@@ -106,6 +106,21 @@ describe("independent Local Map branches", () => {
     expect(columnsOf(ranking)).toEqual([["base"], ["m1", "two"], ["m2"], ["m3", "one"], ["end"]]);
   });
 
+  it("pulls every file toward the last column by the pull's weight, up to the longest-chain ranking", () => {
+    const files = ["base", "m1", "m2", "m3", "end", "leaf"].map(id => node(id));
+    const edges = [...chain, reference("leaf", "base")];
+    // A pull lighter than the one reference leaf has leaves the spans in charge; a heavier one stands leaf at the far right, as before 2026-10-06.
+    expect(columnsOf(rankBranches(files, edges, { pull: 0.5 }))).toEqual([["base"], ["leaf", "m1"], ["m2"], ["m3"], ["end"]]);
+    expect(columnsOf(rankBranches(files, edges, { pull: 2 }))).toEqual([["base"], ["m1"], ["m2"], ["m3"], ["end", "leaf"]]);
+  });
+
+  it("settles a tie by the rule asked: the fewest cards, the rightmost, or the leftmost column", () => {
+    const files = ["base", "m1", "m2", "m3", "end", "two", "one"].map(id => node(id));
+    const edges = [...chain, reference("two", "base", "x"), reference("two", "base", "y"), reference("end", "two"), reference("one", "base"), reference("end", "one")];
+    expect(columnsOf(rankBranches(files, edges, { tie: "right" }))).toEqual([["base"], ["m1", "two"], ["m2"], ["m3", "one"], ["end"]]);
+    expect(columnsOf(rankBranches(files, edges, { tie: "left" }))).toEqual([["base"], ["m1", "one", "two"], ["m2"], ["m3"], ["end"]]);
+  });
+
   it("ends every unconnected group at the last column, where a file nothing uses stands", () => {
     const files = ["base", "mid", "end", "p", "q", "alone"].map(id => node(id));
     const ranking = rankBranches(files, [reference("mid", "base"), reference("end", "mid"), reference("q", "p")]);

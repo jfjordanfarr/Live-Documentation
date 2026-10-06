@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-05T20:41:23.435Z
+- Generated At: 2026-10-06T19:32:24.868Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `ViewName` union controls which visualization mode is active (now includes `"membrane"`).
 - `BezierTuning` parameters govern connection line rendering in both Local Map and Membrane Map.
 - `SymbolOrder` (2026-10-05) names how a card's symbol rows stand: `layout`, where their wires lead, which only the many-file layout can choose; `alphabetical`; or `appearance`, the Live Doc's order. It lives in `LocalMapTuning.symbolOrder` with `layout` as the default, the owner's choice of navigability of the whole over a fixed order of the few ([Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-11)).
+- `LocalMapTuning` gained the layout lab's levers on 2026-10-06, each at the value the picture was designed at: `rankingPull` (0), `rankingTie` ("fewest"), `orderSweeps` (4), `orderSeed` (null, the ranking's order), `itemGap` (24), `bandGap` (28), `membraneNeck` (60), `membranePadding` (12) and `cardMaxWidth` (null, as wide as the content asks). The page reads them so that the lab's finalists can be rendered and measured by the deck with the tuning seeded; the tuning panel does not yet show them.
 - `ClickBehaviorTuning` and `VisualTuning` interfaces removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md); `TuningConfig` simplified to only `bezier` and `localMap` properties.
 
 ## Generated
@@ -62,7 +63,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L63)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L84)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -71,14 +72,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L66)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L87)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L75)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L96)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -86,21 +87,21 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L86)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L107)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
 
 #### `CircuitTransform` {#symbol-circuittransform}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L89)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L110)
 
 ##### `CircuitTransform` — Summary
 Pan/zoom transform for the Circuit Board (treemap) view.
 
 #### `DirectoryNode` {#symbol-directorynode}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L99)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L120)
 
 ##### `DirectoryNode` — Summary
 Tree node representing a directory in the workspace.

@@ -57,6 +57,21 @@ describe("ordering the retained files", () => {
     }
   });
 
+  it("starts the sweep from a shuffled order when given a seed, the same for a seed and different between seeds", () => {
+    const given = seeded(7, 4, 6, 18);
+    const ranked = orderBranches({ ...given, sweeps: 0 });
+    const once = orderBranches({ ...given, sweeps: 0, seed: 3 });
+    const again = orderBranches({ ...given, sweeps: 0, seed: 3 });
+    const other = orderBranches({ ...given, sweeps: 0, seed: 4 });
+    expect(once.columns).toEqual(again.columns);
+    expect(once.columns).not.toEqual(ranked.columns);
+    expect(other.columns).not.toEqual(once.columns);
+    for (const order of [once, other]) order.columns.forEach((column, c) => expect([...column].sort()).toEqual([...given.columns[c]].sort()));
+    // The sweep from a shuffled start still ends no worse than that start.
+    const swept = orderBranches({ ...given, seed: 3 });
+    expect(swept.crossings).toBeLessThanOrEqual(once.crossings);
+  });
+
   it("reduces the crossings a scope with no skipped columns starts with, on the instrument's own count", () => {
     let improved = 0;
     for (const seed of [5, 9, 13, 21, 34]) {

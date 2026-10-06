@@ -60,6 +60,7 @@
     "ci-check": "node ./scripts/safe-to-commit.mjs --skip-git-status"
   },
   "devDependencies": {
+    "@chenglou/pretext": "^0.0.9",
     "@playwright/test": "^1.58.2",
     "@sourcegraph/scip-typescript": "^0.4.0",
     "@types/node": "^25.3.2",

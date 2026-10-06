@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: package.json
-- Generated At: 2026-09-30T16:22:02.613Z
+- Generated At: 2026-10-06T19:32:23.104Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,7 @@ _Pending notes_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `@chenglou/pretext@^0.0.9`
 - `@playwright/test@^1.58.2`
 - `@sourcegraph/scip-typescript@^0.4.0`
 - `@types/node@^25.3.2`

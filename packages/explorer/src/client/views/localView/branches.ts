@@ -29,6 +29,31 @@ export interface BranchRanking {
   back: Set<string>;
 }
 
+/** The ranking's dials. */
+export interface RankingOptions {
+  /**
+   * How strongly every file is pulled toward the last column, against the cost of the spans: zero ranks by the fewest
+   * column spans alone; a weight above every pair's stands each file as far right as its consumers allow, which is the
+   * longest-chain ranking the Local Map had before 2026-10-06.
+   */
+  pull?: number;
+  /** Which column a file takes when several cost the same: the one with the fewest other cards (the rightmost among equals), the rightmost, or the leftmost. */
+  tie?: "fewest" | "right" | "left";
+}
+
+/** The dials of the layout's first two steps. */
+export interface BranchOptions {
+  /** How a card's rows stand; the layout's own order when omitted. */
+  symbolOrder?: SymbolOrder;
+  ranking?: RankingOptions;
+  order?: {
+    /** How many left-and-right sweeps the ordering tries; four when omitted. */
+    sweeps?: number;
+    /** A seed for a shuffled starting order of each column; the ranking's order when omitted. */
+    seed?: number;
+  };
+}
+
 /** One reference's identity: its two files, its two symbols and its kind. */
 export function edgeKey(edge: LocalEdge): string {
   return JSON.stringify([edge.sourceId, edge.targetId, edge.sourceSymbol, edge.targetSymbol, edge.kind]);
@@ -38,16 +63,19 @@ export function edgeKey(edge: LocalEdge): string {
  * Disclose the union of independent pins. Once both endpoints are present,
  * retain their relationship even when neither pin directly requested it.
  * Filters hide neighbors, but never the selected or explicitly pinned files.
- * The symbol order says how a card's rows stand: by where their wires lead
- * (the layout's choice), alphabetically, or as the Live Doc lists them.
+ * The options set the layout's dials: the symbol order says how a card's rows
+ * stand, by where their wires lead (the layout's choice), alphabetically, or as
+ * the Live Doc lists them; the ranking's pull and tie rule and the order's
+ * sweeps and seed are the layout lab's levers.
  */
 export function buildBranches(
   center: ExplorerNodePayload,
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
-  symbolOrder: SymbolOrder = "layout"
+  options: BranchOptions = {}
 ): BranchGraph {
+  const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
   const retained = new Set([center.id, ...pins.entries.map(pin => pin.nodeId)]);
@@ -84,7 +112,7 @@ export function buildBranches(
   for (const node of nodes) for (const edge of buildSelfLoopEdges(node)) {
     if (!keys.has(edgeKey(edge))) { links.push(edge); keys.add(edgeKey(edge)); }
   }
-  const ranking = rankBranches(nodes, links);
+  const ranking = rankBranches(nodes, links, options.ranking);
   const rows = visibleRows(nodes, center.id, relevantSymbols, symbolOrder);
   const row = (symbol: string | undefined): string => normalizeSymbolIdentifier(symbol) ?? "__internals__";
   const forward: ForwardReference[] = links
@@ -104,7 +132,9 @@ export function buildBranches(
     // Only the layout order moves rows, and Internals keeps the foot of the card.
     movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
     edges: forward,
-    internal
+    internal,
+    sweeps: options.order?.sweeps,
+    seed: options.order?.seed
   });
   return {
     subgraph: { center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },
@@ -154,7 +184,9 @@ export function compareSymbolNames(a: string, b: string): number {
  * order of its members, so that every other reference flows left to right;
  * the broken ones are returned as `back`.
  */
-export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): BranchRanking {
+export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[], options: RankingOptions = {}): BranchRanking {
+  const pull = Math.max(0, options.pull ?? 0);
+  const tie = options.tie ?? "fewest";
   const ids = nodes.map(node => node.id);
   const present = new Set(ids);
   const edges = links.filter(edge => edge.sourceId !== edge.targetId && present.has(edge.sourceId) && present.has(edge.targetId));
@@ -215,34 +247,41 @@ export function rankBranches(nodes: ExplorerNodePayload[], links: LocalEdge[]): 
     const pair = `${edge.targetId}\0${edge.sourceId}`;
     weights.set(pair, (weights.get(pair) ?? 0) + 1);
   }
-  const constraints: Constraint[] = [...weights].sort(([x], [y]) => x.localeCompare(y)).map(([pair, weight]) => {
+  const pairs: Constraint[] = [...weights].sort(([x], [y]) => x.localeCompare(y)).map(([pair, weight]) => {
     const [provider, consumer] = pair.split("\0");
     return { tail: at.get(provider)!, head: at.get(consumer)!, delta: 1, weight };
   });
-  const column = rankByNetworkSimplex(ids.length, constraints).position;
+  // The pull: a column past every file, toward which each file is drawn by the pull's weight, so that a file stands
+  // further right than the spans alone would have it wherever the pull outweighs the spans it lengthens.
+  const sink = ids.length;
+  const pulls: Constraint[] = pull > 0 ? ids.map((_, v) => ({ tail: v, head: sink, delta: 0, weight: pull })) : [];
+  const column = rankByNetworkSimplex(ids.length + (pull > 0 ? 1 : 0), [...pairs, ...pulls]).position.slice(0, ids.length);
   // Files no reference joins stand apart from one another, so each connected group ends at the last column, as a
   // file nothing uses does: the picture's right edge is where the chains end.
   const group = ids.map((_, i) => i);
   const find = (v: number): number => (group[v] === v ? v : (group[v] = find(group[v])));
-  for (const edge of constraints) group[find(edge.tail)] = find(edge.head);
+  for (const edge of pairs) group[find(edge.tail)] = find(edge.head);
   const last = Math.max(0, ...column);
   const groupLast = new Map<number, number>();
   for (let v = 0; v < ids.length; v++) groupLast.set(find(v), Math.max(groupLast.get(find(v)) ?? 0, column[v]));
   for (let v = 0; v < ids.length; v++) column[v] += last - groupLast.get(find(v))!;
   // A file whose references weigh the same on both sides costs the same in any column between its providers and its
-  // consumers; it takes the column with the fewest other cards, the rightmost among equals, so no stack grows for nothing.
+  // consumers (the pull counted on the consumers' side); by the tie rule it takes the column with the fewest other
+  // cards, the rightmost among equals, so no stack grows for nothing, or the rightmost or leftmost outright.
   const cards = new Map<number, number>();
   for (const value of column) cards.set(value, (cards.get(value) ?? 0) + 1);
   for (let v = 0; v < ids.length; v++) {
-    let inbound = 0, outbound = 0, low = 0, high = last;
-    for (const edge of constraints) {
+    let inbound = 0, outbound = pull, low = 0, high = last;
+    for (const edge of pairs) {
       if (edge.head === v) { inbound += edge.weight; low = Math.max(low, column[edge.tail] + 1); }
       if (edge.tail === v) { outbound += edge.weight; high = Math.min(high, column[edge.head] - 1); }
     }
     if (!inbound || inbound !== outbound) continue;
     let best = column[v];
     const others = (value: number): number => (cards.get(value) ?? 0) - (value === column[v] ? 1 : 0);
-    for (let value = low; value <= high; value++) if (others(value) <= others(best)) best = value;
+    if (tie === "right") best = high;
+    else if (tie === "left") best = low;
+    else for (let value = low; value <= high; value++) if (others(value) <= others(best)) best = value;
     cards.set(column[v], cards.get(column[v])! - 1);
     cards.set(best, (cards.get(best) ?? 0) + 1);
     column[v] = best;

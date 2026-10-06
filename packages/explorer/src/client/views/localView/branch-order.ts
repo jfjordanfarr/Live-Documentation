@@ -54,6 +54,8 @@ export interface OrderInput {
   internal?: ReadonlyMap<string, readonly (readonly [string, string])[]>;
   /** How many left-and-right sweeps to try; the best order seen is kept. Zero keeps the starting order. */
   sweeps?: number;
+  /** A seed for a shuffled starting order of each column, so that the sweep starts elsewhere; omitted, the columns start as given. */
+  seed?: number;
 }
 
 /** The wires of one offering pin that pass one column together, sharing a slot in its lane. */
@@ -135,9 +137,10 @@ export function orderBranches(input: OrderInput): BranchOrder {
   const flow = new Map<string, FlowNode>();
   input.columns.forEach((files, column) => files.forEach(id => flow.set(id, { id, column, role: "pinned", directory: input.directoryOf(id) })));
 
-  // The starting order: each column as the ranking gave it, each stand-in at the mean place of its wires' ends.
+  // The starting order: each column as the ranking gave it, or shuffled by the seed, each stand-in at the mean place of its wires' ends.
   const start = new Map<string, number>();
-  input.columns.forEach(files => files.forEach((id, index) => start.set(id, index + 0.5)));
+  const startColumns = input.seed === undefined ? input.columns : shuffledColumns(input.columns, input.seed);
+  startColumns.forEach(files => files.forEach((id, index) => start.set(id, index + 0.5)));
   for (const virtual of virtuals) {
     const ends = [virtual.provider, ...virtual.members.map(member => member.consumer)].map(id => start.get(id) ?? 0);
     start.set(virtual.id, ends.reduce((sum, value) => sum + value, 0) / ends.length);
@@ -202,6 +205,26 @@ export function orderBranches(input: OrderInput): BranchOrder {
     }));
   const stripped = strip(best.bands);
   return { bands: stripped, columns: walkColumns(stripped, columnCount), rows, lanes, passages, crossings: best.crossings };
+}
+
+/** Each column shuffled by a small deterministic generator (mulberry32) from the seed, the same every time for a seed. */
+function shuffledColumns(columns: readonly (readonly string[])[], seed: number): string[][] {
+  let state = seed >>> 0;
+  const next = (): number => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  return columns.map(files => {
+    const list = [...files];
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(next() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    return list;
+  });
 }
 
 /** A barycenter sweep from a starting band tree: the order with the fewest crossings seen, the start included. */

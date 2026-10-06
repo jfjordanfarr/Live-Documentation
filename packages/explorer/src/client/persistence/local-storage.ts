@@ -49,7 +49,16 @@ export const getDefaultTuning = (): TuningConfig => ({
     collapseOnHover: false,
     collapseOnPin: true,
     strainNudge: 48,
-    symbolOrder: "layout"
+    symbolOrder: "layout",
+    rankingPull: 0,
+    rankingTie: "fewest",
+    orderSweeps: 4,
+    orderSeed: null,
+    itemGap: 24,
+    bandGap: 28,
+    membraneNeck: 60,
+    membranePadding: 12,
+    cardMaxWidth: null
   }
 });
 
@@ -72,6 +81,13 @@ const readSymbolOrder = (value: unknown): SymbolOrder | undefined =>
 const readFiniteNumber = (value: unknown): number | undefined => {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 };
+
+/** A number, or null for a dial set to none; anything else is not read. */
+const readNullableNumber = (value: unknown): number | null | undefined =>
+  value === null ? null : readFiniteNumber(value);
+
+const readRankingTie = (value: unknown): "fewest" | "right" | "left" | undefined =>
+  value === "fewest" || value === "right" || value === "left" ? value : undefined;
 
 /**
  * Reads and validates persisted UI state from localStorage.
@@ -138,6 +154,15 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
         const strainNudge = readFiniteNumber(localMapRaw.strainNudge);
         const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
+        const rankingPull = readFiniteNumber(localMapRaw.rankingPull);
+        const rankingTie = readRankingTie(localMapRaw.rankingTie);
+        const orderSweeps = readFiniteNumber(localMapRaw.orderSweeps);
+        const orderSeed = readNullableNumber(localMapRaw.orderSeed);
+        const itemGap = readFiniteNumber(localMapRaw.itemGap);
+        const bandGap = readFiniteNumber(localMapRaw.bandGap);
+        const membraneNeck = readFiniteNumber(localMapRaw.membraneNeck);
+        const membranePadding = readFiniteNumber(localMapRaw.membranePadding);
+        const cardMaxWidth = readNullableNumber(localMapRaw.cardMaxWidth);
         tuning.localMap = {
           ...(columnGap !== undefined ? { columnGap } : null),
           ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
@@ -146,7 +171,16 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
           ...(collapseOnPin !== undefined ? { collapseOnPin } : null),
           ...(strainNudge !== undefined ? { strainNudge } : null),
-          ...(symbolOrder !== undefined ? { symbolOrder } : null)
+          ...(symbolOrder !== undefined ? { symbolOrder } : null),
+          ...(rankingPull !== undefined ? { rankingPull } : null),
+          ...(rankingTie !== undefined ? { rankingTie } : null),
+          ...(orderSweeps !== undefined ? { orderSweeps } : null),
+          ...(orderSeed !== undefined ? { orderSeed } : null),
+          ...(itemGap !== undefined ? { itemGap } : null),
+          ...(bandGap !== undefined ? { bandGap } : null),
+          ...(membraneNeck !== undefined ? { membraneNeck } : null),
+          ...(membranePadding !== undefined ? { membranePadding } : null),
+          ...(cardMaxWidth !== undefined ? { cardMaxWidth } : null)
         };
       }
 

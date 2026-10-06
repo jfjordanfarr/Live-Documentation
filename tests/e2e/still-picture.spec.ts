@@ -165,13 +165,13 @@ const shot = async (page: Page, run: Run, view: string, moment: string): Promise
 
 const settleLocalMap = async (page: Page, file: string): Promise<void> => {
   await page.waitForSelector(`#map-container .node-card.local-focus[data-id="${file}"]`, { timeout: 20_000 });
-  await page.waitForSelector("#map-connections .connection-path", { timeout: 10_000 });
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { timeout: 10_000 });
   await page.waitForTimeout(700);
 };
 
 const settleLocalBranches = async (page: Page): Promise<void> => {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
-  await page.waitForSelector("#map-connections .connection-path", { timeout: 10_000 });
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { timeout: 10_000 });
   await page.waitForTimeout(900);
 };
 
@@ -317,7 +317,7 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
     moves.take(await press(page, "#pathfind-status a"));
   }
   await page.waitForSelector("#view-map.has-path", { timeout: 10_000 });
-  await page.waitForSelector("#map-connections .connection-path", { timeout: 10_000 });
+  await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { timeout: 10_000 });
   await page.waitForTimeout(1200);
   await shot(page, run, "Local Map", "chain-path");
   const after = await boxOf(page, subject);

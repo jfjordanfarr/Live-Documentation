@@ -53,6 +53,27 @@ export interface LocalMapTuning {
   strainNudge: number;
   /** How a card's symbol rows stand (2026-10-05). */
   symbolOrder: SymbolOrder;
+  /**
+   * How strongly the ranking pulls every file toward the last column: zero ranks by the fewest column spans, a weight
+   * above every pair's by longest-chain depth, as before 2026-10-06. A lever of the layout lab.
+   */
+  rankingPull: number;
+  /** Which column a file takes when several cost the same: the one with the fewest other cards, the rightmost, or the leftmost. */
+  rankingTie: "fewest" | "right" | "left";
+  /** How many left-and-right sweeps the ordering tries. */
+  orderSweeps: number;
+  /** A seed for a shuffled starting order of the ordering's sweep; null starts from the ranking's order. */
+  orderSeed: number | null;
+  /** The room between neighbouring cards and lanes of a column, in CSS pixels. */
+  itemGap: number;
+  /** The room between sibling membranes' segments in a column they share. */
+  bandGap: number;
+  /** The least overlap of a membrane's segments in neighbouring columns, the corridor that joins them. */
+  membraneNeck: number;
+  /** The room between a membrane's outline and its members, which also rounds its corners. */
+  membranePadding: number;
+  /** A card may be no wider than this; null for as wide as its content asks. */
+  cardMaxWidth: number | null;
 }
 
 /**

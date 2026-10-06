@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-10-06T18:33:25.096Z
+- Generated At: 2026-10-06T19:32:25.251Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Builds the Local Map’s independently disclosed graph and ranks its files from 
 
 ### Notes
 
-Every edge between retained files remains present, including connections not directly requested by a pin. Relevant symbol sets separately identify which rows a compact neighbor must display; the same rows give each wire a height on its card for the ordering. Explicit pins survive category filters. The columns are the exact minimum of the references' column spans, each pair of files weighing the references between them, found by the network simplex of `network-simplex.ts` as Gansner et al. rank a graph; a file that costs the same in several columns takes the one with the fewest cards, the rightmost among equals, every connected group of files ends at the last column, and so does a file no reference reaches. Until 2026-10-06 a column was longest-chain depth, every file as near its consumers as its longest forward chain allowed, which stood a leaf that used only the root at the far right, four lanes from it; the owner accepted the change of meaning ([Turn 7](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-7)).
+Every edge between retained files remains present, including connections not directly requested by a pin. Relevant symbol sets separately identify which rows a compact neighbor must display; the same rows give each wire a height on its card for the ordering. Explicit pins survive category filters. The columns are the exact minimum of the references' column spans, each pair of files weighing the references between them, found by the network simplex of `network-simplex.ts` as Gansner et al. rank a graph; a file that costs the same in several columns takes the one with the fewest cards, the rightmost among equals, every connected group of files ends at the last column, and so does a file no reference reaches. Until 2026-10-06 a column was longest-chain depth, every file as near its consumers as its longest forward chain allowed, which stood a leaf that used only the root at the far right, four lanes from it; the owner accepted the change of meaning ([Turn 7](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-7)). The ranking has two dials for the layout lab, carried in `RankingOptions`: a `pull` toward the last column, a column past every file toward which each is drawn by the pull's weight, so that zero is the span-minimal ranking and a weight above every pair's is the longest-chain ranking of before; and a `tie` rule for a file that costs the same in several columns: the fewest other cards (the default), the rightmost or the leftmost. `buildBranches` takes its dials as one `BranchOptions` object: the symbol order, the ranking's, and the order's sweeps and seed.
 
 A cycle no longer shares a column. Its members stand in the provider-first order of Eades, Lin and Smyth, the references that read backward in that order are returned as `back`, and everything else ranks forward; the renderer draws a back reference as French Corset laces with its route on hover, under the owner's words of 2026-10-05 that ugly design may produce ugly visualization and the picture must say what it hides. The ranking then hands its columns, each card's rows, the symbol order and each file's own references to `branch-order.ts`, which orders them and reserves the lanes; the own references break ties among rows whose wires lead alike. The symbol order is the owner's three strategies of 2026-10-05: the layout's own, where rows stand by their wires and only Internals keeps the foot of the card; alphabetical, which `compareSymbolNames` defines for every card; and the order of appearance, the Live Doc's.
 
@@ -36,9 +36,23 @@ A disclosed exploration, with every connection between its retained files.
 ##### `BranchRanking` — Summary
 The ranking of retained files into columns, and the references the ranking reads backward.
 
+#### `RankingOptions` {#symbol-rankingoptions}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L33)
+
+##### `RankingOptions` — Summary
+The ranking's dials.
+
+#### `BranchOptions` {#symbol-branchoptions}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L45)
+
+##### `BranchOptions` — Summary
+The dials of the layout's first two steps.
+
 #### `edgeKey` {#symbol-edgekey}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L58)
 - Parameters: `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `edgeKey` — Summary
@@ -46,29 +60,31 @@ One reference's identity: its two files, its two symbols and its kind.
 
 #### `buildBranches` {#symbol-buildbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L44)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L71)
 - Returns: [`BranchGraph`](#symbol-branchgraph)
-- Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graph`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `pins`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `symbolOrder`: [`SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder)
+- Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graph`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `pins`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `options`: [`BranchOptions`](#symbol-branchoptions)
 
 ##### `buildBranches` — Summary
 Disclose the union of independent pins. Once both endpoints are present,
 retain their relationship even when neither pin directly requested it.
 Filters hide neighbors, but never the selected or explicitly pinned files.
-The symbol order says how a card's rows stand: by where their wires lead
-(the layout's choice), alphabetically, or as the Live Doc lists them.
+The options set the layout's dials: the symbol order says how a card's rows
+stand, by where their wires lead (the layout's choice), alphabetically, or as
+the Live Doc lists them; the ranking's pull and tie rule and the order's
+sweeps and seed are the layout lab's levers.
 
 #### `compareSymbolNames` {#symbol-comparesymbolnames}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L141)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L171)
 
 ##### `compareSymbolNames` — Summary
 Alphabetical order of symbol names, case first set aside, then as the names compare.
 
 #### `rankBranches` {#symbol-rankbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L157)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L187)
 - Returns: [`BranchRanking`](#symbol-branchranking)
-- Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]
+- Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]; `options`: [`RankingOptions`](#symbol-rankingoptions)
 
 ##### `rankBranches` — Summary
 Rank providers before consumers so that the references cross the fewest
