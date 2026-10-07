@@ -152,6 +152,18 @@
               <option value="appearance">Order of appearance</option>
             </select>
           </label>
+          <label class="tuning-slider" title="How long the picture takes to move from one arrangement to the next, in milliseconds; zero jumps">
+            <span>Move</span>
+            <input type="range" id="tuning-move-ms" min="0" max="1200" step="50" value="450" />
+            <output id="tuning-move-ms-value">450</output>
+          </label>
+          <label class="tuning-slider" title="Which card stays put on screen while the picture moves around it">
+            <span>Hold Still</span>
+            <select id="tuning-hold-still">
+              <option value="click">Last clicked card</option>
+              <option value="hover">Last clicked or hovered card</option>
+            </select>
+          </label>
         </div>
       </div>
     </details>

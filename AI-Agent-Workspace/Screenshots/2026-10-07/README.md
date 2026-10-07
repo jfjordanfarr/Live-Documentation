@@ -27,3 +27,18 @@ The same card with the dials turned, each seeded into the page's storage; the de
 | [Reach 24, curl 14](repository-five-graph-card-laces-cut-reach24-curl14.png) | Longer loops that read more like a connector's first bend, which is the distinction the laces exist to keep. |
 
 The agent's choice, pending the owner's: the defaults as they stand (reach 18, curl 12, width 2.5, taper 0.5), the "wide" shape the owner found most convincing, now cut. The dials remain in the tuning panel under Local Map.
+
+## The picture moves, later on October 7
+
+Evidence from [Turn 16 of the October 6 session](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-16), the owner's yes to the animated re-layout. Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 at the view's own scale, with the Move dial at its longest, 1,200 ms, so that three frames could be caught by a script; the default is 450 ms. The picture is graph.ts and document.ts retained whole, and the click pins document.ts's row `renderSymbolBlocks`, which turns the file's whole pin into pins on its other symbols (2 pins become 17), lets four adapter test cards go, and moves 24 of the 27 cards that remain by 59 to 80 px. document.ts is the card last acted on, so the camera holds it still: at rest it stands 1 px from where it stood. The frames are timed from the moment the picture's root says `data-moving`.
+
+| Capture | State |
+| --- | --- |
+| [Before the click](repository-move-before.png) | 31 cards and 2 pins. document.ts, at the left edge, is about to be clicked on its `renderSymbolBlocks` row. |
+| [A quarter of the way](repository-move-25.png) | The move's first frames: every element that both pictures share has left its old place; the four leaving cards are fading. |
+| [Halfway](repository-move-50.png) | graph.ts's rows are mid-swap: `deriveLiveDocGraph` and `GraphFile` pass through each other on the way to the order the new picture chose; the cards above and below slide with their membranes; the wires are redrawn to the frame, without their glow. document.ts has not moved. |
+| [Three quarters](repository-move-75.png) | Easing in to the new places. |
+| [At rest](repository-move-after.png) | 27 cards and 17 pins; the glow is back; nothing of the move remains. |
+
+Measured on this move by the page's own frame clock and the browser's counters: with the wires' glow drawn every frame the move ran at six frames a second (a frame of 150 to 250 ms, most of it rasterising the drop-shadow filters of 172 wires); with the glow off, sixty (a median frame of 17 ms: script about 10 ms for the wires rebuilt, style 5, layout 1.5). The glow now goes while a move runs and returns at rest. The agent's eye: the move reads as one picture becoming another, the held card the fixed point; the rows passing through each other mid-swap are the one moment that looks like motion for its own sake, and a card's height snapping while its membrane slides is visible on the leaving cards' neighbours. Both are open.
+

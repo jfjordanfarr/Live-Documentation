@@ -41,6 +41,8 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const laceWidthInput = document.getElementById("tuning-lace-width") as HTMLInputElement | null;
   const strainNudgeInput = document.getElementById("tuning-strain-nudge") as HTMLInputElement | null;
   const symbolOrderSelect = document.getElementById("tuning-symbol-order") as HTMLSelectElement | null;
+  const moveMsInput = document.getElementById("tuning-move-ms") as HTMLInputElement | null;
+  const holdStillSelect = document.getElementById("tuning-hold-still") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -118,6 +120,8 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     state.tuning.localMap.laceWidth = setSlider(laceWidthInput, "tuning-lace-width-value", state.tuning.localMap.laceWidth);
     state.tuning.localMap.strainNudge = setSlider(strainNudgeInput, "tuning-strain-nudge-value", state.tuning.localMap.strainNudge, v => String(v));
     if (symbolOrderSelect) symbolOrderSelect.value = state.tuning.localMap.symbolOrder;
+    state.tuning.localMap.moveMs = setSlider(moveMsInput, "tuning-move-ms-value", state.tuning.localMap.moveMs, v => String(v));
+    if (holdStillSelect) holdStillSelect.value = state.tuning.localMap.holdStill;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -151,6 +155,22 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       state.tuning.localMap.symbolOrder = value === "alphabetical" || value === "appearance" ? value : "layout";
       onTuningChange();
       if (state.view === "map") onRender();
+    });
+  }
+
+  // The move's length and the card it holds still take effect at the next change of picture; nothing redraws now.
+  if (moveMsInput) {
+    const output = document.getElementById("tuning-move-ms-value") as HTMLOutputElement | null;
+    moveMsInput.addEventListener("input", () => {
+      state.tuning.localMap.moveMs = parseFloat(moveMsInput.value);
+      if (output) output.textContent = moveMsInput.value;
+      onTuningChange();
+    });
+  }
+  if (holdStillSelect) {
+    holdStillSelect.addEventListener("change", () => {
+      state.tuning.localMap.holdStill = holdStillSelect.value === "hover" ? "hover" : "click";
+      onTuningChange();
     });
   }
 

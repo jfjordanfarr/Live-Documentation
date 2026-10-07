@@ -59,6 +59,10 @@ export interface LocalMapTuning {
   strainNudge: number;
   /** How a card's symbol rows stand (2026-10-05). */
   symbolOrder: SymbolOrder;
+  /** How long the picture takes to move from one arrangement to the next, in milliseconds; zero jumps (2026-10-07). */
+  moveMs: number;
+  /** Which card a move holds still on screen: the one last clicked, or the one last clicked or hovered (2026-10-07). */
+  holdStill: "click" | "hover";
   /**
    * How strongly the ranking pulls every file toward the last column: zero ranks by the fewest column spans, a weight
    * above every pair's by longest-chain depth, as before 2026-10-06. A lever of the layout lab.

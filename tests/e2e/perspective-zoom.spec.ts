@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+import { localMapSettled } from "./still-picture";
+
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const cardSelector = `#map-container .node-card[data-id="${ROOT}helpers.ts"]`;
 
@@ -85,6 +87,7 @@ test("native symbol wires gather by file pair and directory shells reverse their
   const card = (name: string) => page.locator(`#map-container .node-card[data-id="scripts/slopcop/${name}"]`);
   await card("symbolReferences.ts").locator(".node-title").click();
   await card("check-symbols.ts").locator(".node-title").click();
+  await localMapSettled(page);
   await page.mouse.move(1500, 950);
   await expect(page.locator('#map-container .local-directory-band[data-directory=""]')).toBeVisible();
   const nativeWires = await page.locator("#map-connections .connection-path").count();

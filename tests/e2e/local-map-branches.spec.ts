@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { displayNames, loadGraph, LOCAL_MAP, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
+import { displayNames, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);
@@ -16,6 +16,8 @@ async function branches(page: Page): Promise<void> {
   await pin(page, "helpers.ts", "format").click();
   await card(page, "processor.ts").getByRole("button", { name: "+2 symbols", exact: true }).click();
   await pin(page, "processor.ts", "run").click();
+  // Each pin moves the picture to its next arrangement; the measurements below are of the picture at rest.
+  await localMapSettled(page);
 }
 
 /** Every lane's height and the slot lines it publishes, as the router reads them. */
@@ -137,6 +139,7 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   await file("symbolReferences.ts").locator(".node-title").click();
   await file("check-symbols.ts").locator(".node-title").click();
   await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toBeVisible();
+  await localMapSettled(page);
   const before = (await file("symbolReferences.ts").boundingBox())!;
   const config = (await file("config.ts").boundingBox())!;
   expect(Math.abs(config.x - before.x)).toBeLessThan(2);
@@ -146,6 +149,8 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   // Two files and their neighbours strain nothing: no nudge toward the Force Graph.
   await expect(page.locator(".perspective-strain")).toBeHidden();
   await file("symbolReferences.ts").getByRole("button", { name: "Close symbolReferences.ts", exact: true }).click();
+  // The closed card is the one last acted on, so the move holds it still; at rest it stands where it stood.
+  await localMapSettled(page);
   const after = (await file("symbolReferences.ts").boundingBox())!;
   expect(after.height).toBeLessThan(before.height);
   expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(1);

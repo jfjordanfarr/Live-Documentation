@@ -1,4 +1,5 @@
 import { EMPTY_PIN_SET, retainFile, removePinsForNode, toggleFileSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
+import { dropStage, type BranchStage } from "./branch-renderer";
 import { edgeKey, type BranchGraph } from "./branches";
 import type {
   ExplorerNodePayload
@@ -97,6 +98,16 @@ export class LocalViewController implements LocalViewApi {
    * arrangement is clearly cheaper. Null until a branch picture has been drawn, and again when the branches are left.
    */
   previousTops: ReadonlyMap<string, number> | null = null;
+  /**
+   * The branch picture's elements, kept across renders so that a change of picture moves them rather than redrawing
+   * them; null until a branch picture is drawn, and again when the branches are left.
+   */
+  stage: BranchStage | null = null;
+  /**
+   * The file whose card the person last acted on, by a click on it or, when the tuning says hover counts, by hovering
+   * it; the card a move of the picture holds still on screen (the owner's choice, 2026-10-07).
+   */
+  lastInteracted: string | null = null;
   /** Cards whose complete symbol list the person has explicitly opened. */
   readonly expandedCards = new Set<string>();
   private renderedPath = false;
@@ -268,6 +279,14 @@ export class LocalViewController implements LocalViewApi {
     }
     this.layerObserver?.disconnect();
     this.layerObserver = null;
+    this.dropStage();
+  }
+
+  /** Lets the branch picture's stage go, ending any move it runs; its elements are the container's to clear. */
+  dropStage(): void {
+    if (!this.stage) return;
+    dropStage(this.stage);
+    this.stage = null;
   }
 
   /** Triggers a full re-render of the Local Map view via {@link renderLocalView}. */
@@ -360,6 +379,7 @@ export class LocalViewController implements LocalViewApi {
     // Update hover state in the state store (for reactive updates)
     if (!fromPin) {
       this.localMapState.update(s => setHoveredSymbol(s, { nodeId, symbol }));
+      if (options.state.tuning.localMap.holdStill === "hover") this.lastInteracted = nodeId;
     }
 
     // Compute the highlight using pure function
@@ -427,6 +447,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Apply retained scope while keeping the acted-on row in its screen position. */
   private updateRetainedPins(nodeId: string, symbol: string, pins: PinSet, focus = true): void {
+    this.lastInteracted = nodeId;
     const leavingPath = !!this.localMapState.getState().activePath;
     const selector = symbol === "*"
       ? `.node-card[data-id="${CSS.escape(nodeId)}"] .node-title`

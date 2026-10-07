@@ -53,6 +53,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     collapseOnPin: true,
     strainNudge: 48,
     symbolOrder: "layout",
+    moveMs: 450,
+    holdStill: "click",
     rankingPull: 0,
     rankingTie: "fewest",
     orderSweeps: 4,
@@ -95,6 +97,9 @@ const readNullableNumber = (value: unknown): number | null | undefined =>
 
 const readRankingTie = (value: unknown): "fewest" | "right" | "left" | undefined =>
   value === "fewest" || value === "right" || value === "left" ? value : undefined;
+
+const readHoldStill = (value: unknown): "click" | "hover" | undefined =>
+  value === "click" || value === "hover" ? value : undefined;
 
 /**
  * Reads and validates persisted UI state from localStorage.
@@ -164,6 +169,8 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
         const strainNudge = readFiniteNumber(localMapRaw.strainNudge);
         const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
+        const moveMs = readFiniteNumber(localMapRaw.moveMs);
+        const holdStill = readHoldStill(localMapRaw.holdStill);
         const rankingPull = readFiniteNumber(localMapRaw.rankingPull);
         const rankingTie = readRankingTie(localMapRaw.rankingTie);
         const orderSweeps = readFiniteNumber(localMapRaw.orderSweeps);
@@ -189,6 +196,8 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(collapseOnPin !== undefined ? { collapseOnPin } : null),
           ...(strainNudge !== undefined ? { strainNudge } : null),
           ...(symbolOrder !== undefined ? { symbolOrder } : null),
+          ...(moveMs !== undefined ? { moveMs } : null),
+          ...(holdStill !== undefined ? { holdStill } : null),
           ...(rankingPull !== undefined ? { rankingPull } : null),
           ...(rankingTie !== undefined ? { rankingTie } : null),
           ...(orderSweeps !== undefined ? { orderSweeps } : null),

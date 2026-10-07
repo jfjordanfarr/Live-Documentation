@@ -178,6 +178,14 @@ export function localRetainUrl(base: string, files: readonly string[]): string {
 
 export const forceGraphUrl = (base: string, file: string): string => `${base}?view=force&node=${encodeURIComponent(file)}`;
 
+/**
+ * Waits until the Local Map's picture is at rest: a change of pins moves the branch picture from one arrangement to the
+ * next over the tuning's move length (2026-10-07), and the root says `data-moving` while it does.
+ */
+export async function localMapSettled(page: Page): Promise<void> {
+  await page.waitForFunction(() => !document.querySelector("#map-container .local-placed[data-moving]"), undefined, { timeout: 10_000 });
+}
+
 // ─── Reading a view ───────────────────────────────────────────────────────
 
 /** How a view's DOM is read: where its wires, cards, rows and names are, and which way its wires are stamped. */

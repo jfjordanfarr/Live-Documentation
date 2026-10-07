@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-07T01:30:17.927Z
+- Generated At: 2026-10-07T02:59:52.612Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - The pathfinder's status (`pathfind-status`) is a line of its own under the input row since [Turn 10 of 2026-10-01](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10), because it can hold a sentence and a link (the reverse question offered when a path runs against the map's direction).
 - The Tuning section's Local Map subsection gained the laces' sliders on 2026-10-06 (`tuning-lace-reach`, `tuning-lace-curl`, `tuning-lace-width`), beside the taper now labelled Lace Taper, each with a title saying what it moves ([Turn 13](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)); a `tuning-lace-inset` slider of the same day was removed on 2026-10-07, when the laces became cut by the card's edge, and the reach's title now says it is measured from that edge.
 - Click Behavior and Visual tuning subsections removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code — their checkbox controls were eliminated along with the corresponding `ClickBehaviorTuning`/`VisualTuning` type interfaces.
+- The Local Map subsection gained the Move slider (`tuning-move-ms`, 0 to 1,200 ms by 50) and the Hold Still select (`tuning-hold-still`: the last clicked card, or the last clicked or hovered) on 2026-10-07, for the animated re-layout.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -170,6 +171,9 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `tuning-column-gap-value` {#symbol-tuning-column-gap-value}
 - Type: variable
 
+#### `tuning-hold-still` {#symbol-tuning-hold-still}
+- Type: variable
+
 #### `tuning-hover-dim-connections` {#symbol-tuning-hover-dim-connections}
 - Type: variable
 
@@ -198,6 +202,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-lace-width-value` {#symbol-tuning-lace-width-value}
+- Type: variable
+
+#### `tuning-move-ms` {#symbol-tuning-move-ms}
+- Type: variable
+
+#### `tuning-move-ms-value` {#symbol-tuning-move-ms-value}
 - Type: variable
 
 #### `tuning-self-loop-taper` {#symbol-tuning-self-loop-taper}

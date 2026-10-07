@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture.ts
-- Generated At: 2026-10-06T16:47:49.787Z
+- Generated At: 2026-10-07T02:59:53.903Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ The still-picture instrument: quantized measures of one Explorer view in one sta
 - The length measure sums every drawn wire's path length in screen pixels at the view's scale, stubs left out, and reports the mean; the owner named the total length of connectors across a frame as the Local Map's reward on 2026-10-05, so the deck reads it rather than assumes it. Since 2026-10-06 it also reports the horizontal and the vertical parts, each wire's summed over its samples, because the two halves answer to different levers: the ranking and the column widths set the horizontal, the order and the placement the vertical.
 - Churn compares the cards' boxes before and after one gesture; the tour plans from the picture as it stands, then makes each pan by mouse and counts what actually became legible, so a plan the view does not honour shows as a difference. A drag starts from an empty spot the whole drag fits from, so one planned pan is one drag.
 - Built on 2026-10-01 after the owner's go-ahead in [Turn 4](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-4); its first run found and the session fixed a clipped Membrane symbol name and an 862 px jump of the Local Map's subject on pinning a symbol. Expanded the same evening under [Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-8).
+- `localMapSettled` (2026-10-07) waits for the branch picture to rest, since a change of pins now moves it over the tuning's move length and the root says `data-moving` while it does; the specs that measure after a click wait on it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -115,47 +116,56 @@ The address of the Local Map with every file of the set retained whole, the firs
 - Type: const
 - Source: [source](../../../../tests/e2e/still-picture.ts#L179)
 
+#### `localMapSettled` {#symbol-localmapsettled}
+- Type: function
+- Source: [source](../../../../tests/e2e/still-picture.ts#L185)
+- Parameters: `page`: `Page`
+
+##### `localMapSettled` — Summary
+Waits until the Local Map's picture is at rest: a change of pins moves the branch picture from one arrangement to the
+next over the tuning's move length (2026-10-07), and the root says `data-moving` while it does.
+
 #### `ViewReading` {#symbol-viewreading}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L184)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L192)
 
 ##### `ViewReading` — Summary
 How a view's DOM is read: where its wires, cards, rows and names are, and which way its wires are stamped.
 
 #### `LOCAL_MAP` {#symbol-local_map}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L215)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L223)
 - Returns: [`ViewReading`](#symbol-viewreading)
 
 #### `MEMBRANE_MAP` {#symbol-membrane_map}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L241)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L249)
 - Returns: [`ViewReading`](#symbol-viewreading)
 
 #### `WireReading` {#symbol-wirereading}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L269)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L277)
 
 ##### `WireReading` — Summary
 What the page reports about one wire.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L303)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L311)
 
 ##### `CardReading` — Summary
 What the page reports about one card.
 
 #### `PictureReading` {#symbol-picturereading}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L316)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L324)
 
 ##### `PictureReading` — Summary
 What the page reports about the picture as a whole.
 
 #### `readPicture` {#symbol-readpicture}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L328)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L336)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `readPicture` — Summary
@@ -163,11 +173,11 @@ Reads the wires, cards and camera of a view as drawn now.
 
 #### `LegibilityScore` {#symbol-legibilityscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L523)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L531)
 
 #### `scoreLegibility` {#symbol-scorelegibility}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L540)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L548)
 - Returns: [`LegibilityScore`](#symbol-legibilityscore)
 - Parameters: `picture`: [`PictureReading`](#symbol-picturereading)
 
@@ -176,11 +186,11 @@ Test 1 and test 5: the facts in scope against the wires drawn.
 
 #### `OcclusionScore` {#symbol-occlusionscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L571)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L579)
 
 #### `scoreOcclusion` {#symbol-scoreocclusion}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L579)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L587)
 - Returns: [`OcclusionScore`](#symbol-occlusionscore)
 - Parameters: `picture`: [`PictureReading`](#symbol-picturereading)
 
@@ -189,11 +199,11 @@ Test 2: wires that cross a card they do not end at.
 
 #### `ForeignScore` {#symbol-foreignscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L591)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L599)
 
 #### `scoreForeign` {#symbol-scoreforeign}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L603)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L611)
 - Returns: [`ForeignScore`](#symbol-foreignscore)
 - Parameters: `picture`: [`PictureReading`](#symbol-picturereading)
 
@@ -202,11 +212,11 @@ Test 16: wires drawn through a directory that holds neither of their ends, over 
 
 #### `LengthScore` {#symbol-lengthscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L615)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L623)
 
 #### `scoreLength` {#symbol-scorelength}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L627)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L635)
 - Returns: [`LengthScore`](#symbol-lengthscore)
 - Parameters: `picture`: [`PictureReading`](#symbol-picturereading)
 
@@ -215,18 +225,18 @@ Test 17: the total drawn length of the wires, the owner's reward for the Local M
 
 #### `wireLegible` {#symbol-wirelegible}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L636)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L644)
 
 ##### `wireLegible` — Summary
 The legibility of one wire by the deck's full definition.
 
 #### `ExpandedScore` {#symbol-expandedscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L647)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L655)
 
 #### `scoreExpanded` {#symbol-scoreexpanded}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L661)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L669)
 - Returns: [`ExpandedScore`](#symbol-expandedscore)
 - Parameters: `picture`: [`PictureReading`](#symbol-picturereading)
 
@@ -235,11 +245,11 @@ Tests 7 to 12 over one picture; `counts` is the graph's public symbol count per 
 
 #### `HiddenScore` {#symbol-hiddenscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L692)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L700)
 
 #### `scoreHiddenAmongDrawn` {#symbol-scorehiddenamongdrawn}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L700)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L708)
 - Returns: [`HiddenScore`](#symbol-hiddenscore)
 - Parameters: `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `picture`: [`PictureReading`](#symbol-picturereading)
 
@@ -248,7 +258,7 @@ Test 13: test 5 with the scope widened to whatever the view drew.
 
 #### `scoreHops` {#symbol-scorehops}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L707)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L715)
 - Parameters: `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `picture`: [`PictureReading`](#symbol-picturereading)
 
 ##### `scoreHops` — Summary
@@ -256,11 +266,11 @@ Which hops of a chain are legible: a hop is legible when any reference between i
 
 #### `ChurnScore` {#symbol-churnscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L716)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L724)
 
 #### `scoreChurn` {#symbol-scorechurn}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L728)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L736)
 - Returns: [`ChurnScore`](#symbol-churnscore)
 
 ##### `scoreChurn` — Summary
@@ -268,7 +278,7 @@ Test 14: what one gesture did to every card.
 
 #### `cardBoxes` {#symbol-cardboxes}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L751)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L759)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `cardBoxes` — Summary
@@ -276,11 +286,11 @@ The screen box of the first card of each file.
 
 #### `TextScore` {#symbol-textscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L764)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L772)
 
 #### `scoreText` {#symbol-scoretext}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L772)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L780)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `scoreText` — Summary
@@ -288,7 +298,7 @@ Test 3: the design audit over the view's text.
 
 #### `dragBy` {#symbol-dragby}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L831)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L839)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `dragBy` — Summary
@@ -296,11 +306,11 @@ Pans the view by dragging an empty spot of it with the mouse, as a person would;
 
 #### `RouteScore` {#symbol-routescore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L848)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L856)
 
 #### `scoreRoutes` {#symbol-scoreroutes}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L858)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L866)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `scoreRoutes` — Summary
@@ -308,11 +318,11 @@ Test 4: the shape of every wire across six pans by mouse, translation removed.
 
 #### `TourScore` {#symbol-tourscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L884)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L892)
 
 #### `runTour` {#symbol-runtour}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L904)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L912)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `runTour` — Summary
@@ -321,22 +331,22 @@ The camera is left where the tour ends.
 
 #### `Journey` {#symbol-journey}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L940)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L948)
 
 #### `ChainJourney` {#symbol-chainjourney}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L957)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L965)
 
 ##### `ChainJourney` — Summary
 The chain scope's journey: from A's single-file state to a picture in which the hops are legible.
 
 #### `Box` {#symbol-box}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L973)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L981)
 
 #### `boxOf` {#symbol-boxof}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L981)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L989)
 - Parameters: `page`: `Page`
 
 ##### `boxOf` — Summary
@@ -344,18 +354,18 @@ The screen box of the first element the selector names, or null.
 
 #### `centerDistance` {#symbol-centerdistance}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L990)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L998)
 
 #### `Move` {#symbol-move}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L994)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1002)
 
 ##### `Move` — Summary
 What one move of a journey cost: the gestures it took, counting the pans that brought the target into the frame, and the short side of the target hit.
 
 #### `gesture` {#symbol-gesture}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1003)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1011)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `gesture` — Summary
@@ -364,7 +374,7 @@ target is inside the frame, each pan a gesture, then clicking its center. Report
 
 #### `legibleNames` {#symbol-legiblenames}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1026)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1034)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `legibleNames` — Summary
@@ -372,29 +382,29 @@ How many of the files' names are legible on their cards now: in frame, uncovered
 
 #### `backEnabled` {#symbol-backenabled}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1051)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1059)
 
 #### `Scoreboard` {#symbol-scoreboard}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1055)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1063)
 
 #### `scoreboardTable` {#symbol-scoreboardtable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1089)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1097)
 
 ##### `scoreboardTable` — Summary
 The scoreboard of one bundle as a markdown table, one row per view, one column per number the deck defines.
 
 #### `expandedTable` {#symbol-expandedtable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1132)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1140)
 
 ##### `expandedTable` — Summary
 The expanded measures of one bundle as a second table, one row per view.
 
 #### `chainTable` {#symbol-chaintable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1164)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1172)
 
 ##### `chainTable` — Summary
 The chain journeys of one bundle as a table.

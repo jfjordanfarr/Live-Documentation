@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/render.ts
-- Generated At: 2026-10-03T02:21:29.450Z
+- Generated At: 2026-10-07T02:59:51.907Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ Builds the native Local Map’s classic neighborhood, independently pinned branc
 ### Notes
 
 Uses the same native card and symbol factories across all three disclosures. Branch ranking comes from the pure branch graph; explicit pathfinding retains its own ordered columns and fit behavior. The rendering boundary originated in the December 4, 2025 Local Map extraction.
+- A branch picture keeps its stage across renders (`keepStage`, 2026-10-07): the container is not cleared and the stage's root is the layout root again, so that the renderer can move the picture from the previous one; any other picture, an empty one, or a path drops the stage and starts from an empty container. Choosing a different file marks its card as the one last interacted with, which a move then holds still.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -29,6 +30,7 @@ Renders (or re-renders) the Local Map DOM layout from the current controller sta
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`branch-renderer.createStage`](./branch-renderer.ts.mdmd.md#symbol-createstage)
 - [`branch-renderer.renderBranches`](./branch-renderer.ts.mdmd.md#symbol-renderbranches)
 - [`column-factory.createHierarchicalColumn`](./column-factory.ts.mdmd.md#symbol-createhierarchicalcolumn)
 - [`column-factory.createStackedColumn`](./column-factory.ts.mdmd.md#symbol-createstackedcolumn)

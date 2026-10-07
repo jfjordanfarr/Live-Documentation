@@ -1,5 +1,5 @@
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
-import { renderBranches } from "./branch-renderer";
+import { createStage, renderBranches } from "./branch-renderer";
 import { createHierarchicalColumn, createStackedColumn, highlightSymbolInColumn } from "./column-factory";
 import type { LocalViewController } from "./controller";
 import type { PathResult } from "./state";
@@ -31,13 +31,20 @@ export function renderLocalView(controller: LocalViewController): void {
   }
 
   overlay.innerHTML = "";
-  container.innerHTML = "";
   controller.currentSubgraph = null;
   controller.branches = null;
   container.classList.remove("symbol-hover-active");
   overlay.classList.remove("symbol-hover-active");
-  controller.contentRoot = null;
   controller.clearAnchors();
+  // A branch picture keeps its stage across renders, so that the next picture moves from this one; every other
+  // picture starts from an empty container.
+  const activePath = controller.localMapState.getState().activePath;
+  const keepStage = !!state.selectedNode && !activePath && controller.pins.entries.length > 0 && controller.stage?.root.parentElement === container;
+  if (!keepStage) {
+    controller.dropStage();
+    container.innerHTML = "";
+    controller.contentRoot = null;
+  }
 
   if (!state.selectedNode) {
     container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">Select a node to view local relationships.</div>';
@@ -54,7 +61,9 @@ export function renderLocalView(controller: LocalViewController): void {
   controller.currentSubgraph = subgraph;
 
   if (subgraph.nodes.length === 0) {
+    controller.dropStage();
     container.innerHTML = '<div class="empty-hint">No related nodes were found.</div>';
+    controller.contentRoot = null;
     controller.mapTransform = { x: 0, y: 0, k: 1 };
     controller.mapHasInitialFit = false;
     controller.mapUserAdjusted = false;
@@ -73,6 +82,8 @@ export function renderLocalView(controller: LocalViewController): void {
     controller.mapUserAdjusted = false;
     controller.lastCenteredNodeId = state.selectedNode.id;
     controller.mapInitialTransform = null;
+    // Choosing a file is acting on its card: a move of the picture holds it still.
+    controller.lastInteracted = state.selectedNode.id;
   }
 
   const connectionScore = new Map<string, number>();
@@ -81,16 +92,17 @@ export function renderLocalView(controller: LocalViewController): void {
     connectionScore.set(edge.targetId, (connectionScore.get(edge.targetId) ?? 0) + 1);
   });
 
-  // Check if we're in path mode (FROM-TO pathfinding result)
-  const activePath = controller.localMapState.getState().activePath;
+  // Path mode (a FROM-TO pathfinding result) has a column per file of the path.
   const columnCount = activePath ? activePath.nodeIds.length : 3;
 
-  const layoutRoot = document.createElement("div");
-  layoutRoot.className = "local-layout";
-  // Apply dynamic grid template based on column count
-  layoutRoot.style.setProperty("--local-column-count", String(columnCount));
-  layoutRoot.style.gridTemplateColumns = `repeat(${columnCount}, max-content)`;
-  container.appendChild(layoutRoot);
+  const layoutRoot = keepStage ? controller.stage!.root : document.createElement("div");
+  if (!keepStage) {
+    layoutRoot.className = "local-layout";
+    // Apply dynamic grid template based on column count
+    layoutRoot.style.setProperty("--local-column-count", String(columnCount));
+    layoutRoot.style.gridTemplateColumns = `repeat(${columnCount}, max-content)`;
+    container.appendChild(layoutRoot);
+  }
   controller.contentRoot = layoutRoot;
 
   // Path mode: render a simple linear chain of nodes
@@ -104,7 +116,8 @@ export function renderLocalView(controller: LocalViewController): void {
   }
   // Independent pins disclose branches without changing explicit pathfinding.
   else if (controller.pins.entries.length > 0) {
-    renderBranches(controller, layoutRoot);
+    const stage = controller.stage ?? (controller.stage = createStage(layoutRoot, overlay));
+    renderBranches(controller, stage);
   }
   else {
     // Single-hop exploration: classic 3-column layout

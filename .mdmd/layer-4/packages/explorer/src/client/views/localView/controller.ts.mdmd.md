@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-05T16:55:01.514Z
+- Generated At: 2026-10-07T02:59:51.764Z
 
 ## Authored
 ### Purpose
@@ -19,13 +19,14 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, the c
 - Explicit pathfinding saves the exploration camera and restores it on Clear, accounting for the toolbar’s changed height. `setActivePath(null)` is a no-op when no path is active; independent pins are retained throughout.
 - `previousTops` (2026-10-06) keeps where the last branch picture stood each card, by its top; the renderer offers that order as a start of the order step and prices a start by the pairs of cards it would swap, so a re-layout keeps the picture put unless another arrangement is clearly cheaper. `render.ts` forgets it when the branches are left.
 - `getStrain` counts the references the drawn exploration threads through lanes and the ones it draws as stubs; the Explorer compares their sum with the tuning's nudge threshold to say, beside the 3D control, that the Force Graph may read better. The owner asked for that nudge on 2026-10-05, from the layout's own strain and never from the number of pins.
+- `stage` and `lastInteracted` (2026-10-07): the branch picture's elements kept across renders so that a change of picture moves them, and the file whose card the person last acted on (every pin change passes through `updateRetainedPins`; choosing a file counts in `render.ts`; hover counts when the `holdStill` tuning says so), which a move holds still on screen. `dropStage` ends a running move when the branches are left or the controller is disposed ([Turn 16](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-16)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L73)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L74)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -35,6 +36,8 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
+- [`branch-renderer.BranchStage`](./branch-renderer.ts.mdmd.md#symbol-branchstage)
+- [`branch-renderer.dropStage`](./branch-renderer.ts.mdmd.md#symbol-dropstage)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)

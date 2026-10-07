@@ -498,6 +498,12 @@ function drawBranchConnections(context: ConnectionsContext): void {
     const measured = measure(element);
     if (measured) lanes.set(element.dataset.lane!, { top: measured.topY, slots: (element.dataset.slots ?? "").split(",").filter(Boolean).map(Number) });
   });
+  // Every pin measured before any wire is written, so that the page lays itself out once for the drawing rather than
+  // once per wire: a move redraws the wires every frame (2026-10-07).
+  for (const edge of branches.subgraph.links) {
+    measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
+    measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
+  }
   let drawn = 0;
   const laceRanks = new Map<string, number>();
   const shape = laceShape(state.tuning.localMap);
