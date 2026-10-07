@@ -42,6 +42,14 @@ export interface LocalMapTuning {
   hoverDimConnections: number;
   /** How much self-loop "French Corset" strokes taper (0=no taper, 1=full taper to half width) */
   selfLoopTaper: number;
+  /** How far out from its pin a lace sweeps before it turns back, in CSS pixels (2026-10-06). */
+  laceReach: number;
+  /** How far along the card's edge from its pin a lace returns, toward its partner's row. */
+  laceCurl: number;
+  /** A lace's width at the pin's edge. */
+  laceWidth: number;
+  /** How far past the card's edge a lace ends, inward: zero ends it on the edge, more dives it under the card. */
+  laceInset: number;
   /** Collapse (hide) unrelated symbols when hovering a symbol row */
   collapseOnHover: boolean;
   /** Collapse (hide) unrelated symbols when a symbol is pinned */

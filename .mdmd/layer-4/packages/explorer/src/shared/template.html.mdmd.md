@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-05T20:41:24.623Z
+- Generated At: 2026-10-07T00:20:37.174Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Relocated from `server/template.html` to `shared/template.html` on [2026-03-09](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-09.1.md) during the server retirement that consolidated all Explorer build-time utilities into the `shared/` module.
 - Its `id` attributes are extracted as public symbols by the HTML adapter ([html.ts](../../../engine/src/live-docs/adapters/html.ts.mdmd.md)), enabling Live Documentation to track which client modules depend on which DOM elements.
 - The pathfinder's status (`pathfind-status`) is a line of its own under the input row since [Turn 10 of 2026-10-01](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10), because it can hold a sentence and a link (the reverse question offered when a path runs against the map's direction).
+- The Tuning section's Local Map subsection gained the laces' four sliders on 2026-10-06 (`tuning-lace-reach`, `tuning-lace-curl`, `tuning-lace-width`, `tuning-lace-inset`), beside the taper now labelled Lace Taper, each with a title saying what it moves ([Turn 13](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)).
 - Click Behavior and Visual tuning subsections removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code — their checkbox controls were eliminated along with the corresponding `ClickBehaviorTuning`/`VisualTuning` type interfaces.
 
 ## Generated
@@ -179,6 +180,30 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-hover-dim-symbols-value` {#symbol-tuning-hover-dim-symbols-value}
+- Type: variable
+
+#### `tuning-lace-curl` {#symbol-tuning-lace-curl}
+- Type: variable
+
+#### `tuning-lace-curl-value` {#symbol-tuning-lace-curl-value}
+- Type: variable
+
+#### `tuning-lace-inset` {#symbol-tuning-lace-inset}
+- Type: variable
+
+#### `tuning-lace-inset-value` {#symbol-tuning-lace-inset-value}
+- Type: variable
+
+#### `tuning-lace-reach` {#symbol-tuning-lace-reach}
+- Type: variable
+
+#### `tuning-lace-reach-value` {#symbol-tuning-lace-reach-value}
+- Type: variable
+
+#### `tuning-lace-width` {#symbol-tuning-lace-width}
+- Type: variable
+
+#### `tuning-lace-width-value` {#symbol-tuning-lace-width-value}
 - Type: variable
 
 #### `tuning-self-loop-taper` {#symbol-tuning-self-loop-taper}

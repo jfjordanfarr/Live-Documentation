@@ -119,10 +119,30 @@
             <input type="range" id="tuning-hover-dim-connections" min="0.1" max="0.8" step="0.05" value="0.1" />
             <output id="tuning-hover-dim-connections-value">0.1</output>
           </label>
-          <label class="tuning-slider">
-            <span>Self-Loop Taper</span>
+          <label class="tuning-slider" title="How far out from its pin a self-reference's lace sweeps before it turns back">
+            <span>Lace Reach</span>
+            <input type="range" id="tuning-lace-reach" min="4" max="40" step="1" value="18" />
+            <output id="tuning-lace-reach-value">18</output>
+          </label>
+          <label class="tuning-slider" title="How far along the card's edge from its pin a lace returns, toward its partner's row">
+            <span>Lace Curl</span>
+            <input type="range" id="tuning-lace-curl" min="2" max="30" step="1" value="12" />
+            <output id="tuning-lace-curl-value">12</output>
+          </label>
+          <label class="tuning-slider" title="A lace's width where it leaves the pin">
+            <span>Lace Width</span>
+            <input type="range" id="tuning-lace-width" min="1" max="6" step="0.5" value="2.5" />
+            <output id="tuning-lace-width-value">2.5</output>
+          </label>
+          <label class="tuning-slider" title="How much a lace thins by the card's edge">
+            <span>Lace Taper</span>
             <input type="range" id="tuning-self-loop-taper" min="0" max="1" step="0.1" value="0.5" />
             <output id="tuning-self-loop-taper-value">0.5</output>
+          </label>
+          <label class="tuning-slider" title="How far past the card's edge a lace ends, inward: zero ends it on the edge, more dives it under the card">
+            <span>Lace Inset</span>
+            <input type="range" id="tuning-lace-inset" min="0" max="16" step="1" value="0" />
+            <output id="tuning-lace-inset-value">0</output>
           </label>
           <label class="tuning-slider" title="References that skip columns or read against them; at this many the Local Map suggests the Force Graph">
             <span>Dense Picture Nudge</span>

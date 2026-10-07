@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/connection-geometry.ts
-- Generated At: 2026-10-06T01:30:52.134Z
+- Generated At: 2026-10-07T00:20:35.999Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ Pure-function SVG geometry for the Local Map: Bézier path computation, the Fren
 - Created 2025-12-18 (Dev Day 49) in chat 2025-12-18.1.md Turn 06 as third of three pure-function module extractions.
 - `computeBezierPath()` generates cubic Bézier SVG `d` strings with tunable control point distances.
 - `computeSelfLoopStubs()` draws a self-reference, a symbol referring to another on the same card, as two laces: at each pin a tapered polygon that leaves the pin outward, turns toward the partner's row and returns to the card's edge one pin radius inward, so that it reads as one wire passing behind the card. Until 2026-10-06 each end was a straight tapered stub curling toward the partner; two such stubs leaving one pin toward partners above and below met as a chevron that read as an arrowhead, which the owner saw at graph.ts's DocLocation pin ([Turn 14](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-14)) and answered with the loop-around shape ([Turn 15](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-15)). The laces of one pin that turn the same way nest outward by `LACE_PITCH`, sharing their return, so a row referred to from several rows shows as many laces. The tests hold the geometry: the lace starts at the pin's edge at its full width, ends on the card's edge toward the partner, never reaches inside the card past the pin, nests by rank, and thins by the taper.
+- The laces' four numbers (the reach out from the pin, the curl along the edge, the width, and since 2026-10-06 a return inset past the card's edge, `returnInset`) are the Local Map tuning's dials, so the owner can tune the shape by eye in the page ([Turn 13](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)). The same night the hidden middle between the two laces, one cubic across the card shown through it on hover, was tried and set aside by the owner's eye: it gave no impression of "behind" and its dashed strokes fought the rows' text; the pictures stay under `AI-Agent-Workspace/Screenshots/2026-10-06/`.
 - `createConnectionGradient()` returns `GradientDef` for directional color transitions.
 - Geometric primitives (`Point`, `Rect`, `distance`, `rectCenter`, `mergeRects`) enable unit-testable arc fitting.
 - 385 lines of geometry, all unit-testable without DOM.
@@ -127,29 +128,31 @@ to the card's edge, as if it ran on behind the card to the other pin.
 
 #### `DEFAULT_SELF_LOOP_PARAMS` {#symbol-default_self_loop_params}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L184)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L188)
 - Returns: [`SelfLoopParams`](#symbol-selfloopparams)
 
 ##### `DEFAULT_SELF_LOOP_PARAMS` — Summary
-Default lace parameters: a lace a little wider than a row is tall, returning between the pin and the next.
+Default lace parameters: a lace a little wider than a row is tall, returning between the pin and the next. The
+Local Map's tuning carries the same four numbers as dials (`laceReach`, `laceCurl`, `laceWidth`, `laceInset`), so the
+shape can be tuned by eye in the page (the owner's ask, 2026-10-06).
 
 #### `LACE_PITCH` {#symbol-lace_pitch}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L193)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L197)
 
 ##### `LACE_PITCH` — Summary
 Laces of one pin that turn the same way stand each this much further out, nested, sharing their return.
 
 #### `SelfLoopStubResult` {#symbol-selfloopstubresult}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L198)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L202)
 
 ##### `SelfLoopStubResult` — Summary
 The two laces of a self-reference, as SVG polygon point strings.
 
 #### `computeSelfLoopStubs` {#symbol-computeselfloopstubs}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L220)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L224)
 - Returns: [`SelfLoopStubResult`](#symbol-selfloopstubresult)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point); `params`: [`SelfLoopParams`](#symbol-selfloopparams)
 
@@ -171,7 +174,7 @@ arrowhead, which two straight stubs did (the owner's note, 2026-10-06).
 
 #### `offsetToPinEdge` {#symbol-offsettopinedge}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L293)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L297)
 - Returns: [`Point`](#symbol-point)
 - Parameters: `center`: [`Point`](#symbol-point)
 
@@ -191,7 +194,7 @@ The point at the pin's edge
 
 #### `rectCenter` {#symbol-rectcenter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L307)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L311)
 - Returns: [`Point`](#symbol-point)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
@@ -200,7 +203,7 @@ Computes the center point of a rectangle.
 
 #### `rectSize` {#symbol-rectsize}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L317)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L321)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
 ##### `rectSize` — Summary
@@ -208,7 +211,7 @@ Computes the dimensions of a rectangle.
 
 #### `expandRect` {#symbol-expandrect}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L327)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L331)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
@@ -217,7 +220,7 @@ Expands a rectangle by a given margin on all sides.
 
 #### `boundingBoxFromPoints` {#symbol-boundingboxfrompoints}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L339)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L343)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `points`: [`Point`](#symbol-point)[]
 
@@ -226,7 +229,7 @@ Computes the bounding box that contains all given points.
 
 #### `mergeRects` {#symbol-mergerects}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L360)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L364)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `rects`: [`Rect`](#symbol-rect)[]
 
@@ -235,14 +238,14 @@ Merges multiple rectangles into their bounding box.
 
 #### `GradientDef` {#symbol-gradientdef}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L374)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L378)
 
 ##### `GradientDef` — Summary
 Linear gradient definition for path coloring.
 
 #### `createConnectionGradient` {#symbol-createconnectiongradient}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L396)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/connection-geometry.ts#L400)
 - Returns: [`GradientDef`](#symbol-gradientdef)
 - Parameters: `source`: [`Point`](#symbol-point); `target`: [`Point`](#symbol-point)
 

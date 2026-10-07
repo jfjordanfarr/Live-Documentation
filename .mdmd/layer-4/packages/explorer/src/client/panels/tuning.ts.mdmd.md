@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-05T20:41:23.181Z
+- Generated At: 2026-10-07T00:20:35.566Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 - CSS variable `--local-column-gap` is set on `document.documentElement` (not `.local-layout`) so it cascades to both Local Map and Membrane Map grid containers.
 - `TuningPanelConfig.drawMembraneConnections` callback triggers lightweight SVG connection redraw when column gap or bezier sliders change in membrane view, avoiding full DOM reconstruction.
 - The Symbol Order select (2026-10-05) holds the owner's three strategies for a card's rows, layout, alphabetical and order of appearance; like the dense-picture nudge it changes the layout rather than a drawing, so the Local Map re-renders on change and the choice persists with the rest of the tuning.
+- The laces' four dials (2026-10-06: Lace Reach, Lace Curl, Lace Width, Lace Inset, beside the taper) change a drawing, not the layout, so each redraws the Local Map's wires as it moves through `wireSlider`; the owner asked for the self-references' shape to be tuned by eye in the panel until it is distinct from a connector wire and reads as a wire pulled taut ([Turn 13](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -58,6 +59,10 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-hover-dim-connections`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-connections)
 - [`template.tuning-hover-dim-symbols`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-symbols)
+- [`template.tuning-lace-curl`](../../shared/template.html.mdmd.md#symbol-tuning-lace-curl)
+- [`template.tuning-lace-inset`](../../shared/template.html.mdmd.md#symbol-tuning-lace-inset)
+- [`template.tuning-lace-reach`](../../shared/template.html.mdmd.md#symbol-tuning-lace-reach)
+- [`template.tuning-lace-width`](../../shared/template.html.mdmd.md#symbol-tuning-lace-width)
 - [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuning-self-loop-taper)
 - [`template.tuning-strain-nudge`](../../shared/template.html.mdmd.md#symbol-tuning-strain-nudge)
 - [`template.tuning-strain-nudge-value`](../../shared/template.html.mdmd.md#symbol-tuning-strain-nudge-value)

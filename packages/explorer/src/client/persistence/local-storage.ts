@@ -46,6 +46,10 @@ export const getDefaultTuning = (): TuningConfig => ({
     hoverDimSymbols: 0.5,
     hoverDimConnections: 0.1,
     selfLoopTaper: 0.5,
+    laceReach: 18,
+    laceCurl: 12,
+    laceWidth: 2.5,
+    laceInset: 0,
     collapseOnHover: false,
     collapseOnPin: true,
     strainNudge: 48,
@@ -154,6 +158,10 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const hoverDimSymbols = readFiniteNumber(localMapRaw.hoverDimSymbols);
         const hoverDimConnections = readFiniteNumber(localMapRaw.hoverDimConnections);
         const selfLoopTaper = readFiniteNumber(localMapRaw.selfLoopTaper);
+        const laceReach = readFiniteNumber(localMapRaw.laceReach);
+        const laceCurl = readFiniteNumber(localMapRaw.laceCurl);
+        const laceWidth = readFiniteNumber(localMapRaw.laceWidth);
+        const laceInset = readFiniteNumber(localMapRaw.laceInset);
         const collapseOnHover = readBoolean(localMapRaw.collapseOnHover);
         const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
         const strainNudge = readFiniteNumber(localMapRaw.strainNudge);
@@ -176,6 +184,10 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
           ...(hoverDimConnections !== undefined ? { hoverDimConnections } : null),
           ...(selfLoopTaper !== undefined ? { selfLoopTaper } : null),
+          ...(laceReach !== undefined ? { laceReach } : null),
+          ...(laceCurl !== undefined ? { laceCurl } : null),
+          ...(laceWidth !== undefined ? { laceWidth } : null),
+          ...(laceInset !== undefined ? { laceInset } : null),
           ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
           ...(collapseOnPin !== undefined ? { collapseOnPin } : null),
           ...(strainNudge !== undefined ? { strainNudge } : null),

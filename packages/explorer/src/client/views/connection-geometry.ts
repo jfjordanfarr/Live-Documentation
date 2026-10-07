@@ -176,10 +176,14 @@ export interface SelfLoopParams {
   taper: number;
   /** The pin's radius: the lace leaves the pin's outer edge and returns to the card's edge, one radius inward. */
   pinRadius: number;
+  /** How far past the card's edge the lace ends, inward; zero ends it on the edge, where the pin's centre stands. */
+  returnInset?: number;
 }
 
 /**
- * Default lace parameters: a lace a little wider than a row is tall, returning between the pin and the next.
+ * Default lace parameters: a lace a little wider than a row is tall, returning between the pin and the next. The
+ * Local Map's tuning carries the same four numbers as dials (`laceReach`, `laceCurl`, `laceWidth`, `laceInset`), so the
+ * shape can be tuned by eye in the page (the owner's ask, 2026-10-06).
  */
 export const DEFAULT_SELF_LOOP_PARAMS: SelfLoopParams = {
   stubLength: 18,
@@ -242,7 +246,7 @@ function lace(pin: Point, side: 1 | -1, toward: 1 | -1, params: SelfLoopParams, 
   const p0 = pin;
   const p1 = { x: pin.x + side * out, y: pin.y + toward * along * 0.1 };
   const p2 = { x: pin.x + side * out, y: pin.y + toward * along };
-  const p3 = { x: pin.x - side * params.pinRadius, y: pin.y + toward * along };
+  const p3 = { x: pin.x - side * (params.pinRadius + (params.returnInset ?? 0)), y: pin.y + toward * along };
   const steps = 12;
   const left: Point[] = [];
   const right: Point[] = [];

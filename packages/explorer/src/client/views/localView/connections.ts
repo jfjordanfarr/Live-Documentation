@@ -3,8 +3,8 @@ import { edgeKey, type BranchGraph } from "./branches";
 import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
-import type { BezierTuning, ExplorerState } from "../../types";
-import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS } from "../connection-geometry";
+import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
+import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type SelfLoopParams } from "../connection-geometry";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /**
@@ -63,6 +63,18 @@ interface Point {
  * Paths stop one radius shy of the pin center so they don't overlap the circle.
  */
 const PIN_RADIUS = 6;
+
+/** The laces' shape from the Local Map's tuning: its four dials and the taper, with the pin's radius. */
+function laceShape(tuning: Partial<LocalMapTuning> | undefined): SelfLoopParams {
+  return {
+    stubLength: tuning?.laceReach ?? DEFAULT_SELF_LOOP_PARAMS.stubLength,
+    curlAmount: tuning?.laceCurl ?? DEFAULT_SELF_LOOP_PARAMS.curlAmount,
+    baseWidth: tuning?.laceWidth ?? DEFAULT_SELF_LOOP_PARAMS.baseWidth,
+    taper: tuning?.selfLoopTaper ?? DEFAULT_SELF_LOOP_PARAMS.taper,
+    pinRadius: PIN_RADIUS,
+    returnInset: tuning?.laceInset ?? 0
+  };
+}
 
 /**
  * Main entry point for drawing SVG connection edges in the Local Map view.
@@ -190,7 +202,7 @@ export function drawConnections(context: ConnectionsContext): void {
 
   // The file's own references, each a pair of laces at its pins.
   if (centerCardBounds) {
-    const taper = state.tuning.localMap?.selfLoopTaper ?? DEFAULT_SELF_LOOP_PARAMS.taper;
+    const shape = laceShape(state.tuning.localMap);
     const ranks = new Map<string, number>();
     selfLoopSegments.forEach(({ edge, sourcePoint, targetPoint }) => {
       const adjustedSource = {
@@ -201,7 +213,7 @@ export function drawConnections(context: ConnectionsContext): void {
         x: targetPoint.x - bounds.left,
         y: targetPoint.y - bounds.top
       };
-      appendSelfLoopPath(svg, adjustedSource, adjustedTarget, edge, context.svgNamespace, taper, ranks);
+      appendSelfLoopPath(svg, adjustedSource, adjustedTarget, edge, context.svgNamespace, shape, ranks);
     });
   }
 
@@ -305,43 +317,7 @@ function appendConnectionPath(
   extraClass?: string
 ): void {
   const commands: string[] = [`M ${source.x} ${source.y}`, curveTo(source, target, tuning)];
-
-  // Create a linear gradient from source (outbound/blue) to target (inbound/green).
-  // Colors match the CSS variables: --outbound-color and --inbound-color.
-  // Gradient uses 10%-80%-10% breathing room: pure source color, transition, pure target color.
-  const gradient = document.createElementNS(svgNamespace, "linearGradient");
-  gradient.setAttribute("id", gradientId);
-  gradient.setAttribute("gradientUnits", "userSpaceOnUse");
-  gradient.setAttribute("x1", String(source.x));
-  gradient.setAttribute("y1", String(source.y));
-  gradient.setAttribute("x2", String(target.x));
-  gradient.setAttribute("y2", String(target.y));
-
-  // 0-10%: Pure source color (blue)
-  const stopSourceStart = document.createElementNS(svgNamespace, "stop");
-  stopSourceStart.setAttribute("offset", "0%");
-  stopSourceStart.setAttribute("stop-color", "#38bdf8"); // outbound blue (sky-400)
-
-  const stopSourceEnd = document.createElementNS(svgNamespace, "stop");
-  stopSourceEnd.setAttribute("offset", "10%");
-  stopSourceEnd.setAttribute("stop-color", "#38bdf8"); // outbound blue (sky-400)
-
-  // 10-90%: Gradient transition zone
-  const stopTargetStart = document.createElementNS(svgNamespace, "stop");
-  stopTargetStart.setAttribute("offset", "90%");
-  stopTargetStart.setAttribute("stop-color", "#34d399"); // inbound green (emerald-400)
-
-  // 90-100%: Pure target color (green)
-  const stopTargetEnd = document.createElementNS(svgNamespace, "stop");
-  stopTargetEnd.setAttribute("offset", "100%");
-  stopTargetEnd.setAttribute("stop-color", "#34d399"); // inbound green (emerald-400)
-
-  gradient.appendChild(stopSourceStart);
-  gradient.appendChild(stopSourceEnd);
-  gradient.appendChild(stopTargetStart);
-  gradient.appendChild(stopTargetEnd);
-  defs.appendChild(gradient);
-
+  appendGradient(defs, gradientId, source, target, svgNamespace);
   const path = document.createElementNS(svgNamespace, "path") as SVGPathElement;
   path.setAttribute("d", routedPath ?? commands.join(" "));
   path.setAttribute("stroke", `url(#${gradientId})`);
@@ -354,6 +330,28 @@ function appendConnectionPath(
   path.dataset.sourceId = edge.sourceId;
   path.dataset.targetId = edge.targetId;
   svg.appendChild(path);
+}
+
+/**
+ * A wire's gradient, from the offering side's blue at `source` to the using side's green at `target`, in the overlay's
+ * own coordinates: the first and last tenth pure, the transition between. The colours match the stylesheet's
+ * `--outbound-color` and `--inbound-color`.
+ */
+function appendGradient(defs: SVGDefsElement, gradientId: string, source: Point, target: Point, svgNamespace: string): void {
+  const gradient = document.createElementNS(svgNamespace, "linearGradient");
+  gradient.setAttribute("id", gradientId);
+  gradient.setAttribute("gradientUnits", "userSpaceOnUse");
+  gradient.setAttribute("x1", String(source.x));
+  gradient.setAttribute("y1", String(source.y));
+  gradient.setAttribute("x2", String(target.x));
+  gradient.setAttribute("y2", String(target.y));
+  for (const [offset, color] of [["0%", "#38bdf8"], ["10%", "#38bdf8"], ["90%", "#34d399"], ["100%", "#34d399"]] as const) {
+    const stop = document.createElementNS(svgNamespace, "stop");
+    stop.setAttribute("offset", offset);
+    stop.setAttribute("stop-color", color);
+    gradient.appendChild(stop);
+  }
+  defs.appendChild(gradient);
 }
 
 /**
@@ -371,7 +369,7 @@ function appendSelfLoopPath(
   target: Point,
   edge: LocalEdge,
   svgNamespace: string,
-  taper: number,
+  shape: SelfLoopParams,
   ranks: Map<string, number>
 ): void {
   const sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
@@ -382,7 +380,7 @@ function appendSelfLoopPath(
     ranks.set(key, seen + 1);
     return seen;
   };
-  const laces = computeSelfLoopStubs(source, target, { ...DEFAULT_SELF_LOOP_PARAMS, taper, pinRadius: PIN_RADIUS }, {
+  const laces = computeSelfLoopStubs(source, target, shape, {
     provider: rank(`${edge.targetId}\0out\0${targetSymbol}\0${down ? "down" : "up"}`),
     consumer: rank(`${edge.sourceId}\0in\0${sourceSymbol}\0${down ? "up" : "down"}`)
   });
@@ -505,6 +503,7 @@ function drawBranchConnections(context: ConnectionsContext): void {
   });
   let drawn = 0;
   const laceRanks = new Map<string, number>();
+  const shape = laceShape(state.tuning.localMap);
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
   const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number }>();
   branches.subgraph.links.forEach((edge, index) => {
@@ -516,12 +515,12 @@ function drawBranchConnections(context: ConnectionsContext): void {
     const from = { x: p.x - bounds.left, y: p.y - bounds.top };
     const to = { x: q.x - bounds.left, y: q.y - bounds.top };
     if (edge.sourceId === edge.targetId) {
-      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper, laceRanks);
+      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, shape, laceRanks);
       return;
     }
     const key = edgeKey(edge);
     if (branches.back.has(key)) {
-      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, state.tuning.localMap.selfLoopTaper, laceRanks);
+      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, shape, laceRanks);
       appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `back-${index}`, undefined, "back-route");
       return;
     }

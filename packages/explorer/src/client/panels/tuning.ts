@@ -36,6 +36,10 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const hoverDimSymbolsInput = document.getElementById("tuning-hover-dim-symbols") as HTMLInputElement | null;
   const hoverDimConnectionsInput = document.getElementById("tuning-hover-dim-connections") as HTMLInputElement | null;
   const selfLoopTaperInput = document.getElementById("tuning-self-loop-taper") as HTMLInputElement | null;
+  const laceReachInput = document.getElementById("tuning-lace-reach") as HTMLInputElement | null;
+  const laceCurlInput = document.getElementById("tuning-lace-curl") as HTMLInputElement | null;
+  const laceWidthInput = document.getElementById("tuning-lace-width") as HTMLInputElement | null;
+  const laceInsetInput = document.getElementById("tuning-lace-inset") as HTMLInputElement | null;
   const strainNudgeInput = document.getElementById("tuning-strain-nudge") as HTMLInputElement | null;
   const symbolOrderSelect = document.getElementById("tuning-symbol-order") as HTMLSelectElement | null;
 
@@ -110,6 +114,10 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     state.tuning.localMap.hoverDimSymbols = setSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", state.tuning.localMap.hoverDimSymbols);
     state.tuning.localMap.hoverDimConnections = setSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", state.tuning.localMap.hoverDimConnections);
     state.tuning.localMap.selfLoopTaper = setSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", state.tuning.localMap.selfLoopTaper);
+    state.tuning.localMap.laceReach = setSlider(laceReachInput, "tuning-lace-reach-value", state.tuning.localMap.laceReach);
+    state.tuning.localMap.laceCurl = setSlider(laceCurlInput, "tuning-lace-curl-value", state.tuning.localMap.laceCurl);
+    state.tuning.localMap.laceWidth = setSlider(laceWidthInput, "tuning-lace-width-value", state.tuning.localMap.laceWidth);
+    state.tuning.localMap.laceInset = setSlider(laceInsetInput, "tuning-lace-inset-value", state.tuning.localMap.laceInset);
     state.tuning.localMap.strainNudge = setSlider(strainNudgeInput, "tuning-strain-nudge-value", state.tuning.localMap.strainNudge, v => String(v));
     if (symbolOrderSelect) symbolOrderSelect.value = state.tuning.localMap.symbolOrder;
 
@@ -133,6 +141,11 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   wireLocalMapSlider(hoverDimSymbolsInput, "tuning-hover-dim-symbols-value", "--hover-dim-symbols", v => { state.tuning.localMap.hoverDimSymbols = v; });
   wireLocalMapSlider(hoverDimConnectionsInput, "tuning-hover-dim-connections-value", "--hover-dim-connections", v => { state.tuning.localMap.hoverDimConnections = v; });
   wireLocalMapSlider(selfLoopTaperInput, "tuning-self-loop-taper-value", "--self-loop-taper", v => { state.tuning.localMap.selfLoopTaper = v; });
+  // The laces' shape: each dial redraws the wires, where the laces are, as it moves (the owner's ask, 2026-10-06).
+  wireSlider(laceReachInput, "tuning-lace-reach-value", v => { state.tuning.localMap.laceReach = v; });
+  wireSlider(laceCurlInput, "tuning-lace-curl-value", v => { state.tuning.localMap.laceCurl = v; });
+  wireSlider(laceWidthInput, "tuning-lace-width-value", v => { state.tuning.localMap.laceWidth = v; });
+  wireSlider(laceInsetInput, "tuning-lace-inset-value", v => { state.tuning.localMap.laceInset = v; });
 
   // The symbol order changes where every card's rows stand: the view re-renders.
   if (symbolOrderSelect) {

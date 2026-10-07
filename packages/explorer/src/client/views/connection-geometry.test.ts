@@ -225,6 +225,16 @@ describe("connection-geometry", () => {
       expect(Math.min(...ys(lace))).toBeGreaterThanOrEqual(provider.y - params.baseWidth);
     });
 
+    it("ends further inside the card by the return inset, and on the edge without one", () => {
+      const onEdge = parse(computeSelfLoopStubs(provider, consumer, params).providerPoints);
+      const inset = parse(computeSelfLoopStubs(provider, consumer, { ...params, returnInset: 5 }).providerPoints);
+      expect(farMid(onEdge).x).toBeCloseTo(provider.x - params.pinRadius, 1);
+      expect(farMid(inset).x).toBeCloseTo(provider.x - params.pinRadius - 5, 1);
+      expect(farMid(inset).y).toBeCloseTo(farMid(onEdge).y, 1);
+      // The consumer's lace mirrors it, ending further right.
+      expect(farMid(parse(computeSelfLoopStubs(provider, consumer, { ...params, returnInset: 5 }).consumerPoints)).x).toBeCloseTo(consumer.x + params.pinRadius + 5, 1);
+    });
+
     it("nests the laces of one pin that turn the same way outward by rank, sharing their return", () => {
       const first = parse(computeSelfLoopStubs(provider, consumer, params, { provider: 0, consumer: 0 }).providerPoints);
       const second = parse(computeSelfLoopStubs(provider, consumer, params, { provider: 1, consumer: 0 }).providerPoints);
