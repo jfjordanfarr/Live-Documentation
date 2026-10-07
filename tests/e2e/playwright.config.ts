@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+
 /**
  * Playwright E2E configuration for the Live Docs Explorer.
  *
@@ -23,6 +25,12 @@ export default defineConfig({
     baseURL: "http://localhost:8766",
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
+    // The Local Map's continuing search is off for the suite, so that a picture read after it is drawn is the picture
+    // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07).
+    storageState: {
+      cookies: [],
+      origins: [{ origin: "http://localhost:8766", localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { searchStarts: 0 } } }) }] }]
+    },
   },
 
   projects: [

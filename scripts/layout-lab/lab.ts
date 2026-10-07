@@ -8,7 +8,7 @@
  *
  *   npm run layout:lab -- capture <bundle/scope> [--out <dir>]
  *   npm run layout:lab -- sweep <bundle/scope> [--capture <file>] [--grid <spec>] [--sample <n>] [--seed <n>] [--weights k=v,...] [--label <name>] [--out <dir>]
- *   npm run layout:lab -- restarts <bundle/scope> [--capture <file>] [--starts <n>] [--costs <spec>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- restarts <bundle/scope> [--capture <file>] [--starts <n>] [--costs <spec>] [--churn a,b,c] [--first <n>] [--patience <n>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
  *
  * The scopes are the deck's: repository/five, repository/chain, estate/five,
@@ -23,10 +23,11 @@ import process from "node:process";
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
 import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
 import { differences, renderMarkdown, toJson, type ReportRow, type RunReport } from "./report";
-import { parseCosts, renderRestarts, tabulateStarts, trialCosts } from "./restarts";
+import { parseCosts, renderRestarts, simulateSearch, tabulateStarts, trialCosts } from "./restarts";
 import { findScope, loadBundleGraph, scopeSlug, type ScopeRun } from "./scopes";
 import { configurations, DEFAULT_GRID, oneAtATime, parseGrid, parseWeights } from "./sweep";
 import { compareTable, verifyConfig } from "./verify";
+import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 
 interface Args {
   verb: string;
@@ -137,11 +138,18 @@ async function main(): Promise<void> {
     const weights = parseWeights(options.weights);
     const rows = tabulateStarts(capture, graph, run, config, seeds);
     const trials = trialCosts(rows, parseCosts(options.costs), weights);
+    // The page's search over the same starts, at the page's crossing and height costs and each churn cost asked for.
+    const churnCosts = (options.churn ?? "0,50,100,200,400").split(",").map(Number).filter(Number.isFinite);
+    const first = Number(options.first ?? config.orderStarts);
+    const patience = Number(options.patience ?? getDefaultTuning().localMap.searchPatience);
+    const pageCosts = { crossing: config.crossingCost, height: config.heightCost, churn: 0 };
+    const search = { trials: simulateSearch(rows, pageCosts, churnCosts, first, patience), costs: pageCosts, orderStarts: first, patience };
     const label = options.label ?? "restarts";
     await fs.mkdir(out, { recursive: true });
     const markdown = path.join(out, `${scopeSlug(run)}-${label}.md`);
-    await fs.writeFile(markdown, renderRestarts(run, rows, trials, weights, capture, startedAt));
-    await fs.writeFile(path.join(out, `${scopeSlug(run)}-${label}.json`), JSON.stringify({ run: { bundle: run.bundle, scopeName: run.scopeName, subject: run.subject, files: run.scope }, capturedAt: capture.capturedAt, startedAt, config, weights, rows, trials: trials.map(t => ({ ...t, pick: t.pick.name, best: t.best.name })) }));
+    await fs.writeFile(markdown, renderRestarts(run, rows, trials, weights, capture, startedAt, search));
+    await fs.writeFile(path.join(out, `${scopeSlug(run)}-${label}.json`), JSON.stringify({ run: { bundle: run.bundle, scopeName: run.scopeName, subject: run.subject, files: run.scope }, capturedAt: capture.capturedAt, startedAt, config, weights, rows, trials: trials.map(t => ({ ...t, pick: t.pick.name, best: t.best.name })), search: { orderStarts: first, patience, trials: search.trials.map(t => ({ churn: t.churn, first: t.first.name, adoptions: t.adoptions.map(a => ({ start: a.row.name, gain: a.gain, pairs: a.pairs, tried: a.tried })), tried: t.tried, stopped: t.stopped, final: t.final.name })) } }));
+    for (const trial of search.trials) console.log(`Search at churn ${trial.churn}: first paint ${trial.first.name}; ${trial.adoptions.length} move(s)${trial.adoptions.length ? ` (${trial.adoptions.map(a => `${a.row.name} −${Math.round(a.gain).toLocaleString("en-US")} px, ${a.pairs} pairs`).join("; ")})` : ""}; ${trial.tried} starts tried, ${trial.stopped}; final ${trial.final.name}.`);
     const shortest = [...rows].sort((a, b) => a.cheap.vertical - b.cheap.vertical)[0];
     const agreeing = trials.filter(t => t.pick === t.best);
     console.log(`${rows.length} starts in ${((Date.now() - Date.parse(startedAt)) / 1000).toFixed(1)} s; report at ${path.relative(process.cwd(), markdown)}.`);

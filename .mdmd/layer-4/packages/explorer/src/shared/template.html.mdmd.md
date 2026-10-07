@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-07T02:59:52.612Z
+- Generated At: 2026-10-07T13:20:48.560Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - The Tuning section's Local Map subsection gained the laces' sliders on 2026-10-06 (`tuning-lace-reach`, `tuning-lace-curl`, `tuning-lace-width`), beside the taper now labelled Lace Taper, each with a title saying what it moves ([Turn 13](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)); a `tuning-lace-inset` slider of the same day was removed on 2026-10-07, when the laces became cut by the card's edge, and the reach's title now says it is measured from that edge.
 - Click Behavior and Visual tuning subsections removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code — their checkbox controls were eliminated along with the corresponding `ClickBehaviorTuning`/`VisualTuning` type interfaces.
 - The Local Map subsection gained the Move slider (`tuning-move-ms`, 0 to 1,200 ms by 50) and the Hold Still select (`tuning-hold-still`: the last clicked card, or the last clicked or hovered) on 2026-10-07, for the animated re-layout.
+- The Local Map subsection gained the Order Starts slider (`tuning-order-starts`, 0 to 16) and the continuing search's Search Starts (`tuning-search-starts`, 0 to 128, zero off) and Search Patience (`tuning-search-patience`, 1 to 32) on 2026-10-07.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -208,6 +209,24 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-move-ms-value` {#symbol-tuning-move-ms-value}
+- Type: variable
+
+#### `tuning-order-starts` {#symbol-tuning-order-starts}
+- Type: variable
+
+#### `tuning-order-starts-value` {#symbol-tuning-order-starts-value}
+- Type: variable
+
+#### `tuning-search-patience` {#symbol-tuning-search-patience}
+- Type: variable
+
+#### `tuning-search-patience-value` {#symbol-tuning-search-patience-value}
+- Type: variable
+
+#### `tuning-search-starts` {#symbol-tuning-search-starts}
+- Type: variable
+
+#### `tuning-search-starts-value` {#symbol-tuning-search-starts-value}
 - Type: variable
 
 #### `tuning-self-loop-taper` {#symbol-tuning-self-loop-taper}

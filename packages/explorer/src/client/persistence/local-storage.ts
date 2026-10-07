@@ -55,6 +55,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     symbolOrder: "layout",
     moveMs: 450,
     holdStill: "click",
+    searchStarts: 32,
+    searchPatience: 8,
     rankingPull: 0,
     rankingTie: "fewest",
     orderSweeps: 4,
@@ -171,6 +173,8 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
         const moveMs = readFiniteNumber(localMapRaw.moveMs);
         const holdStill = readHoldStill(localMapRaw.holdStill);
+        const searchStarts = readFiniteNumber(localMapRaw.searchStarts);
+        const searchPatience = readFiniteNumber(localMapRaw.searchPatience);
         const rankingPull = readFiniteNumber(localMapRaw.rankingPull);
         const rankingTie = readRankingTie(localMapRaw.rankingTie);
         const orderSweeps = readFiniteNumber(localMapRaw.orderSweeps);
@@ -198,6 +202,8 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(symbolOrder !== undefined ? { symbolOrder } : null),
           ...(moveMs !== undefined ? { moveMs } : null),
           ...(holdStill !== undefined ? { holdStill } : null),
+          ...(searchStarts !== undefined ? { searchStarts } : null),
+          ...(searchPatience !== undefined ? { searchPatience } : null),
           ...(rankingPull !== undefined ? { rankingPull } : null),
           ...(rankingTie !== undefined ? { rankingTie } : null),
           ...(orderSweeps !== undefined ? { orderSweeps } : null),

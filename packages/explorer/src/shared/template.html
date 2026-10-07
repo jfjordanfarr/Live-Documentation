@@ -164,6 +164,21 @@
               <option value="hover">Last clicked or hovered card</option>
             </select>
           </label>
+          <label class="tuning-slider" title="How many shuffled starts the order step tries before the first picture is drawn, beside the ranking's own order and the previous picture's">
+            <span>Order Starts</span>
+            <input type="range" id="tuning-order-starts" min="0" max="16" step="1" value="4" />
+            <output id="tuning-order-starts-value">4</output>
+          </label>
+          <label class="tuning-slider" title="How many further starts the search may try after the first picture, one per idle moment, moving to a better one when it clears the churn cost; zero turns the search off">
+            <span>Search Starts</span>
+            <input type="range" id="tuning-search-starts" min="0" max="128" step="4" value="32" />
+            <output id="tuning-search-starts-value">32</output>
+          </label>
+          <label class="tuning-slider" title="How many starts in a row may fail to better the picture before the search rests until the picture changes">
+            <span>Search Patience</span>
+            <input type="range" id="tuning-search-patience" min="1" max="32" step="1" value="8" />
+            <output id="tuning-search-patience-value">8</output>
+          </label>
         </div>
       </div>
     </details>

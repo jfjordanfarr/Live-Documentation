@@ -43,6 +43,9 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const symbolOrderSelect = document.getElementById("tuning-symbol-order") as HTMLSelectElement | null;
   const moveMsInput = document.getElementById("tuning-move-ms") as HTMLInputElement | null;
   const holdStillSelect = document.getElementById("tuning-hold-still") as HTMLSelectElement | null;
+  const orderStartsInput = document.getElementById("tuning-order-starts") as HTMLInputElement | null;
+  const searchStartsInput = document.getElementById("tuning-search-starts") as HTMLInputElement | null;
+  const searchPatienceInput = document.getElementById("tuning-search-patience") as HTMLInputElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -122,6 +125,9 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     if (symbolOrderSelect) symbolOrderSelect.value = state.tuning.localMap.symbolOrder;
     state.tuning.localMap.moveMs = setSlider(moveMsInput, "tuning-move-ms-value", state.tuning.localMap.moveMs, v => String(v));
     if (holdStillSelect) holdStillSelect.value = state.tuning.localMap.holdStill;
+    state.tuning.localMap.orderStarts = setSlider(orderStartsInput, "tuning-order-starts-value", state.tuning.localMap.orderStarts, v => String(v));
+    state.tuning.localMap.searchStarts = setSlider(searchStartsInput, "tuning-search-starts-value", state.tuning.localMap.searchStarts, v => String(v));
+    state.tuning.localMap.searchPatience = setSlider(searchPatienceInput, "tuning-search-patience-value", state.tuning.localMap.searchPatience, v => String(v));
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -173,6 +179,21 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       onTuningChange();
     });
   }
+
+  // The starts before paint and the continuing search's cap and patience change which picture is drawn: the view re-renders.
+  const rerenderSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
+    if (!input) return;
+    const output = document.getElementById(outputId) as HTMLOutputElement | null;
+    input.addEventListener("input", () => {
+      setter(parseFloat(input.value));
+      if (output) output.textContent = input.value;
+      onTuningChange();
+      if (state.view === "map") onRender();
+    });
+  };
+  rerenderSlider(orderStartsInput, "tuning-order-starts-value", v => { state.tuning.localMap.orderStarts = v; });
+  rerenderSlider(searchStartsInput, "tuning-search-starts-value", v => { state.tuning.localMap.searchStarts = v; });
+  rerenderSlider(searchPatienceInput, "tuning-search-patience-value", v => { state.tuning.localMap.searchPatience = v; });
 
   // The nudge threshold changes a status, not a drawing: the view re-renders so the perspective controls read it again.
   if (strainNudgeInput) {

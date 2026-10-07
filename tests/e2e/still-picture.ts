@@ -180,10 +180,14 @@ export const forceGraphUrl = (base: string, file: string): string => `${base}?vi
 
 /**
  * Waits until the Local Map's picture is at rest: a change of pins moves the branch picture from one arrangement to the
- * next over the tuning's move length (2026-10-07), and the root says `data-moving` while it does.
+ * next over the tuning's move length, and the continuing search may move it again to a better arrangement
+ * (2026-10-07); the root says `data-moving` while a move runs and `data-search-status` what the search is doing.
  */
 export async function localMapSettled(page: Page): Promise<void> {
-  await page.waitForFunction(() => !document.querySelector("#map-container .local-placed[data-moving]"), undefined, { timeout: 10_000 });
+  await page.waitForFunction(() => {
+    const root = document.querySelector<HTMLElement>("#map-container .local-placed");
+    return !root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running");
+  }, undefined, { timeout: 30_000 });
 }
 
 // ─── Reading a view ───────────────────────────────────────────────────────

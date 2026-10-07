@@ -61,6 +61,13 @@ export interface LocalMapTuning {
   symbolOrder: SymbolOrder;
   /** How long the picture takes to move from one arrangement to the next, in milliseconds; zero jumps (2026-10-07). */
   moveMs: number;
+  /**
+   * How many seeded starts the continuing search may try after the first paint, one per idle moment, beyond those the
+   * first paint tried; zero turns the search off (2026-10-07).
+   */
+  searchStarts: number;
+  /** How many starts in a row may go unadopted before the search settles until the picture is drawn anew. */
+  searchPatience: number;
   /** Which card a move holds still on screen: the one last clicked, or the one last clicked or hovered (2026-10-07). */
   holdStill: "click" | "hover";
   /**

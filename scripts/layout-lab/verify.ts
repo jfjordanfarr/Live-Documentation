@@ -35,7 +35,8 @@ export async function verifyConfig(run: ScopeRun, graph: ExplorerGraphPayload, c
   const browser = await chromium.launch();
   try {
     const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
-    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: config } }) });
+    // The lab's numbers are the first paint's: the continuing search is off, so the page keeps the picture it first drew.
+    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { ...config, searchStarts: 0 } } }) });
     await serveBundle(page);
     await page.goto(`${ORIGIN}${localRetainUrl(run.base, run.scope)}`);
     await page.waitForSelector("#map-container .branch-mode", { timeout: 30_000 });

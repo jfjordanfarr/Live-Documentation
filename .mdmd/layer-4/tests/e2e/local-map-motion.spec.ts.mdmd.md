@@ -12,6 +12,7 @@ Holds the animated re-layout in a real browser: a pin moves the picture, the cli
 
 ### Notes
 - Records every frame from inside the page, a `requestAnimationFrame` loop started before the click, since the test runner's own clock and its tracing say nothing about when the page drew: the first version sampled from outside and found the move over at moments it was not. The test's move is seeded long (1,500 ms) so that its frames fall inside it on any machine; the row it pins is on a card wholly in the frame, since the map does not scroll and a click lands only on what is shown. Written 2026-10-07 after the move was judged by eye in the frames under `AI-Agent-Workspace/Screenshots/2026-10-07/` ([Turn 16](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-16)).
+- The seeds it writes keep the search off, so that only the click moves the picture (2026-10-07).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

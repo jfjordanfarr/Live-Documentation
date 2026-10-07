@@ -39,7 +39,7 @@ const moving = (page: Page): Promise<boolean> => page.evaluate(() => document.qu
 const LONG_MOVE_MS = 1500;
 
 async function openPicture(page: Page, moveMs?: number): Promise<void> {
-  if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { moveMs } } }) });
+  if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { moveMs, searchStarts: 0 } } }) });
   await page.goto(localRetainUrl("/", [GRAPH, DOCUMENT]));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });

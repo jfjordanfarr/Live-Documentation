@@ -8,7 +8,10 @@
  * setting of the crossing and height costs, which start the page would keep
  * and how that start stands by the full weighted score. The costs in the
  * Local Map's tuning are set from this table, so that the page's cheap choice
- * agrees with the full picture.
+ * agrees with the full picture. Since 2026-10-07 the table also runs the
+ * page's continuing search over the same starts at each of several churn
+ * costs: the first paint, each picture the search would move to, what the
+ * move gains and how many pairs of cards it swaps, and where the search stops.
  *
  * @module layout-lab/restarts
  */
@@ -18,14 +21,20 @@ import type { ScopeRun } from "./scopes";
 import type { Signals } from "./signals";
 import { scoreOf as fullScoreOf, type Weights } from "./sweep";
 import { churnOf, scoreOf, type StartCosts, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
+import { beginSearch, judgeStart } from "../../packages/explorer/src/client/views/localView/branch-search";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 
 /** One start laid out alone: what the page would price it at, and what the deck would read of its picture. */
 export interface StartRow {
   name: string;
+  /** The seed, or null for the ranking's own order. */
+  seed: number | null;
   cheap: StartSignals;
   signals: Signals;
   ms: number;
+  /** The files of each column, top to bottom, and each card's top, by which the churn between any two pictures is counted. */
+  columns: string[][];
+  tops: Record<string, number>;
 }
 
 /** The costs tried by default: a crossing at nothing to forty pixels of wire, a pixel of height at nothing to five. */
@@ -47,12 +56,60 @@ export function tabulateStarts(capture: Capture, graph: ExplorerGraphPayload, ru
   const alone = (seed: number | null) => evaluate(capture, graph, run, { ...config, orderSeed: seed, orderStarts: 0 });
   const ranked = alone(null);
   const evaluations = [ranked, ...Array.from({ length: Math.max(0, seeds) }, (_, i) => alone(i + 1))];
-  return evaluations.map(evaluation => ({
+  return evaluations.map((evaluation, index) => ({
     name: evaluation.start,
+    seed: index === 0 ? null : index,
     cheap: { ...evaluation.starts[0].signals, churn: churnOf(evaluation.branches.columns.map(column => column.map(node => node.id)), ranked.scene.tops) },
     signals: evaluation.signals,
-    ms: evaluation.ms
+    ms: evaluation.ms,
+    columns: evaluation.branches.columns.map(column => column.map(node => node.id)),
+    tops: Object.fromEntries(evaluation.scene.tops)
   }));
+}
+
+/** One picture the search would move to: the start, what the move gains in the shown picture's own price, the pairs of cards it swaps, and after how many starts. */
+export interface Adoption {
+  row: StartRow;
+  gain: number;
+  pairs: number;
+  tried: number;
+}
+
+/** The page's search simulated at one churn cost over the tabulated starts. */
+export interface SearchTrial {
+  churn: number;
+  /** The first paint: the cheapest of the ranking's order and the seeds the page tries before paint. */
+  first: StartRow;
+  adoptions: Adoption[];
+  tried: number;
+  stopped: "settled" | "capped";
+  final: StartRow;
+}
+
+/**
+ * The page's sequence at each churn cost: the first paint is the cheapest of the ranking's order and the first
+ * `orderStarts` seeds by the costs, churn aside; then each further seed in order is priced with its churn against the
+ * shown picture and adopted when that beats the shown picture's own price, by the page's own judge, until the patience
+ * or the last tabulated seed. The pictures must be tabulated in seed order, the ranking's first.
+ */
+export function simulateSearch(rows: readonly StartRow[], costs: StartCosts, churnCosts: readonly number[], orderStarts: number, patience: number): SearchTrial[] {
+  const base = (row: StartRow): number => scoreOf(row.cheap, { ...costs, churn: 0 });
+  const seeds = rows.filter(row => row.seed !== null).sort((a, b) => a.seed! - b.seed!);
+  const last = seeds.length ? seeds[seeds.length - 1].seed! : 0;
+  return churnCosts.map(churn => {
+    const first = rows.filter(row => row.seed === null || row.seed <= orderStarts).reduce((best, row) => (base(row) < base(best) ? row : best));
+    let shown = first;
+    let state = beginSearch({ from: orderStarts + 1, to: last, patience }, base(first));
+    const adoptions: Adoption[] = [];
+    for (const row of seeds) {
+      if (row.seed! <= orderStarts || state.status !== "running") continue;
+      const pairs = churnOf(row.columns, new Map(Object.entries(shown.tops)));
+      const judged = judgeStart(state, base(row) + churn * pairs, base(row));
+      state = judged.state;
+      if (judged.adopt) { adoptions.push({ row, gain: base(shown) - base(row), pairs, tried: state.tried }); shown = row; }
+    }
+    return { churn, first, adoptions, tried: state.tried, stopped: state.status === "settled" ? "settled" : "capped", final: shown };
+  });
 }
 
 /** One setting of the costs tried: the start the page would keep, the start the full score prefers, and both by the full score. */
@@ -80,7 +137,7 @@ const n = (value: number): string => Math.round(value).toLocaleString("en-US");
 const pct = (value: number, base: number): string => (base === 0 ? "n/a" : `${value >= base ? "+" : ""}${(((value - base) / base) * 100).toFixed(1)}%`);
 
 /** The tabulation as a person reads it. */
-export function renderRestarts(run: ScopeRun, rows: readonly StartRow[], trials: readonly CostTrial[], weights: Weights, capture: Capture, startedAt: string): string {
+export function renderRestarts(run: ScopeRun, rows: readonly StartRow[], trials: readonly CostTrial[], weights: Weights, capture: Capture, startedAt: string, search?: { trials: readonly SearchTrial[]; costs: StartCosts; orderStarts: number; patience: number }): string {
   const base = rows[0];
   const full = (row: StartRow): string => fullScoreOf(row.signals, base.signals, weights).toFixed(3);
   const lines: string[] = [];
@@ -100,6 +157,18 @@ export function renderRestarts(run: ScopeRun, rows: readonly StartRow[], trials:
   lines.push("| ---: | ---: | --- | ---: | --- | ---: | --- |");
   for (const trial of trials) {
     lines.push(`| ${trial.costs.crossing} | ${trial.costs.height} | ${trial.pick.name} | ${trial.pickScore.toFixed(3)} | ${trial.best.name} | ${trial.bestScore.toFixed(3)} | ${trial.pick === trial.best ? "yes" : "no"} |`);
+  }
+  if (search) {
+    lines.push("", "## The search, simulated", "");
+    lines.push(`The page's continuing search over these starts: the first paint is the cheapest of the ranking's order and the first ${search.orderStarts} seeds; each later seed is adopted when its price with its churn against the shown picture beats the shown picture's own; the search settles after ${search.patience} starts without an adoption or caps at the last seed. The gain is in the shown picture's own price, churn aside; the pairs are the cards of one column that swap places.`, "");
+    lines.push(`| Churn cost px/pair | First paint | Moves (seed: gain, pairs swapped, after n starts) | Starts tried | Stopped | Final | Final price at crossing ${search.costs.crossing}, height ${search.costs.height} (vs first) | Final full score |`);
+    lines.push("| ---: | --- | --- | ---: | --- | --- | ---: | ---: |");
+    for (const trial of search.trials) {
+      const firstBase = scoreOf(trial.first.cheap, { ...search.costs, churn: 0 });
+      const finalBase = scoreOf(trial.final.cheap, { ...search.costs, churn: 0 });
+      const moves = trial.adoptions.length ? trial.adoptions.map(a => `${a.row.name}: −${n(a.gain)}, ${a.pairs}, after ${a.tried}`).join("; ") : "none";
+      lines.push(`| ${trial.churn} | ${trial.first.name} | ${moves} | ${trial.tried} | ${trial.stopped} | ${trial.final.name} | ${n(finalBase)} (${pct(finalBase, firstBase)}) | ${full(trial.final)} |`);
+    }
   }
   lines.push("", "## What the numbers are", "");
   lines.push("- The vertical length is the exact placement's measure, the wires' vertical distances summed; the order's crossings are its own count between adjacent columns, a bundle's shared run counted once; the height is the picture's. The page knows these three the moment a start is placed, and prices a start by the vertical length plus the costs.");

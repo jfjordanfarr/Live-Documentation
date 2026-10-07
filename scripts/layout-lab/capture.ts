@@ -15,6 +15,7 @@ import path from "node:path";
 
 import { TEXT_TOLERANCE } from "./card-model";
 import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
+import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 import { localRetainUrl } from "../../tests/e2e/still-picture";
 
 /** A text as Pretext prepared it in the page: its segments and their measured widths, laid out again by arithmetic. */
@@ -126,6 +127,8 @@ export async function captureScope(run: ScopeRun): Promise<Capture> {
   try {
     const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
     await serveBundle(page);
+    // A capture is of the first paint: the continuing search is off, so the page keeps the picture it first drew.
+    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { searchStarts: 0 } } }) });
     await page.goto(`${ORIGIN}${localRetainUrl(run.base, run.scope)}`);
     return await captureFromPage(page, run);
   } finally {

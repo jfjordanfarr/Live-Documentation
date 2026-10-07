@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-07T02:59:50.979Z
+- Generated At: 2026-10-07T13:20:46.967Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,7 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 - The Symbol Order select (2026-10-05) holds the owner's three strategies for a card's rows, layout, alphabetical and order of appearance; like the dense-picture nudge it changes the layout rather than a drawing, so the Local Map re-renders on change and the choice persists with the rest of the tuning.
 - The laces' dials (2026-10-06: Lace Reach, Lace Curl, Lace Width, beside the taper; a Lace Inset dial of the same day was retired on 2026-10-07, when the laces became cut by the card's edge) change a drawing, not the layout, so each redraws the Local Map's wires as it moves through `wireSlider`; the owner asked for the self-references' shape to be tuned by eye in the panel until it is distinct from a connector wire and reads as a wire pulled taut ([Turn 13](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)).
 - The Move slider and the Hold Still select (2026-10-07) set `moveMs` and `holdStill` and persist them; neither redraws anything, since both take effect at the next change of picture. As with every slider, syncing the panel from state writes the slider's value back, so a stored `moveMs` beyond the slider's 1,200 ms comes back as 1,200.
+- The Order Starts, Search Starts and Search Patience sliders (2026-10-07) each re-render the view, since they change which picture is drawn and searched.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -66,6 +67,9 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-lace-width`](../../shared/template.html.mdmd.md#symbol-tuning-lace-width)
 - [`template.tuning-move-ms`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms)
 - [`template.tuning-move-ms-value`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms-value)
+- [`template.tuning-order-starts`](../../shared/template.html.mdmd.md#symbol-tuning-order-starts)
+- [`template.tuning-search-patience`](../../shared/template.html.mdmd.md#symbol-tuning-search-patience)
+- [`template.tuning-search-starts`](../../shared/template.html.mdmd.md#symbol-tuning-search-starts)
 - [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuning-self-loop-taper)
 - [`template.tuning-strain-nudge`](../../shared/template.html.mdmd.md#symbol-tuning-strain-nudge)
 - [`template.tuning-strain-nudge-value`](../../shared/template.html.mdmd.md#symbol-tuning-strain-nudge-value)
