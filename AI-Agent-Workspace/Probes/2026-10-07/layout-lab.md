@@ -122,7 +122,7 @@ So, to the owner's question: neither two dimensions nor the browser is the wall 
 
 ## Open
 
-- The membranes' room as the owner's trade: the band gap, the neck and the padding against 10 to 33% of the vertical wire; a membrane allowed to overlap its sibling by a few pixels (a negative band gap) is the "little non-orthogonality" the lab says pays most per pixel of room given up.
+- The membranes' room was the owner's trade, and they made it on seeing the pictures ([Turn 21](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-21)): "'Every level, the default' was the clear readability winner to the human eye. I think we've found the wall with this respective set of rules." The defaults stand; a membrane allowed to overlap its sibling by a few pixels (a negative band gap) remains the relaxation that pays most per pixel of room, should the eye ever want it.
 - Membranes for the upper levels only (`membraneDepth` 2 on the five files), for the owner's eye, and a price the search can see it by.
 - The pull as a fork: a page search that samples it needs a membrane term in the price and a smoother move across column changes; or the lab's reading sets fixed defaults, which today are the baseline's.
 - The rules not yet levers: wires behind cards instead of through lanes, sub-columns for a tall rank, a backward reference drawn backward, a soft gap in the solver; each a larger change of the order step or the placement.
