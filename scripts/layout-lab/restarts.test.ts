@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { parseCosts, simulateSearch, trialCosts, type StartRow } from "./restarts";
+import { baselineConfig } from "./evaluate";
+import { parseCosts, simulateSearch, summarizeSetting, trialCosts, type StartRow } from "./restarts";
 import type { Signals } from "./signals";
 
 const signals = (lengthPx: number, spots: number): Signals => ({
@@ -63,11 +64,42 @@ describe("the search simulated", () => {
     expect(dear.final.name).toBe("seed 6");
   });
 
-  it("settles after the patience of starts without an adoption", () => {
+  it("settles after the patience of starts that better nothing", () => {
     const [trial] = simulateSearch(rows, costs, [0], 4, 1);
     // The first paint is the best of ranked and seeds 1 to 4: seed 4. Seed 5 betters nothing, and with a patience of one the search settles there.
     expect(trial.first.name).toBe("seed 4");
     expect(trial).toMatchObject({ adoptions: [], tried: 1, stopped: "settled", final: rows[4] });
+  });
+
+  it("goes on past a better start refused for its churn, as the page does", () => {
+    // From seed 1 with a patience of two at 200 a pair: seed 4 is refused (two pairs), but found; seed 5 betters nothing; seed 6 is adopted.
+    const [trial] = simulateSearch(rows, costs, [200], 2, 2);
+    expect(trial.adoptions.map(a => [a.row.name, a.gain, a.pairs, a.tried])).toEqual([["seed 5", 100, 0, 3], ["seed 6", 900, 0, 4]]);
+    // Had the patience counted adoptions, seed 4's refusal would have been the second unadopted start and the search settled before seed 5.
+    // A patience of one settles at seed 3, which betters nothing, after one start.
+    const [impatient] = simulateSearch(rows, costs, [200], 2, 1);
+    expect(impatient).toMatchObject({ adoptions: [], tried: 1, stopped: "settled" });
+  });
+});
+
+describe("the wider space", () => {
+  it("summarizes a setting: the page's price's pick, the full score's, and the search's end, scored against the given base", () => {
+    const rows = [row("ranked", 300, 4, 3000, 40), row("seed 1", 200, 10, 2000, 100), row("seed 2", 260, 5, 2600, 50, [["b", "a", "c"]])];
+    const setting = summarizeSetting(baselineConfig(), "baseline", rows, rows[0].signals, { lengthPx: 1, spots: 1 }, { crossing: 20, height: 0, churn: 0 }, 100, 0, 8);
+    // At twenty a crossing seed 2 (260 + 100) is the page's cheapest; by the full score the ranked start (2) beats seed 1 (3.167) and seed 2 (2.117).
+    expect(setting.cheapest.name).toBe("seed 2");
+    expect(setting.cheapestScore).toBeCloseTo(2600 / 3000 + 50 / 40, 6);
+    expect(setting.best.name).toBe("ranked");
+    expect(setting.bestScore).toBe(2);
+    expect(setting.rankedScore).toBe(2);
+    // The search from the ranked start alone: seed 1 (400) is dearer than ranked (380); seed 2 (360 + 100 of churn for its one pair) is not adopted either.
+    expect(setting.search.adoptions).toEqual([]);
+    expect(setting.search.final.name).toBe("ranked");
+    expect(setting.searchScore).toBe(2);
+    expect(setting.msPerStart).toBe(1);
+    // Scored against another base, the scores move with it.
+    expect(summarizeSetting(baselineConfig(), "x", rows, rows[1].signals, { lengthPx: 1, spots: 1 }, { crossing: 20, height: 0, churn: 0 }, 100, 0, 8).rankedScore).toBeCloseTo(3000 / 2000 + 40 / 100, 6);
+    expect(() => summarizeSetting(baselineConfig(), "x", [], rows[0].signals, { lengthPx: 1 }, { crossing: 0, height: 0, churn: 0 }, 0, 0, 1)).toThrow(/No starts/u);
   });
 });
 

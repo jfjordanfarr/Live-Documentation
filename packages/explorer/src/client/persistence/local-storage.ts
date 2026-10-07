@@ -61,7 +61,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     rankingTie: "fewest",
     orderSweeps: 4,
     orderSeed: null,
-    orderStarts: 4,
+    orderStarts: 2,
     crossingCost: 80,
     heightCost: 5,
     churnCost: 100,

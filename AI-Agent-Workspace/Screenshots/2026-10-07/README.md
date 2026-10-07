@@ -42,3 +42,10 @@ Evidence from [Turn 16 of the October 6 session](../../ChatHistory/2026/10/2026-
 
 Measured on this move by the page's own frame clock and the browser's counters: with the wires' glow drawn every frame the move ran at six frames a second (a frame of 150 to 250 ms, most of it rasterising the drop-shadow filters of 172 wires); with the glow off, sixty (a median frame of 17 ms: script about 10 ms for the wires rebuilt, style 5, layout 1.5). The glow now goes while a move runs and returns at rest. The agent's eye: the move reads as one picture becoming another, the held card the fixed point; the rows passing through each other mid-swap are the one moment that looks like motion for its own sake, and a card's height snapping while its membrane slides is visible on the leaving cards' neighbours. Both are open.
 
+## The search's dials, later on October 7
+
+Evidence from [Turn 18 of the October 6 session](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-18), the owner's go on fewer starts before paint and on the churn cost as a slider. Taken by the root Claude Code agent (Fable 5.1) in Chromium at 1600 × 1000 and twice the device scale, clipped to the Tuning panel's dials for the order step and the search.
+
+| Capture | State |
+| --- | --- |
+| [The order step's and the search's dials](tuning-search-dials.png) | Order Starts at its new default of 2 (the ranking's order and two seeded shuffles before the first picture, where it was four), Search Starts 32, Search Patience 8, and the new Churn Cost slider at 100 px a swapped pair, zero moving to any better picture. The page's search at these defaults was watched on the four scopes and agrees with the lab's simulation of it; the first picture comes 50 to 130 ms sooner. |

@@ -7,7 +7,7 @@ describe("the continuing search", () => {
 
   it("begins at the seed after the first paint's last, running, with the shown picture's price to beat", () => {
     const state = beginSearch(settings, 1000);
-    expect(state).toMatchObject({ next: 5, tried: 0, sinceAdoption: 0, adopted: 0, shown: 1000, priced: null, status: "running" });
+    expect(state).toMatchObject({ next: 5, tried: 0, sinceBetter: 0, adopted: 0, shown: 1000, best: 1000, priced: null, status: "running" });
   });
 
   it("is capped at once with no seed to try, and settled with no patience", () => {
@@ -18,17 +18,18 @@ describe("the continuing search", () => {
   it("adopts a start priced strictly below the shown picture, and the shown price becomes the start's own without churn", () => {
     const first = judgeStart(beginSearch(settings, 1000), 900, 850);
     expect(first.adopt).toBe(true);
-    expect(first.state).toMatchObject({ next: 6, tried: 1, sinceAdoption: 0, adopted: 1, shown: 850, priced: 900, status: "running" });
+    expect(first.state).toMatchObject({ next: 6, tried: 1, sinceBetter: 0, adopted: 1, shown: 850, best: 850, priced: 900, status: "running" });
+    // Priced equal to the shown picture, it is not adopted; but at 800 without churn it betters the best found, so the patience begins again.
     const equal = judgeStart(first.state, 850, 800);
     expect(equal.adopt).toBe(false);
-    expect(equal.state).toMatchObject({ next: 7, tried: 2, sinceAdoption: 1, adopted: 1, shown: 850, priced: 850 });
+    expect(equal.state).toMatchObject({ next: 7, tried: 2, sinceBetter: 0, adopted: 1, shown: 850, best: 800, priced: 850 });
   });
 
-  it("settles after the patience of starts without an adoption, and caps past the last seed", () => {
+  it("settles after the patience of starts that better nothing, and caps past the last seed", () => {
     let { state } = judgeStart(beginSearch(settings, 1000), 1100, 1050);
     expect(state.status).toBe("running");
     ({ state } = judgeStart(state, 1200, 1150));
-    expect(state).toMatchObject({ tried: 2, sinceAdoption: 2, status: "settled" });
+    expect(state).toMatchObject({ tried: 2, sinceBetter: 2, best: 1000, status: "settled" });
     // Settled, it judges nothing more.
     expect(judgeStart(state, 1, 1)).toEqual({ state, adopt: false });
     const long = { from: 5, to: 6, patience: 10 };
@@ -36,6 +37,20 @@ describe("the continuing search", () => {
     expect(run.status).toBe("running");
     run = judgeStart(run, 1100, 1050).state;
     expect(run).toMatchObject({ next: 7, status: "capped" });
+  });
+
+  it("a better start refused for its churn keeps the search going, and the next better one is adopted on its own account", () => {
+    // Shown at 1000; a start at 990 with 150 of churn is refused, but found; two more that better nothing do not settle a patience of three.
+    let { state } = judgeStart(beginSearch({ from: 5, to: 20, patience: 3 }, 1000), 1140, 990);
+    expect(state).toMatchObject({ adopted: 0, shown: 1000, best: 990, sinceBetter: 0, status: "running" });
+    ({ state } = judgeStart(state, 1300, 1200));
+    ({ state } = judgeStart(state, 1300, 1200));
+    expect(state).toMatchObject({ sinceBetter: 2, status: "running" });
+    // A start at 980 with no churn is adopted; the shown and the best are its own.
+    const adopted = judgeStart(state, 980, 980);
+    expect(adopted.adopt).toBe(true);
+    expect(adopted.state).toMatchObject({ adopted: 1, shown: 980, best: 980, sinceBetter: 0, status: "running" });
+    // Under the old rule the two unbettering starts after the refusal would have been three with it, and a patience of three settled.
   });
 
   it("an adoption on the last seed caps the search as well", () => {

@@ -66,7 +66,10 @@ export interface LocalMapTuning {
    * first paint tried; zero turns the search off (2026-10-07).
    */
   searchStarts: number;
-  /** How many starts in a row may go unadopted before the search settles until the picture is drawn anew. */
+  /**
+   * How many starts in a row may fail to better the best picture found, churn aside, before the search settles until the
+   * picture is drawn anew.
+   */
   searchPatience: number;
   /** Which card a move holds still on screen: the one last clicked, or the one last clicked or hovered (2026-10-07). */
   holdStill: "click" | "hover";
@@ -84,13 +87,16 @@ export interface LocalMapTuning {
    * previous picture's and `orderStarts` seeded shuffles, and keeps the cheapest picture.
    */
   orderSeed: number | null;
-  /** How many seeded starts the ordering tries beside the ranking's order and the previous picture's (2026-10-06). */
+  /**
+   * How many seeded starts the ordering tries before the first picture, beside the ranking's order and the previous
+   * picture's (2026-10-06); two since the search follows the first picture (2026-10-07).
+   */
   orderStarts: number;
   /** What one crossing of the order's own count costs when a start's picture is priced, in pixels of wire. */
   crossingCost: number;
   /** What one pixel of the picture's height costs when a start's picture is priced, in pixels of wire. */
   heightCost: number;
-  /** What one pair of cards swapped against the previous picture costs when a start's picture is priced, in pixels of wire. */
+  /** What one pair of cards swapped against the previous picture costs when a start's picture is priced, in pixels of wire; a slider since 2026-10-07. */
   churnCost: number;
   /** The room between neighbouring cards and lanes of a column, in CSS pixels. */
   itemGap: number;

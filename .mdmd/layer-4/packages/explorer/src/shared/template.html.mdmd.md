@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-07T13:20:48.560Z
+- Generated At: 2026-10-07T14:15:47.817Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Click Behavior and Visual tuning subsections removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code — their checkbox controls were eliminated along with the corresponding `ClickBehaviorTuning`/`VisualTuning` type interfaces.
 - The Local Map subsection gained the Move slider (`tuning-move-ms`, 0 to 1,200 ms by 50) and the Hold Still select (`tuning-hold-still`: the last clicked card, or the last clicked or hovered) on 2026-10-07, for the animated re-layout.
 - The Local Map subsection gained the Order Starts slider (`tuning-order-starts`, 0 to 16) and the continuing search's Search Starts (`tuning-search-starts`, 0 to 128, zero off) and Search Patience (`tuning-search-patience`, 1 to 32) on 2026-10-07.
+- The Local Map subsection gained the Churn Cost slider (`tuning-churn-cost`, 0 to 400 by 10) later on 2026-10-07, and the Order Starts slider's default fell to 2.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -164,6 +165,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `stats-line` {#symbol-stats-line}
+- Type: variable
+
+#### `tuning-churn-cost` {#symbol-tuning-churn-cost}
+- Type: variable
+
+#### `tuning-churn-cost-value` {#symbol-tuning-churn-cost-value}
 - Type: variable
 
 #### `tuning-column-gap` {#symbol-tuning-column-gap}

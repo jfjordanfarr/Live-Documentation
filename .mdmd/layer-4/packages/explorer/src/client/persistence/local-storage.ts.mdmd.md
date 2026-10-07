@@ -18,6 +18,7 @@ Manages localStorage-based persistence for Explorer UI preferences and navigatio
 - Serialization simplified in [Dev Day 83](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md): `clickBehavior` and `visual` tuning defaults/deserialization removed alongside the corresponding type interfaces.
 - `moveMs` is a number and `holdStill` one of two names (`readHoldStill`), read like the other dials (2026-10-07); their defaults are 450 ms and `click`.
 - `searchStarts` and `searchPatience` are numbers read like the other dials (2026-10-07); their defaults are 32 and 8.
+- `orderStarts` defaults to 2 since later on 2026-10-07: two seeded starts before the first picture where there were four, the search following it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

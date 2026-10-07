@@ -3127,3 +3127,2118 @@ the scratchpad" completed (exit code 0)
     commits.
 
   I wait for your yes, or your changes, before building.
+
+❯ >Yes, with two honest caveats. The best of many starts can only improve as
+  the count grows, and the lab's tabulation says most of the gain comes early,
+  because the starts fall into a few basins. On this repository's five files,
+  seeds 1 and 7 give the same picture and seeds 3 and 4 sit beside the ranked
+  start. On the chain, seeds 2 and 8 are identical.
+
+  This, to me, reads as maaaaaybe a bit of a failure to perhaps exercise
+  permutations over enough settings that we can optimize the things we like
+  further? I feel like if the number of measurements we're taking into account
+  and the number of parameters we're allowed to tweak are relatively large,
+  additional random sampling should yield additional variation. **However**,
+  your statement that "most of the gain comes early" is _exactly_ the behavior
+  we see in the 3D Force Graph as it is settling into place. That, to me, reads
+  as a good thing.
+
+  >The first caveat is that nothing guarantees the best basin is ever found.
+  The order step is a heuristic, not a solver, so "best" means best found. The
+  second is that "converged" needs a definition that keeps the picture
+  reproducible.
+
+  I believe that if we write our code correctly, the optimal layout will emerge
+  reliably and reproducibly, even if not deterministically implemented. This
+  is precisely the way the force-directed graph behaves. And yet, GPT-6 Astra
+  managed to do some surprisingly slick transitions between 2D and 3D (who
+  knows if they're in total perfect working order right now as we make changes
+  in the 2D Local Map, but I digress) in a way which felt pretty stable
+  shifting back and forth. The same general structure was being recreated with
+  the same general distances between objects.
+
+  >"Only update when a new best is found" then has a precise form: a new start
+  replaces the picture only when its score beats the current one by more than
+  the churn cost. That cost exists for exactly this. It is the price in wire of
+  moving the reader's eye, and today it is set provisionally at 100 px per
+  swapped pair because no picture has yet had a previous one.
+
+  Permute the churn cost space just as we have for the other knobs if we have
+  not already done so in conjunction with the other knobs. I feel confident
+  that we have not reached the optimal layout solver, but big big wide
+  permutation experiments very well could help us find those values. What would
+  be really cool to know is if optimal dial values _differ_ depending on
+  context -- in which case, additional value would be had in truer randomized
+  permutation as a means of layout score-maximizing per iteration. Once again,
+  I must say this is astoundingly similar to the per-frame (as best as it can
+  anyway) behavior of the Obsidian Graph view and the 3D Force Graph view in
+  the Live Documentation Explorer.
+
+  >The search must end. A cap on seeds, with the lab setting the cap from the
+  tabulated sequence. "Ever-continuing" literally would burn battery for
+  nothing after the basins are found.
+
+  The reason that the Force Graphs that we have and that Obsidian has keep
+  updating is because they allow the user to grab and tug on the objects and
+  feel the resultant resistance of the rest of the graph trying to update into
+  a new optimum. One fairly easy choice we might make is to stop solving for
+  better if the diff between last best and most recent best is below some
+  threshold. (until map marked dirty when something new gets pinned?)
+
+  >The branch renderer will instead keep cards, rows, membranes and lanes
+  across renders, each by its identity: a card by its file, a row by its
+  symbol, a membrane by its directory, a lane by its key. A render computes the
+  new scene and applies it to the elements that exist, creating only what is
+  new and removing only what is gone. This is the biggest change and touches no
+  layout math.
+
+  Sounds a lot like the innovations from Reflow. Very cool.
+
+  >Wires in motion. Redraw them every frame so they follow the cards, falling
+  back to fading them out and redrawing after the cards settle if the chain
+  scope cannot hold a frame rate. I recommend every frame with the measured
+  fallback.
+
+  Every frame if possible.
+
+  >The anchor. The selected card held still on screen. The alternatives are the
+  last hovered card or the viewport's center. I recommend the selected card.
+
+  Last card interacted with, configurable for us to figure out whether we want
+  to include both click and hover or just click.
+
+  >The search's visibility. A small readout in the controls strip while the
+  search runs, saying how many starts have been tried and the current score,
+  fading when the cap is reached. Or silent. Your panopticon preference says
+  show it; your rule that visible text must earn its space says keep it small.
+  I lean to showing it.
+
+  I'm not terribly interested in text to announce the iterations. Make sure
+  it's observable to you when you're testing it and don't worry about adding
+  any extra text.
+
+  >Scope of this pass. Steps 1 to 4 and 6 first, with the search as a second
+  commit once the move is right by eye. Or all at once. I recommend two
+  commits.
+
+  Scope the commits as you need. Expect surprises. Implementation is never
+  perfect on the first try. Roll with the punches.
+
+  Overall: Your 6 step plan looks really awesome, and I'm very onboard.
+
+  Searched for 2 patterns, read 3 files, listed 1 directory, ran 10 shell commands (ctrl+o to expand)
+
+● Writing the pure motion module and its tests, rewriting the branch renderer
+  around a stage that keeps its elements, and reading the panel's select
+  handling for the two new settings.
+
+● Write(packages/explorer/src/client/views/localView/branch-motion.ts)
+  ⎿  Wrote 129 lines to
+     packages/explorer/src/client/views/localView/branch-motion.ts
+       1 import { hostOf, type Scene, type SceneBox, type SceneSegment }
+       2
+       4  * The Local Map's picture between two arrangements. A scene say
+       5  * card, membrane and lane stands; a pose is the same places fla
+       6  * the renderer sets on each element, keyed by what the element
+         is (a card by
+          that two
+         ent. The
+         he other,
+          pins or a
+     … +157 lines (ctrl+o to expand)
+
+● Write(packages/explorer/src/client/views/localView/branch-motion.test.ts)
+  ⎿  Wrote 123 lines to
+     packages/explorer/src/client/views/localView/branch-motion.test.ts
+       1 import { describe, expect, it } from "vitest";
+       3 import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Po
+         se } from "./branch-motion";
+         , type SceneMeasurer } from "./branch-scene";
+       6 import type { ExplorerGraphPayload, ExplorerNodePayload } from "
+         ../../../shared/types";
+       8
+       9 function node(id: string, symbols: string[] = ["value"]): Explor
+      10   return { id, name: id.slice(id.lastIndexOf("/") + 1), codePath
+         : `${id}.md`,
+     … +170 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(packages/explorer/src/client/views/localView/branch-renderer.ts)
+  ⎿  Added 303 lines, removed 80 lines
+      1 +import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Po
+        +se } from "./branch-motion";                                    
+      2  import { candidateStarts, layoutStarts, startName, startOrder } 
+         from "./branch-restarts";
+      3  import { BAND_BORDER, hostOf, layoutScene, planBranches, type Sc
+         eneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } f
+         rom "./branch-scene";
+      4  import { edgeKey, exploreBranches, orderExploration, type Explor
+         ation } from "./branches";
+     ...
+      10  const SVG_NS = "http://www.w3.org/2000/svg";
+      11  
+      12  /**
+      13 + * The branch picture's elements, kept across renders by what e
+         +ach one is: a                                                  
+      14 + * card's wrapper by its file, a membrane's section and a lane'
+         +s spacer by                                                    
+      15 + * the pose's box key, a label by its directory. A render build
+         +s the cards                                                    
+      16 + * afresh for the state it draws, but inside the wrapper that s
+         +tood for the                                                   
+      17 + * file before, so that the picture moves from where it was to 
+         +where it now                                                   
+      18 + * belongs instead of being redrawn (the owner's ask, 2026-10-0
+         +7).                                                            
+      19 + */                                                            
+      20 +export interface BranchStage {                                 
+      21 +  root: HTMLElement;                                           
+      22 +  wrappers: Map<string, HTMLElement>;                          
+      23 +  boxes: Map<string, HTMLElement>;                             
+      24 +  shapes: Map<string, SVGPathElement>;                         
+      25 +  labels: Map<string, HTMLElement>;                            
+      26 +  /** The pose the page shows: the picture's once a move has en
+         +ded, the frame's while one runs; null before the first picture.
+         + */                                                            
+      27 +  pose: Pose | null;                                           
+      28 +  move: Move | null;                                           
+      29 +}                                                              
+      30 +                                                               
+      31 +/** One move of the picture from one pose to the next, running.
+         + */                                                            
+      32 +interface Move {                                               
+      33 +  frame: number;                                               
+      34 +  to: Pose;                                                    
+      35 +  bandPadding: number;                                         
+      36 +  /** Elements of the previous picture that the new one has no 
+         +place for: they fade out and go when the move ends. */         
+      37 +  leaving: HTMLElement[];                                      
+      38 +  /** Elements new to the picture: they fade in at their place.
+         + */                                                            
+      39 +  entering: HTMLElement[];                                     
+      40 +  /** The children of rows whose place on their card changed, e
+         +ach with how far from its new place it starts. */              
+      41 +  rows: Array<{ element: HTMLElement; delta: number }>;        
+      42 +}                                                              
+      43 +                                                               
+      44 +/** A stage for a root that holds nothing yet. */              
+      45 +export function createStage(root: HTMLElement): BranchStage {  
+      46 +  return { root, wrappers: new Map(), boxes: new Map(), shapes:
+         + new Map(), labels: new Map(), pose: null, move: null };       
+      47 +}                                                              
+      48 +                                                               
+      49 +/** Ends whatever move the stage runs, where it stands; the sta
+         +ge's elements are the caller's to remove. */                   
+      50 +export function dropStage(stage: BranchStage): void {          
+      51 +  endMove(stage, false);                                       
+      52 +}                                                              
+      53 +                                                               
+      54 +/**                                                            
+      55   * Render the independently retained branches with the Local Ma
+          p's cards,
+      56   * symbol pins and interface colours, placed by the scene of
+      57   * `branch-scene.ts`: the cards and lanes of every column stand
+           where the
+     ...
+      65   * module builds the cards once, measures them for every start,
+           then builds
+      66   * the chosen scene's sections and lanes and applies the layout
+          ; the elements
+      67   * keep the names the router, the deck and the perspective tran
+          sition read.
+      68 + * When the stage already shows a picture, the new one is not a
+         +pplied at once:                                                
+      69 + * every element the two share slides from its old place to its
+         + new over the                                                  
+      70 + * tuning's move length, the rows of a card with them, what is 
+         +new fades in                                                   
+      71 + * and what is gone fades out, the wires are redrawn every fram
+         +e, and the card                                                
+      72 + * the person last interacted with is held still on screen by t
+         +he camera.                                                     
+      73   * The layout's dials come from the Local Map's tuning.
+      74   */
+      27 -export function renderBranches(controller: LocalViewController,
+         - root: HTMLElement): void {                                    
+      75 +export function renderBranches(controller: LocalViewController,
+         + stage: BranchStage): void {                                   
+      76    const started = performance.now();
+      77    const { state, graphData } = controller.options;
+      78    const tuning = state.tuning.localMap;
+      79 +  const { root } = stage;                                      
+      80 +  // A move still running ends where it stands: the new picture
+         + starts from the frame the page shows.                         
+      81 +  endMove(stage, false);                                       
+      82 +  const previous = stage.pose;                                 
+      83 +  const scale = controller.runtime.mapTransform.k || 1;        
+      84 +  const oldRows = previous ? rowOffsets(stage, scale) : null;  
+      85 +                                                               
+      86    const exploration = exploreBranches(state.selectedNode!, grap
+          hData, controller.pins, node => controller.shouldIncludeNode(no
+          de), {
+      87      symbolOrder: tuning.symbolOrder,
+      88      ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie
+           }
+     ...
+       94      columnGap: tuning.columnGap, itemGap: tuning.itemGap, band
+           Gap: tuning.bandGap, neck: tuning.membraneNeck, bandPadding: t
+           uning.membranePadding, cardMaxWidth: tuning.cardMaxWidth
+       95    };
+       96  
+       42 -  // The cards, once: each in its column wrapper, in the root 
+          -to be measured, hosted by the chosen scene's boxes after.     
+       43 -  // Each card keeps its column wrapper: the page's hover rule
+          -s, the router and the deck find a card through it.            
+       44 -  const wrappers = new Map<string, HTMLElement>();            
+       97 +  // The cards, once per render, each built afresh for this re
+          +nder's state inside the wrapper that stood for its file       
+       98 +  // before, or a new one; in the root to be measured, hosted 
+          +by the chosen scene's boxes after. Each card keeps its        
+       99 +  // column wrapper: the page's hover rules, the router and th
+          +e deck find a card through it.                                
+      100 +  const entering: HTMLElement[] = [];                         
+      101 +  const kept = new Set<string>();                             
+      102    for (const node of exploration.subgraph.nodes) {
+       46 -    const wrapper = document.createElement("div");            
+       47 -    wrapper.className = "local-column center";                
+       48 -    wrapper.dataset.direction = "center";                     
+       49 -    wrapper.dataset.position = "center";                      
+      103 +    let wrapper = stage.wrappers.get(node.id);                
+      104 +    if (!wrapper) {                                           
+      105 +      wrapper = document.createElement("div");                
+      106 +      wrapper.className = "local-column center";              
+      107 +      wrapper.dataset.direction = "center";                   
+      108 +      wrapper.dataset.position = "center";                    
+      109 +      stage.wrappers.set(node.id, wrapper);                   
+      110 +      if (previous) entering.push(wrapper);                   
+      111 +    }                                                         
+      112      const card = createNodeCard(controller, node, "center");
+      113      card.classList.add("focus-node");
+       52 -    wrapper.append(card);                                     
+      114 +    wrapper.replaceChildren(card);                            
+      115      root.append(wrapper);
+       54 -    wrappers.set(node.id, wrapper);                           
+      116 +    kept.add(node.id);                                        
+      117    }
+       56 -  dressCards(controller, root, exploration);                  
+      118 +  const leaving: HTMLElement[] = [];                          
+      119 +  for (const [id, wrapper] of stage.wrappers) {               
+      120 +    if (kept.has(id)) continue;                               
+      121 +    stage.wrappers.delete(id);                                
+      122 +    leaving.push(wrapper);                                    
+      123 +  }                                                           
+      124 +  const cards = [...stage.wrappers.values()].map(wrapper => wr
+          +apper.firstElementChild as HTMLElement);                      
+      125 +  dressCards(controller, cards, exploration);                 
+      126    // The drawn directories' labels, once each, by directory: m
+           easured at the width the scene gives, hosted by the chosen sce
+           ne's sections after.
+       58 -  const labels = new Map<string, HTMLElement>();              
+      127    const labelFor = (directory: string): HTMLElement => {
+       60 -    let label = labels.get(directory);                        
+      128 +    let label = stage.labels.get(directory);                  
+      129      if (!label) {
+      130        label = document.createElement("div");
+      131        label.className = "local-directory-label";
+      132        label.textContent = directory;
+      133        root.append(label);
+       66 -      labels.set(directory, label);                           
+      134 +      stage.labels.set(directory, label);                     
+      135      }
+      136      return label;
+      137    };
+     ...
+      139    // The page as the scene's measurer. Widths first, every car
+           d at its own, no wider than the cap; then heights at the
+      140    // widths the columns give, since a card's rows of test name
+           s wrap at its column's width where its own did not, and a
+      141    // label wraps to nothing in a box not yet given a width; an
+           d every pin's height on its card, in the rows of this start.
+       74 -  const scale = controller.runtime.mapTransform.k || 1;       
+      142    const measurerFor = (plan: ScenePlan): SceneMeasurer => ({
+      143      widths(cardMaxWidth) {
+       77 -      for (const wrapper of wrappers.values()) Object.assign(w
+          -rapper.style, { width: "max-content", maxWidth: cardMaxWidth =
+          -== null ? "" : `${cardMaxWidth}px` });                        
+      144 +      for (const wrapper of stage.wrappers.values()) Object.as
+          +sign(wrapper.style, { width: "max-content", maxWidth: cardMaxW
+          +idth === null ? "" : `${cardMaxWidth}px` });                  
+      145        const widths = new Map<string, number>();
+       79 -      for (const [id, wrapper] of wrappers) widths.set(id, wra
+          -pper.offsetWidth);                                            
+      146 +      for (const [id, wrapper] of stage.wrappers) widths.set(i
+          +d, wrapper.offsetWidth);                                      
+      147        return widths;
+      148      },
+      149      measure(cardWidths, labelWidths) {
+      150        const boxes = new Map(plan.boxes.map(box => [box.key, bo
+           x]));
+       84 -      for (const [id, width] of cardWidths) { const wrapper = 
+          -wrappers.get(id); if (wrapper) wrapper.style.width = `${width}
+          -px`; }                                                        
+      151 +      for (const [id, width] of cardWidths) { const wrapper = 
+          +stage.wrappers.get(id); if (wrapper) wrapper.style.width = `${
+          +width}px`; }                                                  
+      152        for (const [key, width] of labelWidths) { const box = bo
+           xes.get(key)!; Object.assign(labelFor(box.directory).style, { 
+           left: `${box.inset}px`, width: `${width}px` }); }
+      153        const heights = new Map<string, number>();
+       87 -      for (const [id, wrapper] of wrappers) heights.set(id, wr
+          -apper.offsetHeight);                                          
+      154 +      for (const [id, wrapper] of stage.wrappers) heights.set(
+          +id, wrapper.offsetHeight);                                    
+      155        const labelHeights = new Map<string, number>();
+      156        for (const key of labelWidths.keys()) labelHeights.set(k
+           ey, labelFor(boxes.get(key)!.directory).offsetHeight);
+      157        const pin = (id: string, direction: "inbound" | "outboun
+           d", symbol: string | undefined): number | null => {
+      158          const anchor = controller.getAnchor(id, "center", dire
+           ction, symbol);
+       92 -        const card = wrappers.get(id);                        
+      159 +        const card = stage.wrappers.get(id);                  
+      160          if (!anchor || !card) return null;
+      161          const rect = anchor.getBoundingClientRect(), cardRect 
+           = card.getBoundingClientRect();
+      162          if (!rect.width && !rect.height) return null;
+     ...
+      174    const costs = { crossing: tuning.crossingCost, height: tunin
+           g.heightCost, churn: tuning.churnCost };
+      175    const { chosen, outcomes } = layoutStarts(starts, start => {
+      176      const branches = orderExploration(exploration, { sweeps: t
+           uning.orderSweeps, ...startOrder(start) });
+      110 -    orderRows(root, branches.rows);                           
+      177 +    orderRows(cards, branches.rows);                          
+      178      const plan = planBranches(branches, sceneTuning.bandPaddin
+           g);
+      179      return { branches, scene: layoutScene(plan, branches, meas
+           urerFor(plan), sceneTuning) };
+      180    }, costs, controller.previousTops);
+      181    const { branches, scene } = chosen;
+      115 -  if (outcomes[outcomes.length - 1] !== chosen) orderRows(root
+          -, branches.rows);                                             
+      182 +  if (outcomes[outcomes.length - 1] !== chosen) orderRows(card
+          +s, branches.rows);                                            
+      183    controller.branches = branches;
+      184    controller.currentSubgraph = branches.subgraph;
+      185    controller.previousTops = scene.tops;
+     ...
+      191    root.dataset.layoutMs = String(Math.round(performance.now() 
+           - started));
+      192  
+      193    // The elements of the chosen scene: a section for the root 
+           and for each directory, a drawn directory's with its
+      127 -  // outline and label; a spacer for each lane; each card's wr
+          -apper moved into the box that hosts it. Each sits inside the  
+      128 -  // element of the box that hosts it.                        
+      194 +  // outline and label; a spacer for each lane; each kept by i
+          +ts key across renders, created when new. Each sits inside     
+      195 +  // the element of the box that hosts it, the cards' wrappers
+          + inside theirs.                                               
+      196    const elements = new Map<SceneBox, HTMLElement>();
+      130 -  const shapes = new Map<SceneBox, SVGPathElement>();         
+      131 -  const hostElement = (anchor: SceneBox | null): HTMLElement =
+          -> (anchor ? elements.get(anchor)! : root);                    
+      197 +  const keptBoxes = new Set<string>();                        
+      198    for (const box of scene.boxes) {
+      199      if (box.kind === "files") continue;
+      134 -    if (box.kind === "lane") {                                
+      135 -      const element = laneElement(box.lane!.key);             
+      136 -      elements.set(box, element);                             
+      137 -      hostElement(box.anchor).append(element);                
+      138 -      continue;                                               
+      200 +    const key = boxKeyOf(box);                                
+      201 +    keptBoxes.add(key);                                       
+      202 +    let element = stage.boxes.get(key);                       
+      203 +    if (!element) {                                           
+      204 +      if (box.kind === "lane") element = laneElement(box.lane!
+          +.key);                                                        
+      205 +      else {                                                  
+      206 +        element = document.createElement("section");          
+      207 +        element.className = `local-directory-band${box.kind ==
+          += "root" ? " local-directory-root" : ""}`;                    
+      208 +        element.dataset.directory = box.directory;            
+      209 +        if (box.kind === "directory") {                       
+      210 +          // The membrane's outline, beneath everything the el
+          +ement holds, and its label at its leftmost segment's top.     
+      211 +          const svg = document.createElementNS(SVG_NS, "svg");
+      212 +          svg.classList.add("local-membrane");                
+      213 +          svg.dataset.directory = box.directory;              
+      214 +          const shape = document.createElementNS(SVG_NS, "path
+          +");                                                           
+      215 +          shape.classList.add("local-membrane-shape");        
+      216 +          shape.dataset.directory = box.directory;            
+      217 +          svg.append(shape);                                  
+      218 +          element.append(svg, labelFor(box.directory));       
+      219 +          stage.shapes.set(key, shape);                       
+      220 +          if (previous) entering.push(element);               
+      221 +        }                                                     
+      222 +      }                                                       
+      223 +      stage.boxes.set(key, element);                          
+      224      }
+      140 -    const element = document.createElement("section");        
+      141 -    element.className = `local-directory-band${box.kind === "r
+          -oot" ? " local-directory-root" : ""}`;                        
+      142 -    element.dataset.directory = box.directory;                
+      143 -    if (box.kind === "directory") {                           
+      144 -      // The membrane's outline, beneath everything the elemen
+          -t holds, and its label at its leftmost segment's top.         
+      145 -      const svg = document.createElementNS(SVG_NS, "svg");    
+      146 -      svg.classList.add("local-membrane");                    
+      147 -      svg.dataset.directory = box.directory;                  
+      148 -      const shape = document.createElementNS(SVG_NS, "path"); 
+      149 -      shape.classList.add("local-membrane-shape");            
+      150 -      shape.dataset.directory = box.directory;                
+      151 -      svg.append(shape);                                      
+      152 -      element.append(svg, labelFor(box.directory));           
+      153 -      shapes.set(box, shape);                                 
+      154 -    }                                                         
+      225      elements.set(box, element);
+      156 -    hostElement(box.anchor).append(element);                  
+      226    }
+      158 -  for (const item of scene.items.values()) {                  
+      159 -    const wrapper = wrappers.get(item.id);                    
+      160 -    if (wrapper) hostElement(hostOf(item.box)).append(wrapper)
+          -;                                                             
+      227 +  for (const [key, element] of stage.boxes) {                 
+      228 +    if (keptBoxes.has(key)) continue;                         
+      229 +    stage.boxes.delete(key);                                  
+      230 +    stage.shapes.delete(key);                                 
+      231 +    leaving.push(element);                                    
+      232    }
+      162 -  for (const [directory, label] of labels) if (label.parentEle
+          -ment === root) { label.remove(); labels.delete(directory); }  
+      163 -                                                              
+      164 -  // Every element at its place, relative to the element it si
+          -ts in; a drawn directory gets its outline, its label at       
+      165 -  // its leftmost segment, and its segments as data; a lane sa
+          -ys where its slots came to rest, for the router.              
+      166 -  const origin = (anchor: SceneBox | null): { left: number; to
+          -p: number } => (anchor ? { left: anchor.left, top: anchor.top 
+          -} : { left: 0, top: 0 });                                     
+      233 +  const drawn = new Set(scene.boxes.filter(box => box.kind ===
+          + "directory").map(box => box.directory));                     
+      234 +  for (const [directory, label] of stage.labels) if (!drawn.ha
+          +s(directory)) { label.remove(); stage.labels.delete(directory)
+          +; }                                                           
+      235 +  const hostElement = (anchor: SceneBox | null): HTMLElement =
+          +> (anchor ? elements.get(anchor)! : root);                    
+      236 +  for (const box of scene.boxes) if (box.kind !== "files") hos
+          +tElement(box.anchor).append(elements.get(box)!);              
+      237 +  for (const item of scene.items.values()) hostElement(hostOf(
+          +item.box)).append(stage.wrappers.get(item.id)!);              
+      238 +  // A drawn directory publishes its segments, a lane where it
+          +s slots came to rest, for the router and the tests.           
+      239    for (const box of scene.boxes) {
+      240      const element = elements.get(box);
+      241      if (!element) continue;
+      170 -    const at = origin(box.anchor);                            
+      242 +    if (box.kind === "lane") element.dataset.slots = (scene.sl
+          +otLines.get(box.lane!.key) ?? []).map(String).join(",");      
+      243 +    else element.dataset.segments = box.segments.map(segment =
+          +> `${segment.column}:${segment.left}:${segment.top}:${segment.
+          +right}:${segment.bottom}`).join(";");                         
+      244 +  }                                                           
+      245 +                                                              
+      246 +  // Every element at its place, at once for the first picture
+          +, else moved there from where the previous one stood it.      
+      247 +  const pose = scenePose(scene);                              
+      248 +  const reduced = typeof matchMedia === "function" && matchMed
+          +ia("(prefers-reduced-motion: reduce)").matches;               
+      249 +  const duration = previous && !reduced ? Math.max(0, tuning.m
+          +oveMs) : 0;                                                   
+      250 +  if (!previous || duration === 0) {                          
+      251 +    for (const element of leaving) element.remove();          
+      252 +    applyPose(stage, pose, sceneTuning.bandPadding);          
+      253 +    stage.pose = pose;                                        
+      254 +    return;                                                   
+      255 +  }                                                           
+      256 +  const rows = oldRows ? rowMotions(stage, oldRows, scale) : [
+          +];                                                            
+      257 +  startMove(controller, stage, previous, pose, duration, { to:
+          + pose, bandPadding: sceneTuning.bandPadding, leaving, entering
+          +, rows, frame: 0 });                                          
+      258 +}                                                             
+      259 +                                                              
+      260 +/** The outline's stroke, which the scene counts in a membrane
+          +'s inset. */                                                  
+      261 +export { BAND_BORDER };                                       
+      262 +                                                              
+      263 +/**                                                           
+      264 + * Sets every element of the stage where the pose stands it, r
+          +elative to the                                                
+      265 + * element that holds it: a membrane's section with its outlin
+          +e and its label                                               
+      266 + * at its leftmost segment's top, a lane's spacer, each card's
+          + wrapper, and                                                 
+      267 + * the picture's own size.                                    
+      268 + */                                                           
+      269 +function applyPose(stage: BranchStage, pose: Pose, bandPadding
+          +: number): void {                                             
+      270 +  const origin = (host: string | null): { left: number; top: n
+          +umber } => {                                                  
+      271 +    const box = host ? pose.boxes.get(host) : undefined;      
+      272 +    return box ? { left: box.left, top: box.top } : { left: 0,
+          + top: 0 };                                                    
+      273 +  };                                                          
+      274 +  for (const box of pose.boxes.values()) {                    
+      275 +    const element = stage.boxes.get(box.key);                 
+      276 +    if (!element) continue;                                   
+      277 +    const at = origin(box.host);                              
+      278      Object.assign(element.style, { left: `${box.left - at.left
+           }px`, width: `${box.right - box.left}px`, top: `${box.top - at
+           .top}px`, height: `${Math.max(0, box.bottom - box.top)}px` });
+      172 -    if (box.kind === "lane") {                                
+      173 -      element.dataset.slots = (scene.slotLines.get(box.lane!.k
+          -ey) ?? []).map(String).join(",");                             
+      174 -      continue;                                               
+      279 +    if (box.kind !== "directory") continue;                   
+      280 +    stage.shapes.get(box.key)?.setAttribute("d", membranePath(
+          +box.segments.map(segment => ({ left: segment.left - box.left, 
+          +right: segment.right - box.left, top: segment.top - box.top, b
+          +ottom: segment.bottom - box.top })), bandPadding));           
+      281 +    const label = stage.labels.get(box.directory);            
+      282 +    if (label && box.segments.length) label.style.top = `${box
+          +.segments[0].top - box.top + box.inset}px`;                   
+      283 +  }                                                           
+      284 +  for (const item of pose.items.values()) {                   
+      285 +    const wrapper = stage.wrappers.get(item.id);              
+      286 +    if (!wrapper) continue;                                   
+      287 +    const at = origin(item.host);                             
+      288 +    Object.assign(wrapper.style, { left: `${item.left - at.lef
+          +t}px`, width: `${item.width}px`, top: `${item.top - at.top}px`
+          + });                                                          
+      289 +  }                                                           
+      290 +  Object.assign(stage.root.style, { width: `${pose.pictureWidt
+          +h}px`, height: `${pose.pictureHeight}px` });                  
+      291 +}                                                             
+      292 +                                                              
+      293 +/**                                                           
+      294 + * Runs the move from one pose to the next over `duration` mil
+          +liseconds: each                                               
+      295 + * frame applies the pose part way, eased; the rows of a card 
+          +slide from their                                              
+      296 + * old place on it; new elements fade in and gone ones fade ou
+          +t; the camera                                                 
+      297 + * shifts by what the held card moved, so that it stays where 
+          +the eye left it;                                              
+      298 + * and the wires are redrawn to the frame. The stage's pose fo
+          +llows the                                                     
+      299 + * frames, so a render that interrupts the move starts from wh
+          +at the page                                                   
+      300 + * shows. The root says `data-moving` throughout, for whoever 
+          +reads the page.                                               
+      301 + */                                                           
+      302 +function startMove(controller: LocalViewController, stage: Bra
+          +nchStage, from: Pose, to: Pose, duration: number, move: Move):
+          + void {                                                       
+      303 +  const { root } = stage;                                     
+      304 +  root.dataset.moving = "true";                               
+      305 +  applyPose(stage, tweenPose(from, to, 0), move.bandPadding); 
+      306 +  for (const element of move.entering) element.style.opacity =
+          + "0";                                                         
+      307 +  for (const { element, delta } of move.rows) element.style.tr
+          +ansform = `translateY(${delta}px)`;                           
+      308 +  const held = heldCard(controller, from, to);                
+      309 +  let heldAt = held ? from.items.get(held)! : null;           
+      310 +  const start = performance.now();                            
+      311 +  const step = (now: number): void => {                       
+      312 +    const t = Math.min(1, (now - start) / duration);          
+      313 +    const eased = easeInOutCubic(t);                          
+      314 +    const frame = tweenPose(from, to, eased);                 
+      315 +    applyPose(stage, frame, move.bandPadding);                
+      316 +    for (const element of move.entering) element.style.opacity
+          + = String(eased);                                             
+      317 +    for (const element of move.leaving) element.style.opacity 
+          += String(1 - eased);                                          
+      318 +    for (const { element, delta } of move.rows) element.style.
+          +transform = `translateY(${delta * (1 - eased)}px)`;           
+      319 +    if (held && heldAt) {                                     
+      320 +      const at = frame.items.get(held)!;                      
+      321 +      const camera = controller.mapTransform;                 
+      322 +      controller.mapTransform = { ...camera, x: camera.x - (at
+          +.left - heldAt.left) * camera.k, y: camera.y - (at.top - heldA
+          +t.top) * camera.k };                                          
+      323 +      controller.updateMapTransform();                        
+      324 +      heldAt = at;                                            
+      325      }
+      176 -    element.dataset.segments = box.segments.map(segment => `${
+          -segment.column}:${segment.left}:${segment.top}:${segment.right
+          -}:${segment.bottom}`).join(";");                              
+      177 -    const shape = shapes.get(box);                            
+      178 -    if (shape) {                                              
+      179 -      shape.setAttribute("d", membranePath(box.segments.map(se
+          -gment => ({ left: segment.left - box.left, right: segment.righ
+          -t - box.left, top: segment.top - box.top, bottom: segment.bott
+          -om - box.top })), sceneTuning.bandPadding));                  
+      326 +    stage.pose = frame;                                       
+      327 +    controller.drawConnections();                             
+      328 +    if (t < 1) move.frame = requestAnimationFrame(step);      
+      329 +    else {                                                    
+      330 +      endMove(stage, true);                                   
+      331 +      controller.drawConnections();                           
+      332 +      const hovered = controller.localMapState.getState().hove
+          +redSymbol;                                                    
+      333 +      if (hovered) controller.highlightSymbolConnections(hover
+          +ed.nodeId, hovered.symbol);                                   
+      334      }
+      181 -    const label = box.kind === "directory" ? labels.get(box.di
+          -rectory) : undefined;                                         
+      182 -    if (label) label.style.top = `${box.segments[0].top - box.
+          -top + box.inset}px`;                                          
+      335 +  };                                                          
+      336 +  move.frame = requestAnimationFrame(step);                   
+      337 +  stage.move = move;                                          
+      338 +}                                                             
+      339 +                                                              
+      340 +/**                                                           
+      341 + * Ends the stage's move, if one runs: gone elements are remov
+          +ed, new ones                                                  
+      342 + * and moved rows stand plain. Finished, the picture is at its
+          + destination;                                                 
+      343 + * interrupted, it stays at the frame the page shows.         
+      344 + */                                                           
+      345 +function endMove(stage: BranchStage, finished: boolean): void 
+          +{                                                             
+      346 +  const move = stage.move;                                    
+      347 +  if (!move) return;                                          
+      348 +  cancelAnimationFrame(move.frame);                           
+      349 +  for (const element of move.leaving) element.remove();       
+      350 +  for (const element of move.entering) element.style.opacity =
+          + "";                                                          
+      351 +  for (const { element } of move.rows) element.style.transform
+          + = "";                                                        
+      352 +  if (finished) {                                             
+      353 +    applyPose(stage, move.to, move.bandPadding);              
+      354 +    stage.pose = move.to;                                     
+      355    }
+      184 -  for (const item of scene.items.values()) {                  
+      185 -    const wrapper = wrappers.get(item.id);                    
+      186 -    if (!wrapper) continue;                                   
+      187 -    const at = origin(hostOf(item.box));                      
+      188 -    Object.assign(wrapper.style, { left: `${scene.lefts[item.c
+          -olumn] + item.inset - at.left}px`, width: `${scene.widths[item
+          -.column] - 2 * item.inset}px`, top: `${(scene.tops.get(item.id
+          -) ?? 0) - at.top}px` });                                      
+      356 +  delete stage.root.dataset.moving;                           
+      357 +  stage.move = null;                                          
+      358 +}                                                             
+      359 +                                                              
+      360 +/**                                                           
+      361 + * The card held still on screen through a move: the one the p
+          +erson last                                                    
+      362 + * interacted with, else the selected file, when the picture h
+          +as it before                                                  
+      363 + * and after; a card that enters or leaves cannot be held.    
+      364 + */                                                           
+      365 +function heldCard(controller: LocalViewController, from: Pose,
+          + to: Pose): string | null {                                   
+      366 +  for (const id of [controller.lastInteracted, controller.opti
+          +ons.state.selectedNode?.id]) {                                
+      367 +    if (id && from.items.has(id) && to.items.has(id)) return i
+          +d;                                                            
+      368    }
+      190 -  Object.assign(root.style, { width: `${scene.pictureWidth}px`
+          -, height: `${scene.pictureHeight}px` });                      
+      369 +  return null;                                                
+      370  }
+      371  
+      193 -/** The outline's stroke, which the scene counts in a membrane
+          -'s inset. */                                                  
+      194 -export { BAND_BORDER };                                       
+      372 +/**                                                           
+      373 + * Where each visible row of each card stands, from its card's
+          + top, in the                                                  
+      374 + * picture's pixels, by the row's symbol and its place among r
+          +ows of that                                                   
+      375 + * name (LinkTarget and linkTarget share one). Hidden rows hav
+          +e no place.                                                   
+      376 + */                                                           
+      377 +function rowOffsets(stage: BranchStage, scale: number): Map<st
+          +ring, Map<string, number>> {                                  
+      378 +  const offsets = new Map<string, Map<string, number>>();     
+      379 +  for (const [id, wrapper] of stage.wrappers) {               
+      380 +    const card = wrapper.querySelector<HTMLElement>(".node-car
+          +d");                                                          
+      381 +    if (!card) continue;                                      
+      382 +    const cardTop = card.getBoundingClientRect().top;         
+      383 +    const seen = new Map<string, number>();                   
+      384 +    const rows = new Map<string, number>();                   
+      385 +    card.querySelectorAll<HTMLElement>(".symbol-row").forEach(
+          +row => {                                                      
+      386 +      const name = normalizeSymbolIdentifier(row.dataset.symbo
+          +l) ?? "__internals__";                                        
+      387 +      const count = seen.get(name) ?? 0;                      
+      388 +      seen.set(name, count + 1);                              
+      389 +      const rect = row.firstElementChild?.getBoundingClientRec
+          +t();                                                          
+      390 +      if (!rect || (!rect.width && !rect.height)) return;     
+      391 +      rows.set(`${name}\0${count}`, (rect.top - cardTop) / sca
+          +le);                                                          
+      392 +    });                                                       
+      393 +    offsets.set(id, rows);                                    
+      394 +  }                                                           
+      395 +  return offsets;                                             
+      396 +}                                                             
+      397  
+      398 +/** The children of every row that stands elsewhere on its car
+          +d than it did, each with how far from its new place it starts.
+          + */                                                           
+      399 +function rowMotions(stage: BranchStage, before: Map<string, Ma
+          +p<string, number>>, scale: number): Array<{ element: HTMLEleme
+          +nt; delta: number }> {                                        
+      400 +  const motions: Array<{ element: HTMLElement; delta: number }
+          +> = [];                                                       
+      401 +  const after = rowOffsets(stage, scale);                     
+      402 +  for (const [id, wrapper] of stage.wrappers) {               
+      403 +    const was = before.get(id), now = after.get(id);          
+      404 +    if (!was || !now) continue;                               
+      405 +    const seen = new Map<string, number>();                   
+      406 +    wrapper.querySelectorAll<HTMLElement>(".symbol-row").forEa
+          +ch(row => {                                                   
+      407 +      const name = normalizeSymbolIdentifier(row.dataset.symbo
+          +l) ?? "__internals__";                                        
+      408 +      const count = seen.get(name) ?? 0;                      
+      409 +      seen.set(name, count + 1);                              
+      410 +      const key = `${name}\0${count}`;                        
+      411 +      const from = was.get(key), to = now.get(key);           
+      412 +      if (from === undefined || to === undefined || Math.abs(f
+          +rom - to) < 0.5) return;                                      
+      413 +      for (const child of row.children) motions.push({ element
+          +: child as HTMLElement, delta: from - to });                  
+      414 +    });                                                       
+      415 +  }                                                           
+      416 +  return motions;                                             
+      417 +}                                                             
+      418 +                                                              
+      419  /**
+      420   * Each card's rows in the order a start chose; rows the order
+            does not name
+      421   * keep their place after them, Internals last. Two symbols ma
+           y share a
+      422   * normalized name (LinkTarget and linkTarget), so a name clai
+           ms one row per
+      423   * mention. Run once per start, since a start's pins stand whe
+           re its rows do.
+      424   */
+      202 -function orderRows(root: HTMLElement, rows: ReadonlyMap<string
+          -, readonly string[]>): void {                                 
+      203 -  root.querySelectorAll<HTMLElement>(".node-card").forEach(car
+          -d => {                                                        
+      425 +function orderRows(cards: readonly HTMLElement[], rows: Readon
+          +lyMap<string, readonly string[]>): void {                     
+      426 +  for (const card of cards) {                                 
+      427      const rowOrder = rows.get(card.dataset.id!);
+      205 -    if (!rowOrder) return;                                    
+      428 +    if (!rowOrder) continue;                                  
+      429      const byName = new Map<string, HTMLElement[]>();
+      430      card.querySelectorAll<HTMLElement>(".symbol-row").forEach(
+           row => {
+      431        const name = normalizeSymbolIdentifier(row.dataset.symbo
+           l) ?? "__internals__";
+     ...
+      438      for (const list of byName.values()) for (const row of list
+           ) row.parentElement?.append(row);
+      439      const internals = card.querySelector<HTMLElement>(".symbol
+           -row.internals-row");
+      440      if (internals) internals.parentElement?.append(internals);
+      218 -  });                                                         
+      441 +  }                                                           
+      442  }
+      443  
+      444  /**
+     ...
+      446   * connections outside the view, which every start shares: the
+           y stand before
+      447   * any start is measured, since they take room on the card.
+      448   */
+      226 -function dressCards(controller: LocalViewController, root: HTM
+          -LElement, exploration: Exploration): void {                   
+      449 +function dressCards(controller: LocalViewController, cards: re
+          +adonly HTMLElement[], exploration: Exploration): void {       
+      450    const { state } = controller.options;
+      451    const connected = new Set<string>();
+      452    const key = (id: string, symbol?: string): string => `${id}\
+           0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
+     ...
+      457      if (!exploration.ranking.back.has(edgeKey(edge))) continue
+           ;
+      458      for (const id of new Set([edge.sourceId, edge.targetId])) 
+           backReferences.set(id, (backReferences.get(id) ?? 0) + 1);
+      459    }
+      237 -  root.querySelectorAll<HTMLElement>(".node-card").forEach(car
+          -d => {                                                        
+      460 +  for (const card of cards) {                                 
+      461      const id = card.dataset.id!;
+      462      const all = controller.isPinned(id, "*") || controller.exp
+           andedCards.has(id) || id === state.selectedNode?.id;
+      463      let hidden = 0;
+     ...
+      497        }
+      498        card.append(reveal);
+      499      }
+      277 -  });                                                         
+      500 +  }                                                           
+      501  }
+      502  
+      503  /** The room a lane's bundles pass through; the placement size
+           s it, and the router reads its place and its slots back from t
+           he page. */
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Write(tests/e2e/local-map-motion.spec.ts)
+  ⎿  Wrote 116 lines to tests/e2e/local-map-motion.spec.ts
+       1 import { expect, test, type Page } from "@playwright/test";
+       3 import { localMapSettled, localRetainUrl } from "./still-picture
+         ";
+         ient/persistence/local-storage";
+       6 /**
+       7  * The animated re-layout: a change of pins moves the branch pic
+       8  * arrangement to the next instead of redrawing it. Every card k
+         eeps its
+         ngs, the card
+         a, and the
+     … +154 lines (ctrl+o to expand)
+
+  Read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● The branches test failed because the picture drifted when its size changed,
+  not just when the card moved. I'll fix this by measuring the card's position
+  on screen each frame instead, which accounts for both causes. · summary
+
+  Searched for 2 patterns, read 2 files, ran 6 shell commands (ctrl+o to expand)
+
+● The move does start without a seed in my probe, so the test environment must
+  be causing the spec failure. I'll check the Playwright config for
+  reduced-motion settings and review the frame timings from the probe. · summary
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Frames are slow (median 150ms) because the wire drawer measures each pin
+  between writes, forcing a layout per wire. I'll batch the pin measurements
+  before rebuilding, then rebuild and re-time while lengthening the spec's test
+  move so slow frames can't hide behind it. · summary
+
+  Read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● Found that disabling the wires' glow filter restores the move to 60 fps
+  instead of 6. I'll drop the glow only during moves, rebuild, retime, refilm
+  the frames, then update docs, run the gate, and commit. · summary
+
+  Read 3 files, ran 8 shell commands (ctrl+o to expand)
+
+● The gate is running the full chain (lint, build, unit, integration, links,
+  Live Docs, SlopCop, Playwright) in the background. Everything else for this
+  pass is written; the commit waits on its exit 0, and the reply follows.
+
+● Background command "Run the full pre-commit gate with Playwright for the
+animated re-layout" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Built, gated and committed as 8476f928. The picture now moves. Here is what it
+  does, what building it taught, and where it lives.
+
+  What moves
+
+  A change of pins, a closed file, an opened card or a changed setting no longer
+  redraws the branch picture. Every card, membrane and lane keeps its element
+  and slides from where it stood to where it now belongs, over a Move dial in
+  Tuning set to 450 ms by default. Rows that change order slide within their
+  card. New cards fade in at their place, gone cards fade out. The wires are
+  redrawn every frame, as you asked. The card you last acted on stays exactly
+  where it is on screen while everything else moves around it, and a Hold Still
+  setting chooses whether hovering a card counts as acting on it or only
+  clicking does. With motion reduced in the system, or the dial at zero, the
+  picture jumps as before. No text announces any of it; the picture's root
+  carries a marker while a move runs, which the tests read.
+
+  Five frames of one move (AI-Agent-Workspace/Screenshots/2026-10-07/README.md#t
+  he-picture-moves-later-on-october-7) are in the screenshot README, filmed at
+  the dial's longest so the frames could be caught. The clicked card at the left
+  never moves. My eye: it reads as one picture becoming another. Two things are
+  honest flaws for yours: rows that swap pass through each other mid-move, and
+  a card whose height changes snaps to it while its membrane slides.
+
+  What running it taught
+
+  Holding by the pose was wrong. My first hold shifted the camera by the card's
+  change of place in the picture. The picture crept upward over several moves,
+  because the picture's root shifts inside its container as the picture's size
+  changes, and the pose cannot see that. The card is now measured on screen each
+  frame and the camera shifted by whatever it drifted. Your own drag during a
+  move is left alone, since only the camera's change since the start is
+  subtracted.
+
+  The wires' glow was the frame rate. The first moves ran at six frames a second
+  headless. The browser's counters put script, style and layout at a third of
+  each frame, and a test that switched off the wires' drop-shadow filters took
+  the same move to sixty. The glow now goes while a move runs and returns at
+  rest. On your machine with a GPU the filters cost less, but the choice stands
+  either way.
+
+  A test that watches from outside lies. The spec first sampled the move from
+  the test runner's clock and found it over at moments the page said it was not,
+  because the runner's own tracing was eating the page's time. It now records
+  every frame from inside the page and holds the clicked card within 1.5 px on
+  all of them.
+
+  Where it lives
+
+  One new pure module, branch-motion.ts, flattens a scene to a pose, every
+  element keyed by what it is, and gives the pose part way between two. The
+  branch renderer now keeps a stage across renders and applies poses to it frame
+  by frame. The controller remembers the last card acted on and keeps the
+  stage. The render module keeps the stage's root for branch pictures and drops
+  it for any other. The tuning type, storage, panel and template carry the two
+  new settings. Nothing in the layout math changed.
+
+  Gate: 1,020 unit, 50 integration, no broken links, 106 Playwright. Your
+  re-exported capture is in the commit; the inventory names where it ends.
+
+  Your points, carried forward
+
+  The basins question and "do the best dials differ by context" are in ideas.md
+  in your words, with my reading: a start varies only the order's first
+  permutation, and the levers a per-iteration search could honestly vary are the
+  ranking's tie rule and pull and the sweep count, not the costs, which define
+  what "best" means. Your stopping rule, stop when a new best gains too little
+  and resume when a pin marks the map dirty, is the one I will build.
+
+  Next is step 5: the order step's measurement taken off the DOM so starts can
+  run in idle time, that scheduler with your stopping rule, moves to each new
+  best past the churn cost, the churn cost permuted in the lab against the other
+  knobs, and an Order Starts slider.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+❯ It's now 10/7 but I'll avoid starting a new chat until we get through this
+  multi-step effort, just to avoid the extra context bloat of bootstrapping
+  again mid-effort. Next is step 5? That sounds phenomenal. Please go ahead.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Write(packages/explorer/src/client/views/localView/branch-search.ts)
+  ⎿  Wrote 140 lines to
+     packages/explorer/src/client/views/localView/branch-search.ts
+       1 /**
+         starts the
+         ing seeded
+         d after the
+         s price plus
+         e shown
+         ithout an
+         is drawn
+         arts are a
+         e same on
+     … +178 lines (ctrl+o to expand)
+
+● Write(packages/explorer/src/client/views/localView/branch-search.test.ts)
+  ⎿  Wrote 82 lines to
+     packages/explorer/src/client/views/localView/branch-search.test.ts
+       1 import { describe, expect, it } from "vitest";
+       3 import { beginSearch, judgeStart, orderedRows, pinFor, type Card
+         Rows } from "./branch-search";
+       4
+       6   const settings = { from: 5, to: 8, patience: 2 };
+       7
+         with the shown picture's price to beat", () => {
+       9     const state = beginSearch(settings, 1000);
+      10     expect(state).toMatchObject({ next: 5, tried: 0, sinceAdopti
+         });
+     … +107 lines (ctrl+o to expand)
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Write(packages/explorer/src/client/views/localView/branch-renderer.ts)
+  ⎿  Error writing file
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Now that the renderer file has been read again, I am writing the search-aware
+  version of it in full, then type-checking and running the two unit test files.
+
+● Write(packages/explorer/src/client/views/localView/branch-renderer.ts)
+  ⎿  Added 306 lines, removed 81 lines
+      1  import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Po
+         se } from "./branch-motion";
+      2 -import { candidateStarts, layoutStarts, startName, startOrder } 
+        -from "./branch-restarts";                                       
+      3 -import { BAND_BORDER, hostOf, layoutScene, planBranches, type Sc
+        -eneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } f
+        -rom "./branch-scene";                                           
+      4 -import { edgeKey, exploreBranches, orderExploration, type Explor
+        -ation } from "./branches";                                      
+      2 +import { candidateStarts, churnOf, layoutStarts, scoreOf, startN
+        +ame, startOrder, type StartCosts } from "./branch-restarts";    
+      3 +import { BAND_BORDER, hostOf, layoutScene, planBranches, type Sc
+        +ene, type SceneBox, type SceneMeasurer, type ScenePlan, type Sce
+        +neTuning } from "./branch-scene";                               
+      4 +import { beginSearch, judgeStart, pinFor, type CardRows, type Ro
+        +wMeasure, type SearchState } from "./branch-search";            
+      5 +import { edgeKey, exploreBranches, orderExploration, type Branch
+        +Graph, type Exploration } from "./branches";                    
+      6  import { createNodeCard } from "./card-factory";
+      7  import type { LocalViewController } from "./controller";
+      8  import { membranePath } from "./membrane-outline";
+     ...
+      16   * the pose's box key, a label by its directory. A render build
+          s the cards
+      17   * afresh for the state it draws, but inside the wrapper that s
+          tood for the
+      18   * file before, so that the picture moves from where it was to 
+          where it now
+      18 - * belongs instead of being redrawn (the owner's ask, 2026-10-0
+         -7).                                                            
+      19 + * belongs instead of being redrawn (the owner's ask, 2026-10-0
+         +7). The stage                                                  
+      20 + * also carries the continuing search that runs after each pict
+         +ure.                                                           
+      21   */
+      22  export interface BranchStage {
+      23    root: HTMLElement;
+     ...
+      30    /** The pose the page shows: the picture's once a move has en
+          ded, the frame's while one runs; null before the first picture.
+           */
+      31    pose: Pose | null;
+      32    move: Move | null;
+      33 +  search: Search | null;                                       
+      34  }
+      35  
+      36  /** One move of the picture from one pose to the next, running.
+           */
+     ...
+      46    rows: Array<{ element: HTMLElement; delta: number }>;
+      47  }
+      48  
+      49 +/** What the page answered the scene's measurer that no start c
+         +hanges, kept so that the search can price a start without the p
+         +age. */                                                        
+      50 +interface PageAnswers {                                        
+      51 +  natural: Map<string, number>;                                
+      52 +  heights: Map<string, number>;                                
+      53 +  /** Each drawn directory's label height at its width, by dire
+         +ctory. */                                                      
+      54 +  labelHeights: Map<string, number>;                           
+      55 +}                                                              
+      56 +                                                               
+      57 +/** The continuing search over the seeded starts the first pain
+         +t did not try, pricing each from the page's answers and each ca
+         +rd's rows measured once. */                                    
+      58 +interface Search {                                             
+      59 +  state: SearchState;                                          
+      60 +  exploration: Exploration;                                    
+      61 +  sceneTuning: SceneTuning;                                    
+      62 +  sweeps: number;                                              
+      63 +  costs: StartCosts;                                           
+      64 +  moveMs: number;                                              
+      65 +  answers: PageAnswers;                                        
+      66 +  rows: Map<string, CardRows>;                                 
+      67 +  /** The idle callback or timer waiting to run the next start;
+         + zero when none. */                                            
+      68 +  handle: number;                                              
+      69 +  /** Takes the next step when the page is idle; a move that en
+         +ds calls it. */                                                
+      70 +  resume: () => void;                                          
+      71 +}                                                              
+      72 +                                                               
+      73  /** A stage for a root that holds nothing yet. */
+      74  export function createStage(root: HTMLElement, overlay: HTMLEle
+          ment): BranchStage {
+      48 -  return { root, overlay, wrappers: new Map(), boxes: new Map()
+         -, shapes: new Map(), labels: new Map(), pose: null, move: null 
+         -};                                                             
+      75 +  return { root, overlay, wrappers: new Map(), boxes: new Map()
+         +, shapes: new Map(), labels: new Map(), pose: null, move: null,
+         + search: null };                                               
+      76  }
+      77  
+      51 -/** Ends whatever move the stage runs, where it stands; the sta
+         -ge's elements are the caller's to remove. */                   
+      78 +/** Ends whatever move the stage runs, where it stands, and its
+         + search; the stage's elements are the caller's to remove. */   
+      79  export function dropStage(stage: BranchStage): void {
+      80 +  stopSearch(stage);                                           
+      81    endMove(stage, false);
+      82  }
+      83  
+     ...
+      100   * tuning's move length, the rows of a card with them, what is
+            new fades in
+      101   * and what is gone fades out, the wires are redrawn every fra
+           me, and the card
+      102   * the person last interacted with is held still on screen by 
+           the camera.
+      103 + * After the picture is drawn, the continuing search goes on t
+          +rying seeded                                                  
+      104 + * starts in the page's idle moments and moves the picture to 
+          +a better one.                                                 
+      105   * The layout's dials come from the Local Map's tuning.
+      106   */
+      107  export function renderBranches(controller: LocalViewController
+           , stage: BranchStage): void {
+     ...
+      109    const { state, graphData } = controller.options;
+      110    const tuning = state.tuning.localMap;
+      111    const { root } = stage;
+       82 -  // A move still running ends where it stands: the new pictur
+          -e starts from the frame the page shows.                       
+      112 +  // A move still running ends where it stands, and the search
+          + for the previous picture ends: the new picture starts        
+      113 +  // from the frame the page shows and searches anew.         
+      114 +  stopSearch(stage);                                          
+      115    endMove(stage, false);
+      116    const previous = stage.pose;
+      117    const scale = controller.runtime.mapTransform.k || 1;
+     ...
+      155      stage.wrappers.delete(id);
+      156      leaving.push(wrapper);
+      157    }
+      126 -  const cards = [...stage.wrappers.values()].map(wrapper => wr
+          -apper.firstElementChild as HTMLElement);                      
+      127 -  dressCards(controller, cards, exploration);                 
+      128 -  // The drawn directories' labels, once each, by directory: m
+          -easured at the width the scene gives, hosted by the chosen sce
+          -ne's sections after.                                          
+      129 -  const labelFor = (directory: string): HTMLElement => {      
+      130 -    let label = stage.labels.get(directory);                  
+      131 -    if (!label) {                                             
+      132 -      label = document.createElement("div");                  
+      133 -      label.className = "local-directory-label";              
+      134 -      label.textContent = directory;                          
+      135 -      root.append(label);                                     
+      136 -      stage.labels.set(directory, label);                     
+      137 -    }                                                         
+      138 -    return label;                                             
+      158 +  dressCards(controller, cardsOf(stage), exploration);        
+      159 +                                                              
+      160 +  // The starts, each ordered, its rows stood on the cards, pl
+          +anned, measured on the page and placed; the cheapest          
+      161 +  // picture is kept. The page's answers that no start changes
+          + are kept for the search.                                     
+      162 +  const answers: PageAnswers = { natural: new Map(), heights: 
+          +new Map(), labelHeights: new Map() };                         
+      163 +  const ranked = exploration.ranking.columns.map(column => col
+          +umn.map(node => node.id));                                    
+      164 +  const starts = candidateStarts(tuning.orderStarts, tuning.or
+          +derSeed, controller.previousTops, ranked);                    
+      165 +  const costs: StartCosts = { crossing: tuning.crossingCost, h
+          +eight: tuning.heightCost, churn: tuning.churnCost };          
+      166 +  const { chosen, outcomes } = layoutStarts(starts, start => {
+      167 +    const branches = orderExploration(exploration, { sweeps: t
+          +uning.orderSweeps, ...startOrder(start) });                   
+      168 +    orderRows(cardsOf(stage), branches.rows);                 
+      169 +    const plan = planBranches(branches, sceneTuning.bandPaddin
+          +g);                                                           
+      170 +    return { branches, scene: layoutScene(plan, branches, page
+          +Measurer(controller, stage, plan, scale, answers), sceneTuning
+          +) };                                                          
+      171 +  }, costs, controller.previousTops);                         
+      172 +  const { branches, scene } = chosen;                         
+      173 +  if (outcomes[outcomes.length - 1] !== chosen) orderRows(card
+          +sOf(stage), branches.rows);                                   
+      174 +  controller.branches = branches;                             
+      175 +  controller.currentSubgraph = branches.subgraph;             
+      176 +  controller.previousTops = scene.tops;                       
+      177 +  root.dataset.placementCost = String(scene.placement.cost);  
+      178 +  root.dataset.placementOptimal = String(scene.placement.optim
+          +al);                                                          
+      179 +  root.dataset.orderStart = startName(chosen.start);          
+      180 +  root.dataset.orderStarts = String(outcomes.length);         
+      181 +  root.dataset.orderScore = String(chosen.score);             
+      182 +  root.dataset.layoutMs = String(Math.round(performance.now() 
+          +- started));                                                  
+      183 +                                                              
+      184 +  const reduced = typeof matchMedia === "function" && matchMed
+          +ia("(prefers-reduced-motion: reduce)").matches;               
+      185 +  const moveMs = reduced ? 0 : Math.max(0, tuning.moveMs);    
+      186 +  showScene(controller, stage, scene, sceneTuning, previous ? 
+          +moveMs : 0, leaving, entering, oldRows);                      
+      187 +                                                              
+      188 +  // The search over the seeds the first paint did not try, pr
+          +iced from the page's answers and each card's rows as they     
+      189 +  // now stand; a forced seed, the lab's lever, searches nothi
+          +ng.                                                           
+      190 +  const from = tuning.orderSeed !== null ? 1 : Math.max(0, Mat
+          +h.floor(tuning.orderStarts)) + 1;                             
+      191 +  const to = tuning.orderSeed !== null ? 0 : from - 1 + Math.m
+          +ax(0, Math.floor(tuning.searchStarts));                       
+      192 +  const search: Search = {                                    
+      193 +    state: beginSearch({ from, to, patience: Math.floor(tuning
+          +.searchPatience) }, scoreOf(chosen.signals, { ...costs, churn:
+          + 0 })),                                                       
+      194 +    exploration, sceneTuning, sweeps: tuning.orderSweeps, cost
+          +s, moveMs, answers, rows: rowsOf(stage, scale), handle: 0,    
+      195 +    resume: () => scheduleSearch(controller, stage)           
+      196    };
+      197 +  stage.search = search;                                      
+      198 +  writeSearch(stage);                                         
+      199 +  if (!stage.move) scheduleSearch(controller, stage);         
+      200 +}                                                             
+      201  
+      141 -  // The page as the scene's measurer. Widths first, every car
+          -d at its own, no wider than the cap; then heights at the      
+      142 -  // widths the columns give, since a card's rows of test name
+          -s wrap at its column's width where its own did not, and a     
+      143 -  // label wraps to nothing in a box not yet given a width; an
+          -d every pin's height on its card, in the rows of this start.  
+      144 -  const measurerFor = (plan: ScenePlan): SceneMeasurer => ({  
+      202 +/** The outline's stroke, which the scene counts in a membrane
+          +'s inset. */                                                  
+      203 +export { BAND_BORDER };                                       
+      204 +                                                              
+      205 +/** Every card the stage shows, inside its wrapper. */        
+      206 +const cardsOf = (stage: BranchStage): HTMLElement[] => [...sta
+          +ge.wrappers.values()].map(wrapper => wrapper.firstElementChild
+          + as HTMLElement);                                             
+      207 +                                                              
+      208 +/** The drawn directory's label, made when first asked for, in
+          + the root until a section hosts it. */                        
+      209 +function labelFor(stage: BranchStage, directory: string): HTML
+          +Element {                                                     
+      210 +  let label = stage.labels.get(directory);                    
+      211 +  if (!label) {                                               
+      212 +    label = document.createElement("div");                    
+      213 +    label.className = "local-directory-label";                
+      214 +    label.textContent = directory;                            
+      215 +    stage.root.append(label);                                 
+      216 +    stage.labels.set(directory, label);                       
+      217 +  }                                                           
+      218 +  return label;                                               
+      219 +}                                                             
+      220 +                                                              
+      221 +/**                                                           
+      222 + * The page as the scene's measurer. Widths first, every card 
+          +at its own, no                                                
+      223 + * wider than the cap; then heights at the widths the columns 
+          +give, since a                                                 
+      224 + * card's rows of test names wrap at its column's width where 
+          +its own did                                                   
+      225 + * not, and a label wraps to nothing in a box not yet given a 
+          +width; and                                                    
+      226 + * every pin's height on its card, in the rows as they stand. 
+          +What no start                                                 
+      227 + * changes is written into `answers` for the search.          
+      228 + */                                                           
+      229 +function pageMeasurer(controller: LocalViewController, stage: 
+          +BranchStage, plan: ScenePlan, scale: number, answers: PageAnsw
+          +ers): SceneMeasurer {                                         
+      230 +  return {                                                    
+      231      widths(cardMaxWidth) {
+      232        for (const wrapper of stage.wrappers.values()) Object.as
+           sign(wrapper.style, { width: "max-content", maxWidth: cardMaxW
+           idth === null ? "" : `${cardMaxWidth}px` });
+      233        const widths = new Map<string, number>();
+      234        for (const [id, wrapper] of stage.wrappers) widths.set(i
+           d, wrapper.offsetWidth);
+      235 +      answers.natural = widths;                               
+      236        return widths;
+      237      },
+      238      measure(cardWidths, labelWidths) {
+      239        const boxes = new Map(plan.boxes.map(box => [box.key, bo
+           x]));
+      240        for (const [id, width] of cardWidths) { const wrapper = 
+           stage.wrappers.get(id); if (wrapper) wrapper.style.width = `${
+           width}px`; }
+      154 -      for (const [key, width] of labelWidths) { const box = bo
+          -xes.get(key)!; Object.assign(labelFor(box.directory).style, { 
+          -left: `${box.inset}px`, width: `${width}px` }); }             
+      241 +      for (const [key, width] of labelWidths) { const box = bo
+          +xes.get(key)!; Object.assign(labelFor(stage, box.directory).st
+          +yle, { left: `${box.inset}px`, width: `${width}px` }); }      
+      242        const heights = new Map<string, number>();
+      243        for (const [id, wrapper] of stage.wrappers) heights.set(
+           id, wrapper.offsetHeight);
+      244        const labelHeights = new Map<string, number>();
+      158 -      for (const key of labelWidths.keys()) labelHeights.set(k
+          -ey, labelFor(boxes.get(key)!.directory).offsetHeight);        
+      245 +      for (const key of labelWidths.keys()) {                 
+      246 +        const directory = boxes.get(key)!.directory;          
+      247 +        const height = labelFor(stage, directory).offsetHeight
+          +;                                                             
+      248 +        labelHeights.set(key, height);                        
+      249 +        answers.labelHeights.set(directory, height);          
+      250 +      }                                                       
+      251 +      answers.heights = heights;                              
+      252        const pin = (id: string, direction: "inbound" | "outboun
+           d", symbol: string | undefined): number | null => {
+      253          const anchor = controller.getAnchor(id, "center", dire
+           ction, symbol);
+      254          const card = stage.wrappers.get(id);
+     ...
+      261        };
+      262        return { heights, pin, labelHeights };
+      263      }
+      171 -  });                                                         
+      264 +  };                                                          
+      265 +}                                                             
+      266  
+      173 -  // The starts, each ordered, its rows stood on the cards, pl
+          -anned, measured and placed; the cheapest picture is kept.     
+      174 -  const ranked = exploration.ranking.columns.map(column => col
+          -umn.map(node => node.id));                                    
+      175 -  const starts = candidateStarts(tuning.orderStarts, tuning.or
+          -derSeed, controller.previousTops, ranked);                    
+      176 -  const costs = { crossing: tuning.crossingCost, height: tunin
+          -g.heightCost, churn: tuning.churnCost };                      
+      177 -  const { chosen, outcomes } = layoutStarts(starts, start => {
+      178 -    const branches = orderExploration(exploration, { sweeps: t
+          -uning.orderSweeps, ...startOrder(start) });                   
+      179 -    orderRows(cards, branches.rows);                          
+      180 -    const plan = planBranches(branches, sceneTuning.bandPaddin
+          -g);                                                           
+      181 -    return { branches, scene: layoutScene(plan, branches, meas
+          -urerFor(plan), sceneTuning) };                                
+      182 -  }, costs, controller.previousTops);                         
+      183 -  const { branches, scene } = chosen;                         
+      184 -  if (outcomes[outcomes.length - 1] !== chosen) orderRows(card
+          -s, branches.rows);                                            
+      185 -  controller.branches = branches;                             
+      186 -  controller.currentSubgraph = branches.subgraph;             
+      187 -  controller.previousTops = scene.tops;                       
+      188 -  root.dataset.placementCost = String(scene.placement.cost);  
+      189 -  root.dataset.placementOptimal = String(scene.placement.optim
+          -al);                                                          
+      190 -  root.dataset.orderStart = startName(chosen.start);          
+      191 -  root.dataset.orderStarts = String(outcomes.length);         
+      192 -  root.dataset.orderScore = String(chosen.score);             
+      193 -  root.dataset.layoutMs = String(Math.round(performance.now() 
+          -- started));                                                  
+      267 +/**                                                           
+      268 + * The page's answers as the scene's measurer, with every pin 
+          +arithmetic from                                               
+      269 + * the card's rows as measured once, so that the search prices
+          + a start                                                      
+      270 + * without the page's layout.                                 
+      271 + */                                                           
+      272 +function answersMeasurer(search: Search, plan: ScenePlan, bran
+          +ches: BranchGraph): SceneMeasurer {                           
+      273 +  const boxes = new Map(plan.boxes.map(box => [box.key, box]))
+          +;                                                             
+      274 +  return {                                                    
+      275 +    widths: () => search.answers.natural,                     
+      276 +    measure: (_cardWidths, labelWidths) => ({                 
+      277 +      heights: search.answers.heights,                        
+      278 +      labelHeights: new Map([...labelWidths.keys()].map(key =>
+          + [key, search.answers.labelHeights.get(boxes.get(key)!.directo
+          +ry) ?? 0])),                                                  
+      279 +      pin: (id, direction, symbol) => {                       
+      280 +        const card = search.rows.get(id);                     
+      281 +        return card ? pinFor(card, branches.rows.get(id), dire
+          +ction, normalizeSymbolIdentifier(symbol) ?? undefined) : null;
+      282 +      }                                                       
+      283 +    })                                                        
+      284 +  };                                                          
+      285 +}                                                             
+      286  
+      195 -  // The elements of the chosen scene: a section for the root 
+          -and for each directory, a drawn directory's with its          
+      196 -  // outline and label; a spacer for each lane; each kept by i
+          -ts key across renders, created when new. Each sits inside     
+      197 -  // the element of the box that hosts it, the cards' wrappers
+          - inside theirs.                                               
+      287 +/**                                                           
+      288 + * Builds or finds the elements of a scene's boxes, hosts ever
+          +y element inside                                              
+      289 + * the element of the box that holds it, publishes a drawn dir
+          +ectory's segments                                             
+      290 + * and a lane's slots, and shows the scene: at once when `move
+          +Ms` is zero or                                                
+      291 + * no picture was shown, else moved to from the pose the page 
+          +shows.                                                        
+      292 + */                                                           
+      293 +function showScene(controller: LocalViewController, stage: Bra
+          +nchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: numb
+          +er, leavingCards: HTMLElement[], enteringCards: HTMLElement[],
+          + oldRows: Map<string, Map<string, number>> | null): void {    
+      294 +  const { root } = stage;                                     
+      295 +  const previous = stage.pose;                                
+      296 +  const scale = controller.runtime.mapTransform.k || 1;       
+      297 +  const leaving = [...leavingCards];                          
+      298 +  const entering = [...enteringCards];                        
+      299 +  // The elements of the scene: a section for the root and for
+          + each directory, a drawn directory's with its outline         
+      300 +  // and label; a spacer for each lane; each kept by its key a
+          +cross renders, created when new.                              
+      301    const elements = new Map<SceneBox, HTMLElement>();
+      302    const keptBoxes = new Set<string>();
+      303    for (const box of scene.boxes) {
+     ...
+      320            shape.classList.add("local-membrane-shape");
+      321            shape.dataset.directory = box.directory;
+      322            svg.append(shape);
+      220 -          element.append(svg, labelFor(box.directory));       
+      323 +          element.append(svg, labelFor(stage, box.directory));
+      324            stage.shapes.set(key, shape);
+      325            if (previous) entering.push(element);
+      326          }
+     ...
+      350  
+      351    // Every element at its place, at once for the first picture
+           , else moved there from where the previous one stood it.
+      352    const pose = scenePose(scene);
+      250 -  const reduced = typeof matchMedia === "function" && matchMed
+          -ia("(prefers-reduced-motion: reduce)").matches;               
+      251 -  const duration = previous && !reduced ? Math.max(0, tuning.m
+          -oveMs) : 0;                                                   
+      252 -  if (!previous || duration === 0) {                          
+      353 +  if (!previous || moveMs <= 0) {                             
+      354      for (const element of leaving) element.remove();
+      355      applyPose(stage, pose, sceneTuning.bandPadding);
+      356      stage.pose = pose;
+      357      return;
+      358    }
+      359    const rows = oldRows ? rowMotions(stage, oldRows, scale) : [
+           ];
+      259 -  startMove(controller, stage, previous, pose, duration, { to:
+          - pose, bandPadding: sceneTuning.bandPadding, leaving, entering
+          -, rows, frame: 0 });                                          
+      360 +  startMove(controller, stage, previous, pose, moveMs, { to: p
+          +ose, bandPadding: sceneTuning.bandPadding, leaving, entering, 
+          +rows, frame: 0 });                                            
+      361  }
+      362  
+      262 -/** The outline's stroke, which the scene counts in a membrane
+          -'s inset. */                                                  
+      263 -export { BAND_BORDER };                                       
+      264 -                                                              
+      363  /**
+      364   * Sets every element of the stage where the pose stands it, r
+           elative to the
+      365   * element that holds it: a membrane's section with its outlin
+           e and its label
+     ...
+      402   * without, measured headless on 31 cards and 172 wires, 2026-
+           10-07). The
+      403   * stage's pose follows the frames, so a render that interrupt
+           s the move
+      404   * starts from what the page shows. The root says `data-moving
+           ` throughout,
+      307 - * for whoever reads the page.                                
+      405 + * for whoever reads the page, and the search waits for the mo
+          +ve to end.                                                    
+      406   */
+      407  function startMove(controller: LocalViewController, stage: Bra
+           nchStage, from: Pose, to: Pose, duration: number, move: Move):
+            void {
+      408    const { root } = stage;
+     ...
+      427      if (heldElement && heldRect) {
+      428        // Where the card should be: where it was, moved by what
+           ever the camera itself has moved since (a drag, say).
+      429        const camera = controller.mapTransform;
+      332 -      const now = heldElement.getBoundingClientRect();        
+      333 -      const dx = heldRect.left + (camera.x - cameraAtStart.x) 
+          -- now.left;                                                   
+      334 -      const dy = heldRect.top + (camera.y - cameraAtStart.y) -
+          - now.top;                                                     
+      430 +      const rect = heldElement.getBoundingClientRect();       
+      431 +      const dx = heldRect.left + (camera.x - cameraAtStart.x) 
+          +- rect.left;                                                  
+      432 +      const dy = heldRect.top + (camera.y - cameraAtStart.y) -
+          + rect.top;                                                    
+      433        if (dx || dy) {
+      434          controller.mapTransform = { ...camera, x: camera.x + d
+           x, y: camera.y + dy };
+      435          cameraAtStart.x += dx;
+     ...
+      445        controller.drawConnections();
+      446        const hovered = controller.localMapState.getState().hove
+           redSymbol;
+      447        if (hovered) controller.highlightSymbolConnections(hover
+           ed.nodeId, hovered.symbol);
+      448 +      stage.search?.resume();                                 
+      449      }
+      450    };
+      451    move.frame = requestAnimationFrame(step);
+     ...
+      485    return null;
+      486  }
+      487  
+      488 +// ─── The continuing search ─────────────────────────────────
+          +─────────────                                                 
+      489 +                                                              
+      490  /**
+      491 + * Waits for the page's next idle moment and runs the search's
+          + next start in                                                
+      492 + * it, one start a moment, unless the search is over, a move r
+          +uns, or a                                                     
+      493 + * step is already waiting. Without `requestIdleCallback` a sh
+          +ort timer                                                     
+      494 + * stands in.                                                 
+      495 + */                                                           
+      496 +function scheduleSearch(controller: LocalViewController, stage
+          +: BranchStage): void {                                        
+      497 +  const search = stage.search;                                
+      498 +  if (!search || search.state.status !== "running" || stage.mo
+          +ve || search.handle) return;                                  
+      499 +  const run = (): void => {                                   
+      500 +    search.handle = 0;                                        
+      501 +    if (stage.search !== search) return;                      
+      502 +    searchStep(controller, stage, search);                    
+      503 +    scheduleSearch(controller, stage);                        
+      504 +  };                                                          
+      505 +  search.handle = typeof requestIdleCallback === "function" ? 
+          +requestIdleCallback(run, { timeout: 1000 }) : window.setTimeou
+          +t(run, 32);                                                   
+      506 +}                                                             
+      507 +                                                              
+      508 +/** Ends the stage's search, if one runs, and lets any waiting
+          + step go. */                                                  
+      509 +function stopSearch(stage: BranchStage): void {               
+      510 +  const search = stage.search;                                
+      511 +  if (!search) return;                                        
+      512 +  if (search.handle) {                                        
+      513 +    if (typeof cancelIdleCallback === "function") cancelIdleCa
+          +llback(search.handle);                                        
+      514 +    window.clearTimeout(search.handle);                       
+      515 +  }                                                           
+      516 +  stage.search = null;                                        
+      517 +}                                                             
+      518 +                                                              
+      519 +/**                                                           
+      520 + * One start of the search: the next seed ordered, planned and
+          + placed from                                                  
+      521 + * the page's answers, priced with its churn against the shown
+          + picture, and                                                 
+      522 + * adopted when it beats the shown picture's own price; an ado
+          +pted picture is                                               
+      523 + * measured on the page, in the rows it chose, and moved to.  
+      524 + */                                                           
+      525 +function searchStep(controller: LocalViewController, stage: Br
+          +anchStage, search: Search): void {                            
+      526 +  const seed = search.state.next;                             
+      527 +  const branches = orderExploration(search.exploration, { swee
+          +ps: search.sweeps, seed });                                   
+      528 +  const plan = planBranches(branches, search.sceneTuning.bandP
+          +adding);                                                      
+      529 +  const scene = layoutScene(plan, branches, answersMeasurer(se
+          +arch, plan, branches), search.sceneTuning);                   
+      530 +  const columns = branches.columns.map(column => column.map(no
+          +de => node.id));                                              
+      531 +  const signals = { vertical: scene.placement.cost, crossings:
+          + branches.order.crossings, height: scene.pictureHeight, churn:
+          + churnOf(columns, controller.previousTops) };                 
+      532 +  const priced = scoreOf(signals, search.costs);              
+      533 +  const { state, adopt } = judgeStart(search.state, priced, sc
+          +oreOf(signals, { ...search.costs, churn: 0 }));               
+      534 +  search.state = state;                                       
+      535 +  if (adopt) adoptPicture(controller, stage, search, branches,
+          + seed, priced);                                               
+      536 +  writeSearch(stage);                                         
+      537 +}                                                             
+      538 +                                                              
+      539 +/** Shows a picture the search found: its rows stood on the ca
+          +rds, measured on the page, placed, priced exactly and moved to
+          +. */                                                          
+      540 +function adoptPicture(controller: LocalViewController, stage: 
+          +BranchStage, search: Search, branches: BranchGraph, seed: numb
+          +er, priced: number): void {                                   
+      541 +  const { root } = stage;                                     
+      542 +  const scale = controller.runtime.mapTransform.k || 1;       
+      543 +  const oldRows = rowOffsets(stage, scale);                   
+      544 +  orderRows(cardsOf(stage), branches.rows);                   
+      545 +  const plan = planBranches(branches, search.sceneTuning.bandP
+          +adding);                                                      
+      546 +  const scene = layoutScene(plan, branches, pageMeasurer(contr
+          +oller, stage, plan, scale, search.answers), search.sceneTuning
+          +);                                                            
+      547 +  const columns = branches.columns.map(column => column.map(no
+          +de => node.id));                                              
+      548 +  const signals = { vertical: scene.placement.cost, crossings:
+          + branches.order.crossings, height: scene.pictureHeight, churn:
+          + churnOf(columns, controller.previousTops) };                 
+      549 +  search.state = { ...search.state, shown: scoreOf(signals, { 
+          +...search.costs, churn: 0 }) };                               
+      550 +  search.rows = rowsOf(stage, scale);                         
+      551 +  controller.branches = branches;                             
+      552 +  controller.currentSubgraph = branches.subgraph;             
+      553 +  controller.previousTops = scene.tops;                       
+      554 +  root.dataset.placementCost = String(scene.placement.cost);  
+      555 +  root.dataset.placementOptimal = String(scene.placement.optim
+          +al);                                                          
+      556 +  root.dataset.orderStart = `seed ${seed}`;                   
+      557 +  root.dataset.orderScore = String(scoreOf(signals, search.cos
+          +ts));                                                         
+      558 +  root.dataset.searchPriced = String(priced);                 
+      559 +  showScene(controller, stage, scene, search.sceneTuning, sear
+          +ch.moveMs, [], [], oldRows);                                  
+      560 +}                                                             
+      561 +                                                              
+      562 +/** What the search has done, on the root, for whoever reads t
+          +he page: no text announces it. */                             
+      563 +function writeSearch(stage: BranchStage): void {              
+      564 +  const search = stage.search;                                
+      565 +  if (!search) return;                                        
+      566 +  const { state } = search;                                   
+      567 +  stage.root.dataset.searchStatus = state.status;             
+      568 +  stage.root.dataset.searchTried = String(state.tried);       
+      569 +  stage.root.dataset.searchNext = String(state.next);         
+      570 +  stage.root.dataset.searchAdopted = String(state.adopted);   
+      571 +  stage.root.dataset.searchShown = String(state.shown);       
+      572 +}                                                             
+      573 +                                                              
+      574 +// ─── Measuring the cards ───────────────────────────────────
+          +─────────────                                                 
+      575 +                                                              
+      576 +/** A row's name and its place among rows of that name on its 
+          +card, since LinkTarget and linkTarget share one. */           
+      577 +function rowKeys(card: HTMLElement): Array<[HTMLElement, strin
+          +g]> {                                                         
+      578 +  const seen = new Map<string, number>();                     
+      579 +  return [...card.querySelectorAll<HTMLElement>(".symbol-row")
+          +].map(row => {                                                
+      580 +    const name = normalizeSymbolIdentifier(row.dataset.symbol)
+          + ?? "__internals__";                                          
+      581 +    const count = seen.get(name) ?? 0;                        
+      582 +    seen.set(name, count + 1);                                
+      583 +    return [row, `${name}\0${count}`];                        
+      584 +  });                                                         
+      585 +}                                                             
+      586 +                                                              
+      587 +/**                                                           
+      588 + * Each card's rows as they stand, measured once in the pictur
+          +e's pixels:                                                   
+      589 + * the header above the first visible row, the gap between row
+          +s, each                                                       
+      590 + * visible row's height and where its pins stand in it, and wh
+          +ich row is                                                    
+      591 + * Internals. A pin's place for any order of the rows follows 
+          +from these.                                                   
+      592 + */                                                           
+      593 +function rowsOf(stage: BranchStage, scale: number): Map<string
+          +, CardRows> {                                                 
+      594 +  const measured = new Map<string, CardRows>();               
+      595 +  for (const [id, wrapper] of stage.wrappers) {               
+      596 +    const card = wrapper.querySelector<HTMLElement>(".node-car
+          +d");                                                          
+      597 +    if (!card) continue;                                      
+      598 +    const cardTop = card.getBoundingClientRect().top;         
+      599 +    const rows: RowMeasure[] = [];                            
+      600 +    let internals: string | null = null;                      
+      601 +    let header = 0, gap = 6, previousBottom: number | null = n
+          +ull, first = true;                                            
+      602 +    for (const [row, key] of rowKeys(card)) {                 
+      603 +      const children = [...row.children] as HTMLElement[];    
+      604 +      const rects = children.map(child => child.getBoundingCli
+          +entRect()).filter(rect => rect.width || rect.height);         
+      605 +      if (!rects.length) continue;                            
+      606 +      const top = Math.min(...rects.map(rect => rect.top)), bo
+          +ttom = Math.max(...rects.map(rect => rect.bottom));           
+      607 +      if (first) { header = (top - cardTop) / scale; first = f
+          +alse; } else if (previousBottom !== null) gap = (top - previou
+          +sBottom) / scale;                                             
+      608 +      previousBottom = bottom;                                
+      609 +      const centre = (selector: string): number | null => {   
+      610 +        const anchor = row.querySelector<HTMLElement>(selector
+          +);                                                            
+      611 +        const rect = anchor?.getBoundingClientRect();         
+      612 +        return rect && (rect.width || rect.height) ? (rect.top
+          + + rect.height / 2 - top) / scale : null;                     
+      613 +      };                                                      
+      614 +      rows.push({ key, height: (bottom - top) / scale, inbound
+          +: centre(".symbol-anchor.inbound"), outbound: centre(".symbol-
+          +anchor.outbound") });                                         
+      615 +      if (row.classList.contains("internals-row")) internals =
+          + key;                                                         
+      616 +    }                                                         
+      617 +    measured.set(id, { header, gap, rows, internals });       
+      618 +  }                                                           
+      619 +  return measured;                                            
+      620 +}                                                             
+      621 +                                                              
+      622 +/**                                                           
+      623   * Where each visible row of each card stands, from its card's
+            top, in the
+      391 - * picture's pixels, by the row's symbol and its place among r
+          -ows of that                                                   
+      392 - * name (LinkTarget and linkTarget share one). Hidden rows hav
+          -e no place.                                                   
+      624 + * picture's pixels, by the row's key. Hidden rows have no pla
+          +ce.                                                           
+      625   */
+      626  function rowOffsets(stage: BranchStage, scale: number): Map<st
+           ring, Map<string, number>> {
+      627    const offsets = new Map<string, Map<string, number>>();
+     ...
+      629      const card = wrapper.querySelector<HTMLElement>(".node-car
+           d");
+      630      if (!card) continue;
+      631      const cardTop = card.getBoundingClientRect().top;
+      400 -    const seen = new Map<string, number>();                   
+      632      const rows = new Map<string, number>();
+      402 -    card.querySelectorAll<HTMLElement>(".symbol-row").forEach(
+          -row => {                                                      
+      403 -      const name = normalizeSymbolIdentifier(row.dataset.symbo
+          -l) ?? "__internals__";                                        
+      404 -      const count = seen.get(name) ?? 0;                      
+      405 -      seen.set(name, count + 1);                              
+      633 +    for (const [row, key] of rowKeys(card)) {                 
+      634        const rect = row.firstElementChild?.getBoundingClientRec
+           t();
+      407 -      if (!rect || (!rect.width && !rect.height)) return;     
+      408 -      rows.set(`${name}\0${count}`, (rect.top - cardTop) / sca
+          -le);                                                          
+      409 -    });                                                       
+      635 +      if (!rect || (!rect.width && !rect.height)) continue;   
+      636 +      rows.set(key, (rect.top - cardTop) / scale);            
+      637 +    }                                                         
+      638      offsets.set(id, rows);
+      639    }
+      640    return offsets;
+     ...
+      647    for (const [id, wrapper] of stage.wrappers) {
+      648      const was = before.get(id), now = after.get(id);
+      649      if (!was || !now) continue;
+      422 -    const seen = new Map<string, number>();                   
+      423 -    wrapper.querySelectorAll<HTMLElement>(".symbol-row").forEa
+          -ch(row => {                                                   
+      424 -      const name = normalizeSymbolIdentifier(row.dataset.symbo
+          -l) ?? "__internals__";                                        
+      425 -      const count = seen.get(name) ?? 0;                      
+      426 -      seen.set(name, count + 1);                              
+      427 -      const key = `${name}\0${count}`;                        
+      650 +    const card = wrapper.querySelector<HTMLElement>(".node-car
+          +d");                                                          
+      651 +    if (!card) continue;                                      
+      652 +    for (const [row, key] of rowKeys(card)) {                 
+      653        const from = was.get(key), to = now.get(key);
+      429 -      if (from === undefined || to === undefined || Math.abs(f
+          -rom - to) < 0.5) return;                                      
+      654 +      if (from === undefined || to === undefined || Math.abs(f
+          +rom - to) < 0.5) continue;                                    
+      655        for (const child of row.children) motions.push({ element
+           : child as HTMLElement, delta: from - to });
+      431 -    });                                                       
+      656 +    }                                                         
+      657    }
+      658    return motions;
+      659  }
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(tests/e2e/local-map-search.spec.ts)
+  ⎿  Wrote 102 lines to tests/e2e/local-map-search.spec.ts
+       1 import { expect, test, type Page } from "@playwright/test";
+       3 import { localMapSettled, localRetainUrl } from "./still-picture
+         ";
+         ient/persistence/local-storage";
+       6 /**
+       7  * The continuing search: after the first picture is painted, th
+       8  * keeps trying seeded starts in the page's idle moments and mov
+         es the picture
+          costs; it
+         and starts
+     … +138 lines (ctrl+o to expand)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Watch the search on all four deck scopes with the default
+dials" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the search, motion, layout-lab and branches specs"
+completed (exit code 0)
+
+● The search runs as designed on this repository's two scopes. On the estate's
+  it never starts, so something throws after the first paint there; I am reading
+  the page's errors and the one failing spec.
+
+  Searched for 1 pattern, ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Tabulate 32 starts and simulate the search at five churn
+costs on all four scopes" completed (exit code 0)
+
+  Listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● Waiting for the lab to finish tabulating 32 starts per scope and simulating
+  the search across five churn costs (a few minutes for all four runs); once
+  done, I'll write the probe record, read off the churn cost, and move to the
+  gate. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The lab's four runs are still going in the background; their notification will
+  arrive. Nothing else in this step can proceed before them: the probe record
+  and the churn-cost reading come from those tables, and the gate follows the
+  docs.
+
+● Background command "Tabulate 32 starts and simulate the search at five churn
+costs on all four scopes, from the day's captures" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/Probes/2026-10-07/layout-lab.md)
+  ⎿  Wrote 47 lines to AI-Agent-Workspace/Probes/2026-10-07/layout-lab.md
+      1 # The layout lab, October 7: the continuing search
+      2
+      3 _Design instrument, continued. Root agent: Claude Fable 5.1. Run
+        n [Turn 17](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn
+        -17) of the October 6 session, after their questions of [Turn 15]
+        (../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-15) and an
+        swers of [Turn 16](../../ChatHistory/2026/10/2026-10-06.1.record.
+        ging on a best with the picture moved only to a new best, the sea
+        rch continuing after the first picture, stopping "if the diff bet
+        ween last best and most recent best is below some thr
+     … +113 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The reports are regenerating with the corrected final-price column; when that
+  finishes I start the gate, and the commit follows its result.
+
+● Background command "Price the simulation's final pictures at the page's costs,
+then regenerate the four reports" completed (exit code 0)
+
+  Searched for 2 patterns, read 4 files, ran 5 shell commands (ctrl+o to expand)
+
+● The gate has started, but I spotted an import placed out of order in the lab
+  script, which lint would reject. Fixing it, then stopping and restarting the
+  gate.
+
+● Update(scripts/layout-lab/lab.ts)
+  ⎿  Added 1 line, removed 1 line
+      24  import { baselineConfig, driftOf, evaluate, type LabConfig } fr
+          om "./evaluate";
+      25  import { differences, renderMarkdown, toJson, type ReportRow, t
+          ype RunReport } from "./report";
+      26  import { parseCosts, renderRestarts, simulateSearch, tabulateSt
+          arts, trialCosts } from "./restarts";
+      27 -import { getDefaultTuning } from "../../packages/explorer/src/c
+         -lient/persistence/local-storage";                              
+      27  import { findScope, loadBundleGraph, scopeSlug, type ScopeRun }
+           from "./scopes";
+      28  import { configurations, DEFAULT_GRID, oneAtATime, parseGrid, p
+          arseWeights } from "./sweep";
+      29  import { compareTable, verifyConfig } from "./verify";
+      30 +import { getDefaultTuning } from "../../packages/explorer/src/c
+         +lient/persistence/local-storage";                              
+      31  
+      32  interface Args {
+      33    verb: string;
+
+● Stop Task  ⎿  LOG=/tmp/claude-1000/-workspaces-Live-Documentation/76d2de05-aa3f-4c47
+     -b1db-fa9555e124bb/scratchpad/motion/gate2.log && (npm run safe:commit
+     -- --e2e > "$LOG" 2… · stopped
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate is running again with the import fixed. Drafting the commit message
+  while it runs; the commit itself waits on its exit 0.
+
+  Made 1 scratchpad edit +39 (ctrl+o to expand)
+
+● The commit message is drafted. What remains depends only on the gate's
+  verdict: the capture's final hash for the inventory, the commit, the record's
+  closing note, and the reply. The gate's notification will arrive; nothing else
+  can be requested until then.
+
+● Background command "Run the full pre-commit gate with Playwright for the
+continuing search" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Step 5 is built, gated and committed as d97d47ed. The search now runs after
+  every picture, and the picture moves when it finds better.
+
+  What the search does
+
+  After the first picture is painted from the starts the order step already
+  tried, the page keeps going in its idle moments: one more seeded start each,
+  from the seed after the last one tried, up to a cap. Each start is priced
+  without touching the page. The first paint's measurer already knew every
+  card's width and height and every label's height, and each card's rows are
+  measured once at the chosen order, so a pin's place for any other order is
+  arithmetic. A start is adopted only when its price plus the churn it would
+  cost against the shown picture is below the shown picture's own price, which
+  is your "only update on a new best" with the churn cost as the threshold. An
+  adopted picture is measured on the page, placed exactly and moved to through
+  the same move as any other change, holding the card you last acted on. The
+  search settles after eight unadopted starts in a row, stops at a cap of
+  thirty-two, and starts afresh whenever the picture changes, which is your
+  "until the map is marked dirty." Nothing announces it in text. The picture's
+  root carries what the search has tried, priced and adopted, which the tests
+  and I read.
+
+  Three new dials in Tuning: Order Starts, the count before paint, which you
+  asked to be configurable; Search Starts, the cap, zero turning the search off;
+  Search Patience.
+
+  What it found
+
+  Watched on the four scopes with the default dials:
+
+  ┌────────────────┬─────────────┬─────────────────────┬─────────┬──────────┐
+  │     Scope      │ First paint │  The search's move  │ Found   │ Settled  │
+  │                │             │                     │  after  │  after   │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │ This           │             │ seed 6, vertical    │      2  │          │
+  │ repository,    │ seed 1      │ wire down 8%        │  starts │       10 │
+  │ five files     │             │                     │         │          │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │ This           │ the         │ seed 5, vertical    │         │          │
+  │ repository,    │ ranking's   │ wire down 28%       │ 1 start │        9 │
+  │ the chain      │ order       │                     │         │          │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │ The estate,    │ seed 1      │ none                │         │        8 │
+  │ five files     │             │                     │         │          │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │                │ the         │ seed 8, the start   │         │          │
+  │ The estate,    │ ranking's   │ the October 6 table │      4  │       12 │
+  │ the chain      │ order       │  found beyond the   │  starts │          │
+  │                │             │ page's four         │         │          │
+  └────────────────┴─────────────┴─────────────────────┴─────────┴──────────┘
+
+  Each scope's search makes at most one move, then eight starts better nothing
+  and it rests. Your "most of the gain comes early" holds here too. A start
+  costs the page 15 to 120 ms of idle time, so the whole thing is over in one to
+  two seconds. The chain's result is the striking one: on today's grown graph
+  the four starts before paint found a poor picture, and the first idle start
+  fixed it.
+
+  The churn cost, permuted
+
+  The lab's restarts tabulation now simulates the same search over 32 starts at
+  churn costs of 0, 50, 100, 200 and 400, with the page's own judge. At the
+  page's 100 it reproduces every scope's run exactly, the same adoptions after
+  the same counts. Only one move anywhere depends on the cost: the five-file
+  move gains 13,495 px of wire for 92 swapped pairs, 147 px a pair, so it is
+  made at 100 and refused at 200. The chain's and the estate's moves pay at
+  every cost tried. So 100 stands, and the question it leaves is yours: whether
+  a move worth 147 px of wire per swapped pair is worth the eye's disturbance.
+  The tables are in the day's probe record
+  (AI-Agent-Workspace/Probes/2026-10-07/layout-lab.md).
+
+  Where it lives
+
+  A new pure module, branch-search.ts, holds the judge and the rows' arithmetic.
+  The branch renderer gained the idle-time scheduler, the arithmetic measurer
+  and the adoption path, which shares the move with a render. The lab's restarts
+  verb gained the simulation. The lab's capture and verify, and the whole
+  Playwright suite, run with the search off so that what they read is the first
+  paint, which the lab still reproduces to the pixel; the search has its own
+  spec of three tests. Gate: 1,030 unit, 50 integration, no broken links, 109
+  Playwright.
+
+  Open, for your eye and your call
+
+  - The search in the page itself, on your machine, with moves at the default
+    450 ms.
+  - Whether the first paint should try fewer starts now that the search follows
+    it, for a faster first picture.
+  - Your wider permutation: the ranking's tie rule and pull and the sweep count
+    as further dimensions of a start. The four scopes' tables can begin to say
+    whether the best dials differ by scope.
+  - The churn cost as a slider, and the crossing-and-height tabulation rerun on
+    the grown graph, where the chain's full score now prefers a different seed
+    than the page's cheap price does.
+
+● Step 5 is built, gated and committed as d97d47ed. The search now runs after
+  every picture, and the picture moves when it finds better.
+
+  What the search does
+
+  After the first picture is painted from the starts the order step already
+  tried, the page keeps going in its idle moments: one more seeded start each,
+  from the seed after the last one tried, up to a cap. Each start is priced
+  without touching the page. The first paint's measurer already knew every
+  card's width and height and every label's height, and each card's rows are
+  measured once at the chosen order, so a pin's place for any other order is
+  arithmetic. A start is adopted only when its price plus the churn it would
+  cost against the shown picture is below the shown picture's own price, which
+  is your "only update on a new best" with the churn cost as the threshold. An
+  adopted picture is measured on the page, placed exactly and moved to through
+  the same move as any other change, holding the card you last acted on. The
+  search settles after eight unadopted starts in a row, stops at a cap of
+  thirty-two, and starts afresh whenever the picture changes, which is your
+  "until the map is marked dirty." Nothing announces it in text. The picture's
+  root carries what the search has tried, priced and adopted, which the tests
+  and I read.
+
+  Three new dials in Tuning: Order Starts, the count before paint, which you
+  asked to be configurable; Search Starts, the cap, zero turning the search off;
+  Search Patience.
+
+  What it found
+
+  Watched on the four scopes with the default dials:
+
+  ┌────────────────┬─────────────┬─────────────────────┬─────────┬──────────┐
+  │     Scope      │ First paint │  The search's move  │ Found   │ Settled  │
+  │                │             │                     │  after  │  after   │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │ This           │             │ seed 6, vertical    │      2  │          │
+  │ repository,    │ seed 1      │ wire down 8%        │  starts │       10 │
+  │ five files     │             │                     │         │          │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │ This           │ the         │ seed 5, vertical    │         │          │
+  │ repository,    │ ranking's   │ wire down 28%       │ 1 start │        9 │
+  │ the chain      │ order       │                     │         │          │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │ The estate,    │ seed 1      │ none                │         │        8 │
+  │ five files     │             │                     │         │          │
+  ├────────────────┼─────────────┼─────────────────────┼─────────┼──────────┤
+  │                │ the         │ seed 8, the start   │         │          │
+  │ The estate,    │ ranking's   │ the October 6 table │      4  │       12 │
+  │ the chain      │ order       │  found beyond the   │  starts │          │
+  │                │             │ page's four         │         │          │
+  └────────────────┴─────────────┴─────────────────────┴─────────┴──────────┘
+
+  Each scope's search makes at most one move, then eight starts better nothing
+  and it rests. Your "most of the gain comes early" holds here too. A start
+  costs the page 15 to 120 ms of idle time, so the whole thing is over in one to
+  two seconds. The chain's result is the striking one: on today's grown graph
+  the four starts before paint found a poor picture, and the first idle start
+  fixed it.
+
+  The churn cost, permuted
+
+  The lab's restarts tabulation now simulates the same search over 32 starts at
+  churn costs of 0, 50, 100, 200 and 400, with the page's own judge. At the
+  page's 100 it reproduces every scope's run exactly, the same adoptions after
+  the same counts. Only one move anywhere depends on the cost: the five-file
+  move gains 13,495 px of wire for 92 swapped pairs, 147 px a pair, so it is
+  made at 100 and refused at 200. The chain's and the estate's moves pay at
+  every cost tried. So 100 stands, and the question it leaves is yours: whether
+  a move worth 147 px of wire per swapped pair is worth the eye's disturbance.
+  The tables are in the day's probe record
+  (AI-Agent-Workspace/Probes/2026-10-07/layout-lab.md).
+
+  Where it lives
+
+  A new pure module, branch-search.ts, holds the judge and the rows' arithmetic.
+  The branch renderer gained the idle-time scheduler, the arithmetic measurer
+  and the adoption path, which shares the move with a render. The lab's restarts
+  verb gained the simulation. The lab's capture and verify, and the whole
+  Playwright suite, run with the search off so that what they read is the first
+  paint, which the lab still reproduces to the pixel; the search has its own
+  spec of three tests. Gate: 1,030 unit, 50 integration, no broken links, 109
+  Playwright.
+
+  Open, for your eye and your call
+
+  - The search in the page itself, on your machine, with moves at the default
+    450 ms.
+  - Whether the first paint should try fewer starts now that the search follows
+    it, for a faster first picture.
+  - Your wider permutation: the ranking's tie rule and pull and the sweep count
+    as further dimensions of a start. The four scopes' tables can begin to say
+    whether the best dials differ by scope.
+  - The churn cost as a slider, and the crossing-and-height tabulation rerun on
+    the grown graph, where the chain's full score now prefers a different seed
+    than the page's cheap price does.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/76d2de05-aa3f-4c4
+     7-b1db-fa9555e124bb/scratchpad/motion/commit2.txt (39 lines)
+  ⎿  Read scripts/layout-lab/lab.ts (180 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/76d2de05-aa3f-4c4
+     7-b1db-fa9555e124bb/scratchpad/motion/lab-search2.log (10 lines)
+  ⎿  Read AI-Agent-Workspace/Probes/2026-10-07/layout-lab/repository-five-files-
+     search.md (89 lines)
+  ⎿  Read AI-Agent-Workspace/Probes/2026-10-07/layout-lab.md (48 lines)

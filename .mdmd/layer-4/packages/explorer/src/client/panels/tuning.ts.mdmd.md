@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-07T13:20:46.967Z
+- Generated At: 2026-10-07T14:15:46.098Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 - The laces' dials (2026-10-06: Lace Reach, Lace Curl, Lace Width, beside the taper; a Lace Inset dial of the same day was retired on 2026-10-07, when the laces became cut by the card's edge) change a drawing, not the layout, so each redraws the Local Map's wires as it moves through `wireSlider`; the owner asked for the self-references' shape to be tuned by eye in the panel until it is distinct from a connector wire and reads as a wire pulled taut ([Turn 13](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)).
 - The Move slider and the Hold Still select (2026-10-07) set `moveMs` and `holdStill` and persist them; neither redraws anything, since both take effect at the next change of picture. As with every slider, syncing the panel from state writes the slider's value back, so a stored `moveMs` beyond the slider's 1,200 ms comes back as 1,200.
 - The Order Starts, Search Starts and Search Patience sliders (2026-10-07) each re-render the view, since they change which picture is drawn and searched.
+- The Churn Cost slider (2026-10-07, later in the day) sets `churnCost` and re-renders the view like the search's other dials, so the owner can price a swapped pair at nothing and watch; Order Starts' default fell to 2 the same day.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -58,6 +59,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-hold-still`](../../shared/template.html.mdmd.md#symbol-tuning-hold-still)
 - [`template.tuning-hover-dim-connections`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-connections)

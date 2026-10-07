@@ -4,11 +4,15 @@
  * starts one at a time in the page's idle moments, from the seed after the
  * last one tried, and the picture moves to a start only when its price plus
  * the churn it would cost against the shown picture is below the shown
- * picture's own price. The search stops after a run of starts without an
- * adoption, or at a cap, and begins again whenever the picture is drawn
- * anew (the owner's plan and stopping rule, 2026-10-07). The starts are a
- * fixed sequence, so the picture after any number of them is the same on
- * every machine; only the moments they arrive differ.
+ * picture's own price. The search stops after a run of starts none of which
+ * betters the best picture found, churn aside, or at a cap, and begins again
+ * whenever the picture is drawn anew (the owner's plan and stopping rule,
+ * 2026-10-07). A better picture refused for its churn still counts as found,
+ * so the search is not cut short by the refusal; the owner's suspicion that
+ * the search approaches the best picture whatever the churn cost rests on
+ * this (2026-10-07). The starts are a fixed sequence, so the picture after
+ * any number of them is the same on every machine; only the moments they
+ * arrive differ.
  *
  * The search prices a start without the page: each card's rows are measured
  * once, at the widths the columns give, and a pin's place for any order of
@@ -27,7 +31,7 @@ export interface SearchSettings {
   from: number;
   /** The last seed to try. */
   to: number;
-  /** How many starts in a row may fail to be adopted before the search settles. */
+  /** How many starts in a row may fail to better the best picture found, churn aside, before the search settles. */
   patience: number;
 }
 
@@ -38,12 +42,14 @@ export interface SearchState {
   next: number;
   /** Seeds tried since the search began. */
   tried: number;
-  /** Seeds tried since the last adoption, or since the beginning. */
-  sinceAdoption: number;
+  /** Seeds tried since a start last bettered the best price found, or since the beginning. */
+  sinceBetter: number;
   /** Pictures adopted so far. */
   adopted: number;
   /** The shown picture's own price, churn aside: what a start must beat with its churn counted. */
   shown: number;
+  /** The best price found so far, churn aside, adopted or not: the shown picture's own until a start betters it. */
+  best: number;
   /** The last start's price with its churn, or null before any. */
   priced: number | null;
   status: "running" | "settled" | "capped";
@@ -51,26 +57,32 @@ export interface SearchState {
 
 /** A search about to try its first seed; already capped when there is none to try. */
 export function beginSearch(settings: SearchSettings, shown: number): SearchState {
-  const state: SearchState = { settings, next: settings.from, tried: 0, sinceAdoption: 0, adopted: 0, shown, priced: null, status: "running" };
+  const state: SearchState = { settings, next: settings.from, tried: 0, sinceBetter: 0, adopted: 0, shown, best: shown, priced: null, status: "running" };
   return settings.to < settings.from || settings.patience < 1 ? { ...state, status: settings.patience < 1 ? "settled" : "capped" } : state;
 }
 
 /**
  * The next seed tried: the start is adopted when its price with its churn is
  * strictly below the shown picture's own, and the shown price becomes the
- * start's own; else the run without an adoption grows, and the search
- * settles when it reaches the patience. Past the last seed the search is
- * capped. `base` is the start's price without churn, `priced` with it.
+ * start's own. The start betters the best found when its price without
+ * churn is strictly below it, adopted or not; else the run without a better
+ * start grows, and the search settles when it reaches the patience. Past
+ * the last seed the search is capped. `base` is the start's price without
+ * churn, `priced` with it.
  */
 export function judgeStart(state: SearchState, priced: number, base: number): { state: SearchState; adopt: boolean } {
   if (state.status !== "running") return { state, adopt: false };
   const adopt = priced < state.shown;
+  const better = base < state.best;
   const next = state.next + 1;
-  const sinceAdoption = adopt ? 0 : state.sinceAdoption + 1;
-  const status: SearchState["status"] = sinceAdoption >= state.settings.patience ? "settled" : next > state.settings.to ? "capped" : "running";
+  const sinceBetter = better ? 0 : state.sinceBetter + 1;
+  const status: SearchState["status"] = sinceBetter >= state.settings.patience ? "settled" : next > state.settings.to ? "capped" : "running";
   return {
     adopt,
-    state: { ...state, next, tried: state.tried + 1, sinceAdoption, adopted: state.adopted + (adopt ? 1 : 0), shown: adopt ? base : state.shown, priced, status }
+    state: {
+      ...state, next, tried: state.tried + 1, sinceBetter, adopted: state.adopted + (adopt ? 1 : 0),
+      shown: adopt ? base : state.shown, best: better ? base : state.best, priced, status
+    }
   };
 }
 

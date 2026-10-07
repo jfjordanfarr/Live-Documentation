@@ -9,12 +9,15 @@
  *   npm run layout:lab -- capture <bundle/scope> [--out <dir>]
  *   npm run layout:lab -- sweep <bundle/scope> [--capture <file>] [--grid <spec>] [--sample <n>] [--seed <n>] [--weights k=v,...] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- restarts <bundle/scope> [--capture <file>] [--starts <n>] [--costs <spec>] [--churn a,b,c] [--first <n>] [--patience <n>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- widen <bundle/scope> [--capture <file>] [--grid <spec>] [--starts <n>] [--churn <n>] [--first <n>] [--patience <n>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
  *
  * The scopes are the deck's: repository/five, repository/chain, estate/five,
  * estate/chain. The bundles must be built first (`npm run live-docs:visualize`
  * and `:estate`). Reports go under the day's probe folder unless `--out` says
- * otherwise.
+ * otherwise. `widen` tabulates the starts at every setting of the ranking's
+ * pull and tie rule and the order's sweeps (its default grid, or `--grid`)
+ * and reports which start each judge would keep at each.
  */
 import * as fs from "node:fs/promises";
 import path from "node:path";
@@ -23,7 +26,7 @@ import process from "node:process";
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
 import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
 import { differences, renderMarkdown, toJson, type ReportRow, type RunReport } from "./report";
-import { parseCosts, renderRestarts, simulateSearch, tabulateStarts, trialCosts } from "./restarts";
+import { DEFAULT_WIDE_GRID, parseCosts, renderRestarts, renderWide, simulateSearch, tabulateStarts, trialCosts, widenStarts } from "./restarts";
 import { findScope, loadBundleGraph, scopeSlug, type ScopeRun } from "./scopes";
 import { configurations, DEFAULT_GRID, oneAtATime, parseGrid, parseWeights } from "./sweep";
 import { compareTable, verifyConfig } from "./verify";
@@ -65,7 +68,7 @@ async function loadCapture(run: ScopeRun, options: Record<string, string>): Prom
 async function main(): Promise<void> {
   const { verb, scope, options } = parseArgs(process.argv.slice(2));
   if (!verb || !scope) {
-    console.error("Usage: layout-lab <capture|sweep|restarts|verify> <bundle/scope> [options]");
+    console.error("Usage: layout-lab <capture|sweep|restarts|widen|verify> <bundle/scope> [options]");
     process.exit(2);
   }
   const run = findScope(scope);
@@ -157,6 +160,29 @@ async function main(): Promise<void> {
     console.log(agreeing.length ? `The page agrees with the full score at ${agreeing.length} of ${trials.length} cost settings: ${agreeing.map(t => `crossing ${t.costs.crossing}, height ${t.costs.height}`).join("; ")}.` : `The page agrees with the full score at none of the ${trials.length} cost settings.`);
     return;
   }
+  if (verb === "widen") {
+    const capture = await loadCapture(run, options);
+    const graph = await loadBundleGraph(run);
+    const startedAt = new Date().toISOString();
+    const baseline: LabConfig = { ...baselineConfig(), ...(JSON.parse(options.config ?? "{}") as Partial<LabConfig>) };
+    const gridSpec = options.grid ?? DEFAULT_WIDE_GRID;
+    const grid = parseGrid(gridSpec);
+    const seeds = Number(options.starts ?? 16);
+    const weights = parseWeights(options.weights);
+    const defaults = getDefaultTuning().localMap;
+    const judge = { costs: { crossing: baseline.crossingCost, height: baseline.heightCost, churn: 0 }, churn: Number(options.churn ?? defaults.churnCost), first: Number(options.first ?? baseline.orderStarts), patience: Number(options.patience ?? defaults.searchPatience) };
+    const settings = widenStarts(capture, graph, run, baseline, grid, seeds, weights, judge.costs, judge.churn, judge.first, judge.patience, (setting, done, count) => console.log(`  ${done} of ${count}: ${setting}`));
+    const label = options.label ?? "wide";
+    await fs.mkdir(out, { recursive: true });
+    const markdown = path.join(out, `${scopeSlug(run)}-${label}.md`);
+    await fs.writeFile(markdown, renderWide(run, settings, weights, capture, startedAt, gridSpec, judge));
+    await fs.writeFile(path.join(out, `${scopeSlug(run)}-${label}.json`), JSON.stringify({ run: { bundle: run.bundle, scopeName: run.scopeName, subject: run.subject, files: run.scope }, capturedAt: capture.capturedAt, startedAt, baseline, grid: gridSpec, weights, judge, settings: settings.map(s => ({ ...s, search: { ...s.search, first: s.search.first.name, final: s.search.final.name, adoptions: s.search.adoptions.map(a => ({ start: a.row.name, gain: a.gain, pairs: a.pairs, tried: a.tried })) }, cheapest: s.cheapest.name, best: s.best.name })) }));
+    const byEnd = [...settings].sort((a, b) => a.searchScore - b.searchScore);
+    const byBest = [...settings].sort((a, b) => a.bestScore - b.bestScore);
+    console.log(`${settings.length} settings, ${(settings.length * settings[0].rows.length).toLocaleString("en-US")} layouts in ${((Date.now() - Date.parse(startedAt)) / 1000).toFixed(1)} s; report at ${path.relative(process.cwd(), markdown)}.`);
+    console.log(`The baseline's search ends at ${settings[0].search.final.name}, full score ${settings[0].searchScore.toFixed(3)}; the best setting by where the search ends is ${byEnd[0].setting} at ${byEnd[0].search.final.name}, ${byEnd[0].searchScore.toFixed(3)}; by its best start ${byBest[0].setting} at ${byBest[0].best.name}, ${byBest[0].bestScore.toFixed(3)}.`);
+    return;
+  }
   if (verb === "verify") {
     const capture = await loadCapture(run, options);
     const graph = await loadBundleGraph(run);
@@ -169,7 +195,7 @@ async function main(): Promise<void> {
     console.log(compareTable(lab.signals, page));
     return;
   }
-  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts or verify.`);
+  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts, widen or verify.`);
   process.exit(2);
 }
 

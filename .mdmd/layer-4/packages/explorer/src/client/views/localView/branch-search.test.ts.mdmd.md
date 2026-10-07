@@ -12,6 +12,7 @@ Holds the search's judge (adoption strictly below the shown price, the patience,
 
 ### Notes
 - Hand-made rows and prices, so that every number is checkable: a row named twice (LinkTarget and linkTarget share a name), a row with no outbound pin, an Internals row that answers for a symbol with no row.
+- The judge's later tests (2026-10-07): a start priced equal to the shown picture but cheaper without churn is not adopted yet restarts the patience; a better start refused for its churn keeps the search going, and the next better one is adopted on its own account.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -12,14 +12,19 @@
  * page's continuing search over the same starts at each of several churn
  * costs: the first paint, each picture the search would move to, what the
  * move gains and how many pairs of cards it swaps, and where the search stops.
+ * The wider space (`widenStarts`, the owner's ask of 2026-10-07) tabulates the
+ * starts again at every setting of the ranking's pull and tie rule and the
+ * order's sweeps, and says for each setting which start the page's price
+ * keeps, which the full score prefers, and where the page's search would end.
  *
  * @module layout-lab/restarts
  */
 import type { Capture } from "./capture";
 import { evaluate, type LabConfig } from "./evaluate";
+import { differences } from "./report";
 import type { ScopeRun } from "./scopes";
 import type { Signals } from "./signals";
-import { scoreOf as fullScoreOf, type Weights } from "./sweep";
+import { configurations, scoreOf as fullScoreOf, type LeverValues, type Weights } from "./sweep";
 import { churnOf, scoreOf, type StartCosts, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
 import { beginSearch, judgeStart } from "../../packages/explorer/src/client/views/localView/branch-search";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
@@ -160,7 +165,7 @@ export function renderRestarts(run: ScopeRun, rows: readonly StartRow[], trials:
   }
   if (search) {
     lines.push("", "## The search, simulated", "");
-    lines.push(`The page's continuing search over these starts: the first paint is the cheapest of the ranking's order and the first ${search.orderStarts} seeds; each later seed is adopted when its price with its churn against the shown picture beats the shown picture's own; the search settles after ${search.patience} starts without an adoption or caps at the last seed. The gain is in the shown picture's own price, churn aside; the pairs are the cards of one column that swap places.`, "");
+    lines.push(`The page's continuing search over these starts: the first paint is the cheapest of the ranking's order and the first ${search.orderStarts} seeds; each later seed is adopted when its price with its churn against the shown picture beats the shown picture's own; the search settles after ${search.patience} starts none of which betters the best price found, churn aside, or caps at the last seed. The gain is in the shown picture's own price, churn aside; the pairs are the cards of one column that swap places.`, "");
     lines.push(`| Churn cost px/pair | First paint | Moves (seed: gain, pairs swapped, after n starts) | Starts tried | Stopped | Final | Final price at crossing ${search.costs.crossing}, height ${search.costs.height} (vs first) | Final full score |`);
     lines.push("| ---: | --- | --- | ---: | --- | --- | ---: | ---: |");
     for (const trial of search.trials) {
@@ -174,5 +179,105 @@ export function renderRestarts(run: ScopeRun, rows: readonly StartRow[], trials:
   lines.push("- The vertical length is the exact placement's measure, the wires' vertical distances summed; the order's crossings are its own count between adjacent columns, a bundle's shared run counted once; the height is the picture's. The page knows these three the moment a start is placed, and prices a start by the vertical length plus the costs.");
   lines.push("- The churn is the number of pairs of cards in one column that stand the other way round from the ranked start's picture, the signal the page prices against its previous picture.");
   lines.push("- The length, the crossing spots, the foreign samples and the escaping wires are the deck's signals over the routed wires, which the page does not compute; the full score weighs them as the sweeps do.");
+  return lines.join("\n") + "\n";
+}
+
+// ─── The wider space ────────────────────────────────────────────────────
+
+/** The levers of the ranking and the order the wider space walks by default: every pull, tie rule and sweep count the design has stood at or near. */
+export const DEFAULT_WIDE_GRID = "rankingPull=0,1,2,5;rankingTie=fewest,right,left;orderSweeps=2,4,8";
+
+/** One setting of the ranking's and the order's levers: its starts, and the start each judge would keep. */
+export interface WideSetting {
+  config: LabConfig;
+  /** The levers that differ from the page's own setting, as the reports name them, or "baseline". */
+  setting: string;
+  rows: StartRow[];
+  /** The ranked start's full score, against the baseline setting's ranked start as every score here is. */
+  rankedScore: number;
+  /** The start the page's price keeps of all at this setting, and its full score. */
+  cheapest: StartRow;
+  cheapestScore: number;
+  /** The start the full score prefers at this setting, and its score. */
+  best: StartRow;
+  bestScore: number;
+  /** The page's search at this setting, and where it ends by the full score. */
+  search: SearchTrial;
+  searchScore: number;
+  /** The mean time of a start in the lab, in milliseconds. */
+  msPerStart: number;
+}
+
+/**
+ * A setting summarized from its tabulated starts: the start the page's price keeps (the costs, churn aside), the start the
+ * full score prefers against `base` (the baseline setting's ranked start), and the page's search at `churn` from the first
+ * `first` seeds with the patience.
+ */
+export function summarizeSetting(config: LabConfig, setting: string, rows: readonly StartRow[], base: Signals, weights: Weights, costs: StartCosts, churn: number, first: number, patience: number): WideSetting {
+  if (rows.length === 0) throw new Error("No starts to summarize.");
+  const price = (row: StartRow): number => scoreOf(row.cheap, { ...costs, churn: 0 });
+  const full = (row: StartRow): number => fullScoreOf(row.signals, base, weights);
+  const cheapest = rows.reduce((a, b) => (price(b) < price(a) ? b : a));
+  const best = rows.reduce((a, b) => (full(b) < full(a) ? b : a));
+  const [search] = simulateSearch(rows, costs, [churn], first, patience);
+  return {
+    config, setting, rows: [...rows], rankedScore: full(rows[0]), cheapest, cheapestScore: full(cheapest), best, bestScore: full(best),
+    search, searchScore: full(search.final), msPerStart: rows.reduce((sum, row) => sum + row.ms, 0) / rows.length
+  };
+}
+
+/**
+ * Every setting of the grid, the baseline first, with its starts tabulated and summarized; every full score is against
+ * the baseline setting's ranked start, so the settings compare. `progress` hears each setting as it is done.
+ */
+export function widenStarts(
+  capture: Capture, graph: ExplorerGraphPayload, run: ScopeRun, baseline: LabConfig, grid: readonly LeverValues[], seeds: number,
+  weights: Weights, costs: StartCosts, churn: number, first: number, patience: number,
+  progress?: (setting: string, done: number, count: number) => void
+): WideSetting[] {
+  const configs = configurations(baseline, grid, Number.POSITIVE_INFINITY, 0);
+  const settings: WideSetting[] = [];
+  let base: Signals | null = null;
+  configs.forEach((config, index) => {
+    const setting = differences(config, baseline);
+    const rows = tabulateStarts(capture, graph, run, config, seeds);
+    base ??= rows[0].signals;
+    settings.push(summarizeSetting(config, setting, rows, base, weights, costs, churn, first, patience));
+    progress?.(setting, index + 1, configs.length);
+  });
+  return settings;
+}
+
+/** The wider space as a person reads it: every setting on one line, then the settings ranked three ways. */
+export function renderWide(run: ScopeRun, settings: readonly WideSetting[], weights: Weights, capture: Capture, startedAt: string, grid: string, judge: { costs: StartCosts; churn: number; first: number; patience: number }): string {
+  if (settings.length === 0) throw new Error("No settings to render.");
+  const starts = settings[0].rows.length;
+  const lines: string[] = [];
+  const startCells = (row: StartRow, score: number): string => `${row.name} | ${score.toFixed(3)} | ${n(row.signals.lengthPx)} | ${row.signals.crossings.spots} | ${row.signals.foreignSamples} | ${row.signals.escapingWires}`;
+  lines.push(`# Layout lab, the wider space: ${run.bundle}, ${run.scopeName}`, "");
+  lines.push(`_Run ${startedAt}, over a capture of ${capture.capturedAt} (${capture.userAgent.replace(/^.*?(Chrome\/[\d.]+).*$/u, "$1")}). ${settings.length} settings of the grid \`${grid}\`, each with ${starts} starts laid out alone (the ranking's order and the seeds 1 to ${starts - 1}), ${(settings.length * starts).toLocaleString("en-US")} layouts in all. Full-score weights: ${Object.entries(weights).map(([k, v]) => `${k} ${v}`).join(", ")}; the baseline setting's ranked start scores ${Object.values(weights).reduce((a, b) => a + (b ?? 0), 0).toFixed(3)} by definition, and every start of every setting is scored against it. The page's price is the vertical length plus ${judge.costs.crossing} px a crossing and ${judge.costs.height} px a pixel of height; the search is simulated at ${judge.churn} px a swapped pair from a first paint of the ranking's order and the first ${judge.first} seeds, with a patience of ${judge.patience}._`, "");
+  lines.push("## Every setting", "");
+  lines.push("For each setting: what a start costs the lab, the ranked start's full score, the start the page's price keeps and its full score, the start the full score prefers with the deck's signals of its picture, and the page's search from its first paint to where it ends.", "");
+  lines.push("| Setting | ms / start | Ranked: full | Page's price keeps | Its full | Full score prefers | Its full | Length px | Spots | Foreign | Escaping | Search: first paint | Moves | Final | Its full |");
+  lines.push("| --- | ---: | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | ---: |");
+  for (const s of settings) {
+    const moves = s.search.adoptions.length ? s.search.adoptions.map(a => `${a.row.name} after ${a.tried}`).join("; ") : "none";
+    lines.push(`| ${s.setting} | ${s.msPerStart.toFixed(0)} | ${s.rankedScore.toFixed(3)} | ${s.cheapest.name} | ${s.cheapestScore.toFixed(3)} | ${startCells(s.best, s.bestScore)} | ${s.search.first.name} | ${moves} | ${s.search.final.name} | ${s.searchScore.toFixed(3)} |`);
+  }
+  const ranked = (title: string, intro: string, pick: (s: WideSetting) => { row: StartRow; score: number }, count = 10): void => {
+    lines.push("", `## ${title}`, "", intro, "");
+    lines.push("| Rank | Setting | Start | Full score | Length px | Spots | Foreign | Escaping |");
+    lines.push("| ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |");
+    [...settings].map(s => ({ s, ...pick(s) })).sort((a, b) => a.score - b.score).slice(0, count).forEach((entry, index) => {
+      lines.push(`| ${index + 1} | ${entry.s.setting} | ${startCells(entry.row, entry.score)} |`);
+    });
+  };
+  ranked("The settings by where the search ends", "What the page would show at each setting once its search has settled, by the full score; the baseline is what it shows today.", s => ({ row: s.search.final, score: s.searchScore }));
+  ranked("The settings by their best start", "What each setting can reach by the full score, whichever start gets there; a setting high here and low above has a best start the page's price does not pick.", s => ({ row: s.best, score: s.bestScore }));
+  ranked("The settings by the page's price", "The start the page's price keeps at each setting, by the full score; where this and the first table differ, the search's churn or patience stopped short of the price's pick.", s => ({ row: s.cheapest, score: s.cheapestScore }));
+  lines.push("", "## What the numbers are", "");
+  lines.push("- A setting is the ranking's pull and tie rule and the order's sweep count; the spacing stays at the page's values. Every start of every setting is laid out alone and scored by the full weighted score against the baseline setting's ranked start, so the scores compare across settings.");
+  lines.push("- The page's price is what the page knows the moment a start is placed: the vertical wire length plus the costs of the order's own crossings and the picture's height. The full score reads the routed wires the page never draws for a start: the length, the crossing spots, the samples over foreign membranes, the escaping wires, the picture's height and the backward wires.");
+  lines.push("- The search is the page's own judge over the setting's starts in seed order, as the restarts report simulates it.");
   return lines.join("\n") + "\n";
 }

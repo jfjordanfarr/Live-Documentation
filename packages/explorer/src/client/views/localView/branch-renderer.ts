@@ -546,7 +546,9 @@ function adoptPicture(controller: LocalViewController, stage: BranchStage, searc
   const scene = layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, search.answers), search.sceneTuning);
   const columns = branches.columns.map(column => column.map(node => node.id));
   const signals = { vertical: scene.placement.cost, crossings: branches.order.crossings, height: scene.pictureHeight, churn: churnOf(columns, controller.previousTops) };
-  search.state = { ...search.state, shown: scoreOf(signals, { ...search.costs, churn: 0 }) };
+  // The shown price is the page's own measurement of the adopted picture, and so is the best found, unless an earlier start priced lower.
+  const measured = scoreOf(signals, { ...search.costs, churn: 0 });
+  search.state = { ...search.state, shown: measured, best: Math.min(search.state.best, measured) };
   search.rows = rowsOf(stage, scale);
   controller.branches = branches;
   controller.currentSubgraph = branches.subgraph;
@@ -569,6 +571,7 @@ function writeSearch(stage: BranchStage): void {
   stage.root.dataset.searchNext = String(state.next);
   stage.root.dataset.searchAdopted = String(state.adopted);
   stage.root.dataset.searchShown = String(state.shown);
+  stage.root.dataset.searchBest = String(state.best);
 }
 
 // ─── Measuring the cards ────────────────────────────────────────────────

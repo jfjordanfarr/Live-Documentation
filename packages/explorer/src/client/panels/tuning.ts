@@ -46,6 +46,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const orderStartsInput = document.getElementById("tuning-order-starts") as HTMLInputElement | null;
   const searchStartsInput = document.getElementById("tuning-search-starts") as HTMLInputElement | null;
   const searchPatienceInput = document.getElementById("tuning-search-patience") as HTMLInputElement | null;
+  const churnCostInput = document.getElementById("tuning-churn-cost") as HTMLInputElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -128,6 +129,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     state.tuning.localMap.orderStarts = setSlider(orderStartsInput, "tuning-order-starts-value", state.tuning.localMap.orderStarts, v => String(v));
     state.tuning.localMap.searchStarts = setSlider(searchStartsInput, "tuning-search-starts-value", state.tuning.localMap.searchStarts, v => String(v));
     state.tuning.localMap.searchPatience = setSlider(searchPatienceInput, "tuning-search-patience-value", state.tuning.localMap.searchPatience, v => String(v));
+    state.tuning.localMap.churnCost = setSlider(churnCostInput, "tuning-churn-cost-value", state.tuning.localMap.churnCost, v => String(v));
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -194,6 +196,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   rerenderSlider(orderStartsInput, "tuning-order-starts-value", v => { state.tuning.localMap.orderStarts = v; });
   rerenderSlider(searchStartsInput, "tuning-search-starts-value", v => { state.tuning.localMap.searchStarts = v; });
   rerenderSlider(searchPatienceInput, "tuning-search-patience-value", v => { state.tuning.localMap.searchPatience = v; });
+  rerenderSlider(churnCostInput, "tuning-churn-cost-value", v => { state.tuning.localMap.churnCost = v; });
 
   // The nudge threshold changes a status, not a drawing: the view re-renders so the perspective controls read it again.
   if (strainNudgeInput) {
