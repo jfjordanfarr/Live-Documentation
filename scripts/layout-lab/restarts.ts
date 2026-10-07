@@ -253,21 +253,21 @@ export function renderWide(run: ScopeRun, settings: readonly WideSetting[], weig
   if (settings.length === 0) throw new Error("No settings to render.");
   const starts = settings[0].rows.length;
   const lines: string[] = [];
-  const startCells = (row: StartRow, score: number): string => `${row.name} | ${score.toFixed(3)} | ${n(row.signals.lengthPx)} | ${row.signals.crossings.spots} | ${row.signals.foreignSamples} | ${row.signals.escapingWires}`;
+  const startCells = (row: StartRow, score: number): string => `${row.name} | ${score.toFixed(3)} | ${n(row.signals.lengthPx)} | ${n(row.cheap.vertical)} | ${row.signals.crossings.spots} | ${n(row.signals.pictureHeight)} | ${row.signals.foreignSamples} | ${row.signals.escapingWires} | ${row.signals.fragments}`;
   lines.push(`# Layout lab, the wider space: ${run.bundle}, ${run.scopeName}`, "");
   lines.push(`_Run ${startedAt}, over a capture of ${capture.capturedAt} (${capture.userAgent.replace(/^.*?(Chrome\/[\d.]+).*$/u, "$1")}). ${settings.length} settings of the grid \`${grid}\`, each with ${starts} starts laid out alone (the ranking's order and the seeds 1 to ${starts - 1}), ${(settings.length * starts).toLocaleString("en-US")} layouts in all. Full-score weights: ${Object.entries(weights).map(([k, v]) => `${k} ${v}`).join(", ")}; the baseline setting's ranked start scores ${Object.values(weights).reduce((a, b) => a + (b ?? 0), 0).toFixed(3)} by definition, and every start of every setting is scored against it. The page's price is the vertical length plus ${judge.costs.crossing} px a crossing and ${judge.costs.height} px a pixel of height; the search is simulated at ${judge.churn} px a swapped pair from a first paint of the ranking's order and the first ${judge.first} seeds, with a patience of ${judge.patience}._`, "");
   lines.push("## Every setting", "");
   lines.push("For each setting: what a start costs the lab, the ranked start's full score, the start the page's price keeps and its full score, the start the full score prefers with the deck's signals of its picture, and the page's search from its first paint to where it ends.", "");
-  lines.push("| Setting | ms / start | Ranked: full | Page's price keeps | Its full | Full score prefers | Its full | Length px | Spots | Foreign | Escaping | Search: first paint | Moves | Final | Its full |");
-  lines.push("| --- | ---: | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | ---: |");
+  lines.push("| Setting | ms / start | Ranked: full | Page's price keeps | Its full | Full score prefers | Its full | Length px | Vertical px | Spots | Height px | Foreign | Escaping | Fragments | Search: first paint | Moves | Final | Its full |");
+  lines.push("| --- | ---: | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | ---: |");
   for (const s of settings) {
     const moves = s.search.adoptions.length ? s.search.adoptions.map(a => `${a.row.name} after ${a.tried}`).join("; ") : "none";
     lines.push(`| ${s.setting} | ${s.msPerStart.toFixed(0)} | ${s.rankedScore.toFixed(3)} | ${s.cheapest.name} | ${s.cheapestScore.toFixed(3)} | ${startCells(s.best, s.bestScore)} | ${s.search.first.name} | ${moves} | ${s.search.final.name} | ${s.searchScore.toFixed(3)} |`);
   }
   const ranked = (title: string, intro: string, pick: (s: WideSetting) => { row: StartRow; score: number }, count = 10): void => {
     lines.push("", `## ${title}`, "", intro, "");
-    lines.push("| Rank | Setting | Start | Full score | Length px | Spots | Foreign | Escaping |");
-    lines.push("| ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |");
+    lines.push("| Rank | Setting | Start | Full score | Length px | Vertical px | Spots | Height px | Foreign | Escaping | Fragments |");
+    lines.push("| ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
     [...settings].map(s => ({ s, ...pick(s) })).sort((a, b) => a.score - b.score).slice(0, count).forEach((entry, index) => {
       lines.push(`| ${index + 1} | ${entry.s.setting} | ${startCells(entry.row, entry.score)} |`);
     });
@@ -279,5 +279,6 @@ export function renderWide(run: ScopeRun, settings: readonly WideSetting[], weig
   lines.push("- A setting is the ranking's pull and tie rule and the order's sweep count; the spacing stays at the page's values. Every start of every setting is laid out alone and scored by the full weighted score against the baseline setting's ranked start, so the scores compare across settings.");
   lines.push("- The page's price is what the page knows the moment a start is placed: the vertical wire length plus the costs of the order's own crossings and the picture's height. The full score reads the routed wires the page never draws for a start: the length, the crossing spots, the samples over foreign membranes, the escaping wires, the picture's height and the backward wires.");
   lines.push("- The search is the page's own judge over the setting's starts in seed order, as the restarts report simulates it.");
+  lines.push("- The fragments count, for each of the files' real directories in each column, its runs of neighbouring cards beyond the first: how far the directories interleave, whatever membranes the setting drew. Where a setting draws fewer membranes than the files have directories (`membraneDepth`), the full score's membrane terms shrink with them, so full scores compare only among settings of one depth; the length, the vertical length, the spots, the height and the fragments compare across all.");
   return lines.join("\n") + "\n";
 }

@@ -119,7 +119,8 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
 
   const exploration = exploreBranches(state.selectedNode!, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
     symbolOrder: tuning.symbolOrder,
-    ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie }
+    ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie },
+    membraneDepth: tuning.membraneDepth
   });
   root.classList.add("branch-mode", "local-placed");
   root.style.gridTemplateColumns = "";

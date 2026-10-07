@@ -37,10 +37,11 @@ export interface LabConfig {
   membraneNeck: number;
   membranePadding: number;
   cardMaxWidth: number | null;
+  membraneDepth: number | null;
 }
 
 /** The levers in the order the reports name them. */
-export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth"];
+export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth"];
 
 /** The page's own tuning: the configuration the picture was designed at. */
 export function baselineConfig(): LabConfig {
@@ -83,7 +84,8 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
   const pins = scopePins(run);
   const exploration = exploreBranches(center, graph, pins, includeNode(pins, retainedSubject(run)), {
     symbolOrder: config.symbolOrder,
-    ranking: { pull: config.rankingPull, tie: config.rankingTie }
+    ranking: { pull: config.rankingPull, tie: config.rankingTie },
+    membraneDepth: config.membraneDepth
   });
   // The page's own starts and choice, with the capture's card model as the measurer; the lab has no previous picture.
   const ranked = exploration.ranking.columns.map(column => column.map(node => node.id));

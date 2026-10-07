@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/evaluate.ts
-- Generated At: 2026-10-06T23:02:45.854Z
+- Generated At: 2026-10-07T15:18:08.016Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ One configuration of the layout's levers, laid out and scored: the page's own ra
 ### Notes
 
 The levers are the Local Map tuning the layout reads (`LabConfig`), the baseline the page's defaults. Since the restarts of 2026-10-06 an evaluation runs the page's own starts and choice (`exploreBranches` once, then `orderExploration` from each start of `candidateStarts`, each measured by the capture's card model and placed, the cheapest by the configuration's `crossingCost` and `heightCost` kept by `layoutStarts`; the lab has no previous picture, so the churn is nothing), and reports which start it drew and every start's cheap signals and price beside the chosen picture's full signals. `orderStarts` at 0 is the ranking's order alone; `orderSeed` set is that one start alone. The exploration is the retained picture's: every file of the scope pinned whole, the first file the subject as `localRetainUrl` opens it, the page's default filters. `driftOf` holds a baseline evaluation to the capture's truth in every card's width, height and pin, the placement measure, the picture's size and every label's height: nothing, when the model is right, which `tests/e2e/layout-lab.spec.ts` asserts on every deck scope.
+- `membraneDepth` (2026-10-07) is a lever like the others, passed to the exploration; `none` in a grid is every level.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -27,7 +28,7 @@ The levers: the Local Map tuning the layout reads.
 
 #### `LEVERS` {#symbol-levers}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L43)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L44)
 - Returns: `ReadonlyArray`
 
 ##### `LEVERS` — Summary
@@ -35,7 +36,7 @@ The levers in the order the reports name them.
 
 #### `baselineConfig` {#symbol-baselineconfig}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L46)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L47)
 - Returns: [`LabConfig`](#symbol-labconfig)
 
 ##### `baselineConfig` — Summary
@@ -43,14 +44,14 @@ The page's own tuning: the configuration the picture was designed at.
 
 #### `Evaluation` {#symbol-evaluation}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L52)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L53)
 
 ##### `Evaluation` — Summary
 A configuration laid out and scored, with the exploration, the scene and the routes behind the signals.
 
 #### `scopePins` {#symbol-scopepins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L67)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L68)
 - Returns: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -59,7 +60,7 @@ The scope's pins, every file retained whole, and its subject.
 
 #### `includeNode` {#symbol-includenode}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L72)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L73)
 - Parameters: `pins`: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `includeNode` — Summary
@@ -67,7 +68,7 @@ The page's default filters: tests shown, assets hidden, a pinned or selected fil
 
 #### `evaluate` {#symbol-evaluate}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L78)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L79)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `config`: [`LabConfig`](#symbol-labconfig)
 
@@ -76,7 +77,7 @@ Lays out and scores one configuration of the levers over a capture.
 
 #### `driftOf` {#symbol-driftof}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L114)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L116)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `evaluation`: [`Evaluation`](#symbol-evaluation)
 
 ##### `driftOf` — Summary

@@ -14,6 +14,7 @@ Holds the sweep's grid, sampling, sensitivity, scoring and Pareto front.
 ### Notes
 
 A grid of lists, ranges and `none` parses and an unknown lever is refused; one lever at a time skips the baseline's own value; a small grid is walked whole and a large one sampled by its seed, the baseline first, nothing twice, the same for a seed and different between seeds; the score follows the weights and a signal the baseline lacks counts double; the levers a configuration moved are named; the front keeps only the rows no other beats.
+- The signal fixtures carry `fragments` (2026-10-07).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

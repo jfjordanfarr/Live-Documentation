@@ -5242,3 +5242,369 @@ continuing search" completed (exit code 0)
   ⎿  Read AI-Agent-Workspace/Probes/2026-10-07/layout-lab/repository-five-files-
      search.md (89 lines)
   ⎿  Read AI-Agent-Workspace/Probes/2026-10-07/layout-lab.md (48 lines)
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >A start is adopted only when its price plus the churn it would cost against
+  the shown picture is below the shown picture's own price, which is your "only
+  update on a new best" with the churn cost as the threshold.
+
+  Can churn cost ramp up from a low value to a higher value as the iterations
+  continue? I suspect at the beginning of the search, we actually want to have
+  extremely low churn cost (maybe zero). Indeed, if necessary, perhaps a
+  handful of random searches are performed before first-paint just so a basic
+  "best" is established (albeit it would not surprise me if this is exactly
+  what you already wrote)
+
+  >the count before paint,
+
+  Ope there it is! Awesome.
+
+  >A start costs the page 15 to 120 ms of idle time, so the whole thing is over
+  in one to two seconds. The chain's result is the striking one: on today's
+  grown graph the four starts before paint found a poor picture, and the first
+  idle start fixed it.
+
+  1-2 seconds to settle in is very similar to the time it takes the force graph
+  to settle. That sounds great.
+
+  >Whether the first paint should try fewer starts now that the search follows
+  it, for a faster first picture.
+
+  Yeah probably a search of like... 5 samples would bootstrap it sufficiently?
+  I'd be happy to go as low as 3. At least at 3 we might see a little more
+  "updating" as the layout eases into position.
+
+  >Your wider permutation: the ranking's tie rule and pull and the sweep count
+  as further dimensions of a start. The four scopes' tables can begin to say
+  whether the best dials differ by scope.
+
+  Would love the wider sweep. Even if we just had to do a ludicrously wide
+  sweep here locally so that we could bring back semi-optimal defaults for a
+  typical start.
+
+  >The churn cost as a slider, and the crossing-and-height tabulation rerun on
+  the grown graph, where the chain's full score now prefers a different seed
+  than the page's cheap price does.
+
+  Ramping churn cost is reasonable. Alternatively, quantifying churn cost with
+  higher precision is reasonable (i.e. it will only rearrange this section in
+  the upper-right that you're not looking at, so the price is relatively low
+  for rearrangement). Personally I suspect that we'll get good results even
+  with a churn cost of 0, as we're kind of asymptotically approachinig the
+  optimal layout anyway.
+
+● Turn 18 lands three threads: the churn cost's shape, the count before paint,
+  and the wider sweep. I'll record the turn, then measure what the lab can
+  already say about the first two before planning the third.
+
+  Read 4 files, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Reading the renderer's adoption path and the tuning defaults, and simulating
+  the first paint at fewer starts from today's lab tables, in parallel.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Two of three threads are resolved: seeds 2-4 before paint have no effect on
+  any scope, and churn 0/100 behave identically except in one notable case. I'll
+  record this, then check the costs grid and a stricter stopping rule from the
+  same tables. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The sweep shows crossing and height costs don't affect the page selection
+  across 0–160, with cost-score disagreements staying under 1%; the one real
+  issue is the stopping rule, where a rejected small improvement halts the
+  search early. I'll now review what's needed to expand the lab's tabulation and
+  fix that stopping rule. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● I have the shape of both changes. Reading the last details for exact edits:
+  the tuning panel's slider pattern, where the patience counter is referenced,
+  and the probe script from this morning.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll implement these changes: patience tracks the best-found start, churn cost
+  becomes adjustable, Order Starts is reduced to 2, and I'll add a widen
+  command alongside the ranking and order controls. · summary
+
+  Searched for 1 pattern, ran 13 shell commands (ctrl+o to expand)
+
+● The new defaults match the simulation across all four scopes and render faster
+  (207ms vs 263ms on five files, 338ms vs 470ms on the chain). Now checking the
+  docs—Live Docs' authored notes, the decisions log format, and memory
+  files—while the wide tabulations finish running. · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The panel confirms all four dials are working as intended—the wide estate
+  scopes are complete and the repository scopes are a third done. While those
+  finish, I'll review the screenshots README, ideas file, capture inventory, and
+  the Live Docs' structure. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The three specs pass. The two repository-scope tabulations are the last thing
+  before the write-up; checking them.
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● I've found that the five-file-wide configuration is optimal: the starting
+  layout dominates lever choice, 2/4/8 sweeps perform equivalently, and pull-2
+  with tie-right beats the baseline by 1.8% via a 6% wire/12% crossing
+  trade-off. Now I'll check the final run of the chain. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+● Starting the full gate in the background now that the code and Live Docs are
+  finalized; I'll add the probe record's prose once the chain's table comes in,
+  since the gate doesn't check that. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both remaining pieces are running in the background: the chain's wide
+  tabulation (three settings to go) and the full gate. The probe record and the
+  commit follow their results.
+
+● Background command "Run the widen tabulation on all four scopes concurrently
+into the day's probe folder" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed the pull setting is the key lever (its optimal value varies by
+  scope and can't be judged by price alone), while tie rules and sweep counts
+  have no effect. Now I'll record these findings in the probe record, decisions
+  entry, and direction entry as the gate runs. · summary
+
+  Searched for 1 pattern, read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The gate's lint, unit and integration stages are through (1,033 unit, 50
+  integration; the 36 lint warnings are long-standing missing-JSDoc notes in
+  files this change does not touch). Playwright is the remaining stage; the
+  commit follows its exit code.
+
+● Background command "Run the full pre-commit gate with Playwright, logging to
+the scratchpad" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate passed: 1,033 unit, 50 integration, 654 docs validated, no broken
+  links, 109 Playwright. Revising the record's resumption notes and committing
+  by path on the gate's exit 0.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Committed as eb300d6c, gate green: 1,033 unit, 50 integration, no broken
+  links, 109 Playwright. Your three threads, in the order you raised them.
+
+  The churn cost: no ramp needed, and one real defect found
+
+  Yes, a ramp is a one-line change in the judge. But the tables say it would
+  change nothing. I simulated the search from this morning's four tabulations at
+  churn 0 and at 100, from zero to eight starts before paint. In every run but
+  one, the two costs make exactly the same moves. The exception was the estate's
+  five files from a first paint of eight seeds: churn 0 passed through three
+  small moves to a picture 10% shorter, and churn 100 refused the first of them,
+  a 45 px gain for three swapped pairs, then settled eight starts later without
+  ever reaching the others.
+
+  The refusal was right. The stopping was the defect. The patience counted
+  starts since the last adoption, so a better start refused for its churn also
+  ran down the clock. It now counts starts since the best price found improved,
+  adopted or not. With that rule churn 100 reaches the same picture in one move
+  of two pairs, and churn 0 and 100 agree on every run of every scope. That is
+  your suspicion borne out: the churn cost decides whether a small gain moves
+  the picture, not where the search ends. Churn Cost is now a slider in Tuning,
+  so you can set it to 0 and watch.
+
+  Your "higher precision" idea is recorded in ideas.md, with one thing the
+  tables showed: the churn counts cards that swap places in a column, not rows
+  that reorder within a card. A move of 0 pairs and 208 px of gain was in the
+  data.
+
+  Fewer starts before paint
+
+  Today's default was the ranking's order plus four seeds, five starts. Seeds 2
+  to 4 bettered nothing before paint on any of the four scopes. Order Starts is
+  now 2, your "3" counting the ranking's order. Same first picture everywhere,
+  sooner:
+
+  ┌────────────┬────────────────────┬────────┐
+  │   Scope    │ First paint before │  Now   │
+  ├────────────┼────────────────────┼────────┤
+  │ Five files │             263 ms │ 207 ms │
+  ├────────────┼────────────────────┼────────┤
+  │ The chain  │             470 ms │ 338 ms │
+  └────────────┴────────────────────┴────────┘
+
+  The search then makes its one move a few starts later, still within the
+  second. I watched the page at the new defaults on all four scopes, and it
+  agrees with the lab's simulation start for start.
+
+  The wider sweep
+
+  The lab has a new verb, widen, which tabulates the starts at every setting of
+  the ranking's pull, its tie rule and the order's sweep count. 36 settings of
+  33 starts per scope, 1,188 layouts each, about ten minutes per repository
+  scope. The four reports are in the day's probe record
+  (AI-Agent-Workspace/Probes/2026-10-07/layout-lab.md#the-wider-space). What
+  they say together:
+
+  - Two sweeps are the fixed point. At every setting on every scope, two passes
+    give the same picture as four or eight. The default could drop to two. It
+    saves little in the page, where the order step is a few ms of a 65 to 120 ms
+    start.
+  - The tie rule is not a dial. Nothing on three scopes, 0.3% on the five files.
+  - The pull is the lever that matters, and its best value differs by scope.
+    Pull 2 with the tie to the right is the five files' best, 1.8% better by the
+    full score, and worse than no pull on the chain. Pull 1 is the chain's
+    best, 1.1% better, 5% at its best start, and a wash on the five files. Every
+    gain is the same trade: more wire for fewer crossing spots, fewer foreign
+    membranes crossed, fewer escaping wires. The estate is indifferent. So your
+    question has an answer for one lever: yes, the optimum depends on context,
+    and no single pull beats the baseline on both of this repository's scopes.
+    The current defaults are the robust ones.
+  - The page's price cannot judge the pull. At pull 1 on the chain, the price
+    keeps a start the full score ranks 6% worse than the best one there. The
+    pull's gains live in the routed wires and the membranes they cross, which
+    the price never sees.
+
+  Also retried on the grown graph: the crossing and height costs change the
+  page's pick nowhere between 20 and 160 px a crossing. Where the cheap price
+  and the full score disagree, the gap is under 1%. The start is the lever, not
+  the costs.
+
+  The fork this leaves you
+
+  Should the page's search sample the pull as a dimension of a start? That needs
+  two things: a term in the price for membranes crossed, which the page would
+  have to compute without routing every start, and a smoother move across column
+  changes, which today snaps the membrane outlines. Or the lab's reading sets
+  fixed defaults, which today means the baseline. My recommendation is the
+  second for now, with the sweep count at two, and the pull revisited when the
+  price grows a membrane term. Your call. Also for your eye: the search and the
+  Churn Cost slider in the page itself.
+
+❯ >That needs two things: a term in the price for membranes crossed, which the
+  page would have to compute without routing every start, and a smoother move
+  across column changes, which today snaps the membrane outlines.
+
+  Yeah, are we measuring/permuting these things? On the one hand, setting a
+  cost for every wire that crosses a membrane sounds efficient insofar as there
+  is some unavoidable base cost of wires crossing membranes in the optimal
+  layout; however, I fear that _any_ bug in connectors reaching their
+  destinations would cause that score to be _radically_ exploited; never
+  reaching your destination is much cheaper than crossing the minimum number of
+  membranes necessary to _actually_ reach it. Just something to be cognizant
+  of with such a metric. And I think that the different tensions that the
+  layout feels (desire to keep contents in the membrane, desire to preserve
+  left-to-right ordering, desire to minimize connector length) might be able to
+  be resolved with independent levers. If too many wires from your directory's
+  nodes are needlessly crossing outside the membrane during their bezier
+  connections, maybe you try rounding out the membrane corners more to simply
+  pick up the connector within the membrane boundary? (Perhaps if membrane
+  dynamics cause excessive expansion, there is another push from other
+  membranes to prevent overlap? I feel like that's more-or-less not a set of
+  forces right now for membrane-versus-membrane and is simply a set of
+  deterministic browser layout rules, which is probably fine -- I don't have in
+  my mind a good idea of how one might implement the membranes pushing upon
+  one another, but if we can do it, that's great).
+
+  I definitely see that we're beginning to cross into the point of diminishing
+  returns, which is likely a good thing. I still admit maybe a smidgeon of
+  surprise that adding more levers to tune, more forces to contend with, more
+  scores' dimensions to optimize, that we couldn't get a _little_ more optimal.
+  Perhaps we're smacking into the limits of what a 2D diagram can do, and
+  perhaps we're smacking into the limits of what deterministic layouts in a
+  browser will allow (i.e. membrane overlap an _impossibility_, etc.).
+
+  What I know from the high-dimensional/embedding/semantic work that folks do
+  is that, with respect to dimensionality-reduction, allowing _juuuust a little
+  non-orthogonality_ in things like PCA can wildly improve the ability of the
+  reduced-dimensional representation to capture the true variation in
+  high-dimensional space. Is it worth refusing bare browser necessities?
+  Probably not. But I am curious if that's perhaps a wall we're running into,
+  rather than the wall of what 2D space will actually allow.
+
+  To you, is improvement more constrainted by two dimensions, or by the
+  browser?
+
+● Two things before answering: the record gets your message and my last reply,
+  and I want to check one factual premise in your warning, whether the
+  instruments actually verify that every wire reaches its pins.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Neither, to my eye. The wall is a set of rules we wrote, and we can price each
+  one.
+
+  What the browser does and does not constrain
+
+  The browser measures text and paints. Everything else is our arithmetic: the
+  ranking, the order, the exact placement, the membrane outlines, the routes.
+  Membrane overlap is not a browser impossibility. It is a constraint in the
+  placement solve, which keeps sibling directories in their rows of a column
+  without interleaving, and a rule in the order step's bands. We wrote it, and
+  on October 6 the lab priced relaxing it: letting sibling membranes interleave
+  takes the five-file vertical wire down another twelve points, 45% against the
+  33 to 38% the uncrossed membranes reach. That is exactly your "little
+  non-orthogonality", measured for one rule. The browser's genuine limits are
+  legible text size and the screen, and neither is what caps the scores.
+
+  What two dimensions constrain
+
+  A non-planar graph has a crossing floor no drawing can go under, and I cannot
+  tell you how far above it we sit. What I can tell you is that the order step's
+  crossing count swings 30% between starts of the same algorithm. That spread
+  is the heuristic's limit, not the plane's. The plane's floor is below our best
+  by an unknown amount.
+
+  Why more levers bought so little
+
+  Today's sweep turned the knobs of one search inside fixed rules: the seed, the
+  tie rule, the sweep count. Every large gain so far came from changing the
+  rules or the solver, not from tuning: the span-minimal ranking, the exact
+  placement, membranes as per-column segments, the restarts. Within fixed rules
+  the search is already near its optimum, so the knobs move the score by
+  hundredths while the start's lottery moves it from 2.2 to 1.77. The rules that
+  remain and could become levers of the lab, each with a measurable price:
+  membranes allowed to interleave, a tall rank split into two sub-columns, wires
+  allowed to pass behind a card instead of through a lane, a backward reference
+  drawn backward, a soft gap between membranes instead of a hard one. That is
+  where "a little more optimal" lives, if it lives anywhere.
+
+  Your warning, and what the instruments actually check
+
+  We measure membranes crossed: the deck and the lab count samples inside a
+  foreign membrane, wires that escape the membrane holding both their ends, lane
+  passages and backward wires. We permute only the spacing around them so far,
+  not the rules. The page's price has no membrane term, and today it cannot be
+  gamed by a missing wire, because it is computed from pin positions the
+  placement owns, not from drawn paths. Your fear applies the moment a term
+  reads drawn geometry. Two guards. First, define any membrane term over the
+  pins and the membranes' segments, which needs no routing and cannot lose a
+  wire. Second, a gap I found while checking: the deck confirms a wire is drawn
+  for every fact and that its ends are in frame and uncovered, but it does not
+  check that the ends sit on the right pins. The lab's routes reach their pins
+  by construction, so it is the page's reading that needs the assertion. Worth
+  adding before any such term exists.
+
+  The tensions as independent levers
+
+  They already are, with one nuance. The placement has one objective, vertical
+  wire length, and the other tensions are hard constraints with dials: the order
+  from the sweep, the gap between sibling membranes, the neck that joins a
+  membrane's segments across a gutter, the padding. Membranes do not push on
+  each other. They refuse to overlap, and the solve finds the shortest wires
+  under that refusal. A push would be a soft gap, a cost for proximity instead
+  of a constraint, which the solver can take. Your rounding idea maps onto two
+  existing dials: a sibling wire escapes its membrane when its vertical travel
+  across a gutter exceeds the join's overlap, so the neck and the padding are
+  what pick it up, and both were in the October 6 sweep.
+
+  If you want to find the wall, the path is the one we have been on: make a rule
+  a lever, sweep it on the four scopes, read the price. The interleaving rule
+  is the first candidate, since half its price is already known.

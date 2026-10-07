@@ -69,7 +69,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     bandGap: 28,
     membraneNeck: 60,
     membranePadding: 12,
-    cardMaxWidth: null
+    cardMaxWidth: null,
+    membraneDepth: null
   }
 });
 
@@ -188,6 +189,7 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const membraneNeck = readFiniteNumber(localMapRaw.membraneNeck);
         const membranePadding = readFiniteNumber(localMapRaw.membranePadding);
         const cardMaxWidth = readNullableNumber(localMapRaw.cardMaxWidth);
+        const membraneDepth = readNullableNumber(localMapRaw.membraneDepth);
         tuning.localMap = {
           ...(columnGap !== undefined ? { columnGap } : null),
           ...(hoverDimSymbols !== undefined ? { hoverDimSymbols } : null),
@@ -216,7 +218,8 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(bandGap !== undefined ? { bandGap } : null),
           ...(membraneNeck !== undefined ? { membraneNeck } : null),
           ...(membranePadding !== undefined ? { membranePadding } : null),
-          ...(cardMaxWidth !== undefined ? { cardMaxWidth } : null)
+          ...(cardMaxWidth !== undefined ? { cardMaxWidth } : null),
+          ...(membraneDepth !== undefined ? { membraneDepth } : null)
         };
       }
 

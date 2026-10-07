@@ -8,7 +8,7 @@ const signals = (lengthPx: number, spots: number): Signals => ({
   wires: 1, lengthPx, meanPx: lengthPx, horizontalPx: lengthPx, verticalPx: 0,
   crossings: { points: spots, spots, farPoints: 0, pairs: 0, wiresCrossed: 0 },
   foreignSamples: 0, foreignWires: 0, samples: 0, laneSamples: 0, escapingWires: 0, escapingSamples: 0, passages: 0, threaded: 0, backward: 0,
-  columns: 1, lanes: 0, pictureWidth: 100, pictureHeight: 100, placementCost: 0, optimal: true
+  columns: 1, lanes: 0, pictureWidth: 100, pictureHeight: 100, placementCost: 0, optimal: true, fragments: 0
 });
 
 const row = (name: string, vertical: number, crossings: number, lengthPx: number, spots: number, columns: string[][] = [["a", "b", "c"]]): StartRow =>

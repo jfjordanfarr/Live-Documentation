@@ -12,6 +12,7 @@ import type { Route } from "./routes";
 import type { Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import type { BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import { membraneOutline } from "../../packages/explorer/src/client/views/localView/membrane-outline";
+import { parentDirectory } from "../../packages/explorer/src/client/views/membraneView/pin-layout";
 import { crossings, type CrossingScore, type Polyline } from "../../tests/e2e/still-picture-geometry";
 
 /** The signals of one layout. */
@@ -41,6 +42,12 @@ export interface Signals {
   pictureHeight: number;
   placementCost: number;
   optimal: boolean;
+  /**
+   * How far the files' own directories are broken up in the columns: for each directory in each column, its runs of
+   * neighbouring cards beyond the first, summed. Zero when every directory's cards stand together in every column, as
+   * the membranes keep them; counted on the files' real directories whatever membranes the layout drew.
+   */
+  fragments: number;
 }
 
 interface Membrane {
@@ -60,6 +67,22 @@ export function insidePolygon(points: ReadonlyArray<{ x: number; y: number }>, x
     if (a.y > y !== b.y > y && x < ((b.x - a.x) * (y - a.y)) / (b.y - a.y) + a.x) inside = !inside;
   }
   return inside;
+}
+
+/** The runs beyond the first that each directory's cards form in each column, summed: how far the directories interleave. */
+export function fragmentsOf(columns: ReadonlyArray<ReadonlyArray<{ codeRelativePath: string }>>): number {
+  let fragments = 0;
+  for (const column of columns) {
+    const runs = new Map<string, number>();
+    let previous: string | null = null;
+    for (const file of column) {
+      const directory = parentDirectory(file.codeRelativePath);
+      if (directory !== previous) runs.set(directory, (runs.get(directory) ?? 0) + 1);
+      previous = directory;
+    }
+    for (const count of runs.values()) fragments += count - 1;
+  }
+  return fragments;
 }
 
 /** Every signal of a laid-out scene and its routes. */
@@ -116,6 +139,7 @@ export function measureScene(scene: Scene, branches: BranchGraph, routes: readon
     pictureWidth: scene.pictureWidth,
     pictureHeight: scene.pictureHeight,
     placementCost: scene.placement.cost,
-    optimal: scene.placement.optimal
+    optimal: scene.placement.optimal,
+    fragments: fragmentsOf(branches.columns)
   };
 }

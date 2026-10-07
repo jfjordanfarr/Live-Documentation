@@ -108,6 +108,11 @@ export interface LocalMapTuning {
   membranePadding: number;
   /** A card may be no wider than this; null for as wide as its content asks. */
   cardMaxWidth: number | null;
+  /**
+   * How many levels of directory below the retained files' common directory are membranes; null for every level. A
+   * lever of the layout lab for pricing the membrane rule (2026-10-07): at zero the cards interleave freely.
+   */
+  membraneDepth: number | null;
 }
 
 /**

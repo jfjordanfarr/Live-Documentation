@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { buildBranches, edgeKey, exploreBranches, orderExploration, rankBranches } from "./branches";
+import { buildBranches, commonDirectory, edgeKey, exploreBranches, membraneDirectory, orderExploration, rankBranches } from "./branches";
 import type { LocalEdge } from "./types";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { addPin, EMPTY_PIN_SET, removePin } from "../pin-state";
@@ -160,5 +160,35 @@ describe("independent Local Map branches", () => {
       if (ranking.back.has(edgeKey(edge))) continue;
       expect(columnOf.get(edge.targetId)!, `${edge.targetId} offers to ${edge.sourceId}`).toBeLessThan(columnOf.get(edge.sourceId)!);
     }
+  });
+});
+
+describe("the membrane depth", () => {
+  it("finds the directory every file shares, and cuts each file's directory to the levels below it", () => {
+    expect(commonDirectory(["a/x", "a/x", "a/y", "a/y/z"])).toBe("a");
+    expect(commonDirectory(["a/x", "b/x"])).toBe("");
+    expect(commonDirectory(["a/x/y", "a/x/y"])).toBe("a/x/y");
+    expect(commonDirectory([])).toBe("");
+    expect(membraneDirectory("a/y/z", "a", null)).toBe("a/y/z");
+    expect(membraneDirectory("a/y/z", "a", 0)).toBe("a");
+    expect(membraneDirectory("a/y/z", "a", 1)).toBe("a/y");
+    expect(membraneDirectory("a/y/z", "a", 5)).toBe("a/y/z");
+    expect(membraneDirectory("a", "a", 2)).toBe("a");
+    expect(membraneDirectory("b/x", "", 1)).toBe("b");
+    expect(membraneDirectory("b/x", "", 0)).toBe("");
+    // A directory not under the root, which cannot happen for a retained file, keeps the root.
+    expect(membraneDirectory("c/d", "a", 1)).toBe("a");
+  });
+
+  it("gives the order step the directories of the chosen depth, every file in one at zero", () => {
+    const files = ["a/x/f1", "a/x/f2", "a/y/g1", "a/y/z/h1"].map(id => node(id));
+    const wires = ([["a/x/f2", "a/x/f1"], ["a/y/g1", "a/x/f1"], ["a/y/z/h1", "a/y/g1"]] as Array<[string, string]>)
+      .map(([source, target]) => ({ source, target, sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const }));
+    const graph: ExplorerGraphPayload = { nodes: files, links: wires, stats: { nodes: 4, links: 3, missingDependencies: 0 } };
+    const pins = files.reduce((set, file) => addPin(set, file.id, "*"), EMPTY_PIN_SET);
+    const directories = (depth: number | null): string[] => files.map(file => exploreBranches(files[0], graph, pins, () => true, { membraneDepth: depth }).order.directoryOf(file.id));
+    expect(directories(null)).toEqual(["a/x", "a/x", "a/y", "a/y/z"]);
+    expect(directories(1)).toEqual(["a/x", "a/x", "a/y", "a/y"]);
+    expect(directories(0)).toEqual(["a", "a", "a", "a"]);
   });
 });

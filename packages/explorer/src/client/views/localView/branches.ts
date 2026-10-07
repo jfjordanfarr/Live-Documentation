@@ -57,6 +57,12 @@ export interface BranchOptions {
   symbolOrder?: SymbolOrder;
   ranking?: RankingOptions;
   order?: OrderOptions;
+  /**
+   * How many levels of directory below the retained files' common directory are membranes: files deeper belong to the
+   * membrane at that level, so that at zero no directory shapes the order or the placement and the cards interleave
+   * freely; null, the default, keeps every level. A lever of the layout lab (2026-10-07).
+   */
+  membraneDepth?: number | null;
 }
 
 /**
@@ -105,7 +111,7 @@ export function exploreBranches(
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
-  options: Pick<BranchOptions, "symbolOrder" | "ranking"> = {}
+  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth"> = {}
 ): Exploration {
   const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
@@ -157,6 +163,7 @@ export function exploreBranches(
     if (edge.sourceId !== edge.targetId) continue;
     (internal.get(edge.sourceId) ?? internal.set(edge.sourceId, []).get(edge.sourceId)!).push([row(edge.targetSymbol), row(edge.sourceSymbol)]);
   }
+  const root = commonDirectory(nodes.map(node => parentDirectory(node.codeRelativePath)));
   return {
     subgraph: { center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },
     ranking,
@@ -164,7 +171,7 @@ export function exploreBranches(
     relevantSymbols,
     order: {
       columns: ranking.columns.map(column => column.map(node => node.id)),
-      directoryOf: nodeId => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId),
+      directoryOf: nodeId => membraneDirectory(parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId), root, options.membraneDepth ?? null),
       rows,
       // Only the layout order moves rows, and Internals keeps the foot of the card.
       movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
@@ -195,6 +202,30 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
  * with Internals last; alphabetical when that order is chosen, otherwise as
  * the Live Doc lists them, which the layout order then moves by the wires.
  */
+/** The deepest directory every given directory is in or under; "" when they share none. */
+export function commonDirectory(directories: readonly string[]): string {
+  if (directories.length === 0) return "";
+  let common = directories[0].split("/").filter(Boolean);
+  for (const directory of directories.slice(1)) {
+    const parts = directory.split("/").filter(Boolean);
+    let shared = 0;
+    while (shared < common.length && shared < parts.length && common[shared] === parts[shared]) shared++;
+    common = common.slice(0, shared);
+    if (common.length === 0) break;
+  }
+  return common.join("/");
+}
+
+/**
+ * The membrane a file's directory belongs to when only `depth` levels below the common directory are membranes: the
+ * directory cut to that many levels below the root, the root itself at zero, the directory as it is when depth is null.
+ */
+export function membraneDirectory(directory: string, root: string, depth: number | null): string {
+  if (depth === null) return directory;
+  const below = directory === root ? [] : (root === "" ? directory : directory.startsWith(`${root}/`) ? directory.slice(root.length + 1) : "").split("/").filter(Boolean);
+  return [...(root ? [root] : []), ...below.slice(0, Math.max(0, Math.floor(depth)))].join("/");
+}
+
 function visibleRows(nodes: readonly ExplorerNodePayload[], centerId: string, relevant: ReadonlyMap<string, ReadonlySet<string>>, symbolOrder: SymbolOrder): Map<string, string[]> {
   const rows = new Map<string, string[]>();
   for (const node of nodes) {

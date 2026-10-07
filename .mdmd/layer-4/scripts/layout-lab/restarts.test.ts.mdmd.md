@@ -16,6 +16,7 @@ Holds the tabulation's pure parts: the grid of costs parsed, and the page's pick
 Three starts with made-up signals: by the full score the ranked start is preferred; by the page's price the shortest vertical wins at no cost, a start with fewer crossings wins at twenty pixels a crossing, and at forty the ranked start ties it and, earlier, wins. The grid parser takes every crossing cost with every height cost, the churn nothing, since the lab has no previous picture.
 - The search's simulation (2026-10-07): seven hand-made starts, a churn-free run that adopts twice, a dear churn that lets one of them go, and a patience of one that settles after a single unadopted start.
 - The wider space (2026-10-07): a setting summarized from three starts, the page's pick and the full score's and a search that adopts nothing, scored against a given base and against another; and the search's simulation going on past a better start refused for its churn, where a patience of one settles at a start that betters nothing.
+- The signal fixtures carry `fragments` (2026-10-07).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

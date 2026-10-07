@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-10-07T13:20:47.511Z
+- Generated At: 2026-10-07T15:18:06.793Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Since 2026-10-06 (the layout lab's first milestone) this module is the page's sh
 - Since 2026-10-07 the renderer keeps a stage across renders (`BranchStage`: the wrappers by file, the sections and spacers by the pose's box key, the outlines, the labels, the pose shown and the move running) and moves the picture from the previous pose to the new over the tuning's `moveMs` instead of redrawing it: `applyPose` sets every element from a pose; `startMove` runs the frames, eased, slides the rows of a card from their old places (`rowOffsets`, `rowMotions`), fades entering and leaving elements, holds the card last interacted with still by measuring it on screen each frame, and redraws the wires every frame with the overlay saying `moving` so that the stylesheet drops their glow; `endMove` finishes a move at its destination or leaves an interrupted one where it stands, and a render that interrupts starts from that frame. The held card is measured on screen rather than followed in the pose because the picture root shifts in its container as the picture's size changes; the first try followed the pose alone and the picture crept upward over several moves. The root says `data-moving` while a move runs, for the specs and the tools, and no text announces it (the owner's choices, [Turn 16](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-16)).
 - The continuing search (2026-10-07, [Turn 17](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-17)): the first paint's measurer writes the page's answers that no start changes into `PageAnswers` (each card's natural width and height at its column's width, each drawn directory's label height), and `rowsOf` measures each card's rows once at the chosen order; after the first paint the stage's `Search` runs one seeded start per idle moment (`scheduleSearch`, `requestIdleCallback` or a timer), each ordered, planned and placed from the answers through `answersMeasurer` and judged by `branch-search.ts` against the shown picture's own price with its churn against the shown tops; an adopted picture has its rows stood on the cards, is measured on the page through `pageMeasurer`, placed, priced exactly and shown through `showScene`, the same way a render's picture is, moving; the search waits for a move to end and begins afresh on every render; `writeSearch` puts its state on the root (`data-search-status`, `-tried`, `-next`, `-adopted`, `-shown`, `-priced`) and no text announces it. A forced seed searches nothing. `showScene` is the part of a render after the picture is chosen, factored out so that the search's adoption and a render share it.
 - Later on 2026-10-07 the root also says the best price the search has found, churn aside (`data-search-best`), and an adopted picture's price as the page measures it becomes the best found as well as the shown price, unless an earlier start priced lower.
+- The exploration takes the tuning's `membraneDepth` (2026-10-07), the lab's lever for the membrane rule; at its default of null nothing changes.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -80,7 +81,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L203)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L204)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

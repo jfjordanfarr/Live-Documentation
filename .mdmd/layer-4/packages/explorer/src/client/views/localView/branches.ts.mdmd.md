@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-10-06T23:02:44.774Z
+- Generated At: 2026-10-07T15:18:06.951Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ Every edge between retained files remains present, including connections not dir
 A cycle no longer shares a column. Its members stand in the provider-first order of Eades, Lin and Smyth, the references that read backward in that order are returned as `back`, and everything else ranks forward; the renderer draws a back reference as French Corset laces with its route on hover, under the owner's words of 2026-10-05 that ugly design may produce ugly visualization and the picture must say what it hides. The ranking then hands its columns, each card's rows, the symbol order and each file's own references to `branch-order.ts`, which orders them and reserves the lanes; the own references break ties among rows whose wires lead alike. The symbol order is the owner's three strategies of 2026-10-05: the layout's own, where rows stand by their wires and only Internals keeps the foot of the card; alphabetical, which `compareSymbolNames` defines for every card; and the order of appearance, the Live Doc's.
 
 The earlier linear hop-layout module originated in the [December 18, 2025 extraction](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-18.1.md). Its truncating path model and duplicate-card exploration renderer were retired in the [October 2, 2026 native-view pass](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-02.1.record.md#turn-11); explicit FROM/TO paths retain their own renderer.
+- `membraneDepth` (2026-10-07, [Turn 20](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-20)): how many levels of directory below the retained files' common directory are membranes (`commonDirectory`, `membraneDirectory`); files deeper belong to the membrane at that level, so the order step's bands, the placement's segments and the drawn outlines all follow the cut directories, and at zero no directory shapes the picture and the cards interleave freely. Null, the default, keeps every level. A lever of the layout lab for pricing the membrane rule, and a tuning value so that the page can be seeded with it and the lab's verify can confirm the lab; the page agreed to the pixel at depths 0, 1 and full on the five files.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -59,7 +60,7 @@ The dials of the layout's first two steps.
 
 #### `Exploration` {#symbol-exploration}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L72)
 
 ##### `Exploration` — Summary
 A disclosed exploration before its order: the retained files and the references between them, ranked into columns,
@@ -67,7 +68,7 @@ with everything the order step takes but its start, so that the order step can b
 
 #### `edgeKey` {#symbol-edgekey}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L76)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L82)
 - Parameters: `edge`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)
 
 ##### `edgeKey` — Summary
@@ -75,7 +76,7 @@ One reference's identity: its two files, its two symbols and its kind.
 
 #### `buildBranches` {#symbol-buildbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L92)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L98)
 - Returns: [`BranchGraph`](#symbol-branchgraph)
 - Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graph`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `pins`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `options`: [`BranchOptions`](#symbol-branchoptions)
 
@@ -93,7 +94,7 @@ one exploration; this runs both once.
 
 #### `exploreBranches` {#symbol-explorebranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L103)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L109)
 - Returns: [`Exploration`](#symbol-exploration)
 - Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graph`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `pins`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
@@ -102,23 +103,38 @@ The exploration's first two steps: the retained files and references disclosed, 
 
 #### `orderExploration` {#symbol-orderexploration}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L178)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L185)
 - Returns: [`BranchGraph`](#symbol-branchgraph)
 - Parameters: `exploration`: [`Exploration`](#symbol-exploration); `options`: [`OrderOptions`](#symbol-orderoptions)
 
 ##### `orderExploration` — Summary
 The exploration's third step: its columns ordered from the given start, with the lanes and each card's rows the order chose.
 
+#### `commonDirectory` {#symbol-commondirectory}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L206)
+
+##### `commonDirectory` — Summary
+The deepest directory every given directory is in or under; "" when they share none.
+
+#### `membraneDirectory` {#symbol-membranedirectory}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L223)
+
+##### `membraneDirectory` — Summary
+The membrane a file's directory belongs to when only `depth` levels below the common directory are membranes: the
+directory cut to that many levels below the root, the root itself at zero, the directory as it is when depth is null.
+
 #### `compareSymbolNames` {#symbol-comparesymbolnames}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L213)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L244)
 
 ##### `compareSymbolNames` — Summary
 Alphabetical order of symbol names, case first set aside, then as the names compare.
 
 #### `rankBranches` {#symbol-rankbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L229)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L260)
 - Returns: [`BranchRanking`](#symbol-branchranking)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]; `options`: [`RankingOptions`](#symbol-rankingoptions)
 
