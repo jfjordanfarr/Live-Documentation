@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-10-07T15:18:06.793Z
+- Generated At: 2026-10-07T21:57:23.535Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ Since 2026-10-06 (the layout lab's first milestone) this module is the page's sh
 - The continuing search (2026-10-07, [Turn 17](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-17)): the first paint's measurer writes the page's answers that no start changes into `PageAnswers` (each card's natural width and height at its column's width, each drawn directory's label height), and `rowsOf` measures each card's rows once at the chosen order; after the first paint the stage's `Search` runs one seeded start per idle moment (`scheduleSearch`, `requestIdleCallback` or a timer), each ordered, planned and placed from the answers through `answersMeasurer` and judged by `branch-search.ts` against the shown picture's own price with its churn against the shown tops; an adopted picture has its rows stood on the cards, is measured on the page through `pageMeasurer`, placed, priced exactly and shown through `showScene`, the same way a render's picture is, moving; the search waits for a move to end and begins afresh on every render; `writeSearch` puts its state on the root (`data-search-status`, `-tried`, `-next`, `-adopted`, `-shown`, `-priced`) and no text announces it. A forced seed searches nothing. `showScene` is the part of a render after the picture is chosen, factored out so that the search's adoption and a render share it.
 - Later on 2026-10-07 the root also says the best price the search has found, churn aside (`data-search-best`), and an adopted picture's price as the page measures it becomes the best found as well as the shown price, unless an earlier start priced lower.
 - The exploration takes the tuning's `membraneDepth` (2026-10-07), the lab's lever for the membrane rule; at its default of null nothing changes.
+- The scene tuning carries the two shape weights, `membraneEvenness` and `rowLevelness`, from the Local Map tuning (2026-10-07).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -81,7 +82,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L204)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L205)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

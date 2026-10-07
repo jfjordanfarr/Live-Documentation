@@ -297,6 +297,9 @@ span.local-disclosure { cursor: default; }
 .connection-path.back-route:not(.connection-highlighted) { display: none; }
 /* The shared run of a bundle beneath its wires, as wide as their number; it carries no reference and never highlights. */
 .connection-path.bundle-run { opacity: .45; stroke-linecap: butt; }
+/* Under a hover the run dims with every wire it carries; without this rule its own opacity above outranked the hover's
+   dimming, and the runs stood out as the thick bright lines of a picture otherwise dimmed (the owner's report, 2026-10-07). */
+.symbol-hover-active .connection-path.bundle-run { opacity: var(--hover-dim-connections, 0.1); }
 /* While the picture moves, the wires are redrawn every frame and go without their glow, whose filters cost more than the
    rest of the frame together; the glow returns at rest (2026-10-07). */
 .connections-layer.moving .connection-path { filter: none; }

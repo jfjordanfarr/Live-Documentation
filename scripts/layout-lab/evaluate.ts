@@ -38,10 +38,12 @@ export interface LabConfig {
   membranePadding: number;
   cardMaxWidth: number | null;
   membraneDepth: number | null;
+  membraneEvenness: number;
+  rowLevelness: number;
 }
 
 /** The levers in the order the reports name them. */
-export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth"];
+export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "rowLevelness"];
 
 /** The page's own tuning: the configuration the picture was designed at. */
 export function baselineConfig(): LabConfig {
@@ -96,7 +98,8 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
     const plan = planBranches(branches, config.membranePadding);
     const measurer = capturedMeasurer(capture, branches, { pins, selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin });
     const scene = layoutScene(plan, branches, measurer, {
-      columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth
+      columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth,
+      evenness: config.membraneEvenness, levelness: config.rowLevelness
     });
     metricsOf.set(scene, measurer.metrics);
     return { branches, scene };

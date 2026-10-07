@@ -120,6 +120,48 @@ What the tables say:
 
 So, to the owner's question: neither two dimensions nor the browser is the wall these scopes meet. The measured price of the membrane rule is almost entirely the room the design gives membranes to be legible, a dial already in the tuning (padding, band gap, neck), and the remainder is the order heuristic's distance from the best start it could find. What the lab cannot price is the eye: a membrane with no room hugs its cards and touches its siblings, and a picture without membranes loses where a file lives except by the path under its name ([the pictures](../../Screenshots/2026-10-07/README.md#the-membrane-rule-relaxed-later-on-october-7)).
 
+## The membranes' shape priced, later on October 7
+
+The owner's first look at the hosted build ([Turn 4 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-4)): "We need a force which optimizes for the _prevention_ of membrane _unevenness_ ... Directories should be rewarded for rectangularity and punished for strange ameboid shapes, in a way which is configurable and we can sweep through." Built as two levers of the exact placement, each a weight in units of a one-reference wire's pixel: `membraneEvenness` charges every step between a membrane's neighbouring segments, top and bottom, so that the outline tends to the rectangle around its members, bought by stretching the segments rather than moving cards; `rowLevelness` charges the difference between the tops of the k-th cards of a membrane's neighbouring columns, which moves cards against their wires. Two signals read them back from the scene, `unevenness` and `unlevel`, and the first grid walks both at 0, 0.5, 1, 2 and 5; the full score does not weigh them, so it says what they cost.
+
+```
+npm run layout:lab -- sweep <bundle/scope> --grid "membraneEvenness=0,0.5,1,2,5;rowLevelness=0,0.5,1,2,5" --sample 25 --label evenness
+```
+
+The reports are beside this page (`*-evenness.md`), each lever alone and the pairs. One lever at a time, against the baseline of both at zero:
+
+| Scope | Lever | Length px | Crossing spots | Foreign samples | Escaping wires / samples | Unevenness px | Unlevel px | Full score |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| This repository, five files | baseline | 299,570 | 796 | 3,667 | 55 / 2,076 | 17,762 | 1,177 | 2.200 |
+| | evenness 0.5 | 299,862 (+0.1%) | 780 | 3,714 | 29 / 770 | 9,129 | 1,165 | 2.134 |
+| | evenness 1 | 299,952 (+0.1%) | 779 | 3,723 | 29 / 770 | 9,043 | 1,164 | 2.135 |
+| | evenness 5 | 308,297 (+2.9%) | 765 | 4,096 | 27 / 679 | 4,491 | 665 | 2.180 |
+| | levelness 5 | 302,111 (+0.8%) | 798 | 3,677 | 46 / 2,142 | 16,892 | 511 | 2.211 |
+| This repository, the chain | baseline | 402,221 | 1,456 | 2,637 | 97 / 4,745 | 24,736 | 2,827 | 2.200 |
+| | evenness 0.5 | 402,682 (+0.1%) | 1,414 | 2,952 | 13 / 1,388 | 11,040 | 2,326 | 2.145 |
+| | evenness 1 | 402,724 (+0.1%) | 1,416 | 2,955 | 13 / 1,388 | 10,937 | 2,345 | 2.146 |
+| | evenness 5 | 417,669 (+3.8%) | 1,385 | 4,477 | 13 / 1,342 | 4,126 | 1,214 | 2.297 |
+| | levelness 5 | 402,777 (+0.1%) | 1,464 | 2,595 | 96 / 4,788 | 23,745 | 2,037 | 2.198 |
+| The estate, five files | baseline | 65,373 | 49 | 160 | 5 / 64 | 2,161 | 580 | 2.200 |
+| | evenness 0.5 | 65,394 (+0.0%) | 50 | 160 | 2 / 24 | 886 | 580 | 2.144 |
+| | evenness 1 | 65,468 (+0.1%) | 50 | 160 | 2 / 24 | 801 | 495 | 2.145 |
+| | evenness 5 | 66,140 (+1.2%) | 55 | 270 | 1 / 17 | 455 | 414 | 2.309 |
+| | levelness 5 | 65,596 (+0.3%) | 53 | 210 | 3 / 58 | 1,973 | 393 | 2.281 |
+| The estate, the chain | baseline | 37,728 | 34 | 105 | 2 / 12 | 922 | 200 | 2.200 |
+| | evenness 0.5 | 37,275 (−1.2%) | 29 | 44 | 0 / 0 | 52 | 136 | 1.953 |
+| | evenness 1 | 37,275 (−1.2%) | 29 | 44 | 0 / 0 | 52 | 136 | 1.953 |
+| | evenness 5 | 37,373 (−0.9%) | 29 | 54 | 0 / 0 | 7 | 112 | 1.975 |
+| | levelness 5 | 37,891 (+0.4%) | 34 | 110 | 2 / 12 | 936 | 145 | 2.214 |
+
+What the four say:
+
+- **Evenness at 0.5 to 1 halves the outline's steps on every scope for a tenth of a percent of wire**, and it does what the owner's rounding of 2026-10-07 wanted: far fewer wires escape their membrane (55 to 29 on the five files, 97 to 13 on the chain, 5 to 2 and 2 to 0 on the estate's), because a rectangle catches the wires between its own members that a staircase let out through its steps. The crossing spots fall by 2 to 15%. The full score falls on all four scopes; the estate's chain gets shorter outright.
+- **At 5 the wire pays**, 1 to 4% on the three scopes with room to lose, and foreign samples rise by a tenth to two thirds, as rectangles reach over wires that do not belong to them. The owner's "it's understandable that it wouldn't form a perfect grid due to the tugs of the other forces" is this trade; 1 is the default since this day, the owner's eye on the hosted build to settle it.
+- **Levelness alone buys little below 5 and costs wire at 5**, since it moves cards against their wires where evenness only stretches outlines; on the estate's five files at 5 the crossing spots rise 8%. It stays a dial at zero.
+- **The two together add nothing the first alone lacks** on these scopes (the pairs are in the reports).
+
+The pictures of the owner's warehouse scene at these settings are under [Screenshots/2026-10-07](../../Screenshots/2026-10-07/README.md#the-membranes-shape-priced-and-the-bundles-runs-dimmed-later-on-october-7).
+
 ## Open
 
 - The membranes' room was the owner's trade, and they made it on seeing the pictures ([Turn 21](../../ChatHistory/2026/10/2026-10-06.1.record.md#turn-21)): "'Every level, the default' was the clear readability winner to the human eye. I think we've found the wall with this respective set of rules." The defaults stand; a membrane allowed to overlap its sibling by a few pixels (a negative band gap) remains the relaxation that pays most per pixel of room, should the eye ever want it.
@@ -127,3 +169,4 @@ So, to the owner's question: neither two dimensions nor the browser is the wall 
 - The pull as a fork: a page search that samples it needs a membrane term in the price and a smoother move across column changes; or the lab's reading sets fixed defaults, which today are the baseline's.
 - The rules not yet levers: wires behind cards instead of through lanes, sub-columns for a tall rank, a backward reference drawn backward, a soft gap in the solver; each a larger change of the order step or the placement.
 - The sweep count at two, for the owner's go (withdrawn later on 2026-10-07: see the correction under the wider space's reading; it stays at four); a churn weighted by where the eye is, or a ramp, should chains of small moves appear; the churn's blindness to rows reordering within a card.
+- Whether the row levelness earns a default above zero by the owner's eye, and whether the picture's root, drawn as nothing, should price its loose files' rows as a membrane does (later on 2026-10-07).

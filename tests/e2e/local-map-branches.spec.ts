@@ -202,6 +202,29 @@ test("a retained exploration threads skipped references through lanes: nothing o
   await expect(nudge).toHaveAttribute("title", /references skip columns/);
 });
 
+test("a hovered row dims every wire it does not touch, the bundles' shared runs among them, and the runs return at rest", async ({ page }) => {
+  await start(page);
+  await branches(page);
+  const runs = await page.locator(".connection-svg .connection-path.bundle-run").count();
+  expect(runs, "the scene has bundles whose shared runs are drawn").toBeGreaterThan(0);
+  await pin(page, "helpers.ts", "format").hover();
+  await page.waitForTimeout(400);
+  const wires = await page.locator(".connection-svg .connection-path").evaluateAll(elements => elements.map(element => ({
+    highlighted: element.classList.contains("connection-highlighted"),
+    run: element.classList.contains("bundle-run"),
+    opacity: Number(getComputedStyle(element).opacity)
+  })));
+  expect(wires.filter(wire => wire.highlighted).length, "the hovered row's wires stay bright").toBeGreaterThan(0);
+  for (const wire of wires) {
+    if (wire.highlighted) expect(wire.opacity).toBe(1);
+    else expect(wire.opacity, wire.run ? "a bundle's shared run dims with the wires it carries" : "a wire the row does not touch dims").toBeLessThanOrEqual(0.1);
+  }
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(400);
+  const rested = await page.locator(".connection-svg .connection-path.bundle-run").first().evaluate(element => Number(getComputedStyle(element).opacity));
+  expect(rested, "at rest a run is drawn at its own opacity beneath its wires").toBeCloseTo(0.45, 2);
+});
+
 test("a lane's slots spread to the wires through them where the wires ask", async ({ page }) => {
   // The five-file scope's lanes all stand at pitch since the span-minimal ranking (2026-10-06); on the chain scope the wires still ask.
   await page.setViewportSize({ width: 1600, height: 1000 });

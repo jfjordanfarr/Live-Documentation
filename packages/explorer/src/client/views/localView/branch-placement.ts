@@ -31,6 +31,18 @@ import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
  * height costs one unit against a wire's million, so no box is taller than
  * its members and the wires need, and the wires are never traded for it.
  *
+ * Two shapes may be priced beside the wires, each by a weight in units of a
+ * one-reference wire (the owner's ask of 2026-10-07, that a membrane be
+ * rewarded for rectangularity and its cards for standing level): the
+ * evenness weight charges every pixel of step between a membrane's
+ * neighbouring segments, top and bottom, so that at a high weight the outline
+ * is the rectangle around its members, stretched rather than moving a card
+ * since a box's height is nearly free; and the levelness weight charges every
+ * pixel between the tops of the k-th cards of a membrane's neighbouring
+ * columns, which does move cards, the wires paying where the weight says so.
+ * Both are auxiliary nodes of the same kind a wire is. At zero, neither
+ * exists and the picture is the wires' alone.
+ *
  * Pure-function module: no DOM. Heights, offsets and gaps are CSS pixels of
  * the unscaled page, rounded to integers; the renderer measures them before
  * placing and reads the positions back as absolute tops.
@@ -65,6 +77,8 @@ export interface PlacementBand {
   maxColumn: number;
   /** The membrane's row among its siblings; where a sibling in a lower row shares a column, its segment there stands below. */
   row: number;
+  /** Whether the box has a drawn outline whose shape is priced: a membrane, not the picture's root nor a lane. */
+  shaped: boolean;
   /** The items directly in this membrane, each in one of its columns. */
   items: readonly string[];
   children: readonly PlacementBand[];
@@ -103,6 +117,10 @@ export interface PlacementInput {
   bandGap: number;
   /** The least overlap of one membrane's segments in neighbouring columns, so that it is one connected shape. */
   neck: number;
+  /** What a pixel of step between a membrane's neighbouring segments costs, in units of a one-reference wire's pixel; zero, or absent, leaves the outline to its members. */
+  evenness?: number;
+  /** What a pixel between the tops of the k-th cards of a membrane's neighbouring columns costs, in the same units; zero, or absent, leaves the cards to their wires. */
+  levelness?: number;
 }
 
 /** The placement: every item's top, every membrane's segments, and the objective. */
@@ -169,6 +187,7 @@ export function placeBranches(input: PlacementInput): Placement {
   });
 
   const spans = new Map<string, PlacementBand>();
+  const even = Math.round((input.evenness ?? 0) * WIRE_WEIGHT), level = Math.round((input.levelness ?? 0) * WIRE_WEIGHT);
   const visit = (bands: readonly PlacementBand[]): void => {
     for (const band of bands) {
       spans.set(band.key, band);
@@ -200,6 +219,30 @@ export function placeBranches(input: PlacementInput): Placement {
         if (column > band.minColumn) {
           constraints.push({ tail: segmentTop(band.key, column - 1), head: segmentBottom(band.key, column), delta: neck, weight: 0 });
           constraints.push({ tail: segmentTop(band.key, column), head: segmentBottom(band.key, column - 1), delta: neck, weight: 0 });
+        }
+      }
+      // The shape's price, where a weight asks: a step between neighbouring segments' tops or bottoms costs the evenness
+      // weight per pixel, and the k-th cards of neighbouring columns cost the levelness weight per pixel between their
+      // tops, each through an auxiliary node both stay above, as a wire's pins do (the cost is then the distance).
+      if (band.shaped && (even > 0 || level > 0)) {
+        const members = new Set(band.items);
+        const cardsOf = (column: number): string[] => input.columns[column].filter((entry): entry is string => typeof entry === "string" && members.has(entry));
+        for (let column = band.minColumn + 1; column <= band.maxColumn; column++) {
+          if (even > 0) {
+            for (const [edge, name] of [[segmentTop, "top"], [segmentBottom, "bottom"]] as const) {
+              const aux = node(`even\0${band.key}\0${column}\0${name}`);
+              constraints.push({ tail: aux, head: edge(band.key, column - 1), delta: 0, weight: even });
+              constraints.push({ tail: aux, head: edge(band.key, column), delta: 0, weight: even });
+            }
+          }
+          if (level > 0) {
+            const left = cardsOf(column - 1), right = cardsOf(column);
+            for (let k = 0; k < Math.min(left.length, right.length); k++) {
+              const aux = node(`level\0${band.key}\0${column}\0${k}`);
+              constraints.push({ tail: aux, head: itemNode(left[k]), delta: 0, weight: level });
+              constraints.push({ tail: aux, head: itemNode(right[k]), delta: 0, weight: level });
+            }
+          }
         }
       }
       visit(band.children);

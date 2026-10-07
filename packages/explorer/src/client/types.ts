@@ -109,6 +109,17 @@ export interface LocalMapTuning {
   /** A card may be no wider than this; null for as wide as its content asks. */
   cardMaxWidth: number | null;
   /**
+   * What a pixel of step between a membrane's neighbouring segments costs the placement, in units of a one-reference
+   * wire's pixel: at zero the outline follows its members column by column; higher, it tends to the rectangle around
+   * them. The owner's ask of 2026-10-07, that a directory be rewarded for rectangularity, as a lever of the layout lab.
+   */
+  membraneEvenness: number;
+  /**
+   * What a pixel between the tops of the k-th cards of a membrane's neighbouring columns costs, in the same units: at
+   * zero the cards stand where their wires are shortest; higher, they stand in rows, the wires paying (2026-10-07).
+   */
+  rowLevelness: number;
+  /**
    * How many levels of directory below the retained files' common directory are membranes; null for every level. A
    * lever of the layout lab for pricing the membrane rule (2026-10-07): at zero the cards interleave freely.
    */

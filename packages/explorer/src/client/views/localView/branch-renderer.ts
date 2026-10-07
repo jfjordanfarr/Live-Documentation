@@ -126,7 +126,8 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   root.style.gridTemplateColumns = "";
   root.style.alignItems = "";
   const sceneTuning: SceneTuning = {
-    columnGap: tuning.columnGap, itemGap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.membraneNeck, bandPadding: tuning.membranePadding, cardMaxWidth: tuning.cardMaxWidth
+    columnGap: tuning.columnGap, itemGap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.membraneNeck, bandPadding: tuning.membranePadding, cardMaxWidth: tuning.cardMaxWidth,
+    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness
   };
 
   // The cards, once per render, each built afresh for this render's state inside the wrapper that stood for its file

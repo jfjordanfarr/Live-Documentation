@@ -109,6 +109,16 @@
             <input type="range" id="tuning-column-gap" min="24" max="160" step="4" value="100" />
             <output id="tuning-column-gap-value">100</output>
           </label>
+          <label class="tuning-slider" title="What a step in a directory's outline between neighbouring columns costs the layout, in wires per pixel: at zero the outline follows its files; higher, it tends to a rectangle">
+            <span>Membrane Evenness</span>
+            <input type="range" id="tuning-membrane-evenness" min="0" max="5" step="0.25" value="1" />
+            <output id="tuning-membrane-evenness-value">1</output>
+          </label>
+          <label class="tuning-slider" title="What a difference between the tops of a directory's cards in neighbouring columns costs, in wires per pixel: at zero each card stands where its wires are shortest; higher, the cards stand in rows">
+            <span>Row Levelness</span>
+            <input type="range" id="tuning-row-levelness" min="0" max="5" step="0.25" value="0" />
+            <output id="tuning-row-levelness-value">0</output>
+          </label>
           <label class="tuning-slider">
             <span>Hover Dim (Symbols)</span>
             <input type="range" id="tuning-hover-dim-symbols" min="0.1" max="0.8" step="0.05" value="0.5" />

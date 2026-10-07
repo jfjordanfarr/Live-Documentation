@@ -14,6 +14,7 @@ A run's report as markdown a person reads and as JSON the next analysis loads.
 ### Notes
 
 The capture's date and warnings, the drift check, the baseline's signals, each lever alone in its own table, the twelve best by the weighted score with only the levers they moved named, the trade between length and crossings, and what the numbers are.
+- Two columns since 2026-10-07, Unevenness and Unlevel, after the placement measure.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

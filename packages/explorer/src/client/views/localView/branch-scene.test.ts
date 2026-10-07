@@ -95,7 +95,15 @@ describe("the Local Map's scene", () => {
     const [laneKey, lines] = [...scene.slotLines][0];
     expect(plan.lanes.has(laneKey)).toBe(true);
     expect(lines).toEqual([6 + SLOT_LINE]);
-    expect(scene.placement.cost).toBe(placementCost(scene.wires, scene.tops));
+    // The positions the scene publishes, the cards' tops and the lanes' slot lines alike, give back the placement's own
+    // cost: the slot wires carry cost here, since the lane stands above y in its column while its slot wants x's pin.
+    const published = new Map(scene.tops);
+    for (const [key, lines] of scene.slotLines) {
+      const box = plan.lanes.get(key)!;
+      lines.forEach((line, i) => published.set(box.slots![i], box.top + line - SLOT_LINE));
+    }
+    expect(placementCost(scene.wires, published)).toBe(scene.placement.cost);
+    expect(scene.placement.optimal).toBe(true);
     let lowest = 0;
     for (const [id, top] of scene.tops) lowest = Math.max(lowest, top + scene.heights.get(id)!);
     expect(scene.pictureHeight).toBeGreaterThanOrEqual(lowest);

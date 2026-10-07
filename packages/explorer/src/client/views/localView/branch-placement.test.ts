@@ -4,8 +4,8 @@ import { placeBranches, placementCost, type PlacementBand, type PlacementInput, 
 
 const heights = (pairs: Array<[string, number]>): Map<string, number> => new Map(pairs);
 
-const band = (key: string, items: string[], columns: [number, number], row = 0, children: PlacementBand[] = [], inset: [number, number] = [30, 12]): PlacementBand =>
-  ({ key, insetTop: inset[0], insetBottom: inset[1], minColumn: columns[0], maxColumn: columns[1], row, items, children });
+const band = (key: string, items: string[], columns: [number, number], row = 0, children: PlacementBand[] = [], inset: [number, number] = [30, 12], shaped = key !== "root"): PlacementBand =>
+  ({ key, insetTop: inset[0], insetBottom: inset[1], minColumn: columns[0], maxColumn: columns[1], row, items, children, shaped });
 
 const wire = (from: [string, number], to: [string, number], weight = 1): PlacementWire => ({ from: { item: from[0], offset: from[1] }, to: { item: to[0], offset: to[1] }, weight });
 
@@ -15,7 +15,7 @@ const PITCH = 7, PADDING = 6, LINE = Math.floor(PITCH / 2);
 /** A lane of `count` slots in one column, as the stack entry and as the band around its slots. */
 const lane = (key: string, column: number, count: number, row = 0): { entry: PlacementLane; band: PlacementBand; slots: string[]; heights: Array<[string, number]> } => {
   const slots = Array.from({ length: count }, (_, i) => `${key}/${i}`);
-  return { entry: { key, slots }, band: band(key, slots, [column, column], row, [], [PADDING, PADDING]), slots, heights: slots.map(slot => [slot, PITCH] as [string, number]) };
+  return { entry: { key, slots }, band: band(key, slots, [column, column], row, [], [PADDING, PADDING], false), slots, heights: slots.map(slot => [slot, PITCH] as [string, number]) };
 };
 
 /**
@@ -268,6 +268,54 @@ describe("placing the retained files", () => {
     expect(m1.bottom - m1.top).toBeGreaterThanOrEqual(60);
     expect(m2.bottom).toBe(p + 240);
     expect(Math.min(m1.bottom, m2.bottom) - Math.max(m1.top, m2.top)).toBe(60);
+  });
+
+  it("prices a membrane's steps under the evenness weight: the outline comes level by stretching, and no card moves for it", () => {
+    // a (left) and b (right) share a membrane; b's pin at 90 meets a's pin at 10, so b stands 80 px above a and the outline steps.
+    const input: PlacementInput = {
+      columns: [["a"], ["b"]],
+      heights: heights([["a", 100], ["b", 100]]),
+      wires: [wire(["a", 10], ["b", 90])],
+      bands: [band("root", [], [0, 1], 0, [band("m", ["a", "b"], [0, 1])], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60
+    };
+    const stepped = placeBranches(input);
+    const [left, right] = stepped.boxes.get("m")!;
+    expect(stepped.top.get("a")! - stepped.top.get("b")!).toBe(80);
+    expect(left.top).not.toBe(right.top);
+    expect(left.bottom).not.toBe(right.bottom);
+    const even = placeBranches({ ...input, evenness: 1 });
+    const [evenLeft, evenRight] = even.boxes.get("m")!;
+    expect(evenLeft.top).toBe(evenRight.top);
+    expect(evenLeft.bottom).toBe(evenRight.bottom);
+    // The rectangle is bought by stretching the segments, which is nearly free, not by moving a card against its wire.
+    expect(even.top.get("a")! - even.top.get("b")!).toBe(80);
+    expect(even.cost).toBe(0);
+    expect(even.optimal).toBe(true);
+    expectWellFormed(input, even);
+  });
+
+  it("levels the k-th cards of neighbouring columns under the levelness weight, the wire paying where the weight outranks it", () => {
+    const input: PlacementInput = {
+      columns: [["a"], ["b"]],
+      heights: heights([["a", 100], ["b", 100]]),
+      wires: [wire(["a", 10], ["b", 90])],
+      bands: [band("root", [], [0, 1], 0, [band("m", ["a", "b"], [0, 1])], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60
+    };
+    // A levelness below the wire's weight loses to it: the cards stay where the wire wants.
+    const light = placeBranches({ ...input, levelness: 0.5 });
+    expect(light.top.get("a")! - light.top.get("b")!).toBe(80);
+    expect(light.cost).toBe(0);
+    // Above it, the tops come level and the wire pays its 80 px.
+    const heavy = placeBranches({ ...input, levelness: 2 });
+    expect(heavy.top.get("a")).toBe(heavy.top.get("b"));
+    expect(heavy.cost).toBe(80);
+    expect(heavy.optimal).toBe(true);
+    expectWellFormed(input, heavy);
+    // The picture's root is drawn as nothing and never priced, and a membrane with one column has no neighbour to level with.
+    const alone = placeBranches({ ...input, bands: [band("root", ["a", "b"], [0, 1], 0, [], [0, 0])], levelness: 2, evenness: 2 });
+    expect(alone.top.get("a")! - alone.top.get("b")!).toBe(80);
   });
 
   it("refuses an item outside its membrane's columns, and a child reaching outside its parent", () => {

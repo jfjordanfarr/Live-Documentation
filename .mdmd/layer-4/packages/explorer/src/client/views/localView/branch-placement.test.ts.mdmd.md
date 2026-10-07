@@ -14,6 +14,7 @@ Holds the placement to its constraints and its objective: columns in order at th
 ### Notes
 
 Every test checks the placement is well formed by the same predicate, so a change that broke a constraint would fail every test that touches it.
+- Two cases of 2026-10-07 for the shape weights: under the evenness weight a stepped outline comes level by stretching, no card moving and the wire cost unchanged; under a levelness weight above the wire's the k-th cards come level and the wire pays, and below it they do not; the root and a one-column membrane are never priced.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

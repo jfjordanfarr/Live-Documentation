@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-07T14:15:46.098Z
+- Generated At: 2026-10-07T21:57:22.935Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 - The Move slider and the Hold Still select (2026-10-07) set `moveMs` and `holdStill` and persist them; neither redraws anything, since both take effect at the next change of picture. As with every slider, syncing the panel from state writes the slider's value back, so a stored `moveMs` beyond the slider's 1,200 ms comes back as 1,200.
 - The Order Starts, Search Starts and Search Patience sliders (2026-10-07) each re-render the view, since they change which picture is drawn and searched.
 - The Churn Cost slider (2026-10-07, later in the day) sets `churnCost` and re-renders the view like the search's other dials, so the owner can price a swapped pair at nothing and watch; Order Starts' default fell to 2 the same day.
+- Two sliders since 2026-10-07, Membrane Evenness and Row Levelness, wired like Churn Cost: the picture re-renders as they move.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -67,9 +68,11 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-lace-curl`](../../shared/template.html.mdmd.md#symbol-tuning-lace-curl)
 - [`template.tuning-lace-reach`](../../shared/template.html.mdmd.md#symbol-tuning-lace-reach)
 - [`template.tuning-lace-width`](../../shared/template.html.mdmd.md#symbol-tuning-lace-width)
+- [`template.tuning-membrane-evenness`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-evenness)
 - [`template.tuning-move-ms`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms)
 - [`template.tuning-move-ms-value`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms-value)
 - [`template.tuning-order-starts`](../../shared/template.html.mdmd.md#symbol-tuning-order-starts)
+- [`template.tuning-row-levelness`](../../shared/template.html.mdmd.md#symbol-tuning-row-levelness)
 - [`template.tuning-search-patience`](../../shared/template.html.mdmd.md#symbol-tuning-search-patience)
 - [`template.tuning-search-starts`](../../shared/template.html.mdmd.md#symbol-tuning-search-starts)
 - [`template.tuning-self-loop-taper`](../../shared/template.html.mdmd.md#symbol-tuning-self-loop-taper)

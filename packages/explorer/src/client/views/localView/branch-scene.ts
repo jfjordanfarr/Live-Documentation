@@ -35,10 +35,14 @@ export interface SceneTuning {
   bandPadding: number;
   /** A card may be no wider than this; null for as wide as its content asks. */
   cardMaxWidth: number | null;
+  /** What a pixel of step between a membrane's neighbouring segments costs, in units of a one-reference wire's pixel (2026-10-07). */
+  evenness: number;
+  /** What a pixel between the tops of the k-th cards of a membrane's neighbouring columns costs, in the same units (2026-10-07). */
+  levelness: number;
 }
 
 /** The values the picture was designed at. */
-export const DEFAULT_SCENE_TUNING: SceneTuning = { columnGap: 100, itemGap: 24, bandGap: 28, neck: 60, bandPadding: 12, cardMaxWidth: null };
+export const DEFAULT_SCENE_TUNING: SceneTuning = { columnGap: 100, itemGap: 24, bandGap: 28, neck: 60, bandPadding: 12, cardMaxWidth: null, evenness: 1, levelness: 0 };
 
 /** The outline's stroke, outside the padding. */
 export const BAND_BORDER = 1;
@@ -292,9 +296,12 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
 
   const toPlacementBand = (box: SceneBox): PlacementBand => ({
     key: box.key, insetTop: box.insetTop, insetBottom: box.insetBottom, minColumn: box.minColumn, maxColumn: box.maxColumn, row: box.row,
-    items: box.items, children: box.children.map(toPlacementBand)
+    shaped: box.kind === "directory", items: box.items, children: box.children.map(toPlacementBand)
   });
-  const placement = placeBranches({ columns, heights, wires: [...wires.values()], bands: [toPlacementBand(root)], gap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.neck });
+  const placement = placeBranches({
+    columns, heights, wires: [...wires.values()], bands: [toPlacementBand(root)],
+    gap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.neck, evenness: tuning.evenness, levelness: tuning.levelness
+  });
 
   const placeDown = (box: SceneBox): void => {
     const placed = placement.boxes.get(box.key)!;

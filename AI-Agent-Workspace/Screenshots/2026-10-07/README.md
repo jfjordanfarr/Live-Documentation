@@ -61,3 +61,25 @@ Evidence from [Turn 20 of the October 6 session](../../ChatHistory/2026/10/2026-
 | [Depth 2: the packages and the script folders](repository-five-membrane-depth-2.png) | Membranes for `packages/engine`, `packages/explorer`, `scripts/layout-lab` and their peers, nothing deeper: the picture at the first paint, 147,579 px of vertical wire by the page's reading (the lab's model is 0.6% off here, having no measured label for a directory the full picture never draws); the search's best start at this depth is the shortest of any setting that keeps membranes, 129,443 px (−20%), its directories broken in 2 places. |
 | [Every membrane, no room](repository-five-membranes-no-room.png) | The default depth with the padding, the gap between sibling membranes and the neck all at zero: the outlines hug their cards and touch their neighbours, the labels sit on the outlines. 153,280 px of vertical wire at the first paint, the lab agreeing to the pixel; the search's end at this setting, seed 6, is 137,606 px (−15% against the default's 161,899) with no directory broken. The price of the membranes, these pictures say, is their room, not their rule. |
 | [Every level, the default](repository-five-membrane-depth-full.png) | The picture as the page draws it: every directory its own membrane, nested; the cards of a directory together in every column. |
+
+## The owner's pictures of the hosted build, later on October 7
+
+The owner's own screenshots of the build hosted at [Turn 2 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-2), sent with [Turn 4](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-4) and preserved as received. The scene is this repository's Java warehouse sample (`tests/integration/programs/java/warehouse`), App.java retained with three pins, the `model`, `report` and `store` directories as membranes.
+
+| Capture | State |
+| --- | --- |
+| [owner-hosted-warehouse-app.png](owner-hosted-warehouse-app.png) | 1920 × 930, 162,600 bytes, SHA-256 `14358cb4f6ffe614fd3a01681b9d93fb019ad8b08d74d953f13aaa6414d057ac`. The whole scene at rest, no hover: the membranes' outlines step from column to column, which the owner read as "ameboid" and asked to be priced. |
+| [owner-hosted-warehouse-listener-hover.png](owner-hosted-warehouse-listener-hover.png) | 1891 × 710, 120,875 bytes, SHA-256 `54fa9aa2c80600bb801a856c5fde4e980fa3c5ca633515a395f638cc9cc0fb41`. The pointer on Inventory.java's `Listener` row: several wires that touch neither the row nor its partners stay bright, which the owner reported as "not all connectors dim when they should". |
+
+## The membranes' shape priced, and the bundles' runs dimmed, later on October 7
+
+Taken by the agent after [Turn 4 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-4), on the owner's warehouse scene (App.java, Inventory.java and Item.java retained whole, the search off so that each is the first paint), at 3,400 by 1,500 CSS pixels so that the whole picture stands at reading scale. The levers are the new Membrane Evenness and Row Levelness dials; the numbers are the layout lab's for the four deck scopes, in [the probe record](../../Probes/2026-10-07/layout-lab.md#the-membranes-shape-priced-later-on-october-7).
+
+| Capture | State |
+| --- | --- |
+| [warehouse-evenness-0.png](warehouse-evenness-0.png) | Both levers at zero, the picture as the owner saw it drawn: the `store` membrane steps where MemoryInventory.java stands below Inventory.java, and `report` where ReportWriter.java stands below Report.java. |
+| [warehouse-evenness-1.png](warehouse-evenness-1.png) | Membrane Evenness at 1, the default since this day: `report` and `store` are rectangles with their two cards level; the first paint is the ranking's own order here where it was seed 1 before, and the page's price is 0.5% lower. |
+| [warehouse-evenness-5.png](warehouse-evenness-5.png) | Membrane Evenness at 5: the outlines no more even than at 1, the picture back to seed 1's order with its price 0.1% higher; on the deck's scopes this weight pays 1 to 4% of wire. |
+| [warehouse-levelness-5.png](warehouse-levelness-5.png) | Row Levelness at 5, evenness at zero: the cards come level by moving, the outlines following them. |
+| [warehouse-listener-hover-runs-dimmed.png](warehouse-listener-hover-runs-dimmed.png) | The owner's hover on Inventory.java's `Listener` row after the fix, at half size: the wires the row touches bright, every other wire and every bundle's shared run at the dim value. Compare [the owner's picture](owner-hosted-warehouse-listener-hover.png), where the runs stayed at their own opacity. |
+

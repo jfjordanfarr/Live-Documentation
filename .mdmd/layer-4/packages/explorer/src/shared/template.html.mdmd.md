@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-07T14:15:47.817Z
+- Generated At: 2026-10-07T21:57:24.747Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - The Local Map subsection gained the Move slider (`tuning-move-ms`, 0 to 1,200 ms by 50) and the Hold Still select (`tuning-hold-still`: the last clicked card, or the last clicked or hovered) on 2026-10-07, for the animated re-layout.
 - The Local Map subsection gained the Order Starts slider (`tuning-order-starts`, 0 to 16) and the continuing search's Search Starts (`tuning-search-starts`, 0 to 128, zero off) and Search Patience (`tuning-search-patience`, 1 to 32) on 2026-10-07.
 - The Local Map subsection gained the Churn Cost slider (`tuning-churn-cost`, 0 to 400 by 10) later on 2026-10-07, and the Order Starts slider's default fell to 2.
+- The Membrane Evenness and Row Levelness sliders (2026-10-07) stand after Column Gap in the Local Map group, 0 to 5 by a quarter, evenness at 1 by default.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -212,6 +213,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `tuning-lace-width-value` {#symbol-tuning-lace-width-value}
 - Type: variable
 
+#### `tuning-membrane-evenness` {#symbol-tuning-membrane-evenness}
+- Type: variable
+
+#### `tuning-membrane-evenness-value` {#symbol-tuning-membrane-evenness-value}
+- Type: variable
+
 #### `tuning-move-ms` {#symbol-tuning-move-ms}
 - Type: variable
 
@@ -222,6 +229,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-order-starts-value` {#symbol-tuning-order-starts-value}
+- Type: variable
+
+#### `tuning-row-levelness` {#symbol-tuning-row-levelness}
+- Type: variable
+
+#### `tuning-row-levelness-value` {#symbol-tuning-row-levelness-value}
 - Type: variable
 
 #### `tuning-search-patience` {#symbol-tuning-search-patience}

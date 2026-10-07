@@ -14,6 +14,7 @@ Holds the scene's plan and layout to a small exploration with a page of fixed si
 ### Notes
 
 Three files in two directories, one reference skipping a column: the plan has a box per directory, every card inside a drawn directory with the padding and border as its inset, one lane in the skipped column hosted by the directory that holds the provider, and the column's stack holding the card and the lane. The layout is checked against arithmetic: the column widths from the widest card with its insets, the lefts a gap apart, the measurer asked once for widths with no cap and once for heights at each card's column width less its insets and each label at its segment's width, the directory's top inset the inset plus the label's height, the cards inside their segments, four wires with two through the lane's slot at its middle line, the slot line at the lane's padding plus the middle pixel, and the placement's cost equal to the cost of the returned wires at the returned tops. A third test caps the cards' widths through the measurer and takes the gap and padding from the tuning.
+- Since 2026-10-07 the placing-down case recomputes the placement's cost over the positions the scene publishes for cards and for lanes' slots alike, where it had read the cards' tops only: with the evenness weight on, the solver breaks the tie in that scene toward the level arrangement, which puts the cost on the wires through the slot, and a recomputation that skipped the slot read zero against the placement's 148.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -9,7 +9,7 @@
  * @module layout-lab/signals
  */
 import type { Route } from "./routes";
-import type { Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
+import type { Scene, SceneBox } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import type { BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import { membraneOutline } from "../../packages/explorer/src/client/views/localView/membrane-outline";
 import { parentDirectory } from "../../packages/explorer/src/client/views/membraneView/pin-layout";
@@ -48,6 +48,10 @@ export interface Signals {
    * the membranes keep them; counted on the files' real directories whatever membranes the layout drew.
    */
   fragments: number;
+  /** The steps of every membrane's outline between neighbouring columns, top and bottom, in pixels: zero when every membrane is a rectangle. */
+  unevenness: number;
+  /** How far the k-th cards of each membrane's neighbouring columns stand from level, summed, in pixels: zero when every membrane's cards stand in rows. */
+  unlevel: number;
 }
 
 interface Membrane {
@@ -83,6 +87,45 @@ export function fragmentsOf(columns: ReadonlyArray<ReadonlyArray<{ codeRelativeP
     for (const count of runs.values()) fragments += count - 1;
   }
   return fragments;
+}
+
+/** The steps of every membrane's outline between neighbouring columns, top and bottom, summed in pixels. */
+export function unevennessOf(boxes: readonly SceneBox[]): number {
+  let total = 0;
+  for (const box of boxes) {
+    if (box.kind !== "directory") continue;
+    for (let i = 1; i < box.segments.length; i++) {
+      total += Math.abs(box.segments[i].top - box.segments[i - 1].top) + Math.abs(box.segments[i].bottom - box.segments[i - 1].bottom);
+    }
+  }
+  return total;
+}
+
+/**
+ * How far the k-th cards of each membrane's neighbouring columns stand from level, summed over the pairs in pixels:
+ * the cards directly in a membrane, by column in the column's order, the k-th of one column against the k-th of the
+ * next, as the placement prices them under its levelness weight.
+ */
+export function unlevelOf(boxes: readonly SceneBox[], columns: ReadonlyArray<ReadonlyArray<{ id: string }>>, tops: ReadonlyMap<string, number>): number {
+  const place = new Map<string, { column: number; index: number }>();
+  columns.forEach((column, c) => column.forEach((node, i) => place.set(node.id, { column: c, index: i })));
+  let total = 0;
+  for (const box of boxes) {
+    if (box.kind !== "directory") continue;
+    const byColumn = new Map<number, string[]>();
+    for (const item of box.items) {
+      const at = place.get(item);
+      if (!at) continue;
+      if (!byColumn.has(at.column)) byColumn.set(at.column, []);
+      byColumn.get(at.column)!.push(item);
+    }
+    for (const list of byColumn.values()) list.sort((a, b) => place.get(a)!.index - place.get(b)!.index);
+    for (let column = box.minColumn + 1; column <= box.maxColumn; column++) {
+      const left = byColumn.get(column - 1) ?? [], right = byColumn.get(column) ?? [];
+      for (let k = 0; k < Math.min(left.length, right.length); k++) total += Math.abs((tops.get(left[k]) ?? 0) - (tops.get(right[k]) ?? 0));
+    }
+  }
+  return total;
 }
 
 /** Every signal of a laid-out scene and its routes. */
@@ -140,6 +183,8 @@ export function measureScene(scene: Scene, branches: BranchGraph, routes: readon
     pictureHeight: scene.pictureHeight,
     placementCost: scene.placement.cost,
     optimal: scene.placement.optimal,
-    fragments: fragmentsOf(branches.columns)
+    fragments: fragmentsOf(branches.columns),
+    unevenness: unevennessOf(scene.boxes),
+    unlevel: unlevelOf(scene.boxes, branches.columns, scene.tops)
   };
 }

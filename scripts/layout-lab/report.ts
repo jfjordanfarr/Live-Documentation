@@ -46,11 +46,11 @@ export function differences(config: LabConfig, baseline: LabConfig): string {
 }
 
 function signalCells(s: Signals, base: Signals): string {
-  return `${n(s.lengthPx)} (${pct(s.lengthPx, base.lengthPx)}) | ${n(s.horizontalPx)} | ${n(s.verticalPx)} | ${s.crossings.spots} (${pct(s.crossings.spots, base.crossings.spots)}) | ${s.foreignSamples} | ${s.escapingWires} / ${s.escapingSamples} | ${s.passages} | ${s.backward} | ${s.columns} | ${n(s.pictureWidth)} × ${n(s.pictureHeight)} | ${n(s.placementCost)}`;
+  return `${n(s.lengthPx)} (${pct(s.lengthPx, base.lengthPx)}) | ${n(s.horizontalPx)} | ${n(s.verticalPx)} | ${s.crossings.spots} (${pct(s.crossings.spots, base.crossings.spots)}) | ${s.foreignSamples} | ${s.escapingWires} / ${s.escapingSamples} | ${s.passages} | ${s.backward} | ${s.columns} | ${n(s.pictureWidth)} × ${n(s.pictureHeight)} | ${n(s.placementCost)} | ${n(s.unevenness)} | ${n(s.unlevel)}`;
 }
 
-const HEADER = "| Configuration | Length px (vs baseline) | Horizontal | Vertical | Crossing spots (vs baseline) | Foreign samples | Escaping wires / samples | Lane passages | Backward | Columns | Picture w × h | Placement measure | Score |";
-const RULE = "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |";
+const HEADER = "| Configuration | Length px (vs baseline) | Horizontal | Vertical | Crossing spots (vs baseline) | Foreign samples | Escaping wires / samples | Lane passages | Backward | Columns | Picture w × h | Placement measure | Unevenness | Unlevel | Score |";
+const RULE = "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |";
 
 /** The run as a person reads it. */
 export function renderMarkdown(report: RunReport, capture: Capture): string {
