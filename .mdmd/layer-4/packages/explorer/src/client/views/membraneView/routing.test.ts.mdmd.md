@@ -13,7 +13,7 @@ Verifies connection routing classification (front vs. back trace), Bézier path 
 
 ### Notes
 
-- 21 tests covering: front/back classification based on relative X positions, front trace source/target at pin edges, back trace stub polygon generation, edge cases (vertically aligned pins, coincident pins, zero-radius pins), `routeConnection` unified router, and `routeConnections` batch API with result map keying.
+- 21 tests covering: front/back classification based on relative X positions, front trace source/target at pin edges, back trace stub polygon generation, edge cases (vertically aligned pins, coincident pins, zero-radius pins), `routeConnection` unified router, and `routeConnections` batch API with result map keying. Every test pin stands on a card whose edge is 8 px beyond it, since the laces are cut by that edge (2026-10-07).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

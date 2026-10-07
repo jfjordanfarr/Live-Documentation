@@ -11,8 +11,10 @@ import type { PinAnchor, ConnectionToRoute } from "./routing";
 
 // ─── Helpers ───────────────────────────────────────────────────────
 
+/** A pin on a card whose edge stands 8 px beyond the pin, on the pin's side. */
 function makeAnchor(x: number, y: number, direction: "inbound" | "outbound", pinRadius = 6): PinAnchor {
-  return { center: { x, y }, direction, pinRadius };
+  const side = direction === "outbound" ? 1 : -1;
+  return { center: { x, y }, direction, pinRadius, edge: x + side * (pinRadius + 8) };
 }
 
 // ─── classifyTrace ─────────────────────────────────────────────────

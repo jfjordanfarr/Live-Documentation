@@ -49,7 +49,6 @@ export const getDefaultTuning = (): TuningConfig => ({
     laceReach: 18,
     laceCurl: 12,
     laceWidth: 2.5,
-    laceInset: 0,
     collapseOnHover: false,
     collapseOnPin: true,
     strainNudge: 48,
@@ -161,7 +160,6 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const laceReach = readFiniteNumber(localMapRaw.laceReach);
         const laceCurl = readFiniteNumber(localMapRaw.laceCurl);
         const laceWidth = readFiniteNumber(localMapRaw.laceWidth);
-        const laceInset = readFiniteNumber(localMapRaw.laceInset);
         const collapseOnHover = readBoolean(localMapRaw.collapseOnHover);
         const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
         const strainNudge = readFiniteNumber(localMapRaw.strainNudge);
@@ -187,7 +185,6 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(laceReach !== undefined ? { laceReach } : null),
           ...(laceCurl !== undefined ? { laceCurl } : null),
           ...(laceWidth !== undefined ? { laceWidth } : null),
-          ...(laceInset !== undefined ? { laceInset } : null),
           ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
           ...(collapseOnPin !== undefined ? { collapseOnPin } : null),
           ...(strainNudge !== undefined ? { strainNudge } : null),

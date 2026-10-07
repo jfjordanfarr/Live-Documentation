@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/focal-overlay.ts
-- Generated At: 2026-10-02T21:07:39.927Z
+- Generated At: 2026-10-07T01:30:17.424Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf
 
 - Created during [Dev Day 80 Step 6b](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) as the DOM companion to the pure-function `pin-state.ts`, then extended in Step 7 with `attachHopBadges` and `renderPathBreadcrumb`.
 - `renderFocalOverlay` builds absolutely-positioned symbol panels at each pinned node's layout rect, registering `MeasuredAnchor` elements for subsequent connection routing; `drawConnections` must be called after DOM insertion (via `requestAnimationFrame`) so `getBoundingClientRect` returns real positions.
-- Connection rendering delegates to `routeConnection` from `routing.ts`, which classifies each connection as front trace (Bézier) or back trace (French Corset stubs) based on relative pin X positions, then renders the appropriate SVG elements color-coded by edge kind (import=blue, export=green, type=purple). `drawConnections` accepts optional `BezierTuningParams` for live tuning integration.
+- Connection rendering delegates to `routeConnection` from `routing.ts`, which classifies each connection as front trace (Bézier) or back trace (French Corset laces) based on relative pin X positions, then renders the appropriate SVG elements color-coded by edge kind (import=blue, export=green, type=purple). Each pin anchor carries its card's edge on the pin's side, from the pin's `.membrane-card`, by which a back trace's lace is cut (2026-10-07); a pin with no card around it is its own edge. `drawConnections` accepts optional `BezierTuningParams` for live tuning integration.
 - `setupHoverDimming` guards against no-op activation when a symbol has zero connections (`matchCount === 0 → return early`), and marks opposite-end symbols with `.membrane-focal-pin--participating` / `.membrane-row--participating` so users see which endpoints interact during hover.
 - `markConnectedEndpoints` (added [Dev Day 83](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md)) post-processes SVG connection data attributes to apply `.membrane-card__symbol-row--connected` to unpinned endpoint rows, providing always-visible indication of which symbols participate in drawn connections. Uses case-insensitive matching to bridge the lowercase SVG attribute convention with original-case DOM data attributes.
 - `hopLabel` uses Unicode circled numbers (①–⑴) for hop indices 0–19, falling back to parenthesized numbers for larger paths.
@@ -90,7 +90,7 @@ Must be called after the focal overlay panels are inserted into the DOM
 
 #### `hopLabel` {#symbol-hoplabel}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L538)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L545)
 
 ##### `hopLabel` — Summary
 Get the display label for a hop index.
@@ -98,7 +98,7 @@ Uses circled numbers for 0-19, falls back to plain number for larger indices.
 
 #### `attachHopBadges` {#symbol-attachhopbadges}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L553)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L560)
 - Parameters: `panels`: `ReadonlyMap`; `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `attachHopBadges` — Summary
@@ -113,14 +113,14 @@ top-right corner showing the hop index.
 
 #### `BreadcrumbCallbacks` {#symbol-breadcrumbcallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L585)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L592)
 
 ##### `BreadcrumbCallbacks` — Summary
 Callbacks for breadcrumb bar interaction.
 
 #### `renderPathBreadcrumb` {#symbol-renderpathbreadcrumb}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L601)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L608)
 - Parameters: `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`BreadcrumbCallbacks`](#symbol-breadcrumbcallbacks)
 
 ##### `renderPathBreadcrumb` — Summary
@@ -135,7 +135,7 @@ Returns null if no active path exists.
 
 #### `setupHoverDimming` {#symbol-setuphoverdimming}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L686)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L693)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `setupHoverDimming` — Summary
@@ -159,7 +159,7 @@ is called once, not per-row.
 
 #### `clearHoverDimming` {#symbol-clearhoverdimming}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L780)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L787)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `clearHoverDimming` — Summary
@@ -167,7 +167,7 @@ Remove all hover-dimming state from the SVG overlay and container.
 
 #### `markConnectedEndpoints` {#symbol-markconnectedendpoints}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L818)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L825)
 - Parameters: `svgOverlay`: `SVGSVGElement`; `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `markConnectedEndpoints` — Summary

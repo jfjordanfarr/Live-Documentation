@@ -308,7 +308,6 @@ export class LocalViewController implements LocalViewApi {
       getAnchorWithHop: (nodeId, columnRole, hopIndex, direction, symbol) => 
         this.getAnchorWithHop(nodeId, columnRole, hopIndex, direction, symbol),
       measureLayoutExtents: () => this.measureLayoutExtents(),
-      getCenterCardBounds: () => this.getCenterCardBounds(),
       activePath: this.localMapState.getState().activePath ?? undefined,
       branches: this.branches ?? undefined
     });
@@ -772,26 +771,6 @@ export class LocalViewController implements LocalViewApi {
   /** Measures content and column bounding boxes used for fit-to-content and centering calculations. */
   measureLayoutExtents(): LayoutExtents | null {
     return computeLayoutExtents(this.container, this.contentRoot);
-  }
-
-  /**
-   * Returns the bounding box of the center column's node card in viewport-layer coordinates.
-   * Used for self-loop wraparound path routing.
-   */
-  getCenterCardBounds(): { left: number; right: number; top: number; bottom: number } | null {
-    const centerCard = this.container.querySelector<HTMLElement>(".local-column.center .node-card");
-    if (!centerCard || !this.runtime.contentRoot) {
-      return null;
-    }
-    const cardRect = centerCard.getBoundingClientRect();
-    const rootRect = this.runtime.contentRoot.getBoundingClientRect();
-    const scale = this.mapTransform.k;
-    return {
-      left: (cardRect.left - rootRect.left) / scale,
-      right: (cardRect.right - rootRect.left) / scale,
-      top: (cardRect.top - rootRect.top) / scale,
-      bottom: (cardRect.bottom - rootRect.top) / scale
-    };
   }
 
   /** Applies the current {@link mapTransform} to the viewport's CSS `transform`, keeping container and overlay in sync. */

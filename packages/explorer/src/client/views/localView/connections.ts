@@ -4,7 +4,7 @@ import type { LocalViewRuntime } from "./runtime";
 import type { PathResult } from "./state";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
-import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type SelfLoopParams } from "../connection-geometry";
+import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
 /**
@@ -29,10 +29,6 @@ export interface ConnectionsContext {
     symbol?: string
   ) => HTMLElement | null;
   measureLayoutExtents: () => LayoutExtents | null;
-  /** Card bounds for the center node, used for self-loop routing */
-  getCenterCardBounds?: () => { left: number; right: number; top: number; bottom: number } | null;
-  /** Card bounds for a specific hop's center node */
-  getCardBoundsForHop?: (hopIndex: number) => { left: number; right: number; top: number; bottom: number } | null;
   /**
    * The drawn path, when the view is in path mode. Its wires come from the
    * path subgraph in `runtime.currentSubgraph`, one column per file.
@@ -64,16 +60,19 @@ interface Point {
  */
 const PIN_RADIUS = 6;
 
-/** The laces' shape from the Local Map's tuning: its four dials and the taper, with the pin's radius. */
+/** The laces' shape from the Local Map's tuning: its three dials and the taper. */
 function laceShape(tuning: Partial<LocalMapTuning> | undefined): SelfLoopParams {
   return {
-    stubLength: tuning?.laceReach ?? DEFAULT_SELF_LOOP_PARAMS.stubLength,
+    reach: tuning?.laceReach ?? DEFAULT_SELF_LOOP_PARAMS.reach,
     curlAmount: tuning?.laceCurl ?? DEFAULT_SELF_LOOP_PARAMS.curlAmount,
     baseWidth: tuning?.laceWidth ?? DEFAULT_SELF_LOOP_PARAMS.baseWidth,
-    taper: tuning?.selfLoopTaper ?? DEFAULT_SELF_LOOP_PARAMS.taper,
-    pinRadius: PIN_RADIUS,
-    returnInset: tuning?.laceInset ?? 0
+    taper: tuning?.selfLoopTaper ?? DEFAULT_SELF_LOOP_PARAMS.taper
   };
+}
+
+/** The card edges a reference's laces are cut by, from the two pins' cards, in the overlay's frame. */
+function cardEdgesOf(provider: AnchorMeasurement, consumer: AnchorMeasurement, bounds: { left: number }): LaceEdges {
+  return { provider: provider.cardRight - bounds.left, consumer: consumer.cardLeft - bounds.left };
 }
 
 /**
@@ -123,14 +122,12 @@ export function drawConnections(context: ConnectionsContext): void {
 
   const centerId = currentSubgraph.center.id;
 
-  // Get center card bounds for self-loop routing
-  const centerCardBounds = context.getCenterCardBounds?.();
-
-  // Self-loop segments need special wraparound rendering
+  // The file's own references, each a pair of laces at its pins, cut by its card's edges.
   const selfLoopSegments: Array<{
     edge: LocalEdge;
     sourcePoint: Point;
     targetPoint: Point;
+    cardEdges: LaceEdges;
   }> = [];
 
   currentSubgraph.links.forEach(edge => {
@@ -149,7 +146,7 @@ export function drawConnections(context: ConnectionsContext): void {
 
       const sourcePoint = offsetToEdge(providerAnchor, "outbound");
       const targetPoint = offsetToEdge(consumerAnchor, "inbound");
-      selfLoopSegments.push({ edge, sourcePoint, targetPoint });
+      selfLoopSegments.push({ edge, sourcePoint, targetPoint, cardEdges: cardEdgesOf(providerAnchor, consumerAnchor, bounds) });
       return;
     }
 
@@ -200,22 +197,19 @@ export function drawConnections(context: ConnectionsContext): void {
     appendConnectionPath(svg, defs, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace, state.tuning.bezier, gradientId);
   });
 
-  // The file's own references, each a pair of laces at its pins.
-  if (centerCardBounds) {
-    const shape = laceShape(state.tuning.localMap);
-    const ranks = new Map<string, number>();
-    selfLoopSegments.forEach(({ edge, sourcePoint, targetPoint }) => {
-      const adjustedSource = {
-        x: sourcePoint.x - bounds.left,
-        y: sourcePoint.y - bounds.top
-      };
-      const adjustedTarget = {
-        x: targetPoint.x - bounds.left,
-        y: targetPoint.y - bounds.top
-      };
-      appendSelfLoopPath(svg, adjustedSource, adjustedTarget, edge, context.svgNamespace, shape, ranks);
-    });
-  }
+  const shape = laceShape(state.tuning.localMap);
+  const ranks = new Map<string, number>();
+  selfLoopSegments.forEach(({ edge, sourcePoint, targetPoint, cardEdges }) => {
+    const adjustedSource = {
+      x: sourcePoint.x - bounds.left,
+      y: sourcePoint.y - bounds.top
+    };
+    const adjustedTarget = {
+      x: targetPoint.x - bounds.left,
+      y: targetPoint.y - bounds.top
+    };
+    appendSelfLoopPath(svg, adjustedSource, adjustedTarget, cardEdges, edge, context.svgNamespace, shape, ranks);
+  });
 
   overlay.dataset.active = "true";
 }
@@ -356,17 +350,20 @@ function appendGradient(defs: SVGDefsElement, gradientId: string, source: Point,
 
 /**
  * Draws a self-reference as the two laces of the French Corset, one at each
- * pin, from {@link computeSelfLoopStubs}: each leaves its pin, turns toward
- * the other row and returns to the card's edge, as if it ran on behind the
- * card. The laces of one pin that turn the same way nest outward, so a row
- * referred to from several rows below shows as many laces; `ranks` counts
- * them across one drawing. Each lace is a filled polygon in its pin's colour,
- * carrying the reference's symbols for hover.
+ * pin, from {@link computeSelfLoopStubs}: each leaves its pin, sweeps past
+ * its card's edge, turns toward the other row and comes back to be cut by
+ * that edge, as a wire passing behind the card would be. The laces of one
+ * pin that turn the same way nest outward, so a row referred to from several
+ * rows below shows as many laces; `ranks` counts them across one drawing.
+ * Each lace is a filled polygon in its pin's colour, carrying the
+ * reference's symbols for hover. A back reference between two cards gets
+ * the same pair, each lace cut by its own card.
  */
 function appendSelfLoopPath(
   svg: SVGSVGElement,
   source: Point,
   target: Point,
+  cardEdges: LaceEdges,
   edge: LocalEdge,
   svgNamespace: string,
   shape: SelfLoopParams,
@@ -380,7 +377,7 @@ function appendSelfLoopPath(
     ranks.set(key, seen + 1);
     return seen;
   };
-  const laces = computeSelfLoopStubs(source, target, shape, {
+  const laces = computeSelfLoopStubs(source, target, cardEdges, shape, {
     provider: rank(`${edge.targetId}\0out\0${targetSymbol}\0${down ? "down" : "up"}`),
     consumer: rank(`${edge.sourceId}\0in\0${sourceSymbol}\0${down ? "up" : "down"}`)
   });
@@ -515,12 +512,12 @@ function drawBranchConnections(context: ConnectionsContext): void {
     const from = { x: p.x - bounds.left, y: p.y - bounds.top };
     const to = { x: q.x - bounds.left, y: q.y - bounds.top };
     if (edge.sourceId === edge.targetId) {
-      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, shape, laceRanks);
+      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks);
       return;
     }
     const key = edgeKey(edge);
     if (branches.back.has(key)) {
-      appendSelfLoopPath(svg, from, to, edge, context.svgNamespace, shape, laceRanks);
+      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks);
       appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `back-${index}`, undefined, "back-route");
       return;
     }

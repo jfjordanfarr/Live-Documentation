@@ -8,8 +8,8 @@
  * - **Front traces**: Standard Bézier curves (connection flows "naturally"
  *   from outbound pin rightward to inbound pin leftward).
  * - **Back traces**: French Corset laces only — at each pin a lace that
- *   leaves it, turns toward the other and returns to its card's edge,
- *   implying the connection routes "behind the board."
+ *   leaves it, sweeps past its card's edge, turns toward the other and comes
+ *   back to be cut by that edge, implying the connection routes "behind the board."
  *
  * @module routing
  */
@@ -37,6 +37,8 @@ export interface PinAnchor {
   readonly direction: "inbound" | "outbound";
   /** The pin's radius (for edge offset). */
   readonly pinRadius: number;
+  /** The x of the card's edge on the pin's side, where a lace is cut; a pin with no card around it is its own edge. */
+  readonly edge: number;
 }
 
 /**
@@ -126,9 +128,10 @@ export function computeFrontTrace(
 /**
  * Compute the French Corset laces for a backward connection.
  *
- * Each pin gets an independent lace that leaves it, turns toward the other
- * pin's row and returns to its card's edge, as if the wire ran on behind the
- * card. No connecting path is drawn between them.
+ * Each pin gets an independent lace that leaves it, sweeps past its card's
+ * edge, turns toward the other pin's row and comes back to be cut by that
+ * edge, as if the wire ran on behind the card. No connecting path is drawn
+ * between them.
  */
 export function computeBackTrace(
   outbound: PinAnchor,
@@ -146,7 +149,7 @@ export function computeBackTrace(
     y: inbound.center.y,
   };
 
-  const stubs = computeSelfLoopStubs(sourceEdge, targetEdge, { ...params, pinRadius: outbound.pinRadius });
+  const stubs = computeSelfLoopStubs(sourceEdge, targetEdge, { provider: outbound.edge, consumer: inbound.edge }, params);
 
   return {
     kind: "back",

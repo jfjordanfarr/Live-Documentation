@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/routing.ts
-- Generated At: 2026-10-06T01:30:52.967Z
+- Generated At: 2026-10-07T01:30:17.632Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Pure-function connection routing that classifies each pin-to-pin connection as a
 
 - Created during [Dev Day 80 Step 6](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) alongside `focal-overlay.ts`, after an extended design discussion about how to handle backward-facing connections in a 2D treemap layout.
 - The front/back classification is purely spatial: if `outboundPin.x < inboundPin.x`, the connection flows naturally left-to-right (front trace); otherwise it wraps backward (back trace). This is the Membrane Map's adaptation of the "French Corset" pattern established in the Local Map's `connection-geometry.ts`.
-- Front traces delegate to `computeBezierPath` from the shared `connection-geometry.ts` module; back traces delegate to `computeSelfLoopStubs` with the pin's own radius, producing a lace at each pin, a polygon that leaves the pin, turns toward the other and returns to its card's edge, which suggests the connection routes "behind the board" like PCB back-copper. Until 2026-10-06 the pair were straight tapered stubs.
+- Front traces delegate to `computeBezierPath` from the shared `connection-geometry.ts` module; back traces delegate to `computeSelfLoopStubs` with each pin's card edge (`PinAnchor.edge`, the x of the card's edge on the pin's side), producing a lace at each pin, a polygon that leaves the pin, sweeps past its card's edge, turns toward the other and comes back to be cut by that edge, which suggests the connection routes "behind the board" like PCB back-copper. Until 2026-10-06 the pair were straight tapered stubs; until 2026-10-07 the lace returned to the pin's own x over the card.
 - `routeConnections` provides batch routing with opaque `id` correlation, used by the focal overlay to route all visible connections in a single pass after DOM measurement.
 
 ## Generated
@@ -37,21 +37,21 @@ Anchor positions for a single connection endpoint (one pin on one card).
 
 #### `FrontTrace` {#symbol-fronttrace}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L45)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L47)
 
 ##### `FrontTrace` — Summary
 A routed front-trace connection: a full Bézier between two pins.
 
 #### `BackTrace` {#symbol-backtrace}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L58)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L60)
 
 ##### `BackTrace` — Summary
 A routed back-trace connection: two French Corset stubs with no connecting path.
 
 #### `RoutedTrace` {#symbol-routedtrace}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L71)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L73)
 - Returns: [`FrontTrace`](#symbol-fronttrace), [`BackTrace`](#symbol-backtrace)
 
 ##### `RoutedTrace` — Summary
@@ -59,7 +59,7 @@ A routed connection: either a full Bézier (front) or paired stubs (back).
 
 #### `classifyTrace` {#symbol-classifytrace}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L89)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L91)
 - Returns: [`TraceKind`](#symbol-tracekind)
 - Parameters: `outbound`: [`PinAnchor`](#symbol-pinanchor); `inbound`: [`PinAnchor`](#symbol-pinanchor)
 
@@ -80,7 +80,7 @@ need to wrap "backwards" against the L/R directional grammar.
 
 #### `computeFrontTrace` {#symbol-computefronttrace}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L106)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L108)
 - Returns: [`FrontTrace`](#symbol-fronttrace)
 - Parameters: `outbound`: [`PinAnchor`](#symbol-pinanchor); `inbound`: [`PinAnchor`](#symbol-pinanchor); `tuning`: [`BezierTuningParams`](../connection-geometry.ts.mdmd.md#symbol-beziertuningparams)
 
@@ -92,20 +92,21 @@ inbound pin's left edge.
 
 #### `computeBackTrace` {#symbol-computebacktrace}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L133)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L136)
 - Returns: [`BackTrace`](#symbol-backtrace)
 - Parameters: `outbound`: [`PinAnchor`](#symbol-pinanchor); `inbound`: [`PinAnchor`](#symbol-pinanchor); `params`: [`SelfLoopParams`](../connection-geometry.ts.mdmd.md#symbol-selfloopparams)
 
 ##### `computeBackTrace` — Summary
 Compute the French Corset laces for a backward connection.
 
-Each pin gets an independent lace that leaves it, turns toward the other
-pin's row and returns to its card's edge, as if the wire ran on behind the
-card. No connecting path is drawn between them.
+Each pin gets an independent lace that leaves it, sweeps past its card's
+edge, turns toward the other pin's row and comes back to be cut by that
+edge, as if the wire ran on behind the card. No connecting path is drawn
+between them.
 
 #### `routeConnection` {#symbol-routeconnection}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L170)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L173)
 - Returns: [`RoutedTrace`](#symbol-routedtrace)
 - Parameters: `outbound`: [`PinAnchor`](#symbol-pinanchor); `inbound`: [`PinAnchor`](#symbol-pinanchor); `tuning`: [`BezierTuningParams`](../connection-geometry.ts.mdmd.md#symbol-beziertuningparams); `selfLoopParams`: [`SelfLoopParams`](../connection-geometry.ts.mdmd.md#symbol-selfloopparams)
 
@@ -120,7 +121,7 @@ Route a single connection: classify as front or back, then compute geometry.
 
 #### `ConnectionToRoute` {#symbol-connectiontoroute}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L189)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L192)
 
 ##### `ConnectionToRoute` — Summary
 A connection to be routed, pairing the outbound and inbound anchors
@@ -128,7 +129,7 @@ with an opaque identifier for correlation.
 
 #### `routeConnections` {#symbol-routeconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L199)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/routing.ts#L202)
 - Returns: `ReadonlyMap`
 - Parameters: `tuning`: [`BezierTuningParams`](../connection-geometry.ts.mdmd.md#symbol-beziertuningparams); `selfLoopParams`: [`SelfLoopParams`](../connection-geometry.ts.mdmd.md#symbol-selfloopparams)
 

@@ -2205,3 +2205,701 @@ background" completed (exit code 0)
 ● Recorded your membrane thought in ideas.md in your words, with my reading
   beside it for the reply. The laces' gate is still running; the commit and the
   full answer follow when it exits.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ I see screenshots coming in. @AI-Agent-Workspace/Screenshots/2026-10-06/repos
+  itory-five-graph-card-pass-card.png ,  @AI-Agent-Workspace/Screenshots/2026-1
+  0-06/repository-csharp-dependencies-pass-card.png , and  @AI-Agent-Workspace/
+  Screenshots/2026-10-06/repository-staticBuilder-pass-symbol.png definitely
+  don't give off an impression of going "behind" the card. Whereas I asked
+  originally that we focus on trying to get the nubs which loop around to card
+  backs to be more convincing (that is: actually _terminate_ at the card's edge
+  on the loop back around of a single outbound or inbound nub). The dashed
+  lines don't improve the impression of looping-behind, either. Instead, they
+  just make the text hard to read. I'm not confident that drawing the wire
+  between those two self-looping pins is going to get us the perceived look
+  we're going for. It definitely does not give the impression of "behind". If
+  the cards had actual opacity to them (i.e. liquid glass), _maaaaybe_ it would
+  work? But I suspect that it could actually be even worse... and expensive to
+  render... and more confusing relative to the cell membrane look of the
+  engulfing directory.
+
+  I think we'll get a lot more bang for our buck by simply trying to fix up the
+  self-loops such that they are sufficiently distinct from true
+  outbound/inbound connector lines. One could feasibly go around tuning (i.e.
+  via the old "tuning panel" maybe? if it still works?) the parameters which
+  make those draw until something which is distinct in most cases is reached,
+  and that distinct-in-most-cases shape is sufficiently pedagogically correct
+  (the wires being pulled _taut_ in the self-connections, I think, is something
+  which should reasonably set them apart from typical connector wires).
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-10-06/repository-five-graph-card-p
+     ass-card.png (251.1KB)
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-10-06/repository-csharp-dependenci
+     es-pass-card.png (217.1KB)  ⎿  Read AI-Agent-Workspace/Screenshots/2026-10-06/repository-staticBuilder-pas
+     s-symbol.png (91.1KB)
+
+● Your eye decides this one. Stopping the gate that was about to commit the
+  hidden middle, recording your verdict, and looking at what the tuning panel
+  can do for the laces.
+
+  Listed 1 directory (ctrl+o to expand)
+
+● Stop Task
+  ⎿  (npm run safe:commit -- --e2e >
+     /tmp/claude-1000/-workspaces-Live-Documentation/76d2de05-aa3f-4c47-b1d
+     b-fa9555e124bb/scratchpad/restarts/gate2.log 2>&1; echo "e… · stopped
+
+  Searched for 1 pattern, read 1 file, ran 12 shell commands (ctrl+o to expand)
+
+● Four lace shapes are on disk. Looking at them, and running the corset spec
+  with the dials' test at the same time.
+
+  Read 4 files, ran 6 shell commands (ctrl+o to expand)
+
+● The gate for the lace dials is running. The commit and the full reply follow
+  when its log reads exit 0.
+
+● Background command "Run the full pre-commit gate with Playwright for the lace
+dials" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Your eye was right, and the trial is out. Here is where things stand, in the
+  order you raised them.
+
+  The hidden middle, tried and set aside
+
+  I built it, pictured it, and your verdict came before it was committed. The
+  dashed stroke through the card is gone from the code. What remains of the
+  trial is its six pictures in the screenshot README
+  (AI-Agent-Workspace/Screenshots/2026-10-06/README.md#the-laces-hidden-middle-s
+  hown-through-the-card-on-hover-the-night-of-october-6) with your words beside
+  them, and one small side effect kept because it made the drawer simpler: the
+  blue-to-green gradient every wire carries is now built by one helper instead
+  of being written out inline each time.
+
+  The laces, now yours to tune
+
+  Committed as 11210dcd. The laces' shape is four sliders in the Tuning section
+  of the sidebar, beside the taper that was already there:
+
+  - Lace Reach: how far out from its pin a lace sweeps before turning back.
+  - Lace Curl: how far along the card's edge it returns, toward its partner's
+    row.
+  - Lace Width: its width where it leaves the pin.
+  - Lace Inset: how far past the card's edge it ends, inward. Zero ends it on
+    the edge line, where it ended before. More makes it dive under the card
+    body, which is the "terminate at the edge" you asked for.
+
+  Each slider redraws the wires as it moves and persists with the rest of the
+  tuning, so you can work on your own screen. The defaults are unchanged until
+  you settle a shape. Four settings on graph.ts
+  (AI-Agent-Workspace/Screenshots/2026-10-06/README.md#the-laces-shape-as-dials-
+  a-sheet-for-the-owners-eye-the-small-hours-of-october-7) are there to start
+  from. My eye says the one I called "taut" (reach 10, curl 14, taper 0.3, inset
+  4) is closest to a wire pulled tight around the card's back and already reads
+  differently from the connector curves beside it. Yours decides.
+
+  Where this lives, so the map stays in your head: the lace's polygon is
+  computed in connection-geometry.ts, the one pure module both maps share. The
+  Local Map's wire drawer, connections.ts, reads the five numbers from the
+  tuning and hands them to that geometry in both of its drawers, the selected
+  file's and the retained exploration's. The sliders are wired in
+  panels/tuning.ts, declared in the HTML template, and stored by the persistence
+  module like every other dial. Nothing in the layout pipeline changed.
+
+  Your question on motion
+
+  You are half right. The rows' rearrangement is not a separate force. The Local
+  Map has no forces at all. It is three computed steps: rank files into
+  columns, order each column, place everything exactly. The rows' order is a
+  pass inside the second step: once the columns settle, each card's rows are
+  sorted by where their wires lead, then the columns are swept once more at the
+  new heights. It is coupled to the column order, not independent of it.
+
+  So there is nothing to watch crystallize. Each step produces an answer, not a
+  trajectory. Showing the rows shuffling as the map "settles" would be staging a
+  process that does not happen. I think your second instinct is the right one.
+  Motion here has one honest job: carrying identity across a change of picture,
+  so when a pin is added or a directory opens, every card, row and wire slides
+  from where it was to where it now belongs and the eye keeps what it was
+  holding. That is the animated re-layout, next in line. A hover that traces a
+  wire is the other motion the map already has.
+
+  Your membrane thought
+
+  Recorded in ideas.md (AI-Agent-Workspace/Memory/ideas.md) in your words, with
+  my reading beside it. The short version: nothing in the Local Map warbles
+  because its placement is solved, but the contention you want to see is real in
+  it. The membranes' containment, the siblings kept apart, the neck and the
+  gaps are constraints; the wires' length is the objective. A card you drag
+  could become one more constraint the exact placement is re-solved under,
+  warm-started from the last solution so it keeps up with the pointer, with the
+  rise in wire length felt as the card's resistance. That would be the
+  knottedness made tangible, and nothing faked. The animated re-layout is the
+  foundation of that too, as of directories opening and closing. Whether
+  membranes should also breathe when nothing is pulled is for your eye later; my
+  caution is that motion with no cause to read is the staged kind.
+
+  Where the code stands
+
+  The Local Map's many-file picture runs through these modules, in order:
+  branches.ts discloses the retained files and ranks them into columns;
+  branch-order.ts orders each column and reserves the lanes; branch-restarts.ts
+  runs that order step from several starts and keeps the cheapest;
+  branch-scene.ts turns the result into pure geometry with a measurer;
+  branch-placement.ts is the exact solver underneath it; branch-renderer.ts is
+  the page's measurer and builds the DOM; connections.ts draws the wires and
+  laces over it. The lab in scripts/layout-lab/ runs the same modules in node
+  over a capture of the page. Gate for this commit: 1,015 unit, 50 integration,
+  103 Playwright.
+
+  Next is the animated re-layout. I will put its plan in the chat before
+  building.
+
+● Your eye was right, and the trial is out. Here is where things stand, in the
+  order you raised them.
+
+  The hidden middle, tried and set aside
+
+  I built it, pictured it, and your verdict came before it was committed. The
+  dashed stroke through the card is gone from the code. What remains of the
+  trial is its six pictures in the screenshot README
+  (AI-Agent-Workspace/Screenshots/2026-10-06/README.md#the-laces-hidden-middle-s
+  hown-through-the-card-on-hover-the-night-of-october-6) with your words beside
+  them, and one small side effect kept because it made the drawer simpler: the
+  blue-to-green gradient every wire carries is now built by one helper instead
+  of being written out inline each time.
+
+  The laces, now yours to tune
+
+  Committed as 11210dcd. The laces' shape is four sliders in the Tuning section
+  of the sidebar, beside the taper that was already there:
+
+  - Lace Reach: how far out from its pin a lace sweeps before turning back.
+  - Lace Curl: how far along the card's edge it returns, toward its partner's
+    row.
+  - Lace Width: its width where it leaves the pin.
+  - Lace Inset: how far past the card's edge it ends, inward. Zero ends it on
+    the edge line, where it ended before. More makes it dive under the card
+    body, which is the "terminate at the edge" you asked for.
+
+  Each slider redraws the wires as it moves and persists with the rest of the
+  tuning, so you can work on your own screen. The defaults are unchanged until
+  you settle a shape. Four settings on graph.ts
+  (AI-Agent-Workspace/Screenshots/2026-10-06/README.md#the-laces-shape-as-dials-
+  a-sheet-for-the-owners-eye-the-small-hours-of-october-7) are there to start
+  from. My eye says the one I called "taut" (reach 10, curl 14, taper 0.3, inset
+  4) is closest to a wire pulled tight around the card's back and already reads
+  differently from the connector curves beside it. Yours decides.
+
+  Where this lives, so the map stays in your head: the lace's polygon is
+  computed in connection-geometry.ts, the one pure module both maps share. The
+  Local Map's wire drawer, connections.ts, reads the five numbers from the
+  tuning and hands them to that geometry in both of its drawers, the selected
+  file's and the retained exploration's. The sliders are wired in
+  panels/tuning.ts, declared in the HTML template, and stored by the persistence
+  module like every other dial. Nothing in the layout pipeline changed.
+
+  Your question on motion
+
+  You are half right. The rows' rearrangement is not a separate force. The Local
+  Map has no forces at all. It is three computed steps: rank files into
+  columns, order each column, place everything exactly. The rows' order is a
+  pass inside the second step: once the columns settle, each card's rows are
+  sorted by where their wires lead, then the columns are swept once more at the
+  new heights. It is coupled to the column order, not independent of it.
+
+  So there is nothing to watch crystallize. Each step produces an answer, not a
+  trajectory. Showing the rows shuffling as the map "settles" would be staging a
+  process that does not happen. I think your second instinct is the right one.
+  Motion here has one honest job: carrying identity across a change of picture,
+  so when a pin is added or a directory opens, every card, row and wire slides
+  from where it was to where it now belongs and the eye keeps what it was
+  holding. That is the animated re-layout, next in line. A hover that traces a
+  wire is the other motion the map already has.
+
+  Your membrane thought
+
+  Recorded in ideas.md (AI-Agent-Workspace/Memory/ideas.md) in your words, with
+  my reading beside it. The short version: nothing in the Local Map warbles
+  because its placement is solved, but the contention you want to see is real in
+  it. The membranes' containment, the siblings kept apart, the neck and the
+  gaps are constraints; the wires' length is the objective. A card you drag
+  could become one more constraint the exact placement is re-solved under,
+  warm-started from the last solution so it keeps up with the pointer, with the
+  rise in wire length felt as the card's resistance. That would be the
+  knottedness made tangible, and nothing faked. The animated re-layout is the
+  foundation of that too, as of directories opening and closing. Whether
+  membranes should also breathe when nothing is pulled is for your eye later; my
+  caution is that motion with no cause to read is the staged kind.
+
+  Where the code stands
+
+  The Local Map's many-file picture runs through these modules, in order:
+  branches.ts discloses the retained files and ranks them into columns;
+  branch-order.ts orders each column and reserves the lanes; branch-restarts.ts
+  runs that order step from several starts and keeps the cheapest;
+  branch-scene.ts turns the result into pure geometry with a measurer;
+  branch-placement.ts is the exact solver underneath it; branch-renderer.ts is
+  the page's measurer and builds the DOM; connections.ts draws the wires and
+  laces over it. The lab in scripts/layout-lab/ runs the same modules in node
+  over a capture of the page. Gate for this commit: 1,015 unit, 50 integration,
+  103 Playwright.
+
+  Next is the animated re-layout. I will put its plan in the chat before
+  building.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Read tests/e2e/layout-lab.spec.ts (54 lines)
+  ⎿  Read scripts/layout-lab/verify.ts (79 lines)
+  ⎿  Read scripts/layout-lab/sweep.ts (135 lines)
+  ⎿  Read scripts/layout-lab/evaluate.ts (142 lines)
+
+[Image #1]
+
+❯ >the blue-to-green gradient every wire carries is now built by one helper
+  instead of being written out inline each time.
+
+  Savings savings savings! (on cognitive complexity budget) Love it! Yes
+  please!
+
+  Among your four screenshots, @AI-Agent-Workspace/Screenshots/2026-10-06/repos
+  itory-five-graph-card-laces-wide.png  seemed the most convincing, but none of
+  those four were convincing at all. Let me take that screenshot and do a
+  little erasing so you can see what I mean "going behind" should look like....
+  okay just some boxes with the sampled color used to block off some of the
+  places where looping back looks incorrect (fails to go "behind" the card).
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Enlarging the two sides of your marked-up picture so I can read exactly where
+  the boxes sit, then reading the lace geometry, the wire drawer and the layer
+  stacking.
+
+  Searched for 4 patterns, read 2 files, listed 1 directory, ran 12 shell commands (ctrl+o to expand)
+
+● Record updated. Now reading how the Membrane Map builds its pin anchors, so
+  the card's edge can reach the laces there too, then I write the geometry.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Write(tests/e2e/local-map-corset.spec.ts)
+  ⎿  Added 78 lines, removed 58 lines
+       1  import { expect, test, type Page } from "@playwright/test";
+       2  
+       3  import { localMapUrl, localRetainUrl } from "./still-picture";
+       4 +import { getDefaultTuning } from "../../packages/explorer/src/c
+         +lient/persistence/local-storage";                              
+       5 +import type { LocalMapTuning } from "../../packages/explorer/sr
+         +c/client/types";                                               
+       6  import { normalizeSymbolIdentifier } from "../../packages/explo
+          rer/src/client/views/symbolAnchors";
+       7  
+       8  /**
+       9   * The French Corset: a file's own references are drawn as lace
+          s, one at each
+       8 - * pin, that leave the pin, turn toward the partner's row and r
+         -eturn to the                                                   
+       9 - * card's edge. The owner saw two straight stubs of one pin mee
+         -t as a chevron                                                 
+      10 - * that read as an arrowhead (2026-10-05, Turn 14) and asked fo
+         -r a loop-around                                                
+      11 - * shape (Turn 15). These tests hold the laces closed on the ca
+         -rd in both                                                     
+      12 - * drawers, the selected file's and the retained exploration's,
+         - and the                                                       
+      13 - * laces' dials in the tuning panel redrawing them as they move
+         - (2026-10-06,                                                  
+      14 - * Turn 13: the shape is the owner's to tune by eye).          
+      10 + * pin, that leave the pin, sweep past the card's edge, turn to
+         +ward the                                                       
+      11 + * partner's row and come back to be cut flush by the card's ed
+         +ge, as a wire                                                  
+      12 + * passing behind the card would be. The owner saw two straight
+         + stubs of one                                                  
+      13 + * pin meet as a chevron that read as an arrowhead (2026-10-05,
+         + Turn 14), asked                                               
+      14 + * for a loop-around shape (Turn 15), and showed with a marked-
+         +up picture what                                                
+      15 + * "going behind" the card must look like: the return vanishes 
+         +where the                                                      
+      16 + * card's border begins (2026-10-07, Turn 14). These tests hold
+         + the laces to                                                  
+      17 + * that picture in both drawers, the selected file's and the re
+         +tained                                                         
+      18 + * exploration's, and hold the laces' dials in the tuning panel
+         + to the shape                                                  
+      19 + * they name as they move (2026-10-06, Turn 13: the shape is th
+         +e owner's to                                                   
+      20 + * tune by eye).                                               
+      21   */
+      22  
+      23  const FILE = "packages/engine/src/live-docs/adapters/csharp.dep
+          endencies.ts";
+     ...
+      26  
+      27  test.use({ viewport: { width: 1600, height: 1000 } });
+      28  
+      23 -interface Lace { role: "provider" | "consumer"; file: string; s
+         -ymbol: string; left: number; right: number; top: number; bottom
+         -: number }                                                     
+      29 +interface Point { x: number; y: number }                       
+      30 +interface Lace {                                               
+      31 +  role: "provider" | "consumer";                               
+      32 +  file: string;                                                
+      33 +  symbol: string;                                              
+      34 +  left: number; right: number; top: number; bottom: number;    
+      35 +  /** The lace's far end, where the card's edge cuts it, in pag
+         +e pixels. */                                                   
+      36 +  end: Point;                                                  
+      37 +  /** Every point of the lace's outline, in page pixels. */    
+      38 +  points: Point[];                                             
+      39 +}                                                              
+      40  interface Pin { file: string; symbol: string; side: "inbound" |
+           "outbound"; x: number; y: number; diameter: number }
+      41 +interface Card { file: string; left: number; right: number }   
+      42  
+      26 -async function readLaces(page: Page): Promise<{ laces: Lace[]; 
+         -pins: Pin[] }> {                                               
+      43 +async function readLaces(page: Page): Promise<{ laces: Lace[]; 
+         +pins: Pin[]; cards: Card[] }> {                                
+      44    return page.evaluate(() => {
+      45      const laces = [...document.querySelectorAll<SVGPolygonEleme
+          nt>("#map-connections polygon.self-loop")].map(el => {
+      46        const r = el.getBoundingClientRect();
+      47        const provider = el.classList.contains("self-loop-provide
+          r");
+      48 +      // The outline's points in page pixels: the polygon's own
+         + box maps onto its rendered box by one uniform scale.          
+      49 +      const box = el.getBBox();                                
+      50 +      const k = r.width / box.width;                           
+      51 +      const points = Array.from({ length: el.points.numberOfIte
+         +ms }, (_, i) => el.points.getItem(i)).map(p => ({ x: r.left + (
+         +p.x - box.x) * k, y: r.top + (p.y - box.y) * k }));            
+      52 +      // The outline runs out along one side and back along the
+         + other, so the far end is its middle pair.                     
+      53 +      const [a, b] = [points[points.length / 2 - 1], points[poi
+         +nts.length / 2]];                                              
+      54        return {
+      55          role: provider ? "provider" as const : "consumer" as co
+          nst,
+      56          file: provider ? el.dataset.targetId! : el.dataset.sour
+          ceId!,
+      57          symbol: provider ? el.dataset.targetSymbol! : el.datase
+          t.sourceSymbol!,
+      35 -        left: r.left, right: r.right, top: r.top, bottom: r.bot
+         -tom                                                            
+      58 +        left: r.left, right: r.right, top: r.top, bottom: r.bot
+         +tom,                                                           
+      59 +        end: { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 },       
+      60 +        points                                                 
+      61        };
+      62      });
+      63      const pins = [...document.querySelectorAll<HTMLElement>("#m
+          ap-container .node-card .symbol-anchor")].map(el => {
+     ...
+       69          x: (r.left + r.right) / 2, y: (r.top + r.bottom) / 2, 
+           diameter: r.width
+       70        };
+       71      });
+       47 -    return { laces, pins };                                   
+       72 +    const cards = [...document.querySelectorAll<HTMLElement>("
+          +#map-container .node-card")].map(el => {                      
+       73 +      const r = el.getBoundingClientRect();                   
+       74 +      return { file: el.dataset.id!, left: r.left, right: r.ri
+          +ght };                                                        
+       75 +    });                                                       
+       76 +    return { laces, pins, cards };                            
+       77    });
+       78  }
+       79  
+       51 -/** Every lace starts at its pin, reaches out a little way, an
+          -d comes back to the card's edge at the pin's own x. */        
+       52 -async function expectLacesClosed(page: Page, file: string): Pr
+          -omise<number> {                                               
+       53 -  const { laces, pins } = await readLaces(page);              
+       80 +/**                                                           
+       81 + * Every lace of the file starts at its pin, sweeps the shape'
+          +s reach beyond its card's edge, comes back the shape's curl   
+       82 + * along the edge toward its partner's row, and is cut flush w
+          +here the card's edge begins; over the card there is only      
+       83 + * its stem at the pin's row. Returns how many laces the file 
+          +has.                                                          
+       84 + */                                                           
+       85 +async function expectLacesCut(page: Page, file: string, shape:
+          + Pick<LocalMapTuning, "laceReach" | "laceCurl" | "laceWidth"> 
+          += getDefaultTuning().localMap): Promise<number> {             
+       86 +  const { laces, pins, cards } = await readLaces(page);       
+       87    const own = laces.filter(lace => lace.file === file);
+       88    expect(own.length, "the file has self-references, drawn as l
+           aces").toBeGreaterThan(0);
+       89    expect(own.filter(lace => lace.role === "provider").length, 
+           "one lace at each end of every self-reference").toBe(own.filte
+           r(lace => lace.role === "consumer").length);
+       90 +  const card = cards.find(candidate => candidate.file === file
+          +);                                                            
+       91 +  expect(card, `the card of ${file}`).toBeDefined();          
+       92    for (const lace of own) {
+       93      const side = lace.role === "provider" ? "outbound" : "inbo
+           und";
+       94      // Two symbols may share a normalized name (graph.ts's Lin
+           kTarget and linkTarget), so of the pins that carry the
+       95      // lace's name, take the one whose row the lace passes.
+       96      const candidates = pins.filter(candidate => candidate.file
+            === file && candidate.side === side && (normalizeSymbolIdenti
+           fier(candidate.symbol) ?? candidate.symbol) === lace.symbol);
+       62 -    const pin = candidates.sort((a, b) => Math.abs(a.y - (lace
+          -.top + lace.bottom) / 2) - Math.abs(b.y - (lace.top + lace.bot
+          -tom) / 2))[0];                                                
+       97 +    const pin = candidates.sort((a, b) => Math.abs(a.y - lace.
+          +end.y) - Math.abs(b.y - lace.end.y))[0];                      
+       98      expect(pin, `a pin for the ${lace.role} lace of ${lace.sym
+           bol}`).toBeDefined();
+       99      // Pins are drawn 12 CSS px across; the rendered diameter 
+           gives the map's scale.
+      100      const scale = pin!.diameter / 12;
+       66 -    const reach = lace.role === "provider" ? (lace.right - pin
+          -!.x) / scale : (pin!.x - lace.left) / scale;                  
+       67 -    const closed = lace.role === "provider" ? Math.abs(lace.le
+          -ft - pin!.x) / scale : Math.abs(lace.right - pin!.x) / scale; 
+       68 -    expect(closed, `the ${lace.role} lace of ${lace.symbol} re
+          -turns to the card's edge at its pin`).toBeLessThanOrEqual(2); 
+       69 -    expect(reach, `the ${lace.role} lace of ${lace.symbol} rea
+          -ches out past the pin`).toBeGreaterThan(12);                  
+       70 -    expect(reach, `the ${lace.role} lace of ${lace.symbol} sta
+          -ys near its card`).toBeLessThan(45);                          
+       71 -    expect(lace.top, `the ${lace.role} lace of ${lace.symbol} 
+          -passes its pin's row`).toBeLessThanOrEqual(pin!.y + 2 * scale)
+          -;                                                             
+       72 -    expect(lace.bottom, `the ${lace.role} lace of ${lace.symbo
+          -l} passes its pin's row`).toBeGreaterThanOrEqual(pin!.y - 2 * 
+          -scale);                                                       
+       73 -    expect((lace.bottom - lace.top) / scale, `the ${lace.role}
+          - lace of ${lace.symbol} turns along the edge, not into the ope
+          -n`).toBeLessThan(40);                                         
+      101 +    const edge = lace.role === "provider" ? card!.right : card
+          +!.left;                                                       
+      102 +    const outward = lace.role === "provider" ? 1 : -1;        
+      103 +    const name = `the ${lace.role} lace of ${lace.symbol}`;   
+      104 +    expect(Math.abs(lace.end.x - edge) / scale, `${name} is cu
+          +t flush at the card's edge`).toBeLessThanOrEqual(0.75);       
+      105 +    const curl = Math.abs(lace.end.y - pin!.y) / scale;       
+      106 +    expect(curl, `${name} comes back the curl along the edge`)
+          +.toBeGreaterThanOrEqual(shape.laceCurl - 1.5);                
+      107 +    expect(curl, `${name} comes back the curl along the edge`)
+          +.toBeLessThanOrEqual(shape.laceCurl + 1.5);                   
+      108 +    const reach = (lace.role === "provider" ? lace.right - edg
+          +e : edge - lace.left) / scale;                                
+      109 +    expect(reach, `${name} sweeps the reach beyond the card's 
+          +edge`).toBeGreaterThanOrEqual(shape.laceReach - 0.75);        
+      110 +    expect(reach, `${name} sweeps the reach beyond the card's 
+          +edge`).toBeLessThanOrEqual(shape.laceReach + shape.laceWidth /
+          + 2 + 0.75);                                                   
+      111 +    const inside = lace.points.filter(point => outward * (poin
+          +t.x - edge) < -0.5 * scale);                                  
+      112 +    expect(inside.length, `${name} has a stem over the card`).
+          +toBeGreaterThan(2);                                           
+      113 +    for (const point of inside) expect(Math.abs(point.y - pin!
+          +.y) / scale, `${name} over the card is only its stem at the pi
+          +n's row`).toBeLessThanOrEqual(shape.laceWidth / 2 + 1);       
+      114 +    expect(lace.top, `${name} passes its pin's row`).toBeLessT
+          +hanOrEqual(pin!.y + 2 * scale);                               
+      115 +    expect(lace.bottom, `${name} passes its pin's row`).toBeGr
+          +eaterThanOrEqual(pin!.y - 2 * scale);                         
+      116    }
+      117    return own.length;
+      118  }
+      119  
+       78 -test("the selected file's own references are laces that leave 
+          -a pin and close on the card's edge", async ({ page }) => {    
+      120 +test("the selected file's own references are laces that leave 
+          +a pin, loop past the card's edge and are cut by it", async ({ 
+          +page }) => {                                                  
+      121    await page.goto(localMapUrl("/", FILE));
+      122    await page.waitForSelector(`#map-container .node-card.local-
+           focus[data-id="${FILE}"]`, { timeout: 20_000 });
+      123    await page.waitForSelector("#map-connections polygon.self-lo
+           op", { timeout: 10_000 });
+       82 -  await expectLacesClosed(page, FILE);                        
+      124 +  await expectLacesCut(page, FILE);                           
+      125  });
+      126  
+      127  test("a retained exploration draws the same laces, and two of 
+           one pin make a bracket, not an arrowhead", async ({ page }) =>
+            {
+     ...
+      129    await page.waitForSelector("#map-container .branch-mode", { 
+           timeout: 20_000 });
+      130    await page.waitForSelector("#map-connections polygon.self-lo
+           op", { timeout: 10_000 });
+      131    await page.waitForTimeout(500);
+       90 -  const count = await expectLacesClosed(page, GRAPH);         
+       91 -  // Some row of graph.ts is referred to from more than one ot
+          -her row, so one pin carries several laces, each closed        
+       92 -  // on the card by the check above: a bracket, where straight
+          - stubs met as a chevron.                                      
+      132 +  const count = await expectLacesCut(page, GRAPH);            
+      133 +  // Some row of graph.ts is referred to from more than one ot
+          +her row, so one pin carries several laces, each cut by        
+      134 +  // the card by the check above: a bracket, where straight st
+          +ubs met as a chevron.                                         
+      135    const { laces } = await readLaces(page);
+      136    const perPin = new Map<string, number>();
+      137    for (const lace of laces.filter(lace => lace.file === GRAPH)
+           ) perPin.set(`${lace.role}\0${lace.symbol}`, (perPin.get(`${la
+           ce.role}\0${lace.symbol}`) ?? 0) + 1);
+     ...
+      140    expect(count).toBeGreaterThanOrEqual(busiest[1]);
+      141  });
+      142  
+      101 -/** Every lace of the file with how far it reaches out from it
+          -s pin and where its far end lies, at the map's scale. */      
+      102 -async function laceReaches(page: Page, file: string): Promise<
+          -Array<{ reach: number; farX: number }>> {                     
+      103 -  const { laces, pins } = await readLaces(page);              
+      104 -  const scale = (pins[0]?.diameter ?? 12) / 12;               
+      105 -  return laces.filter(lace => lace.file === file).map(lace => 
+          -{                                                             
+      106 -    const side = lace.role === "provider" ? "outbound" : "inbo
+          -und";                                                         
+      107 -    const pin = pins.filter(candidate => candidate.file === fi
+          -le && candidate.side === side && (normalizeSymbolIdentifier(ca
+          -ndidate.symbol) ?? candidate.symbol) === lace.symbol)         
+      108 -      .sort((a, b) => Math.abs(a.y - (lace.top + lace.bottom) 
+          -/ 2) - Math.abs(b.y - (lace.top + lace.bottom) / 2))[0];      
+      109 -    return lace.role === "provider"                           
+      110 -      ? { reach: (lace.right - pin.x) / scale, farX: (pin.x - 
+          -lace.left) / scale }                                          
+      111 -      : { reach: (pin.x - lace.left) / scale, farX: (lace.righ
+          -t - pin.x) / scale };                                         
+      112 -  });                                                         
+      113 -}                                                             
+      114 -                                                              
+      143  /** Moves a slider of the tuning panel as a person would, firi
+           ng the input event the panel listens for. */
+      144  async function turnDial(page: Page, id: string, value: number)
+           : Promise<void> {
+      145    await page.locator(`#${id}`).evaluate((input, next) => {
+     ...
+      151    await page.waitForTimeout(300);
+      152  }
+      153  
+      126 -test("the laces' dials in Tuning redraw them as they move: the
+          - reach sweeps further out, the inset dives further under the c
+          -ard", async ({ page }) => {                                   
+      154 +test("the laces' dials in Tuning redraw them as they move: the
+          + reach sweeps further out, the curl comes back further along t
+          +he edge, and the cut stays flush", async ({ page }) => {      
+      155    await page.goto(localMapUrl("/", FILE));
+      156    await page.waitForSelector(`#map-container .node-card.local-
+           focus[data-id="${FILE}"]`, { timeout: 20_000 });
+      157    await page.waitForSelector("#map-connections polygon.self-lo
+           op", { timeout: 10_000 });
+      130 -  const before = await laceReaches(page, FILE);               
+      131 -  expect(before.length).toBeGreaterThan(0);                   
+      132 -  // On the edge by default: the far end stands at the pin's o
+          -wn x, within a hairline.                                      
+      133 -  for (const lace of before) expect(Math.abs(lace.farX)).toBeL
+          -essThanOrEqual(2);                                            
+      158 +  const defaults = getDefaultTuning().localMap;               
+      159 +  await expectLacesCut(page, FILE, defaults);                 
+      160    await turnDial(page, "tuning-lace-reach", 32);
+      135 -  const reached = await laceReaches(page, FILE);              
+      136 -  expect(reached.length).toBe(before.length);                 
+      137 -  for (let i = 0; i < before.length; i++) expect(reached[i].re
+          -ach, "a lace reaches further out with the dial").toBeGreaterTh
+          -an(before[i].reach + 10);                                     
+      138 -  await turnDial(page, "tuning-lace-inset", 8);               
+      139 -  const inset = await laceReaches(page, FILE);                
+      140 -  for (const lace of inset) {                                 
+      141 -    expect(lace.farX, "a lace ends further inside the card wit
+          -h the inset").toBeGreaterThanOrEqual(6);                      
+      142 -    expect(lace.farX).toBeLessThanOrEqual(10);                
+      143 -  }                                                           
+      161 +  await expectLacesCut(page, FILE, { ...defaults, laceReach: 3
+          +2 });                                                         
+      162 +  await turnDial(page, "tuning-lace-curl", 24);               
+      163 +  await expectLacesCut(page, FILE, { ...defaults, laceReach: 3
+          +2, laceCurl: 24 });                                           
+      164    // The dials persist with the rest of the tuning and come ba
+           ck after a reload.
+      165    await page.reload();
+      166    await page.waitForSelector("#map-connections polygon.self-lo
+           op", { timeout: 20_000 });
+      167    await page.waitForTimeout(300);
+      168    expect(await page.locator("#tuning-lace-reach").inputValue()
+           ).toBe("32");
+      149 -  expect(await page.locator("#tuning-lace-inset").inputValue()
+          -).toBe("8");                                                  
+      150 -  for (const lace of await laceReaches(page, FILE)) expect(lac
+          -e.farX).toBeGreaterThanOrEqual(6);                            
+      169 +  expect(await page.locator("#tuning-lace-curl").inputValue())
+          +.toBe("24");                                                  
+      170 +  await expectLacesCut(page, FILE, { ...defaults, laceReach: 3
+          +2, laceCurl: 24 });                                           
+      171  });
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The new geometry type-checks and its tests pass; one old test still names the
+  retired field. Fixing that, then building the Explorer to look at the laces.
+
+  Searched for 2 patterns, read 6 files, ran 10 shell commands (ctrl+o to expand)
+
+● The spec passes and the pictures show the cut. Now regenerating the Live Docs
+  and gathering the authored notes, decisions entry and memory sections that
+  need the change written in.
+
+  Searched for 2 patterns, ran 5 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/Screenshots/2026-10-07/README.md)
+  ⎿  Wrote 29 lines to AI-Agent-Workspace/Screenshots/2026-10-07/README.md
+      1 # October 7, 2026 — the laces cut by the card's edge
+      3 ## The owner's picture: what "going behind" the card looks like
+      4
+      6 | --- | --- |
+      7 | [The owner's edit of the "wide" shape](owner-laces-behind-the-c
+        f [the dials sheet's "wide" picture](../2026-10-06/repository-fiv
+        e-graph-card-laces-wide.png), attached to [Turn 14 of the October
+        -14) with the words "just some boxes with the sampled color used
+        to block off some of the places where looping back looks incorrec
+        d816e039f22849dd7
+     … +72 lines (ctrl+o to expand)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The owner has re-exported the session capture again, so its inventory entry
+  needs the new size and hash. Updating that and drafting the commit message
+  while the gate runs.
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Lint is clean (0 errors) and the build passed. The gate is now on the
+  type-check of tests, then the unit, integration, link and Playwright suites.
+  Everything else for this turn is written; the commit waits on the gate's exit
+  0.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -06-141908-a-new-day-a-new-chat-please-read-all-chat-summar.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ Oh sorry I didn't know that would mess with what you were doing. I just try
+  to keep it up to date when I can, normally after turns
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No harm done. Nothing in the build reads that file, so your export never
+  touches the work. The only effect is that I take its size and hash for the
+  inventory right before the commit, so the entry names the copy that actually
+  goes in. Exporting after turns is the tidiest for that, since the committed
+  copy then ends at a turn boundary, but mid-turn costs nothing. Keep doing it
+  whenever suits you.
+
+  The gate is in its unit-test stage now. I will commit on its exit 0 and then
+  give you the full report of what changed and where it lives.

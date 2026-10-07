@@ -162,39 +162,48 @@ export function distance(a: Point, b: Point): number {
 
 /**
  * Parameters for the laces of a self-reference, the "French Corset": at each
- * of its two pins a lace leaves the pin, turns toward the partner and returns
- * to the card's edge, as if it ran on behind the card to the other pin.
+ * of its two pins a lace leaves the pin, sweeps out past the card's edge,
+ * turns toward the partner and comes back, to be cut by the card's edge as a
+ * wire passing behind the card would be.
  */
 export interface SelfLoopParams {
-  /** How far out from the pin's edge the lace sweeps before it turns back. */
-  stubLength: number;
-  /** How far along the card's edge from the pin the lace returns, toward the partner. */
+  /** How far beyond the card's edge the lace sweeps before it turns back. */
+  reach: number;
+  /** How far along the card's edge from the pin's row the lace returns, toward the partner. */
   curlAmount: number;
-  /** The lace's width at the pin's edge. */
+  /** The lace's width where it leaves the pin. */
   baseWidth: number;
   /** How much the lace thins by the card's edge: 0 keeps its width, 1 ends in a hairline. */
   taper: number;
-  /** The pin's radius: the lace leaves the pin's outer edge and returns to the card's edge, one radius inward. */
-  pinRadius: number;
-  /** How far past the card's edge the lace ends, inward; zero ends it on the edge, where the pin's centre stands. */
-  returnInset?: number;
 }
 
 /**
- * Default lace parameters: a lace a little wider than a row is tall, returning between the pin and the next. The
- * Local Map's tuning carries the same four numbers as dials (`laceReach`, `laceCurl`, `laceWidth`, `laceInset`), so the
- * shape can be tuned by eye in the page (the owner's ask, 2026-10-06).
+ * Default lace parameters. The Local Map's tuning carries the same four numbers as dials (`laceReach`, `laceCurl`,
+ * `laceWidth`, `selfLoopTaper`), so the shape can be tuned by eye in the page (the owner's ask, 2026-10-06).
  */
 export const DEFAULT_SELF_LOOP_PARAMS: SelfLoopParams = {
-  stubLength: 18,
+  reach: 18,
   curlAmount: 12,
   baseWidth: 2.5,
-  taper: 0.5,
-  pinRadius: 6
+  taper: 0.5
 };
 
 /** Laces of one pin that turn the same way stand each this much further out, nested, sharing their return. */
 export const LACE_PITCH = 3;
+
+/** How far under the card's edge a lace's return runs on before it is cut, so that it meets the edge nearly level. */
+const LACE_UNDER = 6;
+
+/** The control distance that bends a cubic into a quarter of an ellipse. */
+const QUARTER_TURN = 0.5523;
+
+/** The card edges a self-reference's two laces are cut by, as x coordinates in the laces' own frame. */
+export interface LaceEdges {
+  /** The right edge of the card the provider's pin stands on. */
+  provider: number;
+  /** The left edge of the card the consumer's pin stands on. */
+  consumer: number;
+}
 
 /**
  * The two laces of a self-reference, as SVG polygon point strings.
@@ -209,74 +218,120 @@ export interface SelfLoopStubResult {
 /**
  * Computes the two laces of a self-reference, a symbol referring to another on
  * the same card. No route is drawn between them: the provider's lace leaves
- * its pin outward, turns toward the consumer's row and comes back to the
- * card's edge, and the consumer's lace does the same toward the provider's
- * row, so that each reads as one wire that passes behind the card. A lace
- * that turns back is a shape no wire between cards ever makes, and two laces
- * of one pin, one turning up and one down, make a bracket rather than an
- * arrowhead, which two straight stubs did (the owner's note, 2026-10-06).
+ * its pin outward, past its card's right edge, turns toward the consumer's row
+ * and comes back, and the consumer's lace does the same past its card's left
+ * edge toward the provider's row. Each is cut flush where its card's edge
+ * begins, so that it reads as one wire that passes behind the card: the
+ * owner's picture of 2026-10-07 painted the card's colour over every return
+ * from the border inward, and this is that picture drawn. A lace that turns
+ * back is a shape no wire between cards ever makes, and two laces of one pin,
+ * one turning up and one down, make a bracket rather than an arrowhead, which
+ * two straight stubs did (the owner's note, 2026-10-06).
  *
  * @param source - The provider pin's outer edge
  * @param target - The consumer pin's outer edge
+ * @param edges - The card edges the two laces are cut by
  * @param params - The laces' shape
  * @param ranks - Each lace's place among the laces of its pin that turn the same way, from 0; later ones nest outward
  */
 export function computeSelfLoopStubs(
   source: Point,
   target: Point,
+  edges: LaceEdges,
   params: SelfLoopParams = DEFAULT_SELF_LOOP_PARAMS,
   ranks: { provider: number; consumer: number } = { provider: 0, consumer: 0 }
 ): SelfLoopStubResult {
   // The consumer stands below the provider, or on its row, in which case the laces part downward and upward.
   const down = target.y >= source.y;
   return {
-    providerPoints: lace(source, 1, down ? 1 : -1, params, ranks.provider),
-    consumerPoints: lace(target, -1, down ? -1 : 1, params, ranks.consumer)
+    providerPoints: lace(source, 1, down ? 1 : -1, edges.provider, params, ranks.provider),
+    consumerPoints: lace(target, -1, down ? -1 : 1, edges.consumer, params, ranks.consumer)
   };
 }
 
 /**
- * One lace as a tapered polygon: from the pin's outer edge out to `side` (1 right, -1 left), turning `toward`
- * (1 down, -1 up) and back to the card's edge, the outline sampled along a cubic curve.
+ * One lace as a tapered polygon. Its centre line is a hairpin of two quarter
+ * ellipses: out from the pin, level, to a tip `reach` beyond the card's edge
+ * (nested laces further by the pitch), turning `toward` (1 down, -1 up); then
+ * back from the tip to a point under the card, level again, `curlAmount` from
+ * the pin's row. The return is cut where it crosses the card's edge, its end
+ * flush with the edge, and nothing of it is drawn inside the card; the stem
+ * at the pin's row is the only part of the lace over the card. The width
+ * thins from the pin to the cut by the taper.
  */
-function lace(pin: Point, side: 1 | -1, toward: 1 | -1, params: SelfLoopParams, rank: number): string {
-  const out = (params.stubLength + Math.max(0, rank) * LACE_PITCH) * 1.6;
-  const along = params.curlAmount;
+function lace(pin: Point, side: 1 | -1, toward: 1 | -1, edge: number, params: SelfLoopParams, rank: number): string {
+  // The tip, as a distance from the pin along `side`: at least a bend's worth beyond a pin that stands outside its card.
+  const tip = Math.max(side * (edge - pin.x) + params.reach + Math.max(0, rank) * LACE_PITCH, 4);
+  const half = params.curlAmount / 2;
+  const apex = { x: pin.x + side * tip, y: pin.y + toward * half };
+  const end = { x: edge - side * LACE_UNDER, y: pin.y + toward * params.curlAmount };
+  const back = side * (apex.x - end.x);
+  const outbound: Cubic = [pin, { x: pin.x + side * QUARTER_TURN * tip, y: pin.y }, { x: apex.x, y: apex.y - toward * QUARTER_TURN * half }, apex];
+  const inbound: Cubic = [apex, { x: apex.x, y: apex.y + toward * QUARTER_TURN * half }, { x: end.x + side * QUARTER_TURN * back, y: end.y }, end];
+  const steps = 10;
+  const line: Sample[] = [];
+  for (let i = 0; i <= steps; i++) line.push(sampleCubic(outbound, i / steps));
+  for (let i = 1; i <= steps; i++) line.push(sampleCubic(inbound, i / steps));
+  // The cut: the return's first sample at or past the edge, and the point on the edge between it and the one before.
+  let cut = line.length - 1;
+  for (let i = steps + 1; i < line.length; i++) if (side * (line[i].point.x - edge) <= 0) { cut = i; break; }
+  const before = line[cut - 1], after = line[cut];
+  const f = after.point.x === before.point.x ? 1 : (edge - before.point.x) / (after.point.x - before.point.x);
+  const atEdge: Sample = {
+    point: { x: edge, y: before.point.y + (after.point.y - before.point.y) * f },
+    tangent: unit({ x: before.tangent.x + (after.tangent.x - before.tangent.x) * f, y: before.tangent.y + (after.tangent.y - before.tangent.y) * f })
+  };
+  const centre = [...line.slice(0, cut), atEdge];
+  // The width thins along the lace's length, from the pin to the cut.
+  const lengths = [0];
+  for (let i = 1; i < centre.length; i++) lengths.push(lengths[i - 1] + distance(centre[i - 1].point, centre[i].point));
+  const total = lengths[lengths.length - 1] || 1;
   const endWidth = params.baseWidth * (1 - 0.85 * Math.min(1, Math.max(0, params.taper)));
-  const p0 = pin;
-  const p1 = { x: pin.x + side * out, y: pin.y + toward * along * 0.1 };
-  const p2 = { x: pin.x + side * out, y: pin.y + toward * along };
-  const p3 = { x: pin.x - side * (params.pinRadius + (params.returnInset ?? 0)), y: pin.y + toward * along };
-  const steps = 12;
   const left: Point[] = [];
   const right: Point[] = [];
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    const point = cubicPoint(p0, p1, p2, p3, t);
-    const tangent = cubicTangent(p0, p1, p2, p3, t);
-    const length = Math.hypot(tangent.x, tangent.y) || 1;
-    const normal = { x: -tangent.y / length, y: tangent.x / length };
-    const half = (params.baseWidth + (endWidth - params.baseWidth) * t) / 2;
-    left.push({ x: point.x + normal.x * half, y: point.y + normal.y * half });
-    right.push({ x: point.x - normal.x * half, y: point.y - normal.y * half });
-  }
+  centre.forEach(({ point, tangent }, i) => {
+    const halfWidth = (params.baseWidth + (endWidth - params.baseWidth) * (lengths[i] / total)) / 2;
+    const normal = { x: -tangent.y, y: tangent.x };
+    let a = { x: point.x + normal.x * halfWidth, y: point.y + normal.y * halfWidth };
+    let b = { x: point.x - normal.x * halfWidth, y: point.y - normal.y * halfWidth };
+    // On the return, nothing past the edge; at the cut, both sides flush with it.
+    if (i > steps) {
+      a = { x: side * Math.max(side * a.x, side * edge), y: a.y };
+      b = { x: side * Math.max(side * b.x, side * edge), y: b.y };
+    }
+    if (i === centre.length - 1) { a = { x: edge, y: a.y }; b = { x: edge, y: b.y }; }
+    left.push(a);
+    right.push(b);
+  });
   return [...left, ...right.reverse()].map(point => `${round2(point.x)},${round2(point.y)}`).join(" ");
 }
 
-function cubicPoint(p0: Point, p1: Point, p2: Point, p3: Point, t: number): Point {
+type Cubic = [Point, Point, Point, Point];
+
+interface Sample {
+  point: Point;
+  /** The unit tangent, along the curve's direction. */
+  tangent: Point;
+}
+
+function sampleCubic([p0, p1, p2, p3]: Cubic, t: number): Sample {
   const u = 1 - t;
-  return {
+  const point = {
     x: u * u * u * p0.x + 3 * u * u * t * p1.x + 3 * u * t * t * p2.x + t * t * t * p3.x,
     y: u * u * u * p0.y + 3 * u * u * t * p1.y + 3 * u * t * t * p2.y + t * t * t * p3.y
   };
-}
-
-function cubicTangent(p0: Point, p1: Point, p2: Point, p3: Point, t: number): Point {
-  const u = 1 - t;
-  return {
+  const derivative = {
     x: 3 * u * u * (p1.x - p0.x) + 6 * u * t * (p2.x - p1.x) + 3 * t * t * (p3.x - p2.x),
     y: 3 * u * u * (p1.y - p0.y) + 6 * u * t * (p2.y - p1.y) + 3 * t * t * (p3.y - p2.y)
   };
+  // Where the derivative vanishes, as at the end of a degenerate bend, the chord to the far point gives the direction.
+  const tangent = Math.hypot(derivative.x, derivative.y) > 1e-6 ? unit(derivative) : unit({ x: p3.x - p0.x, y: p3.y - p0.y });
+  return { point, tangent };
+}
+
+function unit(vector: Point): Point {
+  const length = Math.hypot(vector.x, vector.y) || 1;
+  return { x: vector.x / length, y: vector.y / length };
 }
 
 function round2(value: number): number {

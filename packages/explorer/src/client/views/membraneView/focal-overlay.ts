@@ -343,23 +343,30 @@ export function drawConnections(
       continue;
     }
 
-    // Convert to svg-local coordinates (relative to container, unscaled)
+    // Convert to svg-local coordinates (relative to container, unscaled). A back trace's laces are cut by the pin's
+    // card's edge on the pin's side; a pin with no card around it is its own edge.
+    const outboundCenter = {
+      x: (outboundRect.left + outboundRect.width / 2 - containerRect.left) / scale,
+      y: (outboundRect.top + outboundRect.height / 2 - containerRect.top) / scale,
+    };
+    const outboundCard = outboundEl.closest(".membrane-card")?.getBoundingClientRect();
     const outboundAnchor: PinAnchor = {
-      center: {
-        x: (outboundRect.left + outboundRect.width / 2 - containerRect.left) / scale,
-        y: (outboundRect.top + outboundRect.height / 2 - containerRect.top) / scale,
-      },
+      center: outboundCenter,
       direction: "outbound",
       pinRadius: PIN_RADIUS / scale,
+      edge: outboundCard ? (outboundCard.right - containerRect.left) / scale : outboundCenter.x + PIN_RADIUS / scale,
     };
 
+    const inboundCenter = {
+      x: (inboundRect.left + inboundRect.width / 2 - containerRect.left) / scale,
+      y: (inboundRect.top + inboundRect.height / 2 - containerRect.top) / scale,
+    };
+    const inboundCard = inboundEl.closest(".membrane-card")?.getBoundingClientRect();
     const inboundAnchor: PinAnchor = {
-      center: {
-        x: (inboundRect.left + inboundRect.width / 2 - containerRect.left) / scale,
-        y: (inboundRect.top + inboundRect.height / 2 - containerRect.top) / scale,
-      },
+      center: inboundCenter,
       direction: "inbound",
       pinRadius: PIN_RADIUS / scale,
+      edge: inboundCard ? (inboundCard.left - containerRect.left) / scale : inboundCenter.x - PIN_RADIUS / scale,
     };
 
     const trace = routeConnection(outboundAnchor, inboundAnchor, tuning);

@@ -16,7 +16,7 @@ Unit tests for connection-geometry.ts covering Bézier path generation, self-loo
 - Created 2025-12-18 (Dev Day 49) alongside connection-geometry.ts extraction.
 - Tests edge cases: zero horizontal gap, negative coordinates, coincident points.
 - Validates SVG path string format (`M ... C ...`) for Bézier curves.
-- Ensures self-loop stubs produce valid arc paths even for symbols in the same node; since 2026-10-06 the laces' geometry (the pin's edge, the return on the card's edge or further in by the return inset, the nesting by rank, the taper).
+- Ensures self-loop stubs produce valid arc paths even for symbols in the same node; since 2026-10-06 the laces' geometry, and since 2026-10-07 as cut by the card's edge: the stem at the pin's edge at full width, the cut flush at the edge at the curl from the pin's row, the reach beyond the edge with only the stem over the card, the nesting by the pitch sharing the cut, the taper at the cut, and a pin that stands outside its card.
 - Part of the 153-test pure-function module validation suite.
 - Promoted from `localView/connection-geometry.test.ts` to `views/connection-geometry.test.ts` during Step 0 of the Membrane Map implementation (Dev Day 81).
 
