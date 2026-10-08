@@ -24,10 +24,8 @@ import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
+import { PACKAGE_KIND } from "../openings";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
-
-/** The kind of the symbol a package manifest publishes. */
-export const PACKAGE_KIND = "package";
 
 const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"] as const;
 

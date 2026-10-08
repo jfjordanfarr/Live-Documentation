@@ -26,6 +26,12 @@ export const ROUTE_KIND = "route";
 export const ADDRESS_KIND = "address";
 /** The kinds of symbols a database script declares. */
 export const SQL_OBJECT_KINDS: ReadonlySet<string> = new Set(["procedure", "table", "view", "sql-function"]);
+/** The kinds of the symbol a project file publishes: what the project builds. */
+export const PROJECT_KINDS: ReadonlySet<string> = new Set(["library", "program", "web"]);
+/** The kind of the symbol a package manifest publishes. */
+export const PACKAGE_KIND = "package";
+/** The kinds that mark a doc as a manifest's, whose external dependencies are what a thing stands on. */
+export const MANIFEST_KINDS: ReadonlySet<string> = new Set([...PROJECT_KINDS, PACKAGE_KIND]);
 
 const HTTP_METHODS: ReadonlySet<string> = new Set(["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]);
 

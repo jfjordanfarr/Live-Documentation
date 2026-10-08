@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps the configuration adapter's readings on the estate's hub configuration and three smaller files: the five symbol kinds in document order, contracts and services linked to their types, and an unmatched client address kept as an external observed from configuration; a client endpoint linked to the configuration that listens on its address when the index knows it; a relative service address joined to the host's base address, an empty one giving the base itself; single-quoted attribute values; and a `packages.config` as a list of externals.
 
 ### Notes
-_Pending notes_
+- The configuration and two C# files are written to a temporary folder, so the type resolution runs over real files; the listener case uses a hand-built symbol index with the estate's path.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

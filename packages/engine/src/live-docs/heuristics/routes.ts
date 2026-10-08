@@ -162,7 +162,7 @@ function propertyText(node: ts.Expression | undefined, name: string): string | u
 }
 
 /** The text of a URL expression, with `{}` standing for each part the script computes; undefined when nothing of it is written. */
-export function urlText(node: ts.Expression | undefined): string | undefined {
+function urlText(node: ts.Expression | undefined): string | undefined {
   if (!node) {
     return undefined;
   }

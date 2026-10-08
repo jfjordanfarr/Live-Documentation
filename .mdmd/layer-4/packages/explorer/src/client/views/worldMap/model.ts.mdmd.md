@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+What the World Map draws, read from a board joined to the graph, as pure data: a thing that holds things is a region with a tint; every other thing is a piece with a shape, its files, symbols, doors and what it stands on; a wire between two pieces is a road, in the air door to door when it is a call (it lands on a door or was observed beyond source) and on the board when one piece stands on another's code; a declared connection between two regions is a crossing; what two or more pieces stand on outside the board is a token they share; the board's Layout gives positions for pieces; and what could not be drawn is said in words.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The words piece, region, road, crossing and token are the renderer's; the vision's picture still says piece, district, tunnel and wire, a difference [Boards](../../../../../../../layer-3/boards.mdmd.md) notes for when the World Map is rebuilt. Shapes and tints come from the board's legend through `legendFor`, with `cube` and `grey` for a kind it does not know.
+- A wire that joins a thing and a region is not drawn, and the model says so in its issues; what a closed region shows of its members' wires is the design's open question ([the survey of groups](../../../../../../../../AI-Agent-Workspace/Research/2026-09-28-groups-and-nested-boards.md)).
+- Measured by `model.test.ts` on five docs rendered through the Live Doc grammar and a board with nested regions, an imagined thing and a person.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,13 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The grammar of a board, the one markdown file in which a person declares an estate: its things, each with a kind, the folder its docs come from, the doors it promises and what it holds; the connections no scan can see; a legend of how each kind is drawn; and where each thing sits. `renderBoard` writes a board and `parseBoard` reads one back, inverses as the Live Doc grammar's are, refusing anything outside the grammar; `lintBoard` checks what the grammar alone cannot. Nothing here reads the docs: the join is `boardGraph.ts`.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 as the last of the five growths the vision's step 3 lists, the evening the owner set the board's shape: two nouns, kinds as free labels drawn through a legend, floors as an arrangement the tool forgets, and where a board lives left to the host that opens it ([Turn 43](../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-43) and [Turn 45](../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-45)). The proposal with the owner's words is [board-text.md](../../../../../../AI-Agent-Workspace/Probes/2026-09-28/board-text.md); the design, and the forks still open, are in [Boards](../../../../../layer-3/boards.mdmd.md).
+- The strict sections carry no `LIVE-DOC` markers because a person writes them, so the parser's refusals and `lintBoard` are the whole gate. A change to a line's form changes `renderBoard`, `parseBoard` and the round-trip test together, and reaches the two real boards: the estate sample's `board.md` and [this repository's](../../../../../layer-3/board.mdmd.md), which the integration test keeps valid.
+- `DOOR_KINDS` are the opening kinds of `openings.ts`, so a door a person promises is one the docs could publish. `SHAPES` and `TINTS` are the words the World Map can draw; `DEFAULT_LEGEND` covers the kinds a manifest's doc publishes (`web`, `service`, `program`, `library`) and four a person is likely to write. `legendFor` looks a kind up in the board's legend first, then the tool's; a kind neither knows gets no entry.
+- Measured by `board.test.ts`: one full board byte for byte, the empty placeholders, seven refusals and twelve lint faults on one board.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -14,7 +14,6 @@ import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import {
   FLOAT,
   GRID,
-  NORMALS,
   autoPlace,
   clamp,
   corners,
@@ -68,9 +67,7 @@ export interface Hover {
   id: string;
 }
 
-/**
- *
- */
+/** What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view. */
 export interface WorldMapOptions {
   root: HTMLElement;
   board: Board;
@@ -132,8 +129,6 @@ const THEMES = {
   light: { faceLight: "#ffffff", faceDark: "#98a2b1", faceStroke: "#505c6b", tankStroke: "#505c6b", shadow: 0.26 },
   dark:  { faceLight: "#4a5468", faceDark: "#1f2530", faceStroke: "#0b0d11", tankStroke: "#6b7a90", shadow: 0.55 }
 };
-
-/** The transform of a panel lying flat on the screen. */
 
 const BASIS_WORDS: Record<string, string> = {
   source: "from source",
@@ -241,9 +236,7 @@ export class WorldMapController {
     this.writeCrumbs();
   }
 
-  /**
-   *
-   */
+    /** Removes every listener and empties the root. */
   dispose(): void {
     for (const dispose of this.disposers) {
       dispose();
@@ -765,9 +758,7 @@ export class WorldMapController {
     return fitScreen(this.camera, this.pivot, corners(this.bench), this.viewport());
   }
 
-  /**
-   *
-   */
+    /** Pans and zooms so that the whole board is in view. */
   fit(): void {
     this.screen = this.fitParams();
     this.applyCamera();
@@ -812,9 +803,7 @@ export class WorldMapController {
     });
   }
 
-  /**
-   *
-   */
+    /** Eases the camera to an azimuth and elevation about the centre of the view, refitting the board after when asked. */
   async orbitTo(theta: number, phi: number, ms = 520, fitAfter = false): Promise<void> {
     const from = { ...this.camera };
     const to = { theta, phi: clamp(phi, MIN_ELEVATION, TOP_DOWN) };
@@ -844,9 +833,7 @@ export class WorldMapController {
     this.syncButtons();
   }
 
-  /**
-   *
-   */
+    /** Turns the camera by an angle, easing. */
   rotateBy(radians: number): Promise<void> {
     return this.orbitTo(this.camera.theta + radians, this.camera.phi);
   }
@@ -1075,18 +1062,14 @@ export class WorldMapController {
     return `<a class="file" href="${escapeHtml(localMapHref(file))}" data-file="${escapeHtml(file)}">${escapeHtml(text)}</a>`;
   }
 
-  /**
-   *
-   */
+    /** Pins what the pointer is on, so the panel stays and every name in it is a link. */
   pin(h: Hover): void {
     this.pinned = h;
     this.evidence.dataset.pin = "";
     this.applyHover();
   }
 
-  /**
-   *
-   */
+    /** Lets go of the pinned thing. */
   unpin(): void {
     this.pinned = null;
     this.evidence.dataset.pin = "";
@@ -1200,7 +1183,7 @@ export class WorldMapController {
           this.draw();
         } else if (drag.orbit) {
           // The world follows the pointer, as it does in the force graph: drag right and the camera turns left, drag down and the camera rises.
-        this.setCamera(drag.theta0 - (event.clientX - drag.x0) * 0.006, drag.phi0 + (event.clientY - drag.y0) * 0.005, drag.pivot);
+          this.setCamera(drag.theta0 - (event.clientX - drag.x0) * 0.006, drag.phi0 + (event.clientY - drag.y0) * 0.005, drag.pivot);
         } else if (!drag.piece) {
           this.screen = { ...this.screen, x: drag.screen0.x + event.clientX - drag.x0, y: drag.screen0.y + event.clientY - drag.y0 };
           this.applyCamera();
@@ -1422,18 +1405,14 @@ export class WorldMapController {
     }
   }
 
-  /**
-   *
-   */
+    /** Shows the grid and snaps a dropped piece to it, or stops. */
   setSnap(value: boolean): void {
     this.snap = value;
     this.syncButtons();
     this.draw();
   }
 
-  /**
-   *
-   */
+    /** Shows the built-on layer, what two or more pieces share, or hides it. */
   setUnder(value: boolean): void {
     this.under = value;
     this.world.classList.toggle("under", value);
@@ -1441,9 +1420,7 @@ export class WorldMapController {
     this.draw();
   }
 
-  /**
-   *
-   */
+    /** Switches between the white board and the dark one, remembering the choice. */
   setTheme(theme: "light" | "dark"): void {
     this.theme = theme;
     this.world.dataset.theme = theme;
@@ -1469,9 +1446,7 @@ export class WorldMapController {
     this.syncButtons();
   }
 
-  /**
-   *
-   */
+    /** Puts every piece back where the board's Layout rests it. */
   resetLayout(): void {
     this.positions = new Map(this.restPositions);
     this.savePositions();
@@ -1530,9 +1505,7 @@ export class WorldMapController {
     });
   }
 
-  /**
-   *
-   */
+    /** Opens or closes the help panel. */
   toggleHelp(value?: boolean): void {
     const on = value === undefined ? !this.help.classList.contains("on") : value;
     this.help.classList.toggle("on", on);
@@ -1553,9 +1526,7 @@ export class WorldMapController {
     ];
   }
 
-  /**
-   *
-   */
+    /** Shows one step of the walkthrough and does what it describes. */
   async tourStep(index: number): Promise<void> {
     const steps = this.tourSteps();
     this.tour.at = clamp(index, 0, steps.length - 1);
@@ -1566,18 +1537,14 @@ export class WorldMapController {
     await steps[this.tour.at].go();
   }
 
-  /**
-   *
-   */
+    /** Begins the walkthrough at its first step. */
   async startTour(): Promise<void> {
     this.tour.on = true;
     this.tourBox.classList.add("on");
     await this.tourStep(0);
   }
 
-  /**
-   *
-   */
+    /** Ends the walkthrough and lets go of what it pinned or showed. */
   endTour(): void {
     this.tour.on = false;
     this.tourBox.classList.remove("on");
@@ -1719,5 +1686,3 @@ function mix(a: string, b: string, t: number): string {
   const B = channels(b);
   return `rgb(${A.map((value, i) => Math.round(value + (B[i] - value) * t)).join(",")})`;
 }
-
-export { NORMALS };

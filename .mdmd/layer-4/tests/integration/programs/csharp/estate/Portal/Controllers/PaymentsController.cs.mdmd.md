@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The portal's own Web API 2 controller: receives the browser's payment requests, refuses them when payments are disabled, and forwards them to the gateway through `GatewayClient`. Serves `POST api/payments` and `GET api/payments/{paymentId}`, the same templates the gateway serves.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Its routes are the portal's doors on the board, and `portal.js` reaches them at home by `fetch`, a hand-verified hop the routes heuristic finds. Because the gateway serves the same two templates, this controller is half of the estate's one ambiguity, decided by home and away ([Openings](../../../../../../../../layer-3/openings.mdmd.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

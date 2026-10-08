@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The data contract for the outcome of a payment operation: the payment's id and status, and the account balance read from the system of record, the Oracle database at the end of the chain.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The balance is what the chain exists to carry back: `dbo.usp_PostPayment` reads it through the linked server and it travels up through the service, the hub and the gateway to the portal's own result model. The compiler oracle sees every use of this type.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

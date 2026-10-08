@@ -8,10 +8,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The twenty edges of the estate that a reader verified by hand, each with how it is carried (`via`) and whether it is a hop between deployments that no compiler can see (`remote`). `oracle:compare` reports which of them the shipped generator finds and which it misses, and the board test checks that every remote one is drawn as a wire between two things.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-27 with the estate ([Turn 2](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-2)) as the measure beyond the compiler's 37 edges: 3 of 20 were found that morning, 8 after the C# rewrite, 17 after the openings of 2026-09-28. The three still missing are the ones no scan of the files honestly gives, a designer file's fields to the page's control ids, endpoint names the hub builds at run time, and a row type matched to a procedure by its result columns; [Openings](../../../../../../../layer-3/openings.mdmd.md) names them. Nothing here is trimmed to fit the adapter: an edge it cannot find stays as a missing one.
+- The paths are relative to this file's folder and `readHandVerifiedEdges` in `scripts/oracle/files.ts` resolves them against the program.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -13,6 +13,7 @@ import path from "node:path";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
+import { PROJECT_KINDS } from "../openings";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 
 const PROJECT_REFERENCE  = /<ProjectReference\b[^>]*?\bInclude\s*=\s*"([^"]+)"/giu;
@@ -25,9 +26,6 @@ const PROJECT_TYPE_GUIDS = /<ProjectTypeGuids>([^<]*)<\/ProjectTypeGuids>/iu;
 const VERSION_ELEMENT    = /<Version>\s*([^<]+?)\s*<\/Version>/iu;
 /** The project type of an ASP.NET web application in a classic project file. */
 const WEB_APPLICATION_GUID = "349c5851-65df-11da-9384-00065b846f21";
-
-/** The kinds of the project symbol. */
-export const PROJECT_KINDS: ReadonlySet<string> = new Set(["library", "program", "web"]);
 
 function attribute(fragment: string, name: string): string | undefined {
   return new RegExp(`\\b${name}\\s*=\\s*"([^"]*)"`, "iu").exec(fragment)?.[1];
@@ -44,7 +42,7 @@ export function projectKind(content: string): string {
 }
 
 /** The name of the project a project file declares: its assembly name, or the file's stem. */
-export function projectName(projectFile: string, content: string): string {
+function projectName(projectFile: string, content: string): string {
   return ASSEMBLY_NAME.exec(content)?.[1] ?? path.basename(projectFile).replace(/\.[^.]+$/u, "");
 }
 

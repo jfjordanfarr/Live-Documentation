@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The client side of the hub contract: opens a channel on the `PaymentHub` client endpoint named in `Web.config` for each call and closes it after. The hub itself is another deployment, on-prem.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). `ChannelFactory<IPaymentHub>(EndpointName)` with the name in a constant is the C# adapter's WCF client case, linking this file to the endpoint `Web.config` publishes; a hand-verified hop.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

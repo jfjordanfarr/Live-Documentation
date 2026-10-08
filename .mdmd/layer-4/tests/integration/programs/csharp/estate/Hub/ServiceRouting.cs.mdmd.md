@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Names the client endpoint that serves a workload and environment: the prefix `PaymentService`, the workload and the environment, joined with dots, which is how `App.config` names its client endpoints.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The name exists only at run time, which is the point: an endpoint name no scan reads is the estate's reminder that a hand-verified hop may stay missing honestly.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

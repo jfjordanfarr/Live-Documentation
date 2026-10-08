@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps the four call families read with their method and URL as written, computed parts as `{}` and a call with nothing written skipped; and the resolution: a script linked to the controller at home that serves each route on the basis of a contract, a route nothing serves kept as an external and a fetched file ignored, and an absolute URL looking away from home.
 
 ### Notes
-_Pending notes_
+- The symbol index and file index are hand-built with the estate's paths, and the parsed script is JavaScript, as the estate's is.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

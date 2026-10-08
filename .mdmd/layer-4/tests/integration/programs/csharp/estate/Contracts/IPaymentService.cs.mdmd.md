@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The payment service's WCF contract, one deployment per workload and environment: posting and looking up a payment with the shared data contracts. The hub forwards to it and the payment service implements it.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The hub's configuration names it as the `contract` of its two client endpoints and the service's configuration as the contract of its listening endpoint; the configuration adapter links both files here. The hub reaches the service by a name it builds at run time, one of the three estate hops no scan of the files honestly gives.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

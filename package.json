@@ -39,7 +39,6 @@
     "format": "prettier --check .",
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
-    "pretest:e2e": "npm run live-docs:visualize && npm run live-docs:visualize:estate",
     "test:e2e": "npm run live-docs:visualize && npm run live-docs:visualize:estate && npx playwright test --config tests/e2e/playwright.config.ts",
     "verify": "node ./scripts/verify.mjs",
     "safe:commit": "node ./scripts/safe-to-commit.mjs",

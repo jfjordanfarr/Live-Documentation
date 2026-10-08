@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The manifest of the generator package: one entry, `generator.ts`, that analyses a workspace through the engine and writes one Live Doc per source file, preserving authored sections, and the graph index after every run.
 
 ### Notes
-_Pending notes_
+- Born 2025-10-16 as `packages/server`, the language server behind the VS Code extension, and renamed to the generator on 2026-09-27 (`cad63bdd`) when the extension and the server were removed and what remained was the generator. It depends on the engine alone.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

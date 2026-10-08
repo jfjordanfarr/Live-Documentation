@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+What the browser receives, deserialised from the gateway's JSON: the payment's id and status and the account balance.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). A compiler-visible type; no scan links it to the gateway's contract, and none should.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

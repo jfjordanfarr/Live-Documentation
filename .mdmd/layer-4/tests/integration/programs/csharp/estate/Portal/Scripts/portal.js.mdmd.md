@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Drives the payment form without postbacks: reads the server-authored values from the hidden fields, posts a payment and looks one up through the portal's own Web API by `fetch`, and hides the form when payments are disabled.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Two hand-verified hops: to the page by the element ids it reads, which the DOM heuristic links, and to the portal's controller by the two routes it fetches, which the routes heuristic links at home, observed from a contract. The relative URL is what makes home win over the gateway's identical routes.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

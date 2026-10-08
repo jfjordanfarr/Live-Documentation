@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The on-prem WCF hub: it does no payment work itself, but picks the payment service for the request's workload and environment and forwards the operation over a channel it opens and closes per call.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Implements `IPaymentHub`; `App.config` names it as its hosted service, which the configuration adapter links. Its `ChannelFactory<IPaymentService>(ServiceRouting.EndpointNameFor(...))` names its endpoint by concatenation at run time, so the hand-verified hop to `App.config` is one of the three the estate keeps missing on purpose.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The project file of the `basic` C# sample, a .NET 8 library with no references: it exists so that `scip-dotnet` can index the sample and write its compiler expectations.
 
 ### Notes
-_Pending notes_
+- Added on 2026-01-27 when the C# samples moved from heuristic oracles to the compiler's (`95595aa3`); the indexer needs a project to build. Since 2026-09-28 the project adapter reads it as a `library` symbol with no dependencies, and the oracle names it as the sample's indexer target. What the sample itself exercises is in [Sample Programs](../../../../../../layer-3/sample-programs.mdmd.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

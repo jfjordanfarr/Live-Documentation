@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps what `place.ts` counts as a move and what as a change within a place: views and files are different places, a bare node is the Local Map, an opened folder of the Membrane Map is a move, pins, expanded cards, pan and zoom are the same place, a path counts only with both ends, and the data file the page was opened on is ignored.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-30 with Back and Forward ([Turn 16](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-16)). The Membrane Map cases build real compressed `?s=` addresses through `compressSnapshot`, since that one parameter carries both the open folders and the pins, which is the reason `place.ts` decodes it rather than comparing raw addresses.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The gateway's Web API 2 controller: bridges the portal's REST calls into WCF calls on the on-prem hub, stamping the workload and environment onto each request and query. Serves `POST api/payments` and `GET api/payments/{paymentId}`.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The two routes are the gateway's doors on the board, published by the C# adapter from the attributes; the portal's `GatewayClient.cs` reaches them away from home, the hand-verified remote hop between the two cloud deployments. The portal's own controller serves the same two templates, the one ambiguity the home-and-away presumption decides ([Openings](../../../../../../../../layer-3/openings.mdmd.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

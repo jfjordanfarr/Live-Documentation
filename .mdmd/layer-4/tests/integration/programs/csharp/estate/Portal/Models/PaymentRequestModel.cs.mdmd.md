@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+What the browser sends to post a payment: account number and amount. The gateway's request contract is a separate class; the two meet only as JSON, as in the real portal.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). A compiler-visible type; no scan links it to the gateway's contract, and none should.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

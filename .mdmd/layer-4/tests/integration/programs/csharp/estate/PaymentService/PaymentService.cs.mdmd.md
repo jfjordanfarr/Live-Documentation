@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The on-prem WCF payment service, the implementation of `IPaymentService`: posting goes through the stored procedure by way of the data context, lookups through Entity Framework, and both answer with the shared result contract.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). `App.config` names it as its hosted service, which the configuration adapter links. Every other edge from it, to the context, the entity, the row type and the contracts, is one the compiler sees.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

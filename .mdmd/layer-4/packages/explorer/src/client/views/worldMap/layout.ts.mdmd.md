@@ -8,10 +8,11 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The World Map's geometry, pure and tested: the solid each shape word is drawn as; a piece's box around its centre, floating above the board and lifted while dragged; the rectangle around some rectangles; board units to pixels and back; rows for the things nobody has placed, a region's members together; the wall of a piece that faces a counterpart among the walls the viewer sees, and the point on it where a door sits (on a drum, a point on the visible rim); the curve a wire hangs along between two doors; tokens pushed clear of the pieces and of each other; and the order to draw pieces in, far first.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The numbers here are the picture's: one board unit is 60 pixels, a piece floats 46 above the board, the grid is 50. Nothing here touches the DOM; `controller.ts` draws what this returns and keeps the labels apart afterwards, since a label's box is only known once it is drawn.
+- `solidFor` is reached through `placePiece` and by the tests; `UNIT` and `LIFT` are exported and read by nothing outside, kept as the names of the picture's units. Measured by `layout.test.ts`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

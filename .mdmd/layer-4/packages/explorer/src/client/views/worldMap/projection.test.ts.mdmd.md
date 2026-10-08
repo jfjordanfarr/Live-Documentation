@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps the camera honest: a board point projects and unprojects through every azimuth and elevation tried; a point rises on the picture as it rises off the board, and never when seen from straight above; nearer is deeper, so it draws later; the board's corners fit the viewport with room around them; a zoom keeps the point under the pointer still and stays within its limits; top-down is known; the top of a solid is lit brightest, the underside darkest, the walls between; a box's faces sort far to near with the top last from above; a Bezier runs from its first point to its last; and inside is told from outside a polygon.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

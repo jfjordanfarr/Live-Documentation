@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The data contract for a payment to post: account number and amount from the browser, workload and environment stamped by the gateway and never by the browser.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). A plain data contract: the compiler oracle sees every use of it and the C# adapter matches those edges. The portal's own request model is a separate class, as in the real portal.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

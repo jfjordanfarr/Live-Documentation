@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The workspace manifest: the four npm workspaces (engine, generator, explorer, cli), the commands that matter (build, lint, the unit, integration and Playwright suites, the Live Docs pipeline, the oracle, the layout lab, the gate) and the development dependencies they share. Nothing is published from here; the package is private and its version stays 0.0.0.
 
 ### Notes
-_Pending notes_
+- Born 2025-10-16 with the repository. Its scripts are the table in AGENTS.md's "Commands that matter"; each is a `tsx` run of a script under `scripts/`, with this repository's own configuration (`.live-docs.config.json`) and board passed explicitly, so that the product reads configuration and never assumes this workspace's conventions.
+- On 2026-10-08 the `pretest:e2e` hook was removed: `test:e2e` builds both bundles itself, and the hook had built them a second time before every run since 2026-09-29.
+- This doc is written by the JSON adapter's manifest branch (since 2026-09-28): the package as its one symbol, the workspace packages linked by name, the rest external with their ranges.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

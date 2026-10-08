@@ -4,46 +4,47 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-10-08T16:03:29.390Z
+- Generated At: 2026-10-08T19:04:57.143Z
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The World Map, drawn. Everything that touches the DOM is here: the SVG the board is drawn into in layers (ground, the built-on layer, shadows, roads, blocks, strands, doors, labels), the tools and the crumbs, the evidence panel that peeks on hover and pins on click with every name in it a link, the help and the walkthrough, the pointer (drag to pan, right-drag or shift-drag to orbit, wheel to zoom and, past half the view, into a thing, drag a piece to move it, double-click to open it), the keys, the positions kept in the browser's storage and written back into the board text on save, and the handle at `window.__worldMap` that the tests and screenshot scripts drive. The numbers come from `projection.ts`, `layout.ts` and `model.ts`.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)) and reworked on the owner's first look the next day ([Turn 47](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-47): a click never pinned, because the SVG captured the pointer on press and the release was retargeted to the surface, so the pressed element is kept now; every name in a pinned panel became a link; the orbit's vertical direction was corrected) and on their second ([Turn 49](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-49): a thing opens into the Membrane Map scoped to its folder, with the World Map as the crumb above). The colours follow the owner's word of 2026-09-29, blue offers and green uses on the World Map as inside a system ([Turn 13 of the September 29 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-13)). Labels keep their size while the world scales, so `settleLabels` runs after every camera move and the design audit holds under zoom.
+- At 1,700 lines this is the client's largest module: drawing, the evidence panel's words, input, tools, help and the walkthrough in one class. It was built in a day as the board probe's rendering on real data, and the owner expects the World Map to be re-imagined, "a week to a month of work"; splitting it before that would be work the re-imagining discards. On 2026-10-08 its fifteen empty doc comments, which satisfied the JSDoc lint rule and told a reader nothing, were written, and a dangling comment and a stray re-export of `NORMALS` were removed.
+- Kept by `tests/e2e/world-map.spec.ts` (what is drawn and what a person can do), `world-map-design.spec.ts` (no two labels collide and nothing is cut off, in each state) and `world-map-estate.spec.ts` (the same over the estate), through the handle rather than pixels.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L65)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L71)
+
+##### `WorldMapOptions` — Summary
+What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L146)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L141)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1643)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1610)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
-
-#### `NORMALS` {#symbol-normals}
-- Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1723)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -55,7 +56,6 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)
 - [`layout.FLOAT`](./layout.ts.mdmd.md#symbol-float)
 - [`layout.GRID`](./layout.ts.mdmd.md#symbol-grid)
-- [`layout.NORMALS`](./layout.ts.mdmd.md#symbol-normals)
 - [`layout.Placed`](./layout.ts.mdmd.md#symbol-placed)
 - [`layout.Rect`](./layout.ts.mdmd.md#symbol-rect)
 - [`layout.Wall`](./layout.ts.mdmd.md#symbol-wall)

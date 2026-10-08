@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The portal's HTTP client for the gateway, a separate deployment in the same cloud: the only ties are the base URL from `Web.config` and the route strings here, `api/payments` and `api/payments/{paymentId}`.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The C# adapter reads the `HttpClient` calls with `new Uri(base, relative)`, folds the computed id to `{}`, and looks away from home, so the hand-verified remote hop lands on the gateway's controller and not the portal's; observed from a contract.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

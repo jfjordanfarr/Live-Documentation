@@ -76,7 +76,7 @@ function usage(): string {
 }
 
 /** The lines the report prints. */
-export function renderBoardReport(boardPath: string, title: string, derived: BoardGraph): string[] {
+function renderBoardReport(boardPath: string, title: string, derived: BoardGraph): string[] {
   const lines: string[] = [`${title} (${boardPath})`, ""];
   lines.push(`Things (${derived.things.length}):`);
   for (const entry of derived.things) {

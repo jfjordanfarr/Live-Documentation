@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps what the model makes of a board joined to five docs: regions of the things that hold things, nested, with their pieces at every depth and their tints from the legend; pieces of the rest, shaped by the legend and counted from their docs, with their doors, files and what they stand on; roads in the air for calls and on the board for what stands on what, crossings for declared connections between regions, and an issue for a connection that joins a thing and a region; a token for what two pieces share; positions for pieces only; and a piece's regions nearest first.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The docs are rendered through the Live Doc grammar and joined by `deriveBoardGraph`, so the fixture is what the generator and the engine would give the Explorer.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The one place the portal reads `Web.config`: every appSettings key is a constant here so that a renamed key breaks in one file, and the page and the controller read the typed values.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The owner's own convention, "a common C# configuration reference file (we tend to call ours `Globals.cs`)" (2025-11-06, quoted in [Sample Programs](../../../../../../../../layer-3/sample-programs.mdmd.md)); the hop to `Web.config` through the constants is hand-verified and found since the C# rewrite.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

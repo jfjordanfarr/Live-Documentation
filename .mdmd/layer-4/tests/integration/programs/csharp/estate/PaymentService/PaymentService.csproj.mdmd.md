@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The on-prem payment service's project: a .NET Framework 4.8 WCF service on Entity Framework 6, standing on the contracts library, the `EntityFramework` package and the WCF, data and annotations assemblies.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Read by the project adapter; its package reference with a version is what the board lists as something the `payments` thing stands on, `EntityFramework@6.5.1`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

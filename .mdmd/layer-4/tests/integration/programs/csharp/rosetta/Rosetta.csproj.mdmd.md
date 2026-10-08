@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The project file of the C# Rosetta sample, a .NET 8 library standing on the `xunit` package: it exists so that `scip-dotnet` can index the sample and write its compiler expectations, and so that the sample's test file compiles.
 
 ### Notes
-_Pending notes_
+- Added on 2026-01-27 with the move to the compiler oracle (`95595aa3`). The project adapter reads it as a `library` with `xunit@2.6.1` as an external; the Rosetta parity suite reads the program from `rosetta-manifest.json`, not from here ([Sample Programs](../../../../../../layer-3/sample-programs.mdmd.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

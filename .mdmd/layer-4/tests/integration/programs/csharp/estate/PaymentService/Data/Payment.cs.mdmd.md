@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The entity for a row of `dbo.Payment`, mapped to the table by `[Table("Payment", Schema = "dbo")]` and keyed by the payment id.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The table attribute is how the C# adapter reads the hand-verified remote hop from this entity to the table's script, as a contract; the key and the properties are the compiler's business.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps the SQL adapter's two claims on written scripts: the estate's posting procedure publishes itself and links to the table it inserts into from source and to the Oracle table it reads through a linked server as a contract, a `FROM` inside a string ignored; and a schema script publishes a table, a view and a function with brackets off and the kinds the docs use, `sql-function` among them.
 
 ### Notes
-_Pending notes_
+- The scripts are written to a temporary folder and the symbol index is hand-built with the estate's paths, as the other adapter tests do.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

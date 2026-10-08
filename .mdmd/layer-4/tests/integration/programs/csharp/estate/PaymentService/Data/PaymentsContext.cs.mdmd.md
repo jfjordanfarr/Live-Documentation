@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The Entity Framework context over the on-prem Payments database: its connection string is `App.config`'s `PaymentsDb`, named through a constant; posting a payment calls `dbo.usp_PostPayment` by a name held in a constant, and the linked-server read of the Oracle balance happens there.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Two hand-verified hops leave this file and the C# adapter reads both by folding the constants: `base("name=" + ConnectionName)` to the connection string the configuration publishes, and the `EXEC` of the procedure's name in `SqlQuery` to the procedure's script as a contract, a remote hop. The row type it returns is matched to the procedure by columns alone, the hop that stays missing.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

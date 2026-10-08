@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The single row `dbo.usp_PostPayment` returns, as Entity Framework materialises it: the payment's id and status and the account balance from Oracle.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Its hand-verified hop to the procedure rests on the result columns alone, which no scan of the files gives; it is one of the three edges the estate keeps missing so that the measure stays honest.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

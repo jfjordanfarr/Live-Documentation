@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The manifest of the CLI package: a `live-docs` binary that is not yet publishable. It depends on the engine and the Explorer packages and builds its one source file with `tsc`; the root's `npm run build` does not include it.
 
 ### Notes
-_Pending notes_
+- Born 2025-12-15 as "pre-publish prep" (`7aea17b7`), with the npm metadata the root manifest carries. Its source, `src/index.ts`, spawns `tsx` on the scripts under this repository's `scripts/live-docs/` by a path relative to the package, which works inside this repository and nowhere else; its own comment says a published form would compile the scripts first. Nothing builds, imports or tests the package, so what it offers today is `npm run live-docs:*` under another name. Whether to keep the shell until publishing is near or delete it and build the real package then is the owner's call, asked on 2026-10-08.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

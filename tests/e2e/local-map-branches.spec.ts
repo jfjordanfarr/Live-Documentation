@@ -400,6 +400,14 @@ test("a card's rows stand where their wires lead by default, and Tuning offers t
   expect(await rowsOf()).toEqual(alphabetical);
   const lastRows = await page.locator("#map-container .node-card").evaluateAll(cards => cards.map(card => [...card.querySelectorAll<HTMLElement>(".symbol-row")].at(-1)?.dataset.symbol));
   expect(lastRows.every(symbol => symbol === "__internals__")).toBe(true);
+  // Chosen again, the layout order stands the rows where their wires lead once more. It need not reproduce the first
+  // picture: a re-render starts the order search from the picture on the page, under the churn cost, where a cold render
+  // starts from the ranking's order, and the two can settle on different orders of the same quality (seen 2026-10-08,
+  // when a neighbour's card changed shape). A cold render under the kept choice does reproduce it.
   await choose("layout");
+  expect([...(await rowsOf())].sort()).toEqual([...listed].sort());
+  expect(await disorder(), "the layout order follows the wires more closely than the file's order, chosen again").toBeLessThan(appearanceDisorder);
+  await page.reload();
+  await settle();
   expect(await rowsOf()).toEqual(byLayout);
 });

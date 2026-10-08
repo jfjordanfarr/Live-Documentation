@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The page's code-behind: renders the server-authored values, whether payments are enabled and the gateway's base URL, into the hidden fields once on load. Nothing posts back; the script takes over from there.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Its use of the two fields the designer file declares is the C# adapter's partial-class case, linking it to the designer peer; the hand-verified hop from the markup to it is the directive's.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

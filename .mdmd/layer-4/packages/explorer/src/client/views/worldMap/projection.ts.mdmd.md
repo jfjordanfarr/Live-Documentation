@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The World Map's camera: an orthographic projection of the board seen from an azimuth and an elevation about a pivot, so that nothing changes size as the camera turns, and the pan and zoom applied to the projected picture; the way back from the picture to the board plane; the depth that orders drawing; the fit of some corners into a viewport; a zoom about a screen point within limits; the shading of a face by its normal; a box's six faces sorted far to near; the ring of a drum; a point along a cubic Bezier; a point in a polygon; and a smooth step for easing.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The board plane is z = 0 and z grows upward. `REST_ELEVATION` is the angle the board is first seen at, `MIN_ELEVATION` the lowest before the board is a line, and `TOP_DOWN` straight down, where the board is a plain two-dimensional canvas and the labels keep their size. Pure functions over numbers; `controller.ts` applies them to SVG. Measured by `projection.test.ts`, which round-trips a point through every azimuth and elevation it tries.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

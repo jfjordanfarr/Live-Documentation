@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The tool-generated half of the page's partial class: one protected field per control declared with `runat="server"` and an id.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Its hand-verified hop to the markup rests on the control ids alone, one of the three edges the estate keeps missing; the code-behind's hop to it is found.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

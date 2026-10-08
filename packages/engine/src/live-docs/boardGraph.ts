@@ -18,6 +18,7 @@
 import { DOOR_KINDS, type Board, type BoardIssue, type Door, type Thing } from "./board";
 import { symbolName } from "./document";
 import type { GraphFile, LiveDocGraph } from "./graph";
+import { MANIFEST_KINDS } from "./openings";
 
 // ============================================================================
 // The model
@@ -87,9 +88,6 @@ export interface BoardGraph {
   /** What the join found wanting: a `From` with no docs, a declared door nothing serves. Reports, not refusals. */
   issues: BoardIssue[];
 }
-
-/** The symbol kinds a manifest's doc publishes: a project's kind from `adapters/project.ts`, a package from `adapters/json.ts`. */
-const MANIFEST_KINDS: ReadonlySet<string> = new Set(["library", "program", "web", "package"]);
 
 // ============================================================================
 // The join

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps the World Map's words off each other over this repository's board, in each state the view can be in: at rest, with the built-on layer showing, after a turn and a zoom (labels keep their size and the world does not), and a thing opened into the Membrane Map, where nothing collides and nothing is cut off.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-29 when the owner asked whether Playwright could catch "text overflows or other immediate design fails" ([Turn 48](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-48)); `tests/e2e/design-audit.ts` is the instrument, and each state is its own case so that a failure names the state and the words. The controller's label settling is what these cases keep honest.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The gateway's configuration: the workload and environment this deployment serves as appSettings, and the `PaymentHub` client endpoint whose address reaches the on-prem hub over the tunnel, with the hub's contract.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The configuration adapter publishes the two keys as settings and the endpoint by name; `GatewaySettings.cs` reads the keys through constants and `HubProxy.cs` names the endpoint, both hand-verified hops the C# adapter finds. The client address matches the hub's listening address in `Hub/App.config`, the remote hop observed from configuration, and the contract links to `IPaymentHub.cs`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

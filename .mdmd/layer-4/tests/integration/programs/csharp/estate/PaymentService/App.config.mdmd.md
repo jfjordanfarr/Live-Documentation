@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The payment service's configuration: the `PaymentsDb` connection string to the on-prem SQL Server, and the service it hosts at `net.tcp://payments.onprem.example:8732/PaymentService`.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The configuration adapter publishes the connection string and the listening address (the door the hub's production client endpoint matches, observed from configuration) and links the service name and contract to `PaymentService.cs` and `IPaymentService.cs`; `PaymentsContext.cs` reaches the connection string by name through a constant, a hand-verified hop.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

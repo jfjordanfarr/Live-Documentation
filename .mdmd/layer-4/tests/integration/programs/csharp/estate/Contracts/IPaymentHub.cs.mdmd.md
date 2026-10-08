@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The hub's WCF service contract: two operations, posting a payment and looking one up, each taking and returning the shared data contracts. The gateway's proxy opens a channel on it and the hub implements it.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The contract is the name both sides of the gateway-to-hub hop carry: the gateway's and the hub's configuration name it as their endpoint's `contract`, which is how the configuration adapter links each of those files here. The compiler sees the gateway's and the hub's uses of the interface; what it cannot see, the address those endpoints share, is the hand-verified remote hop between `Gateway/Web.config` and `Hub/App.config`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

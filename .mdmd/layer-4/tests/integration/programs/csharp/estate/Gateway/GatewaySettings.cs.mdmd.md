@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Which workload and environment this gateway deployment serves, read from `Web.config` through constants that hold the keys, so that a renamed key breaks in one file. The controller stamps both onto every request before it reaches the hub.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The hand-verified hop to `Web.config` through `WorkloadKey` and `EnvironmentKey` is the C# adapter's configuration-key case: a key held in a constant, resolved to the setting the configuration file publishes.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

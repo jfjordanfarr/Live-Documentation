@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The on-prem hub's project: a .NET Framework 4.8 WCF service host standing on the contracts library and `System.ServiceModel`.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). Read by the project adapter as a library with one project reference and one assembly reference; the board names it a `service`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

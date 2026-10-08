@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The World Map view's door: reads the bundle's board text, refuses it with a note when it is not a board or has faults, joins it to the graph with the engine's own modules, builds the model, and gives a `WorldMapController` the root to draw into with the two ways out of the view, a file into the Local Map and a thing's folder into the Membrane Map. A bundle without a board gets a note that says how to build one. The controller's handle is left at `window.__worldMap` for the tests.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 when the World Map landed ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)), the board probe's rendering ported onto real data. The parse, lint and join are the calls `npm run live-docs:board` makes, so what the page draws is what the command prints. The view is created once and rendered once; `dispose` empties the root.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

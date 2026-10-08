@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+The portal's configuration: the gateway's base URL and whether payments are enabled, the two appSettings that `Globals.cs` reads through constants.
 
 ### Notes
-_Pending notes_
+- Part of the estate, the owner's payment chain in miniature, written on 2026-09-27 so that the oracle and the adapters are measured on their world ([the estate's README](../../../../../../../../tests/integration/programs/csharp/estate/README.md)). The configuration adapter publishes the two keys as settings; `Globals.cs`'s hand-verified hop to them is the C# adapter's configuration-key case.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

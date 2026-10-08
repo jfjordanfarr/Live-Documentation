@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Measures the join on a graph of six docs that are rendered through `renderLiveDoc` and read back through `parseLiveDoc`, so the fixture is what the generator would write: files by folder with one thing nested in another, doors from a doc and from a declaration, what a thing stands on from its manifest's externals, six wires with the edges behind them, and the three issues the join reports instead of refusing.
 
 ### Notes
-_Pending notes_
+- The graph is `deriveLiveDocGraph` over the docs at the shipped default location (`.live-documentation/source`), so a change to the grammar, or to how the graph derives its inbound and outbound lists, reaches this test before it reaches a real board.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

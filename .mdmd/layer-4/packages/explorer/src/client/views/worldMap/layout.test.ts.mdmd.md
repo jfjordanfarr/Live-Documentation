@@ -8,10 +8,10 @@
 
 ## Authored
 ### Purpose
-_Pending authored purpose_
+Keeps the geometry's claims: every shape word has a solid, the tile flat and the drum round; a piece is placed around its centre, floating, and higher while dragged; units and pixels convert both ways to two decimals; a padded rectangle wraps rectangles and none wraps nothing; unplaced things go in rows below what is placed, a region's members together; a door sits on the wall that faces its counterpart among the walls the viewer sees, at mid-height, pointing outward, and on a drum's rim; a wire leaves each door along its outward direction and hangs; far pieces draw first; and tokens spread clear of pieces and of each other inside the board.
 
 ### Notes
-_Pending notes_
+- Written on 2026-09-28 with the view ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)). The numbers asserted (84, 46, 60) are the picture's constants, so a change to a size is a change here too, on purpose.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
