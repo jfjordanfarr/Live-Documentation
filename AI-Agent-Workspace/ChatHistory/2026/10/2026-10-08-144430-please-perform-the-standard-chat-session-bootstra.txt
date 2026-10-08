@@ -1435,3 +1435,261 @@ background" completed (exit code 0)
 
   The thousand-line heuristic is noted in owner.md as a heuristic. Next, in your
   order, the World Map plan with its forks.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >
+  On September 26 you said agents had got good enough at exploring on their own
+  that this tool is "not terribly useful for them." The market went the other
+  way while you were away. Graphify turns a repository into a graph for agents
+  and reached 80,000 stars in under four months, a YC Summer 2026 company.
+  There is now a whole shelf of MCP servers that parse with tree-sitter, build
+  a dependency graph and serve it to Claude Code or Cursor, one of them
+  advertising "96% fewer tokens." Supermodel ships a CLI, an MCP server, a
+  GitHub Action, and a public site of precomputed architecture docs for popular
+  open-source repositories, which is your September 28 idea built by someone
+  else, with one difference: their docs command uploads your repository to
+  their API. The second use case is older and quieter: architecture docs
+  generated in CI and published as a static site (an arch-docs action to GitHub
+  Pages, Structurizr's C4-as-code with a site generator, Backstage TechDocs'
+  pipeline model, dependency-cruiser as a rules engine in CI). The third is you
+  at work, with no internet calls allowed and non-engineers to show.
+  So I suppose what this really means is that Live Documentation's greatest
+  relative strength is that it exists to **prevent your understanding of
+  complex systems run away on you**. Other systems care about making agents
+  more efficient, but that's cheap and easy and we can do it too. Here's the
+  JSON exports. What we give you best and most effectively is _knowledge of
+  your own systems_. In a world of more and ore agent code, _understanding_ is
+  the real bottleneck.
+
+  >My advice on the shape, since you asked for one and not a menu. The headless
+  form is the primary deliverable: one npm package whose binary runs generate,
+  lint, inspect, board and visualize. Everything else wraps it. A GitHub
+  Action that runs it and commits the mirror or publishes the Explorer. The
+  static bundle as the thing you hand to someone, and the single self-saving
+  file as that idea taken further. Agents served through the exported markdown
+  and JSON, as the rule already says, with an MCP door a thin wrapper later if
+  ever.
+
+  Bah MCP is in flux all the time anyway, I don't even care about that spec.
+  Everybody figured out LLMs are workin' off plain text. Whomever gets the
+  easiest-to-understand (by the human and LLM) plain text with the
+  easiest-to-copy utilities basically wins this race haha! I dunno, maybe
+  things will change. I've been pretty unimpressed with the early standards.
+
+  >What none of them have together is what you already built: a committed
+  markdown mirror per file with authored sections that survive regeneration, a
+  JSON index derived from it, adapters measured against compilers, a board for
+  the estate scale, and a static Explorer. Offline, no upload, reviewable in a
+  pull request. Your three constants are exactly the line that separates Live
+  Documentation from Supermodel and the MCP servers.
+
+  Yeah but that's all the stuff that we all kind of cumulatively get "for free"
+  in the age of agentic development. As you say, there is a garden variety of
+  similar tools purporting to do similar things. Anyone can weave together the
+  solution and indeed _many will_. If they spin out whole new solutions
+  independently, I'll expect they look somewhat like this one. I am, for this
+  project, aiming to maximize what is good about LLMs: that they are collective
+  common sense. That is the gradient we're all descending down in this space.
+  What is unique is that the entire point of this delightful
+  oh-cool-copypaste-engine-for-agents software is never letting understanding
+  run away from you.
+
+  From this perspective, thinking of Live Documentation as a system which can
+  look at directories and map out shape is just one part of solving that
+  puzzle. But there remains much more to solve. We have never delved deep into
+  the possibility of looking at, say, any local `.git/` folders in a directory
+  being scanned and suddenly being able to show the _trajectory_ of a system
+  over time. The possibility space we're exploring _on top of a common-sense
+  markdown-based system mapping engine_ is how we can maximize human
+  understanding of complex systems.
+
+● Recording this turn, then reading the vision's purpose paragraph and the
+  existing notes on the system's history over time, so that I can propose exact
+  words rather than paraphrase yours.
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The owner's words are in Memory and the record; the gate is running over them.
+  The commit and my answer, with the vision sentences I'll propose, follow its
+  result.
+
+● Background command "Run the pre-commit chain without Playwright in the
+background for the Memory and record changes" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The owner re-exported the chat again (the capture file changed on disk).
+  Measuring it to update the inventory, then committing it as received.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Recorded and committed: your words in Memory as 038d185a, your fourth export
+  of this chat as received in 355f7121. The tree is clean.
+
+  I agree, and it changes what counts. The mechanics are the commodity: parse,
+  graph, markdown, index, static page. Anyone can weave them and many will, and
+  their results will look like this. The purpose is not a commodity. A tool
+  whose point is that your understanding of a system never runs away from you is
+  judged by one question, whether a person understands more after looking than
+  before, and every feature here has to answer it. Agents get the same plain
+  text and the same commands as anyone else, which is already the rule, and that
+  settles the protocol question too: no MCP, the markdown and the JSON exports
+  and copyable commands are the door.
+
+  The vision should say this in your words, and I will not edit it until you say
+  yes. Its purpose paragraph now reads "It exists so that a person can see how
+  a system's pieces connect without reading the code or drawing the diagram by
+  hand," with three readers named. I propose replacing it with:
+
+  ▎ It exists so that a person's understanding of a complex system never runs
+  ▎ away from them. In a world of more and more agent-written code,
+  ▎ understanding is the bottleneck. The map gives a person knowledge of their
+  ▎ own systems: how the pieces connect, what a change touches, what the whole
+  ▎ estate looks like, and, in time, how it came to be that way. Agents read its
+  ▎ plain text like anyone else; making them efficient is a by-product, served
+  ▎ by the exports.
+
+  and adding to "What it is not": "Not a protocol. There is no MCP door; the
+  plain text and the commands are the door." The three readers stay under "Who
+  looks at it."
+
+  The trajectory is closer than it looks, because the mirror is committed. For
+  this repository the history of its shape is already in git: every regeneration
+  commit is a snapshot, the generator at any commit gives the index, and the
+  difference between two indexes is a map of what changed, files, symbols and
+  wires added and removed. For a scanned repository whose owner commits no
+  mirror, a .git folder found in the scan gives the same thing at the cost of
+  one generator run per commit into a copy, which the oracle already does for a
+  fixture. You said the shape of it on September 28: two snapshots of one system
+  on the board, with the doors and wires that differ between them, and "the
+  inflation and deflation of the universe of this workspace" in the force graph.
+  I would add it to the vision's order of work as its sixth step, after the
+  traded file, with the first slice being the map at a commit and the difference
+  between two.
+
+  What this does to the World Map plan. It comes framed under understanding
+  rather than under "the next leap in functionality," and its first fork stays
+  the one you named: this repository's board is its delivery shape, drawn with
+  imagined things before it is decided. Whether the trajectory ranks before,
+  after or between the World Map's chats is yours to say when the plan arrives;
+  you expected that work interspersed with other work anyway.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >What this does to the World Map plan. It comes framed under understanding
+  rather than under "the next leap in functionality," and its first fork stays
+  the one you named: this repository's board is its delivery shape, drawn with
+  imagined things before it is decided. Whether the trajectory ranks before,
+  after or between the World Map's chats is yours to say when the plan arrives;
+  you expected that work interspersed with other work anyway.
+
+  I still believe that the World Map is for understanding connectivity between
+  systems, deployment shapes (maybe CICD stuff), things like that. But I do
+  believe that one could quite nicely timelapse their way through git history
+  in the 3D force-directed graph. Just a 3D version of what another person came
+  up with for git history visualization. Can't remember the name of it off the
+  top of my head.
+
+● The name you're reaching for is almost certainly Gource; I'll confirm it with
+  a source while I record this turn.
+
+  Read 1 file (ctrl+o to expand)
+
+● Web Search("Gource software version control visualization git history animated
+            tree")
+  ⎿  Did 1 search in 7s
+
+● Confirmed Gource as the OpenGL repo history visualization tool. Saving this to
+  memory along with the source details in the ideas file. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The placement is recorded in Memory and the gate is running over it; the
+  commit and my answer follow.
+
+● Background command "Run the pre-commit chain without Playwright in the
+background for the Memory and record changes" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The name is Gource. It draws a repository's history as a growing tree, the
+  root at the centre, directories as branches, files as leaves, with each
+  contributor an avatar that flies to the files they touch, reading Git,
+  Mercurial, Bazaar or Subversion logs and rendering to video through FFmpeg
+  (its manual (https://man.archlinux.org/man/gource.1.en)). Its older sibling is
+  code_swarm, which animated the same logs as particles.
+
+  The 3D version you mean differs in kind, and that is the point. Gource
+  animates the file tree and who touched it. A timelapse in the Force Graph
+  would animate the dependency graph: files as nodes, references as edges,
+  appearing, drifting into clusters and vanishing commit by commit. That is what
+  you asked for on September 28, "the inflation and deflation of the universe
+  of this workspace," and it shows something Gource cannot: wires, and the
+  moment two clusters become one. Each frame is the generator's index at a
+  commit. For this repository the frames are already in git, since the mirror is
+  committed; for a scanned repository with a .git folder, each frame costs one
+  generator run into a copy, which the oracle already does for a fixture. The
+  hard part is not the frames but continuity: a node must keep its place from
+  one frame to the next and a new one must enter beside its neighbours, or the
+  person watching loses their bearings, which is the orientation rule the
+  Explorer already lives under.
+
+  Recorded and committed as 5af828e8. The World Map stays for connectivity
+  between systems and deployment shapes, with CI/CD files a possible source, and
+  the trajectory is a separate piece of work in the Force Graph. That split is
+  in direction.md, the tool's name with its source and the difference in kind
+  are in ideas.md under the graph over time. The vision's purpose sentences from
+  my last reply are still neither accepted nor declined, so the vision is
+  unedited.
+
+  Next, in your order: the World Map plan with its forks, framed under
+  understanding, its first fork this repository's board as its delivery shape.
+
+  Sources: Gource manual (https://man.archlinux.org/man/gource.1.en)
+
+● The name is Gource. It draws a repository's history as a growing tree, the
+  root at the centre, directories as branches, files as leaves, with each
+  contributor an avatar that flies to the files they touch, reading Git,
+  Mercurial, Bazaar or Subversion logs and rendering to video through FFmpeg
+  (its manual (https://man.archlinux.org/man/gource.1.en)). Its older sibling is
+  code_swarm, which animated the same logs as particles.
+
+  The 3D version you mean differs in kind, and that is the point. Gource
+  animates the file tree and who touched it. A timelapse in the Force Graph
+  would animate the dependency graph: files as nodes, references as edges,
+  appearing, drifting into clusters and vanishing commit by commit. That is what
+  you asked for on September 28, "the inflation and deflation of the universe
+  of this workspace," and it shows something Gource cannot: wires, and the
+  moment two clusters become one. Each frame is the generator's index at a
+  commit. For this repository the frames are already in git, since the mirror is
+  committed; for a scanned repository with a .git folder, each frame costs one
+  generator run into a copy, which the oracle already does for a fixture. The
+  hard part is not the frames but continuity: a node must keep its place from
+  one frame to the next and a new one must enter beside its neighbours, or the
+  person watching loses their bearings, which is the orientation rule the
+  Explorer already lives under.
+
+  Recorded and committed as 5af828e8. The World Map stays for connectivity
+  between systems and deployment shapes, with CI/CD files a possible source, and
+  the trajectory is a separate piece of work in the Force Graph. That split is
+  in direction.md, the tool's name with its source and the difference in kind
+  are in ideas.md under the graph over time. The vision's purpose sentences from
+  my last reply are still neither accepted nor declined, so the vision is
+  unedited.
+
+  Next, in your order: the World Map plan with its forks, framed under
+  understanding, its first fork this repository's board as its delivery shape.
+
+  Sources: Gource manual (https://man.archlinux.org/man/gource.1.en)
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read package.json (83 lines)
+  ⎿  Read packages/engine/src/live-docs/boardGraph.ts (250 lines)
+  ⎿  Read packages/engine/src/live-docs/adapters/project.ts (105 lines)
+  ⎿  Referenced file packages/engine/src/live-docs/openings.ts  ⎿  Read packages/engine/src/live-docs/heuristics/routes.ts (185 lines)
