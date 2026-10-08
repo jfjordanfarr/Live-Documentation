@@ -1,6 +1,6 @@
 # The owner
 
-_Current as of 2026-10-03. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
+_Current as of 2026-10-08. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
 
 The owner of this repository is its only human contributor. They act as product manager and architect and expect the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
 
@@ -63,6 +63,7 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 
 - **Measures must be plural and at odds** (2026-10-01). On the still-picture scoreboard: "perhaps we need to expand the metrics we measure (ensuring that plenty of them are at least somewhat at odds with each other to avoid systemic biases which allow design cheats to win)." Their eye outranks a number: "I see the measurements and yet I can still confidently say based on what I've seen in the screenshots that the existing Local Map is far more informative about the shapes and connections of classes". A single measure one design can max is a bias, not a judgment. [Source](../ChatHistory/2026/10/2026-10-01.1.record.md#turn-7).
 - **They show what they mean by marking up a picture** (2026-10-07, [Turn 14](../ChatHistory/2026/10/2026-10-06.1.record.md#turn-14)). When four shapes of the laces were "not convincing at all", the owner took the nearest picture and painted boxes in the card's sampled colour over the parts that failed, "so you can see what I mean 'going behind' should look like". The marked picture was the brief, more exact than any sentence; it is kept under the day's Screenshots with its hash. When a visual verdict comes, the agent should ask for or expect a picture, and read it closely before building.
+- **Cruft in highly-visited files is worth clearing** (2026-10-08, [Turn 2](../ChatHistory/2026/10/2026-10-08.1.record.md#turn-2)). Asked whether to rewrite direction.md's stale "Next" section and add one line to AGENTS.md's bootstrap bullet, after their 2026-10-07 finding that the agent's ranking leaned on the recent: "Yeah please clean up the stale stuff. Cruft in highly-visited files is very worth clearing." The cause was the routine's shape as much as the text, so the fix went into both the file and the bullet.
 
 ## Formatting and visual taste
 
