@@ -1,0 +1,35 @@
+# Headless Live Documentation: who would use it, as of 2026-10-08
+
+_A survey gathered on 2026-10-08 for the delivery-shape question the owner raised that day ([Turn 6](../ChatHistory/2026/10/2026-10-08.1.record.md#turn-6)): "Is there a market for a headless Live Documentation? ('Market' as in 'use case' -- this project is not for money and is truly open source)", with "maximum security, portability, shareability" as the constants. It records what existed on its date, with a source for every claim, and decides nothing._
+
+## Three use cases that exist in the world
+
+### 1. Agents reading a codebase's structure
+
+- Aider's repository map parses code with tree-sitter into symbols, ranks them with PageRank over a dependency graph and fits the result to a token budget; it is the pattern the local tools converged on ([Stacklit's comparison of Repomix, code2prompt and Aider's repo map](https://github.com/glincker/stacklit/discussions/13); [code-intelligence indexing for agents, 2026](https://anthonywest.co.uk/research/code-intelligence-indexing-2026-openai)).
+- MCP servers that build a code graph with tree-sitter and serve it to Claude Code, Cursor or Codex: [codebase-graph](https://glama.ai/mcp/servers/Phoenixrr2113/codebase-graph) (five languages, a bitemporal graph), [trace-mcp](https://mcpservers.org/servers/nikolai-vysotskyi/trace-mcp) (68 languages, impact analysis), [Codebase Memory MCP](https://landscape.jimmysong.io/projects/codebase-memory-mcp/) (158 languages, "sub-millisecond structural queries"), [CodeGraph](https://glama.ai/mcp/servers/jotaseme/codegraph) ("96% fewer tokens on average").
+- Graphify turns repositories and mixed folders into knowledge graphs for agents; launched April 2026, 80,000 GitHub stars in under four months, a Y Combinator Summer 2026 company ([InfoQ, September 2026](https://www.infoq.com/news/2026/09/graphify-codebase-exploration/); [a review](https://andrew.ooo/posts/graphify-yc-s26-knowledge-graph-review/)).
+- Supermodel ships a CLI, an MCP server and a TypeScript SDK that generate code graphs, a `docs` command that uploads a repository to their API and builds a static architecture site from the returned graph, a GitHub Action that hunts dead code with call graphs, and a public site of precomputed architecture docs for popular open-source repositories ([the CLI's docs command](https://docs.supermodeltools.com/cli/commands/docs.md); [the prompt library](https://docs.supermodeltools.com/prompt-library); [the precomputed repositories](https://repos.supermodeltools.com)). The precomputed library is the owner's idea of 2026-09-28 ([ideas.md](../Memory/ideas.md)), built by someone else, with the upload the owner would do without.
+
+What these share: tree-sitter parsing, a graph, a door for the agent (MCP or a CLI). What most of them lack: a committed, reviewable artifact; several run as servers, and one uploads the code. Set this beside the owner's own reading of 2026-09-26, "AI agents have become significantly better about the knock-on-effect exploration on their own, so this tool is truthfully not terribly useful for them" ([the September 26 record](../ChatHistory/2026/09/2026-09-26.1.md)): the market of 2026 disagrees about the use case, and agrees with the owner that the human picture is a separate product. The `llms.txt` convention is the same shape for websites, shipped by hundreds of sites while only a small share of agent visits fetch it ([a 2026 guide](https://baeseokjae.github.io/posts/optimizing-for-agents-llmstxt/)).
+
+### 2. Architecture documentation generated in CI and published as a static site
+
+- The arch-docs GitHub Action generates and publishes an architecture documentation site to GitHub Pages on every push ([Supermodel's prompt library names it beside the others](https://docs.supermodeltools.com/prompt-library.md)); the automatic-architecture-documentation repository builds its site from JSON descriptions and hand-drawn diagrams in a workflow ([the repository](https://github.com/automatic-architecture-documentation/documentation)).
+- Structurizr keeps the C4 model as code in the repository and exports diagrams in CI; a static site generator renders a Structurizr DSL workspace to HTML with SVG, PNG and PlantUML diagrams ([codecentric on docs-as-code with Structurizr](https://www.codecentric.de/wissens-hub/blog/architecture-documentation-docs-as-code-structurizr-asciidoctor); [a site generator fork](https://github.com/BrianSurrattDsg/structurizr-site-generatr-group-menu)).
+- Backstage TechDocs' CI model: the pipeline builds the site with MkDocs and publishes it to storage, and Backstage only reads the published HTML ([CloudThat on TechDocs](https://www.cloudthat.com/resources/blog/automated-documentation-sites-with-backstage-techdocs)).
+- dependency-cruiser, "the most mature and widely used dependency analysis tool in the JavaScript ecosystem", is a rules engine over the dependency graph run in CI, and madge finds circular dependencies ([self-hosted dependency graph platforms, June 2026](https://www.pistack.xyz/posts/2026-06-18-self-hosted-dependency-graph-architecture-visualization-platforms/); [madge](https://socket.dev/npm/package/madge)).
+
+What these share: the pipeline is the product, the site is static, and nothing runs when a reader opens it. This is the shape the owner's three constants describe.
+
+### 3. The owner's own use
+
+A person at a workplace with .NET Framework estates, who wants no internet calls ("Internet calls are things I really do want to do without if I can", 2026-09-28, [ideas.md](../Memory/ideas.md)) and wants to show non-engineers the system: "I just want to be able to show non-software people what I do and they can _see it_ the way I understand it. I don't want to keep drawing bespoke diagrams for XYZ questions from the business at work" (2026-09-26, [the record](../ChatHistory/2026/09/2026-09-26.1.md)). Headless is what runs in a work pipeline without an extension to install; the static bundle is what is handed over.
+
+## What Live Documentation has that none of these have together
+
+A committed markdown mirror, one file per source file, with authored sections preserved across regeneration; a JSON index derived from the docs; adapters measured against compilers; openings and a board text for the estate scale; a static Explorer that needs no server. Offline, no upload, reviewable in a pull request.
+
+## What "headless" would mean in the market's sense
+
+A published npm package whose binary runs `generate`, `lint`, `inspect`, `board` and `visualize`; a GitHub Action that runs it and commits the mirror or publishes the Explorer; the static bundle as the thing shared; agents served through the exported markdown and JSON, with an MCP door at most a thin wrapper later, under the rule that agents are served through what a person exports. The package under `packages/cli` is not this: it spawns this repository's scripts by a relative path and nothing builds, imports or tests it ([its doc](../../.mdmd/layer-4/packages/cli/package.json.mdmd.md)).
