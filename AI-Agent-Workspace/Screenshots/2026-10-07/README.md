@@ -83,3 +83,12 @@ Taken by the agent after [Turn 4 of the October 7 session](../../ChatHistory/202
 | [warehouse-levelness-5.png](warehouse-levelness-5.png) | Row Levelness at 5, evenness at zero: the cards come level by moving, the outlines following them. |
 | [warehouse-listener-hover-runs-dimmed.png](warehouse-listener-hover-runs-dimmed.png) | The owner's hover on Inventory.java's `Listener` row after the fix, at half size: the wires the row touches bright, every other wire and every bundle's shared run at the dim value. Compare [the owner's picture](owner-hosted-warehouse-listener-hover.png), where the runs stayed at their own opacity. |
 
+
+## The owner's second look at the hosted build, received at 00:37 UTC on October 8
+
+The owner's own pictures, not the agent's, attached before [Turn 5 of the October 7 session](../../ChatHistory/2026/10/2026-10-07.1.record.md#turn-5): the Java warehouse sample on the build the owner hosts themselves (port 8901), at the new defaults, Membrane Evenness 1 and Row Levelness 0. Kept as received, with their hashes.
+
+| Capture | State |
+| --- | --- |
+| [owner-hosted-warehouse-report-evenness-1.png](owner-hosted-warehouse-report-evenness-1.png) | 1920 × 997, 167,180 bytes, SHA-256 `7f775c1c3231a24fc82b4d3dd6d10e1055c76e04390a4fd55b37c02a380188a1`. Report.java the subject with two pins, the whole scene at rest and no hover, the search's dials at their defaults: the `report` and `store` membranes are rectangles with their two cards level, which is what the evenness weight bought. |
+| [owner-hosted-warehouse-unit-hover.png](owner-hosted-warehouse-unit-hover.png) | 1920 × 875, 153,898 bytes, SHA-256 `1d33ab2fccb50e0d135121dfe47a6955380de3542308d2e61d08bcde6e6774e2`. Three pins, the search's dials at their widest (Order Starts 16, Search Starts 128, Search Patience 32, Churn Cost 0) and the pointer on Unit.java's `Unit` row, every wire the row does not touch dimmed, the bundles' runs among them. The owner's remaining reservation is on this picture: the `Unit` bundle climbs in steps through two columns of its own directory before it reaches the top row of the root and runs across to App.java, and fans out to the two tests only in the last gutter. |
