@@ -1,10 +1,11 @@
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { createDetailPanel } from "./detailPanel";
 import { requireElement, setActiveView } from "./dom";
-import { downloadDocs, type DownloadBundleType, type DownloadFormat } from "./download";
+import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { initOmnisearch } from "./panels/omnisearch";
+import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
 import { initTuningPanel } from "./panels/tuning";
 import {
@@ -1008,37 +1009,19 @@ function startExplorer(bundle: StaticExplorerData): void {
   const downloadCtx = { files, bundledMarkdown };
 
   function doRenderSourcesView(): void {
-    const canBulkDownload = true;
-
     renderSourcesView({
-      graphData,
-      resolveLinkEndpoint,
-      nodesById,
+      facts: sourcesFacts(bundle.graph),
       bundledDocs,
-      onNavigateToNode: (nodeId: string) => {
-        const node = nodesById.get(nodeId);
-        if (node) {
-          state.view = "map";
-          setActiveView("map");
-          updateUrlState("map", node.id);
-          schedulePersistNav();
-          selectNode(node);
-        }
-      },
+      // A file named on the panel goes to the detail panel, where its doc and its doors are; the panel itself stays as it is.
       onFocusNode: (nodeId: string) => {
         const node = nodesById.get(nodeId);
-        if (node) {
-          updateUrlState(state.view, node.id);
-          schedulePersistNav();
-          selectNode(node);
-        }
+        if (node) focusSidebar(node);
       },
       onViewBundledDoc: (docPath: string) => {
         showBundledDocInDetailPanel(docPath);
       },
-      onDownload: canBulkDownload
-        ? (bundleType: DownloadBundleType, format: DownloadFormat) => void downloadDocs(bundleType, format, downloadCtx)
-        : undefined
+      onDownload: (bundleType: DownloadBundleType, format: DownloadFormat) => void downloadDocs(bundleType, format, downloadCtx),
+      onDownloadFacts: downloadFactsJson
     });
   }
 

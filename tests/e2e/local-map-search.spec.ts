@@ -42,21 +42,24 @@ const readSearch = (page: Page): Promise<SearchReading> => page.evaluate(() => {
 });
 
 test("after the first picture the search tries further starts in idle time and moves to a better one when it clears the churn cost", async ({ page }) => {
-  // The first paint tries only the ranking's order and one seed, so there is better to find; the search tries twelve more and jumps rather than moves, for speed.
-  await open(page, { orderStarts: 1, searchStarts: 12, searchPatience: 12, moveMs: 0 });
-  expect((await readSearch(page)).starts, "the first paint tried the ranking's order and one seed").toBe(2);
+  // The first paint tries only the ranking's order, so there is better to find: on every scope the lab has measured, a
+  // seeded start beats the ranking's bare order (24% on 2026-10-06; 31% on this scope on 2026-10-08, when the first
+  // paint's own seed became the shortest of thirteen and a premise on one seed beating another went). The search
+  // tries twelve seeds and jumps rather than moves, for speed.
+  await open(page, { orderStarts: 0, searchStarts: 12, searchPatience: 12, moveMs: 0 });
+  expect((await readSearch(page)).starts, "the first paint tried only the ranking's order").toBe(1);
   await localMapSettled(page);
   const done = await readSearch(page);
   expect(done.status).toBe("capped");
   expect(done.tried).toBe(12);
-  expect(done.next).toBe(14);
+  expect(done.next).toBe(13);
   expect(done.adopted, "a better picture was found among the twelve").toBeGreaterThanOrEqual(1);
-  expect(done.start).toMatch(/^seed ([2-9]|1[0-3])$/u);
+  expect(done.start).toMatch(/^seed ([1-9]|1[0-2])$/u);
   // The price the search put on the adopted start from the page's answers is close to its price measured on the page.
   expect(done.priced).not.toBeNull();
   expect(Math.abs(done.priced! - done.score) / done.score, "the search's arithmetic price is near the page's measurement").toBeLessThan(0.02);
   // Without the search the page keeps the first paint, which the search's picture beats by its own price, churn aside.
-  await open(page, { orderStarts: 1, searchStarts: 0 });
+  await open(page, { orderStarts: 0, searchStarts: 0 });
   const first = await readSearch(page);
   expect(first.status).toBe("capped");
   expect(first.tried).toBe(0);
@@ -64,7 +67,8 @@ test("after the first picture the search tries further starts in idle time and m
 });
 
 test("a change of pins starts the search afresh, from the seed after the first paint's last", async ({ page }) => {
-  await open(page, { orderStarts: 2, searchStarts: 4, searchPatience: 4, moveMs: 0 });
+  // The first paint takes the ranking's order alone, so a seed is adopted and the search runs to its cap (see above).
+  await open(page, { orderStarts: 0, searchStarts: 4, searchPatience: 4, moveMs: 0 });
   await localMapSettled(page);
   const before = await readSearch(page);
   expect(before.status).toBe("capped");
@@ -83,13 +87,13 @@ test("a change of pins starts the search afresh, from the seed after the first p
   await page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .symbol-label-wrapper`).click();
   const fresh = await readSearch(page);
   expect(fresh.tried, "the new picture's search has only begun").toBeLessThan(4);
-  expect(fresh.next).toBeGreaterThanOrEqual(3);
+  expect(fresh.next).toBeGreaterThanOrEqual(1);
   await localMapSettled(page);
   const again = await readSearch(page);
   // Four starts and a patience of four: the search ends capped, or settled when none of the four was adopted.
   expect(["capped", "settled"]).toContain(again.status);
   expect(again.tried).toBe(4);
-  expect(again.next).toBe(7);
+  expect(again.next).toBe(5);
 });
 
 test("the search settles when a run of starts betters nothing, short of its cap", async ({ page }) => {

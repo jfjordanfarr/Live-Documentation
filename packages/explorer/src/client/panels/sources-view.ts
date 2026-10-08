@@ -1,449 +1,271 @@
 /**
- * Sources View Panel
- * 
- * Renders the "Knowledge Sources" view that shows graph statistics,
- * data provenance, and health warnings (high fan-out/fan-in nodes).
+ * The Knowledge Sources panel: what this bundle is, the files most used and
+ * most using, what nothing references, the related documentation and the
+ * export. Everything it says about the graph comes as the facts that
+ * `sources-facts.ts` computed from the bundle's graph; the tree of related
+ * markdown comes from the bundle. Each file named is a
+ * button that puts the file in the detail panel, where its doc and its doors
+ * are; each directory counted is a link to the Local Map's directory door.
+ *
+ * Rewritten on 2026-10-08 from the dead code sweep's findings: the fixed
+ * thresholds that called a file a "potential barrel" or "heavily
+ * depended-upon" went, with the cut list of "disconnected nodes", the tagline,
+ * the "How to Improve" text that named this repository's npm scripts, and the
+ * export's prose.
  */
 
 import type { BundledMarkdownTreeNode } from "../../shared/staticExplorerData";
-import type {
-  ExplorerGraphPayload,
-  ExplorerLinkPayload,
-  ExplorerNodePayload
-} from "../../shared/types";
 import { requireElement } from "../dom";
 import { escapeHtml } from "../graph-helpers";
+import { symbolCount, type SourcesFacts, type SymbolsOfFile, type UnreferencedFile } from "./sources-facts";
 
-/** Callback for navigating to a node from health warnings */
-export type NavigateToNodeCallback = (nodeId: string) => void;
-
-/** Download bundle type */
+/** Which documents the export takes: the Live Docs, the related markdown, or both. */
 export type DownloadBundleType = "live" | "related" | "all";
 
-/** Download format */
+/** One flattened markdown file, or a ZIP that keeps the folders. */
 export type DownloadFormat = "markdown" | "zip";
 
-/** Callback for downloading documentation */
-export type DownloadCallback = (bundleType: DownloadBundleType, format: DownloadFormat) => void;
-
-/** Callback for viewing a bundled doc in the detail panel */
-export type ViewBundledDocCallback = (docPath: string) => void;
-
-/** Bundled docs tree data */
-export interface BundledDocsData {
-  tree: BundledMarkdownTreeNode;
-  count: number;
-}
-
-/** Sources view configuration */
+/** What the panel needs from the client. */
 export interface SourcesViewConfig {
-  graphData: ExplorerGraphPayload;
-  resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
-  nodesById: Map<string, ExplorerNodePayload>;
-  /** Navigate to node in Local Map view (for health warnings) */
-  onNavigateToNode: NavigateToNodeCallback;
-  /** Focus node in detail panel without navigating away (for islands) */
-  onFocusNode?: NavigateToNodeCallback;
-  onDownload?: DownloadCallback;
-  bundledDocs?: BundledDocsData;
-  onViewBundledDoc?: ViewBundledDocCallback;
+  facts: SourcesFacts;
+  /** Put a file in the detail panel without leaving the panel. */
+  onFocusNode: (nodeId: string) => void;
+  onDownload: (bundleType: DownloadBundleType, format: DownloadFormat) => void;
+  /** Take the panel's facts out as JSON. */
+  onDownloadFacts: (facts: SourcesFacts) => void;
+  bundledDocs?: { tree: BundledMarkdownTreeNode; count: number };
+  onViewBundledDoc?: (docPath: string) => void;
 }
 
-/** Thresholds for health warnings */
-const HIGH_FANOUT_THRESHOLD = 50;
-const HIGH_FANIN_THRESHOLD = 30;
+const dateOf = (iso: string): string => iso.slice(0, 10);
+const plural = (count: number, noun: string): string => `${count.toLocaleString()} ${noun}${count === 1 ? "" : "s"}`;
+const nameOf = (path: string): string => path.slice(path.lastIndexOf("/") + 1);
+const directoryOf = (path: string): string => (path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : "");
 
-/** Maximum islands to display before truncating */
-const MAX_ISLAND_DISPLAY = 20;
-
-/**
- * Render health warnings for high fan-out and fan-in nodes.
- */
-function renderHealthWarnings(
-  highFanout: ExplorerNodePayload[],
-  highFanin: ExplorerNodePayload[],
-  outboundCounts: Map<string, number>,
-  inboundCounts: Map<string, number>
-): string {
-  const warnings: string[] = [];
-
-  highFanout.forEach(node => {
-    const count = outboundCounts.get(node.id) ?? 0;
-    warnings.push(`
-      <li>
-        <span class="warning-text">
-          <span class="warning-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
-          has <strong>${count}</strong> outbound dependencies (potential barrel file)
-        </span>
-      </li>
-    `);
-  });
-
-  highFanin.forEach(node => {
-    const count = inboundCounts.get(node.id) ?? 0;
-    warnings.push(`
-      <li>
-        <span class="warning-text">
-          <span class="warning-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
-          has <strong>${count}</strong> inbound dependencies (heavily depended-upon)
-        </span>
-      </li>
-    `);
-  });
-
-  if (warnings.length === 0) {
-    return '<div class="sources-empty">No high fan-out or fan-in nodes detected.</div>';
-  }
-
-  return `<ul class="sources-warnings">${warnings.join("")}</ul>`;
+/** A file's name as a button that focuses it, with its directory beside it. */
+function fileButton(path: string): string {
+  const directory = directoryOf(path);
+  return `<button type="button" class="sources-file" data-node-id="${escapeHtml(path)}">${escapeHtml(nameOf(path))}</button>` +
+    (directory ? `<span class="sources-path">${escapeHtml(directory)}</span>` : "");
 }
 
-/**
- * Render warnings for disconnected "island" nodes (no dependencies and no dependents).
- */
-function renderIslandWarnings(
-  islands: ExplorerNodePayload[]
-): string {
-  if (islands.length === 0) {
-    return '<div class="sources-empty sources-positive">No disconnected nodes detected. All nodes are connected!</div>';
-  }
-
-  // Group islands by directory prefix for readability
-  const byDirectory = new Map<string, ExplorerNodePayload[]>();
-  for (const node of islands) {
-    const parts = node.id.split("/");
-    const dir = parts.length > 1 ? parts.slice(0, -1).join("/") : "(root)";
-    if (!byDirectory.has(dir)) {
-      byDirectory.set(dir, []);
-    }
-    byDirectory.get(dir)!.push(node);
-  }
-
-  // Sort directories alphabetically
-  const sortedDirs = [...byDirectory.keys()].sort();
-
-  // Build display list with truncation
-  const items: string[] = [];
-  let displayedCount = 0;
-
-  for (const dir of sortedDirs) {
-    if (displayedCount >= MAX_ISLAND_DISPLAY) break;
-    
-    const nodes = byDirectory.get(dir)!.sort((a, b) => a.name.localeCompare(b.name));
-    for (const node of nodes) {
-      if (displayedCount >= MAX_ISLAND_DISPLAY) break;
-      
-      items.push(`
-        <li>
-          <span class="warning-text">
-            <span class="warning-node island-node" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</span>
-            <span class="island-path">${escapeHtml(dir)}</span>
-          </span>
-        </li>
-      `);
-      displayedCount++;
-    }
-  }
-
-  const remaining = islands.length - displayedCount;
-  const suffix = remaining > 0 
-    ? `<li class="island-truncated">...and ${remaining} more disconnected node(s)</li>` 
-    : "";
-
+function renderShape(facts: SourcesFacts): string {
+  const { shape } = facts;
+  const archetypes = shape.byArchetype.map(entry => `${entry.name} ${entry.count.toLocaleString()}`).join(", ");
+  const generated = shape.generatedFrom && shape.generatedTo
+    ? (dateOf(shape.generatedFrom) === dateOf(shape.generatedTo) ? dateOf(shape.generatedTo) : `${dateOf(shape.generatedFrom)} to ${dateOf(shape.generatedTo)}`)
+    : "unknown";
+  const directories = shape.byDirectory.map(entry => entry.name
+    ? `<li><a class="sources-directory" href="?view=local&amp;dir=${encodeURIComponent(entry.name)}">${escapeHtml(entry.name)}</a><span class="sources-count">${entry.count.toLocaleString()}</span></li>`
+    : `<li><span class="sources-directory">at the root</span><span class="sources-count">${entry.count.toLocaleString()}</span></li>`).join("");
+  const extensions = shape.byExtension.map(entry => `${escapeHtml(entry.name || "no extension")} ${entry.count.toLocaleString()}`).join(", ");
   return `
-    <ul class="sources-warnings sources-islands">${items.join("")}${suffix}</ul>
-    <p class="sources-note">Disconnected nodes may indicate missing adapter detection, stale files, or legitimately standalone utilities.</p>
-  `;
+    <section class="sources-panel" data-section="bundle">
+      <h2><span class="sources-title">This bundle</span></h2>
+      <div class="sources-row" data-row="docs"><span class="sources-row-label">Docs</span><span class="sources-row-value">${escapeHtml(`${shape.root}/${shape.baseLayer}`)}</span></div>
+      <div class="sources-row" data-row="files"><span class="sources-row-label">Files</span><span class="sources-row-value">${shape.files.toLocaleString()}: ${escapeHtml(archetypes)}</span></div>
+      <div class="sources-row" data-row="references"><span class="sources-row-label">References between files</span><span class="sources-row-value">${shape.references.toLocaleString()}</span></div>
+      <div class="sources-row" data-row="generated"><span class="sources-row-label">Generated</span><span class="sources-row-value">${escapeHtml(generated)}</span></div>
+      <h3><span class="sources-title">By directory</span></h3>
+      <ul class="sources-counts">${directories}</ul>
+      <h3><span class="sources-title">By extension</span></h3>
+      <p class="sources-inline">${extensions}</p>
+    </section>`;
 }
 
-/**
- * Render a bundled docs tree node recursively.
- */
-function renderBundledTreeNode(node: BundledMarkdownTreeNode, depth: number = 0): string {
+function renderUse(facts: SourcesFacts): string {
+  const used = facts.mostUsed.map(entry =>
+    `<li>${fileButton(entry.path)}<span class="sources-count">used by ${plural(entry.users, "file")}, ${entry.symbolsUsed} of ${plural(entry.symbols, "symbol")}</span></li>`).join("");
+  const using = facts.mostUsing.map(entry =>
+    `<li>${fileButton(entry.path)}<span class="sources-count">uses ${plural(entry.uses, "file")}</span></li>`).join("");
+  return `
+    <section class="sources-panel" data-section="use">
+      <h2><span class="sources-title">Most used</span></h2>
+      <ol class="sources-list">${used || '<li class="sources-empty">No file references another.</li>'}</ol>
+      <h2><span class="sources-title">Uses the most</span></h2>
+      <ol class="sources-list">${using || '<li class="sources-empty">No file references another.</li>'}</ol>
+    </section>`;
+}
+
+function renderFileGroup(files: readonly UnreferencedFile[], open: boolean): string {
+  const byArchetype = new Map<string, UnreferencedFile[]>();
+  for (const file of files) {
+    const group = byArchetype.get(file.archetype) ?? [];
+    group.push(file);
+    byArchetype.set(file.archetype, group);
+  }
+  return [...byArchetype.entries()].map(([archetype, group]) => `
+    <details class="sources-group" data-archetype="${escapeHtml(archetype)}"${open ? " open" : ""}>
+      <summary><span class="sources-group-name">${escapeHtml(archetype)}</span><span class="sources-count">${group.length.toLocaleString()}</span></summary>
+      <ul class="sources-list">${group.map(file => `<li>${fileButton(file.path)}</li>`).join("")}</ul>
+    </details>`).join("");
+}
+
+function renderUnreferenced(facts: SourcesFacts): string {
+  const { unreferenced, testsOnly } = facts;
+  return `
+    <section class="sources-panel" data-section="unreferenced">
+      <h2><span class="sources-title">Nothing references these</span><span class="sources-count">${unreferenced.length.toLocaleString()}</span></h2>
+      <div class="sources-files" data-list="unreferenced">${unreferenced.length ? renderFileGroup(unreferenced, false) : '<p class="sources-empty">Every file is referenced by another.</p>'}</div>
+      <p class="sources-note">An entry point a script or a test runner names, a file a template links, and a file nothing needs look alike here: the docs carry the references the code makes, and no more.</p>
+      <h3><span class="sources-title">Only tests reference these</span><span class="sources-count">${testsOnly.length.toLocaleString()}</span></h3>
+      <div class="sources-files" data-list="tests-only">${testsOnly.length ? renderFileGroup(testsOnly, true) : '<p class="sources-empty">None.</p>'}</div>
+    </section>`;
+}
+
+function renderSymbolFile(entry: SymbolsOfFile): string {
+  return `
+    <details class="sources-group" data-file="${escapeHtml(entry.path)}">
+      <summary>${fileButton(entry.path)}<span class="sources-count">${entry.symbols.length.toLocaleString()}</span></summary>
+      <ul class="sources-symbols">${entry.symbols.map(symbol => `<li><code>${escapeHtml(symbol.name)}</code><span class="sources-kind">${escapeHtml(symbol.kind)}</span></li>`).join("")}</ul>
+    </details>`;
+}
+
+/** The files of a class under their first directory, so that a bundle of hundreds of files is a few groups at rest. */
+function renderSymbolClass(classes: readonly SymbolsOfFile[]): string {
+  if (classes.length === 0) return '<p class="sources-empty">None.</p>';
+  const byDirectory = new Map<string, SymbolsOfFile[]>();
+  for (const entry of classes) {
+    const directory = entry.path.includes("/") ? entry.path.slice(0, entry.path.indexOf("/")) : "";
+    const group = byDirectory.get(directory) ?? [];
+    group.push(entry);
+    byDirectory.set(directory, group);
+  }
+  return [...byDirectory.entries()].map(([directory, group]) => `
+    <details class="sources-group sources-group--directory" data-directory="${escapeHtml(directory)}">
+      <summary><span class="sources-directory-name">${escapeHtml(directory || "at the root")}</span><span class="sources-count">${symbolCount(group).toLocaleString()} on ${plural(group.length, "file")}</span></summary>
+      ${group.map(renderSymbolFile).join("")}
+    </details>`).join("");
+}
+
+function renderSymbols(facts: SourcesFacts): string {
+  const unreferenced = symbolCount(facts.symbolsUnreferenced);
+  const testsOnly = symbolCount(facts.symbolsTestsOnly);
+  return `
+    <section class="sources-panel" data-section="symbols">
+      <h2><span class="sources-title">Symbols nothing references</span><span class="sources-count">${unreferenced.toLocaleString()} on ${plural(facts.symbolsUnreferenced.length, "file")}</span></h2>
+      ${renderSymbolClass(facts.symbolsUnreferenced)}
+      <p class="sources-note">A symbol its own file uses is among these: the docs carry no uses within a file.</p>
+      <h3><span class="sources-title">Symbols only tests reference</span><span class="sources-count">${testsOnly.toLocaleString()} on ${plural(facts.symbolsTestsOnly.length, "file")}</span></h3>
+      ${renderSymbolClass(facts.symbolsTestsOnly)}
+    </section>`;
+}
+
+function renderBundledTreeNode(node: BundledMarkdownTreeNode, depth = 0): string {
   const indent = depth * 16;
-  
   if (node.type === "folder") {
-    const hasChildren = node.children && node.children.length > 0;
-    const childrenHtml = hasChildren
-      ? node.children!.map(child => renderBundledTreeNode(child, depth + 1)).join("")
-      : "";
-    
+    const children = (node.children ?? []).map(child => renderBundledTreeNode(child, depth + 1)).join("");
     return `
       <div class="bundled-tree-folder" style="padding-left: ${indent}px;">
         <div class="bundled-tree-folder-header" data-expanded="false">
           <span class="bundled-tree-toggle">▶</span>
           <span class="bundled-tree-name">${escapeHtml(node.name)}</span>
         </div>
-        <div class="bundled-tree-children" style="display: none;">
-          ${childrenHtml}
-        </div>
-      </div>
-    `;
+        <div class="bundled-tree-children" style="display: none;">${children}</div>
+      </div>`;
   }
-  
-  // File node - use simple file icon for all markdown files
   return `
     <div class="bundled-tree-file" style="padding-left: ${indent}px;" data-doc-path="${escapeHtml(node.path)}">
       <span class="bundled-tree-name">${escapeHtml(node.name)}</span>
-    </div>
-  `;
+    </div>`;
 }
 
-/**
- * Render the bundled docs tree panel.
- */
-function renderBundledDocsPanel(bundledDocs: BundledDocsData | undefined): string {
+function renderRelated(bundledDocs: SourcesViewConfig["bundledDocs"]): string {
   if (!bundledDocs || bundledDocs.count === 0) {
     return `
-      <div class="sources-panel">
-        <h2>Related Documentation</h2>
-        <div class="sources-empty">No referenced markdown files found. Live Docs may not contain links to READMEs, specs, or other documentation.</div>
-      </div>
-    `;
+    <section class="sources-panel" data-section="related">
+      <h2><span class="sources-title">Related documentation</span><span class="sources-count">0</span></h2>
+      <p class="sources-empty">No Live Doc links to a markdown file.</p>
+    </section>`;
   }
-
-  const tree = bundledDocs.tree;
-  const childrenHtml = tree.children
-    ? tree.children.map(child => renderBundledTreeNode(child, 0)).join("")
-    : "";
-
+  const children = (bundledDocs.tree.children ?? []).map(child => renderBundledTreeNode(child, 0)).join("");
   return `
-    <div class="sources-panel">
-      <h2>Related Documentation</h2>
-      <p class="sources-panel-desc">
-        ${bundledDocs.count} markdown files referenced from Live Docs (READMEs, chat history, specs, etc.).
-        Click any file to view it in the detail panel.
-      </p>
-      <div class="bundled-tree-container">
-        ${childrenHtml}
-      </div>
-    </div>
-  `;
+    <section class="sources-panel" data-section="related">
+      <h2><span class="sources-title">Related documentation</span><span class="sources-count">${bundledDocs.count.toLocaleString()}</span></h2>
+      <p class="sources-panel-desc">Markdown files that Live Docs link to. Click one to read it.</p>
+      <div class="bundled-tree-container">${children}</div>
+    </section>`;
 }
 
-/**
- * Render the Sources view panel showing graph statistics and health information.
- */
-export function renderSourcesView(config: SourcesViewConfig): void {
-  const { graphData, resolveLinkEndpoint, nodesById: _nodesById, onNavigateToNode, onFocusNode, onDownload, bundledDocs, onViewBundledDoc } = config;
-
-  const container = requireElement<HTMLDivElement>("sources-container");
-
-  // Compute graph health metrics
-  const nodeCount = graphData.nodes.length;
-  const linkCount = graphData.links.length;
-
-  // Count archetypes
-  const archetypeCounts = new Map<string, number>();
-  graphData.nodes.forEach(node => {
-    const arch = (node.archetype || "unknown").toLowerCase();
-    archetypeCounts.set(arch, (archetypeCounts.get(arch) ?? 0) + 1);
-  });
-
-  // High fan-out nodes (potential barrels)
-  const outboundCounts = new Map<string, number>();
-  const inboundCounts = new Map<string, number>();
-  graphData.links.forEach(link => {
-    const sourceId = resolveLinkEndpoint(link.source);
-    const targetId = resolveLinkEndpoint(link.target);
-    if (sourceId) outboundCounts.set(sourceId, (outboundCounts.get(sourceId) ?? 0) + 1);
-    if (targetId) inboundCounts.set(targetId, (inboundCounts.get(targetId) ?? 0) + 1);
-  });
-
-  const highFanoutNodes = graphData.nodes
-    .filter(node => (outboundCounts.get(node.id) ?? 0) >= HIGH_FANOUT_THRESHOLD)
-    .sort((a, b) => (outboundCounts.get(b.id) ?? 0) - (outboundCounts.get(a.id) ?? 0))
-    .slice(0, 5);
-
-  const highFaninNodes = graphData.nodes
-    .filter(node => (inboundCounts.get(node.id) ?? 0) >= HIGH_FANIN_THRESHOLD)
-    .sort((a, b) => (inboundCounts.get(b.id) ?? 0) - (inboundCounts.get(a.id) ?? 0))
-    .slice(0, 5);
-
-  // Island nodes (no outbound and no inbound links)
-  const islandNodes = graphData.nodes
-    .filter(node => {
-      const outCount = outboundCounts.get(node.id) ?? 0;
-      const inCount = inboundCounts.get(node.id) ?? 0;
-      return outCount === 0 && inCount === 0;
-    })
-    .sort((a, b) => a.id.localeCompare(b.id));
-
-  // Build archetype breakdown string
-  const archetypeList = Array.from(archetypeCounts.entries())
-    .sort((a, b) => b[1] - a[1])
-    .map(([arch, count]) => `${arch}: ${count}`)
-    .join(", ");
-
-  // Render
-  container.innerHTML = `
-    <div class="sources-header">
-      <h1>Knowledge Sources</h1>
-      <p>Where this graph gets its data, what it knows, and how you can improve it.</p>
-    </div>
-
-    <div class="sources-panel">
-      <h2>Data Provenance</h2>
-      <div class="sources-row">
-        <span class="sources-row-label">Data source</span>
-        <span class="sources-row-value neutral">The graph index in the static bundle</span>
-      </div>
-    </div>
-
-    <div class="sources-panel">
-      <h2>Graph Statistics</h2>
-      <div class="sources-row">
-        <span class="sources-row-label">Total nodes</span>
-        <span class="sources-row-value positive">${nodeCount.toLocaleString()}</span>
-      </div>
-      <div class="sources-row">
-        <span class="sources-row-label">Total links</span>
-        <span class="sources-row-value positive">${linkCount.toLocaleString()}</span>
-      </div>
-      <div class="sources-row">
-        <span class="sources-row-label">Archetypes</span>
-        <span class="sources-row-value neutral">${escapeHtml(archetypeList) || "None"}</span>
-      </div>
-    </div>
-
-    <div class="sources-panel">
-      <h2>Graph Health Warnings</h2>
-      ${renderHealthWarnings(highFanoutNodes, highFaninNodes, outboundCounts, inboundCounts)}
-    </div>
-
-    <div class="sources-panel">
-      <h2>Disconnected Nodes (${islandNodes.length})</h2>
-      ${renderIslandWarnings(islandNodes)}
-    </div>
-
-    ${renderBundledDocsPanel(bundledDocs)}
-
-    <div class="sources-panel">
-      <h2>How to Improve</h2>
-      <div class="sources-guidance">
-        <p>The Explorer builds its graph from <strong>Live Documentation</strong> — markdown files that mirror your source code and declare their dependencies explicitly.</p>
-        <p>To enrich the graph:</p>
-        <ul>
-          <li>Run <code>npm run live-docs:generate</code> to create or update Live Docs for your workspace.</li>
-          <li>Use <code>npm run live-docs:inspect -- &lt;path&gt;</code> to trace dependency paths from the command line.</li>
-          <li>Author <code>Purpose</code> and <code>Notes</code> sections in your Live Docs to improve discoverability.</li>
-        </ul>
-        <p><strong>Barrel files</strong> (index.ts re-exporters) can obscure original symbol sources. If you see high fan-out warnings above, consider whether those files are masking the true dependency structure.</p>
-      </div>
-    </div>
-
-    <div class="sources-panel">
-      <h2>Export Documentation</h2>
-      <div class="sources-guidance">
-        <p>Download documentation as a combined markdown file or a ZIP archive with preserved directory structure.</p>
-        <p>Use this to:</p>
-        <ul>
-          <li>Share documentation with team members who don't have workspace access</li>
-          <li>Create offline backups of your documentation</li>
-          <li>Publish documentation to wikis or static sites</li>
-        </ul>
-      </div>
+function renderExport(facts: SourcesFacts, bundledDocs: SourcesViewConfig["bundledDocs"]): string {
+  const related = bundledDocs?.count ?? 0;
+  return `
+    <section class="sources-panel" data-section="export">
+      <h2><span class="sources-title">Export</span></h2>
       <div class="export-options">
         <div class="export-row">
-          <label class="export-label">Bundle:</label>
-          <select id="export-bundle-type" class="export-select" ${onDownload ? "" : "disabled"}>
-            <option value="live">Live Docs (${nodeCount})</option>
-            <option value="related" ${bundledDocs && bundledDocs.count > 0 ? "" : "disabled"}>Related Docs (${bundledDocs?.count ?? 0})</option>
-            <option value="all">All Documentation (${nodeCount + (bundledDocs?.count ?? 0)})</option>
+          <label class="export-label" for="export-bundle-type">Documents</label>
+          <select id="export-bundle-type" class="export-select">
+            <option value="live">Live Docs (${facts.shape.files.toLocaleString()})</option>
+            <option value="related" ${related > 0 ? "" : "disabled"}>Related documentation (${related.toLocaleString()})</option>
+            <option value="all">Both (${(facts.shape.files + related).toLocaleString()})</option>
           </select>
         </div>
         <div class="export-row">
-          <label class="export-label">Format:</label>
+          <span class="export-label">Format</span>
           <div class="export-format-options">
-            <label class="export-format-option">
-              <input type="radio" name="export-format" value="markdown" checked ${onDownload ? "" : "disabled"}>
-              <span>Flattened Markdown</span>
-            </label>
-            <label class="export-format-option">
-              <input type="radio" name="export-format" value="zip" ${onDownload ? "" : "disabled"}>
-              <span>ZIP Archive</span>
-            </label>
+            <label class="export-format-option"><input type="radio" name="export-format" value="markdown" checked><span>One markdown file</span></label>
+            <label class="export-format-option"><input type="radio" name="export-format" value="zip"><span>ZIP, folders kept</span></label>
           </div>
         </div>
         <div class="export-actions">
-          <button id="download-btn" class="action-btn primary" ${onDownload ? "" : "disabled"}>
-            Download
-          </button>
-          ${onDownload ? "" : '<span class="sources-note">Bulk download requires server mode or static bundle with embedded docs.</span>'}
+          <button id="download-btn" type="button" class="action-btn primary">Download</button>
+          <button id="download-facts-btn" type="button" class="action-btn">This panel as JSON</button>
         </div>
       </div>
-    </div>
+    </section>`;
+}
+
+/** Render the panel into its container and wire its buttons. */
+export function renderSourcesView(config: SourcesViewConfig): void {
+  const { facts, onFocusNode, onDownload, onDownloadFacts, bundledDocs, onViewBundledDoc } = config;
+  const container = requireElement<HTMLDivElement>("sources-container");
+
+  container.innerHTML = `
+    <div class="sources-header"><h1>Knowledge Sources</h1></div>
+    ${renderShape(facts)}
+    ${renderUse(facts)}
+    ${renderUnreferenced(facts)}
+    ${renderSymbols(facts)}
+    ${renderRelated(bundledDocs)}
+    ${renderExport(facts, bundledDocs)}
   `;
 
-  // Attach click handlers for warning nodes (navigate to Local Map)
-  container.querySelectorAll<HTMLElement>(".warning-node:not(.island-node)").forEach(el => {
-    el.addEventListener("click", () => {
-      const nodeId = el.dataset.nodeId;
-      if (nodeId) {
-        onNavigateToNode(nodeId);
-      }
+  container.querySelectorAll<HTMLButtonElement>(".sources-file").forEach(button => {
+    button.addEventListener("click", event => {
+      // A name inside a <summary> focuses the file without toggling the group.
+      event.preventDefault();
+      event.stopPropagation();
+      const nodeId = button.dataset.nodeId;
+      if (nodeId) onFocusNode(nodeId);
     });
   });
 
-  // Attach click handlers for island nodes (focus in detail panel without navigating)
-  const focusCallback = onFocusNode ?? onNavigateToNode;
-  container.querySelectorAll<HTMLElement>(".island-node").forEach(el => {
-    el.addEventListener("click", () => {
-      const nodeId = el.dataset.nodeId;
-      if (nodeId) {
-        focusCallback(nodeId);
-      }
-    });
+  container.querySelector<HTMLButtonElement>("#download-btn")?.addEventListener("click", () => {
+    const bundleType = container.querySelector<HTMLSelectElement>("#export-bundle-type")?.value as DownloadBundleType | undefined;
+    const format = container.querySelector<HTMLInputElement>('input[name="export-format"]:checked')?.value as DownloadFormat | undefined;
+    onDownload(bundleType ?? "live", format ?? "markdown");
   });
+  container.querySelector<HTMLButtonElement>("#download-facts-btn")?.addEventListener("click", () => onDownloadFacts(facts));
 
-  // Attach click handler for download button
-  if (onDownload) {
-    const downloadBtn = container.querySelector<HTMLButtonElement>("#download-btn");
-    const bundleTypeSelect = container.querySelector<HTMLSelectElement>("#export-bundle-type");
-    const formatRadios = container.querySelectorAll<HTMLInputElement>('input[name="export-format"]');
-    
-    if (downloadBtn && bundleTypeSelect) {
-      downloadBtn.addEventListener("click", () => {
-        const bundleType = bundleTypeSelect.value as DownloadBundleType;
-        let format: DownloadFormat = "markdown";
-        formatRadios.forEach(radio => {
-          if (radio.checked) {
-            format = radio.value as DownloadFormat;
-          }
-        });
-        onDownload(bundleType, format);
-      });
-    }
-  }
-
-  // Attach click handlers for bundled tree folders (expand/collapse)
   container.querySelectorAll<HTMLElement>(".bundled-tree-folder-header").forEach(header => {
     header.addEventListener("click", () => {
       const folder = header.parentElement;
       if (!folder) return;
-      
-      const isExpanded = header.dataset.expanded === "true";
+      const expanded = header.dataset.expanded === "true";
       const toggle = header.querySelector<HTMLSpanElement>(".bundled-tree-toggle");
-      const childrenContainer = folder.querySelector<HTMLDivElement>(".bundled-tree-children");
-      
-      if (toggle) {
-        toggle.textContent = isExpanded ? "▶" : "▼";
-      }
-      if (childrenContainer) {
-        childrenContainer.style.display = isExpanded ? "none" : "block";
-      }
-      header.dataset.expanded = isExpanded ? "false" : "true";
+      const children = folder.querySelector<HTMLDivElement>(".bundled-tree-children");
+      if (toggle) toggle.textContent = expanded ? "▶" : "▼";
+      if (children) children.style.display = expanded ? "none" : "block";
+      header.dataset.expanded = expanded ? "false" : "true";
     });
   });
 
-  // Attach click handlers for bundled tree files (view doc)
   if (onViewBundledDoc) {
     container.querySelectorAll<HTMLElement>(".bundled-tree-file").forEach(fileEl => {
       fileEl.addEventListener("click", () => {
         const docPath = fileEl.dataset.docPath;
-        if (docPath) {
-          onViewBundledDoc(docPath);
-        }
+        if (docPath) onViewBundledDoc(docPath);
       });
     });
   }

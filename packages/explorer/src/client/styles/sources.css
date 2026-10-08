@@ -11,7 +11,6 @@
   box-sizing: border-box;
 }
 
-/* Responsive: reduce padding on narrower viewports */
 @media (max-width: 768px) {
   .sources-view {
     padding: 24px 16px;
@@ -25,21 +24,14 @@
 }
 
 .sources-header {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .sources-header h1 {
   font-size: 28px;
   font-weight: 600;
   color: var(--text-active);
-  margin: 0 0 8px 0;
-}
-
-.sources-header p {
-  font-size: 14px;
-  color: var(--text-muted);
   margin: 0;
-  line-height: 1.5;
 }
 
 .sources-panel {
@@ -51,190 +43,228 @@
   backdrop-filter: blur(8px);
 }
 
+.sources-panel h2,
+.sources-panel h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--text-active);
+  margin: 0 0 12px 0;
+}
+
 .sources-panel h2 {
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-active);
-  margin: 0 0 16px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
+.sources-panel h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.sources-panel .sources-list + h2 {
+  margin-top: 20px;
+}
+
+/* Label and value on one line */
 .sources-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
+  align-items: baseline;
+  gap: 16px;
+  padding: 8px 0;
   border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.05));
+  font-size: 13px;
 }
 
-.sources-row:last-child {
+.sources-row:last-of-type {
   border-bottom: none;
 }
 
 .sources-row-label {
-  font-size: 13px;
   color: var(--text);
+  flex: none;
 }
 
 .sources-row-value {
-  font-size: 13px;
-  font-weight: 500;
   color: var(--text-active);
+  font-weight: 500;
+  text-align: right;
 }
 
-.sources-row-value.positive {
-  color: var(--accent);
-}
-
-.sources-row-value.warning {
-  color: #f5a623;
-}
-
-.sources-row-value.negative {
-  color: #e74c3c;
-}
-
-.sources-row-value.neutral {
-  color: var(--text-muted);
-}
-
-/* Health warnings list */
-.sources-warnings {
+/* Lists of files, and of directories with counts */
+.sources-list,
+.sources-counts,
+.sources-symbols {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.sources-warnings li {
+.sources-list li,
+.sources-counts li,
+.sources-symbols li {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   gap: 10px;
-  padding: 12px 14px;
-  background: rgba(245, 166, 35, 0.08);
-  border: 1px solid rgba(245, 166, 35, 0.2);
-  border-radius: 8px;
-  margin-bottom: 8px;
+  padding: 5px 0;
   font-size: 13px;
   color: var(--text);
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.04));
 }
 
-.sources-warnings li:last-child {
-  margin-bottom: 0;
+.sources-list li:last-child,
+.sources-counts li:last-child,
+.sources-symbols li:last-child {
+  border-bottom: none;
 }
 
-.sources-warnings .warning-text {
-  flex: 1;
-}
-
-.sources-warnings .warning-node {
+/* A file's name is a button that puts it in the detail panel; the directory link opens the Local Map on it */
+.sources-file,
+.sources-directory {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
   font-weight: 500;
   color: var(--accent);
   cursor: pointer;
+  text-decoration: none;
 }
 
-.sources-warnings .warning-node:hover {
+.sources-file:hover,
+.sources-file:focus-visible,
+.sources-directory:hover,
+.sources-directory:focus-visible {
   text-decoration: underline;
+  outline: none;
 }
 
-.sources-empty {
-  padding: 20px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  background: rgba(0, 200, 150, 0.05);
-  border: 1px solid rgba(0, 200, 150, 0.15);
-  border-radius: 8px;
-}
-
-.sources-empty.sources-positive {
-  background: rgba(0, 200, 150, 0.08);
-  border-color: rgba(0, 200, 150, 0.25);
-  color: var(--accent);
-}
-
-/* Island/disconnected node warnings */
-.sources-islands li {
-  background: rgba(150, 150, 180, 0.08);
-  border-color: rgba(150, 150, 180, 0.2);
-}
-
-.sources-islands .island-path {
-  display: block;
+.sources-path {
   font-size: 11px;
   color: var(--text-muted);
-  margin-top: 2px;
   font-family: "Fira Code", "Consolas", monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
-.sources-islands .island-truncated {
-  background: transparent;
-  border: none;
+.sources-count {
+  font-size: 12px;
+  font-weight: 400;
   color: var(--text-muted);
-  font-style: italic;
-  padding: 8px 14px;
+  margin-left: auto;
+  flex: none;
 }
 
-/* Guidance section */
-.sources-guidance {
+.sources-panel h2 .sources-count,
+.sources-panel h3 .sources-count,
+.sources-group summary .sources-count {
+  margin-left: 0;
+}
+
+.sources-inline {
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text);
+  margin: 0;
   line-height: 1.6;
 }
 
-.sources-guidance p {
+.sources-kind {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.sources-symbols code {
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 12px;
+  color: var(--text-active);
+}
+
+/* Groups that open and close */
+.sources-group {
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 0 12px;
+}
+
+.sources-group summary {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 0;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  list-style: none;
+}
+
+.sources-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.sources-group summary::before {
+  content: "▶";
+  font-size: 9px;
+  color: var(--text-muted);
+  width: 12px;
+  flex: none;
+}
+
+.sources-group[open] > summary::before {
+  content: "▼";
+}
+
+.sources-group[open] > summary {
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  margin-bottom: 4px;
+}
+
+.sources-group .sources-list,
+.sources-group .sources-symbols {
+  padding: 0 0 8px 22px;
+}
+
+.sources-group--directory > .sources-group {
+  margin-left: 22px;
+}
+
+.sources-group--directory > .sources-group:last-child {
+  margin-bottom: 10px;
+}
+
+.sources-directory-name {
+  font-weight: 500;
+  color: var(--text-active);
+}
+
+.sources-empty {
+  padding: 8px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.sources-note,
+.sources-panel-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 12px 0 0 0;
+  line-height: 1.5;
+}
+
+.sources-panel-desc {
   margin: 0 0 12px 0;
 }
 
-.sources-guidance p:last-child {
-  margin-bottom: 0;
-}
-
-.sources-guidance code {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: "Fira Code", "Consolas", monospace;
-  font-size: 12px;
-  color: var(--accent);
-}
-
-.sources-guidance ul {
-  margin: 8px 0;
-  padding-left: 20px;
-}
-
-.sources-guidance li {
-  margin-bottom: 6px;
-}
-
-/* Export/Download actions */
-.sources-actions {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.sources-actions .action-btn {
-  padding: 10px 20px;
-  font-size: 14px;
-}
-
-.sources-note {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-style: italic;
-}
-
-/* Export Options UI */
+/* Export */
 .export-options {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 16px;
+  gap: 14px;
 }
 
 .export-row {
@@ -247,12 +277,12 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--text);
-  min-width: 60px;
+  min-width: 80px;
 }
 
 .export-select {
   flex: 1;
-  max-width: 280px;
+  max-width: 300px;
   padding: 8px 12px;
   font-size: 13px;
   background: rgba(255, 255, 255, 0.05);
@@ -263,7 +293,7 @@
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.export-select:hover:not(:disabled) {
+.export-select:hover {
   border-color: var(--accent);
   background: rgba(255, 255, 255, 0.08);
 }
@@ -271,11 +301,6 @@
 .export-select:focus {
   outline: none;
   border-color: var(--accent);
-}
-
-.export-select:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .export-select option {
@@ -299,7 +324,6 @@
   cursor: pointer;
   font-size: 13px;
   color: var(--text);
-  transition: color 0.15s ease;
 }
 
 .export-format-option:hover {
@@ -311,19 +335,10 @@
   cursor: pointer;
 }
 
-.export-format-option input[type="radio"]:disabled {
-  cursor: not-allowed;
-}
-
-.export-format-option input[type="radio"]:disabled + span {
-  color: var(--text-muted);
-}
-
 .export-actions {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 4px;
 }
 
 .export-actions .action-btn {
@@ -332,13 +347,6 @@
 }
 
 /* Bundled Docs Tree */
-.sources-panel-desc {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 0 0 16px 0;
-  line-height: 1.5;
-}
-
 .bundled-tree-container {
   max-height: 400px;
   overflow-y: auto;
@@ -381,16 +389,12 @@
   white-space: nowrap;
 }
 
-.bundled-tree-children {
-  /* controlled by JS display toggle */
-}
-
 .bundled-tree-file {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  padding-left: calc(12px + 20px); /* extra padding for toggle space */
+  padding-left: calc(12px + 20px);
   cursor: pointer;
   color: var(--text);
   font-size: 13px;
@@ -422,8 +426,4 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   flex: 1;
-}
-
-.bundled-doc-content {
-  /* Inherits from detail-doc-content but with minor tweaks */
 }

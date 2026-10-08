@@ -60,8 +60,15 @@ export async function textBoxes(page: Page, selectors: string[]): Promise<TextBo
         }
         let opacity = 1;
         let hidden = false;
-        for (let element: Element | null = node; element && element !== document.body; element = element.parentElement) {
+        // A closed <details> keeps its content laid out but unrendered (Chromium reports its boxes at their places), so
+        // anything under one that is not its own summary is hidden, as display: none is (2026-10-08).
+        let child: Element | null = null;
+        for (let element: Element | null = node; element && element !== document.body; child = element, element = element.parentElement) {
           if (element.classList.contains("view-container")) {
+            break;
+          }
+          if (element instanceof HTMLDetailsElement && !element.open && child !== null && !(child instanceof HTMLElement && child.tagName === "SUMMARY")) {
+            hidden = true;
             break;
           }
           const style = getComputedStyle(element);
@@ -120,6 +127,17 @@ export async function truncations(page: Page, selectors: string[]): Promise<Trun
       for (const node of document.querySelectorAll<HTMLElement>(selector)) {
         const text = (node.textContent ?? "").trim();
         if (!text || node.offsetWidth === 0) {
+          continue;
+        }
+        // Under a closed <details>, and not its summary: laid out but not shown (see textBoxes).
+        let underClosedDetails = false;
+        for (let child: Element = node, element = node.parentElement; element && element !== document.body; child = element, element = element.parentElement) {
+          if (element instanceof HTMLDetailsElement && !element.open && child.tagName !== "SUMMARY") {
+            underClosedDetails = true;
+            break;
+          }
+        }
+        if (underClosedDetails) {
           continue;
         }
         const style = getComputedStyle(node);

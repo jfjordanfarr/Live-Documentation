@@ -82,7 +82,7 @@ These proposals were originally described against the multi-hop rendering archit
 - [packages/explorer/src/client/markdown.ts](../layer-4/packages/explorer/src/client/markdown.ts.mdmd.md)
 - [packages/explorer/src/client/pathfind.ts](../layer-4/packages/explorer/src/client/pathfind.ts.mdmd.md)
 - [packages/explorer/src/client/graph-helpers.ts](../layer-4/packages/explorer/src/client/graph-helpers.ts.mdmd.md)
-- [packages/explorer/src/client/download.ts](../layer-4/packages/explorer/src/client/download.ts.mdmd.md) — The exports Knowledge Sources offers: the docs as one flattened markdown file or a ZIP
+- [packages/explorer/src/client/download.ts](../layer-4/packages/explorer/src/client/download.ts.mdmd.md) — The exports Knowledge Sources offers: the docs as one flattened markdown file or a ZIP, and the panel's facts as JSON
 
 #### Bootstrap (entry point heuristics)
 
@@ -92,7 +92,8 @@ These proposals were originally described against the multi-hop rendering archit
 #### Panels (UI controls)
 
 - [packages/explorer/src/client/panels/omnisearch.ts](../layer-4/packages/explorer/src/client/panels/omnisearch.ts.mdmd.md)
-- [packages/explorer/src/client/panels/sources-view.ts](../layer-4/packages/explorer/src/client/panels/sources-view.ts.mdmd.md)
+- [packages/explorer/src/client/panels/sources-facts.ts](../layer-4/packages/explorer/src/client/panels/sources-facts.ts.mdmd.md) — What the Knowledge Sources panel says, computed from the graph index alone (pure, Vitest-tested)
+- [packages/explorer/src/client/panels/sources-view.ts](../layer-4/packages/explorer/src/client/panels/sources-view.ts.mdmd.md) — The panel's rendering of those facts, the related documentation tree and the export
 - [packages/explorer/src/client/panels/tuning.ts](../layer-4/packages/explorer/src/client/panels/tuning.ts.mdmd.md)
 
 #### Persistence (state management)

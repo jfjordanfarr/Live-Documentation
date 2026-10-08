@@ -47,7 +47,7 @@ Your workspace as nested membranes: directories contain directories, and files s
 
 ### Knowledge Sources
 
-Graph statistics and health warnings: files with unusually high fan-out (likely barrel files) or fan-in, and isolated files with no connections at all. The export controls described below live here too.
+What the bundle is (its docs root, its files by kind, directory and extension, when they were generated), the files most used and most using, the files and public symbols that nothing references or only tests reference, and the related markdown that Live Docs link to. Every file named is a button that opens it in the detail panel; every directory counted is a door into the Local Map. The lists say only what the docs say: an entry point a script names and a file nothing needs look alike there. The export controls described below live here too.
 
 ### Circuit Board
 
@@ -96,7 +96,7 @@ Expect roughly 3 MB for 600 files. Everything a Live Doc links to is bundled so 
 
 ## Exporting documentation
 
-The Knowledge Sources view can download the documentation as a single flattened markdown file or as a ZIP that preserves directory structure, for the Live Docs alone, the related markdown alone, or both.
+The Knowledge Sources view can download the documentation as a single flattened markdown file or as a ZIP that preserves directory structure, for the Live Docs alone, the related markdown alone, or both; and the panel's own facts as one JSON file, so that what it shows can be handed on as data.
 
 ---
 

@@ -57,7 +57,7 @@ The graph records every direct import and every type reference between this work
 
 ## What the software should detect, by simplicity
 
-1. **From the graph alone, today, in the client or a command**: files nothing references, by archetype; files only tests reference; public symbols nothing references, split into those their own file uses (export noise) and those nothing uses (dead); symbols only tests reference; re-exports nobody imports through their barrel. All five classes were computed here from `index.json` in a few lines.
+1. **From the graph alone, today, in the client or a command**: files nothing references, by archetype; files only tests reference; public symbols nothing references; symbols only tests reference. These four were computed here from `index.json` in a few lines and are the panel's sections since later this day. Two more classes the sweep used needed the source text, not the docs: the split of an unreferenced symbol into one its own file uses and one nothing uses (the docs carry no uses within a file), and the re-exports nobody imports through a barrel (the docs list a barrel's re-exports as symbols of kind `unknown`, which is a symptom, not a mark). _Corrected later on 2026-10-08; the first wording claimed all six came from the index._
 2. **A declared dependency no file imports**: a manifest's Live Doc lists its dependencies and every file's doc lists its external dependency lines; comparing the two per package is the graph's version of knip's finding. Needs module names normalized (`glob@^10` against `glob`).
 3. **A dynamic `import()` with a string literal as an import edge**: an adapter fix measured on the oracle; scip-typescript records it.
 4. **Entry points inferred, as edges with basis `configuration`**: a manifest's `scripts` naming workspace paths; `bin` and `main` mapped through the package's tsconfig; a test runner's include globs from `vitest.config.ts` and `playwright.config.ts`. This is doc-format growth of the kind that landed for openings and manifests in September; it would clear 18 of the 26 implementation files and all 134 tests on this repository.
@@ -80,6 +80,8 @@ Deleted and repaired under the owner's standing grant of that day (dead code is 
 - Dependencies: `glob` out of the CLI's and the explorer's manifests, `minimatch` out of the engine's, `@typescript-eslint/eslint-plugin`, `@typescript-eslint/parser` and `@vscode/tree-sitter-wasm` out of the root's, `@types/lz-string` out of the explorer's (`lz-string` ships its typings); `@eslint/js` and `lz-string` listed at the root, which `eslint.config.js` and five Playwright specs require.
 
 Not deleted: `find-orphans.ts`, by the correction above.
+
+And the panel, the same day: rebuilt from a pure module over the graph index with the four classes above as its sections, every file a button into the detail panel, every directory a door into the Local Map, the facts downloadable as JSON, and the stale text gone ([the decisions log](../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-knowledge-sources-panel-says-what-the-graph-says-and-no-more-recorded-2026-10-08), [the pictures](../../Screenshots/2026-10-08/README.md#the-knowledge-sources-panel-rebuilt-from-the-sweep)).
 
 ## Proposed deletions and repairs, as first written
 

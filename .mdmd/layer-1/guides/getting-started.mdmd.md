@@ -57,7 +57,7 @@ npm run live-docs:visualize
 npx serve dist/explorer
 ```
 
-It opens on the **Membrane Map**: your directories as nested membranes, files as cards. Click a card to see its symbols; pin a symbol to trace what flows in and out of it. The **Local Map** shows one file with the files it uses and the files that use it, keeps as many files pinned as you like, and zooms out into the **Force Graph**, the whole workspace as a physics layout; **Knowledge Sources** reports graph statistics and health warnings. Pass `--board <board.md>` to the build to open on a **World Map** of systems instead. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+It opens on the **Membrane Map**: your directories as nested membranes, files as cards. Click a card to see its symbols; pin a symbol to trace what flows in and out of it. The **Local Map** shows one file with the files it uses and the files that use it, keeps as many files pinned as you like, and zooms out into the **Force Graph**, the whole workspace as a physics layout; **Knowledge Sources** says what the bundle is, which files are most used, and what nothing references. Pass `--board <board.md>` to the build to open on a **World Map** of systems instead. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
 ### Step 3: Trace a dependency path
 
