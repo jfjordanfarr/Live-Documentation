@@ -12,6 +12,7 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
+import { escapeHtml } from "../graph-helpers";
 
 /** Callback for navigating to a node from health warnings */
 export type NavigateToNodeCallback = (nodeId: string) => void;
@@ -54,15 +55,6 @@ const HIGH_FANIN_THRESHOLD = 30;
 
 /** Maximum islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 20;
-
-/**
- * Escape HTML special characters
- */
-const escapeHtml = (str: string): string => {
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c] || c));
-};
 
 /**
  * Render health warnings for high fan-out and fan-in nodes.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/markdown.ts
-- Generated At: 2026-09-28T01:11:42.954Z
+- Generated At: 2026-10-08T16:03:27.769Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ Lightweight markdown renderer for the Live Docs Explorer detail panel. Handles h
 ### Public Symbols
 #### `renderMarkdown` {#symbol-rendermarkdown}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L24)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L26)
 - Parameters: `options`: [`RenderMarkdownOptions`](#symbol-rendermarkdownoptions)
 
 ##### `renderMarkdown` — Summary
@@ -35,7 +35,7 @@ HTML string
 
 #### `RenderMarkdownOptions` {#symbol-rendermarkdownoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L132)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L134)
 
 ##### `RenderMarkdownOptions` — Summary
 Options for the lightweight markdown-to-HTML renderer.
@@ -43,5 +43,5 @@ Options for the lightweight markdown-to-HTML renderer.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 <!-- LIVE-DOC:END Dependencies -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: package.json
-- Generated At: 2026-10-06T19:32:23.104Z
+- Generated At: 2026-10-08T16:03:26.314Z
 
 ## Authored
 ### Purpose
@@ -24,19 +24,18 @@ _Pending notes_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@chenglou/pretext@^0.0.9`
+- `@eslint/js@^9.39.4`
 - `@playwright/test@^1.58.2`
 - `@sourcegraph/scip-typescript@^0.4.0`
 - `@types/node@^25.3.2`
-- `@typescript-eslint/eslint-plugin@^8.57.0`
-- `@typescript-eslint/parser@^8.57.0`
 - `@vitest/coverage-v8@^4.1.11`
-- `@vscode/tree-sitter-wasm@^0.3.0`
 - `eslint-config-prettier@^10.1.8`
 - `eslint-import-resolver-typescript@^4.4.4`
 - `eslint-plugin-import@^2.29.1`
 - `eslint-plugin-jsdoc@^62.7.1`
 - `eslint@^9.39.2`
 - `glob@^13.0.6`
+- `lz-string@^1.5.0`
 - `prettier@^3.8.1`
 - `tsx@^4.23.15`
 - `typescript-eslint@^8.57.0`

@@ -58,6 +58,7 @@ import {
   type Point3,
   type Screen
 } from "./projection";
+import { escapeHtml } from "../../graph-helpers";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -67,6 +68,9 @@ export interface Hover {
   id: string;
 }
 
+/**
+ *
+ */
 export interface WorldMapOptions {
   root: HTMLElement;
   board: Board;
@@ -237,6 +241,9 @@ export class WorldMapController {
     this.writeCrumbs();
   }
 
+  /**
+   *
+   */
   dispose(): void {
     for (const dispose of this.disposers) {
       dispose();
@@ -758,6 +765,9 @@ export class WorldMapController {
     return fitScreen(this.camera, this.pivot, corners(this.bench), this.viewport());
   }
 
+  /**
+   *
+   */
   fit(): void {
     this.screen = this.fitParams();
     this.applyCamera();
@@ -802,6 +812,9 @@ export class WorldMapController {
     });
   }
 
+  /**
+   *
+   */
   async orbitTo(theta: number, phi: number, ms = 520, fitAfter = false): Promise<void> {
     const from = { ...this.camera };
     const to = { theta, phi: clamp(phi, MIN_ELEVATION, TOP_DOWN) };
@@ -831,6 +844,9 @@ export class WorldMapController {
     this.syncButtons();
   }
 
+  /**
+   *
+   */
   rotateBy(radians: number): Promise<void> {
     return this.orbitTo(this.camera.theta + radians, this.camera.phi);
   }
@@ -1059,12 +1075,18 @@ export class WorldMapController {
     return `<a class="file" href="${escapeHtml(localMapHref(file))}" data-file="${escapeHtml(file)}">${escapeHtml(text)}</a>`;
   }
 
+  /**
+   *
+   */
   pin(h: Hover): void {
     this.pinned = h;
     this.evidence.dataset.pin = "";
     this.applyHover();
   }
 
+  /**
+   *
+   */
   unpin(): void {
     this.pinned = null;
     this.evidence.dataset.pin = "";
@@ -1400,12 +1422,18 @@ export class WorldMapController {
     }
   }
 
+  /**
+   *
+   */
   setSnap(value: boolean): void {
     this.snap = value;
     this.syncButtons();
     this.draw();
   }
 
+  /**
+   *
+   */
   setUnder(value: boolean): void {
     this.under = value;
     this.world.classList.toggle("under", value);
@@ -1413,6 +1441,9 @@ export class WorldMapController {
     this.draw();
   }
 
+  /**
+   *
+   */
   setTheme(theme: "light" | "dark"): void {
     this.theme = theme;
     this.world.dataset.theme = theme;
@@ -1438,6 +1469,9 @@ export class WorldMapController {
     this.syncButtons();
   }
 
+  /**
+   *
+   */
   resetLayout(): void {
     this.positions = new Map(this.restPositions);
     this.savePositions();
@@ -1496,6 +1530,9 @@ export class WorldMapController {
     });
   }
 
+  /**
+   *
+   */
   toggleHelp(value?: boolean): void {
     const on = value === undefined ? !this.help.classList.contains("on") : value;
     this.help.classList.toggle("on", on);
@@ -1516,6 +1553,9 @@ export class WorldMapController {
     ];
   }
 
+  /**
+   *
+   */
   async tourStep(index: number): Promise<void> {
     const steps = this.tourSteps();
     this.tour.at = clamp(index, 0, steps.length - 1);
@@ -1526,12 +1566,18 @@ export class WorldMapController {
     await steps[this.tour.at].go();
   }
 
+  /**
+   *
+   */
   async startTour(): Promise<void> {
     this.tour.on = true;
     this.tourBox.classList.add("on");
     await this.tourStep(0);
   }
 
+  /**
+   *
+   */
   endTour(): void {
     this.tour.on = false;
     this.tourBox.classList.remove("on");
@@ -1649,10 +1695,6 @@ function svgElement(tag: string, attributes: Record<string, string | number>, pa
   }
   parent?.appendChild(node);
   return node;
-}
-
-function escapeHtml(text: string): string {
-  return text.replace(/&/gu, "&amp;").replace(/</gu, "&lt;").replace(/>/gu, "&gt;").replace(/"/gu, "&quot;");
 }
 
 function basename(path: string): string {

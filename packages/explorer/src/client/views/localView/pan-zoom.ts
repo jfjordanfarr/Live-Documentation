@@ -27,16 +27,6 @@ export function easeOutCubic(t: number): number {
 }
 
 /**
- * Applies the current map transform to the viewport.
- */
-export function applyMapTransform(runtime: LocalViewRuntime): void {
-  const viewport = runtime.container.parentElement;
-  if (viewport) {
-    viewport.style.transform = `translate(${runtime.mapTransform.x}px, ${runtime.mapTransform.y}px) scale(${runtime.mapTransform.k})`;
-  }
-}
-
-/**
  * Zooms by a factor around the center of the viewport.
  */
 export function zoomByFactor(

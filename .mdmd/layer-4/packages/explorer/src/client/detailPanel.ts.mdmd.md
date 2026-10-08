@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-09-28T01:11:42.750Z
+- Generated At: 2026-10-08T16:03:27.562Z
 
 ## Authored
 ### Purpose
@@ -20,21 +20,21 @@ The Explorer's detail panel: renders a selected file's Live Doc from the graph i
 ### Public Symbols
 #### `DetailPanelApi` {#symbol-detailpanelapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L16)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L17)
 
 ##### `DetailPanelApi` — Summary
 Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L28)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L29)
 
 ##### `DetailPanelOptions` — Summary
 Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L59)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L60)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 
@@ -48,6 +48,7 @@ and node metadata.
 - [`document.renderLiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
+- [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

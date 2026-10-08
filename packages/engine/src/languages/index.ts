@@ -18,22 +18,11 @@ import { rustSyntax } from "./rust";
 import type { LanguageSyntax } from "./syntax";
 import { typescriptSyntax } from "./typescript";
 
-export type {
-  LanguageSyntax,
-  LanguageSyntaxConfig,
-  CommentDelimiters,
-  StringDelimiters,
-} from "./syntax";
-
-export { createSyncStripper, createLanguageSyntax, stripCStyleComments } from "./syntax";
-
 export { cSyntax } from "./c";
 export { csharpSyntax } from "./csharp";
 export { goSyntax } from "./go";
 export { javaSyntax } from "./java";
-export { powershellSyntax } from "./powershell";
 export { pythonSyntax } from "./python";
-export { rubySyntax } from "./ruby";
 export { rustSyntax } from "./rust";
 export { typescriptSyntax } from "./typescript";
 
@@ -101,13 +90,6 @@ export function getSyntaxByPath(filePath: string): LanguageSyntax | undefined {
 }
 
 /**
- * Gets all registered language syntax configurations.
- */
-export function getAllSyntaxes(): readonly LanguageSyntax[] {
-  return LANGUAGE_SYNTAXES;
-}
-
-/**
  * Checks if a language is supported.
  *
  * @param languageId - The language identifier
@@ -125,37 +107,4 @@ export function isExtensionSupported(extension: string): boolean {
   return SYNTAX_BY_EXTENSION.has(extension.toLowerCase());
 }
 
-/**
- * Strips comments from content using the appropriate language syntax.
- * String literals are preserved to avoid destroying code in interpolated strings.
- *
- * @param filePath - Path to the file (used to determine language)
- * @param content - The source code content
- * @returns Stripped content, or original content if language not supported
- */
-export async function stripCommentsForPath(
-  filePath: string,
-  content: string
-): Promise<string> {
-  const syntax = getSyntaxByPath(filePath);
-  if (!syntax) {
-    return content;
-  }
-  return syntax.stripComments(content);
-}
-
-/**
- * Checks if an identifier is a fundamental framework type for the given file's language.
- *
- * @param filePath - Path to the file (used to determine language)
- * @param identifier - The identifier to check
- * @returns True if the identifier is a framework type to filter as noise, false otherwise
- */
-export function isFrameworkTypeForPath(filePath: string, identifier: string): boolean {
-  const syntax = getSyntaxByPath(filePath);
-  if (!syntax) {
-    return false;
-  }
-  return syntax.isFrameworkType(identifier);
-}
 

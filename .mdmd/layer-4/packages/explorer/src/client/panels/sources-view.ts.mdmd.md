@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-09-29T19:31:57.363Z
+- Generated At: 2026-10-08T16:03:27.822Z
 
 ## Authored
 ### Purpose
@@ -18,28 +18,28 @@ Renders the Knowledge Sources panel: graph statistics, health warnings (high fan
 ### Public Symbols
 #### `NavigateToNodeCallback` {#symbol-navigatetonodecallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L17)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L18)
 
 ##### `NavigateToNodeCallback` — Summary
 Callback for navigating to a node from health warnings
 
 #### `DownloadBundleType` {#symbol-downloadbundletype}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L20)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L21)
 
 ##### `DownloadBundleType` — Summary
 Download bundle type
 
 #### `DownloadFormat` {#symbol-downloadformat}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L23)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L24)
 
 ##### `DownloadFormat` — Summary
 Download format
 
 #### `DownloadCallback` {#symbol-downloadcallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L26)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L27)
 - Parameters: `bundleType`: [`DownloadBundleType`](#symbol-downloadbundletype); `format`: [`DownloadFormat`](#symbol-downloadformat)
 
 ##### `DownloadCallback` — Summary
@@ -47,28 +47,28 @@ Callback for downloading documentation
 
 #### `ViewBundledDocCallback` {#symbol-viewbundleddoccallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L30)
 
 ##### `ViewBundledDocCallback` — Summary
 Callback for viewing a bundled doc in the detail panel
 
 #### `BundledDocsData` {#symbol-bundleddocsdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L32)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L33)
 
 ##### `BundledDocsData` — Summary
 Bundled docs tree data
 
 #### `SourcesViewConfig` {#symbol-sourcesviewconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L38)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L39)
 
 ##### `SourcesViewConfig` — Summary
 Sources view configuration
 
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L235)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L227)
 - Parameters: `config`: [`SourcesViewConfig`](#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary
@@ -78,6 +78,7 @@ Render the Sources view panel showing graph statistics and health information.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
+- [`graph-helpers.escapeHtml`](../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`staticExplorerData.BundledMarkdownTreeNode`](../../shared/staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
 - [`types.ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerLinkPayload`](../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)

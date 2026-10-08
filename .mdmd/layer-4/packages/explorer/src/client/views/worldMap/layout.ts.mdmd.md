@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/layout.ts
-- Generated At: 2026-10-02T22:33:03.739Z
+- Generated At: 2026-10-08T16:03:29.437Z
 
 ## Authored
 ### Purpose
@@ -51,21 +51,16 @@ The snapping grid, in board pixels.
 ##### `Shape` — Summary
 The shape words the legend may use; the tool ships a solid for each.
 
-#### `SHAPE_WORDS` {#symbol-shape_words}
-- Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L21)
-- Returns: `ReadonlySet`
-
 #### `Solid` {#symbol-solid}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L23)
 
 ##### `Solid` — Summary
 A solid: a block with a footprint and a height, or a round tank with a radius.
 
 #### `solidFor` {#symbol-solidfor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L32)
 - Returns: [`Solid`](#symbol-solid)
 - Parameters: `shape`: [`Shape`](#symbol-shape)
 
@@ -74,7 +69,7 @@ The solid drawn for a shape word.
 
 #### `Placed` {#symbol-placed}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L52)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L51)
 - Extends: [`Box`](./projection.ts.mdmd.md#symbol-box)
 
 ##### `Placed` — Summary
@@ -82,7 +77,7 @@ A piece placed on the board, in board pixels.
 
 #### `placePiece` {#symbol-placepiece}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L62)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L61)
 - Returns: [`Placed`](#symbol-placed)
 - Parameters: `shape`: [`Shape`](#symbol-shape); `center`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
@@ -91,14 +86,14 @@ A piece's box around its centre, floating, and lifted a little more while dragge
 
 #### `Rect` {#symbol-rect}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L68)
 
 ##### `Rect` — Summary
 A rectangle on the board.
 
 #### `rectAround` {#symbol-rectaround}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L77)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L76)
 - Returns: [`Rect`](#symbol-rect)
 - Parameters: `rects`: [`Rect`](#symbol-rect)[]
 
@@ -107,7 +102,7 @@ The rectangle around some rectangles, with padding; nothing when there are none.
 
 #### `corners` {#symbol-corners}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L89)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L88)
 - Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
 - Parameters: `rect`: [`Rect`](#symbol-rect)
 
@@ -116,7 +111,7 @@ The corners of a rectangle, clockwise from the top left.
 
 #### `inRect` {#symbol-inrect}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L94)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L93)
 - Parameters: `rect`: [`Rect`](#symbol-rect); `point`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
 ##### `inRect` — Summary
@@ -124,26 +119,26 @@ Whether a board point lies in a rectangle.
 
 #### `unitsToPixels` {#symbol-unitstopixels}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L98)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L97)
 - Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 - Parameters: `units`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
 #### `pixelsToUnits` {#symbol-pixelstounits}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L102)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L101)
 - Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 - Parameters: `pixels`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
 #### `PlacementGroup` {#symbol-placementgroup}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L107)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L106)
 
 ##### `PlacementGroup` — Summary
 A run of things to place together: the members of one region, or the things in none.
 
 #### `autoPlace` {#symbol-autoplace}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L116)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L115)
 - Parameters: `groups`: [`PlacementGroup`](#symbol-placementgroup)[]; `placed`: `Iterable`
 
 ##### `autoPlace` — Summary
@@ -153,18 +148,18 @@ row between groups, so that a region's members sit together.
 
 #### `Wall` {#symbol-wall}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L134)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L133)
 
 ##### `Wall` — Summary
 A wall of a block, by its outward direction on the board.
 
 #### `NORMALS` {#symbol-normals}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L135)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L134)
 
 #### `wallOf` {#symbol-wallof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L138)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L137)
 - Returns: [`Wall`](#symbol-wall)
 - Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `placed`: [`Placed`](#symbol-placed); `toward`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
@@ -173,14 +168,14 @@ The wall that faces a counterpart best, among the walls the viewer can see.
 
 #### `Anchor` {#symbol-anchor}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L150)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L149)
 
 ##### `Anchor` — Summary
 Where a door sits: a point at mid-height on the board, and the direction a wire leaves it.
 
 #### `wallPoint` {#symbol-wallpoint}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L156)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L155)
 - Returns: [`Anchor`](#symbol-anchor)
 - Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `placed`: [`Placed`](#symbol-placed); `wall`: [`Wall`](#symbol-wall); `toward`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
@@ -189,7 +184,7 @@ The point on a wall, at a fraction along it, where a door sits; on a drum, a poi
 
 #### `roadCurve` {#symbol-roadcurve}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L183)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L182)
 - Parameters: `from`: [`Anchor`](#symbol-anchor); `to`: [`Anchor`](#symbol-anchor)
 
 ##### `roadCurve` — Summary
@@ -197,7 +192,7 @@ A wire between two doors: a cable in the air that hangs a little.
 
 #### `spreadTokens` {#symbol-spreadtokens}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L195)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L194)
 - Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
 - Parameters: `seeds`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]; `obstacles`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]; `bounds`: [`Rect`](#symbol-rect)
 
@@ -208,7 +203,7 @@ of each other.
 
 #### `drawOrder` {#symbol-draworder}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L231)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L230)
 - Returns: [`Placed`](#symbol-placed)[]
 - Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `pivot`: [`Pivot`](./projection.ts.mdmd.md#symbol-pivot); `pieces`: [`Placed`](#symbol-placed)[]
 
@@ -217,7 +212,7 @@ The order to draw pieces in: far ones first.
 
 #### `clamp` {#symbol-clamp}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L235)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L234)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

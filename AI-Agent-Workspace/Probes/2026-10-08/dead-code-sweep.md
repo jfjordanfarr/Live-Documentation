@@ -65,7 +65,25 @@ The graph records every direct import and every type reference between this work
 
 Not detectable from the docs, and said so: a reachable file that repeats what another does; a private helper copied twelve times; a template id nothing selects.
 
-## Proposed deletions and repairs, for the owner's yes
+## Correction, later on 2026-10-08
+
+The record above calls `scripts/live-docs/find-orphans.ts` dead by duplication. The origin check the owner asked for before any deletion ([Turn 4](../../ChatHistory/2026/10/2026-10-08.1.record.md#turn-4)) found an intended use the hand had missed: the generator's prune skips a stale doc that has authored content ("Preserving … (authored content detected)"), and [the pipeline doc](../../../.mdmd/layer-3/live-documentation-pipeline.mdmd.md) and [the internal tooling reference](../../../.mdmd/layer-2/internal-tooling.mdmd.md) say to run `live-docs:orphans` after deleting source files for exactly those docs. So the script is reachable and useful, and it stays. The files table in the appendix carries the wrong class; this note corrects it. The lesson for the software is the one the record already draws: a reachable file's usefulness is a reading, not a measurement.
+
+## Outcome, 2026-10-08
+
+Deleted and repaired under the owner's standing grant of that day (dead code is deleted once its origin is checked and no programmatic or intended use is found), in the commit that follows this record's correction:
+
+- `membraneView/hierarchy.ts` and its test, with their Live Docs removed by hand since the generator preserves docs that carry authored content.
+- The eight dead symbols; `treeSitter.ts` keeps its `Tree` import, which `parseSource` still returns.
+- The four barrels trimmed to what is imported through them: `core.ts` 58 to 24 names, `persistence/index.ts` 20 to 9, `languages/index.ts` 16 to 7, `bootstrap/index.ts` 4 to 1.
+- The eleven local `escapeHtml` copies replaced by the one exported from `graph-helpers.ts`; two of them had escaped four characters where it escapes five, which is safe in every HTML context the client writes into.
+- Dependencies: `glob` out of the CLI's and the explorer's manifests, `minimatch` out of the engine's, `@typescript-eslint/eslint-plugin`, `@typescript-eslint/parser` and `@vscode/tree-sitter-wasm` out of the root's, `@types/lz-string` out of the explorer's (`lz-string` ships its typings); `@eslint/js` and `lz-string` listed at the root, which `eslint.config.js` and five Playwright specs require.
+
+Not deleted: `find-orphans.ts`, by the correction above.
+
+## Proposed deletions and repairs, as first written
+
+_Superseded by the outcome above; kept as the proposal the owner answered._
 
 - Delete `membraneView/hierarchy.ts` and its test.
 - Delete the eight dead symbols, with any import that only they used.

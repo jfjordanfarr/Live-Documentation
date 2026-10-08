@@ -94,9 +94,3 @@ export function tryBuildNormalizedKeyFromAnchorKey(anchorKey: string): string | 
     }
     return buildNormalizedAnchorKey(direction, symbol);
 }
-
-/**
- * Template literal type constraining normalised anchor keys to the
- * `"normalized:<direction>:<symbol>"` shape for type-safe lookups.
- */
-export type NormalizedAnchorKey = `${typeof NORMALIZED_PREFIX}:${AnchorDirection}:${string}`;

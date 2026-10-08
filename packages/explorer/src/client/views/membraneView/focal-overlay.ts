@@ -16,6 +16,7 @@ import { routeConnection } from "./routing";
 import type { BezierTuningParams } from "../connection-geometry";
 import type { MembraneLayout, MembraneNode } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
+import { escapeHtml } from "../../graph-helpers";
 import { normalizeSymbolIdentifier } from "../../views/symbolAnchors";
 
 // ─── Types ─────────────────────────────────────────────────────────
@@ -55,12 +56,6 @@ export interface FocalOverlayResult {
 const PIN_RADIUS = 6;
 
 /** Escape HTML special characters to prevent XSS. */
-function escapeHtml(str: string): string {
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c] || c));
-}
-
 // ─── Panel Rendering ───────────────────────────────────────────────
 
 /**

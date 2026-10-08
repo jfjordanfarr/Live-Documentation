@@ -84,3 +84,291 @@
 
   If you say nothing else, I take the Knowledge Sources panel now and bring the
   World Map plan to the chat after.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >The two bootstrap-document fixes: rewrite direction.md's "Next, in the
+  agreed order" as a short current statement with its dated bullets moved under
+  "How the work unfolded", every word kept; and one line in AGENTS.md's
+  bootstrap bullet so the ranking starts from the vision's order rather than
+  the last session's open ends. Your Turn 2 critique applies to this morning's
+  routine just as it did then, so I recommend both. I will not touch AGENTS.md
+  without your word.
+
+  Yeah please clean up the stale stuff. Cruft in highly-visited files is very
+  worth clearing.
+
+  >The order between the Knowledge Sources panel and the World Map plan.
+
+  Ooh, hmm good question! Let's do Knowledge Sources first, because I think we
+  can swing this into something very interesting. I'm actually very curious
+  about doing a dead code/dead file sweep through this workspace and I'm
+  wondering if Live Documentaton can help us detect true orphans. Perhaps the
+  high-intelligence manually curated list can be compared to what our software
+  might come up with.
+
+  >The click grammar's one open sequence: two clicks on a symbol of an unpinned
+  card give all, then that symbol alone, not none. I recommended the table as
+  it stood.
+
+  Two clicks on a symbol of an unpinned card...  hmmmm... well if a card is
+  showing _any_ symbols, one or more must be party to an interaction. If we pin
+  a symbol and then unpin it again on that node, then -- ahhh you're right --
+  then it would go back to something akin to the membranes' "Encasing" state,
+  more or less. The node would go back to no symbol pins, and showing only the
+  symbols party to the interaction that is keeping them onscreen.
+
+  >If you say nothing else, I take the Knowledge Sources panel now and bring
+  the World Map plan to the chat after.
+
+  I think we can make Knowledge Sources vastly better in a day based on the
+  progress made with recent chats. However, I think that the World Map will be
+  herculean, and possibly go through many total reimaginings before we're happy
+  with it. Could be a week to a month of work. Maybe 5 to 20 chats, probably
+  interspersed with some other work to keep sanity alive hahaha!
+
+  >Lower by your word: the two instrument gaps, the pull, and the Unit bundle's
+  two remedies.
+
+  Continued layout optimization might be something I could spin up another
+  agent to work on at some point. Might even need to wait until frontier models
+  start taking on a better sense of aesthetic intuition based on visual
+  inputs. The remainder of the layout quibbles are, I think, potentially a
+  large matter of taste.
+
+● I'll record this turn first, then make the two document fixes you approved,
+  carry your new words into Memory, and read the Knowledge Sources panel before
+  bringing its plan to the chat.
+
+  Searched for 1 pattern, read 1 file, listed 2 directories, ran 13 shell commands (ctrl+o to expand)
+
+● I found that the existing orphan script checks the mirror for deleted sources
+  rather than the graph for unreferenced files, so I'm now building a picture of
+  the panel's current state. · summary
+
+  Searched for 1 pattern, read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● Done so far. The two document fixes are committed as 0434af8e: direction.md
+  now opens with a short Next section and its stale heading is history with
+  every word kept, and AGENTS.md's bootstrap bullet has the one-sentence ranking
+  rule. Your answers from this turn are in Memory. Your export of this chat
+  appeared in the folder and will be committed as received with the next commit.
+
+  The click grammar, as I read your answer. A symbol click on a card with no
+  pins pins that symbol alone, and a second click returns the card to none,
+  showing only what the interaction needs. Since a card cannot remember how it
+  came to have one pinned symbol, the same click on the only pinned symbol of a
+  card that stood at all also returns to none, which drops the "returns to all"
+  from your first list. Say if that is right. Nothing of it is built yet.
+
+  The Knowledge Sources panel as it stands. I read its code and photographed it
+  from the committed build. Its text is stale in the four places named
+  yesterday, and its two judgment sections are weak in a way the text fix would
+  not cure. "Graph Health Warnings" names the five most used and five most using
+  files as warnings at fixed thresholds, which is the atmosphere's temperature
+  dressed as a fault. "Disconnected Nodes" lists entry scripts, Playwright
+  specs, tsconfig files and fixture files alike, cut at twenty, with no reason
+  given for any of them.
+
+  What the graph already says about orphans, computed from the index this
+  morning, leaving the sample programs and fixtures aside:
+
+  ┌──────────────────────────────────────────────────────────────┬───────┐
+  │              On this repository's own 343 files              │ Count │
+  ├──────────────────────────────────────────────────────────────┼───────┤
+  │ Implementation files nothing references                      │    24 │
+  ├──────────────────────────────────────────────────────────────┼───────┤
+  │ Test files nothing references                                │   134 │
+  ├──────────────────────────────────────────────────────────────┼───────┤
+  │ Public symbols with no reference from another file, of 1,230 │   348 │
+  └──────────────────────────────────────────────────────────────┴───────┘
+
+  Every one of the 24 is an entry or a tooling input: the scripts that
+  package.json runs, the client's and CLI's entries, the stylesheet the template
+  links, the PowerShell adapter's emitter script, and one file loaded by a
+  dynamic import the TypeScript adapter does not record. The graph cannot tell
+  those from a true orphan today because nothing in the docs says what an entry
+  point is. And the first candidate for your curated list is already in view:
+  the existing orphan script under scripts/live-docs/ checks for docs whose
+  source file is gone, which the generator now prunes itself.
+
+  The plan, in three parts.
+
+  1. The panel made true, today. Drop the tagline, the "How to Improve" section
+     with its npm scripts and barrel paragraph, the "Use this to" list and the
+     dead server-mode note. Replace "Data Provenance" and "Graph Statistics"
+     with one section on this bundle: the docs root, the files by archetype,
+     when they were generated, the languages present. Replace the warnings with
+     the most used and most using files as plain counts and links, no threshold
+     and no verdict. Replace "Disconnected Nodes" with "nothing references
+     these", every file with the reason the graph gives, uncut. Keep the related
+     documentation tree and the export, with their text made true.
+  2. The sweep, as a measurement. The software's candidates (files and symbols
+     nothing references) beside my hand-curated list from reading the code, the
+     build, the scripts and the templates, every disagreement classified: an
+     adapter miss, an entry point, a tooling input, or a true orphan. The
+     curated list is the oracle, by the rule that nothing grades itself. The
+     record goes under the day's Probes folder; true orphans get ordinary
+     deletion commits for your yes.
+  3. What the sweep feeds. The adapter misses become fixes measured on the
+     oracle, the dynamic import first. The entry-point rules become reachable,
+     the vision's step 4, as both the panel's section and a command, so a person
+     can take the list out as markdown or JSON.
+
+  Three forks for you.
+
+  - Where an entry point is declared. Grown into the docs as observed facts (a
+    manifest's scripts name the files they run; a test runner's config names its
+    globs; a template links its stylesheet), or a declared list of globs in the
+    config, or both. I recommend both, observed first and the list as the
+    escape hatch, with the panel saying which rule made each file an entry.
+  - Symbols in the sweep. Files only, or symbols too. I recommend symbols too,
+    as a second table, since dead exports are the half of "dead code" that
+    file-level reading misses.
+  - The most-used list. Keep it as plain counts without the warning framing, or
+    drop it. I recommend keeping it.
+
+  Say yes or redirect, and I start with part 1.
+
+❯ >The click grammar, as I read your answer. A symbol click on a card with no
+  pins pins that symbol alone, and a second click returns the card to none,
+  showing only what the interaction needs. Since a card cannot remember how it
+  came to have one pinned symbol, the same click on the only pinned symbol of a
+  card that stood at all also returns to none, which drops the "returns to
+  all" from your first list. Say if that is right. Nothing of it is built yet.
+
+  You are right. In essence, what each little dumb rule I spoke was aiming to
+  do was improve the number of times that a second click performs the semantic
+  reverse of the first click.
+
+● Recording the turn and your confirmation, then starting part 1 of the plan,
+  since it needs no fork and follows your "Knowledge Sources first"; parts 2 and
+  3 wait on the three forks.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+❯ >Where an entry point is declared. Grown into the docs as observed facts (a
+  manifest's scripts name the files they run; a test runner's config names its
+  globs; a template links its stylesheet), or a declared list of globs in the
+  config, or both. I recommend both, observed first and the list as the escape
+  hatch, with the panel saying which rule made each file an entry.
+
+  Yeah we might need to make heuristics or ask the user to identify the start
+  file? Hmmm wow it's so much better if we can infer
+
+❯ >Symbols in the sweep. Files only, or symbols too. I recommend symbols too,
+  as a second table, since dead exports are the half of "dead code" that
+  file-level reading misses.
+
+  Symbols too but the linter should do pretty well on it depending on language
+  you're trying to hit.
+
+● Two of the three questions are resolved: entry points will be inferred where
+  possible with a declared start file as fallback, and symbols will be covered
+  via the sweep plus the linter as a secondary check. I'll note these decisions
+  and continue with part 1. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+❯ >The most-used list. Keep it as plain counts without the warning framing, or
+  drop it. I recommend keeping it.
+
+  Let's evaluate based on what we find in the dead code sweep. Think about your
+  manual dead code sweep (or general code health sweep) as informing us about
+  what we want our software to be able to detect (if possible/simple to do)
+
+● The sweep needs to come before the panel since its results inform detection
+  logic and the panel's judgment sections, so I'll reorder the steps and fix the
+  stale text while I'm at it. Starting the sweep now. · summary
+
+  Searched for 1 pattern, ran 11 shell commands (ctrl+o to expand)
+
+● I've run the dependency graph, knip report, and mention scan; now I'll
+  manually verify the remaining candidates—unused symbols, barrel re-exports
+  with no importers, a possible missed edge, and knip's dependency
+  findings—before recording the results. · summary
+
+  Read 1 file, listed 2 directories, ran 8 shell commands (ctrl+o to expand)
+
+● The sweep is written and committed as bfebac76. Here is what it found and what
+  I propose; the deletions and the panel wait on your word.
+
+  Your three answers, recorded in direction.md: entry points inferred wherever
+  they can be, a declared start file as the fallback; symbols in the sweep, with
+  a linter beside the graph; the sweep first, the panel designed from it. The
+  click grammar is settled and not yet built.
+
+  What the sweep found. The record is dead-code-sweep.md
+  (AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md), the graph's full
+  lists in its appendix
+  (AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep/candidates.md). Three
+  instruments ran over this repository's own 343 files: the graph index, a
+  one-off run of the knip linter from the scratchpad with nothing installed, and
+  a whole-word mention scan. Then the hand.
+
+  ┌──────────────────────────────────────────────────────────────────┬───────┐
+  │               Class, on this repository's own code               │ Count │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ Implementation files nothing references                          │    26 │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ of which dead, or redundant                                      │  1, 1 │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ Test files nothing references, every one a runner's entry or a   │   134 │
+  │ config                                                           │       │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ Public symbols defined and used nowhere                          │     8 │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ Exported but used only in their own file                         │   191 │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ Re-exports nobody imports through their barrel (four barrels)    │    60 │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ Symbols only tests reference                                     │   130 │
+  ├──────────────────────────────────────────────────────────────────┼───────┤
+  │ Copies of escapeHtml in the client                               │    12 │
+  └──────────────────────────────────────────────────────────────────┴───────┘
+
+  The graph missed no direct import: of the 131 unreferenced symbols whose name
+  appears elsewhere, not one is imported from its own module without an edge in
+  the docs. Everything it cannot see is a reference that is not an import: a
+  package script naming a path, a runner's glob, a template link, a path string,
+  a dynamic import, an element id. So its orphan list is the right list of
+  candidates, and the whole judgment turns on knowing what an entry is. On this
+  repository, inference from manifests and runners would clear 18 of the 26
+  files and every test; a declared list of five paths would finish it.
+
+  Proposed deletions and repairs, for your yes.
+
+  1. Delete the Membrane Map's barrel-hierarchy module and its test. Nothing but
+     the test has used it since September 28.
+  2. Delete the eight dead symbols.
+  3. Delete the stale-mirror orphan script with its npm script and CLI command.
+     The generator prunes stale docs itself.
+  4. Trim the four barrels of the re-exports nobody imports through them. The
+     core.ts barrel is more than half unused through itself, which is also what
+     the panel's "116 inbound dependencies" was crowning.
+  5. Replace the eleven local copies of escapeHtml with the exported one.
+  6. Dependencies: three listed and never imported go; two required and unlisted
+     get listed.
+
+  Left alone on purpose: the test-only exports, which are how a test reaches a
+  helper, and the exports a file uses itself.
+
+  What the software should detect, by simplicity. Five classes come from the
+  graph alone today and belong in the panel: files nothing references, by
+  archetype; files only tests use; dead symbols against export noise; test-only
+  symbols; unused barrel re-exports. Then a dynamic import as an edge, an
+  adapter fix measured on the oracle. Then entry inference as doc-format growth,
+  the way openings and manifests landed in September: a manifest's scripts, its
+  bin and main, a runner's globs. Then the declared start file for the rest.
+  That path is reachable, the vision's step 4, and the panel's lists are its
+  screen form.
+
+  The panel, from this. The bundle's shape; the files nothing references, each a
+  link, with the honest note that entries are not yet told apart; the symbol
+  classes with their lists, which no other view shows; the most-used files as "N
+  files use K of its M symbols", since a bare count crowned a barrel; the
+  related documentation; the export; the stale text gone.
+
+  Say yes or redirect on the deletions and the panel, and I build.

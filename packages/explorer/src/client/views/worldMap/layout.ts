@@ -18,7 +18,6 @@ export const GRID = 50;
 
 /** The shape words the legend may use; the tool ships a solid for each. */
 export type Shape = "cube" | "tile" | "drum" | "figure" | "sheet" | "cloud";
-export const SHAPE_WORDS: ReadonlySet<string> = new Set(["cube", "tile", "drum", "figure", "sheet", "cloud"]);
 
 /** A solid: a block with a footprint and a height, or a round tank with a radius. */
 export interface Solid {

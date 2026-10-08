@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/pin-active-renderer.ts
-- Generated At: 2026-10-02T21:07:40.072Z
+- Generated At: 2026-10-08T16:03:29.200Z
 
 ## Authored
 ### Purpose
@@ -27,21 +27,21 @@ DOM renderer for the Membrane Map's pin-active dependency-flow view. Transforms 
 ### Public Symbols
 #### `PinActiveCallbacks` {#symbol-pinactivecallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-active-renderer.ts#L53)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-active-renderer.ts#L48)
 
 ##### `PinActiveCallbacks` — Summary
 Callbacks for pin-active renderer interactive elements.
 
 #### `PinActiveRenderResult` {#symbol-pinactiverenderresult}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-active-renderer.ts#L62)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-active-renderer.ts#L57)
 
 ##### `PinActiveRenderResult` — Summary
 Result from renderPinActiveLayout.
 
 #### `renderPinActiveLayout` {#symbol-renderpinactivelayout}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-active-renderer.ts#L86)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/pin-active-renderer.ts#L81)
 - Returns: [`PinActiveRenderResult`](#symbol-pinactiverenderresult)
 - Parameters: `pinLayout`: [`PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult); `nodesById`: `ReadonlyMap`; `callbacks`: [`PinActiveCallbacks`](#symbol-pinactivecallbacks); `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
@@ -64,6 +64,7 @@ Creates a horizontal column layout where:
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`focal-overlay.MeasuredAnchor`](./focal-overlay.ts.mdmd.md#symbol-measuredanchor) (type-only)
 - [`pin-layout.DirectoryBand`](./pin-layout.ts.mdmd.md#symbol-directoryband) (type-only)
 - [`pin-layout.PinLayoutResult`](./pin-layout.ts.mdmd.md#symbol-pinlayoutresult) (type-only)

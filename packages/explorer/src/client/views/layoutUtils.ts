@@ -1,8 +1,4 @@
-import type {
-  ExplorerGraphPayload,
-  ExplorerLinkPayload,
-  ExplorerNodePayload
-} from "../../shared/types";
+import type { ExplorerNodePayload } from "../../shared/types";
 import type { DirectoryNode } from "../types";
 
 /** Sentinel key representing the virtual root directory in the layout tree. */
@@ -570,53 +566,4 @@ function layoutFileArea(
     rows,
     nodes: nodePlans
   };
-}
-
-/**
- * Identifies the directory with the highest aggregate link-degree score
- * among a set of nodes.
- *
- * Used by the Circuit Board view to determine the initial viewport
- * position — centering on the most-connected directory cluster.
- */
-export function findDominantDirectory(
-  graphData: ExplorerGraphPayload,
-  nodes: ExplorerNodePayload[],
-  resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string
-): { path: string; score: number; count: number } | null {
-  if (!nodes || nodes.length === 0) {
-    return null;
-  }
-  const included = new Set(nodes.map(node => node.id));
-  const degreeMap = new Map<string, number>();
-  graphData.links.forEach(link => {
-    const sourceId = resolveLinkEndpoint(link.source);
-    const targetId = resolveLinkEndpoint(link.target);
-    if (included.has(sourceId)) {
-      degreeMap.set(sourceId, (degreeMap.get(sourceId) ?? 0) + 1);
-    }
-    if (included.has(targetId)) {
-      degreeMap.set(targetId, (degreeMap.get(targetId) ?? 0) + 1);
-    }
-  });
-
-  const directoryScores = new Map<string, { score: number; count: number }>();
-  nodes.forEach(node => {
-    const key = getDirectoryKey(node);
-    if (!directoryScores.has(key)) {
-      directoryScores.set(key, { score: 0, count: 0 });
-    }
-    const entry = directoryScores.get(key)!;
-    entry.score += degreeMap.get(node.id) ?? 0;
-    entry.count += 1;
-  });
-
-  let best: { path: string; score: number; count: number } | null = null;
-  directoryScores.forEach((value, key) => {
-    if (!best || value.score > best.score || (value.score === best.score && value.count > best.count)) {
-      best = { path: key, score: value.score, count: value.count };
-    }
-  });
-
-  return best;
 }

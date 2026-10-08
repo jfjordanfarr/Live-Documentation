@@ -11,7 +11,7 @@
 Provides utility functions for graph data manipulation in the Explorer client. Includes link endpoint resolution, node lookup helpers, and graph traversal utilities used across multiple views.
 
 ### Notes
-Extracted from client/index.ts during Dev Day 50 (12/19). These helpers are consumed by the Local Map, Circuit Board, and Force Graph views for consistent graph data access.
+Extracted from client/index.ts during Dev Day 50 (12/19). These helpers are consumed by the Local Map, Circuit Board, and Force Graph views for consistent graph data access. `escapeHtml` is the client's one HTML escaper since 2026-10-08, when [the dead code sweep](../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md) replaced eleven local copies with it; it escapes the five characters that matter in text and attribute content alike.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

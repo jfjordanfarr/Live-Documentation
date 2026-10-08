@@ -5,6 +5,7 @@
  * Integrates with the omnisearch pattern but operates inline within the Local Map view.
  */
 
+import { escapeHtml } from "./graph-helpers";
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 import { commitUrl } from "./persistence/history";
 
@@ -348,12 +349,6 @@ export function initPathfind(
   // ==================
   // RESULT RENDERING
   // ==================
-
-  function escapeHtml(str: string): string {
-    return str.replace(/[&<>"']/g, c =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] || c)
-    );
-  }
 
   function renderResults(
     results: ExplorerNodePayload[],

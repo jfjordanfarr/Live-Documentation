@@ -4,85 +4,49 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/languages/index.ts
-- Generated At: 2026-09-27T23:21:30.093Z
+- Generated At: 2026-10-08T16:03:26.425Z
 
 ## Authored
 ### Purpose
-Central registry for language syntax configurations. Exports all `LanguageSyntax` implementations and provides lookup functions: `getSyntaxById()`, `getSyntaxByExtension()`, `getSyntaxByPath()`, and the convenience `stripCommentsAndStringsForPath()`.
+Central registry for language syntax configurations: the lookups `getSyntaxById()`, `getSyntaxByExtension()`, `getSyntaxByPath()`, `isLanguageSupported()` and `isExtensionSupported()`, and the re-export of the seven syntaxes that other modules import through here. The syntax types and the comment-stripping helpers come from `./syntax`.
 
 ### Notes
-Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution.
+Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-29.1.md) — designed as the single entry point for language-aware utilities. Adapters and heuristics import from here rather than individual language files to ensure consistent resolution. On 2026-10-08 [the dead code sweep](../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md) removed three functions nothing called (`getAllSyntaxes`, `stripCommentsForPath`, `isFrameworkTypeForPath`) and nine re-exports nobody imported through here.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `LanguageSyntax` {#symbol-languagesyntax}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L22)
-
-#### `LanguageSyntaxConfig` {#symbol-languagesyntaxconfig}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L23)
-
-#### `CommentDelimiters` {#symbol-commentdelimiters}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L24)
-
-#### `StringDelimiters` {#symbol-stringdelimiters}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L25)
-
-#### `createSyncStripper` {#symbol-createsyncstripper}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L28)
-
-#### `createLanguageSyntax` {#symbol-createlanguagesyntax}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L28)
-
-#### `stripCStyleComments` {#symbol-stripcstylecomments}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L28)
-
 #### `cSyntax` {#symbol-csyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L30)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L21)
 
 #### `csharpSyntax` {#symbol-csharpsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L31)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L22)
 
 #### `goSyntax` {#symbol-gosyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L32)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L23)
 
 #### `javaSyntax` {#symbol-javasyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L33)
-
-#### `powershellSyntax` {#symbol-powershellsyntax}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L34)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L24)
 
 #### `pythonSyntax` {#symbol-pythonsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L35)
-
-#### `rubySyntax` {#symbol-rubysyntax}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L36)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L25)
 
 #### `rustSyntax` {#symbol-rustsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L37)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L26)
 
 #### `typescriptSyntax` {#symbol-typescriptsyntax}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L38)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L27)
 
 #### `getSyntaxById` {#symbol-getsyntaxbyid}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L78)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L67)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxById` — Summary
@@ -96,7 +60,7 @@ The syntax configuration, or undefined if not found
 
 #### `getSyntaxByExtension` {#symbol-getsyntaxbyextension}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L88)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L77)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxByExtension` — Summary
@@ -110,7 +74,7 @@ The syntax configuration, or undefined if not found
 
 #### `getSyntaxByPath` {#symbol-getsyntaxbypath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L98)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L87)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxByPath` — Summary
@@ -122,16 +86,9 @@ Gets a language syntax configuration by file path.
 ##### `getSyntaxByPath` — Returns
 The syntax configuration, or undefined if not found
 
-#### `getAllSyntaxes` {#symbol-getallsyntaxes}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L106)
-
-##### `getAllSyntaxes` — Summary
-Gets all registered language syntax configurations.
-
 #### `isLanguageSupported` {#symbol-islanguagesupported}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L115)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L97)
 
 ##### `isLanguageSupported` — Summary
 Checks if a language is supported.
@@ -141,42 +98,13 @@ Checks if a language is supported.
 
 #### `isExtensionSupported` {#symbol-isextensionsupported}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L124)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L106)
 
 ##### `isExtensionSupported` — Summary
 Checks if a file extension is supported.
 
 ##### `isExtensionSupported` — Parameters
 - `extension`: The file extension including dot
-
-#### `stripCommentsForPath` {#symbol-stripcommentsforpath}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L136)
-
-##### `stripCommentsForPath` — Summary
-Strips comments from content using the appropriate language syntax.
-String literals are preserved to avoid destroying code in interpolated strings.
-
-##### `stripCommentsForPath` — Parameters
-- `content`: The source code content
-- `filePath`: Path to the file (used to determine language)
-
-##### `stripCommentsForPath` — Returns
-Stripped content, or original content if language not supported
-
-#### `isFrameworkTypeForPath` {#symbol-isframeworktypeforpath}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L154)
-
-##### `isFrameworkTypeForPath` — Summary
-Checks if an identifier is a fundamental framework type for the given file's language.
-
-##### `isFrameworkTypeForPath` — Parameters
-- `filePath`: Path to the file (used to determine language)
-- `identifier`: The identifier to check
-
-##### `isFrameworkTypeForPath` — Returns
-True if the identifier is a framework type to filter as noise, false otherwise
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -189,12 +117,6 @@ True if the identifier is a framework type to filter as noise, false otherwise
 - [`python.pythonSyntax`](./python.ts.mdmd.md#symbol-pythonsyntax)
 - [`ruby.rubySyntax`](./ruby.ts.mdmd.md#symbol-rubysyntax)
 - [`rust.rustSyntax`](./rust.ts.mdmd.md#symbol-rustsyntax)
-- [`syntax.CommentDelimiters`](./syntax.ts.mdmd.md#symbol-commentdelimiters) (type-only)
 - [`syntax.LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax) (type-only)
-- [`syntax.LanguageSyntaxConfig`](./syntax.ts.mdmd.md#symbol-languagesyntaxconfig) (type-only)
-- [`syntax.StringDelimiters`](./syntax.ts.mdmd.md#symbol-stringdelimiters) (type-only)
-- [`syntax.createLanguageSyntax`](./syntax.ts.mdmd.md#symbol-createlanguagesyntax) (type-only)
-- [`syntax.createSyncStripper`](./syntax.ts.mdmd.md#symbol-createsyncstripper) (type-only)
-- [`syntax.stripCStyleComments`](./syntax.ts.mdmd.md#symbol-stripcstylecomments) (type-only)
 - [`typescript.typescriptSyntax`](./typescript.ts.mdmd.md#symbol-typescriptsyntax)
 <!-- LIVE-DOC:END Dependencies -->

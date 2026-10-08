@@ -35,6 +35,8 @@ In languages with barrel/index files (TypeScript `index.ts`, Python `__init__.py
 This isomorphism (barrel = membrane boundary) resolves the existing problem where the Local Map misleadingly presents barrel files as rich artifacts with many symbols, when they are actually routing tables for the directory's true contents.
 
 > **Status (2026-09-27)**: Designed, not rendered. `hierarchy.ts` implements `isBarrelFile()` and `applyBarrelSemantics()` with tests, but no renderer consumes them yet; barrel files still render as ordinary cards.
+>
+> **2026-10-08**: `hierarchy.ts` and its test were deleted in [the dead code sweep](../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md): no renderer had consumed them since the Membrane Map was scaffolded, and the September 28 probe found that on this repository the barrel is not the membrane (80 of 95 wires into `live-docs/` bypass `core.ts`). The design above stays as history; git holds the module at `663fe804` if the idea is taken up again.
 
 #### Pin-Level Fidelity
 
@@ -218,7 +220,6 @@ The testing strategy is:
 
 - `packages/explorer/src/client/views/membraneView/types.ts` — Core types: `MembraneNode`, `MembraneLink`, `PinSet`, `PinEntry`
 - `packages/explorer/src/client/views/membraneView/layout.ts` — Recursive squarify engine with focus-aware weight boosting
-- `packages/explorer/src/client/views/membraneView/hierarchy.ts` — `isBarrelFile()`, `applyBarrelSemantics()`, `getAncestorDirectories()`
 - `packages/explorer/src/client/views/membraneView/detail-levels.ts` — `resolveDetailLevels()` (full/summary/badge/hidden)
 - `packages/explorer/src/client/views/pin-state.ts` — Shared pure-function pin state: add/remove/toggle/serialize/getVisibleConnections
 - `packages/explorer/src/client/views/membraneView/routing.ts` — Front/back trace classification + geometry (French Corset stubs)

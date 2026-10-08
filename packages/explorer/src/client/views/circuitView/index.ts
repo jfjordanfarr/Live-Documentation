@@ -23,6 +23,7 @@ import type {
   ExplorerNodePayload
 } from "../../../shared/types";
 import { requireElement } from "../../dom";
+import { escapeHtml } from "../../graph-helpers";
 import type { CircuitTransform, ExplorerState, TestCoverageMap } from "../../types";
 import {
   buildHierarchy,
@@ -44,12 +45,6 @@ import {
 } from "./state";
 
 /** Escape HTML special characters to prevent XSS */
-function escapeHtml(str: string): string {
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c] || c));
-}
-
 /** Options passed to the Circuit Board view factory. */
 export interface CircuitViewOptions {
   state: ExplorerState;

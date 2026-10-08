@@ -6,6 +6,7 @@
  */
 
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../shared/types";
+import { escapeHtml } from "../graph-helpers";
 
 /** Callback for when a node is selected from search results */
 export type OmnisearchSelectCallback = (node: ExplorerNodePayload) => void | Promise<void>;
@@ -19,12 +20,6 @@ export interface OmnisearchConfig {
 /**
  * Escape HTML special characters
  */
-const escapeHtml = (str: string): string => {
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c] || c));
-};
-
 /**
  * Initialize the omnisearch panel with keyboard shortcuts and fuzzy search.
  * 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/pathfind.ts
-- Generated At: 2026-10-03T02:21:28.626Z
+- Generated At: 2026-10-08T16:03:27.887Z
 
 ## Authored
 ### Purpose
@@ -23,42 +23,42 @@ The pathfinder of the Local Map: the FROM and TO toolbar with its fuzzy search a
 ### Public Symbols
 #### `PathfindEndpoint` {#symbol-pathfindendpoint}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L12)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L13)
 
 ##### `PathfindEndpoint` — Summary
 Pathfind endpoint selection
 
 #### `PathfindState` {#symbol-pathfindstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L18)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L19)
 
 ##### `PathfindState` — Summary
 Pathfind state
 
 #### `PathHop` {#symbol-pathhop}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L24)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L25)
 
 ##### `PathHop` — Summary
 A hop in a path result
 
 #### `PathfindResult` {#symbol-pathfindresult}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L31)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L32)
 
 ##### `PathfindResult` — Summary
 What a search between two files found.
 
 #### `PathfindCallbacks` {#symbol-pathfindcallbacks}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L55)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L56)
 
 ##### `PathfindCallbacks` — Summary
 Callbacks for pathfind events
 
 #### `findPath` {#symbol-findpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L76)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L77)
 - Returns: [`PathfindResult`](#symbol-pathfindresult)
 - Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
@@ -74,7 +74,7 @@ and that path is returned as `reversePath`, provider first, never drawn.
 
 #### `referencesAgainstPath` {#symbol-referencesagainstpath}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L128)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L129)
 - Parameters: `links`: [`ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
 ##### `referencesAgainstPath` — Summary
@@ -84,14 +84,14 @@ The path drawer leaves them out, so the toolbar counts them aloud.
 
 #### `parsePathfindFromUrl` {#symbol-parsepathfindfromurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L198)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L199)
 
 ##### `parsePathfindFromUrl` — Summary
 Parse pathfind state from URL parameters.
 
 #### `pathfindHref` {#symbol-pathfindhref}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L227)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L228)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `pathfindHref` — Summary
@@ -99,7 +99,7 @@ The page's address with the pathfind state written into it and everything else k
 
 #### `updatePathfindUrl` {#symbol-updatepathfindurl}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L257)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L258)
 - Parameters: `state`: [`PathfindState`](#symbol-pathfindstate)
 
 ##### `updatePathfindUrl` — Summary
@@ -107,14 +107,14 @@ Update URL with pathfind state.
 
 #### `PathfindApi` {#symbol-pathfindapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L262)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L263)
 
 ##### `PathfindApi` — Summary
 Return type for initPathfind
 
 #### `initPathfind` {#symbol-initpathfind}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L275)
+- Source: [source](../../../../../../packages/explorer/src/client/pathfind.ts#L276)
 - Returns: [`PathfindApi`](#symbol-pathfindapi)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `callbacks`: [`PathfindCallbacks`](#symbol-pathfindcallbacks)
 
@@ -124,6 +124,7 @@ Initialize the pathfind toolbar with search and symbol selection
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`history.commitUrl`](./persistence/history.ts.mdmd.md#symbol-commiturl)
 - [`template.pathfind-clear`](../shared/template.html.mdmd.md#symbol-pathfind-clear)
 - [`template.pathfind-from`](../shared/template.html.mdmd.md#symbol-pathfind-from)

@@ -1,12 +1,7 @@
 import type { DirectoryAggregate } from "./aggregation";
+import { escapeHtml } from "../../graph-helpers";
 
 /** Escape HTML special characters to prevent XSS */
-function escapeHtml(str: string): string {
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c] || c));
-}
-
 /**
  * Creates a DOM element representing a collapsed directory tile
  * in the aggregated Circuit Board view.

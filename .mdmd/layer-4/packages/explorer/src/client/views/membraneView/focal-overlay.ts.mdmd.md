@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/focal-overlay.ts
-- Generated At: 2026-10-07T01:30:17.424Z
+- Generated At: 2026-10-08T16:03:29.082Z
 
 ## Authored
 ### Purpose
@@ -28,14 +28,14 @@ DOM rendering of the focal overlay layer: symbol expansion panels on pinned leaf
 ### Public Symbols
 #### `FocalOverlayCallbacks` {#symbol-focaloverlaycallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L25)
 
 ##### `FocalOverlayCallbacks` — Summary
 Callbacks for focal overlay interaction events.
 
 #### `MeasuredAnchor` {#symbol-measuredanchor}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L33)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L34)
 
 ##### `MeasuredAnchor` — Summary
 A measured pin anchor with its absolute position in the layout.
@@ -43,7 +43,7 @@ Used after DOM insertion to compute connection geometry.
 
 #### `FocalOverlayResult` {#symbol-focaloverlayresult}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L44)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L45)
 
 ##### `FocalOverlayResult` — Summary
 The result of rendering the focal overlay — contains the DOM elements
@@ -51,7 +51,7 @@ and an anchor registry for subsequent connection routing.
 
 #### `renderFocalOverlay` {#symbol-renderfocaloverlay}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L78)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L73)
 - Returns: [`FocalOverlayResult`](#symbol-focaloverlayresult)
 - Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`FocalOverlayCallbacks`](#symbol-focaloverlaycallbacks); `skipNodeIds`: `ReadonlySet`
 
@@ -72,7 +72,7 @@ Overlay result with panels, anchors, and SVG overlay
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L285)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L280)
 - Parameters: `svgOverlay`: `SVGSVGElement`; `tuning`: [`BezierTuningParams`](../connection-geometry.ts.mdmd.md#symbol-beziertuningparams)
 
 ##### `drawConnections` — Summary
@@ -90,7 +90,7 @@ Must be called after the focal overlay panels are inserted into the DOM
 
 #### `hopLabel` {#symbol-hoplabel}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L545)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L540)
 
 ##### `hopLabel` — Summary
 Get the display label for a hop index.
@@ -98,7 +98,7 @@ Uses circled numbers for 0-19, falls back to plain number for larger indices.
 
 #### `attachHopBadges` {#symbol-attachhopbadges}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L560)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L555)
 - Parameters: `panels`: `ReadonlyMap`; `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `attachHopBadges` — Summary
@@ -113,14 +113,14 @@ top-right corner showing the hop index.
 
 #### `BreadcrumbCallbacks` {#symbol-breadcrumbcallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L592)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L587)
 
 ##### `BreadcrumbCallbacks` — Summary
 Callbacks for breadcrumb bar interaction.
 
 #### `renderPathBreadcrumb` {#symbol-renderpathbreadcrumb}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L608)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L603)
 - Parameters: `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `callbacks`: [`BreadcrumbCallbacks`](#symbol-breadcrumbcallbacks)
 
 ##### `renderPathBreadcrumb` — Summary
@@ -135,7 +135,7 @@ Returns null if no active path exists.
 
 #### `setupHoverDimming` {#symbol-setuphoverdimming}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L693)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L688)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `setupHoverDimming` — Summary
@@ -159,7 +159,7 @@ is called once, not per-row.
 
 #### `clearHoverDimming` {#symbol-clearhoverdimming}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L787)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L782)
 - Parameters: `svgOverlay`: `SVGSVGElement`
 
 ##### `clearHoverDimming` — Summary
@@ -167,7 +167,7 @@ Remove all hover-dimming state from the SVG overlay and container.
 
 #### `markConnectedEndpoints` {#symbol-markconnectedendpoints}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L825)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/focal-overlay.ts#L820)
 - Parameters: `svgOverlay`: `SVGSVGElement`; `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `markConnectedEndpoints` — Summary
@@ -183,6 +183,7 @@ Pin dots for connected endpoints also get lit up with directional coloring.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`connection-geometry.BezierTuningParams`](../connection-geometry.ts.mdmd.md#symbol-beziertuningparams) (type-only)
 - [`animation.animateLineDrawIn`](./animation.ts.mdmd.md#symbol-animatelinedrawin)
 - [`routing.BackTrace`](./routing.ts.mdmd.md#symbol-backtrace) (type-only)

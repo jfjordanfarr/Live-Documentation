@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/symbolAnchors.ts
-- Generated At: 2026-09-28T01:11:44.489Z
+- Generated At: 2026-10-08T16:03:29.350Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ Symbol anchor key normalisation utilities for the Local Map. Ensures that symbol
 - Created 2025-12-03 to centralise symbol matching logic.
 - `normalizeSymbolIdentifier` strips decorators like `(class)`, `(function)` and converts to lowercase.
 - `buildNormalizedAnchorKey` combines node ID, direction, and optional symbol into a canonical key.
+- The `NormalizedAnchorKey` template-literal type, which nothing used, was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -56,14 +57,6 @@ Attempts to derive a normalised anchor key from an existing raw anchor key.
 Parses the `"<direction>:<symbol>"` format, normalises the symbol portion,
 and returns a key suitable for fuzzy matching. Returns `null` for wildcard
 keys (`"*"`) or keys with unrecognised direction prefixes.
-
-#### `NormalizedAnchorKey` {#symbol-normalizedanchorkey}
-- Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts#L102)
-
-##### `NormalizedAnchorKey` — Summary
-Template literal type constraining normalised anchor keys to the
-`"normalized:<direction>:<symbol>"` shape for type-safe lookups.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

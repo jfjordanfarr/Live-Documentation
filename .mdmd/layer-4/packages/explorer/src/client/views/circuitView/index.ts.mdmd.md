@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/circuitView/index.ts
-- Generated At: 2026-09-28T01:11:43.375Z
+- Generated At: 2026-10-08T16:03:28.183Z
 
 ## Authored
 ### Purpose
@@ -24,21 +24,21 @@ Main controller for the Circuit Board (treemap) view in the Live Docs Explorer. 
 ### Public Symbols
 #### `CircuitViewOptions` {#symbol-circuitviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/index.ts#L54)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/index.ts#L49)
 
 ##### `CircuitViewOptions` — Summary
 Options passed to the Circuit Board view factory.
 
 #### `CircuitViewApi` {#symbol-circuitviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/index.ts#L65)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/index.ts#L60)
 
 ##### `CircuitViewApi` — Summary
 Public API surface of the Circuit Board (treemap) view.
 
 #### `createCircuitView` {#symbol-createcircuitview}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/index.ts#L78)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/index.ts#L73)
 - Returns: [`CircuitViewApi`](#symbol-circuitviewapi)
 - Parameters: `options`: [`CircuitViewOptions`](#symbol-circuitviewoptions)
 
@@ -49,6 +49,7 @@ Creates the Circuit Board (treemap) view for the Live Docs Explorer.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
+- [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`types.CircuitTransform`](../../types.ts.mdmd.md#symbol-circuittransform) (type-only)
 - [`types.ExplorerState`](../../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.TestCoverageMap`](../../types.ts.mdmd.md#symbol-testcoveragemap) (type-only)

@@ -12,6 +12,7 @@
 import type { MeasuredAnchor } from "./focal-overlay";
 import type { PinLayoutResult, DirectoryBand } from "./pin-layout";
 import type { ExplorerNodePayload, ExplorerPublicSymbol } from "../../../shared/types";
+import { escapeHtml } from "../../graph-helpers";
 import type { PinSet } from "../pin-state";
 import { isSymbolPinned, areAllSymbolsPinned } from "../pin-state";
 
@@ -43,12 +44,6 @@ function createReferenceBadges(extSymbol: ExplorerPublicSymbol | undefined): HTM
 }
 
 /** Escape HTML special characters to prevent XSS. */
-function escapeHtml(str: string): string {
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c] || c));
-}
-
 /** Callbacks for pin-active renderer interactive elements. */
 export interface PinActiveCallbacks {
   onSelectNode: (node: ExplorerNodePayload) => void;

@@ -9,6 +9,7 @@ import { renderLiveDoc } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 
 import { requireElement } from "./dom";
+import { escapeHtml } from "./graph-helpers";
 import { renderMarkdown } from "./markdown";
 import type { ExplorerNodePayload } from "../shared/types";
 
@@ -681,10 +682,3 @@ function resolveRelativePathFromBundledDoc(
   return parts.join("/");
 }
 
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}

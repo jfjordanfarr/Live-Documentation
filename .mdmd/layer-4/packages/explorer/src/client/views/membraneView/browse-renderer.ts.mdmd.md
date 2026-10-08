@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/membraneView/browse-renderer.ts
-- Generated At: 2026-10-02T21:07:39.864Z
+- Generated At: 2026-10-08T16:03:29.018Z
 
 ## Authored
 ### Purpose
@@ -27,21 +27,21 @@ DOM rendering of the Membrane Map's browse mode, converting a `MembraneLayout` t
 ### Public Symbols
 #### `BrowseRenderCallbacks` {#symbol-browserendercallbacks}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/browse-renderer.ts#L57)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/browse-renderer.ts#L52)
 
 ##### `BrowseRenderCallbacks` — Summary
 Callbacks invoked by browse-mode interactive elements.
 
 #### `BrowseRenderResult` {#symbol-browserenderresult}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/browse-renderer.ts#L71)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/browse-renderer.ts#L66)
 
 ##### `BrowseRenderResult` — Summary
 Result from renderBrowseMode, including any card-grid anchors.
 
 #### `renderBrowseMode` {#symbol-renderbrowsemode}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/browse-renderer.ts#L91)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/membraneView/browse-renderer.ts#L86)
 - Returns: [`BrowseRenderResult`](#symbol-browserenderresult)
 - Parameters: `layout`: [`MembraneLayout`](./types.ts.mdmd.md#symbol-membranelayout); `callbacks`: [`BrowseRenderCallbacks`](#symbol-browserendercallbacks); `pinSet`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `expandedCards`: `ReadonlySet`; `testCoverage`: [`TestCoverageMap`](../../types.ts.mdmd.md#symbol-testcoveragemap); `detailLevels`: `ReadonlyMap`
 
@@ -62,6 +62,7 @@ A root HTMLElement containing the entire membrane tree
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`types.TestCoverageMap`](../../types.ts.mdmd.md#symbol-testcoveragemap) (type-only)
 - [`aggregation.DirectoryAggregate`](./aggregation.ts.mdmd.md#symbol-directoryaggregate) (type-only)
 - [`detail-levels.DetailLevel`](./detail-levels.ts.mdmd.md#symbol-detaillevel)

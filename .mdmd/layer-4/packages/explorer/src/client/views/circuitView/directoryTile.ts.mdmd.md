@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/circuitView/directoryTile.ts
-- Generated At: 2026-09-28T01:11:43.337Z
+- Generated At: 2026-10-08T16:03:28.142Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ DOM builder for collapsed directory tiles in the Circuit Board's aggregated view
 ### Public Symbols
 #### `createDirectoryTile` {#symbol-createdirectorytile}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/directoryTile.ts#L17)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/circuitView/directoryTile.ts#L12)
 - Parameters: `aggregate`: [`DirectoryAggregate`](./aggregation.ts.mdmd.md#symbol-directoryaggregate)
 
 ##### `createDirectoryTile` — Summary
@@ -36,5 +36,6 @@ and cross-boundary dependency counts as compact metric badges.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`aggregation.DirectoryAggregate`](./aggregation.ts.mdmd.md#symbol-directoryaggregate) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

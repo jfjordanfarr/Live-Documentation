@@ -10,8 +10,6 @@ import { Language, Parser, type Node, type Tree } from "web-tree-sitter";
 
 /** A node of a parsed tree; the runtime's own name for it collides with the DOM type. */
 export type SyntaxNode = Node;
-/** A parsed tree. */
-export type SyntaxTree = Tree;
 
 const GRAMMAR_DIRECTORY = path.join(path.dirname(require.resolve("@vscode/tree-sitter-wasm/package.json")), "wasm");
 

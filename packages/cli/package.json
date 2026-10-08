@@ -38,8 +38,7 @@
   },
   "dependencies": {
     "@live-documentation/engine": "file:../engine",
-    "@live-documentation/explorer": "file:../explorer",
-    "glob": "^13.0.6"
+    "@live-documentation/explorer": "file:../explorer"
   },
   "engines": {
     "node": ">=22.0.0"

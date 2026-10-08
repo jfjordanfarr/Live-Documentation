@@ -151,7 +151,6 @@ These proposals were originally described against the multi-hop rendering archit
 - [packages/explorer/src/client/views/membraneView/pin-layout.ts](../layer-4/packages/explorer/src/client/views/membraneView/pin-layout.ts.mdmd.md) — Pure dependency-flow layout for the pin-active state: relevant nodes, BFS columns and directory bands; the bands are shared with the Local Map
 - [packages/explorer/src/client/views/membraneView/pin-active-renderer.ts](../layer-4/packages/explorer/src/client/views/membraneView/pin-active-renderer.ts.mdmd.md) — Draws the pin-active columns and bands in place of the treemap
 - [packages/explorer/src/client/views/membraneView/animation.ts](../layer-4/packages/explorer/src/client/views/membraneView/animation.ts.mdmd.md) — FLIP animation between a teardown and a rebuild of the membrane DOM
-- [packages/explorer/src/client/views/membraneView/hierarchy.ts](../layer-4/packages/explorer/src/client/views/membraneView/hierarchy.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/detail-levels.ts](../layer-4/packages/explorer/src/client/views/membraneView/detail-levels.ts.mdmd.md)
 - [packages/explorer/src/client/views/pin-state.ts](../layer-4/packages/explorer/src/client/views/pin-state.ts.mdmd.md)
 - [packages/explorer/src/client/views/membraneView/routing.ts](../layer-4/packages/explorer/src/client/views/membraneView/routing.ts.mdmd.md)

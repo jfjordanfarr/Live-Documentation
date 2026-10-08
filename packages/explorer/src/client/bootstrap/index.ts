@@ -1,12 +1,7 @@
 /**
  * Bootstrap Module Index
- * 
- * Re-exports entry heuristics for inferring initial focus nodes.
+ *
+ * Re-exports the entry heuristic the client imports through here.
  */
 
-export {
-  inferDefaultEntryNodeId,
-  scoreNode,
-  buildDegreeMap,
-  type LinkEndpointResolver
-} from "./entry-heuristics";
+export { inferDefaultEntryNodeId } from "./entry-heuristics";

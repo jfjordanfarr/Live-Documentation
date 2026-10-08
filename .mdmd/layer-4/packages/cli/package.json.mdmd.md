@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/cli/package.json
-- Generated At: 2026-09-30T16:22:02.622Z
+- Generated At: 2026-10-08T16:03:26.322Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,6 @@ _Pending notes_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `glob@^13.0.6`
 - [`package.@live-documentation/engine`](../engine/package.json.mdmd.md#symbol-live-documentationengine)
 - [`package.@live-documentation/explorer`](../explorer/package.json.mdmd.md#symbol-live-documentationexplorer)
 <!-- LIVE-DOC:END Dependencies -->

@@ -16,15 +16,10 @@ import type { PinSet } from "../pin-state";
 import { isSymbolPinned, areAllSymbolsPinned } from "../pin-state";
 import type { MembraneNode, MembraneLayout } from "./types";
 import type { ExplorerNodePayload, ExplorerPublicSymbol } from "../../../shared/types";
+import { escapeHtml } from "../../graph-helpers";
 import type { TestCoverageMap } from "../../types";
 
 /** Escape HTML special characters to prevent XSS. */
-function escapeHtml(str: string): string {
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[c] || c));
-}
-
 const REF_BADGE_ICONS: Record<string, string> = {
   return: "→", parameter: "←", extends: "⊲", implements: "◇", constraint: "∈",
 };
