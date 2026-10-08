@@ -126,6 +126,23 @@ describe("layout-measure", () => {
       expect(transform.k).toBeGreaterThan(0);
     });
 
+    it("keeps a picture that fits wholly in the frame when the focus stands at its edge, and keeps the frame full when it does not", () => {
+      const viewport = createViewportRect(1540, 1030);
+      // A 1200 by 560 picture with its focus at the left edge: centred on the focus, the right 400 px would be cut.
+      const fits: LayoutExtents = { content: createBounds(0, 0, 1200, 560), focus: createBounds(0, 0, 300, 150) };
+      const framed = computeFitTransform(fits, viewport, { minScale: 1 });
+      expect(framed.k).toBe(1);
+      expect(framed.x + 1200).toBeLessThanOrEqual(1540);
+      expect(framed.x).toBeGreaterThanOrEqual(0);
+      expect(framed.y + 560).toBeLessThanOrEqual(1030);
+      // A picture wider than the frame, focused at its left edge: the frame starts at the picture's left edge, no gap.
+      const wide: LayoutExtents = { content: createBounds(0, 0, 3000, 560), focus: createBounds(0, 0, 300, 150) };
+      const cut = computeFitTransform(wide, viewport, { minScale: 1 });
+      expect(cut.k).toBe(1);
+      expect(cut.x).toBeLessThanOrEqual(72);
+      expect(cut.x + 3000).toBeGreaterThanOrEqual(1540 - 72);
+    });
+
     it("respects minimum scale constraint", () => {
       // Very large content relative to viewport
       const extents: LayoutExtents = {

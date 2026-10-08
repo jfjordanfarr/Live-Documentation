@@ -54,6 +54,8 @@ export interface CompressedPayload {
   f?: [number, number];
   /** Expanded file card IDs. */
   c?: string[];
+  /** The directories opened in the Local Map (2026-10-08). */
+  d?: string[];
 }
 
 // ─── Snapshot (typed application-level state) ──────────────────────
@@ -69,6 +71,8 @@ export interface UrlStateSnapshot {
   pinSet: PinSet;
   expandedDirectories: ReadonlySet<string>;
   expandedCards: ReadonlySet<string>;
+  /** The directories opened in the Local Map; they ride with the pins, and like the pins are no part of the place. */
+  openDirectories: ReadonlySet<string>;
   transform: { x: number; y: number; k: number };
   filters: { showTests: boolean; showAssets: boolean };
 }
@@ -80,6 +84,7 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   pinSet: EMPTY_PIN_SET,
   expandedDirectories: new Set(),
   expandedCards: new Set(),
+  openDirectories: new Set(),
   transform: { x: 0, y: 0, k: 1 },
   filters: { showTests: true, showAssets: true },
 };
@@ -107,6 +112,9 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   }
   if (snapshot.expandedCards.size > 0) {
     payload.c = [...snapshot.expandedCards];
+  }
+  if (snapshot.openDirectories.size > 0) {
+    payload.d = [...snapshot.openDirectories].sort();
   }
   const { x, y, k } = snapshot.transform;
   if (x !== 0 || y !== 0 || k !== 1) {
@@ -142,6 +150,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
   const pinSet = payload.p ? deserializePins(payload.p) : EMPTY_PIN_SET;
   const expandedDirectories = new Set(payload.e ?? []);
   const expandedCards = new Set(payload.c ?? []);
+  const openDirectories = new Set((payload.d ?? []).filter((entry): entry is string => typeof entry === "string"));
   const transform = payload.t
     ? { x: payload.t[0], y: payload.t[1], k: payload.t[2] }
     : { ...DEFAULT_SNAPSHOT.transform };
@@ -149,7 +158,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     ? { showTests: payload.f[0] === 1, showAssets: payload.f[1] === 1 }
     : { ...DEFAULT_SNAPSHOT.filters };
 
-  return { view, selectedNodeId, pinSet, expandedDirectories, expandedCards, transform, filters };
+  return { view, selectedNodeId, pinSet, expandedDirectories, expandedCards, openDirectories, transform, filters };
 }
 
 /**
@@ -198,6 +207,13 @@ export function scrubSnapshot(
     }
   }
 
+  // Opened directories: keep only those with a live node under them
+  const openDirectories = new Set<string>();
+  for (const dir of snapshot.openDirectories) {
+    const prefix = dir.endsWith("/") ? dir : dir + "/";
+    if (nodeIds.some(id => id.startsWith(prefix))) openDirectories.add(dir);
+  }
+
   // Expanded cards: keep only if the node still exists
   const expandedCards = new Set<string>();
   for (const id of snapshot.expandedCards) {
@@ -219,6 +235,7 @@ export function scrubSnapshot(
     ...snapshot,
     expandedDirectories,
     expandedCards,
+    openDirectories,
     pinSet,
     selectedNodeId,
   };
@@ -264,6 +281,7 @@ export function writeUrlState(snapshot: UrlStateSnapshot, options: { preservePat
     !snapshot.selectedNodeId &&
     snapshot.pinSet.entries.length === 0 &&
     snapshot.expandedDirectories.size === 0 &&
+    snapshot.openDirectories.size === 0 &&
     snapshot.transform.x === 0 &&
     snapshot.transform.y === 0 &&
     snapshot.transform.k === 1 &&

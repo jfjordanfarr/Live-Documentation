@@ -12,6 +12,7 @@ Holds the pose and the tween: the pose's keys and places from a real scene, the 
 
 ### Notes
 - Builds the three-file scene of the scene tests with a fixed-size measurer for `scenePose`, then hand-made poses for `tweenPose`, so that every number is checkable by hand: a kept card halfway between its places, a new card at its place, a gone card left out, a membrane's box moving while its outline snaps when its columns differ.
+- A directory opening and closing in place (2026-10-08): the membrane grows from its box's rectangle and the box shrinks from its membrane's; the poses carry heights since that day.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

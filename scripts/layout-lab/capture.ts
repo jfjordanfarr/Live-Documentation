@@ -218,7 +218,9 @@ function readCapture(page: Page): Promise<PageCapture> {
     wrappers.forEach((wrapper, i) => Object.assign(wrapper.style, { width: saved[i][0], maxWidth: saved[i][1] }));
     let constants: CardConstants | null = null;
     wrappers.forEach((wrapper, i) => {
-      const card = wrapper.querySelector<HTMLElement>(".node-card")!;
+      // A closed directory's box has a wrapper and no card; the scopes open no directory, and the model does not hold one.
+      const card = wrapper.querySelector<HTMLElement>(".node-card");
+      if (!card) return;
       const id = card.dataset.id!;
       const cardStyle = getComputedStyle(card);
       const cardRect = card.getBoundingClientRect();
@@ -326,7 +328,9 @@ function readCapture(page: Page): Promise<PageCapture> {
     const labels: Record<string, PreparedText> = {};
     const labelHeights: Record<string, number> = {};
     for (const label of root.querySelectorAll<HTMLElement>(".local-directory-label")) {
-      const directory = label.textContent ?? "";
+      // The label says its directory; its text is the name and, on an encasing membrane, the count of what it hides,
+      // one text flow the model lays out as the page does (2026-10-08). An open membrane's X is not modelled: the scopes open nothing.
+      const directory = label.dataset.directory ?? label.textContent ?? "";
       labels[directory] = prepared(label);
       labelHeights[directory] = label.offsetHeight;
     }

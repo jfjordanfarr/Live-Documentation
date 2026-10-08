@@ -242,7 +242,11 @@ export const LOCAL_MAP: ViewReading = {
     "#view-map .node-directory",
     "#view-map .node-tests__label",
     "#view-map .node-tests__item",
-    "#view-map .local-column-empty"
+    "#view-map .local-column-empty",
+    "#view-map .local-directory-name",
+    "#view-map .local-directory-more",
+    "#view-map .local-directory-closed__name",
+    "#view-map .local-directory-closed__count"
   ],
   folderText: [".node-path", ".node-directory"],
   folderContainer: { container: ".local-stack-group", label: ".local-stack-group__label" },

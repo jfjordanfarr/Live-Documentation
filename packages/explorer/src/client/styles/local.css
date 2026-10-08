@@ -285,6 +285,22 @@ span.local-disclosure { cursor: default; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-membrane-shape { fill: #ffffff03; stroke: var(--border); stroke-width: 1px; stroke-linejoin: round; }
 .local-directory-label { position: absolute; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
+/* The label is one text flow: the name, which opens the directory while it is encasing; then what it hides, or the X that
+   closes it once open (the owner's grammar, 2026-10-08). One flow, so the label wraps as the one text the layout lab models
+   from its capture; the X stands in it, in the room the placement already reserves above the leftmost segment, so an open
+   membrane grows no gap for it. */
+.local-directory-opens { cursor: pointer; }
+.local-directory-opens:hover { color: var(--accent); }
+.local-directory-more { opacity: .85; }
+.local-directory-close { display: inline-block; vertical-align: middle; margin-top: -2px; padding: 2px; line-height: 0; color: var(--text-panel-subtle); background: none; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
+.local-directory-close:hover { color: var(--accent); border-color: var(--accent); }
+.local-directory-name:focus-visible, .local-directory-close:focus-visible, .local-directory-closed:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* A closed directory: a pseudo-node without symbols in the membrane's style, named and counted, with a second outline
+   behind it saying it holds more; a click opens it in place, the membrane growing from the box (2026-10-08). */
+.local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: #ffffff05; color: var(--text-panel-subtle); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--bg-deep, #15191f), 4px 4px 0 0 var(--border); }
+.local-directory-closed:hover { border-color: var(--accent); color: var(--text-primary); }
+.local-directory-closed__name { font-size: 13px; font-weight: 600; color: var(--text-primary); overflow-wrap: anywhere; }
+.local-directory-closed__count { margin-top: 4px; font-size: 11px; }
 /* The placed layout: every membrane, card and lane stands where the placement put it, inside the element it belongs to. */
 .local-layout.local-placed { display: block; position: relative; }
 .local-placed .local-directory-band .local-column, .local-placed .local-directory-band .local-pass-through { position: absolute; display: block; margin: 0; }

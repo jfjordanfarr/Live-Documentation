@@ -141,7 +141,7 @@ export function computeLayoutExtents(
   return withTransformReset(container, containerRect => {
     // Query for layout elements
     const trackedElements = contentRoot.querySelectorAll<HTMLElement>(
-      ".layout-node, .layout-box, .node-card, .local-pass-through"
+      ".layout-node, .layout-box, .node-card, .local-pass-through, .local-directory-closed"
     );
     const contentBounds = measureElementsBounds(trackedElements, containerRect);
     if (!contentBounds) {
@@ -239,23 +239,24 @@ export function computeFitTransform(
   const focusCenterX = focusBounds.left + focusBounds.width / 2;
   const focusCenterY = focusBounds.top + focusBounds.height / 2;
 
-  let targetX = viewportRect.width / 2 - focusCenterX * scale;
-  let targetY = viewportRect.height / 2 - focusCenterY * scale;
-
-  // Clamp to keep content visible
-  const minTargetX = viewportRect.width - horizontalPadding - content.right * scale;
-  const maxTargetX = horizontalPadding - content.left * scale;
-  if (minTargetX <= maxTargetX) {
-    targetX = clamp(targetX, minTargetX, maxTargetX);
-  }
-
-  const minTargetY = viewportRect.height - verticalPadding - content.bottom * scale;
-  const maxTargetY = verticalPadding - content.top * scale;
-  if (minTargetY <= maxTargetY) {
-    targetY = clamp(targetY, minTargetY, maxTargetY);
-  }
+  const targetX = keepVisible(viewportRect.width / 2 - focusCenterX * scale, horizontalPadding - content.left * scale, viewportRect.width - horizontalPadding - content.right * scale);
+  const targetY = keepVisible(viewportRect.height / 2 - focusCenterY * scale, verticalPadding - content.top * scale, viewportRect.height - verticalPadding - content.bottom * scale);
 
   return { x: targetX, y: targetY, k: scale };
+}
+
+/**
+ * The camera's offset along one axis, centred on the focus but keeping the
+ * content visible: when the content fits the frame it is shifted no further
+ * than the padding allows on either side, so that centring on a card at the
+ * edge of a picture that would fit does not cut the picture (a directory
+ * entered with no file in focus, 2026-10-08); when it does not fit, the frame
+ * stays full, with no gap at either side. `lowest` is the offset at which the
+ * content's near edge touches the padding, `highest` the one at which its far
+ * edge does; they stand the other way round when the content does not fit.
+ */
+function keepVisible(centred: number, lowest: number, highest: number): number {
+  return lowest <= highest ? clamp(centred, lowest, highest) : clamp(centred, highest, lowest);
 }
 
 /**

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-10-07T13:20:48.662Z
+- Generated At: 2026-10-08T02:26:17.272Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ The layout lab's capture of a Local Map scope: everything the card model needs t
 
 Opens the scope with every file retained whole (its own browser over the built bundle through `scopes.ts`, or a page the Playwright runner already shows) and reads it in one evaluation: every card's natural width, border and padding; every text block prepared by Pretext inside the page, where the canvas knows the fonts, and serialized whole so `layoutWithLines` reads it back in node; every row's badge width; every test chip; each pin's horizontal place from a dot the page shows (a card whose rows are all collapsed has none, and then the grid's geometry says where one would be); the stylesheet's constants from computed styles and from probe elements, since a card's first dot may be collapsed to nothing; the height of one line of each font from a probe that stays until the membrane labels are read too; and the truth: each card's height and each pin's offset as the renderer rounds them, each label's height, the placement measure and the picture's size. Pretext's layout of each shown text at its element's width is checked against the element's own height as the capture runs, with the browser's one layout unit of tolerance, and disagreements are reported. The page runs code compiled by tsx, whose esbuild keeps function names by wrapping them in `__name(...)`, a helper the page lacks; `admitCompiledFunctions` defines it there first. A capture weighs hundreds of kilobytes and is rebuilt in seconds, so captures are not committed. Built 2026-10-06 for the lab the owner asked for ([Turn 7](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-7)), after the owner connected Pretext to the problem ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-9)).
 - A capture is of the first paint: the page is seeded with the continuing search off (`searchStarts: 0`) before it loads (2026-10-07).
+- A wrapper without a card is passed by (2026-10-08): a closed directory's box takes a wrapper of the cards' kind; the scopes open no directory and the card model does not hold one. A label is keyed by the directory it says it is for (`data-directory`), since its text now carries the count of what an encasing membrane hides; the text, name and count in one flow, is what the model lays out, and an open membrane's X is not modelled.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -88,7 +89,7 @@ node_modules and loaded as a module, then the page is read in one go.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L347)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L351)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -96,7 +97,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L353)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L357)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

@@ -146,6 +146,8 @@ export interface TuningConfig {
 export interface ExplorerState {
   /** Independent exploration branches, retained across perspectives. */
   pins?: PinSet;
+  /** The directories opened in the Local Map, retained with the pins (2026-10-08). */
+  openDirectories?: ReadonlySet<string>;
   view: ViewName;
   selectedNode: ExplorerNodePayload | null;
   focusedNode: ExplorerNodePayload | null;

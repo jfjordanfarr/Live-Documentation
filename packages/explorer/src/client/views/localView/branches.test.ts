@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { buildBranches, commonDirectory, edgeKey, exploreBranches, membraneDirectory, orderExploration, rankBranches } from "./branches";
+import { buildBranches, commonDirectory, directoryIndex, edgeKey, exploreBranches, isClosedDirectory, membraneDirectory, orderExploration, placeMembers, rankBranches } from "./branches";
 import type { LocalEdge } from "./types";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { addPin, EMPTY_PIN_SET, removePin } from "../pin-state";
@@ -190,5 +190,78 @@ describe("the membrane depth", () => {
     expect(directories(null)).toEqual(["a/x", "a/x", "a/y", "a/y/z"]);
     expect(directories(1)).toEqual(["a/x", "a/x", "a/y", "a/y"]);
     expect(directories(0)).toEqual(["a", "a", "a", "a"]);
+  });
+});
+
+describe("directories opening in the Local Map (2026-10-08)", () => {
+  // A tree: a/x.ts and a/y.ts, a/sub/s.ts and a/sub/deep/d.ts, b/z.ts and b/w.ts; z uses x; y uses x.
+  const tree = ["a/x.ts", "a/y.ts", "a/sub/s.ts", "a/sub/deep/d.ts", "b/z.ts", "b/w.ts"].map(id => node(id));
+  const treeLinks = [
+    { source: "b/z.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const },
+    { source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const }
+  ];
+  const graph: ExplorerGraphPayload = { nodes: tree, links: treeLinks, stats: { nodes: 6, links: 2, missingDependencies: 0 } };
+  const byId = new Map(tree.map(file => [file.id, file]));
+
+  it("indexes every directory's own files and immediate subdirectories", () => {
+    const index = directoryIndex(tree);
+    expect(index.get("")!.subdirectories).toEqual(["a", "b"]);
+    expect(index.get("a")).toEqual({ files: ["a/x.ts", "a/y.ts"], subdirectories: ["a/sub"] });
+    expect(index.get("a/sub")).toEqual({ files: ["a/sub/s.ts"], subdirectories: ["a/sub/deep"] });
+  });
+
+  it("joins an opened directory's files as compact unwired members and its closed subdirectories as boxes, and counts what a membrane hides", () => {
+    // z pinned whole retains x, its provider; y, which uses x, is not party: x is retained, not pinned.
+    const pins = addPin(EMPTY_PIN_SET, "b/z.ts", "*");
+    const plain = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true);
+    expect(plain.subgraph.nodes.map(file => file.id).sort()).toEqual(["a/x.ts", "b/z.ts"]);
+    expect(plain.directories.get("a")).toEqual({ state: "encasing", hiddenFiles: 1, hiddenDirectories: 1 });
+    expect(plain.directories.get("b")).toEqual({ state: "encasing", hiddenFiles: 1, hiddenDirectories: 0 });
+
+    const opened = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a"]) });
+    expect(opened.subgraph.nodes.map(file => file.id).sort()).toEqual(["a/sub", "a/x.ts", "a/y.ts", "b/z.ts"]);
+    expect([...opened.members]).toEqual(["a/y.ts"]);
+    expect(opened.closed.get("a/sub")).toEqual({ path: "a/sub", name: "sub", files: 2, directories: 1 });
+    const box = opened.subgraph.nodes.find(file => file.id === "a/sub")!;
+    expect(isClosedDirectory(box)).toBe(true);
+    expect(opened.order.rows.get("a/sub")).toEqual([]);
+    // The member's reference to x is not drawn: it is a hidden connection of the member, and y shows no row.
+    expect(opened.subgraph.links.filter(edge => edge.sourceId === "a/y.ts")).toEqual([]);
+    expect(opened.hiddenConnections.get("a/y.ts")).toBe(1);
+    expect(opened.order.rows.get("a/y.ts")).toEqual([]);
+    expect(opened.directories.get("a")).toEqual({ state: "open", hiddenFiles: 0, hiddenDirectories: 0 });
+    // The party's columns stand as ranked, x before z; a's two unwired items fill two columns from x's.
+    expect(opened.ranking.columns.map(column => column.map(file => file.id))).toEqual([["a/x.ts", "a/sub"], ["b/z.ts", "a/y.ts"]]);
+    expect(opened.order.directoryOf("a/sub")).toBe("a");
+  });
+
+  it("opens a subdirectory in place: its box becomes a membrane with its files compact and its own subdirectories closed", () => {
+    const pins = addPin(EMPTY_PIN_SET, "b/z.ts", "*");
+    const twice = exploreBranches(byId.get("b/z.ts")!, graph, pins, () => true, { openDirectories: new Set(["a", "a/sub"]) });
+    expect(twice.subgraph.nodes.map(file => file.id).sort()).toEqual(["a/sub/deep", "a/sub/s.ts", "a/x.ts", "a/y.ts", "b/z.ts"]);
+    expect(twice.closed.has("a/sub")).toBe(false);
+    expect(twice.directories.get("a/sub")).toEqual({ state: "open", hiddenFiles: 0, hiddenDirectories: 0 });
+    expect(twice.directories.get("a")).toEqual({ state: "open", hiddenFiles: 0, hiddenDirectories: 0 });
+  });
+
+  it("enters a directory with nothing pinned and no file in focus: a grid about as wide as tall, no wire", () => {
+    const entry = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { openDirectories: new Set(["a"]) });
+    expect(entry.subgraph.center).toBeNull();
+    expect(entry.subgraph.links).toEqual([]);
+    expect(entry.ranking.columns.map(column => column.map(file => file.id))).toEqual([["a/sub", "a/y.ts"], ["a/x.ts"]]);
+    const ordered = orderExploration(entry);
+    expect(ordered.columns.flat().map(file => file.id).sort()).toEqual(["a/sub", "a/x.ts", "a/y.ts"]);
+    expect(ordered.order.bands.map(band => band.directory)).toEqual(["a"]);
+  });
+
+  it("lays an opened directory's items from its party's first column, as wide as its span or the square root of their count, appending columns", () => {
+    const directoryOf = (id: string): string => id.slice(0, id.lastIndexOf("/"));
+    const items = (directory: string): string[] => directory === "p" ? ["p/1", "p/2", "p/3", "p/4", "p/5"] : directory === "p/q" ? ["p/q/1", "p/q/2"] : [];
+    // p's party stands in columns 1 and 2: five items over a width of three, from column 1, so column 3 is appended.
+    expect(placeMembers([["o/a"], ["p/a"], ["p/b"]], new Set(["p"]), items, directoryOf)).toEqual([["o/a"], ["p/a", "p/1", "p/4"], ["p/b", "p/2", "p/5"], ["p/3"]]);
+    // p/q has no party: its items start where p's do, and p's own start where its party does.
+    expect(placeMembers([["o/a"], ["p/a"]], new Set(["p", "p/q"]), items, directoryOf)).toEqual([["o/a"], ["p/a", "p/1", "p/4", "p/q/1"], ["p/2", "p/5", "p/q/2"], ["p/3"]]);
+    // Nothing pinned: from the first column.
+    expect(placeMembers([], new Set(["p/q"]), items, directoryOf)).toEqual([["p/q/1"], ["p/q/2"]]);
   });
 });

@@ -255,7 +255,7 @@ export function computeDirectionalAlignmentValue(
     return Number.POSITIVE_INFINITY;
   }
 
-  const centerId = subgraph.center.id;
+  const centerId = subgraph.center?.id ?? "";
   const relatedEdges = subgraph.links.filter(edge => {
     if (direction === "inbound") {
       return edge.sourceId === node.id && edge.targetId === centerId;

@@ -47,6 +47,8 @@ export const viewNameToUrl = (name: ViewName): string => {
 export interface InitialUrlState {
   view: ViewName;
   nodeId: string | null;
+  /** The directories opened in the Local Map: a snapshot's, or the one `?dir=` names, the door into a directory with no file in focus (2026-10-08). */
+  openDirectories: ReadonlySet<string>;
   hasUrlState: boolean;
 }
 
@@ -65,24 +67,27 @@ export const parseInitialState = (): InitialUrlState => {
     return {
       view: snapshot.view,
       nodeId: snapshot.selectedNodeId,
+      openDirectories: snapshot.openDirectories,
       hasUrlState: true
     };
   }
 
   const urlView = params.get("view");
   const urlNode = params.get("node");
+  const urlDirectory = params.get("dir");
 
   // URL params take priority
-  if (urlView || urlNode) {
+  if (urlView || urlNode || urlDirectory) {
     return {
       view: urlView ? viewNameToInternal(urlView) : "map",
       nodeId: urlNode,
+      openDirectories: new Set(urlDirectory ? [urlDirectory.replace(/\/+$/u, "")] : []),
       hasUrlState: true
     };
   }
 
   // Defaults: Membrane Map is the cold-start landing for first-time visitors.
-  return { view: "membrane", nodeId: null, hasUrlState: false };
+  return { view: "membrane", nodeId: null, openDirectories: new Set(), hasUrlState: false };
 };
 
 /**

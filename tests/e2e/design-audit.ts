@@ -36,7 +36,9 @@ export interface Truncation {
 }
 
 /**
- * The screen boxes of every visible text-bearing element the selectors name.
+ * The screen boxes of every visible text-bearing element the selectors name,
+ * one per line box, so that an inline element that wraps is measured line by
+ * line rather than by the bounding box that spans its lines.
  * Hidden elements and those faded below a fifth by their ancestors are left
  * out, since the fade is the design's way of putting them out of the way; the
  * fade of a whole view as it appears is not counted, so a spec must wait for
@@ -72,12 +74,16 @@ export async function textBoxes(page: Page, selectors: string[]): Promise<TextBo
         if (hidden || opacity < 0.2) {
           continue;
         }
-        const rect = node.getBoundingClientRect();
-        if (rect.width < 1 || rect.height < 1) {
-          continue;
-        }
+        // An element's text occupies its line boxes: one for a block, one per line for an inline element that wraps, whose
+        // bounding box would span every line and collide with whatever shares its last line (a membrane's name and the
+        // count beside it, 2026-10-08).
         const className = node.getAttribute("class")?.split(" ")[0];
-        boxes.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, x: rect.left, y: rect.top, w: rect.width, h: rect.height });
+        for (const rect of node.getClientRects()) {
+          if (rect.width < 1 || rect.height < 1) {
+            continue;
+          }
+          boxes.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, x: rect.left, y: rect.top, w: rect.width, h: rect.height });
+        }
       }
     }
     return boxes;

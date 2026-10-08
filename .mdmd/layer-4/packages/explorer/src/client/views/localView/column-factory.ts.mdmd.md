@@ -12,6 +12,7 @@ Creates column containers for the Local Map's three-column layout. Handles both 
 
 ### Notes
 Extracted from render.ts during Dev Day 50 (12/19). The `createHierarchicalColumn()` and `createStackedColumn()` functions build the upstream/center/downstream column structures.
+- The subgraph's center may be null since 2026-10-08 (a picture entered by directory); the classic columns read its id with that in mind.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

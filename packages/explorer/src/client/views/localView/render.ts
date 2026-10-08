@@ -39,14 +39,16 @@ export function renderLocalView(controller: LocalViewController): void {
   // A branch picture keeps its stage across renders, so that the next picture moves from this one; every other
   // picture starts from an empty container.
   const activePath = controller.localMapState.getState().activePath;
-  const keepStage = !!state.selectedNode && !activePath && controller.pins.entries.length > 0 && controller.stage?.root.parentElement === container;
+  // A retained exploration: something pinned or a directory opened, drawn as branches; a directory entered with no file in focus is one.
+  const branching = controller.exploring && !activePath;
+  const keepStage = branching && controller.stage?.root.parentElement === container;
   if (!keepStage) {
     controller.dropStage();
     container.innerHTML = "";
     controller.contentRoot = null;
   }
 
-  if (!state.selectedNode) {
+  if (!state.selectedNode && !branching) {
     container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">Select a node to view local relationships.</div>';
     controller.mapTransform = { x: 0, y: 0, k: 1 };
     controller.mapHasInitialFit = false;
@@ -57,10 +59,10 @@ export function renderLocalView(controller: LocalViewController): void {
     return;
   }
 
-  const subgraph = controller.buildLocalSubgraph(state.selectedNode);
+  const subgraph = state.selectedNode ? controller.buildLocalSubgraph(state.selectedNode) : null;
   controller.currentSubgraph = subgraph;
 
-  if (subgraph.nodes.length === 0) {
+  if (subgraph && subgraph.nodes.length === 0) {
     controller.dropStage();
     container.innerHTML = '<div class="empty-hint">No related nodes were found.</div>';
     controller.contentRoot = null;
@@ -77,17 +79,18 @@ export function renderLocalView(controller: LocalViewController): void {
     controller.mapInitialTransform = null;
   }
 
-  if (state.selectedNode.id !== controller.lastCenteredNodeId) {
+  const centeredId = state.selectedNode?.id ?? null;
+  if (centeredId !== controller.lastCenteredNodeId) {
     controller.mapHasInitialFit = false;
     controller.mapUserAdjusted = false;
-    controller.lastCenteredNodeId = state.selectedNode.id;
+    controller.lastCenteredNodeId = centeredId;
     controller.mapInitialTransform = null;
     // Choosing a file is acting on its card: a move of the picture holds it still.
-    controller.lastInteracted = state.selectedNode.id;
+    controller.lastInteracted = centeredId;
   }
 
   const connectionScore = new Map<string, number>();
-  subgraph.links.forEach(edge => {
+  subgraph?.links.forEach(edge => {
     connectionScore.set(edge.sourceId, (connectionScore.get(edge.sourceId) ?? 0) + 1);
     connectionScore.set(edge.targetId, (connectionScore.get(edge.targetId) ?? 0) + 1);
   });
@@ -114,14 +117,14 @@ export function renderLocalView(controller: LocalViewController): void {
     controller.scheduleConnectionRedraw();
     return;
   }
-  // Independent pins disclose branches without changing explicit pathfinding.
-  else if (controller.pins.entries.length > 0) {
+  // Independent pins and opened directories disclose branches without changing explicit pathfinding.
+  else if (branching) {
     const stage = controller.stage ?? (controller.stage = createStage(layoutRoot, overlay));
     renderBranches(controller, stage);
   }
   else {
     // Single-hop exploration: classic 3-column layout
-    renderSingleHopColumns(controller, layoutRoot, subgraph, connectionScore);
+    renderSingleHopColumns(controller, layoutRoot, subgraph!, connectionScore);
   }
 
   if (!controller.branches) {
@@ -148,7 +151,7 @@ function renderSingleHopColumns(
   subgraph: LocalSubgraph,
   connectionScore: Map<string, number>
 ): void {
-  const centerNodes = [subgraph.center];
+  const centerNodes = subgraph.center ? [subgraph.center] : [];
   const inboundNodes = subgraph.nodes.filter(node => subgraph.inboundIds.has(node.id));
   const outboundNodes = subgraph.nodes.filter(node => subgraph.outboundIds.has(node.id));
 

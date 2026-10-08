@@ -8,7 +8,7 @@
  * @module card-factory
  */
 
-import { compareSymbolNames } from "./branches";
+import { compareSymbolNames, type ClosedDirectory } from "./branches";
 import type { LocalViewController } from "./controller";
 import type { ColumnRole } from "./types";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
@@ -148,6 +148,42 @@ export function createNodeCard(
   });
 
   return card;
+}
+
+/**
+ * A closed directory's box: a pseudo-node with no symbols in the membrane's
+ * style, named and counted, that opens in place on a click (the owner's
+ * grammar, 2026-10-08). It carries no pin: a directory with a party file
+ * under it is at least encasing, so no wire ever reaches a closed box.
+ */
+export function createClosedDirectory(controller: LocalViewController, closed: ClosedDirectory): HTMLElement {
+  const box = document.createElement("div");
+  box.className = "local-directory-closed";
+  box.dataset.directory = closed.path;
+  box.tabIndex = 0;
+  box.setAttribute("role", "button");
+  box.setAttribute("aria-label", `Open ${closed.path}`);
+  box.title = `${closed.path}\nOpen this directory: every file inside as a compact card, every subdirectory as a closed box`;
+  const name = document.createElement("div");
+  name.className = "local-directory-closed__name";
+  name.textContent = closed.name;
+  const count = document.createElement("div");
+  count.className = "local-directory-closed__count";
+  count.textContent = countsOf(closed.files, closed.directories);
+  box.append(name, count);
+  box.addEventListener("click", event => { event.stopPropagation(); controller.openDirectory(closed.path); });
+  box.addEventListener("keydown", event => {
+    if (event.target === box && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); box.click(); }
+  });
+  return box;
+}
+
+/** "3 files, 2 directories", either part left out at zero; "empty" when both are. */
+export function countsOf(files: number, directories: number): string {
+  const parts: string[] = [];
+  if (files) parts.push(`${files} ${files === 1 ? "file" : "files"}`);
+  if (directories) parts.push(`${directories} ${directories === 1 ? "directory" : "directories"}`);
+  return parts.length ? parts.join(", ") : "empty";
 }
 
 /**

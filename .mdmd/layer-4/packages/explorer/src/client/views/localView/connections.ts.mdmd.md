@@ -20,6 +20,7 @@ SVG wire drawing for the Local Map: Bézier splines between the symbol pins of t
 - The wires of one offering pin that pass a column together share one slot of its lane, so their paths coincide there; beneath them the branch drawer draws the bundle's shared run once more, the curve into the lane and the run along it, as wide as the member count on a logarithmic scale and stamped `data-members`, so the picture says how many a bundle carries before they part. The run carries no reference: it has no endpoint attributes, the deck does not read it as a wire, and it never highlights (2026-10-05, after the owner's review of the first pass).
 - Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics, through the pure `curveTo` of `branch-routing.ts`.
 - The branch drawer measures every pin before it writes any wire (2026-10-07), so that a drawing lays the page out once rather than once per wire: a move of the picture redraws the wires every frame.
+- A column's horizontal extent is read from the wrappers that say their column (`data-column`), a card's and a closed directory's box alike, rather than from the cards' pins (2026-10-08): a box has no pin, and a column of boxes alone is passed by lanes like any other. The classic drawing's center may be null.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -812,6 +812,8 @@ export function createMembraneView(options: MembraneViewOptions): MembraneViewAp
       pinSet: exploration.pins,
       expandedDirectories,
       expandedCards,
+      // The Local Map's opened directories ride the address with the pins; this view carries them through untouched.
+      openDirectories: readUrlState().openDirectories,
       transform,
       filters: {
         showTests: state.filters.showTests,

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-10-07T21:57:23.535Z
+- Generated At: 2026-10-08T01:58:13.939Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,7 @@ Since 2026-10-06 (the layout lab's first milestone) this module is the page's sh
 - Later on 2026-10-07 the root also says the best price the search has found, churn aside (`data-search-best`), and an adopted picture's price as the page measures it becomes the best found as well as the shown price, unless an earlier start priced lower.
 - The exploration takes the tuning's `membraneDepth` (2026-10-07), the lab's lever for the membrane rule; at its default of null nothing changes.
 - The scene tuning carries the two shape weights, `membraneEvenness` and `rowLevelness`, from the Local Map tuning (2026-10-07).
+- Directories open and close (2026-10-08, [the decisions log](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08), [the pictures](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-10-08/README.md)): a closed box takes a wrapper of the same kind as a card's, by its path, holding the element of `createClosedDirectory`; `dressCards` passes it by. The stage keeps each drawn directory's disclosure, and `fillLabel` fills the label as one text flow: the name, which opens the directory while it is encasing; then what it hides ("+3 files, 1 directory") or, once open, the X that closes it, in the room the placement already reserves above the leftmost segment, so an open membrane grows no gap for it (the owner's worry, [Turn 6 of the October 7 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-07.1.record.md#turn-6)). Every item's wrapper says its column (`data-column`) for the router's column bounds, since a box has no pin to measure. The element held still through a move is now `elementHeld`: the card last interacted with, or, when a directory was, its label once it is a membrane and its box once it is closed, so that what was clicked stays under the eye while the directory opens or closes.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -38,7 +39,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L74)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L76)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -46,7 +47,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L79)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L81)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -54,7 +55,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L107)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L109)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -82,7 +83,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L205)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L218)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -115,10 +116,14 @@ The layout's dials come from the Local Map's tuning.
 - [`branch-search.judgeStart`](./branch-search.ts.mdmd.md#symbol-judgestart)
 - [`branch-search.pinFor`](./branch-search.ts.mdmd.md#symbol-pinfor)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
+- [`branches.DirectoryDisclosure`](./branches.ts.mdmd.md#symbol-directorydisclosure)
 - [`branches.Exploration`](./branches.ts.mdmd.md#symbol-exploration)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`branches.exploreBranches`](./branches.ts.mdmd.md#symbol-explorebranches)
+- [`branches.isClosedDirectory`](./branches.ts.mdmd.md#symbol-iscloseddirectory)
 - [`branches.orderExploration`](./branches.ts.mdmd.md#symbol-orderexploration)
+- [`card-factory.countsOf`](./card-factory.ts.mdmd.md#symbol-countsof)
+- [`card-factory.createClosedDirectory`](./card-factory.ts.mdmd.md#symbol-createcloseddirectory)
 - [`card-factory.createNodeCard`](./card-factory.ts.mdmd.md#symbol-createnodecard)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)

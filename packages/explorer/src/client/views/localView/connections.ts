@@ -120,7 +120,7 @@ export function drawConnections(context: ConnectionsContext): void {
     target: Point;
   }> = [];
 
-  const centerId = currentSubgraph.center.id;
+  const centerId = currentSubgraph.center?.id ?? "";
 
   // The file's own references, each a pair of laces at its pins, cut by its card's edges.
   const selfLoopSegments: Array<{
@@ -485,12 +485,12 @@ function drawBranchConnections(context: ConnectionsContext): void {
   const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1);
   const bounds = extents.content;
   const { svg, defs } = createOverlaySvg(context, bounds);
-  const columnBounds = branches.columns.map(nodes => {
-    const cards = nodes.flatMap(node => {
-      const anchor = measure(context.getAnchor(node.id, "center", "outbound"));
-      return anchor ? [anchor] : [];
-    });
-    return { left: Math.min(...cards.map(card => card.cardLeft)), right: Math.max(...cards.map(card => card.cardRight)) };
+  // Each column's horizontal extent, from the wrappers of its items as the renderer placed them: a card's and a
+  // closed directory's box alike, which has no pin to measure (2026-10-08).
+  const columnBounds = branches.columns.map((_, column) => {
+    const wrappers = [...runtime.container.querySelectorAll<HTMLElement>(`.local-column[data-column="${column}"]`)]
+      .flatMap(element => { const measured = measure(element); return measured ? [measured] : []; });
+    return { left: Math.min(...wrappers.map(wrapper => wrapper.leftX)), right: Math.max(...wrappers.map(wrapper => wrapper.rightX)) };
   });
   // Each lane as the renderer placed it: its top, and where each slot rests below that top.
   const lanes = new Map<string, { top: number; slots: number[] }>();

@@ -12,6 +12,7 @@ Unit tests for layout measurement pure functions. Validates clamp behavior, fit-
 
 ### Notes
 Created during Dev Day 50 (12/19). Tests the mathematical aspects of `computeFitTransform()` without requiring DOM; DOM-dependent measurement is validated via integration tests.
+- A picture that fits is kept whole when its focus stands at its edge, and the frame stays full when it does not (2026-10-08).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

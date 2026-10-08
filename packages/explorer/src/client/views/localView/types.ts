@@ -117,7 +117,8 @@ export type LocalSubgraphLink = LocalEdge;
  * to lay out the three-column Local Map view.
  */
 export interface LocalSubgraph {
-  center: ExplorerNodePayload;
+  /** The file in focus; null for a picture entered by directory, which has none (2026-10-08). */
+  center: ExplorerNodePayload | null;
   nodes: ExplorerNodePayload[];
   links: LocalEdge[];
   inboundIds: Set<string>;

@@ -143,7 +143,10 @@ function startExplorer(bundle: StaticExplorerData): void {
   const schedulePersistUi = persistUi.schedule;
 
   const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
-  state.pins = scrubSnapshot(readUrlState(), nodesById).pinSet;
+  // The pins and the opened directories ride the address together; `?dir=` names an opened directory on its own.
+  const initialExploration = scrubSnapshot({ ...readUrlState(), openDirectories: initialState.openDirectories }, nodesById);
+  state.pins = initialExploration.pinSet;
+  state.openDirectories = initialExploration.openDirectories;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
@@ -787,8 +790,13 @@ function startExplorer(bundle: StaticExplorerData): void {
   // than a default picture and then the focused one.
   const urlRequestedNodeId = initialState.hasUrlState ? initialState.nodeId : null;
   const storedOrConfiguredNodeId = !initialState.hasUrlState ? (persistedNav?.nodeId ?? initialState.nodeId) : null;
+  // An address that opens a directory and names no file is the door into that directory: nothing is put in focus for it.
+  const enteredByDirectory = initialState.hasUrlState && !initialState.nodeId && state.openDirectories.size > 0;
 
   const initialFocusNodeId = (() => {
+    if (enteredByDirectory) {
+      return null;
+    }
     if (urlRequestedNodeId) {
       return urlRequestedNodeId;
     }
@@ -858,7 +866,9 @@ function startExplorer(bundle: StaticExplorerData): void {
     const view: ViewName = place.hasUrlState ? place.view : bundle.board ? "world" : place.view;
     detailPanel.hide();
     state.view = view;
-    state.pins = scrubSnapshot(readUrlState(), nodesById).pinSet;
+    const exploration = scrubSnapshot({ ...readUrlState(), openDirectories: place.openDirectories }, nodesById);
+    state.pins = exploration.pinSet;
+    state.openDirectories = exploration.openDirectories;
     setActiveView(view);
     const node = place.nodeId ? nodesById.get(place.nodeId) ?? null : null;
     state.selectedNode = node;
@@ -957,7 +967,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     const contextName = document.getElementById("context-name");
     if (contextName) contextName.textContent = state.selectedNode?.codeRelativePath ?? "None";
     writeUrlState({ ...readUrlState(), view: state.view, selectedNodeId: state.selectedNode?.id ?? null,
-      pinSet: state.pins!, filters: state.filters }, { preservePath: !leavingPath });
+      pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), filters: state.filters }, { preservePath: !leavingPath });
   }
 
   function renderCurrentView(): void {

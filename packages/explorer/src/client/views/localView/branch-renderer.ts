@@ -2,8 +2,8 @@ import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Pose } from "./bra
 import { candidateStarts, churnOf, layoutStarts, scoreOf, startName, startOrder, type StartCosts } from "./branch-restarts";
 import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } from "./branch-scene";
 import { beginSearch, judgeStart, pinFor, type CardRows, type RowMeasure, type SearchState } from "./branch-search";
-import { edgeKey, exploreBranches, orderExploration, type BranchGraph, type Exploration } from "./branches";
-import { createNodeCard } from "./card-factory";
+import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
+import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory";
 import type { LocalViewController } from "./controller";
 import { membranePath } from "./membrane-outline";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
@@ -27,6 +27,8 @@ export interface BranchStage {
   boxes: Map<string, HTMLElement>;
   shapes: Map<string, SVGPathElement>;
   labels: Map<string, HTMLElement>;
+  /** What each drawn directory's label says of it, from the exploration drawn: its state and what it hides. */
+  disclosures: Map<string, DirectoryDisclosure>;
   /** The pose the page shows: the picture's once a move has ended, the frame's while one runs; null before the first picture. */
   pose: Pose | null;
   move: Move | null;
@@ -72,7 +74,7 @@ interface Search {
 
 /** A stage for a root that holds nothing yet. */
 export function createStage(root: HTMLElement, overlay: HTMLElement): BranchStage {
-  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), pose: null, move: null, search: null };
+  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null };
 }
 
 /** Ends whatever move the stage runs, where it stands, and its search; the stage's elements are the caller's to remove. */
@@ -117,11 +119,15 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const scale = controller.runtime.mapTransform.k || 1;
   const oldRows = previous ? rowOffsets(stage, scale) : null;
 
-  const exploration = exploreBranches(state.selectedNode!, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
+  const exploration = exploreBranches(state.selectedNode, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
     symbolOrder: tuning.symbolOrder,
     ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie },
-    membraneDepth: tuning.membraneDepth
+    membraneDepth: tuning.membraneDepth,
+    openDirectories: controller.openDirectories
   });
+  // Every drawn directory's label says what this picture makes of it; the labels already made are refilled.
+  stage.disclosures = exploration.directories;
+  for (const [directory, label] of stage.labels) fillLabel(controller, label, directory, exploration.directories.get(directory));
   root.classList.add("branch-mode", "local-placed");
   root.style.gridTemplateColumns = "";
   root.style.alignItems = "";
@@ -132,7 +138,8 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
 
   // The cards, once per render, each built afresh for this render's state inside the wrapper that stood for its file
   // before, or a new one; in the root to be measured, hosted by the chosen scene's boxes after. Each card keeps its
-  // column wrapper: the page's hover rules, the router and the deck find a card through it.
+  // column wrapper: the page's hover rules, the router and the deck find a card through it. A closed directory's box
+  // takes a wrapper of the same kind, by its path, and no card.
   const entering: HTMLElement[] = [];
   const kept = new Set<string>();
   for (const node of exploration.subgraph.nodes) {
@@ -142,12 +149,18 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
       wrapper.className = "local-column center";
       wrapper.dataset.direction = "center";
       wrapper.dataset.position = "center";
+      wrapper.classList.toggle("local-closed-directory", isClosedDirectory(node));
       stage.wrappers.set(node.id, wrapper);
       if (previous) entering.push(wrapper);
     }
-    const card = createNodeCard(controller, node, "center");
-    card.classList.add("focus-node");
-    wrapper.replaceChildren(card);
+    if (isClosedDirectory(node)) {
+      wrapper.replaceChildren(createClosedDirectory(controller, exploration.closed.get(node.id)!));
+    } else {
+      const card = createNodeCard(controller, node, "center");
+      card.classList.add("focus-node");
+      card.classList.toggle("branch-member", exploration.members.has(node.id));
+      wrapper.replaceChildren(card);
+    }
     root.append(wrapper);
     kept.add(node.id);
   }
@@ -208,16 +221,62 @@ export { BAND_BORDER };
 const cardsOf = (stage: BranchStage): HTMLElement[] => [...stage.wrappers.values()].map(wrapper => wrapper.firstElementChild as HTMLElement);
 
 /** The drawn directory's label, made when first asked for, in the root until a section hosts it. */
-function labelFor(stage: BranchStage, directory: string): HTMLElement {
+function labelFor(controller: LocalViewController, stage: BranchStage, directory: string): HTMLElement {
   let label = stage.labels.get(directory);
   if (!label) {
     label = document.createElement("div");
     label.className = "local-directory-label";
-    label.textContent = directory;
+    label.dataset.directory = directory;
+    fillLabel(controller, label, directory, stage.disclosures.get(directory));
     stage.root.append(label);
     stage.labels.set(directory, label);
   }
   return label;
+}
+
+/**
+ * A label's text: the directory's name, which opens the directory while it
+ * is encasing; then what it hides, "+3 files, 1 directory", or, once open,
+ * the X that closes it, which steps the directory down as far as it can go
+ * (the owner's grammar, 2026-10-08). The name and the count are one text
+ * flow, so the label wraps as the one text the layout lab models from its
+ * capture; the X stands in that flow, in the room the placement already
+ * reserves above the leftmost segment, so an open membrane grows no gap for
+ * it.
+ */
+function fillLabel(controller: LocalViewController, label: HTMLElement, directory: string, disclosure: DirectoryDisclosure | undefined): void {
+  const open = disclosure?.state === "open";
+  const name = document.createElement("span");
+  name.className = "local-directory-name";
+  name.textContent = directory;
+  if (!open) {
+    name.classList.add("local-directory-opens");
+    name.tabIndex = 0;
+    name.setAttribute("role", "button");
+    name.title = "Open this directory: every file inside as a compact card, every subdirectory as a closed box";
+    name.setAttribute("aria-label", `Open ${directory}`);
+    name.addEventListener("click", event => { event.stopPropagation(); controller.openDirectory(directory); });
+    name.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); name.click(); }
+    });
+  }
+  label.replaceChildren(name);
+  if (open) {
+    const close = document.createElement("button");
+    close.type = "button";
+    close.className = "local-directory-close";
+    close.title = "Close this directory; what other pins need stays";
+    close.setAttribute("aria-label", `Close ${directory}`);
+    close.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+    close.addEventListener("click", event => { event.stopPropagation(); controller.closeDirectory(directory); });
+    label.append(" ", close);
+  } else if (disclosure && (disclosure.hiddenFiles || disclosure.hiddenDirectories)) {
+    const more = document.createElement("span");
+    more.className = "local-directory-more";
+    more.textContent = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
+    more.title = "Not drawn; open the directory to see them";
+    label.append(" ", more);
+  }
 }
 
 /**
@@ -240,13 +299,13 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
     measure(cardWidths, labelWidths) {
       const boxes = new Map(plan.boxes.map(box => [box.key, box]));
       for (const [id, width] of cardWidths) { const wrapper = stage.wrappers.get(id); if (wrapper) wrapper.style.width = `${width}px`; }
-      for (const [key, width] of labelWidths) { const box = boxes.get(key)!; Object.assign(labelFor(stage, box.directory).style, { left: `${box.inset}px`, width: `${width}px` }); }
+      for (const [key, width] of labelWidths) { const box = boxes.get(key)!; Object.assign(labelFor(controller, stage, box.directory).style, { left: `${box.inset}px`, width: `${width}px` }); }
       const heights = new Map<string, number>();
       for (const [id, wrapper] of stage.wrappers) heights.set(id, wrapper.offsetHeight);
       const labelHeights = new Map<string, number>();
       for (const key of labelWidths.keys()) {
         const directory = boxes.get(key)!.directory;
-        const height = labelFor(stage, directory).offsetHeight;
+        const height = labelFor(controller, stage, directory).offsetHeight;
         labelHeights.set(key, height);
         answers.labelHeights.set(directory, height);
       }
@@ -322,7 +381,7 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
           shape.classList.add("local-membrane-shape");
           shape.dataset.directory = box.directory;
           svg.append(shape);
-          element.append(svg, labelFor(stage, box.directory));
+          element.append(svg, labelFor(controller, stage, box.directory));
           stage.shapes.set(key, shape);
           if (previous) entering.push(element);
         }
@@ -341,7 +400,12 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
   for (const [directory, label] of stage.labels) if (!drawn.has(directory)) { label.remove(); stage.labels.delete(directory); }
   const hostElement = (anchor: SceneBox | null): HTMLElement => (anchor ? elements.get(anchor)! : root);
   for (const box of scene.boxes) if (box.kind !== "files") hostElement(box.anchor).append(elements.get(box)!);
-  for (const item of scene.items.values()) hostElement(hostOf(item.box)).append(stage.wrappers.get(item.id)!);
+  // Each item's wrapper in the element of the box that holds it, saying its column for the router's column bounds.
+  for (const item of scene.items.values()) {
+    const wrapper = stage.wrappers.get(item.id)!;
+    wrapper.dataset.column = String(item.column);
+    hostElement(hostOf(item.box)).append(wrapper);
+  }
   // A drawn directory publishes its segments, a lane where its slots came to rest, for the router and the tests.
   for (const box of scene.boxes) {
     const element = elements.get(box);
@@ -413,8 +477,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   applyPose(stage, tweenPose(from, to, 0), move.bandPadding);
   for (const element of move.entering) element.style.opacity = "0";
   for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta}px)`;
-  const held = heldCard(controller, from, to);
-  const heldElement = held ? stage.wrappers.get(held) ?? null : null;
+  const heldElement = elementHeld(controller, stage, from, to);
   const heldRect = heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
   const start = performance.now();
@@ -476,13 +539,19 @@ function endMove(stage: BranchStage, finished: boolean): void {
 }
 
 /**
- * The card held still on screen through a move: the one the person last
- * interacted with, else the selected file, when the picture has it before
- * and after; a card that enters or leaves cannot be held.
+ * The element held still on screen through a move: the card the person last
+ * interacted with, else the selected file's, when the picture has it before
+ * and after; or, when what they last acted on is a directory, its label once
+ * it is a membrane and its box once it is closed, so that what was clicked
+ * stays under the eye while the directory opens or closes (2026-10-08). An
+ * element that enters or leaves cannot be held.
  */
-function heldCard(controller: LocalViewController, from: Pose, to: Pose): string | null {
+function elementHeld(controller: LocalViewController, stage: BranchStage, from: Pose, to: Pose): HTMLElement | null {
   for (const id of [controller.lastInteracted, controller.options.state.selectedNode?.id]) {
-    if (id && from.items.has(id) && to.items.has(id)) return id;
+    if (!id) continue;
+    const membrane = `directory\0${id}`;
+    if (!(from.items.has(id) || from.boxes.has(membrane)) || !(to.items.has(id) || to.boxes.has(membrane))) continue;
+    return (to.items.has(id) ? stage.wrappers.get(id) : stage.labels.get(id)) ?? null;
   }
   return null;
 }
@@ -705,6 +774,8 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
     for (const id of new Set([edge.sourceId, edge.targetId])) backReferences.set(id, (backReferences.get(id) ?? 0) + 1);
   }
   for (const card of cards) {
+    // A closed directory's box has no rows and no notes.
+    if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
     const all = controller.isPinned(id, "*") || controller.expandedCards.has(id) || id === state.selectedNode?.id;
     let hidden = 0;

@@ -58,8 +58,8 @@ describe("the picture's pose", () => {
 
   const from: Pose = {
     items: new Map([
-      ["kept", { id: "kept", host: "root", left: 0, top: 100, width: 200 }],
-      ["gone", { id: "gone", host: "root", left: 0, top: 300, width: 200 }]
+      ["kept", { id: "kept", host: "root", left: 0, top: 100, width: 200, height: 60 }],
+      ["gone", { id: "gone", host: "root", left: 0, top: 300, width: 200, height: 60 }]
     ]),
     boxes: new Map([
       ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, left: 0, top: 0, right: 500, bottom: 400, segments: [{ column: 0, left: 0, right: 500, top: 0, bottom: 400 }] }],
@@ -69,8 +69,8 @@ describe("the picture's pose", () => {
   };
   const to: Pose = {
     items: new Map([
-      ["kept", { id: "kept", host: "directory\0a", left: 20, top: 200, width: 240 }],
-      ["new", { id: "new", host: "root", left: 300, top: 50, width: 200 }]
+      ["kept", { id: "kept", host: "directory\0a", left: 20, top: 200, width: 240, height: 60 }],
+      ["new", { id: "new", host: "root", left: 300, top: 50, width: 200, height: 60 }]
     ]),
     boxes: new Map([
       ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, left: 0, top: 0, right: 700, bottom: 600, segments: [{ column: 0, left: 0, right: 700, top: 0, bottom: 600 }] }],
@@ -83,7 +83,7 @@ describe("the picture's pose", () => {
   it("moves a kept element along the line between its places, stands a new one at its place, and leaves out what is gone", () => {
     const half = tweenPose(from, to, 0.5);
     expect([...half.items.keys()].sort()).toEqual(["kept", "new"]);
-    expect(half.items.get("kept")).toEqual({ id: "kept", host: "directory\0a", left: 10, top: 150, width: 220 });
+    expect(half.items.get("kept")).toEqual({ id: "kept", host: "directory\0a", left: 10, top: 150, width: 220, height: 60 });
     expect(half.items.get("new")).toEqual(to.items.get("new"));
     const a = half.boxes.get("directory\0a")!;
     expect([a.left, a.top, a.right, a.bottom]).toEqual([0, 130, 250, 280]);
@@ -119,5 +119,45 @@ describe("the picture's pose", () => {
     expect(easeInOutCubic(0.9)).toBeGreaterThan(0.9);
     expect(easeInOutCubic(-1)).toBe(0);
     expect(easeInOutCubic(2)).toBe(1);
+  });
+});
+
+describe("a directory opening and closing in place", () => {
+  const box: Pose = {
+    items: new Map([["a/b", { id: "a/b", host: "directory\0a", left: 40, top: 100, width: 160, height: 50 }]]),
+    boxes: new Map([
+      ["root", { key: "root", kind: "root", directory: "", host: null, inset: 0, left: 0, top: 0, right: 500, bottom: 400, segments: [{ column: 0, left: 0, right: 500, top: 0, bottom: 400 }] }],
+      ["directory\0a", { key: "directory\0a", kind: "directory", directory: "a", host: "root", inset: 13, left: 0, top: 80, right: 220, bottom: 220, segments: [{ column: 0, left: 0, right: 220, top: 80, bottom: 220 }] }]
+    ]),
+    pictureWidth: 500, pictureHeight: 400
+  };
+  const membrane: Pose = {
+    items: new Map([["a/b/x.ts", { id: "a/b/x.ts", host: "directory\0a/b", left: 60, top: 140, width: 300, height: 80 }]]),
+    boxes: new Map([
+      ...box.boxes,
+      ["directory\0a/b", { key: "directory\0a/b", kind: "directory", directory: "a/b", host: "directory\0a", inset: 13, left: 40, top: 100, right: 400, bottom: 300, segments: [{ column: 0, left: 40, right: 200, top: 100, bottom: 300 }, { column: 1, left: 240, right: 400, top: 120, bottom: 280 }] }]
+    ]),
+    pictureWidth: 500, pictureHeight: 400
+  };
+
+  it("grows the membrane from the rectangle of the closed box that stood for it", () => {
+    const start = tweenPose(box, membrane, 0);
+    expect(start.boxes.get("directory\0a/b")).toMatchObject({ left: 40, top: 100, right: 200, bottom: 150 });
+    expect(start.boxes.get("directory\0a/b")!.segments).toEqual([
+      { column: 0, left: 40, right: 200, top: 100, bottom: 150 }, { column: 1, left: 40, right: 200, top: 100, bottom: 150 }
+    ]);
+    const half = tweenPose(box, membrane, 0.5);
+    expect(half.boxes.get("directory\0a/b")).toMatchObject({ left: 40, top: 100, right: 300, bottom: 225 });
+    expect(half.boxes.get("directory\0a/b")!.segments[1]).toEqual({ column: 1, left: 140, right: 300, top: 110, bottom: 215 });
+    // The card inside is new to the picture and stands at its place throughout.
+    expect(half.items.get("a/b/x.ts")).toEqual(membrane.items.get("a/b/x.ts"));
+  });
+
+  it("shrinks the box from the rectangle of the membrane it closes", () => {
+    const start = tweenPose(membrane, box, 0);
+    expect(start.items.get("a/b")).toMatchObject({ left: 40, top: 100, width: 360 });
+    const half = tweenPose(membrane, box, 0.5);
+    expect(half.items.get("a/b")).toMatchObject({ left: 40, top: 100, width: 260 });
+    expect(half.boxes.has("directory\0a/b")).toBe(false);
   });
 });

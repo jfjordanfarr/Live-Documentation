@@ -16,6 +16,7 @@ Unit tests for the lz-string URL state compression module, verifying round-trip 
 - Created alongside `compressed-url-state.ts` during Step 9 of the Membrane Map implementation on [Dev Day 80](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md). 19 tests covering `snapshotToPayload`, `payloadToSnapshot`, `compressSnapshot`, and `decompressSnapshot`.
 - Tests are structured around the pure-function boundary: `snapshotToPayload`/`payloadToSnapshot` tests verify field inclusion/omission logic and defaults; `compressSnapshot`/`decompressSnapshot` tests verify lz-string round-trip integrity, corrupt input resilience, and that compressed output is shorter than raw JSON.
 - The test file does not exercise `readUrlState`/`writeUrlState` (the DOM-touching boundary functions) because those require `window.location`, which is unavailable in vitest's Node environment. Browser-level testing is deferred to Playwright E2E.
+- `d`, the opened directories (2026-10-08): sorted in the payload, absent when none, scrubbed to those with a live file under them.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

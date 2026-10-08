@@ -189,6 +189,7 @@ describe("compress/decompress round-trip", () => {
       },
       expandedDirectories: new Set(["packages", "packages/server", "packages/server/src"]),
       expandedCards: new Set(["packages/server/src/index.ts", "packages/server/src/main.ts"]),
+      openDirectories: new Set(["packages/server/src", "packages/client"]),
       transform: { x: 150.5, y: -42.3, k: 1.75 },
       filters: { showTests: false, showAssets: false },
     };
@@ -198,6 +199,7 @@ describe("compress/decompress round-trip", () => {
 
     expect(restored.view).toBe(original.view);
     expect(restored.selectedNodeId).toBe(original.selectedNodeId);
+    expect([...restored.openDirectories].sort()).toEqual(["packages/client", "packages/server/src"]);
     expect(restored.pinSet.entries).toHaveLength(3);
     expect(restored.pinSet.entries[1].hopIndex).toBe(1);
     expect(restored.expandedDirectories).toEqual(original.expandedDirectories);
@@ -333,5 +335,23 @@ describe("scrubSnapshot", () => {
     const result = scrubSnapshot(snap, nodesById);
     expect(result.transform).toEqual({ x: 10, y: 20, k: 1.5 });
     expect(result.filters).toEqual({ showTests: false, showAssets: true });
+  });
+});
+
+// ─── The Local Map's opened directories (2026-10-08) ──────────────
+
+describe("the opened directories", () => {
+  it("ride the payload as `d`, sorted, and are left out when none is opened", () => {
+    expect(snapshotToPayload(DEFAULT_SNAPSHOT).d).toBeUndefined();
+    const payload = snapshotToPayload({ ...DEFAULT_SNAPSHOT, openDirectories: new Set(["b", "a/c"]) });
+    expect(payload.d).toEqual(["a/c", "b"]);
+    expect([...payloadToSnapshot({ v: 1, d: ["x/y"] }).openDirectories]).toEqual(["x/y"]);
+    expect(payloadToSnapshot({ v: 1 }).openDirectories.size).toBe(0);
+  });
+
+  it("are scrubbed to those with a live file under them", () => {
+    const nodes = new Map([["a/b/c.ts", {}], ["d.ts", {}]]);
+    const scrubbed = scrubSnapshot({ ...DEFAULT_SNAPSHOT, openDirectories: new Set(["a", "a/b", "a/bc", "gone", ""]) }, nodes);
+    expect([...scrubbed.openDirectories].sort()).toEqual(["a", "a/b"]);
   });
 });

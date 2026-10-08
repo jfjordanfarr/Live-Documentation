@@ -1,6 +1,7 @@
 import { EMPTY_PIN_SET, retainFile, removePinsForNode, toggleFileSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import { dropStage, type BranchStage } from "./branch-renderer";
 import { edgeKey, type BranchGraph } from "./branches";
+import { closeDirectory as closeDirectoryIn, NO_OPEN_DIRECTORIES, openDirectory as openDirectoryIn, type OpenDirectories } from "./directory-state";
 import type {
   ExplorerNodePayload
 } from "../../../shared/types";
@@ -115,6 +116,10 @@ export class LocalViewController implements LocalViewApi {
   private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
   /** Shared pins are owned by the application, not this renderer. */
   get pins(): PinSet { return this.options.state.pins ?? EMPTY_PIN_SET; }
+  /** The directories the person has opened, owned by the application beside the pins (2026-10-08). */
+  get openDirectories(): OpenDirectories { return this.options.state.openDirectories ?? NO_OPEN_DIRECTORIES; }
+  /** Whether a retained exploration is drawn: something pinned, or a directory opened. */
+  get exploring(): boolean { return this.pins.entries.length > 0 || this.openDirectories.size > 0; }
 
   /** How many references the drawn exploration threads through lanes, and how many it draws as stubs. */
   getStrain(): BranchStrain | null {
@@ -396,7 +401,7 @@ export class LocalViewController implements LocalViewApi {
       this.container,
       this.overlay,
       highlight,
-      currentSubgraph.center.id,
+      currentSubgraph.center?.id ?? "",
       dimSymbols,
       dimConnections,
       () => this.drawConnections(),
@@ -443,6 +448,47 @@ export class LocalViewController implements LocalViewApi {
       this.options.state.selectedNode = this.options.state.focusedNode = next ? this.resolveNode(next.nodeId) ?? null : null;
     }
     this.updateRetainedPins(nodeId, "*", pins, false);
+  }
+
+  /** Open a directory: every file inside drawn compact, every subdirectory as a closed box; what was clicked keeps its place on screen. */
+  openDirectory(directory: string): void {
+    const next = openDirectoryIn(this.openDirectories, directory);
+    if (next !== this.openDirectories) this.updateOpenDirectories(directory, next);
+  }
+
+  /** Close a directory as far as it can go: to encasing when a party file or an opened directory stands under it, else to a closed box. */
+  closeDirectory(directory: string): void {
+    const next = closeDirectoryIn(this.openDirectories, directory);
+    if (next !== this.openDirectories) this.updateOpenDirectories(directory, next);
+  }
+
+  /** Apply the opened set while keeping the directory's label or box in its screen position, as a pin keeps its row. */
+  private updateOpenDirectories(directory: string, next: OpenDirectories): void {
+    const leavingPath = !!this.localMapState.getState().activePath;
+    const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
+    const before = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+    const keyboardFocus = this.container.contains(document.activeElement);
+    // The directory is what was acted on: a move of the picture holds its label, or its box, still.
+    this.lastInteracted = directory;
+    this.options.state.openDirectories = next;
+    this.localMapState.update(s => ({ ...s, activePath: null }));
+    this.render();
+    const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+    if (before && after) {
+      cancelAnimationFrame(this.runtime.mapAnimationFrame);
+      this.runtime.mapAnimationTarget = null;
+      this.mapHasInitialFit = true;
+      this.mapUserAdjusted = true;
+      this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + before.left - after.left, y: this.mapTransform.y + before.top - after.top };
+      this.updateMapTransform();
+      this.drawConnections();
+    }
+    if (keyboardFocus) {
+      const element = this.container.querySelector<HTMLElement>(`${selector} [role="button"], ${selector} button, .local-directory-closed[data-directory="${CSS.escape(directory)}"]`)
+        ?? this.container.querySelector<HTMLElement>(".node-card, .empty-hint");
+      element?.focus({ preventScroll: true });
+    }
+    this.options.onExplorationChange?.(leavingPath);
   }
 
   /** Apply retained scope while keeping the acted-on row in its screen position. */

@@ -4,6 +4,7 @@ import { parentDirectory } from "../membraneView/pin-layout";
 import { getVisibleConnections, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
+import { directoryState, NO_OPEN_DIRECTORIES, under, type OpenDirectories } from "./directory-state";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
 import { buildSelfLoopEdges } from "./subgraph-builder";
 import type { LocalEdge, LocalSubgraph } from "./types";
@@ -63,6 +64,29 @@ export interface BranchOptions {
    * freely; null, the default, keeps every level. A lever of the layout lab (2026-10-07).
    */
   membraneDepth?: number | null;
+  /**
+   * The directories the person has opened: every file directly inside one joins the picture as a compact, unwired card
+   * unless it is retained, and every immediate subdirectory neither opened nor encasing joins as a closed box
+   * (the owner's grammar, 2026-10-08).
+   */
+  openDirectories?: OpenDirectories;
+}
+
+/** A closed directory drawn as a box: a pseudo-node with no symbols, standing in for everything under it. */
+export interface ClosedDirectory {
+  path: string;
+  name: string;
+  /** The files under it, at any depth. */
+  files: number;
+  /** Its immediate subdirectories. */
+  directories: number;
+}
+
+/** A drawn directory's state and what it does not draw: its own files, and its immediate subdirectories, not in the picture. */
+export interface DirectoryDisclosure {
+  state: "encasing" | "open";
+  hiddenFiles: number;
+  hiddenDirectories: number;
 }
 
 /**
@@ -74,8 +98,85 @@ export interface Exploration {
   ranking: BranchRanking;
   hiddenConnections: Map<string, number>;
   relevantSymbols: Map<string, Set<string>>;
+  /** The files drawn compact and unwired because their directory is open; their references are hidden connections. */
+  members: Set<string>;
+  /** The closed directories drawn as boxes, by path. */
+  closed: Map<string, ClosedDirectory>;
+  /** Every directory the picture may draw as a membrane, by path: its state and what it hides. */
+  directories: Map<string, DirectoryDisclosure>;
   /** What the order step takes, its sweeps and start apart. */
   order: Omit<OrderInput, "sweeps" | "seed" | "start">;
+}
+
+/** The archetype a closed directory's pseudo-node carries, which no file has. */
+const DIRECTORY_ARCHETYPE = "directory";
+
+/** A closed directory as a node of the picture: its path for an id, no symbols, no references. */
+export function closedDirectoryNode(closed: ClosedDirectory): ExplorerNodePayload {
+  return { id: closed.path, name: closed.name, codePath: closed.path, codeRelativePath: closed.path, docPath: "", docRelativePath: "",
+    archetype: DIRECTORY_ARCHETYPE, dependencies: [], dependents: [], missingDependencies: [], publicSymbols: [] };
+}
+
+/** Whether a node of the picture is a closed directory's box rather than a file's card. */
+export const isClosedDirectory = (node: ExplorerNodePayload): boolean => node.archetype === DIRECTORY_ARCHETYPE;
+
+/** What every directory holds, from the graph's files: the files directly in it and its immediate subdirectories, each by path. */
+export function directoryIndex(nodes: readonly ExplorerNodePayload[]): Map<string, { files: string[]; subdirectories: string[] }> {
+  const index = new Map<string, { files: string[]; subdirectories: string[] }>();
+  const entry = (directory: string): { files: string[]; subdirectories: string[] } =>
+    index.get(directory) ?? index.set(directory, { files: [], subdirectories: [] }).get(directory)!;
+  for (const node of nodes) {
+    let child = parentDirectory(node.codeRelativePath);
+    entry(child).files.push(node.id);
+    while (child !== "") {
+      const parent = parentDirectory(child);
+      const siblings = entry(parent).subdirectories;
+      if (!siblings.includes(child)) siblings.push(child);
+      child = parent;
+    }
+  }
+  for (const contents of index.values()) { contents.files.sort(); contents.subdirectories.sort(); }
+  return index;
+}
+
+/**
+ * The columns with every opened directory's unwired items laid in: the closed boxes and the compact files of an
+ * opened directory fill a span of columns from an anchor, the first column of the party files under it, else its
+ * nearest ancestor's, else the first column; as wide as the party files' span or the square root of the items'
+ * count, whichever is more, item i in column anchor plus i modulo the width; columns past the party's are appended.
+ * So a directory entered with nothing pinned is a grid about as wide as tall, and a directory opened beside pinned
+ * files fills the room its own files already take.
+ */
+export function placeMembers(
+  party: readonly (readonly string[])[],
+  opened: OpenDirectories,
+  itemsOf: (directory: string) => readonly string[],
+  directoryOf: (id: string) => string
+): string[][] {
+  const columns = party.map(column => [...column]);
+  const partyColumns = (directory: string): number[] =>
+    party.flatMap((column, index) => (column.some(id => under(directoryOf(id), directory)) ? [index] : []));
+  const anchorOf = (directory: string): number => {
+    for (let current: string | null = directory; current !== null; current = current === "" ? null : parentDirectory(current)) {
+      const held = partyColumns(current);
+      if (held.length) return Math.min(...held);
+    }
+    return 0;
+  };
+  for (const directory of [...opened].sort()) {
+    const items = itemsOf(directory);
+    if (!items.length) continue;
+    const held = partyColumns(directory);
+    const span = held.length ? Math.max(...held) - Math.min(...held) + 1 : 0;
+    const width = Math.max(span, Math.ceil(Math.sqrt(items.length)));
+    const anchor = anchorOf(directory);
+    items.forEach((item, index) => {
+      const column = anchor + (index % width);
+      while (columns.length <= column) columns.push([]);
+      columns[column].push(item);
+    });
+  }
+  return columns;
 }
 
 /** One reference's identity: its two files, its two symbols and its kind. */
@@ -96,7 +197,7 @@ export function edgeKey(edge: LocalEdge): string {
  * one exploration; this runs both once.
  */
 export function buildBranches(
-  center: ExplorerNodePayload,
+  center: ExplorerNodePayload | null,
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
@@ -105,18 +206,23 @@ export function buildBranches(
   return orderExploration(exploreBranches(center, graph, pins, include, options), options.order);
 }
 
-/** The exploration's first two steps: the retained files and references disclosed, and the files ranked into columns. */
+/**
+ * The exploration's first two steps: the retained files and references disclosed, the opened directories' contents
+ * joined as compact files and closed boxes, and everything ranked into columns. The center, the file in focus, is
+ * retained whole; a picture entered by directory has none.
+ */
 export function exploreBranches(
-  center: ExplorerNodePayload,
+  center: ExplorerNodePayload | null,
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
-  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth"> = {}
+  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories"> = {}
 ): Exploration {
   const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
-  const retained = new Set([center.id, ...pins.entries.map(pin => pin.nodeId)]);
+  const opened = options.openDirectories ?? NO_OPEN_DIRECTORIES;
+  const retained = new Set([...(center ? [center.id] : []), ...pins.entries.map(pin => pin.nodeId)]);
   const relevantSymbols = new Map<string, Set<string>>();
   const remember = (nodeId: string, symbol?: string): void => {
     const rows = relevantSymbols.get(nodeId) ?? new Set<string>();
@@ -132,26 +238,68 @@ export function exploreBranches(
       if (node && include(node)) retained.add(endpoint);
     }
   }
-  const nodes = [...retained].flatMap(key => byId.get(key) ?? []);
+  // The opened directories' contents: each file directly in one, compact and unwired unless it is retained; each
+  // immediate subdirectory neither opened nor encasing, a closed box.
+  const index = directoryIndex(graph.nodes);
+  const members = new Set<string>();
+  const closed = new Map<string, ClosedDirectory>();
+  for (const directory of [...opened].sort()) {
+    const contents = index.get(directory);
+    if (!contents) continue;
+    for (const file of contents.files) {
+      const node = byId.get(file);
+      if (node && !retained.has(file) && include(node)) members.add(file);
+    }
+    for (const subdirectory of contents.subdirectories) {
+      if (directoryState(subdirectory, opened, retained) === "closed") closed.set(subdirectory, closedDirectory(subdirectory, index));
+    }
+  }
+  const files = [...retained, ...members].flatMap(key => byId.get(key) ?? []);
+  const boxes = [...closed.values()].map(closedDirectoryNode);
+  const nodes = [...files, ...boxes];
+  for (const box of boxes) byId.set(box.id, box);
+  const shown = new Set(nodes.map(node => node.id));
   const links: LocalEdge[] = [];
   const hiddenConnections = new Map<string, number>();
   for (const link of graph.links) {
     const sourceId = id(link.source), targetId = id(link.target);
     if (retained.has(sourceId) && retained.has(targetId)) {
       links.push({ sourceId, targetId, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol,
-        kind: link.kind, direction: sourceId === center.id ? "outbound" : "inbound" });
+        kind: link.kind, direction: sourceId === center?.id ? "outbound" : "inbound" });
     } else {
       for (const endpoint of new Set([sourceId, targetId])) {
-        if (retained.has(endpoint)) hiddenConnections.set(endpoint, (hiddenConnections.get(endpoint) ?? 0) + 1);
+        if (shown.has(endpoint)) hiddenConnections.set(endpoint, (hiddenConnections.get(endpoint) ?? 0) + 1);
       }
     }
   }
   const keys = new Set(links.map(edgeKey));
-  for (const node of nodes) for (const edge of buildSelfLoopEdges(node)) {
+  const party = files.filter(node => retained.has(node.id));
+  for (const node of party) for (const edge of buildSelfLoopEdges(node)) {
     if (!keys.has(edgeKey(edge))) { links.push(edge); keys.add(edgeKey(edge)); }
   }
-  const ranking = rankBranches(nodes, links, options.ranking);
-  const rows = visibleRows(nodes, center.id, relevantSymbols, symbolOrder);
+  const directoryOfNode = (nodeId: string): string => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId);
+  const ranked = rankBranches(party, links, options.ranking);
+  const columns = placeMembers(ranked.columns.map(column => column.map(node => node.id)), opened, directory => {
+    const contents = index.get(directory);
+    const inside = (path: string): boolean => parentDirectory(path) === directory;
+    return [...[...closed.keys()].filter(inside), ...(contents?.files ?? []).filter(file => members.has(file))];
+  }, directoryOfNode);
+  const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back };
+  const rows = visibleRows(files, center?.id ?? null, relevantSymbols, symbolOrder);
+  for (const box of boxes) rows.set(box.id, []);
+  // Every directory the picture may draw as a membrane: an ancestor of something shown, the scan root aside.
+  const directories = new Map<string, DirectoryDisclosure>();
+  for (const node of nodes) {
+    for (let directory = parentDirectory(node.codeRelativePath); directory !== ""; directory = parentDirectory(directory)) {
+      if (directories.has(directory)) continue;
+      const contents = index.get(directory);
+      directories.set(directory, {
+        state: opened.has(directory) ? "open" : "encasing",
+        hiddenFiles: (contents?.files ?? []).filter(file => !shown.has(file)).length,
+        hiddenDirectories: (contents?.subdirectories ?? []).filter(subdirectory => ![...shown].some(path => under(path, subdirectory))).length
+      });
+    }
+  }
   const row = (symbol: string | undefined): string => normalizeSymbolIdentifier(symbol) ?? "__internals__";
   const forward: ForwardReference[] = links
     .filter(edge => edge.sourceId !== edge.targetId && !ranking.back.has(edgeKey(edge)))
@@ -169,9 +317,12 @@ export function exploreBranches(
     ranking,
     hiddenConnections,
     relevantSymbols,
+    members,
+    closed,
+    directories,
     order: {
-      columns: ranking.columns.map(column => column.map(node => node.id)),
-      directoryOf: nodeId => membraneDirectory(parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId), root, options.membraneDepth ?? null),
+      columns,
+      directoryOf: nodeId => membraneDirectory(directoryOfNode(nodeId), root, options.membraneDepth ?? null),
       rows,
       // Only the layout order moves rows, and Internals keeps the foot of the card.
       movable: symbolOrder === "layout" ? name => name !== "__internals__" : undefined,
@@ -196,12 +347,13 @@ export function orderExploration(exploration: Exploration, options: OrderOptions
   };
 }
 
-/**
- * The rows each card will show, top to bottom, by their normalized names: every
- * row of a file retained whole or in focus, otherwise the rows some pin needs,
- * with Internals last; alphabetical when that order is chosen, otherwise as
- * the Live Doc lists them, which the layout order then moves by the wires.
- */
+/** A closed directory's box as the picture counts it: the files under it at any depth, and its immediate subdirectories. */
+function closedDirectory(path: string, index: ReadonlyMap<string, { files: string[]; subdirectories: string[] }>): ClosedDirectory {
+  let files = 0;
+  for (const [directory, contents] of index) if (under(directory, path)) files += contents.files.length;
+  return { path, name: path.slice(path.lastIndexOf("/") + 1), files, directories: index.get(path)?.subdirectories.length ?? 0 };
+}
+
 /** The deepest directory every given directory is in or under; "" when they share none. */
 export function commonDirectory(directories: readonly string[]): string {
   if (directories.length === 0) return "";
@@ -226,7 +378,14 @@ export function membraneDirectory(directory: string, root: string, depth: number
   return [...(root ? [root] : []), ...below.slice(0, Math.max(0, Math.floor(depth)))].join("/");
 }
 
-function visibleRows(nodes: readonly ExplorerNodePayload[], centerId: string, relevant: ReadonlyMap<string, ReadonlySet<string>>, symbolOrder: SymbolOrder): Map<string, string[]> {
+/**
+ * The rows each card will show, top to bottom, by their normalized names: every
+ * row of a file retained whole or in focus, otherwise the rows some pin needs,
+ * with Internals last; alphabetical when that order is chosen, otherwise as
+ * the Live Doc lists them, which the layout order then moves by the wires. A
+ * compact member of an opened directory shows no row.
+ */
+function visibleRows(nodes: readonly ExplorerNodePayload[], centerId: string | null, relevant: ReadonlyMap<string, ReadonlySet<string>>, symbolOrder: SymbolOrder): Map<string, string[]> {
   const rows = new Map<string, string[]>();
   for (const node of nodes) {
     const needed = relevant.get(node.id);

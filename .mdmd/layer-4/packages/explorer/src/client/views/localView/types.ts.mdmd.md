@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-10-05T16:55:01.745Z
+- Generated At: 2026-10-08T01:58:14.518Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ Type definitions for the Local Map view. Centralises interfaces for view options
 - Created 2025-12-04 when `localView.ts` was split into a modular directory.
 - `LocalSubgraph` describes the 3-column layout (inbound, center, outbound nodes).
 - `CenterAlignmentGuides` tracks vertical positions for connection line rendering.
+- `LocalSubgraph.center` may be null since 2026-10-08: a branch picture entered by directory has no file in focus.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -91,7 +92,7 @@ to lay out the three-column Local Map view.
 
 #### `CenterAlignmentGuides` {#symbol-centeralignmentguides}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L139)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L140)
 
 ##### `CenterAlignmentGuides` — Summary
 Captures per-symbol anchor positions and card vertical centers in the
@@ -107,7 +108,7 @@ Created 2025-12-04 during the SVG Bezier connector work. Used by
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L148)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L149)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -115,7 +116,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L166)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L167)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -128,7 +129,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L179)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L180)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -140,7 +141,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L194)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L195)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.

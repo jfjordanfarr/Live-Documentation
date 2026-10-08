@@ -35,7 +35,7 @@ export interface PosedBox {
   segments: SceneSegment[];
 }
 
-/** A card, where it stands. */
+/** A card, or a closed directory's box, where it stands. */
 export interface PosedItem {
   id: string;
   /** The key of the box whose element holds the card's. */
@@ -43,6 +43,7 @@ export interface PosedItem {
   left: number;
   top: number;
   width: number;
+  height: number;
 }
 
 /** Every element of the picture at its place. */
@@ -76,7 +77,8 @@ export function scenePose(scene: Scene): Pose {
   for (const item of scene.items.values()) {
     items.set(item.id, {
       id: item.id, host: boxKeyOf(item.box),
-      left: scene.lefts[item.column] + item.inset, top: scene.tops.get(item.id) ?? 0, width: scene.widths[item.column] - 2 * item.inset
+      left: scene.lefts[item.column] + item.inset, top: scene.tops.get(item.id) ?? 0, width: scene.widths[item.column] - 2 * item.inset,
+      height: scene.heights.get(item.id) ?? 0
     });
   }
   return { items, boxes, pictureWidth: scene.pictureWidth, pictureHeight: scene.pictureHeight };
@@ -87,25 +89,40 @@ const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 const sameColumns = (a: readonly SceneSegment[], b: readonly SceneSegment[]): boolean =>
   a.length === b.length && a.every((segment, i) => segment.column === b[i].column);
 
+/** A membrane that closed, as the box it becomes: the box starts from the membrane's rectangle. */
+const membraneAsBox = (membrane: PosedBox | undefined): Pick<PosedItem, "left" | "top" | "width" | "height"> | undefined =>
+  membrane && { left: membrane.left, top: membrane.top, width: membrane.right - membrane.left, height: membrane.bottom - membrane.top };
+
+/** A closed box that opened, as the membrane it becomes: the membrane starts from the box's rectangle, every segment at it. */
+const boxAsMembrane = (membrane: PosedBox, box: PosedItem | undefined): PosedBox | undefined =>
+  box && {
+    ...membrane, left: box.left, top: box.top, right: box.left + box.width, bottom: box.top + box.height,
+    segments: membrane.segments.map(segment => ({ column: segment.column, left: box.left, right: box.left + box.width, top: box.top, bottom: box.top + box.height }))
+  };
+
 /**
  * The picture `t` of the way from one pose to the next, for every element of
  * the next: an element the previous pose also had moves along the straight
  * line between its two places, its membrane's segments with it when it spans
  * the same columns in both, else standing at once where it will be; an
- * element new to the picture stands at its place throughout. Elements only
- * the previous pose had are not in the result; the renderer fades them out.
- * With no previous pose, or at `t` of 1 or more, the next pose itself.
+ * element new to the picture stands at its place throughout. A directory
+ * that opened is the exception: its membrane grows from the rectangle of the
+ * closed box that stood for it, and one that closed shrinks to its box from
+ * the membrane's (the owner's picture of a directory opening in place,
+ * 2026-10-08). Elements only the previous pose had are not in the result;
+ * the renderer fades them out. With no previous pose, or at `t` of 1 or
+ * more, the next pose itself.
  */
 export function tweenPose(from: Pose | null, to: Pose, t: number): Pose {
   if (!from || t >= 1) return to;
   const items = new Map<string, PosedItem>();
   for (const [id, item] of to.items) {
-    const was = from.items.get(id);
+    const was = from.items.get(id) ?? membraneAsBox(from.boxes.get(`directory\0${id}`));
     items.set(id, was ? { ...item, left: lerp(was.left, item.left, t), top: lerp(was.top, item.top, t), width: lerp(was.width, item.width, t) } : item);
   }
   const boxes = new Map<string, PosedBox>();
   for (const [key, box] of to.boxes) {
-    const was = from.boxes.get(key);
+    const was = from.boxes.get(key) ?? (box.kind === "directory" ? boxAsMembrane(box, from.items.get(box.directory)) : undefined);
     if (!was) { boxes.set(key, box); continue; }
     boxes.set(key, {
       ...box,

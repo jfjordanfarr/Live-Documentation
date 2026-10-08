@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-10-02T21:07:39.074Z
+- Generated At: 2026-10-08T01:58:13.528Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ Manages URL-based state persistence for the Explorer. Parses initial state from 
 - Extracted from client/index.ts on 2025-12-19. The `parseInitialState()` and `updateUrlState()` functions work together to maintain URL and state synchronization without page reloads.
 - On 2026-03-31 the default fallback view was changed from `"sources"` to `"membrane"` to reflect the Membrane Map's promotion to cold-start default. `updateUrlState()` was also updated to write an explicit `?view=` parameter for non-membrane views, since membrane is now the implicit default.
 - The viewer-configuration fallback in `parseInitialState()` went on 2026-09-28: nothing wrote one.
+- `?dir=<path>` (2026-10-08): the door into a directory with no file in focus, read into `InitialUrlState.openDirectories` beside a snapshot's `d`; a trailing slash is dropped. Nothing writes it back: once the person acts, the opened set rides the compressed state.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -41,7 +42,7 @@ State parsed from the initial URL on page load.
 
 #### `parseInitialState` {#symbol-parseinitialstate}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L57)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L59)
 
 ##### `parseInitialState` — Summary
 Parse initial view and node from URL parameters.
@@ -49,7 +50,7 @@ Priority: URL params > defaults (Membrane view for cold start)
 
 #### `updateUrlState` {#symbol-updateurlstate}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L91)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L96)
 
 ##### `updateUrlState` — Summary
 Update URL to reflect current view and focused node without page reload.
