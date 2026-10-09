@@ -94,10 +94,12 @@ export function inRect(rect: Rect, point: Point2): boolean {
   return point[0] >= rect.x && point[0] <= rect.x + rect.w && point[1] >= rect.y && point[1] <= rect.y + rect.d;
 }
 
+/** A board point in board units, as pixels on the plane. */
 export function unitsToPixels(units: Point2): Point2 {
   return [units[0] * UNIT, units[1] * UNIT];
 }
 
+/** A point on the plane in pixels, as board units rounded to hundredths, which is how the Layout section writes them. */
 export function pixelsToUnits(pixels: Point2): Point2 {
   return [Math.round((pixels[0] / UNIT) * 100) / 100, Math.round((pixels[1] / UNIT) * 100) / 100];
 }
@@ -131,6 +133,7 @@ export function autoPlace(groups: PlacementGroup[], placed: Iterable<Point2>, co
 
 /** A wall of a block, by its outward direction on the board. */
 export type Wall = "N" | "E" | "S" | "W";
+/** Each wall's outward direction on the board plane. */
 export const NORMALS: Record<Wall, Point2> = { E: [1, 0], W: [-1, 0], S: [0, 1], N: [0, -1] };
 
 /** The wall that faces a counterpart best, among the walls the viewer can see. */
@@ -231,6 +234,7 @@ export function drawOrder(camera: Camera, pivot: Pivot, pieces: Placed[]): Place
   return [...pieces].sort((a, b) => depthOf(camera, pivot, a.cx, a.cy) - depthOf(camera, pivot, b.cx, b.cy));
 }
 
+/** The value held within the bounds. */
 export function clamp(value: number, low: number, high: number): number {
   return Math.max(low, Math.min(high, value));
 }

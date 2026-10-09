@@ -499,6 +499,7 @@ export function authoredBlockOf(text: string | undefined): string {
 // Reader
 // ============================================================================
 
+/** Reads a text line by line for the parsers, and fails with the line number when the grammar is not met. */
 export class Reader {
   private readonly lines: string[];
   private index = 0;
@@ -510,10 +511,12 @@ export class Reader {
     this.lines = text.slice(0, -1).split("\n");
   }
 
+  /** The current line's number, counted from one. */
   lineNumber(): number {
     return this.index + 1;
   }
 
+  /** True when every line has been consumed. */
   atEnd(): boolean {
     return this.index >= this.lines.length;
   }
@@ -523,10 +526,12 @@ export class Reader {
     return this.lines[this.index + offset];
   }
 
+  /** Throws a syntax error at the current line. */
   fail(detail: string): never {
     throw new LiveDocSyntaxError(this.lineNumber(), detail);
   }
 
+  /** Consumes the current line, which must be exactly the text expected. */
   expectLine(expected: string): void {
     if (this.lines[this.index] !== expected) {
       this.fail(`expected ${JSON.stringify(expected)}, found ${JSON.stringify(this.lines[this.index])}`);
@@ -534,10 +539,12 @@ export class Reader {
     this.index += 1;
   }
 
+  /** Consumes the current line, which must be blank. */
   expectBlank(): void {
     this.expectLine("");
   }
 
+  /** Consumes the current line, which must match the pattern, and returns the match; `what` names it in the error. */
   expect(pattern: RegExp, what: string): RegExpExecArray {
     const match = this.take(pattern);
     if (!match) {
@@ -546,6 +553,7 @@ export class Reader {
     return match;
   }
 
+  /** Consumes the current line when it matches the pattern and returns the match; otherwise leaves it and returns undefined. */
   take(pattern: RegExp): RegExpExecArray | undefined {
     const line = this.lines[this.index];
     if (line === undefined) {

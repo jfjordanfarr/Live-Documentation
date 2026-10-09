@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/layout.ts
-- Generated At: 2026-10-08T16:03:29.437Z
+- Generated At: 2026-10-09T20:54:51.932Z
 
 ## Authored
 ### Purpose
@@ -120,26 +120,32 @@ Whether a board point lies in a rectangle.
 
 #### `unitsToPixels` {#symbol-unitstopixels}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L97)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L98)
 - Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 - Parameters: `units`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
+##### `unitsToPixels` — Summary
+A board point in board units, as pixels on the plane.
+
 #### `pixelsToUnits` {#symbol-pixelstounits}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L101)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L103)
 - Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 - Parameters: `pixels`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
+##### `pixelsToUnits` — Summary
+A point on the plane in pixels, as board units rounded to hundredths, which is how the Layout section writes them.
+
 #### `PlacementGroup` {#symbol-placementgroup}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L106)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L108)
 
 ##### `PlacementGroup` — Summary
 A run of things to place together: the members of one region, or the things in none.
 
 #### `autoPlace` {#symbol-autoplace}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L115)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L117)
 - Parameters: `groups`: [`PlacementGroup`](#symbol-placementgroup)[]; `placed`: `Iterable`
 
 ##### `autoPlace` — Summary
@@ -149,18 +155,21 @@ row between groups, so that a region's members sit together.
 
 #### `Wall` {#symbol-wall}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L133)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L135)
 
 ##### `Wall` — Summary
 A wall of a block, by its outward direction on the board.
 
 #### `NORMALS` {#symbol-normals}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L134)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L137)
+
+##### `NORMALS` — Summary
+Each wall's outward direction on the board plane.
 
 #### `wallOf` {#symbol-wallof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L137)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L140)
 - Returns: [`Wall`](#symbol-wall)
 - Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `placed`: [`Placed`](#symbol-placed); `toward`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
@@ -169,14 +178,14 @@ The wall that faces a counterpart best, among the walls the viewer can see.
 
 #### `Anchor` {#symbol-anchor}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L149)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L152)
 
 ##### `Anchor` — Summary
 Where a door sits: a point at mid-height on the board, and the direction a wire leaves it.
 
 #### `wallPoint` {#symbol-wallpoint}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L155)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L158)
 - Returns: [`Anchor`](#symbol-anchor)
 - Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `placed`: [`Placed`](#symbol-placed); `wall`: [`Wall`](#symbol-wall); `toward`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)
 
@@ -185,7 +194,7 @@ The point on a wall, at a fraction along it, where a door sits; on a drum, a poi
 
 #### `roadCurve` {#symbol-roadcurve}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L182)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L185)
 - Parameters: `from`: [`Anchor`](#symbol-anchor); `to`: [`Anchor`](#symbol-anchor)
 
 ##### `roadCurve` — Summary
@@ -193,7 +202,7 @@ A wire between two doors: a cable in the air that hangs a little.
 
 #### `spreadTokens` {#symbol-spreadtokens}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L194)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L197)
 - Returns: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]
 - Parameters: `seeds`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]; `obstacles`: [`Point2`](./projection.ts.mdmd.md#symbol-point2)[]; `bounds`: [`Rect`](#symbol-rect)
 
@@ -204,7 +213,7 @@ of each other.
 
 #### `drawOrder` {#symbol-draworder}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L230)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L233)
 - Returns: [`Placed`](#symbol-placed)[]
 - Parameters: `camera`: [`Camera`](./projection.ts.mdmd.md#symbol-camera); `pivot`: [`Pivot`](./projection.ts.mdmd.md#symbol-pivot); `pieces`: [`Placed`](#symbol-placed)[]
 
@@ -213,7 +222,10 @@ The order to draw pieces in: far ones first.
 
 #### `clamp` {#symbol-clamp}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L234)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/layout.ts#L238)
+
+##### `clamp` — Summary
+The value held within the bounds.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

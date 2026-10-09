@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-scene.ts
-- Generated At: 2026-10-07T21:57:23.634Z
+- Generated At: 2026-10-09T20:54:50.860Z
 
 ## Authored
 ### Purpose
@@ -94,11 +94,14 @@ What the layout asks of the page, or of a capture of it.
 
 #### `SceneMeasurement` {#symbol-scenemeasurement}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L129)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L130)
+
+##### `SceneMeasurement` — Summary
+What the measurer found: each card's height, where each pin sits, and each drawn directory's label height.
 
 #### `Scene` {#symbol-scene}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L137)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L138)
 - Extends: [`ScenePlan`](#symbol-sceneplan)
 
 ##### `Scene` — Summary
@@ -106,7 +109,7 @@ The laid-out scene.
 
 #### `planBranches` {#symbol-planbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L157)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L158)
 - Returns: [`ScenePlan`](#symbol-sceneplan)
 - Parameters: `branches`: [`BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 
@@ -117,14 +120,14 @@ among them by row; then its own files, with the lanes that follow them.
 
 #### `hostOf` {#symbol-hostof}
 - Type: const
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L218)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L219)
 
 ##### `hostOf` — Summary
 The box whose element holds a box's elements: itself, unless it is a directory's loose files, which share their parent's.
 
 #### `layoutScene` {#symbol-layoutscene}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L235)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L236)
 - Returns: [`Scene`](#symbol-scene)
 - Parameters: `plan`: [`ScenePlan`](#symbol-sceneplan); `branches`: [`BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph); `measurer`: [`SceneMeasurer`](#symbol-scenemeasurer); `tuning`: [`SceneTuning`](#symbol-scenetuning)
 

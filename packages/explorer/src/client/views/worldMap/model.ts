@@ -18,6 +18,7 @@ import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import type { Shape } from "./layout";
 import type { Point2 } from "./projection";
 
+/** The tints a region may be drawn in, light on the white board and deep on the dark one. */
 export type Tint = "blue" | "orange" | "green" | "grey" | "violet" | "rose";
 
 /** A thing drawn as a solid on the board. */
@@ -81,6 +82,7 @@ export interface WorldToken {
   users: string[];
 }
 
+/** Everything the World Map draws, derived from a board joined to the graph: the pieces, regions, roads, crossings and tokens, the positions the board places, and what could not be drawn. */
 export interface WorldModel {
   title: string;
   pieces: WorldPiece[];

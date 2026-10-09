@@ -126,6 +126,7 @@ export interface SceneMeasurer {
   measure(cardWidths: ReadonlyMap<string, number>, labelWidths: ReadonlyMap<string, number>): SceneMeasurement;
 }
 
+/** What the measurer found: each card's height, where each pin sits, and each drawn directory's label height. */
 export interface SceneMeasurement {
   heights: ReadonlyMap<string, number>;
   /** A pin's distance from its card's top, or null when the card has no pin for it. */

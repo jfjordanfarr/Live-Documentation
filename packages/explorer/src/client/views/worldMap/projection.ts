@@ -27,12 +27,15 @@ export interface Screen {
   k: number;
 }
 
+/** The drawing surface's size in CSS pixels. */
 export interface Viewport {
   width: number;
   height: number;
 }
 
+/** A point in the board's space: x and y on the plane, z above it. */
 export type Point3 = [number, number, number];
+/** A point on the board plane, or on the screen, in whichever units the caller says. */
 export type Point2 = [number, number];
 
 /** The elevation the board is seen at when nothing has moved it. */

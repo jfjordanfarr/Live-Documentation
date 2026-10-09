@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/index.ts
-- Generated At: 2026-10-02T22:31:59.248Z
+- Generated At: 2026-10-09T20:54:51.894Z
 
 ## Authored
 ### Purpose
@@ -18,15 +18,21 @@ The World Map view's door: reads the bundle's board text, refuses it with a note
 ### Public Symbols
 #### `WorldMapViewOptions` {#symbol-worldmapviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L14)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L15)
+
+##### `WorldMapViewOptions` — Summary
+What the World Map view is given: where to draw, the graph, the bundle's board when it carries one, and the doors into the other views.
 
 #### `WorldMapView` {#symbol-worldmapview}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L26)
+
+##### `WorldMapView` — Summary
+The World Map view as the client holds it: drawn, disposed, and driven by tests through its handle.
 
 #### `createWorldMapView` {#symbol-createworldmapview}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L32)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/index.ts#L34)
 - Returns: [`WorldMapView`](#symbol-worldmapview)
 - Parameters: `options`: [`WorldMapViewOptions`](#symbol-worldmapviewoptions)
 

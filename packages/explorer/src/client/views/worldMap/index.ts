@@ -11,6 +11,7 @@ import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import { WorldMapController, type WorldMapApi } from "./controller";
 import { buildWorldModel } from "./model";
 
+/** What the World Map view is given: where to draw, the graph, the bundle's board when it carries one, and the doors into the other views. */
 export interface WorldMapViewOptions {
   root: HTMLElement;
   graph: LiveDocGraph;
@@ -21,6 +22,7 @@ export interface WorldMapViewOptions {
   onOpenThing?: (thing: { name: string; folder: string }) => void;
 }
 
+/** The World Map view as the client holds it: drawn, disposed, and driven by tests through its handle. */
 export interface WorldMapView {
   render: () => void;
   dispose: () => void;

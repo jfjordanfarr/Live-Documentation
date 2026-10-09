@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/document.ts
-- Generated At: 2026-09-28T21:15:51.330Z
+- Generated At: 2026-10-09T20:54:49.525Z
 
 ## Authored
 ### Purpose
@@ -136,7 +136,10 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L502)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L503)
+
+##### `Reader` — Summary
+Reads a text line by line for the parsers, and fails with the line number when the grammar is not met.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

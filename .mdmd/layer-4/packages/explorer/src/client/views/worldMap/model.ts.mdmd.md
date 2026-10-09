@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/model.ts
-- Generated At: 2026-10-02T22:33:03.781Z
+- Generated At: 2026-10-09T20:54:51.987Z
 
 ## Authored
 ### Purpose
@@ -20,50 +20,56 @@ What the World Map draws, read from a board joined to the graph, as pure data: a
 ### Public Symbols
 #### `Tint` {#symbol-tint}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L21)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L22)
+
+##### `Tint` — Summary
+The tints a region may be drawn in, light on the white board and deep on the dark one.
 
 #### `WorldPiece` {#symbol-worldpiece}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L24)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L25)
 
 ##### `WorldPiece` — Summary
 A thing drawn as a solid on the board.
 
 #### `WorldRegion` {#symbol-worldregion}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L42)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L43)
 
 ##### `WorldRegion` — Summary
 A thing that holds things, drawn as a tinted region around them.
 
 #### `WorldRoad` {#symbol-worldroad}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L55)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L56)
 
 ##### `WorldRoad` — Summary
 A wire between two pieces.
 
 #### `WorldCrossing` {#symbol-worldcrossing}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L70)
 
 ##### `WorldCrossing` — Summary
 A declared connection between two regions.
 
 #### `WorldToken` {#symbol-worldtoken}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L77)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L78)
 
 ##### `WorldToken` — Summary
 Something two or more pieces stand on.
 
 #### `WorldModel` {#symbol-worldmodel}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L84)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L86)
+
+##### `WorldModel` — Summary
+Everything the World Map draws, derived from a board joined to the graph: the pieces, regions, roads, crossings and tokens, the positions the board places, and what could not be drawn.
 
 #### `buildWorldModel` {#symbol-buildworldmodel}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L98)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L100)
 - Returns: [`WorldModel`](#symbol-worldmodel)
 - Parameters: `board`: [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board); `joined`: [`BoardGraph`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-boardgraph); `graph`: [`LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
@@ -72,7 +78,7 @@ Builds what the World Map draws.
 
 #### `regionsOf` {#symbol-regionsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L189)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/model.ts#L191)
 - Returns: [`WorldRegion`](#symbol-worldregion)[]
 - Parameters: `model`: [`WorldModel`](#symbol-worldmodel)
 
