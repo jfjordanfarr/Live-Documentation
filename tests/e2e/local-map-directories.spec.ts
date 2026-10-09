@@ -119,7 +119,9 @@ test("an encasing membrane counts what it hides, its name opens it around the pi
   await expect(more).toHaveText(/^\+\d+ files, 2 directories$/);
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toHaveCount(0);
   const partyCards = await cards(page).count();
-  await label(page, LIVE_DOCS).locator(".local-directory-name").click();
+  // The map does not scroll and the encased picture may be wider than the frame, with its label under the sidebar, so
+  // the click is dispatched to the name rather than aimed at the frame, as the member's and the X's are below.
+  await label(page, LIVE_DOCS).locator(".local-directory-name").evaluate(name => (name as HTMLElement).click());
   await settled(page);
   // Open: every file of live-docs is drawn, the ones not party compact and unwired, and its subdirectories are boxes; the wires are the same.
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toBeVisible();

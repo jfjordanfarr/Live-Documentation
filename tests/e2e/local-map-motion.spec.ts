@@ -11,10 +11,15 @@ import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence
  * picture comes to rest with nothing of the move left on it. With the move
  * length at zero, or motion reduced, the picture jumps as before (the
  * owner's plan and answers, 2026-10-07, Turns 15 and 16).
+ *
+ * The picture is the rosetta sample program's helpers file with its users, so
+ * that it fits the frame and keeps a card whose dependencies are not yet drawn,
+ * whatever this repository's own code grows into; the engine's live-docs folder
+ * served until 2026-10-09, when it grew too dense for a pin to move anything.
  */
 
-const GRAPH = "packages/engine/src/live-docs/graph.ts";
-const DOCUMENT = "packages/engine/src/live-docs/document.ts";
+const ROOT = "tests/integration/programs/typescript/rosetta/src/";
+const FILES = [`${ROOT}helpers.ts`];
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 
@@ -40,28 +45,45 @@ const LONG_MOVE_MS = 1500;
 
 async function openPicture(page: Page, moveMs?: number): Promise<void> {
   if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { moveMs, searchStarts: 0 } } }) });
-  await page.goto(localRetainUrl("/", [GRAPH, DOCUMENT]));
+  await page.goto(localRetainUrl("/", FILES));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });
   // The first picture's camera settles over a third of a second.
   await page.waitForTimeout(700);
 }
 
+interface IndexFile { symbols: Array<{ name: string; slug?: string }>; edges: Array<{ to?: string; toSymbol?: string }>; outbound: string[] }
+
 /**
  * A row to pin on a card that is not the subject and stands wholly in the frame, since the map does not scroll and a
- * click lands only on what is shown: pinning it changes the picture.
+ * click lands only on what is shown, chosen so that pinning it rearranges the picture: first the internals row of a
+ * card with a dependency not yet drawn, since what it brings in lands in a column already drawn and moves its
+ * neighbours, then a symbol row whose symbol a file not yet drawn uses. The choice is made from the bundle's own data,
+ * so it holds whatever this repository's graph becomes.
  */
 async function rowToPin(page: Page) {
-  const found = await page.evaluate(() => {
+  const data = await (await page.request.get("/explorer-data.json")).json() as { graph: { files: Record<string, IndexFile> } };
+  const seen = await page.evaluate(() => {
+    const drawn = [...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(card => card.dataset.id!);
+    const rows: Array<{ id: string; symbol: string }> = [];
     for (const card of document.querySelectorAll<HTMLElement>("#map-container .node-card:not(.local-focus)")) {
       const r = card.getBoundingClientRect();
       if (r.left < 0 || r.top < 0 || r.right > innerWidth || r.bottom > innerHeight) continue;
-      const row = card.querySelector<HTMLElement>(".symbol-row:not(.branch-symbol-hidden)");
-      if (row) return { id: card.dataset.id!, symbol: row.dataset.symbol! };
+      for (const row of card.querySelectorAll<HTMLElement>(".symbol-row:not(.branch-symbol-hidden)")) {
+        rows.push({ id: card.dataset.id!, symbol: row.dataset.symbol! });
+      }
     }
-    return null;
+    return { drawn, rows };
   });
-  expect(found, "a card wholly in the frame with a row to pin").not.toBeNull();
+  const shown = new Set(seen.drawn);
+  const internals = seen.rows.find(({ id, symbol }) => symbol === "__internals__" && (data.graph.files[id]?.outbound ?? []).some(other => !shown.has(other)));
+  const offered = seen.rows.find(({ id, symbol }) => {
+    if (symbol === "__internals__") return false;
+    const slug = data.graph.files[id]?.symbols.find(s => s.name === symbol || s.name.replace(/ \([^()]*\)$/u, "") === symbol || s.slug === symbol)?.slug;
+    return slug !== undefined && Object.entries(data.graph.files).some(([other, file]) => !shown.has(other) && file.edges.some(edge => edge.to === id && edge.toSymbol === slug));
+  });
+  const found = internals ?? offered;
+  expect(found, "a card wholly in the frame with a row whose pin brings a file not yet drawn").toBeDefined();
   return page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .symbol-label-wrapper`);
 }
 
