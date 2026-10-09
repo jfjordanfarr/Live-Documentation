@@ -1876,3 +1876,145 @@
   the wires equal the one-scan build's, the dropped project reference written
   unlinked and matched by the join, and the generator's warning. Nothing of that
   is built until you say the resolution stands or say what is wrong with it.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >And sharing is sharing text, because the board is a markdown file:
+
+  Oddly enough, I do wonder if this piece may shift, depending on whether or
+  not we find the format sufficient for what we need during authoring. I could
+  see reasons to pick something else (i.e. JSON) for the Canvas-like world map
+  objects. Noticeable to me is the fact that an Obsidian Canvas is _not_
+  Markdown. I think those are a great standard. But indeed, not so easy to
+  share. Hmm... in any case, we'll try it this way for now and leave the
+  possibility open for other formats if needed.
+
+  >With the close I write the plan's edits in one commit: that resolution and
+  its line under Decisions so far, the rule under the standing rules with its
+  import test, your two cases under T4, the fog line on what evidence may
+  suggest and how a person accepts a suggestion, and one line per scenario on
+  how its person engages. Then the probe: Portal and Gateway from the estate
+  sample scanned as two folders, joined over two graphs, drawn, with a test
+  that the wires equal the one-scan build's, the dropped project reference
+  written unlinked and matched by the join, and the generator's warning.
+  Nothing of that is built until you say the resolution stands or say what is
+  wrong with it.
+
+  I think we're aligned. I agree with this plan. Please proceed with it, of
+  course stopping when you've got questions you need my eyes on. I'm probably a
+  little more chatty than your average user these days. Try to engage with me
+  a bit more and ensure understanding of what is being done isn't running away
+  from me.
+
+● Recording your message and the Turn 6 reply, then writing the plan's edits as
+  one commit. After that I'll lay out the probe's shape before building it,
+  since it carries one consequence of B that you should see first.
+
+  Searched for 4 patterns, read 4 files, listed 5 directories, ran 8 shell commands (ctrl+o to expand)
+
+● I've gathered the key facts: how unserved calls are labeled, how the C# client
+  selects a home server by default, and that the estate bundle already exists
+  under dist/explorer/samples/estate/. Now I'll write the probe's brief and
+  script. · summary
+
+  Made 1 scratchpad edit +297, ran 6 shell commands (ctrl+o to expand)
+
+● The probe confirmed the expected route mislink, surfaced a second doc gap in
+  the SQL adapter, and showed the Contracts wires collapsing. I'll make two
+  small corrections to the script for fidelity, re-run it, and generate the
+  images. · summary
+
+  Made 1 scratchpad edit +56, ran 2 shell commands (ctrl+o to expand)
+
+● Pictures taken. Looking at them now to see what the drawing shows before I
+  write the findings.
+
+  Read 4 files, ran 3 shell commands (ctrl+o to expand)
+
+● Written for: you, the owner, in plain words, with the probe's record for the
+  detail.
+
+  Three commits since your message: the plan's edits as 534f4951, the probe's
+  record as 10f6701e, your re-export kept as received. Here is what happened and
+  where I need your eyes.
+
+  The plan's edits, as promised
+
+  One commit: T1's resolution under the ticket and a line under Decisions so
+  far, the rule under the standing rules, your two cases from work under T4,
+  three fog lines (what evidence may suggest, the submodule case, and the
+  board's format kept open in your words), one line per scenario on how its
+  person engages, and T8 and T9 moved to the frontier. Your request to be kept
+  in step is in owner.md, dated, and the Canvas thought is in ideas.md.
+
+  The probe, in plain words
+
+  I took the estate sample, whose board carves one scan into seven things, and
+  scanned each of the seven folders by itself, so that no scan could see
+  another. Then I merged the seven graphs into one, each file named by its
+  address, the thing's name and then the path, exactly as B says. Where a scan
+  had written a call it could not serve, a route or an address or a table name,
+  the merged graph matched that label against the doors the other things
+  publish. Then the unchanged join drew the board over it, and I compared every
+  wire with the one-scan build's. The record with the numbers and five pictures
+  is two-scans.md (AI-Agent-Workspace/Probes/2026-10-09/two-scans.md); nothing
+  under packages/ changed, and the script was disposable.
+
+  Eight of the eleven wires came out the same. The pictures tell it fastest: one
+  scan (AI-Agent-Workspace/Probes/2026-10-09/two-scans/one-scan-world-map.png)
+  beside seven scans
+  (AI-Agent-Workspace/Probes/2026-10-09/two-scans/seven-scans-world-map.png).
+  Addresses crossed with no loss, and so did the table and the procedure. The
+  three that did not:
+
+  - The portal's two calls to the gateway. Scanned alone, the portal's HTTP
+    client got linked to the portal's own controller, which serves routes of the
+    same shape for the browser script, because the matcher falls back to a
+    server at home when none is away. So the scan wrote a wrong link where it
+    should have written a label, and the estate had nothing to match.
+  - SQL Server to Oracle through the linked server. The SQL adapter writes
+    nothing at all for a name it cannot resolve. The C# adapter keeps such a
+    name as a label; the SQL one drops it.
+  - The wires to the shared Contracts library did come back, through the project
+    reference I had the probe write the way the fix would, but thirty-seven
+    file-level edges collapsed to three. At the World Map's scale the picture is
+    identical. Inside, the gateway no longer shows which classes use which
+    contract. That is the cost of carving where the facts are not whole, and
+    your rule, scan the solution root and carve inside it, is how a person
+    avoids paying it.
+
+  Two more things worth your knowing. The address-as-key worked unchanged
+  through the join, the bundle and the viewer: inside the portal
+  (AI-Agent-Workspace/Probes/2026-10-09/two-scans/seven-scans-inside-portal.png)
+  the files read portal/Web.config, and a pinned wire's evidence reads an
+  address on each side. And "what a thing stands on" is read from the doc's
+  lines rather than the graph's edges, so after the estate linked the project
+  reference, Contracts was still listed as something three things stand on. The
+  build has to read that from the edges instead.
+
+  Two forks for you
+
+  1. A server's HTTP client that only its own project serves. Keep today's
+     fallback, and a thing scanned alone mislinks its outbound calls and hides
+     them from the estate. Or: a server's client never links to its own project,
+     an unserved call stays a label with its basis, and the estate matches it
+     across things. The cost is one rare shape, a process calling its own routes
+     over HTTP in a single scan, which loses that edge. I recommend the change.
+  2. How much the SQL adapter writes of what it cannot resolve. Narrow: only
+     names through a linked server. Wide: every object a script names that the
+     scan does not declare, with the sys and INFORMATION_SCHEMA schemas as
+     builtins. Your database project of record is the case for wide, since it
+     names tables of another database and today those names vanish. I recommend
+     wide.
+
+  The record ends with what the build would contain once these are settled: the
+  two adapter fixes with tests, the route rule per your word, an estate graph
+  module in the engine with the estate as its integration test and the Contracts
+  collapse stated in the test rather than hidden, standing-on read from the
+  edges, the bundle build taking a board and scanning each outermost From alone,
+  the generator's warning for a nested scan, the boards design doc brought
+  current, and T1 closed. The World Map's modules stay untouched, because the
+  estate graph reaches them as one graph and one board. Your word on the two
+  forks, and a yes to that list, and I build it.
