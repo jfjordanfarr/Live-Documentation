@@ -2727,3 +2727,70 @@ close's changes" completed (exit code 0)
 
 ● The closing reply is recorded and the last gate is running over the record and
   summary. When it reports, I confirm the final commit and send that reply.
+
+● Background command "Record the closing reply and the commit hash, check links,
+run the gate, and commit the record and summary by path if it passes" completed
+(exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Your export changed on disk once more after the closing commits, so I am
+  committing that seventh copy as received with its inventory entry, after one
+  more gate run. The closing reply follows it.
+
+● Background command "Update the export's inventory entry, run the gate, and
+commit the owner's seventh export as received if it passes" completed (exit code
+0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The chat is wrapped up. The closing commit is 3faea78c and the tree is clean.
+  Nothing of the World Map was built.
+
+  On how I wrote to you. You are right, and the fault was specific. I used the
+  word "map" for two different things, the product's World Map and the markdown
+  document for planning its design, and I did not say which until you asked.
+  When you said you needed more context, I answered with "rather than describe
+  it a third time", which counted my attempts instead of fixing my explanation.
+  That minimized your concern. The onus is mine. Your words on this are in
+  owner.md as standing guidance for how I write here: when you say you did not
+  understand, I start again in plain words, name the distinction that was
+  missing, and do not count the earlier tries. On your wider worry about where
+  the frontier is heading, the only honest answer is that the signal reached me
+  because you said it plainly, and that it now sits where every session reads it
+  first.
+
+  What the next chat starts from. The plan is in the repository at
+  .mdmd/layer-3/world-map.mdmd.md. In plain terms it is the World Map's design
+  document, written as a plan first. It holds what "done" means; the thirteen
+  scenarios every idea is walked through on paper before code; the five standing
+  rules, no network calls among them; the decisions already made, including
+  today's; twelve open questions, each with what blocks it; the fog; what is out
+  of scope; and the ideas you already withdrew. Your doubt about zooming as the
+  switch is written into ticket T8 in your own words, and the Local Map's
+  automatic switch to the Force Graph is named there as a standing defect to fix
+  with it. The questions nothing blocks are T1, what a thing is when two
+  directories are opened with no board; T2, this repository's board as its
+  delivery shape, drawn with imagined things; T3, where declared facts live and
+  who writes positions; T4, which CI/CD and infrastructure files are a source;
+  and T5, what a closed region shows on its boundary.
+
+  What else happened at the close. Your message is in the record verbatim, with
+  this reply after it. The session's summary is written, twelve turns and
+  seventeen commits, and the inventory names it and your export's sixth copy.
+  direction.md's Next now says to build the World Map from the plan in a fresh
+  chat. The boards doc links the plan. owner.md carries three things from today
+  in your words: how to write for you, zooming as the switch in doubt, and files
+  on disk over network calls. ideas.md carries the SBOM tendrils and the facts
+  on the Microsoft tool.
+
+  For the fresh chat. The bootstrap routine will read the summary and then the
+  plan. One line starts the build: "Build the World Map from
+  .mdmd/layer-3/world-map.mdmd.md, starting from its frontier." If you want T8,
+  the transition, settled before any drawing, say so first; the plan ranks it
+  behind T1, which is my reading and not your decision.
+
+  Two commits followed the one above, after this reply was recorded: b00ab995
+  holds the reply in the record with the closing hash, and 43aae964 keeps the
+  seventh copy of your export as received, since it changed on disk again after
+  the close. The tree is clean at 43aae964.
