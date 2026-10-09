@@ -1191,22 +1191,22 @@ function contractDependencies(
     for (const server of servers) link(server.location.sourcePath, server.name);
   }
 
-  const objects: Array<{ name: SqlObjectName; raw: string; called: boolean }> = [];
+  const objects: Array<{ name: SqlObjectName; raw: string }> = [];
   for (const use of facts.sqlUses) {
     const text = foldString(use, facts, table, undefined);
     if (text === undefined) continue;
     for (const reference of sqlReferences(text)) {
-      objects.push({ name: reference.name, raw: reference.raw, called: reference.verb.startsWith("EXEC") });
+      objects.push({ name: reference.name, raw: reference.raw });
     }
   }
   for (const use of facts.tableUses) {
     const text = foldString(use, facts, table, undefined);
-    if (text) objects.push({ name: sqlObjectName(text), raw: text, called: true });
+    if (text) objects.push({ name: sqlObjectName(text), raw: text });
   }
   for (const object of objects) {
     const declared = symbolIndex ? matchSqlObject(object.name, symbolIndex) : [];
     if (declared.length === 0) {
-      if (object.called) unresolved.add(object.raw);
+      unresolved.add(object.raw);
       continue;
     }
     for (const target of declared) link(target.location.sourcePath, target.name);

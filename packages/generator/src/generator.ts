@@ -112,6 +112,14 @@ export async function generateLiveDocs(
 
   const includeSet = new Set<string>((options.include ?? []).map((entry) => normalizeWorkspacePath(entry)));
 
+  // A scan never lies inside another scan: say so when this one would, either way round.
+  for (const outer of await scansAbove(workspaceRoot, normalizedConfig)) {
+    logger.warn(`This folder lies inside a scan at ${outer}; a scan never lies inside another scan. Point at one of them.`);
+  }
+  for (const inner of await scansWithin(workspaceRoot, normalizedConfig)) {
+    logger.warn(`A scan lies inside this folder at ${inner}; a scan never lies inside another scan. Point at one of them.`);
+  }
+
   const targetFiles = await discoverTargetFiles({
     workspaceRoot,
     config: normalizedConfig,
@@ -276,6 +284,47 @@ export async function generateLiveDocs(
     deletedFiles,
     index
   };
+}
+
+/** The ancestor folders that are scans of their own: a docs root or a configuration file of this tool above the workspace. */
+async function scansAbove(workspaceRoot: string, config: LiveDocumentationConfig): Promise<string[]> {
+  const found: string[] = [];
+  let current = path.dirname(workspaceRoot);
+  for (let depth = 0; depth < 64 && current !== path.dirname(current); depth += 1) {
+    if (await isScan(current, config)) {
+      found.push(current);
+    }
+    current = path.dirname(current);
+  }
+  return found;
+}
+
+/** The folders below the workspace that are scans of their own, as workspace-relative paths. */
+async function scansWithin(workspaceRoot: string, config: LiveDocumentationConfig): Promise<string[]> {
+  const docsRoot = normalizeWorkspacePath(path.join(config.root, config.baseLayer));
+  const patterns = [`**/${docsRoot}`, "**/.live-docs.config.json"];
+  const matches = await glob(patterns, { cwd: workspaceRoot, dot: true, ignore: ["**/node_modules/**", `${config.root}/**`], windowsPathsNoEscape: true });
+  const folders = new Set<string>();
+  for (const match of matches) {
+    const relative = normalizeWorkspacePath(match);
+    const folder = relative.endsWith(docsRoot) ? relative.slice(0, -docsRoot.length).replace(/\/$/u, "") : path.posix.dirname(relative);
+    if (folder !== "" && folder !== ".") {
+      folders.add(folder);
+    }
+  }
+  return [...folders].sort();
+}
+
+async function isScan(folder: string, config: LiveDocumentationConfig): Promise<boolean> {
+  for (const candidate of [path.join(folder, config.root, config.baseLayer), path.join(folder, ".live-docs.config.json")]) {
+    try {
+      await fs.stat(candidate);
+      return true;
+    } catch {
+      // Not there.
+    }
+  }
+  return false;
 }
 
 function resolveLiveDocPaths(

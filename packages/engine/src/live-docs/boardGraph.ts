@@ -17,7 +17,7 @@
 
 import { DOOR_KINDS, type Board, type BoardIssue, type Door, type Thing } from "./board";
 import { symbolName } from "./document";
-import type { GraphFile, LiveDocGraph } from "./graph";
+import type { EdgeBasis, GraphFile, LiveDocGraph } from "./graph";
 import { MANIFEST_KINDS } from "./openings";
 
 // ============================================================================
@@ -63,6 +63,15 @@ export interface StandsOn {
   manifest: string;
 }
 
+/** A ghost: what files of a thing name and nothing on the board serves, a route, an address or a database object, with the basis it was named under. */
+export interface Ghost {
+  /** The name as the doc writes it. */
+  label: string;
+  basis: EdgeBasis;
+  /** The files that name it, sorted. */
+  files: string[];
+}
+
 /** A door a thing serves, with the file whose doc publishes it; no file when the board declares the door. */
 export interface ServedDoor extends Door {
   file?: string;
@@ -79,6 +88,8 @@ export interface BoardThing {
   doors: ServedDoor[];
   /** What its manifests name that nothing in the workspace answers to, without repeats. */
   standsOn: StandsOn[];
+  /** What its files name under a basis that nothing on the board serves, one ghost per name and basis. */
+  ghosts: Ghost[];
 }
 
 /** A board joined to the graph. */
@@ -102,13 +113,12 @@ export interface BoardGraph {
  */
 export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: string): BoardGraph {
   const issues: BoardIssue[] = [];
-  const boardDir = dirname(boardPath);
 
   const things: BoardThing[] = board.things.map((thing) => {
-    const entry: BoardThing = { thing, files: [], doors: [], standsOn: [] };
+    const entry: BoardThing = { thing, files: [], doors: [], standsOn: [], ghosts: [] };
     if (thing.from !== undefined) {
-      const folder = normalizePath(`${boardDir}/${thing.from}`);
-      if (folder.startsWith("../") || folder === ".." || folder.startsWith("/")) {
+      const folder = folderOf(thing.from, boardPath);
+      if (folder === undefined) {
         issues.push({ message: `${thing.name} comes from ${thing.from}, which is outside the workspace` });
       } else {
         entry.folder = folder;
@@ -141,20 +151,31 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
       }
     };
     const seenLabels = new Set<string>();
+    const ghosts = new Map<string, Ghost>();
     for (const codePath of entry.files) {
       const file = graph.files[codePath];
       for (const door of doorsOf(file)) {
         addDoor({ ...door, file: codePath });
       }
-      if (file.symbols.some((symbol) => MANIFEST_KINDS.has(symbol.kind))) {
-        for (const dependency of file.dependencies) {
-          if (dependency.link === undefined && !seenLabels.has(dependency.label)) {
-            seenLabels.add(dependency.label);
-            entry.standsOn.push({ label: dependency.label, manifest: codePath });
+      const manifest = file.symbols.some((symbol) => MANIFEST_KINDS.has(symbol.kind));
+      for (const edge of file.edges) {
+        if (edge.to !== undefined || (edge.kind !== "import" && edge.kind !== "re-export")) {
+          continue;
+        }
+        if (edge.basis !== undefined) {
+          const key = `${edge.basis}\u0000${edge.label}`;
+          const ghost = ghosts.get(key) ?? { label: edge.label, basis: edge.basis, files: [] };
+          if (!ghost.files.includes(codePath)) {
+            ghost.files.push(codePath);
           }
+          ghosts.set(key, ghost);
+        } else if (manifest && edge.link === undefined && !seenLabels.has(edge.label)) {
+          seenLabels.add(edge.label);
+          entry.standsOn.push({ label: edge.label, manifest: codePath });
         }
       }
     }
+    entry.ghosts = [...ghosts.values()].sort((a, b) => compare(a.basis, b.basis) || compare(a.label, b.label));
     for (const door of entry.thing.serves) {
       addDoor(door);
     }
@@ -203,6 +224,15 @@ export function deriveBoardGraph(board: Board, graph: LiveDocGraph, boardPath: s
   }
 
   return { things, wires: [...wires.values()].sort(compareWires), issues };
+}
+
+/**
+ * The workspace-relative folder a `From` line names, resolved against the board's folder;
+ * undefined when it leaves the workspace.
+ */
+export function folderOf(from: string, boardPath: string): string | undefined {
+  const folder = normalizePath(`${dirname(boardPath)}/${from}`);
+  return folder.startsWith("../") || folder === ".." || folder.startsWith("/") ? undefined : folder;
 }
 
 /** The doors a file serves: its public symbols whose kind is an opening kind. */

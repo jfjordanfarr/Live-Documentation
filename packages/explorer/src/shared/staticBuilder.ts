@@ -19,8 +19,9 @@ import {
     normalizeLiveDocumentationConfig,
     type LiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { renderLiveDoc } from "@live-documentation/engine/live-docs/document";
-import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { parseBoard } from "@live-documentation/engine/live-docs/board";
+import { LiveDocSyntaxError, renderLiveDoc } from "@live-documentation/engine/live-docs/document";
+import { readEstateGraph, readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 
 import { scanAndBundleMarkdown } from "./bundledMarkdownScanner";
 import type { StaticExplorerData } from "./staticExplorerData";
@@ -84,8 +85,15 @@ export async function buildStaticExplorer(
     logger.log(`Building static explorer for ${workspaceRoot}...`);
     await fs.mkdir(outputDir, { recursive: true });
 
+    let board: StaticExplorerData["board"];
+    if (boardPath) {
+        const absolute = path.resolve(workspaceRoot, boardPath);
+        const relative = path.relative(workspaceRoot, absolute).split(path.sep).join("/");
+        board = { path: relative, text: await fs.readFile(absolute, "utf8") };
+    }
+
     logger.log("Reading the graph...");
-    const graph = await readLiveDocGraph({ workspaceRoot, config });
+    const graph = await readGraph(workspaceRoot, config, board, logger);
     const files = Object.values(graph.files);
     const edgeCount = files.reduce((count, file) => count + file.outbound.length, 0);
     logger.log(`Graph: ${files.length} files, ${edgeCount} edges`);
@@ -113,11 +121,9 @@ export async function buildStaticExplorer(
         bundledMarkdownTree: bundledMarkdownCount > 0 ? bundledMarkdownTree : undefined,
         relatedDocLinks: relatedDocLinks.length > 0 ? relatedDocLinks : undefined
     };
-    if (boardPath) {
-        const absolute = path.resolve(workspaceRoot, boardPath);
-        const relative = path.relative(workspaceRoot, absolute).split(path.sep).join("/");
-        staticData.board = { path: relative, text: await fs.readFile(absolute, "utf8") };
-        logger.log(`Board: ${relative}`);
+    if (board) {
+        staticData.board = board;
+        logger.log(`Board: ${board.path}`);
     }
 
     const dataFile = path.join(outputDir, "explorer-data.json");
@@ -151,6 +157,25 @@ export async function buildStaticExplorer(
             totalSizeBytes: totalSize
         }
     };
+}
+
+/** The workspace's graph, or, with a board, the graph of the estate its things name, one scan or several. */
+async function readGraph(workspaceRoot: string, config: LiveDocumentationConfig, board: StaticExplorerData["board"], logger: Pick<Console, "log" | "error">) {
+    if (!board) {
+        return readLiveDocGraph({ workspaceRoot, config });
+    }
+    let parsed;
+    try {
+        parsed = parseBoard(board.text);
+    } catch (error) {
+        throw error instanceof LiveDocSyntaxError ? new Error(`${board.path}: ${error.message}`) : error;
+    }
+    const reading = await readEstateGraph({ workspaceRoot, config, board: parsed, boardPath: board.path });
+    logger.log(`Scans: ${reading.scans.map((scan) => scan || "the workspace root").join(", ") || "none"}`);
+    for (const issue of reading.issues) {
+        logger.error(issue);
+    }
+    return reading.graph;
 }
 
 function formatBytes(bytes: number): string {

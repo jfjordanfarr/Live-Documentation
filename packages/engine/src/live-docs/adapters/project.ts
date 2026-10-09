@@ -4,9 +4,12 @@
  * The project is the file's one public symbol, and its kind says what the
  * project builds: a `library`, a `program`, or a `web` application. Its
  * dependencies are its project references, linked to the project files they
- * name; its package references, external as `name@version`; and its assembly
- * references, external by name. Compiled files are not listed: a system is a
- * folder, and the folder already says which files belong to it.
+ * name, or kept as the referenced project's name when the file lies outside
+ * the scan or does not exist, so that a map of several scans can match the
+ * name to the project that publishes it; its package references, external as
+ * `name@version`; and its assembly references, external by name. Compiled
+ * files are not listed: a system is a folder, and the folder already says
+ * which files belong to it.
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -55,11 +58,15 @@ export const projectAdapter: LanguageAdapter = {
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const symbols: PublicSymbolEntry[] = [{ name: projectName(thisFile, content), kind: projectKind(content), location: { line: 1, character: 1 } }];
 
-    const projects: DependencyEntry[] = [];
+    const projects = new Map<string, DependencyEntry>();
     for (const match of content.matchAll(PROJECT_REFERENCE)) {
       const referenced = await resolveProjectReference(match[1], absolutePath, workspaceRoot, fileIndex);
-      if (!referenced) continue;
-      projects.push({ specifier: referenced, resolvedPath: referenced, symbols: [referencedProjectName(referenced, symbolIndex)], kind: "import" });
+      if (referenced) {
+        projects.set(referenced, { specifier: referenced, resolvedPath: referenced, symbols: [referencedProjectName(referenced, symbolIndex)], kind: "import" });
+      } else {
+        const name = projectStem(match[1]);
+        projects.set(name, { specifier: name, symbols: [], kind: "import" });
+      }
     }
 
     const external = new Set<string>();
@@ -73,12 +80,17 @@ export const projectAdapter: LanguageAdapter = {
     }
 
     const dependencies = [
-      ...projects.sort((left, right) => left.specifier.localeCompare(right.specifier)),
+      ...Array.from(projects.values()).sort((left, right) => left.specifier.localeCompare(right.specifier)),
       ...Array.from(external).sort().map((specifier) => ({ specifier, symbols: [], kind: "import" as const }))
     ];
     return { symbols, dependencies };
   }
 };
+
+/** The name a project reference stands for when its file cannot be found: the file's stem. */
+function projectStem(include: string): string {
+  return path.basename(include.replace(/\\/gu, "/")).replace(/\.[^.]+$/u, "");
+}
 
 /** The workspace-relative path of a referenced project file, when it exists. */
 async function resolveProjectReference(include: string, projectFile: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined): Promise<string | undefined> {

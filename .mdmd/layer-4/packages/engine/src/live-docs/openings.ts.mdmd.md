@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/openings.ts
-- Generated At: 2026-10-08T19:04:55.348Z
+- Generated At: 2026-10-09T20:42:16.370Z
 
 ## Authored
 ### Purpose
@@ -235,14 +235,22 @@ A database object some script declares, as the symbol index records it.
 ##### `declaredSqlObjects` — Summary
 Every procedure, table, view and function symbol of the workspace, read once per index.
 
-#### `matchSqlObject` {#symbol-matchsqlobject}
+#### `sqlNameMatches` {#symbol-sqlnamematches}
 - Type: function
 - Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L330)
+- Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `declared`: [`SqlObjectName`](#symbol-sqlobjectname-interface)
+
+##### `sqlNameMatches` — Summary
+True when a written name names the declared object: schema and object when both are written, the object alone otherwise.
+
+#### `matchSqlObject` {#symbol-matchsqlobject}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L338)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
 ##### `matchSqlObject` — Summary
-The declared objects a name matches: schema and object when both are written, the object alone otherwise.
+The declared objects a name matches, by {@link sqlNameMatches}.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

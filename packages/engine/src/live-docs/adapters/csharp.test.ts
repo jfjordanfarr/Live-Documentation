@@ -367,7 +367,7 @@ describe("csharpAdapter", () => {
       ]);
     });
 
-    it("links a data context to its connection string, and to the procedure and table it names, folding constants", async () => {
+    it("links a data context to its connection string and to the procedure and table it names, folding constants, and keeps by name an object nothing declares", async () => {
       await write("PaymentService/App.config", ["<configuration><connectionStrings><add name=\"PaymentsDb\" connectionString=\"x\" /></connectionStrings></configuration>"]);
       const contextPath = await write("PaymentService/Data/PaymentsContext.cs", [
         "using System.Data.Entity;",
@@ -395,7 +395,8 @@ describe("csharpAdapter", () => {
       expect(result?.dependencies).toEqual([
         { specifier: "PaymentService/App.config",       resolvedPath: "PaymentService/App.config",       symbols: ["PaymentsDb"],          kind: "import" },
         { specifier: "Database/dbo.Payment.sql",         resolvedPath: "Database/dbo.Payment.sql",         symbols: ["dbo.Payment"],         kind: "import", basis: "contract" },
-        { specifier: "Database/dbo.usp_PostPayment.sql", resolvedPath: "Database/dbo.usp_PostPayment.sql", symbols: ["dbo.usp_PostPayment"], kind: "import", basis: "contract" }
+        { specifier: "Database/dbo.usp_PostPayment.sql", resolvedPath: "Database/dbo.usp_PostPayment.sql", symbols: ["dbo.usp_PostPayment"], kind: "import", basis: "contract" },
+        { specifier: "dbo.Audit",                        symbols: [], kind: "import", basis: "contract" }
       ]);
     });
   });

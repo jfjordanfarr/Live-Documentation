@@ -13,6 +13,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 ### Notes
 - After the docs are written, every doc on disk is read back through the grammar and the graph derived from them is written to `<root>/index.json` (since 2026-09-28). A preserved orphan the grammar refuses fails that step with its path and line; the docs already written stay written. A dry run writes nothing, the index included.
 - A doc is rewritten only when its rendered text differs from what is on disk, and only then does its `Generated At` line move.
+- Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) a run warns when the folder lies inside a scan, a docs root or a configuration file of this tool above it, and when a scan lies inside the folder, found by one walk for the docs root's and the configuration file's names below it; a scan never lies inside another scan, the owner's rule for the World Map, and the warning says to point at one of them. It warns and does not refuse, since the generator cannot know whether the other scan is current or abandoned.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

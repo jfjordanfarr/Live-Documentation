@@ -169,3 +169,49 @@ describe("generateLiveDocs pruning", () => {
     expect(infoMessages.some((message) => message.includes("Deleted stale Live Doc"))).toBe(true);
   });
 });
+
+describe("generateLiveDocs and nested scans", () => {
+  let workspaceRoot: string;
+  const warnings: string[] = [];
+  const logger = { info: () => undefined, warn: (message: string) => { warnings.push(message); }, error: () => undefined };
+
+  beforeEach(async () => {
+    warnings.length = 0;
+    workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-nested-"));
+    await fs.mkdir(path.join(workspaceRoot, "packages", "foo", "src"), { recursive: true });
+    await fs.writeFile(path.join(workspaceRoot, "packages", "foo", "src", "index.ts"), "export const one = 1;\n", "utf8");
+  });
+
+  afterEach(async () => {
+    await fs.rm(workspaceRoot, { recursive: true, force: true });
+  });
+
+  it("warns when a scan lies inside the folder being scanned, by its docs root or its configuration file", async () => {
+    await fs.mkdir(path.join(workspaceRoot, "packages", "foo", DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer), { recursive: true });
+    await fs.mkdir(path.join(workspaceRoot, "packages", "bar"), { recursive: true });
+    await fs.writeFile(path.join(workspaceRoot, "packages", "bar", ".live-docs.config.json"), "{}\n", "utf8");
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] });
+
+    await generateLiveDocs({ workspaceRoot, config, logger });
+
+    expect(warnings).toEqual([
+      "A scan lies inside this folder at packages/bar; a scan never lies inside another scan. Point at one of them.",
+      "A scan lies inside this folder at packages/foo; a scan never lies inside another scan. Point at one of them."
+    ]);
+  });
+
+  it("warns when the folder being scanned lies inside a scan", async () => {
+    await fs.mkdir(path.join(workspaceRoot, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer), { recursive: true });
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+
+    await generateLiveDocs({ workspaceRoot: path.join(workspaceRoot, "packages", "foo"), config, logger });
+
+    expect(warnings).toEqual([`This folder lies inside a scan at ${workspaceRoot}; a scan never lies inside another scan. Point at one of them.`]);
+  });
+
+  it("says nothing when no scan nests", async () => {
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] });
+    await generateLiveDocs({ workspaceRoot, config, logger });
+    expect(warnings).toEqual([]);
+  });
+});

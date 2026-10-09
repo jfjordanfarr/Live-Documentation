@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/sql.ts
-- Generated At: 2026-09-28T16:48:38.737Z
+- Generated At: 2026-10-09T20:42:15.918Z
 
 ## Authored
 ### Purpose
@@ -14,13 +14,14 @@ The adapter for SQL scripts. What a script creates, a procedure, a table, a view
 - Written on 2026-09-28 for the openings ([Turn 34](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-34)), so that the estate's posting procedure, which reads an Oracle table through a linked server, has an edge to that table's script. The owner's own chain ends there: "stored procedures in an onprem MS SQL Server, which itself may perform OraQueries into the (yuck) Oracle database at the center of everything" (their words of 2026-09-27 07:32 UTC in [the September 26 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/2026-09-26.1.md)). The scanning itself, declarations, references and the folding of names, lives in `openings.ts` so that the C# adapter reads SQL held in strings the same way; this file only maps it to symbols and dependencies.
 - The whole adapter is one pass of regular expressions over the script with its comments and strings blanked; it reads the T-SQL and Oracle forms of `CREATE` and no dialect in full. [Openings](../../../../../../layer-3/openings.mdmd.md) names SQL Server's ScriptDom as a possible oracle; nothing measures this adapter against a parser yet.
 - Measured by `sql.test.ts`.
+- Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) a name the script uses that nothing in the scan creates is kept as written, a contract by name, the owner's choice of the wide rule with no builtins since the system schemas differ by database; a name the script itself creates is never kept. [The probe](../../../../../../../AI-Agent-Workspace/Probes/2026-10-09/two-scans.md) found the SQL Server to Oracle wire lost when the two databases were scanned apart, because the linked-server name was dropped; now it is a ghost of the script's doc that the estate graph matches to the table's.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `sqlAdapter` {#symbol-sqladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L20)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/sql.ts#L22)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `sqlAdapter` — Summary
@@ -37,6 +38,8 @@ Language adapter for SQL scripts: created objects as symbols, named objects as d
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`openings.matchSqlObject`](../openings.ts.mdmd.md#symbol-matchsqlobject)
 - [`openings.sqlDeclarations`](../openings.ts.mdmd.md#symbol-sqldeclarations)
+- [`openings.sqlNameMatches`](../openings.ts.mdmd.md#symbol-sqlnamematches)
+- [`openings.sqlObjectName`](../openings.ts.mdmd.md#symbol-sqlobjectname-function)
 - [`openings.sqlReferences`](../openings.ts.mdmd.md#symbol-sqlreferences)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

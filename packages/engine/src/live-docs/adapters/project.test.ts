@@ -17,7 +17,7 @@ describe("projectAdapter", () => {
     await fs.rm(workspaceRoot, { recursive: true, force: true });
   });
 
-  it("publishes the project and links its project, package and assembly references", async () => {
+  it("publishes the project, links its project references, keeps the ones it cannot find by name, and lists package and assembly references", async () => {
     await fs.mkdir(path.join(workspaceRoot, "Gateway"), { recursive: true });
     await fs.mkdir(path.join(workspaceRoot, "Contracts"), { recursive: true });
     await fs.writeFile(path.join(workspaceRoot, "Contracts", "Contracts.csproj"), "<Project Sdk=\"Microsoft.NET.Sdk\"></Project>\n", "utf8");
@@ -37,6 +37,8 @@ describe("projectAdapter", () => {
       "  <ItemGroup>",
       "    <ProjectReference Include=\"..\\Contracts\\Contracts.csproj\" />",
       "    <ProjectReference Include=\"../Missing/Missing.csproj\" />",
+      "    <ProjectReference Include=\"..\\..\\Elsewhere\\Elsewhere.csproj\" />",
+      "    <ProjectReference Include=\"../../Elsewhere/Elsewhere.csproj\" />",
       "  </ItemGroup>",
       "</Project>"
     ].join("\n"), "utf8");
@@ -49,6 +51,8 @@ describe("projectAdapter", () => {
     expect(result?.symbols).toEqual([{ name: "Gateway", kind: "library", location: { line: 1, character: 1 } }]);
     expect(result?.dependencies).toEqual([
       { specifier: "Contracts/Contracts.csproj", resolvedPath: "Contracts/Contracts.csproj", symbols: ["Estate.Contracts"], kind: "import" },
+      { specifier: "Elsewhere",                          symbols: [], kind: "import" },
+      { specifier: "Missing",                            symbols: [], kind: "import" },
       { specifier: "EntityFramework",                    symbols: [], kind: "import" },
       { specifier: "Microsoft.AspNet.WebApi.Core@5.3.0", symbols: [], kind: "import" },
       { specifier: "Newtonsoft.Json@13.0.3",             symbols: [], kind: "import" },

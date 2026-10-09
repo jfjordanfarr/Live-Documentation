@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * Reads a board, checks it, joins it to the workspace's docs, and prints what
- * the World Map would draw: each thing with its files and doors, every wire
- * between things with its basis, and what the join found wanting.
+ * Reads a board, checks it, joins it to the docs of the scans its things name,
+ * and prints what the World Map would draw: each thing with its files, doors,
+ * what it stands on and its ghosts, every wire between things with its basis,
+ * and what the reading and the join found wanting.
  *
  * Usage:
  *   npm run live-docs:board -- <board.md> [--workspace <dir>] [--config <file>]
@@ -19,7 +20,7 @@ import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } f
 import { lintBoard, parseBoard } from "@live-documentation/engine/live-docs/board";
 import { deriveBoardGraph, type BoardGraph } from "@live-documentation/engine/live-docs/boardGraph";
 import { LiveDocSyntaxError } from "@live-documentation/engine/live-docs/document";
-import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { readEstateGraph } from "@live-documentation/engine/live-docs/graphFiles";
 
 interface ParsedArgs {
   help: boolean;
@@ -76,8 +77,9 @@ function usage(): string {
 }
 
 /** The lines the report prints. */
-function renderBoardReport(boardPath: string, title: string, derived: BoardGraph): string[] {
+function renderBoardReport(boardPath: string, title: string, scans: string[], derived: BoardGraph, wanting: string[]): string[] {
   const lines: string[] = [`${title} (${boardPath})`, ""];
+  lines.push(`Scans (${scans.length}): ${scans.map((scan) => scan || "the workspace root").join(", ") || "none"}`, "");
   lines.push(`Things (${derived.things.length}):`);
   for (const entry of derived.things) {
     const kind = entry.thing.kind ? ` (${entry.thing.kind})` : "";
@@ -90,6 +92,9 @@ function renderBoardReport(boardPath: string, title: string, derived: BoardGraph
     if (entry.standsOn.length) {
       lines.push(`    stands on ${entry.standsOn.map((item) => item.label).join(", ")}`);
     }
+    for (const ghost of entry.ghosts) {
+      lines.push(`    ghost ${ghost.label} (${ghost.basis}) from ${ghost.files.join(", ")}`);
+    }
   }
   lines.push("", `Wires (${derived.wires.length}):`);
   for (const wire of derived.wires) {
@@ -98,10 +103,11 @@ function renderBoardReport(boardPath: string, title: string, derived: BoardGraph
     const count = wire.edges > 1 ? `  x${wire.edges}` : "";
     lines.push(`  ${wire.from} -> ${wire.to}${door}${over}  [${wire.basis}]${count}`);
   }
-  if (derived.issues.length) {
-    lines.push("", `Wanting (${derived.issues.length}):`);
-    for (const issue of derived.issues) {
-      lines.push(`  ${issue.message}`);
+  const issues = [...wanting, ...derived.issues.map((issue) => issue.message)];
+  if (issues.length) {
+    lines.push("", `Wanting (${issues.length}):`);
+    for (const issue of issues) {
+      lines.push(`  ${issue}`);
     }
   }
   return lines;
@@ -145,9 +151,9 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const graph = await readLiveDocGraph({ workspaceRoot, config });
-  const derived = deriveBoardGraph(board, graph, boardPath);
-  console.log(renderBoardReport(boardPath, board.title, derived).join("\n"));
+  const reading = await readEstateGraph({ workspaceRoot, config, board, boardPath });
+  const derived = deriveBoardGraph(board, reading.graph, boardPath);
+  console.log(renderBoardReport(boardPath, board.title, reading.scans, derived, reading.issues).join("\n"));
 }
 
 if (require.main === module) {

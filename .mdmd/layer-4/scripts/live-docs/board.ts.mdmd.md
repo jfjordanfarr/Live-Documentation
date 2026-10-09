@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/board.ts
-- Generated At: 2026-10-08T19:04:57.655Z
+- Generated At: 2026-10-09T20:42:18.848Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ The command `npm run live-docs:board -- <board.md>`: reads a board, refuses a fa
 ### Notes
 - Written on 2026-09-28 with the grammar ([Turn 45](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-45)) as the headless peer of the World Map, under the rule that whatever a person can learn by clicking they can learn by a command. It reads the graph through `readLiveDocGraph`, so it knows what the docs know and nothing more.
 - The report is the join the Explorer draws, `deriveBoardGraph`, printed; a difference between the two is a bug in one of them. The design is [Boards](../../../layer-3/boards.mdmd.md).
+- Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) it reads the graph through `readEstateGraph`, prints the scans it read, lists each thing's ghosts after what it stands on, and reports a scan found inside another under Wanting, so that it stays the headless peer of a World Map drawn over several scans.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -32,5 +33,5 @@ _No public symbols detected_
 - [`BoardGraph`](../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-boardgraph)
 - [`boardGraph.deriveBoardGraph`](../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-deriveboardgraph)
 - [`document.LiveDocSyntaxError`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
-- [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`graphFiles.readEstateGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readestategraph)
 <!-- LIVE-DOC:END Dependencies -->

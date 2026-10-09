@@ -2018,3 +2018,447 @@
   current, and T1 closed. The World Map's modules stay untouched, because the
   estate graph reaches them as one graph and one board. Your word on the two
   forks, and a yes to that list, and I build it.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ The probe pictures are phenomenal. Your methodology for mixing scans is
+  really great.
+
+  >Keep today's fallback, and a thing scanned alone mislinks its outbound calls
+  and hides them from the estate. Or: a server's client never links to its own
+  project, an unserved call stays a label with its basis, and the estate
+  matches it across things. The cost is one rare shape, a process calling its
+  own routes over HTTP in a single scan, which loses that edge. I recommend the
+  change.
+
+  Based on the different ways in which I have seen such things structured in
+  codebases, I can say that this makes me feel uneasy. I've seen client classes
+  built alongside their APIs so that it's very easy to consume. I've seen
+  client classes built in other projects to consume other servers.
+
+  And it occurs to me that some of the interactions I really care about are
+  actually between symbols _across_ scanned "things". I almost wonder if the
+  canvas is where someone can pull ingredients from systems and show how they
+  interface directly? Gosh. Hmm... To put my confusion another way, let me
+  speak this scenario: Suppose I am looking at a local map of just one side of
+  an interaction between two applications. If it's like a simple API route kind
+  of interaction (or WCF contract if you're old-school), it shouldn't be that
+  bad to draw a Local Map that includes nodes from _both_ codebases. They would
+  appear in different root membranes.
+
+  I guess I'm just wondering what I want here too. If cross-system interactions
+  really need to be viewed up close... hmmm gosh it's like... it's like the
+  software could really use a concept of "space in which to declare things by
+  fiat and preserve them". But what if a World Map is just one thing you might
+  do with such a canvas? And could you have many canvases over your scanned
+  directories? Is opening this software locally like opening some kind of
+  knowledge hub over your software you care about? And if you could declare
+  multiple "canvases" (which is already getting pretty hairy/crazy I think?),
+  how does sharing and all that work? Oh man it gets really hairy. I hope you
+  can see what I'm gesturing at here though. We have a system which builds
+  really reliable markdown representing one directory's connectivities
+  recursively and ways to visualize that high-confidence map. But then when it
+  comes to taking those high-confidence maps and turning them into
+  even-more-digestible/shareable things that can be reasoned about more widely,
+  that's where I'm kinda running in circles. There is so much one could
+  reasonably wish to do when describing how two well-mapped directories relate
+  to one another.
+
+  >Wide: every object a script names that the scan does not declare, with the
+  sys and INFORMATION_SCHEMA schemas as builtins.
+
+  Are those builtins true on every SQL server type? (Oracle, Postgres, MS SQL
+  Server, etc.?) If not, no need for the builtins I think? I feel like your
+  description of "wide" is more like "we created a node for every object
+  represented by code", which to me just sounds like, uh, what our software
+  already does. I'm confident that your real question is not so simple. I'm
+  clearly just not fully understanding it.
+
+  Read 3 files, ran 3 shell commands (ctrl+o to expand)
+
+● The two Local Map images over the estate graph are the relevant ones—the
+  Membrane Map image adds nothing new, so I'm excluding it. I'll now log your
+  input and the revised reading, then send my reply. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The owner re-exported the chat again. Measuring that copy, updating its
+  inventory line and committing everything, then the reply.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Recorded and committed as 90a54954, your re-export with it. Your unease was
+  right, and it changed the answer. Let me take the three things in turn.
+
+  The route fork dissolves
+
+  You named two shapes and the estate is a third. A client class built beside
+  its API, in the same project, for consumers elsewhere. A client class in
+  another project, calling another server. And the estate's portal, a front end
+  that serves api/payments for its own browser script and also calls
+  api/payments on the gateway. By the call alone, a scan cannot tell the first
+  shape from the third: in both, a client in project P calls a route that P
+  serves. So keeping the home fallback is wrong for the portal, and removing it
+  is wrong for your client-beside-its-API, and I was asking you to choose
+  between two wrongs.
+
+  What is true in every shape is that the docs never lose the route name. A call
+  nothing serves is written as a label. A call something serves is written as a
+  linked line whose target symbol is the route. So the resolution is this: the
+  scan stays exactly as it is, and the estate build matches the route name of
+  every contract edge, linked or not, against the doors of the other things, and
+  adds the cross-thing link wherever another thing serves that shape. Nothing
+  hidden, nothing changed inside a single scan. The portal's two wires to the
+  gateway come back. Your client beside its API keeps its link to its own
+  routes, and gains nothing false unless another thing happens to serve the same
+  shape. The false edge inside the portal stays as the portal's own scan saw
+  it, and you can see it up close in the Local Map at the gateway client
+  (AI-Agent-Workspace/Probes/2026-10-09/two-scans/seven-scans-local-map-gateway-
+  client.png): the portal's controller appears on both sides, as the controller
+  the client calls and as the controller that uses the client, a cycle that is
+  the smell made visible.
+
+  The weakness that remains is honest to name. Routes match by shape, and in an
+  estate of fifty things, GET api/health will be served by several of them, so a
+  client's call would be wired to each, every wire saying "from a contract"
+  with its evidence lines, which is what a single scan already does when several
+  servers match. A declared connection on the board is where a person says
+  which one is true. The fact that would settle it by evidence is the base URL
+  the client is configured with, which the docs already half-carry, as the
+  portal's Globals.cs reading Portal.GatewayBaseUrl from its Web.config.
+  Following that value to a host is the first of your seven questions in
+  scenario 1, and a later sharpening, not T1's.
+
+  The SQL question, from the start
+
+  No builtins. INFORMATION_SCHEMA is in the SQL standard and exists in SQL
+  Server, PostgreSQL and MySQL, but Oracle does not have it. sys is SQL
+  Server's; Oracle has SYS and PostgreSQL has pg_catalog. Not universal, so out,
+  as you said. That makes the question simpler, and here it is plainly.
+
+  The software already makes a symbol for every object a script creates. The
+  question is about an object a script merely names: the table after FROM or
+  INSERT INTO, the procedure after EXEC. Today, when some script in the scan
+  creates that object, the naming script's doc gets a line linking to it, and
+  that is a wire. When no script in the scan creates it, the doc gets nothing.
+  The name is dropped. So a procedure in your database project of record that
+  reads a table from another database leaves no trace of that read in its doc,
+  and the one SQL Server procedure in the estate that reads the Oracle table
+  through the linked server leaves none either, which is why that wire went
+  missing. Wide means: write the name anyway, as a dependency line without a
+  link, the way a manifest lists a package that is not here. No node is created.
+  The line says only "this script names this object, which is not in this
+  scan". The estate build then matches the name to the thing that creates it,
+  when that thing is on the board, and the World Map draws the wire; when no
+  thing creates it, it stays a name, the edge of the known world. The same rule
+  for SQL inside C# strings, where the adapter today keeps a called procedure
+  and a mapped table but drops a plain INSERT INTO dbo.Audit when nothing
+  declares it. One rule for both: a database object a file names that nothing in
+  the scan creates is written as its name. I recommend it.
+
+  What you are gesturing at
+
+  You already have it, and the probe drew it. Look at the Local Map at the
+  payment entity (AI-Agent-Workspace/Probes/2026-10-09/two-scans/seven-scans-loc
+  al-map-payment-entity.png): its one input is dbo.Payment.sql, drawn under the
+  group SQLSERVER, which is the other thing's name. Two codebases, one Local
+  Map, the other codebase's file in its own root. That needed no new concept,
+  because the estate graph the probe built is one graph whose roots are the
+  things, and every view that draws a graph draws it. The Find Path box at the
+  top of that picture would run across things today for the same reason. That is
+  T12, a path across systems symbol to symbol, with its substrate now in hand.
+
+  The rest of your gesture maps onto the plan without a new noun:
+
+  - The space to declare by fiat and preserve is the board. It has been that
+    since September 28.
+  - Many canvases over the same scans are many boards. Nothing in the grammar or
+    the join limits you to one. A board is a few lines; the scans are the
+    expensive, high-confidence part; several boards over the same scans are
+    several claims about the same facts, each a file you can keep, share or
+    throw away.
+  - Pulling two ingredients and showing how they interface is a saved opening of
+    a Local Map across things, which the bundle's exporter already chooses. If
+    a persistent, authored arrangement of files turns out to be wanted, that
+    would be a board whose things are files, a stretch of the same grammar. I
+    put it in ideas.md in your words and will not build it until a scenario
+    asks.
+  - The knowledge hub is a folder of boards and the scans they name, and opening
+    the software is opening a board. How a board travels, and whether a bundle
+    may carry several, are T3 and T6, already on the plan.
+
+  Where you felt you were running in circles, I think you were missing one
+  ingredient, not a concept. Every "more digestible, shareable thing" is a view
+  over two inputs: the estate graph, derived, which carries the cross-system
+  facts down to the symbol; and the board, written, which carries what you claim
+  and what the things are. The estate graph did not exist until today. Now it
+  exists on paper and in a probe, and the World Map, the Local Map across
+  things, a path, and a saved opening are all drawings of the same two inputs.
+
+  So the build list in the record stands with those two resolutions in place of
+  the forks: the scan untouched and the estate build matching every contract
+  edge's route name across things; the SQL rule wide with no builtins, in both
+  adapters. Say yes, or say what is still uneasy, and I build it.
+
+❯ >Routes match by shape, and in an estate of fifty things, GET api/health will
+  be served by several of them, so a client's call would be wired to each,
+  every wire saying "from a contract" with its evidence lines, which is what a
+  single scan already does when several servers match. A declared connection on
+  the board is where a person says which one is true. The fact that would
+  settle it by evidence is the base URL the client is configured with, which
+  the docs already half-carry, as the portal's Globals.cs reading
+  Portal.GatewayBaseUrl from its Web.config. Following that value to a host is
+  the first of your seven questions in scenario 1, and a later sharpening, not
+  T1's.
+
+  Oh wow that would be helpful in mapping. But less so over time as folks
+  continue to shift over to configuration services, key vaults, etc.
+
+  >When no script in the scan creates it, the doc gets nothing. The name is
+  dropped. So a procedure in your database project of record that reads a table
+  from another database leaves no trace of that read in its doc
+
+  Hmmmm dang that one really is a conundrum. You're right. A really solid
+  amount of the time, we declare our tables and procs and whatnot all in the
+  same DB project (sqlproject). But that is importantly not always the case. My
+  lord I actually have one AWFUL scenario at my work that I expect Live
+  Documentation could basically never resolve. I have these queries which have
+  their _query text_ stored as varchar(max) in an effing table in a DB that
+  _does not execute those queries_ (it is the recipient for those queries
+  though). A Powershell script in another TFS-versioned project is responsible
+  for pulling those query texts out, executing them against a data warehouse,
+  and pushing the results into the DB holding the query text.
+
+  With respect to the easier case of a piece of code referencing something that
+  you can't find -- can we make some "ghost" of that object? Some putative
+  node that we think might exist somewhere but can't verify its existence? And
+  if so, is that good enough to prevent us from needing to draw true maps that
+  span multiple scanned systems?
+
+  >The knowledge hub is a folder of boards and the scans they name, and opening
+  the software is opening a board. How a board travels, and whether a bundle
+  may carry several, are T3 and T6, already on the plan.
+
+  YES. Having a linear navigable source that tells me everything that I've been
+  scanning would be a great use of the Knowledge Hub.
+
+  >Every "more digestible, shareable thing" is a view over two inputs: the
+  estate graph, derived, which carries the cross-system facts down to the
+  symbol; and the board, written, which carries what you claim and what the
+  things are.
+
+  This is true. I just  meant that the shape of what might be useful to share
+  may take a variety of forms.
+
+  Searched for 2 patterns, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+● Recorded and committed as c4c12cf5: your words in direction.md, and three
+  lines of the plan sharpened by them. Your four points in order.
+
+  Vaults. Yes. When the value leaves the file for a configuration service or a
+  key vault, the last fact on disk is the key name the code reads, and the docs
+  can carry that and nothing more. The connection then becomes a declared one on
+  the board, and the disagreement rule you named on September 28 applies the
+  other way round: a wire that only a declaration can carry is the nudge that
+  the fact has left the code. So the base URL is a sharpening worth having where
+  it still works, and never the foundation.
+
+  The query text in a table. You are right that Live Documentation can never
+  resolve it, and it should not pretend to. The queries are rows, not files, and
+  your own rule, software that interprets what exists on disk already, puts
+  them out of reach. What the scans do see is still worth drawing: the
+  PowerShell script reads the holding database's queries table and writes its
+  results table, which the wide rule turns into ghosts and the estate build into
+  wires, and its warehouse address is a door if it sits in a config file. What
+  the queries touch inside the warehouse is a declared connection on the board,
+  drawn beside that evidence. That is exactly the case the board exists for, and
+  I put it into scenario 1 and under out of scope so nobody tries to be clever
+  about it later.
+
+  Ghosts. Yes, and the word is better than mine, so it is now the plan's. Three
+  things are true about them today. A ghost already exists on the docs: a line
+  without a link, with its basis, is the ghost of a route, an address, a
+  database object, a package or a project. The wide SQL rule is nothing more
+  than writing the ghosts the SQL adapter currently drops. And the viewer
+  already counts them, the "19 missing dependencies" in the status bar, and
+  already draws one kind: what a thing stands on, from its manifests, with a
+  token on the board for a package that more than one thing stands on. What no
+  view draws yet is a ghost for a call: a card with no file at the edge of a
+  thing's Local Map, or a name beneath a thing on the board beside what it
+  stands on, one ghost per name however many files call it.
+
+  Your real question was whether ghosts spare us the map across systems, and the
+  answer is no, but they make it cheap. A ghost is half a wire. It says "I call
+  something named this" and nothing about who answers. Only a match across
+  scans, a ghost against a door of another thing, says who, and that match is a
+  name comparison: the probe did it in a few dozen lines. So ghosts make a
+  thing's own map honest about its edges, and the estate build turns
+  ghost-meets-door into a wire with its basis. A ghost no door answers stays the
+  edge of the known world, and on the board it is the invitation you described
+  in Turn 2, a thing waiting to be pointed at the folder that serves it.
+
+  The hub. Your YES is in the fog in your words: the Knowledge Sources panel as
+  the linear, navigable list of the boards and the scans they name, each with
+  its folder, its time and its file count. It belongs with T8, how a person
+  moves between the maps, since the hub is where that movement starts. And on
+  sharing taking many forms: agreed, and the mechanism for many forms is already
+  decided, the exporter's choice of scope and opening over the same two inputs.
+
+  So the build of T1 stands as the probe record lists it, with these settled:
+  the scan unchanged and the estate build matching every contract edge's route
+  name across things; the SQL rule wide with no builtins, in both adapters; and
+  the join listing each thing's ghosts from its edges, so that drawing them is
+  the first small step after T1, with pictures. Is that a go?
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >a wire that only a declaration can carry is the nudge that the fact has left
+  the code.
+
+  Also possible: While we won't be able to easily automatically putatively
+  propose cross-system connectivity based on Key Vault strings, they _are_
+  still symbols with values. We can know that the internals of a software
+  system use whatever comes out of that symbol to connect somewhere, and that
+  somewhere can be declared by fiat up a level.
+
+  >So ghosts make a thing's own map honest about its edges, and the estate
+  build turns ghost-meets-door into a wire with its basis. A ghost no door
+  answers stays the edge of the known world, and on the board it is the
+  invitation you described in Turn 2, a thing waiting to be pointed at the
+  folder that serves it.
+
+  If what-was-once-a-ghost becomes a door in the world map, should the local
+  map of that system allow one to hop over to the local map of the other system
+  via that "door" that is now known where the one-way-wire and ghost once
+  were?
+
+  >the SQL rule wide with no builtins, in both adapters; and the join listing
+  each thing's ghosts from its edges, so that drawing them is the first small
+  step after T1, with pictures. Is that a go?
+
+  Yep! Let's give it a shot!
+
+● Go received. Recording your message, then reading the five files the build
+  touches first before writing any code.
+
+  Read 2 files, ran 12 shell commands (ctrl+o to expand)
+
+● Adapters, the join and the new estate graph module are written. Now the estate
+  graph's unit tests and a ghost test for the join, then a run of the engine's
+  unit tests.
+
+  Read 2 files, ran 7 shell commands (ctrl+o to expand)
+
+● I found that the seven-scan wire shows only one edge when run from source,
+  likely because the integration project resolves the engine from stale built
+  output predating the browser-script rule. I'll check the alias and rebuild.
+  · summary
+
+  Searched for 2 patterns, ran 8 shell commands (ctrl+o to expand)
+
+● Docs and design pages are done. Before running full verification, I'll confirm
+  my authored links resolve (ignoring the scratchpad checker's symbol
+  complaints, which are noise since it doesn't understand the docs' explicit
+  anchors) and review the seven-scan estate from the real bundle builder.
+  · summary
+
+  Searched for 1 pattern, read 3 files, ran 5 shell commands (ctrl+o to expand)
+
+● Lint, build, and type-check all passed cleanly (the 20 JSDoc warnings are
+  pre-existing and unrelated to my changes), and unit tests are now running.
+  I'll wait for the notification once integration and Playwright tests finish
+  rather than polling. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Waiting on the verification chain; the wait task will wake me when it ends.
+  Nothing else is left to request until then.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >(the 20 JSDoc warnings are pre-existing and unrelated to my changes)
+
+  (facepalm) dude all changes are your changes. No one else effectuates change
+  in the code hahahahaha!
+
+  Searched for 1 pattern, read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+  Not that lints relate to your changes _today_, just that all messes are our
+  own. That is one of the primary reasons I do this development completely
+  linearly (you'll see the only branching ever to occur in our git is due to
+  dependabot merges). LLMs used to have this instinct much much more intensely
+  but I see this instinct is still around today: to declare a mess as
+  not-one's-own. The development setup I have created here -- where every code
+  change is effectuated by an AI agent in a linear fashion which leaves a
+  linear auditable record -- removes all excuses for not cleaning things up and
+  not being a good steward of the codebase.
+
+● Noting your second message in the record and owner.md—the twenty comments are
+  already written and lint's clean, so I'll commit the fix separately after the
+  build, then check the chain. · summary
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● So far I've seen two failures in the e2e run, including a 30s timeout in Local
+  Map specs unrelated to my changes, likely caused by resource contention with
+  the doc regeneration and lint running alongside it. I'll let the chain finish,
+  then re-run those two specs in isolation before concluding anything.
+  · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full pre-commit chain with Playwright, logging to
+the scratchpad" completed (exit code 0)
+
+● My time limit cut off the Playwright run, and two Local Map specs had already
+  failed while doc regeneration was running alongside. I'll re-run just those
+  two specs now, with nothing else running in parallel. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Wait for the verification chain to finish and summarize
+its outcome" completed (exit code 0)
+
+● Both specs fail alone as well, so it is not load. Reading their error contexts
+  and checking when they last passed before I draw a line to my changes.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The last green run on October 8 had 118 passing tests, so the two failures
+  look tied to my changes—likely the files I added under
+  packages/engine/src/live-docs/ if specs hardcode that directory's contents.
+  I'll read both specs to confirm. · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● I'll pull up the exact failing step in the directories spec along with the
+  internals row markup so I can decide on the right fix. · summary
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● The directories spec now passes, but the motion spec still fails since the
+  graph.ts fixture has outgrown the test's assumptions—no fully visible card
+  shows an undrawn-user symbol row. I'll check the smaller rosetta sample
+  program as a more stable fixture instead. · summary
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The pinned cards landed in a new column of their own, leaving existing cards
+  untouched—the old fixture moved cards only because its pinned row's
+  dependencies happened to land in an existing column. I'll update the spec to
+  deliberately pin a row like that and keep a rosetta file around to make it
+  possible. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The whole Playwright suite is running alone now, both bundles rebuilt first;
+  the three commits wait on its result, in this order: the two specs made
+  steady, then T1's build, then the twenty comments.

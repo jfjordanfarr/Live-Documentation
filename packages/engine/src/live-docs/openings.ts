@@ -326,12 +326,15 @@ export function declaredSqlObjects(index: WorkspaceSymbolIndex): DeclaredSqlObje
   return objects;
 }
 
-/** The declared objects a name matches: schema and object when both are written, the object alone otherwise. */
+/** True when a written name names the declared object: schema and object when both are written, the object alone otherwise. */
+export function sqlNameMatches(name: SqlObjectName, declared: SqlObjectName): boolean {
+  if (name.parts.length >= 2) {
+    return declared.parts.length === 2 && declared.parts[0] === name.parts[0] && declared.parts[1] === name.parts[1];
+  }
+  return declared.parts[declared.parts.length - 1] === name.parts[0];
+}
+
+/** The declared objects a name matches, by {@link sqlNameMatches}. */
 export function matchSqlObject(name: SqlObjectName, index: WorkspaceSymbolIndex): DeclaredSqlObject[] {
-  return declaredSqlObjects(index).filter((object) => {
-    if (name.parts.length >= 2) {
-      return object.parts.length === 2 && object.parts[0] === name.parts[0] && object.parts[1] === name.parts[1];
-    }
-    return object.parts[object.parts.length - 1] === name.parts[0];
-  });
+  return declaredSqlObjects(index).filter((object) => sqlNameMatches(name, { parts: object.parts, linked: false }));
 }

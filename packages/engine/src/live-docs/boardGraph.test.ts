@@ -28,7 +28,9 @@ const graph = deriveLiveDocGraph(
     doc("b/y.ts", {
       dependencies: [
         { label: "x.POST api/x", link: "../a/x.ts.md#symbol-post-apix", qualifiers: ["contract"] },
-        { label: "x.helper", link: "../a/x.ts.md#symbol-helper", qualifiers: [] }
+        { label: "x.helper", link: "../a/x.ts.md#symbol-helper", qualifiers: [] },
+        { label: "GET api/elsewhere", qualifiers: ["contract"] },
+        { label: "dbo.Elsewhere", qualifiers: ["contract"] }
       ]
     }),
     doc("b/z.ts", { dependencies: [{ label: "x", link: "../a/x.ts.md", qualifiers: [] }, { label: "y", link: "./y.ts.md", qualifiers: [] }] }),
@@ -74,6 +76,14 @@ describe("deriveBoardGraph", () => {
   it("collects the doors a thing serves from its docs, each with its file, and from its declaration", () => {
     expect(derived.things.find((entry) => entry.thing.name === "A")?.doors).toEqual([{ name: "POST api/x", kind: "route", file: "a/x.ts" }]);
     expect(derived.things.find((entry) => entry.thing.name === "D")?.doors).toEqual([{ name: "usp_Do", kind: "procedure" }]);
+  });
+
+  it("lists a thing's ghosts, what its files name under a basis that nothing serves, one per name and basis", () => {
+    expect(derived.things.find((entry) => entry.thing.name === "B")?.ghosts).toEqual([
+      { label: "GET api/elsewhere", basis: "contract", files: ["b/y.ts"] },
+      { label: "dbo.Elsewhere", basis: "contract", files: ["b/y.ts"] }
+    ]);
+    expect(derived.things.find((entry) => entry.thing.name === "A")?.ghosts).toEqual([]);
   });
 
   it("collects what a thing stands on from its manifests' externals", () => {

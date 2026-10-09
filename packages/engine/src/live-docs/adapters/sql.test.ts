@@ -45,6 +45,32 @@ describe("sqlAdapter", () => {
     ]);
   });
 
+  it("keeps a name nothing in the scan creates, as a contract by name, and never a name the script creates itself", async () => {
+    const scriptPath = path.join(workspaceRoot, "Database", "dbo.usp_Report.sql");
+    await fs.mkdir(path.dirname(scriptPath), { recursive: true });
+    await fs.writeFile(scriptPath, [
+      "CREATE PROCEDURE dbo.usp_Report AS",
+      "BEGIN",
+      "    INSERT INTO dbo.Report (Note) SELECT c.Name FROM dbo.Customer AS c JOIN [Billing].[dbo].[Invoice] AS i ON i.CustomerId = c.Id;",
+      "    SELECT * FROM ORACLE_CENTRAL..CENTRAL.ACCOUNT;",
+      "    EXEC dbo.usp_Report;",
+      "    DELETE FROM dbo.Customer WHERE Id = 0;",
+      "END;"
+    ].join("\n"), "utf8");
+    const symbolIndex: WorkspaceSymbolIndex = new Map([
+      ["dbo.usp_Report", [{ liveDocPath: "d", sourcePath: "Database/dbo.usp_Report.sql", anchor: "symbol-dbousp_report", kind: "procedure" }]]
+    ]);
+
+    const result = await sqlAdapter.analyze({ absolutePath: scriptPath, workspaceRoot, symbolIndex });
+
+    expect(result?.dependencies).toEqual([
+      { specifier: "Billing.dbo.Invoice",             symbols: [], kind: "import", basis: "contract" },
+      { specifier: "ORACLE_CENTRAL..CENTRAL.ACCOUNT", symbols: [], kind: "import", basis: "contract" },
+      { specifier: "dbo.Customer",                    symbols: [], kind: "import", basis: "contract" },
+      { specifier: "dbo.Report",                      symbols: [], kind: "import", basis: "contract" }
+    ]);
+  });
+
   it("publishes tables, views and functions, with brackets off", async () => {
     const scriptPath = path.join(workspaceRoot, "schema.sql");
     await fs.writeFile(scriptPath, [
