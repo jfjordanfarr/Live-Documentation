@@ -1296,3 +1296,360 @@
   Still open from the last round, one line each: your refusal of nested scans
   with a generator warning; the bundle as the exporter's choice of scope and
   opening; one line per scenario on how its person engages.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -09-170524-hello-again-it-is-1092026-and-its-time-to-sta.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ > That removes D for me. B or C remains yours.
+
+  Fair. Preference? Pros/cons of each? Gosh, I'm tied.
+
+  >One caution: a board's From lines are relative to the board, so a board
+  shared across repositories assumes the checkouts sit where it expects, which
+  a pipeline can arrange and a workstation may not.
+
+  Completely true and worth considering. If we think this World Map is so cool,
+  how would just one DevOps pipeline manage to compose it?
+
+  ...unless the pipeline read the TFS root and -- hoohehehehehehehehhhhh evil
+  laughs indeed -- (I secretly like TFS; don't hate) perhaps that could work.
+
+  >On the name. The docs are live where the code is: regenerated with every
+  commit, which is what the word promised. A bundle is an edition of those docs
+  at a commit, stamped with where it came from, which the vision already calls
+  a snapshot. And a hosted site is as live as the pipeline that republishes
+  it, which here is every push. I would not rebrand.
+
+  Fair
+
+  >The seam rule, the World Map reads graphs and a board and never source, kept
+  now and drawn in T2. Yes?
+
+  I like this. I think that's a reasonable architectural boundary. What does it
+  cost to formalize (what do we lose the ability to do)?
+
+  >Scan where the facts are whole, carve where the deployment is. Holds?
+
+  Reasonable for now I think. Seems sufficienlty simple.
+
+● Recording your message and the previous reply, and checking the export you
+  just placed in the folder so it can be kept as received.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The export covers everything from your first prompt to my last reply. Next,
+  I'll create its inventory entry, log your words into direction.md, checkpoint
+  the record, and check the World Map's current module imports to give the seam
+  rule real teeth. · summary
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/README.md)
+  ⎿  Added 1 line
+      16  
+      17  ## Owner captures
+      18  
+      19 +- [October 9 Claude Code terminal export](2026-10-09-170524-hel
+         +lo-again-it-is-1092026-and-its-time-to-sta.txt): placed in this
+         + folder by the owner with their Turn 5 message of [the October 
+         +9 session](2026-10-09.1.record.md), named by the harness with t
+         +he export time and the first prompt, and committed as received.
+         + It runs from the first prompt through the agent's Turn 4 reply
+         +, so it holds Turns 1 to 4 whole and the fifth's message not at
+         + all: 77,607 bytes; 1,297 lines; SHA-256 `8d6cf26f205c16128447d
+         +8e0b8aaeb306d154cd98106062d807de85c089f083f`. Prompts are marke
+         +d `❯` and responses `●`; collapsed tool counts, terminal wrappi
+         +ng and `ide_opened_file` notices are capture characteristics, n
+         +ot extra turns. The owner may re-export it as the session goes 
+         +on; each committed copy is as received, and the agent does not 
+         +edit it. No hidden reasoning was extracted.                    
+      20  - [October 8 Claude Code terminal export](2026-10-08-144430-ple
+          ase-perform-the-standard-chat-session-bootstra.txt): placed in 
+          this folder by the owner during Turn 2 of [the October 8 sessio
+          n](2026-10-08.1.record.md), named by the harness with the sessi
+          on's start time and first prompt, and re-exported by the owner 
+          during Turn 4, with their Turn 5 message, with their Turn 7 mes
+          sage, with their Turn 9 message, with their Turn 11 message, wi
+          th their Turn 12 message, once more after the closing reply was
+           recorded, and once more after the session's last commit, found
+           on disk when the October 9 chat opened; each committed copy is
+           as received. The current copy runs from the first prompt throu
+          gh the agent's closing reply, which names `43aae964` as the las
+          t commit, so the export is a second source for that reply besid
+          e [the record](2026-10-08.1.record.md#turn-12): 151,196 bytes; 
+          2,795 lines; SHA-256 `67c8a9643e116e326c698e4418f06560b7149ff3f
+          30b7477b85cb931004c1dfc`. The copy committed at `43aae964` ran 
+          through the owner's Turn 12 message and the agent's progress li
+          nes before the closing reply: 147,299 bytes; 2,728 lines; SHA-2
+          56 `28615bc357dd025783519d2a4da5eba6a064aa00ab645514a33b78856dc
+          92be0`. The copy committed at `3faea78c` ran through the agent'
+          s Turn 11 reply: 142,059 bytes; 2,633 lines; SHA-256 `0f0918e0e
+          579fc349539dddb1334c1480ffd355c88d4d6291256ed97665f100e`. The c
+          opy committed at `2aa5b343` ran through the agent's Turn 10 rep
+          ly: 133,736 bytes; 2,476 lines; SHA-256 `119e9ff81f45dece8027fa
+          5121ca4c4e728de61604c2404657e8f545fdb53a57`. The copy committed
+           at `2a4e57c4` ran through the agent's Turn 8 reply and the own
+          er's `/compact` that followed it: 89,798 bytes; 1,694 lines; SH
+          A-256 `88b60a29c7aef364f30386316c846b90ceb25e38085cc62be40df421
+          2f9e2ffc`. The copy committed at `355f7121` ran through the age
+          nt's Turn 6 reply: 74,690 bytes; 1,436 lines; SHA-256 `b9994177
+          e70de38aaf0cb642883294ff0e2654cfd73a2bc67bd3759d27034334`. The 
+          copy committed at `0eea706e` ran through the ow … [+827 chars]
+      21  - [October 7–8 Claude Code terminal export](2026-10-08-035441-p
+          lease-begin-a-new-1072026-chat-following-the-c.txt): placed in 
+          this folder by the owner before their Turn 7 message of [the Oc
+          tober 7–8 session](2026-10-07.1.record.md), named by the harnes
+          s with its export time and the first prompt, and committed as r
+          eceived at the session's close. It runs from the first prompt t
+          hrough the agent's note after the Turn 6 reply, so it holds eve
+          ry turn but the seventh, whose message is in the record and who
+          se reply is unrecorded at the owner's request: 97,221 bytes; 1,
+          835 lines; SHA-256 `020067b973463441e0e83842fb6a36f42cecfffab25
+          4eefd7613dbdedb3fc766`. Prompts are marked `❯` and responses `●
+          `; collapsed tool counts, terminal wrapping, ten `ide_opened_fi
+          le` and `ide_selection` notices, two `/compact` commands (after
+           the replies to Turns 1 and 4), four `[Image #n]` placeholders 
+          (the owner's two screenshots at Turn 4 and two at Turn 5, prese
+          rved under `Screenshots/2026-10-07/`), the background-task and 
+          watcher notices of Turn 6's gate, and the harness's diff views 
+          of files the agent wrote are capture characteristics, not extra
+           turns. No hidden reasoning was extracted.
+      22  - [October 6 Claude Code terminal export](2026-10-06-141908-a-n
+          ew-day-a-new-chat-please-read-all-chat-summar.txt): placed in t
+          his folder by the owner during Turn 1 of [the October 6 session
+          ](2026-10-06.1.record.md), named by the harness with the sessio
+          n's start time and first prompt. The current copy, received aft
+          er the session's close and committed on 2026-10-07 with the fol
+          lowing session's bootstrap, holds only a later portion of the s
+          ession: it begins with the agent's Turn 17 reply and runs throu
+          gh the agent's acknowledgment of the Turn 21 close, which [the 
+          maintained record](2026-10-06.1.record.md) omits at the owner's
+           request, so this re-export is the one source for that acknowle
+          dgment: 38,434 bytes; 670 lines; SHA-256 `5818064ba4292a557f6b5
+          555391794a56340d992d9e2455bce4c813e1efcadd9`. It is not a super
+          set of the copy before it, and the two were not spliced; where 
+          they overlap, from the Turn 17 reply through the Turn 19 reply,
+           they agree. The opening, from the first prompt through the age
+          nt's Turn 19 reply, is the copy committed at `10bb1683` and unc
+          hanged at [`4b1d1375`](https://github.com/jfjordanfarr/Live-Doc
+          umentation/blob/4b1d1375/AI-Agent-Workspace/ChatHistory/2026/10
+          /2026-10-06-141908-a-new-day-a-new-chat-please-read-all-chat-su
+          mmar.txt), re-exported by the owner before their Turn 20 messag
+          e: 325,086 bytes; 5,609 lines; SHA-256 `a284a82d0e2bea177b4971f
+          c16982d240887e1113172bf461f276897076e60bf` (the `10bb1683` inve
+          ntory line still described the copy before it, the staging havi
+          ng swept the newer file in; corrected at `4b1d1375`). The repli
+          es to Turns 14, 15 and 16, recovered into the record on 2026-10
+          -07, were taken from that committed copy at its lines 2,897–2,9
+          05, 2,912–2,988, 3,010–3,129 and 4,040–4,112. Earlier committed
+           copies: at `eb300d6c`, through the agent's Turn 17 reply, the 
+          `/compact` command that followed it and the five file reads the
+           agent made on resuming, re-exported by the owner before their 
+          Turn 18 message, 305,171 bytes, 5,243 lines, SH … [+2708 chars]
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The World Map modules only depend on the board grammar, join, doc parser, and
+  graph types—no disk access—so the seam rule already holds and just needs a
+  test to lock it in. I'll commit the record, inventory, export, and
+  direction.md now. · summary
+  Ran 1 shell command (ctrl+o to expand)
+
+● Recorded and committed as 5f92be6b, your export with it. Three things now
+  stand for now: scan where the facts are whole and carve where the deployment
+  is, no address from a disk path, and the name. Your three questions, in order.
+
+  B or C: my preference is B
+
+  B, the thing's name and the path. For it: one name for a thing everywhere, on
+  the board's lines, in links, and as the Local Map's outermost membrane. Two
+  folders with one name are handled by naming, which lint already enforces. A
+  folder moving on disk changes one From line and no address. Links read the way
+  the board reads. Against it: renaming a thing moves every address inside it,
+  so old links die. A derived name shows its order of arrival, api first and
+  crm-api second.
+
+  C, the folder's name and the path. For it: an address is a fact of the disk
+  and needs no board. Renaming a thing is free. Links carry the folder name
+  colleagues already know. Two people pointing at the same folders get the same
+  addresses without agreeing on anything. Against it: two folders with one name
+  cannot share a board, or one gets an invented name, which is B for that
+  folder. A folder renamed on disk moves every address. A thing named
+  differently from its folder has two names, one in links and one on the board.
+
+  The tie-breaker. When nobody renames, B and C give the same address, because a
+  derived name is the folder's name. So every virtue of C is also B's until a
+  rename. The one thing C keeps that B loses is the free rename. Renaming a
+  thing after links exist is rare and deliberate, and it is the same act as
+  renaming a folder, which moves addresses today. The one thing B keeps that C
+  loses is two same-named folders on one board, and in an estate of Web and Api
+  projects that is not rare. B, with one rule riding on it: a rename is a
+  rename, and the tool says so at the moment you do it, naming the links that
+  will die.
+
+  One pipeline composing the map
+
+  The pipeline is the layout. It checks things out where it chooses, so a board
+  whose From lines assume a layout assumes nothing a pipeline does not already
+  decide. Your evil laugh is justified, and TFS makes it easier, not harder: a
+  TFVC workspace mapping brings $/Dev down as one tree in a fixed shape, so a
+  board kept at that root with From: Billing and From: Claims is stable by
+  construction. The pipeline then scans each solution root on its own, or the
+  whole root once if the facts should be whole across solutions and the run is
+  bearable, never both, by your refusal rule. Then one build with the board, one
+  detached bundle, one publish. Git repositories work the same way: each is
+  checked out into a named folder, and an estate repository holds the board that
+  names them. On a workstation, a person either mirrors that layout or keeps a
+  personal board; the shared one lives with the pipeline.
+
+  What the pipeline needs that does not exist yet is exactly T1's work: the join
+  over several graphs, and the bundle build taking several roots. Nothing
+  exotic. This is also the one-line engagement for two scenarios at once, the
+  estate at work and this repository: the pipeline scans, keeps the board,
+  builds detached, publishes.
+
+  What the seam rule costs
+
+  The rule: the World Map reads graphs and a board, and never source. Here is
+  what we give up.
+
+  - Every fact the World Map wants must first be a fact of the docs. There is no
+    reading a file the generator did not read. Concretely today: a doc's
+    metadata carries its layer, archetype, code path and generation time, and
+    nothing else. So before a thing can say which repository and commit it came
+    from, the stamp has to grow into the doc format. That is T11's first job,
+    not a World Map shortcut. The same holds for an SBOM, which T10 already
+    makes a Live Doc, and for a deployed configuration value, invisible until an
+    adapter reads transforms. Each is slower than a hack in the view, and that
+    is the point: no second channel.
+  - The World Map cannot look at the disk. It cannot know whether a From folder
+    exists, how large it is, or its git status. It knows a thing has a graph or
+    has none. Pointing a thing at a folder from the viewer is the viewer asking
+    the engine to scan and then reading the result. The rule is about reading,
+    not about triggering.
+  - The World Map cannot be smarter than the join. Matching across things works
+    only on what the docs carry as names: routes, addresses, SQL objects,
+    project and package names, unlinked labels. The dropped project reference we
+    found is a doc gap this rule makes visible instead of patchable.
+  - Size. A thing is known through its whole index, 3.7 MB for this repository.
+    An estate of fifty things carries fifty. A lighter summary is allowed only
+    when derived from the index, which it can be at build time.
+
+  What we do not lose: authoring, since the World Map writes the board; testing
+  without a file system, which the join already does; and one behavior over live
+  scans, snapshots, CI builds and detached bundles, which is the gain. The rule
+  is already true today: the World Map's modules import the board grammar, the
+  join, the doc parser and the graph's types, and nothing that opens a file.
+  Formalizing it is one line under the plan's standing rules and one test that
+  holds those modules to that import list, so the first import of a disk reader
+  fails a test rather than a review.
+
+  Still open from the earlier rounds, one line each: your refusal of nested
+  scans with a generator warning; the bundle as the exporter's choice of scope
+  and opening; one line per scenario on how its person engages. With the address
+  settled, T1 has its answer and the probe can start.
+
+● Recorded and committed as 5f92be6b, your export with it. Three things now
+  stand for now: scan where the facts are whole and carve where the deployment
+  is, no address from a disk path, and the name. Your three questions, in order.
+
+  B or C: my preference is B
+
+  B, the thing's name and the path. For it: one name for a thing everywhere, on
+  the board's lines, in links, and as the Local Map's outermost membrane. Two
+  folders with one name are handled by naming, which lint already enforces. A
+  folder moving on disk changes one From line and no address. Links read the way
+  the board reads. Against it: renaming a thing moves every address inside it,
+  so old links die. A derived name shows its order of arrival, api first and
+  crm-api second.
+
+  C, the folder's name and the path. For it: an address is a fact of the disk
+  and needs no board. Renaming a thing is free. Links carry the folder name
+  colleagues already know. Two people pointing at the same folders get the same
+  addresses without agreeing on anything. Against it: two folders with one name
+  cannot share a board, or one gets an invented name, which is B for that
+  folder. A folder renamed on disk moves every address. A thing named
+  differently from its folder has two names, one in links and one on the board.
+
+  The tie-breaker. When nobody renames, B and C give the same address, because a
+  derived name is the folder's name. So every virtue of C is also B's until a
+  rename. The one thing C keeps that B loses is the free rename. Renaming a
+  thing after links exist is rare and deliberate, and it is the same act as
+  renaming a folder, which moves addresses today. The one thing B keeps that C
+  loses is two same-named folders on one board, and in an estate of Web and Api
+  projects that is not rare. B, with one rule riding on it: a rename is a
+  rename, and the tool says so at the moment you do it, naming the links that
+  will die.
+
+  One pipeline composing the map
+
+  The pipeline is the layout. It checks things out where it chooses, so a board
+  whose From lines assume a layout assumes nothing a pipeline does not already
+  decide. Your evil laugh is justified, and TFS makes it easier, not harder: a
+  TFVC workspace mapping brings $/Dev down as one tree in a fixed shape, so a
+  board kept at that root with From: Billing and From: Claims is stable by
+  construction. The pipeline then scans each solution root on its own, or the
+  whole root once if the facts should be whole across solutions and the run is
+  bearable, never both, by your refusal rule. Then one build with the board, one
+  detached bundle, one publish. Git repositories work the same way: each is
+  checked out into a named folder, and an estate repository holds the board that
+  names them. On a workstation, a person either mirrors that layout or keeps a
+  personal board; the shared one lives with the pipeline.
+
+  What the pipeline needs that does not exist yet is exactly T1's work: the join
+  over several graphs, and the bundle build taking several roots. Nothing
+  exotic. This is also the one-line engagement for two scenarios at once, the
+  estate at work and this repository: the pipeline scans, keeps the board,
+  builds detached, publishes.
+
+  What the seam rule costs
+
+  The rule: the World Map reads graphs and a board, and never source. Here is
+  what we give up.
+
+  - Every fact the World Map wants must first be a fact of the docs. There is no
+    reading a file the generator did not read. Concretely today: a doc's
+    metadata carries its layer, archetype, code path and generation time, and
+    nothing else. So before a thing can say which repository and commit it came
+    from, the stamp has to grow into the doc format. That is T11's first job,
+    not a World Map shortcut. The same holds for an SBOM, which T10 already
+    makes a Live Doc, and for a deployed configuration value, invisible until an
+    adapter reads transforms. Each is slower than a hack in the view, and that
+    is the point: no second channel.
+  - The World Map cannot look at the disk. It cannot know whether a From folder
+    exists, how large it is, or its git status. It knows a thing has a graph or
+    has none. Pointing a thing at a folder from the viewer is the viewer asking
+    the engine to scan and then reading the result. The rule is about reading,
+    not about triggering.
+  - The World Map cannot be smarter than the join. Matching across things works
+    only on what the docs carry as names: routes, addresses, SQL objects,
+    project and package names, unlinked labels. The dropped project reference we
+    found is a doc gap this rule makes visible instead of patchable.
+  - Size. A thing is known through its whole index, 3.7 MB for this repository.
+    An estate of fifty things carries fifty. A lighter summary is allowed only
+    when derived from the index, which it can be at build time.
+
+  What we do not lose: authoring, since the World Map writes the board; testing
+  without a file system, which the join already does; and one behavior over live
+  scans, snapshots, CI builds and detached bundles, which is the gain. The rule
+  is already true today: the World Map's modules import the board grammar, the
+  join, the doc parser and the graph's types, and nothing that opens a file.
+  Formalizing it is one line under the plan's standing rules and one test that
+  holds those modules to that import list, so the first import of a disk reader
+  fails a test rather than a review.
+
+  Still open from the earlier rounds, one line each: your refusal of nested
+  scans with a generator warning; the bundle as the exporter's choice of scope
+  and opening; one line per scenario on how its person engages. With the address
+  settled, T1 has its answer and the probe can start.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/10/README.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/cd238f0c-0d95-4c5
+     6-b9a6-710652beec78/scratchpad/check-links.ts (98 lines)
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md
