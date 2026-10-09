@@ -1693,3 +1693,785 @@ background for the Memory and record changes" completed (exit code 0)
   ⎿  Read packages/engine/src/live-docs/boardGraph.ts (250 lines)
   ⎿  Read packages/engine/src/live-docs/adapters/project.ts (105 lines)
   ⎿  Referenced file packages/engine/src/live-docs/openings.ts  ⎿  Read packages/engine/src/live-docs/heuristics/routes.ts (185 lines)
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >Next, in your order: the World Map plan with its forks, framed under
+  understanding, its first fork this repository's board as its delivery shape.
+
+  I do worry that the world map ideas still remain underdefined, but I invite
+  you to please look up the Matt Pocock skills "Grill With Docs", "Wayfinder",
+  that kind of thing. Look up Matt Pocock's skills library and see what kind of
+  "grilling" standards might get us from where we are now to where we want to
+  be. The world map is, while given a pretty slick baseline
+  implementation/demo, still very underdefined in terms of requirements. I want
+  to really get a good idea of all the pieces fitting together in our software
+  and I want to see the stress points/breaking points of our ideas. I want to
+  fail ideas early for being unable to congeal with any permutation of
+  adjustments to our software and shortcut us lots of work.
+
+● I'll record this turn first, then look up Matt Pocock's skills library and
+  come back with what a "grilling" of the World Map would look like.
+
+  Searched for 1 pattern, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Web Search("Matt Pocock skills library "grill-with-docs"")
+  ⎿  Did 1 search in 7s
+
+● Web Search("Matt Pocock "wayfinder" skill Claude Code")
+  ⎿  Did 1 search in 6s
+
+● Fetch(https://github.com/mattpocock/skills)
+  ⎿  Received 353.1KB (200 OK)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Fetch(https://www.aihero.dev/skills-grill-with-docs)
+  ⎿  Received 9.8KB (200 OK)
+
+● Fetch(https://www.latent.space/p/wayfinder-skill)
+  ⎿  Received 222.7KB (200 OK)
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● I have the four core skills and the formats read in full. Reading the README's
+  remaining sections, the scope file and the two docs pages now, then I'll
+  write the assessment.
+
+  Searched for 2 patterns, read 5 files, listed 2 directories, ran 10 shell commands (ctrl+o to expand)
+
+● Research is read in full. Writing the survey with its sources, then the Memory
+  and record updates, before the gate and the reply.
+
+  Read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+● Everything for this turn is written and link-checked. The only thing
+  outstanding is the pre-commit gate, which is running in the background over
+  the docs changes; when it reports, I commit by path and send the assessment
+  with the first round of questions.
+
+● Background command "Run the pre-commit gate without Playwright over the docs
+changes" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The library is read whole and the survey is committed as 2a4e57c4, with every
+  claim pinned to the repository's commit of this morning. Here is what it says,
+  where we already stand in its terms, and the first round.
+
+  What the library is
+
+  Grilling is thirty lines, and the rest is wrappers. The grill-me skill says
+  only "call grilling"; grill-with-docs says "call grilling and
+  domain-modeling". The primitive: map the subject as a design tree, where every
+  decision branches into the decisions that hang off it. Work it in rounds.
+  Each round asks the whole frontier, every question whose prerequisites are
+  settled, numbered, each with a recommended answer worded so that "yes" accepts
+  it. A question that depends on another still open waits for a later round.
+  Facts are the agent's job, found by looking, never asked. Decisions are the
+  person's, put to them and waited for. The session ends when the frontier is
+  empty, and nothing is built until the person says the understanding is shared.
+
+  "With docs" adds the stress test you asked for, in part. Domain modeling
+  challenges each term, invents concrete scenarios "that probe edge cases and
+  force the user to be precise about the boundaries between concepts", and
+  cross-references what the person says against the code. It writes a glossary
+  the moment a term resolves and offers a decision record only when a choice is
+  hard to reverse, surprising without context, and a real trade-off.
+
+  Wayfinder is the shape for work bigger than one chat. Name the destination
+  first, since it fixes the scope. The map is an index, not a store: decisions
+  so far as one line each, a "not yet specified" section for the fog you can see
+  but cannot yet phrase sharply, and an out-of-scope list that never graduates.
+  Tickets are questions, of four types: grilling, prototype, research, task.
+  One ticket per chat. The map is done when nothing is left to decide before
+  someone builds. Its own docs report the failures: an agent that writes code
+  mid-map, a 27-ticket map whose thirteenth answer invalidated the rest, and
+  three-paragraph questions. Pocock's answer to the second is a bounded
+  destination and "prototypemaxxing, not planmaxxing".
+
+  Where we already stand, in its words. Stop at forks is the frontier.
+  direction.md's fork table is decisions so far, and the decisions log is the
+  ADR folder, with the owner's words instead of a template. The probes are
+  prototype tickets and the surveys are research tickets. There is no glossary,
+  by your choice of October 3 to keep names loose. What is missing is exactly
+  what makes the World Map feel underdefined: no destination has been named, and
+  nothing says which open question blocks which. The open forks sit in three
+  probe records, the fork table and ideas.md with no order among them.
+
+  What would get us there
+
+  The library does not have a "fail early" ticket. Its nearest tools are the
+  invented scenarios and the cross-reference with code, so I propose making
+  those a standard rather than a habit. Every idea is walked, on paper, through
+  a fixed set of scenarios before any code, and at each scenario through the
+  seven places it can touch: the doc grammar, the board grammar, the join, the
+  bundle, the Explorer, the CLI, and the tests with their oracles. An idea
+  survives only if some adjustment of those seven holds every scenario without
+  breaking a standing rule: markdown canonical, headless and UI as peers, a scan
+  never hidden, orientation kept. An idea that cannot is written down as
+  failed, with why, so it is not proposed again in six months. That is your
+  board-game rules of September 30 applied to the whole World Map.
+
+  Three adjustments to the library's shape, none of which it forbids: the map as
+  a markdown file in this repository rather than a tracker, since the record
+  and Memory are the system of record for any vendor's agent; the scenario set
+  as the test; and probes and surveys as the prototype and research tickets,
+  which we already do. What I will not do: rename the views, start a glossary
+  file or an ADR folder, or move decisions out of the record you read.
+
+  Round 1: the destination and the method
+
+  Answer by number. "Yes" accepts the recommendation.
+
+  1. The destination. What does the end of this map look like? Recommended: a
+  design of the World Map that has survived the scenarios, on paper and in
+  probes, written so that the build can begin one chat at a time: every piece
+  named with its seam, each decision with the scenario that tested it, each
+  failed idea with why. Your estate at work is the scenario that says "done":
+  the design must let a non-software colleague get an answer by pointing. The
+  first build and this repository's own board are tickets inside this map, not
+  the destination. The alternatives are a first build as the destination, or the
+  delivery-shape decision alone.
+
+  2. Where the map lives. Recommended: one file,
+  AI-Agent-Workspace/Maps/world-map.md, holding the destination, decisions so
+  far as one-line pointers into direction.md and the decisions log, not yet
+  specified, out of scope, and the tickets as sections, each with its type, what
+  blocks it, the scenarios it must survive, and its resolution. Closed tickets
+  stay as the trail. direction.md's Next points at it and AGENTS.md's workspace
+  facts gain one line. The alternative is GitHub Issues on this repository,
+  where native blocking shows the frontier in the tracker's own view, at the
+  cost of decisions living outside the record.
+
+  3. The scenarios. Recommended: these ten, and you add or strike.
+  - Your estate at work: several repositories, the Portal-to-Oracle chain, with
+    Oracle and the linked server never scannable.
+  - This repository itself, with its delivery shape undecided and its Pages site
+    and deploy workflow.
+  - Two directories pointed at together, with no board written.
+  - A nested project: a git submodule, or a package that is also a thing.
+  - An imagined system with no folder, your Kubernetes example.
+  - A board handed to a colleague detached from its sources, and a link to a
+    hosted site, with endpoints trimmed for security.
+  - CI/CD and infrastructure files as the source of a deployment shape.
+  - An SBOM found in a thing's folder.
+  - The blank file that opens to one node asking for a directory.
+  - An agent reading the board as text and JSON.
+
+  4. The rounds, by hand rather than by plugin. Recommended: run the method as
+  adapted. Numbered questions with a recommendation each, the whole frontier per
+  round, facts fetched by me, decisions yours, nothing built until you say the
+  understanding is shared. A chat takes the frontier as far as it goes, closing
+  each ticket before the next, and the chat record stays the record. The
+  alternative is to install the plugin and type /wayfinder after its setup,
+  which would want a glossary file, an ADR folder and a tracker document.
+
+  5. Out of scope for this map. Recommended: the trajectory timelapse, which
+  went to the Force Graph last turn; the Local Map's layout, paused; reachable
+  and the Knowledge Sources panel; the retirement of the older views; and the
+  vision's purpose sentences, which want their own yes. Two things stay in scope
+  although they look like separate questions: the delivery shape, because this
+  repository's board must draw it, and the single traded file, because the sixth
+  scenario needs it.
+
+  Once the destination is named, round 2 fans out breadth-first across the open
+  questions. The tickets I expect to chart: what a thing is when two directories
+  are opened with no board; this repository's board as its delivery shape,
+  drawn with imagined things; where declared facts live and who writes
+  positions, with your Jonathan Blow pointer; the traded file and the readable
+  link; the transition between the Local Map and the World Map; nested projects;
+  what a closed region shows on its boundary; CI/CD files as a source; SBOMs as
+  the first reading of the underbelly; and a thing whose docs come from outside
+  the workspace. The vocabulary on trial and agents' access to the board stay
+  in the fog until something sharpens them.
+
+❯ >Grilling is thirty lines, and the rest is wrappers. The grill-me skill says
+  only "call grilling"; grill-with-docs says "call grilling and
+  domain-modeling".
+
+  "As simple as possible, and no simpler."
+
+  >The library does not have a "fail early" ticket. Its nearest tools are the
+  invented scenarios and the cross-reference with code, so I propose making
+  those a standard rather than a habit. Every idea is walked, on paper, through
+  a fixed set of scenarios before any code, and at each scenario through the
+  seven places it can touch: the doc grammar, the board grammar, the join, the
+  bundle, the Explorer, the CLI, and the tests with their oracles.
+
+  **SCENARIOS**. For some reason this rings highly to me. Because I suspect
+  chat history mining will find an unbelievable number of results for "I want"
+  or "I wish" from the chats. I have probably described an ungodly number of
+  use case scenarios, some likely later invalidated. But I definitely likely
+  the idea of a specific **set** of use cases in which one can pressure-test
+  their ideas.
+
+  >That is your board-game rules of September 30 applied to the whole World
+  Map.
+
+  HAH! OMG I was just about to say that! Reasoning these ahead is totally
+  board-game rules!
+
+  >What I will not do: rename the views, start a glossary file or an ADR
+  folder, or move decisions out of the record you read.
+
+  THANK YOU. Good job seeing the simple useful stuff and throwing out the
+  cruft.
+
+  >1. The destination. What does the end of this map look like? Recommended: a
+  design of the World Map that has survived the scenarios, on paper and in
+  probes, written so that the build can begin one chat at a time: every piece
+  named with its seam, each decision with the scenario that tested it, each
+  failed idea with why. Your estate at work is the scenario that says "done":
+  the design must let a non-software colleague get an answer by pointing. The
+  first build and this repository's own board are tickets inside this map, not
+  the destination. The alternatives are a first build as the destination, or
+  the delivery-shape decision alone.
+
+  The prototypes created prior (the "estate" maps that were navigable in 3D
+  space -- especially the earliest Fable 5.1 prototypes) -- were very slick.
+  These are a great starting point for what we want. Think about what a .NET
+  Aspire app dashobard is getting you: you're seeing a distributed system
+  connected together. That's a lot of lah-dee-dah. Until it turns out that you
+  can zoom in and actually see inside them. Or -- hang on, wait am I answering
+  a dumb question? Am I answering a question about the world map when you're
+  really asking about a "wayfinder" map in its semantics?
+
+  >3. The scenarios. Recommended: these ten, and you add or strike.
+
+  Oh wow I see you already went out and found many! The only thing I have
+  questions about is the "An SBOM found in a thing's folder." That, to me, is
+  not fully descriptive enough for me to understand what you mean.
+
+  >Recommended: run the method as adapted. Numbered questions with a
+  recommendation each, the whole frontier per round, facts fetched by me,
+  decisions yours, nothing built until you say the understanding is shared.
+
+  Yeah don't install anything that's crazy. The whole idea that skills are
+  "installed" just strikes me as outright preposterous when we go visit the
+  repo and they're 30 lines of plain text.
+
+  >5. Out of scope for this map. Recommended: the trajectory timelapse, which
+  went to the Force Graph last turn; the Local Map's layout, paused; reachable
+  and the Knowledge Sources panel; the retirement of the older views; and the
+  vision's purpose sentences, which want their own yes.
+
+  Sure. We can keep them out of scope for this map. But don't be scared to need
+  another map _and_ need to find a way for many many ideas to congeal and gel
+  together.
+
+  >The tickets I expect to chart:
+
+  If we have to. Hopefully not too much extra repo cruft. I already feel like
+  the Fable/Astra era is producing _waaaaaay_ more committed artifacts in the
+  AI-Agent-Workspace directory than the preceding Github Copilot era.
+
+● Three things to do before I answer: record the turn, check your feeling about
+  committed artifacts against git, and start the chat-history mining you suspect
+  would pay off, since scenarios are facts I should find rather than ask for.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● 5 background agents launched (↓ to manage)
+   ├ Mine Oct 2025 chats for scenarios
+   ├ Mine Nov 2025 chats for scenarios
+   ├ Mine Dec 2025 chats for scenarios
+   ├ Mine Jan-Apr 2026 chats for scenarios
+   └ Mine Sep-Oct 2026 chats for scenarios
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Record and Memory are written and link-checked. The gate is running over them,
+  and five read-only subagents are mining the chat record for your scenario
+  statements. When the gate passes I commit and send the round's scoring with
+  the two questions put again.
+
+● Background command "Run the pre-commit gate without Playwright over the docs
+changes" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Committed as 629e3dc0: your answers in Memory in your words, the round's score
+  in direction.md, and the record. Questions 3, 4 and 5 are settled. Questions
+  1 and 2 come back below, sharpened by what you said.
+
+  You were answering the right thing, to the wrong question. Question 1 asked
+  for the wayfinder destination: what "done" looks like for this planning map,
+  not what the World Map looks like. Your answer is not wasted. It is the World
+  Map's measure, and it is recorded as such: the connected whole first, the way
+  an Aspire dashboard draws the resources an app host declares with their
+  endpoints and references, and then the zoom inside, which Aspire gives you
+  through a resource's logs and traces and we give through the Local Map. The
+  September 28 probes drew that order, and you named them the starting point.
+  One difference is worth keeping in view: Aspire knows the system because the
+  app host declares it in code and the system is running. The World Map knows it
+  from scans and a board with nothing running, which is why the declared facts
+  and the imagined system are scenarios of their own. An Aspire app host file
+  is, in fact, a declared estate in code, and belongs with the CI/CD and
+  infrastructure files as a source.
+
+  The SBOM scenario, said properly. A software bill of materials is a file a
+  build tool can write beside a system, in the CycloneDX or SPDX formats,
+  listing every component the system ships with and its version, and in some
+  cases the known vulnerabilities against them. On September 28 you asked for
+  the underbelly: the vines and barnacles are passengers that ride with a piece
+  of software, the number beneath a thing is exposure rather than age, and "the
+  first iteration of dealing with SBOMs would be us just checking whether an
+  SBOM format file exists in a directory that was opened as an object in the
+  world map." So the scenario is: one thing on the board has such a file in its
+  folder, and the map must show what that thing stands on from the file, and how
+  exposed it is where the file says so, with the person declaring nothing. If
+  that reads right, the ten stand.
+
+  Your feeling about committed artifacts is right, and it decides question 2.
+  Files added under the workspace folder and still tracked:
+
+  ┌────────────────────────────────┬─────────────┬─────────────┐
+  │              Era               │ Commit days │ Files added │
+  ├────────────────────────────────┼─────────────┼─────────────┤
+  │ Copilot, 2025-10 to 2026-09-25 │ 93          │ 179         │
+  ├────────────────────────────────┼─────────────┼─────────────┤
+  │ Claude, since 2026-09-26       │ 11          │ 588         │
+  └────────────────────────────────┴─────────────┴─────────────┘
+
+  Of the 588, 221 are screenshots, 156 probe files and 49 gallery pictures,
+  which is the panopticon you asked for on September 29, then 89 under Research
+  and 68 under the chat record. The conclusion I drew and recorded: a plan gets
+  no new folder and no new kind of artifact, and pictures are taken when a
+  change needs looking at rather than as a matter of course.
+
+  Another map, and congealing. Agreed. The shape below repeats for any map, and
+  the place many ideas meet is the one that already exists, the vision's
+  picture, with each map's decisions pointing into the same decisions log.
+
+  The mining is running. Five read-only subagents are reading your own turns
+  across the whole chat record, October 2025 to now, for every scenario and
+  wish, each with its verbatim quote, file, line and date. I report what they
+  find set against the ten, and nothing of it is written anywhere yet.
+
+  The two questions again. "Yes" accepts.
+
+  1. The destination of this map. Recommended: a design of the World Map that
+  has survived the scenarios on paper and in probes, written so that the build
+  can begin one chat at a time. The connected whole first and the zoom inside,
+  as the September 28 probes drew it. Every piece named with its seam, each
+  decision with the scenario that tested it, each failed idea with why. The test
+  that says "done": your estate at work drawn so that a non-software colleague
+  gets an answer by pointing. The first build and this repository's own board
+  are tickets inside the map. The alternatives are a first build as the
+  destination, or the delivery-shape decision alone.
+
+  2. Where the map lives. Recommended, withdrawing the new folder: the map is
+  the World Map's own design doc, .mdmd/layer-3/world-map.mdmd.md, which does
+  not exist yet and must exist anyway, beside the boards doc. It opens as the
+  map: the destination, decisions so far as one-line pointers, not yet
+  specified, out of scope, and the tickets as sections with their type, what
+  blocks them, the scenarios they must survive, and their resolution. The
+  scenarios live in it with their sources. As tickets close it becomes the
+  design in place, failed ideas kept in a short section, and at the end the
+  decisions that meet the three tests go to the decisions log as they do today.
+  Nothing new under the workspace folder. The alternative is the file under the
+  workspace folder as first proposed.
+
+  Once these two are answered I open the doc with the map in it and run round 2,
+  the breadth-first fan-out across the open questions. The mining results
+  arrive before that and may add scenarios for you to strike.
+
+› Message from general-purpose
+  Output: /tmp/claude-1000/-workspaces-Live-Documentation/270703a1-324b-475f-acf
+  4-c48f0ca89dd2/scratchpad/mining/2025-10.md
+
+  Scenarios found: 73 bullets across the eleven headings (more than the 40 asked
+  for; near-duplicates within a session are collapsed and re-pastes noted, but
+  the caller may want to trim further). Three headings are thin or empty for
+  this month and say so: no WCF/SQL/Oracle/payment-chain mentions, no SBOM
+  mention, no single-file/offline/hosted wish; in October 2025 the product was
+  still a VS Code extension and the owner said it was "only copilot and myself".
+
+  Five most distinct:
+
+  1. Design a whole system in pseudocode docs, then dispatch several agents to
+  build it in several languages. "send out 3 different AI agents to implement
+  that in 3 different programming languages, or with 3 different approaches?"
+  (2025-10-25.md:4896)
+
+  2. Reverse-engineer a known brownfield project's architecture, requirements
+  and vision docs upward from its code docstrings, and seed them from the
+  project's own chat history. (2025-10-26.md:4930; 2025-10-27.md:6055)
+
+  3. A metaprogramming ripple test from the owner's WebForms past: change one
+  value in a web.config XSLT transform and expect knock-on effects deep down the
+  dependency chain. (2025-10-21.md:1419)
+
+  4. LLMs as the primary consumer, so output must be ASCII or markdown diagrams
+  that "SHOW relationships and cause and effect", readable by human and model
+  alike. (2025-10-29.md:4858)
+
+  5. Chained glob rules across a workspace: "All files matching Glob Pattern X
+  must contain a reference to one or more files matching Glob Pattern Y", with
+  the owner noting in the same breath that this only works if something like
+  markdown links is enforced. (2025-10-30.md:4516)
+
+● One of the five mining reports is in, for October 2025. I'll spot-check its
+  quotes against the transcripts before the other four arrive, so that the
+  consolidation can trust the method.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Mine Oct 2025 chats for scenarios" finished · 7m 30s
+
+  Ran 1 shell command (ctrl+o to expand)
+● The October 2025 report checks out: the three quotes I tested sit on the cited
+  lines, inside the owner's turns, with the method the brief asked for. It
+  found 73 scenario statements in that month alone, which already confirms your
+  suspicion. I will consolidate once the other four reports land, and report the
+  set against the ten scenarios then.
+
+› Message from general-purpose
+  Output: /tmp/claude-1000/-workspaces-Live-Documentation/270703a1-324b-475f-acf
+  4-c48f0ca89dd2/scratchpad/mining/2026-01-to-04.md
+
+  Scenarios found: 69 bullets across the eleven headings (plus 3 bullets
+  recording that a theme has no owner statement in this range: SBOM-as-feature,
+  CI/infra files as nodes, redaction when sharing). Every quote was
+  machine-verified verbatim against the cited owner-turn line and is within 40
+  words. Note: a sibling process overwrote my first extraction in the shared
+  mining/ folder mid-run; I redid the work in a private subfolder (now deleted)
+  and discarded the contaminated hit lists, so the output is clean.
+
+  Five most distinct:
+
+  1. PCI-DSS data-field map for the security team (2026-02-24.1.md:2735-2737).
+  Map, per sensitive field, every locus where card data is in transit or in
+  memory, from browser through tokenization to the token's later handling, and
+  send the security folk shareable URLs; raises inline-DTO and "data-like
+  element" detection as open problems.
+
+  2. Reconcile two versions of a closed-source Unity game, privately
+  (2026-02-24.1.md:2978-2980). Use the tool outside the public workspace to
+  unify improvements made across two separate codebases of the same game; the
+  only cross-version/diff-like want in the range.
+
+  3. The software unburdens itself from LLMs; headless consumers and agents read
+  its outputs (2026-02-17.1.md:334, 2026-02-20.1.md:315/469,
+  2026-02-24.1.md:1800/1844). Users bring their own assistant via prompt files;
+  CLI outputs serve "AI agent developers"; and because Copilot never consults
+  the docs before reading code, the product must work for a userbase that writes
+  no authored content.
+
+  4. Live Docs link to the chats that made each file, so the Force Graph shows
+  how and why the software is the way it is (2026-01-13.1.md:3227;
+  2026-02-24.1.md:2511). The Related Documentation bundle carries chat history
+  and brownfield docs, and the owner has watched the app's emergent shape change
+  over weeks in that view.
+
+  5. Run the Explorer with no server and no VS Code, hosted anywhere, with
+  nothing fetched from the internet (2026-02-24.1.md:1138/1325/1327/1566;
+  2026-01-09.1.md:328). The static site's inputs are the CLI's outputs, headless
+  parity comes from the CLI or the page's own JS, markdown may live in a temp
+  dir for users who only want the UI, and no CDN is ever used.
+
+  Listed 1 directory (ctrl+o to expand)
+
+● Agent "Mine Jan-Apr 2026 chats for scenarios" finished · 10m 27s
+
+● Three of the five range files are on disk and intact; the subagents left about
+  15 MB of their own intermediate files beside them in the scratchpad, which I
+  will clear once the last two report. Waiting on December 2025 and the
+  September-to-October 2026 ranges before consolidating.
+
+› Message from general-purpose
+  Output: /tmp/claude-1000/-workspaces-Live-Documentation/270703a1-324b-475f-acf
+  4-c48f0ca89dd2/scratchpad/mining/2025-11.md
+
+  Scenarios found: 74 bullets across the eleven headings (every quote verified
+  verbatim against the source transcript; max quote length 39 words). Four
+  headings carry an explicit note on what this month does not contain: no
+  non-software reader is named, no multi-system map, no trimming/redaction when
+  sharing, no SBOM, no single-file export.
+
+  Five most distinct:
+
+  1. Trace one JS variable back to its plain `Web.config` value through an ASPX
+  hidden field and `Globals.cs`, as a one-input CLI query (2025-11-17 L493; "We
+  will know that our tool has succeded when we can pull off that important
+  trick").
+     The owner's day-job estate this month is WebForms, Blazor, a TFS PowerShell
+  compendium and an Azure DevOps wiki; WCF/SQL/Oracle/payments are not named
+  yet.
+
+  2. A hosted Cloudflare site that runs the tool on a user's open-source repo
+  and returns the Live Docs plus the SQLite DB in a zip with LLM prompting
+  instructions, strictly as marketing (2025-11-15 L379, L698).
+     Paired with the opposite rule: "no cloud dependencies", no auth, no remote
+  git, docs never held hostage by a provider.
+
+  3. Greenfield pseudocode UX: wire up System-layer docs in a document editor,
+  press a button, Copilot implements, possibly several skeleton sets in several
+  languages (2025-11-13 L1445; 2025-11-08 L5607).
+     The merged map must therefore become text-editable and WCAG AA (2025-11-21
+  L142).
+
+  4. Git-history churn as an optional generated field, withdrawn two days later
+  because two contributors would commit different numbers (2025-11-08 L333,
+  L809; retired 2025-11-10 L2190), then partly reopened for ephemeral system
+  views only (2025-11-11 L1534).
+     The clearest example in this range of a want the owner invalidated and then
+  re-scoped.
+
+  5. Point an Azure DevOps wiki at the generated folder at the day job, so links
+  must be relative and slugging configurable (2025-11-08 L1127).
+     Alongside: the top layer should read as release notes a closed-source
+  project could publish (2025-11-10 L612).
+
+● Three of five reports are in and verified in method. Two ranges remain,
+  December 2025 and the current era. I consolidate when they land.
+
+● Agent "Mine Nov 2025 chats for scenarios" finished · 10m 58s
+
+› Message from general-purpose
+  Output file: /tmp/claude-1000/-workspaces-Live-Documentation/270703a1-324b-475
+  f-acf4-c48f0ca89dd2/scratchpad/mining/2025-12.md
+
+  Scenarios found: 52 (57 bullets; five are explicit absence notes: no SBOM, no
+  "single file"/HTML delivery form, no imagined-not-yet-built system, no
+  trimming-before-sharing, no CI/infra files as map nodes). 94 verbatim quotes,
+  every one mechanically verified against the raw transcript as a substring on
+  the cited line, inside an owner turn, at most 40 words. Format note: owner
+  marker is `jfjordanfarr:` through 12-10.1 and `User:` from 12-11.1 on; six
+  pasted non-owner blocks inside owner turns (NotebookLM transcripts, Gemini
+  reports, a pasted summary, a directory tree) were excluded by line range.
+
+  Five most distinct:
+
+  1. Trace a config value end to end across the estate: a payment page's
+  frontend JS file in "From", `APPLICATIONINSIGHTS_CONNECTION_STRING` in
+  Web.config in "To", and watch the whole path through `Payment.aspx.cs` and
+  `Globals.cs` to `<appSettings>` (2025-12-16.1.md:1201).
+
+  2. Find where a WCF data contract is mapped into the shared PaymentSubmission
+  model, a NuGet-packaged model consumed one hop away in a separate
+  cloud-to-on-prem API; a real question asked at work that day, and the only
+  cross-system path in the month (2025-12-16.1.md:1203).
+
+  3. A colleague-facing showcase: host the Explorer so
+  requirements/QA/compliance colleagues understand it as the owner pans, and
+  deterministic links that drop a colleague onto a specific Local Map or a
+  rendered pathfinder result (2025-12-05.md:3691, 2025-12-16.1.md:1339,
+  2025-12-18.3.md:162).
+
+  4. Prove with tests that the software never reaches the internet and works
+  offline, as evidence not README promises, because the day job is
+  PCI-DSS-secured public-facing software; default to no LLM provider and prefer
+  CLI plus a self-hosted static site over a local server (2025-12-14.1.md:813,
+  2025-12-15.2.md:711, 2025-12-14.1.md:1706).
+
+  5. Keep many snapshots of the data behind the static site to watch a workspace
+  evolve commit by commit, and combine multiple workspaces into one cumulative
+  understanding; both offered as pie-in-the-sky roadmap items
+  (2025-12-19.1.md:1231-1233).
+
+● Four of five are in; only the current era, September to October 2026, is still
+  running. Consolidation follows its report.
+
+● Agent "Mine Dec 2025 chats for scenarios" finished · 13m 35s
+
+› Message from general-purpose
+  Output: /tmp/claude-1000/-workspaces-Live-Documentation/270703a1-324b-475f-acf
+  4-c48f0ca89dd2/scratchpad/mining/2026-09-to-10.md
+
+  Scenarios found: 58 distinct bullets across the eleven requested headings
+  (near-duplicates within a session collapsed and counted; later withdrawals
+  noted). Every main quote was checked mechanically against its cited source
+  file and the 40-word limit; all 58 pass.
+
+  Five most distinct from the rest:
+
+  1. A colleague round-trips the map: takes the owner's wired-up estate, changes
+  it and sends it back (2026-09-30, record Turn 21).
+     The only scenario where the shared artifact is edited by someone else and
+  returned, which forces authoring, saving and merging questions nothing else
+  raises.
+
+  2. A colleague opens the file, maps directories, and finds 3K+ uncommitted
+  generated files in Visual Studio (2026-10-03, record Turn 6).
+     The one scenario about the tool's side effects on the recipient's working
+  tree rather than on what they see.
+
+  3. Imagining a system before it exists, a kubernetes pod/swarm with slots to
+  be filled, and asserting facts "by fiat" when detached from sources
+  (2026-09-27, transcript line 1652).
+     The only case where there are no program guts to scan at all, so the World
+  Map must work as pure authoring.
+
+  4. Drop an ARM/Bicep resource and see inside its black box via a precomputed
+  index of popular open-source software, following Entra managed-identity
+  permissions down the chain, with no internet calls (2026-09-27, line 1455).
+     The one scenario that reaches outside any opened directory, and it collides
+  head-on with the offline constraint stated in the same message.
+
+  5. An org hosts a static Live Documentation site for an estate and sends an
+  agent a hyperlink, or attaches the HTML in M365 Copilot (2026-10-03, record
+  Turn 2).
+     The only surviving agent-as-reader scenario after the owner withdrew agent
+  hydration as a purpose; it is served by hosting and export, not by a door of
+  its own.
+
+  Scope note: 27 capture files searched (all records, snapshots, reconstructed
+  transcripts and exports in the two folders); 13 opened directly for context.
+  The September 26 and 27 terminal exports begin late, so most September quotes
+  cite the reconstructed `.md` transcripts, whose owner prompts are verbatim;
+  where an export carries the passage, it is cited. Nothing in the repository
+  was modified; the extraction scripts and intermediate candidate lists live
+  only in the scratchpad (`tools/` and `mining/corpus`, `mining/candidates-*`,
+  `mining/skim*`).
+
+● All five reports are in. Reading the five files in full now, then
+  consolidating against the ten scenarios, and clearing the subagents'
+  intermediate files from the scratchpad.
+
+  Read 5 files, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Mine Sep-Oct 2026 chats for scenarios" finished · 17m 16s
+
+  Read 4 files (ctrl+o to expand)
+
+● Next up: I'll draft a consolidated scenario, update the record's work notes
+  with the mining results, spot-check two unverified quotes, and check whether
+  the no-internet rule already exists elsewhere—these can all be done
+  independently. · summary
+
+  Searched for 2 patterns, read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● The consolidation is written and the record carries it. The gate is running
+  over the record; when it passes I commit and send you the scenario set as the
+  record shaped it.
+
+● Background command "Run the pre-commit gate without Playwright over the record
+change" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Committed as 1f0f939c. The mining is done, read whole, and consolidated. You
+  were right, and by a wide margin.
+
+  ┌───────────────────────────┬──────────────────┐
+  │           Range           │ Statements found │
+  ├───────────────────────────┼──────────────────┤
+  │ October 2025              │ 73               │
+  ├───────────────────────────┼──────────────────┤
+  │ November 2025             │ 74               │
+  ├───────────────────────────┼──────────────────┤
+  │ December 2025             │ 57               │
+  ├───────────────────────────┼──────────────────┤
+  │ January to April 2026     │ 69               │
+  ├───────────────────────────┼──────────────────┤
+  │ September to October 2026 │ 58               │
+  └───────────────────────────┴──────────────────┘
+
+  Each is your own words with file, line and date. Every range's quotes were
+  checked against the transcripts by its subagent, and I re-checked eight myself
+  across four ranges. Their 15 MB of scratch is gone; the five reports stay in
+  my scratchpad.
+
+  The set, as the record shaped it
+
+  The ten stand, each with its sources now, and the record forces three more and
+  one rewrite.
+
+  1. The estate at work. The chain as you gave it on September 26. The record
+     adds the questions a person must answer by pointing, which is the "done"
+     test made concrete: where a page's JS value comes from, back to Web.config,
+     "that important trick" (2025-11-17, line 493); where the WCF contract is
+     mapped into the shared PaymentSubmission model, a NuGet package consumed a
+     hop away in the gateway (2025-12-16.1, line 1203); which stored-procedure
+     parameter supplies a value (line 1207); a deployed web.config that points
+     at a different system than the file (2026-09-27.1, line 1543); every place
+     card data is in transit or in memory, for the security team, as URLs
+     (2026-02-24.1, line 2735); how exposed the distributed system is
+     (2026-09-29.2, line 1386); and a thing that is a folder of PowerShell
+     scripts referencing each other (2025-11-20, line 375).
+  2. This repository. The delivery shape, plus your October 2 reading of its
+     estate as "the repo and the static site address and the workflow to deploy
+     it", and chats as provenance (2026-09-26.1, line 171).
+  3. Two directories, no board. Said five ways from September 26 to October 7,
+     and earlier as "if the contents of one folder talk to the contents of
+     another" (2026-03-17.1, line 2453).
+  4. Nested and sibling projects. The TFS case is sharper than submodules: two
+     C# solutions in sister directories of one monorepo as separate things,
+     "inside" and "outside" relative, and git subtrees possibly a third level
+     (2026-09-30.2, Turn 20).
+  5. An imagined system. Kubernetes slots, kinds with a shape and a label, true
+     by fiat (2026-09-27.1, lines 1652 and 2076). The withdrawn half: generating
+     code from the drawing, backburnered December 12 and de-scoped February 20.
+  6. Shared out. A board handed over detached and trimmed, or a readable link to
+     a hosted site. The record adds the director's whole-enterprise view you
+     called "potentially not plausible" (2026-09-26.1, line 431), a link whose
+     files no longer exist (2026-03-31.1, line 1600), and a Teams card
+     (2025-12-07.1, line 304).
+  7. Sent back changed. New. "Even better if a colleague can take my version,
+     mess with it, and send it back to me with their own ideas." (2026-09-30.2,
+     Turn 21). Nothing else forces merging.
+  8. CI/CD and infrastructure files as a source. Infrastructure-as-code
+     inference and key-value tags, the deploy workflow, an ARM or Bicep resource
+     seen inside through a precomputed index with "Internet calls are things I
+     really do want to do without" in the same breath (2026-09-27.1, line 1455),
+     managed-identity permissions down the chain, OpenAPI specs in a folder,
+     and the Aspire app host from yesterday.
+  9. An SBOM in a thing's folder. Rewritten from your September 27 words:
+     noticing the file is the first iteration, a vulnerable library known from
+     its vulnerability data is the stretch, and the stage that matters is
+     "wiring two software systems together" (lines 927, 1366, 1639).
+  10. The blank file. One node asking for a directory, the self-reproducing HTML
+      you called "very very cool" and very risky, where the generated markdown
+      goes, and the colleague's 3K uncommitted files (2026-10-03.2, Turns 5
+      and 6).
+  11. No authored content anywhere. New. "prepare for a userbase which does not
+      fill in any authored content at all" (2026-02-24.1, line 1844). The estate
+      sample's bundle is this today.
+  12. Opened on a phone. New. "works-at-basically-any-screen-size"
+      (2026-09-29.2, line 1438), with hover having no mobile equivalent. Nothing
+      else forces touch.
+  13. An agent reads the board. A hosted site's link sent to an agent, the HTML
+      attached in M365 Copilot, served by export with no doors (2026-10-03.2,
+      Turns 2 and 3). Withdrawn as the purpose, twice.
+
+  A standing rule my list missed. Nothing reaches the internet, no CDN, no
+  fetch, with tests that prove it. You said it in December 2025, January 2026
+  and September 2026, and the vision carries it as "offline, static, and
+  portable". It joins markdown canonical, headless and UI as peers, a scan never
+  hidden, and orientation kept. It is the rule the precomputed index in
+  scenario 8 collides with.
+
+  Ideas you already withdrew
+
+  These are the first entries of the failed-ideas list, and the record shows the
+  pattern you described: wanted, then invalidated by a scenario.
+
+  - Churn counts from git committed into docs, withdrawn two days later because
+    two contributors would commit different numbers, allowed only in ephemeral
+    views (2025-11-08 to 11). This bears on the trajectory and on any
+    history-derived fact in a board.
+  - Code generated from docs, and code edited inside the Explorer.
+  - LLM features inside the tool, removed in February for "bring your own
+    assistant".
+  - Agents as the primary consumer, the founding wish of October 2025, to export
+    only.
+  - A hosted service that runs the tool on a public repository, doubted the same
+    day and parked. Someone else built it since.
+  - Directory-level authored docs: "We've waffled on that."
+  - The animated flyover, "a wild stretch goal".
+  - The 3D outside, doubted the day it was set, then held by the board's
+    verdict. A reversal that held, kept for contrast.
+
+  One small fork. The mined index is about 150 KB of your own words with line
+  citations into the record. Keep it as one file under Research, or let it go
+  once the scenarios are in the map doc with their citations? I recommend
+  keeping it: re-mining costs what it cost, and it points into the record rather
+  than restating it. Your call, given the artifact count.
+
+  The two questions from last time, the destination and where the map lives, are
+  still open. Once you answer them and strike or add here, the thirteen go into
+  the map doc with these sources and round 2 begins.
