@@ -74,6 +74,7 @@ The estate sample's board, `tests/integration/programs/csharp/estate/board.md`: 
 - [Architectural Decisions](architectural-decisions.mdmd.md), under "The Board Text"
 - [The vision](../layer-1/vision.mdmd.md), under "The picture" and step 3
 - [This repository's board](board.mdmd.md)
+- [The World Map's plan](world-map.mdmd.md), the design in progress that this grammar serves
 
 ## Evidence
 
