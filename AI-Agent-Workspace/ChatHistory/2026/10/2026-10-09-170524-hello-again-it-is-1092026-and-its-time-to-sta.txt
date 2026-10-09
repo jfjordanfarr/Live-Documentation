@@ -1653,3 +1653,226 @@
      6-b9a6-710652beec78/scratchpad/check-links.ts (98 lines)
   ⎿  Referenced file
      AI-Agent-Workspace/ChatHistory/2026/10/2026-10-08.1.record.md
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -09-170524-hello-again-it-is-1092026-and-its-time-to-sta.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >one name for a thing everywhere, on the board's lines, in links, and as the
+  Local Map's outermost membrane.
+
+  Clean. I like it. B it is.
+
+  >The pipeline then scans each solution root on its own, or the whole root
+  once if the facts should be whole across solutions and the run is bearable,
+  never both, by your refusal rule.
+
+  Bah. Yeah this raises all these questions about how a world map could be
+  _automatically_ constructed, and while I think various files _inform_ a
+  global shape (provide _evidence_ for a world map shape), I strongly suspect
+  that _automatic_ population of a world map is likely to be _significantly_
+  more error-prone than the automatic population of the Local Map/Force Graph.
+  We have nowhere near the guarantees out at this level that we do inside a
+  well-connected software solution. IAC is awesome, but I know we have a git
+  repo stuffed with yaml pipelines that are manually disabled in Azure DevOps.
+  So scanning those would totally lead things astray in that project. I also
+  know that the very same repo contains a DB project which doesn't deploy at
+  all (purely a system of record), but if it _did_ deploy, it would deploy to a
+  different resource than the UI app whose solution _also_ resides in that
+  repo. (This is a sensible case of creating a "thing" per solution)
+
+  I see so many personal cases where automatic detection _should be expected to
+  fail_ for the world map and ponder whether the world map is better
+  understood as an authoring surface that preserves human decisions (and is
+  hopefully bolstered by evidence from IAC/pipelines/etc.?). My confidence in
+  what the World Map _is_ is nowhere near my confidence in what the Local Map
+  _is_.
+
+  >Every fact the World Map wants must first be a fact of the docs. There is no
+  reading a file the generator did not read. Concretely today: a doc's
+  metadata carries its layer, archetype, code path and generation time, and
+  nothing else.
+
+  Damn. Yeah and I think we really need the ability to claim things by fiat in
+  the world map. And if that's the case, is automatically generating a world
+  map from even an easy target like a TFVC root a fool's errand? What if using
+  code to generate the world map is the wrong approach due to the fact that the
+  dependable/reliable facts are simply not in our hands to make such decisions
+  accurately?
+
+  But then how do we share a world map with our colleagues? MAN! TOUGH!
+
+  >The World Map cannot be smarter than the join. Matching across things works
+  only on what the docs carry as names: routes, addresses, SQL objects, project
+  and package names, unlinked labels. The dropped project reference we found
+  is a doc gap this rule makes visible instead of patchable.
+
+  This I actually agree with. I'd only add that the world map cannot be smarter
+  than the join _and_ the human effort that went into authoring that world
+  map.
+
+  >What we do not lose: authoring, since the World Map writes the board;
+
+  Wait really? Oh wow these two gel with each other?
+
+  >your refusal of nested scans with a generator warning
+
+  Yeah let's definitely do that, at least to start with. Our programming lives
+  will be much easier with that constraint.
+
+  >the bundle as the exporter's choice of scope and opening;
+
+  Yep still agreed on that
+
+● Appending the Turn 5 reply and your new message to the record first, then
+  checking the re-exported capture.
+
+  Read 4 files, ran 5 shell commands (ctrl+o to expand)
+
+● I've finished reading the plan and board modules. Next I'll draft the reply,
+  verifying it against the direction.md Turn 5 entry format and the current
+  World Map client output. · summary
+
+  Searched for 2 patterns, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Recorded and committed as fa7779e5, your re-export with it. B is decided,
+  nested scans are refused with a generator warning, and the bundle is the
+  exporter's choice. Now the question you raised, which is the one that matters.
+
+  What the World Map is
+
+  Your reading is right, and it is the design as it already stands. I should
+  have said it that plainly instead of talking about a pipeline composing
+  anything. The first line of the board module says what a board is: "the text a
+  person writes about an estate." Nothing in the code or in the plan writes a
+  board from files. Nothing was ever going to.
+
+  The reason your confidence in the two maps differs is that they have a
+  different number of inputs. The Local Map has one, the docs, derived from
+  source, so your confidence in it is confidence in a compiler. The World Map
+  has two: a board a person wrote, and the docs. The join puts them together and
+  reports where they disagree. The sentence to hold is this. The Local Map is
+  the drawing of the docs. The World Map is the drawing of a board joined to the
+  docs. Your confidence gap is the right size, because one of the World Map's
+  inputs is yours to write, and the tool cannot be more right about it than you
+  were.
+
+  Fiat is already in the grammar, not something we need to add:
+
+  - A thing with no From line is imagined. It exists because you wrote it.
+  - Serves promises doors "whether or not a scan finds them."
+  - A connection is, in the module's own words, "a connection no scan can see,"
+    with declared as its basis.
+  - Kind is your label. The manifest's kind is only the default when you give
+    none.
+  - Holds is your grouping, drawn as a region.
+
+  The estate sample uses all of this today. Its oracle thing serves the table
+  CENTRAL.ACCOUNT by declaration, because Oracle is never scannable, and the
+  join wires the payment service's call to that declared door. The tunnel
+  between the cloud and the on-prem regions is a declared connection. Those are
+  claims by fiat, drawn beside evidence, and they have been there since
+  September 28.
+
+  So "automatic" splits in two, and only one half is what you fear:
+
+  - Things are never automatic. Nothing creates, merges or carves a thing but a
+    person. The one-click create-and-scan is still a person's click on a folder
+    they chose.
+  - Wires are automatic, each with its basis. A route call to the file that
+    serves it, a SQL call to its table, a project reference to its project.
+    These are the Local Map's own edges, crossing a thing's boundary. They are
+    as reliable as the docs are, and a string-matched route is weaker than a
+    resolved symbol, which is why every wire says which it is. In the estate
+    sample, ten of the eleven wires come from the docs and one is declared.
+    Expect that ratio: the person writes the things, the docs write the wires.
+
+  Your two cases, under that split. The database project that does not deploy: a
+  thing per solution, as you said. The UI app's SQL calls wire to it from the
+  docs, which is evidence. Where it deploys, or that it does not, is a region or
+  a kind you write, because no file in that repository says it. The disabled
+  pipelines: if T4 ever decides pipeline files are a source, what they say is
+  evidence with its basis, drawn beside your claim and never replacing it. The
+  plan's standing rules already say so: "A scan is never hidden; a declaration
+  is drawn beside it." A pipeline file that says a thing deploys where your
+  board says it does not is a finding, the same nudge you asked for on September
+  28 about a web.config that names the wrong system. Your two cases go into T4
+  as its first tests: evidence known to be wrong must be visible as evidence,
+  and must change nothing by itself.
+
+  That also settles the rule, with your addition folded in. The World Map cannot
+  be smarter than the join and the human effort, and those are exactly its two
+  inputs. So the line for the standing rules is: the World Map reads a board and
+  the graphs its things name, and never source; it knows what the person wrote
+  and what the docs know, and nothing else. And this is why authoring and the
+  rule gel. The rule is about reading. The board is not source, it is your file,
+  so the World Map may write it freely and may never read the code. It already
+  does one small write today: drag things, and "save board" hands back the board
+  text with its Layout section rewritten. Adding a thing, naming its kind,
+  promising a door, declaring a connection: more lines of the same file, written
+  the same way. The one act the view cannot do alone is fill a thing from a
+  folder, because that is a scan, which reads source; it asks the engine to scan
+  and reads the result. Where the written file lands, the disk in VS Code or a
+  download from a static page, is T3's question.
+
+  The board drives the build
+
+  Generating a board from a TFVC root is a fool's errand, yes. A folder tree
+  says where code is, never what a system is or what deploys together. Your own
+  repository proves it: a UI solution and a database project of record side by
+  side, and no file in it says the second one does not deploy.
+
+  "The pipeline composing the map" was my wrong verb. The pipeline composes
+  nothing. It reads the board. Every outermost From on the board is a scan root.
+  A From that lies inside another thing's From is a carve of that scan, as the
+  estate sample carves one solution into seven things, and is never a scan of
+  its own. Then one join over the scans, one build, one publish. Your refusal of
+  nested scans falls out of this: the pipeline never scans inside a scan
+  because the board cannot ask it to, and the generator's warning covers a scan
+  someone runs by hand. The question I left open, whether to scan each solution
+  or the whole root, is yours too, answered by where you point. Nobody automates
+  it.
+
+  And sharing is sharing text, because the board is a markdown file:
+
+  - Checked in, at the TFS root or in an estate repository, and the pipeline
+    builds the site from it. A change to it is a diff a reviewer reads. Moving a
+    thing, declaring a connection or promising a door is an architectural claim
+    with history and blame. That is what preserving human decisions means in
+    practice.
+  - Detached. The bundle already carries the board in its data, so the static
+    site a pipeline publishes is the shared map, with your claims baked in and
+    the evidence joined at build time. That is scenario 6, and T6 is the round
+    trip.
+  - Handed over. A colleague with the same folders takes the file, and the join
+    fills it from their own scans.
+
+  The hard part was never sharing. It is two people's claims disagreeing, which
+  is a merge of text, and that is T7, already in the plan behind T6.
+
+  T1 as it stands
+
+  Every answer of T1 now has your word except the whole. Here is the resolution
+  I would write under the ticket when you say it closes:
+
+  A thing is what a person puts on the board, and nothing else makes one.
+  Opening a directory is that act: it creates the board if none exists, adds a
+  thing named after the folder, points its From at it, and scans it alone. A
+  second directory is a second thing, scanned alone. A scan never lies inside
+  another scan, and a From inside another From is a carve. The join over the
+  things' graphs draws the doors and the wires with their bases; the person's
+  lines are drawn beside them, and disagreement is reported. A file's address is
+  its thing's name and its path inside it; a rename is a rename, and the tool
+  names the links it breaks. A bundle is the exporter's choice of things and
+  opening.
+
+  With the close I write the plan's edits in one commit: that resolution and its
+  line under Decisions so far, the rule under the standing rules with its
+  import test, your two cases under T4, the fog line on what evidence may
+  suggest and how a person accepts a suggestion, and one line per scenario on
+  how its person engages. Then the probe: Portal and Gateway from the estate
+  sample scanned as two folders, joined over two graphs, drawn, with a test that
+  the wires equal the one-scan build's, the dropped project reference written
+  unlinked and matched by the join, and the generator's warning. Nothing of that
+  is built until you say the resolution stands or say what is wrong with it.
