@@ -5,7 +5,7 @@
 - Layer: 3
 - Audience: Contributors
 
-_Current as of 2026-10-09._
+_Current as of 2026-10-10._
 
 ## Authored
 
@@ -20,6 +20,7 @@ Describe the board text: what a person declares about an estate, in one small ma
 - **Every name is an identity.** Things are named once, in backticks, and every other line refers to them by name, so moving a folder changes one `From` line and nothing else.
 - **A kind is any word**, drawn through the Legend: a shape for a thing that holds nothing, `cube`, `tile`, `drum`, `figure`, `sheet` or `cloud`, and a tint for a thing that holds things, `blue`, `orange`, `green`, `grey`, `violet` or `rose`. The tool knows defaults for the kinds manifests publish, `web`, `service` and `program` as a cube and `library` as a tile, and for `database`, `person`, `cloud` and `on-prem`; a legend line overrides or adds, and the help control shows the legend.
 - **Layout is positions only**, two numbers per thing in board units, written by a person or by the tool on save. A thing that holds things needs none; its region is drawn around what it holds. Stacking regions as floors is an arrangement the tool applies and then forgets, writing only the moved positions.
+- **An imagined thing is drawn hollow** (2026-10-10): its edges dashed, its faces all but unfilled, its kind under its name and no word for its state, so that a promise and a fact are not the same solid; it fills in when a `From` arrives. A door it declares that nothing on the board uses is drawn dashed with a stub into the air, the mirror of a ghost, since a promise is never hidden; a door the docs publish is drawn where a wire lands. What the join found wanting is counted beside the board's title and listed in the help, as `live-docs:board` prints it, so that the viewer never knows less than the command.
 
 ### The grammar
 
@@ -54,7 +55,7 @@ Since 2026-10-09 a thing may come from a folder scanned alone, with docs of its 
 
 ### Measured against
 
-The estate sample's board, `tests/integration/programs/csharp/estate/board.md`: nine things, two of them regions, and one declared tunnel. The integration test generates the docs over a copy of the fixture, joins the board to them and checks that every remote hand-verified edge appears as a wire between the two things that hold its files. All six do, as five pairs of things with their doors, two routes, two addresses, a procedure and two tables, and their bases. The board reads eleven wires in all: those seven, three to the shared contracts library from source, and the tunnel. This repository's own board, `.mdmd/layer-3/board.mdmd.md`, is read by the same test against the committed docs and by `npm run live-docs:board`: seven things and ten wires, all from source.
+The estate sample's board, `tests/integration/programs/csharp/estate/board.md`: nine things, two of them regions, and one declared tunnel. The integration test generates the docs over a copy of the fixture, joins the board to them and checks that every remote hand-verified edge appears as a wire between the two things that hold its files. All six do, as five pairs of things with their doors, two routes, two addresses, a procedure and two tables, and their bases. The board reads eleven wires in all: those seven, three to the shared contracts library from source, and the tunnel. This repository's own board, `.mdmd/layer-3/board.mdmd.md`, is read by the same test against the committed docs and by `npm run live-docs:board`. Since 2026-10-10 it draws the delivery shape the owner chose from [the T2 probe](../../AI-Agent-Workspace/Probes/2026-10-10/delivery-shape.md), the package first: seventeen things, two of them regions and eight imagined, the sample programs and fixtures carved from the tests so that their doors are not read as the repository's, and nineteen wires, ten from source and nine declared.
 
 ### Not covered
 
@@ -62,6 +63,7 @@ The estate sample's board, `tests/integration/programs/csharp/estate/board.md`: 
 - Wires between regions implied from their members, and what a closed region shows on its boundary. [A survey](../../AI-Agent-Workspace/Research/2026-09-28-groups-and-nested-boards.md) of how canvases and diagram tools collapse groups was gathered for it: every one derives a closed box's wires from its children and stores nothing, and none closes a group because the camera moved.
 - The Explorer writes Layout only by download: a moved thing is kept in the browser's storage, and "save board" hands back the text with its Layout rewritten. The Legend is not written yet, nor the single self-saving file that carries a board with its docs and provenance, nor the import that brings a returned file home with the difference shown. The proposal is the probe record's board-file.md.
 - A board as a thing on another board, which the owner called a stretch goal.
+- Whether a person is ever a thing. The owner's rule of 2026-10-10 is that a thing on the board is a directory of interconnected files, or one that will be: "A colleague is not a pseudo-directory to one day be populated with interconnected files." The `person` kind and the `figure` shape stay in the grammar until a scenario needs them or retires them.
 - How a board is found when no host names it: a path the CLI takes, the file VS Code opens, the text inside a bundle, until a feature needs more.
 - The vision's picture still says piece, district, tunnel and wire; thing, region, crossing and wire would match the text, to be changed when the World Map is built.
 

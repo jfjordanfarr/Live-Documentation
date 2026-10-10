@@ -9,7 +9,7 @@
  */
 
 import { renderBoard, type Board } from "@live-documentation/engine/live-docs/board";
-import type { Ghost } from "@live-documentation/engine/live-docs/boardGraph";
+import type { Ghost, ServedDoor } from "@live-documentation/engine/live-docs/boardGraph";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import {
@@ -93,6 +93,8 @@ interface Door {
   anchor: Anchor;
   /** A ghost: a door that uses what nothing on the board serves, with no road. */
   ghost?: Ghost;
+  /** A door the board declares that nothing on the board uses, with no road: drawn all the same, since a promise is never hidden. */
+  declared?: ServedDoor;
 }
 
 interface Token {
@@ -132,6 +134,9 @@ const THEMES = {
   light: { faceLight: "#ffffff", faceDark: "#98a2b1", faceStroke: "#505c6b", tankStroke: "#505c6b", shadow: 0.26 },
   dark:  { faceLight: "#4a5468", faceDark: "#1f2530", faceStroke: "#0b0d11", tankStroke: "#6b7a90", shadow: 0.55 }
 };
+
+/** How much of a face an imagined thing keeps: enough to catch the pointer, too little to read as a solid. */
+const HOLLOW = 0.08;
 
 const BASIS_WORDS: Record<string, string> = {
   source: "from source",
@@ -393,7 +398,8 @@ export class WorldMapController {
       if (region.depth > 0) {
         polygon.setAttribute("fill-opacity", "0.85");
       }
-      const label = svgElement("text", { class: "w-zone", "data-fixed": this.P(rect.x + 18, rect.y + rect.d - 14), "text-anchor": "start", dy: "4", "data-dy": "4" }, this.layers.labels);
+      // The region's name sits just outside its left point, off the feet of the things at its corners.
+      const label = svgElement("text", { class: "w-zone", "data-fixed": this.P(rect.x - 10, rect.y + rect.d / 2), "text-anchor": "end", dy: "4", "data-dy": "4" }, this.layers.labels);
       label.textContent = region.name;
     }
     if (this.snap) {
@@ -412,19 +418,21 @@ export class WorldMapController {
 
   private drawPiece(placed: Placed): void {
     const colours = this.themeColours();
+    // An imagined thing is hollow: its edges dashed, its faces all but unfilled, its shadow faint. A promise and a fact are not the same solid.
+    const imagined = this.model.pieces.find((piece) => piece.name === placed.name)?.imagined === true;
     const footprint = placed.form === "tank" ? ring(placed.cx, placed.cy, placed.r, 0, 24).map((p) => [p[0], p[1]] as Point2) : corners({ x: placed.x, y: placed.y, w: placed.w, d: placed.d });
-    svgElement("polygon", { class: "w-shadow", filter: "url(#world-blur)", "fill-opacity": colours.shadow * (placed.z0 > FLOAT ? 0.6 : 1), points: footprint.map(([x, y]) => this.P(x + 6, y + 6, 0)).join(" ") }, this.layers.shadows);
-    const group = svgElement("g", { class: "w-piece", "data-piece": placed.name }, this.layers.blocks);
+    svgElement("polygon", { class: "w-shadow", filter: "url(#world-blur)", "fill-opacity": colours.shadow * (placed.z0 > FLOAT ? 0.6 : 1) * (imagined ? 0.35 : 1), points: footprint.map(([x, y]) => this.P(x + 6, y + 6, 0)).join(" ") }, this.layers.shadows);
+    const group = svgElement("g", { class: `w-piece${imagined ? " imagined" : ""}`, "data-piece": placed.name }, this.layers.blocks);
     if (placed.form === "tank") {
-      this.drawTank(group, placed);
+      this.drawTank(group, placed, imagined);
       return;
     }
     for (const face of cuboidFaces(this.camera, this.pivot, placed)) {
-      svgElement("polygon", { class: "w-face", points: face.points.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(shade(this.camera, face.normal)), stroke: colours.faceStroke }, group);
+      svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: face.points.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(shade(this.camera, face.normal)), "fill-opacity": imagined ? HOLLOW : 1, stroke: colours.faceStroke, "stroke-dasharray": imagined ? "5 4" : "" }, group);
     }
   }
 
-  private drawTank(group: SVGElement, placed: Placed): void {
+  private drawTank(group: SVGElement, placed: Placed, imagined = false): void {
     const count = 40;
     const bottom = ring(placed.cx, placed.cy, placed.r, placed.z0, count);
     const top = ring(placed.cx, placed.cy, placed.r, placed.z0 + placed.h, count);
@@ -437,8 +445,8 @@ export class WorldMapController {
     }
     const side = [...ordered.map((i) => bottom[i]), ...ordered.slice().reverse().map((i) => top[i])];
     const colours = this.themeColours();
-    svgElement("polygon", { class: "w-face", points: side.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.55), "stroke-dasharray": "4 3", stroke: colours.tankStroke }, group);
-    svgElement("polygon", { class: "w-face", points: top.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.9), "stroke-dasharray": "4 3", stroke: colours.tankStroke }, group);
+    svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: side.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.55), "fill-opacity": imagined ? HOLLOW : 1, "stroke-dasharray": "4 3", stroke: colours.tankStroke }, group);
+    svgElement("polygon", { class: `w-face${imagined ? " imagined" : ""}`, points: top.map((p) => this.P(p[0], p[1], p[2])).join(" "), fill: this.faceFill(0.9), "fill-opacity": imagined ? HOLLOW : 1, "stroke-dasharray": "4 3", stroke: colours.tankStroke }, group);
   }
 
   private faceFill(value: number): string {
@@ -482,6 +490,15 @@ export class WorldMapController {
         const key = `ghost:${piece.name}:${ghost.basis}:${ghost.label}`;
         if (!byKey.has(key)) {
           const door: Door = { key, piece: piece.name, toward: away, role: "uses", label: ghost.label, sub: `${BASIS_WORDS[ghost.basis]} · nothing on the board serves it`, roads: [], wall: "E", anchor: { p: [0, 0, 0], out: [1, 0] }, ghost };
+          byKey.set(key, door);
+          this.doors.push(door);
+        }
+      }
+      // A door the board declares that no road lands on is drawn all the same, facing the same way: a promise is never hidden.
+      for (const served of piece.doors) {
+        const key = `offers:${piece.name}:${served.name}`;
+        if (served.file === undefined && !byKey.has(key)) {
+          const door: Door = { key, piece: piece.name, toward: away, role: "offers", label: served.name, sub: `${served.kind} · declared, nothing on the board uses it`, roads: [], wall: "E", anchor: { p: [0, 0, 0], out: [1, 0] }, declared: served };
           byKey.set(key, door);
           this.doors.push(door);
         }
@@ -574,15 +591,15 @@ export class WorldMapController {
     for (const door of this.doors) {
       const group = svgElement("g", { class: "w-door-group", "data-piece": door.piece, "data-door": door.key }, this.layers.doors);
       const s = project(this.camera, this.pivot, door.anchor.p[0], door.anchor.p[1], door.anchor.p[2]);
-      if (door.ghost) {
-        // The stub into the air: a call that leaves the wall and lands nowhere on the board.
+      if (door.ghost || door.declared) {
+        // The stub into the air: a call that leaves the wall and lands nowhere on the board, or a promised door that nothing on the board reaches.
         const far = project(this.camera, this.pivot, door.anchor.p[0] + door.anchor.out[0] * 34, door.anchor.p[1] + door.anchor.out[1] * 34, door.anchor.p[2]);
-        svgElement("path", { class: "w-stub", d: `M${s[0]},${s[1]} L${far[0]},${far[1]}` }, group);
+        svgElement("path", { class: `w-stub ${door.role}`, d: `M${s[0]},${s[1]} L${far[0]},${far[1]}` }, group);
         svgElement("circle", { class: "w-ghost-end", r: 3, "data-fixed": far.join(",") }, group);
       }
-      svgElement("circle", { class: `w-door ${door.role}${door.ghost ? " ghost" : ""}`, r: 5, "data-fixed": s.join(",") }, group);
+      svgElement("circle", { class: `w-door ${door.role}${door.ghost ? " ghost" : ""}${door.declared ? " declared" : ""}`, r: 5, "data-fixed": s.join(",") }, group);
       const leftward = door.anchor.out[0] < 0 || (door.anchor.out[0] === 0 && door.anchor.out[1] < 0);
-      const text = svgElement("text", { class: "w-doorlabel", "data-fixed": s.join(","), "data-piece": door.piece, "data-roads": door.roads.join(" "), "text-anchor": leftward ? "end" : "start", dx: leftward ? -10 : 10, dy: door.role === "offers" ? -6 : 14 }, this.layers.labels);
+      const text = svgElement("text", { class: "w-doorlabel", "data-fixed": s.join(","), "data-piece": door.piece, "data-roads": door.roads.join(" "), "data-anchor": leftward ? "end" : "start", "data-dx": leftward ? -10 : 10, "text-anchor": leftward ? "end" : "start", dx: leftward ? -10 : 10, dy: door.role === "offers" ? -6 : 14 }, this.layers.labels);
       text.textContent = door.label;
     }
   }
@@ -704,7 +721,7 @@ export class WorldMapController {
       const name = svgElement("text", { "data-fixed": c.join(","), "text-anchor": "middle", dy: -14 }, group);
       name.textContent = piece.name;
       const sub = svgElement("text", { class: "w-sub", "data-fixed": c.join(","), "text-anchor": "middle", dy: 1 }, group);
-      sub.textContent = piece.imagined ? "imagined" : `${piece.kind ? `${piece.kind} · ` : ""}${piece.files.length} file${piece.files.length === 1 ? "" : "s"}`;
+      sub.textContent = piece.imagined ? (piece.kind ?? "") : `${piece.kind ? `${piece.kind} · ` : ""}${piece.files.length} file${piece.files.length === 1 ? "" : "s"}`;
     }
   }
 
@@ -757,26 +774,54 @@ export class WorldMapController {
         placed.push(box);
       }
     }
-    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36], "w-tag": [0, -20, 20, -40, 40], "w-tokenlabel": [0, -52, 18, -70, 36], "w-doorlabel": [0, -14, 14, -28, 28, -42, 42] };
+    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36], "w-tag": [0, -20, 20, -40, 40], "w-tokenlabel": [0, -52, 18, -70, 36], "w-doorlabel": [0, -14, 14, -28, 28, -42, 42, -56, 56, -70, 70] };
+    const doorBoxes: DOMRect[] = [];
     for (const kind of ["w-zone", "w-tag", "w-tokenlabel", "w-doorlabel"]) {
       for (const node of this.layers.labels.querySelectorAll<SVGElement>(`text.${kind}`)) {
         if (!visible(node)) {
           continue;
         }
         const rest = Number(node.dataset.dy ?? node.getAttribute("dy") ?? "0");
-        let best = { dy: rest, cover: Number.POSITIVE_INFINITY };
-        for (const step of steps[kind]) {
-          node.setAttribute("dy", String(rest + step));
-          const cover = covered(node.getBoundingClientRect());
-          if (cover < best.cover) {
-            best = { dy: rest + step, cover };
+        // A door's label rests on the side its door faces; when no step up or down clears it there, it may cross to the other side of the door.
+        const sides: Array<{ anchor: string; dx: string } | undefined> = node.dataset.anchor
+          ? [{ anchor: node.dataset.anchor, dx: node.dataset.dx ?? "0" }, { anchor: node.dataset.anchor === "end" ? "start" : "end", dx: String(-Number(node.dataset.dx ?? "0")) }]
+          : [undefined];
+        let best = { dy: rest, cover: Number.POSITIVE_INFINITY, side: sides[0] };
+        search: for (const side of sides) {
+          if (side) {
+            node.setAttribute("text-anchor", side.anchor);
+            node.setAttribute("dx", side.dx);
           }
-          if (cover === 0) {
-            break;
+          for (const step of steps[kind]) {
+            node.setAttribute("dy", String(rest + step));
+            const cover = covered(node.getBoundingClientRect());
+            if (cover < best.cover) {
+              best = { dy: rest + step, cover, side };
+            }
+            if (cover === 0) {
+              break search;
+            }
           }
+        }
+        if (best.side) {
+          node.setAttribute("text-anchor", best.side.anchor);
+          node.setAttribute("dx", best.side.dx);
         }
         node.setAttribute("dy", String(best.dy));
         placed.push(node.getBoundingClientRect());
+        if (kind === "w-doorlabel") {
+          doorBoxes.push(node.getBoundingClientRect());
+        }
+      }
+    }
+    // A sub-line that a door's label still covers goes, as it does under a name: the pinned panel says the same words.
+    for (const node of this.layers.labels.querySelectorAll<SVGElement>(".w-label text.w-sub")) {
+      if (!visible(node)) {
+        continue;
+      }
+      const box = node.getBoundingClientRect();
+      if (doorBoxes.some((other) => Math.min(box.right, other.right) - Math.max(box.left, other.left) > 1 && Math.min(box.bottom, other.bottom) - Math.max(box.top, other.top) > 1)) {
+        node.style.display = "none";
       }
     }
   }
@@ -1040,7 +1085,7 @@ export class WorldMapController {
       const standsList = full && piece.standsOn.length ? `<div class="list">${piece.standsOn.map((item) => `<span class="f">${escapeHtml(item.label)} <span class="k">in ${this.fileLink(item.manifest, inside(item.manifest))}</span></span>`).join("")}</div>` : "";
       const named = piece.standsOn.length && !full ? `<div class="src">named in ${manifests.map((manifest) => this.fileLink(manifest, inside(manifest))).join(", ")}</div>` : "";
       return `<div class="h">${escapeHtml(piece.name)}<span class="tier">${escapeHtml(piece.kind ?? "thing")}${regions.length ? ` · ${regions.map((region) => this.pinLink("region", region.name)).join(" · ")}` : ""}</span></div>`
-        + (piece.imagined ? `<div>imagined: no folder yet</div>` : `<div>${piece.files.length} file${piece.files.length === 1 ? "" : "s"} · ${piece.symbols} symbol${piece.symbols === 1 ? "" : "s"}</div>${files}`)
+        + (piece.imagined ? `<div>imagined: no folder yet, nothing inside to open</div>` : `<div>${piece.files.length} file${piece.files.length === 1 ? "" : "s"} · ${piece.symbols} symbol${piece.symbols === 1 ? "" : "s"}</div>${files}`)
         + (served.length ? `<div class="via"><span class="k">offers</span> ${full ? `<div class="list">${served.join("")}</div>` : served.join(", ")}</div>` : "")
         + (calls.length ? `<div class="via"><span class="k">calls</span> ${calls.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
         + (calledBy.length ? `<div class="via"><span class="k">called by</span> ${calledBy.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
@@ -1071,6 +1116,9 @@ export class WorldMapController {
       if (door.ghost) {
         const from = door.ghost.files.map((file) => this.fileLink(file)).join(", ");
         return `<div class="h">${escapeHtml(door.label)}<span class="tier">a ghost</span></div><div class="k">a call ${this.pinLink("piece", door.piece)} makes that nothing on the board serves; point at the folder that serves it and it becomes a wire</div><div><span class="k">from</span> ${from}</div><div class="src">${BASIS_WORDS[door.ghost.basis]}</div>`;
+      }
+      if (door.declared) {
+        return `<div class="h">${escapeHtml(door.label)}<span class="tier">a door declared</span></div><div class="k">a door ${this.pinLink("piece", door.piece)} promises on the board that nothing on the board uses; a thing that called it would draw a wire</div><div class="src">${escapeHtml(door.declared.kind)}, declared</div>`;
       }
       const served = door.role === "offers" ? this.model.pieces.find((candidate) => candidate.name === door.piece)?.doors.find((candidate) => candidate.name === door.label) : undefined;
       const where = served?.file ? `<div class="src">in ${this.fileLink(served.file)}</div>` : "";
@@ -1125,6 +1173,11 @@ export class WorldMapController {
   /** Opens a thing's folder in the Membrane Map, easing the camera back first so that the next wheel over the board does not open it again. */
   enter(name: string): void {
     const piece = this.model.pieces.find((candidate) => candidate.name === name);
+    if (piece && piece.folder === undefined) {
+      // Nothing inside an imagined thing to open: its panel says so rather than the view staying silent.
+      this.pin({ kind: "piece", id: name });
+      return;
+    }
     if (!piece?.folder || !this.onOpenThing) {
       return;
     }
@@ -1519,7 +1572,13 @@ export class WorldMapController {
     if (this.model.crossings.length) {
       parts.push(`${this.model.crossings.length} crossing${this.model.crossings.length === 1 ? "" : "s"}`);
     }
-    this.crumbs.innerHTML = `<b>${escapeHtml(this.model.title)}</b> <span style="color:var(--w-faint)">· ${parts.join(", ")}</span>`;
+    // What the join found wanting is counted here and listed in the help, as the board command prints it: the viewer never knows less than the command.
+    const wanting = this.model.issues.length ? ` <a href="#" class="w-wanting">· ${this.model.issues.length} wanting</a>` : "";
+    this.crumbs.innerHTML = `<b>${escapeHtml(this.model.title)}</b> <span style="color:var(--w-faint)">· ${parts.join(", ")}${wanting}</span>`;
+    this.crumbs.querySelector<HTMLElement>(".w-wanting")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      this.toggleHelp(true);
+    });
   }
 
   // ==========================================================================
@@ -1527,7 +1586,8 @@ export class WorldMapController {
   // ==========================================================================
 
   private writeHelp(): void {
-    this.help.innerHTML = `<h3>World Map</h3><p>Each thing on the board is a system, a database, a person, or something imagined. Click one for its facts. A tinted region holds the things inside it.</p>
+    const wanting = this.model.issues.length ? `<h4>Wanting</h4><p>What the join found wanting on this board, as <b>live-docs:board</b> prints it.</p><ul class="w-wanting-list">${this.model.issues.map((issue) => `<li>${escapeHtml(issue)}</li>`).join("")}</ul>` : "";
+    this.help.innerHTML = `<h3>World Map</h3><p>Each thing on the board is a system, a database, a site, or something imagined, which is drawn hollow until its folder arrives. Click one for its facts. A tinted region holds the things inside it.</p>${wanting}
 <h4>Doors and wires</h4><p><i style="border-color:var(--w-blue)"></i><b>blue</b> offers, <i style="border-color:var(--w-green)"></i><b>green</b> uses, as inside a system. A wire in the air is one call, flowing from what is offered to where it is used; hover it for how it is known. The warm sleeve is a declared crossing. A dashed door with a stub into the air is a ghost: a call that nothing on the board serves, named on hover; point at the folder that serves it and it becomes a wire.</p>
 <h4>What a thing stands on</h4><p>The strands under a thing are what it is built with: another thing's code, drawn as a dotted line on the board to that thing, and the packages its manifests name. No call crosses these while the things run. <b>built on</b> lays out what two or more things share.</p>
 <h4>Pinned</h4><p>A hover peeks; a click pins. In a pinned panel every name is a link: a thing pins it, a file opens it in the Local Map.</p>

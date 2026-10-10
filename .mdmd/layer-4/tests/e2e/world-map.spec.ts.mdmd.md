@@ -12,6 +12,7 @@ Keeps what the World Map draws of this repository's board and what a person can 
 
 ### Notes
 - Written on 2026-09-28 with the view ([Turn 46](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)) and grown with the owner's two looks ([Turn 47](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-47), [Turn 49](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-49)): the first found a click that never pinned, which the suite had not noticed because it pinned through the handle, so the pinning cases click with the mouse now. The suite clears the browser's storage and resets the layout before each case, since positions and the theme are kept there.
+- Since 2026-10-10 ([Turn 14 of the October 9 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-14)), over the board re-authored as the repository's delivery shape: the CLI shell left the board, so the wheel and drag cases take `scripts`; new cases keep the hollow drawing of imagined things, the declared door nothing uses with its stub and its panel, entering an imagined thing pinning it, and the count and list of what the join found wanting, the last over a copy of the bundle's data that the test hands the page with a connection to a door nothing serves, so that the bundle itself stays sound.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

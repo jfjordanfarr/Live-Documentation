@@ -23,6 +23,8 @@ interface WorldMapHandle {
   zoom: (k: number) => number;
   enter: (name: string) => void;
   pieces: () => string[];
+  pin: (kind: string, id: string) => void;
+  unpin: () => void;
 }
 
 declare global {
@@ -79,6 +81,16 @@ test.describe("World Map design audit", () => {
     await page.evaluate(() => window.__worldMap!.zoom(0.6));
     const overlaps = overlapsAmong(await boardLabels(page));
     expect(overlaps, describeFaults(overlaps)).toEqual([]);
+  });
+
+  test("nor with each thing pinned in turn, when its door labels show", async ({ page }) => {
+    await openWorldMap(page);
+    for (const name of await page.evaluate(() => window.__worldMap!.pieces())) {
+      await page.evaluate((id) => window.__worldMap!.pin("piece", id), name);
+      const overlaps = overlapsAmong(await boardLabels(page));
+      expect(overlaps, `${name} pinned: ${describeFaults(overlaps)}`).toEqual([]);
+    }
+    await page.evaluate(() => window.__worldMap!.unpin());
   });
 
   test("a thing opened into the Membrane Map: no two words collide and nothing is cut off", async ({ page }) => {

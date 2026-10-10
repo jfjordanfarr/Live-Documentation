@@ -14,6 +14,7 @@ interface WorldMapHandle {
   instant: (value: boolean) => void;
   pieces: () => string[];
   roads: () => string[];
+  doors: () => string[];
   hover: (kind: string | null, id?: string) => void;
   pin: (kind: string, id: string) => void;
   unpin: () => void;
@@ -54,6 +55,62 @@ test.describe("World Map", () => {
     expect(await page.locator("#view-world .w-region").count()).toBeGreaterThan(0);
     expect(await page.locator("#view-world .w-road-group").count()).toBeGreaterThan(0);
     await expect(page.locator("#view-world .world-crumbs")).toContainText("Live Documentation");
+    await expect(page.locator("#view-world .world-crumbs")).not.toContainText("wanting");
+  });
+
+  test("draws an imagined thing hollow, with its kind under its name and no word for its state", async ({ page }) => {
+    await openWorldMap(page);
+    // The board imagines the package, the action, the panel, the three workflows, the site and the registry.
+    await expect(page.locator("#view-world .w-piece.imagined")).toHaveCount(8);
+    const faces = page.locator('#view-world .w-piece[data-piece="live-docs"] .w-face.imagined');
+    expect(await faces.count()).toBeGreaterThan(0);
+    await expect(faces.first()).toHaveAttribute("fill-opacity", "0.08");
+    await expect(faces.first()).toHaveAttribute("stroke-dasharray", "5 4");
+    await expect(page.locator('#view-world .w-piece[data-piece="engine"] .w-face.imagined')).toHaveCount(0);
+    await expect(page.locator('#view-world .w-label[data-piece="live-docs"] text.w-sub')).toHaveText("package");
+    await expect(page.locator('#view-world .w-label[data-piece="engine"] text.w-sub')).toHaveText(/^library · \d+ files$/u);
+    await page.evaluate(() => window.__worldMap!.pin("piece", "live-docs"));
+    await expect(page.locator("#view-world .world-evidence")).toContainText("imagined: no folder yet");
+  });
+
+  test("draws a door the board declares even when nothing on the board uses it, dashed with a stub, and says so when pinned", async ({ page }) => {
+    await openWorldMap(page);
+    const key = "offers:pages:https://jfjordanfarr.github.io/Live-Documentation/";
+    expect(await page.evaluate(() => window.__worldMap!.doors())).toContain(key);
+    // The site's address has no caller on the board; the registry's address has one, the publish workflow, so only the site's door is dashed.
+    await expect(page.locator("#view-world .w-door.declared")).toHaveCount(1);
+    await expect(page.locator("#view-world .w-stub.offers")).toHaveCount(1);
+    await page.evaluate((id) => window.__worldMap!.pin("door", id), key);
+    const evidence = page.locator("#view-world .world-evidence");
+    await expect(evidence).toHaveClass(/pinned/);
+    await expect(evidence).toContainText("a door declared");
+    await expect(evidence).toContainText("nothing on the board uses");
+    await expect(evidence).toContainText("address, declared");
+  });
+
+  test("entering an imagined thing pins it and says there is nothing inside, instead of staying silent", async ({ page }) => {
+    await openWorldMap(page);
+    await page.evaluate(() => window.__worldMap!.enter("pages"));
+    expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toEqual({ kind: "piece", id: "pages" });
+    await expect(page.locator("#view-membrane.active")).toHaveCount(0);
+    await expect(page.locator("#view-world .world-evidence")).toContainText("nothing inside to open");
+  });
+
+  test("counts what the join found wanting in the crumbs and lists it in the help, as the board command prints it", async ({ page }) => {
+    // The bundle's board is sound; this test hands the page a copy with a connection to a door nothing serves.
+    await page.route("**/explorer-data.json", async (route) => {
+      const response = await route.fetch();
+      const data = await response.json() as { board: { text: string } };
+      data.board.text = data.board.text.replace("### Connections\n", "### Connections\n- `pages-workflow` to `pages.https://nowhere.example/` over `a mistake`\n");
+      await route.fulfill({ response, json: data });
+    });
+    await openWorldMap(page);
+    const crumbs = page.locator("#view-world .world-crumbs");
+    await expect(crumbs).toContainText("1 wanting");
+    await crumbs.locator(".w-wanting").click();
+    const list = page.locator("#view-world .world-help .w-wanting-list");
+    await expect(list).toBeVisible();
+    await expect(list).toContainText("pages-workflow to pages.https://nowhere.example/: pages serves no such door");
   });
 
   test("shows a thing's facts on hover and pins them on click", async ({ page }) => {
@@ -173,7 +230,7 @@ test.describe("World Map", () => {
   test("wheeling into a thing opens it, and the board is ready for the next look when you come back", async ({ page }) => {
     await openWorldMap(page);
     const box0 = (await page.locator("#view-world svg.world-svg").boundingBox())!;
-    const lid = await page.evaluate(() => window.__worldMap!.lidCorners("cli"));
+    const lid = await page.evaluate(() => window.__worldMap!.lidCorners("scripts"));
     const sx = box0.x + lid.reduce((sum, p) => sum + p[0], 0) / 4;
     const sy = box0.y + lid.reduce((sum, p) => sum + p[1], 0) / 4;
     await page.mouse.move(sx, sy);
@@ -181,10 +238,10 @@ test.describe("World Map", () => {
       await page.mouse.wheel(0, -120);
     }
     await expect(page.locator("#view-membrane.active")).toHaveCount(1);
-    await expect(page.locator("#view-membrane .membrane-browse-breadcrumb")).toContainText("cli");
+    await expect(page.locator("#view-membrane .membrane-browse-breadcrumb")).toContainText("scripts");
     await page.locator('.nav-item[data-view="world"]').click();
     await expect(page.locator("#view-world.active")).toHaveCount(1);
-    const after = await page.evaluate(() => window.__worldMap!.lidCorners("cli"));
+    const after = await page.evaluate(() => window.__worldMap!.lidCorners("scripts"));
     const xs = after.map((p) => p[0]);
     expect(Math.max(...xs) - Math.min(...xs)).toBeLessThan(box0.width * 0.5);
   });
@@ -199,13 +256,13 @@ test.describe("World Map", () => {
 
   test("drags a thing with the pointer", async ({ page }) => {
     await openWorldMap(page);
-    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("cli"));
-    const before = await page.evaluate(() => window.__worldMap!.state().positions.cli);
+    const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("scripts"));
+    const before = await page.evaluate(() => window.__worldMap!.state().positions.scripts);
     await page.mouse.move(sx, sy);
     await page.mouse.down();
     await page.mouse.move(sx + 60, sy + 30, { steps: 6 });
     await page.mouse.up();
-    const after = await page.evaluate(() => window.__worldMap!.state().positions.cli);
+    const after = await page.evaluate(() => window.__worldMap!.state().positions.scripts);
     expect(after).not.toEqual(before);
   });
 });

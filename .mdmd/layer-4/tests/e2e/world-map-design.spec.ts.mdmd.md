@@ -12,6 +12,7 @@ Keeps the World Map's words off each other over this repository's board, in each
 
 ### Notes
 - Written on 2026-09-29 when the owner asked whether Playwright could catch "text overflows or other immediate design fails" ([Turn 48](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-48)); `tests/e2e/design-audit.ts` is the instrument, and each state is its own case so that a failure names the state and the words. The controller's label settling is what these cases keep honest.
+- Since 2026-10-10 ([Turn 14 of the October 9 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-14)), one case pins each thing of this repository's board in turn and audits the board's words with its door labels showing, the state in which the T2 probe's densest board collided.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

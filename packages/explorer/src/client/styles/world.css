@@ -66,6 +66,11 @@
   vector-effect: non-scaling-stroke;
 }
 
+/* An imagined thing: hollow, its edges dashed by the renderer, until a folder fills it. */
+.world .w-piece.imagined .w-face {
+  stroke-width: 1.2;
+}
+
 .world .w-bench {
   fill: var(--w-board);
   stroke: var(--w-line);
@@ -186,7 +191,8 @@
   stroke: var(--w-green);
 }
 
-.world .w-door.ghost {
+.world .w-door.ghost,
+.world .w-door.declared {
   stroke-dasharray: 3 2.5;
 }
 
@@ -198,6 +204,11 @@
   stroke-dasharray: 4 4;
   vector-effect: non-scaling-stroke;
   pointer-events: none;
+}
+
+/* A declared door nothing uses: its stub is blue, the side that offers. */
+.world .w-stub.offers {
+  stroke: var(--w-blue);
 }
 
 .world .w-ghost-end {
@@ -336,6 +347,17 @@
 .world-crumbs b {
   color: var(--w-text);
   font-weight: 600;
+}
+
+.world-crumbs .w-wanting {
+  color: var(--w-warm);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.world-help .w-wanting-list {
+  margin: 4px 0 10px 18px;
+  padding: 0;
 }
 
 .world-tools {

@@ -12,6 +12,7 @@ The World Map's look: the board's two themes as custom properties, the white boa
 
 ### Notes
 - Written on 2026-09-28 with the view ([Turn 46](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)); the colours were aligned to blue offers and green uses on 2026-09-29 ([Turn 13 of the September 29 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-13)), and the road's flow stops under `prefers-reduced-motion`. Every stroke that should not scale with the world uses `vector-effect: non-scaling-stroke`, and every label is placed by a `data-fixed` transform the controller writes, which is why the text rules here set none. The `.world-root` box and the nav icon are the page template's.
+- Since 2026-10-10 ([Turn 14 of the October 9 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-14)): a declared door nothing uses shares the ghost's dash and its stub is blue, the side that offers; the hollow faces of an imagined thing keep a slightly heavier stroke; the crumbs' count of what is wanting is warm, and the help's list of it is a plain list.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

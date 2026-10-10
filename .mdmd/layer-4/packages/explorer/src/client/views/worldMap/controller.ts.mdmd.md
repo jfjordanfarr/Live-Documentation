@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-10-10T17:19:03.721Z
+- Generated At: 2026-10-10T21:10:29.719Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 - At 1,700 lines this is the client's largest module: drawing, the evidence panel's words, input, tools, help and the walkthrough in one class. It was built in a day as the board probe's rendering on real data, and the owner expects the World Map to be re-imagined, "a week to a month of work"; splitting it before that would be work the re-imagining discards. On 2026-10-08 its fifteen empty doc comments, which satisfied the JSDoc lint rule and told a reader nothing, were written, and a dangling comment and a stray re-export of `NORMALS` were removed.
 - Kept by `tests/e2e/world-map.spec.ts` (what is drawn and what a person can do), `world-map-design.spec.ts` (no two labels collide and nothing is cut off, in each state) and `world-map-estate.spec.ts` (the same over the estate), through the handle rather than pixels.
 - Since 2026-10-10 ([Turn 12 of the October 9 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-12)) a thing's ghosts, what its files call that nothing on the board serves, are doors that use with no road: keyed `ghost:<thing>:<basis>:<name>`, on the wall facing away from the board's middle, dashed, with a short dashed stub along the wall's normal and an empty ring at its end; pinned, a ghost says who calls it, from which files and on what basis, and that pointing at the folder that serves it would make it a wire; a thing's panel lists them under "calls out to". The same day door labels were found never to have shown on hover, the stylesheet hiding them and the hover clearing only an inline style; they show now and settle like the other movable labels after every hover, with the estate's spec auditing them pinned.
+- Since 2026-10-10 ([Turn 14 of the October 9 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-14)), with this repository's board re-authored as its delivery shape: an imagined thing is drawn hollow, its faces at `HOLLOW` opacity and its edges dashed, with its kind under its name and no word for its state, the owner's "visual grammar for 'proposed' elements"; a door the board declares that no road lands on is a door that offers with no road, keyed like a served one, dashed with a stub into the air, the mirror of a ghost, since a promise is never hidden; `enter` pins an imagined thing instead of returning silently; the crumbs count what the join found wanting and the help lists it, as the board command prints it; a door's label may cross to the other side of its door when no step up or down clears it, and a sub-line a door's label still covers goes; a region's name sits just outside its left point, off the feet of the things at its corners.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -35,14 +36,14 @@ What the controller is given: where to draw, the board and its join, the graph, 
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L144)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L149)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1646)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1706)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -53,6 +54,7 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board)
 - [`board.renderBoard`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-renderboard)
 - [`boardGraph.Ghost`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-ghost) (type-only)
+- [`boardGraph.ServedDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-serveddoor) (type-only)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)
