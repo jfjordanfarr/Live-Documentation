@@ -2560,3 +2560,127 @@ warnings" completed (exit code 0)
   sufficiently present to be _able_ to draw to the actual symbol pin. That
   said, that's just a minor nit to carry forward and work on. Keep focusing on
   agreed next steps.
+
+  Searched for 3 patterns, ran 11 shell commands (ctrl+o to expand)
+
+● The ghost door design is settled: a dashed "uses" door on the outward-facing
+  wall with a short stub leading nowhere, labeled on hover and in the panel. Now
+  I'll implement the model, controller, styles, and tests together. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● All 17 World Map specs pass over both bundles, the new ghost test among them.
+  Now the pictures, to look at the ghost before I keep it.
+
+  Read 3 files, ran 5 shell commands (ctrl+o to expand)
+
+● The ghost looks right, but the fix revealed that door labels now show on hover
+  and overlap with each other and with item names since they were never run
+  through the label-settling routine. I'll review that routine and the audit
+  helpers to bring door labels in line with the others. · summary
+
+  Searched for 1 pattern, read 2 files, ran 8 shell commands (ctrl+o to expand)
+
+● The link depth is fixed; what remains in that count is the checker's own
+  blindness to the docs' symbol anchors, which the docs' own lint already
+  validated. Waiting on the full chain now; the commit and the reply follow its
+  result.
+
+● Background command "Run the full pre-commit chain with Playwright in the
+background" completed (exit code 0)
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Committed as 2c3bc6d4, tree clean, the full chain green beforehand. Your nit
+  is in direction.md in your words and waits its turn.
+
+  Ghosts are on the board. A thing's unserved calls, which the join has listed
+  since the build, are drawn now: a dashed green door, a door that uses, on the
+  wall facing away from the board's middle, with a short dashed stub into the
+  air and an empty ring where a counterpart would be. Pinned, a ghost says who
+  calls it, from which files and on what basis, and that pointing at the folder
+  that serves it would make it a wire. A thing's panel gained "calls out to"
+  between "called by" and "stands on". The estate's hub has one ghost, the
+  staging address of the payment service, and its spec now checks the door, the
+  stub and both panels. Pictures under Screenshots/2026-10-10
+  (AI-Agent-Workspace/Screenshots/2026-10-10/README.md): at rest
+  (AI-Agent-Workspace/Screenshots/2026-10-10/estate-ghost-at-rest.png), the
+  ghost pinned
+  (AI-Agent-Workspace/Screenshots/2026-10-10/estate-ghost-pinned.png), and the
+  hub's panel
+  (AI-Agent-Workspace/Screenshots/2026-10-10/estate-hub-pinned-calls-out.png). I
+  kept it faint on purpose; a call nobody answers should read on the second
+  look, not the first.
+
+  Looking at it found a defect of our own. Door labels had never once appeared
+  on hover. The stylesheet hid them and the hover code cleared only an inline
+  style, so they stayed hidden, and nobody had seen them collide. They show now,
+  which immediately showed them colliding with each other and with a thing's
+  name, so they take the same settling as the region, crossing and token labels,
+  after every hover as well as every camera move, and the estate spec audits
+  the board's words with the hub pinned. Same commit, since the ghost's label
+  was the first one anyone saw.
+
+  Where things stand. T1 is closed in the plan with the drawing recorded; the
+  Local Map's ghost card stays in the fog for later. The chain ran alone once
+  more before the commit: lint with no warnings, 1,067 unit and 52 integration
+  tests, the pipeline and the three audits, and 119 Playwright tests over both
+  bundles.
+
+  The frontier is now T2, T3, T4, T5, T8 and T9. By the plan's own order and
+  your October 8 word that T8, how a person moves between the maps, is the one
+  piece you were unsure of, I would take T8 next, with your hop question and the
+  hub idea as its brief. The other candidate is T2, this repository's board as
+  its delivery shape, which is a probe rather than a talk. Say which, and I
+  start.
+
+● Committed as 2c3bc6d4, tree clean, the full chain green beforehand. Your nit
+  is in direction.md in your words and waits its turn.
+
+  Ghosts are on the board. A thing's unserved calls, which the join has listed
+  since the build, are drawn now: a dashed green door, a door that uses, on the
+  wall facing away from the board's middle, with a short dashed stub into the
+  air and an empty ring where a counterpart would be. Pinned, a ghost says who
+  calls it, from which files and on what basis, and that pointing at the folder
+  that serves it would make it a wire. A thing's panel gained "calls out to"
+  between "called by" and "stands on". The estate's hub has one ghost, the
+  staging address of the payment service, and its spec now checks the door, the
+  stub and both panels. Pictures under Screenshots/2026-10-10
+  (AI-Agent-Workspace/Screenshots/2026-10-10/README.md): at rest
+  (AI-Agent-Workspace/Screenshots/2026-10-10/estate-ghost-at-rest.png), the
+  ghost pinned
+  (AI-Agent-Workspace/Screenshots/2026-10-10/estate-ghost-pinned.png), and the
+  hub's panel
+  (AI-Agent-Workspace/Screenshots/2026-10-10/estate-hub-pinned-calls-out.png). I
+  kept it faint on purpose; a call nobody answers should read on the second
+  look, not the first.
+
+  Looking at it found a defect of our own. Door labels had never once appeared
+  on hover. The stylesheet hid them and the hover code cleared only an inline
+  style, so they stayed hidden, and nobody had seen them collide. They show now,
+  which immediately showed them colliding with each other and with a thing's
+  name, so they take the same settling as the region, crossing and token labels,
+  after every hover as well as every camera move, and the estate spec audits
+  the board's words with the hub pinned. Same commit, since the ghost's label
+  was the first one anyone saw.
+
+  Where things stand. T1 is closed in the plan with the drawing recorded; the
+  Local Map's ghost card stays in the fog for later. The chain ran alone once
+  more before the commit: lint with no warnings, 1,067 unit and 52 integration
+  tests, the pipeline and the three audits, and 119 Playwright tests over both
+  bundles.
+
+  The frontier is now T2, T3, T4, T5, T8 and T9. By the plan's own order and
+  your October 8 word that T8, how a person moves between the maps, is the one
+  piece you were unsure of, I would take T8 next, with your hop question and the
+  hub idea as its brief. The other candidate is T2, this repository's board as
+  its delivery shape, which is a probe rather than a talk. Say which, and I
+  start.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read .mdmd/layer-3/boards.mdmd.md (93 lines)
+  ⎿  Referenced file packages/generator/src/generator.ts
+  ⎿  Read scripts/live-docs/board.ts (165 lines)
+  ⎿  Read packages/explorer/src/shared/staticBuilder.ts (219 lines)
+  ⎿  Read packages/engine/src/live-docs/graphFiles.ts (114 lines)
