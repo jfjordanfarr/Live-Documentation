@@ -12,7 +12,7 @@
  */
 
 import { legendFor, SHAPES, TINTS, type Board } from "@live-documentation/engine/live-docs/board";
-import type { BoardGraph, ServedDoor, StandsOn, WireBasis, WireDoor, WireLine } from "@live-documentation/engine/live-docs/boardGraph";
+import type { BoardGraph, Ghost, ServedDoor, StandsOn, WireBasis, WireDoor, WireLine } from "@live-documentation/engine/live-docs/boardGraph";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type { Shape } from "./layout";
@@ -35,6 +35,8 @@ export interface WorldPiece {
   doors: ServedDoor[];
   /** What its manifests name outside the workspace. */
   standsOn: StandsOn[];
+  /** What its files call that nothing on the board serves: a route, an address or a database object, named with its basis. */
+  ghosts: Ghost[];
   /** No folder and no docs: a thing imagined and not yet built. */
   imagined: boolean;
 }
@@ -146,6 +148,7 @@ export function buildWorldModel(board: Board, joined: BoardGraph, graph: LiveDoc
         symbols: entry.files.reduce((count, file) => count + (graph.files[file]?.symbols.length ?? 0), 0),
         doors: entry.doors,
         standsOn: entry.standsOn,
+        ghosts: entry.ghosts,
         imagined: entry.thing.from === undefined
       };
     });

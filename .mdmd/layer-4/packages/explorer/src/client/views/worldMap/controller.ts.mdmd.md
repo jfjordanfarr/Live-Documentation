@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-10-08T19:04:57.143Z
+- Generated At: 2026-10-10T17:19:03.721Z
 
 ## Authored
 ### Purpose
@@ -14,34 +14,35 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 - Written on 2026-09-28 ([Turn 46](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-46)) and reworked on the owner's first look the next day ([Turn 47](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-47): a click never pinned, because the SVG captured the pointer on press and the release was retargeted to the surface, so the pressed element is kept now; every name in a pinned panel became a link; the orbit's vertical direction was corrected) and on their second ([Turn 49](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-27.1.SUMMARIZED.md#turn-49): a thing opens into the Membrane Map scoped to its folder, with the World Map as the crumb above). The colours follow the owner's word of 2026-09-29, blue offers and green uses on the World Map as inside a system ([Turn 13 of the September 29 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-13)). Labels keep their size while the world scales, so `settleLabels` runs after every camera move and the design audit holds under zoom.
 - At 1,700 lines this is the client's largest module: drawing, the evidence panel's words, input, tools, help and the walkthrough in one class. It was built in a day as the board probe's rendering on real data, and the owner expects the World Map to be re-imagined, "a week to a month of work"; splitting it before that would be work the re-imagining discards. On 2026-10-08 its fifteen empty doc comments, which satisfied the JSDoc lint rule and told a reader nothing, were written, and a dangling comment and a stray re-export of `NORMALS` were removed.
 - Kept by `tests/e2e/world-map.spec.ts` (what is drawn and what a person can do), `world-map-design.spec.ts` (no two labels collide and nothing is cut off, in each state) and `world-map-estate.spec.ts` (the same over the estate), through the handle rather than pixels.
+- Since 2026-10-10 ([Turn 12 of the October 9 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-12)) a thing's ghosts, what its files call that nothing on the board serves, are doors that use with no road: keyed `ghost:<thing>:<basis>:<name>`, on the wall facing away from the board's middle, dashed, with a short dashed stub along the wall's normal and an empty ring at its end; pinned, a ghost says who calls it, from which files and on what basis, and that pointing at the folder that serves it would make it a wire; a thing's panel lists them under "calls out to". The same day door labels were found never to have shown on hover, the stylesheet hiding them and the hover clearing only an inline style; they show now and settle like the other movable labels after every hover, with the estate's spec auditing them pinned.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L65)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L66)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L71)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L72)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L141)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L144)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1610)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1646)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -51,6 +52,7 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 ### Dependencies
 - [`Board`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-board)
 - [`board.renderBoard`](../../../../../engine/src/live-docs/board.ts.mdmd.md#symbol-renderboard)
+- [`boardGraph.Ghost`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-ghost) (type-only)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)

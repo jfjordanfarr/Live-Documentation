@@ -20,6 +20,7 @@ const graph = deriveLiveDocGraph(
     doc("portal/portal.csproj", { symbols: [{ name: "Portal", slug: "symbol-portal", kind: "web", flags: [], references: [], sections: [] }], dependencies: [{ label: "Newtonsoft.Json@13.0.3", symbols: [], qualifiers: [] }, { label: "System.Web", symbols: [], qualifiers: [] }] }),
     doc("gateway/g.cs", { symbols: [{ name: "POST api/pay", slug: "symbol-post-apipay", kind: "route", flags: [], references: [], sections: [] }], dependencies: [{ label: "c", link: "../contracts/c.cs.md", qualifiers: [] }] }),
     doc("gateway/gateway.csproj", { symbols: [{ name: "Gateway", slug: "symbol-gateway", kind: "web", flags: [], references: [], sections: [] }], dependencies: [{ label: "Newtonsoft.Json@13.0.3", symbols: [], qualifiers: [] }] }),
+    doc("gateway/Web.config", { dependencies: [{ label: "net.tcp://hub.example:8731/PaymentHub", qualifiers: ["configuration"] }] }),
     doc("contracts/c.cs", { symbols: [{ name: "IPay", slug: "symbol-ipay", kind: "interface", flags: [], references: [], sections: [] }] })
   ],
   location
@@ -62,7 +63,7 @@ describe("buildWorldModel", () => {
   it("makes pieces of the rest, shaped by the legend, counted from their docs", () => {
     expect(model.pieces.map((piece) => [piece.name, piece.shape, piece.region, piece.files.length, piece.symbols, piece.imagined])).toEqual([
       ["portal", "cube", "CLOUD", 2, 1, false],
-      ["gateway", "cube", "CLOUD", 2, 2, false],
+      ["gateway", "cube", "CLOUD", 3, 2, false],
       ["contracts", "tile", "INNER", 1, 1, false],
       ["warehouse", "drum", "ON-PREM", 0, 0, true],
       ["someone", "figure", undefined, 0, 0, true]
@@ -70,6 +71,11 @@ describe("buildWorldModel", () => {
     expect(model.pieces.find((piece) => piece.name === "gateway")?.doors).toEqual([{ name: "POST api/pay", kind: "route", file: "gateway/g.cs" }]);
     expect(model.pieces.find((piece) => piece.name === "contracts")?.files).toEqual(["contracts/c.cs"]);
     expect(model.pieces.find((piece) => piece.name === "portal")?.standsOn.map((item) => item.label)).toEqual(["Newtonsoft.Json@13.0.3", "System.Web"]);
+  });
+
+  it("gives a piece its ghosts, what its files call that nothing on the board serves", () => {
+    expect(model.pieces.find((piece) => piece.name === "gateway")?.ghosts).toEqual([{ label: "net.tcp://hub.example:8731/PaymentHub", basis: "configuration", files: ["gateway/Web.config"] }]);
+    expect(model.pieces.find((piece) => piece.name === "portal")?.ghosts).toEqual([]);
   });
 
   it("makes roads in the air of calls and on the board of what stands on what, and crossings of declared connections between regions", () => {

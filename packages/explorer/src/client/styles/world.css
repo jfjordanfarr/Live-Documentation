@@ -186,6 +186,27 @@
   stroke: var(--w-green);
 }
 
+.world .w-door.ghost {
+  stroke-dasharray: 3 2.5;
+}
+
+.world .w-stub {
+  fill: none;
+  stroke: var(--w-green);
+  stroke-opacity: 0.7;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.world .w-ghost-end {
+  fill: none;
+  stroke: var(--w-muted);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
 .world .w-spoke {
   fill: none;
   stroke-width: 2.5;

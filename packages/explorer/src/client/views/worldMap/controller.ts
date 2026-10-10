@@ -9,6 +9,7 @@
  */
 
 import { renderBoard, type Board } from "@live-documentation/engine/live-docs/board";
+import type { Ghost } from "@live-documentation/engine/live-docs/boardGraph";
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import {
@@ -90,6 +91,8 @@ interface Door {
   roads: string[];
   wall: Wall;
   anchor: Anchor;
+  /** A ghost: a door that uses what nothing on the board serves, with no road. */
+  ghost?: Ghost;
 }
 
 interface Token {
@@ -467,6 +470,23 @@ export class WorldMapController {
       const files = [...new Set(road.lines.map((line) => basename(line.from)))];
       request(`uses:${road.from}:${road.to}`, road.from, [provider.cx, provider.cy], "uses", `to ${road.to}`, files.join(", ") || (road.over ? `over ${road.over}` : BASIS_WORDS[road.basis]), road.id);
     }
+    // A ghost is a door that uses what nothing on the board serves: it faces away from the board's middle, toward the unknown.
+    const placedPieces = this.model.pieces.map((piece) => this.place(piece.name));
+    const middle: Point2 = placedPieces.length
+      ? [placedPieces.reduce((sum, b) => sum + b.cx, 0) / placedPieces.length, placedPieces.reduce((sum, b) => sum + b.cy, 0) / placedPieces.length]
+      : [0, 0];
+    for (const piece of this.model.pieces) {
+      const placed = this.place(piece.name);
+      const away: Point2 = placed.cx === middle[0] && placed.cy === middle[1] ? [placed.cx + 1, placed.cy] : [placed.cx + (placed.cx - middle[0]), placed.cy + (placed.cy - middle[1])];
+      for (const ghost of piece.ghosts) {
+        const key = `ghost:${piece.name}:${ghost.basis}:${ghost.label}`;
+        if (!byKey.has(key)) {
+          const door: Door = { key, piece: piece.name, toward: away, role: "uses", label: ghost.label, sub: `${BASIS_WORDS[ghost.basis]} · nothing on the board serves it`, roads: [], wall: "E", anchor: { p: [0, 0, 0], out: [1, 0] }, ghost };
+          byKey.set(key, door);
+          this.doors.push(door);
+        }
+      }
+    }
     const groups = new Map<string, Door[]>();
     for (const door of this.doors) {
       const placed = this.place(door.piece);
@@ -554,7 +574,13 @@ export class WorldMapController {
     for (const door of this.doors) {
       const group = svgElement("g", { class: "w-door-group", "data-piece": door.piece, "data-door": door.key }, this.layers.doors);
       const s = project(this.camera, this.pivot, door.anchor.p[0], door.anchor.p[1], door.anchor.p[2]);
-      svgElement("circle", { class: `w-door ${door.role}`, r: 5, "data-fixed": s.join(",") }, group);
+      if (door.ghost) {
+        // The stub into the air: a call that leaves the wall and lands nowhere on the board.
+        const far = project(this.camera, this.pivot, door.anchor.p[0] + door.anchor.out[0] * 34, door.anchor.p[1] + door.anchor.out[1] * 34, door.anchor.p[2]);
+        svgElement("path", { class: "w-stub", d: `M${s[0]},${s[1]} L${far[0]},${far[1]}` }, group);
+        svgElement("circle", { class: "w-ghost-end", r: 3, "data-fixed": far.join(",") }, group);
+      }
+      svgElement("circle", { class: `w-door ${door.role}${door.ghost ? " ghost" : ""}`, r: 5, "data-fixed": s.join(",") }, group);
       const leftward = door.anchor.out[0] < 0 || (door.anchor.out[0] === 0 && door.anchor.out[1] < 0);
       const text = svgElement("text", { class: "w-doorlabel", "data-fixed": s.join(","), "data-piece": door.piece, "data-roads": door.roads.join(" "), "text-anchor": leftward ? "end" : "start", dx: leftward ? -10 : 10, dy: door.role === "offers" ? -6 : 14 }, this.layers.labels);
       text.textContent = door.label;
@@ -703,11 +729,12 @@ export class WorldMapController {
    * Keeps labels off each other. A thing's name stays where it is, since it
    * names the thing. The line under a name, its kind and its files, goes
    * when it would cover another label, as it does when the world is zoomed
-   * out and names draw together. A region's label, a crossing's tag and a
-   * token's label move a step up or down from where they rest until they
-   * cover nothing, in that order, each keeping clear of the ones settled
-   * before it. Labels keep their size while the world scales, so this runs
-   * after every camera move.
+   * out and names draw together. A region's label, a crossing's tag, a
+   * token's label and a door's label, shown while its thing, its road or the
+   * door itself is under the pointer or pinned, move a step up or down from
+   * where they rest until they cover nothing, in that order, each keeping
+   * clear of the ones settled before it. Labels keep their size while the
+   * world scales, so this runs after every camera move and every hover.
    */
   private settleLabels(): void {
     if (!this.world.isConnected) {
@@ -730,8 +757,8 @@ export class WorldMapController {
         placed.push(box);
       }
     }
-    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36], "w-tag": [0, -20, 20, -40, 40], "w-tokenlabel": [0, -52, 18, -70, 36] };
-    for (const kind of ["w-zone", "w-tag", "w-tokenlabel"]) {
+    const steps: Record<string, number[]> = { "w-zone": [0, -18, 18, -36, 36], "w-tag": [0, -20, 20, -40, 40], "w-tokenlabel": [0, -52, 18, -70, 36], "w-doorlabel": [0, -14, 14, -28, 28, -42, 42] };
+    for (const kind of ["w-zone", "w-tag", "w-tokenlabel", "w-doorlabel"]) {
       for (const node of this.layers.labels.querySelectorAll<SVGElement>(`text.${kind}`)) {
         if (!visible(node)) {
           continue;
@@ -873,7 +900,7 @@ export class WorldMapController {
       }
       for (const node of doorLabels) {
         if ((node.dataset.roads ?? "").split(" ").includes(h.id)) {
-          node.style.display = "";
+          node.style.display = "inline";
         }
       }
     } else if (h?.kind === "piece") {
@@ -891,7 +918,7 @@ export class WorldMapController {
       }
       for (const node of doorLabels) {
         if (node.dataset.piece === h.id) {
-          node.style.display = "";
+          node.style.display = "inline";
         }
       }
       for (const node of tokens) {
@@ -918,7 +945,7 @@ export class WorldMapController {
       const door = this.doors.find((candidate) => candidate.key === h.id);
       for (const node of doorLabels) {
         if (door && node.dataset.piece === door.piece) {
-          node.style.display = "";
+          node.style.display = "inline";
         }
       }
       for (const node of roads) {
@@ -935,6 +962,7 @@ export class WorldMapController {
       }
     }
     this.showEvidence(h);
+    this.settleLabels();
   }
 
   private showEvidence(h: Hover | null): void {
@@ -994,6 +1022,9 @@ export class WorldMapController {
       const calledBy = [...new Set(this.model.roads.filter((road) => road.kind === "call" && road.to === piece.name).map((road) => road.from))];
       const onPieces = this.standsOnPieces(piece.name).map((road) => road.to);
       const under = this.standingOn(piece.name).map((road) => road.from);
+      const ghosts = piece.ghosts.map((ghost) => (full
+        ? `<span class="f">${escapeHtml(ghost.label)} <span class="k">· ${BASIS_WORDS[ghost.basis]}, in ${ghost.files.map((file) => this.fileLink(file, inside(file))).join(", ")}</span></span>`
+        : escapeHtml(ghost.label)));
       const packages = piece.standsOn.filter((item) => item.label.includes("@"));
       const references = piece.standsOn.filter((item) => !item.label.includes("@"));
       const manifests = [...new Set(piece.standsOn.map((item) => item.manifest))];
@@ -1013,6 +1044,7 @@ export class WorldMapController {
         + (served.length ? `<div class="via"><span class="k">offers</span> ${full ? `<div class="list">${served.join("")}</div>` : served.join(", ")}</div>` : "")
         + (calls.length ? `<div class="via"><span class="k">calls</span> ${calls.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
         + (calledBy.length ? `<div class="via"><span class="k">called by</span> ${calledBy.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
+        + (ghosts.length ? `<div class="via"><span class="k">calls out to</span> ${full ? `<div class="list">${ghosts.join("")}</div><div class="src">nothing on the board serves ${ghosts.length === 1 ? "it" : "them"}; a ghost until something does</div>` : ghosts.join(", ")}</div>` : "")
         + (stands ? `<div class="via"><span class="k">stands on</span> ${stands}</div>${standsList}${named}` : "")
         + (under.length ? `<div class="via"><span class="k">under</span> ${under.map((name) => this.pinLink("piece", name)).join(", ")}</div>` : "")
         + (piece.folder ? `<div class="src">${escapeHtml(piece.folder)}</div>` : "")
@@ -1035,6 +1067,10 @@ export class WorldMapController {
       const door = this.doors.find((candidate) => candidate.key === h.id);
       if (!door) {
         return "";
+      }
+      if (door.ghost) {
+        const from = door.ghost.files.map((file) => this.fileLink(file)).join(", ");
+        return `<div class="h">${escapeHtml(door.label)}<span class="tier">a ghost</span></div><div class="k">a call ${this.pinLink("piece", door.piece)} makes that nothing on the board serves; point at the folder that serves it and it becomes a wire</div><div><span class="k">from</span> ${from}</div><div class="src">${BASIS_WORDS[door.ghost.basis]}</div>`;
       }
       const served = door.role === "offers" ? this.model.pieces.find((candidate) => candidate.name === door.piece)?.doors.find((candidate) => candidate.name === door.label) : undefined;
       const where = served?.file ? `<div class="src">in ${this.fileLink(served.file)}</div>` : "";
@@ -1492,7 +1528,7 @@ export class WorldMapController {
 
   private writeHelp(): void {
     this.help.innerHTML = `<h3>World Map</h3><p>Each thing on the board is a system, a database, a person, or something imagined. Click one for its facts. A tinted region holds the things inside it.</p>
-<h4>Doors and wires</h4><p><i style="border-color:var(--w-blue)"></i><b>blue</b> offers, <i style="border-color:var(--w-green)"></i><b>green</b> uses, as inside a system. A wire in the air is one call, flowing from what is offered to where it is used; hover it for how it is known. The warm sleeve is a declared crossing.</p>
+<h4>Doors and wires</h4><p><i style="border-color:var(--w-blue)"></i><b>blue</b> offers, <i style="border-color:var(--w-green)"></i><b>green</b> uses, as inside a system. A wire in the air is one call, flowing from what is offered to where it is used; hover it for how it is known. The warm sleeve is a declared crossing. A dashed door with a stub into the air is a ghost: a call that nothing on the board serves, named on hover; point at the folder that serves it and it becomes a wire.</p>
 <h4>What a thing stands on</h4><p>The strands under a thing are what it is built with: another thing's code, drawn as a dotted line on the board to that thing, and the packages its manifests name. No call crosses these while the things run. <b>built on</b> lays out what two or more things share.</p>
 <h4>Pinned</h4><p>A hover peeks; a click pins. In a pinned panel every name is a link: a thing pins it, a file opens it in the Local Map.</p>
 <h4>Inside a thing</h4><p>Wheel into a thing, double-click it, or follow <b>open</b> in its pinned panel: it opens in the Membrane Map, its folders as membranes. The crumbs there lead back to the board.</p>

@@ -2462,3 +2462,101 @@ its outcome" completed (exit code 0)
 ● The whole Playwright suite is running alone now, both bundles rebuilt first;
   the three commits wait on its result, in this order: the two specs made
   steady, then T1's build, then the twenty comments.
+
+● Background command "Rebuild both bundles and run the whole Playwright suite,
+alone, logging to the scratchpad" completed (exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● All 118 Playwright tests pass. I'll regenerate the mirror for the two edited
+  specs, run a full lint in the background to confirm zero warnings, log the
+  verification, then make the three commits. · summary
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Run the full lint in the background to confirm zero
+warnings" completed (exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Lint is clean now with no warnings, so the comments get their commit, then the
+  record its closing lines.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Four commits since your go, tree clean at eb088c29. First the slip, then the
+  build, then your two thoughts.
+
+  "Pre-existing" was the wrong word and the wrong instinct. The twenty warnings
+  were ours, and they are gone: the grammar's Reader and its methods, the branch
+  scene's measurement, and nine exports of the World Map's layout, model,
+  projection and view now carry their comments, in a commit of their own, and
+  the full lint runs with no errors and no warnings. Your second message is in
+  owner.md in your words, the linear auditable record as the thing that removes
+  the excuse. I will not reach for that word again.
+
+  T1 is built. The commit e240e1c0 carries it:
+
+  - A board may name things whose docs come from folders scanned alone. The
+    reader finds the scans a board names, the workspace root when it has docs
+    and each thing's folder when it has them, refuses a scan inside another with
+    a report, and the estate graph merges them into one, keyed by each file's
+    path from the estate's root.
+  - Across scans it links what each left unlinked, by name: routes by the
+    openings module's own matching, addresses exactly, database objects by
+    schema and name, project references to the project another scan publishes. A
+    route call a scan linked at home gains the servers other scans publish, as
+    settled in Turn 8, and a browser script's call stays at home.
+  - The adapters write the ghosts they used to drop: a project reference whose
+    file is outside the scan, and every database object a SQL script or a C#
+    string names that nothing in the scan creates. The join reads what a thing
+    stands on from its edges and lists each thing's ghosts. The generator warns
+    when a run would nest inside or around another scan.
+  - The bundle builder and the board command read through the estate reader, so
+    the World Map needed no change. The seven-scan estate is now an integration
+    test against the one-scan build, with its one cost stated in the test: the
+    wires to the shared library carry one project reference each where one scan
+    carries every use.
+
+  The pictures are under Screenshots/2026-10-09
+  (AI-Agent-Workspace/Screenshots/2026-10-09/README.md): the seven-scan estate
+  drawn through the real builder has all ten roads back
+  (AI-Agent-Workspace/Screenshots/2026-10-09/estate-seven-scans-world-map.png),
+  the portal-to-gateway wire's evidence reads a file of each scan, and a Local
+  Map at the SQL procedure (AI-Agent-Workspace/Screenshots/2026-10-09/estate-sev
+  en-scans-local-map-procedure.png) shows three things around one file, each
+  scanned alone.
+
+  The full chain, honestly. Unit, integration and the link enforcement passed;
+  two Local Map Playwright specs failed, and they failed alone too, so not load.
+  Both used the engine's live-docs folder as their fixture, and the two files I
+  added there made the picture around graph.ts dense enough to break their
+  assumptions: one clicked a membrane label the sidebar now covered, the other
+  pinned a test file's internals row that brought nothing in, so nothing moved.
+  They are steadied in their own commit, before the build's: the click is
+  dispatched like the spec's other clicks, and the row to pin is chosen from the
+  bundle's own data, with the small rosetta sample as the fixture, so that the
+  engine growing never moves them again. The whole suite then passed alone, 118
+  tests, before anything was committed. The lesson is in the record: a check
+  that stands on this repository's own code as a fixture is a check that our own
+  growth can break.
+
+  Your two thoughts. On key vaults, yes: the key name is a symbol the code
+  reads, the docs carry it, and where its value points is yours to declare a
+  level up, which is a declared connection drawn beside the evidence of the
+  read. On hopping through a door: the estate graph already makes it one graph,
+  so a Local Map follows a wire into another thing's file today, as that
+  procedure picture shows. What T8 owes the hop is orientation, knowing which
+  thing you are in and how you got there, and your question is now written under
+  T8 in the plan.
+
+  Next, as agreed: the drawing of ghosts, a small step with pictures, then the
+  frontier.
+
+❯ Looking slick so far! I know it's 10/10 now but I think I'll continue using
+  this chat for the time being. The only minor thing I'm seeing is that the
+  Local Map screenshots that have resulted throughout this chat sometimes use
+  the node-level connector pin more frequently than the symbol connector pin
+  when drawing connectivity, in a way that feels like the detail was
+  sufficiently present to be _able_ to draw to the actual symbol pin. That
+  said, that's just a minor nit to carry forward and work on. Keep focusing on
+  agreed next steps.

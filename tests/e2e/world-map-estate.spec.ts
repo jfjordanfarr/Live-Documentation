@@ -23,6 +23,8 @@ interface WorldMapHandle {
   enter: (name: string) => void;
   pieces: () => string[];
   roads: () => string[];
+  doors: () => string[];
+  pin: (kind: string, id: string) => void;
 }
 
 declare global {
@@ -52,6 +54,29 @@ test.describe("The estate on the World Map", () => {
     const roads = await page.evaluate(() => window.__worldMap!.roads());
     expect(roads).toContain("hub>contracts::source");
     expect(roads.some((id) => id.startsWith("gateway>hub:") && !id.endsWith(":source"))).toBe(true);
+  });
+
+  test("draws the hub's ghost, the staging address nothing on the board serves, as a dashed door with a stub, named in its panel", async ({ page }) => {
+    await openEstate(page);
+    const key = "ghost:hub:configuration:net.tcp://payments-staging.onprem.example:8732/PaymentService";
+    const doors = await page.evaluate(() => window.__worldMap!.doors());
+    expect(doors.filter((door) => door.startsWith("ghost:"))).toEqual([key]);
+    await expect(page.locator("#view-world .w-door.ghost")).toHaveCount(1);
+    await expect(page.locator("#view-world .w-stub")).toHaveCount(1);
+    await page.evaluate((id) => window.__worldMap!.pin("door", id), key);
+    const evidence = page.locator("#view-world .world-evidence");
+    await expect(evidence).toHaveClass(/pinned/);
+    await expect(evidence).toContainText("a ghost");
+    await expect(evidence).toContainText("nothing on the board serves");
+    await expect(evidence).toContainText("Hub/App.config");
+    await page.evaluate(() => window.__worldMap!.pin("piece", "hub"));
+    await expect(evidence).toContainText("calls out to");
+    await expect(evidence).toContainText("payments-staging");
+    // With the hub pinned its door labels show, the ghost's among them, and they stay off each other and off the names.
+    await expect(page.locator("#view-world text.w-doorlabel:visible")).toHaveCount(3);
+    const boxes = await textBoxes(page, BOARD_TEXT);
+    const overlaps = overlapsAmong(boxes);
+    expect(overlaps, describeFaults(overlaps)).toEqual([]);
   });
 
   test("its labels stay off each other at rest and with the built-on layer showing", async ({ page }) => {
