@@ -1,8 +1,8 @@
 /**
- * Compressed URL state for the Membrane Map.
+ * Portable exploration state for the Local Map.
  *
  * Encodes the full view state (view, node selection, pins, expanded
- * directories, transform, filters) into a single `?s=` query parameter
+ * directories, perspective, filters) into a single `?s=` query parameter
  * using lz-string compression.
  *
  * **Forward-compatibility contract:**
@@ -18,7 +18,8 @@
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
-import type { ViewName } from "../types";
+import { readPerspective, readView } from "./navigation";
+import type { LocalMapPerspective, ViewName } from "../types";
 import { commitUrl } from "./history";
 import type { PinSet } from "../views/pin-state";
 import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/pin-state";
@@ -26,7 +27,7 @@ import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/pin-stat
 // ─── Current Payload Version ───────────────────────────────────────
 
 /** Bump when the payload shape changes in a backward-incompatible way. */
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2;
 
 // ─── Payload Shape ─────────────────────────────────────────────────
 
@@ -40,19 +41,21 @@ const CURRENT_VERSION = 1;
 export interface CompressedPayload {
   /** Schema version. Always present. */
   v: number;
-  /** View name (internal: "membrane", "graph", "sources", etc.). */
+  /** View name. Version 1 also used the retired view names. */
   w?: string;
+  /** Local Map representation, independent of the navigable view. */
+  q?: LocalMapPerspective;
   /** Selected node ID. */
   n?: string;
   /** Pin entries (compact: `{ n, s, h? }[]`). */
   p?: Array<{ n: string; s: string; h?: number }>;
-  /** Expanded directory IDs. */
+  /** Version 1 Membrane Map directories; read only for migration. */
   e?: string[];
-  /** Transform: [x, y, k]. */
+  /** Version 1 camera; no longer written. */
   t?: [number, number, number];
   /** Filters: [showTests, showAssets]. Stored as 0/1 for compactness. */
   f?: [number, number];
-  /** Expanded file card IDs. */
+  /** Version 1 expanded cards; no longer written. */
   c?: string[];
   /** The directories opened in the Local Map (2026-10-08). */
   d?: string[];
@@ -67,25 +70,21 @@ export interface CompressedPayload {
  */
 export interface UrlStateSnapshot {
   view: ViewName;
+  perspective: LocalMapPerspective;
   selectedNodeId: string | null;
   pinSet: PinSet;
-  expandedDirectories: ReadonlySet<string>;
-  expandedCards: ReadonlySet<string>;
-  /** The directories opened in the Local Map; they ride with the pins, and like the pins are no part of the place. */
+  /** The directories opened in the Local Map; folder navigation is a history step, while pin edits remain within it. */
   openDirectories: ReadonlySet<string>;
-  transform: { x: number; y: number; k: number };
   filters: { showTests: boolean; showAssets: boolean };
 }
 
 /** Default state for cold start (no URL parameter). */
 export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
-  view: "membrane",
+  view: "map",
+  perspective: "2d",
   selectedNodeId: null,
   pinSet: EMPTY_PIN_SET,
-  expandedDirectories: new Set(),
-  expandedCards: new Set(),
   openDirectories: new Set(),
-  transform: { x: 0, y: 0, k: 1 },
   filters: { showTests: true, showAssets: true },
 };
 
@@ -101,28 +100,15 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   if (snapshot.view !== DEFAULT_SNAPSHOT.view) {
     payload.w = snapshot.view;
   }
+  if (snapshot.perspective !== DEFAULT_SNAPSHOT.perspective) payload.q = snapshot.perspective;
   if (snapshot.selectedNodeId) {
     payload.n = snapshot.selectedNodeId;
   }
   if (snapshot.pinSet.entries.length > 0) {
     payload.p = serializePins(snapshot.pinSet);
   }
-  if (snapshot.expandedDirectories.size > 0) {
-    payload.e = [...snapshot.expandedDirectories];
-  }
-  if (snapshot.expandedCards.size > 0) {
-    payload.c = [...snapshot.expandedCards];
-  }
   if (snapshot.openDirectories.size > 0) {
     payload.d = [...snapshot.openDirectories].sort();
-  }
-  const { x, y, k } = snapshot.transform;
-  if (x !== 0 || y !== 0 || k !== 1) {
-    payload.t = [
-      Math.round(x * 100) / 100,
-      Math.round(y * 100) / 100,
-      Math.round(k * 1000) / 1000,
-    ];
   }
   if (!snapshot.filters.showTests || !snapshot.filters.showAssets) {
     payload.f = [
@@ -139,26 +125,23 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
  * Applies version migrations and defaults for missing fields.
  */
 export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot {
-  // Version check — currently only v1 exists.
-  // Future: add migration logic here for v2+.
-  if (typeof payload.v !== "number" || payload.v < 1) {
+  // Version 1 defaulted to the retired Membrane Map and stored ancestor expansion chains.
+  if (!payload || typeof payload.v !== "number" || payload.v < 1 || payload.v > CURRENT_VERSION) {
     return { ...DEFAULT_SNAPSHOT };
   }
 
-  const view = (payload.w ?? DEFAULT_SNAPSHOT.view) as ViewName;
+  const view = readView(payload.w);
+  const perspective = readPerspective(payload.q, payload.w);
   const selectedNodeId = payload.n ?? null;
   const pinSet = payload.p ? deserializePins(payload.p) : EMPTY_PIN_SET;
-  const expandedDirectories = new Set(payload.e ?? []);
-  const expandedCards = new Set(payload.c ?? []);
-  const openDirectories = new Set((payload.d ?? []).filter((entry): entry is string => typeof entry === "string"));
-  const transform = payload.t
-    ? { x: payload.t[0], y: payload.t[1], k: payload.t[2] }
-    : { ...DEFAULT_SNAPSHOT.transform };
+  const legacyDirectories = payload.v === 1 && (!payload.w || payload.w === "membrane" || payload.w === "circuit")
+    ? (payload.e ?? []).filter((dir, _, all) => !all.some(other => other !== dir && other.startsWith(`${dir}/`))) : [];
+  const openDirectories = new Set([...(payload.d ?? []), ...legacyDirectories].filter((entry): entry is string => typeof entry === "string"));
   const filters = payload.f
     ? { showTests: payload.f[0] === 1, showAssets: payload.f[1] === 1 }
     : { ...DEFAULT_SNAPSHOT.filters };
 
-  return { view, selectedNodeId, pinSet, expandedDirectories, expandedCards, openDirectories, transform, filters };
+  return { view, perspective, selectedNodeId, pinSet, openDirectories, filters };
 }
 
 /**
@@ -197,27 +180,13 @@ export function scrubSnapshot(
   snapshot: UrlStateSnapshot,
   nodesById: ReadonlyMap<string, unknown>,
 ): UrlStateSnapshot {
-  // Expanded directories: keep only if at least one live node has this prefix
   const nodeIds = [...nodesById.keys()];
-  const expandedDirectories = new Set<string>();
-  for (const dir of snapshot.expandedDirectories) {
-    const prefix = dir.endsWith("/") ? dir : dir + "/";
-    if (nodeIds.some(id => id.startsWith(prefix) || id === dir)) {
-      expandedDirectories.add(dir);
-    }
-  }
 
   // Opened directories: keep only those with a live node under them
   const openDirectories = new Set<string>();
   for (const dir of snapshot.openDirectories) {
-    const prefix = dir.endsWith("/") ? dir : dir + "/";
+    const prefix = dir === "" ? "" : dir.endsWith("/") ? dir : dir + "/";
     if (nodeIds.some(id => id.startsWith(prefix))) openDirectories.add(dir);
-  }
-
-  // Expanded cards: keep only if the node still exists
-  const expandedCards = new Set<string>();
-  for (const id of snapshot.expandedCards) {
-    if (nodesById.has(id)) expandedCards.add(id);
   }
 
   // Pins: keep only entries whose node still exists
@@ -233,8 +202,6 @@ export function scrubSnapshot(
 
   return {
     ...snapshot,
-    expandedDirectories,
-    expandedCards,
     openDirectories,
     pinSet,
     selectedNodeId,
@@ -275,23 +242,8 @@ export function writeUrlState(snapshot: UrlStateSnapshot, options: { preservePat
     params.delete(key);
   }
 
-  // Only write ?s= if state differs from defaults
-  const isDefault = (
-    snapshot.view === DEFAULT_SNAPSHOT.view &&
-    !snapshot.selectedNodeId &&
-    snapshot.pinSet.entries.length === 0 &&
-    snapshot.expandedDirectories.size === 0 &&
-    snapshot.openDirectories.size === 0 &&
-    snapshot.transform.x === 0 &&
-    snapshot.transform.y === 0 &&
-    snapshot.transform.k === 1 &&
-    snapshot.filters.showTests &&
-    snapshot.filters.showAssets
-  );
-
-  if (!isDefault) {
-    params.set(URL_PARAM, compressSnapshot(snapshot));
-  }
+  // Always encode an explicit exploration, including an empty Local Map. A bare URL may land on a World Map.
+  params.set(URL_PARAM, compressSnapshot(snapshot));
 
   // Restore data param
   if (dataParam) {

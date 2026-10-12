@@ -17,13 +17,13 @@ import type { PinSet } from "../views/pin-state";
 describe("snapshotToPayload", () => {
   it("omits all optional fields for default snapshot", () => {
     const payload = snapshotToPayload(DEFAULT_SNAPSHOT);
-    expect(payload).toEqual({ v: 1 });
+    expect(payload).toEqual({ v: 2 });
   });
 
   it("includes view when non-default", () => {
-    const snap: UrlStateSnapshot = { ...DEFAULT_SNAPSHOT, view: "graph" };
+    const snap: UrlStateSnapshot = { ...DEFAULT_SNAPSHOT, view: "world" };
     const payload = snapshotToPayload(snap);
-    expect(payload.w).toBe("graph");
+    expect(payload.w).toBe("world");
   });
 
   it("includes selected node when present", () => {
@@ -47,49 +47,10 @@ describe("snapshotToPayload", () => {
     ]);
   });
 
-  it("includes expanded directories when non-empty", () => {
-    const snap: UrlStateSnapshot = {
-      ...DEFAULT_SNAPSHOT,
-      expandedDirectories: new Set(["packages", "packages/engine"]),
-    };
-    const payload = snapshotToPayload(snap);
-    expect(payload.e).toEqual(expect.arrayContaining(["packages", "packages/engine"]));
-    expect(payload.e).toHaveLength(2);
-  });
 
-  it("includes expanded cards when non-empty", () => {
-    const snap: UrlStateSnapshot = {
-      ...DEFAULT_SNAPSHOT,
-      expandedCards: new Set(["packages/engine/src/types.ts", "packages/server/src/index.ts"]),
-    };
-    const payload = snapshotToPayload(snap);
-    expect(payload.c).toEqual(expect.arrayContaining(["packages/engine/src/types.ts", "packages/server/src/index.ts"]));
-    expect(payload.c).toHaveLength(2);
-  });
 
-  it("omits expanded cards when empty", () => {
-    const payload = snapshotToPayload(DEFAULT_SNAPSHOT);
-    expect(payload.c).toBeUndefined();
-  });
 
-  it("includes transform when non-default", () => {
-    const snap: UrlStateSnapshot = {
-      ...DEFAULT_SNAPSHOT,
-      transform: { x: 123.456, y: -78.9, k: 1.5 },
-    };
-    const payload = snapshotToPayload(snap);
-    expect(payload.t).toEqual([123.46, -78.9, 1.5]);
-  });
 
-  it("rounds transform values to avoid float noise", () => {
-    const snap: UrlStateSnapshot = {
-      ...DEFAULT_SNAPSHOT,
-      transform: { x: 0.1 + 0.2, y: 0, k: 1 },
-    };
-    const payload = snapshotToPayload(snap);
-    // 0.1 + 0.2 = 0.30000000000000004 → rounds to 0.3
-    expect(payload.t![0]).toBe(0.3);
-  });
 
   it("includes filters when non-default", () => {
     const snap: UrlStateSnapshot = {
@@ -111,11 +72,10 @@ describe("snapshotToPayload", () => {
 describe("payloadToSnapshot", () => {
   it("returns defaults for minimal payload", () => {
     const snap = payloadToSnapshot({ v: 1 });
-    expect(snap.view).toBe("membrane");
+    expect(snap.view).toBe("map");
     expect(snap.selectedNodeId).toBeNull();
     expect(snap.pinSet).toEqual(EMPTY_PIN_SET);
-    expect(snap.expandedDirectories.size).toBe(0);
-    expect(snap.transform).toEqual({ x: 0, y: 0, k: 1 });
+    expect(snap.openDirectories.size).toBe(0);
     expect(snap.filters).toEqual({ showTests: true, showAssets: true });
   });
 
@@ -131,14 +91,13 @@ describe("payloadToSnapshot", () => {
       f: [0, 1],
     };
     const snap = payloadToSnapshot(payload);
-    expect(snap.view).toBe("graph");
+    expect(snap.view).toBe("map");
+    expect(snap.perspective).toBe("3d");
     expect(snap.selectedNodeId).toBe("foo.ts");
     expect(snap.pinSet.entries).toHaveLength(1);
     expect(snap.pinSet.entries[0].nodeId).toBe("a.ts");
     expect(snap.pinSet.entries[0].hopIndex).toBe(0);
-    expect(snap.expandedDirectories).toEqual(new Set(["dir1", "dir2"]));
-    expect(snap.expandedCards).toEqual(new Set(["card1.ts", "card2.ts"]));
-    expect(snap.transform).toEqual({ x: 10, y: 20, k: 2 });
+    expect(snap.openDirectories).toEqual(new Set());
     expect(snap.filters).toEqual({ showTests: false, showAssets: true });
   });
 
@@ -158,8 +117,7 @@ describe("payloadToSnapshot", () => {
     const snap = payloadToSnapshot(payload);
     expect(snap.view).toBe("sources");
     expect(snap.pinSet).toEqual(EMPTY_PIN_SET);
-    expect(snap.expandedDirectories.size).toBe(0);
-    expect(snap.expandedCards.size).toBe(0);
+    expect(snap.openDirectories.size).toBe(0);
   });
 });
 
@@ -172,13 +130,13 @@ describe("compress/decompress round-trip", () => {
     expect(restored.view).toBe(DEFAULT_SNAPSHOT.view);
     expect(restored.selectedNodeId).toBe(DEFAULT_SNAPSHOT.selectedNodeId);
     expect(restored.pinSet).toEqual(DEFAULT_SNAPSHOT.pinSet);
-    expect(restored.transform).toEqual(DEFAULT_SNAPSHOT.transform);
     expect(restored.filters).toEqual(DEFAULT_SNAPSHOT.filters);
   });
 
-  it("round-trips a complex snapshot with pins, transform, and filters", () => {
+  it("round-trips a complex snapshot with pins, a 3D perspective, directories and filters", () => {
     const original: UrlStateSnapshot = {
-      view: "membrane",
+      view: "map",
+      perspective: "3d",
       selectedNodeId: "packages/server/src/index.ts",
       pinSet: {
         entries: [
@@ -187,10 +145,7 @@ describe("compress/decompress round-trip", () => {
           { nodeId: "c.ts", symbol: "TypeC", hopIndex: 2 },
         ],
       },
-      expandedDirectories: new Set(["packages", "packages/server", "packages/server/src"]),
-      expandedCards: new Set(["packages/server/src/index.ts", "packages/server/src/main.ts"]),
       openDirectories: new Set(["packages/server/src", "packages/client"]),
-      transform: { x: 150.5, y: -42.3, k: 1.75 },
       filters: { showTests: false, showAssets: false },
     };
 
@@ -198,15 +153,12 @@ describe("compress/decompress round-trip", () => {
     const restored = decompressSnapshot(compressed);
 
     expect(restored.view).toBe(original.view);
+    expect(restored.perspective).toBe("3d");
     expect(restored.selectedNodeId).toBe(original.selectedNodeId);
     expect([...restored.openDirectories].sort()).toEqual(["packages/client", "packages/server/src"]);
     expect(restored.pinSet.entries).toHaveLength(3);
     expect(restored.pinSet.entries[1].hopIndex).toBe(1);
-    expect(restored.expandedDirectories).toEqual(original.expandedDirectories);
-    expect(restored.expandedCards).toEqual(original.expandedCards);
-    expect(restored.transform.x).toBeCloseTo(150.5);
-    expect(restored.transform.y).toBeCloseTo(-42.3);
-    expect(restored.transform.k).toBeCloseTo(1.75);
+    expect(restored.openDirectories).toEqual(original.openDirectories);
     expect(restored.filters).toEqual({ showTests: false, showAssets: false });
   });
 
@@ -252,14 +204,12 @@ describe("scrubSnapshot", () => {
     const nodesById = makeNodeMap("pkg/src/a.ts", "pkg/src/b.ts");
     const snap: UrlStateSnapshot = {
       ...DEFAULT_SNAPSHOT,
-      expandedDirectories: new Set(["pkg/src"]),
-      expandedCards: new Set(["pkg/src/a.ts"]),
+      openDirectories: new Set(["pkg/src"]),
       selectedNodeId: "pkg/src/b.ts",
       pinSet: { entries: [{ nodeId: "pkg/src/a.ts", symbol: "Foo" }] },
     };
     const result = scrubSnapshot(snap, nodesById);
-    expect([...result.expandedDirectories]).toEqual(["pkg/src"]);
-    expect([...result.expandedCards]).toEqual(["pkg/src/a.ts"]);
+    expect([...result.openDirectories]).toEqual(["pkg/src"]);
     expect(result.selectedNodeId).toBe("pkg/src/b.ts");
     expect(result.pinSet.entries).toHaveLength(1);
   });
@@ -268,21 +218,12 @@ describe("scrubSnapshot", () => {
     const nodesById = makeNodeMap("pkg/src/a.ts");
     const snap: UrlStateSnapshot = {
       ...DEFAULT_SNAPSHOT,
-      expandedDirectories: new Set(["pkg/src", "deleted/dir"]),
+      openDirectories: new Set(["pkg/src", "deleted/dir"]),
     };
     const result = scrubSnapshot(snap, nodesById);
-    expect([...result.expandedDirectories]).toEqual(["pkg/src"]);
+    expect([...result.openDirectories]).toEqual(["pkg/src"]);
   });
 
-  it("drops stale expanded cards", () => {
-    const nodesById = makeNodeMap("pkg/src/a.ts");
-    const snap: UrlStateSnapshot = {
-      ...DEFAULT_SNAPSHOT,
-      expandedCards: new Set(["pkg/src/a.ts", "gone/file.ts"]),
-    };
-    const result = scrubSnapshot(snap, nodesById);
-    expect([...result.expandedCards]).toEqual(["pkg/src/a.ts"]);
-  });
 
   it("drops all-stale pins (falls to empty pinSet)", () => {
     const nodesById = makeNodeMap("pkg/src/a.ts");
@@ -325,15 +266,13 @@ describe("scrubSnapshot", () => {
     expect(result.selectedNodeId).toBeNull();
   });
 
-  it("preserves transform and filters untouched", () => {
+  it("preserves perspective and filters untouched", () => {
     const nodesById = makeNodeMap("a.ts");
     const snap: UrlStateSnapshot = {
       ...DEFAULT_SNAPSHOT,
-      transform: { x: 10, y: 20, k: 1.5 },
       filters: { showTests: false, showAssets: true },
     };
     const result = scrubSnapshot(snap, nodesById);
-    expect(result.transform).toEqual({ x: 10, y: 20, k: 1.5 });
     expect(result.filters).toEqual({ showTests: false, showAssets: true });
   });
 });
@@ -352,6 +291,21 @@ describe("the opened directories", () => {
   it("are scrubbed to those with a live file under them", () => {
     const nodes = new Map([["a/b/c.ts", {}], ["d.ts", {}]]);
     const scrubbed = scrubSnapshot({ ...DEFAULT_SNAPSHOT, openDirectories: new Set(["a", "a/b", "a/bc", "gone", ""]) }, nodes);
-    expect([...scrubbed.openDirectories].sort()).toEqual(["a", "a/b"]);
+    expect([...scrubbed.openDirectories].sort()).toEqual(["", "a", "a/b"]);
+  });
+});
+
+describe("retired view migration", () => {
+  it("keeps the deepest opened folders and pins of old Membrane Map links", () => {
+    const migrated = payloadToSnapshot({ v: 1, w: "membrane", n: "a/b/file.ts", e: ["a", "a/b", "other"], p: [{ n: "a/b/file.ts", s: "run" }], t: [50, -40, 2], c: ["a/b/file.ts"] });
+    expect(migrated.view).toBe("map");
+    expect(migrated.perspective).toBe("2d");
+    expect(migrated.openDirectories).toEqual(new Set(["a/b", "other"]));
+    expect(migrated.pinSet.entries).toEqual([{ nodeId: "a/b/file.ts", symbol: "run" }]);
+    expect(snapshotToPayload(migrated)).toEqual({ v: 2, n: "a/b/file.ts", d: ["a/b", "other"], p: [{ n: "a/b/file.ts", s: "run" }] });
+  });
+  it("retains the representation while another view is active", () => {
+    const snapshot = { ...DEFAULT_SNAPSHOT, view: "sources" as const, perspective: "3d" as const };
+    expect(decompressSnapshot(compressSnapshot(snapshot))).toEqual(snapshot);
   });
 });

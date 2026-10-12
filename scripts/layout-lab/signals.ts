@@ -11,8 +11,8 @@
 import type { Route } from "./routes";
 import type { Scene, SceneBox } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import type { BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import { parentDirectory } from "../../packages/explorer/src/client/views/localView/directory-bands";
 import { membraneOutline } from "../../packages/explorer/src/client/views/localView/membrane-outline";
-import { parentDirectory } from "../../packages/explorer/src/client/views/membraneView/pin-layout";
 import { crossings, type CrossingScore, type Polyline } from "../../tests/e2e/still-picture-geometry";
 
 /** The signals of one layout. */

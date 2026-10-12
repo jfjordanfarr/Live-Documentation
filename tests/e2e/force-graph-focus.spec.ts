@@ -14,7 +14,7 @@ async function expectFocused(page: Page, id: string): Promise<void> {
 }
 
 test("a focused URL centers the actual graph node and opens that file's details", async ({ page }) => {
-  await page.goto(`/?view=force&node=${encodeURIComponent(GRAPH)}`);
+  await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
   const canvas = page.locator("#graph-svg canvas");
   const box = (await canvas.boundingBox())!;
@@ -23,14 +23,18 @@ test("a focused URL centers the actual graph node and opens that file's details"
   await expect(page.locator("#detail-panel")).toContainText(GRAPH);
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
   await page.locator('[onclick="openInLocalView()"]').click();
+  // Opening the Local Map respects the representation already chosen.
+  await expectFocused(page, GRAPH);
+  await expect(page.locator("#view-graph.active")).toBeVisible();
+  await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator(`.node-card.local-focus[data-id="${GRAPH}"]`)).toBeVisible();
-  await page.goBack();
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   await expectFocused(page, GRAPH);
 });
 
 test("search moves focus smoothly, survives filtering, and resizes with its container", async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1000 });
-  await page.goto(`/?view=force&node=${encodeURIComponent(GRAPH)}`);
+  await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
   await page.keyboard.press("Control+p");
   await page.locator("#omnisearch-input").fill(DOCUMENT);
@@ -47,9 +51,9 @@ test("search moves focus smoothly, survives filtering, and resizes with its cont
   expect(canvas.height).toBe(container.height);
 });
 
-test("manual pan survives a trip to detail and back without restarting the settled layout", async ({ page }) => {
+test("manual pan survives a 2D and 3D round trip without restarting the settled layout", async ({ page }) => {
   test.setTimeout(45_000);
-  await page.goto(`/?view=force&node=${encodeURIComponent(GRAPH)}`);
+  await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
   // The existing force simulation has a 15-second cooldown. Compare a settled graph.
   await page.waitForTimeout(16_000);
@@ -83,8 +87,8 @@ test("manual pan survives a trip to detail and back without restarting the settl
   }, { intervals: [100], timeout: 5000 }).toBeGreaterThanOrEqual(3);
   const before = await position();
   expect(Math.hypot(before.x - canvas.width / 2, before.y - canvas.height / 2)).toBeGreaterThan(20);
-  await page.locator('.nav-item[data-view="map"]').click();
-  await page.locator('.nav-item[data-view="graph"]').click();
+  await page.getByRole("button", { name: "2D", exact: true }).click();
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   await page.waitForTimeout(800);
   const after = await position();
   expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(3);
@@ -92,6 +96,6 @@ test("manual pan survives a trip to detail and back without restarting the settl
 
 test("reduced motion still focuses a requested file", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto(`/samples/estate/?view=force&node=${encodeURIComponent("PaymentService/PaymentService.cs")}`);
+  await page.goto(`/samples/estate/?view=local&mode=3d&node=${encodeURIComponent("PaymentService/PaymentService.cs")}`);
   await expectFocused(page, "PaymentService/PaymentService.cs");
 });

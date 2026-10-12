@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-10-12T18:02:21.669Z
+- Generated At: 2026-10-12T20:19:48.993Z
 
 ## Authored
 ### Purpose
@@ -213,6 +213,7 @@ the broken ones are returned as `back`.
 - [`branch-order.ForwardReference`](./branch-order.ts.mdmd.md#symbol-forwardreference)
 - [`branch-order.OrderInput`](./branch-order.ts.mdmd.md#symbol-orderinput)
 - [`branch-order.orderBranches`](./branch-order.ts.mdmd.md#symbol-orderbranches)
+- [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`directory-state.NO_OPEN_DIRECTORIES`](./directory-state.ts.mdmd.md#symbol-no_open_directories)
 - [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
 - [`directory-state.directoryState`](./directory-state.ts.mdmd.md#symbol-directorystate-function)
@@ -224,7 +225,6 @@ the broken ones are returned as `back`.
 - [`subgraph-builder.buildSelfLoopEdges`](./subgraph-builder.ts.mdmd.md#symbol-buildselfloopedges)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
-- [`pin-layout.parentDirectory`](../membraneView/pin-layout.ts.mdmd.md#symbol-parentdirectory)
 - [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 - [`pin-state.getVisibleConnections`](../pin-state.ts.mdmd.md#symbol-getvisibleconnections)
 - [`pin-state.retainFile`](../pin-state.ts.mdmd.md#symbol-retainfile)

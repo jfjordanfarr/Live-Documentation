@@ -29,24 +29,15 @@
 
     <!-- View Navigation -->
     <div class="sidebar-section">
-      <div class="nav-item" data-view="world" onclick="switchView(event, 'world')">
-        <span class="nav-icon nav-icon--world"></span><span>World Map</span>
-      </div>
-      <div class="nav-item" data-view="sources" onclick="switchView(event, 'sources')">
+      <button class="nav-item" data-view="sources" onclick="switchView(event, 'sources')">
         <span class="nav-icon"></span><span>Knowledge Sources</span>
-      </div>
-      <div class="nav-item" data-view="circuit" onclick="switchView(event, 'circuit')">
-        <span class="nav-icon"></span><span>Circuit Board</span>
-      </div>
-      <div class="nav-item" data-view="map" onclick="switchView(event, 'map')">
+      </button>
+      <button class="nav-item" data-view="world" onclick="switchView(event, 'world')">
+        <span class="nav-icon nav-icon--world"></span><span>World Map</span>
+      </button>
+      <button class="nav-item" data-view="map" onclick="switchView(event, 'map')">
         <span class="nav-icon"></span><span>Local Map</span>
-      </div>
-      <div class="nav-item active" data-view="membrane" onclick="switchView(event, 'membrane')">
-        <span class="nav-icon"></span><span>Membrane Map</span>
-      </div>
-      <div class="nav-item" data-view="graph" onclick="switchView(event, 'graph')">
-        <span class="nav-icon"></span><span>Force Graph</span>
-      </div>
+      </button>
     </div>
 
     <!-- Search Trigger -->
@@ -69,7 +60,7 @@
         <span>Show Assets</span>
       </label>
       <label class="sidebar-checkbox force-graph-only"
-        title="Shows related documentation (READMEs, specs, chat history) as nodes in Force Graph view">
+        title="Shows related documentation (READMEs, specs, chat history) as nodes in the 3D Local Map">
         <input id="filter-toggle-related-docs" type="checkbox" />
         <span>Show Related Docs</span>
       </label>
@@ -234,13 +225,6 @@
       <div id="sources-container" class="sources-view"></div>
     </div>
 
-    <div id="view-circuit" class="view-container">
-      <div id="circuit-viewport">
-        <div id="circuit-container" class="dom-layer"></div>
-        <div id="circuit-connections" class="connections-layer"></div>
-      </div>
-    </div>
-
     <div id="view-map" class="view-container">
       <!-- Pathfind Toolbar for FROM/TO symbol navigation -->
       <div id="pathfind-toolbar" class="pathfind-toolbar">
@@ -289,13 +273,6 @@
       </div>
     </div>
 
-    <div id="view-membrane" class="view-container active">
-      <div id="membrane-viewport">
-        <div id="membrane-container"></div>
-        <div id="membrane-connections"></div>
-      </div>
-    </div>
-
     <div id="view-graph" class="view-container">
       <div id="graph-svg"></div>
     </div>
@@ -317,10 +294,7 @@
         <p class="detail-placeholder">Click on any node to view details.</p>
       </div>
       <div class="detail-footer">
-        <button class="action-btn ghost" onclick="openInCircuitBoard()">Open in Circuit Board</button>
-        <button class="action-btn ghost" onclick="openInLocalView()">Open in Local View</button>
-        <button class="action-btn ghost" onclick="openInMembraneMap()">Open in Membrane Map</button>
-        <button class="action-btn ghost" onclick="openInGraphView()">Open in Graph View</button>
+        <button class="action-btn ghost" onclick="openInLocalView()">Open in Local Map</button>
         <button class="action-btn ghost" id="download-doc-btn" onclick="downloadCurrentDoc()">Download Markdown</button>
       </div>
     </div>

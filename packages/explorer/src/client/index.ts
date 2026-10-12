@@ -33,11 +33,9 @@ import {
 import { readUrlState, scrubSnapshot, writeUrlState } from "./persistence/compressed-url-state";
 import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
 import { placeOf } from "./persistence/place";
-import type { ExplorerState, ViewName } from "./types";
-import { createCircuitView } from "./views/circuitView";
+import type { ExplorerState, LocalMapPerspective, ViewName } from "./types";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
-import { createMembraneView } from "./views/membraneView";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
 import { createWorldMapView } from "./views/worldMap";
 import { explorerGraphOf } from "../shared/graph";
@@ -49,8 +47,6 @@ declare global {
     __liveDocsExplorerError?: unknown;
     switchView: (event: MouseEvent, viewName: ViewName) => void;
     openInLocalView: () => void;
-    openInGraphView: () => void;
-    openInCircuitBoard: () => void;
     openOmnisearch: () => void;
     downloadCurrentDoc: () => void;
     zoomIn: () => void;
@@ -119,7 +115,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   const persistedUi = readPersistedUi();
   const initialUi = applyPersistedUi(defaults, persistedUi);
 
-  const persistedNav = initialState.hasUrlState ? null : readPersistedNav();
+  const savedNav = readPersistedNav();
+  const persistedNav = initialState.hasUrlState ? null : savedNav;
 
   const resolveInitialView = (): ViewName => {
     if (initialState.hasUrlState) {
@@ -131,6 +128,7 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   const state: ExplorerState = {
     view: resolveInitialView(),
+    perspective: initialState.perspective ?? savedNav?.perspective ?? "2d",
     selectedNode: null,
     focusedNode: null,
     filters: initialUi.filters,
@@ -145,44 +143,20 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
   // The pins and the opened directories ride the address together; `?dir=` names an opened directory on its own.
-  const initialExploration = scrubSnapshot({ ...readUrlState(), openDirectories: initialState.openDirectories }, nodesById);
+  const initialExploration = scrubSnapshot({ ...readUrlState(), openDirectories: initialState.hasUrlState
+    ? initialState.openDirectories : new Set(persistedNav?.openDirectories ?? []) }, nodesById);
+  if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...initialExploration.filters };
   state.pins = initialExploration.pinSet;
   state.openDirectories = initialExploration.openDirectories;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
+    perspective: state.perspective,
+    openDirectories: state.openDirectories ?? new Set(),
     focusedNodeId: state.focusedNode?.id ?? null,
     selectedNodeId: state.selectedNode?.id ?? null
   }));
   const schedulePersistNav = persistNav.schedule;
-
-  // Helper to open a node in Circuit Board view
-  const openInCircuitBoardView = (node: ExplorerNodePayload): void => {
-    // Hide detail panel when navigating to another view
-    detailPanel.hide();
-    state.selectedNode = node;
-    state.view = "circuit";
-    setActiveView("circuit");
-    updateUrlState("circuit", node.id);
-    schedulePersistNav();
-    renderCurrentView();
-    // Expand the containing directory and scroll to the node
-    setTimeout(() => {
-      circuitView.expandAndScrollToNode(node.id);
-    }, 50);
-  };
-
-  // Helper to open a node in Membrane Map view
-  const openInMembraneMapView = (node: ExplorerNodePayload): void => {
-    detailPanel.hide();
-    state.selectedNode = node;
-    state.focusedNode = node;
-    state.view = "membrane";
-    setActiveView("membrane");
-    updateUrlState("membrane", node.id);
-    schedulePersistNav();
-    renderCurrentView();
-  };
 
   // Helper to handle clicks on node links in documentation
   const handleDocNodeClick = (nodeId: string): void => {
@@ -200,8 +174,6 @@ function startExplorer(bundle: StaticExplorerData): void {
       // Show the bundled doc in the detail panel
       showBundledDocInDetailPanel(docPath);
     },
-    onOpenInCircuitBoard: openInCircuitBoardView,
-    onOpenInMembraneMap: openInMembraneMapView,
   });
 
   // Use imported resolveLinkEndpoint and inferDefaultEntryNodeId from extracted modules
@@ -216,18 +188,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   if (statsLine instanceof HTMLElement) {
     statsLine.textContent = `${graphData.stats.nodes} nodes, ${graphData.stats.links} links, ${graphData.stats.missingDependencies} missing dependencies`;
   }
-
-  const circuitView = createCircuitView({
-    state,
-    graphData,
-    resolveLinkEndpoint,
-    onSelectNode: node => handleNodeClick(node),
-    onRecenterNode: node => handleNodeDoubleClick(node),
-    onOpenLocalView: node => {
-      openLocalViewForNode(node);
-    },
-    testCoverage
-  });
 
   const localView = createLocalView({
     state,
@@ -256,33 +216,16 @@ function startExplorer(bundle: StaticExplorerData): void {
     }
   });
 
-  // The World Map is the outside of every folder when the bundle carries a board.
-  const showWorldMap = (): void => {
-    detailPanel.hide();
-    state.view = "world";
-    setActiveView("world");
-    updateUrlState("world", null);
-    schedulePersistNav();
-    renderCurrentView();
-  };
-
-  const membraneView = createMembraneView({
-    state,
-    graphData,
-    onSelectNode: node => handleNodeClick(node),
-    testCoverage,
-    nodesById,
-    world: bundle.board ? { open: showWorldMap } : undefined
-  });
-
-  // A thing on the World Map opens in the Membrane Map, focused on its folder.
-  const openThingInMembraneMap = (thing: { name: string; folder: string }): void => {
-    detailPanel.hide();
-    state.view = "membrane";
-    setActiveView("membrane");
-    updateUrlState("membrane", null);
-    schedulePersistNav();
-    membraneView.focusDirectory(thing.folder);
+  // Opening a thing is a new Local Map scope, rendered in the remembered representation.
+  const openThingInLocalMap = (thing: { name: string; folder: string }): void => {
+    clearPathResult();
+    pathfindApi.setFrom(undefined);
+    pathfindApi.setTo(undefined);
+    state.pins = { entries: [] };
+    state.openDirectories = new Set([thing.folder]);
+    state.selectedNode = state.focusedNode = null;
+    changePerspective(state.perspective, null);
+    persistExploration();
   };
 
   const worldMapView = createWorldMapView({
@@ -295,7 +238,7 @@ function startExplorer(bundle: StaticExplorerData): void {
         openLocalViewForNode(node);
       }
     },
-    onOpenThing: openThingInMembraneMap
+    onOpenThing: openThingInLocalMap
   });
 
   syncFilterControls();
@@ -330,7 +273,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       state.filters.showRelatedDocs = event.target.checked;
       schedulePersistUi();
       // Only re-render Force Graph (Related Docs only affect that view)
-      if (state.view === "graph") {
+      if (state.view === "map" && state.perspective === "3d") {
         forceGraphView.render();
       }
     });
@@ -338,15 +281,15 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   const perspectiveControls = document.createElement("div");
   perspectiveControls.className = "perspective-controls";
-  perspectiveControls.setAttribute("aria-label", "File perspective");
+  perspectiveControls.setAttribute("aria-label", "Local Map representation");
   const mapButton = document.createElement("button");
   mapButton.textContent = "2D";
-  mapButton.title = "Local Map";
-  mapButton.addEventListener("click", () => changePerspective("map"));
+  mapButton.title = "Local Map in 2D";
+  mapButton.addEventListener("click", () => changePerspective("2d"));
   const graphButton = document.createElement("button");
   graphButton.textContent = "3D";
-  graphButton.title = "Force Graph";
-  graphButton.addEventListener("click", () => changePerspective("graph"));
+  graphButton.title = "Local Map in 3D";
+  graphButton.addEventListener("click", () => changePerspective("3d"));
   const clearPinsButton = document.createElement("button");
   clearPinsButton.title = "Clear exploration pins";
   clearPinsButton.setAttribute("aria-label", "Clear exploration pins");
@@ -357,9 +300,12 @@ function startExplorer(bundle: StaticExplorerData): void {
   requireElement("main").append(perspectiveControls);
 
   function syncPerspectiveControls(): void {
-    perspectiveControls.hidden = state.view !== "map" && state.view !== "graph";
-    mapButton.setAttribute("aria-pressed", String(state.view === "map"));
-    graphButton.setAttribute("aria-pressed", String(state.view === "graph"));
+    const contextName = document.getElementById("context-name");
+    if (contextName) contextName.textContent = (state.focusedNode ?? state.selectedNode)?.codeRelativePath
+      ?? ([...(state.openDirectories ?? [])].join(", ") || "None");
+    perspectiveControls.hidden = state.view !== "map";
+    mapButton.setAttribute("aria-pressed", String(state.perspective === "2d"));
+    graphButton.setAttribute("aria-pressed", String(state.perspective === "3d"));
     const path = localView.getActivePath();
     perspectivePath.textContent = path ? `Path: ${path.nodeIds.length} files` : "";
     perspectivePath.hidden = !path;
@@ -371,60 +317,60 @@ function startExplorer(bundle: StaticExplorerData): void {
   let changingPerspective = false;
   let pendingPerspective: (() => void) | null = null;
   let perspectiveEpoch = 0;
-  let transitionDestination: ViewName | null = null;
+  let transitionDestination: LocalMapPerspective | null = null;
   let releasePerspectiveCover = (): void => {};
   let cancelPerspectiveAnimation = (): void => {};
 
-  /** Change file perspective around the identity the person was last inspecting. */
-  function changePerspective(view: "map" | "graph", target = state.focusedNode ?? state.selectedNode): void {
-    if (changingPerspective) { pendingPerspective = () => changePerspective(view, target); return; }
-    if (state.view === view && target?.id === state.selectedNode?.id) return;
+  /** Change Local Map representation around the identity the person was last inspecting. */
+  function changePerspective(perspective: LocalMapPerspective, target = state.focusedNode ?? state.selectedNode): void {
+    if (changingPerspective) { pendingPerspective = () => changePerspective(perspective, target); return; }
+    if (state.view === "map" && state.perspective === perspective && target?.id === state.selectedNode?.id) return;
     const epoch = ++perspectiveEpoch;
-    transitionDestination = view;
-    const previousView = state.view;
-    const sourceCards = previousView === "map" ? captureLocalScene(requireElement("view-map")) : null;
-    const sourceGraph = previousView === "graph" ? forceGraphView.captureScene() : null;
-    const releaseCover = (previousView === "map" || previousView === "graph") && target
-      ? holdPerspective(requireElement(`view-${previousView}`)) : () => {};
+    transitionDestination = perspective;
+    const previous = state.view === "map" ? state.perspective : null;
+    const destination = perspective === "2d" ? "map" : "graph";
+    const sourceSurface = previous === "2d" ? "map" : "graph";
+    const sourceCards = previous === "2d" ? captureLocalScene(requireElement("view-map")) : null;
+    const sourceGraph = previous === "3d" ? forceGraphView.captureScene() : null;
+    const releaseCover = previous && target ? holdPerspective(requireElement(`view-${sourceSurface}`)) : () => {};
     releasePerspectiveCover = releaseCover;
     changingPerspective = true;
     mapButton.disabled = graphButton.disabled = true;
-    const source = state.view === "map" ? localView : state.view === "graph" ? forceGraphView : null;
+    const source = previous === "2d" ? localView : previous === "3d" ? forceGraphView : null;
     let anchor = target && source ? source.getSubjectAnchor(target.id) : null;
     detailPanel.hide();
     state.selectedNode = target;
     state.focusedNode = target;
-    state.view = view;
-    setActiveView(view);
-    updateUrlState(view, target?.id ?? null);
+    state.view = "map";
+    state.perspective = perspective;
+    setActiveView(state.view, perspective);
+    updateUrlState(state.view, target?.id ?? null, perspective);
     schedulePersistNav();
     renderCurrentView();
     if (target && anchor) {
-      const viewport = requireElement(`view-${view}`).getBoundingClientRect();
-      // Off-screen subjects cannot provide a visible continuity anchor.
+      const viewport = requireElement(`view-${destination}`).getBoundingClientRect();
       if (anchor.x >= viewport.left && anchor.x <= viewport.right && anchor.y >= viewport.top && anchor.y <= viewport.bottom) {
-        (view === "map" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
+        (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
       } else anchor = null;
     }
-    const ready = view === "graph" ? forceGraphView.whenReady() : Promise.resolve();
+    const ready = perspective === "3d" ? forceGraphView.whenReady() : Promise.resolve();
     void ready.then(() => {
       if (epoch !== perspectiveEpoch) { releaseCover(); return; }
-      if (target && anchor) (view === "map" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
-      if (target && (previousView === "map" || previousView === "graph")) {
-        const cards = view === "graph" ? sourceCards! : captureLocalScene(requireElement("view-map"));
-        const graph = view === "graph" ? forceGraphView.captureScene() : sourceGraph!;
+      if (target && anchor) (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
+      if (target && previous && previous !== perspective) {
+        const cards = perspective === "3d" ? sourceCards! : captureLocalScene(requireElement("view-map"));
+        const graph = perspective === "3d" ? forceGraphView.captureScene() : sourceGraph!;
         forceGraphView.setActive(false);
-        changingPerspective = true;
-        mapButton.disabled = graphButton.disabled = true;
-        cancelPerspectiveAnimation = animatePerspective(cards, graph, view === "graph", target.id, requireElement(`view-${view}`).getBoundingClientRect(), () => {
+        cancelPerspectiveAnimation = animatePerspective(cards, graph, perspective === "3d", target.id, requireElement(`view-${destination}`).getBoundingClientRect(), () => {
           if (epoch !== perspectiveEpoch) return;
           transitionDestination = null;
           changingPerspective = false;
           mapButton.disabled = graphButton.disabled = false;
-          forceGraphView.setActive(state.view === "graph");
+          forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
           const pending = pendingPerspective; pendingPerspective = null; pending?.();
         });
       } else {
+        transitionDestination = null;
         changingPerspective = false;
         mapButton.disabled = graphButton.disabled = false;
       }
@@ -435,10 +381,10 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   globalWindow.switchView = (event: MouseEvent, viewName: ViewName) => {
     event.preventDefault();
-    if (viewName === "map" || viewName === "graph") { changePerspective(viewName); return; }
-    setActiveView(viewName);
+    if (viewName === "map") { changePerspective(state.perspective); return; }
+    setActiveView(viewName, state.perspective);
     state.view = viewName;
-    updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null);
+    updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null, state.perspective);
     schedulePersistNav();
     renderCurrentView();
   };
@@ -456,53 +402,24 @@ function startExplorer(bundle: StaticExplorerData): void {
     openLocalViewForNode(target);
   };
 
-  globalWindow.openInGraphView = () => changePerspective("graph");
-
-  globalWindow.openInCircuitBoard = () => {
-    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
-    const target = state.focusedNode ?? state.selectedNode;
-    if (!target) {
-      return;
-    }
-    openInCircuitBoardView(target);
-  };
-
   globalWindow.zoomIn = () => {
-    if (state.view === "circuit") {
-      circuitView.zoomIn();
-      circuitView.drawConnections();
-    } else if (state.view === "map") {
+    if (state.view === "map" && state.perspective === "2d") {
       localView.zoomIn();
       localView.drawConnections();
-    } else if (state.view === "membrane") {
-      membraneView.zoomIn();
     }
   };
-
   globalWindow.zoomOut = () => {
-    if (state.view === "circuit") {
-      circuitView.zoomOut();
-      circuitView.drawConnections();
-    } else if (state.view === "map") {
+    if (state.view === "map" && state.perspective === "2d") {
       localView.zoomOut();
       localView.drawConnections();
-    } else if (state.view === "membrane") {
-      membraneView.zoomOut();
     }
   };
-
   globalWindow.resetZoom = () => {
-    if (state.view === "circuit") {
-      circuitView.resetZoom();
-      circuitView.drawConnections();
-    } else if (state.view === "map") {
+    if (state.view === "map" && state.perspective === "2d") {
       localView.resetZoom();
       localView.drawConnections();
-    } else if (state.view === "membrane") {
-      membraneView.resetZoom();
     }
   };
-
   globalWindow.toggleSidebar = () => {
     const sidebar = document.getElementById("sidebar");
     const toggleBtn = document.getElementById("sidebar-toggle");
@@ -515,9 +432,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   };
 
   window.addEventListener("resize", () => {
-    if (state.view === "circuit") {
-      circuitView.drawConnections();
-    } else if (state.view === "map") {
+    if (state.view === "map" && state.perspective === "2d") {
       localView.drawConnections();
     }
   });
@@ -531,6 +446,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   // ==================
   // PATHFIND STATE
   // ==================
+
+  let restoringPath = false;
 
   /** Render the path visualization strip; an empty path hides it. */
   const renderPathVisualization = (path: PathHop[]): void => {
@@ -619,9 +536,9 @@ function startExplorer(bundle: StaticExplorerData): void {
       detailPanel.hide();
 
       // Path found - switch to Local Map view centered on first node
-      if (state.view !== "map") {
+      if (!restoringPath && state.view !== "map") {
         state.view = "map";
-        setActiveView("map");
+        setActiveView("map", state.perspective);
       }
 
       // Path mode draws over a selected file; when none is selected yet, the
@@ -644,6 +561,9 @@ function startExplorer(bundle: StaticExplorerData): void {
       const notDrawn = against === 0
         ? ""
         : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn`;
+      updateUrlState(state.view, state.selectedNode?.id ?? null, state.perspective);
+      schedulePersistNav();
+      renderCurrentView();
       setPathStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
       return;
     }
@@ -692,6 +612,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     viewMapEl?.classList.remove("has-path");
     // Clear path mode and re-render to restore exploration mode layout
     localView.setActivePath(null);
+    if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
   };
 
   // Initialize pathfind toolbar (Local Map FROM/TO navigation)
@@ -720,7 +641,7 @@ function startExplorer(bundle: StaticExplorerData): void {
         localView.setActivePath(null);
         if (state.view !== "map") {
           state.view = "map";
-          setActiveView("map");
+          setActiveView("map", state.perspective);
         }
         selectNode(from.node, { suppressDetailPanel: true });
         setPathStatus(`Exploring: ${from.node.name}`, "success");
@@ -767,7 +688,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   const urlRequestedNodeId = initialState.hasUrlState ? initialState.nodeId : null;
   const storedOrConfiguredNodeId = !initialState.hasUrlState ? (persistedNav?.nodeId ?? initialState.nodeId) : null;
   // An address that opens a directory and names no file is the door into that directory: nothing is put in focus for it.
-  const enteredByDirectory = initialState.hasUrlState && !initialState.nodeId && state.openDirectories.size > 0;
+  const enteredByDirectory = !initialState.nodeId && !persistedNav?.nodeId && state.openDirectories.size > 0;
 
   const initialFocusNodeId = (() => {
     if (enteredByDirectory) {
@@ -796,21 +717,18 @@ function startExplorer(bundle: StaticExplorerData): void {
   }
 
   // Set initial sidebar active state based on parsed URL/config
-  setActiveView(state.view);
+  setActiveView(state.view, state.perspective);
 
   // Render initial view
   // Resolve a shared path before drawing, so loading it never paints an unrelated neighborhood first.
-  if (urlPathfindState.from && urlPathfindState.to) pathfindApi.executeFindPath();
+  if (urlPathfindState.from && urlPathfindState.to) {
+    restoringPath = true;
+    try { pathfindApi.executeFindPath(); } finally { restoringPath = false; }
+  }
   renderCurrentView();
 
   if (focusNode) {
-    // The selected cards are marked once the view has settled; the Circuit Board also opens the node's directory.
-    setTimeout(() => {
-      highlightSelectedCards();
-      if (state.view === "circuit") {
-        circuitView.expandAndScrollToNode(focusNode.id);
-      }
-    }, 100);
+    setTimeout(highlightSelectedCards, 100);
   }
 
   initTuningPanel({
@@ -818,7 +736,6 @@ function startExplorer(bundle: StaticExplorerData): void {
     onTuningChange: schedulePersistUi,
     onRender: renderCurrentView,
     drawLocalConnections: () => localView.drawConnections(),
-    drawMembraneConnections: () => membraneView.redrawConnections(),
   });
 
   // Back and Forward: a move to another place is an entry, and landing on one shows the place its address names.
@@ -844,10 +761,13 @@ function startExplorer(bundle: StaticExplorerData): void {
     const view: ViewName = place.hasUrlState ? place.view : bundle.board ? "world" : place.view;
     detailPanel.hide();
     state.view = view;
+    state.perspective = place.perspective ?? state.perspective;
     const exploration = scrubSnapshot({ ...readUrlState(), openDirectories: place.openDirectories }, nodesById);
+    if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...exploration.filters };
+    syncFilterControls();
     state.pins = exploration.pinSet;
     state.openDirectories = exploration.openDirectories;
-    setActiveView(view);
+    setActiveView(view, state.perspective);
     const node = place.nodeId ? nodesById.get(place.nodeId) ?? null : null;
     state.selectedNode = node;
     state.focusedNode = node;
@@ -858,14 +778,13 @@ function startExplorer(bundle: StaticExplorerData): void {
     const path = parsePathfindFromUrl(nodesById);
     pathfindApi.setFrom(path.from);
     pathfindApi.setTo(path.to);
-    if (view === "membrane") {
-      membraneView.applySnapshot(scrubSnapshot(readUrlState(), nodesById));
-    } else {
-      renderCurrentView();
-    }
+    clearPathResult();
     if (path.from && path.to) {
-      pathfindApi.executeFindPath();
+      restoringPath = true;
+      try { pathfindApi.executeFindPath(); } finally { restoringPath = false; }
     }
+    renderCurrentView();
+    schedulePersistNav();
     highlightSelectedCards();
   }
 
@@ -882,7 +801,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
-    updateUrlState(state.view, node.id);
+    updateUrlState(state.view, node.id, state.perspective);
     schedulePersistNav();
   }
 
@@ -901,7 +820,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
-    updateUrlState(state.view, node.id);
+    updateUrlState(state.view, node.id, state.perspective);
     schedulePersistNav();
     highlightSelectedCards();
     if (!options?.suppressDetailPanel) {
@@ -918,7 +837,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   }
 
   function highlightSelectedCards(): void {
-    circuitView.highlightSelection();
     localView.highlightSelection();
   }
 
@@ -932,7 +850,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     clearPathResult();
     // Hide detail panel to avoid blocking the visualization
     detailPanel.hide();
-    changePerspective("map", node);
+    changePerspective(state.perspective, node);
     // Populate FROM field with the node and CLEAR TO field (exploration mode)
     pathfindApi.setFrom({ node, symbol: undefined });
     pathfindApi.setTo(undefined);
@@ -942,22 +860,21 @@ function startExplorer(bundle: StaticExplorerData): void {
   function persistExploration(leavingPath = false): void {
     if (leavingPath) clearPathResult();
     syncPerspectiveControls();
-    const contextName = document.getElementById("context-name");
-    if (contextName) contextName.textContent = state.selectedNode?.codeRelativePath ?? "None";
-    writeUrlState({ ...readUrlState(), view: state.view, selectedNodeId: state.selectedNode?.id ?? null,
+    schedulePersistNav();
+    writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, selectedNodeId: state.selectedNode?.id ?? null,
       pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), filters: state.filters }, { preservePath: !leavingPath });
   }
 
   function renderCurrentView(): void {
     // History and navigation can interrupt an animated perspective change.
-    if (changingPerspective && state.view !== transitionDestination) {
+    if (changingPerspective && (state.view !== "map" || state.perspective !== transitionDestination)) {
       perspectiveEpoch++;
       releasePerspectiveCover(); cancelPerspectiveAnimation();
       changingPerspective = false; pendingPerspective = null; transitionDestination = null;
       mapButton.disabled = graphButton.disabled = false;
     }
     syncPerspectiveControls();
-    forceGraphView.setActive(state.view === "graph");
+    forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
     if (state.view === "sources") {
       doRenderSourcesView();
       return;
@@ -969,16 +886,9 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (graphData.nodes.length === 0) {
       return;
     }
-    if (state.view === "circuit") {
-      circuitView.render();
-    } else if (state.view === "map") {
-      localView.render();
-      syncPerspectiveControls();
-    } else if (state.view === "graph") {
-      forceGraphView.render();
-    } else if (state.view === "membrane") {
-      membraneView.render();
-    }
+    if (state.perspective === "2d") localView.render();
+    else forceGraphView.render();
+    syncPerspectiveControls();
   }
 
   const downloadCtx = { files, bundledMarkdown };
@@ -986,6 +896,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   function doRenderSourcesView(): void {
     renderSourcesView({
       facts: sourcesFacts(bundle.graph),
+      perspective: state.perspective,
       bundledDocs,
       // A file named on the panel goes to the detail panel, where its doc and its doors are; the panel itself stays as it is.
       onFocusNode: (nodeId: string) => {

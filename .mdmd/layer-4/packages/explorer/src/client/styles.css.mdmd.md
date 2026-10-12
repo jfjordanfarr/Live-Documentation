@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/styles.css
-- Generated At: 2026-09-28T23:04:09.021Z
+- Generated At: 2026-10-12T19:21:19.557Z
 
 ## Authored
 ### Purpose
@@ -24,10 +24,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`circuit`](./styles/circuit.css.mdmd.md)
 - [`graph`](./styles/graph.css.mdmd.md)
 - [`local`](./styles/local.css.mdmd.md)
-- [`membrane`](./styles/membrane.css.mdmd.md)
 - [`pathfind`](./styles/pathfind.css.mdmd.md)
 - [`shell`](./styles/shell.css.mdmd.md)
 - [`sources`](./styles/sources.css.mdmd.md)

@@ -84,7 +84,7 @@ After changing source, run `live-docs:generate` and commit the regenerated docs 
 - Design faults that geometry can name are tested: `tests/e2e/design-audit.ts` finds labels that collide and text that is cut off, and each state a view can be in gets an audit spec, over this repository and the estate sample (the owner's ask, 2026-09-29). A view keeps its own words apart; the World Map settles its movable labels after every camera move so the audit holds under zoom.
 - The visual language is consistent across scales: inputs enter on one side and outputs leave on the other, colour-coded the same way everywhere: blue is the side that offers (a file's symbols, a system's routes and tables) and green the side that uses them, inside a system and between systems (the owner's word, 2026-09-29). Inside a system what a file uses enters on the left and what it offers leaves on the right. Fade the irrelevant; never boost the relevant. No emoji anywhere in the UI.
 - Prefer a symbol's origin file over a barrel re-export when resolving links.
-- View-specific doctrine (the Membrane Map's pin spectrum, font-size invariance) lives in `.mdmd/layer-3/membrane-map.mdmd.md`, and the vision's "one crafted rendering per scale" may revise it. Don't treat either as settled.
+- View-specific behavior is described in `.mdmd/layer-3/live-documentation-explorer.mdmd.md`. Retired view designs remain historical evidence, not requirements for their successors.
 
 ## Correctness
 

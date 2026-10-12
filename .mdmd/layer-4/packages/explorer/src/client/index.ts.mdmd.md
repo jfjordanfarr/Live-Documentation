@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-08T17:03:51.606Z
+- Generated At: 2026-10-12T20:19:48.212Z
 
 ## Authored
 ### Purpose
@@ -71,11 +71,10 @@ _No public symbols detected_
 - [`index.updateUrlState`](./persistence/index.ts.mdmd.md#symbol-updateurlstate)
 - [`place.placeOf`](./persistence/place.ts.mdmd.md#symbol-placeof)
 - [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
-- [`index.createCircuitView`](./views/circuitView/index.ts.mdmd.md#symbol-createcircuitview)
 - [`forceGraphView.createForceGraphView`](./views/forceGraphView.ts.mdmd.md#symbol-createforcegraphview)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
-- [`index.createMembraneView`](./views/membraneView/index.ts.mdmd.md#symbol-createmembraneview)
 - [`perspectiveTransition.animatePerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-animateperspective)
 - [`perspectiveTransition.captureLocalScene`](./views/perspectiveTransition.ts.mdmd.md#symbol-capturelocalscene)
 - [`perspectiveTransition.holdPerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-holdperspective)

@@ -81,17 +81,6 @@
     box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3);
 }
 
-/* Circuit Board: highlight connected nodes instead of drawing connector lines */
-.node-card.connected-outbound {
-    border-color: var(--connection-stroke);
-    box-shadow: 0 0 0 2px rgba(0, 189, 255, 0.4), 0 0 12px rgba(0, 189, 255, 0.25);
-}
-
-.node-card.connected-inbound {
-    border-color: rgba(0, 240, 180, 0.7);
-    box-shadow: 0 0 0 2px rgba(0, 240, 180, 0.35), 0 0 12px rgba(0, 240, 180, 0.2);
-}
-
 .node-card.local-focus {
     border-width: 2px;
     box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.4), 0 12px 30px rgba(0, 145, 255, 0.22);
@@ -282,7 +271,7 @@
     z-index: 100;
 }
 
-/* Show zoom controls only for Circuit Board and Local Map views */
+/* Show zoom controls for the 2D Local Map */
 body.zoom-controls-active #controls {
     display: flex;
 }
@@ -435,8 +424,7 @@ button.action-btn.ghost:hover {
     transition: opacity 0.18s ease;
 }
 
-#view-map .connections-layer,
-#view-circuit .connections-layer {
+#view-map .connections-layer {
     z-index: 20;
 }
 

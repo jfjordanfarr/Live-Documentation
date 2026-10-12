@@ -5,7 +5,6 @@ import path from "node:path";
 import { DECK_SCOPES, type DeckScope } from "./scopes";
 import {
   LOCAL_MAP,
-  MEMBRANE_MAP,
   backEnabled,
   boxOf,
   cardBoxes,
@@ -21,8 +20,6 @@ import {
   loadGraph,
   localMapUrl,
   localRetainUrl,
-  membraneBrowseUrl,
-  membranePinAllUrl,
   readPicture,
   runTour,
   scoreboardTable,
@@ -79,7 +76,7 @@ const FORCE_GRAPH: ViewReading = {
 
 const REPORT_DIR = path.resolve(__dirname, "../../reports/still-picture");
 
-const VIEW_ORDER = ["Local Map", "Membrane Map", "Rings", "Force Graph"];
+const VIEW_ORDER = ["Local Map", "Rings", "Force Graph"];
 
 const nameOf = (id: string): string => id.split("/").pop() ?? id;
 
@@ -131,18 +128,6 @@ const settleLocalMap = async (page: Page, file: string): Promise<void> => {
 const settleLocalBranches = async (page: Page): Promise<void> => {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 10_000 });
-  await page.waitForTimeout(900);
-};
-
-const settleMembranePins = async (page: Page): Promise<void> => {
-  await page.waitForSelector(".pin-active-root", { timeout: 20_000 });
-  await page.waitForSelector("#membrane-container .membrane-connection", { timeout: 10_000 });
-  await page.waitForTimeout(1300);
-};
-
-const settleMembraneBrowse = async (page: Page, file: string): Promise<void> => {
-  await page.waitForSelector(".membrane-browse-root", { timeout: 20_000 });
-  await page.waitForSelector(`#membrane-container .membrane-card[data-id="${file}"]`, { timeout: 10_000 });
   await page.waitForTimeout(900);
 };
 
@@ -340,108 +325,6 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
   };
 }
 
-/** From the folder view, open the subject's card if it is closed, pin the symbol, read the consumers and what moved, then unpin. */
-async function membraneJourney(page: Page, run: Run, graph: ExplorerGraphPayload): Promise<{ journey: Journey; churn: ChurnScore }> {
-  const { file, symbol } = run.journey!;
-  const answer = consumersOf(graph, file, symbol);
-  await page.goto(membraneBrowseUrl(run.base, file));
-  await settleMembraneBrowse(page, file);
-  const card = `#membrane-container .membrane-card[data-id="${file}"]`;
-  const label = `${card} .membrane-card__symbol-row[data-symbol="${symbol}"] .membrane-card__symbol-label`;
-  const notes: string[] = [];
-  const moves = new Moves();
-  const backBefore = await backEnabled(page);
-  await shot(page, run, "Membrane Map", "journey-start");
-  if ((await page.locator(`${card}.membrane-card--collapsed`).count()) > 0) {
-    moves.take(await gesture(page, MEMBRANE_MAP, card));
-    await page.waitForTimeout(900);
-    notes.push("the card opened first: a closed card shows no symbol rows");
-  }
-  const start = await boxOf(page, card);
-  const before = await cardBoxes(page, MEMBRANE_MAP);
-  moves.take(await gesture(page, MEMBRANE_MAP, label));
-  await settleMembranePins(page);
-  const after = await boxOf(page, card);
-  const churn = scoreChurn(before, await cardBoxes(page, MEMBRANE_MAP));
-  await shot(page, run, "Membrane Map", "journey-answer");
-  const answerLegible = await legibleNames(page, MEMBRANE_MAP, answer);
-  const historyEntry = (await backEnabled(page)) && !backBefore;
-  await gesture(page, MEMBRANE_MAP, label);
-  await page.waitForTimeout(1300);
-  const returned = await boxOf(page, card);
-  await shot(page, run, "Membrane Map", "journey-return");
-  notes.push("return move: the same symbol label clicked again, which empties the pins and returns to the folder");
-  return {
-    journey: {
-      question: `which files use ${symbol} of ${file}`,
-      answer,
-      gestures: moves.gestures,
-      smallestTargetPx: moves.smallest,
-      subjectMovedPx: centerDistance(start, after),
-      answerLegible,
-      historyEntry,
-      returnErrorPx: centerDistance(start, returned),
-      notes
-    },
-    churn
-  };
-}
-
-/**
- * From A's folder, pin all of A, then of B as it appears, then of C, so that D arrives: the Membrane's own way to
- * walk a chain. The pin-active header's back control is the return move.
- */
-async function membraneChainJourney(page: Page, run: Run, graph: ExplorerGraphPayload, names: Record<string, Record<string, string>>): Promise<ChainJourney> {
-  const chain = run.chain!;
-  const a = chain[0];
-  await page.goto(membraneBrowseUrl(run.base, a));
-  await settleMembraneBrowse(page, a);
-  const card = (id: string): string => `#membrane-container .membrane-card[data-id="${id}"]`;
-  const start = await boxOf(page, card(a));
-  const backBefore = await backEnabled(page);
-  const moves = new Moves();
-  const notes: string[] = [];
-  for (const id of chain.slice(0, -1)) {
-    if ((await page.locator(card(id)).count()) === 0) {
-      notes.push(`${nameOf(id)} had no card to pin from, so the walk stopped there`);
-      break;
-    }
-    moves.take(await gesture(page, MEMBRANE_MAP, `${card(id)} [title="Pin all symbols"]`));
-    await settleMembranePins(page);
-  }
-  await shot(page, run, "Membrane Map", "chain-answer");
-  const after = await boxOf(page, card(a));
-  const picture = await readPicture(page, MEMBRANE_MAP, names);
-  const hops = scoreHops(graph, chain, picture);
-  const namesLegible = await legibleNames(page, MEMBRANE_MAP, chain);
-  const historyEntry = (await backEnabled(page)) && !backBefore;
-  // The return move: the header's back control, or its keyboard twin when the layout has carried the header off screen.
-  let returnMove = "the pin-active header's back control";
-  try {
-    await page.click(".pin-active-header__back", { timeout: 3_000 });
-  } catch {
-    await page.keyboard.press("Escape");
-    returnMove = "Escape, because the header's back control sat outside the viewport";
-  }
-  await page.waitForTimeout(1300);
-  const returned = await boxOf(page, card(a));
-  await shot(page, run, "Membrane Map", "chain-return");
-  notes.push("pin all on each file of the chain in turn, each pin bringing the next file's card into the picture", `return move: ${returnMove}, not counted among the gestures`);
-  return {
-    question: `how does ${nameOf(a)} reach ${nameOf(chain[chain.length - 1])}`,
-    path: chain,
-    gestures: moves.gestures,
-    smallestTargetPx: moves.smallest,
-    subjectMovedPx: centerDistance(start, after),
-    hops: hops.hops,
-    hopsLegible: hops.legible,
-    namesLegible,
-    historyEntry,
-    returnErrorPx: centerDistance(start, returned),
-    notes
-  };
-}
-
 for (const run of RUNS) {
   test.describe(`still pictures of the ${run.bundle}, ${run.scopeName}`, () => {
     test.use({ viewport: { width: 1600, height: 1000 } });
@@ -488,6 +371,7 @@ for (const run of RUNS) {
       expect(still.text!.collisions, still.text!.faults).toBe(0);
       expect(still.text!.cutOffs, still.text!.faults).toBe(0);
       expect(routes.changed, routes.examples.join("\n")).toBe(0);
+      expect(routes.countChanges, "panning neither adds nor removes wires").toBe(0);
       expect(still.occlusion!.occludedWires, "the Local Map keeps its wires in the gutters between columns").toBe(0);
     });
 
@@ -504,7 +388,7 @@ for (const run of RUNS) {
       await shot(page, run, "Local Map retained", "state");
       const picture = await readPicture(page, LOCAL_MAP, names);
       const still = await stillMeasures(page, LOCAL_MAP, graph, facts, names, picture);
-      // The deck counts a back reference's stubs as backward, as it does the Membrane's; the rule here is for routes.
+      // The deck counts a back reference's stubs as backward, the rule here is for routes.
       const routesOnly = scoreExpanded({ ...picture, wires: picture.wires.filter(wire => !wire.stub) }, symbolCounts(graph));
       expect(still.foreign!.foreignLaneSamples, "no lane lies in a directory that holds neither end of its wires").toBe(0);
       const tour = await runTour(page, LOCAL_MAP, facts, names);
@@ -523,52 +407,15 @@ for (const run of RUNS) {
         churn: null,
         tour,
         chain: null,
-        notes: ["every file of the scope retained whole, the first as the subject, at the view's own fit; the Membrane row above pins the same files' symbols"]
+        notes: ["every file of the scope retained whole, the first as the subject, at the view's own fit"]
       });
 
       expect(still.text!.collisions, still.text!.faults).toBe(0);
       expect(still.text!.cutOffs, still.text!.faults).toBe(0);
       expect(routes.changed, routes.examples.join("\n")).toBe(0);
+      expect(routes.countChanges, "panning neither adds nor removes wires").toBe(0);
       expect(still.occlusion!.occludedWires, "a retained exploration keeps every wire out of every card it does not end at").toBe(0);
       expect(routesOnly.flow.backward, "every route a retained exploration draws reads forward; a cycle's feedback is stubs").toBe(0);
-    });
-
-    test("Membrane Map", async ({ page }) => {
-      const graph = await loadGraph(page, run.base);
-      const facts = factsInScope(graph, run.scope);
-      const names = displayNames(graph, graph.nodes.map(node => node.id));
-
-      await page.goto(membranePinAllUrl(graph, run.base, run.scope));
-      await settleMembranePins(page);
-      await shot(page, run, "Membrane Map", "state");
-      const still = await stillMeasures(page, MEMBRANE_MAP, graph, facts, names);
-      const tour = await runTour(page, MEMBRANE_MAP, facts, names);
-      const routes = await scoreRoutes(page, MEMBRANE_MAP);
-      let journey: Journey | null = null;
-      let churn: ChurnScore | null = null;
-      let chain: ChainJourney | null = null;
-      if (run.journey) ({ journey, churn } = await membraneJourney(page, run, graph));
-      if (run.chain) chain = await membraneChainJourney(page, run, graph, names);
-
-      recordBoard({
-        measuredAt: new Date().toISOString(),
-        bundle: run.bundle,
-        scopeName: run.scopeName,
-        view: "Membrane Map",
-        state: `all symbols of ${run.scope.length} files pinned, default camera`,
-        scope: { files: run.scope.length, facts: facts.length },
-        ...still,
-        routes,
-        journey,
-        churn,
-        tour,
-        chain,
-        notes: ["occlusion is reported, not asserted"]
-      });
-
-      expect(still.text!.collisions, still.text!.faults).toBe(0);
-      expect(still.text!.cutOffs, still.text!.faults).toBe(0);
-      expect(routes.changed, routes.examples.join("\n")).toBe(0);
     });
 
     test("Force Graph", async ({ page }) => {

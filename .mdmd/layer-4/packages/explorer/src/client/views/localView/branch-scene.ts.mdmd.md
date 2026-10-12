@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-scene.ts
-- Generated At: 2026-10-09T20:54:50.860Z
+- Generated At: 2026-10-12T19:21:19.914Z
 
 ## Authored
 ### Purpose
@@ -152,5 +152,5 @@ a wire per reference through the slots its passages name.
 - [`branch-routing.LANE_PITCH`](./branch-routing.ts.mdmd.md#symbol-lane_pitch)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
-- [`pin-layout.DirectoryBand`](../membraneView/pin-layout.ts.mdmd.md#symbol-directoryband) (type-only)
+- [`directory-bands.DirectoryBand`](./directory-bands.ts.mdmd.md#symbol-directoryband) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

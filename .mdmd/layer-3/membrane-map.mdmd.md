@@ -1,5 +1,7 @@
 # Membrane Map
 
+_Historical design, retired 2026-10-12 by the owner ([session Turn 4](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4)). The Local Map now provides directory browsing and 2D/3D representations. This document preserves the earlier design and its unresolved proposals; it does not describe the current application. See [the current Explorer](live-documentation-explorer.mdmd.md)._
+
 ## Metadata
 
 - Layer: 3

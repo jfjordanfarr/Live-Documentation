@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/signals.ts
-- Generated At: 2026-10-07T22:32:32.380Z
+- Generated At: 2026-10-12T19:21:20.939Z
 
 ## Authored
 ### Purpose
@@ -75,8 +75,8 @@ Every signal of a laid-out scene and its routes.
 - [`branch-scene.Scene`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scene) (type-only)
 - [`branch-scene.SceneBox`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenebox) (type-only)
 - [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
+- [`directory-bands.parentDirectory`](../../packages/explorer/src/client/views/localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`membrane-outline.membraneOutline`](../../packages/explorer/src/client/views/localView/membrane-outline.ts.mdmd.md#symbol-membraneoutline)
-- [`pin-layout.parentDirectory`](../../packages/explorer/src/client/views/membraneView/pin-layout.ts.mdmd.md#symbol-parentdirectory)
 - [`routes.Route`](./routes.ts.mdmd.md#symbol-route) (type-only)
 - [`still-picture-geometry.CrossingScore`](../../tests/e2e/still-picture-geometry.ts.mdmd.md#symbol-crossingscore)
 - [`still-picture-geometry.Polyline`](../../tests/e2e/still-picture-geometry.ts.mdmd.md#symbol-polyline)

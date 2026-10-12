@@ -18,7 +18,7 @@ export interface WorldMapViewOptions {
   board?: { path: string; text: string };
   /** Opens a file of the graph in the Local Map, from a link in a pinned panel. */
   onOpenFile?: (file: string) => void;
-  /** Opens a thing's folder in the Membrane Map, by the wheel, a double-click or the link in its pinned panel. */
+  /** Opens a thing's folder in the Local Map, by the wheel, a double-click or the link in its pinned panel. */
   onOpenThing?: (thing: { name: string; folder: string }) => void;
 }
 

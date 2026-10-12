@@ -19,14 +19,13 @@ export interface TuningPanelConfig {
   onTuningChange: TuningChangeCallback;
   onRender: RenderCallback;
   drawLocalConnections: () => void;
-  drawMembraneConnections: () => void;
 }
 
 /**
  * Initialize the tuning panel with all slider and checkbox controls.
  */
 export function initTuningPanel(config: TuningPanelConfig): void {
-  const { state, onTuningChange, onRender, drawLocalConnections, drawMembraneConnections } = config;
+  const { state, onTuningChange, onRender, drawLocalConnections } = config;
 
   const stubFactorInput = document.getElementById("tuning-stub-factor") as HTMLInputElement | null;
   const stubMinInput = document.getElementById("tuning-stub-min") as HTMLInputElement | null;
@@ -57,10 +56,8 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       setter(value);
       if (output) output.textContent = input.value;
       onTuningChange();
-      if (state.view === "map") {
+      if (state.view === "map" && state.perspective === "2d") {
         drawLocalConnections();
-      } else if (state.view === "membrane") {
-        onRender();
       }
     });
   };
@@ -79,13 +76,11 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       setter(value);
       if (output) output.textContent = input.value;
       onTuningChange();
-      // Update CSS custom property on root (cascades to both Local Map and Membrane Map)
+      // Update CSS custom property on root (cascades to the Local Map)
       const cssValue = cssProperty === "--local-column-gap" ? `${value}px` : String(value);
       document.documentElement.style.setProperty(cssProperty, cssValue);
-      if (state.view === "map") {
+      if (state.view === "map" && state.perspective === "2d") {
         drawLocalConnections();
-      } else if (state.view === "membrane") {
-        drawMembraneConnections();
       }
     });
   };
@@ -164,7 +159,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       const value = symbolOrderSelect.value;
       state.tuning.localMap.symbolOrder = value === "alphabetical" || value === "appearance" ? value : "layout";
       onTuningChange();
-      if (state.view === "map") onRender();
+      if (state.view === "map" && state.perspective === "2d") onRender();
     });
   }
 
@@ -192,7 +187,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       setter(parseFloat(input.value));
       if (output) output.textContent = input.value;
       onTuningChange();
-      if (state.view === "map") onRender();
+      if (state.view === "map" && state.perspective === "2d") onRender();
     });
   };
   rerenderSlider(orderStartsInput, "tuning-order-starts-value", v => { state.tuning.localMap.orderStarts = v; });

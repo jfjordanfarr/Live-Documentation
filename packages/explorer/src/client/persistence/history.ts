@@ -4,7 +4,7 @@
  * A move from one place to another, another view, another file, another folder opened or a path between two files,
  * becomes an entry that Back returns to. A change within a place, pins, an expanded card, pan and zoom, rewrites the
  * current entry, so Back never walks through pin toggles. Which kind a write is comes from the parsed address, not
- * from the raw one, because the Membrane Map packs its pins and its folders into one compressed parameter.
+ * from the raw one, because the Local Map packs its pins and its folders into one compressed parameter.
  */
 
 /** What a write does to the history: a new entry, a rewrite of the current one, or nothing. */

@@ -48,7 +48,8 @@ test("a directory entered with nothing pinned is a grid of compact cards and clo
   await expect(cards(page)).toHaveCount(0);
   await expect(wires(page)).toHaveCount(0);
   await expect(label(page, ENGINE).locator(".local-directory-close")).toBeVisible();
-  await expect(page.locator("#context-name")).toHaveText("None");
+  await expect(page.locator("#context-name")).toHaveText(ENGINE);
+  await expect(page.locator("#map-container .node-card.local-focus")).toHaveCount(0);
   // The whole picture is in the frame: nothing to focus on, so the fit keeps it visible.
   const frame = (await page.locator("#view-map").boundingBox())!;
   for (const b of await page.locator("#map-container .local-directory-closed").all()) {

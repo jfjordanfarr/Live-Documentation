@@ -21,6 +21,7 @@ import { requireElement } from "../dom";
 import type { ExplorerState } from "../types";
 import { fileConnections } from "./fileConnections";
 import { focusedCameraPosition, screenAnchorTranslation, type CameraPoint } from "./forceGraphCamera";
+import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET } from "./pin-state";
 import { wheelPixels } from "./wheel";
@@ -106,6 +107,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let subjectAnchor: { x: number; y: number } | null = null;
   let simulationRunning = true;
   let ready = false;
+  let framedDirectoryScope = "";
+  let frameDirectory = (): void => {};
   const readyWaiters: Array<() => void> = [];
 
   function getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
@@ -233,6 +236,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   function render(): void {
     const container = requireElement<HTMLDivElement>("graph-svg");
     const path = options.getPath?.();
+    const directories = [...(state.openDirectories ?? [])].sort();
+    const directoryScope = directories.length && !state.selectedNode && !path?.length ? JSON.stringify(directories) : "";
+    container.dataset.directoryScope = directoryScope;
 
     const includeNode = (node: ExplorerNodePayload): boolean => {
       if (path?.includes(node.id) || (state.focusedNode ?? state.selectedNode)?.id === node.id || state.pins?.entries.some(pin => pin.nodeId === node.id)) {
@@ -371,9 +377,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     for (const { link } of getVisibleConnections(pins, graphData.links)) {
       retained.add(resolveLinkEndpoint(link.source)); retained.add(resolveLinkEndpoint(link.target));
     }
+    for (const node of filteredNodes) if (directories.some(directory => under(node.id, directory))) retained.add(node.id);
     if (state.selectedNode) retained.add(state.selectedNode.id);
     if (path?.length) { retained.clear(); for (const id of path) retained.add(id); }
-    const hasAttention = !!pins.entries.length || !!path?.length;
+    const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
+    frameDirectory = (): void => {
+      if (directoryScope && directoryScope !== framedDirectoryScope) {
+        forceGraphInstance?.zoomToFit(0, 70, node => directories.some(directory => under(String(node.id), directory)));
+      }
+      framedDirectoryScope = directoryScope;
+    };
     const nodeColor = (node: ForceGraphNode): string => {
       const colors: Record<string, string> = { implementation: "#0091ff", test: "#28a745", interface: "#ffc107", config: "#6c757d", script: "#17a2b8", "related-doc": "#9966cc" };
       const color = colors[(node.archetype ?? "").toLowerCase()] ?? "#888888";
@@ -395,6 +408,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       focusSelection();
       forceGraphInstance.nodeColor(node => nodeColor(node as ForceGraphNode));
       forceGraphInstance.linkColor(link => linkColor(link as ForceGraphLink));
+      frameDirectory();
       setActive(true);
       return;
     }
@@ -408,7 +422,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .warmupTicks(100)
       // The simulation moves nodes immediately before painting. Track that
       // position in the same frame so the sphere and its projected label agree.
-      .onEngineTick(() => { simulationRunning = true; ready = true; updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
+      .onEngineTick(() => { simulationRunning = true; ready = true; frameDirectory(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
       .onEngineStop(() => { simulationRunning = false; })
       .nodePositionUpdate((object, _position, node) => {
         nodeObjects.set((node as ForceGraphNode).id, object);

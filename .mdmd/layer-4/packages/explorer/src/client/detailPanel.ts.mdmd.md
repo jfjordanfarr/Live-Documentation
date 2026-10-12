@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-10-08T16:03:27.562Z
+- Generated At: 2026-10-12T19:21:19.021Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ The Explorer's detail panel: renders a selected file's Live Doc from the graph i
 ### Notes
 - Created 2025-11-21 during the explorer modularisation.
 - Since 2026-09-28 the panel reads the graph's file for a node instead of splitting the doc's markdown by regex, and `renderLiveDoc` gives back the doc's bytes for the download; the fetches from the retired server went with it.
-- Added "Open in Membrane Map" button and `onOpenInMembraneMap` callback on 2026-03-28, wired through `DetailPanelApi` so the Explorer can navigate from any detail view into the Membrane Map with the selected node focused.
+- The footer opens graph files in the Local Map using its remembered representation. The historical Membrane/Circuit actions were retired with those views on October 12, 2026; bundled documents have no graph-file action.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -34,7 +34,7 @@ Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L60)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L51)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 

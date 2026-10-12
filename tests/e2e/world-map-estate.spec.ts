@@ -1,6 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { LOCAL_MAP } from "./still-picture";
+
 
 /**
  * The estate sample over its own board: the owner's target shape.
@@ -13,7 +15,7 @@ import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-
 
 const ESTATE = "/samples/estate/index.html?view=world";
 const BOARD_TEXT = ["#view-world svg text"];
-const MEMBRANE_TEXT = ["#view-membrane .membrane__label", "#view-membrane .membrane__badge", "#view-membrane .membrane-leaf__name", "#view-membrane .membrane-card__header", "#view-membrane .membrane-card__path", "#view-membrane .membrane-card__symbol-summary", "#view-membrane .membrane-card__directory", "#view-membrane .membrane-browse-breadcrumb__segment", "#controls .control-btn"];
+const LOCAL_TEXT = [...LOCAL_MAP.text, "#controls .control-btn"];
 
 interface WorldMapHandle {
   ready: boolean;
@@ -93,17 +95,17 @@ test.describe("The estate on the World Map", () => {
   });
 
   for (const [thing, folder] of [["gateway", "Gateway"], ["hub", "Hub"]]) {
-    test(`${thing} opens into the Membrane Map on its folder, where nothing collides and nothing is cut off`, async ({ page }) => {
+    test(`${thing} opens into the Local Map on its folder, where nothing collides and nothing is cut off`, async ({ page }) => {
       await openEstate(page);
       await page.evaluate((name) => window.__worldMap!.enter(name), thing);
-      await expect(page.locator("#view-membrane.active")).toHaveCount(1);
-      await expect(page.locator(`#view-membrane .membrane[data-id="${folder}"]:not(.membrane--collapsed)`)).toHaveCount(1);
-      await page.waitForFunction(() => getComputedStyle(document.querySelector("#view-membrane")!).opacity === "1");
+      await expect(page.locator("#view-map.active")).toHaveCount(1);
+      await expect(page.locator(`#view-map .local-directory-label[data-directory="${folder}"]`)).toHaveCount(1);
+      await page.waitForFunction(() => getComputedStyle(document.querySelector("#view-map")!).opacity === "1");
       await page.waitForTimeout(800);
-      const boxes = await textBoxes(page, MEMBRANE_TEXT);
+      const boxes = await textBoxes(page, LOCAL_TEXT);
       expect(boxes.length).toBeGreaterThan(5);
       const overlaps = overlapsAmong(boxes);
-      const cut = await truncations(page, MEMBRANE_TEXT);
+      const cut = await truncations(page, LOCAL_TEXT);
       expect([...overlaps, ...cut], describeFaults(overlaps, cut)).toEqual([]);
     });
   }

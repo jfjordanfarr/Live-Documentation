@@ -140,35 +140,6 @@ export function symbolCounts(graph: ExplorerGraphPayload): Record<string, number
   return counts;
 }
 
-// ─── Addresses ────────────────────────────────────────────────────────────
-
-/** The address of the Membrane Map with every symbol of every file in the set pinned, at the default camera. */
-export function membranePinAllUrl(graph: ExplorerGraphPayload, base: string, files: readonly string[]): string {
-  const byId = new Map(graph.nodes.map(node => [node.id, node]));
-  const pins: Array<{ n: string; s: string }> = [];
-  for (const id of files) {
-    const node = byId.get(id);
-    if (!node) {
-      throw new Error(`${id} is not in the bundle`);
-    }
-    for (const symbol of node.publicSymbols) {
-      pins.push({ n: id, s: symbol });
-    }
-    pins.push({ n: id, s: "__internals__" });
-  }
-  return `${base}?s=${compressToEncodedURIComponent(JSON.stringify({ v: 1, w: "membrane", p: pins }))}`;
-}
-
-/** The address of the Membrane Map browsing the folder of `file`, with the file selected and nothing pinned. */
-export function membraneBrowseUrl(base: string, file: string): string {
-  const parts = file.split("/");
-  const folders: string[] = [];
-  for (let i = 1; i < parts.length; i += 1) {
-    folders.push(parts.slice(0, i).join("/"));
-  }
-  return `${base}?s=${compressToEncodedURIComponent(JSON.stringify({ v: 1, w: "membrane", n: file, e: folders }))}`;
-}
-
 export const localMapUrl = (base: string, file: string): string => `${base}?view=local&node=${encodeURIComponent(file)}`;
 
 /** The address of the Local Map with every file of the set retained whole, the first as the subject, at the view's own fit. */
@@ -176,7 +147,7 @@ export function localRetainUrl(base: string, files: readonly string[]): string {
   return `${base}?s=${compressToEncodedURIComponent(JSON.stringify({ v: 1, w: "map", n: files[0], p: files.map(n => ({ n, s: "*" })) }))}`;
 }
 
-export const forceGraphUrl = (base: string, file: string): string => `${base}?view=force&node=${encodeURIComponent(file)}`;
+export const forceGraphUrl = (base: string, file: string): string => `${base}?view=local&mode=3d&node=${encodeURIComponent(file)}`;
 
 /**
  * Waits until the Local Map's picture is at rest: a change of pins moves the branch picture from one arrangement to the
@@ -208,7 +179,7 @@ export interface ViewReading {
   camera: string;
   /** The element to drag to pan. */
   pannable: string;
-  /** Whether `data-source-id` is the consumer (the graph's orientation) or the provider (the Membrane's flow orientation). */
+  /** Whether `data-source-id` is the consumer (the graph's orientation) or the provider (the flow orientation). */
   sourceIs: "consumer" | "provider";
   /** The text the design audit reads. */
   text: string[];
@@ -252,33 +223,6 @@ export const LOCAL_MAP: ViewReading = {
   folderContainer: { container: ".local-stack-group", label: ".local-stack-group__label" },
   folderShape: "#map-container .local-membrane-shape[data-directory]",
   lane: "#map-container .local-pass-through"
-};
-
-export const MEMBRANE_MAP: ViewReading = {
-  wires: "#membrane-container .membrane-connection",
-  card: "#membrane-container .membrane-card",
-  row: ".membrane-card__symbol-row",
-  rowLabel: ".membrane-card__symbol-label",
-  name: ".membrane-card__header",
-  camera: "#membrane-container",
-  pannable: "#membrane-viewport",
-  sourceIs: "provider",
-  text: [
-    "#view-membrane .membrane-card__header",
-    "#view-membrane .membrane-card__path",
-    "#view-membrane .membrane-card__symbol-label",
-    "#view-membrane .membrane-card__directory",
-    "#view-membrane .pa-band-membrane__label",
-    "#view-membrane .pa-ancestor-membrane__label",
-    "#view-membrane .pin-active-column__label",
-    "#view-membrane .pin-active-header__back",
-    "#view-membrane .membrane__label",
-    "#view-membrane .membrane-leaf__name",
-    "#view-membrane .membrane-browse-breadcrumb__segment"
-  ],
-  folderText: [".membrane-card__path", ".membrane-card__directory"],
-  folderContainer: { container: ".pa-band-membrane, .pa-ancestor-membrane, .membrane", label: ".pa-band-membrane__label, .pa-ancestor-membrane__label, .membrane__label" },
-  folderBox: "#membrane-container .pa-band-membrane[data-directory]"
 };
 
 /** What the page reports about one wire. */
@@ -829,7 +773,7 @@ async function emptySpot(page: Page, view: ViewReading, dx = 0, dy = 0): Promise
       for (let x = frame.left + 40; x < frame.right - 40; x += 24) {
         const top = document.elementFromPoint(x, y);
         if (!top || !surface?.contains(top)) continue;
-        if (top.closest(`${card}, button, input, select, a, #detail-panel, #controls, .pathfind-toolbar, .membrane--collapsed, .membrane-leaf`)) continue;
+        if (top.closest(`${card}, button, [role="button"], input, select, a, #detail-panel, #controls, .pathfind-toolbar`)) continue;
         const fits = x + dx > frame.left + 20 && x + dx < frame.right - 20 && y + dy > frame.top + 20 && y + dy < frame.bottom - 20;
         if (fits) return { x, y };
         fallback ??= { x, y };

@@ -1,6 +1,6 @@
+import { parentDirectory } from "./directory-bands";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import type { SymbolOrder } from "../../types";
-import { parentDirectory } from "../membraneView/pin-layout";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";

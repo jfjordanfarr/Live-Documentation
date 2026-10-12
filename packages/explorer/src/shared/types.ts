@@ -83,7 +83,7 @@ export interface ExplorerPublicSymbol {
  * The full payload for a single node in the explorer graph.
  *
  * Serialised to JSON by the explorer HTTP server and consumed by the client
- * to render the Circuit Board treemap, Force Graph, and Local Map views.
+ * to render the Local Map’s 2D and 3D representations.
  * Each node maps 1:1 to a tracked workspace artifact and its corresponding
  * Live Doc.
  *
@@ -133,7 +133,7 @@ export interface ExplorerLinkPayload {
 }
 
 /**
- * Summary statistics for the explorer graph, rendered in the Circuit Board
+ * Summary statistics for the explorer graph, rendered in the Explorer
  * header and used by the static builder to emit a quick-access overview.
  */
 export interface ExplorerGraphStats {

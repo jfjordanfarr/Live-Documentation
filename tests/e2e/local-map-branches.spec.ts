@@ -201,7 +201,7 @@ test("a retained exploration threads skipped references through lanes: nothing o
   expect(detours).toBe(0);
   // Dense scopes also leave the perspective choice to the person.
   await expect(page.locator(".perspective-strain")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "3D", exact: true })).toHaveAttribute("title", "Force Graph");
+  await expect(page.getByRole("button", { name: "3D", exact: true })).toHaveAttribute("title", "Local Map in 3D");
 });
 
 test("a hovered row dims every wire it does not touch, the bundles' shared runs among them, and the runs return at rest", async ({ page }) => {
@@ -318,7 +318,7 @@ test("a type-reference badge retains its source pin and keeps the referenced fil
   await page.locator('.local-focus .symbol-row[data-symbol="GraphFile"] .type-badge-extends').click();
   await expect(page.locator("#context-name")).toHaveText(document);
   await expect(page.locator('.symbol-row[data-symbol="GraphFile"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
-  await page.locator('.nav-item[data-view="graph"]').click();
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", document);
   await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("1 pin ×");
 });

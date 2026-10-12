@@ -1,6 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 
-import { FIXTURE_FILE, FIXTURE_SUBDIR, expandDirectory, goToMembraneMap, pinAllOnCard } from "./helpers";
+import { localMapSettled } from "./still-picture";
+
+const FIXTURE_DIR = "packages/engine/src";
+const FIXTURE_SUBDIR = `${FIXTURE_DIR}/config`;
+const FIXTURE_FILE = `${FIXTURE_SUBDIR}/liveDocumentationConfig.ts`;
 
 /**
  * Back and Forward between places. A move to another view, another file or another folder is an entry in the
@@ -42,23 +46,25 @@ test.describe("Back and Forward", () => {
   });
 
   test("an opened folder is a step back, and pins made in it are not", async ({ page }) => {
-    await goToMembraneMap(page);
-    await expandDirectory(page, FIXTURE_SUBDIR);
+    await page.goto(`/?view=local&node=${FIXTURE_FILE}&dir=${FIXTURE_DIR}`);
+    await page.getByRole("button", { name: `Open ${FIXTURE_SUBDIR}`, exact: true }).click();
+    await localMapSettled(page);
     const folderUrl = page.url();
 
-    await pinAllOnCard(page, FIXTURE_FILE);
-    await expect(page.locator(".pin-active-root")).toBeVisible();
+    await page.locator(`.node-card[data-id="${FIXTURE_FILE}"] .node-title`).click();
+    await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeVisible();
     expect(page.url(), "a pin changes the address of the place").not.toBe(folderUrl);
 
-    await openView(page, "map");
+    await openView(page, "sources");
     await page.goBack();
-    await expect.poll(() => activeView(page)).toBe("membrane");
-    await expect(page.locator(".pin-active-root"), "the place comes back with its pins").toBeVisible();
+    await expect.poll(() => activeView(page)).toBe("map");
+    await expect(page.getByRole("button", { name: "Clear exploration pins" }), "the place comes back with its pins").toBeVisible();
 
     await page.goBack();
-    await expect.poll(() => activeView(page)).toBe("membrane");
-    await expect(page.locator(".pin-active-root"), "Back left the folder, not the pins").toHaveCount(0);
-    await expect(page.locator(`.membrane--collapsed[data-id="${FIXTURE_SUBDIR}"]`)).toBeVisible();
+    await expect.poll(() => activeView(page)).toBe("map");
+    await expect(page.getByRole("button", { name: "Clear exploration pins" }), "Back left the folder, not the pins").toBeHidden();
+    await expect(page.getByRole("button", { name: `Open ${FIXTURE_SUBDIR}`, exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: `Close ${FIXTURE_SUBDIR}`, exact: true })).toHaveCount(0);
   });
 
   test("a thing opened from the World Map is a step back to the board, and Forward opens it again", async ({ page }) => {
@@ -66,7 +72,7 @@ test.describe("Back and Forward", () => {
     await page.waitForFunction(() => window.__worldMap?.ready === true);
     await page.evaluate(() => window.__worldMap!.pin("piece", "engine"));
     await page.locator("#view-world .world-evidence a[data-open='engine']").click();
-    const engine = page.locator('#view-membrane .membrane[data-id="packages/engine"]:not(.membrane--collapsed)');
+    const engine = page.locator('#view-map .local-directory-label[data-directory="packages/engine"]');
     await expect(engine).toHaveCount(1);
 
     await page.goBack();
@@ -74,7 +80,7 @@ test.describe("Back and Forward", () => {
     await expect.poll(() => activeView(page)).toBe("world");
 
     await page.goForward();
-    await expect(page.locator("#view-membrane.active")).toHaveCount(1);
+    await expect(page.locator("#view-map.active")).toHaveCount(1);
     await expect(engine).toHaveCount(1);
   });
 });

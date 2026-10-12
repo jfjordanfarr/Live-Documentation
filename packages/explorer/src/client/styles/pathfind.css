@@ -5,7 +5,7 @@
 /* The Local Map is a column: the toolbar takes the height it needs (one row of
    inputs, a status line when there is one, the path strip when a path is drawn)
    and the map layer fills whatever is left, so nothing overlaps the map. */
-#view-map {
+#view-map, #view-graph {
     display: flex;
     flex-direction: column;
 }

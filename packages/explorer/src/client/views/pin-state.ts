@@ -3,10 +3,9 @@
  *
  * Pure-function module: no DOM, no side effects.
  *
- * The pin model drives the continuous rendering spectrum:
- * Browse (0 pins) → Selected → Partial Pins → All Pins (≡ Local Map).
- * "Compare" emerges from pinning symbols on two nodes.
- * "Path" emerges from injecting BFS-ordered pins via a population strategy.
+ * Pins retain independent file and symbol neighborhoods in both Local Map
+ * representations. Explicit paths have their own scope; hop indices remain
+ * readable only to preserve earlier shared snapshots.
  *
  * @module pin-state
  */
@@ -23,8 +22,8 @@ export interface PinEntry {
   readonly nodeId: string;
   readonly symbol: string;
   /**
-   * When populated by BFS pathfinding, the hop index orders this pin
-   * in the path sequence. Undefined for manually pinned symbols.
+   * Legacy path order, preserved when reading earlier shared snapshots.
+   * Undefined for manually pinned symbols.
    */
   readonly hopIndex?: number;
 }
@@ -119,29 +118,6 @@ export function toggleFileSymbol(set: PinSet, nodeId: string, symbol: string, sy
   return next;
 }
 
-/**
- * Clear all pins.
- */
-export function clearPins(): PinSet {
-  return EMPTY_PIN_SET;
-}
-
-/**
- * Replace the entire pin set with BFS path results.
- * Each entry gets a hopIndex corresponding to its position in the path.
- */
-export function setPinsFromPath(
-  hops: ReadonlyArray<{ nodeId: string; symbol: string }>
-): PinSet {
-  return {
-    entries: hops.map((hop, i) => ({
-      nodeId: hop.nodeId,
-      symbol: hop.symbol,
-      hopIndex: i,
-    })),
-  };
-}
-
 // ─── Queries ───────────────────────────────────────────────────────
 
 /**
@@ -157,31 +133,6 @@ export function getPinnedNodeIds(set: PinSet): ReadonlySet<string> {
 export function isSymbolPinned(set: PinSet, nodeId: string, symbol: string): boolean {
   const key = pinKey(nodeId, symbol);
   return set.entries.some(e => pinKey(e.nodeId, e.symbol) === key);
-}
-
-/**
- * Check whether ALL symbols of a node (including __internals__) are pinned.
- */
-export function areAllSymbolsPinned(set: PinSet, nodeId: string, symbols: readonly string[]): boolean {
-  const allSymbols = [...symbols, "__internals__"];
-  return allSymbols.every(sym => isSymbolPinned(set, nodeId, sym));
-}
-
-/**
- * Whether the pin set contains any entries with hop indices (i.e., a path is active).
- */
-export function hasActivePath(set: PinSet): boolean {
-  return set.entries.some(e => e.hopIndex !== undefined);
-}
-
-/**
- * Get entries sorted by hop index (for path breadcrumb rendering).
- * Returns only entries that have a hopIndex.
- */
-export function getPathEntries(set: PinSet): readonly PinEntry[] {
-  return set.entries
-    .filter(e => e.hopIndex !== undefined)
-    .sort((a, b) => a.hopIndex! - b.hopIndex!);
 }
 
 // ─── Connection Visibility ─────────────────────────────────────────
@@ -317,29 +268,4 @@ export function deserializePins(data: ReadonlyArray<{ n: string; s: string; h?: 
       hopIndex: d.h,
     })),
   };
-}
-
-// ─── Auto-Expansion ────────────────────────────────────────────────
-
-/**
- * Compute the set of directory IDs that must be expanded so all
- * pinned nodes are visible in the membrane layout.
- *
- * For each pinned node ID (a file path like `"packages/engine/src/types.ts"`),
- * we derive the ancestor directories (`"packages"`, `"packages/engine"`,
- * `"packages/engine/src"`) and add them to the result set.
- *
- * @param set - Current pin state
- * @returns Set of directory IDs that should be expanded
- */
-export function getRequiredExpansions(set: PinSet): ReadonlySet<string> {
-  const dirs = new Set<string>();
-  for (const entry of set.entries) {
-    const parts = entry.nodeId.split("/");
-    // Build ancestor paths (exclude the filename itself)
-    for (let i = 1; i < parts.length; i++) {
-      dirs.add(parts.slice(0, i).join("/"));
-    }
-  }
-  return dirs;
 }

@@ -1,6 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { LOCAL_MAP } from "./still-picture";
+
 
 /**
  * The World Map's words must not land on each other.
@@ -12,7 +14,7 @@ import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-
  */
 
 const BOARD_TEXT = ["#view-world svg text"];
-const MEMBRANE_TEXT = ["#view-membrane .membrane__label", "#view-membrane .membrane__badge", "#view-membrane .membrane-leaf__name", "#view-membrane .membrane-card__header", "#view-membrane .membrane-card__path", "#view-membrane .membrane-card__symbol-summary", "#view-membrane .membrane-card__directory", "#view-membrane .membrane-browse-breadcrumb__segment", "#controls .control-btn"];
+const LOCAL_TEXT = [...LOCAL_MAP.text, "#controls .control-btn"];
 
 interface WorldMapHandle {
   ready: boolean;
@@ -50,12 +52,12 @@ async function boardLabels(page: Page) {
   return boxes;
 }
 
-/** A thing opened into the Membrane Map, its cards settled after the layout's animation. */
+/** A thing opened into the Local Map, its cards settled after the layout's animation. */
 async function openThing(page: Page, name: string) {
   await page.evaluate((thing) => window.__worldMap!.enter(thing), name);
-  await page.waitForFunction(() => getComputedStyle(document.querySelector("#view-membrane")!).opacity === "1");
+  await page.waitForFunction(() => getComputedStyle(document.querySelector("#view-map")!).opacity === "1");
   await page.waitForTimeout(800);
-  const boxes = await textBoxes(page, MEMBRANE_TEXT);
+  const boxes = await textBoxes(page, LOCAL_TEXT);
   expect(boxes.length).toBeGreaterThan(5);
   return boxes;
 }
@@ -93,10 +95,10 @@ test.describe("World Map design audit", () => {
     await page.evaluate(() => window.__worldMap!.unpin());
   });
 
-  test("a thing opened into the Membrane Map: no two words collide and nothing is cut off", async ({ page }) => {
+  test("a thing opened into the Local Map: no two words collide and nothing is cut off", async ({ page }) => {
     await openWorldMap(page);
     const overlaps = overlapsAmong(await openThing(page, "engine"));
-    const cut = await truncations(page, MEMBRANE_TEXT);
+    const cut = await truncations(page, LOCAL_TEXT);
     expect([...overlaps, ...cut], describeFaults(overlaps, cut)).toEqual([]);
   });
 });

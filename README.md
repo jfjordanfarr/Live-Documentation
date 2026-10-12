@@ -66,22 +66,20 @@ Live Documentation turns your workspace into a navigable markdown graph:
 1. **Discovery**: Selects source artifacts via configurable glob patterns.
 2. **Analysis**: Extracts public symbols and dependency edges (language-aware where possible).
 3. **Materialization**: Writes deterministic markdown mirrors—each file gets a `.md` companion with headers for every public symbol.
-4. **Exploration**: The Explorer's views (World Map, Local Map, Force Graph, Membrane Map, Circuit Board) and CLI commands let you navigate, trace paths, and share links.
+4. **Exploration**: The Explorer's views (Knowledge Sources, World Map, Local Map) and CLI commands let you navigate, trace paths, and share links.
 5. **Consumption**: Reviewers, CI checks and any agent you hand it to read the same markdown.
 
 ---
 
 ## The Explorer: See Your Code Like Never Before
 
-Live Documentation includes a visual Explorer with five views over one graph:
+Live Documentation includes a visual Explorer with three navigable views over one graph:
 
 | View              | Purpose                                                                                                           |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Knowledge Sources** | The graph’s inventory, related documentation and exports |
 | **World Map**     | The outside: systems as closed pieces on a board, doors where they offer and use openings, wires between them     |
-| **Local Map**     | One file with what it uses and what uses it, symbol by symbol; pin as many files as you like and zoom out into 3D |
-| **Force Graph**   | The whole workspace as a physics layout, one counted line per pair of files that reference each other             |
-| **Membrane Map**  | Directories as nested membranes with files as cards inside; pin a symbol and the map re-lays itself as a flow     |
-| **Circuit Board** | An earlier directory treemap                                                                                      |
+| **Local Map** | Files, symbols and directories in 2D, or file connectivity in 3D; the representation is remembered and travels in shared links |
 
 ### Path Mode: The "Oracle of Bacon" for Code
 

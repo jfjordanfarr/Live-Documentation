@@ -1,4 +1,4 @@
-import { computeDirectoryBands, type DirectoryBand, type FlowNode } from "../membraneView/pin-layout";
+import { computeDirectoryBands, type DirectoryBand, type FlowNode } from "./directory-bands";
 
 /**
  * Orders a ranked exploration so that its wires cross as little as the
@@ -7,7 +7,7 @@ import { computeDirectoryBands, type DirectoryBand, type FlowNode } from "../mem
  * that holds an end of every wire in it.
  *
  * Pure-function module: no DOM. The columns come from the ranking; the bands
- * come from the Membrane Map's band computation; this module decides the order
+ * come from the shared directory-band computation; this module decides the order
  * of band rows, the order of files within a band, the order of each card's
  * rows, and where the threaded wires pass. A bundle's stand-in in a column it
  * passes is a virtual node: in a directory's stack of files it takes a place
@@ -141,7 +141,7 @@ export function orderBranches(input: OrderInput): BranchOrder {
   const virtualById = new Map(virtuals.map(virtual => [virtual.id, virtual]));
 
   const flow = new Map<string, FlowNode>();
-  input.columns.forEach((files, column) => files.forEach(id => flow.set(id, { id, column, role: "pinned", directory: input.directoryOf(id) })));
+  input.columns.forEach((files, column) => files.forEach(id => flow.set(id, { id, column, directory: input.directoryOf(id) })));
 
   // The starting order: each column as a previous picture stood it, or shuffled by the seed, or as the ranking gave it; each stand-in at the mean place of its wires' ends.
   const start = new Map<string, number>();

@@ -4,12 +4,12 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-12T18:02:22.660Z
+- Generated At: 2026-10-12T19:21:20.619Z
 
 ## Authored
 ### Purpose
 
-The single-page HTML shell for the Live Docs Explorer static site. Defines the full DOM skeleton — sidebar, view containers (Circuit Board, Local Map, Force Graph, Knowledge Sources), pathfinding toolbar, detail panel, and all interactive controls. Every `id` attribute in this file constitutes the Explorer's public DOM API; client TypeScript modules bind to these ids via `getElementById()` at startup.
+The single-page HTML shell for the Live Docs Explorer static site. Defines the full DOM skeleton — sidebar, Knowledge Sources, World Map, and the Local Map’s 2D/3D containers, pathfinding toolbar, detail panel, and all interactive controls. Every `id` attribute in this file constitutes the Explorer's public DOM API; client TypeScript modules bind to these ids via `getElementById()` at startup.
 
 ### Notes
 
@@ -27,15 +27,6 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `circuit-connections` {#symbol-circuit-connections}
-- Type: variable
-
-#### `circuit-container` {#symbol-circuit-container}
-- Type: variable
-
-#### `circuit-viewport` {#symbol-circuit-viewport}
-- Type: variable
-
 #### `context-bar` {#symbol-context-bar}
 - Type: variable
 
@@ -88,15 +79,6 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `map-viewport` {#symbol-map-viewport}
-- Type: variable
-
-#### `membrane-connections` {#symbol-membrane-connections}
-- Type: variable
-
-#### `membrane-container` {#symbol-membrane-container}
-- Type: variable
-
-#### `membrane-viewport` {#symbol-membrane-viewport}
 - Type: variable
 
 #### `omnisearch` {#symbol-omnisearch}
@@ -282,16 +264,10 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `tuning-vertical-offset-value` {#symbol-tuning-vertical-offset-value}
 - Type: variable
 
-#### `view-circuit` {#symbol-view-circuit}
-- Type: variable
-
 #### `view-graph` {#symbol-view-graph}
 - Type: variable
 
 #### `view-map` {#symbol-view-map}
-- Type: variable
-
-#### `view-membrane` {#symbol-view-membrane}
 - Type: variable
 
 #### `view-sources` {#symbol-view-sources}

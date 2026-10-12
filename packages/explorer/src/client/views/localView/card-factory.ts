@@ -10,9 +10,9 @@
 
 import { compareSymbolNames, type ClosedDirectory } from "./branches";
 import type { LocalViewController } from "./controller";
+import { parentDirectory } from "./directory-bands";
 import type { ColumnRole } from "./types";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
-import { ROOT_KEY, getDirectoryKey } from "../layoutUtils";
 
 /**
  * Creates a node card element for the Local Map view.
@@ -120,7 +120,7 @@ export function createNodeCard(
 
   const directory = document.createElement("div");
   directory.className = "node-directory";
-  directory.textContent = getDirectoryKey(node) === ROOT_KEY ? "(root)" : getDirectoryKey(node);
+  directory.textContent = parentDirectory(node.id) || "(root)";
   card.appendChild(directory);
 
   card.addEventListener("click", event => {

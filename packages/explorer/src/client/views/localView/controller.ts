@@ -139,7 +139,7 @@ export class LocalViewController implements LocalViewApi {
 
   private readonly handleWindowMouseMove = (event: MouseEvent): void => {
     const { state } = this.options;
-    if (!this.isDragging || !this.runtime.lastDragPosition || state.view !== "map") {
+    if (!this.isDragging || !this.runtime.lastDragPosition || (state.view !== "map" || state.perspective !== "2d")) {
       return;
     }
     event.preventDefault();
@@ -148,7 +148,7 @@ export class LocalViewController implements LocalViewApi {
 
   private readonly handleWheel = (event: WheelEvent): void => {
     const { state } = this.options;
-    if (state.view !== "map") {
+    if ((state.view !== "map" || state.perspective !== "2d")) {
       return;
     }
     handleWheelFn(this.runtime, event, () => this.updateMapTransform());
@@ -753,11 +753,11 @@ export class LocalViewController implements LocalViewApi {
 
   private bindPointerEvents(): void {
     this.viewport.addEventListener("mousedown", event => {
-      // A press on a card or in the pathfinder toolbar is not the start of a drag.
+      // A press on a card, a directory control or the pathfinder toolbar is not the start of a drag.
       // A drag marks the camera as the person's own, after which no render re-fits
       // it; toolbar clicks used to do that too, which left Clear unable to bring
       // the subject back into the frame (measured 3,846 px off, 2026-10-01).
-      if ((event.target as HTMLElement | null)?.closest?.(".node-card, .pathfind-toolbar")) {
+      if ((event.target as HTMLElement | null)?.closest?.(".node-card, .pathfind-toolbar, button, [role=button], input, select, a")) {
         return;
       }
       startDrag(this.runtime, event.clientX, event.clientY, this.viewport);

@@ -42,15 +42,6 @@ export interface DetailPanelOptions {
    */
   onBundledDocClick?: (docPath: string) => void;
 
-  /**
-   * Callback when user clicks "Open in Circuit Board".
-   */
-  onOpenInCircuitBoard?: (node: ExplorerNodePayload) => void;
-
-  /**
-   * Callback when user clicks "Open in Membrane Map".
-   */
-  onOpenInMembraneMap?: (node: ExplorerNodePayload) => void;
 }
 
 /**
@@ -61,7 +52,7 @@ export function createDetailPanel(
   nodesById: Map<string, ExplorerNodePayload>,
   options: DetailPanelOptions
 ): DetailPanelApi {
-  const { files, onNodeClick, onBundledDocClick, onOpenInCircuitBoard, onOpenInMembraneMap } = options;
+  const { files, onNodeClick, onBundledDocClick } = options;
 
   const panel = requireElement<HTMLDivElement>("detail-panel");
   const title = requireElement<HTMLHeadingElement>("detail-title");
@@ -87,26 +78,6 @@ export function createDetailPanel(
     }
   });
 
-  // Set up "Open in Circuit Board" button handler
-  const circuitBoardButton = document.querySelector<HTMLButtonElement>('[onclick="openInCircuitBoard()"]');
-  if (circuitBoardButton && onOpenInCircuitBoard) {
-    circuitBoardButton.onclick = () => {
-      if (currentNode) {
-        onOpenInCircuitBoard(currentNode);
-      }
-    };
-  }
-
-  // Set up "Open in Membrane Map" button handler
-  const membraneMapButton = document.querySelector<HTMLButtonElement>('[onclick="openInMembraneMap()"]');
-  if (membraneMapButton && onOpenInMembraneMap) {
-    membraneMapButton.onclick = () => {
-      if (currentNode) {
-        onOpenInMembraneMap(currentNode);
-      }
-    };
-  }
-
   function setLoading(node: ExplorerNodePayload): void {
     panel.classList.add("visible");
     title.textContent = node.name;
@@ -118,18 +89,10 @@ export function createDetailPanel(
   function showNode(node: ExplorerNodePayload): void {
     setLoading(node);
 
-    // Show Circuit Board, Local Map, and Membrane Map buttons (these are graph nodes)
-    const circuitBoardBtn = document.querySelector<HTMLButtonElement>('[onclick="openInCircuitBoard()"]');
+    // Show the Local Map action (these are graph nodes)
     const localViewBtn = document.querySelector<HTMLButtonElement>('[onclick="openInLocalView()"]');
-    const membraneMapBtn = document.querySelector<HTMLButtonElement>('[onclick="openInMembraneMap()"]');
-    if (circuitBoardBtn) {
-      circuitBoardBtn.style.display = "";
-    }
     if (localViewBtn) {
       localViewBtn.style.display = "";
-    }
-    if (membraneMapBtn) {
-      membraneMapBtn.style.display = "";
     }
 
     try {
@@ -208,18 +171,10 @@ export function createDetailPanel(
     const fileName = docPath.split("/").pop() ?? docPath;
     title.textContent = fileName;
     
-    // Hide Circuit Board, Local Map, and Membrane Map buttons (bundled docs aren't graph nodes)
-    const circuitBoardBtn = document.querySelector<HTMLButtonElement>('[onclick="openInCircuitBoard()"]');
+    // Hide the Local Map action (bundled docs aren't graph nodes)
     const localViewBtn = document.querySelector<HTMLButtonElement>('[onclick="openInLocalView()"]');
-    const membraneMapBtn = document.querySelector<HTMLButtonElement>('[onclick="openInMembraneMap()"]');
-    if (circuitBoardBtn) {
-      circuitBoardBtn.style.display = "none";
-    }
     if (localViewBtn) {
       localViewBtn.style.display = "none";
-    }
-    if (membraneMapBtn) {
-      membraneMapBtn.style.display = "none";
     }
     
     // Create link handler for bundled doc content

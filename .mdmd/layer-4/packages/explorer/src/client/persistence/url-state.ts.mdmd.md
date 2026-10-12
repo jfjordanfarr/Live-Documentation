@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-10-08T01:58:13.528Z
+- Generated At: 2026-10-12T19:35:22.059Z
 
 ## Authored
 ### Purpose
@@ -12,48 +12,42 @@ Manages URL-based state persistence for the Explorer. Parses initial state from 
 
 ### Notes
 - Extracted from client/index.ts on 2025-12-19. The `parseInitialState()` and `updateUrlState()` functions work together to maintain URL and state synchronization without page reloads.
-- On 2026-03-31 the default fallback view was changed from `"sources"` to `"membrane"` to reflect the Membrane Map's promotion to cold-start default. `updateUrlState()` was also updated to write an explicit `?view=` parameter for non-membrane views, since membrane is now the implicit default.
+- The original query parser was extracted on December 19, 2025. Current links explicitly name the navigation view and Local Map mode; the caller chooses World Map for fresh board-backed bundles.
 - The viewer-configuration fallback in `parseInitialState()` went on 2026-09-28: nothing wrote one.
-- `?dir=<path>` (2026-10-08): the door into a directory with no file in focus, read into `InitialUrlState.openDirectories` beside a snapshot's `d`; a trailing slash is dropped. Nothing writes it back: once the person acts, the opened set rides the compressed state.
+- `?dir=<path>` (2026-10-08): the door into a directory with no file in focus, read into `InitialUrlState.openDirectories` beside a snapshot's `d`; a trailing slash is dropped. Once the person acts, the opened set rides the compressed exploration state.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `viewNameToInternal` {#symbol-viewnametointernal}
-- Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L19)
-
-##### `viewNameToInternal` — Summary
-Maps a URL-facing view name (e.g. `"local"`) to the internal {@link ViewName}.
-
-#### `viewNameToUrl` {#symbol-viewnametourl}
-- Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L33)
-
-##### `viewNameToUrl` — Summary
-Maps an internal {@link ViewName} back to the URL-facing string used in query parameters.
-
 #### `InitialUrlState` {#symbol-initialurlstate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L47)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L11)
 
 ##### `InitialUrlState` — Summary
-State parsed from the initial URL on page load.
+Navigation read from an address. An omitted perspective outside Local Map uses the saved preference.
+
+#### `parseNavigation` {#symbol-parsenavigation}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L20)
+- Returns: [`InitialUrlState`](#symbol-initialurlstate)
+
+##### `parseNavigation` — Summary
+Parse an address without consulting browser storage; an explicit Local Map link owns its representation.
 
 #### `parseInitialState` {#symbol-parseinitialstate}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L59)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L44)
 
 ##### `parseInitialState` — Summary
-Parse initial view and node from URL parameters.
-Priority: URL params > defaults (Membrane view for cold start)
+URL navigation takes precedence over saved navigation. A board chooses World Map on a fresh visit.
 
 #### `updateUrlState` {#symbol-updateurlstate}
-- Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L96)
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L47)
+- Parameters: `view`: [`ViewName`](../types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective)
 
 ##### `updateUrlState` — Summary
-Update URL to reflect current view and focused node without page reload.
+Write view, subject and representation together, preserving paths and exploration state.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -61,5 +55,8 @@ Update URL to reflect current view and focused node without page reload.
 - [`compressed-url-state.compressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.decompressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`history.commitUrl`](./history.ts.mdmd.md#symbol-commiturl)
+- [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
+- [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)
+- [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

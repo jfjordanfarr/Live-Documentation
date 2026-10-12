@@ -59,6 +59,7 @@ import {
   type Screen
 } from "./projection";
 import { escapeHtml } from "../../graph-helpers";
+import { parseInitialState } from "../../persistence/url-state";
 
 const SVG = "http://www.w3.org/2000/svg";
 
@@ -77,7 +78,7 @@ export interface WorldMapOptions {
   graph: LiveDocGraph;
   /** Opens a file of the graph in the Local Map, from a link in a pinned panel. */
   onOpenFile?: (file: string) => void;
-  /** Opens a thing's folder in the Membrane Map: the wheel past half the view, a double-click, or the link in its pinned panel. */
+  /** Opens a thing's folder in the Local Map: the wheel past half the view, a double-click, or the link in its pinned panel. */
   onOpenThing?: (thing: { name: string; folder: string }) => void;
 }
 
@@ -1170,7 +1171,7 @@ export class WorldMapController {
     return corners({ x: placed.x, y: placed.y, w: placed.w, d: placed.d }).map(([x, y]) => toScreen(this.screen, project(this.camera, this.pivot, x, y, placed.z0 + placed.h)));
   }
 
-  /** Opens a thing's folder in the Membrane Map, easing the camera back first so that the next wheel over the board does not open it again. */
+  /** Opens a thing's folder in the Local Map, easing the camera back first so that the next wheel over the board does not open it again. */
   enter(name: string): void {
     const piece = this.model.pieces.find((candidate) => candidate.name === name);
     if (piece && piece.folder === undefined) {
@@ -1591,7 +1592,7 @@ export class WorldMapController {
 <h4>Doors and wires</h4><p><i style="border-color:var(--w-blue)"></i><b>blue</b> offers, <i style="border-color:var(--w-green)"></i><b>green</b> uses, as inside a system. A wire in the air is one call, flowing from what is offered to where it is used; hover it for how it is known. The warm sleeve is a declared crossing. A dashed door with a stub into the air is a ghost: a call that nothing on the board serves, named on hover; point at the folder that serves it and it becomes a wire.</p>
 <h4>What a thing stands on</h4><p>The strands under a thing are what it is built with: another thing's code, drawn as a dotted line on the board to that thing, and the packages its manifests name. No call crosses these while the things run. <b>built on</b> lays out what two or more things share.</p>
 <h4>Pinned</h4><p>A hover peeks; a click pins. In a pinned panel every name is a link: a thing pins it, a file opens it in the Local Map.</p>
-<h4>Inside a thing</h4><p>Wheel into a thing, double-click it, or follow <b>open</b> in its pinned panel: it opens in the Membrane Map, its folders as membranes. The crumbs there lead back to the board.</p>
+<h4>Inside a thing</h4><p>Wheel into a thing, double-click it, or follow <b>open</b> in its pinned panel: it opens in the Local Map, its folders as membranes. World Map in the sidebar leads back to the board.</p>
 <h4>Moving around</h4><p>Drag to pan. Right-drag or <kbd>Shift</kbd>-drag to orbit. Wheel to zoom. Drag a thing to move it; <b>save board</b> writes the positions into the board text.</p>
 <p><kbd>Q</kbd> <kbd>E</kbd> turn · <kbd>T</kbd> top-down · <kbd>F</kbd> fit · <kbd>U</kbd> built on · <kbd>G</kbd> snap · <kbd>D</kbd> dark · <kbd>R</kbd> reset · <kbd>Esc</kbd> let go</p>
 <button data-act="tour">walk me through it</button>`;
@@ -1617,7 +1618,7 @@ export class WorldMapController {
       { text: "Each thing on the board is one system, database or person, drawn by its kind. Click one to pin what it offers, calls and stands on; every name in the panel is a link.", go: () => { if (firstPiece) { this.hover = { kind: "piece", id: firstPiece }; this.lastPointer = point; this.applyHover(); } } },
       { text: "A wire is one call, from the blue door that offers to the green door that uses it. Hover it for how it is known and which files carry it.", go: () => { if (firstRoad) { this.hover = { kind: "road", id: firstRoad.id }; this.lastPointer = point; this.applyHover(); } } },
       { text: "The strands under a thing are what it is built with: another thing's code, a dotted line on the board, or a package from its manifests. Built on shows what things share.", go: () => { this.hover = null; this.applyHover(); this.setUnder(true); } },
-      { text: "Nothing inside a thing shows until you open it: wheel in, double-click, or follow open in its pinned panel. It opens in the Membrane Map, folder by folder.", go: () => { this.setUnder(false); const first = this.model.pieces.find((piece) => piece.folder); if (first) { this.lastPointer = point; this.pin({ kind: "piece", id: first.name }); } } },
+      { text: "Nothing inside a thing shows until you open it: wheel in, double-click, or follow open in its pinned panel. It opens in the Local Map, folder by folder.", go: () => { this.setUnder(false); const first = this.model.pieces.find((piece) => piece.folder); if (first) { this.lastPointer = point; this.pin({ kind: "piece", id: first.name }); } } },
       { text: "Drag to pan, right-drag to orbit, wheel to zoom. Things stay where you put them, and save board writes them into the text.", go: async () => { this.unpin(); await this.orbitTo((-35 * Math.PI) / 180, (42 * Math.PI) / 180); } }
     ];
   }
@@ -1767,11 +1768,13 @@ function basename(path: string): string {
 /** The page's URL opened on the Local Map at a file, so a link can be followed in a new tab as well as in place. */
 function localMapHref(file: string): string {
   const url = new URL(window.location.href);
-  for (const key of ["view", "node", "s"]) {
+  const mode = parseInitialState().perspective ?? "2d";
+  for (const key of ["view", "node", "s", "dir", "from", "to", "fromSymbol", "toSymbol"]) {
     url.searchParams.delete(key);
   }
   url.searchParams.set("view", "local");
   url.searchParams.set("node", file);
+  url.searchParams.set("mode", mode);
   return `${url.pathname}?${url.searchParams.toString()}`;
 }
 

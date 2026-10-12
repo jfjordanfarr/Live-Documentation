@@ -4,22 +4,24 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/place.ts
-- Generated At: 2026-09-30T01:36:12.302Z
+- Generated At: 2026-10-12T19:21:19.478Z
 
 ## Authored
 ### Purpose
-Reads the place an Explorer address names, the view, the file in focus, the Membrane Map's open folders and the two ends of a path, as a key that tells a move from a change within a place.
+
+Reads an Explorer address as a navigable place: view, focused file, opened directories and complete path endpoints. Explicit 2D/3D changes remain history steps, while pins change the picture within a place.
 
 ### Notes
-- It decodes the Membrane Map's compressed `?s=` because that one parameter carries both where the person is (the open folders) and what they did there (pins, cards, pan, zoom); comparing raw addresses would count a pin as a move.
-- A path counts only once it has both ends, and the `?data=` parameter is ignored.
+
+- Browser history was introduced in the [September 30 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-30.2.SUMMARIZED.md). Comparing parsed state avoids treating each compressed pin edit as another history entry.
+- [View consolidation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4) gives Local Map folder navigation the same Back/Forward semantics as the retired folder view. A path counts only once both ends exist; the data-source parameter is not a place change.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `placeOf` {#symbol-placeof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/place.ts#L11)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/place.ts#L10)
 
 ##### `placeOf` — Summary
 Reads the place from an address's query, in either form the Explorer writes: `?view=&node=` or the compressed `?s=`.
@@ -27,6 +29,5 @@ Reads the place from an address's query, in either form the Explorer writes: `?v
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`compressed-url-state.decompressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
-- [`url-state.viewNameToInternal`](./url-state.ts.mdmd.md#symbol-viewnametointernal)
+- [`url-state.parseNavigation`](./url-state.ts.mdmd.md#symbol-parsenavigation)
 <!-- LIVE-DOC:END Dependencies -->

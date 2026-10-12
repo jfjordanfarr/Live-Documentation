@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-order.ts
-- Generated At: 2026-10-06T23:02:44.561Z
+- Generated At: 2026-10-12T19:21:19.762Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Orders a ranked Local Map exploration so that its wires cross as little as the d
 
 ### Notes
 
-This is the ordering and lane step of layered graph drawing, with the Membrane Map's directory bands as a constraint: files of one directory stay together in a column, and a band's row is the same in every column it spans. The sweep walks the columns left to right and then right to left, settling each column by the barycenter of what it is wired to in the column just settled; the band rows are repacked once per pass from where every member's wires lead; the order with the fewest crossings between adjacent columns is kept. A bundle is the wires of one offering pin: they run together through every column they pass, and each leaves in the gutter before its consumer's column, where the eye needs the separation; the shared run is one segment, so the sweep counts its crossings once and stops arranging identical strings. This is the edge bundling of layered drawings (Pupyrev, Nachmanson and Kaufmann, 2010), taken up on 2026-10-05 after the owner saw the first pass's "guitar strings" of parallel wires and asked to keep a bundle bunched until separation is warranted ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-8)). A bundle's stand-in in a column it passes is a virtual node placed in the band tree: into the deepest directory spanning that column that holds an end of every wire in the bundle, else the root, so that no lane lies inside a directory that holds neither end, which the first pass did when it placed every lane after a file. In a directory's stack of files the stand-in joins the column's list and the lane is the gap after a file or above the first; in a directory of directories the stand-ins of one column share a lane band of their own, whose row is packed with its sibling directories' rows; a directory that spans a column with no file of its own there keeps its wire inside its box through a column of only its lane. Every reference keeps its own wire; the bundle only shares its place.
+This is the ordering and lane step of layered graph drawing, with the shared directory bands as a constraint: files of one directory stay together in a column, and a band's row is the same in every column it spans. The sweep walks the columns left to right and then right to left, settling each column by the barycenter of what it is wired to in the column just settled; the band rows are repacked once per pass from where every member's wires lead; the order with the fewest crossings between adjacent columns is kept. A bundle is the wires of one offering pin: they run together through every column they pass, and each leaves in the gutter before its consumer's column, where the eye needs the separation; the shared run is one segment, so the sweep counts its crossings once and stops arranging identical strings. This is the edge bundling of layered drawings (Pupyrev, Nachmanson and Kaufmann, 2010), taken up on 2026-10-05 after the owner saw the first pass's "guitar strings" of parallel wires and asked to keep a bundle bunched until separation is warranted ([Turn 8](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-8)). A bundle's stand-in in a column it passes is a virtual node placed in the band tree: into the deepest directory spanning that column that holds an end of every wire in the bundle, else the root, so that no lane lies inside a directory that holds neither end, which the first pass did when it placed every lane after a file. In a directory's stack of files the stand-in joins the column's list and the lane is the gap after a file or above the first; in a directory of directories the stand-ins of one column share a lane band of their own, whose row is packed with its sibling directories' rows; a directory that spans a column with no file of its own there keeps its wire inside its box through a column of only its lane. Every reference keeps its own wire; the bundle only shares its place.
 
 The ordering owns each card's rows: the input lists them as given and names the row at each end of every wire, and a wire's height on its card is its row's place in that list. When the caller says which rows may move, the port-ordering step of layered drawing follows the column sweep: each card's movable rows are sorted by the mean height of their wires' far ends, wired rows first and unwired ones after them, a row that may not move keeping its place; rows whose wires lead alike, and the unwired rows among themselves, are ordered by the file's own references, which the input lists per card as pairs of row names: such a row moves halfway from where it stands toward the rows it refers to or is built on, so the two rows of a self-reference draw together, and a row with none keeps its place (the owner's suggestion of a tie-breaker, [Turn 15 of 2026-10-05](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-15); a wire to another card always outweighs it); the cards are settled one at a time, left to right and then right to left, each against its neighbours' rows as they stand, since two cards wired crosswise would otherwise both turn over and cross again; then the columns are swept once more at the new heights, and the result is kept only if it crosses no more than the given rows did. Asked for by the owner on 2026-10-05 after the bundles showed the cables of one card climbing across its neighbour's wires ([Turn 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-10)), and chosen over a partition that would keep the Live Doc's order within groups ([Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-11)).
 
@@ -78,7 +78,7 @@ The files of every column, top to bottom, as the bands' rows and lists lay them.
 #### `repackRows` {#symbol-repackrows}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-order.ts#L471)
-- Returns: [`DirectoryBand`](../membraneView/pin-layout.ts.mdmd.md#symbol-directoryband)[]
+- Returns: [`DirectoryBand`](./directory-bands.ts.mdmd.md#symbol-directoryband)[]
 
 ##### `repackRows` — Summary
 Sorts every level of the band tree by the mean key of its members and packs
@@ -108,7 +108,7 @@ The crossings among the wires between adjacent columns of an order, at the given
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`pin-layout.DirectoryBand`](../membraneView/pin-layout.ts.mdmd.md#symbol-directoryband)
-- [`pin-layout.FlowNode`](../membraneView/pin-layout.ts.mdmd.md#symbol-flownode)
-- [`pin-layout.computeDirectoryBands`](../membraneView/pin-layout.ts.mdmd.md#symbol-computedirectorybands)
+- [`directory-bands.DirectoryBand`](./directory-bands.ts.mdmd.md#symbol-directoryband)
+- [`directory-bands.FlowNode`](./directory-bands.ts.mdmd.md#symbol-flownode)
+- [`directory-bands.computeDirectoryBands`](./directory-bands.ts.mdmd.md#symbol-computedirectorybands)
 <!-- LIVE-DOC:END Dependencies -->

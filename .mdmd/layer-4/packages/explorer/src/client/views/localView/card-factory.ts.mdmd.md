@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-12T18:02:21.698Z
+- Generated At: 2026-10-12T20:19:49.025Z
 
 ## Authored
 ### Purpose
@@ -107,11 +107,10 @@ The badge element
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`layoutUtils.ROOT_KEY`](../layoutUtils.ts.mdmd.md#symbol-root_key)
-- [`layoutUtils.getDirectoryKey`](../layoutUtils.ts.mdmd.md#symbol-getdirectorykey)
 - [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
+- [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](../../../shared/types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-10-10T21:10:29.719Z
+- Generated At: 2026-10-12T19:27:07.698Z
 
 ## Authored
 ### Purpose
@@ -22,28 +22,28 @@ The World Map, drawn. Everything that touches the DOM is here: the SVG the board
 ### Public Symbols
 #### `Hover` {#symbol-hover}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L66)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L67)
 
 ##### `Hover` — Summary
 What the pointer is on.
 
 #### `WorldMapOptions` {#symbol-worldmapoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L73)
 
 ##### `WorldMapOptions` — Summary
 What the controller is given: where to draw, the board and its join, the graph, and the doors out of the view.
 
 #### `WorldMapController` {#symbol-worldmapcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L149)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L150)
 
 ##### `WorldMapController` — Summary
 Draws a board and answers the pointer.
 
 #### `WorldMapApi` {#symbol-worldmapapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1706)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/worldMap/controller.ts#L1707)
 
 ##### `WorldMapApi` — Summary
 The handle a test or a screenshot script drives, at `window.__worldMap`.
@@ -57,6 +57,7 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`boardGraph.ServedDoor`](../../../../../engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-serveddoor) (type-only)
 - [`graph.LiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
+- [`url-state.parseInitialState`](../../persistence/url-state.ts.mdmd.md#symbol-parseinitialstate)
 - [`layout.Anchor`](./layout.ts.mdmd.md#symbol-anchor)
 - [`layout.FLOAT`](./layout.ts.mdmd.md#symbol-float)
 - [`layout.GRID`](./layout.ts.mdmd.md#symbol-grid)

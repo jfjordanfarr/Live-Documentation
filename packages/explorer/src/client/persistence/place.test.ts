@@ -4,7 +4,7 @@ import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "./com
 import { placeOf } from "./place";
 import { addPin } from "../views/pin-state";
 
-const membrane = (snapshot: Partial<UrlStateSnapshot>): string =>
+const exploration = (snapshot: Partial<UrlStateSnapshot>): string =>
   `?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, ...snapshot })}`;
 
 describe("placeOf", () => {
@@ -17,22 +17,26 @@ describe("placeOf", () => {
     expect(placeOf("?node=a.ts")).toBe(placeOf("?view=local&node=a.ts"));
   });
 
-  it("counts an opened folder of the Membrane Map as a move", () => {
-    expect(placeOf(membrane({ expandedDirectories: new Set(["packages"]) })))
-      .not.toBe(placeOf(membrane({ expandedDirectories: new Set(["packages", "packages/engine"]) })));
+  it("counts an opened folder of the Local Map as a move", () => {
+    expect(placeOf(exploration({ openDirectories: new Set(["packages"]) })))
+      .not.toBe(placeOf(exploration({ openDirectories: new Set(["packages", "packages/engine"]) })));
   });
 
-  it("reads pins, expanded cards, pan and zoom as the same place", () => {
+  it("reads pins as the same place", () => {
     const folders = new Set(["packages", "packages/engine"]);
-    const before = membrane({ expandedDirectories: folders });
-    const after = membrane({
-      expandedDirectories: folders,
+    const before = exploration({ openDirectories: folders });
+    const after = exploration({
+      openDirectories: folders,
       pinSet: addPin(DEFAULT_SNAPSHOT.pinSet, "packages/engine/src/a.ts", "run"),
-      expandedCards: new Set(["packages/engine/src/a.ts"]),
-      transform: { x: 40, y: -12, k: 1.6 }
     });
     expect(after).not.toBe(before);
     expect(placeOf(after)).toBe(placeOf(before));
+  });
+
+  it("keeps explicit representation changes in history within the Local Map", () => {
+    expect(placeOf("?view=local&mode=2d&node=a.ts")).not.toBe(placeOf("?view=local&mode=3d&node=a.ts"));
+    expect(placeOf("?view=force&node=a.ts")).toBe(placeOf("?view=local&mode=3d&node=a.ts"));
+    expect(placeOf("?view=sources&mode=2d")).toBe(placeOf("?view=sources&mode=3d"));
   });
 
   it("counts a path only once it has both ends", () => {

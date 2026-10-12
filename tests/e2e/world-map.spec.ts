@@ -92,7 +92,7 @@ test.describe("World Map", () => {
     await openWorldMap(page);
     await page.evaluate(() => window.__worldMap!.enter("pages"));
     expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toEqual({ kind: "piece", id: "pages" });
-    await expect(page.locator("#view-membrane.active")).toHaveCount(0);
+    await expect(page.locator("#view-map.active")).toHaveCount(0);
     await expect(page.locator("#view-world .world-evidence")).toContainText("nothing inside to open");
   });
 
@@ -211,18 +211,15 @@ test.describe("World Map", () => {
     expect(fontSize).toBe("11px");
   });
 
-  test("opens a thing from its pinned panel into the Membrane Map, focused on its folder, and the crumb there leads back to the board", async ({ page }) => {
+  test("opens a thing from its pinned panel into the Local Map, focused on its folder, and navigation leads back to the board", async ({ page }) => {
     await openWorldMap(page);
     await page.evaluate(() => window.__worldMap!.pin("piece", "engine"));
     await page.locator("#view-world .world-evidence a[data-open='engine']").click();
-    await expect(page.locator("#view-membrane.active")).toHaveCount(1);
-    await expect(page.locator('.nav-item.active[data-view="membrane"]')).toHaveCount(1);
-    const crumbs = page.locator("#view-membrane .membrane-browse-breadcrumb");
-    await expect(crumbs).toContainText("engine");
-    await expect(crumbs.locator("[data-crumb='world']")).toHaveText("World Map");
-    await expect(page.locator('#view-membrane .membrane[data-id="packages/engine"]:not(.membrane--collapsed)')).toHaveCount(1);
-    expect(await page.locator("#view-membrane .membrane-focal-pin--active").count()).toBe(0);
-    await crumbs.locator("[data-crumb='world']").click();
+    await expect(page.locator("#view-map.active")).toHaveCount(1);
+    await expect(page.locator('.nav-item.active[data-view="map"]')).toHaveCount(1);
+    await expect(page.locator('#view-map .local-directory-label[data-directory="packages/engine"]')).toHaveCount(1);
+    await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
+    await page.locator('.nav-item[data-view="world"]').click();
     await expect(page.locator("#view-world.active")).toHaveCount(1);
     expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toBeNull();
   });
@@ -234,11 +231,11 @@ test.describe("World Map", () => {
     const sx = box0.x + lid.reduce((sum, p) => sum + p[0], 0) / 4;
     const sy = box0.y + lid.reduce((sum, p) => sum + p[1], 0) / 4;
     await page.mouse.move(sx, sy);
-    for (let i = 0; i < 30 && !(await page.locator("#view-membrane.active").count()); i += 1) {
+    for (let i = 0; i < 30 && !(await page.locator("#view-map.active").count()); i += 1) {
       await page.mouse.wheel(0, -120);
     }
-    await expect(page.locator("#view-membrane.active")).toHaveCount(1);
-    await expect(page.locator("#view-membrane .membrane-browse-breadcrumb")).toContainText("scripts");
+    await expect(page.locator("#view-map.active")).toHaveCount(1);
+    await expect(page.locator('#view-map .local-directory-label[data-directory="scripts"]')).toContainText("scripts");
     await page.locator('.nav-item[data-view="world"]').click();
     await expect(page.locator("#view-world.active")).toHaveCount(1);
     const after = await page.evaluate(() => window.__worldMap!.lidCorners("scripts"));
@@ -250,8 +247,8 @@ test.describe("World Map", () => {
     await openWorldMap(page);
     const [sx, sy] = await page.evaluate(() => window.__worldMap!.screenPointOf("generator"));
     await page.mouse.dblclick(sx, sy);
-    await expect(page.locator("#view-membrane.active")).toHaveCount(1);
-    await expect(page.locator("#view-membrane .membrane-browse-breadcrumb")).toContainText("generator");
+    await expect(page.locator("#view-map.active")).toHaveCount(1);
+    await expect(page.locator('#view-map .local-directory-label[data-directory="packages/generator"]')).toContainText("generator");
   });
 
   test("drags a thing with the pointer", async ({ page }) => {

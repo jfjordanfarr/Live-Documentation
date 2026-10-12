@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/types.ts
-- Generated At: 2026-09-28T01:11:44.600Z
+- Generated At: 2026-10-12T19:21:20.632Z
 
 ## Authored
 ### Purpose
@@ -82,7 +82,7 @@ Extended symbol information including type references.
 The full payload for a single node in the explorer graph.
 
 Serialised to JSON by the explorer HTTP server and consumed by the client
-to render the Circuit Board treemap, Force Graph, and Local Map views.
+to render the Local Map’s 2D and 3D representations.
 Each node maps 1:1 to a tracked workspace artifact and its corresponding
 Live Doc.
 
@@ -115,7 +115,7 @@ in the dependency columns rather than just file-level cards.
 - Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L139)
 
 ##### `ExplorerGraphStats` — Summary
-Summary statistics for the explorer graph, rendered in the Circuit Board
+Summary statistics for the explorer graph, rendered in the Explorer
 header and used by the static builder to emit a quick-access overview.
 
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}

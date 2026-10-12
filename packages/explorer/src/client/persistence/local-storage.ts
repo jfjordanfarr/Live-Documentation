@@ -5,7 +5,8 @@
  * state (view, node selection) across browser sessions.
  */
 
-import type { ExplorerFilters, SymbolOrder, TuningConfig, ViewName } from "../types";
+import { readPerspective, readView } from "./navigation";
+import type { LocalMapPerspective, ExplorerFilters, SymbolOrder, TuningConfig, ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -292,6 +293,8 @@ export const PERSISTED_NAV_VERSION = 1 as const;
 export type PersistedNavV1 = {
   version: typeof PERSISTED_NAV_VERSION;
   view?: ViewName;
+  perspective?: LocalMapPerspective;
+  openDirectories?: string[];
   nodeId?: string | null;
 };
 
@@ -321,8 +324,10 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
     const viewCandidate = parsed.view;
     const nodeIdCandidate = parsed.nodeId;
 
-    const view: ViewName | undefined =
-      viewCandidate === "circuit" || viewCandidate === "map" || viewCandidate === "graph" || viewCandidate === "sources" || viewCandidate === "membrane" || viewCandidate === "world" ? viewCandidate : undefined;
+    const view = typeof viewCandidate === "string" ? readView(viewCandidate) : undefined;
+    const perspective = readPerspective(parsed.perspective, viewCandidate);
+    const openDirectories = Array.isArray(parsed.openDirectories)
+      ? parsed.openDirectories.filter((entry): entry is string => typeof entry === "string") : [];
 
     const nodeId: string | null | undefined =
       typeof nodeIdCandidate === "string" ? nodeIdCandidate : nodeIdCandidate === null ? null : undefined;
@@ -330,6 +335,8 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
     return {
       version: PERSISTED_NAV_VERSION,
       ...(view ? { view } : null),
+      perspective,
+      openDirectories,
       ...(nodeId !== undefined ? { nodeId } : null)
     };
   } catch {
@@ -389,7 +396,7 @@ export const createPersistUiScheduler = (
  * Writes view and focused node to localStorage after a 150ms debounce.
  */
 export const createPersistNavScheduler = (
-  getState: () => { view: ViewName; focusedNodeId: string | null; selectedNodeId: string | null }
+  getState: () => { view: ViewName; perspective: LocalMapPerspective; openDirectories: ReadonlySet<string>; focusedNodeId: string | null; selectedNodeId: string | null }
 ): PersistNavScheduler => {
   let timer: number | null = null;
 
@@ -405,6 +412,8 @@ export const createPersistNavScheduler = (
           const payload: PersistedNavV1 = {
             version: PERSISTED_NAV_VERSION,
             view: state.view,
+            perspective: state.perspective,
+            openDirectories: [...state.openDirectories],
             nodeId: state.focusedNodeId ?? state.selectedNodeId ?? null
           };
           window.localStorage.setItem(PERSISTED_NAV_KEY, JSON.stringify(payload));

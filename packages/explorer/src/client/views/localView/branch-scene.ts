@@ -2,7 +2,7 @@ import type { Lane } from "./branch-order";
 import { placeBranches, type Placement, type PlacementBand, type PlacementWire, type StackEntry } from "./branch-placement";
 import { LANE_PADDING, LANE_PITCH } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
-import type { DirectoryBand } from "../membraneView/pin-layout";
+import type { DirectoryBand } from "./directory-bands";
 
 /**
  * The Local Map's many-file scene as geometry: from the ranked and ordered

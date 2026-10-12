@@ -17,6 +17,7 @@
 import type { BundledMarkdownTreeNode } from "../../shared/staticExplorerData";
 import { requireElement } from "../dom";
 import { escapeHtml } from "../graph-helpers";
+import type { LocalMapPerspective } from "../types";
 import { symbolCount, type SourcesFacts, type SymbolsOfFile, type UnreferencedFile } from "./sources-facts";
 
 /** Which documents the export takes: the Live Docs, the related markdown, or both. */
@@ -28,6 +29,7 @@ export type DownloadFormat = "markdown" | "zip";
 /** What the panel needs from the client. */
 export interface SourcesViewConfig {
   facts: SourcesFacts;
+  perspective: LocalMapPerspective;
   /** Put a file in the detail panel without leaving the panel. */
   onFocusNode: (nodeId: string) => void;
   onDownload: (bundleType: DownloadBundleType, format: DownloadFormat) => void;
@@ -49,14 +51,14 @@ function fileButton(path: string): string {
     (directory ? `<span class="sources-path">${escapeHtml(directory)}</span>` : "");
 }
 
-function renderShape(facts: SourcesFacts): string {
+function renderShape(facts: SourcesFacts, perspective: LocalMapPerspective): string {
   const { shape } = facts;
   const archetypes = shape.byArchetype.map(entry => `${entry.name} ${entry.count.toLocaleString()}`).join(", ");
   const generated = shape.generatedFrom && shape.generatedTo
     ? (dateOf(shape.generatedFrom) === dateOf(shape.generatedTo) ? dateOf(shape.generatedTo) : `${dateOf(shape.generatedFrom)} to ${dateOf(shape.generatedTo)}`)
     : "unknown";
   const directories = shape.byDirectory.map(entry => entry.name
-    ? `<li><a class="sources-directory" href="?view=local&amp;dir=${encodeURIComponent(entry.name)}">${escapeHtml(entry.name)}</a><span class="sources-count">${entry.count.toLocaleString()}</span></li>`
+    ? `<li><a class="sources-directory" href="?view=local&amp;mode=${perspective}&amp;dir=${encodeURIComponent(entry.name)}">${escapeHtml(entry.name)}</a><span class="sources-count">${entry.count.toLocaleString()}</span></li>`
     : `<li><span class="sources-directory">at the root</span><span class="sources-count">${entry.count.toLocaleString()}</span></li>`).join("");
   const extensions = shape.byExtension.map(entry => `${escapeHtml(entry.name || "no extension")} ${entry.count.toLocaleString()}`).join(", ");
   return `
@@ -223,7 +225,7 @@ export function renderSourcesView(config: SourcesViewConfig): void {
 
   container.innerHTML = `
     <div class="sources-header"><h1>Knowledge Sources</h1></div>
-    ${renderShape(facts)}
+    ${renderShape(facts, config.perspective)}
     ${renderUse(facts)}
     ${renderUnreferenced(facts)}
     ${renderSymbols(facts)}

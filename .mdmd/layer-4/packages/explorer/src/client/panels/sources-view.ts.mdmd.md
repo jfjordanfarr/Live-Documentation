@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-10-08T17:03:51.685Z
+- Generated At: 2026-10-12T20:19:48.299Z
 
 ## Authored
 ### Purpose
@@ -19,28 +19,28 @@ Renders the Knowledge Sources panel from `sources-facts.ts`: the bundle's shape,
 ### Public Symbols
 #### `DownloadBundleType` {#symbol-downloadbundletype}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L23)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L24)
 
 ##### `DownloadBundleType` — Summary
 Which documents the export takes: the Live Docs, the related markdown, or both.
 
 #### `DownloadFormat` {#symbol-downloadformat}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L26)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L27)
 
 ##### `DownloadFormat` — Summary
 One flattened markdown file, or a ZIP that keeps the folders.
 
 #### `SourcesViewConfig` {#symbol-sourcesviewconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L30)
 
 ##### `SourcesViewConfig` — Summary
 What the panel needs from the client.
 
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L220)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L222)
 - Parameters: `config`: [`SourcesViewConfig`](#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary
@@ -55,5 +55,6 @@ Render the panel into its container and wire its buttons.
 - [`sources-facts.SymbolsOfFile`](./sources-facts.ts.mdmd.md#symbol-symbolsoffile)
 - [`sources-facts.UnreferencedFile`](./sources-facts.ts.mdmd.md#symbol-unreferencedfile)
 - [`sources-facts.symbolCount`](./sources-facts.ts.mdmd.md#symbol-symbolcount)
+- [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`staticExplorerData.BundledMarkdownTreeNode`](../../shared/staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

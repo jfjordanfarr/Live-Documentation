@@ -86,6 +86,11 @@
 }
 
 .nav-item {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    font-family: inherit;
     padding: 12px 20px;
     cursor: pointer;
     transition: all 0.2s;
@@ -133,6 +138,7 @@
 }
 
 #main {
+    --detail-panel-width: min(360px, 90vw);
     flex: 1;
     position: relative;
     overflow: hidden;
@@ -221,8 +227,7 @@
 }
 
 #detail-panel {
-    width: 360px;
-    max-width: 90vw;
+    width: var(--detail-panel-width);
     background: var(--glass);
     backdrop-filter: blur(10px);
     border-left: 1px solid var(--border);

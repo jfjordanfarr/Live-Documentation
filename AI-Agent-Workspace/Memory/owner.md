@@ -1,6 +1,6 @@
 # The owner
 
-_Current as of 2026-10-08. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
+_Current as of 2026-10-12. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
 
 The owner of this repository is its only human contributor. They act as product manager and architect and expect the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
 
@@ -16,7 +16,7 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 
 - **AGENTS.md holds only what is forever true** (2026-10-03). Asked whether its dated Status section should grow: "Or maybe attempt to make AGENTS.md less a place to hold such stateful stuff. I remember when I used to make changes to the `copilot-instructions.md` file in the pre-Astra/Fable days that I would describe the things that need to go in there as the 'forever-true, always-relevant' things." The Status section moved to direction.md that day; where the code stands is the vision's status section. This re-affirms the Copilot-era entry below on the always-in-context file. [Source](../ChatHistory/2026/10/2026-10-03.2.record.md#turn-2).
 
-- **Names stay loose while the design moves** (2026-10-03). On the Membrane Map's name ("We might just call it the '2D Local Map'? I don't know"): "There is definitely terminology drift in the repo and terminology gaps in the ongoing work. Coming to concrete terms would be useful. Exploration continues at a pace such that concretizing terms hasn't _yet_ borne more value than cost in terms of re-breaking them on the next set of changes." So record the drift and the candidates; do not rename. [Source](../ChatHistory/2026/10/2026-10-03.2.record.md#turn-2).
+- **Names stay loose while the design moves** (2026-10-03). On the Membrane Map's name ("We might just call it the '2D Local Map'? I don't know"): "There is definitely terminology drift in the repo and terminology gaps in the ongoing work. Coming to concrete terms would be useful. Exploration continues at a pace such that concretizing terms hasn't _yet_ borne more value than cost in terms of re-breaking them on the next set of changes." So record the drift and the candidates; do not rename. [Source](../ChatHistory/2026/10/2026-10-03.2.record.md#turn-2). On 2026-10-12 the owner settled this round’s navigation names and retired the two older views: Knowledge Sources, World Map, and Local Map with remembered 2D/3D representations ([Turn 4](../ChatHistory/2026/10/2026-10-12.1.record.md#turn-4)).
 
 - **Two sessions at once, rarely, split by what each may change** (2026-10-03). A Codex session changing Explorer source and a Claude Code session restricted to docs ran in parallel, each told of the other's record so that commits stay separate; the owner called it "(quite rare!)". [Source](../ChatHistory/2026/10/2026-10-03.2.record.md#turn-1).
 

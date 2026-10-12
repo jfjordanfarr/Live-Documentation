@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/dom.ts
-- Generated At: 2026-09-28T01:11:42.764Z
+- Generated At: 2026-10-12T19:21:19.050Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ Looks up an element by `id` and throws if not found.
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
 - Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L13)
-- Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname)
+- Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective)
 
 ##### `setActiveView` — Summary
 Activates the given view tab and its container while deactivating siblings.
@@ -36,5 +36,7 @@ Activates the given view tab and its container while deactivating siblings.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
+- [`template.pathfind-toolbar`](../shared/template.html.mdmd.md#symbol-pathfind-toolbar)
 <!-- LIVE-DOC:END Dependencies -->

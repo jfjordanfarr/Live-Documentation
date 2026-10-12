@@ -1,17 +1,11 @@
 import type { PinSet } from "./views/pin-state";
 import type { ExplorerNodePayload } from "../shared/types";
 
-/**
- * Names of the four main Explorer views.
- *
- * - `"circuit"` — treemap / circuit-board overview
- * - `"map"` — 3-column Local Map (inbound → node → outbound)
- * - `"graph"` — force-directed D3 graph
- * - `"sources"` — knowledge-sources health list
- *
- * Created 2025-11-22 with the initial Explorer scaffold.
- */
-export type ViewName = "circuit" | "map" | "graph" | "sources" | "membrane" | "world";
+/** The three navigable Explorer views. Local Map has two representations. */
+export type ViewName = "map" | "sources" | "world";
+
+/** The remembered representation of the Local Map. */
+export type LocalMapPerspective = "2d" | "3d";
 
 /** Toggle flags for the Explorer filter panel. */
 export interface ExplorerFilters {
@@ -32,7 +26,7 @@ export interface BezierTuning {
 }
 
 /**
- * Tuning knobs specific to the Local Map (3-column) view.
+ * Tuning knobs specific to the two-dimensional Local Map.
  * Includes self-loop rendering and hover/pin collapse behaviour
  * added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
  */
@@ -144,6 +138,7 @@ export interface ExplorerState {
   /** The directories opened in the Local Map, retained with the pins (2026-10-08). */
   openDirectories?: ReadonlySet<string>;
   view: ViewName;
+  perspective: LocalMapPerspective;
   selectedNode: ExplorerNodePayload | null;
   focusedNode: ExplorerNodePayload | null;
   filters: ExplorerFilters;
@@ -152,21 +147,3 @@ export interface ExplorerState {
 
 /** Map from implementation file path → covering test node(s). */
 export type TestCoverageMap = Map<string, ExplorerNodePayload[]>;
-
-/** Pan/zoom transform for the Circuit Board (treemap) view. */
-export interface CircuitTransform {
-  x: number;
-  y: number;
-  k: number;
-}
-
-/**
- * Tree node representing a directory in the workspace.
- * Built by the Circuit Board view to lay out the treemap hierarchy.
- */
-export interface DirectoryNode {
-  name: string;
-  path: string;
-  children: Map<string, DirectoryNode>;
-  nodes: ExplorerNodePayload[];
-}

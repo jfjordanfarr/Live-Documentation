@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-12T18:02:21.779Z
+- Generated At: 2026-10-12T20:19:49.121Z
 
 ## Authored
 ### Purpose

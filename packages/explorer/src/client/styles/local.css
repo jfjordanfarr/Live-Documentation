@@ -269,6 +269,8 @@ span.local-disclosure { cursor: default; }
 .symbol-label-wrapper:focus-visible, .local-file-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .perspective-controls { position: absolute; bottom: 18px; right: 18px; z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
+/* Keep the representation controls beside the details drawer, which otherwise covers them. */
+#detail-panel.visible ~ .perspective-controls { right: calc(var(--detail-panel-width) + 18px); }
 .perspective-controls[hidden], .perspective-controls button[hidden] { display: none; }
 .perspective-controls button { padding: 7px 10px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; font-size: 12px; }
 .perspective-controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
