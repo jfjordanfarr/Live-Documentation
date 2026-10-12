@@ -4,29 +4,21 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/subgraph-builder.ts
-- Generated At: 2026-10-06T01:30:52.632Z
+- Generated At: 2026-10-12T18:02:22.016Z
 
 ## Authored
 ### Purpose
-Pure functions for building local subgraphs from the full Explorer graph. Creates the subset of nodes and edges centered on a focus node, with proper inbound/outbound direction classification.
+Builds self-reference edges and the adjacent-hop subgraph of an explicit path from Explorer graph data.
 
 ### Notes
-Extracted from controller.ts during Dev Day 50 (12/19). The `createLocalSubgraph()` function builds exploration-mode subgraphs; `buildPathSubgraph()` handles path-mode with adjacent-only edge filtering.
+Extracted from the controller during the December 19, 2025 modularization. Neighborhood disclosure now belongs to branches.ts. Path construction preserves reference direction and metadata; the common disclosure draws forward references and the pathfinder reports those that run against the path.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `NodeFilter` {#symbol-nodefilter}
-- Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L17)
-- Parameters: `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
-
-##### `NodeFilter` — Summary
-Filter function to determine if a node should be included in the subgraph.
-
 #### `LinkEndpointResolver` {#symbol-linkendpointresolver}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L22)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L17)
 - Parameters: `_unnamed_`: [`ExplorerLinkPayload`](../../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)
 
 ##### `LinkEndpointResolver` — Summary
@@ -34,30 +26,15 @@ Function to resolve a link endpoint to a node ID.
 
 #### `NodeResolver` {#symbol-noderesolver}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L27)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L22)
 - Returns: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `NodeResolver` — Summary
 Function to resolve a node by ID.
 
-#### `createLocalSubgraph` {#symbol-createlocalsubgraph}
-- Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L38)
-- Returns: [`LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph)
-- Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver); `shouldIncludeNode`: [`NodeFilter`](#symbol-nodefilter)
-
-##### `createLocalSubgraph` — Summary
-Creates a local subgraph centered on a node.
-
-This is a pure function that builds a subgraph containing:
-- The center node
-- All direct neighbors (nodes connected by a single edge)
-- All edges between the center and neighbors
-- Self-loop edges from intra-file type references
-
 #### `buildSelfLoopEdges` {#symbol-buildselfloopedges}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L111)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L30)
 - Returns: [`LocalSubgraphLink`](./types.ts.mdmd.md#symbol-localsubgraphlink)[]
 - Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
@@ -69,7 +46,7 @@ which the connections module draws as the two laces of the French Corset.
 
 #### `buildPathSubgraph` {#symbol-buildpathsubgraph}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L168)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L87)
 - Returns: [`LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph)
 - Parameters: `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver)
 

@@ -13,6 +13,8 @@ Playwright over the estate sample's Local Map path mode: asked with the dependen
 
 ### Notes
 
+Also checks direct links over this repository and the estate: directory-aware layout before any pin, and the same neighborhood after retaining the selected file. Paths from the toolbar and an address use the same placed scene, including their intermediate directories.
+
 - Written on [2026-10-01](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10), after the fix was played by eye on both bundles, as the rule says: the tests keep what the eye accepted. The estate's chain `GatewayClient.cs` to `PaymentsController.cs` to `HubProxy.cs` to `IPaymentHub.cs` runs from the file that depends to the file depended on, so asking it that way round is the case the owner's rule of 2025-12-18 refuses.
 - Each wire's two ends are read in screen coordinates and matched to the nearest pin within 12 px, so the test checks the grammar on the picture, not on the data that drew it.
 

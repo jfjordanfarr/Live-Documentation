@@ -9,7 +9,7 @@
 ## Authored
 ### Purpose
 
-Styles specific to the Local Map view: the multi-column grid layout (dependency inputs, selected artifact, consumer outputs), symbol-row hover states, and connection anchor geometry that enables the directional blue-to-green connector routing.
+Styles specific to the Local Map view: the placed cards, directory membranes and explicit perspective controls, symbol-row hover states, and connection anchor geometry that enables the directional blue-to-green connector routing.
 
 ### Notes
 

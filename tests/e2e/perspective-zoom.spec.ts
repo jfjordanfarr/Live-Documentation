@@ -36,27 +36,37 @@ test("hover isolates within retained files and a row toggles the effective file-
   await expect(page.locator('.local-directory-band[data-directory="tests/integration/programs/typescript/rosetta/src"]')).toBeVisible();
 });
 
-test("zoom stops at each boundary and carries a real projected subject through a deliberate second gesture", async ({ page }) => {
+test("scroll zooms within each perspective; only the 2D and 3D buttons change it", async ({ page }) => {
   await page.goto(`/?view=local&node=${ROOT}helpers.ts`);
   await expect(page.locator(cardSelector)).toBeVisible();
+  await localMapSettled(page);
   await page.waitForTimeout(500);
   await page.mouse.move(950, 500);
-  await page.mouse.wheel(0, 4000);
-  await expect(page.locator(".zoom-boundary")).toHaveText("Scroll again for 3D");
+  await page.mouse.wheel(0, 1500);
+  await page.waitForTimeout(450);
+  await page.mouse.wheel(0, 120);
   await page.waitForTimeout(450);
   await expect(page.locator("#view-map")).toHaveClass(/active/);
-  await page.mouse.wheel(0, 120);
+  const scale = await page.locator("#map-viewport").evaluate(el => new DOMMatrix(getComputedStyle(el).transform).a);
+  expect(scale).toBeLessThan(0.4);
+  expect(scale).toBeGreaterThan(0);
+  await expect(page.locator(".zoom-boundary, .perspective-transition")).toHaveCount(0);
+  await page.getByRole("button", { name: "Reset Zoom" }).click();
+  await page.waitForTimeout(450);
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   const bridge = page.locator(".perspective-transition[data-graph-files]");
   await expect(bridge).toBeVisible();
   expect(Number(await bridge.getAttribute("data-graph-files"))).toBeGreaterThan(10);
   await expect(bridge.locator(`[data-node-id="${ROOT}helpers.ts"]`)).toBeAttached();
-  await expect(page.locator(".perspective-transition")).toHaveCount(0);
-  await expect(page.locator("#view-graph")).toHaveClass(/active/);
+  await expect(bridge).toHaveCount(0);
+  await page.mouse.move(950, 500);
   await page.mouse.wheel(0, -4000);
-  await expect(page.locator(".zoom-boundary")).toHaveText("Scroll again for 2D");
+  await page.waitForTimeout(450);
+  await page.mouse.wheel(0, -120);
   await page.waitForTimeout(450);
   await expect(page.locator("#view-graph")).toHaveClass(/active/);
-  await page.mouse.wheel(0, -120);
+  await expect(page.locator(".zoom-boundary, .perspective-transition")).toHaveCount(0);
+  await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator("#view-map")).toHaveClass(/active/);
   await expect(page.locator(".perspective-transition")).toHaveCount(0);
   await expect(page.locator(cardSelector)).toBeVisible();
@@ -68,14 +78,14 @@ test("a thirteen-file path keeps its ordered steps and constrained symbols throu
   await page.goto(`/?view=local&node=${from}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
   await expect(page.locator("#pathfind-status")).toContainText("Path found: 13 files");
   await expect(page.locator("#pathfind-status")).toContainText("3 references between these files run the other way and are not drawn");
-  const ids = () => page.locator("#map-container .path-node .node-card").evaluateAll(cards => cards.map(card => (card as HTMLElement).dataset.id));
+  const ids = () => page.locator("#map-container .path-node .node-card").evaluateAll(cards => cards.sort((a, b) => Number((a.closest(".local-column") as HTMLElement).dataset.column) - Number((b.closest(".local-column") as HTMLElement).dataset.column)).map(card => (card as HTMLElement).dataset.id));
   const before = await ids();
   expect(before).toHaveLength(13);
   expect(before[0]).toBe(from); expect(before[12]).toBe(to);
   expect(await page.locator("#map-container .branch-symbol-hidden").count()).toBeGreaterThan(0);
-  await page.getByRole("button", { name: "Force Graph · 3D", exact: true }).click();
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.locator("#view-graph")).toHaveClass(/active/);
-  await page.getByRole("button", { name: "Local Map · 2D", exact: true }).click();
+  await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator("#view-map")).toHaveClass(/active/);
   expect(await ids()).toEqual(before);
   expect(new URL(page.url()).searchParams.get("from")).toBe(from);
@@ -92,7 +102,7 @@ test("native symbol wires gather by file pair and directory shells reverse their
   await expect(page.locator('#map-container .local-directory-band[data-directory=""]')).toBeVisible();
   const nativeWires = await page.locator("#map-connections .connection-path").count();
   expect(nativeWires).toBeGreaterThan(10);
-  for (const button of ["Force Graph · 3D", "Local Map · 2D"]) {
+  for (const button of ["3D", "2D"]) {
     await page.getByRole("button", { name: button, exact: true }).click();
     const bridge = page.locator(".perspective-transition[data-graph-files]");
     await expect(bridge).toBeVisible();
@@ -116,7 +126,7 @@ test("native symbol wires gather by file pair and directory shells reverse their
     expect(frames.length).toBeGreaterThan(5);
     expect(frames.some(frame => frame.fold > 0 && frame.fold < 1)).toBe(true);
     expect(frames.every(frame => frame.children.length === 2 && frame.children.every(child => child >= frame.root))).toBe(true);
-    if (button.startsWith("Local")) {
+    if (button === "2D") {
       expect(frames.some(frame => frame.root === 0 && frame.children.some(child => child > 0))).toBe(true);
     }
   }
@@ -131,7 +141,7 @@ test("nested directory animation represents each ancestor once, without loose-fi
   const names = await page.locator("#map-container .local-directory-band").evaluateAll(bands => bands.map(band => (band as HTMLElement).dataset.directory));
   expect(new Set(names).size).toBe(names.length);
   expect(names).toEqual(expect.arrayContaining(["", "packages/explorer/src", "packages/explorer/src/client", "packages/explorer/src/client/views", directory]));
-  await page.getByRole("button", { name: "Force Graph · 3D", exact: true }).click();
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   const bridge = page.locator(".perspective-transition[data-graph-files]");
   await expect(bridge).toBeVisible();
   const shells = await bridge.locator("[data-transition-directory]").evaluateAll(bands => bands.map(band => ({ name: (band as HTMLElement).dataset.transitionDirectory, depth: Number((band as HTMLElement).dataset.depth) })));

@@ -1,7 +1,6 @@
 import { curveTo, LANE_MARGIN, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import type { LocalViewRuntime } from "./runtime";
-import type { PathResult } from "./state";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
@@ -17,23 +16,7 @@ export interface ConnectionsContext {
   state: ExplorerState;
   svgNamespace: string;
   getAnchor: (nodeId: string, columnRole: ColumnRole, direction: "inbound" | "outbound", symbol?: string) => HTMLElement | null;
-  /**
-   * Extended anchor lookup for multi-hop visualization.
-   * Includes hop index to disambiguate the same node appearing in multiple columns.
-   */
-  getAnchorWithHop?: (
-    nodeId: string,
-    columnRole: ColumnRole,
-    hopIndex: number,
-    direction: "inbound" | "outbound",
-    symbol?: string
-  ) => HTMLElement | null;
   measureLayoutExtents: () => LayoutExtents | null;
-  /**
-   * The drawn path, when the view is in path mode. Its wires come from the
-   * path subgraph in `runtime.currentSubgraph`, one column per file.
-   */
-  activePath?: PathResult;
 }
 
 interface AnchorMeasurement {
@@ -75,143 +58,11 @@ function cardEdgesOf(provider: AnchorMeasurement, consumer: AnchorMeasurement, b
   return { provider: provider.cardRight - bounds.left, consumer: consumer.cardLeft - bounds.left };
 }
 
-/**
- * Main entry point for drawing SVG connection edges in the Local Map view.
- *
- * Draws an explicit path, independent branches, or the classic neighborhood.
- * Each measures DOM anchor positions relative to the
- * container, computes Bézier curves, and appends `<path>` elements to the SVG
- * overlay.
- */
+/** Draw every Local Map scope with the shared directory-aware router. */
 export function drawConnections(context: ConnectionsContext): void {
-  const { runtime, state } = context;
-  const { overlay, container, currentSubgraph, mapTransform } = runtime;
-  overlay.innerHTML = "";
-
-  if (context.activePath && context.activePath.nodeIds.length > 0) {
-    drawPathConnections(context);
-    return;
-  }
-
-  if (context.branches) {
-    drawBranchConnections(context);
-    return;
-  }
-
-  // Single-hop (legacy) path
-  if (!state.selectedNode || !currentSubgraph) {
-    overlay.dataset.active = "false";
-    return;
-  }
-
-  const extents = context.measureLayoutExtents();
-  if (!extents) {
-    overlay.dataset.active = "false";
-    return;
-  }
-  const bounds = extents.content;
-
-  const measureAnchor = createAnchorMeasurer(container, mapTransform.k || 1);
-
-  const segments: Array<{
-    edge: LocalEdge;
-    renderDirection: "inbound" | "outbound";
-    source: Point;
-    target: Point;
-  }> = [];
-
-  const centerId = currentSubgraph.center?.id ?? "";
-
-  // The file's own references, each a pair of laces at its pins, cut by its card's edges.
-  const selfLoopSegments: Array<{
-    edge: LocalEdge;
-    sourcePoint: Point;
-    targetPoint: Point;
-    cardEdges: LaceEdges;
-  }> = [];
-
-  currentSubgraph.links.forEach(edge => {
-    // Detect self-loops: both source and target reference the center node
-    const isSelfLoop = edge.sourceId === centerId && edge.targetId === centerId;
-
-    if (isSelfLoop) {
-      // Self-loop: a symbol on the center card references another symbol on the same card
-      // Provider is the outbound pin (targetSymbol), consumer is the inbound pin (sourceSymbol)
-      const providerAnchor = measureAnchor(context.getAnchor(centerId, "center", "outbound", edge.targetSymbol));
-      const consumerAnchor = measureAnchor(context.getAnchor(centerId, "center", "inbound", edge.sourceSymbol));
-
-      if (!providerAnchor || !consumerAnchor) {
-        return;
-      }
-
-      const sourcePoint = offsetToEdge(providerAnchor, "outbound");
-      const targetPoint = offsetToEdge(consumerAnchor, "inbound");
-      selfLoopSegments.push({ edge, sourcePoint, targetPoint, cardEdges: cardEdgesOf(providerAnchor, consumerAnchor, bounds) });
-      return;
-    }
-
-    // For dependencies (direction === "outbound"), draw from the dependency's outbound side to the center's inbound side.
-    // For dependents (direction === "inbound"), draw from the center's outbound side to the dependent's inbound side.
-    const isDependency = edge.direction === "outbound";
-
-    // Column role mapping:
-    // - Dependencies live in "upstream" column, center node in "center", dependents in "downstream"
-    const providerAnchor = isDependency
-      ? measureAnchor(context.getAnchor(edge.targetId, "upstream", "outbound", edge.targetSymbol))
-      : measureAnchor(context.getAnchor(centerId, "center", "outbound", edge.targetSymbol));
-
-    const consumerAnchor = isDependency
-      ? measureAnchor(context.getAnchor(centerId, "center", "inbound", edge.sourceSymbol))
-      : measureAnchor(context.getAnchor(edge.sourceId, "downstream", "inbound", edge.sourceSymbol));
-
-    if (!providerAnchor || !consumerAnchor) {
-      return;
-    }
-
-    // Offset both endpoints by PIN_RADIUS so paths stop at the pin edge, not center.
-    // Provider is always outbound (emitting), consumer is always inbound (receiving).
-    const sourcePoint = offsetToEdge(providerAnchor, "outbound");
-    const targetPoint = offsetToEdge(consumerAnchor, "inbound");
-    const renderDirection: "inbound" | "outbound" = isDependency ? "inbound" : "outbound";
-    segments.push({ edge, renderDirection, source: sourcePoint, target: targetPoint });
-  });
-
-  if (segments.length === 0 && selfLoopSegments.length === 0) {
-    overlay.dataset.active = "false";
-    return;
-  }
-
-  const { svg, defs } = createOverlaySvg(context, bounds);
-
-  let gradientIndex = 0;
-  segments.forEach(({ edge, renderDirection, source, target }) => {
-    const adjustedSource = {
-      x: source.x - bounds.left,
-      y: source.y - bounds.top
-    };
-    const adjustedTarget = {
-      x: target.x - bounds.left,
-      y: target.y - bounds.top
-    };
-    const gradientId = `conn-grad-${gradientIndex++}`;
-    appendConnectionPath(svg, defs, adjustedSource, adjustedTarget, renderDirection, edge, context.svgNamespace, state.tuning.bezier, gradientId);
-  });
-
-  const shape = laceShape(state.tuning.localMap);
-  const ranks = new Map<string, number>();
-  selfLoopSegments.forEach(({ edge, sourcePoint, targetPoint, cardEdges }) => {
-    const adjustedSource = {
-      x: sourcePoint.x - bounds.left,
-      y: sourcePoint.y - bounds.top
-    };
-    const adjustedTarget = {
-      x: targetPoint.x - bounds.left,
-      y: targetPoint.y - bounds.top
-    };
-    appendSelfLoopPath(svg, adjustedSource, adjustedTarget, cardEdges, edge, context.svgNamespace, shape, ranks);
-  });
-
-  overlay.dataset.active = "true";
+  context.runtime.overlay.innerHTML = "";
+  context.runtime.overlay.dataset.active = "false";
+  if (context.branches) drawBranchConnections(context);
 }
 
 /**
@@ -397,73 +248,6 @@ function appendSelfLoopPath(
     polygon.dataset.targetSymbol = targetSymbol;
     svg.appendChild(polygon);
   }
-}
-
-/**
- * Draws the wires of a path: one column per file, each file depending on the
- * one before it, so what offers stands left of what uses it.
- *
- * Every reference between adjacent files that runs with the path leaves the
- * earlier file's offering pin (blue, right edge) and enters the later file's
- * using pin (green, left edge), the same grammar as the exploration columns.
- * A reference that runs against the path, the earlier file depending on the
- * later, is not drawn: a wire never reaches backwards across the columns (the
- * owner's rule of 2025-12-18). The toolbar counts those references instead.
- */
-function drawPathConnections(context: ConnectionsContext): void {
-  const { runtime, state, activePath, getAnchorWithHop } = context;
-  const { overlay, container, currentSubgraph, mapTransform } = runtime;
-
-  if (!activePath || !currentSubgraph || !getAnchorWithHop) {
-    overlay.dataset.active = "false";
-    return;
-  }
-
-  const extents = context.measureLayoutExtents();
-  if (!extents) {
-    overlay.dataset.active = "false";
-    return;
-  }
-  const bounds = extents.content;
-
-  const measureAnchor = createAnchorMeasurer(container, mapTransform.k || 1);
-  const columnOf = new Map(activePath.nodeIds.map((id, index) => [id, index] as const));
-
-  const segments: Array<{ edge: LocalEdge; source: Point; target: Point; column: number }> = [];
-  for (const edge of currentSubgraph.links) {
-    // The link runs from the file that depends (its source) to the file it depends on (its target).
-    const providerColumn = columnOf.get(edge.targetId);
-    const consumerColumn = columnOf.get(edge.sourceId);
-    if (providerColumn === undefined || consumerColumn === undefined || consumerColumn !== providerColumn + 1) {
-      continue;
-    }
-    const providerAnchor = measureAnchor(getAnchorWithHop(edge.targetId, "center", providerColumn, "outbound", edge.targetSymbol));
-    const consumerAnchor = measureAnchor(getAnchorWithHop(edge.sourceId, "center", consumerColumn, "inbound", edge.sourceSymbol));
-    if (!providerAnchor || !consumerAnchor) {
-      continue;
-    }
-    segments.push({
-      edge,
-      source: offsetToEdge(providerAnchor, "outbound"),
-      target: offsetToEdge(consumerAnchor, "inbound"),
-      column: providerColumn
-    });
-  }
-
-  if (segments.length === 0) {
-    overlay.dataset.active = "false";
-    return;
-  }
-
-  const { svg, defs } = createOverlaySvg(context, bounds);
-  let gradientIndex = 0;
-  for (const { edge, source, target, column } of segments) {
-    const adjustedSource = { x: source.x - bounds.left, y: source.y - bounds.top };
-    const adjustedTarget = { x: target.x - bounds.left, y: target.y - bounds.top };
-    const gradientId = `conn-grad-hop${column}-${gradientIndex++}`;
-    appendConnectionPath(svg, defs, adjustedSource, adjustedTarget, "outbound", edge, context.svgNamespace, state.tuning.bezier, gradientId);
-  }
-  overlay.dataset.active = "true";
 }
 
 /**

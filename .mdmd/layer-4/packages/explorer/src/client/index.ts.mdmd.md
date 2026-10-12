@@ -11,6 +11,7 @@
 Bootstrap entry point for the Explorer client: loads the bundle, projects its graph index into the payload the views render, initialises the views and the detail panel, and wires the global navigation and toolbar handlers.
 
 ### Notes
+- Shared path endpoints are resolved before the first render. Perspective switches use the compact 2D/3D buttons; scrolling stays within the active view. The [owner’s walkthrough](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3) removed the automatic wheel boundary and unsolicited density message.
 - Created 2025-11-21 when the monolithic `visualize-explorer.ts` was modularised.
 - Since 2026-09-28 the bundle is loaded from `explorer-data.json` beside the page, or from the URL named by `?data=`; the fetches from the retired server and their lazy loader are gone.
 - Exposes `window.switchView`, `window.openInEditor`, and zoom controls to the HTML template.

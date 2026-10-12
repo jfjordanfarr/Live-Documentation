@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Exercises layered file/symbol pins, deliberate zoom crossings and a long route across the two native file perspectives.
+Exercises layered file/symbol pins, explicit perspective changes with scrolling confined to the active view and a long route across the two native file perspectives.
 
 ### Notes
 Browser journeys verify transient hover under whole-file pins, persistence of an explicit symbol after removing its file pin, a populated intermediate projection, and the ordered thirteen-file estate path through a round trip.

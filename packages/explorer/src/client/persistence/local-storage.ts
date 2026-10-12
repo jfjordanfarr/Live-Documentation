@@ -51,7 +51,6 @@ export const getDefaultTuning = (): TuningConfig => ({
     laceWidth: 2.5,
     collapseOnHover: false,
     collapseOnPin: true,
-    strainNudge: 48,
     symbolOrder: "layout",
     moveMs: 450,
     holdStill: "click",
@@ -172,7 +171,6 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const laceWidth = readFiniteNumber(localMapRaw.laceWidth);
         const collapseOnHover = readBoolean(localMapRaw.collapseOnHover);
         const collapseOnPin = readBoolean(localMapRaw.collapseOnPin);
-        const strainNudge = readFiniteNumber(localMapRaw.strainNudge);
         const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
         const moveMs = readFiniteNumber(localMapRaw.moveMs);
         const holdStill = readHoldStill(localMapRaw.holdStill);
@@ -204,7 +202,6 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(laceWidth !== undefined ? { laceWidth } : null),
           ...(collapseOnHover !== undefined ? { collapseOnHover } : null),
           ...(collapseOnPin !== undefined ? { collapseOnPin } : null),
-          ...(strainNudge !== undefined ? { strainNudge } : null),
           ...(symbolOrder !== undefined ? { symbolOrder } : null),
           ...(moveMs !== undefined ? { moveMs } : null),
           ...(holdStill !== undefined ? { holdStill } : null),

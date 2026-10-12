@@ -1,6 +1,6 @@
 import { EMPTY_PIN_SET, retainFile, removePinsForNode, toggleFileSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import { dropStage, type BranchStage } from "./branch-renderer";
-import { edgeKey, type BranchGraph } from "./branches";
+import type { BranchGraph } from "./branches";
 import { closeDirectory as closeDirectoryIn, NO_OPEN_DIRECTORIES, openDirectory as openDirectoryIn, type OpenDirectories } from "./directory-state";
 import type {
   ExplorerNodePayload
@@ -8,10 +8,8 @@ import type {
 import { requireElement } from "../../dom";
 import {
   buildNormalizedAnchorKey,
-  normalizeSymbolIdentifier,
   tryBuildNormalizedKeyFromAnchorKey
 } from "../symbolAnchors";
-import { ZoomBarrier, wheelPixels } from "../zoomBarrier";
 import { drawConnections } from "./connections";
 import {
   computeLayoutExtents,
@@ -19,11 +17,7 @@ import {
   computePathFitTransform,
   applyContainerDimensions,
   withTransformReset,
-  applyColumnVerticalCentering as applyColumnVerticalCenteringFn,
-  collectCenterAlignmentGuides as collectCenterAlignmentGuidesFn,
-  lookupCenterAnchorPosition as lookupCenterAnchorPositionFn,
-  type LayoutExtents,
-  type CenterAlignmentGuides
+  type LayoutExtents
 } from "./layout-measure";
 import {
   zoomByFactor as zoomByFactorFn,
@@ -40,9 +34,7 @@ import {
   clearAnchorRegistry,
   createRuntime,
   getAnchor as fetchAnchor,
-  getAnchorWithHop as fetchAnchorWithHop,
-  registerAnchor as storeAnchor,
-  registerAnchorWithHop as storeAnchorWithHop
+  registerAnchor as storeAnchor
 } from "./runtime";
 import {
   type StateStore,
@@ -54,16 +46,11 @@ import {
   setActivePath as setActivePathAction
 } from "./state";
 import {
-  createLocalSubgraph as createLocalSubgraphFn,
-  buildPathSubgraph as buildPathSubgraphFn
-} from "./subgraph-builder";
-import {
   computeSymbolHighlight,
   applySymbolHighlight,
   clearSymbolHighlightDOM
 } from "./symbol-highlight";
 import type {
-  BranchStrain,
   ColumnRole,
   LocalViewApi,
   LocalViewOptions,
@@ -91,7 +78,7 @@ export class LocalViewController implements LocalViewApi {
    */
   readonly localMapState: StateStore<LocalMapState>;
 
-  /** The independently disclosed branch graph, absent in classic or path mode. */
+  /** The directory-aware graph for the current neighborhood, exploration or path. */
   branches: BranchGraph | null = null;
   /**
    * Where the last branch picture stood each card, by its top in the picture: the order step starts from it among its
@@ -118,23 +105,6 @@ export class LocalViewController implements LocalViewApi {
   get pins(): PinSet { return this.options.state.pins ?? EMPTY_PIN_SET; }
   /** The directories the person has opened, owned by the application beside the pins (2026-10-08). */
   get openDirectories(): OpenDirectories { return this.options.state.openDirectories ?? NO_OPEN_DIRECTORIES; }
-  /** Whether a retained exploration is drawn: something pinned, or a directory opened. */
-  get exploring(): boolean { return this.pins.entries.length > 0 || this.openDirectories.size > 0; }
-
-  /** How many references the drawn exploration threads through lanes, and how many it draws as stubs. */
-  getStrain(): BranchStrain | null {
-    const branches = this.branches;
-    if (!branches) return null;
-    const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
-    let threaded = 0;
-    for (const edge of branches.subgraph.links) {
-      if (edge.sourceId === edge.targetId || branches.back.has(edgeKey(edge))) continue;
-      const a = columnOf.get(edge.targetId), b = columnOf.get(edge.sourceId);
-      if (a !== undefined && b !== undefined && b > a + 1) threaded++;
-    }
-    return { threaded, back: branches.back.size, columns: branches.columns.length };
-  }
-
   /** Screen position of a file's readable identity, shared across perspectives. */
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
     const title = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(nodeId)}"] .node-title`);
@@ -165,6 +135,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Cleanup function for state subscription */
   private stateUnsubscribe: (() => void) | null = null;
+  private pendingRender = 0;
 
   private readonly handleWindowMouseMove = (event: MouseEvent): void => {
     const { state } = this.options;
@@ -175,29 +146,10 @@ export class LocalViewController implements LocalViewApi {
     handleDragMove(this.runtime, event.clientX, event.clientY, () => this.updateMapTransform());
   };
 
-  private readonly zoomBarrier = new ZoomBarrier();
-
   private readonly handleWheel = (event: WheelEvent): void => {
     const { state } = this.options;
     if (state.view !== "map") {
       return;
-    }
-    if (!event.shiftKey && Math.abs(event.deltaY) >= Math.abs(event.deltaX) && this.options.onZoomOut) {
-      const delta = wheelPixels(event.deltaY, event.deltaMode, this.viewport.clientHeight);
-      const scale = (this.runtime.mapAnimationTarget ?? this.mapTransform).k;
-      if (delta > 0 && scale <= 0.62) {
-        event.preventDefault();
-        this.options.onZoomBoundary?.(true);
-        if (this.zoomBarrier.push(delta, performance.now())) {
-          this.options.onZoomBoundary?.(false);
-          this.options.onZoomOut();
-        }
-        return;
-      }
-      this.zoomBarrier.reset();
-      const arriving = delta > 0 && scale * Math.exp(-delta * .0015) <= .62;
-      this.options.onZoomBoundary?.(arriving);
-      if (arriving) this.zoomBarrier.push(delta, performance.now());
     }
     handleWheelFn(this.runtime, event, () => this.updateMapTransform());
   };
@@ -266,7 +218,8 @@ export class LocalViewController implements LocalViewApi {
       // When activePath changes, trigger full re-render for path-mode layout
       if (state.activePath !== prevState.activePath) {
         // Defer render to avoid recursive updates
-        requestAnimationFrame(() => this.render());
+        cancelAnimationFrame(this.pendingRender);
+        this.pendingRender = requestAnimationFrame(() => this.render());
         return;
       }
 
@@ -278,6 +231,7 @@ export class LocalViewController implements LocalViewApi {
    * Should be called when the controller is disposed.
    */
   dispose(): void {
+    cancelAnimationFrame(this.pendingRender);
     if (this.stateUnsubscribe) {
       this.stateUnsubscribe();
       this.stateUnsubscribe = null;
@@ -296,6 +250,8 @@ export class LocalViewController implements LocalViewApi {
 
   /** Triggers a full re-render of the Local Map view via {@link renderLocalView}. */
   render(): void {
+    cancelAnimationFrame(this.pendingRender);
+    this.pendingRender = 0;
     // Apply pending toolbar displacement before capturing the visible subject.
     this.keepContentPutWhenLayerMoves();
     const id = this.options.state.selectedNode?.id;
@@ -329,10 +285,7 @@ export class LocalViewController implements LocalViewApi {
       state: this.options.state,
       svgNamespace: this.svgNamespace,
       getAnchor: (nodeId, columnRole, direction, symbol) => this.getAnchor(nodeId, columnRole, direction, symbol),
-      getAnchorWithHop: (nodeId, columnRole, hopIndex, direction, symbol) => 
-        this.getAnchorWithHop(nodeId, columnRole, hopIndex, direction, symbol),
       measureLayoutExtents: () => this.measureLayoutExtents(),
-      activePath: this.localMapState.getState().activePath ?? undefined,
       branches: this.branches ?? undefined
     });
   }
@@ -404,8 +357,7 @@ export class LocalViewController implements LocalViewApi {
       currentSubgraph.center?.id ?? "",
       dimSymbols,
       dimConnections,
-      () => this.drawConnections(),
-      () => this.reapplyVerticalCentering()
+      () => this.drawConnections()
     );
   }
 
@@ -421,8 +373,7 @@ export class LocalViewController implements LocalViewApi {
     clearSymbolHighlightDOM(
       this.container,
       this.overlay,
-      () => this.drawConnections(),
-      () => this.reapplyVerticalCentering()
+      () => this.drawConnections()
     );
   }
 
@@ -529,8 +480,8 @@ export class LocalViewController implements LocalViewApi {
    * Path mode renders ONLY the nodes in the path as a linear chain,
    * without showing the full Dependencies/Dependents subgraphs of each node.
    * 
-   * This is distinct from "exploration mode" (single FROM node) which
-   * shows the classic 3-column layout: Dependencies → Center → Dependents.
+   * It uses the same directory-aware layout as exploration, while keeping
+   * the exploration pins and camera available for Clear.
    * 
    * @param path - The path result containing nodeIds and symbols, or null to exit path mode
    */
@@ -565,14 +516,6 @@ export class LocalViewController implements LocalViewApi {
    */
   isPinned(nodeId: string, symbol: string): boolean {
     return isExplorationPin(this.pins, nodeId, symbol) || isExplorationPin(this.pins, nodeId, "*");
-  }
-
-  /** Restore legible card size when crossing inward through the zoom boundary. */
-  ensureReadable(): void {
-    cancelAnimationFrame(this.runtime.mapAnimationFrame);
-    this.runtime.mapAnimationTarget = null;
-    this.mapTransform = { ...this.mapTransform, k: Math.max(1, this.mapTransform.k) };
-    this.updateMapTransform();
   }
 
   /** Zooms the map in by 20%. */
@@ -646,7 +589,7 @@ export class LocalViewController implements LocalViewApi {
     this.runtime.mapTransform = transform;
   }
 
-  /** The subgraph currently rendered in the 3-column layout, or `null` before the first render. */
+  /** The currently rendered disclosure, or `null` before the first render. */
   get currentSubgraph(): LocalSubgraph | null {
     return this.runtime.currentSubgraph;
   }
@@ -725,20 +668,6 @@ export class LocalViewController implements LocalViewApi {
     );
   }
 
-  /** Register anchor for multi-hop columns where same node may appear at different hop indices */
-  registerAnchorWithHop(nodeId: string, columnRole: ColumnRole, hopIndex: number, key: string, element: HTMLElement): void {
-    storeAnchorWithHop(this.runtime.anchorRegistry, nodeId, columnRole, hopIndex, key, element, keyValue =>
-      this.tryBuildNormalizedKey(keyValue)
-    );
-  }
-
-  /** Retrieve anchor for multi-hop columns using hop index to disambiguate */
-  getAnchorWithHop(nodeId: string, columnRole: ColumnRole, hopIndex: number, direction: "inbound" | "outbound", symbol?: string): HTMLElement | null {
-    return fetchAnchorWithHop(this.runtime.anchorRegistry, nodeId, columnRole, hopIndex, direction, symbol, (dir, sym) =>
-      this.buildNormalizedAnchorKey(dir, sym)
-    );
-  }
-
   /**
    * Produces a normalized anchor key string from a direction and symbol,
    * used to match symbol rows across columns during connection drawing.
@@ -755,37 +684,6 @@ export class LocalViewController implements LocalViewApi {
   /** Schedules a connection line redraw on the next animation frame. */
   scheduleConnectionRedraw(): void {
     requestAnimationFrame(() => this.drawConnections());
-  }
-
-  /**
-   * Reapplies vertical centering to columns after symbol collapse/uncollapse.
-   * Called when pinning/unpinning causes cards to change height.
-   *
-   * The subject keeps its place on screen while the columns re-center around
-   * it. A change of what is disclosed must not move what the person is looking
-   * at: before this compensation, pinning a symbol on a file with a long
-   * dependents column moved the selected card 862 px off the frame (measured
-   * by the still-picture instrument, 2026-10-01).
-   */
-  private reapplyVerticalCentering(): void {
-    if (!this.contentRoot) {
-      return;
-    }
-    const focus =
-      this.contentRoot.querySelector<HTMLElement>(".node-card.local-focus") ??
-      this.contentRoot.querySelector<HTMLElement>(".local-column.center .node-card");
-    const before = focus?.getBoundingClientRect();
-    this.applyColumnVerticalCentering(this.contentRoot);
-    if (!focus || !before) {
-      return;
-    }
-    const after = focus.getBoundingClientRect();
-    const dx = after.left - before.left;
-    const dy = after.top - before.top;
-    if (dx !== 0 || dy !== 0) {
-      this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x - dx, y: this.mapTransform.y - dy };
-      this.updateMapTransform();
-    }
   }
 
   /**
@@ -808,11 +706,6 @@ export class LocalViewController implements LocalViewApi {
   /** Returns `true` when the given node has a `"test"` archetype. */
   isTestNode(node: ExplorerNodePayload | null | undefined): boolean {
     return !!node && (node.archetype || "").toLowerCase() === "test";
-  }
-
-  /** Builds a {@link LocalSubgraph} centred on the given node (delegates to {@link createLocalSubgraph}). */
-  buildLocalSubgraph(center: ExplorerNodePayload): LocalSubgraph {
-    return this.createLocalSubgraph(center);
   }
 
   /** Resolves a node by `id` from the full graph data, or returns `undefined` if not found. */
@@ -925,46 +818,4 @@ export class LocalViewController implements LocalViewApi {
     this.scheduleConnectionRedraw();
   }
 
-  /** Scans the center column for symbol row positions and returns alignment guides for vertical centering. */
-  collectCenterAlignmentGuides(column: HTMLElement): CenterAlignmentGuides {
-    const rootRect = this.container.getBoundingClientRect();
-    return collectCenterAlignmentGuidesFn(column, rootRect, symbol => normalizeSymbolIdentifier(symbol));
-  }
-
-  /** Returns the vertical position of a center-column anchor for a given node/direction/symbol, or `null` if not found. */
-  lookupCenterAnchorPosition(
-    guides: CenterAlignmentGuides,
-    nodeId: string,
-    direction: "inbound" | "outbound",
-    symbol: string | undefined | null
-  ): number | null {
-    return lookupCenterAnchorPositionFn(guides, nodeId, direction, symbol, sym => normalizeSymbolIdentifier(sym));
-  }
-
-  /** Vertically centres dependency and dependent columns relative to the center column within the layout root. */
-  applyColumnVerticalCentering(layoutRoot: HTMLElement): void {
-    applyColumnVerticalCenteringFn(layoutRoot, this.container);
-  }
-
-  private createLocalSubgraph(center: ExplorerNodePayload): LocalSubgraph {
-    return createLocalSubgraphFn(
-      center,
-      this.options.graphData,
-      endpoint => this.options.resolveLinkEndpoint(endpoint),
-      id => this.resolveNode(id),
-      node => this.shouldIncludeNode(node)
-    );
-  }
-
-  /**
-   * Builds a subgraph for path mode visualization.
-   */
-  buildPathSubgraph(pathNodeIds: string[]): LocalSubgraph | null {
-    return buildPathSubgraphFn(
-      pathNodeIds,
-      this.options.graphData,
-      endpoint => this.options.resolveLinkEndpoint(endpoint),
-      id => this.resolveNode(id)
-    );
-  }
 }

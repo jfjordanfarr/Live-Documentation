@@ -52,11 +52,6 @@ export interface LocalMapTuning {
   collapseOnHover: boolean;
   /** Collapse (hide) unrelated symbols when a symbol is pinned */
   collapseOnPin: boolean;
-  /**
-   * How many references may skip columns or read against them before the Local
-   * Map says the picture is dense and the Force Graph may read better (2026-10-05).
-   */
-  strainNudge: number;
   /** How a card's symbol rows stand (2026-10-05). */
   symbolOrder: SymbolOrder;
   /** How long the picture takes to move from one arrangement to the next, in milliseconds; zero jumps (2026-10-07). */

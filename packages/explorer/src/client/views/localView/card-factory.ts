@@ -20,22 +20,17 @@ import { ROOT_KEY, getDirectoryKey } from "../layoutUtils";
  * @param controller - The LocalViewController instance
  * @param node - The node data to render
  * @param columnRole - The role of the column this card belongs to
- * @param hopIndex - Optional hop index for multi-hop visualization
  * @returns The created card element
  */
 export function createNodeCard(
   controller: LocalViewController,
   node: ExplorerNodePayload,
-  columnRole: ColumnRole,
-  hopIndex?: number
+  columnRole: ColumnRole
 ): HTMLElement {
   const card = document.createElement("div");
   card.className = "node-card";
   card.dataset.id = node.id;
   card.dataset.columnRole = columnRole;
-  if (hopIndex !== undefined) {
-    card.dataset.hopIndex = String(hopIndex);
-  }
   card.title = node.codeRelativePath;
   card.tabIndex = 0;
 
@@ -45,10 +40,7 @@ export function createNodeCard(
     card.classList.add("selected", "local-focus");
   }
 
-  // Use hop-aware registration when hopIndex is provided
-  const registerAnchor = hopIndex !== undefined
-    ? (key: string, element: HTMLElement) => controller.registerAnchorWithHop(node.id, columnRole, hopIndex, key, element)
-    : (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
+  const registerAnchor = (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
 
   registerAnchor("card", card);
 
@@ -95,7 +87,7 @@ export function createNodeCard(
   pathElement.textContent = node.codeRelativePath;
   card.appendChild(pathElement);
 
-  card.appendChild(createSymbolSection(controller, node, columnRole, hopIndex));
+  card.appendChild(createSymbolSection(controller, node, columnRole));
 
   if (!controller.isTestNode(node) && state.filters.showTests) {
     const backing = testCoverage.get(node.id);
@@ -193,22 +185,17 @@ export function countsOf(files: number, directories: number): string {
  * @param controller - The LocalViewController instance
  * @param node - The node data
  * @param columnRole - The role of the column
- * @param hopIndex - Optional hop index for multi-hop visualization
  * @returns The symbol section element
  */
 export function createSymbolSection(
   controller: LocalViewController,
   node: ExplorerNodePayload,
-  columnRole: ColumnRole,
-  hopIndex?: number
+  columnRole: ColumnRole
 ): HTMLElement {
   const wrapper = document.createElement("div");
   wrapper.className = "node-symbols";
 
-  // Use hop-aware registration when hopIndex is provided
-  const registerAnchor = hopIndex !== undefined
-    ? (key: string, element: HTMLElement) => controller.registerAnchorWithHop(node.id, columnRole, hopIndex, key, element)
-    : (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
+  const registerAnchor = (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
 
   const hasPublicSymbols = node.publicSymbols && node.publicSymbols.length > 0;
 

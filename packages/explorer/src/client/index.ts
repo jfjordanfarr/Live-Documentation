@@ -232,8 +232,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   const localView = createLocalView({
     state,
     onExplorationChange: persistExploration,
-    onZoomOut: () => changePerspective("graph"),
-    onZoomBoundary: active => showZoomBoundary(active ? "Scroll again for 3D" : ""),
     graphData,
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
@@ -244,8 +242,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   });
 
   const forceGraphView = createForceGraphView({
-    onZoomIn: () => changePerspective("map", state.focusedNode ?? state.selectedNode, true),
-    onZoomBoundary: active => showZoomBoundary(active ? "Scroll again for 2D" : ""),
     getPath: () => localView.getActivePath()?.nodeIds,
     state,
     graphData,
@@ -344,28 +340,20 @@ function startExplorer(bundle: StaticExplorerData): void {
   perspectiveControls.className = "perspective-controls";
   perspectiveControls.setAttribute("aria-label", "File perspective");
   const mapButton = document.createElement("button");
-  mapButton.textContent = "Local Map · 2D";
+  mapButton.textContent = "2D";
+  mapButton.title = "Local Map";
   mapButton.addEventListener("click", () => changePerspective("map"));
   const graphButton = document.createElement("button");
-  graphButton.textContent = "Force Graph · 3D";
+  graphButton.textContent = "3D";
+  graphButton.title = "Force Graph";
   graphButton.addEventListener("click", () => changePerspective("graph"));
   const clearPinsButton = document.createElement("button");
   clearPinsButton.title = "Clear exploration pins";
   clearPinsButton.setAttribute("aria-label", "Clear exploration pins");
   clearPinsButton.addEventListener("click", () => { state.pins = { entries: [] }; persistExploration(); renderCurrentView(); });
-  const zoomBoundary = document.createElement("span");
-  zoomBoundary.className = "zoom-boundary";
-  zoomBoundary.setAttribute("role", "status");
-  function showZoomBoundary(text: string): void { zoomBoundary.textContent = text; zoomBoundary.hidden = !text; }
-  showZoomBoundary("");
   const perspectivePath = document.createElement("span");
   perspectivePath.className = "perspective-path-status";
-  // The Local Map says when its layout is strained, so a person can choose the Force Graph; the threshold is in Tuning.
-  const perspectiveStrain = document.createElement("span");
-  perspectiveStrain.className = "perspective-strain";
-  perspectiveStrain.setAttribute("role", "status");
-  perspectiveStrain.textContent = "Dense picture: the Force Graph may read better";
-  perspectiveControls.append(zoomBoundary, perspectivePath, perspectiveStrain, mapButton, graphButton, clearPinsButton);
+  perspectiveControls.append(perspectivePath, mapButton, graphButton, clearPinsButton);
   requireElement("main").append(perspectiveControls);
 
   function syncPerspectiveControls(): void {
@@ -375,12 +363,6 @@ function startExplorer(bundle: StaticExplorerData): void {
     const path = localView.getActivePath();
     perspectivePath.textContent = path ? `Path: ${path.nodeIds.length} files` : "";
     perspectivePath.hidden = !path;
-    const strain = state.view === "map" ? localView.getStrain() : null;
-    const dense = !!strain && strain.threaded + strain.back >= state.tuning.localMap.strainNudge;
-    perspectiveStrain.hidden = !dense;
-    if (strain) {
-      perspectiveStrain.title = `${strain.threaded} ${strain.threaded === 1 ? "reference skips" : "references skip"} columns and ${strain.back} ${strain.back === 1 ? "reads" : "read"} against them, across ${strain.columns} columns. Tuning sets the threshold.`;
-    }
     const count = state.pins?.entries.length ?? 0;
     clearPinsButton.hidden = count === 0;
     clearPinsButton.textContent = `${count} ${count === 1 ? "pin" : "pins"} ×`;
@@ -394,10 +376,9 @@ function startExplorer(bundle: StaticExplorerData): void {
   let cancelPerspectiveAnimation = (): void => {};
 
   /** Change file perspective around the identity the person was last inspecting. */
-  function changePerspective(view: "map" | "graph", target = state.focusedNode ?? state.selectedNode, approaching = false): void {
-    if (changingPerspective) { pendingPerspective = () => changePerspective(view, target, approaching); return; }
+  function changePerspective(view: "map" | "graph", target = state.focusedNode ?? state.selectedNode): void {
+    if (changingPerspective) { pendingPerspective = () => changePerspective(view, target); return; }
     if (state.view === view && target?.id === state.selectedNode?.id) return;
-    showZoomBoundary("");
     const epoch = ++perspectiveEpoch;
     transitionDestination = view;
     const previousView = state.view;
@@ -418,7 +399,6 @@ function startExplorer(bundle: StaticExplorerData): void {
     updateUrlState(view, target?.id ?? null);
     schedulePersistNav();
     renderCurrentView();
-    if (approaching && view === "map") localView.ensureReadable();
     if (target && anchor) {
       const viewport = requireElement(`view-${view}`).getBoundingClientRect();
       // Off-screen subjects cannot provide a visible continuity anchor.
@@ -781,11 +761,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   if (urlPathfindState.to) {
     pathfindApi.setTo(urlPathfindState.to);
   }
-  // Auto-execute pathfind if both endpoints are specified in URL
-  if (urlPathfindState.from && urlPathfindState.to) {
-    // Defer execution to after initial render
-    setTimeout(() => pathfindApi.executeFindPath(), 100);
-  }
 
   // The node to focus first, chosen before the first drawing so that the page draws the focused picture once, rather
   // than a default picture and then the focused one.
@@ -824,6 +799,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   setActiveView(state.view);
 
   // Render initial view
+  // Resolve a shared path before drawing, so loading it never paints an unrelated neighborhood first.
+  if (urlPathfindState.from && urlPathfindState.to) pathfindApi.executeFindPath();
   renderCurrentView();
 
   if (focusNode) {
@@ -978,7 +955,6 @@ function startExplorer(bundle: StaticExplorerData): void {
       releasePerspectiveCover(); cancelPerspectiveAnimation();
       changingPerspective = false; pendingPerspective = null; transitionDestination = null;
       mapButton.disabled = graphButton.disabled = false;
-      showZoomBoundary("");
     }
     syncPerspectiveControls();
     forceGraphView.setActive(state.view === "graph");
@@ -997,7 +973,6 @@ function startExplorer(bundle: StaticExplorerData): void {
       circuitView.render();
     } else if (state.view === "map") {
       localView.render();
-      // The strain of the picture just drawn decides the nudge.
       syncPerspectiveControls();
     } else if (state.view === "graph") {
       forceGraphView.render();

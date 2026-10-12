@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-08T01:58:14.257Z
+- Generated At: 2026-10-12T18:02:21.779Z
 
 ## Authored
 ### Purpose
@@ -13,21 +13,21 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, the c
 
 ### Notes
 
-- Created 2025-12-04 during the localView modularisation; renders the columns through `render.ts` and the wires through `connections.ts`.
-- The camera: `fitMapToContent` frames the selected card with its surroundings, at reading size and no smaller when files are retained (the whole exploration when it fits, 2026-10-05), `fitMapToPath` frames a drawn path from its first file at reading size, and both measure the map layer's own frame with its transform reset rather than the whole view. A press on a card or in the pathfinder toolbar never starts a drag, because a drag marks the camera as the person's own and no render re-fits it afterwards; toolbar clicks used to do that and left Clear unable to bring the subject back (3,846 px off, measured by the still-picture instrument, [Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)). A layer observer shifts the camera, and any running animation's target, by however much the toolbar above the map grows or shrinks, so a status line is not a camera move.
-- Clicking a file retains all its interfaces; clicking a symbol toggles that row's effective selection without replacing other pins. Closing a file releases its pins and reveal override; connections still needed elsewhere keep a compact card. These actions preserve the acted-on identity's screen position where it remains visible. Perspective changes use the same subject anchor; inspection and recentering retain independent branches. The earlier hover-collapse compensation remains for classic browsing.
+- Created 2025-12-04 during the localView modularisation; renders the scene through `render.ts` and the wires through `connections.ts`.
+- The camera: `fitMapToContent` frames the selected card with its surroundings, at reading size (the whole exploration when it fits, 2026-10-05), `fitMapToPath` frames a drawn path from its first file at reading size, and both measure the map layer's own frame with its transform reset rather than the whole view. A press on a card or in the pathfinder toolbar never starts a drag, because a drag marks the camera as the person's own and no render re-fits it afterwards; toolbar clicks used to do that and left Clear unable to bring the subject back (3,846 px off, measured by the still-picture instrument, [Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)). A layer observer shifts the camera, and any running animation's target, by however much the toolbar above the map grows or shrinks, so a status line is not a camera move.
+- Clicking a file retains all its interfaces; clicking a symbol toggles that row's effective selection without replacing other pins. Closing a file releases its pins and reveal override; connections still needed elsewhere keep a compact card. These actions preserve the acted-on identity's screen position where it remains visible. Perspective changes use the same subject anchor; inspection and recentering retain independent branches. Hover dims unrelated content without rearranging the scene.
 - Explicit pathfinding saves the exploration camera and restores it on Clear, accounting for the toolbar’s changed height. `setActivePath(null)` is a no-op when no path is active; independent pins are retained throughout.
 - `previousTops` (2026-10-06) keeps where the last branch picture stood each card, by its top; the renderer offers that order as a start of the order step and prices a start by the pairs of cards it would swap, so a re-layout keeps the picture put unless another arrangement is clearly cheaper. `render.ts` forgets it when the branches are left.
-- `getStrain` counts the references the drawn exploration threads through lanes and the ones it draws as stubs; the Explorer compares their sum with the tuning's nudge threshold to say, beside the 3D control, that the Force Graph may read better. The owner asked for that nudge on 2026-10-05, from the layout's own strain and never from the number of pins.
 - `stage` and `lastInteracted` (2026-10-07): the branch picture's elements kept across renders so that a change of picture moves them, and the file whose card the person last acted on (every pin change passes through `updateRetainedPins`; choosing a file counts in `render.ts`; hover counts when the `holdStill` tuning says so), which a move holds still on screen. `dropStage` ends a running move when the branches are left or the controller is disposed ([Turn 16](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-16)).
-- The opened directories (2026-10-08, [the decisions log](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): `openDirectories` reads the set the application owns beside the pins, `exploring` says whether a branch picture is drawn (something pinned or a directory opened), and `openDirectory` and `closeDirectory` change the set through `updateOpenDirectories`, which keeps the directory's label or box where it was on screen as `updateRetainedPins` keeps a row, marks the directory as what was last acted on so the move holds it, and persists the exploration. The subgraph's center may be null, for a picture entered by directory.
+- The opened directories (2026-10-08, [the decisions log](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): `openDirectories` reads the set the application owns beside the pins, `openDirectory` and `closeDirectory` change the set through `updateOpenDirectories`, which keeps the directory's label or box where it was on screen as `updateRetainedPins` keeps a row, marks the directory as what was last acted on so the move holds it, and persists the exploration. The subgraph's center may be null, for a picture entered by directory.
+- Pending path renders are coalesced: an explicit render cancels its queued frame, so a shared path can be resolved before first paint without drawing twice. Wheel input zooms within 2D; the application changes perspective only through explicit controls ([owner's correction](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L75)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L62)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -39,22 +39,17 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
 - [`branch-renderer.BranchStage`](./branch-renderer.ts.mdmd.md#symbol-branchstage)
 - [`branch-renderer.dropStage`](./branch-renderer.ts.mdmd.md#symbol-dropstage)
-- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
-- [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
+- [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
 - [`directory-state.NO_OPEN_DIRECTORIES`](./directory-state.ts.mdmd.md#symbol-no_open_directories)
 - [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
 - [`directory-state.closeDirectory`](./directory-state.ts.mdmd.md#symbol-closedirectory)
 - [`directory-state.openDirectory`](./directory-state.ts.mdmd.md#symbol-opendirectory)
-- [`layout-measure.CenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-centeralignmentguides)
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
-- [`layout-measure.applyColumnVerticalCentering`](./layout-measure.ts.mdmd.md#symbol-applycolumnverticalcentering)
 - [`layout-measure.applyContainerDimensions`](./layout-measure.ts.mdmd.md#symbol-applycontainerdimensions)
-- [`layout-measure.collectCenterAlignmentGuides`](./layout-measure.ts.mdmd.md#symbol-collectcenteralignmentguides)
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
 - [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
-- [`layout-measure.lookupCenterAnchorPosition`](./layout-measure.ts.mdmd.md#symbol-lookupcenteranchorposition)
 - [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
 - [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)
 - [`pan-zoom.cancelInertia`](./pan-zoom.ts.mdmd.md#symbol-cancelinertia)
@@ -68,9 +63,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`runtime.clearAnchorRegistry`](./runtime.ts.mdmd.md#symbol-clearanchorregistry)
 - [`runtime.createRuntime`](./runtime.ts.mdmd.md#symbol-createruntime)
 - [`runtime.getAnchor`](./runtime.ts.mdmd.md#symbol-getanchor)
-- [`runtime.getAnchorWithHop`](./runtime.ts.mdmd.md#symbol-getanchorwithhop)
 - [`runtime.registerAnchor`](./runtime.ts.mdmd.md#symbol-registeranchor)
-- [`runtime.registerAnchorWithHop`](./runtime.ts.mdmd.md#symbol-registeranchorwithhop)
 - [`state.LocalMapState`](./state.ts.mdmd.md#symbol-localmapstate)
 - [`state.PathResult`](./state.ts.mdmd.md#symbol-pathresult)
 - [`state.StateStore`](./state.ts.mdmd.md#symbol-statestore)
@@ -78,12 +71,9 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`state.createStateStore`](./state.ts.mdmd.md#symbol-createstatestore)
 - [`state.setActivePath`](./state.ts.mdmd.md#symbol-setactivepath)
 - [`state.setHoveredSymbol`](./state.ts.mdmd.md#symbol-sethoveredsymbol)
-- [`subgraph-builder.buildPathSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-buildpathsubgraph)
-- [`subgraph-builder.createLocalSubgraph`](./subgraph-builder.ts.mdmd.md#symbol-createlocalsubgraph)
 - [`symbol-highlight.applySymbolHighlight`](./symbol-highlight.ts.mdmd.md#symbol-applysymbolhighlight)
 - [`symbol-highlight.clearSymbolHighlightDOM`](./symbol-highlight.ts.mdmd.md#symbol-clearsymbolhighlightdom)
 - [`symbol-highlight.computeSymbolHighlight`](./symbol-highlight.ts.mdmd.md#symbol-computesymbolhighlight)
-- [`types.BranchStrain`](./types.ts.mdmd.md#symbol-branchstrain) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi) (type-only)
@@ -96,9 +86,6 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`pin-state.retainFile`](../pin-state.ts.mdmd.md#symbol-retainfile)
 - [`pin-state.toggleFileSymbol`](../pin-state.ts.mdmd.md#symbol-togglefilesymbol)
 - [`symbolAnchors.buildNormalizedAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
-- [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`symbolAnchors.tryBuildNormalizedKeyFromAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-trybuildnormalizedkeyfromanchorkey)
-- [`ZoomBarrier`](../zoomBarrier.ts.mdmd.md#symbol-zoombarrier)
-- [`zoomBarrier.wheelPixels`](../zoomBarrier.ts.mdmd.md#symbol-wheelpixels)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

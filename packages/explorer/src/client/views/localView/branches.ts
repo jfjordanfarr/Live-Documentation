@@ -1,12 +1,13 @@
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import type { SymbolOrder } from "../../types";
 import { parentDirectory } from "../membraneView/pin-layout";
-import { getVisibleConnections, type PinSet } from "../pin-state";
+import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { orderBranches, type BranchOrder, type ForwardReference, type OrderInput } from "./branch-order";
 import { directoryState, NO_OPEN_DIRECTORIES, under, type OpenDirectories } from "./directory-state";
 import { rankByNetworkSimplex, type Constraint } from "./network-simplex";
-import { buildSelfLoopEdges } from "./subgraph-builder";
+import type { PathResult } from "./state";
+import { buildPathSubgraph, buildSelfLoopEdges } from "./subgraph-builder";
 import type { LocalEdge, LocalSubgraph } from "./types";
 
 /** A disclosed exploration, with every connection between its retained files. */
@@ -54,6 +55,8 @@ export interface OrderOptions {
 
 /** The dials of the layout's first two steps. */
 export interface BranchOptions {
+  /** An explicit path restricts the picture to its files and forward references between adjacent hops. */
+  path?: PathResult;
   /** How a card's rows stand; the layout's own order when omitted. */
   symbolOrder?: SymbolOrder;
   ranking?: RankingOptions;
@@ -216,21 +219,27 @@ export function exploreBranches(
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
-  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories"> = {}
+  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories" | "path"> = {}
 ): Exploration {
   const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
-  const opened = options.openDirectories ?? NO_OPEN_DIRECTORIES;
-  const retained = new Set([...(center ? [center.id] : []), ...pins.entries.map(pin => pin.nodeId)]);
+  const path = options.path;
+  const pathGraph = path ? buildPathSubgraph(path.nodeIds, graph, id, nodeId => byId.get(nodeId)) : null;
+  const pathColumns = path ? new Map((pathGraph?.nodes ?? []).map((node, column) => [node.id, column])) : null;
+  const opened = path ? NO_OPEN_DIRECTORIES : options.openDirectories ?? NO_OPEN_DIRECTORIES;
+  // A direct file link discloses its neighborhood without manufacturing persistent pins.
+  const disclosure = path ? { entries: [] } : !pins.entries.length && center ? retainFile(pins, center.id) : pins;
+  const retained = path ? new Set(pathColumns!.keys())
+    : new Set([...(center ? [center.id] : []), ...pins.entries.map(pin => pin.nodeId)]);
   const relevantSymbols = new Map<string, Set<string>>();
   const remember = (nodeId: string, symbol?: string): void => {
     const rows = relevantSymbols.get(nodeId) ?? new Set<string>();
     rows.add(symbol === "*" ? "*" : normalizeSymbolIdentifier(symbol) ?? "__internals__");
     relevantSymbols.set(nodeId, rows);
   };
-  for (const pin of pins.entries) remember(pin.nodeId, pin.symbol);
-  for (const { link } of getVisibleConnections(pins, graph.links)) {
+  for (const pin of disclosure.entries) remember(pin.nodeId, pin.symbol);
+  for (const { link } of getVisibleConnections(disclosure, graph.links)) {
     remember(id(link.source), link.sourceSymbol);
     remember(id(link.target), link.targetSymbol);
     for (const endpoint of [id(link.source), id(link.target)]) {
@@ -263,9 +272,11 @@ export function exploreBranches(
   const hiddenConnections = new Map<string, number>();
   for (const link of graph.links) {
     const sourceId = id(link.source), targetId = id(link.target);
-    if (retained.has(sourceId) && retained.has(targetId)) {
+    const followsPath = !pathColumns || pathColumns.get(sourceId) === (pathColumns.get(targetId) ?? -2) + 1;
+    if (retained.has(sourceId) && retained.has(targetId) && followsPath) {
       links.push({ sourceId, targetId, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol,
-        kind: link.kind, direction: sourceId === center?.id ? "outbound" : "inbound" });
+        kind: link.kind, direction: !path && sourceId === center?.id ? "outbound" : "inbound" });
+      if (path) { remember(sourceId, link.sourceSymbol); remember(targetId, link.targetSymbol); }
     } else {
       for (const endpoint of new Set([sourceId, targetId])) {
         if (shown.has(endpoint)) hiddenConnections.set(endpoint, (hiddenConnections.get(endpoint) ?? 0) + 1);
@@ -274,7 +285,7 @@ export function exploreBranches(
   }
   const keys = new Set(links.map(edgeKey));
   const party = files.filter(node => retained.has(node.id));
-  for (const node of party) for (const edge of buildSelfLoopEdges(node)) {
+  for (const node of path ? [] : party) for (const edge of buildSelfLoopEdges(node)) {
     if (!keys.has(edgeKey(edge))) { links.push(edge); keys.add(edgeKey(edge)); }
   }
   const directoryOfNode = (nodeId: string): string => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId);
@@ -285,7 +296,9 @@ export function exploreBranches(
     return [...[...closed.keys()].filter(inside), ...(contents?.files ?? []).filter(file => members.has(file))];
   }, directoryOfNode);
   const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back };
-  const rows = visibleRows(files, center?.id ?? null, relevantSymbols, symbolOrder);
+  if (path?.fromSymbol && pathGraph) remember(pathGraph.nodes[0].id, path.fromSymbol);
+  if (path?.toSymbol && pathGraph) remember(pathGraph.nodes[pathGraph.nodes.length - 1].id, path.toSymbol);
+  const rows = visibleRows(files, path ? null : center?.id ?? null, relevantSymbols, symbolOrder);
   for (const box of boxes) rows.set(box.id, []);
   // Every directory the picture may draw as a membrane: an ancestor of something shown, the scan root aside.
   const directories = new Map<string, DirectoryDisclosure>();
@@ -313,7 +326,7 @@ export function exploreBranches(
   }
   const root = commonDirectory(nodes.map(node => parentDirectory(node.codeRelativePath)));
   return {
-    subgraph: { center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },
+    subgraph: { center: path ? pathGraph?.center ?? null : center, nodes, links, inboundIds: new Set(), outboundIds: new Set() },
     ranking,
     hiddenConnections,
     relevantSymbols,

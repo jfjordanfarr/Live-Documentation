@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-10-08T01:58:14.518Z
+- Generated At: 2026-10-12T18:16:06.480Z
 
 ## Authored
 ### Purpose
@@ -12,8 +12,7 @@ Type definitions for the Local Map view. Centralises interfaces for view options
 
 ### Notes
 - Created 2025-12-04 when `localView.ts` was split into a modular directory.
-- `LocalSubgraph` describes the 3-column layout (inbound, center, outbound nodes).
-- `CenterAlignmentGuides` tracks vertical positions for connection line rendering.
+- `LocalSubgraph` carries the files and annotated references of the current disclosure.
 - `LocalSubgraph.center` may be null since 2026-10-08: a branch picture entered by directory has no file in focus.
 
 ## Generated
@@ -35,19 +34,9 @@ Created 2025-12-04 when the monolithic `localView.ts` was extracted into
 the `localView/` module. `nodesById` was added on 2025-12-05 to support
 click-to-navigate type references in the Local Map symbol cards.
 
-#### `BranchStrain` {#symbol-branchstrain}
-- Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L45)
-
-##### `BranchStrain` — Summary
-How hard the retained exploration's layout is working: the references that
-skip columns and are threaded through lanes, and the references that read
-against the columns and are drawn as stubs. The Explorer compares their sum
-with the tuning's nudge threshold to suggest the Force Graph.
-
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L57)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L42)
 
 ##### `LocalViewApi` — Summary
 Public contract the Local Map exposes to the parent Explorer application.
@@ -57,7 +46,7 @@ Independent exploration pins belong to the shared Explorer state.
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L98)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L80)
 
 ##### `LocalEdge` — Summary
 A directed edge in the local subgraph, annotated with direction relative
@@ -73,7 +62,7 @@ Created 2025-12-04 during Local Map modularization.
 
 #### `LocalSubgraphLink` {#symbol-localsubgraphlink}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L110)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L92)
 - Returns: [`LocalEdge`](#symbol-localedge)
 
 ##### `LocalSubgraphLink` — Summary
@@ -81,34 +70,16 @@ Alias for LocalEdge - used in subgraph contexts.
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L119)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L99)
 
 ##### `LocalSubgraph` — Summary
-The 1-hop neighborhood of the center node, partitioned into inbound
-(upstream) and outbound (downstream) ID sets.
-
-Built by `createLocalSubgraph()` and consumed by the render pipeline
-to lay out the three-column Local Map view.
-
-#### `CenterAlignmentGuides` {#symbol-centeralignmentguides}
-- Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L140)
-
-##### `CenterAlignmentGuides` — Summary
-Captures per-symbol anchor positions and card vertical centers in the
-center column, enabling SVG Bezier connection lines to align precisely
-with symbol dots.
-
-`anchors` maps `symbolSlug` to a Y-coordinate, while `cardCenters`
-maps `nodeId` to the vertical midpoint of its card element.
-
-##### `CenterAlignmentGuides` — Remarks
-Created 2025-12-04 during the SVG Bezier connector work. Used by
-`collectCenterAlignmentGuides()` and `lookupCenterAnchorPosition()`.
+The graph disclosed by the current Local Map scope: its files and
+annotated references. Path construction also classifies adjacent hops
+by direction; the common scene determines their layout.
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L149)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L112)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -116,7 +87,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L167)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L130)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -129,7 +100,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L180)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L143)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -141,7 +112,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L195)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L158)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.

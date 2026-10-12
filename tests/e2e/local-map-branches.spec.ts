@@ -59,7 +59,10 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Clear exploration pins" }).click();
-  await expect(page.locator(".branch-mode")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
+  await expect(page.locator("#map-container .symbol-label-wrapper[aria-pressed='true']")).toHaveCount(0);
+  await expect(page.locator("#map-container .local-placed")).toBeVisible();
+  expect(await page.locator("#map-container .local-membrane").count()).toBeGreaterThan(0);
 });
 
 test("both perspective changes keep the subject at its screen anchor during motion and preserve branch history", async ({ page }) => {
@@ -89,12 +92,12 @@ test("both perspective changes keep the subject at its screen anchor during moti
     });
     return samples;
   });
-  await page.getByRole("button", { name: "Force Graph · 3D", exact: true }).click();
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   const samples = await recording;
   expect(samples.length).toBeGreaterThan(4);
   expect(Math.max(...samples.map(p => Math.hypot(p.x - anchor.x, p.y - anchor.y)))).toBeLessThan(3);
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}processor.ts`);
-  await page.getByRole("button", { name: "Local Map · 2D", exact: true }).click();
+  await page.getByRole("button", { name: "2D", exact: true }).click();
   const after = (await title.boundingBox())!;
   expect(Math.hypot(after.x + after.width / 2 - anchor.x, after.y + after.height / 2 - anchor.y)).toBeLessThan(3);
   await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("2 pins ×");
@@ -120,9 +123,9 @@ test("file retention, individual pruning and close work by keyboard with reduced
   await expect(symbol).toBeFocused();
   await page.keyboard.press("Space");
   await expect(symbol).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Force Graph · 3D", exact: true }).click();
+  await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}helpers.ts`);
-  await page.getByRole("button", { name: "Local Map · 2D", exact: true }).click();
+  await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(symbol).toHaveAttribute("aria-pressed", "true");
   await file.getByRole("button", { name: "Close helpers.ts", exact: true }).focus();
   await page.keyboard.press("Enter");
@@ -146,8 +149,8 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   const routes = await page.locator('#map-connections .connection-path[data-target-id="scripts/slopcop/config.ts"]').evaluateAll(paths => paths.map(path => path.getAttribute("d")!));
   expect(routes.length).toBeGreaterThan(0);
   expect(routes.every(route => route.includes(" C ") && !route.includes(" Q "))).toBe(true);
-  // Two files and their neighbours strain nothing: no nudge toward the Force Graph.
-  await expect(page.locator(".perspective-strain")).toBeHidden();
+  // The perspective choice carries no unsolicited density message.
+  await expect(page.locator(".perspective-strain")).toHaveCount(0);
   await file("symbolReferences.ts").getByRole("button", { name: "Close symbolReferences.ts", exact: true }).click();
   // The closed card is the one last acted on, so the move holds it still; at rest it stands where it stood.
   await localMapSettled(page);
@@ -196,10 +199,9 @@ test("a retained exploration threads skipped references through lanes: nothing o
   // The old detour drew every skipped reference as an orthogonal route; a threaded wire is curves and lane runs only.
   const detours = await page.locator('#map-connections path.connection-path:not(.back-route)').evaluateAll(paths => paths.filter(path => /\sQ\s.*\sQ\s/u.test(path.getAttribute("d") ?? "")).length);
   expect(detours).toBe(0);
-  // Over a hundred references thread columns here, past the default threshold: the Local Map says so beside the 3D control.
-  const nudge = page.locator(".perspective-strain");
-  await expect(nudge).toBeVisible();
-  await expect(nudge).toHaveAttribute("title", /references skip columns/);
+  // Dense scopes also leave the perspective choice to the person.
+  await expect(page.locator(".perspective-strain")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "3D", exact: true })).toHaveAttribute("title", "Force Graph");
 });
 
 test("a hovered row dims every wire it does not touch, the bundles' shared runs among them, and the runs return at rest", async ({ page }) => {

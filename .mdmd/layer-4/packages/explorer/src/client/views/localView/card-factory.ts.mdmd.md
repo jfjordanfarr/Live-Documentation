@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-08T01:58:14.145Z
+- Generated At: 2026-10-12T18:02:21.698Z
 
 ## Authored
 ### Purpose
@@ -12,8 +12,8 @@ Creates individual node cards for the Local Map view. Each card displays artifac
 
 ### Notes
 
-- Since 2026-10-05 the card draws its symbol rows alphabetically when that symbol order is chosen in Tuning, wherever a card is drawn; the layout order is applied afterwards by the branch renderer, where there is a layout, and the order of appearance is the Live Doc's.
-Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` function builds the DOM structure for each artifact in the three-column layout, including symbol sections and type badges.
+- Since 2026-10-05 the card draws its symbol rows alphabetically when that symbol order is chosen in Tuning, wherever a card is drawn; the layout order is applied afterwards by the branch renderer, for every scope, and the order of appearance is the Live Doc's.
+Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` function builds the DOM structure for each artifact in the shared scene, including symbol sections and type badges.
 
 File bodies retain all interfaces; row buttons toggle individual symbols and support keyboard use. The X releases the file's expansion while leaving any interfaces required by other pins visible. Type badges retain their source row and expose the referenced artifact's evidence.
 - `createClosedDirectory` (2026-10-08, [the decisions log](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): a closed directory's box, a pseudo-node without symbols in the membrane's style, named and counted by `countsOf` ("81 files, 2 directories"), a button that opens the directory in place; it carries no pin, since a directory with a party file under it is at least encasing and no wire ever reaches a closed box. `countsOf` also words a label's count of what an encasing membrane hides.
@@ -23,7 +23,7 @@ File bodies retain all interfaces; row buttons toggle individual symbols and sup
 ### Public Symbols
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L26)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L25)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -32,7 +32,6 @@ Creates a node card element for the Local Map view.
 ##### `createNodeCard` — Parameters
 - `columnRole`: The role of the column this card belongs to
 - `controller`: The LocalViewController instance
-- `hopIndex`: Optional hop index for multi-hop visualization
 - `node`: The node data to render
 
 ##### `createNodeCard` — Returns
@@ -40,7 +39,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L159)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L151)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -51,14 +50,14 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L182)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L174)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
 
 #### `createSymbolSection` {#symbol-createsymbolsection}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L199)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L190)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createSymbolSection` — Summary
@@ -68,7 +67,6 @@ and the "Internals" pseudo-symbol.
 ##### `createSymbolSection` — Parameters
 - `columnRole`: The role of the column
 - `controller`: The LocalViewController instance
-- `hopIndex`: Optional hop index for multi-hop visualization
 - `node`: The node data
 
 ##### `createSymbolSection` — Returns
@@ -76,7 +74,7 @@ The symbol section element
 
 #### `createTypeReferenceIndicator` {#symbol-createtypereferenceindicator}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L375)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L362)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `typeRefs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeReferenceIndicator` — Summary
@@ -91,7 +89,7 @@ The indicator element
 
 #### `createTypeBadge` {#symbol-createtypebadge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L426)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L413)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `refs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeBadge` — Summary

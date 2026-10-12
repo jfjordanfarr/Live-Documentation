@@ -23,7 +23,7 @@ import { fileConnections } from "./fileConnections";
 import { focusedCameraPosition, screenAnchorTranslation, type CameraPoint } from "./forceGraphCamera";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET } from "./pin-state";
-import { ZoomBarrier, wheelPixels } from "./zoomBarrier";
+import { wheelPixels } from "./wheel";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
@@ -65,8 +65,6 @@ export interface ForceGraphViewOptions {
   relatedDocLinks?: RelatedDocLink[];
   onShowBundledDoc: (docPath: string) => void;
   onFocusNode: (node: ExplorerNodePayload) => void;
-  onZoomIn?: () => void;
-  onZoomBoundary?: (active: boolean) => void;
   getPath?: () => readonly string[] | undefined;
 }
 
@@ -108,7 +106,6 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let subjectAnchor: { x: number; y: number } | null = null;
   let simulationRunning = true;
   let ready = false;
-  const barrier = new ZoomBarrier();
   const readyWaiters: Array<() => void> = [];
 
   function getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
@@ -221,7 +218,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (!force && node?.id === focusedId) return;
     focusedId = node?.id ?? null;
     zoomMotion = null;
-    barrier.reset(); options.onZoomBoundary?.(false);
+
     subjectAnchor = null;
     following = !!node;
     focusMotion = null;
@@ -440,7 +437,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       }
     });
     container.append(focusLabel);
-    const interrupt = (): void => { following = false; focusMotion = null; subjectAnchor = null; zoomMotion = null; barrier.reset(); options.onZoomBoundary?.(false); };
+    const interrupt = (): void => { following = false; focusMotion = null; subjectAnchor = null; zoomMotion = null;  };
     let press: { x: number; y: number } | null = null;
     container.addEventListener("pointerdown", event => { press = { x: event.clientX, y: event.clientY }; });
     container.addEventListener("pointermove", event => {
@@ -480,17 +477,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const target = new Vector3().copy(previous?.toTarget ?? controls.target);
       const distance = from.distanceTo(point);
       const delta = wheelPixels(event.deltaY, event.deltaMode, container.clientHeight);
-      if (options.onZoomIn && delta < 0 && (distance <= 65.01 || barrier.waiting)) {
-        options.onZoomBoundary?.(true);
-        if (barrier.push(-delta, performance.now())) {
-          options.onZoomBoundary?.(false); options.onZoomIn();
-        }
-        return;
-      }
-      barrier.reset(); options.onZoomBoundary?.(false);
       interrupt();
       const nextDistance = Math.max(65, Math.min(20000, distance * Math.exp(delta * .0015)));
-      if (delta < 0 && nextDistance === 65) { barrier.push(-delta, performance.now()); options.onZoomBoundary?.(true); }
       const ratio = nextDistance / Math.max(.001, distance);
       zoomMotion = { started: performance.now(), from: camera.position.clone(), fromTarget: controls.target.clone(),
         to: point.clone().add(from.sub(point).multiplyScalar(ratio)),

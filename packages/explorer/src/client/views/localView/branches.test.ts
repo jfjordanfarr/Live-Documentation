@@ -13,6 +13,58 @@ function node(id: string, archetype = "implementation"): ExplorerNodePayload {
 const dependency = ([sourceId, targetId]: [string, string]): LocalEdge => ({ sourceId, targetId, direction: "outbound", kind: "dependency" });
 
 describe("independent Local Map branches", () => {
+  it("opens a file's filtered neighborhood through the common layout without storing pins", () => {
+    const files = ["lib/provider", "app/start", "app/user", "other/remote", "tests/check"].map(id => node(id));
+    const wires = [
+      { source: files[1].id, target: files[0].id, sourceSymbol: "value", targetSymbol: "value", kind: "import" as const },
+      { source: files[2].id, target: files[1].id, kind: "dependency" as const },
+      { source: files[0].id, target: files[1].id, kind: "dependency" as const },
+      { source: files[3].id, target: files[2].id, kind: "dependency" as const },
+      { source: files[4].id, target: files[1].id, kind: "dependency" as const }
+    ];
+    const graph = { nodes: files, links: wires, stats: { nodes: 5, links: 5, missingDependencies: 0 } };
+    const pins = { entries: [] };
+    const result = exploreBranches(files[1], graph, pins, file => !file.id.startsWith("tests/"));
+    expect(result.subgraph.nodes.map(file => file.id).sort()).toEqual(["app/start", "app/user", "lib/provider"]);
+    expect(result.subgraph.links).toHaveLength(3);
+    expect(result.subgraph.links).toContainEqual(expect.objectContaining({ kind: "import", sourceSymbol: "value", targetSymbol: "value" }));
+    expect(result.directories.has("app")).toBe(true);
+    expect(result.directories.has("lib")).toBe(true);
+    expect(result.hiddenConnections.get("app/user")).toBe(1);
+    expect(result.ranking.back.size).toBe(1);
+    expect(pins.entries).toEqual([]);
+    const isolated = exploreBranches(files[1], { ...graph, links: [] }, pins, () => false);
+    expect(isolated.subgraph.nodes).toEqual([files[1]]);
+    expect(isolated.subgraph.links).toEqual([]);
+  });
+
+  it("lays out only a path's forward adjacent hops while preserving endpoint symbols and unrelated pins", () => {
+    const files = ["api/model", "service/handler", "ui/view", "outside/file"].map(id => node(id));
+    const links = [
+      { source: files[1].id, target: files[0].id, targetSymbol: "value", kind: "dependency" as const },
+      { source: files[2].id, target: files[1].id, targetSymbol: "value", kind: "dependency" as const },
+      { source: files[0].id, target: files[1].id, kind: "dependency" as const },
+      { source: files[2].id, target: files[0].id, kind: "dependency" as const },
+      { source: files[3].id, target: files[2].id, kind: "dependency" as const }
+    ];
+    const graph = { nodes: files, links, stats: { nodes: 4, links: 5, missingDependencies: 0 } };
+    const pins = addPin(EMPTY_PIN_SET, files[3].id, "*");
+    files[2].publicSymbols.push("unrelated");
+    const result = exploreBranches(files[2], graph, pins, () => false, {
+      path: { nodeIds: files.slice(0, 3).map(file => file.id), fromSymbol: "value", toSymbol: "value" },
+      openDirectories: new Set(["outside"])
+    });
+    expect(result.subgraph.nodes).toEqual(files.slice(0, 3));
+    expect(result.subgraph.links).toHaveLength(2);
+    expect(result.subgraph.links.every(edge => edge.direction === "inbound")).toBe(true);
+    expect(result.ranking.columns.map(column => column.map(file => file.id))).toEqual(files.slice(0, 3).map(file => [file.id]));
+    expect(result.ranking.back.size).toBe(0);
+    expect([...result.directories.keys()].sort()).toEqual(["api", "service", "ui"]);
+    expect(result.relevantSymbols.get(files[2].id)).toEqual(new Set(["__internals__", "value"]));
+    expect(result.order.rows.get(files[2].id)).toEqual(["value", "__internals__"]);
+    expect(pins.entries).toEqual([{ nodeId: files[3].id, symbol: "*" }]);
+  });
+
   it("places an independent provider beside its consumer instead of skipping an unrelated column", () => {
     const files = ["markdown", "symbols", "config", "check"].map(id => node(id));
     const edges: LocalEdge[] = ([["symbols", "markdown"], ["check", "symbols"], ["check", "config"]] as Array<[string, string]>).map(dependency);

@@ -137,13 +137,15 @@ describe("pan-zoom", () => {
       expect(newTransform.k).toBeLessThan(1);
     });
 
-    it("clamps zoom level to minimum 0.4", () => {
+    it("zooms out to 0.05 while preserving the point under the cursor", () => {
       const { runtime, getTransform } = createMockRuntime({ x: 0, y: 0, k: 0.5 });
 
       // Large negative delta should hit the floor
       zoomAtPoint(runtime, 100, 100, -10, () => {});
 
-      expect(getTransform().k).toBe(0.4);
+      expect(getTransform().k).toBe(0.05);
+      expect((100 - getTransform().x) / getTransform().k).toBeCloseTo(200, 5);
+      expect((100 - getTransform().y) / getTransform().k).toBeCloseTo(200, 5);
     });
 
     it("clamps zoom level to maximum 3", () => {

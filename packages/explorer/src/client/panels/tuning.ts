@@ -39,7 +39,6 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const laceReachInput = document.getElementById("tuning-lace-reach") as HTMLInputElement | null;
   const laceCurlInput = document.getElementById("tuning-lace-curl") as HTMLInputElement | null;
   const laceWidthInput = document.getElementById("tuning-lace-width") as HTMLInputElement | null;
-  const strainNudgeInput = document.getElementById("tuning-strain-nudge") as HTMLInputElement | null;
   const symbolOrderSelect = document.getElementById("tuning-symbol-order") as HTMLSelectElement | null;
   const moveMsInput = document.getElementById("tuning-move-ms") as HTMLInputElement | null;
   const holdStillSelect = document.getElementById("tuning-hold-still") as HTMLSelectElement | null;
@@ -124,7 +123,6 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     state.tuning.localMap.laceReach = setSlider(laceReachInput, "tuning-lace-reach-value", state.tuning.localMap.laceReach);
     state.tuning.localMap.laceCurl = setSlider(laceCurlInput, "tuning-lace-curl-value", state.tuning.localMap.laceCurl);
     state.tuning.localMap.laceWidth = setSlider(laceWidthInput, "tuning-lace-width-value", state.tuning.localMap.laceWidth);
-    state.tuning.localMap.strainNudge = setSlider(strainNudgeInput, "tuning-strain-nudge-value", state.tuning.localMap.strainNudge, v => String(v));
     if (symbolOrderSelect) symbolOrderSelect.value = state.tuning.localMap.symbolOrder;
     state.tuning.localMap.moveMs = setSlider(moveMsInput, "tuning-move-ms-value", state.tuning.localMap.moveMs, v => String(v));
     if (holdStillSelect) holdStillSelect.value = state.tuning.localMap.holdStill;
@@ -204,14 +202,4 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   rerenderSlider(membraneEvennessInput, "tuning-membrane-evenness-value", v => { state.tuning.localMap.membraneEvenness = v; });
   rerenderSlider(rowLevelnessInput, "tuning-row-levelness-value", v => { state.tuning.localMap.rowLevelness = v; });
 
-  // The nudge threshold changes a status, not a drawing: the view re-renders so the perspective controls read it again.
-  if (strainNudgeInput) {
-    const output = document.getElementById("tuning-strain-nudge-value") as HTMLOutputElement | null;
-    strainNudgeInput.addEventListener("input", () => {
-      state.tuning.localMap.strainNudge = parseFloat(strainNudgeInput.value);
-      if (output) output.textContent = strainNudgeInput.value;
-      onTuningChange();
-      if (state.view === "map") onRender();
-    });
-  }
 }

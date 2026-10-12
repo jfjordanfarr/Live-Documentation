@@ -67,8 +67,27 @@ async function wireEnds(page: Page): Promise<Array<{ startPin: string; endPin: s
   });
 }
 
-const columnLabels = (page: Page): Promise<string[]> =>
-  page.evaluate(() => [...document.querySelectorAll<HTMLElement>("#map-container .local-column-label")].map(el => el.textContent?.trim() ?? ""));
+const pathFiles = (page: Page): Promise<string[]> =>
+  page.locator("#map-container .path-node").evaluateAll(columns => columns
+    .sort((a, b) => Number((a as HTMLElement).dataset.column) - Number((b as HTMLElement).dataset.column))
+    .map(column => column.querySelector<HTMLElement>(".node-card")!.dataset.id!));
+
+for (const [base, file] of [["/", "packages/explorer/src/client/index.ts"], [BASE, DEPENDENT]]) {
+  test(`a direct file link starts in the directory-aware layout: ${base}`, async ({ page }) => {
+    await page.goto(`${base}?view=local&node=${encodeURIComponent(file)}`);
+    await expect(page.locator("#map-container .local-placed")).toBeVisible();
+    const subject = page.locator(`#map-container .node-card[data-id="${file}"]`);
+    await expect(subject).toBeVisible();
+    expect(await subject.locator("xpath=ancestor::*[contains(@class,'local-directory-band')]").count()).toBeGreaterThan(0);
+    const ids = () => page.locator("#map-container .node-card").evaluateAll(cards => cards.map(card => (card as HTMLElement).dataset.id).sort());
+    const before = await ids();
+    expect(before.length).toBeGreaterThan(2);
+    await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
+    await subject.locator(".node-title").click();
+    expect(await ids(), "retaining the selected file does not switch to a different neighborhood renderer").toEqual(before);
+    await expect(page.locator("#map-container .local-placed")).toBeVisible();
+  });
+}
 
 test.describe("Local Map path mode", () => {
   test("asked with the dependent first, it draws nothing and offers the reverse; the reverse draws blue to green, and Clear returns", async ({ page }) => {
@@ -102,7 +121,9 @@ test.describe("Local Map path mode", () => {
     expect(page.url()).toContain(`from=${encodeURIComponent(DEPENDENCY)}`);
     expect(page.url()).toContain(`to=${encodeURIComponent(DEPENDENT)}`);
     await expect(status).toHaveText("Path found: 4 files");
-    expect(await columnLabels(page)).toEqual(["FROM", "Via 1", "Via 2", "TO"]);
+    expect(await pathFiles(page)).toEqual([DEPENDENCY, "Gateway/Wcf/HubProxy.cs", "Gateway/Controllers/PaymentsController.cs", DEPENDENT]);
+    await expect(page.locator(".path-mode.local-placed")).toBeVisible();
+    expect(await page.locator("#map-container .local-membrane").count()).toBeGreaterThan(0);
     const strip = await page.locator("#pathfind-path .pathfind-path-hop-name").allTextContents();
     expect(strip).toEqual(["IPaymentHub.cs", "HubProxy.cs", "PaymentsController.cs", "GatewayClient.cs"]);
 
@@ -157,7 +178,9 @@ test.describe("Local Map path mode", () => {
     await page.waitForSelector("#view-map.has-path");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
-    expect(await columnLabels(page)).toEqual(["FROM", "Via 1", "Via 2", "TO"]);
+    expect(await pathFiles(page)).toEqual([DEPENDENCY, "Gateway/Wcf/HubProxy.cs", "Gateway/Controllers/PaymentsController.cs", DEPENDENT]);
+    await expect(page.locator(".path-mode.local-placed")).toBeVisible();
+    expect(await page.locator("#map-container .local-membrane").count()).toBeGreaterThan(0);
     expect((await wireEnds(page)).length).toBe(drawn.length);
   });
 

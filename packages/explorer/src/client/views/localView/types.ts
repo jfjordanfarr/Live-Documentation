@@ -22,9 +22,6 @@ import type { ExplorerState, TestCoverageMap } from "../../types";
 export interface LocalViewOptions {
   state: ExplorerState;
   /** Persist shared exploration after an independent pin changes. */
-  /** Deliberate zoom boundary into the file overview. */
-  onZoomOut?: () => void;
-  onZoomBoundary?: (active: boolean) => void;
   onExplorationChange?: (leavingPath?: boolean) => void;
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
@@ -37,18 +34,6 @@ export interface LocalViewOptions {
 }
 
 /**
- * How hard the retained exploration's layout is working: the references that
- * skip columns and are threaded through lanes, and the references that read
- * against the columns and are drawn as stubs. The Explorer compares their sum
- * with the tuning's nudge threshold to suggest the Force Graph.
- */
-export interface BranchStrain {
-  threaded: number;
-  back: number;
-  columns: number;
-}
-
-/**
  * Public contract the Local Map exposes to the parent Explorer application.
  *
  * Exposes rendering, camera alignment and explicit FROM/TO pathfinding.
@@ -56,13 +41,10 @@ export interface BranchStrain {
  */
 export interface LocalViewApi {
   render(): void;
-  /** The strain of the retained exploration drawn now, or null outside branch mode. */
-  getStrain(): BranchStrain | null;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
   drawConnections(): void;
   highlightSelection(): void;
-  ensureReadable(): void;
   zoomIn(): void;
   zoomOut(): void;
   resetZoom(): void;
@@ -110,11 +92,9 @@ export interface LocalEdge {
 export type LocalSubgraphLink = LocalEdge;
 
 /**
- * The 1-hop neighborhood of the center node, partitioned into inbound
- * (upstream) and outbound (downstream) ID sets.
- *
- * Built by `createLocalSubgraph()` and consumed by the render pipeline
- * to lay out the three-column Local Map view.
+ * The graph disclosed by the current Local Map scope: its files and
+ * annotated references. Path construction also classifies adjacent hops
+ * by direction; the common scene determines their layout.
  */
 export interface LocalSubgraph {
   /** The file in focus; null for a picture entered by directory, which has none (2026-10-08). */
@@ -123,23 +103,6 @@ export interface LocalSubgraph {
   links: LocalEdge[];
   inboundIds: Set<string>;
   outboundIds: Set<string>;
-}
-
-/**
- * Captures per-symbol anchor positions and card vertical centers in the
- * center column, enabling SVG Bezier connection lines to align precisely
- * with symbol dots.
- *
- * `anchors` maps `symbolSlug` to a Y-coordinate, while `cardCenters`
- * maps `nodeId` to the vertical midpoint of its card element.
- *
- * @remarks
- * Created 2025-12-04 during the SVG Bezier connector work. Used by
- * `collectCenterAlignmentGuides()` and `lookupCenterAnchorPosition()`.
- */
-export interface CenterAlignmentGuides {
-  anchors: Map<string, number>;
-  cardCenters: Map<string, number>;
 }
 
 /**

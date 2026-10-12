@@ -12,11 +12,6 @@ import type { LocalSubgraph, LocalSubgraphLink } from "./types";
 import type { ExplorerNodePayload, ExplorerLinkPayload, ExplorerGraphPayload } from "../../../shared/types";
 
 /**
- * Filter function to determine if a node should be included in the subgraph.
- */
-export type NodeFilter = (node: ExplorerNodePayload) => boolean;
-
-/**
  * Function to resolve a link endpoint to a node ID.
  */
 export type LinkEndpointResolver = (endpoint: ExplorerLinkPayload["source"]) => string;
@@ -25,82 +20,6 @@ export type LinkEndpointResolver = (endpoint: ExplorerLinkPayload["source"]) => 
  * Function to resolve a node by ID.
  */
 export type NodeResolver = (id: string) => ExplorerNodePayload | undefined;
-
-/**
- * Creates a local subgraph centered on a node.
- *
- * This is a pure function that builds a subgraph containing:
- * - The center node
- * - All direct neighbors (nodes connected by a single edge)
- * - All edges between the center and neighbors
- * - Self-loop edges from intra-file type references
- */
-export function createLocalSubgraph(
-  center: ExplorerNodePayload,
-  graphData: ExplorerGraphPayload,
-  resolveLinkEndpoint: LinkEndpointResolver,
-  resolveNode: NodeResolver,
-  shouldIncludeNode: NodeFilter
-): LocalSubgraph {
-  const neighbors = new Map<string, ExplorerNodePayload>();
-  const linkResults: LocalSubgraphLink[] = [];
-  const inboundIds = new Set<string>();
-  const outboundIds = new Set<string>();
-
-  graphData.links.forEach(edge => {
-    const sourceId = resolveLinkEndpoint(edge.source);
-    const targetId = resolveLinkEndpoint(edge.target);
-    const kind = edge.kind ?? "dependency";
-
-    if (sourceId === center.id) {
-      const neighbor = resolveNode(targetId);
-      if (neighbor) {
-        if (!shouldIncludeNode(neighbor) && neighbor.id !== center.id) {
-          return;
-        }
-        neighbors.set(neighbor.id, neighbor);
-        outboundIds.add(neighbor.id);
-        linkResults.push({
-          sourceId,
-          targetId,
-          direction: "outbound",
-          kind,
-          sourceSymbol: edge.sourceSymbol,
-          targetSymbol: edge.targetSymbol
-        });
-      }
-    } else if (targetId === center.id) {
-      const neighbor = resolveNode(sourceId);
-      if (neighbor) {
-        if (!shouldIncludeNode(neighbor) && neighbor.id !== center.id) {
-          return;
-        }
-        neighbors.set(neighbor.id, neighbor);
-        inboundIds.add(neighbor.id);
-        linkResults.push({
-          sourceId,
-          targetId,
-          direction: "inbound",
-          kind,
-          sourceSymbol: edge.sourceSymbol,
-          targetSymbol: edge.targetSymbol
-        });
-      }
-    }
-  });
-
-  // Generate self-loop edges from intra-file type references
-  const selfLoopEdges = buildSelfLoopEdges(center);
-  linkResults.push(...selfLoopEdges);
-
-  return {
-    center,
-    nodes: [center, ...neighbors.values()],
-    links: linkResults,
-    inboundIds,
-    outboundIds
-  };
-}
 
 /**
  * Build self-loop edges from intra-file type references.

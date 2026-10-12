@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-08T01:58:13.640Z
+- Generated At: 2026-10-12T18:02:21.206Z
 
 ## Authored
 ### Purpose
@@ -69,7 +69,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L134)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L129)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -78,14 +78,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L137)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L132)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L146)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L141)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -93,21 +93,21 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L159)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L154)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
 
 #### `CircuitTransform` {#symbol-circuittransform}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L162)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L157)
 
 ##### `CircuitTransform` — Summary
 Pan/zoom transform for the Circuit Board (treemap) view.
 
 #### `DirectoryNode` {#symbol-directorynode}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L172)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L167)
 
 ##### `DirectoryNode` — Summary
 Tree node representing a directory in the workspace.

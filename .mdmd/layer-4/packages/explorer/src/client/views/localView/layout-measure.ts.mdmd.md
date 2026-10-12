@@ -4,12 +4,12 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-10-08T01:58:14.331Z
+- Generated At: 2026-10-12T18:02:21.847Z
 
 ## Authored
 ### Purpose
 
-Pure functions for measuring layout extents and computing fit transforms. Calculates bounding boxes, determines the camera that frames the selected card or a drawn path, and manages column vertical alignment.
+Pure functions for measuring layout extents and computing fit transforms. Calculates bounding boxes, determines the camera that frames the selected card or a drawn path.
 
 ### Notes
 
@@ -34,23 +34,16 @@ Represents bounding box dimensions.
 ##### `LayoutExtents` — Summary
 Represents layout extent measurements.
 
-#### `CenterAlignmentGuides` {#symbol-centeralignmentguides}
-- Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L36)
-
-##### `CenterAlignmentGuides` — Summary
-Represents anchor Y-position guides for column alignment.
-
 #### `clamp` {#symbol-clamp}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L46)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L36)
 
 ##### `clamp` — Summary
 Clamps a value to a range.
 
 #### `measureElementsBounds` {#symbol-measureelementsbounds}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L53)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L43)
 - Returns: [`Bounds`](#symbol-bounds)
 - Parameters: `elements`: `Iterable`; `containerRect`: `DOMRect`
 
@@ -59,7 +52,7 @@ Measures the combined bounds of multiple elements.
 
 #### `measureElementBounds` {#symbol-measureelementbounds}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L97)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L87)
 - Returns: [`Bounds`](#symbol-bounds)
 - Parameters: `containerRect`: `DOMRect`
 
@@ -68,7 +61,7 @@ Measures the bounds of a single element.
 
 #### `withTransformReset` {#symbol-withtransformreset}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L111)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L101)
 - Returns: `T`
 - Parameters: `containerRect`: `DOMRect`
 
@@ -78,7 +71,7 @@ then restores the original transform.
 
 #### `computeLayoutExtents` {#symbol-computelayoutextents}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L133)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L123)
 - Returns: [`LayoutExtents`](#symbol-layoutextents)
 
 ##### `computeLayoutExtents` — Summary
@@ -86,7 +79,7 @@ Computes layout extents for the content and focus element.
 
 #### `computeFitTransform` {#symbol-computefittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L186)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L176)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `extents`: [`LayoutExtents`](#symbol-layoutextents); `viewportRect`: `DOMRect`
 
@@ -95,7 +88,7 @@ Computes the target transform to fit content within the viewport.
 
 #### `computePathFitTransform` {#symbol-computepathfittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L268)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L258)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: `DOMRect`
 
@@ -105,40 +98,9 @@ centred when the whole path fits and otherwise with its first file at the
 left edge. A path is read from its first file, so what the frame cannot hold
 lies to the right, one pan away, and never the start.
 
-#### `buildAnchorGuideKey` {#symbol-buildanchorguidekey}
-- Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L282)
-
-##### `buildAnchorGuideKey` — Summary
-Builds an anchor guide key for column alignment lookups.
-
-#### `collectCenterAlignmentGuides` {#symbol-collectcenteralignmentguides}
-- Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L294)
-- Returns: [`CenterAlignmentGuides`](#symbol-centeralignmentguides)
-- Parameters: `containerRect`: `DOMRect`
-
-##### `collectCenterAlignmentGuides` — Summary
-Collects center alignment guides from a column element.
-
-#### `lookupCenterAnchorPosition` {#symbol-lookupcenteranchorposition}
-- Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L346)
-- Parameters: `guides`: [`CenterAlignmentGuides`](#symbol-centeralignmentguides)
-
-##### `lookupCenterAnchorPosition` — Summary
-Looks up a center anchor position from guides, with fallback.
-
-#### `applyColumnVerticalCentering` {#symbol-applycolumnverticalcentering}
-- Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L378)
-
-##### `applyColumnVerticalCentering` — Summary
-Applies vertical centering to columns within a layout root.
-
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L426)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L272)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary

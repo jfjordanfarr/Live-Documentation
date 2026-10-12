@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-07T21:57:24.747Z
+- Generated At: 2026-10-12T18:02:22.660Z
 
 ## Authored
 ### Purpose
@@ -253,12 +253,6 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-self-loop-taper-value` {#symbol-tuning-self-loop-taper-value}
-- Type: variable
-
-#### `tuning-strain-nudge` {#symbol-tuning-strain-nudge}
-- Type: variable
-
-#### `tuning-strain-nudge-value` {#symbol-tuning-strain-nudge-value}
 - Type: variable
 
 #### `tuning-stub-factor` {#symbol-tuning-stub-factor}

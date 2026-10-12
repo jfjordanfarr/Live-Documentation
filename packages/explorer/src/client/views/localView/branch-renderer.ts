@@ -111,6 +111,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const { state, graphData } = controller.options;
   const tuning = state.tuning.localMap;
   const { root } = stage;
+  const path = controller.getActivePath();
   // A move still running ends where it stands, and the search for the previous picture ends: the new picture starts
   // from the frame the page shows and searches anew.
   stopSearch(stage);
@@ -123,12 +124,14 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
     symbolOrder: tuning.symbolOrder,
     ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie },
     membraneDepth: tuning.membraneDepth,
-    openDirectories: controller.openDirectories
+    openDirectories: controller.openDirectories,
+    path: path ?? undefined
   });
   // Every drawn directory's label says what this picture makes of it; the labels already made are refilled.
   stage.disclosures = exploration.directories;
   for (const [directory, label] of stage.labels) fillLabel(controller, label, directory, exploration.directories.get(directory));
   root.classList.add("branch-mode", "local-placed");
+  root.classList.toggle("path-mode", !!path);
   root.style.gridTemplateColumns = "";
   root.style.alignItems = "";
   const sceneTuning: SceneTuning = {
@@ -161,6 +164,12 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
       card.classList.toggle("branch-member", exploration.members.has(node.id));
       wrapper.replaceChildren(card);
     }
+    const hop = path?.nodeIds.indexOf(node.id) ?? -1;
+    wrapper.classList.toggle("path-node", hop >= 0);
+    wrapper.classList.toggle("path-origin", hop === 0);
+    wrapper.classList.toggle("path-destination", !!path && hop === path.nodeIds.length - 1);
+    if (hop >= 0) wrapper.dataset.pathIndex = String(hop);
+    else delete wrapper.dataset.pathIndex;
     root.append(wrapper);
     kept.add(node.id);
   }
@@ -171,6 +180,12 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
     leaving.push(wrapper);
   }
   dressCards(controller, cardsOf(stage), exploration);
+  for (const [id, symbol] of [[path?.nodeIds[0], path?.fromSymbol], [path?.nodeIds[path.nodeIds.length - 1], path?.toSymbol]]) {
+    if (!id || !symbol) continue;
+    stage.wrappers.get(id)?.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
+      if (normalizeSymbolIdentifier(row.dataset.symbol) === normalizeSymbolIdentifier(symbol)) row.classList.add("symbol-pinned");
+    });
+  }
 
   // The starts, each ordered, its rows stood on the cards, planned, measured on the page and placed; the cheapest
   // picture is kept. The page's answers that no start changes are kept for the search.
@@ -764,10 +779,11 @@ function orderRows(cards: readonly HTMLElement[], rows: ReadonlyMap<string, read
  */
 function dressCards(controller: LocalViewController, cards: readonly HTMLElement[], exploration: Exploration): void {
   const { state } = controller.options;
+  const path = controller.getActivePath();
   const connected = new Set<string>();
   const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
   for (const [id, rows] of exploration.relevantSymbols) for (const row of rows) connected.add(key(id, row));
-  for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
+  if (!path) for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
   const backReferences = new Map<string, number>();
   for (const edge of exploration.subgraph.links) {
     if (!exploration.ranking.back.has(edgeKey(edge))) continue;
@@ -777,10 +793,10 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
     // A closed directory's box has no rows and no notes.
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
-    const all = controller.isPinned(id, "*") || controller.expandedCards.has(id) || id === state.selectedNode?.id;
+    const all = controller.expandedCards.has(id) || (!path && (controller.isPinned(id, "*") || id === state.selectedNode?.id));
     let hidden = 0;
     card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
-      const collapse = !all && state.tuning.localMap.collapseOnPin && !connected.has(key(id, row.dataset.symbol));
+      const collapse = !all && (path || state.tuning.localMap.collapseOnPin) && !connected.has(key(id, row.dataset.symbol));
       row.classList.toggle("branch-symbol-hidden", collapse);
       row.classList.toggle("branch-symbol-muted", !controller.isPinned(id, "*") && !connected.has(key(id, row.dataset.symbol)));
       if (collapse) hidden++;
