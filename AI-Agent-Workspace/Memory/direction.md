@@ -1,8 +1,10 @@
 # Where the project is going, in the owner's words
 
-_Current as of 2026-10-12. [The vision](../../.mdmd/layer-1/vision.mdmd.md) is the agreed statement of intent and [its status section](../../.mdmd/layer-1/vision.mdmd.md#where-this-stands) says where the code stands. This file records what the owner decided at each fork, with the date, so that nobody re-litigates it and nobody imports older certainty from the chat archive. Add to it when they decide something new._
+_Current as of 2026-10-13. [The vision](../../.mdmd/layer-1/vision.mdmd.md) is the agreed statement of intent and [its status section](../../.mdmd/layer-1/vision.mdmd.md#where-this-stands) says where the code stands. This file records what the owner decided at each fork, with the date, so that nobody re-litigates it and nobody imports older certainty from the chat archive. Add to it when they decide something new._
 
 ## Next
+
+**October 13 Local Map legibility:** the owner reopened layout refinement as today's focus ([Turn 1](../ChatHistory/2026/10/2026-10-13.1.record.md#turn-1)), beginning with small unequal membrane tops around the generator's engine dependencies. They define the desired aesthetics as “less work for the eye and brain to perform while presenting identical information.” Iterate by looking at several 2D Local Map views and testing layout rules for coherence across them. This supersedes the October 8 pause for this session; no new layout rule or default has yet been selected.
 
 **October 12 walkthrough:** today the owner is learning Live Documentation through its own views and pressure-testing normal user journeys ([session](../ChatHistory/2026/10/2026-10-12.1.record.md#turn-1)). Their first corrections ([Turn 3](../ChatHistory/2026/10/2026-10-12.1.record.md#turn-3)) take priority during this exercise: direct Local Map links and paths should use its directory-aware optimized layout immediately; "Scrolling should not cause the 2D local map to transition to the 3D force graph"; remove the "Dense picture" helper text, with "3D" and "2D" sufficient as button labels. An optional button cue is a suggestion only, with no heuristic selected. This supersedes the October 3 scroll-boundary experiment.
 
