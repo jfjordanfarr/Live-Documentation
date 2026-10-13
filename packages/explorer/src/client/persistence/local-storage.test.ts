@@ -28,12 +28,12 @@ describe("persisted membrane tuning", () => {
   it("adds the simplicity default to older settings while retaining the independent shape preferences", () => {
     expect(restoreLocalMap('{"membraneEvenness":2.5,"rowLevelness":1.25}')).toMatchObject({
       membraneEvenness: 2.5,
-      membraneSimplicity: 100,
+      membraneSimplicity: 200,
       rowLevelness: 1.25
     });
   });
 
-  it.each([0, 50, 1000])("restores a saved simplicity weight of %s", value => {
+  it.each([0, 50, 100, 1000])("restores a saved simplicity weight of %s", value => {
     expect(restoreLocalMap(`{"membraneSimplicity":${value}}`).membraneSimplicity).toBe(value);
   });
 
@@ -41,7 +41,7 @@ describe("persisted membrane tuning", () => {
     "falls back from an invalid simplicity weight of %s without losing other saved tuning",
     value => {
       expect(restoreLocalMap(`{"membraneSimplicity":${value},"membraneEvenness":3,"rowLevelness":0.5}`))
-        .toMatchObject({ membraneSimplicity: 100, membraneEvenness: 3, rowLevelness: 0.5 });
+        .toMatchObject({ membraneSimplicity: 200, membraneEvenness: 3, rowLevelness: 0.5 });
     }
   );
 });

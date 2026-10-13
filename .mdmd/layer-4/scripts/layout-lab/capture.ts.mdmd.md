@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-10-13T16:52:35.643Z
+- Generated At: 2026-10-13T19:38:17.292Z
 
 ## Authored
 ### Purpose
@@ -24,64 +24,64 @@ The capture also records the actual test and asset filter controls. The retained
 ### Public Symbols
 #### `PreparedText` {#symbol-preparedtext}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L23)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L24)
 
 ##### `PreparedText` — Summary
 A text as Pretext prepared it in the page: its segments and their measured widths, laid out again by arithmetic.
 
 #### `FontMetrics` {#symbol-fontmetrics}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L32)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L33)
 
 ##### `FontMetrics` — Summary
 A font as the page renders it: the canvas font string, the letter spacing, and the height of one line.
 
 #### `RowCapture` {#symbol-rowcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L41)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L42)
 
 ##### `RowCapture` — Summary
 One symbol row of a card: its name, its label's prepared text and the width of its type badges.
 
 #### `ChipCapture` {#symbol-chipcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L50)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L51)
 
 ##### `ChipCapture` — Summary
 A test chip's, or the test label's, box as the page drew it.
 
 #### `CardCapture` {#symbol-cardcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L56)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L57)
 
 ##### `CardCapture` — Summary
 One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L82)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L83)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L104)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L105)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L128)
-- Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L129)
+- Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
 Opens the scope in a browser of the lab's own over the built bundle and reads the capture.
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L147)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L148)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -91,7 +91,7 @@ node_modules and loaded as a module, then the page is read in one go.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L358)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L359)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -99,7 +99,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L364)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L365)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.
@@ -110,6 +110,8 @@ Reads a capture written by `writeCapture`.
 - `@playwright/test` - `Page`, `chromium`
 - `node:fs/promises`
 - `node:path` - `path`
+- [`layout-presets.LAYOUT_PRESETS`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layout_presets)
+- [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`types.ExplorerFilters`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-explorerfilters) (type-only)
 - [`card-model.TEXT_TOLERANCE`](./card-model.ts.mdmd.md#symbol-text_tolerance)

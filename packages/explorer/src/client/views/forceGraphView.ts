@@ -19,7 +19,9 @@ import type {
 } from "../../shared/types";
 import { requireElement } from "../dom";
 import type { ExplorerState } from "../types";
-import { fileConnections } from "./fileConnections";
+import { spatialGraphOf } from "./forceGraphData";
+import { configureSpatialForces, spatialNodeValue } from "./forceGraphLayout";
+import { layoutPresetOf } from "../layout-presets";
 import { focusedCameraPosition, screenAnchorTranslation, type CameraPoint } from "./forceGraphCamera";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
@@ -32,9 +34,10 @@ import { wheelPixels } from "./wheel";
 
 /** A link in the Force Graph between two nodes. */
 export interface ForceGraphLink {
-  source: string;
-  target: string;
+  source: string | ForceGraphNode;
+  target: string | ForceGraphNode;
   kind: ExplorerLinkPayload["kind"] | "related-doc";
+  count: number;
 }
 
 /** A node in the Force Graph, extending the payload with optional archetype. */
@@ -91,11 +94,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     onFocusNode
   } = options;
 
-  let forceGraphInstance: ForceGraph3DInstance | null = null;
+  let forceGraphInstance: ForceGraph3DInstance<ForceGraphNode, ForceGraphLink> | null = null;
   const nodeCache = new Map<string, ForceGraphNode>();
   const nodeObjects = new Map<string, Object3D>();
   const raycaster = new Raycaster();
   let membership = "";
+  let forceSettings = "";
   let focusedId: string | null = null;
   let active = false;
   let animation = 0;
@@ -255,113 +259,29 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     };
 
     const filteredNodes = graphData.nodes.filter(includeNode);
-    const allowedIds = new Set(filteredNodes.map(node => node.id));
-    const filteredLinks = graphData.links.filter(link => {
-      const sourceId = resolveLinkEndpoint(link.source);
-      const targetId = resolveLinkEndpoint(link.target);
-      return sourceId !== "" && targetId !== "" && allowedIds.has(sourceId) && allowedIds.has(targetId);
-    });
+    const data = spatialGraphOf(graphData, includeNode, state.filters.showRelatedDocs ? relatedDocLinks : []);
+    const graphNodes: ForceGraphNode[] = data.nodes.map(node => nodeCache.get(node.id) ?? node);
+    const dataForGraph: ForceGraphData = { nodes: graphNodes, links: data.links };
+    container.dataset.layoutPreset = layoutPresetOf(state.tuning);
 
-    // Build base graph data
-    const graphNodes: ForceGraphNode[] = filteredNodes.map(node => nodeCache.get(node.id) ?? { ...node });
-    const graphLinks: ForceGraphLink[] = filteredLinks.map(link => ({
-      source: resolveLinkEndpoint(link.source),
-      target: resolveLinkEndpoint(link.target),
-      kind: link.kind
-    }));
-
-    // Add Related Documentation nodes and links when enabled
-    if (state.filters.showRelatedDocs) {
-      if (relatedDocLinks && relatedDocLinks.length > 0) {
-        const existingNodeIds = new Set(graphNodes.map(n => n.id));
-
-        const liveDocPaths = new Set<string>();
-        for (const node of graphData.nodes) {
-          if (node.docPath) {
-            liveDocPaths.add(node.docPath.replace(/\\/g, "/"));
-          }
-        }
-
-        const bundledDocPaths = new Set<string>();
-        const relatedSourcePaths = new Set<string>();
-        const relatedLinks: Array<{ source: string; target: string }> = [];
-
-        for (const link of relatedDocLinks) {
-          const normalizedTarget = link.targetPath.replace(/\\/g, "/");
-          if (liveDocPaths.has(normalizedTarget)) {
-            continue;
-          }
-
-          const sourceId = link.sourceId;
-
-          if (!link.sourceId.startsWith("related:") && !allowedIds.has(sourceId)) {
-            continue;
-          }
-
-          if (link.sourceId.startsWith("related:")) {
-            const sourcePath = link.sourceId.slice("related:".length);
-            if (!liveDocPaths.has(sourcePath)) {
-              relatedSourcePaths.add(sourcePath);
-            } else {
-              continue;
-            }
-          }
-
-          const targetId = `related:${link.targetPath}`;
-          bundledDocPaths.add(link.targetPath);
-          relatedLinks.push({ source: sourceId, target: targetId });
-        }
-
-        for (const docPath of relatedSourcePaths) {
-          const nodeId = `related:${docPath}`;
-          if (!existingNodeIds.has(nodeId)) {
-            const fileName = docPath.split("/").pop() ?? docPath;
-            graphNodes.push({
-              id: nodeId,
-              name: fileName,
-              archetype: "related-doc",
-              docPath: docPath,
-              publicSymbols: [],
-              dependencies: [],
-              dependents: []
-            } as unknown as ForceGraphNode);
-            existingNodeIds.add(nodeId);
-          }
-        }
-
-        for (const docPath of bundledDocPaths) {
-          const nodeId = `related:${docPath}`;
-          if (!existingNodeIds.has(nodeId)) {
-            const fileName = docPath.split("/").pop() ?? docPath;
-            graphNodes.push({
-              id: nodeId,
-              name: fileName,
-              archetype: "related-doc",
-              docPath: docPath,
-              publicSymbols: [],
-              dependencies: [],
-              dependents: []
-            } as unknown as ForceGraphNode);
-            existingNodeIds.add(nodeId);
-          }
-        }
-
-        const finalNodeIds = new Set(graphNodes.map(n => n.id));
-        for (const link of relatedLinks) {
-          if (finalNodeIds.has(link.source) && finalNodeIds.has(link.target)) {
-            graphLinks.push({
-              source: link.source,
-              target: link.target,
-              kind: "related-doc"
-            });
-          }
-        }
-      }
-    }
-
-    const dataForGraph: ForceGraphData = {
-      nodes: graphNodes,
-      links: fileConnections(graphLinks)
+    const updateForces = (): void => {
+      const instance = forceGraphInstance!;
+      const nextSettings = JSON.stringify(state.tuning.forceGraph);
+      if (forceSettings === nextSettings) return;
+      const subject = state.focusedNode ?? state.selectedNode;
+      const anchor = subject ? getSubjectAnchor(subject.id) : null;
+      const tuning = { ...state.tuning.forceGraph };
+      instance.nodeVal(node => spatialNodeValue(node, tuning)).nodeRelSize(tuning.nodeSize);
+      configureSpatialForces<ForceGraphNode>({
+        get: name => instance.d3Force(name),
+        set: (name, force) => { instance.d3Force(name, force); }
+      }, tuning);
+      forceSettings = nextSettings;
+      container.dataset.layoutSettings = nextSettings;
+      container.setAttribute("aria-busy", "true");
+      instance.d3ReheatSimulation();
+      simulationRunning = true;
+      if (subject && anchor) placeSubjectAnchor(subject.id, anchor);
     };
 
     for (let index = 0; index < graphNodes.length; index++) {
@@ -406,39 +326,48 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (nextMembership !== membership) forceGraphInstance.graphData(dataForGraph);
       membership = nextMembership;
       focusSelection();
-      forceGraphInstance.nodeColor(node => nodeColor(node as ForceGraphNode));
-      forceGraphInstance.linkColor(link => linkColor(link as ForceGraphLink));
+      forceGraphInstance.nodeColor(node => nodeColor(node));
+      forceGraphInstance.linkColor(link => linkColor(link));
+      updateForces();
       frameDirectory();
       setActive(true);
       return;
     }
 
     container.dataset.hoveredNode = "false";
-    // The library types its callbacks for any node and link; the ones it hands back are this view's own.
-    forceGraphInstance = new ForceGraph3D(container)
+    // The constructor declaration erases the instance's generic data types;
+    // this boundary supplies the exact node/link types passed to graphData.
+    forceGraphInstance = (new ForceGraph3D(container) as unknown as ForceGraph3DInstance<ForceGraphNode, ForceGraphLink>)
       .width(container.clientWidth)
       .height(container.clientHeight)
       .graphData(dataForGraph)
       .warmupTicks(100)
       // The simulation moves nodes immediately before painting. Track that
       // position in the same frame so the sphere and its projected label agree.
-      .onEngineTick(() => { simulationRunning = true; ready = true; frameDirectory(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
-      .onEngineStop(() => { simulationRunning = false; })
+      .onEngineTick(() => { simulationRunning = true; ready = true; container.setAttribute("aria-busy", "true"); frameDirectory(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
+      .onEngineStop(() => { simulationRunning = false; container.setAttribute("aria-busy", "false"); })
       .nodePositionUpdate((object, _position, node) => {
-        nodeObjects.set((node as ForceGraphNode).id, object);
+        nodeObjects.set((node).id, object);
         return false; // The native renderer still owns object placement.
       })
       .onNodeHover(node => { container.dataset.hoveredNode = String(!!node); })
-      .nodeLabel("name")
-      .linkLabel(link => `${(link as { count?: number }).count ?? 1} references`)
-      .nodeColor(node => nodeColor(node as ForceGraphNode))
-      .linkColor(link => linkColor(link as ForceGraphLink))
+      .nodeLabel(node => {
+        const file = node;
+        const label = document.createElement("span");
+        label.textContent = file.archetype === "related-doc" ? file.name
+          : `${file.name} · ${file.publicSymbols.length} public ${file.publicSymbols.length === 1 ? "symbol" : "symbols"}`;
+        return label;
+      })
+      .linkLabel(link => `${link.count} ${link.kind === "related-doc" ? "documentation" : "documented"} ${link.count === 1 ? "reference" : "references"}`)
+      .nodeColor(node => nodeColor(node))
+      .linkColor(link => linkColor(link))
       .linkWidth(link => {
-        if ((link as ForceGraphLink).kind === "related-doc") {
+        if ((link).kind === "related-doc") {
           return 0.5;
         }
         return 1;
       });
+    updateForces();
     membership = nextMembership;
     focusLabel = document.createElement("button");
     focusLabel.className = "force-graph-focus";
@@ -513,7 +442,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     camera.updateMatrixWorld();
     const rect = requireElement("graph-svg").getBoundingClientRect();
     const colorForNode = instance.nodeColor();
-    const files = (instance.graphData().nodes as ForceGraphNode[]).flatMap(node => {
+    const files = (instance.graphData().nodes).flatMap(node => {
       if (!Number.isFinite(node.x)) return [];
       const point = new Vector3(node.x, node.y, node.z);
       const depth = point.clone().project(camera).z;

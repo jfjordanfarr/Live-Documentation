@@ -1,0 +1,19 @@
+{
+  "localMap": {
+    "columnGap": 100,
+    "itemGap": 24,
+    "bandGap": 28,
+    "heightCost": 5,
+    "membraneEvenness": 2,
+    "membraneSimplicity": 200,
+    "rowLevelness": 0.25
+  },
+  "forceGraph": {
+    "linkGap": 62,
+    "charge": 60,
+    "collisionGap": 5,
+    "coupling": 1.1,
+    "nodeSize": 4,
+    "symbolScale": 1
+  }
+}

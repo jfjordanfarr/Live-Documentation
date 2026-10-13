@@ -1,6 +1,6 @@
 # Live Documentation
 
-_Current as of 2026-10-12. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in [direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
+_Current as of 2026-10-13. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in [direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
 
 _Design clarification, 2026-09-30: the owner has [reopened the dimensional split and separation of views](../../AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md#turn-19). File symbols and system endpoints pose the same interface-display problem: show relevant connections and selectively reveal contents while preserving orientation. The September 28 picture below records the design explored then; its allocation of 2D/3D and separate renderings is under exploration, with no replacement chosen._
 
@@ -84,11 +84,13 @@ The map's edges are checked against oracles that share no mechanism with the ana
 
 ## Where this stands
 
-_As of 2026-10-12._
+_As of 2026-10-13._
 
 Works today: the single-folder map for TypeScript and JavaScript through the compiler API, and for C#, Python, Java, Go and Rust through tree-sitter, each measured against its compiler's own resolution; hand-written scanners for C, Ruby, PowerShell, SQL, ASP.NET markup, .NET configuration, HTML, CSS and JSON, with no oracle yet for C or Ruby; manifests (`.csproj`, `packages.config`, `package.json`) as Live Docs; one grammar that renders and parses every Live Doc, proved by a round trip over the whole corpus; deterministic regeneration with authored sections preserved; one graph index derived from the docs, which `inspect`, lint, the oracle and the Explorer all read; and the board text, one file of things and connections that lint checks and the CLI joins to the docs. The static Explorer draws three navigable views over that graph: Knowledge Sources, the inventory and exports; World Map, the landing view when the bundle carries a board; and Local Map, which keeps pinned file neighborhoods, opens directories and traces paths. Local Map has 2D and 3D representations with shared selection and pins, remembered in browser storage and shared links. The 3D renderer is the force graph. Explicit 2D/3D controls join them: cards fold into named points that take their force positions, and unfold again on the way back. Two instruments keep the pictures honest: the design audit fails a test when words collide or are cut off, and the still-picture deck measures what one picture shows legibly.
 
 As of the [October 12 walkthrough](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3), direct file links and paths use the same directory-aware optimized layout as retained explorations. Scrolling stays within the chosen 2D or 3D perspective; it no longer triggers a view change or a density suggestion. Earlier zoom-based descriptions above are dated design history.
+
+The [October 13 shared layout grammar](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation) adds Compact and Relaxed packing preferences across both Local Map representations. Advanced settings remain available, persist locally, travel in shared links and export as JSON. In 3D, documented coupling shapes proximity and exposed symbols shape sphere volume, with one counted line per file pair. The layout lab runs both the 2D competition and the same 3D forces headlessly. These are starting preferences tuned by inspection, not a universal optimal-layout claim.
 
 The order of work:
 

@@ -5,6 +5,7 @@
  * for bezier curves, click behavior, visual options, and Local Map settings.
  */
 
+import { applyLayoutPreset, layoutPresetOf, layoutSettingsOf } from "../layout-presets";
 import type { ExplorerState } from "../types";
 
 /** Callback for when tuning values change */
@@ -24,8 +25,23 @@ export interface TuningPanelConfig {
 /**
  * Initialize the tuning panel with all slider and checkbox controls.
  */
-export function initTuningPanel(config: TuningPanelConfig): void {
-  const { state, onTuningChange, onRender, drawLocalConnections } = config;
+export function initTuningPanel(config: TuningPanelConfig): () => void {
+  const { state, onTuningChange: persistChange, onRender, drawLocalConnections } = config;
+  const presetSelect = document.getElementById("layout-preset") as HTMLSelectElement | null;
+  let controlPerspective: ExplorerState["perspective"] | undefined;
+  const onTuningChange = (): void => {
+    if (presetSelect) presetSelect.value = layoutPresetOf(state.tuning);
+    persistChange();
+  };
+  const packingSliders = [
+    ...([ ["itemGap", "item-gap"], ["bandGap", "band-gap"], ["heightCost", "height-cost"] ] as const).map(([key, name]) => ({
+      id: `tuning-${name}`, get: () => state.tuning.localMap[key], set: (value: number) => { state.tuning.localMap[key] = value; }
+    })),
+    ...([ ["linkGap", "link-gap"], ["charge", "charge"], ["collisionGap", "collision-gap"],
+      ["coupling", "coupling"], ["nodeSize", "node-size"], ["symbolScale", "symbol-scale"] ] as const).map(([key, name]) => ({
+      id: `tuning-force-${name}`, get: () => state.tuning.forceGraph[key], set: (value: number) => { state.tuning.forceGraph[key] = value; }
+    }))
+  ];
 
   const stubFactorInput = document.getElementById("tuning-stub-factor") as HTMLInputElement | null;
   const stubMinInput = document.getElementById("tuning-stub-min") as HTMLInputElement | null;
@@ -81,7 +97,8 @@ export function initTuningPanel(config: TuningPanelConfig): void {
       const cssValue = cssProperty === "--local-column-gap" ? `${value}px` : String(value);
       document.documentElement.style.setProperty(cssProperty, cssValue);
       if (state.view === "map" && state.perspective === "2d") {
-        drawLocalConnections();
+        if (cssProperty === "--local-column-gap") onRender();
+        else drawLocalConnections();
       }
     });
   };
@@ -107,6 +124,16 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   };
 
   const syncTuningControlsFromState = (): void => {
+    if (controlPerspective !== state.perspective) {
+      document.querySelectorAll<HTMLDetailsElement>("details[data-tuning-perspective]").forEach(group => {
+        group.open = group.dataset.tuningPerspective === state.perspective;
+      });
+      controlPerspective = state.perspective;
+    }
+    for (const slider of packingSliders) {
+      slider.set(setSlider(document.getElementById(slider.id) as HTMLInputElement | null, `${slider.id}-value`, slider.get()));
+    }
+    if (presetSelect) presetSelect.value = layoutPresetOf(state.tuning);
     state.tuning.bezier.stubFactor = setSlider(stubFactorInput, "tuning-stub-factor-value", state.tuning.bezier.stubFactor);
     state.tuning.bezier.stubMin = setSlider(stubMinInput, "tuning-stub-min-value", state.tuning.bezier.stubMin);
     state.tuning.bezier.stubMaxOffset = setSlider(stubMaxOffsetInput, "tuning-stub-max-offset-value", state.tuning.bezier.stubMaxOffset);
@@ -200,4 +227,27 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   rerenderSlider(membraneSimplicityInput, "tuning-membrane-simplicity-value", v => { state.tuning.localMap.membraneSimplicity = v; });
   rerenderSlider(rowLevelnessInput, "tuning-row-levelness-value", v => { state.tuning.localMap.rowLevelness = v; });
 
+  for (const slider of packingSliders) {
+    const input = document.getElementById(slider.id) as HTMLInputElement | null;
+    input?.addEventListener("input", () => {
+      slider.set(Number(input.value));
+      syncTuningControlsFromState();
+      onTuningChange();
+      if (state.view === "map") onRender();
+    });
+  }
+  presetSelect?.addEventListener("change", () => {
+    const preset = presetSelect.value;
+    if (preset !== "compact" && preset !== "relaxed") return;
+    state.tuning = applyLayoutPreset(state.tuning, preset);
+    syncTuningControlsFromState();
+    onTuningChange();
+    if (state.view === "map") onRender();
+  });
+  document.getElementById("export-layout-settings")?.addEventListener("click", () => {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(layoutSettingsOf(state.tuning), null, 2) + "\n"], { type: "application/json" }));
+    const anchor = document.createElement("a"); anchor.href = url; anchor.download = "local-map-layout.json"; anchor.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  });
+  return syncTuningControlsFromState;
 }

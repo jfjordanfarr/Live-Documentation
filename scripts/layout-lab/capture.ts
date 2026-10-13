@@ -15,6 +15,7 @@ import path from "node:path";
 
 import { TEXT_TOLERANCE } from "./card-model";
 import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
+import { LAYOUT_PRESETS, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
 import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ExplorerFilters } from "../../packages/explorer/src/client/types";
 import { localRetainUrl } from "../../tests/e2e/still-picture";
@@ -125,13 +126,13 @@ export interface Capture {
 const PRETEXT_DIST = path.resolve(__dirname, "../../node_modules/@chenglou/pretext/dist");
 
 /** Opens the scope in a browser of the lab's own over the built bundle and reads the capture. */
-export async function captureScope(run: ScopeRun): Promise<Capture> {
+export async function captureScope(run: ScopeRun, preset: LayoutPreset = "relaxed"): Promise<Capture> {
   const browser = await chromium.launch();
   try {
     const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
     await serveBundle(page);
     // A capture is of the first paint: the continuing search is off, so the page keeps the picture it first drew.
-    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { searchStarts: 0 } } }) });
+    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { ...LAYOUT_PRESETS[preset].localMap, searchStarts: 0 } } }) });
     await page.goto(`${ORIGIN}${localRetainUrl(run.base, run.scope)}`);
     return await captureFromPage(page, run);
   } finally {

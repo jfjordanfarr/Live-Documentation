@@ -4,12 +4,12 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-13T16:52:34.237Z
+- Generated At: 2026-10-13T19:38:15.771Z
 
 ## Authored
 ### Purpose
 
-Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sliders that adjust visualization parameters like zoom sensitivity, bezier curve tension, and column gap spacing for the 2D Local Map.
+Connects the Local Map’s shared packing presets and advanced geometry controls to state, persistence, sharing and the appropriate renderer.
 
 ### Notes
 
@@ -23,33 +23,35 @@ Initializes and manages the Tuning Panel UI in the Explorer sidebar. Wires up sl
 - The Churn Cost slider (2026-10-07, later in the day) sets `churnCost` and re-renders the view like the search's other dials, so the owner can price a swapped pair at nothing and watch; Order Starts' default fell to 2 the same day.
 - Two sliders since 2026-10-07, Membrane Evenness and Row Levelness, wired like Churn Cost: the picture re-renders as they move.
 
+The shared Compact/Relaxed selector applies both representations’ packing values. Manual packing changes read as Custom; coupling and size controls survive preset selection. The active perspective’s advanced group opens on a perspective change while either group remains available manually. The returned sync callback keeps controls accurate after navigation. Layout settings can be exported as JSON; the application persists and shares changes and takes over any unfinished camera fit before re-layout. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L11)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L12)
 
 ##### `TuningChangeCallback` — Summary
 Callback for when tuning values change
 
 #### `RenderCallback` {#symbol-rendercallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L14)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L15)
 
 ##### `RenderCallback` — Summary
 Callback for when the current view needs to re-render
 
 #### `TuningPanelConfig` {#symbol-tuningpanelconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L17)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L18)
 
 ##### `TuningPanelConfig` — Summary
 Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L27)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L28)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -58,7 +60,11 @@ Initialize the tuning panel with all slider and checkbox controls.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`layout-presets.applyLayoutPreset`](../layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
+- [`layout-presets.layoutPresetOf`](../layout-presets.ts.mdmd.md#symbol-layoutpresetof)
+- [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-hold-still`](../../shared/template.html.mdmd.md#symbol-tuning-hold-still)

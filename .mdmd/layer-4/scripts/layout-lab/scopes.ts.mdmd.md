@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/scopes.ts
-- Generated At: 2026-10-13T16:52:35.915Z
+- Generated At: 2026-10-13T19:38:17.549Z
 
 ## Authored
 ### Purpose
@@ -89,6 +89,14 @@ would fail on its first line; this defines the helper there as the identity.
 
 ##### `loadBundleGraph` — Summary
 The scope's bundle as the client projects it, read from disk.
+
+#### `loadBundleData` {#symbol-loadbundledata}
+- Type: function
+- Source: [source](../../../../scripts/layout-lab/scopes.ts#L79)
+- Parameters: `run`: [`ScopeRun`](#symbol-scoperun)
+
+##### `loadBundleData` — Summary
+The complete static bundle, including the related-documentation links available to the spatial view.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

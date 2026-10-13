@@ -17,3 +17,14 @@ it("collapses parallel and reciprocal references without mutating canonical link
   ]);
   expect(JSON.stringify(links)).toBe(before);
 });
+
+it("sums documented multiplicity after endpoint aggregation, including reciprocal references", () => {
+  expect(fileConnections([
+    { source: "a", target: "b", kind: "dependency", referenceCount: 4 },
+    { source: "b", target: "a", kind: "type-reference", referenceCount: 2 },
+    { source: "b", target: "c", kind: "dependency" }
+  ])).toEqual([
+    { source: "a", target: "b", kind: "dependency", count: 6 },
+    { source: "b", target: "c", kind: "dependency", count: 1 }
+  ]);
+});

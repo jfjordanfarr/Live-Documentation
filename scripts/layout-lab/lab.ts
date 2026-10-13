@@ -12,6 +12,10 @@
  *   npm run layout:lab -- widen <bundle/scope> [--capture <file>] [--grid <spec>] [--starts <n>] [--churn <n>] [--first <n>] [--patience <n>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- refine <bundle/scope> [--capture <file>] [--starts <n>] [--churn <n>] [--patience <n>] [--config <json or @file>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
+ *   npm run layout:lab -- spatial <bundle/scope> [--preset compact|relaxed] [--config @export.json] [--ticks <n>] [--tests true|false] [--assets true|false] [--out <dir>]
+ *
+ * Every command accepts --preset compact|relaxed; refinement, verification and
+ * spatial layout also accept the settings JSON exported by the page.
  *
  * The scopes are the deck's: repository/five, repository/chain, estate/five,
  * estate/chain. The bundles must be built first (`npm run live-docs:visualize`
@@ -29,9 +33,11 @@ import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
 import { refine, refinementJson, renderRefinement } from "./refine";
 import { differences, renderMarkdown, toJson, type ReportRow, type RunReport } from "./report";
 import { DEFAULT_WIDE_GRID, parseCosts, renderRestarts, renderWide, simulateSearch, tabulateStarts, trialCosts, widenStarts } from "./restarts";
-import { findScope, loadBundleGraph, scopeSlug, type ScopeRun } from "./scopes";
+import { findScope, loadBundleData, loadBundleGraph, scopeSlug, type ScopeRun } from "./scopes";
+import { renderSpatialReport, spatialReport } from "./spatial";
 import { configurations, DEFAULT_GRID, oneAtATime, parseGrid, parseWeights } from "./sweep";
 import { compareTable, verifyConfig } from "./verify";
+import { applyLayoutPreset, applyLayoutSettings, readLayoutSettings } from "../../packages/explorer/src/client/layout-presets";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 
 interface Args {
@@ -70,13 +76,40 @@ async function loadCapture(run: ScopeRun, options: Record<string, string>): Prom
 async function main(): Promise<void> {
   const { verb, scope, options } = parseArgs(process.argv.slice(2));
   if (!verb || !scope) {
-    console.error("Usage: layout-lab <capture|sweep|restarts|widen|refine|verify> <bundle/scope> [options]");
+    console.error("Usage: layout-lab <capture|sweep|restarts|widen|refine|verify|spatial> <bundle/scope> [--preset compact|relaxed] [options]");
     process.exit(2);
   }
   const run = findScope(scope);
   const out = options.out ?? defaultOut();
+  const preset = options.preset ?? "relaxed";
+  if (preset !== "compact" && preset !== "relaxed") throw new Error("Preset must be compact or relaxed.");
+  const presetConfig = (): LabConfig => baselineConfig(preset);
+  const readConfig = async (): Promise<Partial<LabConfig>> => {
+    const spec = options.config ?? "{}";
+    const parsed = JSON.parse(spec.startsWith("@") ? await fs.readFile(spec.slice(1), "utf8") : spec) as Partial<LabConfig> & { localMap?: Partial<LabConfig> };
+    return parsed.localMap ?? parsed;
+  };
+  if (verb === "spatial") {
+    const graph = await loadBundleGraph(run);
+    const spec = options.config ?? "{}";
+    const parsed: unknown = JSON.parse(spec.startsWith("@") ? await fs.readFile(spec.slice(1), "utf8") : spec);
+    const settings = readLayoutSettings(parsed);
+    const tuning = applyLayoutSettings(applyLayoutPreset(getDefaultTuning(), preset), settings).forceGraph;
+    for (const name of ["tests", "assets", "related-docs"] as const) if (options[name] && options[name] !== "true" && options[name] !== "false") throw new Error(`--${name} must be true or false.`);
+    const related = options["related-docs"] === "true" ? (await loadBundleData(run)).relatedDocLinks ?? [] : [];
+    const report = spatialReport(graph, run, tuning, Number(options.ticks ?? 300), {
+      showTests: options.tests !== "false", showAssets: options.assets !== "false", showRelatedDocs: options["related-docs"] === "true"
+    }, related);
+    const label = options.label ?? `spatial-${preset}`;
+    await fs.mkdir(out, { recursive: true });
+    const stem = path.join(out, `${scopeSlug(run)}-${label}`);
+    await fs.writeFile(`${stem}.json`, JSON.stringify(report, null, 2) + "\n");
+    await fs.writeFile(`${stem}.md`, renderSpatialReport(report));
+    console.log(`${report.nodes.length} files, ${report.links.length} counted file pairs; ${report.overlaps} sphere overlaps. Report at ${path.relative(process.cwd(), stem)}.{md,json}.`);
+    return;
+  }
   if (verb === "capture") {
-    const capture = await captureScope(run);
+    const capture = await captureScope(run, preset);
     const file = path.join(out, `capture-${scopeSlug(run)}.json`);
     await writeCapture(capture, file);
     console.log(`Captured ${Object.keys(capture.cards).length} cards and ${Object.keys(capture.labels).length} labels of ${run.bundle}/${run.scopeName} into ${path.relative(process.cwd(), file)} (${(await fs.stat(file)).size.toLocaleString("en-US")} bytes).`);
@@ -88,7 +121,7 @@ async function main(): Promise<void> {
     }
     // The drift check, right away: the baseline through the lab against the page just read.
     const graph = await loadBundleGraph(run);
-    const baseline = evaluate(capture, graph, run, baselineConfig());
+    const baseline = evaluate(capture, graph, run, presetConfig());
     const drift = driftOf(capture, baseline);
     console.log(drift.length ? `The model drifts from the page in ${drift.length} place(s):\n  ${drift.join("\n  ")}` : `The model reproduces the page to the pixel (placement measure ${baseline.signals.placementCost.toLocaleString("en-US")}, ${baseline.signals.lengthPx.toLocaleString("en-US")} px of wire).`);
     return;
@@ -97,7 +130,7 @@ async function main(): Promise<void> {
     const capture = await loadCapture(run, options);
     const graph = await loadBundleGraph(run);
     const startedAt = new Date().toISOString();
-    const baselineConfiguration = baselineConfig();
+    const baselineConfiguration = presetConfig();
     const gridSpec = options.grid ?? DEFAULT_GRID;
     const grid = parseGrid(gridSpec);
     const seed = Number(options.seed ?? 1);
@@ -138,7 +171,7 @@ async function main(): Promise<void> {
     const capture = await loadCapture(run, options);
     const graph = await loadBundleGraph(run);
     const startedAt = new Date().toISOString();
-    const config: LabConfig = { ...baselineConfig(), ...(JSON.parse(options.config ?? "{}") as Partial<LabConfig>) };
+    const config: LabConfig = { ...presetConfig(), ...await readConfig() };
     const seeds = Number(options.starts ?? 8);
     const weights = parseWeights(options.weights);
     const rows = tabulateStarts(capture, graph, run, config, seeds);
@@ -166,7 +199,7 @@ async function main(): Promise<void> {
     const capture = await loadCapture(run, options);
     const graph = await loadBundleGraph(run);
     const startedAt = new Date().toISOString();
-    const baseline: LabConfig = { ...baselineConfig(), ...(JSON.parse(options.config ?? "{}") as Partial<LabConfig>) };
+    const baseline: LabConfig = { ...presetConfig(), ...await readConfig() };
     const gridSpec = options.grid ?? DEFAULT_WIDE_GRID;
     const grid = parseGrid(gridSpec);
     const seeds = Number(options.starts ?? 16);
@@ -188,8 +221,7 @@ async function main(): Promise<void> {
   if (verb === "refine") {
     const capture = await loadCapture(run, options);
     const graph = await loadBundleGraph(run);
-    const spec = options.config ?? "{}";
-    const config: LabConfig = { ...baselineConfig(), ...(JSON.parse(spec.startsWith("@") ? await fs.readFile(spec.slice(1), "utf8") : spec) as Partial<LabConfig>) };
+    const config: LabConfig = { ...presetConfig(), ...await readConfig() };
     const defaults = getDefaultTuning().localMap;
     const result = refine(capture, graph, run, config, {
       searchStarts: Number(options.starts ?? defaults.searchStarts), searchPatience: Number(options.patience ?? defaults.searchPatience), churnCost: Number(options.churn ?? defaults.churnCost)
@@ -206,16 +238,15 @@ async function main(): Promise<void> {
   if (verb === "verify") {
     const capture = await loadCapture(run, options);
     const graph = await loadBundleGraph(run);
-    const spec = options.config ?? "{}";
-    const config: LabConfig = { ...baselineConfig(), ...(JSON.parse(spec.startsWith("@") ? await fs.readFile(spec.slice(1), "utf8") : spec) as Partial<LabConfig>) };
+    const config: LabConfig = { ...presetConfig(), ...await readConfig() };
     const lab = evaluate(capture, graph, run, config);
     const page = await verifyConfig(run, graph, config, options.shot);
-    console.log(`Configuration: ${differences(config, baselineConfig())}`);
+    console.log(`Configuration: ${differences(config, presetConfig())}`);
     console.log(`The lab drew the start ${JSON.stringify(lab.start)}; the page drew ${JSON.stringify(page.start)} in ${page.layoutMs} ms by its own clock.`);
     console.log(compareTable(lab.signals, page));
     return;
   }
-  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts, widen, refine or verify.`);
+  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts, widen, refine, verify or spatial.`);
   process.exit(2);
 }
 

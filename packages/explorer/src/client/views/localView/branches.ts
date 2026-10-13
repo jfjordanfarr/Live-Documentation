@@ -275,7 +275,7 @@ export function exploreBranches(
     const followsPath = !pathColumns || pathColumns.get(sourceId) === (pathColumns.get(targetId) ?? -2) + 1;
     if (retained.has(sourceId) && retained.has(targetId) && followsPath) {
       links.push({ sourceId, targetId, sourceSymbol: link.sourceSymbol, targetSymbol: link.targetSymbol,
-        kind: link.kind, direction: !path && sourceId === center?.id ? "outbound" : "inbound" });
+        kind: link.kind, referenceCount: link.referenceCount, direction: !path && sourceId === center?.id ? "outbound" : "inbound" });
       if (path) { remember(sourceId, link.sourceSymbol); remember(targetId, link.targetSymbol); }
     } else {
       for (const endpoint of new Set([sourceId, targetId])) {

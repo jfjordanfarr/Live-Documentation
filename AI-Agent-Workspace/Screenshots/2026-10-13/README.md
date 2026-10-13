@@ -1,5 +1,7 @@
 # October 13, 2026 — Simpler Local Map boundaries
 
+_Historical pictures from the earlier simplicity-weight study. The later shared Compact / Relaxed implementation has [its own comparisons, controls and motion captures](presets/README.md)._
+
 Pictures from the final 632-file repository bundle and 35-file estate bundle, after the full verification command passed. They implement [the owner's preference for weighted competition](../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), following the [earlier isolated outline probe](../../Probes/2026-10-13/membrane-steps.md).
 
 The comparisons change only Membrane Simplicity from 0 to the new default 100. Both sides use the new implementation, default evenness 1 and row levelness 0, and let continuing search settle in fresh browser contexts. These are comparisons of preferences, not screenshots of two different releases. Overview viewports are 1600×1000. Each pair preserves exactly the same card/symbol identities and rendered semantic-reference set; no browser errors were observed.

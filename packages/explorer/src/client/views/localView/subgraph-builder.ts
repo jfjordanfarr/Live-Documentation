@@ -143,7 +143,8 @@ export function buildPathSubgraph(
       direction,
       kind,
       sourceSymbol: edge.sourceSymbol,
-      targetSymbol: edge.targetSymbol
+      targetSymbol: edge.targetSymbol,
+      referenceCount: edge.referenceCount
     });
   });
 

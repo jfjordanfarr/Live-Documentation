@@ -42,7 +42,7 @@ const isReference = (edge: GraphEdge): boolean => edge.kind !== "import" && edge
  */
 export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
     const links: ExplorerLinkPayload[] = [];
-    const seen = new Set<string>();
+    const seen = new Map<string, ExplorerLinkPayload>();
     let missingDependencyCount = 0;
 
     const addLink = (
@@ -55,12 +55,15 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
         if (source === target) {
             return;
         }
-        const key = `${source}|${target}|${kind}|${sourceSymbol ?? ""}|${targetSymbol ?? ""}`;
-        if (seen.has(key)) {
+        const key = JSON.stringify([source, target, kind, sourceSymbol ?? "", targetSymbol ?? ""]);
+        const existing = seen.get(key);
+        if (existing) {
+            existing.referenceCount = (existing.referenceCount ?? 1) + 1;
             return;
         }
-        seen.add(key);
-        links.push({ source, target, kind, sourceSymbol, targetSymbol });
+        const link = { source, target, kind, sourceSymbol, targetSymbol, referenceCount: 1 };
+        seen.set(key, link);
+        links.push(link);
     };
 
     const nodes: ExplorerNodePayload[] = Object.values(graph.files).map(file => {
@@ -98,7 +101,11 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
         missingDependencyCount += missingDependencies.length;
 
         for (const reference of dependencies) {
-            if (reference.resolved && reference.targetId) {
+            // Signature references remain available in the dependency list, but
+            // become links only in the type-reference pass below. Emitting both
+            // made a single documented fact count twice in the 3D overview.
+            const signature = reference.sourceSymbol !== undefined;
+            if (reference.resolved && reference.targetId && (!signature || reference.kind === "extends" || reference.kind === "implements")) {
                 addLink(file.codePath, reference.targetId, reference.kind, reference.sourceSymbol, reference.targetSymbol);
             }
         }
@@ -130,7 +137,7 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
                 if (reference.role === "extends" || reference.role === "implements") {
                     continue;
                 }
-                addLink(node.id, reference.targetId, "type-reference", symbol.name, reference.typeName);
+                addLink(node.id, reference.targetId, "type-reference", symbol.name, reference.targetAnchor ?? reference.typeName);
             }
         }
     }

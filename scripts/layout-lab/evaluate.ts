@@ -13,6 +13,7 @@ import { capturedMeasurer } from "./measurer";
 import { routeScene, type Route } from "./routes";
 import { retainedSubject, type ScopeRun } from "./scopes";
 import { measureScene, type Signals } from "./signals";
+import { applyLayoutPreset, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
 import { DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { LocalMapTuning, SymbolOrder } from "../../packages/explorer/src/client/types";
@@ -49,8 +50,8 @@ export interface LabConfig {
 export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "membraneSimplicity", "rowLevelness"];
 
 /** The page's own tuning: the configuration the picture was designed at. */
-export function baselineConfig(): LabConfig {
-  const tuning: LocalMapTuning = getDefaultTuning().localMap;
+export function baselineConfig(preset: LayoutPreset = "relaxed"): LabConfig {
+  const tuning: LocalMapTuning = applyLayoutPreset(getDefaultTuning(), preset).localMap;
   return Object.fromEntries(LEVERS.map(lever => [lever, tuning[lever]])) as unknown as LabConfig;
 }
 

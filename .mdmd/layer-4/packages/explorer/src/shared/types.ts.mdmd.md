@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/types.ts
-- Generated At: 2026-10-12T19:21:20.632Z
+- Generated At: 2026-10-13T19:38:17.179Z
 
 ## Authored
 ### Purpose
@@ -112,7 +112,7 @@ in the dependency columns rather than just file-level cards.
 
 #### `ExplorerGraphStats` {#symbol-explorergraphstats}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L139)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L141)
 
 ##### `ExplorerGraphStats` — Summary
 Summary statistics for the explorer graph, rendered in the Explorer
@@ -120,7 +120,7 @@ header and used by the static builder to emit a quick-access overview.
 
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L151)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L153)
 
 ##### `ExplorerGraphPayload` — Summary
 The node-and-link payload the Explorer views render.

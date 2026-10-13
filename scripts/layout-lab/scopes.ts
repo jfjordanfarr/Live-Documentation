@@ -72,7 +72,11 @@ export async function admitCompiledFunctions(page: Page): Promise<void> {
 
 /** The scope's bundle as the client projects it, read from disk. */
 export async function loadBundleGraph(run: ScopeRun): Promise<ExplorerGraphPayload> {
+  return explorerGraphOf((await loadBundleData(run)).graph);
+}
+
+/** The complete static bundle, including the related-documentation links available to the spatial view. */
+export async function loadBundleData(run: ScopeRun): Promise<StaticExplorerData> {
   const file = path.join(DIST, run.base, "explorer-data.json");
-  const bundle = JSON.parse(await fs.readFile(file, "utf8")) as StaticExplorerData;
-  return explorerGraphOf(bundle.graph);
+  return JSON.parse(await fs.readFile(file, "utf8")) as StaticExplorerData;
 }

@@ -14,6 +14,8 @@ Projects the graph index into the `ExplorerGraphPayload` the Explorer views rend
 - Created 2025-11-22 as `server/graph.ts`, moved to `shared/` on 2026-03-09, and rewritten on 2026-09-28 to read the graph index instead of building a graph of its own.
 - It keeps the shape the views were written against, quirks included: a type reference to a symbol of the same file, or to a doc the graph lacks, is reported unresolved; a bare type name keeps its `[]` suffix; type references become `type-reference` links after every dependency link. Those go when the views read the graph directly (vision step 3).
 
+Signature facts remain available as dependency metadata but are emitted as links only once, under their type/inheritance kind. Repeated documented references sharing one visible endpoint/kind pair retain a referenceCount, and resolved target anchors retain canonical symbol identity. This corrects the display duplication that otherwise inflated spatial coupling; the graph index itself is not altered. This supports [the shared-preset design](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

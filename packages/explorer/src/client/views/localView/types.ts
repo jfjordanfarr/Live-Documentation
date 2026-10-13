@@ -84,6 +84,8 @@ export interface LocalEdge {
   kind: ExplorerLinkKind;
   sourceSymbol?: string;
   targetSymbol?: string;
+  /** Number of documented references sharing these endpoints, preserved by the graph projection. */
+  referenceCount?: number;
 }
 
 /**

@@ -1,0 +1,914 @@
+[
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "current",
+    "overrides": {},
+    "size": [
+      3160,
+      1538
+    ],
+    "steps": 7,
+    "unevenness": 865,
+    "unlevel": 547,
+    "vertical": 14107,
+    "price": 30962,
+    "ms": 1626,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "steps200",
+    "overrides": {
+      "membraneSimplicity": 200
+    },
+    "size": [
+      3160,
+      1266
+    ],
+    "steps": 4,
+    "unevenness": 758,
+    "unlevel": 612,
+    "vertical": 16286,
+    "price": 31854,
+    "ms": 669,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 200,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "steps400",
+    "overrides": {
+      "membraneSimplicity": 400
+    },
+    "size": [
+      3160,
+      1266
+    ],
+    "steps": 4,
+    "unevenness": 758,
+    "unlevel": 612,
+    "vertical": 16286,
+    "price": 32654,
+    "ms": 704,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 400,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "even2",
+    "overrides": {
+      "membraneEvenness": 2
+    },
+    "size": [
+      3160,
+      1448
+    ],
+    "steps": 3,
+    "unevenness": 442,
+    "unlevel": 414,
+    "vertical": 15796,
+    "price": 31660,
+    "ms": 999,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 2,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "rows025",
+    "overrides": {
+      "rowLevelness": 0.25
+    },
+    "size": [
+      3160,
+      1538
+    ],
+    "steps": 7,
+    "unevenness": 865,
+    "unlevel": 547,
+    "vertical": 14107,
+    "price": 31098.75,
+    "ms": 1472,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0.25
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "rows05",
+    "overrides": {
+      "rowLevelness": 0.5
+    },
+    "size": [
+      3160,
+      1538
+    ],
+    "steps": 7,
+    "unevenness": 865,
+    "unlevel": 547,
+    "vertical": 14107,
+    "price": 31235.5,
+    "ms": 1491,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0.5
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "regular",
+    "overrides": {
+      "rowLevelness": 0.25,
+      "membraneEvenness": 2,
+      "membraneSimplicity": 200
+    },
+    "size": [
+      3160,
+      1448
+    ],
+    "steps": 3,
+    "unevenness": 442,
+    "unlevel": 414,
+    "vertical": 15796,
+    "price": 32063.5,
+    "ms": 1087,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 2,
+      "membraneSimplicity": 200,
+      "rowLevelness": 0.25
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "relaxed",
+    "name": "space",
+    "overrides": {
+      "heightCost": 2,
+      "membraneSimplicity": 200
+    },
+    "size": [
+      3160,
+      1702
+    ],
+    "steps": 3,
+    "unevenness": 462,
+    "unlevel": 519,
+    "vertical": 14630,
+    "price": 27016,
+    "ms": 654,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 2,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 200,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "compact",
+    "name": "current",
+    "overrides": {},
+    "size": [
+      2936,
+      1197
+    ],
+    "steps": 5,
+    "unevenness": 868,
+    "unlevel": 580,
+    "vertical": 15235,
+    "price": 37813,
+    "ms": 750,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 0.5,
+      "membraneSimplicity": 20,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "compact",
+    "name": "steps50",
+    "overrides": {
+      "membraneSimplicity": 50
+    },
+    "size": [
+      2936,
+      1197
+    ],
+    "steps": 5,
+    "unevenness": 868,
+    "unlevel": 580,
+    "vertical": 15235,
+    "price": 37963,
+    "ms": 732,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 0.5,
+      "membraneSimplicity": 50,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "compact",
+    "name": "steps100",
+    "overrides": {
+      "membraneSimplicity": 100
+    },
+    "size": [
+      2936,
+      1197
+    ],
+    "steps": 5,
+    "unevenness": 868,
+    "unlevel": 580,
+    "vertical": 15235,
+    "price": 38213,
+    "ms": 713,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 0.5,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "estate/five",
+    "preset": "compact",
+    "name": "even1",
+    "overrides": {
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100
+    },
+    "size": [
+      2936,
+      1203
+    ],
+    "steps": 5,
+    "unevenness": 741,
+    "unlevel": 580,
+    "vertical": 15284,
+    "price": 38641,
+    "ms": 657,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "current",
+    "overrides": {},
+    "size": [
+      3926,
+      3382
+    ],
+    "steps": 33,
+    "unevenness": 8025,
+    "unlevel": 5493,
+    "vertical": 192910,
+    "price": 520905,
+    "ms": 26437,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "steps200",
+    "overrides": {
+      "membraneSimplicity": 200
+    },
+    "size": [
+      3926,
+      3382
+    ],
+    "steps": 33,
+    "unevenness": 8025,
+    "unlevel": 5493,
+    "vertical": 192910,
+    "price": 524205,
+    "ms": 25317,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 200,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "steps400",
+    "overrides": {
+      "membraneSimplicity": 400
+    },
+    "size": [
+      3926,
+      3382
+    ],
+    "steps": 29,
+    "unevenness": 7024,
+    "unlevel": 5180,
+    "vertical": 194918,
+    "price": 530212,
+    "ms": 27222,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 400,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "even2",
+    "overrides": {
+      "membraneEvenness": 2
+    },
+    "size": [
+      3926,
+      3382
+    ],
+    "steps": 33,
+    "unevenness": 7318,
+    "unlevel": 5241,
+    "vertical": 193901,
+    "price": 528507,
+    "ms": 24880,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 2,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "rows025",
+    "overrides": {
+      "rowLevelness": 0.25
+    },
+    "size": [
+      3926,
+      3382
+    ],
+    "steps": 33,
+    "unevenness": 8025,
+    "unlevel": 5465,
+    "vertical": 192910,
+    "price": 522271.25,
+    "ms": 25811,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0.25
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "rows05",
+    "overrides": {
+      "rowLevelness": 0.5
+    },
+    "size": [
+      3926,
+      3382
+    ],
+    "steps": 33,
+    "unevenness": 7647,
+    "unlevel": 5309,
+    "vertical": 193366,
+    "price": 523637.5,
+    "ms": 25810,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0.5
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "regular",
+    "overrides": {
+      "rowLevelness": 0.25,
+      "membraneEvenness": 2,
+      "membraneSimplicity": 200
+    },
+    "size": [
+      3926,
+      3443
+    ],
+    "steps": 26,
+    "unevenness": 6081,
+    "unlevel": 4812,
+    "vertical": 196991,
+    "price": 532531,
+    "ms": 43064,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 5,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 2,
+      "membraneSimplicity": 200,
+      "rowLevelness": 0.25
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "relaxed",
+    "name": "space",
+    "overrides": {
+      "heightCost": 2,
+      "membraneSimplicity": 200
+    },
+    "size": [
+      3926,
+      3382
+    ],
+    "steps": 33,
+    "unevenness": 8025,
+    "unlevel": 5493,
+    "vertical": 192910,
+    "price": 514059,
+    "ms": 25278,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 2,
+      "symbolOrder": "layout",
+      "columnGap": 100,
+      "itemGap": 24,
+      "bandGap": 28,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 200,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "compact",
+    "name": "current",
+    "overrides": {},
+    "size": [
+      3758,
+      3238
+    ],
+    "steps": 40,
+    "unevenness": 9457,
+    "unlevel": 5725,
+    "vertical": 181091,
+    "price": 525235.5,
+    "ms": 35610,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 0.5,
+      "membraneSimplicity": 20,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "compact",
+    "name": "steps50",
+    "overrides": {
+      "membraneSimplicity": 50
+    },
+    "size": [
+      3758,
+      3238
+    ],
+    "steps": 38,
+    "unevenness": 9476,
+    "unlevel": 5649,
+    "vertical": 181178,
+    "price": 526432,
+    "ms": 30413,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 0.5,
+      "membraneSimplicity": 50,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "compact",
+    "name": "steps100",
+    "overrides": {
+      "membraneSimplicity": 100
+    },
+    "size": [
+      3758,
+      3238
+    ],
+    "steps": 33,
+    "unevenness": 7892,
+    "unlevel": 5243,
+    "vertical": 182406,
+    "price": 528268,
+    "ms": 37132,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 0.5,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  },
+  {
+    "scope": "repository/five",
+    "preset": "compact",
+    "name": "even1",
+    "overrides": {
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100
+    },
+    "size": [
+      3758,
+      3238
+    ],
+    "steps": 33,
+    "unevenness": 7833,
+    "unlevel": 5229,
+    "vertical": 182446,
+    "price": 532195,
+    "ms": 24161,
+    "config": {
+      "rankingPull": 0,
+      "rankingTie": "fewest",
+      "orderSweeps": 4,
+      "orderSeed": null,
+      "orderStarts": 2,
+      "crossingCost": 80,
+      "heightCost": 12,
+      "symbolOrder": "layout",
+      "columnGap": 72,
+      "itemGap": 16,
+      "bandGap": 20,
+      "membraneNeck": 60,
+      "membranePadding": 12,
+      "cardMaxWidth": null,
+      "membraneDepth": null,
+      "membraneEvenness": 1,
+      "membraneSimplicity": 100,
+      "rowLevelness": 0
+    }
+  }
+]

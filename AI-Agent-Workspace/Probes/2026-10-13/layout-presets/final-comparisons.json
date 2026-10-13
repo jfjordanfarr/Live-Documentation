@@ -1,0 +1,106 @@
+{
+  "repositoryFiles": 643,
+  "estateFiles": 35,
+  "scopes": [
+    {
+      "scope": "generator",
+      "cards": 18,
+      "references": 61,
+      "compact": {
+        "width": 2527,
+        "height": 1636,
+        "steps": 4
+      },
+      "relaxed": {
+        "width": 2639,
+        "height": 1716,
+        "steps": 4
+      }
+    },
+    {
+      "scope": "warehouse",
+      "cards": 7,
+      "references": 23,
+      "compact": {
+        "width": 3981,
+        "height": 617,
+        "steps": 1
+      },
+      "relaxed": {
+        "width": 4121,
+        "height": 617,
+        "steps": 1
+      }
+    },
+    {
+      "scope": "repository-five-files",
+      "cards": 52,
+      "references": 246,
+      "compact": {
+        "width": 3730,
+        "height": 3480,
+        "steps": 32
+      },
+      "relaxed": {
+        "width": 3898,
+        "height": 3725,
+        "steps": 28
+      }
+    },
+    {
+      "scope": "repository-chain",
+      "cards": 52,
+      "references": 235,
+      "compact": {
+        "width": 4349,
+        "height": 3847,
+        "steps": 16
+      },
+      "relaxed": {
+        "width": 4545,
+        "height": 4000,
+        "steps": 13
+      }
+    },
+    {
+      "scope": "estate-five-files",
+      "cards": 20,
+      "references": 58,
+      "compact": {
+        "width": 2936,
+        "height": 1203,
+        "steps": 5
+      },
+      "relaxed": {
+        "width": 3160,
+        "height": 1448,
+        "steps": 3
+      }
+    },
+    {
+      "scope": "estate-chain",
+      "cards": 14,
+      "references": 40,
+      "compact": {
+        "width": 2816,
+        "height": 777,
+        "steps": 2
+      },
+      "relaxed": {
+        "width": 3040,
+        "height": 909,
+        "steps": 1
+      }
+    }
+  ],
+  "motion": {
+    "twoD": {
+      "frames": 105,
+      "maxDrift": 0.0010358009490037319
+    },
+    "threeD": {
+      "frames": 196,
+      "maxDrift": 0
+    }
+  }
+}

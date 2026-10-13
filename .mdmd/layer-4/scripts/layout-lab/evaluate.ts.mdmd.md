@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/evaluate.ts
-- Generated At: 2026-10-13T16:52:35.745Z
+- Generated At: 2026-10-13T19:38:17.386Z
 
 ## Authored
 ### Purpose
@@ -24,14 +24,14 @@ The levers are the Local Map tuning the layout reads (`LabConfig`), the baseline
 ### Public Symbols
 #### `LabConfig` {#symbol-labconfig}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L27)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L28)
 
 ##### `LabConfig` — Summary
 The levers: the Local Map tuning the layout reads.
 
 #### `LEVERS` {#symbol-levers}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L49)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L50)
 - Returns: `ReadonlyArray`
 
 ##### `LEVERS` — Summary
@@ -39,22 +39,23 @@ The levers in the order the reports name them.
 
 #### `baselineConfig` {#symbol-baselineconfig}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L52)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L53)
 - Returns: [`LabConfig`](#symbol-labconfig)
+- Parameters: `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `baselineConfig` — Summary
 The page's own tuning: the configuration the picture was designed at.
 
 #### `Evaluation` {#symbol-evaluation}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L58)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L59)
 
 ##### `Evaluation` — Summary
 A configuration laid out and scored, with the exploration, the scene and the routes behind the signals.
 
 #### `scopePins` {#symbol-scopepins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L75)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L76)
 - Returns: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -63,7 +64,7 @@ The scope's pins, every file retained whole, and its subject.
 
 #### `includeNode` {#symbol-includenode}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L80)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L81)
 - Parameters: `pins`: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `includeNode` — Summary
@@ -71,7 +72,7 @@ The captured filters, or the retained URL's defaults for older captures; a pinne
 
 #### `evaluate` {#symbol-evaluate}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L101)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L102)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `config`: [`LabConfig`](#symbol-labconfig)
 
@@ -80,7 +81,7 @@ Lays out and scores one configuration of the levers over a capture.
 
 #### `evaluateAlignment` {#symbol-evaluatealignment}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L134)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L135)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `previous`: [`Evaluation`](#symbol-evaluation); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -89,7 +90,7 @@ Re-solves a shown order with explicit alignment constraints, preserving its sour
 
 #### `driftOf` {#symbol-driftof}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L148)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L149)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `evaluation`: [`Evaluation`](#symbol-evaluation)
 
 ##### `driftOf` — Summary
@@ -98,6 +99,8 @@ Where the baseline evaluation differs from what the page showed at capture: noth
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
+- [`layout-presets.applyLayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.LocalMapTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-localmaptuning) (type-only)

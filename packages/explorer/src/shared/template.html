@@ -70,8 +70,8 @@
     <details class="sidebar-section sidebar-details">
       <summary class="section-label clickable">Tuning</summary>
       <div class="tuning-content">
-        <div class="tuning-subsection">
-          <div class="subsection-label">Bezier Curve</div>
+        <details class="tuning-subsection">
+          <summary class="subsection-label">2D Wires</summary>
           <label class="tuning-slider">
             <span>Stub Factor</span>
             <input type="range" id="tuning-stub-factor" min="0.1" max="0.8" step="0.01" value="0.8" />
@@ -92,9 +92,9 @@
             <input type="range" id="tuning-vertical-offset" min="0" max="0.5" step="0.02" value="0" />
             <output id="tuning-vertical-offset-value">0</output>
           </label>
-        </div>
-        <div class="tuning-subsection">
-          <div class="subsection-label">Local Map</div>
+        </details>
+        <details class="tuning-subsection" data-tuning-perspective="2d" open>
+          <summary class="subsection-label">2D Layout</summary>
           <label class="tuning-slider">
             <span>Column Gap</span>
             <input type="range" id="tuning-column-gap" min="24" max="160" step="4" value="100" />
@@ -102,18 +102,33 @@
           </label>
           <label class="tuning-slider" title="What a step in a directory's outline between neighbouring columns costs the layout, in wires per pixel: at zero the outline follows its files; higher, it tends to a rectangle">
             <span>Membrane Evenness</span>
-            <input type="range" id="tuning-membrane-evenness" min="0" max="5" step="0.25" value="1" />
-            <output id="tuning-membrane-evenness-value">1</output>
+            <input type="range" id="tuning-membrane-evenness" min="0" max="5" step="0.25" value="2" />
+            <output id="tuning-membrane-evenness-value">2</output>
+          </label>
+          <label class="tuning-slider" title="Minimum space between cards and routing lanes in the same column">
+            <span>Card Gap</span>
+            <input type="range" id="tuning-item-gap" min="8" max="80" step="2" value="24" />
+            <output id="tuning-item-gap-value">24</output>
+          </label>
+          <label class="tuning-slider" title="Minimum space between sibling directory boundaries">
+            <span>Directory Gap</span>
+            <input type="range" id="tuning-band-gap" min="8" max="80" step="2" value="28" />
+            <output id="tuning-band-gap-value">28</output>
+          </label>
+          <label class="tuning-slider" title="How strongly the competition prefers a shorter picture">
+            <span>Height Cost</span>
+            <input type="range" id="tuning-height-cost" min="0" max="40" step="1" value="5" />
+            <output id="tuning-height-cost-value">5</output>
           </label>
           <label class="tuning-slider" title="What each step in a directory's outline costs, in weighted vertical wire pixels: zero gives no preference to fewer steps; higher values favour simpler outlines">
             <span>Membrane Simplicity</span>
-            <input type="range" id="tuning-membrane-simplicity" min="0" max="1000" step="10" value="100" />
-            <output id="tuning-membrane-simplicity-value">100</output>
+            <input type="range" id="tuning-membrane-simplicity" min="0" max="1000" step="10" value="200" />
+            <output id="tuning-membrane-simplicity-value">200</output>
           </label>
           <label class="tuning-slider" title="What a difference between the tops of a directory's cards in neighbouring columns costs, in wires per pixel: at zero each card stands where its wires are shortest; higher, the cards stand in rows">
             <span>Row Levelness</span>
-            <input type="range" id="tuning-row-levelness" min="0" max="5" step="0.25" value="0" />
-            <output id="tuning-row-levelness-value">0</output>
+            <input type="range" id="tuning-row-levelness" min="0" max="5" step="0.25" value="0.25" />
+            <output id="tuning-row-levelness-value">0.25</output>
           </label>
           <label class="tuning-slider">
             <span>Hover Dim (Symbols)</span>
@@ -185,7 +200,35 @@
             <input type="range" id="tuning-churn-cost" min="0" max="400" step="10" value="100" />
             <output id="tuning-churn-cost-value">100</output>
           </label>
-        </div>
+        </details>
+        <details class="tuning-subsection" data-tuning-perspective="3d">
+          <summary class="subsection-label">3D Layout</summary>
+          <label class="tuning-slider" title="Preferred surface gap for two files connected by one documented reference">
+            <span>Link Gap</span><input type="range" id="tuning-force-link-gap" min="8" max="200" step="2" value="60" />
+            <output id="tuning-force-link-gap-value">60</output>
+          </label>
+          <label class="tuning-slider" title="How strongly files repel one another">
+            <span>Repulsion</span><input type="range" id="tuning-force-charge" min="0" max="300" step="5" value="60" />
+            <output id="tuning-force-charge-value">60</output>
+          </label>
+          <label class="tuning-slider" title="Additional clearance between sphere surfaces">
+            <span>Clearance</span><input type="range" id="tuning-force-collision-gap" min="0" max="20" step="0.5" value="5" />
+            <output id="tuning-force-collision-gap-value">5</output>
+          </label>
+          <label class="tuning-slider" title="How much additional documented coupling reduces the preferred gap, with diminishing returns; independent of packing presets">
+            <span>Coupling</span><input type="range" id="tuning-force-coupling" min="0" max="3" step="0.1" value="1" />
+            <output id="tuning-force-coupling-value">1</output>
+          </label>
+          <label class="tuning-slider" title="Radius of a file with no public symbols; independent of packing presets">
+            <span>Base Radius</span><input type="range" id="tuning-force-node-size" min="1" max="10" step="0.25" value="4" />
+            <output id="tuning-force-node-size-value">4</output>
+          </label>
+          <label class="tuning-slider" title="Growth of sphere volume with exposed symbols: zero gives equal sizes, one gives a cube-root radius; independent of packing presets">
+            <span>Symbol Scaling</span><input type="range" id="tuning-force-symbol-scale" min="0" max="2" step="0.1" value="1" />
+            <output id="tuning-force-symbol-scale-value">1</output>
+          </label>
+        </details>
+        <button id="export-layout-settings" type="button" class="tuning-export">Export layout settings</button>
       </div>
     </details>
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.ts
-- Generated At: 2026-10-12T19:21:19.391Z
+- Generated At: 2026-10-13T19:38:15.847Z
 
 ## Authored
 ### Purpose
@@ -17,12 +17,14 @@ Encodes portable exploration state: navigation view, Local Map representation, s
 - [View consolidation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4) introduced version 2. Version 1 Force Graph views become Local Map in 3D; Membrane/Circuit views become 2D, with their deepest opened directories retained. Retired camera and expanded-card fields are no longer emitted.
 - Explicit snapshots are always written, including an empty Local Map: a bare URL may instead land on a board. Data-source and path parameters survive writes. Missing files, directories and pins are scrubbed against the current graph.
 
+Optional layout settings carry both representations’ packing and spatial encoding controls, including Custom values. The optional related-documentation flag makes that force-graph input portable too. Earlier links without these fields retain existing preferences. Numeric settings are validated against their control ranges and increments before application. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CompressedPayload` {#symbol-compressedpayload}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L41)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L42)
 
 ##### `CompressedPayload` — Summary
 The JSON structure compressed into the `?s=` parameter.
@@ -33,7 +35,7 @@ minimize serialized size while remaining readable in code.
 
 #### `UrlStateSnapshot` {#symbol-urlstatesnapshot}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L71)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L76)
 
 ##### `UrlStateSnapshot` — Summary
 Application-level state snapshot that maps 1:1 with the URL.
@@ -42,7 +44,7 @@ This is what the controller produces and consumes; the
 
 #### `DEFAULT_SNAPSHOT` {#symbol-default_snapshot}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L82)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L89)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `DEFAULT_SNAPSHOT` — Summary
@@ -50,7 +52,7 @@ Default state for cold start (no URL parameter).
 
 #### `snapshotToPayload` {#symbol-snapshottopayload}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L104)
 - Returns: [`CompressedPayload`](#symbol-compressedpayload)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
@@ -60,7 +62,7 @@ Omits fields that match defaults to keep the output small.
 
 #### `payloadToSnapshot` {#symbol-payloadtosnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L127)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L137)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `payload`: [`CompressedPayload`](#symbol-compressedpayload)
 
@@ -70,7 +72,7 @@ Applies version migrations and defaults for missing fields.
 
 #### `compressSnapshot` {#symbol-compresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L150)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L162)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `compressSnapshot` — Summary
@@ -78,7 +80,7 @@ Compress a snapshot into a URL-safe string.
 
 #### `decompressSnapshot` {#symbol-decompresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L159)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L171)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `decompressSnapshot` — Summary
@@ -87,7 +89,7 @@ Returns the default snapshot if decompression or parsing fails.
 
 #### `scrubSnapshot` {#symbol-scrubsnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L179)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L191)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot); `nodesById`: `ReadonlyMap`
 
@@ -100,7 +102,7 @@ Pure function — returns a new snapshot; does not mutate the input.
 
 #### `readUrlState` {#symbol-readurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L219)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L231)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `readUrlState` — Summary
@@ -109,7 +111,7 @@ Falls back to defaults if no `?s=` parameter is present.
 
 #### `writeUrlState` {#symbol-writeurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L230)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L242)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `writeUrlState` — Summary
@@ -120,6 +122,8 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `lz-string` - `compressToEncodedURIComponent`, `decompressFromEncodedURIComponent`
+- [`layout-presets.LayoutSettings`](../layout-presets.ts.mdmd.md#symbol-layoutsettings)
+- [`layout-presets.readLayoutSettings`](../layout-presets.ts.mdmd.md#symbol-readlayoutsettings)
 - [`history.commitUrl`](./history.ts.mdmd.md#symbol-commiturl)
 - [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
 - [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)

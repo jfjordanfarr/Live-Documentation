@@ -1,0 +1,36 @@
+# tests/e2e/local-map-presets.spec.ts
+
+## Metadata
+- Layer: 4
+- Archetype: test
+- Code Path: tests/e2e/local-map-presets.spec.ts
+- Generated At: 2026-10-13T19:53:56.043Z
+
+## Authored
+### Purpose
+Keeps the inspected Compact/Relaxed journeys coherent through advanced edits, sharing, exports and motion in both representations.
+
+### Notes
+Runs the same interactions on the repository and estate, preserves visible file/symbol/reference identities, checks coupling and size survive preset changes, and reloads exported/shared settings into a fresh browser context. Motion samples enforce the existing subject-anchor tolerance. A zero-duration estate layout checks actual SVG endpoints against their current pins, guarding the stale-wire defect found during visual tuning.
+
+Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
+## Generated
+<!-- LIVE-DOC:BEGIN Public Symbols -->
+### Public Symbols
+_No public symbols detected_
+<!-- LIVE-DOC:END Public Symbols -->
+
+<!-- LIVE-DOC:BEGIN Dependencies -->
+### Dependencies
+- `@playwright/test` - `Page`, `expect`, `test`
+- `node:fs/promises`
+- [`layout-presets.LAYOUT_PRESETS`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layout_presets)
+- [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
+- [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
+- [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
+- [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
+- [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
+- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
+<!-- LIVE-DOC:END Dependencies -->

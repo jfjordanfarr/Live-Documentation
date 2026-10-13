@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-13T16:52:34.501Z
+- Generated At: 2026-10-13T19:38:16.052Z
 
 ## Authored
 ### Purpose
@@ -85,9 +85,16 @@ Live Doc lists them, the order of appearance in the file.
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
+#### `ForceGraphTuning` {#symbol-forcegraphtuning}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L138)
+
+##### `ForceGraphTuning` — Summary
+The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
+
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L140)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L157)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -95,7 +102,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L154)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L171)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

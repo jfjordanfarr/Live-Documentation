@@ -6,6 +6,7 @@
  */
 
 import { readPerspective, readView } from "./navigation";
+import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import type { LocalMapPerspective, ExplorerFilters, SymbolOrder, TuningConfig, ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -43,7 +44,6 @@ export const getDefaultTuning = (): TuningConfig => ({
     verticalOffset: 0
   },
   localMap: {
-    columnGap: 100,
     hoverDimSymbols: 0.5,
     hoverDimConnections: 0.1,
     selfLoopTaper: 0.5,
@@ -63,18 +63,14 @@ export const getDefaultTuning = (): TuningConfig => ({
     orderSeed: null,
     orderStarts: 2,
     crossingCost: 80,
-    heightCost: 5,
     churnCost: 100,
-    itemGap: 24,
-    bandGap: 28,
     membraneNeck: 60,
     membranePadding: 12,
     cardMaxWidth: null,
-    membraneEvenness: 1,
-    membraneSimplicity: 100,
-    rowLevelness: 0,
-    membraneDepth: null
-  }
+    membraneDepth: null,
+    ...LAYOUT_PRESETS.relaxed.localMap
+  },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1 }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -147,6 +143,9 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
     const parsedTuning = getRecord(parsed, "tuning");
     if (parsedTuning) {
       const tuning: SavedTuning = {};
+
+      const layout = readLayoutSettings(parsedTuning);
+      if (layout?.forceGraph) tuning.forceGraph = layout.forceGraph;
 
       const bezierRaw = getRecord(parsedTuning, "bezier");
       if (bezierRaw) {
@@ -226,7 +225,8 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(membraneEvenness !== undefined ? { membraneEvenness } : null),
           ...(membraneSimplicity !== undefined ? { membraneSimplicity } : null),
           ...(rowLevelness !== undefined ? { rowLevelness } : null),
-          ...(membraneDepth !== undefined ? { membraneDepth } : null)
+          ...(membraneDepth !== undefined ? { membraneDepth } : null),
+          ...(layout?.localMap ?? {})
         };
       }
 
@@ -275,6 +275,10 @@ export const applyPersistedUi = (
     localMap: {
       ...defaults.tuning.localMap,
       ...(persisted.tuning?.localMap ?? {})
+    },
+    forceGraph: {
+      ...defaults.tuning.forceGraph,
+      ...(persisted.tuning?.forceGraph ?? {})
     }
   };
    

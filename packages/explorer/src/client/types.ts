@@ -131,6 +131,23 @@ export type SymbolOrder = "layout" | "alphabetical" | "appearance";
 export interface TuningConfig {
   bezier: BezierTuning;
   localMap: LocalMapTuning;
+  forceGraph: ForceGraphTuning;
+}
+
+/** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
+export interface ForceGraphTuning {
+  /** Preferred surface-to-surface gap for a pair with one documented reference. */
+  linkGap: number;
+  /** Magnitude of the repulsive force between files. */
+  charge: number;
+  /** Additional separation around a sphere when resolving overlaps. */
+  collisionGap: number;
+  /** How quickly the preferred gap falls with log2(reference count); zero ignores coupling. */
+  coupling: number;
+  /** Radius of a file with no exposed symbols, in layout units. */
+  nodeSize: number;
+  /** Exponent of symbol count in sphere volume; one gives cube-root radius growth. */
+  symbolScale: number;
 }
 
 /**

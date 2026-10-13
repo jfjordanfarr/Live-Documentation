@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-12T20:19:48.212Z
+- Generated At: 2026-10-13T19:38:15.639Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,9 @@ _No public symbols detected_
 - [`graph-helpers.buildTestCoverageMap`](./graph-helpers.ts.mdmd.md#symbol-buildtestcoveragemap)
 - [`graph-helpers.getInputById`](./graph-helpers.ts.mdmd.md#symbol-getinputbyid)
 - [`graph-helpers.resolveLinkEndpoint`](./graph-helpers.ts.mdmd.md#symbol-resolvelinkendpoint)
+- [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
+- [`layout-presets.layoutPresetOf`](./layout-presets.ts.mdmd.md#symbol-layoutpresetof)
+- [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`omnisearch.initOmnisearch`](./panels/omnisearch.ts.mdmd.md#symbol-initomnisearch)
 - [`sources-facts.sourcesFacts`](./panels/sources-facts.ts.mdmd.md#symbol-sourcesfacts-function)
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)

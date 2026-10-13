@@ -19,6 +19,7 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
 import { readPerspective, readView } from "./navigation";
+import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
 import type { LocalMapPerspective, ViewName } from "../types";
 import { commitUrl } from "./history";
 import type { PinSet } from "../views/pin-state";
@@ -55,10 +56,14 @@ export interface CompressedPayload {
   t?: [number, number, number];
   /** Filters: [showTests, showAssets]. Stored as 0/1 for compactness. */
   f?: [number, number];
+  /** Whether related documentation participates in the spatial graph; omitted by older links. */
+  r?: boolean;
   /** Version 1 expanded cards; no longer written. */
   c?: string[];
   /** The directories opened in the Local Map (2026-10-08). */
   d?: string[];
+  /** Shared packing and spatial encoding settings, including advanced edits. */
+  l?: LayoutSettings;
 }
 
 // ─── Snapshot (typed application-level state) ──────────────────────
@@ -75,7 +80,9 @@ export interface UrlStateSnapshot {
   pinSet: PinSet;
   /** The directories opened in the Local Map; folder navigation is a history step, while pin edits remain within it. */
   openDirectories: ReadonlySet<string>;
-  filters: { showTests: boolean; showAssets: boolean };
+  filters: { showTests: boolean; showAssets: boolean; showRelatedDocs?: boolean };
+  /** Absent on older links; those retain the viewer's existing preferences. */
+  layout?: LayoutSettings;
 }
 
 /** Default state for cold start (no URL parameter). */
@@ -96,6 +103,9 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
  */
 export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload {
   const payload: CompressedPayload = { v: CURRENT_VERSION };
+  const layout = readLayoutSettings(snapshot.layout);
+  if (layout) payload.l = layout;
+  if (typeof snapshot.filters.showRelatedDocs === "boolean") payload.r = snapshot.filters.showRelatedDocs;
 
   if (snapshot.view !== DEFAULT_SNAPSHOT.view) {
     payload.w = snapshot.view;
@@ -137,11 +147,13 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
   const legacyDirectories = payload.v === 1 && (!payload.w || payload.w === "membrane" || payload.w === "circuit")
     ? (payload.e ?? []).filter((dir, _, all) => !all.some(other => other !== dir && other.startsWith(`${dir}/`))) : [];
   const openDirectories = new Set([...(payload.d ?? []), ...legacyDirectories].filter((entry): entry is string => typeof entry === "string"));
-  const filters = payload.f
+  const filters: UrlStateSnapshot["filters"] = payload.f
     ? { showTests: payload.f[0] === 1, showAssets: payload.f[1] === 1 }
     : { ...DEFAULT_SNAPSHOT.filters };
+  if (typeof payload.r === "boolean") filters.showRelatedDocs = payload.r;
 
-  return { view, perspective, selectedNodeId, pinSet, openDirectories, filters };
+  const layout = readLayoutSettings(payload.l);
+  return { view, perspective, selectedNodeId, pinSet, openDirectories, filters, ...(layout ? { layout } : {}) };
 }
 
 /**

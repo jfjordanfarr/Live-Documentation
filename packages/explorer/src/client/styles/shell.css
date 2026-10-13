@@ -1135,6 +1135,10 @@
     margin-bottom: 0;
 }
 
+details.tuning-subsection > summary { cursor: pointer; }
+.tuning-export { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-deep); color: var(--text-primary); font: inherit; cursor: pointer; }
+.tuning-export:hover, .tuning-export:focus-visible { border-color: var(--accent); outline: 1px solid var(--accent); }
+
 .subsection-label {
     font-size: 10px;
     font-weight: 600;
@@ -1201,4 +1205,3 @@ body.force-graph-active .sidebar-checkbox.force-graph-only {
 .legend-row .legend-swatch--related-doc {
     background: #9966cc;
 }
-

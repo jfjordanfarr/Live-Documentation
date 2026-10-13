@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-13T16:52:35.537Z
+- Generated At: 2026-10-13T19:38:17.164Z
 
 ## Authored
 ### Purpose
@@ -49,6 +49,9 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `download-doc-btn` {#symbol-download-doc-btn}
+- Type: variable
+
+#### `export-layout-settings` {#symbol-export-layout-settings}
 - Type: variable
 
 #### `filter-toggle-assets` {#symbol-filter-toggle-assets}
@@ -150,6 +153,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `stats-line` {#symbol-stats-line}
 - Type: variable
 
+#### `tuning-band-gap` {#symbol-tuning-band-gap}
+- Type: variable
+
+#### `tuning-band-gap-value` {#symbol-tuning-band-gap-value}
+- Type: variable
+
 #### `tuning-churn-cost` {#symbol-tuning-churn-cost}
 - Type: variable
 
@@ -160,6 +169,48 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-column-gap-value` {#symbol-tuning-column-gap-value}
+- Type: variable
+
+#### `tuning-force-charge` {#symbol-tuning-force-charge}
+- Type: variable
+
+#### `tuning-force-charge-value` {#symbol-tuning-force-charge-value}
+- Type: variable
+
+#### `tuning-force-collision-gap` {#symbol-tuning-force-collision-gap}
+- Type: variable
+
+#### `tuning-force-collision-gap-value` {#symbol-tuning-force-collision-gap-value}
+- Type: variable
+
+#### `tuning-force-coupling` {#symbol-tuning-force-coupling}
+- Type: variable
+
+#### `tuning-force-coupling-value` {#symbol-tuning-force-coupling-value}
+- Type: variable
+
+#### `tuning-force-link-gap` {#symbol-tuning-force-link-gap}
+- Type: variable
+
+#### `tuning-force-link-gap-value` {#symbol-tuning-force-link-gap-value}
+- Type: variable
+
+#### `tuning-force-node-size` {#symbol-tuning-force-node-size}
+- Type: variable
+
+#### `tuning-force-node-size-value` {#symbol-tuning-force-node-size-value}
+- Type: variable
+
+#### `tuning-force-symbol-scale` {#symbol-tuning-force-symbol-scale}
+- Type: variable
+
+#### `tuning-force-symbol-scale-value` {#symbol-tuning-force-symbol-scale-value}
+- Type: variable
+
+#### `tuning-height-cost` {#symbol-tuning-height-cost}
+- Type: variable
+
+#### `tuning-height-cost-value` {#symbol-tuning-height-cost-value}
 - Type: variable
 
 #### `tuning-hold-still` {#symbol-tuning-hold-still}
@@ -175,6 +226,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-hover-dim-symbols-value` {#symbol-tuning-hover-dim-symbols-value}
+- Type: variable
+
+#### `tuning-item-gap` {#symbol-tuning-item-gap}
+- Type: variable
+
+#### `tuning-item-gap-value` {#symbol-tuning-item-gap-value}
 - Type: variable
 
 #### `tuning-lace-curl` {#symbol-tuning-lace-curl}

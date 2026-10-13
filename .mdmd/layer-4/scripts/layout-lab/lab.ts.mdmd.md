@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/lab.ts
-- Generated At: 2026-10-13T16:52:35.768Z
+- Generated At: 2026-10-13T19:38:17.413Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,8 @@ The layout lab's command line: capture a retained scope, sweep and compare layou
 
 `refine` runs the same interleaved ordering and membrane-alignment competition as the page, from the captured measurements, and writes first/final metrics, all trial decisions and final geometry. `--starts`, `--patience` and `--churn` set the continuing search; `--config` accepts JSON or `@file`; `--label` and `--out` name the reports. The first-paint sweep and the ordering-only `restarts`/`widen` reports remain distinct tools. Shape-cost grids can vary `evenness`, `levelness` and `steps` while retaining the configured values for terms not varied. This command was added for the [October 13 weighted shape work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
+Every command accepts --preset compact|relaxed. The spatial command runs the shared D3 forces and graph projection, including optional --tests, --assets and --related-docs filters, then writes Markdown and complete JSON with coordinates, counts and diagnostics. The named scope identifies attention; all filtered files participate in the forces. Refinement, verification and spatial layout accept the page’s exported settings as --config @file. This supports [the shared-preset design](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -30,6 +32,9 @@ _No public symbols detected_
 - `node:fs/promises`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`layout-presets.applyLayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
+- [`layout-presets.applyLayoutSettings`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
+- [`layout-presets.readLayoutSettings`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-readlayoutsettings)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 - [`capture.captureScope`](./capture.ts.mdmd.md#symbol-capturescope)
@@ -57,8 +62,11 @@ _No public symbols detected_
 - [`restarts.widenStarts`](./restarts.ts.mdmd.md#symbol-widenstarts)
 - [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 - [`scopes.findScope`](./scopes.ts.mdmd.md#symbol-findscope)
+- [`scopes.loadBundleData`](./scopes.ts.mdmd.md#symbol-loadbundledata)
 - [`scopes.loadBundleGraph`](./scopes.ts.mdmd.md#symbol-loadbundlegraph)
 - [`scopes.scopeSlug`](./scopes.ts.mdmd.md#symbol-scopeslug)
+- [`spatial.renderSpatialReport`](./spatial.ts.mdmd.md#symbol-renderspatialreport)
+- [`spatial.spatialReport`](./spatial.ts.mdmd.md#symbol-spatialreport)
 - [`sweep.DEFAULT_GRID`](./sweep.ts.mdmd.md#symbol-default_grid)
 - [`sweep.configurations`](./sweep.ts.mdmd.md#symbol-configurations)
 - [`sweep.oneAtATime`](./sweep.ts.mdmd.md#symbol-oneatatime)

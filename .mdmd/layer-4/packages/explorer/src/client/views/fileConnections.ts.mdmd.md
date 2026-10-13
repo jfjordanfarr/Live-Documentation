@@ -13,6 +13,8 @@ Projects canonical references into counted, undirected file pairs for the Force 
 ### Notes
 Parallel symbol references and reciprocal dependencies share one visible file relationship. Internal references do not connect different files; the canonical graph retains every original edge.
 
+A projected edge may represent several documented references sharing endpoints. Pair counts sum that multiplicity (one for older inputs), including reciprocal directions, without multiplying it again through display aliases. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

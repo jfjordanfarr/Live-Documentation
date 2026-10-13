@@ -4,6 +4,7 @@ import { requireElement, setActiveView } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
+import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
 import { initOmnisearch } from "./panels/omnisearch";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
@@ -132,7 +133,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     selectedNode: null,
     focusedNode: null,
     filters: initialUi.filters,
-    tuning: initialUi.tuning
+    tuning: applyLayoutSettings(initialUi.tuning, readUrlState().layout)
   };
 
   const persistUi = createPersistUiScheduler(() => ({
@@ -250,6 +251,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       }
       state.filters.showTests = event.target.checked;
       schedulePersistUi();
+      persistExploration();
       renderCurrentView();
     });
   }
@@ -261,6 +263,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       }
       state.filters.showAssets = event.target.checked;
       schedulePersistUi();
+      persistExploration();
       renderCurrentView();
     });
   }
@@ -272,6 +275,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       }
       state.filters.showRelatedDocs = event.target.checked;
       schedulePersistUi();
+      persistExploration();
       // Only re-render Force Graph (Related Docs only affect that view)
       if (state.view === "map" && state.perspective === "3d") {
         forceGraphView.render();
@@ -281,7 +285,15 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   const perspectiveControls = document.createElement("div");
   perspectiveControls.className = "perspective-controls";
-  perspectiveControls.setAttribute("aria-label", "Local Map representation");
+  perspectiveControls.setAttribute("aria-label", "Local Map layout and representation");
+  const layoutSelect = document.createElement("select");
+  layoutSelect.id = "layout-preset";
+  layoutSelect.setAttribute("aria-label", "Local Map layout");
+  layoutSelect.title = "Packing preference for both 2D and 3D; advanced controls are in Tuning";
+  for (const [value, label] of [["compact", "Compact"], ["relaxed", "Relaxed"], ["custom", "Custom"]]) {
+    const option = document.createElement("option"); option.value = value; option.textContent = label;
+    option.disabled = value === "custom"; layoutSelect.append(option);
+  }
   const mapButton = document.createElement("button");
   mapButton.textContent = "2D";
   mapButton.title = "Local Map in 2D";
@@ -296,14 +308,17 @@ function startExplorer(bundle: StaticExplorerData): void {
   clearPinsButton.addEventListener("click", () => { state.pins = { entries: [] }; persistExploration(); renderCurrentView(); });
   const perspectivePath = document.createElement("span");
   perspectivePath.className = "perspective-path-status";
-  perspectiveControls.append(perspectivePath, mapButton, graphButton, clearPinsButton);
+  perspectiveControls.append(perspectivePath, layoutSelect, mapButton, graphButton, clearPinsButton);
   requireElement("main").append(perspectiveControls);
+  let syncTuningControls = (): void => {};
 
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
     if (contextName) contextName.textContent = (state.focusedNode ?? state.selectedNode)?.codeRelativePath
       ?? ([...(state.openDirectories ?? [])].join(", ") || "None");
     perspectiveControls.hidden = state.view !== "map";
+    layoutSelect.disabled = changingPerspective;
+    layoutSelect.value = layoutPresetOf(state.tuning);
     mapButton.setAttribute("aria-pressed", String(state.perspective === "2d"));
     graphButton.setAttribute("aria-pressed", String(state.perspective === "3d"));
     const path = localView.getActivePath();
@@ -335,7 +350,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     const releaseCover = previous && target ? holdPerspective(requireElement(`view-${sourceSurface}`)) : () => {};
     releasePerspectiveCover = releaseCover;
     changingPerspective = true;
-    mapButton.disabled = graphButton.disabled = true;
+    layoutSelect.disabled = mapButton.disabled = graphButton.disabled = true;
     const source = previous === "2d" ? localView : previous === "3d" ? forceGraphView : null;
     let anchor = target && source ? source.getSubjectAnchor(target.id) : null;
     detailPanel.hide();
@@ -365,14 +380,14 @@ function startExplorer(bundle: StaticExplorerData): void {
           if (epoch !== perspectiveEpoch) return;
           transitionDestination = null;
           changingPerspective = false;
-          mapButton.disabled = graphButton.disabled = false;
+          layoutSelect.disabled = mapButton.disabled = graphButton.disabled = false;
           forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
           const pending = pendingPerspective; pendingPerspective = null; pending?.();
         });
       } else {
         transitionDestination = null;
         changingPerspective = false;
-        mapButton.disabled = graphButton.disabled = false;
+        layoutSelect.disabled = mapButton.disabled = graphButton.disabled = false;
       }
       releaseCover();
     });
@@ -731,10 +746,19 @@ function startExplorer(bundle: StaticExplorerData): void {
     setTimeout(highlightSelectedCards, 100);
   }
 
-  initTuningPanel({
+  syncTuningControls = initTuningPanel({
     state,
-    onTuningChange: schedulePersistUi,
-    onRender: renderCurrentView,
+    onTuningChange: () => { schedulePersistUi(); persistExploration(); },
+    onRender: () => {
+      // An explicit tuning action owns the camera from this point, including
+      // when the initial automatic framing has not finished yet.
+      const subject = state.focusedNode ?? state.selectedNode;
+      const view = state.perspective === "2d" ? localView : forceGraphView;
+      const anchor = subject ? view.getSubjectAnchor(subject.id) : null;
+      if (subject && anchor) view.placeSubjectAnchor(subject.id, anchor);
+      renderCurrentView();
+      if (subject && anchor) view.placeSubjectAnchor(subject.id, anchor);
+    },
     drawLocalConnections: () => localView.drawConnections(),
   });
 
@@ -763,6 +787,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     state.view = view;
     state.perspective = place.perspective ?? state.perspective;
     const exploration = scrubSnapshot({ ...readUrlState(), openDirectories: place.openDirectories }, nodesById);
+    state.tuning = applyLayoutSettings(state.tuning, exploration.layout);
     if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...exploration.filters };
     syncFilterControls();
     state.pins = exploration.pinSet;
@@ -862,7 +887,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     syncPerspectiveControls();
     schedulePersistNav();
     writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, selectedNodeId: state.selectedNode?.id ?? null,
-      pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), filters: state.filters }, { preservePath: !leavingPath });
+      pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), filters: state.filters,
+      layout: layoutSettingsOf(state.tuning) }, { preservePath: !leavingPath });
   }
 
   function renderCurrentView(): void {
@@ -871,9 +897,10 @@ function startExplorer(bundle: StaticExplorerData): void {
       perspectiveEpoch++;
       releasePerspectiveCover(); cancelPerspectiveAnimation();
       changingPerspective = false; pendingPerspective = null; transitionDestination = null;
-      mapButton.disabled = graphButton.disabled = false;
+      layoutSelect.disabled = mapButton.disabled = graphButton.disabled = false;
     }
     syncPerspectiveControls();
+    syncTuningControls();
     forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
     if (state.view === "sources") {
       doRenderSourcesView();

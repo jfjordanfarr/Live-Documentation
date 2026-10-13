@@ -130,6 +130,8 @@ export interface ExplorerLinkPayload {
     kind: ExplorerLinkKind;
     sourceSymbol?: string;
     targetSymbol?: string;
+    /** Number of documented references represented by this endpoint/kind pair; one for older payloads. */
+    referenceCount?: number;
 }
 
 /**

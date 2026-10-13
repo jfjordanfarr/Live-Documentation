@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { displayNames, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
+import { displayNames, gesture, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);
@@ -48,13 +48,16 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(pin(page, "processor.ts", "run")).toHaveAttribute("aria-pressed", "true");
   // Neither pin requested this relationship, but both of its endpoints are retained.
   await expect(page.locator(`#map-connections .connection-path[data-source-id="${ROOT}models.ts"][data-target-id="${ROOT}types.ts"]`).first()).toBeAttached();
-  await pin(page, "types.ts", "ProcessorConfig").click();
+  // Packing may place another retained card beyond the current frame. Reach
+  // its pin with the same pan gesture a person uses, preserving the held card.
+  await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}types.ts"] .symbol-row[data-symbol="ProcessorConfig"] .symbol-label-wrapper`);
   await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("3 pins ×");
   await page.reload();
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "processor.ts", "run")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
-  await pin(page, "processor.ts", "run").click();
+  await localMapSettled(page);
+  await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}processor.ts"] .symbol-row[data-symbol="run"] .symbol-label-wrapper`);
   await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("2 pins ×");
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
@@ -360,7 +363,7 @@ test("a card's rows stand where their wires lead by default, and Tuning offers t
     return pairs;
   }, subject);
   const choose = async (order: string): Promise<void> => {
-    await page.locator("#tuning-symbol-order").evaluate(select => { select.closest("details")!.open = true; });
+    if (!(await page.locator("#tuning-symbol-order").isVisible())) await page.getByText("Tuning", { exact: true }).click();
     await page.locator("#tuning-symbol-order").selectOption(order);
     await settle();
   };

@@ -384,6 +384,9 @@ function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph)
 function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null): void {
   const { root } = stage;
   const previous = stage.pose;
+  const pose = scenePose(scene);
+  const instantHeld = previous && moveMs <= 0 ? elementHeld(controller, stage, previous, pose) : null;
+  const instantAnchor = instantHeld?.getBoundingClientRect();
   const scale = controller.runtime.mapTransform.k || 1;
   const leaving = [...leavingCards];
   const entering = [...enteringCards];
@@ -445,11 +448,17 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
   }
 
   // Every element at its place, at once for the first picture, else moved there from where the previous one stood it.
-  const pose = scenePose(scene);
   if (!previous || moveMs <= 0) {
     for (const element of leaving) element.remove();
     applyPose(stage, pose, sceneTuning.bandPadding);
     stage.pose = pose;
+    if (instantHeld && instantAnchor) {
+      const rect = instantHeld.getBoundingClientRect();
+      const camera = controller.mapTransform;
+      controller.mapTransform = { ...camera, x: camera.x + instantAnchor.left - rect.left, y: camera.y + instantAnchor.top - rect.top };
+      controller.updateMapTransform();
+    }
+    controller.drawConnections();
     return;
   }
   const rows = oldRows ? rowMotions(stage, oldRows, scale) : [];

@@ -280,11 +280,11 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
   // A wire per reference, through the slot of each lane it passes; wires between the same pins add up.
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
   const wires = new Map<string, PlacementWire>();
-  const addWire = (from: { item: string; offset: number }, to: { item: string; offset: number }): void => {
+  const addWire = (from: { item: string; offset: number }, to: { item: string; offset: number }, count: number): void => {
     const key = `${from.item}\0${from.offset}\0${to.item}\0${to.offset}`;
     const wire = wires.get(key);
-    if (wire) wire.weight += 1;
-    else wires.set(key, { from, to, weight: 1 });
+    if (wire) wire.weight += count;
+    else wires.set(key, { from, to, weight: count });
   };
   for (const edge of branches.subgraph.links) {
     if (edge.sourceId === edge.targetId || branches.back.has(edgeKey(edge))) continue;
@@ -299,10 +299,10 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
       const slots = passage ? lanes.get(passage.lane)?.slots : undefined;
       if (!passage || !slots) break;
       const slot = { item: slots[passage.index], offset: SLOT_LINE };
-      addWire(previous, slot);
+      addWire(previous, slot, edge.referenceCount ?? 1);
       previous = slot;
     }
-    addWire(previous, { item: edge.sourceId, offset: consumer });
+    addWire(previous, { item: edge.sourceId, offset: consumer }, edge.referenceCount ?? 1);
   }
 
   const toPlacementBand = (box: SceneBox): PlacementBand => ({
