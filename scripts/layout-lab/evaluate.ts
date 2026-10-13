@@ -13,9 +13,11 @@ import { capturedMeasurer } from "./measurer";
 import { routeScene, type Route } from "./routes";
 import { retainedSubject, type ScopeRun } from "./scopes";
 import { measureScene, type Signals } from "./signals";
+import { DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { LocalMapTuning, SymbolOrder } from "../../packages/explorer/src/client/types";
-import { candidateStarts, layoutStarts, startName, startOrder, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
+import type { BoundaryAlignment } from "../../packages/explorer/src/client/views/localView/branch-placement";
+import { candidateStarts, layoutStarts, scoreOf, signalsOf, startName, startOrder, type StartSignals } from "../../packages/explorer/src/client/views/localView/branch-restarts";
 import { layoutScene, planBranches, type Scene } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { exploreBranches, orderExploration, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import { addPin, EMPTY_PIN_SET, type PinSet } from "../../packages/explorer/src/client/views/pin-state";
@@ -39,11 +41,12 @@ export interface LabConfig {
   cardMaxWidth: number | null;
   membraneDepth: number | null;
   membraneEvenness: number;
+  membraneSimplicity: number;
   rowLevelness: number;
 }
 
 /** The levers in the order the reports name them. */
-export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "rowLevelness"];
+export const LEVERS: ReadonlyArray<keyof LabConfig> = ["rankingPull", "rankingTie", "orderSweeps", "orderSeed", "orderStarts", "crossingCost", "heightCost", "symbolOrder", "columnGap", "itemGap", "bandGap", "membraneNeck", "membranePadding", "cardMaxWidth", "membraneDepth", "membraneEvenness", "membraneSimplicity", "rowLevelness"];
 
 /** The page's own tuning: the configuration the picture was designed at. */
 export function baselineConfig(): LabConfig {
@@ -64,6 +67,8 @@ export interface Evaluation {
   /** The start whose picture this is, and every start tried with what the page would price it at. */
   start: string;
   starts: Array<{ name: string; signals: StartSignals; score: number }>;
+  /** Explicit boundary equalities used for this picture; first paint has none. */
+  alignments: readonly BoundaryAlignment[];
 }
 
 /** The scope's pins, every file retained whole, and its subject. */
@@ -71,10 +76,25 @@ export function scopePins(run: ScopeRun): PinSet {
   return run.scope.reduce((set, file) => addPin(set, file, "*"), EMPTY_PIN_SET);
 }
 
-/** The page's default filters: tests shown, assets hidden, a pinned or selected file always kept. */
-export function includeNode(pins: PinSet, subject: string): (node: ExplorerNodePayload) => boolean {
+/** The captured filters, or the retained URL's defaults for older captures; a pinned or selected file is always kept. */
+export function includeNode(pins: PinSet, subject: string, filters = DEFAULT_SNAPSHOT.filters): (node: ExplorerNodePayload) => boolean {
   const pinned = new Set(pins.entries.map(pin => pin.nodeId));
-  return node => pinned.has(node.id) || node.id === subject || (node.archetype || "").toLowerCase() !== "asset";
+  return node => {
+    if (pinned.has(node.id) || node.id === subject) return true;
+    const archetype = (node.archetype || "").toLowerCase();
+    return !(archetype === "asset" && !filters.showAssets || archetype === "test" && !filters.showTests);
+  };
+}
+
+/** A fresh scene for one fixed order, with optional equalities for an alignment trial. */
+function placeConfiguration(capture: Capture, run: ScopeRun, config: LabConfig, branches: BranchGraph, alignments: readonly BoundaryAlignment[] = []): { scene: Scene; metrics: Map<string, CardMetrics> } {
+  const plan = planBranches(branches, config.membranePadding);
+  const measurer = capturedMeasurer(capture, branches, { pins: scopePins(run), selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin, symbolOrder: config.symbolOrder });
+  const scene = layoutScene(plan, branches, measurer, {
+    columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth,
+    evenness: config.membraneEvenness, levelness: config.rowLevelness
+  }, alignments);
+  return { scene, metrics: measurer.metrics };
 }
 
 /** Lays out and scores one configuration of the levers over a capture. */
@@ -84,7 +104,7 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
   const center = byId.get(retainedSubject(run));
   if (!center) throw new Error(`The bundle has no file ${JSON.stringify(retainedSubject(run))}.`);
   const pins = scopePins(run);
-  const exploration = exploreBranches(center, graph, pins, includeNode(pins, retainedSubject(run)), {
+  const exploration = exploreBranches(center, graph, pins, includeNode(pins, retainedSubject(run), capture.filters), {
     symbolOrder: config.symbolOrder,
     ranking: { pull: config.rankingPull, tie: config.rankingTie },
     membraneDepth: config.membraneDepth
@@ -95,23 +115,32 @@ export function evaluate(capture: Capture, graph: ExplorerGraphPayload, run: Sco
   const metricsOf = new Map<Scene, Map<string, CardMetrics>>();
   const { chosen, outcomes } = layoutStarts(starts, start => {
     const branches = orderExploration(exploration, { sweeps: config.orderSweeps, ...startOrder(start) });
-    const plan = planBranches(branches, config.membranePadding);
-    const measurer = capturedMeasurer(capture, branches, { pins, selected: retainedSubject(run), collapseOnPin: getDefaultTuning().localMap.collapseOnPin });
-    const scene = layoutScene(plan, branches, measurer, {
-      columnGap: config.columnGap, itemGap: config.itemGap, bandGap: config.bandGap, neck: config.membraneNeck, bandPadding: config.membranePadding, cardMaxWidth: config.cardMaxWidth,
-      evenness: config.membraneEvenness, levelness: config.rowLevelness
-    });
-    metricsOf.set(scene, measurer.metrics);
+    const { scene, metrics } = placeConfiguration(capture, run, config, branches);
+    metricsOf.set(scene, metrics);
     return { branches, scene };
-  }, { crossing: config.crossingCost, height: config.heightCost, churn: 0 }, null);
+  }, { crossing: config.crossingCost, height: config.heightCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity }, null);
   const { branches, scene } = chosen;
   const metrics = metricsOf.get(scene)!;
   const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
   const signals = measureScene(scene, branches, routes);
   return {
-    config, signals, ms: performance.now() - started, branches, scene, routes, metrics,
+    config, signals, ms: performance.now() - started, branches, scene, routes, metrics, alignments: [],
     start: startName(chosen.start),
     starts: outcomes.map(outcome => ({ name: startName(outcome.start), signals: outcome.signals, score: outcome.score }))
+  };
+}
+
+/** Re-solves a shown order with explicit alignment constraints, preserving its source scene and reporting the same shape price as the page. */
+export function evaluateAlignment(previous: Evaluation, capture: Capture, run: ScopeRun, alignments: readonly BoundaryAlignment[]): Evaluation {
+  const started = performance.now();
+  const { config, branches } = previous;
+  const { scene, metrics } = placeConfiguration(capture, run, config, branches, alignments);
+  const routes = routeScene(scene, branches, capture, metrics, getDefaultTuning().bezier);
+  const signals = signalsOf(branches, scene, previous.scene.tops);
+  const score = scoreOf(signals, { crossing: config.crossingCost, height: config.heightCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity });
+  return {
+    config, signals: measureScene(scene, branches, routes), ms: performance.now() - started, branches, scene, routes, metrics,
+    start: previous.start, starts: [{ name: previous.start, signals, score }], alignments: [...alignments]
   };
 }
 

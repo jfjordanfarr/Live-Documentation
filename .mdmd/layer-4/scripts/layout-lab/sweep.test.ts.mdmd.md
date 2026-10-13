@@ -14,7 +14,7 @@ Holds the sweep's grid, sampling, sensitivity, scoring and Pareto front.
 ### Notes
 
 A grid of lists, ranges and `none` parses and an unknown lever is refused; one lever at a time skips the baseline's own value; a small grid is walked whole and a large one sampled by its seed, the baseline first, nothing twice, the same for a seed and different between seeds; the score follows the weights and a signal the baseline lacks counts double; the levers a configuration moved are named; the front keeps only the rows no other beats.
-- The signal fixtures carry `fragments` (2026-10-07).
+The grid accepts the simplicity lever, and the weighted-score cases give distinct values to unevenness, step count and row misalignment so a missing term changes the expected result. These extend the [original lab tests](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10) for the [October 13 shared shape work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

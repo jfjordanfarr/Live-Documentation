@@ -81,6 +81,8 @@ export interface PlacementBand {
   shaped: boolean;
   /** The items directly in this membrane, each in one of its columns. */
   items: readonly string[];
+  /** Cards paired by the row-levelness objective; defaults to `items`. May include cards in this directory's invisible file buckets without changing their containment. */
+  rowItems?: readonly string[];
   children: readonly PlacementBand[];
 }
 
@@ -102,6 +104,14 @@ export interface PlacementLane {
 /** One thing in a column's stack: a card by its item id, or a lane. */
 export type StackEntry = string | PlacementLane;
 
+/** One membrane edge held level across an inclusive, contiguous interval of columns. */
+export interface BoundaryAlignment {
+  band: string;
+  edge: "top" | "bottom";
+  fromColumn: number;
+  toColumn: number;
+}
+
 /** What the placement takes. */
 export interface PlacementInput {
   /** The cards and lanes of each column, top to bottom. */
@@ -111,6 +121,8 @@ export interface PlacementInput {
   wires: readonly PlacementWire[];
   /** The top-level boxes. */
   bands: readonly PlacementBand[];
+  /** Explicit level runs for an alignment candidate; overlapping intervals on the same edge form one run. */
+  alignments?: readonly BoundaryAlignment[];
   /** The least room between neighbouring cards and lanes of a column. */
   gap: number;
   /** The least room between sibling membranes' segments in a column they share. */
@@ -136,6 +148,51 @@ export interface Placement {
 /** What a unit of a wire's vertical distance costs against a unit of a box's height. */
 const WIRE_WEIGHT = 1_000_000;
 
+const boundaryKey = (edge: BoundaryAlignment["edge"], band: string, column: number): string => `${edge}\0${band}\0${column}`;
+
+/**
+ * Canonical node names for explicitly level runs. Aliasing keeps their edges equal without adding the two opposing
+ * constraints that would make a cycle. Only overlapping intervals join; adjacent, non-overlapping runs stay separate.
+ */
+function boundaryAliases(input: PlacementInput): Map<string, string> {
+  const aliases = new Map<string, string>();
+  if (!input.alignments?.length) return aliases;
+  const bands = new Map<string, PlacementBand>();
+  const collect = (children: readonly PlacementBand[]): void => {
+    for (const band of children) { bands.set(band.key, band); collect(band.children); }
+  };
+  collect(input.bands);
+  const groups = new Map<string, BoundaryAlignment[]>();
+  for (const alignment of input.alignments) {
+    const { band: key, edge, fromColumn, toColumn } = alignment;
+    const band = bands.get(key);
+    if (!band) throw new Error(`The boundary alignment references unknown membrane ${JSON.stringify(key)}.`);
+    if (edge !== "top" && edge !== "bottom") throw new Error(`The boundary alignment of ${JSON.stringify(key)} has invalid edge ${JSON.stringify(edge)}; expected top or bottom.`);
+    if (!Number.isInteger(fromColumn) || !Number.isInteger(toColumn) || fromColumn > toColumn) {
+      throw new Error(`The ${edge} alignment of ${JSON.stringify(key)} needs an increasing inclusive interval of integer columns; received ${fromColumn}..${toColumn}.`);
+    }
+    if (fromColumn < band.minColumn || toColumn > band.maxColumn || fromColumn < 0 || toColumn >= input.columns.length) {
+      throw new Error(`The ${edge} alignment ${fromColumn}..${toColumn} reaches outside the columns of membrane ${JSON.stringify(key)} (${band.minColumn}..${band.maxColumn}) or the picture.`);
+    }
+    const groupKey = `${edge}\0${key}`;
+    const group = groups.get(groupKey);
+    if (group) group.push(alignment);
+    else groups.set(groupKey, [alignment]);
+  }
+  for (const group of groups.values()) {
+    group.sort((a, b) => a.fromColumn - b.fromColumn || a.toColumn - b.toColumn);
+    const { band, edge } = group[0];
+    let start = group[0].fromColumn, end = group[0].toColumn;
+    for (let i = 1; i <= group.length; i++) {
+      const next = group[i];
+      if (next && next.fromColumn <= end) { end = Math.max(end, next.toColumn); continue; }
+      for (let column = start + 1; column <= end; column++) aliases.set(boundaryKey(edge, band, column), boundaryKey(edge, band, start));
+      if (next) { start = next.fromColumn; end = next.toColumn; }
+    }
+  }
+  return aliases;
+}
+
 /** The weighted sum of the wires' vertical distances at given tops; a wire whose pin is unplaced costs nothing. */
 export function placementCost(wires: readonly PlacementWire[], top: ReadonlyMap<string, number>): number {
   let cost = 0;
@@ -149,14 +206,19 @@ export function placementCost(wires: readonly PlacementWire[], top: ReadonlyMap<
 
 /** Places the items; see the module note. */
 export function placeBranches(input: PlacementInput): Placement {
+  const aliases = boundaryAliases(input);
   const index = new Map<string, number>();
   let count = 0;
   const node = (key: string): number => index.get(key) ?? (index.set(key, count), count++);
   const constraints: Constraint[] = [];
   const itemNode = (id: string): number => node(`item\0${id}`);
   const height = (id: string): number => Math.round(input.heights.get(id) ?? 0);
-  const segmentTop = (key: string, column: number): number => node(`top\0${key}\0${column}`);
-  const segmentBottom = (key: string, column: number): number => node(`bottom\0${key}\0${column}`);
+  const segmentNode = (edge: BoundaryAlignment["edge"], key: string, column: number): number => {
+    const name = boundaryKey(edge, key, column);
+    return node(aliases.get(name) ?? name);
+  };
+  const segmentTop = (key: string, column: number): number => segmentNode("top", key, column);
+  const segmentBottom = (key: string, column: number): number => segmentNode("bottom", key, column);
 
   // Every item's column, from the stacks: a card's directly, a slot's through its lane.
   const columnOf = new Map<string, number>();
@@ -225,7 +287,7 @@ export function placeBranches(input: PlacementInput): Placement {
       // weight per pixel, and the k-th cards of neighbouring columns cost the levelness weight per pixel between their
       // tops, each through an auxiliary node both stay above, as a wire's pins do (the cost is then the distance).
       if (band.shaped && (even > 0 || level > 0)) {
-        const members = new Set(band.items);
+        const members = new Set(band.rowItems ?? band.items);
         const cardsOf = (column: number): string[] => input.columns[column].filter((entry): entry is string => typeof entry === "string" && members.has(entry));
         for (let column = band.minColumn + 1; column <= band.maxColumn; column++) {
           if (even > 0) {

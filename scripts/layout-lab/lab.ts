@@ -4,12 +4,13 @@
  * configuration laid out by the page's own ranking, order, scene and
  * placement with a capture of the page's cards in the page's place, scored
  * on the signals the still-picture deck reads, and reported for a person to
- * read. Four verbs:
+ * read. Commands:
  *
  *   npm run layout:lab -- capture <bundle/scope> [--out <dir>]
  *   npm run layout:lab -- sweep <bundle/scope> [--capture <file>] [--grid <spec>] [--sample <n>] [--seed <n>] [--weights k=v,...] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- restarts <bundle/scope> [--capture <file>] [--starts <n>] [--costs <spec>] [--churn a,b,c] [--first <n>] [--patience <n>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- widen <bundle/scope> [--capture <file>] [--grid <spec>] [--starts <n>] [--churn <n>] [--first <n>] [--patience <n>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- refine <bundle/scope> [--capture <file>] [--starts <n>] [--churn <n>] [--patience <n>] [--config <json or @file>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
  *
  * The scopes are the deck's: repository/five, repository/chain, estate/five,
@@ -25,6 +26,7 @@ import process from "node:process";
 
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
 import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
+import { refine, refinementJson, renderRefinement } from "./refine";
 import { differences, renderMarkdown, toJson, type ReportRow, type RunReport } from "./report";
 import { DEFAULT_WIDE_GRID, parseCosts, renderRestarts, renderWide, simulateSearch, tabulateStarts, trialCosts, widenStarts } from "./restarts";
 import { findScope, loadBundleGraph, scopeSlug, type ScopeRun } from "./scopes";
@@ -68,7 +70,7 @@ async function loadCapture(run: ScopeRun, options: Record<string, string>): Prom
 async function main(): Promise<void> {
   const { verb, scope, options } = parseArgs(process.argv.slice(2));
   if (!verb || !scope) {
-    console.error("Usage: layout-lab <capture|sweep|restarts|widen|verify> <bundle/scope> [options]");
+    console.error("Usage: layout-lab <capture|sweep|restarts|widen|refine|verify> <bundle/scope> [options]");
     process.exit(2);
   }
   const run = findScope(scope);
@@ -140,12 +142,12 @@ async function main(): Promise<void> {
     const seeds = Number(options.starts ?? 8);
     const weights = parseWeights(options.weights);
     const rows = tabulateStarts(capture, graph, run, config, seeds);
-    const trials = trialCosts(rows, parseCosts(options.costs), weights);
     // The page's search over the same starts, at the page's crossing and height costs and each churn cost asked for.
     const churnCosts = (options.churn ?? "0,50,100,200,400").split(",").map(Number).filter(Number.isFinite);
     const first = Number(options.first ?? config.orderStarts);
     const patience = Number(options.patience ?? getDefaultTuning().localMap.searchPatience);
-    const pageCosts = { crossing: config.crossingCost, height: config.heightCost, churn: 0 };
+    const pageCosts = { crossing: config.crossingCost, height: config.heightCost, churn: 0, evenness: config.membraneEvenness, levelness: config.rowLevelness, steps: config.membraneSimplicity };
+    const trials = trialCosts(rows, parseCosts(options.costs, pageCosts), weights);
     const search = { trials: simulateSearch(rows, pageCosts, churnCosts, first, patience), costs: pageCosts, orderStarts: first, patience };
     const label = options.label ?? "restarts";
     await fs.mkdir(out, { recursive: true });
@@ -157,7 +159,7 @@ async function main(): Promise<void> {
     const agreeing = trials.filter(t => t.pick === t.best);
     console.log(`${rows.length} starts in ${((Date.now() - Date.parse(startedAt)) / 1000).toFixed(1)} s; report at ${path.relative(process.cwd(), markdown)}.`);
     console.log(`Shortest vertical: ${shortest.name} at ${shortest.cheap.vertical.toLocaleString("en-US")} px (ranked ${rows[0].cheap.vertical.toLocaleString("en-US")}); the full score prefers ${trials[0]?.best.name ?? "n/a"}.`);
-    console.log(agreeing.length ? `The page agrees with the full score at ${agreeing.length} of ${trials.length} cost settings: ${agreeing.map(t => `crossing ${t.costs.crossing}, height ${t.costs.height}`).join("; ")}.` : `The page agrees with the full score at none of the ${trials.length} cost settings.`);
+    console.log(agreeing.length ? `The page agrees with the full score at ${agreeing.length} of ${trials.length} cost settings: ${agreeing.map(t => `crossing ${t.costs.crossing}, height ${t.costs.height}, evenness ${t.costs.evenness}, levelness ${t.costs.levelness}, steps ${t.costs.steps}`).join("; ")}.` : `The page agrees with the full score at none of the ${trials.length} cost settings.`);
     return;
   }
   if (verb === "widen") {
@@ -170,7 +172,7 @@ async function main(): Promise<void> {
     const seeds = Number(options.starts ?? 16);
     const weights = parseWeights(options.weights);
     const defaults = getDefaultTuning().localMap;
-    const judge = { costs: { crossing: baseline.crossingCost, height: baseline.heightCost, churn: 0 }, churn: Number(options.churn ?? defaults.churnCost), first: Number(options.first ?? baseline.orderStarts), patience: Number(options.patience ?? defaults.searchPatience) };
+    const judge = { costs: { crossing: baseline.crossingCost, height: baseline.heightCost, churn: 0, evenness: baseline.membraneEvenness, levelness: baseline.rowLevelness, steps: baseline.membraneSimplicity }, churn: Number(options.churn ?? defaults.churnCost), first: Number(options.first ?? baseline.orderStarts), patience: Number(options.patience ?? defaults.searchPatience) };
     const settings = widenStarts(capture, graph, run, baseline, grid, seeds, weights, judge.costs, judge.churn, judge.first, judge.patience, (setting, done, count) => console.log(`  ${done} of ${count}: ${setting}`));
     const label = options.label ?? "wide";
     await fs.mkdir(out, { recursive: true });
@@ -181,6 +183,24 @@ async function main(): Promise<void> {
     const byBest = [...settings].sort((a, b) => a.bestScore - b.bestScore);
     console.log(`${settings.length} settings, ${(settings.length * settings[0].rows.length).toLocaleString("en-US")} layouts in ${((Date.now() - Date.parse(startedAt)) / 1000).toFixed(1)} s; report at ${path.relative(process.cwd(), markdown)}.`);
     console.log(`The baseline's search ends at ${settings[0].search.final.name}, full score ${settings[0].searchScore.toFixed(3)}; the best setting by where the search ends is ${byEnd[0].setting} at ${byEnd[0].search.final.name}, ${byEnd[0].searchScore.toFixed(3)}; by its best start ${byBest[0].setting} at ${byBest[0].best.name}, ${byBest[0].bestScore.toFixed(3)}.`);
+    return;
+  }
+  if (verb === "refine") {
+    const capture = await loadCapture(run, options);
+    const graph = await loadBundleGraph(run);
+    const spec = options.config ?? "{}";
+    const config: LabConfig = { ...baselineConfig(), ...(JSON.parse(spec.startsWith("@") ? await fs.readFile(spec.slice(1), "utf8") : spec) as Partial<LabConfig>) };
+    const defaults = getDefaultTuning().localMap;
+    const result = refine(capture, graph, run, config, {
+      searchStarts: Number(options.starts ?? defaults.searchStarts), searchPatience: Number(options.patience ?? defaults.searchPatience), churnCost: Number(options.churn ?? defaults.churnCost)
+    });
+    const label = options.label ?? "refine";
+    await fs.mkdir(out, { recursive: true });
+    const markdown = path.join(out, `${scopeSlug(run)}-${label}.md`);
+    await fs.writeFile(markdown, renderRefinement(result, run, capture));
+    await fs.writeFile(path.join(out, `${scopeSlug(run)}-${label}.json`), refinementJson(result, run, capture));
+    console.log(`${result.state.tried} ordering seeds and ${result.alignmentTried} alignments tried; ${result.state.adopted} pictures adopted, ${result.alignmentAdopted} by alignment. Final price ${result.state.shown}, steps ${result.initial.signals.steps} → ${result.final.signals.steps}.`);
+    console.log(`Report at ${path.relative(process.cwd(), markdown)}; complete trial and geometry data in its JSON companion.`);
     return;
   }
   if (verb === "verify") {
@@ -195,7 +215,7 @@ async function main(): Promise<void> {
     console.log(compareTable(lab.signals, page));
     return;
   }
-  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts, widen or verify.`);
+  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts, widen, refine or verify.`);
   process.exit(2);
 }
 

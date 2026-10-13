@@ -1,6 +1,6 @@
 # Live Documentation Explorer
 
-_Current as of 2026-10-12._
+_Current as of 2026-10-13._
 
 ## Metadata
 
@@ -42,6 +42,14 @@ The 2D/3D setting is independent of the active navigation view. Browser storage 
 Direct file links, pinned branches and paths share the directory-aware layout from their first drawing. A file link discloses a neighborhood without storing implicit pins. A shared path is resolved before first paint, and Clear restores the previous exploration and camera. The [owner’s October 12 walkthrough](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3) exposed and retired the separate initial and path renderers. Scrolling zooms within the chosen perspective; the controls say 2D and 3D, with full names in their tooltips and no density suggestion.
 
 Pinning a symbol or file retains its connections without removing other pins. The Local Map displays the union of those neighborhoods and every relationship between the retained files. Cycles are broken at feedback references, drawn as laces with their route on hover; skipped ranks route through reserved lanes between cards. Counts identify connections outside the current disclosure, including those hidden by filters. Explicit pins and the selected file remain visible through filtering. The native perspective controls preserve the selected identity’s screen position; manual camera gestures end automatic tracking.
+
+### Competing layout preferences
+
+The 2D layout prices wire distance, crossings, picture height, ordering churn, membrane evenness, row alignment and boundary-step count together. Membrane Evenness prices the distance a boundary rises or falls; **Membrane Simplicity** prices each nonzero step, so several small changes can lose to fewer larger ones. Its starting weight is 100 equivalent weighted vertical wire pixels per step. The independent controls allow different preferences for compactness and geometric regularity; named Compact/Geometric presets remain a proposal from [the owner's October 13 reply](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
+
+After the initial ordering starts, the continuing search alternates ordering trials with proposed joins of neighboring flat boundary runs. Each join re-solves cards, wire slots and containing membranes under the same padding, separation and overlap constraints. A proposal wins only if its complete score improves; the browser measures it again before adoption. Search pauses during animated moves, and changing a weight starts a new search while preserving the displayed subject. This is deterministic local search, not a global optimum claim for step count. A zero simplicity weight disables alignment proposals; disabling continuing search or forcing one ordering seed disables all continuing trials.
+
+The layout lab's `refine` command runs the same competition from captured card measurements and exports initial/final geometry and every trial. The measurement cache preserves the renderer's resolved endpoint identity, including duplicate symbols and file/asset hubs, so pricing cannot improve by omitting a visible connection. The [browser regression](../layer-4/tests/e2e/local-map-simplicity.spec.ts.mdmd.md) compares final browser and headless geometry exactly on the estate and warehouse.
 
 ### Pathfinding Rendering
 
@@ -135,6 +143,8 @@ These proposals were originally described against the multi-hop rendering archit
 - [packages/explorer/src/client/views/localView/branch-renderer.ts](../layer-4/packages/explorer/src/client/views/localView/branch-renderer.ts.mdmd.md) — Draws the retained branches with the native cards inside directory bands, leaving the lanes between cards and counting a card's back references (2026-10-02, 2026-10-05)
 - [packages/explorer/src/client/views/localView/branch-routing.ts](../layer-4/packages/explorer/src/client/views/localView/branch-routing.ts.mdmd.md) — The native curve as a pure function, and the threaded route of a skipped reference through its lanes: curve, lane, curve, never backward and never through a card (2026-10-05)
 - [packages/explorer/src/client/views/localView/branch-placement.ts](../layer-4/packages/explorer/src/client/views/localView/branch-placement.ts.mdmd.md) — Places the cards and lanes of every column on the vertical axis so that the wires between pins are as short as the column order, the directory boxes and the band rows allow: the coordinate step of layered drawing, exact (2026-10-05)
+- [packages/explorer/src/client/views/localView/branch-alignments.ts](../layer-4/packages/explorer/src/client/views/localView/branch-alignments.ts.mdmd.md) — Proposes joins of complete flat boundary runs for the continuing competition
+- [packages/explorer/src/client/views/localView/branch-shape.ts](../layer-4/packages/explorer/src/client/views/localView/branch-shape.ts.mdmd.md) — Shared measures of boundary distance, step count and directly owned card-row alignment
 - [packages/explorer/src/client/views/localView/network-simplex.ts](../layer-4/packages/explorer/src/client/views/localView/network-simplex.ts.mdmd.md) — The network simplex solver of Gansner, Koutsofios, North and Vo for difference constraints with a weighted-difference objective, which the placement runs on its auxiliary graph (2026-10-05)
 - [packages/explorer/src/client/views/localView/layout-measure.ts](../layer-4/packages/explorer/src/client/views/localView/layout-measure.ts.mdmd.md)
 - [packages/explorer/src/client/views/localView/pan-zoom.ts](../layer-4/packages/explorer/src/client/views/localView/pan-zoom.ts.mdmd.md)

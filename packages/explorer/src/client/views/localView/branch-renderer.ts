@@ -1,7 +1,9 @@
+import { alignmentCandidates } from "./branch-alignments";
 import { boxKeyOf, easeInOutCubic, scenePose, tweenPose, type Pose } from "./branch-motion";
-import { candidateStarts, churnOf, layoutStarts, scoreOf, startName, startOrder, type StartCosts } from "./branch-restarts";
+import type { BoundaryAlignment } from "./branch-placement";
+import { candidateStarts, layoutStarts, scoreOf, signalsOf, startName, startOrder, type StartCosts } from "./branch-restarts";
 import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneBox, type SceneMeasurer, type ScenePlan, type SceneTuning } from "./branch-scene";
-import { beginSearch, judgeStart, pinFor, type CardRows, type RowMeasure, type SearchState } from "./branch-search";
+import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
 import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
 import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory";
 import type { LocalViewController } from "./controller";
@@ -56,9 +58,16 @@ interface PageAnswers {
   labelHeights: Map<string, number>;
 }
 
-/** The continuing search over the seeded starts the first paint did not try, pricing each from the page's answers and each card's rows measured once. */
+/** The continuing competition over ordering starts and boundary joins, priced from the page's measured cards and endpoints. */
 interface Search {
   state: SearchState;
+  incumbent: { branches: BranchGraph; scene: Scene };
+  alignmentEnabled: boolean;
+  alignments: BoundaryAlignment[][];
+  alignmentIndex: number;
+  alignmentTried: number;
+  alignmentAdopted: number;
+  preferAlignment: boolean;
   exploration: Exploration;
   sceneTuning: SceneTuning;
   sweeps: number;
@@ -102,8 +111,8 @@ export function dropStage(stage: BranchStage): void {
  * tuning's move length, the rows of a card with them, what is new fades in
  * and what is gone fades out, the wires are redrawn every frame, and the card
  * the person last interacted with is held still on screen by the camera.
- * After the picture is drawn, the continuing search goes on trying seeded
- * starts in the page's idle moments and moves the picture to a better one.
+ * After the picture is drawn, the continuing search alternates ordering
+ * starts and boundary joins in idle moments, moving to a better picture.
  * The layout's dials come from the Local Map's tuning.
  */
 export function renderBranches(controller: LocalViewController, stage: BranchStage): void {
@@ -192,7 +201,8 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
   const ranked = exploration.ranking.columns.map(column => column.map(node => node.id));
   const starts = candidateStarts(tuning.orderStarts, tuning.orderSeed, controller.previousTops, ranked);
-  const costs: StartCosts = { crossing: tuning.crossingCost, height: tuning.heightCost, churn: tuning.churnCost };
+  const costs: StartCosts = { crossing: tuning.crossingCost, height: tuning.heightCost, churn: tuning.churnCost,
+    evenness: tuning.membraneEvenness, levelness: tuning.rowLevelness, steps: tuning.membraneSimplicity };
   const { chosen, outcomes } = layoutStarts(starts, start => {
     const branches = orderExploration(exploration, { sweeps: tuning.orderSweeps, ...startOrder(start) });
     orderRows(cardsOf(stage), branches.rows);
@@ -213,15 +223,19 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
 
   const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
   const moveMs = reduced ? 0 : Math.max(0, tuning.moveMs);
+  const measuredRows = rowsOf(controller, stage, scale, branches);
   showScene(controller, stage, scene, sceneTuning, previous ? moveMs : 0, leaving, entering, oldRows);
 
   // The search over the seeds the first paint did not try, priced from the page's answers and each card's rows as they
   // now stand; a forced seed, the lab's lever, searches nothing.
   const from = tuning.orderSeed !== null ? 1 : Math.max(0, Math.floor(tuning.orderStarts)) + 1;
   const to = tuning.orderSeed !== null ? 0 : from - 1 + Math.max(0, Math.floor(tuning.searchStarts));
+  const alignmentEnabled = to >= from && tuning.searchPatience > 0 && costs.steps > 0;
   const search: Search = {
     state: beginSearch({ from, to, patience: Math.floor(tuning.searchPatience) }, scoreOf(chosen.signals, { ...costs, churn: 0 })),
-    exploration, sceneTuning, sweeps: tuning.orderSweeps, costs, moveMs, answers, rows: rowsOf(stage, scale), handle: 0,
+    incumbent: { branches, scene }, alignmentEnabled, alignments: alignmentEnabled ? alignmentCandidates(scene) : [],
+    alignmentIndex: 0, alignmentTried: 0, alignmentAdopted: 0, preferAlignment: true,
+    exploration, sceneTuning, sweeps: tuning.orderSweeps, costs, moveMs, answers, rows: measuredRows, handle: 0,
     resume: () => scheduleSearch(controller, stage)
   };
   stage.search = search;
@@ -354,7 +368,8 @@ function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph)
       labelHeights: new Map([...labelWidths.keys()].map(key => [key, search.answers.labelHeights.get(boxes.get(key)!.directory) ?? 0])),
       pin: (id, direction, symbol) => {
         const card = search.rows.get(id);
-        return card ? pinFor(card, branches.rows.get(id), direction, normalizeSymbolIdentifier(symbol) ?? undefined) : null;
+        if (!card) throw new Error(`The search has no measured endpoints for card ${JSON.stringify(id)}.`);
+        return pinFor(card, branches.rows.get(id), direction, symbol);
       }
     })
   };
@@ -581,7 +596,7 @@ function elementHeld(controller: LocalViewController, stage: BranchStage, from: 
  */
 function scheduleSearch(controller: LocalViewController, stage: BranchStage): void {
   const search = stage.search;
-  if (!search || search.state.status !== "running" || stage.move || search.handle) return;
+  if (!search || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment) || stage.move || search.handle) return;
   const run = (): void => {
     search.handle = 0;
     if (stage.search !== search) return;
@@ -603,48 +618,80 @@ function stopSearch(stage: BranchStage): void {
 }
 
 /**
- * One start of the search: the next seed ordered, planned and placed from
- * the page's answers, priced with its churn against the shown picture, and
- * adopted when it beats the shown picture's own price; an adopted picture is
- * measured on the page, in the rows it chose, and moved to.
+ * One idle trial: the next ordering seed or a join of the incumbent's flat
+ * boundary runs. Cached measurements price it against the shown picture;
+ * a predicted improvement is measured again before the final decision.
  */
 function searchStep(controller: LocalViewController, stage: BranchStage, search: Search): void {
+  const kind = nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment);
+  if (!kind) return;
+  search.preferAlignment = kind === "seed";
   const seed = search.state.next;
-  const branches = orderExploration(search.exploration, { sweeps: search.sweeps, seed });
+  const alignments = kind === "alignment" ? search.alignments[search.alignmentIndex++] : [];
+  const branches = kind === "alignment" ? search.incumbent.branches : orderExploration(search.exploration, { sweeps: search.sweeps, seed });
+  if (kind === "alignment") search.alignmentTried++;
   const plan = planBranches(branches, search.sceneTuning.bandPadding);
-  const scene = layoutScene(plan, branches, answersMeasurer(search, plan, branches), search.sceneTuning);
-  const columns = branches.columns.map(column => column.map(node => node.id));
-  const signals = { vertical: scene.placement.cost, crossings: branches.order.crossings, height: scene.pictureHeight, churn: churnOf(columns, controller.previousTops) };
+  const scene = layoutScene(plan, branches, answersMeasurer(search, plan, branches), search.sceneTuning, alignments);
+  const signals = signalsOf(branches, scene, controller.previousTops);
   const priced = scoreOf(signals, search.costs);
-  const { state, adopt } = judgeStart(search.state, priced, scoreOf(signals, { ...search.costs, churn: 0 }));
-  search.state = state;
-  if (adopt) adoptPicture(controller, stage, search, branches, seed, priced);
+  const judge = kind === "alignment" ? judgeAlignment : judgeStart;
+  const { state, adopt } = judge(search.state, priced, scoreOf(signals, { ...search.costs, churn: 0 }));
+  if (adopt) {
+    const adopted = tryAdoptPicture(controller, stage, search, branches, kind === "seed" ? `seed ${seed}` : stage.root.dataset.orderStart ?? "ranked", priced, alignments, kind);
+    if (adopted && kind === "alignment") search.alignmentAdopted++;
+  } else search.state = state;
   writeSearch(stage);
 }
 
-/** Shows a picture the search found: its rows stood on the cards, measured on the page, placed, priced exactly and moved to. */
-function adoptPicture(controller: LocalViewController, stage: BranchStage, search: Search, branches: BranchGraph, seed: number, priced: number): void {
+/** Measures a promising candidate on the page and accepts it only if its actual complete price improves the picture. */
+function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, search: Search, branches: BranchGraph, name: string, priced: number, alignments: readonly BoundaryAlignment[], kind: "seed" | "alignment"): boolean {
   const { root } = stage;
   const scale = controller.runtime.mapTransform.k || 1;
   const oldRows = rowOffsets(stage, scale);
   orderRows(cardsOf(stage), branches.rows);
   const plan = planBranches(branches, search.sceneTuning.bandPadding);
-  const scene = layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, search.answers), search.sceneTuning);
-  const columns = branches.columns.map(column => column.map(node => node.id));
-  const signals = { vertical: scene.placement.cost, crossings: branches.order.crossings, height: scene.pictureHeight, churn: churnOf(columns, controller.previousTops) };
-  // The shown price is the page's own measurement of the adopted picture, and so is the best found, unless an earlier start priced lower.
+  const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
+  const scene = layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), search.sceneTuning, alignments);
+  const signals = signalsOf(branches, scene, controller.previousTops);
   const measured = scoreOf(signals, { ...search.costs, churn: 0 });
-  search.state = { ...search.state, shown: measured, best: Math.min(search.state.best, measured) };
-  search.rows = rowsOf(stage, scale);
+  const actual = scoreOf(signals, search.costs);
+  const judge = kind === "alignment" ? judgeAlignment : judgeStart;
+  const decision = judge(search.state, actual, measured);
+  search.state = decision.state;
+  root.dataset.searchPredicted = String(priced);
+  root.dataset.searchMeasured = String(actual);
+  if (!decision.adopt) {
+    // Measuring tries row order and widths in the existing elements. Refusing
+    // that candidate must restore the displayed picture and its label widths,
+    // while leaving its measurement cache uncontaminated by the rejected one.
+    const incumbent = search.incumbent;
+    orderRows(cardsOf(stage), incumbent.branches.rows);
+    const drawn = new Set<string>();
+    for (const box of incumbent.scene.boxes) {
+      if (box.kind !== "directory") continue;
+      drawn.add(box.directory);
+      const label = stage.labels.get(box.directory);
+      if (label) Object.assign(label.style, { left: `${box.inset}px`, width: `${Math.max(0, box.segments[0].right - box.segments[0].left - 2 * box.inset)}px` });
+    }
+    for (const [directory, label] of stage.labels) if (!drawn.has(directory)) { label.remove(); stage.labels.delete(directory); }
+    applyPose(stage, scenePose(incumbent.scene), search.sceneTuning.bandPadding);
+    return false;
+  }
+  search.answers = answers;
+  search.incumbent = { branches, scene };
+  search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
+  search.alignmentIndex = 0;
+  search.rows = rowsOf(controller, stage, scale, branches);
   controller.branches = branches;
   controller.currentSubgraph = branches.subgraph;
   controller.previousTops = scene.tops;
   root.dataset.placementCost = String(scene.placement.cost);
   root.dataset.placementOptimal = String(scene.placement.optimal);
-  root.dataset.orderStart = `seed ${seed}`;
+  root.dataset.orderStart = name;
   root.dataset.orderScore = String(scoreOf(signals, search.costs));
   root.dataset.searchPriced = String(priced);
   showScene(controller, stage, scene, search.sceneTuning, search.moveMs, [], [], oldRows);
+  return true;
 }
 
 /** What the search has done, on the root, for whoever reads the page: no text announces it. */
@@ -652,7 +699,9 @@ function writeSearch(stage: BranchStage): void {
   const search = stage.search;
   if (!search) return;
   const { state } = search;
-  stage.root.dataset.searchStatus = state.status;
+  stage.root.dataset.searchStatus = search.alignmentIndex < search.alignments.length ? "running" : state.status;
+  stage.root.dataset.searchAlignmentTried = String(search.alignmentTried);
+  stage.root.dataset.searchAlignmentAdopted = String(search.alignmentAdopted);
   stage.root.dataset.searchTried = String(state.tried);
   stage.root.dataset.searchNext = String(state.next);
   stage.root.dataset.searchAdopted = String(state.adopted);
@@ -675,35 +724,58 @@ function rowKeys(card: HTMLElement): Array<[HTMLElement, string]> {
 
 /**
  * Each card's rows as they stand, measured once in the picture's pixels:
- * the header above the first visible row, the gap between rows, each
- * visible row's height and where its pins stand in it, and which row is
- * Internals. A pin's place for any order of the rows follows from these.
+ * the header above the first visible grid track, the grid's gap and each
+ * track's height. Endpoints use the runtime's exact anchor resolution, so
+ * duplicate names, file hubs and hidden rows agree with the page measurer.
  */
-function rowsOf(stage: BranchStage, scale: number): Map<string, CardRows> {
+function rowsOf(controller: LocalViewController, stage: BranchStage, scale: number, branches: BranchGraph): Map<string, CardRows> {
   const measured = new Map<string, CardRows>();
+  const requests = new Map<string, Map<string, { direction: "inbound" | "outbound"; symbol: string | undefined }>>();
+  const request = (id: string, direction: "inbound" | "outbound", symbol: string | undefined): void => {
+    const endpoints = requests.get(id) ?? new Map<string, { direction: "inbound" | "outbound"; symbol: string | undefined }>();
+    endpoints.set(endpointKey(direction, symbol), { direction, symbol });
+    requests.set(id, endpoints);
+  };
+  for (const edge of branches.subgraph.links) {
+    if (edge.sourceId === edge.targetId || branches.back.has(edgeKey(edge))) continue;
+    request(edge.targetId, "outbound", edge.targetSymbol);
+    request(edge.sourceId, "inbound", edge.sourceSymbol);
+  }
   for (const [id, wrapper] of stage.wrappers) {
     const card = wrapper.querySelector<HTMLElement>(".node-card");
     if (!card) continue;
-    const cardTop = card.getBoundingClientRect().top;
+    const cardTop = wrapper.getBoundingClientRect().top;
+    const grid = card.querySelector<HTMLElement>(".symbol-grid");
+    const gap = grid ? Number.parseFloat(getComputedStyle(grid).rowGap) || 0 : 0;
     const rows: RowMeasure[] = [];
+    const rowPositions = new Map<HTMLElement, { key: string; top: number }>();
     let internals: string | null = null;
-    let header = 0, gap = 6, previousBottom: number | null = null, first = true;
+    let header = 0;
     for (const [row, key] of rowKeys(card)) {
-      const children = [...row.children] as HTMLElement[];
-      const rects = children.map(child => child.getBoundingClientRect()).filter(rect => rect.width || rect.height);
-      if (!rects.length) continue;
-      const top = Math.min(...rects.map(rect => rect.top)), bottom = Math.max(...rects.map(rect => rect.bottom));
-      if (first) { header = (top - cardTop) / scale; first = false; } else if (previousBottom !== null) gap = (top - previousBottom) / scale;
-      previousBottom = bottom;
-      const centre = (selector: string): number | null => {
-        const anchor = row.querySelector<HTMLElement>(selector);
-        const rect = anchor?.getBoundingClientRect();
-        return rect && (rect.width || rect.height) ? (rect.top + rect.height / 2 - top) / scale : null;
-      };
-      rows.push({ key, height: (bottom - top) / scale, inbound: centre(".symbol-anchor.inbound"), outbound: centre(".symbol-anchor.outbound") });
+      const bounds = rowBounds([...row.children].flatMap(child => {
+        const rect = child.getBoundingClientRect();
+        if (!rect.width && !rect.height) return [];
+        const style = getComputedStyle(child);
+        return [{ top: (rect.top - cardTop) / scale, bottom: (rect.bottom - cardTop) / scale,
+          marginTop: Number.parseFloat(style.marginTop) || 0, marginBottom: Number.parseFloat(style.marginBottom) || 0 }];
+      }));
+      if (!bounds) continue;
+      if (!rows.length) header = bounds.top;
+      rowPositions.set(row, { key, top: bounds.top });
+      rows.push({ key, height: bounds.bottom - bounds.top });
       if (row.classList.contains("internals-row")) internals = key;
     }
-    measured.set(id, { header, gap, rows, internals });
+    const endpoints = new Map<string, ResolvedPin | null>();
+    for (const [key, { direction, symbol }] of requests.get(id) ?? []) {
+      const anchor = controller.getAnchor(id, "center", direction, symbol);
+      const rect = anchor?.getBoundingClientRect();
+      if (!anchor || !rect || (!rect.width && !rect.height)) { endpoints.set(key, null); continue; }
+      const row = anchor.closest<HTMLElement>(".symbol-row");
+      const at = row ? rowPositions.get(row) : undefined;
+      if (row && !at) throw new Error(`The visible endpoint ${JSON.stringify(symbol ?? "*")} of ${JSON.stringify(id)} has no measured row.`);
+      endpoints.set(key, { row: at?.key ?? null, offset: (rect.top + rect.height / 2 - cardTop) / scale - (at?.top ?? 0) });
+    }
+    measured.set(id, { header, gap, rows, internals, endpoints });
   }
   return measured;
 }

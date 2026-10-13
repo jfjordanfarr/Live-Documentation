@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-scene.ts
-- Generated At: 2026-10-12T19:21:19.914Z
+- Generated At: 2026-10-13T17:03:33.986Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,8 @@ The Local Map's many-file scene as pure geometry: from the ranked and ordered ex
 
 Two steps. `planBranches` turns the order's bands and lanes into a tree of boxes (the root drawn as nothing, each directory a membrane, a directory's loose files sharing their parent's element, each lane a box of slots) with the cards and slots each column stacks, in the order the renderer makes elements: parents before children, siblings in their rows, a column's top lane before its files and each file's following lane after it. `layoutScene` takes a measurer and the tuning: the measurer answers how wide each card wants to be under the card cap, and then, at the widths the columns give, how tall each card is, where its pins are and how tall each drawn directory's label is at its segment's width; the layout places the columns across (each as wide as its widest card with that card's insets, the columns a gap apart, every box's segments inside its column by the insets around it), builds a wire per reference through the slots its passages name, calls the exact placement of `branch-placement.ts` down, and returns every segment, top, slot line and the picture's size. The renderer of `branch-renderer.ts` is one measurer, the page itself; the layout lab's measurer is a capture of the page composed by a card model, so a sweep of the layout's levers runs in node at a solve a tenth of a second. Extracted on 2026-10-06 from the renderer, which had held this logic between its DOM calls, as the first milestone of the layout lab the owner asked for ([Turn 7](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-7) and [Turn 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-10), "if it splits now, hope and plan for reunification later"): the page's placement measures through the scene are the ones the old renderer gave, to the unit, on every deck scope. The tuning's values are the ones the picture was designed at (`DEFAULT_SCENE_TUNING`); the renderer takes them from the Local Map's tuning so that the lab's finalists can be rendered.
 - `SceneTuning` carries `evenness` and `levelness` since 2026-10-07, passed to the placement, and a directory's box is marked `shaped` so that only a membrane's outline is priced; the picture's default evenness is 1 since that day, from the layout lab's sweep.
+
+For [the weighted boundary competition](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), `layoutScene` accepts optional contiguous boundary-alignment groups. It re-solves the full ownership tree and produces consistent segment extents, card tops, lane-relative slot lines and picture bounds; it does not patch only SVG paths. `rowItemsOf` identifies a drawn directory’s directly owned cards, including its same-directory loose-file bucket, for both placement and shared row-alignment scoring. Descendant directories and routing slots are excluded from that row term while retaining their original containment.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -125,9 +127,17 @@ among them by row; then its own files, with the lanes that follow them.
 ##### `hostOf` — Summary
 The box whose element holds a box's elements: itself, unless it is a directory's loose files, which share their parent's.
 
+#### `rowItemsOf` {#symbol-rowitemsof}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L222)
+- Parameters: `box`: [`SceneBox`](#symbol-scenebox)
+
+##### `rowItemsOf` — Summary
+A drawn directory's own cards, including its invisible file buckets, but no nested directory's cards or lane slots.
+
 #### `layoutScene` {#symbol-layoutscene}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L236)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-scene.ts#L246)
 - Returns: [`Scene`](#symbol-scene)
 - Parameters: `plan`: [`ScenePlan`](#symbol-sceneplan); `branches`: [`BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph); `measurer`: [`SceneMeasurer`](#symbol-scenemeasurer); `tuning`: [`SceneTuning`](#symbol-scenetuning)
 
@@ -137,12 +147,15 @@ that card's insets, the columns a gap apart, every box's segments inside
 its column by the insets around it. Then the measurer gives every card's
 height and pins at its column's width and every label's height at its
 segment's width. Down: the exact placement of `branch-placement.ts`, with
-a wire per reference through the slots its passages name.
+a wire per reference through the slots its passages name. Optional boundary
+alignments join selected runs for a competing picture; every card, lane and
+containing box is re-solved under the original placement constraints.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`branch-order.Lane`](./branch-order.ts.mdmd.md#symbol-lane) (type-only)
+- [`branch-placement.BoundaryAlignment`](./branch-placement.ts.mdmd.md#symbol-boundaryalignment)
 - [`branch-placement.Placement`](./branch-placement.ts.mdmd.md#symbol-placement)
 - [`branch-placement.PlacementBand`](./branch-placement.ts.mdmd.md#symbol-placementband)
 - [`branch-placement.PlacementWire`](./branch-placement.ts.mdmd.md#symbol-placementwire)

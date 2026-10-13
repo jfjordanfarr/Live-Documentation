@@ -9,7 +9,7 @@ const signals = (lengthPx: number, spots: number, extra: Partial<Signals> = {}):
   wires: 1, lengthPx, meanPx: lengthPx, horizontalPx: lengthPx, verticalPx: 0,
   crossings: { points: spots, spots, farPoints: 0, pairs: 0, wiresCrossed: 0 },
   foreignSamples: 0, foreignWires: 0, samples: 0, laneSamples: 0, escapingWires: 0, escapingSamples: 0, passages: 0, threaded: 0, backward: 0,
-  columns: 1, lanes: 0, pictureWidth: 100, pictureHeight: 100, placementCost: 0, optimal: true, fragments: 0, ...extra
+  columns: 1, lanes: 0, pictureWidth: 100, pictureHeight: 100, placementCost: 0, optimal: true, fragments: 0, unevenness: 0, steps: 0, unlevel: 0, ...extra
 });
 
 describe("the lab's sweep", () => {
@@ -21,6 +21,7 @@ describe("the lab's sweep", () => {
       { lever: "rankingTie", values: ["fewest", "left"] }
     ]);
     expect(() => parseGrid("gravity=1")).toThrow(/No lever/u);
+    expect(parseGrid("membraneSimplicity=0,50,100")).toEqual([{ lever: "membraneSimplicity", values: [0, 50, 100] }]);
   });
 
   it("varies one lever at a time from the baseline, skipping the baseline's own value", () => {
@@ -53,6 +54,8 @@ describe("the lab's sweep", () => {
     expect(scoreOf(signals(500, 20), base, weights)).toBeCloseTo(0.5 + 1);
     // A signal the baseline has none of counts double when it appears.
     expect(scoreOf(signals(1000, 10, { backward: 2 }), base, { backward: 1 })).toBe(2);
+    const shaped = signals(1000, 10, { unevenness: 50, steps: 4, unlevel: 30 });
+    expect(scoreOf(signals(1000, 10, { unevenness: 25, steps: 2, unlevel: 10 }), shaped, parseWeights("unevenness=1,steps=2,unlevel=3"))).toBe(2.5);
     const baseline = baselineConfig();
     expect(differences(baseline, baseline)).toBe("baseline");
     expect(differences({ ...baseline, rankingPull: 2, cardMaxWidth: 320 }, baseline)).toBe("rankingPull=2 cardMaxWidth=320");

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import { placementCost } from "./branch-placement";
-import { BAND_BORDER, DEFAULT_SCENE_TUNING, hostOf, layoutScene, planBranches, SLOT_LINE, type SceneMeasurer } from "./branch-scene";
+import { BAND_BORDER, DEFAULT_SCENE_TUNING, hostOf, layoutScene, planBranches, rowItemsOf, SLOT_LINE, type SceneMeasurer } from "./branch-scene";
+import { shapeSignalsOf } from "./branch-shape";
 import { buildBranches } from "./branches";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
 import { addPin, EMPTY_PIN_SET } from "../pin-state";
@@ -116,5 +117,46 @@ describe("the Local Map's scene", () => {
     expect([...seen.widths[0].values()]).toEqual([270, 260, 270]);
     expect(scene.widths).toEqual([270 + 42, 260 + 42, 270 + 42]);
     expect(scene.lefts[1]).toBe(312 + 50);
+  });
+
+  it("levels a mixed directory's own files without flattening their bucket or claiming its subdirectory's cards", () => {
+    const mixedFiles = [node("dir/a.ts"), node("dir/b.ts"), node("dir/sub/c.ts")];
+    const mixedGraph: ExplorerGraphPayload = {
+      nodes: mixedFiles,
+      links: [{ source: "dir/b.ts", target: "dir/a.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }],
+      stats: { nodes: 3, links: 1, missingDependencies: 0 }
+    };
+    const mixedPins = mixedFiles.reduce((set, file) => addPin(set, file.id, "*"), EMPTY_PIN_SET);
+    const mixed = buildBranches(mixedFiles[0], mixedGraph, mixedPins, () => true);
+    const measure: SceneMeasurer = {
+      widths: () => new Map(mixedFiles.map(file => [file.id, 200])),
+      measure: (cardWidths, labelWidths) => ({
+        heights: new Map([...cardWidths.keys()].map(id => [id, 100])),
+        pin: (_id, direction) => direction === "outbound" ? 80 : 10,
+        labelHeights: new Map([...labelWidths.keys()].map(key => [key, 14]))
+      })
+    };
+    const layout = (levelness: number) => layoutScene(planBranches(mixed), mixed, measure, { ...DEFAULT_SCENE_TUNING, evenness: 0, levelness });
+    const free = layout(0), level = layout(100);
+    expect(free.tops.get("dir/b.ts")! - free.tops.get("dir/a.ts")!).toBe(70);
+    expect(shapeSignalsOf(free, mixed).unlevel).toBe(70);
+    expect(free.placement.cost).toBe(0);
+    expect(level.tops.get("dir/a.ts")).toBe(level.tops.get("dir/b.ts"));
+    expect(shapeSignalsOf(level, mixed).unlevel).toBe(0);
+    expect(level.placement.cost).toBe(70);
+    expect(level.placement.optimal).toBe(true);
+    for (const scene of [free, level]) {
+      const directory = scene.boxes.find(box => box.kind === "directory" && box.directory === "dir")!;
+      const bucket = scene.items.get("dir/a.ts")!.box;
+      const nested = scene.items.get("dir/sub/c.ts")!.box;
+      expect(directory.items).toEqual([]);
+      expect(bucket.kind).toBe("files");
+      expect(bucket.parent).toBe(directory);
+      expect(bucket.items).toEqual(["dir/a.ts", "dir/b.ts"]);
+      expect(rowItemsOf(directory)).toEqual(["dir/a.ts", "dir/b.ts"]);
+      expect(rowItemsOf(nested)).toEqual(["dir/sub/c.ts"]);
+      expect(rowItemsOf(bucket)).toEqual([]);
+      expect(rowItemsOf(scene.root)).toEqual([]);
+    }
   });
 });

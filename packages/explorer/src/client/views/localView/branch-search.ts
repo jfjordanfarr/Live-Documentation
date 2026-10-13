@@ -86,13 +86,54 @@ export function judgeStart(state: SearchState, priced: number, base: number): { 
   };
 }
 
-/** One row of a card as measured once: its height and where its pins stand in it, from its top. */
+/**
+ * An alignment trial shares the picture's price and adoption count, but does
+ * not consume an ordering seed or its patience. A settled ordering search
+ * still permits pending alignment trials; each new incumbent supplies its
+ * own finite neighborhood of joins.
+ */
+export function judgeAlignment(state: SearchState, priced: number, base: number): { state: SearchState; adopt: boolean } {
+  const adopt = priced < state.shown;
+  return { adopt, state: { ...state, priced, shown: adopt ? base : state.shown, best: Math.min(state.best, base), adopted: state.adopted + (adopt ? 1 : 0) } };
+}
+
+/** Alternate available trial kinds; exhausted seed patience cannot hide pending alignment choices. */
+export function nextTrialKind(state: SearchState, alignmentPending: boolean, preferAlignment: boolean): "seed" | "alignment" | null {
+  if (alignmentPending && (preferAlignment || state.status !== "running")) return "alignment";
+  if (state.status === "running") return "seed";
+  return null;
+}
+
+/** One row of a card as measured once: its identity and the height of its grid track. */
 export interface RowMeasure {
   key: string;
   height: number;
-  /** The inbound pin's centre from the row's top, or null when the row has none. */
-  inbound: number | null;
-  outbound: number | null;
+}
+
+/** A resolved endpoint moves with its named row, or stays at a card offset for a hub or card-level fallback. */
+export interface ResolvedPin {
+  row: string | null;
+  offset: number;
+}
+
+/** The exact request the runtime resolved; an absent and an empty symbol both ask for its default anchor. */
+export const endpointKey = (direction: "inbound" | "outbound", symbol: string | undefined): string => `${direction}\0${symbol ?? ""}`;
+
+/** A visible grid child's border box and vertical margins, in unscaled coordinates. */
+export interface RowChildBox {
+  top: number;
+  bottom: number;
+  marginTop: number;
+  marginBottom: number;
+}
+
+/** The row's layout extent: negative label margins protrude beyond a track and must not make the track taller. */
+export function rowBounds(children: readonly RowChildBox[]): { top: number; bottom: number } | null {
+  if (!children.length) return null;
+  return {
+    top: Math.min(...children.map(child => child.top - child.marginTop)),
+    bottom: Math.max(...children.map(child => child.bottom + child.marginBottom))
+  };
 }
 
 /** A card's rows as measured once, in the order they stood; a pin's place for any order follows from them. */
@@ -104,6 +145,8 @@ export interface CardRows {
   rows: RowMeasure[];
   /** The key of the Internals row, which stands last whatever the order; null when the card has none. */
   internals: string | null;
+  /** The actual runtime resolution of every endpoint requested by the placement, including hidden or absent anchors. */
+  endpoints: ReadonlyMap<string, ResolvedPin | null>;
 }
 
 /**
@@ -136,20 +179,21 @@ export function orderedRows(card: CardRows, order: readonly string[] | undefined
 /**
  * Where a pin stands from its card's top when the rows stand in `order`:
  * the header, the rows above it with the gaps between, and the pin's place
- * in its row. A symbol with no row of its own, or none named, falls to the
- * Internals row, as the card's own anchor does; a card with neither answers
- * null. Rounded as the page's measurement is.
+ * in its resolved row. Hubs and card-level fallbacks retain their measured
+ * card offset; an explicitly unmeasurable endpoint remains null. Resolution
+ * is captured from the runtime, preserving exact names, normalized aliases
+ * and duplicate rows without guessing again here.
  */
 export function pinFor(card: CardRows, order: readonly string[] | undefined, direction: "inbound" | "outbound", symbol: string | undefined): number | null {
-  const rows = orderedRows(card, order);
+  const key = endpointKey(direction, symbol);
+  if (!card.endpoints.has(key)) throw new Error(`The cached card has no resolved ${direction} endpoint for ${JSON.stringify(symbol ?? "*")}.`);
+  const pin = card.endpoints.get(key);
+  if (!pin) return null;
+  if (pin.row === null) return Math.round(pin.offset + 1e-3);
   let top = card.header;
-  let fallback: number | null = null;
-  for (const row of rows) {
-    const at = direction === "inbound" ? row.inbound : row.outbound;
-    const name = row.key.slice(0, row.key.indexOf("\0"));
-    if (symbol !== undefined && name === symbol && at !== null) return Math.round(top + at + 1e-3);
-    if (row.key === card.internals && at !== null) fallback = Math.round(top + at + 1e-3);
+  for (const row of orderedRows(card, order)) {
+    if (row.key === pin.row) return Math.round(top + pin.offset + 1e-3);
     top += row.height + card.gap;
   }
-  return fallback;
+  throw new Error(`The cached endpoint ${JSON.stringify(symbol ?? "*")} resolves to missing row ${JSON.stringify(pin.row)}.`);
 }

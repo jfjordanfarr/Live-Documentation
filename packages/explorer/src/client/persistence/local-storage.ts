@@ -71,6 +71,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     membranePadding: 12,
     cardMaxWidth: null,
     membraneEvenness: 1,
+    membraneSimplicity: 100,
     rowLevelness: 0,
     membraneDepth: null
   }
@@ -191,6 +192,7 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         const membranePadding = readFiniteNumber(localMapRaw.membranePadding);
         const cardMaxWidth = readNullableNumber(localMapRaw.cardMaxWidth);
         const membraneEvenness = readFiniteNumber(localMapRaw.membraneEvenness);
+        const membraneSimplicity = readFiniteNumber(localMapRaw.membraneSimplicity);
         const rowLevelness = readFiniteNumber(localMapRaw.rowLevelness);
         const membraneDepth = readNullableNumber(localMapRaw.membraneDepth);
         tuning.localMap = {
@@ -222,6 +224,7 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
           ...(membranePadding !== undefined ? { membranePadding } : null),
           ...(cardMaxWidth !== undefined ? { cardMaxWidth } : null),
           ...(membraneEvenness !== undefined ? { membraneEvenness } : null),
+          ...(membraneSimplicity !== undefined ? { membraneSimplicity } : null),
           ...(rowLevelness !== undefined ? { rowLevelness } : null),
           ...(membraneDepth !== undefined ? { membraneDepth } : null)
         };

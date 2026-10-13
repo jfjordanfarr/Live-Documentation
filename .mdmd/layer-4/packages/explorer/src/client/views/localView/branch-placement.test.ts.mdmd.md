@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/branch-placement.test.ts
-- Generated At: 2026-10-06T16:47:47.549Z
+- Generated At: 2026-10-13T16:52:34.678Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`branch-placement.BoundaryAlignment`](./branch-placement.ts.mdmd.md#symbol-boundaryalignment)
 - [`branch-placement.PlacementBand`](./branch-placement.ts.mdmd.md#symbol-placementband)
 - [`branch-placement.PlacementInput`](./branch-placement.ts.mdmd.md#symbol-placementinput)
 - [`branch-placement.PlacementLane`](./branch-placement.ts.mdmd.md#symbol-placementlane)

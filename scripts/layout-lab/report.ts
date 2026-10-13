@@ -46,11 +46,11 @@ export function differences(config: LabConfig, baseline: LabConfig): string {
 }
 
 function signalCells(s: Signals, base: Signals): string {
-  return `${n(s.lengthPx)} (${pct(s.lengthPx, base.lengthPx)}) | ${n(s.horizontalPx)} | ${n(s.verticalPx)} | ${s.crossings.spots} (${pct(s.crossings.spots, base.crossings.spots)}) | ${s.foreignSamples} | ${s.escapingWires} / ${s.escapingSamples} | ${s.passages} | ${s.backward} | ${s.columns} | ${n(s.pictureWidth)} × ${n(s.pictureHeight)} | ${n(s.placementCost)} | ${n(s.unevenness)} | ${n(s.unlevel)}`;
+  return `${n(s.lengthPx)} (${pct(s.lengthPx, base.lengthPx)}) | ${n(s.horizontalPx)} | ${n(s.verticalPx)} | ${s.crossings.spots} (${pct(s.crossings.spots, base.crossings.spots)}) | ${s.foreignSamples} | ${s.escapingWires} / ${s.escapingSamples} | ${s.passages} | ${s.backward} | ${s.columns} | ${n(s.pictureWidth)} × ${n(s.pictureHeight)} | ${n(s.placementCost)} | ${n(s.unevenness)} | ${s.steps} | ${n(s.unlevel)}`;
 }
 
-const HEADER = "| Configuration | Length px (vs baseline) | Horizontal | Vertical | Crossing spots (vs baseline) | Foreign samples | Escaping wires / samples | Lane passages | Backward | Columns | Picture w × h | Placement measure | Unevenness | Unlevel | Score |";
-const RULE = "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |";
+const HEADER = "| Configuration | Length px (vs baseline) | Horizontal | Vertical | Crossing spots (vs baseline) | Foreign samples | Escaping wires / samples | Lane passages | Backward | Columns | Picture w × h | Placement measure | Unevenness px | Steps | Unlevel px | Score |";
+const RULE = "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |";
 
 /** The run as a person reads it. */
 export function renderMarkdown(report: RunReport, capture: Capture): string {
@@ -80,6 +80,7 @@ export function renderMarkdown(report: RunReport, capture: Capture): string {
   for (const row of paretoFront(report.rows)) lines.push(line(differences(row.config, baseline.config), row));
   lines.push("", "## What the numbers are", "");
   lines.push("- Length is the routes' arc length in the picture's pixels, horizontal and vertical parts summed over points every eight pixels, as the deck reads a drawn wire; the deck's screen pixels equal these at its scale of 1.");
+  lines.push("- Unevenness sums adjacent membrane top and bottom changes in pixels; steps counts the nonzero changes. Unlevel sums the distance between the k-th directly owned card tops in neighbouring columns. Every drawn boundary is measured, including nested ones.");
   lines.push("- Crossing spots are the deck's own count over the same sampled routes.");
   lines.push("- Foreign samples are points of a wire inside a membrane that holds neither of its ends; escaping wires have both ends in one membrane and leave it. The membranes here are the sharp outlines; the page rounds the corners by the padding.");
   lines.push("- A note under a card the page never showed (\"+N symbols\", \"N references read back\") is set from the font's glyph widths, one line unless its words overflow; every other text is Pretext's layout of the page's own measurement.");

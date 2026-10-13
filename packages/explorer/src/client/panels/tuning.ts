@@ -46,6 +46,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   const searchPatienceInput = document.getElementById("tuning-search-patience") as HTMLInputElement | null;
   const churnCostInput = document.getElementById("tuning-churn-cost") as HTMLInputElement | null;
   const membraneEvennessInput = document.getElementById("tuning-membrane-evenness") as HTMLInputElement | null;
+  const membraneSimplicityInput = document.getElementById("tuning-membrane-simplicity") as HTMLInputElement | null;
   const rowLevelnessInput = document.getElementById("tuning-row-levelness") as HTMLInputElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
@@ -126,6 +127,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
     state.tuning.localMap.searchPatience = setSlider(searchPatienceInput, "tuning-search-patience-value", state.tuning.localMap.searchPatience, v => String(v));
     state.tuning.localMap.churnCost = setSlider(churnCostInput, "tuning-churn-cost-value", state.tuning.localMap.churnCost, v => String(v));
     state.tuning.localMap.membraneEvenness = setSlider(membraneEvennessInput, "tuning-membrane-evenness-value", state.tuning.localMap.membraneEvenness, v => String(v));
+    state.tuning.localMap.membraneSimplicity = setSlider(membraneSimplicityInput, "tuning-membrane-simplicity-value", state.tuning.localMap.membraneSimplicity, v => String(v));
     state.tuning.localMap.rowLevelness = setSlider(rowLevelnessInput, "tuning-row-levelness-value", state.tuning.localMap.rowLevelness, v => String(v));
 
     // Set CSS custom properties on document root so they cascade to both views
@@ -195,6 +197,7 @@ export function initTuningPanel(config: TuningPanelConfig): void {
   rerenderSlider(searchPatienceInput, "tuning-search-patience-value", v => { state.tuning.localMap.searchPatience = v; });
   rerenderSlider(churnCostInput, "tuning-churn-cost-value", v => { state.tuning.localMap.churnCost = v; });
   rerenderSlider(membraneEvennessInput, "tuning-membrane-evenness-value", v => { state.tuning.localMap.membraneEvenness = v; });
+  rerenderSlider(membraneSimplicityInput, "tuning-membrane-simplicity-value", v => { state.tuning.localMap.membraneSimplicity = v; });
   rerenderSlider(rowLevelnessInput, "tuning-row-levelness-value", v => { state.tuning.localMap.rowLevelness = v; });
 
 }

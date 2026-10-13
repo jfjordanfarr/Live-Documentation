@@ -15,8 +15,8 @@ import type { StaticExplorerData } from "../../packages/explorer/src/shared/stat
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 import { DECK_SCOPES, type DeckScope } from "../../tests/e2e/scopes";
 
-/** A scope the lab works on: one of the deck's. */
-export type ScopeRun = DeckScope;
+/** A retained scope over a built bundle: a named deck scope or another explicitly supplied set of files. */
+export type ScopeRun = Omit<DeckScope, "scopeName"> & { scopeName: string };
 
 /** The built Explorer, which `npm run live-docs:visualize` and `:estate` write. */
 export const DIST = path.resolve(__dirname, "../../dist/explorer");

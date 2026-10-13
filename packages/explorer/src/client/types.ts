@@ -104,6 +104,11 @@ export interface LocalMapTuning {
    */
   membraneEvenness: number;
   /**
+   * What each nonzero step in a membrane's boundary costs the picture, in equivalent weighted vertical wire pixels:
+   * zero gives no preference to fewer steps; higher values favour simpler outlines independently of their evenness.
+   */
+  membraneSimplicity: number;
+  /**
    * What a pixel between the tops of the k-th cards of a membrane's neighbouring columns costs, in the same units: at
    * zero the cards stand where their wires are shortest; higher, they stand in rows, the wires paying (2026-10-07).
    */

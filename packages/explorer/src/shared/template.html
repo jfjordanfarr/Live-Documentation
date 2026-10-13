@@ -105,6 +105,11 @@
             <input type="range" id="tuning-membrane-evenness" min="0" max="5" step="0.25" value="1" />
             <output id="tuning-membrane-evenness-value">1</output>
           </label>
+          <label class="tuning-slider" title="What each step in a directory's outline costs, in weighted vertical wire pixels: zero gives no preference to fewer steps; higher values favour simpler outlines">
+            <span>Membrane Simplicity</span>
+            <input type="range" id="tuning-membrane-simplicity" min="0" max="1000" step="10" value="100" />
+            <output id="tuning-membrane-simplicity-value">100</output>
+          </label>
           <label class="tuning-slider" title="What a difference between the tops of a directory's cards in neighbouring columns costs, in wires per pixel: at zero each card stands where its wires are shortest; higher, the cards stand in rows">
             <span>Row Levelness</span>
             <input type="range" id="tuning-row-levelness" min="0" max="5" step="0.25" value="0" />

@@ -16,6 +16,7 @@ import path from "node:path";
 import { TEXT_TOLERANCE } from "./card-model";
 import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
 import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+import type { ExplorerFilters } from "../../packages/explorer/src/client/types";
 import { localRetainUrl } from "../../tests/e2e/still-picture";
 
 /** A text as Pretext prepared it in the page: its segments and their measured widths, laid out again by arithmetic. */
@@ -117,6 +118,8 @@ export interface Capture {
   truth: { placementCost: number; pictureWidth: number; pictureHeight: number; labelHeights: Record<string, number> };
   /** Where Pretext's layout of a text at the page's width disagreed with the page by more than half a pixel. */
   warnings: string[];
+  /** The page's filters; older retained-scope captures used the compressed URL's default filters. */
+  filters?: Pick<ExplorerFilters, "showTests" | "showAssets">;
 }
 
 const PRETEXT_DIST = path.resolve(__dirname, "../../node_modules/@chenglou/pretext/dist");
@@ -156,7 +159,7 @@ export async function captureFromPage(page: Page, run: ScopeRun): Promise<Captur
   return { bundle: run.bundle, base: run.base, scopeName: run.scopeName, subject: run.subject, files: [...run.scope], capturedAt: new Date().toISOString(), ...read };
 }
 
-type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" | "labels" | "truth" | "warnings">;
+type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" | "labels" | "truth" | "warnings" | "filters">;
 
 /** Reads the capture inside the page. One evaluation, so the page is read in one state. */
 function readCapture(page: Page): Promise<PageCapture> {
@@ -342,7 +345,11 @@ function readCapture(page: Page): Promise<PageCapture> {
       cards,
       labels,
       truth: { placementCost: Number(root.dataset.placementCost), pictureWidth: px(root.style.width), pictureHeight: px(root.style.height), labelHeights },
-      warnings
+      warnings,
+      filters: {
+        showTests: document.querySelector<HTMLInputElement>("#filter-toggle-tests")!.checked,
+        showAssets: document.querySelector<HTMLInputElement>("#filter-toggle-assets")!.checked
+      }
     };
   }, { tolerance: TEXT_TOLERANCE });
 }

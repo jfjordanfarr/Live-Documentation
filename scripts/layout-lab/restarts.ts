@@ -17,6 +17,9 @@
  * order's sweeps, and says for each setting which start the page's price
  * keeps, which the full score prefers, and where the page's search would end.
  *
+ * This report simulates ordering seeds only. The `refine` command also tries
+ * the membrane alignments interleaved by the page.
+ *
  * @module layout-lab/restarts
  */
 import type { Capture } from "./capture";
@@ -45,15 +48,17 @@ export interface StartRow {
 /** The costs tried by default: a crossing at nothing to forty pixels of wire, a pixel of height at nothing to five. */
 export const DEFAULT_COST_GRID = "crossing=0,5,10,20,40;height=0,1,2,5";
 
-/** `crossing=a,b;height=c,d`: every combination, the churn cost nothing, since the lab has no previous picture. */
-export function parseCosts(spec: string | undefined): StartCosts[] {
-  const lists: Record<string, number[]> = { crossing: [0], height: [0] };
+/** Every combination of the requested costs, retaining the supplied shape prices unless the grid varies them; no churn without a previous picture. */
+export function parseCosts(spec: string | undefined, shape: Pick<StartCosts, "evenness" | "levelness" | "steps">): StartCosts[] {
+  const lists: Record<string, number[]> = { crossing: [0], height: [0], evenness: [shape.evenness], levelness: [shape.levelness], steps: [shape.steps] };
   for (const part of (spec ?? DEFAULT_COST_GRID).split(";").map(s => s.trim()).filter(Boolean)) {
     const [name, list] = part.split("=").map(s => s.trim());
-    if (!(name in lists)) throw new Error(`No cost ${JSON.stringify(name)}; the costs are crossing and height.`);
+    if (!(name in lists)) throw new Error(`No cost ${JSON.stringify(name)}; the costs are crossing, height, evenness, levelness and steps.`);
     lists[name] = (list ?? "").split(",").map(s => Number(s.trim())).filter(value => Number.isFinite(value));
   }
-  return lists.crossing.flatMap(crossing => lists.height.map(height => ({ crossing, height, churn: 0 })));
+  let grid: StartCosts[] = [{ crossing: 0, height: 0, churn: 0, ...shape }];
+  for (const [name, values] of Object.entries(lists)) grid = grid.flatMap(costs => values.map(value => ({ ...costs, [name]: value })));
+  return grid;
 }
 
 /** Every start alone: the ranked order first, then the seeds 1 to `seeds`; each start's churn is against the ranked start's picture. */
@@ -80,7 +85,7 @@ export interface Adoption {
   tried: number;
 }
 
-/** The page's search simulated at one churn cost over the tabulated starts. */
+/** The page's ordering trials simulated at one churn cost over the tabulated starts; alignment trials are separate. */
 export interface SearchTrial {
   churn: number;
   /** The first paint: the cheapest of the ranking's order and the seeds the page tries before paint. */
@@ -149,24 +154,24 @@ export function renderRestarts(run: ScopeRun, rows: readonly StartRow[], trials:
   lines.push(`# Layout lab, the order step's starts: ${run.bundle}, ${run.scopeName}`, "");
   lines.push(`_Run ${startedAt}, over a capture of ${capture.capturedAt} (${capture.userAgent.replace(/^.*?(Chrome\/[\d.]+).*$/u, "$1")}). ${rows.length} starts, each laid out alone at the page's tuning. Full-score weights: ${Object.entries(weights).map(([k, v]) => `${k} ${v}`).join(", ")}; the ranked start scores ${Object.values(weights).reduce((a, b) => a + (b ?? 0), 0).toFixed(3)} by definition._`, "");
   lines.push("## Every start", "");
-  lines.push("What the page prices a start at the moment its placement is solved (the first four columns), and what the deck would read of the picture it draws (the rest).", "");
-  lines.push("| Start | Vertical px (placement) | Order crossings | Height px | Churn vs ranked | Length px (vs ranked) | Crossing spots (vs ranked) | Foreign samples | Escaping wires / samples | Full score | ms |");
-  lines.push("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+  lines.push("What the page prices a start at the moment its placement is solved (vertical length, crossings, height, churn and shape), and what the deck would read of the picture it draws.", "");
+  lines.push("| Start | Vertical px (placement) | Order crossings | Height px | Churn vs ranked | Unevenness px | Steps | Unlevel px | Length px (vs ranked) | Crossing spots (vs ranked) | Foreign samples | Escaping wires / samples | Full score | ms |");
+  lines.push("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
   for (const row of rows) {
     const s = row.signals;
-    lines.push(`| ${row.name} | ${n(row.cheap.vertical)} (${pct(row.cheap.vertical, base.cheap.vertical)}) | ${row.cheap.crossings} (${pct(row.cheap.crossings, base.cheap.crossings)}) | ${n(row.cheap.height)} | ${row.cheap.churn} | ${n(s.lengthPx)} (${pct(s.lengthPx, base.signals.lengthPx)}) | ${s.crossings.spots} (${pct(s.crossings.spots, base.signals.crossings.spots)}) | ${s.foreignSamples} | ${s.escapingWires} / ${s.escapingSamples} | ${full(row)} | ${row.ms.toFixed(0)} |`);
+    lines.push(`| ${row.name} | ${n(row.cheap.vertical)} (${pct(row.cheap.vertical, base.cheap.vertical)}) | ${row.cheap.crossings} (${pct(row.cheap.crossings, base.cheap.crossings)}) | ${n(row.cheap.height)} | ${row.cheap.churn} | ${n(row.cheap.unevenness)} | ${row.cheap.steps} | ${n(row.cheap.unlevel)} | ${n(s.lengthPx)} (${pct(s.lengthPx, base.signals.lengthPx)}) | ${s.crossings.spots} (${pct(s.crossings.spots, base.signals.crossings.spots)}) | ${s.foreignSamples} | ${s.escapingWires} / ${s.escapingSamples} | ${full(row)} | ${row.ms.toFixed(0)} |`);
   }
   lines.push("", "## The costs tried", "");
   lines.push("At each setting, the start the page would keep (the cheapest by its vertical length plus the costs) and how it stands by the full score beside the start the full score prefers.", "");
-  lines.push("| Crossing cost px | Height cost px | The page keeps | Its full score | The full score prefers | Its full score | Agree |");
-  lines.push("| ---: | ---: | --- | ---: | --- | ---: | --- |");
+  lines.push("| Crossing cost px | Height cost px | Evenness cost | Levelness cost | Step cost px | The page keeps | Its full score | The full score prefers | Its full score | Agree |");
+  lines.push("| ---: | ---: | ---: | ---: | ---: | --- | ---: | --- | ---: | --- |");
   for (const trial of trials) {
-    lines.push(`| ${trial.costs.crossing} | ${trial.costs.height} | ${trial.pick.name} | ${trial.pickScore.toFixed(3)} | ${trial.best.name} | ${trial.bestScore.toFixed(3)} | ${trial.pick === trial.best ? "yes" : "no"} |`);
+    lines.push(`| ${trial.costs.crossing} | ${trial.costs.height} | ${trial.costs.evenness} | ${trial.costs.levelness} | ${trial.costs.steps} | ${trial.pick.name} | ${trial.pickScore.toFixed(3)} | ${trial.best.name} | ${trial.bestScore.toFixed(3)} | ${trial.pick === trial.best ? "yes" : "no"} |`);
   }
   if (search) {
     lines.push("", "## The search, simulated", "");
-    lines.push(`The page's continuing search over these starts: the first paint is the cheapest of the ranking's order and the first ${search.orderStarts} seeds; each later seed is adopted when its price with its churn against the shown picture beats the shown picture's own; the search settles after ${search.patience} starts none of which betters the best price found, churn aside, or caps at the last seed. The gain is in the shown picture's own price, churn aside; the pairs are the cards of one column that swap places.`, "");
-    lines.push(`| Churn cost px/pair | First paint | Moves (seed: gain, pairs swapped, after n starts) | Starts tried | Stopped | Final | Final price at crossing ${search.costs.crossing}, height ${search.costs.height} (vs first) | Final full score |`);
+    lines.push(`The ordering part of the page's continuing search over these starts (alignment trials are not simulated): the first paint is the cheapest of the ranking's order and the first ${search.orderStarts} seeds; each later seed is adopted when its price with its churn against the shown picture beats the shown picture's own; the search settles after ${search.patience} starts none of which betters the best price found, churn aside, or caps at the last seed. The gain is in the shown picture's own price, churn aside; the pairs are the cards of one column that swap places.`, "");
+    lines.push(`| Churn cost px/pair | First paint | Moves (seed: gain, pairs swapped, after n starts) | Starts tried | Stopped | Final | Final price at crossing ${search.costs.crossing}, height ${search.costs.height}, evenness ${search.costs.evenness}, levelness ${search.costs.levelness}, steps ${search.costs.steps} (vs first) | Final full score |`);
     lines.push("| ---: | --- | --- | ---: | --- | --- | ---: | ---: |");
     for (const trial of search.trials) {
       const firstBase = scoreOf(trial.first.cheap, { ...search.costs, churn: 0 });
@@ -176,7 +181,7 @@ export function renderRestarts(run: ScopeRun, rows: readonly StartRow[], trials:
     }
   }
   lines.push("", "## What the numbers are", "");
-  lines.push("- The vertical length is the exact placement's measure, the wires' vertical distances summed; the order's crossings are its own count between adjacent columns, a bundle's shared run counted once; the height is the picture's. The page knows these three the moment a start is placed, and prices a start by the vertical length plus the costs.");
+  lines.push("- The vertical length is the exact placement's measure, the wires' vertical distances summed; the order's crossings are its own count between adjacent columns, a bundle's shared run counted once; the height is the picture's. Unevenness sums the drawn membranes' adjacent top and bottom changes; steps counts nonzero changes; unlevel sums the distance between the k-th directly owned card tops in adjacent columns. The page prices all of these the moment a start is placed.");
   lines.push("- The churn is the number of pairs of cards in one column that stand the other way round from the ranked start's picture, the signal the page prices against its previous picture.");
   lines.push("- The length, the crossing spots, the foreign samples and the escaping wires are the deck's signals over the routed wires, which the page does not compute; the full score weighs them as the sweeps do.");
   return lines.join("\n") + "\n";
@@ -255,7 +260,8 @@ export function renderWide(run: ScopeRun, settings: readonly WideSetting[], weig
   const lines: string[] = [];
   const startCells = (row: StartRow, score: number): string => `${row.name} | ${score.toFixed(3)} | ${n(row.signals.lengthPx)} | ${n(row.cheap.vertical)} | ${row.signals.crossings.spots} | ${n(row.signals.pictureHeight)} | ${row.signals.foreignSamples} | ${row.signals.escapingWires} | ${row.signals.fragments}`;
   lines.push(`# Layout lab, the wider space: ${run.bundle}, ${run.scopeName}`, "");
-  lines.push(`_Run ${startedAt}, over a capture of ${capture.capturedAt} (${capture.userAgent.replace(/^.*?(Chrome\/[\d.]+).*$/u, "$1")}). ${settings.length} settings of the grid \`${grid}\`, each with ${starts} starts laid out alone (the ranking's order and the seeds 1 to ${starts - 1}), ${(settings.length * starts).toLocaleString("en-US")} layouts in all. Full-score weights: ${Object.entries(weights).map(([k, v]) => `${k} ${v}`).join(", ")}; the baseline setting's ranked start scores ${Object.values(weights).reduce((a, b) => a + (b ?? 0), 0).toFixed(3)} by definition, and every start of every setting is scored against it. The page's price is the vertical length plus ${judge.costs.crossing} px a crossing and ${judge.costs.height} px a pixel of height; the search is simulated at ${judge.churn} px a swapped pair from a first paint of the ranking's order and the first ${judge.first} seeds, with a patience of ${judge.patience}._`, "");
+  lines.push(`_Run ${startedAt}, over a capture of ${capture.capturedAt} (${capture.userAgent.replace(/^.*?(Chrome\/[\d.]+).*$/u, "$1")}). ${settings.length} settings of the grid \`${grid}\`, each with ${starts} starts laid out alone (the ranking's order and the seeds 1 to ${starts - 1}), ${(settings.length * starts).toLocaleString("en-US")} layouts in all. Full-score weights: ${Object.entries(weights).map(([k, v]) => `${k} ${v}`).join(", ")}; the baseline setting's ranked start scores ${Object.values(weights).reduce((a, b) => a + (b ?? 0), 0).toFixed(3)} by definition, and every start of every setting is scored against it. The page's price is the vertical length plus ${judge.costs.crossing} px a crossing and ${judge.costs.height} px a pixel of height, ${judge.costs.evenness} px per pixel of membrane unevenness, ${judge.costs.levelness} px per pixel of row misalignment and ${judge.costs.steps} px per boundary step; the search is simulated at ${judge.churn} px a swapped pair from a first paint of the ranking's order and the first ${judge.first} seeds, with a patience of ${judge.patience}._`, "");
+  lines.push("The search columns simulate ordering seeds only. Use the `refine` command for the page's interleaved membrane alignment trials.", "");
   lines.push("## Every setting", "");
   lines.push("For each setting: what a start costs the lab, the ranked start's full score, the start the page's price keeps and its full score, the start the full score prefers with the deck's signals of its picture, and the page's search from its first paint to where it ends.", "");
   lines.push("| Setting | ms / start | Ranked: full | Page's price keeps | Its full | Full score prefers | Its full | Length px | Vertical px | Spots | Height px | Foreign | Escaping | Fragments | Search: first paint | Moves | Final | Its full |");
@@ -272,12 +278,12 @@ export function renderWide(run: ScopeRun, settings: readonly WideSetting[], weig
       lines.push(`| ${index + 1} | ${entry.s.setting} | ${startCells(entry.row, entry.score)} |`);
     });
   };
-  ranked("The settings by where the search ends", "What the page would show at each setting once its search has settled, by the full score; the baseline is what it shows today.", s => ({ row: s.search.final, score: s.searchScore }));
+  ranked("The settings by where the search ends", "Where the ordering-only simulation ends at each setting, by the full score; membrane alignment trials are not included.", s => ({ row: s.search.final, score: s.searchScore }));
   ranked("The settings by their best start", "What each setting can reach by the full score, whichever start gets there; a setting high here and low above has a best start the page's price does not pick.", s => ({ row: s.best, score: s.bestScore }));
   ranked("The settings by the page's price", "The start the page's price keeps at each setting, by the full score; where this and the first table differ, the search's churn or patience stopped short of the price's pick.", s => ({ row: s.cheapest, score: s.cheapestScore }));
   lines.push("", "## What the numbers are", "");
   lines.push("- A setting is the ranking's pull and tie rule and the order's sweep count; the spacing stays at the page's values. Every start of every setting is laid out alone and scored by the full weighted score against the baseline setting's ranked start, so the scores compare across settings.");
-  lines.push("- The page's price is what the page knows the moment a start is placed: the vertical wire length plus the costs of the order's own crossings and the picture's height. The full score reads the routed wires the page never draws for a start: the length, the crossing spots, the samples over foreign membranes, the escaping wires, the picture's height and the backward wires.");
+  lines.push("- The page's price is what the page knows the moment a start is placed: the vertical wire length plus the costs of the order's own crossings, the picture's height and the membrane and row shape signals. The full score reads the routed wires the page never draws for a start: the length, the crossing spots, the samples over foreign membranes, the escaping wires, the picture's height and the backward wires.");
   lines.push("- The search is the page's own judge over the setting's starts in seed order, as the restarts report simulates it.");
   lines.push("- The fragments count, for each of the files' real directories in each column, its runs of neighbouring cards beyond the first: how far the directories interleave, whatever membranes the setting drew. Where a setting draws fewer membranes than the files have directories (`membraneDepth`), the full score's membrane terms shrink with them, so full scores compare only among settings of one depth; the length, the vertical length, the spots, the height and the fragments compare across all.");
   return lines.join("\n") + "\n";

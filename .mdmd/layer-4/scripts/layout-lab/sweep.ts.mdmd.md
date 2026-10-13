@@ -14,7 +14,9 @@ The configurations a run tries and how they are scored: a grid over the levers' 
 ### Notes
 
 A grid spec names each lever's values (`lever=a,b;lever=none,1..4`); the default grid gained `orderStarts` (0, 4, 8) with the restarts of 2026-10-06, and a configuration with restarts on lays out every start before its routes are drawn once; the whole grid is walked when it is no larger than the limit, else the limit's worth is drawn by mulberry32 from the seed, the baseline first and nothing twice. Each lever alone from the baseline is the report's sensitivity table. The score is the weighted sum of the signals as fractions of the baseline's, the owner's order of 2026-10-06 as the default weights (length first, the membranes' concerns behind); a signal the baseline has none of counts double when it appears. The Pareto front is the rows no other beats on both the length and the crossing spots.
-- The weights may name `unevenness` and `unlevel` since 2026-10-07, both absent from the defaults so that the full score says what the shape levers cost in wire, crossings and the membranes' concerns rather than rewarding them; the first grid walks `membraneEvenness` and `rowLevelness` at 0, 0.5, 1, 2 and 5.
+- The weights may name `unevenness`, `steps` and `unlevel`, all absent from the defaults so that the full score says what the shape levers cost in wire, crossings and the membranes' concerns rather than rewarding them; the grid walks `membraneEvenness` and `rowLevelness` at 0, 0.5, 1, 2 and 5, and `membraneSimplicity` at 0, 25, 50, 100 and 200.
+
+The sweep was introduced with the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10). The simplicity lever and independently weighted step count support the [October 13 shape competition](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply); the full routed-wire score remains a separate diagnostic from the page's placement-time price.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

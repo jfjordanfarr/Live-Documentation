@@ -1,5 +1,5 @@
 import type { Lane } from "./branch-order";
-import { placeBranches, type Placement, type PlacementBand, type PlacementWire, type StackEntry } from "./branch-placement";
+import { placeBranches, type BoundaryAlignment, type Placement, type PlacementBand, type PlacementWire, type StackEntry } from "./branch-placement";
 import { LANE_PADDING, LANE_PITCH } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import type { DirectoryBand } from "./directory-bands";
@@ -218,6 +218,14 @@ export function planBranches(branches: BranchGraph, bandPadding: number = DEFAUL
 /** The box whose element holds a box's elements: itself, unless it is a directory's loose files, which share their parent's. */
 export const hostOf = (box: SceneBox): SceneBox => (box.kind === "files" ? hostOf(box.parent!) : box);
 
+/** A drawn directory's own cards, including its invisible file buckets, but no nested directory's cards or lane slots. */
+export function rowItemsOf(box: SceneBox): readonly string[] {
+  if (box.kind !== "directory") return [];
+  return [...box.items, ...box.children
+    .filter(child => child.kind === "files" && child.directory === box.directory)
+    .flatMap(child => child.items)];
+}
+
 /** The sum of the insets of a box and the boxes around it: how far inside its column an item of it stands. */
 function ancestorsInset(box: SceneBox): number {
   let total = 0;
@@ -231,9 +239,11 @@ function ancestorsInset(box: SceneBox): number {
  * its column by the insets around it. Then the measurer gives every card's
  * height and pins at its column's width and every label's height at its
  * segment's width. Down: the exact placement of `branch-placement.ts`, with
- * a wire per reference through the slots its passages name.
+ * a wire per reference through the slots its passages name. Optional boundary
+ * alignments join selected runs for a competing picture; every card, lane and
+ * containing box is re-solved under the original placement constraints.
  */
-export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: SceneMeasurer, tuning: SceneTuning): Scene {
+export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: SceneMeasurer, tuning: SceneTuning, alignments: readonly BoundaryAlignment[] = []): Scene {
   const { root, items, lanes, columns, columnCount } = plan;
   const natural = measurer.widths(tuning.cardMaxWidth);
   const widths = new Array<number>(columnCount).fill(0);
@@ -297,10 +307,10 @@ export function layoutScene(plan: ScenePlan, branches: BranchGraph, measurer: Sc
 
   const toPlacementBand = (box: SceneBox): PlacementBand => ({
     key: box.key, insetTop: box.insetTop, insetBottom: box.insetBottom, minColumn: box.minColumn, maxColumn: box.maxColumn, row: box.row,
-    shaped: box.kind === "directory", items: box.items, children: box.children.map(toPlacementBand)
+    shaped: box.kind === "directory", items: box.items, rowItems: rowItemsOf(box), children: box.children.map(toPlacementBand)
   });
   const placement = placeBranches({
-    columns, heights, wires: [...wires.values()], bands: [toPlacementBand(root)],
+    columns, heights, wires: [...wires.values()], bands: [toPlacementBand(root)], alignments,
     gap: tuning.itemGap, bandGap: tuning.bandGap, neck: tuning.neck, evenness: tuning.evenness, levelness: tuning.levelness
   });
 

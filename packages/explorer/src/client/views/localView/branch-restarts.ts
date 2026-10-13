@@ -1,4 +1,5 @@
 import type { Scene } from "./branch-scene";
+import { shapeSignalsOf, type ShapeSignals } from "./branch-shape";
 import type { BranchGraph, OrderOptions } from "./branches";
 
 /**
@@ -29,10 +30,16 @@ export interface StartCosts {
   height: number;
   /** Per pair of cards in one column that stand the other way round from the previous picture. */
   churn: number;
+  /** Per pixel of change between adjacent membrane tops or bottoms. */
+  evenness: number;
+  /** Per pixel between the k-th directly owned card tops in adjacent columns. */
+  levelness: number;
+  /** Per nonzero change between adjacent membrane tops or bottoms. */
+  steps: number;
 }
 
 /** The signals a start is priced on, every one known the moment its placement is solved. */
-export interface StartSignals {
+export interface StartSignals extends ShapeSignals {
   /** The exact placement's measure: the wires' vertical length in pixels. */
   vertical: number;
   /** The order's own count of crossings between adjacent columns. */
@@ -49,7 +56,7 @@ export interface StartOutcome {
   branches: BranchGraph;
   scene: Scene;
   signals: StartSignals;
-  /** The vertical length plus the costs of the crossings, the height and the churn, in pixels of wire. */
+  /** The vertical length plus the costs of the crossings, height, churn and shape, in pixels of wire. */
   score: number;
 }
 
@@ -94,9 +101,21 @@ export function churnOf(columns: readonly (readonly string[])[], previous: Reado
   return flipped;
 }
 
-/** A start's price: its vertical length and what its crossings, its height and its churn cost, in pixels of wire. */
+/** The signals available as soon as a placement is solved, shared by first paint and the continuing search. */
+export function signalsOf(branches: BranchGraph, scene: Scene, previousTops: ReadonlyMap<string, number> | null): StartSignals {
+  return {
+    vertical: scene.placement.cost,
+    crossings: branches.order.crossings,
+    height: scene.pictureHeight,
+    churn: churnOf(branches.columns.map(column => column.map(node => node.id)), previousTops),
+    ...shapeSignalsOf(scene, branches)
+  };
+}
+
+/** A start's price: its vertical length and what its crossings, height, churn and shape cost, in pixels of wire. */
 export function scoreOf(signals: StartSignals, costs: StartCosts): number {
-  return signals.vertical + costs.crossing * signals.crossings + costs.height * signals.height + costs.churn * signals.churn;
+  return signals.vertical + costs.crossing * signals.crossings + costs.height * signals.height + costs.churn * signals.churn
+    + costs.evenness * signals.unevenness + costs.levelness * signals.unlevel + costs.steps * signals.steps;
 }
 
 /**
@@ -112,12 +131,7 @@ export function layoutStarts(
   if (starts.length === 0) throw new Error("The order step needs at least one start.");
   const outcomes: StartOutcome[] = starts.map(start => {
     const { branches, scene } = layout(start);
-    const signals: StartSignals = {
-      vertical: scene.placement.cost,
-      crossings: branches.order.crossings,
-      height: scene.pictureHeight,
-      churn: churnOf(branches.columns.map(column => column.map(node => node.id)), previous)
-    };
+    const signals = signalsOf(branches, scene, previous);
     return { start, branches, scene, signals, score: scoreOf(signals, costs) };
   });
   const chosen = outcomes.reduce((best, outcome) => (outcome.score < best.score ? outcome : best));

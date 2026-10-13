@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { placeBranches, placementCost, type PlacementBand, type PlacementInput, type PlacementLane, type PlacementWire, type Segment, type StackEntry } from "./branch-placement";
+import { placeBranches, placementCost, type BoundaryAlignment, type PlacementBand, type PlacementInput, type PlacementLane, type PlacementWire, type Segment, type StackEntry } from "./branch-placement";
 
 const heights = (pairs: Array<[string, number]>): Map<string, number> => new Map(pairs);
 
@@ -316,6 +316,114 @@ describe("placing the retained files", () => {
     // The picture's root is drawn as nothing and never priced, and a membrane with one column has no neighbour to level with.
     const alone = placeBranches({ ...input, bands: [band("root", ["a", "b"], [0, 1], 0, [], [0, 0])], levelness: 2, evenness: 2 });
     expect(alone.top.get("a")! - alone.top.get("b")!).toBe(80);
+  });
+
+  it("holds an explicit top plateau level without flattening its bottom or changing the wire's preferred separation", () => {
+    const input: PlacementInput = {
+      columns: [["a"], ["b"]], heights: heights([["a", 100], ["b", 100]]),
+      wires: [wire(["a", 10], ["b", 90])],
+      bands: [band("root", [], [0, 1], 0, [band("m", ["a", "b"], [0, 1])], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60
+    };
+    const baseline = placeBranches(input);
+    expect(baseline.boxes.get("m")![0].top).not.toBe(baseline.boxes.get("m")![1].top);
+    expect(placeBranches({ ...input, alignments: [] })).toEqual(baseline);
+    expect(placeBranches({ ...input, alignments: [{ band: "m", edge: "top", fromColumn: 0, toColumn: 0 }] })).toEqual(baseline);
+    const aligned = placeBranches({ ...input, alignments: [{ band: "m", edge: "top", fromColumn: 0, toColumn: 1 }] });
+    const [left, right] = aligned.boxes.get("m")!;
+    expect(left.top).toBe(right.top);
+    expect(left.bottom).not.toBe(right.bottom);
+    expect(aligned.top.get("a")! - aligned.top.get("b")!).toBe(80);
+    expect(aligned.cost).toBe(0);
+    expect(aligned.optimal).toBe(true);
+    expectWellFormed(input, aligned);
+  });
+
+  it("unites crossing and nested intervals independently for each edge, regardless of request order", () => {
+    const members = ["a", "b", "c", "d", "e"];
+    const input: PlacementInput = {
+      columns: [["p"], ...members.map(id => [id])], heights: heights([["p", 400], ...members.map(id => [id, 40] as [string, number])]),
+      wires: members.map((id, index) => wire(["p", 40 + index * 70], [id, 10])),
+      bands: [band("root", ["p"], [0, 5], 0, [band("m", members, [1, 5])], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60
+    };
+    const alignments: BoundaryAlignment[] = [
+      { band: "m", edge: "top", fromColumn: 3, toColumn: 4 },
+      { band: "m", edge: "bottom", fromColumn: 2, toColumn: 3 },
+      { band: "m", edge: "top", fromColumn: 1, toColumn: 3 },
+      { band: "m", edge: "top", fromColumn: 2, toColumn: 3 }
+    ];
+    const aligned = placeBranches({ ...input, alignments });
+    const segments = aligned.boxes.get("m")!;
+    expect(new Set(segments.slice(0, 4).map(segment => segment.top)).size).toBe(1);
+    expect(segments[4].top).not.toBe(segments[0].top);
+    expect(segments[1].bottom).toBe(segments[2].bottom);
+    expect(segments[0].bottom).not.toBe(segments[1].bottom);
+    expect(aligned).toEqual(placeBranches({ ...input, alignments: [...alignments].reverse() }));
+    expect(aligned).toEqual(placeBranches({ ...input, alignments: [
+      { band: "m", edge: "top", fromColumn: 1, toColumn: 4 },
+      { band: "m", edge: "bottom", fromColumn: 2, toColumn: 3 }
+    ] }));
+    const separate = placeBranches({ ...input, alignments: [
+      { band: "m", edge: "top", fromColumn: 1, toColumn: 2 },
+      { band: "m", edge: "top", fromColumn: 3, toColumn: 4 }
+    ] });
+    const apart = separate.boxes.get("m")!;
+    expect(apart[0].top).toBe(apart[1].top);
+    expect(apart[2].top).toBe(apart[3].top);
+    expect(apart[1].top).not.toBe(apart[2].top);
+    expect(aligned.cost).toBe(0);
+    expectWellFormed(input, aligned);
+    expectWellFormed(input, separate);
+  });
+
+  it("keeps labels, ancestors, sibling lanes and wire slots constrained when boundaries align", () => {
+    const l = lane("lane", 1, 2, 1);
+    const first = band("outer/first", ["a", "b"], [0, 1], 0);
+    const second = band("outer/second", ["c", "d"], [0, 1], 2);
+    const input: PlacementInput = {
+      columns: [["a", "c"], ["b", l.entry, "d"]],
+      heights: heights([["a", 100], ["b", 40], ["c", 40], ["d", 100], ...l.heights]),
+      wires: [wire(["a", 20], ["b", 10]), wire(["a", 80], [l.slots[0], LINE]), wire(["c", 10], [l.slots[1], LINE]), wire(["c", 30], ["d", 80])],
+      bands: [band("root", [], [0, 1], 0, [band("outer", [], [0, 1], 0, [first, l.band, second])], [0, 0])],
+      gap: 24, bandGap: 28, neck: 60, evenness: 0.5, levelness: 0.25,
+      alignments: [
+        { band: "outer", edge: "top", fromColumn: 0, toColumn: 1 },
+        { band: "outer", edge: "bottom", fromColumn: 0, toColumn: 1 },
+        { band: "outer/first", edge: "bottom", fromColumn: 0, toColumn: 1 },
+        { band: "outer/second", edge: "top", fromColumn: 0, toColumn: 1 }
+      ]
+    };
+    const aligned = placeBranches(input);
+    expectWellFormed(input, aligned);
+    for (const alignment of input.alignments!) {
+      const segments = aligned.boxes.get(alignment.band)!;
+      expect(segments[0][alignment.edge]).toBe(segments[1][alignment.edge]);
+    }
+    const passage = aligned.boxes.get("lane")![0];
+    expect(passage.top).toBeGreaterThanOrEqual(aligned.boxes.get(first.key)![1].bottom + input.bandGap);
+    expect(aligned.boxes.get(second.key)![1].top).toBeGreaterThanOrEqual(passage.bottom + input.bandGap);
+    expect(aligned.top.get(l.slots[1])! - aligned.top.get(l.slots[0])!).toBeGreaterThanOrEqual(PITCH);
+    expect(aligned.cost).toBe(placementCost(input.wires, aligned.top));
+    expect(aligned.optimal).toBe(true);
+  });
+
+  it.each([
+    [{ band: "missing", edge: "top", fromColumn: 0, toColumn: 1 }, /unknown membrane "missing"/u],
+    [{ band: "m", edge: "left", fromColumn: 0, toColumn: 1 }, /invalid edge "left"/u],
+    [{ band: "m", edge: "top", fromColumn: 1, toColumn: 0 }, /integer columns/u],
+    [{ band: "m", edge: "top", fromColumn: 0.5, toColumn: 1 }, /integer columns/u],
+    [{ band: "m", edge: "bottom", fromColumn: 0, toColumn: NaN }, /integer columns/u],
+    [{ band: "m", edge: "bottom", fromColumn: 0, toColumn: Infinity }, /integer columns/u],
+    [{ band: "m", edge: "top", fromColumn: -1, toColumn: 1 }, /reaches outside/u],
+    [{ band: "m", edge: "bottom", fromColumn: 0, toColumn: 2 }, /reaches outside/u]
+  ])("refuses an invalid boundary alignment %j", (alignment, message) => {
+    const input: PlacementInput = {
+      columns: [["a"], ["b"]], heights: heights([["a", 40], ["b", 40]]), wires: [],
+      bands: [band("m", ["a", "b"], [0, 1])], gap: 24, bandGap: 28, neck: 60,
+      alignments: [alignment as BoundaryAlignment]
+    };
+    expect(() => placeBranches(input)).toThrow(message as RegExp);
   });
 
   it("refuses an item outside its membrane's columns, and a child reaching outside its parent", () => {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/restarts.ts
-- Generated At: 2026-10-07T14:15:48.068Z
+- Generated At: 2026-10-13T16:52:35.861Z
 
 ## Authored
 ### Purpose
@@ -13,39 +13,41 @@ The order step's starts tabulated for one scope: what the page prices each start
 
 ### Notes
 
-Every start is laid out alone through `evaluate` (the ranked order as `orderSeed` null with no restarts, then the seeds 1 to `--starts` each forced), so a row's cheap signals are the ones the page sees the moment that start is placed (the vertical length, the order's own crossings, the height, and the churn against the ranked start's picture) and its full signals are the deck's over the routed wires (the length, the crossing spots, the samples over foreign membranes, the escaping wires). `trialCosts` then prices every start at each setting of the crossing and height costs and names the page's pick beside the full score's; the markdown says where they agree. The costs in the Local Map's tuning were set from the four deck scopes' tables on 2026-10-06: on this repository's two scopes the cheapest start by vertical length is also the full score's choice, so any cost agrees; on the estate's five files the full score prefers a start with a quarter fewer crossing spots at a percent less length, which the page picks only once a crossing costs 60 px of wire or more; on the estate's chain the full score prefers the one start with no foreign sample, which the page picks from a crossing cost of 40. The owner asked for the score to be "tabulated and tuned" ([Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-11)); this is the table.
-- `simulateSearch` (2026-10-07) runs the page's own judge from `branch-search.ts` over the tabulated starts at each of several churn costs: the first paint is the cheapest of the ranking's order and the first `orderStarts` seeds by the crossing and height costs, each later seed is priced with its churn against the shown picture's tops and adopted when that beats the shown picture's own price, until the patience or the last seed; each row now carries its seed, its columns and its tops, which the churn between any two pictures is counted from. The report's new table says, per churn cost, the first paint, each move with its gain and the pairs it swaps, the starts tried, where the search stopped, and the final picture's price and full score. The lab's `restarts` verb takes `--churn`, `--first` and `--patience`.
-- The wider space (2026-10-07, [Turn 18](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-18)): `widenStarts` tabulates the starts again at every setting of a grid over the ranking's pull and tie rule and the order's sweeps (`DEFAULT_WIDE_GRID`, 36 settings), `summarizeSetting` names for each setting the start the page's price keeps, the start the full score prefers and where the page's search ends, every full score against the baseline setting's ranked start so that the settings compare, and `renderWide` writes one line per setting and the settings ranked three ways: by where the search ends, by their best start, by the page's price. The simulation follows the page's judge, whose patience counts since that day the starts since the best price found improved, not since the last adoption.
+Every start is laid out alone through `evaluate` (the ranked order as `orderSeed` null with no restarts, then the seeds 1 to `--starts` each forced), so a row's cheap signals are the ones the page sees the moment that start is placed (the vertical length, the order's own crossings, the height, the churn against the ranked start's picture, and the shared shape signals) and its full signals are the deck's over the routed wires (the length, the crossing spots, the samples over foreign membranes, the escaping wires). `trialCosts` then prices every start at each setting of the crossing, height and shape costs and names the page's pick beside the full score's; the markdown says where they agree. The costs in the Local Map's tuning were set from the four deck scopes' tables on 2026-10-06: on this repository's two scopes the cheapest start by vertical length is also the full score's choice, so any cost agrees; on the estate's five files the full score prefers a start with a quarter fewer crossing spots at a percent less length, which the page picks only once a crossing costs 60 px of wire or more; on the estate's chain the full score prefers the one start with no foreign sample, which the page picks from a crossing cost of 40. The owner asked for the score to be "tabulated and tuned" ([Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-11)); this is the table.
+- `simulateSearch` (2026-10-07) runs the page's own judge from `branch-search.ts` over the tabulated starts at each of several churn costs: the first paint is the cheapest of the ranking's order and the first `orderStarts` seeds by the shared score, each later seed is priced with its churn against the shown picture's tops and adopted when that beats the shown picture's own price, until the patience or the last seed; each row now carries its seed, its columns and its tops, which the churn between any two pictures is counted from. The report's new table says, per churn cost, the first paint, each move with its gain and the pairs it swaps, the starts tried, where the search stopped, and the final picture's price and full score. The lab's `restarts` verb takes `--churn`, `--first` and `--patience`.
+- The wider space (2026-10-07, [Turn 18](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-18)): `widenStarts` tabulates the starts again at every setting of a grid over the ranking's pull and tie rule and the order's sweeps (`DEFAULT_WIDE_GRID`, 36 settings), `summarizeSetting` names for each setting the start the page's price keeps, the start the full score prefers and where the ordering-only search ends, every full score against the baseline setting's ranked start so that the settings compare, and `renderWide` writes one line per setting and the settings ranked three ways: by where the search ends, by their best start, by the page's price. The simulation follows the page's judge, whose patience counts since that day the starts since the best price found improved, not since the last adoption.
 - The wide report's start cells carry the vertical length, the height and the fragments beside the full score (2026-10-07, the wall), since the full score's membrane terms shrink when a setting draws fewer membranes and compare only within one `membraneDepth`.
+
+The simulations in this module try ordering seeds only. [refine](./refine.ts.mdmd.md) also interleaves membrane-alignment candidates and is the headless counterpart of the continuing page search. `parseCosts` requires explicit default shape costs and permits grids over `evenness`, `levelness` and `steps`; a zero term is deliberate rather than an omitted weight. The start tables expose all three shape measurements. This distinction dates to the [October 13 integration](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StartRow` {#symbol-startrow}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L33)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L36)
 
 ##### `StartRow` — Summary
 One start laid out alone: what the page would price it at, and what the deck would read of its picture.
 
 #### `DEFAULT_COST_GRID` {#symbol-default_cost_grid}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L46)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L49)
 
 ##### `DEFAULT_COST_GRID` — Summary
 The costs tried by default: a crossing at nothing to forty pixels of wire, a pixel of height at nothing to five.
 
 #### `parseCosts` {#symbol-parsecosts}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L49)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L52)
 - Returns: [`StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts)[]
 
 ##### `parseCosts` — Summary
-`crossing=a,b;height=c,d`: every combination, the churn cost nothing, since the lab has no previous picture.
+Every combination of the requested costs, retaining the supplied shape prices unless the grid varies them; no churn without a previous picture.
 
 #### `tabulateStarts` {#symbol-tabulatestarts}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L60)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L65)
 - Returns: [`StartRow`](#symbol-startrow)[]
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `config`: [`LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)
 
@@ -54,21 +56,21 @@ Every start alone: the ranked order first, then the seeds 1 to `seeds`; each sta
 
 #### `Adoption` {#symbol-adoption}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L76)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L81)
 
 ##### `Adoption` — Summary
 One picture the search would move to: the start, what the move gains in the shown picture's own price, the pairs of cards it swaps, and after how many starts.
 
 #### `SearchTrial` {#symbol-searchtrial}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L84)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L89)
 
 ##### `SearchTrial` — Summary
-The page's search simulated at one churn cost over the tabulated starts.
+The page's ordering trials simulated at one churn cost over the tabulated starts; alignment trials are separate.
 
 #### `simulateSearch` {#symbol-simulatesearch}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L100)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L105)
 - Returns: [`SearchTrial`](#symbol-searchtrial)[]
 - Parameters: `costs`: [`StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts)
 
@@ -80,14 +82,14 @@ or the last tabulated seed. The pictures must be tabulated in seed order, the ra
 
 #### `CostTrial` {#symbol-costtrial}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L121)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L126)
 
 ##### `CostTrial` — Summary
 One setting of the costs tried: the start the page would keep, the start the full score prefers, and both by the full score.
 
 #### `trialCosts` {#symbol-trialcosts}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L130)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L135)
 - Returns: [`CostTrial`](#symbol-costtrial)[]
 - Parameters: `weights`: [`Weights`](./sweep.ts.mdmd.md#symbol-weights)
 
@@ -96,7 +98,7 @@ At each setting of the costs, the page's pick and the full score's, the ranked s
 
 #### `renderRestarts` {#symbol-renderrestarts}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L145)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L150)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `weights`: [`Weights`](./sweep.ts.mdmd.md#symbol-weights); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `renderRestarts` — Summary
@@ -104,21 +106,21 @@ The tabulation as a person reads it.
 
 #### `DEFAULT_WIDE_GRID` {#symbol-default_wide_grid}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L188)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L193)
 
 ##### `DEFAULT_WIDE_GRID` — Summary
 The levers of the ranking and the order the wider space walks by default: every pull, tie rule and sweep count the design has stood at or near.
 
 #### `WideSetting` {#symbol-widesetting}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L191)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L196)
 
 ##### `WideSetting` — Summary
 One setting of the ranking's and the order's levers: its starts, and the start each judge would keep.
 
 #### `summarizeSetting` {#symbol-summarizesetting}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L216)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L221)
 - Returns: [`WideSetting`](#symbol-widesetting)
 - Parameters: `config`: [`LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig); `base`: [`Signals`](./signals.ts.mdmd.md#symbol-signals); `weights`: [`Weights`](./sweep.ts.mdmd.md#symbol-weights); `costs`: [`StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts)
 
@@ -129,7 +131,7 @@ full score prefers against `base` (the baseline setting's ranked start), and the
 
 #### `widenStarts` {#symbol-widenstarts}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L233)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L238)
 - Returns: [`WideSetting`](#symbol-widesetting)[]
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `baseline`: [`LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig); `weights`: [`Weights`](./sweep.ts.mdmd.md#symbol-weights); `costs`: [`StartCosts`](../../packages/explorer/src/client/views/localView/branch-restarts.ts.mdmd.md#symbol-startcosts)
 
@@ -139,7 +141,7 @@ the baseline setting's ranked start, so the settings compare. `progress` hears e
 
 #### `renderWide` {#symbol-renderwide}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/restarts.ts#L252)
+- Source: [source](../../../../scripts/layout-lab/restarts.ts#L257)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `weights`: [`Weights`](./sweep.ts.mdmd.md#symbol-weights); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `renderWide` — Summary

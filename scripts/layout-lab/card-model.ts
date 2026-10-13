@@ -11,13 +11,13 @@
 import { layout } from "@chenglou/pretext";
 
 import type { Capture, CardCapture, ChipCapture, PreparedText, RowCapture } from "./capture";
-import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
+import { buildNormalizedAnchorKey } from "../../packages/explorer/src/client/views/symbolAnchors";
 
 /** What a card shows under a configuration: its rows in order, and the lines under it. */
 export interface CardView {
   rows: RowCapture[];
-  /** The rows the page collapses, whose dots a wire cannot reach: the page places and draws no wire to them. */
-  hidden: RowCapture[];
+  /** Original card construction order: moving rows does not re-register their endpoint names. */
+  registration: RowCapture[];
   /** Each note's height at a content width. */
   notes: Array<(width: number) => number>;
 }
@@ -93,13 +93,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   y += c.symbolsMarginTop;
   if (card.meta) y += text(card.meta, content);
   const cell = content - 2 * c.gridSideColumn - 2 * c.gridColumnGap;
-  const pins = new Map<string, number>();
-  const rowKeys = new Set<string>();
-  const hiddenKeys = new Set<string>();
-  for (const row of view.hidden) {
-    for (const name of new Set([row.symbol, normalizeSymbolIdentifier(row.symbol) ?? row.symbol])) { hiddenKeys.add(`inbound:${name}`); hiddenKeys.add(`outbound:${name}`); }
-    if (row.symbol === "__internals__") hiddenKeys.add("inbound:*");
-  }
+  const centres = new Map<RowCapture, number>();
   view.rows.forEach((row, i) => {
     const labelWidth = cell - (row.badgesWidth > 0 ? row.badgesWidth + c.badgeGap : 0);
     // The Internals row's dot and placeholder carry a top margin, so the row is taller by it and the dot sits below the row's middle.
@@ -108,13 +102,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
     const height = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, text(row.label, labelWidth), row.badgesWidth > 0 ? c.badgeHeight : 0);
     if (i > 0) y += c.gridRowGap;
     const centre = y + (height - c.dotHeight - dotMargin) / 2 + dotMargin + c.dotHeight / 2;
-    const names = new Set([row.symbol, normalizeSymbolIdentifier(row.symbol) ?? row.symbol]);
-    for (const name of names) {
-      pins.set(`inbound:${name}`, centre);
-      rowKeys.add(`inbound:${name}`);
-      if (row.symbol !== "__internals__") { pins.set(`outbound:${name}`, centre); rowKeys.add(`outbound:${name}`); }
-    }
-    if (row.symbol === "__internals__") { pins.set("inbound:*", centre); rowKeys.add("inbound:*"); }
+    centres.set(row, centre);
     y += height;
   });
   if (card.tests) {
@@ -126,9 +114,31 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   y += text(card.directory, content);
   for (const note of view.notes) y += c.disclosureMarginTop + note(content);
   y += edge;
-  const height = y;
-  pins.set("outbound:*", height / 2);
-  if (!pins.has("inbound:*") && !hiddenKeys.has("inbound:*")) pins.set("inbound:*", height / 2);
+  return registerPins(view.registration, centres, y);
+}
+
+/** Registers row endpoints in construction order, retaining exact and normalized names separately as the browser does. */
+export function registerPins(rows: readonly RowCapture[], centres: ReadonlyMap<RowCapture, number>, height: number): CardMetrics {
+  const pins = new Map<string, number>([["inbound:*", height / 2], ["outbound:*", height / 2]]);
+  const rowKeys = new Set<string>();
+  const hiddenKeys = new Set<string>();
+  const register = (key: string, centre: number | undefined): void => {
+    pins.delete(key);
+    hiddenKeys.delete(key);
+    rowKeys.add(key);
+    if (centre === undefined) hiddenKeys.add(key);
+    else pins.set(key, centre);
+  };
+  for (const row of rows) {
+    const centre = centres.get(row);
+    for (const direction of ["inbound", "outbound"] as const) {
+      if (direction === "outbound" && row.symbol === "__internals__") continue;
+      register(`${direction}:${row.symbol}`, centre);
+      const normalized = buildNormalizedAnchorKey(direction, row.symbol);
+      if (normalized) register(normalized, centre);
+    }
+    if (row.symbol === "__internals__") register("inbound:*", centre);
+  }
   return { height, pins, rowKeys, hiddenKeys };
 }
 
@@ -148,8 +158,8 @@ export function resolvePin(metrics: CardMetrics, direction: "inbound" | "outboun
   if (symbol) {
     const exact = found(`${direction}:${symbol}`);
     if (exact) return exact;
-    const normalized = normalizeSymbolIdentifier(symbol);
-    const byName = normalized ? found(`${direction}:${normalized}`) : null;
+    const normalized = buildNormalizedAnchorKey(direction, symbol);
+    const byName = normalized ? found(normalized) : null;
     if (byName) return byName;
   }
   return found(`${direction}:*`) ?? { offset: metrics.height / 2, key: null };

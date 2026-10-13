@@ -10,8 +10,9 @@
  */
 import type { Capture, CardCapture, RowCapture } from "./capture";
 import { cardMetrics, labelHeight, pinOffset, synthesizedHeight, textHeight, type CardMetrics, type CardView } from "./card-model";
+import type { SymbolOrder } from "../../packages/explorer/src/client/types";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
-import { edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import { compareSymbolNames, edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
 import type { PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
 
@@ -21,6 +22,7 @@ export interface MeasurerOptions {
   selected: string;
   /** The page's `collapseOnPin` tuning: whether a card not retained whole hides the rows no pin needs. */
   collapseOnPin: boolean;
+  symbolOrder: SymbolOrder;
 }
 
 /** Every card's view under an exploration, as `dressCards` would dress it. */
@@ -36,9 +38,20 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
     for (const id of new Set([edge.sourceId, edge.targetId])) backReferences.set(id, (backReferences.get(id) ?? 0) + 1);
   }
   const views = new Map<string, CardView>();
+  const nodes = new Map(branches.subgraph.nodes.map(node => [node.id, node]));
   for (const card of Object.values(capture.cards)) {
+    const raw = new Map<string, RowCapture[]>();
+    for (const row of card.rows) (raw.get(row.symbol) ?? raw.set(row.symbol, []).get(row.symbol)!).push(row);
+    const symbols = [...(nodes.get(card.id)?.publicSymbols ?? [])];
+    if (options.symbolOrder === "alphabetical") symbols.sort(compareSymbolNames);
+    const registration: RowCapture[] = [];
+    for (const symbol of symbols) {
+      const row = raw.get(symbol)?.shift();
+      if (row) registration.push(row);
+    }
+    for (const rows of raw.values()) registration.push(...rows);
     const byName = new Map<string, RowCapture[]>();
-    for (const row of card.rows) {
+    for (const row of registration) {
       const name = normalizeSymbolIdentifier(row.symbol) ?? "__internals__";
       (byName.get(name) ?? byName.set(name, []).get(name)!).push(row);
     }
@@ -65,7 +78,7 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
       if (/^\+\d+ symbols$/u.test(note.text) || /reads? back$/u.test(note.text)) continue;
       notes.push(width => textHeight(capture, note, width));
     }
-    views.set(card.id, { rows: shown, hidden: collapsed, notes });
+    views.set(card.id, { rows: shown, registration, notes });
   }
   return views;
 }

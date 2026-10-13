@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/branch-scene.test.ts
-- Generated At: 2026-10-06T19:32:25.174Z
+- Generated At: 2026-10-13T17:03:33.951Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,8 @@ _No public symbols detected_
 - [`branch-scene.hostOf`](./branch-scene.ts.mdmd.md#symbol-hostof)
 - [`branch-scene.layoutScene`](./branch-scene.ts.mdmd.md#symbol-layoutscene)
 - [`branch-scene.planBranches`](./branch-scene.ts.mdmd.md#symbol-planbranches)
+- [`branch-scene.rowItemsOf`](./branch-scene.ts.mdmd.md#symbol-rowitemsof)
+- [`branch-shape.shapeSignalsOf`](./branch-shape.ts.mdmd.md#symbol-shapesignalsof)
 - [`branches.buildBranches`](./branches.ts.mdmd.md#symbol-buildbranches)
 - [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.addPin`](../pin-state.ts.mdmd.md#symbol-addpin)

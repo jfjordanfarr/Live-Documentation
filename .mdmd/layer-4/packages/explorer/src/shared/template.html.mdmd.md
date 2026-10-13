@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-12T19:21:20.619Z
+- Generated At: 2026-10-13T16:52:35.537Z
 
 ## Authored
 ### Purpose
@@ -199,6 +199,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-membrane-evenness-value` {#symbol-tuning-membrane-evenness-value}
+- Type: variable
+
+#### `tuning-membrane-simplicity` {#symbol-tuning-membrane-simplicity}
+- Type: variable
+
+#### `tuning-membrane-simplicity-value` {#symbol-tuning-membrane-simplicity-value}
 - Type: variable
 
 #### `tuning-move-ms` {#symbol-tuning-move-ms}

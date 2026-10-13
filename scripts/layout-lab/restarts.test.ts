@@ -4,30 +4,36 @@ import { baselineConfig } from "./evaluate";
 import { parseCosts, simulateSearch, summarizeSetting, trialCosts, type StartRow } from "./restarts";
 import type { Signals } from "./signals";
 
+const noShape = { evenness: 0, levelness: 0, steps: 0 };
+
 const signals = (lengthPx: number, spots: number): Signals => ({
   wires: 1, lengthPx, meanPx: lengthPx, horizontalPx: lengthPx, verticalPx: 0,
   crossings: { points: spots, spots, farPoints: 0, pairs: 0, wiresCrossed: 0 },
   foreignSamples: 0, foreignWires: 0, samples: 0, laneSamples: 0, escapingWires: 0, escapingSamples: 0, passages: 0, threaded: 0, backward: 0,
-  columns: 1, lanes: 0, pictureWidth: 100, pictureHeight: 100, placementCost: 0, optimal: true, fragments: 0
+  columns: 1, lanes: 0, pictureWidth: 100, pictureHeight: 100, placementCost: 0, optimal: true, fragments: 0, unevenness: 0, steps: 0, unlevel: 0
 });
 
 const row = (name: string, vertical: number, crossings: number, lengthPx: number, spots: number, columns: string[][] = [["a", "b", "c"]]): StartRow =>
-  ({ name, seed: name === "ranked" ? null : Number(name.replace("seed ", "")), cheap: { vertical, crossings, height: 1000, churn: 0 }, signals: signals(lengthPx, spots), ms: 1,
+  ({ name, seed: name === "ranked" ? null : Number(name.replace("seed ", "")), cheap: { vertical, crossings, height: 1000, churn: 0, unevenness: 0, steps: 0, unlevel: 0 }, signals: signals(lengthPx, spots), ms: 1,
     columns, tops: Object.fromEntries(columns.flat().map((id, i) => [id, i * 100])) });
 
 describe("the restarts tabulated", () => {
   it("parses a grid of costs, every crossing cost with every height cost, the churn nothing", () => {
-    expect(parseCosts("crossing=0,10;height=0,1")).toEqual([
-      { crossing: 0, height: 0, churn: 0 }, { crossing: 0, height: 1, churn: 0 }, { crossing: 10, height: 0, churn: 0 }, { crossing: 10, height: 1, churn: 0 }
+    expect(parseCosts("crossing=0,10;height=0,1", noShape)).toEqual([
+      { ...noShape, crossing: 0, height: 0, churn: 0 }, { ...noShape, crossing: 0, height: 1, churn: 0 }, { ...noShape, crossing: 10, height: 0, churn: 0 }, { ...noShape, crossing: 10, height: 1, churn: 0 }
     ]);
-    expect(parseCosts("crossing=5")).toEqual([{ crossing: 5, height: 0, churn: 0 }]);
-    expect(parseCosts(undefined).length).toBe(20);
-    expect(() => parseCosts("gravity=1")).toThrow(/No cost/u);
+    expect(parseCosts("crossing=5", noShape)).toEqual([{ ...noShape, crossing: 5, height: 0, churn: 0 }]);
+    expect(parseCosts(undefined, noShape).length).toBe(20);
+    expect(() => parseCosts("gravity=1", noShape)).toThrow(/No cost/u);
+    expect(parseCosts("steps=0,50;levelness=2", { evenness: 3, levelness: 4, steps: 25 })).toEqual([
+      { crossing: 0, height: 0, churn: 0, evenness: 3, levelness: 2, steps: 0 },
+      { crossing: 0, height: 0, churn: 0, evenness: 3, levelness: 2, steps: 50 }
+    ]);
   });
 
   it("says which start the page keeps at each cost and which the full score prefers", () => {
     const rows = [row("ranked", 300, 4, 3000, 40), row("seed 1", 200, 10, 2000, 100), row("seed 2", 260, 5, 2600, 50)];
-    const trials = trialCosts(rows, parseCosts("crossing=0,20,40"), { lengthPx: 1, spots: 1 });
+    const trials = trialCosts(rows, parseCosts("crossing=0,20,40", noShape), { lengthPx: 1, spots: 1 });
     // By the full score the ranked start scores 2 by definition, seed 1 0.667 + 2.5, seed 2 0.867 + 1.25: the ranked start is preferred.
     expect(trials.map(trial => trial.best.name)).toEqual(["ranked", "ranked", "ranked"]);
     expect(trials.map(trial => trial.bestScore)).toEqual([2, 2, 2]);
@@ -35,11 +41,28 @@ describe("the restarts tabulated", () => {
     expect(trials.map(trial => trial.pick.name)).toEqual(["seed 1", "seed 2", "ranked"]);
     expect(trials.map(trial => trial.pick === trial.best)).toEqual([false, false, true]);
     expect(trials[0].pickScore).toBeCloseTo(2000 / 3000 + 100 / 40, 6);
-    expect(() => trialCosts([], parseCosts("crossing=0"), { lengthPx: 1 })).toThrow(/No starts/u);
+    expect(() => trialCosts([], parseCosts("crossing=0", noShape), { lengthPx: 1 })).toThrow(/No starts/u);
   });
 });
 
 describe("the search simulated", () => {
+  it("uses the same shape prices for first paint and later adoptions", () => {
+    const rough = row("ranked", 200, 0, 200, 0);
+    const smooth = row("seed 1", 300, 0, 300, 0);
+    rough.cheap = { ...rough.cheap, unevenness: 40, steps: 2, unlevel: 30 };
+    const rows = [rough, smooth];
+    for (const shape of [{ steps: 60 }, { evenness: 3 }, { levelness: 4 }]) {
+      const costs = { ...noShape, crossing: 0, height: 0, churn: 0, ...shape };
+      const [later] = simulateSearch(rows, costs, [0], 0, 5);
+      expect(later.first.name).toBe("ranked");
+      expect(later.adoptions.map(adoption => [adoption.row.name, adoption.gain])).toEqual([["seed 1", 20]]);
+      const [paint] = simulateSearch(rows, costs, [0], 1, 5);
+      expect(paint.first.name).toBe("seed 1");
+    }
+    const trials = trialCosts(rows, parseCosts("steps=0,60", noShape), { lengthPx: 1 });
+    expect(trials.map(trial => trial.pick.name)).toEqual(["ranked", "seed 1"]);
+  });
+
   // The ranked start and six seeds, vertical only (no crossings, the height constant): seed 1 is the first paint's pick
   // among the ranked start and seeds 1 to 2; seed 4 is cheaper by 300 but swaps two pairs; seed 6 is cheapest of all.
   const rows = [
@@ -51,7 +74,7 @@ describe("the search simulated", () => {
     row("seed 5", 3900, 0, 1, 0, [["a", "b", "c"]]),
     row("seed 6", 3000, 0, 1, 0, [["a", "b", "c"]])
   ];
-  const costs = { crossing: 0, height: 0, churn: 0 };
+  const costs = { ...noShape, crossing: 0, height: 0, churn: 0 };
 
   it("paints the cheapest of the first starts, then adopts a seed only when its price with its churn beats the shown picture", () => {
     const [free, dear] = simulateSearch(rows, costs, [0, 200], 2, 10);
@@ -85,7 +108,7 @@ describe("the search simulated", () => {
 describe("the wider space", () => {
   it("summarizes a setting: the page's price's pick, the full score's, and the search's end, scored against the given base", () => {
     const rows = [row("ranked", 300, 4, 3000, 40), row("seed 1", 200, 10, 2000, 100), row("seed 2", 260, 5, 2600, 50, [["b", "a", "c"]])];
-    const setting = summarizeSetting(baselineConfig(), "baseline", rows, rows[0].signals, { lengthPx: 1, spots: 1 }, { crossing: 20, height: 0, churn: 0 }, 100, 0, 8);
+    const setting = summarizeSetting(baselineConfig(), "baseline", rows, rows[0].signals, { lengthPx: 1, spots: 1 }, { ...noShape, crossing: 20, height: 0, churn: 0 }, 100, 0, 8);
     // At twenty a crossing seed 2 (260 + 100) is the page's cheapest; by the full score the ranked start (2) beats seed 1 (3.167) and seed 2 (2.117).
     expect(setting.cheapest.name).toBe("seed 2");
     expect(setting.cheapestScore).toBeCloseTo(2600 / 3000 + 50 / 40, 6);
@@ -98,8 +121,8 @@ describe("the wider space", () => {
     expect(setting.searchScore).toBe(2);
     expect(setting.msPerStart).toBe(1);
     // Scored against another base, the scores move with it.
-    expect(summarizeSetting(baselineConfig(), "x", rows, rows[1].signals, { lengthPx: 1, spots: 1 }, { crossing: 20, height: 0, churn: 0 }, 100, 0, 8).rankedScore).toBeCloseTo(3000 / 2000 + 40 / 100, 6);
-    expect(() => summarizeSetting(baselineConfig(), "x", [], rows[0].signals, { lengthPx: 1 }, { crossing: 0, height: 0, churn: 0 }, 0, 0, 1)).toThrow(/No starts/u);
+    expect(summarizeSetting(baselineConfig(), "x", rows, rows[1].signals, { lengthPx: 1, spots: 1 }, { ...noShape, crossing: 20, height: 0, churn: 0 }, 100, 0, 8).rankedScore).toBeCloseTo(3000 / 2000 + 40 / 100, 6);
+    expect(() => summarizeSetting(baselineConfig(), "x", [], rows[0].signals, { lengthPx: 1 }, { ...noShape, crossing: 0, height: 0, churn: 0 }, 0, 0, 1)).toThrow(/No starts/u);
   });
 });
 

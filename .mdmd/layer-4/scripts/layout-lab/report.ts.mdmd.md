@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/report.ts
-- Generated At: 2026-10-06T20:39:25.926Z
+- Generated At: 2026-10-13T16:52:35.828Z
 
 ## Authored
 ### Purpose
@@ -14,7 +14,7 @@ A run's report as markdown a person reads and as JSON the next analysis loads.
 ### Notes
 
 The capture's date and warnings, the drift check, the baseline's signals, each lever alone in its own table, the twelve best by the weighted score with only the levers they moved named, the trade between length and crossings, and what the numbers are.
-- Two columns since 2026-10-07, Unevenness and Unlevel, after the placement measure.
+The shape columns separate membrane unevenness in pixels, the count of nonzero boundary steps, and card-row misalignment in pixels. Keeping the count apart from the distance makes the simplicity weight's effect visible: removing several small steps need not reduce total distance. Step counts were added for the [October 13 competition](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply); the reporting pipeline originated with the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -51,7 +51,7 @@ The run as a person reads it.
 
 #### `toJson` {#symbol-tojson}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/report.ts#L91)
+- Source: [source](../../../../scripts/layout-lab/report.ts#L92)
 - Parameters: `report`: [`RunReport`](#symbol-runreport)
 
 ##### `toJson` — Summary

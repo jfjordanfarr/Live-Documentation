@@ -4,16 +4,18 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/scopes.ts
-- Generated At: 2026-10-06T20:39:26.000Z
+- Generated At: 2026-10-13T16:52:35.915Z
 
 ## Authored
 ### Purpose
 
-The scopes the layout lab works on, which are the deck's, and the built bundle each is drawn from, served to a browser straight from `dist/explorer`.
+Defines retained scopes for the layout lab and serves their built Explorer bundles to a browser directly from disk.
 
 ### Notes
 
-A scope is found by `bundle/scope`; the retained picture's subject is its first file. `serveBundle` answers every request under `http://lab.local` from the built bundle on disk through a Playwright route, so no server process is needed, with Pretext's modules passed through to the capture's own route; `loadBundleGraph` reads the bundle's data and projects it as the client does. `admitCompiledFunctions` defines the `__name` helper esbuild's kept names expect, so a function compiled by tsx can run inside the page.
+The CLI finds named deck scopes by `bundle/scope`; callers can also supply another retained file set with its own descriptive scope name. The retained picture's subject is its first file. `serveBundle` answers every request under `http://lab.local` from the built bundle on disk through a Playwright route, so no server process is needed, with Pretext's modules passed through to the capture's own route; `loadBundleGraph` reads the bundle's data and projects it as the client does. `admitCompiledFunctions` defines the `__name` helper esbuild's kept names expect, so a function compiled by tsx can run inside the page.
+
+The disk-serving helpers came from the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10). Custom scope names support browser/lab checks of concrete regressions, such as the warehouse Report scene used during the [October 13 competition work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply), without relabeling them as one of the deck's fixed examples.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -21,10 +23,9 @@ A scope is found by `bundle/scope`; the retained picture's subject is its first 
 #### `ScopeRun` {#symbol-scoperun}
 - Type: type
 - Source: [source](../../../../scripts/layout-lab/scopes.ts#L19)
-- Returns: [`DeckScope`](../../tests/e2e/scopes.ts.mdmd.md#symbol-deckscope)
 
 ##### `ScopeRun` — Summary
-A scope the lab works on: one of the deck's.
+A retained scope over a built bundle: a named deck scope or another explicitly supplied set of files.
 
 #### `DIST` {#symbol-dist}
 - Type: const
