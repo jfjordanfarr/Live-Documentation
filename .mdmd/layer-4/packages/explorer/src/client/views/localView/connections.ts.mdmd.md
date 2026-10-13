@@ -4,12 +4,12 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-10-12T18:02:21.730Z
+- Generated At: 2026-10-13T22:20:24.105Z
 
 ## Authored
 ### Purpose
 
-SVG wire drawing for the Local Map: Bézier splines between the symbol pins of the cards, one directory-aware router for neighborhoods, retained branches and paths.
+SVG wire drawing for the Local Map: Bézier splines between the symbol pins of the cards, one directory-aware router for neighborhoods, retained branches and paths, with stable reference identities through motion.
 
 ### Notes
 
@@ -20,6 +20,7 @@ SVG wire drawing for the Local Map: Bézier splines between the symbol pins of t
 - The wires of one offering pin that pass a column together share one slot of its lane, so their paths coincide there; beneath them the branch drawer draws the bundle's shared run once more, the curve into the lane and the run along it, as wide as the member count on a logarithmic scale and stamped `data-members`, so the picture says how many a bundle carries before they part. The run carries no reference: it has no endpoint attributes, the deck does not read it as a wire, and it never highlights (2026-10-05, after the owner's review of the first pass).
 - Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics, through the pure `curveTo` of `branch-routing.ts`.
 - The branch drawer measures every pin before it writes any wire (2026-10-07), so that a drawing lays the page out once rather than once per wire: a move of the picture redraws the wires every frame.
+- Prepare each drawing off the visible layer, then update retained paths by reference identity. Clearing the live SVG or toggling its active state during measurement restarts opacity transitions and loses hover state. New wires inherit the entering presence of their endpoint cards; they must not appear attached to an invisible card. These constraints follow the owner's [connector-motion review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-7--owner-review-of-alignment-and-motion).
 - A column's horizontal extent is read from the wrappers that say their column (`data-column`), a card's and a closed directory's box alike, rather than from the cards' pins (2026-10-08): a box has no pin, and a column of boxes alone is passed by lanes like any other.
 
 ## Generated
@@ -35,7 +36,7 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L62)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L63)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary

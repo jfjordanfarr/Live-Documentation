@@ -22,7 +22,7 @@ import type { ExplorerState } from "../types";
 import { spatialGraphOf } from "./forceGraphData";
 import { configureSpatialForces, spatialNodeValue } from "./forceGraphLayout";
 import { layoutPresetOf } from "../layout-presets";
-import { focusedCameraPosition, screenAnchorTranslation, type CameraPoint } from "./forceGraphCamera";
+import { focusedCameraPosition, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET } from "./pin-state";
@@ -101,6 +101,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let membership = "";
   let forceSettings = "";
   let focusedId: string | null = null;
+  let hoveredId: string | null = null;
+  let updateAttention = (): void => {};
   let active = false;
   let animation = 0;
   let focusMotion: { started: number; camera: CameraPoint; target: CameraPoint; offset: CameraPoint } | null = null;
@@ -114,6 +116,21 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let framedDirectoryScope = "";
   let frameDirectory = (): void => {};
   const readyWaiters: Array<() => void> = [];
+
+  /** Pick the rendered sphere directly, including re-entry before the native hover cache changes. */
+  function nodeAt(clientX: number, clientY: number): string | undefined {
+    if (!forceGraphInstance) return undefined;
+    const rect = forceGraphInstance.renderer().domElement.getBoundingClientRect();
+    const pointer = new Vector2((clientX - rect.left) / rect.width * 2 - 1, 1 - (clientY - rect.top) / rect.height * 2);
+    forceGraphInstance.scene().updateMatrixWorld(true);
+    forceGraphInstance.camera().updateMatrixWorld();
+    raycaster.setFromCamera(pointer, forceGraphInstance.camera());
+    const byObject = new Map([...nodeObjects].map(([id, object]) => [object, id]));
+    const hit = raycaster.intersectObjects([...nodeObjects.values()], true)[0];
+    let object: Object3D | null = hit?.object ?? null;
+    while (object && !byObject.has(object)) object = object.parent;
+    return object ? byObject.get(object) : undefined;
+  }
 
   function getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
     const node = nodeCache.get(nodeId);
@@ -292,6 +309,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const nextMembership = JSON.stringify([graphNodes.map(node => node.id), dataForGraph.links]);
     const present = new Set(graphNodes.map(node => node.id));
     for (const id of nodeObjects.keys()) if (!present.has(id)) nodeObjects.delete(id);
+    if (hoveredId && !present.has(hoveredId)) hoveredId = null;
     const pins = state.pins ?? EMPTY_PIN_SET;
     const retained = new Set(pins.entries.map(pin => pin.nodeId));
     for (const { link } of getVisibleConnections(pins, graphData.links)) {
@@ -307,27 +325,37 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       }
       framedDirectoryScope = directoryScope;
     };
-    const nodeColor = (node: ForceGraphNode): string => {
-      const colors: Record<string, string> = { implementation: "#0091ff", test: "#28a745", interface: "#ffc107", config: "#6c757d", script: "#17a2b8", "related-doc": "#9966cc" };
-      const color = colors[(node.archetype ?? "").toLowerCase()] ?? "#888888";
-      return hasAttention && !retained.has(node.id) ? `${color}33` : color;
-    };
-
     const pathPairs = new Set(path?.slice(1).map((id, index) => JSON.stringify([id, path[index]].sort())));
-    const linkColor = (link: ForceGraphLink): string => {
-      const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
-      const visible = path?.length ? pathPairs.has(JSON.stringify([a, b].sort())) : !hasAttention || (retained.has(a) && retained.has(b));
-      return link.kind === "related-doc"
-        ? `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`
-        : `rgba(255, 255, 255, ${visible ? 0.2 : 0.025})`;
+    updateAttention = (): void => {
+      // Hover is a temporary look at a file's actual connections, including a
+      // file outside the retained scope. Leaving restores the current pins,
+      // directories or path; it never restores a snapshot from graph entry.
+      const hovered = hoveredId;
+      const attention = hovered ? new Set([hovered]) : hasAttention ? retained : null;
+      if (hovered) for (const link of dataForGraph.links) {
+        const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+        if (a === hovered || b === hovered) { attention!.add(a); attention!.add(b); }
+      }
+      forceGraphInstance?.nodeColor(node => {
+        const colors: Record<string, string> = { implementation: "#0091ff", test: "#28a745", interface: "#ffc107", config: "#6c757d", script: "#17a2b8", "related-doc": "#9966cc" };
+        const color = colors[(node.archetype ?? "").toLowerCase()] ?? "#888888";
+        return attention && !attention.has(node.id) ? `${color}33` : color;
+      });
+      forceGraphInstance?.linkColor(link => {
+        const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+        const visible = hovered ? a === hovered || b === hovered
+          : path?.length ? pathPairs.has(JSON.stringify([a, b].sort())) : !attention || (attention.has(a) && attention.has(b));
+        return link.kind === "related-doc"
+          ? `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`
+          : `rgba(255, 255, 255, ${visible ? 0.2 : 0.025})`;
+      });
     };
 
     if (forceGraphInstance) {
       if (nextMembership !== membership) forceGraphInstance.graphData(dataForGraph);
       membership = nextMembership;
       focusSelection();
-      forceGraphInstance.nodeColor(node => nodeColor(node));
-      forceGraphInstance.linkColor(link => linkColor(link));
+      updateAttention();
       updateForces();
       frameDirectory();
       setActive(true);
@@ -350,7 +378,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         nodeObjects.set((node).id, object);
         return false; // The native renderer still owns object placement.
       })
-      .onNodeHover(node => { container.dataset.hoveredNode = String(!!node); })
+      .onNodeHover(node => { hoveredId = node?.id ?? null; container.dataset.hoveredNode = String(!!node); updateAttention(); })
       .nodeLabel(node => {
         const file = node;
         const label = document.createElement("span");
@@ -359,14 +387,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         return label;
       })
       .linkLabel(link => `${link.count} ${link.kind === "related-doc" ? "documentation" : "documented"} ${link.count === 1 ? "reference" : "references"}`)
-      .nodeColor(node => nodeColor(node))
-      .linkColor(link => linkColor(link))
       .linkWidth(link => {
         if ((link).kind === "related-doc") {
           return 0.5;
         }
         return 1;
       });
+    updateAttention();
     updateForces();
     membership = nextMembership;
     focusLabel = document.createElement("button");
@@ -380,6 +407,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       }
     });
     container.append(focusLabel);
+    container.addEventListener("pointerleave", () => { hoveredId = null; container.dataset.hoveredNode = "false"; updateAttention(); });
+    container.addEventListener("pointerenter", event => {
+      hoveredId = nodeAt(event.clientX, event.clientY) ?? null;
+      container.dataset.hoveredNode = String(!!hoveredId);
+      updateAttention();
+    });
     const interrupt = (): void => { following = false; focusMotion = null; subjectAnchor = null; zoomMotion = null;  };
     let press: { x: number; y: number } | null = null;
     container.addEventListener("pointerdown", event => { press = { x: event.clientX, y: event.clientY }; });
@@ -391,16 +424,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // clicks and touch taps that have never produced a hover frame.
     container.addEventListener("pointerup", event => {
       if (!press || event.button !== 0 || event.target !== forceGraphInstance?.renderer().domElement) return;
-      const rect = forceGraphInstance.renderer().domElement.getBoundingClientRect();
-      const pointer = new Vector2((event.clientX - rect.left) / rect.width * 2 - 1, 1 - (event.clientY - rect.top) / rect.height * 2);
-      forceGraphInstance.scene().updateMatrixWorld(true);
-      forceGraphInstance.camera().updateMatrixWorld();
-      raycaster.setFromCamera(pointer, forceGraphInstance.camera());
-      const byObject = new Map([...nodeObjects].map(([id, object]) => [object, id]));
-      const hit = raycaster.intersectObjects([...nodeObjects.values()], true)[0];
-      let object: Object3D | null = hit?.object ?? null;
-      while (object && !byObject.has(object)) object = object.parent;
-      const id = object ? byObject.get(object) : undefined;
+      const id = nodeAt(event.clientX, event.clientY);
       if (id?.startsWith("related:")) onShowBundledDoc(id.slice("related:".length));
       else if (id) {
         const node = nodesById.get(id);
@@ -409,23 +433,19 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     });
     window.addEventListener("pointerup", () => { press = null; });
     container.addEventListener("wheel", event => {
-      const node = state.selectedNode ? nodeCache.get(state.selectedNode.id) : null;
-      if (!forceGraphInstance || !node || !Number.isFinite(node.x)) { interrupt(); return; }
+      if (!forceGraphInstance) return;
       event.preventDefault(); event.stopPropagation();
-      const point = new Vector3(node.x, node.y, node.z);
       const camera = forceGraphInstance.camera();
       const controls = forceGraphInstance.controls() as { target: Vector3 };
+      const subject = state.focusedNode ?? state.selectedNode;
+      const node = subject ? nodeCache.get(subject.id) : null;
+      const point = node && Number.isFinite(node.x) ? new Vector3(node.x, node.y, node.z) : controls.target;
       const previous = zoomMotion;
-      const from = new Vector3().copy(previous?.to ?? camera.position);
-      const target = new Vector3().copy(previous?.toTarget ?? controls.target);
-      const distance = from.distanceTo(point);
       const delta = wheelPixels(event.deltaY, event.deltaMode, container.clientHeight);
+      const next = wheelZoomCamera(previous?.to ?? camera.position, previous?.toTarget ?? controls.target, point, delta);
       interrupt();
-      const nextDistance = Math.max(65, Math.min(20000, distance * Math.exp(delta * .0015)));
-      const ratio = nextDistance / Math.max(.001, distance);
       zoomMotion = { started: performance.now(), from: camera.position.clone(), fromTarget: controls.target.clone(),
-        to: point.clone().add(from.sub(point).multiplyScalar(ratio)),
-        toTarget: point.clone().add(target.sub(point).multiplyScalar(ratio)) };
+        to: next.camera, toTarget: next.target };
     }, { passive: false, capture: true });
     new ResizeObserver(() => {
       if (container.clientWidth && container.clientHeight) forceGraphInstance?.width(container.clientWidth).height(container.clientHeight);

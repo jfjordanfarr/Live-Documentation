@@ -1,0 +1,4323 @@
+{
+  "kind": "Per-frame largest endpoint separation; other endpoint samples omitted",
+  "baseline": {
+    "placementCost": "516",
+    "placementOptimal": "true",
+    "orderStart": "ranked",
+    "orderStarts": "3",
+    "orderScore": "2006",
+    "layoutMs": "44",
+    "searchStatus": "settled",
+    "searchAlignmentTried": "0",
+    "searchAlignmentAdopted": "0",
+    "searchTried": "8",
+    "searchNext": "11",
+    "searchAdopted": "0",
+    "searchShown": "2006",
+    "searchBest": "2006"
+  },
+  "worst": {
+    "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+    "symbol": "",
+    "direction": "inbound",
+    "error": 0.01485545081510424,
+    "dx": 0.011295205189412627,
+    "dy": -0.009648977077858945,
+    "pin": 578.4022827148438,
+    "wire": 578.3926337377659,
+    "transform": "",
+    "t": 215.5,
+    "moving": true
+  },
+  "errors": [],
+  "frames": [
+    {
+      "t": 12.799999998882413,
+      "moving": false,
+      "measuredEndpoints": 8,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "report",
+        "direction": "outbound",
+        "error": 0.00005169549683200961,
+        "dx": -0.000044264890675549395,
+        "dy": 0.000026702880859375,
+        "pin": 562.9546508789062,
+        "wire": 562.9546775817871,
+        "transform": ""
+      }
+    },
+    {
+      "t": 28.699999999254942,
+      "moving": false,
+      "measuredEndpoints": 8,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "report",
+        "direction": "outbound",
+        "error": 0.00005169549683200961,
+        "dx": -0.000044264890675549395,
+        "dy": 0.000026702880859375,
+        "pin": 562.9546508789062,
+        "wire": 562.9546775817871,
+        "transform": ""
+      }
+    },
+    {
+      "t": 45.399999998509884,
+      "moving": false,
+      "measuredEndpoints": 8,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "report",
+        "direction": "outbound",
+        "error": 0.00005169549683200961,
+        "dx": -0.000044264890675549395,
+        "dy": 0.000026702880859375,
+        "pin": 562.9546508789062,
+        "wire": 562.9546775817871,
+        "transform": ""
+      }
+    },
+    {
+      "t": 118.19999999925494,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006402836784296504,
+        "dx": 0.0006103292198531562,
+        "dy": 0.00019354956020833924,
+        "pin": 698.9954528808594,
+        "wire": 698.9956464304196,
+        "transform": ""
+      }
+    },
+    {
+      "t": 134.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.000694999030346934,
+        "dx": 0.0006679912057734327,
+        "dy": 0.0001918629750434775,
+        "pin": 698.9964904785156,
+        "wire": 698.9966823414907,
+        "transform": ""
+      }
+    },
+    {
+      "t": 153.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0005882111290727619,
+        "dx": 0.0005560404042626033,
+        "dy": 0.0001918629750434775,
+        "pin": 698.9964904785156,
+        "wire": 698.9966823414907,
+        "transform": ""
+      }
+    },
+    {
+      "t": 166.39999999850988,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0005882111290727619,
+        "dx": 0.0005560404042626033,
+        "dy": 0.0001918629750434775,
+        "pin": 698.9804992675781,
+        "wire": 698.9806911305532,
+        "transform": ""
+      }
+    },
+    {
+      "t": 182.59999999962747,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006982417394376494,
+        "dx": 0.0006713643761031562,
+        "dy": 0.0001918629750434775,
+        "pin": 698.9595031738281,
+        "wire": 698.9596950368032,
+        "transform": ""
+      }
+    },
+    {
+      "t": 201.19999999925494,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006982417394376494,
+        "dx": 0.0006713643761031562,
+        "dy": 0.0001918629750434775,
+        "pin": 698.9144897460938,
+        "wire": 698.9146816090688,
+        "transform": ""
+      }
+    },
+    {
+      "t": 215.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.01485545081510424,
+        "dx": 0.011295205189412627,
+        "dy": -0.009648977077858945,
+        "pin": 578.4022827148438,
+        "wire": 578.3926337377659,
+        "transform": ""
+      }
+    },
+    {
+      "t": 232.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0073149575593800635,
+        "dx": 0.00039124647992139217,
+        "dy": -0.007304486996872583,
+        "pin": 564.060546875,
+        "wire": 564.0532423880031,
+        "transform": "translateY(0.996729px)"
+      }
+    },
+    {
+      "t": 248.7999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006953641155085491,
+        "dx": 0.0006713643761031562,
+        "dy": 0.0001811108159017749,
+        "pin": 698.6414489746094,
+        "wire": 698.6416300854253,
+        "transform": ""
+      }
+    },
+    {
+      "t": 265.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.011552685891970484,
+        "dx": 0.011327218285259733,
+        "dy": -0.002271272162602145,
+        "pin": 578.0701904296875,
+        "wire": 578.0679191575249,
+        "transform": ""
+      }
+    },
+    {
+      "t": 282.09999999962747,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0005900749034497854,
+        "dx": 0.0005560404042626033,
+        "dy": 0.00019750306455534883,
+        "pin": 698.2875061035156,
+        "wire": 698.2877036065802,
+        "transform": ""
+      }
+    },
+    {
+      "t": 298.59999999962747,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.011460922066926308,
+        "dx": 0.011232083881623112,
+        "dy": -0.002278821252389207,
+        "pin": 577.6710815429688,
+        "wire": 577.6688027217164,
+        "transform": ""
+      }
+    },
+    {
+      "t": 315.59999999962747,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.011495809273857504,
+        "dx": 0.011270544227841128,
+        "dy": -0.0022646111518724865,
+        "pin": 577.3992309570312,
+        "wire": 577.3969663458794,
+        "transform": ""
+      }
+    },
+    {
+      "t": 331.69999999925494,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/processor.ts",
+        "symbol": "run",
+        "direction": "outbound",
+        "error": 0.007337977414268267,
+        "dx": 0.0003878805600834312,
+        "dy": -0.00732771869024873,
+        "pin": 557.9807739257812,
+        "wire": 557.973446207091,
+        "transform": "translateY(-20.5275px)"
+      }
+    },
+    {
+      "t": 348.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006902172908326121,
+        "dx": 0.0006679912057734327,
+        "dy": 0.0001737459569994826,
+        "pin": 697.0034790039062,
+        "wire": 697.0036527498632,
+        "transform": ""
+      }
+    },
+    {
+      "t": 365.09999999962747,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.011342972108085535,
+        "dx": 0.011114414830899477,
+        "dy": -0.00226556818734025,
+        "pin": 576.2915649414062,
+        "wire": 576.2892993732189,
+        "transform": ""
+      }
+    },
+    {
+      "t": 382,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.011361610947790174,
+        "dx": 0.011133682187164595,
+        "dy": -0.0022643595748377265,
+        "pin": 575.80419921875,
+        "wire": 575.8019348591752,
+        "transform": ""
+      }
+    },
+    {
+      "t": 398.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007317343894443128,
+        "dx": 0.000400482365876087,
+        "dy": -0.007306376362066658,
+        "pin": 559.7196044921875,
+        "wire": 559.7122981158254,
+        "transform": "translateY(0.949277px)"
+      }
+    },
+    {
+      "t": 415.09999999962747,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007317319487337097,
+        "dx": 0.00047717123197799083,
+        "dy": -0.007301744455617154,
+        "pin": 558.8297729492188,
+        "wire": 558.8224712047631,
+        "transform": "translateY(0.939631px)"
+      }
+    },
+    {
+      "t": 431.8999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.01120644396104399,
+        "dx": 0.010971967967634555,
+        "dy": -0.002280417761994613,
+        "pin": 573.9363403320312,
+        "wire": 573.9340599142693,
+        "transform": ""
+      }
+    },
+    {
+      "t": 448.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007321428074034748,
+        "dx": 0.0004684820323745953,
+        "dy": -0.007306424134185363,
+        "pin": 556.75244140625,
+        "wire": 556.7451349821158,
+        "transform": "translateY(0.916901px)"
+      }
+    },
+    {
+      "t": 465.19999999925494,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.000694191069674637,
+        "dx": 0.0006679912057734327,
+        "dy": 0.00018891529907705262,
+        "pin": 692.1614685058594,
+        "wire": 692.1616574211585,
+        "transform": ""
+      }
+    },
+    {
+      "t": 481.69999999925494,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.010988422410851188,
+        "dx": 0.01074835285021436,
+        "dy": -0.0022843682029360934,
+        "pin": 571.3539123535156,
+        "wire": 571.3516279853127,
+        "transform": ""
+      }
+    },
+    {
+      "t": 498.59999999962747,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.01464073731240512,
+        "dx": -0.00664121530257944,
+        "dy": -0.013047813930143093,
+        "pin": 689.9984741210938,
+        "wire": 689.9854263071636,
+        "transform": ""
+      }
+    },
+    {
+      "t": 515.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006935640759745685,
+        "dx": 0.0006679912057734327,
+        "dy": 0.0001865981685114093,
+        "pin": 688.7664489746094,
+        "wire": 688.7666355727779,
+        "transform": ""
+      }
+    },
+    {
+      "t": 531.8999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006999185423487669,
+        "dx": 0.0006713643761031562,
+        "dy": 0.000197878347535152,
+        "pin": 687.4154663085938,
+        "wire": 687.4156641869413,
+        "transform": ""
+      }
+    },
+    {
+      "t": 548.6999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.014641930516542284,
+        "dx": -0.006651274652995198,
+        "dy": -0.013044028317267475,
+        "pin": 685.9614868164062,
+        "wire": 685.948442788089,
+        "transform": ""
+      }
+    },
+    {
+      "t": 565.5999999996275,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.01047249313438509,
+        "dx": 0.010217477827495713,
+        "dy": -0.00229701094781376,
+        "pin": 565.197998046875,
+        "wire": 565.1957010359272,
+        "transform": ""
+      }
+    },
+    {
+      "t": 582.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.000581977304698331,
+        "dx": 0.0005560404042626033,
+        "dy": 0.00017180410941364244,
+        "pin": 682.6774597167969,
+        "wire": 682.6776315209063,
+        "transform": ""
+      }
+    },
+    {
+      "t": 598.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0005824738442389797,
+        "dx": 0.0005560404042626033,
+        "dy": 0.00017347866742056794,
+        "pin": 680.8614807128906,
+        "wire": 680.861654191558,
+        "transform": ""
+      }
+    },
+    {
+      "t": 615.0999999996275,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.010014758071079844,
+        "dx": 0.009783066547697672,
+        "dy": -0.0021417255065898644,
+        "pin": 554.9983215332031,
+        "wire": 554.9961798076965,
+        "transform": ""
+      }
+    },
+    {
+      "t": 631.6999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006946856606812537,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00017848821153165773,
+        "pin": 676.8164672851562,
+        "wire": 676.8166457733678,
+        "transform": ""
+      }
+    },
+    {
+      "t": 648.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/models.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.009626564496635228,
+        "dx": 0.009381232363125491,
+        "dy": -0.0021594497810610846,
+        "pin": 551.041748046875,
+        "wire": 551.0395885970939,
+        "transform": ""
+      }
+    },
+    {
+      "t": 665,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007352336017568426,
+        "dx": 0.0005243838186288485,
+        "dy": -0.007333612106322107,
+        "pin": 529.7098999023438,
+        "wire": 529.7025662902374,
+        "transform": "translateY(0.621823px)"
+      }
+    },
+    {
+      "t": 681.5999999996275,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006982609248399649,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019193278421880677,
+        "pin": 669.6874694824219,
+        "wire": 669.6876614152061,
+        "transform": ""
+      }
+    },
+    {
+      "t": 698.1999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006949349103625604,
+        "dx": 0.0006713643761031562,
+        "dy": 0.0001794558556866832,
+        "pin": 667.0004577636719,
+        "wire": 667.0006372195276,
+        "transform": ""
+      }
+    },
+    {
+      "t": 715.1999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.014606267202606328,
+        "dx": -0.006593457264443714,
+        "dy": -0.013033394143349142,
+        "pin": 664.1514587402344,
+        "wire": 664.138425346091,
+        "transform": ""
+      }
+    },
+    {
+      "t": 734,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.00873067472996697,
+        "dx": -0.006658367703721524,
+        "dy": -0.005647195831784302,
+        "pin": 661.2514953613281,
+        "wire": 661.2458481654963,
+        "transform": ""
+      }
+    },
+    {
+      "t": 748.1999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.008781558892190289,
+        "dx": -0.006719490033219699,
+        "dy": -0.005653691738189082,
+        "pin": 658.5344848632812,
+        "wire": 658.5288311715431,
+        "transform": ""
+      }
+    },
+    {
+      "t": 764.6999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.01465823384228465,
+        "dx": -0.006725911318881117,
+        "dy": -0.01302405222293146,
+        "pin": 655.9444885253906,
+        "wire": 655.9314644731677,
+        "transform": ""
+      }
+    },
+    {
+      "t": 781.0999999996275,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.008689446699982506,
+        "dx": -0.006620183636641741,
+        "dy": -0.005628468048143986,
+        "pin": 653.5014953613281,
+        "wire": 653.49586689328,
+        "transform": ""
+      }
+    },
+    {
+      "t": 797.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.014653510516627746,
+        "dx": -0.0067379280949353415,
+        "dy": -0.013012520718461928,
+        "pin": 651.2204895019531,
+        "wire": 651.2074769812347,
+        "transform": ""
+      }
+    },
+    {
+      "t": 814.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007353009852880213,
+        "dx": 0.0005713597292924533,
+        "dy": -0.007330777718379977,
+        "pin": 499.78131103515625,
+        "wire": 499.77398025743787,
+        "transform": "translateY(0.295147px)"
+      }
+    },
+    {
+      "t": 830.8999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0073392469956687495,
+        "dx": 0.0005928771661274368,
+        "dy": -0.0073152609747921815,
+        "pin": 497.17079162597656,
+        "wire": 497.16347636500177,
+        "transform": "translateY(0.266732px)"
+      }
+    },
+    {
+      "t": 848,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006954272223016192,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00018135295977117494,
+        "pin": 645.1754760742188,
+        "wire": 645.1756574271785,
+        "transform": ""
+      }
+    },
+    {
+      "t": 864.8999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.01466243589338525,
+        "dx": -0.006744812647411891,
+        "dy": -0.013019006439776604,
+        "pin": 643.4335021972656,
+        "wire": 643.4204831908258,
+        "transform": ""
+      }
+    },
+    {
+      "t": 881.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.00736159218905259,
+        "dx": 0.0005449540203699144,
+        "dy": -0.007341393918977701,
+        "pin": 490.39759826660156,
+        "wire": 490.3902568726826,
+        "transform": "translateY(0.1928px)"
+      }
+    },
+    {
+      "t": 900.0999999996275,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006380718037461486,
+        "dx": 0.0006103292198531562,
+        "dy": 0.00018610177357913926,
+        "pin": 640.2964477539062,
+        "wire": 640.2966338556798,
+        "transform": ""
+      }
+    },
+    {
+      "t": 914.6999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.014601661112827284,
+        "dx": -0.006591787017441675,
+        "dy": -0.013029077141936796,
+        "pin": 638.9024963378906,
+        "wire": 638.8894672607487,
+        "transform": ""
+      }
+    },
+    {
+      "t": 931.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006647476578581663,
+        "dx": 0.0006408467979781562,
+        "dy": 0.00017664888946455903,
+        "pin": 637.6324768066406,
+        "wire": 637.6326534555301,
+        "transform": ""
+      }
+    },
+    {
+      "t": 948,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007361247903139785,
+        "dx": 0.0005909268966206582,
+        "dy": -0.0073374911307837465,
+        "pin": 483.47471618652344,
+        "wire": 483.46737869539265,
+        "transform": "translateY(0.117264px)"
+      }
+    },
+    {
+      "t": 964.7999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.014598028522415398,
+        "dx": -0.006562916972370658,
+        "dy": -0.01303957658649324,
+        "pin": 635.3815002441406,
+        "wire": 635.3684606675541,
+        "transform": ""
+      }
+    },
+    {
+      "t": 981.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.008650377435014739,
+        "dx": -0.006554891319410672,
+        "dy": -0.005644681528565343,
+        "pin": 634.4075012207031,
+        "wire": 634.4018565391746,
+        "transform": ""
+      }
+    },
+    {
+      "t": 998.1999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006417366152605216,
+        "dx": 0.0006137023901828798,
+        "dy": 0.00018760399689199403,
+        "pin": 633.5214538574219,
+        "wire": 633.5216414614188,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1014.6999999992549,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.014574571183663945,
+        "dx": -0.0065409942690166645,
+        "dy": -0.013024343329334442,
+        "pin": 632.7244567871094,
+        "wire": 632.71143244378,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1031.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.008633775072412841,
+        "dx": -0.006535324505875906,
+        "dy": -0.005641950514132077,
+        "pin": 632.0084838867188,
+        "wire": 632.0028419362046,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1048.0999999996275,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007370508069721559,
+        "dx": 0.0006164154128782684,
+        "dy": -0.007344686599481065,
+        "pin": 476.9088897705078,
+        "wire": 476.90154508390833,
+        "transform": "translateY(0.0456175px)"
+      }
+    },
+    {
+      "t": 1064.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006426739700307687,
+        "dx": 0.0006103292198531562,
+        "dy": 0.00020131585915805772,
+        "pin": 630.8134460449219,
+        "wire": 630.813647360781,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1081.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006353311978725927,
+        "dx": 0.0006103292198531562,
+        "dy": 0.0001764765547704883,
+        "pin": 630.3174743652344,
+        "wire": 630.3176508417891,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1097.7999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.008674004363348546,
+        "dx": -0.006578986076419824,
+        "dy": -0.005652901370240215,
+        "pin": 629.8904724121094,
+        "wire": 629.8848195107391,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1114.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.007365516948585784,
+        "dx": 0.0006638020367972786,
+        "dy": -0.007335544068155286,
+        "pin": 474.5131072998047,
+        "wire": 474.50577175573653,
+        "transform": "translateY(0.0194809px)"
+      }
+    },
+    {
+      "t": 1131.2999999988824,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.014598500859539008,
+        "dx": -0.006570186121734878,
+        "dy": -0.013036444364615818,
+        "pin": 629.2114868164062,
+        "wire": 629.1984503720416,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1147.8999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006659368711980185,
+        "dx": 0.0006408467979781562,
+        "dy": 0.00018107263167621568,
+        "pin": 628.9524536132812,
+        "wire": 628.9526346859129,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1164.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.008658963292551058,
+        "dx": -0.006566226793438545,
+        "dy": -0.0056446710266300215,
+        "pin": 628.7384643554688,
+        "wire": 628.7328196844421,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1181,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006936244336888672,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00017431216110708192,
+        "pin": 628.5624694824219,
+        "wire": 628.562643794583,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1197.699999999255,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.008671179481288748,
+        "dx": -0.006563936544807802,
+        "dy": -0.005666047178806366,
+        "pin": 628.4284973144531,
+        "wire": 628.4228312672743,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1214.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006985504285535048,
+        "dx": 0.0006713643761031562,
+        "dy": 0.0001929833561007399,
+        "pin": 628.3255004882812,
+        "wire": 628.3256934716374,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1231.199999999255,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006654905506875276,
+        "dx": 0.0006408467979781562,
+        "dy": 0.00017942423073691316,
+        "pin": 628.2514953613281,
+        "wire": 628.2516747855589,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1247.8999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/main.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0073435768696947365,
+        "dx": 0.0005955853721388848,
+        "dy": -0.0073193851726500725,
+        "pin": 472.806884765625,
+        "wire": 472.79956538045235,
+        "transform": "translateY(0.000794px)"
+      }
+    },
+    {
+      "t": 1264.3999999985099,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1704711914062,
+        "wire": 628.1706647409665,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1281.0999999996275,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006402836784296504,
+        "dx": 0.0006103292198531562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1554565429688,
+        "wire": 628.155650092529,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1297.699999999255,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006689514329690833,
+        "dx": 0.0006408467979781562,
+        "dy": 0.0001918629750434775,
+        "pin": 628.1484985351562,
+        "wire": 628.1486903981313,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1314.5,
+      "moving": true,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006689514329690833,
+        "dx": 0.0006408467979781562,
+        "dy": 0.0001918629750434775,
+        "pin": 628.1484985351562,
+        "wire": 628.1486903981313,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1331.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1347.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1364.3999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1380.8999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1397.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1414.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1430.8999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1447.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1464.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1480.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1497.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1514.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1530.8999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1547.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1564.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1580.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1597.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1614.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1630.8999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1647.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1664.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1680.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1697.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1714.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1731.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1747.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1764.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1780.8999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1797.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1814.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1831,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1847.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1864.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1881,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1897.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1914.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1930.8999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1947.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1964.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1980.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 1997.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2014.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2030.8999999985099,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2047.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2064.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2080.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2097.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2114.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2130.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2147.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2164.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2180.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2197.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2214.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2230.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2247.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2264.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2281.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2297.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2314.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2330.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2347.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2364.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2380.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2397.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2414.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2430.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2447.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2464.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2480.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2497.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2514.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2530.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2547.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2564.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2580.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2597.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2614.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2630.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2647.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2664.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2680.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2697.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2714.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2730.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2747.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2764.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2780.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2797.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2814.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2830.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2847.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2864.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2880.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2897.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2914,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2930.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2947.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2963.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2980.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 2997.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3013.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3030.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3047.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3064.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3080.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3097.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3114,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3130.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3147.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3164,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3180.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3197.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3214.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3230.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3247.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3264,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3280.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3297.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3314,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3330.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3347.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3364,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3380.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3397.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3414,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3430.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3447.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3464.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3480.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3497.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3513.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3530.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3547.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3563.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3580.7999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3597.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3614,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3630.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3647.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3664,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3680.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3697.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3714.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3730.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3747.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3764,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3780.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3797.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3814.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3830.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3847.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3864.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3880.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3897.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3913.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3930.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3947.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3964,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3980.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 3997.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4014.0999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4030.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4047.2999999988824,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4064,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4080.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4097.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4114,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4130.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4147.39999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4164,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4180.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4197.299999998882,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4214,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4230.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4247.5,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4264,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4280.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4297.299999998882,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4314,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4330.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4347.199999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4364,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4380.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4397.299999998882,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4414,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4430.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4447.299999998882,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4463.89999999851,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4480.5999999996275,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4497.699999999255,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    },
+    {
+      "t": 4514,
+      "moving": false,
+      "measuredEndpoints": 44,
+      "worst": {
+        "id": "tests/integration/programs/typescript/rosetta/src/pipeline.test.ts",
+        "symbol": "",
+        "direction": "inbound",
+        "error": 0.0006987070614765689,
+        "dx": 0.0006713643761031562,
+        "dy": 0.00019354956020833924,
+        "pin": 628.1404724121094,
+        "wire": 628.1406659616696,
+        "transform": ""
+      }
+    }
+  ]
+}

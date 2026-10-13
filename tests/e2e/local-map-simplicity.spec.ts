@@ -52,7 +52,10 @@ async function picture(page: Page) {
 test("the simplicity slider restarts competition and removes unnecessary generator steps without losing facts", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
-  await tuning(page, { membraneSimplicity: 0, searchStarts: 32, searchPatience: 8, moveMs: 0 });
+  // Keep the inspected counterexample's alignment weight explicit. The
+  // stronger Relaxed default already flattens its remaining top at50, so it
+  // cannot demonstrate the additional join that this test exercises at100.
+  await tuning(page, { rowLevelness: 0.25, membraneSimplicity: 0, searchStarts: 32, searchPatience: 8, moveMs: 0 });
   await page.goto("/?view=local&mode=2d&node=packages/generator/src/generator.ts");
   await page.locator(".local-placed").waitFor();
   await localMapSettled(page);

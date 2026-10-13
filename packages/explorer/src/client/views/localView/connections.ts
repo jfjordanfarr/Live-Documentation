@@ -30,6 +30,7 @@ interface AnchorMeasurement {
   cardLeft: number;
   cardRight: number;
   columnPosition: "left" | "center" | "right";
+  presence: number;
 }
 
 interface Point {
@@ -60,9 +61,42 @@ function cardEdgesOf(provider: AnchorMeasurement, consumer: AnchorMeasurement, b
 
 /** Draw every Local Map scope with the shared directory-aware router. */
 export function drawConnections(context: ConnectionsContext): void {
-  context.runtime.overlay.innerHTML = "";
-  context.runtime.overlay.dataset.active = "false";
-  if (context.branches) drawBranchConnections(context);
+  const overlay = context.runtime.overlay;
+  // Measure and prepare the next drawing without toggling the visible layer's
+  // opacity or removing its paths in the middle of every animation frame.
+  const next = document.createElement("div");
+  next.dataset.active = "false";
+  if (context.branches) drawBranchConnections({ ...context, runtime: { ...context.runtime, overlay: next } });
+  const fresh = next.querySelector<SVGSVGElement>("svg");
+  const current = overlay.querySelector<SVGSVGElement>("svg");
+  if (fresh && current) {
+    copyAttributes(current, fresh);
+    const previous = new Map([...current.querySelectorAll<SVGElement>("[data-connection-key]")].map(element => [element.dataset.connectionKey!, element]));
+    const kept = new Set<Element>();
+    for (const child of [...fresh.children]) {
+      const key = (child as SVGElement).dataset.connectionKey;
+      const existing = key ? previous.get(key) : undefined;
+      const element = existing?.tagName === child.tagName ? existing : child;
+      if (element !== child) {
+        const highlighted = element.classList.contains("connection-highlighted");
+        copyAttributes(element, child);
+        element.classList.toggle("connection-highlighted", highlighted);
+      }
+      current.append(element);
+      kept.add(element);
+    }
+    for (const child of [...current.children]) if (!kept.has(child)) child.remove();
+  } else overlay.replaceChildren(...next.childNodes);
+  overlay.dataset.active = next.dataset.active;
+}
+
+/** Update a kept SVG element without discarding its identity or transient hover state. */
+function copyAttributes(target: Element, source: Element): void {
+  for (const name of target.getAttributeNames()) if (!source.hasAttribute(name)) target.removeAttribute(name);
+  for (const name of source.getAttributeNames()) {
+    const value = source.getAttribute(name)!;
+    if (target.getAttribute(name) !== value) target.setAttribute(name, value);
+  }
 }
 
 /**
@@ -94,6 +128,10 @@ function createAnchorMeasurer(container: HTMLElement, scale: number): (anchor: H
     if (position === "left" || position === "right" || position === "center") {
       columnPosition = position;
     }
+    let presence = 1;
+    for (let element: HTMLElement | null = anchor; element && element !== container; element = element.parentElement) {
+      if (element.style.opacity !== "") presence *= Number(element.style.opacity);
+    }
     const measurement: AnchorMeasurement = {
       centerX: (rect.left - rootRect.left + rect.width / 2) / scale,
       centerY: (rect.top - rootRect.top + rect.height / 2) / scale,
@@ -104,7 +142,8 @@ function createAnchorMeasurer(container: HTMLElement, scale: number): (anchor: H
       isSymbol: anchor.classList.contains("symbol-anchor"),
       cardLeft: cardRect ? (cardRect.left - rootRect.left) / scale : (rect.left - rootRect.left) / scale,
       cardRight: cardRect ? (cardRect.right - rootRect.left) / scale : (rect.right - rootRect.left) / scale,
-      columnPosition
+      columnPosition,
+      presence
     };
     positionCache.set(anchor, measurement);
     return measurement;
@@ -159,7 +198,8 @@ function appendConnectionPath(
   tuning: BezierTuning,
   gradientId: string,
   routedPath?: string,
-  extraClass?: string
+  extraClass?: string,
+  presence = 1
 ): void {
   const commands: string[] = [`M ${source.x} ${source.y}`, curveTo(source, target, tuning)];
   appendGradient(defs, gradientId, source, target, svgNamespace);
@@ -168,6 +208,8 @@ function appendConnectionPath(
   path.setAttribute("stroke", `url(#${gradientId})`);
   path.classList.add("connection-path", renderDirection);
   if (extraClass) path.classList.add(extraClass);
+  path.dataset.connectionKey = JSON.stringify([edgeKey(edge), extraClass ?? "wire"]);
+  path.style.strokeOpacity = String(presence);
   path.dataset.kind = edge.kind;
   // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
   path.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
@@ -218,7 +260,8 @@ function appendSelfLoopPath(
   edge: LocalEdge,
   svgNamespace: string,
   shape: SelfLoopParams,
-  ranks: Map<string, number>
+  ranks: Map<string, number>,
+  presence: number
 ): void {
   const sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
   const targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
@@ -240,6 +283,8 @@ function appendSelfLoopPath(
     // Inline, since the stylesheet's base rule gives every connection path no fill.
     polygon.style.fill = color;
     polygon.style.stroke = "none";
+    polygon.style.fillOpacity = String(presence);
+    polygon.dataset.connectionKey = JSON.stringify([edgeKey(edge), role]);
     polygon.classList.add("connection-path", "self-loop", `self-loop-${role}`);
     polygon.dataset.kind = edge.kind;
     polygon.dataset.sourceId = edge.sourceId;
@@ -292,23 +337,24 @@ function drawBranchConnections(context: ConnectionsContext): void {
   const laceRanks = new Map<string, number>();
   const shape = laceShape(state.tuning.localMap);
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
-  const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number }>();
+  const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number; presence: number }>();
   branches.subgraph.links.forEach((edge, index) => {
     const provider = measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
     const consumer = measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
     if (!provider || !consumer) return;
+    const presence = Math.min(provider.presence, consumer.presence);
     drawn++;
     const p = offsetToEdge(provider, "outbound"), q = offsetToEdge(consumer, "inbound");
     const from = { x: p.x - bounds.left, y: p.y - bounds.top };
     const to = { x: q.x - bounds.left, y: q.y - bounds.top };
     if (edge.sourceId === edge.targetId) {
-      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks);
+      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
       return;
     }
     const key = edgeKey(edge);
     if (branches.back.has(key)) {
-      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks);
-      appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `back-${index}`, undefined, "back-route");
+      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
+      appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `back-${index}`, undefined, "back-route", presence);
       return;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
@@ -333,18 +379,19 @@ function drawBranchConnections(context: ConnectionsContext): void {
         const threaded = threadedRoute(from, to, passages, state.tuning.bezier);
         route = threaded.d;
         slots.forEach((slot, i) => {
-          if (runs.has(slot)) return;
+          const existing = runs.get(slot);
+          if (existing) { existing.presence = Math.max(existing.presence, presence); return; }
           const passage = branches.order.passages.get(`${key}\0${a + 1 + i}`)!;
           const members = branches.order.lanes.get(passage.lane)?.bundles[passage.index]?.edges.length ?? 1;
-          runs.set(slot, { curve: threaded.pieces[2 * i], lane: threaded.pieces[2 * i + 1], gradient: gradientId, members });
+          runs.set(slot, { curve: threaded.pieces[2 * i], lane: threaded.pieces[2 * i + 1], gradient: gradientId, members, presence });
         });
       }
     }
-    appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, gradientId, route);
+    appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, gradientId, route, undefined, presence);
   });
-  for (const run of runs.values()) {
+  for (const [key, run] of runs) {
     if (run.members < 2) continue;
-    appendBundleRun(svg, defs, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier);
+    appendBundleRun(svg, defs, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier, key, run.presence);
   }
   runtime.overlay.dataset.active = String(drawn > 0);
 }
@@ -362,13 +409,17 @@ function appendBundleRun(
   gradientId: string,
   members: number,
   svgNamespace: string,
-  tuning: BezierTuning
+  tuning: BezierTuning,
+  key: string,
+  presence: number
 ): void {
   const path = document.createElementNS(svgNamespace, "path") as SVGPathElement;
   path.setAttribute("d", `M ${curve.from.x} ${curve.from.y} ${curveTo(curve.from, curve.to, tuning)} L ${lane.to.x} ${lane.to.y}`);
   path.setAttribute("stroke", `url(#${gradientId})`);
   path.style.strokeWidth = `${(2.2 + 1.3 * Math.log(members)).toFixed(2)}px`;
   path.classList.add("connection-path", "bundle-run");
+  path.dataset.connectionKey = JSON.stringify([key, "bundle"]);
+  path.style.strokeOpacity = String(presence);
   path.dataset.members = String(members);
   svg.insertBefore(path, defs.nextSibling);
 }

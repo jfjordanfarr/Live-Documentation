@@ -15,6 +15,8 @@ Each profile sets the 2D packing costs and 3D spacing together. Coupling, base s
 
 Created for [the October 13 shared-preset implementation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
+Both packing profiles value card-top alignment. Relaxed gives it greater weight so that extra connector length can buy clearer composition, following the owner's [review of the initial defaults](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-8--relaxed-should-spend-wire-length-on-composition). These remain weighted preferences rather than mandatory rows or a forced routing pattern.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

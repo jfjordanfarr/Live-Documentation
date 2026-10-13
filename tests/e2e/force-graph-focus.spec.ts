@@ -1,7 +1,45 @@
 import { test, expect, type Page } from "@playwright/test";
+import type { Camera, Mesh, Scene, WebGLRenderer } from "three";
+
+import { localRetainUrl } from "./still-picture";
 
 const GRAPH = "packages/engine/src/live-docs/graph.ts";
 const DOCUMENT = "packages/engine/src/live-docs/document.ts";
+
+type ObservedWindow = Window & { __THREE_DEVTOOLS__: EventTarget; renderedGraph?: { scene: Scene; camera: Camera } };
+type GraphMesh = Mesh & { __graphObjType?: string; __data?: { id: string; name: string } };
+
+/** Read the actual meshes and camera sent to WebGL through Three's development-tool event; no Explorer test API. */
+async function observeGraph(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const inspected = window as unknown as ObservedWindow;
+    inspected.__THREE_DEVTOOLS__ = new EventTarget();
+    inspected.__THREE_DEVTOOLS__.addEventListener("observe", event => {
+      const renderer = (event as CustomEvent<WebGLRenderer>).detail;
+      if (!renderer.isWebGLRenderer) return;
+      const render = renderer.render.bind(renderer);
+      renderer.render = (scene, camera) => { inspected.renderedGraph = { scene: scene as Scene, camera }; render(scene, camera); };
+    });
+  });
+}
+
+async function renderedNodes(page: Page) {
+  return page.evaluate(() => {
+    const observed = (window as unknown as ObservedWindow).renderedGraph!;
+    const rect = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
+    const nodes: Array<{ id: string; name: string; x: number; y: number; depth: number; distance: number; opacity: number }> = [];
+    observed.scene.traverse(object => {
+      const mesh = object as GraphMesh;
+      if (mesh.__graphObjType !== "node" || !mesh.__data || Array.isArray(mesh.material)) return;
+      const position = mesh.getWorldPosition(mesh.position.clone());
+      const projected = position.clone().project(observed.camera);
+      nodes.push({ id: mesh.__data.id, name: mesh.__data.name,
+        x: rect.left + (projected.x + 1) * rect.width / 2, y: rect.top + (1 - projected.y) * rect.height / 2,
+        depth: projected.z, distance: position.distanceTo(observed.camera.position), opacity: mesh.material.opacity });
+    });
+    return nodes;
+  });
+}
 
 async function expectFocused(page: Page, id: string): Promise<void> {
   const label = page.locator(".force-graph-focus");
@@ -98,4 +136,79 @@ test("reduced motion still focuses a requested file", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(`/samples/estate/?view=local&mode=3d&node=${encodeURIComponent("PaymentService/PaymentService.cs")}`);
   await expectFocused(page, "PaymentService/PaymentService.cs");
+});
+
+test("hover peeks outside the retained scope, leaving restores it, and clearing pins releases dimming", async ({ page }) => {
+  test.setTimeout(45_000);
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await observeGraph(page);
+  const subject = "tests/integration/programs/typescript/rosetta/src/helpers.ts";
+  await page.goto(localRetainUrl("/", [subject]));
+  // Compressed links carry their own representation; use the public control.
+  if (await page.getByRole("button", { name: "3D", exact: true }).getAttribute("aria-pressed") !== "true") {
+    await page.getByRole("button", { name: "3D", exact: true }).click();
+  }
+  await expect(page.locator(".perspective-transition")).toHaveCount(0);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  await page.mouse.move(30, 50);
+  const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const initialNodes = await renderedNodes(page);
+  const candidates = initialNodes.filter(node => node.opacity < .3 && node.depth > -1 && node.depth < 1
+    && node.x > frame.x + 50 && node.x < frame.x + frame.width - 70 && node.y > frame.y + 50 && node.y < frame.y + frame.height - 100)
+    .sort((a, b) => a.distance - b.distance);
+  expect(candidates.length).toBeGreaterThan(0);
+  let found: typeof candidates[number] | undefined;
+  for (const node of candidates.slice(0, 20)) {
+    await page.mouse.move(node.x, node.y);
+    await page.waitForTimeout(120); // Native picking is throttled at 50 ms.
+    if ((await page.locator(".float-tooltip-kap").textContent())?.startsWith(`${node.name} ·`)) { found = node; break; }
+  }
+  expect(found, "a visible distant sphere is hoverable").toBeDefined();
+  const opacity = async () => (await renderedNodes(page)).find(node => node.id === found!.id)!.opacity;
+  await expect.poll(opacity).toBeGreaterThan(.7);
+  await page.mouse.move(30, 50);
+  await expect.poll(opacity).toBeLessThan(.3);
+  // Re-enter the very same sphere: the library can retain its old hover
+  // cache across a viewport exit and emit no second onNodeHover callback.
+  await page.mouse.move(found!.x, found!.y);
+  await expect.poll(opacity).toBeGreaterThan(.7);
+  await page.mouse.move(30, 50);
+  await expect.poll(opacity).toBeLessThan(.3);
+  await page.getByRole("button", { name: "Clear exploration pins" }).click();
+  await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.7);
+  expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(initialNodes.map(node => node.id).sort());
+});
+
+test("wheel approaches the inspected sphere and does not jump outward after a closer middle-button zoom", async ({ page }) => {
+  test.setTimeout(45_000);
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await observeGraph(page);
+  const subject = "tests/integration/programs/typescript/rosetta/src/helpers.ts";
+  await page.goto(`/?view=local&mode=3d&node=${subject}`);
+  await expectFocused(page, subject);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const distance = async () => (await renderedNodes(page)).find(node => node.id === subject)!.distance;
+  const initial = await distance();
+  const box = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const x = box.x + box.width * .8, y = box.y + box.height * .8;
+  await page.mouse.move(x, y);
+  await page.mouse.wheel(0, -120);
+  await expect.poll(distance).toBeLessThan(initial - 5);
+  await page.waitForTimeout(300);
+  const inward = await distance();
+  await page.mouse.wheel(0, 120);
+  await expect.poll(distance).toBeGreaterThan(inward + 5);
+  await page.waitForTimeout(300);
+  await page.mouse.down({ button: "middle" });
+  for (let i = 1; i <= 12; i++) { await page.mouse.move(x, y - i * 8); await page.waitForTimeout(25); }
+  await page.mouse.up({ button: "middle" });
+  await page.waitForTimeout(1000);
+  const close = await distance();
+  expect(close).toBeLessThan(65);
+  await page.mouse.wheel(0, -100);
+  await page.waitForTimeout(500);
+  expect(await distance()).toBeLessThanOrEqual(close + .01);
+  const beforeOutward = await distance();
+  await page.mouse.wheel(0, 100);
+  await expect.poll(distance).toBeGreaterThan(beforeOutward + .01);
 });

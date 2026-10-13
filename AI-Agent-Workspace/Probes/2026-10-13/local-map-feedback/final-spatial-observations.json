@@ -1,0 +1,46 @@
+{
+  "errors": [],
+  "hover": {
+    "before": {
+      "id": "tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs",
+      "name": "TelemetryHandler.cs",
+      "x": 1140.886819205707,
+      "y": 550.9930639133679,
+      "z": 0.9997844664399925,
+      "distance": 941.6702023001433,
+      "opacity": 0.15000000000000002
+    },
+    "during": {
+      "id": "tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs",
+      "name": "TelemetryHandler.cs",
+      "x": 1140.886819205707,
+      "y": 550.9930639133679,
+      "z": 0.9997844664399925,
+      "distance": 941.6702023001433,
+      "opacity": 0.75
+    },
+    "after": {
+      "id": "tests/integration/fixtures/csharp-reflection/workspace/Services/TelemetryHandler.cs",
+      "name": "TelemetryHandler.cs",
+      "x": 1140.886819205707,
+      "y": 550.9930639133679,
+      "z": 0.9997844664399925,
+      "distance": 941.6702023001433,
+      "opacity": 0.15000000000000002
+    }
+  },
+  "cleared": {
+    "count": 580,
+    "minimumOpacity": 0.75
+  },
+  "zoom": {
+    "approach": [
+      140.00000000000006,
+      104.29613956677696,
+      75.46099205533693,
+      54.61352639320273
+    ],
+    "inward": 54.6116154140405,
+    "outward": 63.449644761903926
+  }
+}

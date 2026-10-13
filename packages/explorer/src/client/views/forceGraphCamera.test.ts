@@ -1,7 +1,7 @@
 import { PerspectiveCamera, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 
-import { focusedCameraPosition, screenAnchorTranslation } from "./forceGraphCamera";
+import { focusedCameraPosition, screenAnchorTranslation, wheelZoomCamera } from "./forceGraphCamera";
 
 describe("Force Graph focus camera", () => {
   it("preserves the viewing direction relative to a panned target", () => {
@@ -23,6 +23,35 @@ describe("Force Graph focus camera", () => {
   it("has a finite fallback when the camera coincides with its target", () => {
     const point = { x: 10, y: 20, z: 30 };
     expect(focusedCameraPosition(point, point, { x: -1, y: -2, z: -3 })).toEqual({ x: -1, y: -2, z: 137 });
+  });
+});
+
+describe("wheel zoom", () => {
+  it("approaches and recedes from an off-axis inspected point without moving its projection", () => {
+    const camera = new PerspectiveCamera(60, 1.6, .1, 100000);
+    camera.position.set(40, 20, 180);
+    const target = new Vector3(0, -10, 0), point = new Vector3(15, 5, -20);
+    camera.lookAt(target); camera.updateMatrixWorld();
+    const before = point.clone().project(camera);
+    for (const delta of [-120, 120]) {
+      const oldDistance = camera.position.distanceTo(point);
+      const next = wheelZoomCamera(camera.position, target, point, delta);
+      camera.position.copy(next.camera); target.copy(next.target);
+      camera.lookAt(target); camera.updateMatrixWorld();
+      const screen = point.clone().project(camera);
+      expect(screen.x).toBeCloseTo(before.x, 10);
+      expect(screen.y).toBeCloseTo(before.y, 10);
+      expect(Math.sign(camera.position.distanceTo(point) - oldDistance)).toBe(Math.sign(delta));
+    }
+  });
+
+  it("does not reverse a wheel gesture when another camera operation crossed a limit", () => {
+    const origin = { x: 0, y: 0, z: 0 };
+    expect(wheelZoomCamera({ x: 0, y: 0, z: 30 }, origin, origin, -120).camera.z).toBe(30);
+    expect(wheelZoomCamera({ x: 0, y: 0, z: 30 }, origin, origin, 120).camera.z).toBeGreaterThan(30);
+    expect(wheelZoomCamera({ x: 0, y: 0, z: 30000 }, origin, origin, 120).camera.z).toBe(30000);
+    expect(wheelZoomCamera({ x: 0, y: 0, z: 30000 }, origin, origin, -120).camera.z).toBeLessThan(30000);
+    expect(wheelZoomCamera(origin, origin, origin, -120)).toEqual({ camera: origin, target: origin });
   });
 });
 

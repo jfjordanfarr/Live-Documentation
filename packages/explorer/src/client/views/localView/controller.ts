@@ -136,6 +136,7 @@ export class LocalViewController implements LocalViewApi {
   /** Cleanup function for state subscription */
   private stateUnsubscribe: (() => void) | null = null;
   private pendingRender = 0;
+  private readonly handlePointerLeave = (): void => this.clearSymbolHighlight();
 
   private readonly handleWindowMouseMove = (event: MouseEvent): void => {
     const { state } = this.options;
@@ -168,6 +169,7 @@ export class LocalViewController implements LocalViewApi {
     this.viewport.style.cursor = "grab";
     this.bindPointerEvents();
     this.bindWheelEvents();
+    this.viewport.addEventListener("pointerleave", this.handlePointerLeave);
     this.subscribeToStateChanges();
     this.bindLayerObserver();
   }
@@ -232,6 +234,7 @@ export class LocalViewController implements LocalViewApi {
    */
   dispose(): void {
     cancelAnimationFrame(this.pendingRender);
+    this.viewport.removeEventListener("pointerleave", this.handlePointerLeave);
     if (this.stateUnsubscribe) {
       this.stateUnsubscribe();
       this.stateUnsubscribe = null;

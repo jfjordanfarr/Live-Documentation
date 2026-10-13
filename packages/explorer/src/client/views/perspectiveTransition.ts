@@ -73,7 +73,8 @@ export function captureLocalScene(root: HTMLElement): LocalScene {
     });
     const style = getComputedStyle(path);
     return [{ provider: path.dataset.targetId, consumer: path.dataset.sourceId, points,
-      opacity: Number(style.opacity), width: parseFloat(style.strokeWidth) * Math.hypot(matrix.a, matrix.b) }];
+      opacity: Number(style.opacity) * Number(path.tagName === "polygon" ? style.fillOpacity : style.strokeOpacity),
+      width: parseFloat(style.strokeWidth) * Math.hypot(matrix.a, matrix.b) }];
   });
   const directories = [...root.querySelectorAll<HTMLElement>(".local-directory-band")].map(band => {
     const rect = band.getBoundingClientRect();

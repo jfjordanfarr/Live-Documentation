@@ -11,7 +11,6 @@ export function renderLocalView(controller: LocalViewController): void {
   container.style.setProperty("--hover-dim-symbols", String(tuning.hoverDimSymbols));
   container.style.setProperty("--hover-dim-connections", String(tuning.hoverDimConnections));
 
-  overlay.innerHTML = "";
   controller.currentSubgraph = null;
   controller.branches = null;
   container.classList.remove("symbol-hover-active");
@@ -29,6 +28,8 @@ export function renderLocalView(controller: LocalViewController): void {
   }
 
   if (!state.selectedNode && !controller.openDirectories.size && !controller.pins.entries.length && !path) {
+    overlay.replaceChildren();
+    overlay.dataset.active = "false";
     container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">Select a node to view local relationships.</div>';
     controller.mapTransform = { x: 0, y: 0, k: 1 };
     controller.mapHasInitialFit = false;

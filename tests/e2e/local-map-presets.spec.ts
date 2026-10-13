@@ -136,3 +136,26 @@ test("instant continuing layouts redraw the actual wires onto their pins", async
   });
   for (const distance of separation) expect(distance).toBeLessThan(1);
 });
+
+test("Relaxed aligns the three Rosetta cards while both presets preserve their facts", async ({ page }) => {
+  const root = "tests/integration/programs/typescript/rosetta/src/";
+  await page.goto(`/?view=local&node=${root}main.ts`);
+  await page.locator(".local-placed").waitFor();
+  const read = async () => page.locator(".local-placed").evaluate(element => {
+    const cards = [...element.querySelectorAll<HTMLElement>(".node-card")];
+    return { ids: cards.map(card => card.dataset.id).sort(), tops: cards.map(card => card.getBoundingClientRect().top),
+      references: [...document.querySelectorAll<SVGElement>(".connection-path[data-source-id]")].map(path =>
+        JSON.stringify([path.dataset.sourceId, path.dataset.sourceSymbol, path.dataset.targetId, path.dataset.targetSymbol, path.dataset.kind])).sort() };
+  });
+  await page.locator("#layout-preset").selectOption("compact");
+  await localMapSettled(page);
+  const compact = await read();
+  expect(compact.ids).toEqual([`${root}main.ts`, `${root}models.ts`, `${root}processor.ts`]);
+  expect(compact.references.length).toBeGreaterThan(0);
+  await page.locator("#layout-preset").selectOption("relaxed");
+  await localMapSettled(page);
+  const relaxed = await read();
+  expect(relaxed.ids).toEqual(compact.ids);
+  expect(relaxed.references).toEqual(compact.references);
+  expect(Math.max(...relaxed.tops) - Math.min(...relaxed.tops)).toBeLessThan(.1);
+});

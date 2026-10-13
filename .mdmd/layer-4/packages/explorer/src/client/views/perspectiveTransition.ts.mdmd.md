@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/perspectiveTransition.ts
-- Generated At: 2026-10-06T16:47:48.482Z
+- Generated At: 2026-10-13T22:20:24.402Z
 
 ## Authored
 ### Purpose
@@ -47,7 +47,7 @@ Capture native cards, rendered symbol curves and directory shells before hiding 
 
 #### `animatePerspective` {#symbol-animateperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L102)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L103)
 - Parameters: `scene`: [`LocalScene`](#symbol-localscene); `graph`: [`ForceScene`](#symbol-forcescene); `viewport`: `DOMRect`
 
 ##### `animatePerspective` — Summary
@@ -57,7 +57,7 @@ are not changed by this temporary, non-interactive drawing.
 
 #### `holdPerspective` {#symbol-holdperspective}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L226)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/perspectiveTransition.ts#L227)
 
 ##### `holdPerspective` — Summary
 Hold the source picture while the destination renderer produces its first frame.

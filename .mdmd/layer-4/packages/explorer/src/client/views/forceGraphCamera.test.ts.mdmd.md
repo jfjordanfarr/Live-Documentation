@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphCamera.test.ts
-- Generated At: 2026-10-02T21:07:39.320Z
+- Generated At: 2026-10-13T22:20:23.621Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - [`forceGraphCamera.focusedCameraPosition`](./forceGraphCamera.ts.mdmd.md#symbol-focusedcameraposition)
 - [`forceGraphCamera.screenAnchorTranslation`](./forceGraphCamera.ts.mdmd.md#symbol-screenanchortranslation)
+- [`forceGraphCamera.wheelZoomCamera`](./forceGraphCamera.ts.mdmd.md#symbol-wheelzoomcamera)
 - `three` - `PerspectiveCamera`, `Vector3`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

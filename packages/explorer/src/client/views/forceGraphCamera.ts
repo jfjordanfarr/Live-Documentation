@@ -22,6 +22,23 @@ export function focusedCameraPosition(
   };
 }
 
+/** Zoom around the inspected point, keeping its screen position and never reversing direction at a distance limit. */
+export function wheelZoomCamera(camera: CameraPoint, target: CameraPoint, point: CameraPoint, delta: number): { camera: CameraPoint; target: CameraPoint } {
+  const distance = Math.hypot(camera.x - point.x, camera.y - point.y, camera.z - point.z);
+  if (distance === 0) return { camera: { ...camera }, target: { ...target } };
+  // A pan or another camera operation may already have crossed a wheel limit.
+  // In that case an outward gesture may return toward the range, but an inward
+  // gesture must not jump away from the point (and conversely at the far limit).
+  const next = Math.max(Math.min(65, distance), Math.min(Math.max(20000, distance), distance * Math.exp(delta * .0015)));
+  const ratio = next / distance;
+  const scaled = (position: CameraPoint): CameraPoint => ({
+    x: point.x + (position.x - point.x) * ratio,
+    y: point.y + (position.y - point.y) * ratio,
+    z: point.z + (position.z - point.z) * ratio
+  });
+  return { camera: scaled(camera), target: scaled(target) };
+}
+
 /** Translate a camera and its target together to place a world point at a normalized screen anchor. */
 export function screenAnchorTranslation(camera: Camera, point: CameraPoint, anchor: { x: number; y: number }): Vector3 {
   const original = new Vector3(point.x, point.y, point.z);

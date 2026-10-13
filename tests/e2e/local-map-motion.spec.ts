@@ -21,6 +21,8 @@ import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const FILES = [`${ROOT}helpers.ts`];
 
+interface WireFrame { moving: boolean; attached: boolean; error: number; layerOpacity: number; entering: number[] }
+
 test.use({ viewport: { width: 1600, height: 1000 } });
 
 interface Seen { id: string; stamp: string; left: number; top: number }
@@ -42,6 +44,60 @@ const moving = (page: Page): Promise<boolean> => page.evaluate(() => document.qu
 
 /** The move's length for the first test: long enough that the samples below fall inside it whatever the machine's frame rate. */
 const LONG_MOVE_MS = 1500;
+
+test("wires keep their elements and follow pins through interrupted, zoomed pin transitions", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("live-docs-explorer:ui:v1", JSON.stringify({ version: 1,
+    tuning: { localMap: { moveMs: 1200, searchStarts: 0 } } })));
+  await page.goto(`/?view=local&node=${ROOT}main.ts`);
+  await localMapSettled(page);
+  await page.waitForTimeout(700);
+  await page.mouse.move(1050, 500);
+  await page.mouse.wheel(0, 500);
+  await page.waitForTimeout(500);
+  await page.evaluate(root => {
+    const stored = window as unknown as { wireFrames: WireFrame[]; wireFramesDone: boolean };
+    stored.wireFrames = []; stored.wireFramesDone = false;
+    const selector = `.connection-path[data-source-id="${root}main.ts"][data-target-id="${root}models.ts"][data-target-symbol="report"]`;
+    const original = document.querySelector<SVGPathElement>(selector)!;
+    const start = performance.now();
+    const sample = (): void => {
+      const wire = document.querySelector<SVGPathElement>(selector)!;
+      const scale = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
+      const source = document.querySelector<HTMLElement>(`.node-card[data-id="${root}models.ts"] .symbol-row[data-symbol="Report"] .symbol-anchor.outbound`)!.getBoundingClientRect();
+      const target = document.querySelector<HTMLElement>(`.node-card[data-id="${root}main.ts"] .internals-anchor.inbound`)!.getBoundingClientRect();
+      const matrix = wire.getScreenCTM()!;
+      const a = wire.getPointAtLength(0), b = wire.getPointAtLength(wire.getTotalLength());
+      const from = new DOMPoint(a.x, a.y).matrixTransform(matrix), to = new DOMPoint(b.x, b.y).matrixTransform(matrix);
+      const entering = [...document.querySelectorAll<SVGPathElement>(`.connection-path[data-target-id="${root}helpers.ts"]`)]
+        .map(path => Number(path.style.strokeOpacity));
+      stored.wireFrames.push({ moving: !!document.querySelector(".local-placed[data-moving]"), attached: wire === original,
+        error: Math.max(Math.hypot(from.x - source.left - source.width / 2 - 6 * scale, from.y - source.top - source.height / 2),
+          Math.hypot(to.x - target.left - target.width / 2 + 6 * scale, to.y - target.top - target.height / 2)),
+        layerOpacity: Number(getComputedStyle(document.querySelector("#map-connections")!).opacity), entering });
+      if (performance.now() - start < 3500) requestAnimationFrame(sample);
+      else stored.wireFramesDone = true;
+    };
+    requestAnimationFrame(sample);
+  }, ROOT);
+  const pin = page.getByRole("button", { name: "Pin run in processor.ts", exact: true });
+  await pin.click();
+  await page.waitForTimeout(200);
+  // Keyboard activation is possible while the row is moving; a second
+  // gesture must start from the live picture, not only work after it settles.
+  await pin.press("Enter");
+  await page.mouse.move(30, 50);
+  await page.waitForFunction(() => (window as unknown as { wireFramesDone: boolean }).wireFramesDone);
+  const frames = await page.evaluate(() => (window as unknown as { wireFrames: WireFrame[] }).wireFrames);
+  expect(frames.filter(frame => frame.moving).length).toBeGreaterThan(5);
+  expect(frames.every(frame => frame.attached), "a retained reference keeps the same path element").toBe(true);
+  for (const frame of frames) {
+    expect(frame.error, "each drawn endpoint follows its actual pin").toBeLessThan(1);
+    expect(frame.layerOpacity, "redrawing a frame does not restart the layer fade").toBeGreaterThan(.98);
+  }
+  expect(frames.some(frame => frame.entering.some(opacity => opacity > 0 && opacity < 1)), "new wires fade in with their entering cards").toBe(true);
+  await expect(page.locator("#map-container")).not.toHaveClass(/symbol-hover-active/);
+  await expect(page.locator("#map-connections")).not.toHaveClass(/symbol-hover-active/);
+});
 
 async function openPicture(page: Page, moveMs?: number): Promise<void> {
   if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { moveMs, searchStarts: 0 } } }) });

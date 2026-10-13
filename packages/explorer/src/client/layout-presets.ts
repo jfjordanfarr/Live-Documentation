@@ -26,11 +26,11 @@ export const LAYOUT_RANGES = {
 /** Packing defaults only: selecting a preset preserves coupling, symbol scaling and unrelated controls. */
 export const LAYOUT_PRESETS: Readonly<Record<LayoutPreset, { localMap: FlatPacking; forceGraph: SpatialPacking }>> = {
   compact: {
-    localMap: { columnGap: 72, itemGap: 16, bandGap: 20, heightCost: 12, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0 },
+    localMap: { columnGap: 72, itemGap: 16, bandGap: 20, heightCost: 12, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0.25 },
     forceGraph: { linkGap: 32, charge: 30, collisionGap: 2 }
   },
   relaxed: {
-    localMap: { columnGap: 100, itemGap: 24, bandGap: 28, heightCost: 5, membraneEvenness: 2, membraneSimplicity: 200, rowLevelness: 0.25 },
+    localMap: { columnGap: 100, itemGap: 24, bandGap: 28, heightCost: 5, membraneEvenness: 2, membraneSimplicity: 200, rowLevelness: 2 },
     forceGraph: { linkGap: 60, charge: 60, collisionGap: 5 }
   }
 };
