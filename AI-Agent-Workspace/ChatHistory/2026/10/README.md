@@ -15,7 +15,7 @@ _Source inventory for October 2026, maintained by the root agent of each session
 - [October 9–10, session 1: Claude Code](2026-10-09.1.record.md): captured through Turn 14, summarized on October 12; no closing exchange or final Turn 14 reply is available. Opened with the standard bootstrap after reading every September and October summary in full. The October 8 session's summary already existed from its close, so the bootstrap checked it against the record, the owner's export and git, added a dated review note correcting its commit count, and committed the owner's eighth export copy as received. The fresh chat the owner chose for building the World Map from [its plan](../../../../.mdmd/layer-3/world-map.mdmd.md). Root conversation and authored work notes are separate, following the [recording convention](../../README.md#recording-as-work-proceeds).
 
 - [October 12, session 1: Codex](2026-10-12.1.record.md): summarized October 13 through four substantive turns and the final delivered reply, recovered from the expanded owner export. A startup walkthrough led to one Local Map layout for all scopes, explicit perspective controls, and retirement of the older views. No separate closing exchange is captured.
-- [October 13, session 1: Codex](2026-10-13.1.record.md): open through Turn 3. Weighted boundary simplification and tunable competition are implemented, visually compared across four scopes and fully verified; the owner returned after a harness restart for reorientation.
+- [October 13, session 1: Codex](2026-10-13.1.record.md): open through Turn 4, retaining one daily record across the harness restart at the owner's request. Weighted boundary simplification and tunable competition are implemented, visually compared across four scopes, fully verified and committed as `86f2e8a2`. The recovered scope reply and restart reorientation remain under their stable turn anchors.
 
 ## Owner captures
 
@@ -62,6 +62,8 @@ _Source inventory for October 2026, maintained by the root agent of each session
 - [October 9–10, session 1](Summarized/2026-10-09.1.SUMMARIZED.md): completed October 12 from both available captures read in full and twenty-two verified commits. Fourteen turns (fifteen substantive owner messages): separate scans and authored things, the estate graph, ghosts, and the repository's package-first delivery board. No delivered final Turn 14 reply or closing exchange is captured. The export has 2,950 text lines, including its final line without a newline; earlier inventory counts use its 2,949 newline characters.
 
 The [October 12 summary](Summarized/2026-10-12.1.SUMMARIZED.md) was completed on October 13 after both sources were read in full and all three commits verified. It records the renderer unification, three-view consolidation, intermediate failures and corrected regressions, and the separate changed-only generation finding.
+
+October 13 Turn 4 recovery read all 909 lines of the attached visible-session export in bounded chunks and verified that its bytes match the repository capture described above. The earlier partial-inspection notes remain dated observations. Its last visible operation is still the final screenshot README write; subsequent restart conversation and the verified implementation commit are recorded in the maintained daily record.
 
 ## Received record snapshots
 
