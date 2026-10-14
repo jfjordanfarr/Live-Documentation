@@ -442,3 +442,410 @@ build, logging to the scratchpad" completed (exit code 0)
 
   Answer those and I will plan the files, build it, look at it on both bundles,
   and bring the pictures.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >They appear as they do today on hover, on retention and on Find Path, so a
+  hovered file's wires cut across the tree and show exactly the intersection
+  you found interesting.
+
+  I hadn't even considered! Thank you, that sounds awesome!
+
+  >with old links migrating.
+
+  Don't sweat backwards compat until we have actually released
+
+  >I recommend a directory's volume be the sum of its files' volumes,
+  recursively.
+
+  Interesting! I hadn't considered using that. That's a neat idea and reuses
+  calculations already made for the standard 3D view. I like it. Size as
+  exposed surface is a really fantastic invariant to get people acclimated to
+  via our UI/UX. Pedagogical. Really love it.
+
+  >The tray and the disclosure. Nothing in either reads as incorrect to me, so
+  take your time. One alternative worth naming: at this viewport the sidebar's
+  lower half is empty, and a pin list there would cover no part of the map. The
+  lower right was your call, and I would only change it if you want.
+
+  We'll want to do that as kind of a holistic UI rearrangement/consolidation
+  pass in a matter of days, I hope. Let's let it be for now.
+
+  >Placement and name. A third perspective button, which I recommend because
+  shared links, history, tests and the lab all key on the perspective already,
+  or a sub-choice inside 3D. And the word on the button: "Tree", "Structure",
+  or your "Declared".
+
+  I personally lean towards sub-choice in 3D? Dangit not sure where that would
+  be though. Hmmm. I _think_ it's more likely to be a choice in the 3D Local
+  Map than a separate view, but I also think that the overall semantic choices
+  available to the user are liable to continue to shift as more
+  parsimonious/useful ways to slice functionality emerge over these
+  increasingly-useful views we've been authoring.
+
+  >Code connections in the tree. Hidden at rest and revealed on demand, as I
+  recommend, or drawn faintly at rest as well.
+
+  Definitely hidden at rest. Revealed on demand would be cool but if it makes
+  the implementation a nightmare filled with technical debt, don't sweat it.
+
+  The only other thing I'd ask is that you make sure to re-read the summary
+  files from September and October (chat summary files) just so you get a
+  better remembrance of the trajectory/narrative of this workspace, since all
+  work is being performed linearly and sequentially. I saw the compaction
+  summary and it left a lot out in my opinion.
+  ⎿  1 skill available
+
+● Recording the exchange first, then I'll do the full re-read of the September
+  and October summaries you asked for before planning the files.
+
+  Read 17 files, ran 2 shell commands (ctrl+o to expand)
+
+● Reading through all seventeen summaries confirms the key thread: from
+  proposing directory pseudo-nodes in October through today's conclusion that
+  declared and analyzed structure need separate layouts. Now I'll record the
+  re-read instruction in owner.md, commit the records, and review the code the
+  build touches. · summary
+
+  Read 14 files, ran 1 shell command (ctrl+o to expand)
+
+● Now I'll dig into the client entry wiring, control icon buttons, lab command,
+  band module's chain compression, the 2D-to-3D transition, the preset module's
+  share-link layout, and every reference to the two checkboxes before drafting
+  the file plan. · summary
+
+  Searched for 1 pattern, read 7 files (ctrl+o to expand)
+
+● I've reviewed the code and have most of what's needed, but still need to check
+  four things: how perspective changes get logged as history entries, the lab's
+  spatial and retained-state tests referencing old flags, and the decisions
+  log's entry format. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Reads are complete. Next I'll check the force library's typed contract for
+  link strength, review the latest decisions log entry for style, save the file
+  plan to the record for safety, then start building the pure modules and tests.
+  · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I'll start with the pure modules—the layout type/reader, the tree projection
+  with chain collapse and hub volumes, and the force logic—along with their unit
+  tests, then run the tests. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Data tests pass, but the layout test's exact-equality check failed since a
+  no-op link slightly shifts positions—I'll trace that with a small script while
+  also writing the persistence changes and lab command in parallel. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I found the bug: D3's link force counts a zero-strength link in a node's
+  degree, causing it to split motion unevenly even though the link doesn't pull.
+  I'll fix this by only passing pulling links to the force, then check how the
+  3D library supplies links and which test assertion is failing. · summary
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● All thirteen unit tests pass, including the proof that a non-pulling link now
+  changes nothing. Next: the renderer, the client entry, the template and a
+  build to type-check them.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Found two type errors: a test snapshot missing the layout field and a cast
+  needing to go through unknown. I'll fix the cast, update the test literal, and
+  verify how the library calls the wrapped force. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll add the layout field to the test's snapshot, rebuild, and run the full
+  unit suite to catch any ripple effects. Then I'll write the browser spec for
+  the buttons, including a check that a hub's rendered volume equals the sum of
+  its members'. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Build and all 1,000 unit tests pass. Next, I'll build both bundles, run the
+  new browser spec in the background, lint the changed files, and update the
+  Explorer design doc and decisions log in parallel. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Build both bundles and run the rewritten directories spec,
+logging to the scratchpad" completed (exit code 0)
+  Ran 1 shell command (ctrl+o to expand)
+
+● The spec only failed because I ran it without the e2e config, so relative
+  addresses lacked a base. I'll rerun it via the project's e2e command in the
+  background while checking which mirrors' notes still reference the old
+  checkboxes and drafting the screenshot script. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the e2e spec reruns in the background, I'll pull the authored mirror
+  sections still describing the old checkboxes to rewrite them, and draft the
+  picture script showing the switch folding the network into the tree. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The spec is still running in the e2e harness. Meanwhile I'll bring the
+  authored notes of the fourteen touched mirrors to the two layouts and
+  regenerate the Live Docs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the rewritten directories spec through the e2e
+command, logging to the scratchpad" completed (exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Two of three checks pass; the one failure was just my continuity bound being
+  too strict, not a real cold-start collapse. I'll tighten the claim to say the
+  picture doesn't collapse and files mostly stay put, then verify the frame
+  transition to confirm the fold reads correctly. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Volume conservation checks out exactly on both bundles, and hub count dropped
+  from 236 to 178 after the chain collapse; since hidden references have no
+  render object at rest, I'll source hover candidates from the connections
+  picture instead and move on to checking the estate pictures. · summary
+
+  Read 12 files, ran 1 shell command (ctrl+o to expand)
+
+● The estate visuals check out—hubs form within the file cloud, the tree settles
+  by 300ms, and hover/transition behavior works as expected. Now moving on to
+  the repository pictures and rerunning the test with the hover candidates
+  fixed. · summary
+
+  Read 5 files, ran 1 shell command (ctrl+o to expand)
+
+● I've mapped out the repo's directory structure and the warehouse hub's nine
+  files along with their references. Next, I'll rerun the headless check to
+  confirm the layout output matches what's documented. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both bundles' structure layout reports are generated with no sphere overlaps.
+  Next, I'll verify the rerun's output images and check the file size precedent
+  before committing the report JSON. · summary
+
+  Read 2 files, listed 1 directory (ctrl+o to expand)
+
+● Background command "Rerun the look with the hover candidates taken from the
+connections picture, logging to the scratchpad" completed (exit code 0)
+
+● The hover pictures confirm the reveal on both bundles. Now the focused spec
+  rerun in the background, and the evidence folders written while it runs.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Stop Task
+  ⎿  python3 -m http.server 8900 --bind 127.0.0.1 --directory dist/explorer
+     · stopped
+
+  Read 1 file (ctrl+o to expand)
+
+● The build is complete, looked at and documented; the gate remains. The
+  rewritten browser spec is running through the e2e harness in the background,
+  and the full pre-commit gate goes next once it finishes, since both rebuild
+  the bundles and share the test server. I'll report when the gate has spoken.
+
+● Background command "Rerun the directories spec through the e2e command after
+the continuity fix, logging to the scratchpad" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All three tests pass through the harness. Now the full gate on the whole tree,
+  in the background; I'll hold further edits until it has spoken.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While the gate runs, I'll draft the commit message in the scratchpad so
+  nothing in the tree changes under it.
+
+  Read 1 file (ctrl+o to expand)
+
+● Nothing is left that does not depend on the gate: the commit, the direction
+  note and the record's close all wait on its result, which arrives as a
+  notification.
+
+● Background command "Run the full pre-commit gate with Playwright over the
+structure-layout tree, logging to the scratchpad" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Two browser tests for the presets journey (packing, export, and sharing across
+  2D/3D) failed. I'll pull the failure text and that spec's source to diagnose
+  the cause, along with the Live Doc lint warnings mentioned in the log.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I see the bug: I overloaded the data-layout-settings attribute to carry both
+  layout and tuning data, which breaks the share test expecting it to only hold
+  force settings. I'll fix this by moving the layout data into its own separate
+  attribute. · summary
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The fix is in place and the two specs are running through the harness again;
+  the full gate follows their result. Nothing else remains that does not depend
+  on it.
+● Background command "Fix the attribute, lint and build the Explorer, note the
+finding in the record, and rerun the two specs through the e2e command"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All eight pass and the build is clean. The complete gate runs again now.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate is the last dependency; the commits, the direction note and the
+  record's close all follow its result, which arrives as a notification.
+
+● Background command "Run the full pre-commit gate with Playwright again after
+the attribute fix, logging to the scratchpad" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All checks passed: lint, builds, 1,000 unit and 52 integration tests, 651
+  regenerated docs with no diffs, and all audits plus 117 browser tests. I'll
+  commit the implementation with its docs and evidence now, then follow with the
+  record and direction note including its hash. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Commit 33060b12 holds the work. Your terminal export changed again since the
+  last commit, so I'll read its new extent for the inventory while I bring the
+  record and direction.md to the landed state.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● This export is a separate copy starting at the compaction and continuing
+  through my Turn 3 reply, not a superset of the committed version. I'll pull
+  its opening lines for the inventory, then proceed with the second commit.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The structure layout is built, gated and committed. The tree is clean.
+
+  ┌──────────┬───────────────────────────────────────────────────────────────┐
+  │  Commit  │                           Contents                            │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │          │ The 3D Local Map's second layout, its tests, the regenerated  │
+  │ 33060b12 │ and authored mirrors, the design doc and decisions-log entry, │
+  │          │  and the evidence                                             │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 94acf9d1 │ Today's record, direction.md, and your re-exported capture as │
+  │          │  received                                                     │
+  └──────────┴───────────────────────────────────────────────────────────────┘
+
+  What you get in 3D. Two icon buttons follow the 3D button, Connections and
+  Structure, shown only in 3D and remembered like the perspective. Structure
+  hangs every file from its directory's hub and every hub from its parent's up
+  to the scan root, and a hub holding nothing but one child collapses into it,
+  so this repository shows 178 hubs where the morning's build had 236. A hub's
+  volume is the sum of its members' volumes, and the rendered spheres prove it:
+  the root's volume equals the sum of its files' to seven decimals on both
+  bundles. Only the chosen layout's links reach the spring force. References are
+  hidden at rest and drawn for the hovered file, for the hovered hub's whole
+  subtree, among retained files, and along a path. Switching keeps every file
+  where it stands and starts each hub at the centroid of its members, so the
+  network folds into the tree in about 300 ms and unfolds on the way back.
+
+  Two findings worth knowing. A zero-strength spring for the non-pulling links
+  still moved the tree, because D3 counts every link in a node's degree when it
+  splits a spring's motion between its ends; a unit test caught it, and the
+  force now receives only the links that pull. And the 3D library gives a hidden
+  link no render object at all, which the browser spec had to account for.
+
+  Verification. The first full gate refused two share tests because I had let
+  the renderer's settings attribute carry the layout too; the attribute carries
+  the settings again and the layout has its own. The complete gate then passed:
+  1,000 unit, 52 integration and 117 browser tests, with 651 docs regenerated
+  unchanged.
+
+  For your eye, in the screenshot record (AI-Agent-Workspace/Screenshots/2026-10
+  -14/README.md#the-3d-local-maps-two-layouts-the-afternoon-of-october-14) and
+  the probe record
+  (AI-Agent-Workspace/Probes/2026-10-14/structure-layout/README.md): the
+  containment lines at rest are drawn at a third of full strength and read faint
+  in overview, the fold is fast, the collapsed chains show on hub labels as
+  names like typescript/rosetta, and the two buttons sit after 3D until your
+  consolidation pass places them.
+
+  I re-read all seventeen September and October summaries in full before
+  building, as you asked; the thread from the October 3 docs session, where
+  "drawn" and "pulling" were first called two separate switches, runs straight
+  to today's split. Your preference to re-read the story after a compaction is
+  now in owner.md.
+
+● The structure layout is built, gated and committed. The tree is clean.
+
+  ┌──────────┬───────────────────────────────────────────────────────────────┐
+  │  Commit  │                           Contents                            │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │          │ The 3D Local Map's second layout, its tests, the regenerated  │
+  │ 33060b12 │ and authored mirrors, the design doc and decisions-log entry, │
+  │          │  and the evidence                                             │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 94acf9d1 │ Today's record, direction.md, and your re-exported capture as │
+  │          │  received                                                     │
+  └──────────┴───────────────────────────────────────────────────────────────┘
+
+  What you get in 3D. Two icon buttons follow the 3D button, Connections and
+  Structure, shown only in 3D and remembered like the perspective. Structure
+  hangs every file from its directory's hub and every hub from its parent's up
+  to the scan root, and a hub holding nothing but one child collapses into it,
+  so this repository shows 178 hubs where the morning's build had 236. A hub's
+  volume is the sum of its members' volumes, and the rendered spheres prove it:
+  the root's volume equals the sum of its files' to seven decimals on both
+  bundles. Only the chosen layout's links reach the spring force. References are
+  hidden at rest and drawn for the hovered file, for the hovered hub's whole
+  subtree, among retained files, and along a path. Switching keeps every file
+  where it stands and starts each hub at the centroid of its members, so the
+  network folds into the tree in about 300 ms and unfolds on the way back.
+
+  Two findings worth knowing. A zero-strength spring for the non-pulling links
+  still moved the tree, because D3 counts every link in a node's degree when it
+  splits a spring's motion between its ends; a unit test caught it, and the
+  force now receives only the links that pull. And the 3D library gives a hidden
+  link no render object at all, which the browser spec had to account for.
+
+  Verification. The first full gate refused two share tests because I had let
+  the renderer's settings attribute carry the layout too; the attribute carries
+  the settings again and the layout has its own. The complete gate then passed:
+  1,000 unit, 52 integration and 117 browser tests, with 651 docs regenerated
+  unchanged.
+
+  For your eye, in the screenshot record (AI-Agent-Workspace/Screenshots/2026-10
+  -14/README.md#the-3d-local-maps-two-layouts-the-afternoon-of-october-14) and
+  the probe record
+  (AI-Agent-Workspace/Probes/2026-10-14/structure-layout/README.md): the
+  containment lines at rest are drawn at a third of full strength and read faint
+  in overview, the fold is fast, the collapsed chains show on hub labels as
+  names like typescript/rosetta, and the two buttons sit after 3D until your
+  consolidation pass places them.
+
+  I re-read all seventeen September and October summaries in full before
+  building, as you asked; the thread from the October 3 docs session, where
+  "drawn" and "pulling" were first called two separate switches, runs straight
+  to today's split. Your preference to re-read the story after a compaction is
+  now in owner.md.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-1
+     3.1.SUMMARIZED.md
+  ⎿  Referenced file scripts/layout-lab/lab.ts
+  ⎿  Referenced file packages/explorer/src/client/views/forceGraphView.ts
+  ⎿  Referenced file tests/e2e/force-graph-directories.spec.ts
+  ⎿  Referenced file packages/explorer/src/client/index.ts
