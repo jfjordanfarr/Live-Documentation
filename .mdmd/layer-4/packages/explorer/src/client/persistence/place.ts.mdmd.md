@@ -9,7 +9,7 @@
 ## Authored
 ### Purpose
 
-Reads an Explorer address as a navigable place: view, focused file, opened directories and complete path endpoints. Explicit 2D/3D changes remain history steps, while pins change the picture within a place.
+Reads an Explorer address as a navigable place: view, focused file, opened directories, the Local Map's representation and 3D layout, and complete path endpoints. Explicit 2D/3D and layout changes remain history steps, while pins change the picture within a place.
 
 ### Notes
 

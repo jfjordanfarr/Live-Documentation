@@ -1,0 +1,38 @@
+[
+  {
+    "name": "estate",
+    "files": 35,
+    "hubs": 18,
+    "containment": 52,
+    "references": 60,
+    "referenceObjectsAtRest": 0,
+    "referencesVisibleAtRest": 0,
+    "hoveredFile": "Portal/Pages/Default.aspx",
+    "revealedForFile": 2,
+    "hoveredHub": "Portal",
+    "revealedForHub": 13,
+    "rootRadius": 21.01435234805685,
+    "largestFileRadius": 7.651724927833909,
+    "rootVolumeOverSumOfFiles": 1.0000000355922212,
+    "settledMs": 16087,
+    "errors": []
+  },
+  {
+    "name": "repository",
+    "files": 588,
+    "hubs": 178,
+    "containment": 765,
+    "references": 1237,
+    "referenceObjectsAtRest": 0,
+    "referencesVisibleAtRest": 0,
+    "hoveredFile": "tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/model/Quantity.java",
+    "revealedForFile": 9,
+    "hoveredHub": "tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse",
+    "revealedForHub": 33,
+    "rootRadius": 55.27640709343976,
+    "largestFileRadius": 19.0488129787329,
+    "rootVolumeOverSumOfFiles": 1.0000000407636929,
+    "settledMs": 15735,
+    "errors": []
+  }
+]

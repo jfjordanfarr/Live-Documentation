@@ -36,7 +36,7 @@ import {
 import { readUrlState, scrubSnapshot, writeUrlState } from "./persistence/compressed-url-state";
 import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
 import { placeOf } from "./persistence/place";
-import type { ExplorerState, LocalMapPerspective, ViewName } from "./types";
+import type { ExplorerState, LocalMapPerspective, SpatialLayout, ViewName } from "./types";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { explorerGraphOf } from "../shared/graph";
@@ -135,6 +135,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   const state: ExplorerState = {
     view: resolveInitialView(),
     perspective: initialState.perspective ?? savedNav?.perspective ?? "2d",
+    spatialLayout: initialState.spatialLayout ?? savedNav?.spatialLayout ?? "connections",
     selectedNode: null,
     focusedNode: null,
     filters: initialUi.filters,
@@ -159,6 +160,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
     perspective: state.perspective,
+    spatialLayout: state.spatialLayout,
     openDirectories: state.openDirectories ?? new Set(),
     focusedNodeId: state.focusedNode?.id ?? null,
     selectedNodeId: state.selectedNode?.id ?? null
@@ -190,8 +192,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   const filterToggleTests = getInputById("filter-toggle-tests");
   const filterToggleAssets = getInputById("filter-toggle-assets");
   const filterToggleRelatedDocs = getInputById("filter-toggle-related-docs");
-  const filterToggleDirectories = getInputById("filter-toggle-directories");
-  const filterToggleDirectoryLinks = getInputById("filter-toggle-directory-links");
   const statsLine = document.getElementById("stats-line");
 
   if (statsLine instanceof HTMLElement) {
@@ -299,19 +299,6 @@ function startExplorer(bundle: StaticExplorerData): void {
     });
   }
 
-  for (const [input, key] of [
-    [filterToggleDirectories, "showDirectories"],
-    [filterToggleDirectoryLinks, "showDirectoryLinks"]
-  ] as const) {
-    input?.addEventListener("change", () => {
-      state.filters[key] = input.checked;
-      syncFilterControls();
-      schedulePersistUi();
-      persistExploration();
-      if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
-    });
-  }
-
   const perspectiveControls = document.createElement("div");
   perspectiveControls.className = "perspective-controls";
   perspectiveControls.setAttribute("aria-label", "Local Map layout and representation");
@@ -337,9 +324,20 @@ function startExplorer(bundle: StaticExplorerData): void {
   graphButton.textContent = "3D";
   graphButton.title = "Local Map in 3D";
   graphButton.addEventListener("click", () => changePerspective("3d"));
+  // The 3D layout: the emergent network of the analyzed references, or the emergent tree of the declared directories
+  // (the owner's distinction, 2026-10-14). A choice inside 3D, shown only there.
+  const connectionsButton = iconButton("Connections", '<circle cx="12" cy="6" r="2.5"/><circle cx="6" cy="17" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="m10.8 8.3-3.6 6.4M13.2 8.3l3.6 6.4M8.5 17h7"/>');
+  connectionsButton.title = "Connections: files placed by their analyzed references";
+  connectionsButton.dataset.spatialLayout = "connections";
+  const structureButton = iconButton("Structure", '<circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 7.5v4M12 11.5l-6 4M12 11.5l6 4"/>');
+  structureButton.title = "Structure: files placed by their declared directories";
+  structureButton.dataset.spatialLayout = "structure";
+  for (const button of [connectionsButton, structureButton]) {
+    button.addEventListener("click", () => changeSpatialLayout(button.dataset.spatialLayout === "structure" ? "structure" : "connections"));
+  }
   const perspectivePath = document.createElement("span");
   perspectivePath.className = "perspective-path-status";
-  perspectiveControls.append(perspectivePath, compactButton, relaxedButton, tuningButton, mapButton, graphButton);
+  perspectiveControls.append(perspectivePath, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton);
   requireElement("main").append(perspectiveControls);
   const pinTray = createPinTray({
     parent: requireElement("main"),
@@ -394,7 +392,10 @@ function startExplorer(bundle: StaticExplorerData): void {
       ?? ([...(state.openDirectories ?? [])].map(path => path || "Scan root").join(", ") || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
     const preset = layoutPresetOf(state.tuning);
-    for (const button of [compactButton, relaxedButton, tuningButton, mapButton, graphButton]) button.disabled = changingPerspective;
+    for (const button of [compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton]) button.disabled = changingPerspective;
+    connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
+    connectionsButton.setAttribute("aria-pressed", String(state.spatialLayout === "connections"));
+    structureButton.setAttribute("aria-pressed", String(state.spatialLayout === "structure"));
     compactButton.setAttribute("aria-pressed", String(preset === "compact"));
     relaxedButton.setAttribute("aria-pressed", String(preset === "relaxed"));
     tuningButton.classList.toggle("custom-layout", preset === "custom");
@@ -407,6 +408,15 @@ function startExplorer(bundle: StaticExplorerData): void {
     perspectivePath.hidden = !path;
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     pinTray.sync(retentionState(), state.view === "map", changingPerspective);
+  }
+
+  /** Change how the 3D Local Map places its files; the picture re-settles from where it stands, a step in the history. */
+  function changeSpatialLayout(layout: SpatialLayout): void {
+    if (state.spatialLayout === layout || changingPerspective) return;
+    state.spatialLayout = layout;
+    updateUrlState(state.view, (state.focusedNode ?? state.selectedNode)?.id ?? null, state.perspective, layout);
+    schedulePersistNav();
+    renderCurrentView();
   }
 
   let changingPerspective = false;
@@ -439,7 +449,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     state.view = "map";
     state.perspective = perspective;
     setActiveView(state.view, perspective);
-    updateUrlState(state.view, target?.id ?? null, perspective);
+    updateUrlState(state.view, target?.id ?? null, perspective, state.spatialLayout);
     schedulePersistNav();
     renderCurrentView();
     if (target && anchor) {
@@ -479,7 +489,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (viewName === "map") { changePerspective(state.perspective); return; }
     setActiveView(viewName, state.perspective);
     state.view = viewName;
-    updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null, state.perspective);
+    updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null, state.perspective, state.spatialLayout);
     schedulePersistNav();
     renderCurrentView();
   };
@@ -656,7 +666,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       const notDrawn = against === 0
         ? ""
         : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn`;
-      updateUrlState(state.view, state.selectedNode?.id ?? null, state.perspective);
+      updateUrlState(state.view, state.selectedNode?.id ?? null, state.perspective, state.spatialLayout);
       schedulePersistNav();
       renderCurrentView();
       setPathStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
@@ -871,6 +881,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     detailPanel.hide();
     state.view = view;
     state.perspective = place.perspective ?? state.perspective;
+    state.spatialLayout = place.spatialLayout ?? state.spatialLayout;
     const exploration = scrubSnapshot({ ...readUrlState(), openDirectories: place.openDirectories }, nodesById);
     state.tuning = applyLayoutSettings(state.tuning, exploration.layout);
     if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...exploration.filters };
@@ -912,7 +923,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
-    updateUrlState(state.view, node.id, state.perspective);
+    updateUrlState(state.view, node.id, state.perspective, state.spatialLayout);
     schedulePersistNav();
   }
 
@@ -931,7 +942,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
-    updateUrlState(state.view, node.id, state.perspective);
+    updateUrlState(state.view, node.id, state.perspective, state.spatialLayout);
     schedulePersistNav();
     highlightSelectedCards();
     if (!options?.suppressDetailPanel) {
@@ -972,7 +983,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (leavingPath) clearPathResult();
     syncPerspectiveControls();
     schedulePersistNav();
-    writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, selectedNodeId: state.selectedNode?.id ?? null,
+    writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, spatialLayout: state.spatialLayout, selectedNodeId: state.selectedNode?.id ?? null,
       pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder, filters: state.filters,
       layout: layoutSettingsOf(state.tuning) }, { preservePath: !leavingPath });
   }
@@ -1042,11 +1053,6 @@ function startExplorer(bundle: StaticExplorerData): void {
     }
     if (filterToggleRelatedDocs) {
       filterToggleRelatedDocs.checked = state.filters.showRelatedDocs;
-    }
-    if (filterToggleDirectories) filterToggleDirectories.checked = !!state.filters.showDirectories;
-    if (filterToggleDirectoryLinks) {
-      filterToggleDirectoryLinks.checked = !!state.filters.showDirectoryLinks;
-      filterToggleDirectoryLinks.disabled = !state.filters.showDirectories;
     }
   }
 }

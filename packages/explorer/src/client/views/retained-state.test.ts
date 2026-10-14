@@ -58,10 +58,11 @@ describe("independent retained selections", () => {
       pinSet: state.pins,
       openDirectories: state.openDirectories,
       retentionOrder: state.retentionOrder,
-      filters: { showTests: true, showAssets: false, showDirectories: true, showDirectoryLinks: true }
+      filters: { showTests: true, showAssets: false },
+      spatialLayout: "structure"
     }));
     expect(restored.retentionOrder).toEqual(ordered);
-    expect(restored.filters.showDirectories && restored.filters.showDirectoryLinks).toBe(true);
+    expect(restored.spatialLayout).toBe("structure");
     state = releaseRetained(state, first);
     state = reconcileRetained({ ...state, openDirectories: new Set([...state.openDirectories, "a"]) });
     expect(retainedItems(state).map(retainedKey)).toEqual([...ordered.slice(1), ordered[0]]);

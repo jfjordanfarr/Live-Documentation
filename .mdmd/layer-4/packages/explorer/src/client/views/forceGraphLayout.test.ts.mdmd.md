@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.test.ts
-- Generated At: 2026-10-13T19:38:16.151Z
+- Generated At: 2026-10-14T16:02:17.807Z
 
 ## Authored
 ### Purpose
@@ -23,11 +23,16 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `d3-force-3d` - `forceLink`
 - [`layout-presets.applyLayoutPreset`](../layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
+- [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
+- [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
+- [`forceGraphLayout.pullingLinkForce`](./forceGraphLayout.ts.mdmd.md#symbol-pullinglinkforce)
 - [`forceGraphLayout.simulateSpatialLayout`](./forceGraphLayout.ts.mdmd.md#symbol-simulatespatiallayout)
 - [`forceGraphLayout.spatialLinkDistance`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallinkdistance)
 - [`forceGraphLayout.spatialNodeRadius`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
+- [`forceGraphLayout.spatialNodeValue`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnodevalue)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

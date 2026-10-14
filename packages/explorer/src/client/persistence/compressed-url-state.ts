@@ -18,9 +18,9 @@
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
-import { readPerspective, readView } from "./navigation";
+import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
-import type { LocalMapPerspective, ViewName } from "../types";
+import type { LocalMapPerspective, SpatialLayout, ViewName } from "../types";
 import { commitUrl } from "./history";
 import type { PinSet } from "../views/pin-state";
 import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/pin-state";
@@ -65,10 +65,8 @@ export interface CompressedPayload {
   d?: string[];
   /** Oldest-first retained-item identities, interleaving file/symbol pins and directory openings. */
   o?: string[];
-  /** Whether containment nodes participate in the spatial graph. */
-  g?: boolean;
-  /** Containment links remain drawn when no directory is hovered or focused. */
-  j?: boolean;
+  /** The 3D Local Map's layout; omitted for the connections layout (2026-10-14). */
+  y?: SpatialLayout;
   /** Shared packing and spatial encoding settings, including advanced edits. */
   l?: LayoutSettings;
 }
@@ -83,12 +81,14 @@ export interface CompressedPayload {
 export interface UrlStateSnapshot {
   view: ViewName;
   perspective: LocalMapPerspective;
+  /** The 3D Local Map's layout, remembered and shared like the perspective. */
+  spatialLayout: SpatialLayout;
   selectedNodeId: string | null;
   pinSet: PinSet;
   /** The directories opened in the Local Map; folder navigation is a history step, while pin edits remain within it. */
   openDirectories: ReadonlySet<string>;
   retentionOrder?: readonly string[];
-  filters: { showTests: boolean; showAssets: boolean; showRelatedDocs?: boolean; showDirectories?: boolean; showDirectoryLinks?: boolean };
+  filters: { showTests: boolean; showAssets: boolean; showRelatedDocs?: boolean };
   /** Absent on older links; those retain the viewer's existing preferences. */
   layout?: LayoutSettings;
 }
@@ -97,6 +97,7 @@ export interface UrlStateSnapshot {
 export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   view: "map",
   perspective: "2d",
+  spatialLayout: "connections",
   selectedNodeId: null,
   pinSet: EMPTY_PIN_SET,
   openDirectories: new Set(),
@@ -114,8 +115,6 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   const layout = readLayoutSettings(snapshot.layout);
   if (layout) payload.l = layout;
   if (typeof snapshot.filters.showRelatedDocs === "boolean") payload.r = snapshot.filters.showRelatedDocs;
-  if (typeof snapshot.filters.showDirectories === "boolean") payload.g = snapshot.filters.showDirectories;
-  if (typeof snapshot.filters.showDirectoryLinks === "boolean") payload.j = snapshot.filters.showDirectoryLinks;
   if (snapshot.retentionOrder?.length) {
     payload.o = [...reconcileRetained({
       pins: snapshot.pinSet,
@@ -128,6 +127,7 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
     payload.w = snapshot.view;
   }
   if (snapshot.perspective !== DEFAULT_SNAPSHOT.perspective) payload.q = snapshot.perspective;
+  if (snapshot.spatialLayout !== DEFAULT_SNAPSHOT.spatialLayout) payload.y = snapshot.spatialLayout;
   if (snapshot.selectedNodeId) {
     payload.n = snapshot.selectedNodeId;
   }
@@ -159,6 +159,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
 
   const view = readView(payload.w);
   const perspective = readPerspective(payload.q, payload.w);
+  const spatialLayout = readSpatialLayout(payload.y);
   const selectedNodeId = payload.n ?? null;
   const pinSet = payload.p ? deserializePins(payload.p) : EMPTY_PIN_SET;
   const legacyDirectories = payload.v === 1 && (!payload.w || payload.w === "membrane" || payload.w === "circuit")
@@ -168,14 +169,12 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     ? { showTests: payload.f[0] === 1, showAssets: payload.f[1] === 1 }
     : { ...DEFAULT_SNAPSHOT.filters };
   if (typeof payload.r === "boolean") filters.showRelatedDocs = payload.r;
-  if (typeof payload.g === "boolean") filters.showDirectories = payload.g;
-  if (typeof payload.j === "boolean") filters.showDirectoryLinks = payload.j;
   const retentionOrder = Array.isArray(payload.o)
     ? payload.o.filter((key): key is string => typeof key === "string") : undefined;
 
   const layout = readLayoutSettings(payload.l);
   return {
-    view, perspective, selectedNodeId, pinSet, openDirectories, filters,
+    view, perspective, spatialLayout, selectedNodeId, pinSet, openDirectories, filters,
     ...(retentionOrder ? { retentionOrder } : {}),
     ...(layout ? { layout } : {})
   };

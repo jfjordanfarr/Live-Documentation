@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-14T02:49:18.726Z
+- Generated At: 2026-10-14T16:02:17.713Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `membraneDepth` (2026-10-07, later in the day): how many levels of directory below the retained files' common directory are membranes, null for every level; the layout lab's lever for pricing the membrane rule, read by the page so the lab can verify it there.
 - `membraneEvenness` (1 by default) and `rowLevelness` (0) since 2026-10-07: what the placement charges for a step in a membrane's outline between neighbouring columns and for a difference between the tops of a membrane's k-th cards in neighbouring columns, in units of a one-reference wire's pixel; the owner's ask for a force against membrane unevenness, as levers of the layout lab.
 - `ExplorerState.openDirectories` (2026-10-08): the directories opened in the Local Map, retained with the pins across perspectives and carried by the share link.
+- `SpatialLayout` and `ExplorerState.spatialLayout` (2026-10-14): how the 3D Local Map places its files, by their analyzed references (`connections`) or by their declared directories (`structure`), remembered like the perspective and carried by the share link; the two directory filters of that morning are gone.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -45,16 +46,24 @@ The three navigable Explorer views. Local Map has two representations.
 ##### `LocalMapPerspective` — Summary
 The remembered representation of the Local Map.
 
+#### `SpatialLayout` {#symbol-spatiallayout}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L14)
+
+##### `SpatialLayout` — Summary
+How the 3D Local Map places its files: by their analyzed references, the emergent network of what the code does, or by
+their declared directories, the emergent tree of what the file system says (the owner's distinction, 2026-10-14).
+
 #### `ExplorerFilters` {#symbol-explorerfilters}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L11)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L17)
 
 ##### `ExplorerFilters` — Summary
 Toggle flags for the Explorer filter panel.
 
 #### `BezierTuning` {#symbol-beziertuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L25)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L27)
 
 ##### `BezierTuning` — Summary
 Cubic-Bézier connection path tuning parameters.
@@ -62,7 +71,7 @@ Exposed in the Explorer tuning panel (2025-12-05, commit `9047949`).
 
 #### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L37)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L39)
 
 ##### `LocalMapTuning` — Summary
 Tuning knobs specific to the two-dimensional Local Map.
@@ -71,7 +80,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L132)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L134)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -80,21 +89,21 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L135)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L137)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L142)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L144)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L161)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L163)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -102,7 +111,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L177)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L181)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

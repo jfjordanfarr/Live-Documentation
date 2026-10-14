@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-14T04:03:00.977Z
+- Generated At: 2026-10-14T16:02:17.282Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Bootstrap entry point for the Explorer client: loads the bundle, projects its gr
 - Exposes `window.switchView`, `window.openInEditor`, and zoom controls to the HTML template.
 - The initial node (from the address, the stored place or the heuristic) is selected before the first drawing (`markSelected`, the selection's bookkeeping without a drawing, which `selectNode` also uses), so the page draws the focused picture once. Until 2026-10-06 it drew a default picture and then, a hundred milliseconds later, the focused one, and every load paid the Local Map's layout twice; found when the layout lab's verify pass read the page's second drawing ([Turn 12](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-12)).
 - The opened directories (2026-10-08, [the decisions log](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): read with the pins from the address at start and after Back, through `scrubSnapshot` with the `?dir=` door folded in, written with the pins by `persistExploration`; an address that opens a directory and names no file puts nothing in focus, so the directory draws alone rather than around a heuristic entry file.
+- The 3D layout (2026-10-14): two icon buttons after 3D in the bottom-centre control, Connections and Structure, shown only in 3D; `changeSpatialLayout` writes the address, so the change is a history step like a perspective change, and re-renders the spatial view, which re-settles from where it stands. The Show Directories and Directory Connections checkboxes of that morning went with it ([the owner's choice](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-4)).
 - The Knowledge Sources panel (2026-10-08) is rendered from the bundle's graph itself rather than the projected payload, and a file named on it goes to the detail panel through `focusSidebar`, which changes the focus without redrawing the view, so the panel keeps its open groups and its scroll.
 
 ## Generated
@@ -77,6 +78,7 @@ _No public symbols detected_
 - [`place.placeOf`](./persistence/place.ts.mdmd.md#symbol-placeof)
 - [`types.ExplorerState`](./types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
+- [`types.SpatialLayout`](./types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`forceGraphView.createForceGraphView`](./views/forceGraphView.ts.mdmd.md#symbol-createforcegraphview)
 - [`directory-state.under`](./views/localView/directory-state.ts.mdmd.md#symbol-under)

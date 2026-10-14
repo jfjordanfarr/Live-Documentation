@@ -4,18 +4,19 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.ts
-- Generated At: 2026-10-14T02:49:18.173Z
+- Generated At: 2026-10-14T16:02:17.503Z
 
 ## Authored
 ### Purpose
 
-Encodes portable exploration state: navigation view, Local Map representation, selected file, pins, opened directories and display filters. Reads earlier snapshots so existing links remain useful.
+Encodes portable exploration state: navigation view, Local Map representation and 3D layout, selected file, pins, opened directories and display filters. Reads earlier snapshots so existing links remain useful.
 
 ### Notes
 
 - Originated in Step 9 of the [March 23 Membrane Map implementation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md), using lz-string for comprehensive shareable state.
 - [View consolidation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4) introduced version 2. Version 1 Force Graph views become Local Map in 3D; Membrane/Circuit views become 2D, with their deepest opened directories retained. Retired camera and expanded-card fields are no longer emitted.
 - Explicit snapshots are always written, including an empty Local Map: a bare URL may instead land on a board. Data-source and path parameters survive writes. Missing files, directories and pins are scrubbed against the current graph.
+- The 3D layout (2026-10-14) rides the snapshot as `y`, written only for the structure layout. The directory flags `g` and `j` of that morning went with the checkboxes they served, unread rather than migrated: the owner said not to sweat backwards compatibility before a release.
 
 Optional layout settings carry both representations’ packing and spatial encoding controls, including Custom values. The optional related-documentation flag makes that force-graph input portable too. Earlier links without these fields retain existing preferences. Numeric settings are validated against their control ranges and increments before application. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
@@ -35,7 +36,7 @@ minimize serialized size while remaining readable in code.
 
 #### `UrlStateSnapshot` {#symbol-urlstatesnapshot}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L83)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L81)
 
 ##### `UrlStateSnapshot` — Summary
 Application-level state snapshot that maps 1:1 with the URL.
@@ -52,7 +53,7 @@ Default state for cold start (no URL parameter).
 
 #### `snapshotToPayload` {#symbol-snapshottopayload}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L112)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L113)
 - Returns: [`CompressedPayload`](#symbol-compressedpayload)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
@@ -72,7 +73,7 @@ Applies version migrations and defaults for missing fields.
 
 #### `compressSnapshot` {#symbol-compresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L187)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L186)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `compressSnapshot` — Summary
@@ -80,7 +81,7 @@ Compress a snapshot into a URL-safe string.
 
 #### `decompressSnapshot` {#symbol-decompresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L196)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L195)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `decompressSnapshot` — Summary
@@ -89,7 +90,7 @@ Returns the default snapshot if decompression or parsing fails.
 
 #### `scrubSnapshot` {#symbol-scrubsnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L216)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L215)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot); `nodesById`: `ReadonlyMap`
 
@@ -102,7 +103,7 @@ Pure function — returns a new snapshot; does not mutate the input.
 
 #### `readUrlState` {#symbol-readurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L259)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L258)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `readUrlState` — Summary
@@ -111,7 +112,7 @@ Falls back to defaults if no `?s=` parameter is present.
 
 #### `writeUrlState` {#symbol-writeurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L270)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L269)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `writeUrlState` — Summary
@@ -126,8 +127,10 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 - [`layout-presets.readLayoutSettings`](../layout-presets.ts.mdmd.md#symbol-readlayoutsettings)
 - [`history.commitUrl`](./history.ts.mdmd.md#symbol-commiturl)
 - [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
+- [`navigation.readSpatialLayout`](./navigation.ts.mdmd.md#symbol-readspatiallayout)
 - [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)
 - [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective) (type-only)
+- [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`pin-state.EMPTY_PIN_SET`](../views/pin-state.ts.mdmd.md#symbol-empty_pin_set) (type-only)
 - [`pin-state.PinSet`](../views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)

@@ -1,8 +1,8 @@
 /** URL navigation and the remembered Local Map representation. */
-import type { LocalMapPerspective, ViewName } from "../types";
+import type { LocalMapPerspective, SpatialLayout, ViewName } from "../types";
 import { decompressSnapshot, compressSnapshot } from "./compressed-url-state";
 import { commitUrl } from "./history";
-import { readPerspective, readView } from "./navigation";
+import { readPerspective, readSpatialLayout, readView } from "./navigation";
 
 /** The Local Map keeps its established `view=local` address. */
 const viewNameToUrl = (name: ViewName): string => name === "map" ? "local" : name;
@@ -11,6 +11,8 @@ const viewNameToUrl = (name: ViewName): string => name === "map" ? "local" : nam
 export interface InitialUrlState {
   view: ViewName;
   perspective: LocalMapPerspective | null;
+  /** The 3D layout an explicit Local Map link names; null outside one, like the perspective. */
+  spatialLayout: SpatialLayout | null;
   nodeId: string | null;
   openDirectories: ReadonlySet<string>;
   hasUrlState: boolean;
@@ -22,18 +24,20 @@ export function parseNavigation(search: string): InitialUrlState {
   const compressed = params.get("s");
   if (compressed) {
     const snapshot = decompressSnapshot(compressed);
-    return { view: snapshot.view, perspective: snapshot.perspective, nodeId: snapshot.selectedNodeId,
+    return { view: snapshot.view, perspective: snapshot.perspective, spatialLayout: snapshot.spatialLayout, nodeId: snapshot.selectedNodeId,
       openDirectories: snapshot.openDirectories, hasUrlState: true };
   }
   const view = params.get("view");
   const node = params.get("node");
   const directory = params.get("dir");
   const mode = params.get("mode");
-  const hasUrlState = view !== null || node !== null || directory !== null || mode !== null;
+  const layout = params.get("layout");
+  const hasUrlState = view !== null || node !== null || directory !== null || mode !== null || layout !== null;
   const local = hasUrlState && readView(view) === "map";
   return {
     view: readView(view),
     perspective: local || mode !== null ? readPerspective(mode, view) : null,
+    spatialLayout: local || layout !== null ? readSpatialLayout(layout) : null,
     nodeId: node,
     openDirectories: new Set(directory !== null ? [directory.replace(/\/+$/u, "")] : []),
     hasUrlState
@@ -43,16 +47,17 @@ export function parseNavigation(search: string): InitialUrlState {
 /** URL navigation takes precedence over saved navigation. A board chooses World Map on a fresh visit. */
 export const parseInitialState = (): InitialUrlState => parseNavigation(window.location.search);
 
-/** Write view, subject and representation together, preserving paths and exploration state. */
-export function updateUrlState(view: ViewName, nodeId: string | null, perspective: LocalMapPerspective): void {
+/** Write view, subject, representation and 3D layout together, preserving paths and exploration state. */
+export function updateUrlState(view: ViewName, nodeId: string | null, perspective: LocalMapPerspective, spatialLayout: SpatialLayout): void {
   const url = new URL(window.location.href);
   const params = url.searchParams;
   const compressed = params.get("s");
   if (compressed) {
-    params.set("s", compressSnapshot({ ...decompressSnapshot(compressed), view, perspective, selectedNodeId: nodeId }));
+    params.set("s", compressSnapshot({ ...decompressSnapshot(compressed), view, perspective, spatialLayout, selectedNodeId: nodeId }));
   }
   params.set("view", viewNameToUrl(view));
   params.set("mode", perspective);
+  params.set("layout", spatialLayout);
   if (nodeId) params.set("node", nodeId);
   else params.delete("node");
   commitUrl(`${url.pathname}?${params.toString()}`);

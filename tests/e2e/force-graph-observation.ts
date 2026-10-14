@@ -37,14 +37,14 @@ export async function observeGraph(page: Page): Promise<void> {
   });
 }
 
-/** Read native node identity, world/screen coordinates and actual material opacity. */
+/** Read native node identity, world/screen coordinates, actual material opacity and the rendered sphere's radius. */
 export async function renderedNodes(page: Page) {
   return page.evaluate(() => {
     const observed = (window as unknown as ObservedWindow).renderedGraph!;
     const rect = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
     const nodes: Array<{
       id: string; name: string; directory?: string; files?: number;
-      x: number; y: number; depth: number; distance: number; opacity: number;
+      x: number; y: number; depth: number; distance: number; opacity: number; radius: number;
       world: { x: number; y: number; z: number };
     }> = [];
     observed.scene.traverse(object => {
@@ -52,6 +52,7 @@ export async function renderedNodes(page: Page) {
       if (mesh.__graphObjType !== "node" || !mesh.__data?.id || Array.isArray(mesh.material)) return;
       const position = mesh.getWorldPosition(mesh.position.clone());
       const projected = position.clone().project(observed.camera);
+      if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
       nodes.push({
         id: mesh.__data.id,
         name: mesh.__data.name ?? mesh.__data.id,
@@ -62,6 +63,7 @@ export async function renderedNodes(page: Page) {
         depth: projected.z,
         distance: position.distanceTo(observed.camera.position),
         opacity: mesh.material.opacity,
+        radius: (mesh.geometry.boundingSphere?.radius ?? 0) * mesh.scale.x,
         world: { x: position.x, y: position.y, z: position.z }
       });
     });

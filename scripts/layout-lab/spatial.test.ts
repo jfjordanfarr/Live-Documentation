@@ -33,14 +33,18 @@ it("keeps explicitly retained tests/assets and can include the same documentatio
   expect(() => spatialReport(graph, { ...run, scope: ["gone"] }, getDefaultTuning().forceGraph)).toThrow("no retained file");
 });
 
-it("reports containment separately and holds the forces fixed when membership-line visibility changes", () => {
-  const filters = { showTests: true, showAssets: false, showDirectories: true };
-  const hidden = spatialReport(graph, run, getDefaultTuning().forceGraph, 100, { ...filters, showDirectoryLinks: false });
-  const visible = spatialReport(graph, run, getDefaultTuning().forceGraph, 100, { ...filters, showDirectoryLinks: true });
-  expect(hidden.nodes).toEqual(visible.nodes);
-  expect(hidden.links).toEqual(visible.links);
-  expect(hidden.nodes.filter(node => node.kind === "directory")).toHaveLength(1);
-  expect(hidden.links.filter(link => link.kind === "containment")).toHaveLength(3);
-  expect(hidden.links.filter(link => link.kind === "containment").every(link => link.references === null)).toBe(true);
-  expect(hidden.links.find(link => link.kind !== "containment")?.references).toBe(4);
+it("reports the declared structure separately, with hubs sized by their members and references that pull nothing", () => {
+  const tuning = getDefaultTuning().forceGraph;
+  const filters = { showTests: false, showAssets: false };
+  const tree = spatialReport(graph, run, tuning, 100, filters, [], "structure");
+  const network = spatialReport(graph, run, tuning, 100, filters);
+  expect(tree.layout).toBe("structure");
+  expect(tree.nodes.filter(node => node.kind === "directory")).toEqual([
+    expect.objectContaining({ id: "directory:", directory: "", files: 2, radius: 4 * Math.cbrt(8 + 1) })
+  ]);
+  expect(tree.links.filter(link => link.kind === "containment")).toHaveLength(2);
+  expect(tree.links.filter(link => link.kind === "containment").every(link => link.references === null && link.pulls)).toBe(true);
+  expect(tree.links.find(link => link.kind !== "containment")).toMatchObject({ references: 4, pulls: false });
+  expect(network.nodes.every(node => node.kind !== "directory")).toBe(true);
+  expect(network.links).toEqual([expect.objectContaining({ source: "a", target: "b", references: 4, pulls: true })]);
 });

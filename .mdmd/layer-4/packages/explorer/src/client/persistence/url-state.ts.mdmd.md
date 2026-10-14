@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-10-12T19:35:22.059Z
+- Generated At: 2026-10-14T16:02:17.616Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ Manages URL-based state persistence for the Explorer. Parses initial state from 
 - The original query parser was extracted on December 19, 2025. Current links explicitly name the navigation view and Local Map mode; the caller chooses World Map for fresh board-backed bundles.
 - The viewer-configuration fallback in `parseInitialState()` went on 2026-09-28: nothing wrote one.
 - `?dir=<path>` (2026-10-08): the door into a directory with no file in focus, read into `InitialUrlState.openDirectories` beside a snapshot's `d`; a trailing slash is dropped. Once the person acts, the opened set rides the compressed exploration state.
+- `?layout=connections|structure` (2026-10-14): the 3D layout in the plain address beside `mode`, read into `InitialUrlState.spatialLayout` like the perspective and written by `updateUrlState` with it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -28,7 +29,7 @@ Navigation read from an address. An omitted perspective outside Local Map uses t
 
 #### `parseNavigation` {#symbol-parsenavigation}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L20)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L22)
 - Returns: [`InitialUrlState`](#symbol-initialurlstate)
 
 ##### `parseNavigation` — Summary
@@ -36,18 +37,18 @@ Parse an address without consulting browser storage; an explicit Local Map link 
 
 #### `parseInitialState` {#symbol-parseinitialstate}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L44)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L48)
 
 ##### `parseInitialState` — Summary
 URL navigation takes precedence over saved navigation. A board chooses World Map on a fresh visit.
 
 #### `updateUrlState` {#symbol-updateurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L47)
-- Parameters: `view`: [`ViewName`](../types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L51)
+- Parameters: `view`: [`ViewName`](../types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective); `spatialLayout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `updateUrlState` — Summary
-Write view, subject and representation together, preserving paths and exploration state.
+Write view, subject, representation and 3D layout together, preserving paths and exploration state.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -56,7 +57,9 @@ Write view, subject and representation together, preserving paths and exploratio
 - [`compressed-url-state.decompressSnapshot`](./compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`history.commitUrl`](./history.ts.mdmd.md#symbol-commiturl)
 - [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
+- [`navigation.readSpatialLayout`](./navigation.ts.mdmd.md#symbol-readspatiallayout)
 - [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)
 - [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective) (type-only)
+- [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

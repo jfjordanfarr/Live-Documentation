@@ -7,15 +7,17 @@ export type ViewName = "map" | "sources" | "world";
 /** The remembered representation of the Local Map. */
 export type LocalMapPerspective = "2d" | "3d";
 
+/**
+ * How the 3D Local Map places its files: by their analyzed references, the emergent network of what the code does, or by
+ * their declared directories, the emergent tree of what the file system says (the owner's distinction, 2026-10-14).
+ */
+export type SpatialLayout = "connections" | "structure";
+
 /** Toggle flags for the Explorer filter panel. */
 export interface ExplorerFilters {
   showTests: boolean;
   showAssets: boolean;
   showRelatedDocs: boolean;
-  /** Optional containment nodes in the 3D Local Map. */
-  showDirectories?: boolean;
-  /** Draw containment links at rest as well as on directory hover/focus. */
-  showDirectoryLinks?: boolean;
 }
 
 /**
@@ -167,6 +169,8 @@ export interface ExplorerState {
   retentionOrder?: readonly string[];
   view: ViewName;
   perspective: LocalMapPerspective;
+  /** The 3D Local Map's layout, remembered like the perspective and carried by shared links. */
+  spatialLayout: SpatialLayout;
   selectedNode: ExplorerNodePayload | null;
   focusedNode: ExplorerNodePayload | null;
   filters: ExplorerFilters;

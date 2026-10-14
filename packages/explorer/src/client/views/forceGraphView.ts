@@ -4,8 +4,11 @@
  * Renders the 3D force-directed graph view for the Live Docs Explorer using
  * ForceGraph3D. Supports Related Documentation overlay nodes when enabled.
  *
- * File references and optional directory membership share the simulation;
- * retention and hover decide which parts of that graph receive attention.
+ * Two layouts share the renderer (2026-10-14): in the connections layout the
+ * documented references pull and are drawn; in the structure layout every file
+ * hangs from its directory's hub and the references pull nothing, drawn only
+ * for the hovered file or hub, the retained files and a path. Retention and
+ * hover decide which parts of either picture receive attention.
  */
 
 import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
@@ -281,7 +284,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function focusDirectory(directory: string): void {
     focusedDirectory = directory;
-    focusedId = state.filters.showDirectories ? directoryNodeId(directory) : null;
+    focusedId = state.spatialLayout === "structure" ? directoryNodeId(directory) : null;
     following = false;
     subjectAnchor = null;
     zoomMotion = null;
@@ -335,7 +338,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     };
 
     const filteredNodes = graphData.nodes.filter(includeNode);
-    const data = spatialGraphOf(graphData, includeNode, state.filters.showRelatedDocs ? relatedDocLinks : [], !!state.filters.showDirectories);
+    const data = spatialGraphOf(graphData, includeNode, state.filters.showRelatedDocs ? relatedDocLinks : [], state.spatialLayout);
     const graphNodes: ForceGraphNode[] = data.nodes.map(node => {
       const cached = nodeCache.get(node.id);
       return cached ? Object.assign(cached, node) : node;
@@ -345,10 +348,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
     const updateForces = (): void => {
       const instance = forceGraphInstance!;
-      const nextSettings = JSON.stringify(state.tuning.forceGraph);
+      const nextSettings = JSON.stringify([state.tuning.forceGraph, state.spatialLayout]);
       if (forceSettings === nextSettings) return;
       const subjectId = focusedDirectory !== null
-        ? state.filters.showDirectories ? directoryNodeId(focusedDirectory) : null
+        ? state.spatialLayout === "structure" ? directoryNodeId(focusedDirectory) : null
         : (state.focusedNode ?? state.selectedNode)?.id;
       const anchor = subjectId ? getSubjectAnchor(subjectId) : null;
       const tuning = { ...state.tuning.forceGraph };
@@ -360,9 +363,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       configureSpatialForces<ForceGraphNode>({
         get: name => instance.d3Force(name),
         set: (name, force) => { instance.d3Force(name, force); }
-      }, tuning);
+      }, tuning, state.spatialLayout);
       forceSettings = nextSettings;
-      container.dataset.layoutSettings = nextSettings;
+      container.dataset.layoutSettings = JSON.stringify(tuning);
+      container.dataset.spatialLayout = state.spatialLayout;
       container.setAttribute("aria-busy", "true");
       instance.d3ReheatSimulation();
       simulationRunning = true;
@@ -373,6 +377,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const node = graphNodes[index];
       graphNodes[index] = nodeCache.get(node.id) ?? node;
       nodeCache.set(node.id, graphNodes[index]);
+    }
+    // A hub new to the picture starts at the centroid of its members that already stand somewhere, and the files keep
+    // their places, so that the structure layout folds the network into the tree from where the eye left it.
+    for (const hub of graphNodes) {
+      if (hub.directoryPath === undefined || Number.isFinite(hub.x)) continue;
+      const placed = graphNodes.filter(node => node !== hub && Number.isFinite(node.x) && under(node.directoryPath ?? node.codeRelativePath, hub.directoryPath!));
+      if (!placed.length) continue;
+      hub.x = placed.reduce((sum, node) => sum + node.x!, 0) / placed.length;
+      hub.y = placed.reduce((sum, node) => sum + node.y!, 0) / placed.length;
+      hub.z = placed.reduce((sum, node) => sum + node.z!, 0) / placed.length;
     }
     const nextMembership = JSON.stringify([graphNodes.map(node => node.id), dataForGraph.links]);
     const present = new Set(graphNodes.map(node => node.id));
@@ -386,7 +400,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }
     if (focusedDirectory !== null) {
       const id = directoryNodeId(focusedDirectory);
-      focusedId = state.filters.showDirectories && present.has(id) ? id : null;
+      focusedId = state.spatialLayout === "structure" && present.has(id) ? id : null;
       if (focusLabel) {
         focusLabel.dataset.nodeId = focusedId ?? "";
         if (!focusedId) focusLabel.hidden = true;
@@ -412,6 +426,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       framedDirectoryScope = directoryScope;
     };
     const pathPairs = new Set(path?.slice(1).map((id, index) => JSON.stringify([id, path[index]].sort())));
+    const within = (id: string, directory: string): boolean => {
+      const node = nodeCache.get(id);
+      return !!node && under(node.directoryPath ?? node.codeRelativePath, directory);
+    };
     updateAttention = (): void => {
       // Hover is a temporary look at a file's actual connections, including a
       // file outside the retained scope. Leaving restores the current pins,
@@ -437,7 +455,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         hovered,
         path ?? null,
         directoryAttention ?? null,
-        !!state.filters.showDirectoryLinks
+        state.spatialLayout
       ]);
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
@@ -449,20 +467,21 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
         const visible = hovered ? a === hovered || b === hovered
           : path?.length ? pathPairs.has(JSON.stringify([a, b].sort())) : !attention || (attention.has(a) && attention.has(b));
-        if (link.kind === "containment") return `rgba(233, 152, 77, ${visible ? 0.25 : 0.04})`;
-        return link.kind === "related-doc"
-          ? `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`
-          : `rgba(255, 255, 255, ${visible ? 0.2 : 0.025})`;
+        // Containment is the structure itself, drawn as a line; a reference revealed in the structure layout reads
+        // against the tree rather than as the faint web of the connections layout.
+        if (link.kind === "containment") return `rgba(233, 152, 77, ${visible ? 0.35 : 0.08})`;
+        if (link.kind === "related-doc") return `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`;
+        return state.spatialLayout === "structure" ? `rgba(255, 255, 255, ${visible ? 0.5 : 0})` : `rgba(255, 255, 255, ${visible ? 0.2 : 0.025})`;
       });
       forceGraphInstance?.linkVisibility(link => {
-        if (link.kind !== "containment" || state.filters.showDirectoryLinks) return true;
+        if (state.spatialLayout !== "structure" || link.kind === "containment") return true;
+        // In the structure layout a reference is drawn on demand: for the hovered file, within and out of the hovered
+        // hub's subtree, among the retained files, and along a path.
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
-        if (hovered && (a === hovered || b === hovered)) return true;
-        if (directoryAttention === undefined) return false;
-        const source = nodeCache.get(a), target = nodeCache.get(b);
-        return !!source && !!target
-          && under(source.directoryPath ?? source.codeRelativePath, directoryAttention)
-          && under(target.directoryPath ?? target.codeRelativePath, directoryAttention);
+        if (hoveredDirectory !== undefined) return within(a, hoveredDirectory) || within(b, hoveredDirectory);
+        if (hovered) return a === hovered || b === hovered;
+        if (path?.length) return pathPairs.has(JSON.stringify([a, b].sort()));
+        return !!attention && attention.has(a) && attention.has(b);
       });
     };
 
@@ -509,12 +528,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       })
       .linkLabel(link => link.kind === "containment" ? "Directory membership"
         : `${link.count} ${link.kind === "related-doc" ? "documentation" : "documented"} ${link.count === 1 ? "reference" : "references"}`)
-      .linkWidth(link => {
-        if (link.kind === "related-doc" || link.kind === "containment") {
-          return 0.5;
-        }
-        return 1;
-      });
+      .linkWidth(link => link.kind === "related-doc" ? 0.5 : 1);
     updateAttention();
     updateForces();
     membership = nextMembership;

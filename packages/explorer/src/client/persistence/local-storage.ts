@@ -5,9 +5,9 @@
  * state (view, node selection) across browser sessions.
  */
 
-import { readPerspective, readView } from "./navigation";
+import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
-import type { LocalMapPerspective, ExplorerFilters, SymbolOrder, TuningConfig, ViewName } from "../types";
+import type { LocalMapPerspective, ExplorerFilters, SpatialLayout, SymbolOrder, TuningConfig, ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -32,9 +32,7 @@ export type PersistedUiV1 = {
 export const getDefaultFilters = (): ExplorerFilters => ({
   showTests: true,
   showAssets: false,
-  showRelatedDocs: false,
-  showDirectories: false,
-  showDirectoryLinks: false
+  showRelatedDocs: false
 });
 
 /** Returns the factory-default tuning configuration for bezier curves and the local-map layout. */
@@ -134,14 +132,10 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
       const showTests = readBoolean(parsedFilters.showTests);
       const showAssets = readBoolean(parsedFilters.showAssets);
       const showRelatedDocs = readBoolean(parsedFilters.showRelatedDocs);
-      const showDirectories = readBoolean(parsedFilters.showDirectories);
-      const showDirectoryLinks = readBoolean(parsedFilters.showDirectoryLinks);
       result.filters = {
         ...(showTests !== undefined ? { showTests } : null),
         ...(showAssets !== undefined ? { showAssets } : null),
-        ...(showRelatedDocs !== undefined ? { showRelatedDocs } : null),
-        ...(showDirectories !== undefined ? { showDirectories } : null),
-        ...(showDirectoryLinks !== undefined ? { showDirectoryLinks } : null)
+        ...(showRelatedDocs !== undefined ? { showRelatedDocs } : null)
       };
     }
 
@@ -307,6 +301,8 @@ export type PersistedNavV1 = {
   version: typeof PERSISTED_NAV_VERSION;
   view?: ViewName;
   perspective?: LocalMapPerspective;
+  /** The 3D Local Map's layout, remembered with the perspective (2026-10-14). */
+  spatialLayout?: SpatialLayout;
   openDirectories?: string[];
   nodeId?: string | null;
 };
@@ -339,6 +335,7 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
 
     const view = typeof viewCandidate === "string" ? readView(viewCandidate) : undefined;
     const perspective = readPerspective(parsed.perspective, viewCandidate);
+    const spatialLayout = readSpatialLayout(parsed.spatialLayout);
     const openDirectories = Array.isArray(parsed.openDirectories)
       ? parsed.openDirectories.filter((entry): entry is string => typeof entry === "string") : [];
 
@@ -349,6 +346,7 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
       version: PERSISTED_NAV_VERSION,
       ...(view ? { view } : null),
       perspective,
+      spatialLayout,
       openDirectories,
       ...(nodeId !== undefined ? { nodeId } : null)
     };
@@ -409,7 +407,7 @@ export const createPersistUiScheduler = (
  * Writes view and focused node to localStorage after a 150ms debounce.
  */
 export const createPersistNavScheduler = (
-  getState: () => { view: ViewName; perspective: LocalMapPerspective; openDirectories: ReadonlySet<string>; focusedNodeId: string | null; selectedNodeId: string | null }
+  getState: () => { view: ViewName; perspective: LocalMapPerspective; spatialLayout: SpatialLayout; openDirectories: ReadonlySet<string>; focusedNodeId: string | null; selectedNodeId: string | null }
 ): PersistNavScheduler => {
   let timer: number | null = null;
 
@@ -426,6 +424,7 @@ export const createPersistNavScheduler = (
             version: PERSISTED_NAV_VERSION,
             view: state.view,
             perspective: state.perspective,
+            spatialLayout: state.spatialLayout,
             openDirectories: [...state.openDirectories],
             nodeId: state.focusedNodeId ?? state.selectedNodeId ?? null
           };

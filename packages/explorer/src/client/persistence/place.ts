@@ -1,6 +1,6 @@
 /**
  * The place an Explorer address names, as a key two addresses can be compared by: the view, the file in focus, the
- * folders open in the Local Map, its representation, and the ends of a path. Pins, pan, zoom and filters are left out;
+ * folders open in the Local Map, its representation and 3D layout, and the ends of a path. Pins, pan, zoom and filters are left out;
  * they change what a place shows, not where the person is.
  */
 
@@ -16,5 +16,5 @@ export function placeOf(search: string): string {
   const from = params.get("from") ?? "";
   const to = params.get("to") ?? "";
   const path = from && to ? [from, params.get("fromSymbol") ?? "", to, params.get("toSymbol") ?? ""] : [];
-  return JSON.stringify([view, view === "map" ? navigation.perspective : null, node, folders, path]);
+  return JSON.stringify([view, view === "map" ? navigation.perspective : null, view === "map" ? navigation.spatialLayout : null, node, folders, path]);
 }

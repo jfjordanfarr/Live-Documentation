@@ -1,7 +1,8 @@
+import { forceLink } from "d3-force-3d";
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
-import { simulateSpatialLayout, spatialLinkDistance, spatialNodeRadius, type SpatialNode } from "./forceGraphLayout";
+import { linkPulls, pullingLinkForce, simulateSpatialLayout, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
 import { getDefaultTuning } from "../persistence/local-storage";
 
 const node = (id: string, symbols: number): SpatialNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, index) => `symbol${index}`) });
@@ -17,6 +18,16 @@ describe("spatial layout grammar", () => {
     expect(spatialNodeRadius(node("many", 63), compact.forceGraph)).toBe(16);
   });
 
+  it("gives a directory hub the volume of its members, so that size is exposed surface at every scale", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    const hub: SpatialNode = { id: "directory:a", publicSymbols: [], containedSymbolCounts: [0, 7, 63] };
+    expect(spatialNodeValue(hub, tuning)).toBe(1 + 8 + 64);
+    expect(spatialNodeValue(hub, tuning)).toBe([0, 7, 63].reduce((sum, count) => sum + spatialNodeValue(node("file", count), tuning), 0));
+    expect(spatialNodeRadius(hub, tuning)).toBeCloseTo(4 * Math.cbrt(73));
+    expect(spatialNodeValue(hub, { ...tuning, symbolScale: 0 })).toBe(3);
+    expect(spatialNodeValue({ ...hub, containedSymbolCounts: [] }, tuning)).toBe(1);
+  });
+
   it("uses a diminishing surface gap and incorporates both endpoint radii", () => {
     const tuning = getDefaultTuning().forceGraph;
     const source = node("a", 0), target = node("b", 7);
@@ -27,6 +38,33 @@ describe("spatial layout grammar", () => {
     expect(distance(2) - distance(4)).toBeLessThan(distance(1) - distance(2));
     expect(spatialLinkDistance({ source, target, count: 50 }, { ...tuning, coupling: 0 })).toBe(distance(1));
     expect(spatialLinkDistance({ source, target, count: 500 }, { ...tuning, linkGap: 8, coupling: 3, collisionGap: 20 })).toBe(32);
+  });
+
+  it("gives the link force only the links that pull in a layout, so that the others neither pull nor count", () => {
+    const containment: SpatialLink[] = [
+      { source: "directory:", target: "a", count: 1, kind: "containment" },
+      { source: "directory:", target: "b", count: 1, kind: "containment" }
+    ];
+    const reference: SpatialLink = { source: "a", target: "b", count: 50, kind: "dependency" };
+    const links = [...containment, reference];
+    expect(links.map(link => linkPulls(link, "structure"))).toEqual([true, true, false]);
+    expect(links.map(link => linkPulls(link, "connections"))).toEqual([false, false, true]);
+    const inner = forceLink<SpatialNode, SpatialLink>();
+    const tree = pullingLinkForce(inner, "structure");
+    tree.links(links);
+    expect(inner.links()).toEqual(containment);
+    expect(tree.links()).toEqual(links);
+    const network = pullingLinkForce(tree, "connections");
+    expect(inner.links()).toEqual([reference]);
+    expect(network.links()).toEqual(links);
+    const tuning = getDefaultTuning().forceGraph;
+    const nodes: SpatialNode[] = [{ id: "directory:", publicSymbols: [], containedSymbolCounts: [3, 7] }, node("a", 3), node("b", 7)];
+    const declared = simulateSpatialLayout(nodes, links, tuning, 300, "structure");
+    expect(declared.nodes).toEqual(simulateSpatialLayout(nodes, containment, tuning, 300, "structure").nodes);
+    expect(declared.links.every(link => typeof link.source !== "string" && typeof link.target !== "string")).toBe(true);
+    const analyzed = simulateSpatialLayout(nodes, links, tuning, 300, "connections");
+    expect(separation(analyzed.nodes.slice(1))).toBeLessThan(separation(declared.nodes.slice(1)));
+    expect(nodes.every(file => file.x === undefined)).toBe(true);
   });
 
   it("actually settles more strongly coupled pairs closer, and Compact tighter, using the shared engine", () => {

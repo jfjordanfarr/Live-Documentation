@@ -137,6 +137,7 @@ describe("compress/decompress round-trip", () => {
     const original: UrlStateSnapshot = {
       view: "map",
       perspective: "3d",
+      spatialLayout: "structure",
       selectedNodeId: "packages/server/src/index.ts",
       pinSet: {
         entries: [
@@ -154,6 +155,7 @@ describe("compress/decompress round-trip", () => {
 
     expect(restored.view).toBe(original.view);
     expect(restored.perspective).toBe("3d");
+    expect(restored.spatialLayout).toBe("structure");
     expect(restored.selectedNodeId).toBe(original.selectedNodeId);
     expect([...restored.openDirectories].sort()).toEqual(["packages/client", "packages/server/src"]);
     expect(restored.pinSet.entries).toHaveLength(3);
