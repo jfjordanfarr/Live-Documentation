@@ -1068,3 +1068,442 @@ the attribute fix, logging to the scratchpad" completed (exit code 0)
      left from. Today a searched file is a subject, not a pin, so on that
      reading a person must pin something before they can ask for a path from it.
   2. Symbols as rows in the results, as above, or the dropdowns kept.
+
+❯ >The 3D renderer reports busy for about 16 seconds after every switch,
+  because the library's cooldown is a clock rather than the simulation's own
+  settling. The 3D browser specs wait on it.
+
+  Hmmm interesting. In my case I see big pauses switching from 2D to 3D but
+  lower than 16 seconds. Closer to like... 2-6 seconds?
+
+  >The footer says "617 missing dependencies". They are imports of packages and
+  builtins, references with no target inside the scan. Nothing is missing, and
+  the word tells a reader something is broken.
+
+  Oh man that is nagging isn't it?
+
+  >Your picture shows the map dark behind the path bar. If that was not just
+  mid-load, send me the address and I will chase it.
+
+  That's just how it got styled (grimace).
+
+  >Where a path starts. The subject in the first field, which I recommend
+  because that is what the field shows and what the reverse link swaps.
+
+  First field, but let's maybe have that field update as we click around
+  pinning things? (i.e. field value = most recent pin...?)
+
+  >Symbols as rows in the results, as above, or the dropdowns kept.
+
+  Can we group in some way? Group by directory, group by node, then have
+  symbols? Might need expandable? But yes we want symbols as things we can
+  search. Clicking such a search result should pin it, be it a symbol, a node,
+  or a directory.
+
+● Recording your answers and my Turn 5 reply first, then reading the pin,
+  retention and persistence code the build touches.
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ Omg I should say, that the sweeping majority of your response and plan I
+  agree with. I see that I tend to only comment on the things which are
+  contentious. I think your plan is extremely sound and reasonable.
+
+● Your mid-turn note is received and will go into the record with the rest of
+  this turn. I'm reading the pin and retention code now.
+
+  Searched for 3 patterns, read 1 file, ran 14 shell commands (ctrl+o to expand)
+
+● I'll now look at how stylesheets are bundled, the main layout, how deleted
+  sources are handled by the generator, and the spec helpers I can reuse.
+  · summary
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● The reads are complete. I'm writing the file plan into the record as a
+  checkpoint, then building the pure search module and its tests first.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Pure modules pass. Now the DOM half: the field, the bar, the stylesheet and
+  the template, plus the small changes to the controller, the tray, the stats
+  and the CLI wording.
+
+  Read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● Fixing the three type errors: the view API gains the non-toggling pin, the
+  test literals gain the destination, then the build runs again.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The Explorer builds clean. Next: unit tests and lint in the background, both
+  bundles built for the look, and the browser specs rewritten meanwhile.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Build both Explorer bundles, logging to the scratchpad"
+completed (exit code 0)
+
+● Background command "Run the whole unit project, logging to the scratchpad"
+completed (exit code 0)
+
+● Background command "Lint the changed files, logging to the scratchpad"
+completed (exit code 0)
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● While the six specs run, I'm writing the design doc and decisions-log entries
+  and the look and pause-measurement scripts, which don't depend on the run.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Regenerate the Live Docs for the changed and new sources,
+logging to the scratchpad" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The stylesheet entry point still imports the deleted file instead of the new
+  one, so bar styles are missing. Fixing that import now, updating the mirrors'
+  notes, and re-checking the run. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Stop Task
+  ⎿  cat > tests/e2e/search-bar.spec.ts <<'EOF'
+     import { expect, test } from "@playwright/test";… · stopped
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● The screenshots confirm the failures were due to the missing stylesheet
+  import, causing the unstyled bar to sit at the corner while the 3D canvas
+  covered it. I'm now letting the corrected run finish while fixing an assertion
+  affected by my design change and logging the miss. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lint and audits can run while the specs do. Starting them, and checking the
+  spec run's progress.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Monitor(the corrected five-spec run's summary when it ends)
+  ⎿  Monitor started · task bcj3tck0x · timeout 900s
+
+● The build, unit tests and docs are done; three background checks are running:
+  the corrected five-spec browser run, the Live Docs lint with the markdown and
+  symbol audits, and ESLint over the specs. Their results arrive as
+  notifications, and the look at both bundles, the pause measurement and the
+  still-picture spec follow them, since those need the machine to themselves.
+
+● 2 background commands completed
+
+  Read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● The stylesheet fix never applied: the import line uses url(...) and my
+  replacement pattern missed it. Fixing it for real, stopping the invalid run,
+  and rerunning.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Stop Task
+  ⎿  S=/tmp/claude-1000/-workspaces-Live-Documentation/d489ab09-fa63-4d41-b
+     784-7c36e5e36be8/scratchpad/search-bar && cp
+     test-results/force-graph-focus-search-m-8a3e4… · stopped
+● Stop Task
+  ⎿  S=/tmp/claude-1000/-workspaces-Live-Documentation/d489ab09-fa63-4d41-b
+     784-7c36e5e36be8/scratchpad/search-bar; until grep -q "E2E-EXIT"
+     $S/e2e-2.log 2>/dev/null;… · stopped
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Lint the zoom spec again, logging to the scratchpad"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The stylesheet is right this time, the link audit is clean, and the third run
+  of the five quick specs is under way; its completion notice will bring me back
+  to read it, after which the look, the pause measurement and the still-picture
+  spec follow.
+
+● Background command "Rerun the five quick specs on the corrected stylesheet,
+logging to the scratchpad" completed (exit code 0)
+
+  Read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● The fourth run of the five quick specs is going, with the lint of the edited
+  files beside it. Nothing else can proceed until it ends: the look, the pause
+  measurement and the still-picture spec all need the machine and the built
+  bundles to themselves. Its completion notice will bring me back.
+
+● Background command "Lint the three edited specs and the entry, logging to the
+scratchpad" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The import order is fixed and lint-clean. The fourth spec run is the only
+  thing outstanding now, and its completion notice will bring me back to read
+  it; the look, the pause measurement and the still-picture spec follow it.
+
+● Background command "Bring the zoom spec's path assertions to the snapshot,
+then rerun the five quick specs, logging to the scratchpad" completed (exit code
+0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The path spec and then the still-picture spec are running in sequence, and the
+  look at both bundles runs beside them now that the build phase is done. Their
+  notices will bring me back; the pause measurement comes last, on an idle
+  machine.
+
+● Background command "Run the look at both bundles once the spec run's build is
+done, logging to the scratchpad" completed (exit code 0)
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● Background command "Run the look from inside the workspace so the browser
+package resolves, logging to the scratchpad" completed (exit code 0)
+
+  Read 6 files, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Give the estate part of the look a fresh browser context
+and rerun it, logging to the scratchpad" completed (exit code 0)
+
+  Read 5 files, ran 2 shell commands (ctrl+o to expand)
+
+● The look's pictures read right on both bundles: the bar in every view, grouped
+  results with symbol rows and folds, the chosen symbol pinned with the
+  destination field appearing, the reverse question and the drawn path in 2D and
+  3D. One styling fix came out of it: a directory found by its own name now
+  reads as a choosable heading rather than a file in the group above it. The
+  still-picture spec is still running with the path spec queued after it, then
+  the final look on the rebuilt bundle, the pause measurement and the full gate.
+
+● Background command "Make the directory-end assertion read the count it finds,
+then rerun the path spec and the still-picture spec in sequence, logging to the
+scratchpad" completed (exit code 0)
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The path spec reruns on the rebuilt bundle, the final look follows its build,
+  and the pause measurement runs once the machine is idle. Their notices bring
+  me back; then the pictures go into the screenshot record, the measurements
+  into a probe record, and the full gate runs.
+
+● Background command "After the still-picture spec ends, rerun the path spec,
+logging to the scratchpad" completed (exit code 0)
+
+  Read 3 files, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● The repository measurement is in: the page freezes for about 9.7 seconds from
+  the 3D click until the first frame on this machine, then the simulation runs
+  16 more seconds before it reports stopped. The estate runs are finishing; the
+  probe record, the cleanup and the full gate follow them.
+
+● Background command "After the rebuild, run the final look; after the spec run
+ends, measure the 2D-to-3D pause on the idle machine; log both to the
+scratchpad" completed (exit code 0)
+
+  Read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● The full gate is running: lint, both bundles, the unit and integration
+  projects, the Live Docs regeneration and audits, and all the browser specs.
+  Nothing in the tree may change until it has spoken, so the commit, the
+  direction note and the record's close wait on its notice. The commit message
+  is drafted in the scratchpad.
+
+● Background command "Run the full pre-commit gate with Playwright, logging to
+the scratchpad" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The search bar is built, gated and committed. The tree is clean.
+
+  ┌──────────┬───────────────────────────────────────────────────────────────┐
+  │  Commit  │                           Contents                            │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │          │ The bar, its tests, the regenerated and authored mirrors, the │
+  │ 096615fe │  design doc and decisions-log entry, the footer's new words,  │
+  │          │ and the evidence                                              │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ aa0aec34 │ Today's record and the direction note                         │
+  └──────────┴───────────────────────────────────────────────────────────────┘
+
+  What you get. One field at the top of every view, reached by Ctrl+P. A few
+  words find directories, files and symbols, listed grouped by directory, then
+  file, then the file's matched symbols. Choosing a row pins what it names and
+  makes it the newest pin, which the field keeps showing as you pin by clicking.
+  Once anything is pinned, a map marker and a second field appear for the end
+  of a path, and choosing there draws the path at once. The reverse question
+  still comes as a link when the files connect only the other way. The dialog,
+  the FROM and TO fields, the Find Path button, the symbol dropdowns and the
+  four loose address parameters are gone. The footer now says "references
+  outside the scan".
+
+  Calls I made on what you left open, for your eye in the screenshot record
+  (AI-Agent-Workspace/Screenshots/2026-10-14/README.md#one-search-bar-for-the-wh
+  ole-explorer-the-evening-of-october-14):
+  - A file's matched symbols are capped at five with a fold that lists the rest,
+    which is your "might need expandable".
+  - A directory can be either end of a path and stands for any file inside it.
+    On the estate, Contracts as the end answers in three files where
+    IPaymentHub.cs alone took four.
+  - Choosing a new subject in the bar while a destination stands re-asks the
+    path from it. Clicking the drawn picture leaves the path as before, so
+    pinning a hop's symbol still opens branches.
+  - Taking the reverse question pins the destination, since a path can only
+    start at a pin.
+  - Clicking a symbol of a file that is pinned whole toggles that symbol out, as
+    it did before, so the field then shows whichever pin is newest. If that
+    reads wrong to you, it is a one-line decision.
+
+  Your 2-to-6-second pause, measured in the probe record
+  (AI-Agent-Workspace/Probes/2026-10-14/perspective-pause/README.md). It is one
+  freeze of the page from the click to the first 3D frame. On this headless
+  machine it runs 9.7 seconds for this repository and 1.0 for the estate. The
+  cause is the 3D library's first picture, which runs a hundred simulation ticks
+  synchronously before it paints. The sixteen seconds I named earlier is a
+  separate thing, the cooldown clock during which the view reports busy. Nothing
+  was changed for either; the remedies are named there for a turn of their own.
+
+  Verification. The complete gate passed: 1,011 unit, 52 integration and 121
+  browser tests, with the audits clean. On the way, four spec runs taught me
+  things. My first fix of the stylesheet's import list did not apply because the
+  lines use url(...), and I misread the unchanged grep output as success, so
+  two runs failed for a missing stylesheet before the real one. A choice made
+  inside the map must select plainly rather than go through the perspective
+  change, or 3D holds the chosen file where it stood instead of centering it.
+  The results under a field had to stand above the path's report.
+
+● The search bar is built, gated and committed. The tree is clean.
+
+  ┌──────────┬───────────────────────────────────────────────────────────────┐
+  │  Commit  │                           Contents                            │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │          │ The bar, its tests, the regenerated and authored mirrors, the │
+  │ 096615fe │  design doc and decisions-log entry, the footer's new words,  │
+  │          │ and the evidence                                              │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ aa0aec34 │ Today's record and the direction note                         │
+  └──────────┴───────────────────────────────────────────────────────────────┘
+
+  What you get. One field at the top of every view, reached by Ctrl+P. A few
+  words find directories, files and symbols, listed grouped by directory, then
+  file, then the file's matched symbols. Choosing a row pins what it names and
+  makes it the newest pin, which the field keeps showing as you pin by clicking.
+  Once anything is pinned, a map marker and a second field appear for the end
+  of a path, and choosing there draws the path at once. The reverse question
+  still comes as a link when the files connect only the other way. The dialog,
+  the FROM and TO fields, the Find Path button, the symbol dropdowns and the
+  four loose address parameters are gone. The footer now says "references
+  outside the scan".
+
+  Calls I made on what you left open, for your eye in the screenshot record
+  (AI-Agent-Workspace/Screenshots/2026-10-14/README.md#one-search-bar-for-the-wh
+  ole-explorer-the-evening-of-october-14):
+  - A file's matched symbols are capped at five with a fold that lists the rest,
+    which is your "might need expandable".
+  - A directory can be either end of a path and stands for any file inside it.
+    On the estate, Contracts as the end answers in three files where
+    IPaymentHub.cs alone took four.
+  - Choosing a new subject in the bar while a destination stands re-asks the
+    path from it. Clicking the drawn picture leaves the path as before, so
+    pinning a hop's symbol still opens branches.
+  - Taking the reverse question pins the destination, since a path can only
+    start at a pin.
+  - Clicking a symbol of a file that is pinned whole toggles that symbol out, as
+    it did before, so the field then shows whichever pin is newest. If that
+    reads wrong to you, it is a one-line decision.
+
+  Your 2-to-6-second pause, measured in the probe record
+  (AI-Agent-Workspace/Probes/2026-10-14/perspective-pause/README.md). It is one
+  freeze of the page from the click to the first 3D frame. On this headless
+  machine it runs 9.7 seconds for this repository and 1.0 for the estate. The
+  cause is the 3D library's first picture, which runs a hundred simulation ticks
+  synchronously before it paints. The sixteen seconds I named earlier is a
+  separate thing, the cooldown clock during which the view reports busy. Nothing
+  was changed for either; the remedies are named there for a turn of their own.
+
+  Verification. The complete gate passed: 1,011 unit, 52 integration and 121
+  browser tests, with the audits clean. On the way, four spec runs taught me
+  things. My first fix of the stylesheet's import list did not apply because the
+  lines use url(...), and I misread the unchanged grep output as success, so
+  two runs failed for a missing stylesheet before the real one. A choice made
+  inside the map must select plainly rather than go through the perspective
+  change, or 3D holds the chosen file where it stood instead of centering it.
+  The results under a field had to stand above the path's report.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file
+     packages/explorer/src/client/persistence/compressed-url-state.ts
+  ⎿  Read packages/explorer/src/client/pathfind.ts (158 lines)  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Referenced file packages/explorer/src/client/views/forceGraphView.ts
+  ⎿  Referenced file tests/e2e/force-graph-directories.spec.ts
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -14-140508-10142026-is-the-day-today-lets-start-a-new-ch.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ A crazy ask on my part: Can we make it so that the "TO" field contains only
+  search results which are actually navigable from the focused/"FROM" node?
+
+● Recording your message and my last reply first, then looking at what the
+  destination field knows today and what the vision calls this.
+
+  Searched for 1 pattern, read 2 files, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Reading the Explorer entry point and the specs that drive the bar, so the plan
+  names exact seams.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Reading the two remaining facts the plan needs: the fields' placeholder words
+  in the template, and the CLI's fan-out output shape.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Not crazy. The page already holds every reference, so one breadth-first search
+  from the newest pin, run when the pin changes, names every file a path can
+  reach and how far. The destination field would then search those files alone.
+  On this repository that is a walk over 3,343 references, well under a frame.
+  Nothing is built yet. Here is the plan, with two forks for you.
+
+  What changes
+  - A pure reachFrom beside the pathfinder: from the pin's files, every file
+    reached along dependents, which is what the map draws, and every file
+    reached along dependencies, which is what the reverse question offers, each
+    with the number of files on the way. The pin's own files are left out, since
+    a file is not its own path. One unit test file.
+  - The destination field searches an index built from the reached files only.
+    Directory headings, and directories offered by name, are those with a
+    reached file inside. The first field stays unlimited.
+  - Each offered file or directory says how far, in the badge slot the first
+    field uses for the archetype: "4 files" when the path would draw, "4 files,
+    the other way" when only the reverse question would come. Symbols sit under
+    their file as now.
+  - When nothing connects to the pin, the field says so in its placeholder
+    instead of offering an empty search. A destination that stops connecting
+    after you pin something else keeps today's "No path either way" status.
+  - The headless peer. The CLI's inspect --from X without --to lists terminal
+    paths, capped at 200, which is not this answer. I would add a listing of
+    every file a path reaches from X with its distance, in the direction asked,
+    text and JSON, from an engine function. The vision's step 4, reachable, is
+    the same walk from a system's entry points, so this is a piece of it rather
+    than a detour.
+  - Specs: the path spec's "two files that do not connect" case moves to an
+    address, since the bar will no longer offer it, and a new case reads the
+    offered rows and their distances on the estate. Pictures, the design doc's
+    search bar section, today's decisions entry extended, and the mirrors'
+    notes.
+
+  Fork 1, the other direction. Files reachable only the other way could be
+  listed with the mark, or left out. I recommend listing them marked. The
+  reverse question is a real navigation under your rule of 2025-12-18, and the
+  mark tells you before you choose which of the two will happen.
+
+  Fork 2, the CLI listing. Include it in this pass, which the peer rule asks for
+  and which I recommend, or leave it for the reachable step. It is roughly
+  eighty lines with its test.
+
+  Say yes, or strike a line, and I build.
