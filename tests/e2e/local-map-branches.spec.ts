@@ -51,21 +51,23 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   // Packing may place another retained card beyond the current frame. Reach
   // its pin with the same pan gesture a person uses, preserving the held card.
   await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}types.ts"] .symbol-row[data-symbol="ProcessorConfig"] .symbol-label-wrapper`);
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("3 pins ×");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
   await page.reload();
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "processor.ts", "run")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await localMapSettled(page);
   await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}processor.ts"] .symbol-row[data-symbol="run"] .symbol-label-wrapper`);
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("2 pins ×");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Show pins", exact: true }).click();
   await page.getByRole("button", { name: "Clear exploration pins" }).click();
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   await expect(page.locator("#map-container .symbol-label-wrapper[aria-pressed='true']")).toHaveCount(0);
   await expect(page.locator("#map-container .local-placed")).toBeVisible();
-  expect(await page.locator("#map-container .local-membrane").count()).toBeGreaterThan(0);
+  expect(await page.locator("#map-container .local-directory-closed").count()).toBeGreaterThan(0);
+  await expect(page.locator("#map-connections .connection-path")).toHaveCount(0);
 });
 
 test("both perspective changes keep the subject at its screen anchor during motion and preserve branch history", async ({ page }) => {
@@ -103,10 +105,10 @@ test("both perspective changes keep the subject at its screen anchor during moti
   await page.getByRole("button", { name: "2D", exact: true }).click();
   const after = (await title.boundingBox())!;
   expect(Math.hypot(after.x + after.width / 2 - anchor.x, after.y + after.height / 2 - anchor.y)).toBeLessThan(3);
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("2 pins ×");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   await page.goBack();
   await expect(page.locator("#view-graph")).toHaveClass(/active/);
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("2 pins ×");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   await page.goForward();
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
 });
@@ -132,10 +134,11 @@ test("file retention, individual pruning and close work by keyboard with reduced
   await expect(symbol).toHaveAttribute("aria-pressed", "true");
   await file.getByRole("button", { name: "Close helpers.ts", exact: true }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.locator("#map-container .node-card")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
-  await expect(page.locator("#context-name")).toHaveText("None");
-  await expect(page.locator("#map-container .empty-hint")).toBeFocused();
+  await expect(card(page, "helpers.ts")).toHaveCount(0);
+  expect(await page.locator("#map-container .local-directory-closed").count()).toBeGreaterThan(0);
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
+  await expect(page.locator("#context-name")).toHaveText("Scan root");
+  await expect(page.locator("#map-container .node-card, #map-container .local-directory-closed").first()).toBeFocused();
 });
 
 test("closing a retained file keeps only symbols needed elsewhere and removes its unneeded branch", async ({ page }) => {
@@ -231,18 +234,19 @@ test("a hovered row dims every wire it does not touch, the bundles' shared runs 
 });
 
 test("a lane's slots spread to the wires through them where the wires ask", async ({ page }) => {
-  // The five-file scope's lanes all stand at pitch since the span-minimal ranking (2026-10-06); on the chain scope the wires still ask.
+  // Use a stable sample dependency chain. The Explorer's own import graph
+  // changes as features are added and no longer asks its old lanes to spread.
   await page.setViewportSize({ width: 1600, height: 1000 });
   const files = [
-    "packages/explorer/src/client/index.ts",
-    "packages/explorer/src/client/persistence/compressed-url-state.ts",
-    "packages/explorer/src/client/views/pin-state.ts",
-    "packages/explorer/src/client/views/symbolAnchors.ts"
+    "Portal/Services/GatewayClient.cs",
+    "Gateway/Controllers/PaymentsController.cs",
+    "Gateway/Wcf/HubProxy.cs",
+    "Contracts/IPaymentHub.cs"
   ];
-  await page.goto(localRetainUrl("/", files));
+  await page.goto(localRetainUrl("/samples/estate/", files));
   await page.waitForSelector("#map-container .branch-mode");
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
-  await page.waitForTimeout(900);
+  await localMapSettled(page);
   const lanes = await readLanes(page);
   expect(lanes.length).toBeGreaterThan(0);
   expectLaneBoxes(lanes);
@@ -323,7 +327,7 @@ test("a type-reference badge retains its source pin and keeps the referenced fil
   await expect(page.locator('.symbol-row[data-symbol="GraphFile"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", document);
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toHaveText("1 pin ×");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
 });
 
 test("a card's rows stand where their wires lead by default, and Tuning offers the alphabetical order and the file's own", async ({ page }) => {

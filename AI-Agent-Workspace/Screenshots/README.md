@@ -2,6 +2,22 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-10-14
+
+Named in [the day's record](2026-10-14/README.md): the pin tray with directories, files and symbols retained together and released one at a time, Compact and Relaxed from their icon buttons, the ancestor disclosure unfolded from a membrane, the root landing after everything is released, the tray over the five-file scopes of this repository and the estate, and the optional directory hubs in 3D with membership lines on hover and at rest, in overview and close up, recursive membership on a parent hub, and a hub retained from a click; all from the build that passed the full gate.
+
+## 2026-10-13
+
+Named in [the day's record](2026-10-13/README.md): Membrane Simplicity off against its default on four scopes, close up and in overview, with the motion of the change; then, in [its presets folder](2026-10-13/presets/README.md), Compact and Relaxed in both representations with their controls and motion captures, and in [its feedback folder](2026-10-13/feedback/README.md), the comparisons of alignment and wire motion made after the owner's review.
+
+## 2026-10-12
+
+Named in [the day's record](2026-10-12/README.md): from the owner's walkthrough, the browser entry file opened directly in the directory-aware layout and the two-file and four-file paths inside their membranes; then, after the Membrane Map and Circuit Board were retired, the three-view navigation in 2D and 3D, the step from the World Map into the Local Map, and the 2D/3D controls beside the open drawer.
+
+## 2026-10-10
+
+Named in [the day's record](2026-10-10/README.md): the first ghost on the estate's World Map, a call that nothing on the board serves, at rest and pinned, with the hub's panel naming it; then this repository's own board re-authored as the delivery shape, its imagined parts hollow, pinned in turn, and a copy with two faults counted as wanting.
+
 ## 2026-10-06
 
 Named in [the day's record](2026-10-06/README.md): the owner's nudge measured on the repository's five-file scope, `graph.ts` forced lower than the exact placement puts it, with the deck's drawn total rising at every step, and the whole placed picture zoomed out to show the consumers that hold the live-docs box where it stands; then, at twice the device scale, three cards with the French Corset's laces in place of the straight stubs.

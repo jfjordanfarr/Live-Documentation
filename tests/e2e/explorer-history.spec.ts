@@ -52,17 +52,20 @@ test.describe("Back and Forward", () => {
     const folderUrl = page.url();
 
     await page.locator(`.node-card[data-id="${FIXTURE_FILE}"] .node-title`).click();
-    await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeVisible();
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
+    await page.getByRole("button", { name: "Show pins", exact: true }).click();
+    await expect(page.getByRole("button", { name: `Release ${FIXTURE_FILE}`, exact: true })).toBeVisible();
     expect(page.url(), "a pin changes the address of the place").not.toBe(folderUrl);
 
     await openView(page, "sources");
     await page.goBack();
     await expect.poll(() => activeView(page)).toBe("map");
-    await expect(page.getByRole("button", { name: "Clear exploration pins" }), "the place comes back with its pins").toBeVisible();
+    await expect(page.getByRole("button", { name: `Release ${FIXTURE_FILE}`, exact: true }), "the place comes back with its file pin").toBeVisible();
 
     await page.goBack();
     await expect.poll(() => activeView(page)).toBe("map");
-    await expect(page.getByRole("button", { name: "Clear exploration pins" }), "Back left the folder, not the pins").toBeHidden();
+    await expect(page.getByRole("button", { name: `Release ${FIXTURE_FILE}`, exact: true }), "Back left the folder, not the pins").toHaveCount(0);
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
     await expect(page.getByRole("button", { name: `Open ${FIXTURE_SUBDIR}`, exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: `Close ${FIXTURE_SUBDIR}`, exact: true })).toHaveCount(0);
   });

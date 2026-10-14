@@ -1,0 +1,124 @@
+[
+  {
+    "bundle": "repository",
+    "scope": "five files",
+    "files": [
+      "packages/engine/src/live-docs/graph.ts",
+      "packages/engine/src/live-docs/document.ts",
+      "packages/engine/src/live-docs/graphFiles.ts",
+      "packages/explorer/src/shared/staticExplorerData.ts",
+      "packages/explorer/src/shared/staticBuilder.ts"
+    ],
+    "lanes": 24,
+    "spread": [
+      {
+        "height": 170,
+        "slots": [
+          9,
+          16,
+          23,
+          30,
+          104,
+          111,
+          118,
+          125,
+          132,
+          139,
+          146,
+          153,
+          160
+        ]
+      },
+      {
+        "height": 237,
+        "slots": [
+          9,
+          16,
+          23,
+          30,
+          37,
+          227
+        ]
+      }
+    ]
+  },
+  {
+    "bundle": "repository",
+    "scope": "chain",
+    "files": [
+      "packages/explorer/src/client/index.ts",
+      "packages/explorer/src/client/persistence/compressed-url-state.ts",
+      "packages/explorer/src/client/views/pin-state.ts",
+      "packages/explorer/src/client/views/symbolAnchors.ts"
+    ],
+    "lanes": 38,
+    "spread": []
+  },
+  {
+    "bundle": "estate",
+    "scope": "five files",
+    "files": [
+      "Contracts/IPaymentService.cs",
+      "PaymentService/PaymentService.cs",
+      "Gateway/Wcf/HubProxy.cs",
+      "Hub/PaymentHub.cs",
+      "Portal/Services/GatewayClient.cs"
+    ],
+    "lanes": 10,
+    "spread": [
+      {
+        "height": 75,
+        "slots": [
+          9,
+          58,
+          65
+        ]
+      },
+      {
+        "height": 201,
+        "slots": [
+          9,
+          177,
+          191
+        ]
+      },
+      {
+        "height": 50,
+        "slots": [
+          9,
+          33,
+          40
+        ]
+      }
+    ]
+  },
+  {
+    "bundle": "estate",
+    "scope": "chain",
+    "files": [
+      "Portal/Services/GatewayClient.cs",
+      "Gateway/Controllers/PaymentsController.cs",
+      "Gateway/Wcf/HubProxy.cs",
+      "Contracts/IPaymentHub.cs"
+    ],
+    "lanes": 9,
+    "spread": [
+      {
+        "height": 99,
+        "slots": [
+          9,
+          89
+        ]
+      },
+      {
+        "height": 197,
+        "slots": [
+          9,
+          173,
+          180,
+          187
+        ]
+      }
+    ]
+  }
+]

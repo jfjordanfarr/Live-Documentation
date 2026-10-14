@@ -41,6 +41,10 @@ export interface LocalViewOptions {
  */
 export interface LocalViewApi {
   render(): void;
+  retainNode(nodeId: string): void;
+  openDirectory(directory: string): void;
+  focusNode(nodeId: string): void;
+  focusDirectory(directory: string): void;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
   drawConnections(): void;

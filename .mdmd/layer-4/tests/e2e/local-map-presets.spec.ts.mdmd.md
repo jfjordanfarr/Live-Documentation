@@ -13,6 +13,8 @@ Keeps the inspected Compact/Relaxed journeys coherent through advanced edits, sh
 ### Notes
 Runs the same interactions on the repository and estate, preserves visible file/symbol/reference identities, checks coupling and size survive preset changes, and reloads exported/shared settings into a fresh browser context. Motion samples enforce the existing subject-anchor tolerance. A zero-duration estate layout checks actual SVG endpoints against their current pins, guarding the stale-wire defect found during visual tuning.
 
+The publisher page closes after its export and share URL are captured. The recipient must stand alone, and an unneeded source WebGL simulation should not compete with its work. Both pages contribute browser errors to the same assertion; no sharing, export or round-trip check is skipped.
+
 Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
 ## Generated

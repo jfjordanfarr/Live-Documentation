@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/spatial.ts
-- Generated At: 2026-10-13T19:38:17.610Z
+- Generated At: 2026-10-14T02:49:22.215Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ Run the same full filtered graph the 3D view simulates; the retained neighborhoo
 
 #### `renderSpatialReport` {#symbol-renderspatialreport}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/spatial.ts#L43)
+- Source: [source](../../../../scripts/layout-lab/spatial.ts#L55)
 
 ##### `renderSpatialReport` — Summary
 Human-readable companion to the complete node, reference-count and coordinate JSON.

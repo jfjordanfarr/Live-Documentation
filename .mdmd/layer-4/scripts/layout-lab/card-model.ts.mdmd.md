@@ -17,6 +17,8 @@ A card is border, padding, the title in its width less its right padding and its
 
 Endpoint identity follows card construction, not the proposed vertical row order. Row centres are measured by captured-row identity; `registerPins` then registers those identities in construction order with separate exact and `normalized:` namespaces, as the browser does. Later duplicate registrations win even when their row is hidden, in which case the endpoint is absent rather than falling back to an earlier visible duplicate. File and asset hubs retain their card-centre fallback. These distinctions support the [October 13 shared competition](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply); the independent card model itself came from the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10).
 
+Directory labels compose their prepared text caption with the captured ancestry-control column: reserve the control width before wrapping and take the taller of the text or control before adding label padding. Optional measurements keep older captures valid. The page and model use the same separation of text and controls, introduced during [the October 14 pin-management work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

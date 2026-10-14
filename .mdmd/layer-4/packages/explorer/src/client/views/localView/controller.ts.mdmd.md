@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-12T20:19:49.121Z
+- Generated At: 2026-10-14T04:03:02.234Z
 
 ## Authored
 ### Purpose
@@ -27,7 +27,7 @@ Controller class for the Local Map. Orchestrates runtime state, rendering, the c
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L62)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L63)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -85,6 +85,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`pin-state.removePinsForNode`](../pin-state.ts.mdmd.md#symbol-removepinsfornode)
 - [`pin-state.retainFile`](../pin-state.ts.mdmd.md#symbol-retainfile)
 - [`pin-state.toggleFileSymbol`](../pin-state.ts.mdmd.md#symbol-togglefilesymbol)
+- [`retained-state.subjectAfterRelease`](../retained-state.ts.mdmd.md#symbol-subjectafterrelease)
 - [`symbolAnchors.buildNormalizedAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-buildnormalizedanchorkey)
 - [`symbolAnchors.tryBuildNormalizedKeyFromAnchorKey`](../symbolAnchors.ts.mdmd.md#symbol-trybuildnormalizedkeyfromanchorkey)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

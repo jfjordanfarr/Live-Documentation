@@ -227,7 +227,9 @@ export function exploreBranches(
   const path = options.path;
   const pathGraph = path ? buildPathSubgraph(path.nodeIds, graph, id, nodeId => byId.get(nodeId)) : null;
   const pathColumns = path ? new Map((pathGraph?.nodes ?? []).map((node, column) => [node.id, column])) : null;
-  const opened = path ? NO_OPEN_DIRECTORIES : options.openDirectories ?? NO_OPEN_DIRECTORIES;
+  // An empty exploration is a browseable scan root, not a hidden directory pin.
+  const rootLanding = !path && !center && !pins.entries.length && !options.openDirectories?.size;
+  const opened = path ? NO_OPEN_DIRECTORIES : rootLanding ? new Set([""]) : options.openDirectories ?? NO_OPEN_DIRECTORIES;
   // A direct file link discloses its neighborhood without manufacturing persistent pins.
   const disclosure = path ? { entries: [] } : !pins.entries.length && center ? retainFile(pins, center.id) : pins;
   const retained = path ? new Set(pathColumns!.keys())

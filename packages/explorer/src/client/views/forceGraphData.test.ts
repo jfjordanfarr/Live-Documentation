@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { spatialGraphOf } from "./forceGraphData";
+import { directoryNodeId, spatialGraphOf } from "./forceGraphData";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../shared/types";
 
 const node = (id: string): ExplorerNodePayload => ({ id, name: id, codePath: id, codeRelativePath: id, docPath: `docs/${id}.md`,
@@ -32,4 +32,26 @@ it("includes authored documentation links while excluding Live Doc aliases, hidd
     { source: "a", target: "related:README.md", kind: "related-doc", count: 2 },
     { source: "related:README.md", target: "related:design.md", kind: "related-doc", count: 1 }
   ]);
+});
+
+it("derives immediate recursive membership from visible source paths without changing reference counts", () => {
+  const input: ExplorerGraphPayload = {
+    nodes: [node("a/one.ts"), node("a/nested/two.ts"), node("ab/hidden.ts"), node("root.ts")],
+    links: [{ source: "a/one.ts", target: "a/nested/two.ts", kind: "dependency", referenceCount: 7 }],
+    stats: { nodes: 4, links: 1, missingDependencies: 0 }
+  };
+  const before = JSON.stringify(input);
+  const data = spatialGraphOf(input, file => !file.id.startsWith("ab/"), [], true);
+  const directory = (path: string) => data.nodes.find(file => file.id === directoryNodeId(path));
+  expect(directory("")?.directoryFileCount).toBe(3);
+  expect(directory("a")?.directoryFileCount).toBe(2);
+  expect(directory("a/nested")?.directoryFileCount).toBe(1);
+  expect(directory("ab")).toBeUndefined();
+  expect(data.links.filter(link => link.kind !== "containment")).toEqual(spatialGraphOf(input, file => !file.id.startsWith("ab/")).links);
+  const membership = data.links.filter(link => link.kind === "containment");
+  expect(membership).toHaveLength(data.nodes.length - 1);
+  expect(membership).toContainEqual({ source: directoryNodeId("a"), target: directoryNodeId("a/nested"), kind: "containment", count: 1 });
+  expect(membership).not.toContainEqual(expect.objectContaining({ source: directoryNodeId(""), target: "a/nested/two.ts" }));
+  expect(JSON.stringify(input)).toBe(before);
+  expect(spatialGraphOf(input, () => false, [], true)).toEqual({ nodes: [], links: [] });
 });

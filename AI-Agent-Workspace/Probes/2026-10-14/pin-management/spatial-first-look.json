@@ -1,0 +1,26 @@
+[
+  {
+    "name": "estate",
+    "nodes": 53,
+    "directories": 18,
+    "hiddenLinks": 0,
+    "visibleLinks": 52,
+    "movement": 0,
+    "cameraStable": true,
+    "hovered": "Portal/Models",
+    "recursive": "Portal",
+    "errors": []
+  },
+  {
+    "name": "repository",
+    "nodes": 824,
+    "directories": 236,
+    "hiddenLinks": 0,
+    "visibleLinks": 823,
+    "movement": 0,
+    "cameraStable": true,
+    "hovered": "tests/integration/programs/java/basic/src/com/example/data",
+    "recursive": "tests/integration/programs/java/basic/src/com/example",
+    "errors": []
+  }
+]

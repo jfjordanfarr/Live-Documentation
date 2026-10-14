@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-10-13T19:38:17.292Z
+- Generated At: 2026-10-14T03:40:56.578Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Opens the scope with every file retained whole (its own browser over the built b
 - A wrapper without a card is passed by (2026-10-08): a closed directory's box takes a wrapper of the cards' kind; the scopes open no directory and the card model does not hold one. A label is keyed by the directory it says it is for (`data-directory`), since its text now carries the count of what an encasing membrane hides; the text, name and count in one flow, is what the model lays out, and an open membrane's X is not modelled.
 
 The capture also records the actual test and asset filter controls. The retained URL defaults to showing assets; assuming the storage defaults instead would remove files from the lab's exploration. Older retained-scope captures without this field use the compressed URL defaults. This distinction was established while checking the warehouse scene for the [weighted competition work of October 13](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
+
+The membrane ancestry control occupies a separate flex column beside the text caption. Captures therefore retain its actual reserved width and effective height, and prepare the caption itself as text. The headless label model composes the two instead of pretending an SVG button is a text glyph. Older captures without control measurements retain their original text-only geometry. This extension accompanies [the October 14 ancestor disclosure](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -73,7 +75,7 @@ A scope's capture: the fonts, the constants, every card, every label, the page's
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L129)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L131)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -81,7 +83,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L148)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L150)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -91,7 +93,7 @@ node_modules and loaded as a module, then the page is read in one go.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L359)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L373)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -99,7 +101,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L365)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L379)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

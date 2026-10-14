@@ -6,6 +6,10 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const controller = new LocalViewController(options);
   return {
     render: () => controller.render(),
+    retainNode: nodeId => controller.retainNode(nodeId),
+    openDirectory: directory => controller.openDirectory(directory),
+    focusNode: nodeId => controller.focusNode(nodeId),
+    focusDirectory: directory => controller.focusDirectory(directory),
     getSubjectAnchor: nodeId => controller.getSubjectAnchor(nodeId),
     placeSubjectAnchor: (nodeId, anchor) => controller.placeSubjectAnchor(nodeId, anchor),
     drawConnections: () => controller.drawConnections(),

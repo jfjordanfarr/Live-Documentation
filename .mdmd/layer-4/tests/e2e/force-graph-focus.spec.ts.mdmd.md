@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-focus.spec.ts
-- Generated At: 2026-10-13T22:20:25.443Z
+- Generated At: 2026-10-14T02:49:23.268Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
+- [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
-- `three` - `Camera`, `Mesh`, `Scene`, `WebGLRenderer` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

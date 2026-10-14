@@ -27,10 +27,10 @@ export function renderLocalView(controller: LocalViewController): void {
     controller.contentRoot = null;
   }
 
-  if (!state.selectedNode && !controller.openDirectories.size && !controller.pins.entries.length && !path) {
+  if (!controller.options.graphData.nodes.length) {
     overlay.replaceChildren();
     overlay.dataset.active = "false";
-    container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">Select a node to view local relationships.</div>';
+    container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">No files in this graph.</div>';
     controller.mapTransform = { x: 0, y: 0, k: 1 };
     controller.mapHasInitialFit = false;
     controller.mapUserAdjusted = false;

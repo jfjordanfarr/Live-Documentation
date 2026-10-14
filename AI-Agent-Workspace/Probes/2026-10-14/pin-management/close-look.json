@@ -1,0 +1,20 @@
+[
+  {
+    "name": "estate",
+    "hub": "Portal/Models",
+    "hiddenLinks": 0,
+    "visibleLinks": 52,
+    "movement": 0,
+    "cameraStable": true,
+    "errors": []
+  },
+  {
+    "name": "repository",
+    "hub": "packages/explorer/src/client/views/localView",
+    "hiddenLinks": 0,
+    "visibleLinks": 823,
+    "movement": 0,
+    "cameraStable": true,
+    "errors": []
+  }
+]

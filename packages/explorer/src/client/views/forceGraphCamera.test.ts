@@ -1,9 +1,44 @@
 import { PerspectiveCamera, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
 
-import { focusedCameraPosition, screenAnchorTranslation, wheelZoomCamera } from "./forceGraphCamera";
+import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera } from "./forceGraphCamera";
 
 describe("Force Graph focus camera", () => {
+  it("frames members far from the origin, with a tilted camera and clearance for their complete bodies", () => {
+    const camera = new PerspectiveCamera(60, 1.6, .1, 100000);
+    camera.position.set(70, 90, 200);
+    camera.lookAt(new Vector3(30, 20, 10));
+    camera.updateMatrixWorld();
+    const bearing = camera.getWorldDirection(new Vector3());
+    const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+    const up = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
+    const back = new Vector3(0, 0, 1).applyQuaternion(camera.quaternion);
+    const spheres = [
+      { center: { x: 900, y: -800, z: 450 }, radius: 40 },
+      { center: { x: 1040, y: -730, z: 620 }, radius: 5 }
+    ];
+    const framed = frameCameraSpheres(camera, spheres, { width: 1600, height: 1000 })!;
+    expect(framed.target.x).toBeGreaterThan(900);
+    expect(framed.target.y).toBeLessThan(-700);
+    camera.position.copy(framed.camera);
+    camera.lookAt(framed.target.x, framed.target.y, framed.target.z);
+    camera.updateMatrixWorld();
+    expect(camera.getWorldDirection(new Vector3()).distanceTo(bearing)).toBeLessThan(1e-12);
+    for (const sphere of spheres) {
+      for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) {
+        const point = new Vector3(sphere.center.x, sphere.center.y, sphere.center.z)
+          .addScaledVector(right, x * sphere.radius)
+          .addScaledVector(up, y * sphere.radius)
+          .addScaledVector(back, z * sphere.radius)
+          .project(camera);
+        expect(Math.abs(point.x)).toBeLessThanOrEqual(1 - 140 / 1600 + 1e-12);
+        expect(Math.abs(point.y)).toBeLessThanOrEqual(1 - 140 / 1000 + 1e-12);
+        expect(point.z).toBeGreaterThan(-1);
+        expect(point.z).toBeLessThan(1);
+      }
+    }
+    expect(frameCameraSpheres(camera, [], { width: 1600, height: 1000 })).toBeNull();
+  });
   it("preserves the viewing direction relative to a panned target", () => {
     const camera = { x: 80, y: -10, z: 130 };
     const target = { x: 50, y: -50, z: 130 };

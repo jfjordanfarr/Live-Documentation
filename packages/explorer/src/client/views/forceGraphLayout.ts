@@ -14,6 +14,8 @@ export interface SpatialLink<N extends SpatialNode = SpatialNode> {
   source: string | N;
   target: string | N;
   count: number;
+  /** Containment remains a separate structural relationship in reports. */
+  kind?: string;
 }
 
 /** The value is sphere volume; zero-symbol files still have a visible body. */

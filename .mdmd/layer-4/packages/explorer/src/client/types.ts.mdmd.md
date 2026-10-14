@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-13T19:38:16.052Z
+- Generated At: 2026-10-14T02:49:18.726Z
 
 ## Authored
 ### Purpose
@@ -54,7 +54,7 @@ Toggle flags for the Explorer filter panel.
 
 #### `BezierTuning` {#symbol-beziertuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L21)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L25)
 
 ##### `BezierTuning` — Summary
 Cubic-Bézier connection path tuning parameters.
@@ -62,7 +62,7 @@ Exposed in the Explorer tuning panel (2025-12-05, commit `9047949`).
 
 #### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L33)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L37)
 
 ##### `LocalMapTuning` — Summary
 Tuning knobs specific to the two-dimensional Local Map.
@@ -71,7 +71,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L128)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L132)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -80,21 +80,21 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L131)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L135)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L138)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L142)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L157)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L161)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -102,7 +102,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L171)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L177)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

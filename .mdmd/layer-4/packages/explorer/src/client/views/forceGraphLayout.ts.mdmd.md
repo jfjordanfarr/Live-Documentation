@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-10-13T19:38:16.168Z
+- Generated At: 2026-10-14T02:49:18.985Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ One undirected file pair; count is the number of documented references in either
 
 #### `spatialNodeValue` {#symbol-spatialnodevalue}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L20)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L22)
 - Parameters: `node`: [`SpatialNode`](#symbol-spatialnode); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialNodeValue` — Summary
@@ -44,7 +44,7 @@ The value is sphere volume; zero-symbol files still have a visible body.
 
 #### `spatialNodeRadius` {#symbol-spatialnoderadius}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L25)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L27)
 - Parameters: `node`: [`SpatialNode`](#symbol-spatialnode); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialNodeRadius` — Summary
@@ -52,7 +52,7 @@ Actual sphere radius, shared by rendering, collision clearance and the command's
 
 #### `spatialLinkDistance` {#symbol-spatiallinkdistance}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L30)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L32)
 - Parameters: `link`: [`SpatialLink`](#symbol-spatiallink); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialLinkDistance` — Summary
@@ -60,7 +60,7 @@ More coupling reduces the desired surface gap with diminishing returns, without 
 
 #### `SpatialForceAccess` {#symbol-spatialforceaccess}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L37)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L39)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `SpatialForceAccess` — Summary
@@ -68,7 +68,7 @@ The force getter/setter shared by D3's simulation and the browser's public force
 
 #### `configureSpatialForces` {#symbol-configurespatialforces}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L43)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L45)
 - Parameters: `engine`: [`SpatialForceAccess`](#symbol-spatialforceaccess); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -77,7 +77,7 @@ Apply the same forces in the browser and headlessly, retaining D3's degree-norma
 
 #### `simulateSpatialLayout` {#symbol-simulatespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L53)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L55)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `simulateSpatialLayout` — Summary

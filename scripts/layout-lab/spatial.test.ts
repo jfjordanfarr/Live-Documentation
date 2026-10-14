@@ -32,3 +32,15 @@ it("keeps explicitly retained tests/assets and can include the same documentatio
   expect(report.links).toHaveLength(4);
   expect(() => spatialReport(graph, { ...run, scope: ["gone"] }, getDefaultTuning().forceGraph)).toThrow("no retained file");
 });
+
+it("reports containment separately and holds the forces fixed when membership-line visibility changes", () => {
+  const filters = { showTests: true, showAssets: false, showDirectories: true };
+  const hidden = spatialReport(graph, run, getDefaultTuning().forceGraph, 100, { ...filters, showDirectoryLinks: false });
+  const visible = spatialReport(graph, run, getDefaultTuning().forceGraph, 100, { ...filters, showDirectoryLinks: true });
+  expect(hidden.nodes).toEqual(visible.nodes);
+  expect(hidden.links).toEqual(visible.links);
+  expect(hidden.nodes.filter(node => node.kind === "directory")).toHaveLength(1);
+  expect(hidden.links.filter(link => link.kind === "containment")).toHaveLength(3);
+  expect(hidden.links.filter(link => link.kind === "containment").every(link => link.references === null)).toBe(true);
+  expect(hidden.links.find(link => link.kind !== "containment")?.references).toBe(4);
+});

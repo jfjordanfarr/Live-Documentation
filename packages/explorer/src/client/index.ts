@@ -5,7 +5,9 @@ import { downloadDocs, downloadFactsJson, type DownloadBundleType, type Download
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
+import { iconButton } from "./panels/icon-button";
 import { initOmnisearch } from "./panels/omnisearch";
+import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
 import { initTuningPanel } from "./panels/tuning";
@@ -37,11 +39,14 @@ import { placeOf } from "./persistence/place";
 import type { ExplorerState, LocalMapPerspective, ViewName } from "./types";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
-import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
-import { createWorldMapView } from "./views/worldMap";
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
+import { under } from "./views/localView/directory-state";
+import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
+import { EMPTY_PIN_SET } from "./views/pin-state";
+import { clearRetainedDirectory, reconcileRetained, releaseRetained, subjectAfterRelease, type RetainedItem, type RetainedState } from "./views/retained-state";
+import { createWorldMapView } from "./views/worldMap";
 
 declare global {
   interface Window {
@@ -149,6 +154,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...initialExploration.filters };
   state.pins = initialExploration.pinSet;
   state.openDirectories = initialExploration.openDirectories;
+  state.retentionOrder = initialExploration.retentionOrder;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
@@ -184,15 +190,20 @@ function startExplorer(bundle: StaticExplorerData): void {
   const filterToggleTests = getInputById("filter-toggle-tests");
   const filterToggleAssets = getInputById("filter-toggle-assets");
   const filterToggleRelatedDocs = getInputById("filter-toggle-related-docs");
+  const filterToggleDirectories = getInputById("filter-toggle-directories");
+  const filterToggleDirectoryLinks = getInputById("filter-toggle-directory-links");
   const statsLine = document.getElementById("stats-line");
 
   if (statsLine instanceof HTMLElement) {
-    statsLine.textContent = `${graphData.stats.nodes} nodes, ${graphData.stats.links} links, ${graphData.stats.missingDependencies} missing dependencies`;
+    statsLine.textContent = `${graphData.stats.nodes} files, ${graphData.stats.links} references, ${graphData.stats.missingDependencies} missing dependencies`;
   }
 
   const localView = createLocalView({
     state,
-    onExplorationChange: persistExploration,
+    onExplorationChange: leavingPath => {
+      persistExploration(leavingPath);
+      if (state.perspective === "3d") forceGraphView.render();
+    },
     graphData,
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
@@ -214,6 +225,11 @@ function startExplorer(bundle: StaticExplorerData): void {
     },
     onFocusNode: (node: ExplorerNodePayload) => {
       selectNode(node);
+    },
+    onRetainNode: node => localView.retainNode(node.id),
+    onOpenDirectory: directory => {
+      localView.openDirectory(directory);
+      forceGraphView.focusDirectory(directory);
     }
   });
 
@@ -283,17 +299,36 @@ function startExplorer(bundle: StaticExplorerData): void {
     });
   }
 
+  for (const [input, key] of [
+    [filterToggleDirectories, "showDirectories"],
+    [filterToggleDirectoryLinks, "showDirectoryLinks"]
+  ] as const) {
+    input?.addEventListener("change", () => {
+      state.filters[key] = input.checked;
+      syncFilterControls();
+      schedulePersistUi();
+      persistExploration();
+      if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
+    });
+  }
+
   const perspectiveControls = document.createElement("div");
   perspectiveControls.className = "perspective-controls";
   perspectiveControls.setAttribute("aria-label", "Local Map layout and representation");
-  const layoutSelect = document.createElement("select");
-  layoutSelect.id = "layout-preset";
-  layoutSelect.setAttribute("aria-label", "Local Map layout");
-  layoutSelect.title = "Packing preference for both 2D and 3D; advanced controls are in Tuning";
-  for (const [value, label] of [["compact", "Compact"], ["relaxed", "Relaxed"], ["custom", "Custom"]]) {
-    const option = document.createElement("option"); option.value = value; option.textContent = label;
-    option.disabled = value === "custom"; layoutSelect.append(option);
-  }
+  const compactButton = iconButton("Compact", '<rect x="6" y="6" width="5" height="5" rx="1"/><rect x="13" y="6" width="5" height="5" rx="1"/><rect x="6" y="13" width="5" height="5" rx="1"/><rect x="13" y="13" width="5" height="5" rx="1"/>');
+  compactButton.dataset.layoutPreset = "compact";
+  const relaxedButton = iconButton("Relaxed", '<rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>');
+  relaxedButton.dataset.layoutPreset = "relaxed";
+  const tuningButton = iconButton("Layout tuning", '<path d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6M10 15v6"/>');
+  tuningButton.addEventListener("click", () => {
+    document.getElementById("sidebar")?.classList.remove("collapsed");
+    const tuning = document.querySelector<HTMLDetailsElement>(".sidebar-details");
+    if (tuning) {
+      tuning.open = true;
+      tuning.querySelector<HTMLElement>("summary")?.focus();
+      tuning.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  });
   const mapButton = document.createElement("button");
   mapButton.textContent = "2D";
   mapButton.title = "Local Map in 2D";
@@ -302,31 +337,76 @@ function startExplorer(bundle: StaticExplorerData): void {
   graphButton.textContent = "3D";
   graphButton.title = "Local Map in 3D";
   graphButton.addEventListener("click", () => changePerspective("3d"));
-  const clearPinsButton = document.createElement("button");
-  clearPinsButton.title = "Clear exploration pins";
-  clearPinsButton.setAttribute("aria-label", "Clear exploration pins");
-  clearPinsButton.addEventListener("click", () => { state.pins = { entries: [] }; persistExploration(); renderCurrentView(); });
   const perspectivePath = document.createElement("span");
   perspectivePath.className = "perspective-path-status";
-  perspectiveControls.append(perspectivePath, layoutSelect, mapButton, graphButton, clearPinsButton);
+  perspectiveControls.append(perspectivePath, compactButton, relaxedButton, tuningButton, mapButton, graphButton);
   requireElement("main").append(perspectiveControls);
+  const pinTray = createPinTray({
+    parent: requireElement("main"),
+    nodes: nodesById,
+    onRelease: item => applyRetentionChange(releaseRetained(retentionState(), item)),
+    onClearDirectory: directory => applyRetentionChange(
+      clearRetainedDirectory(retentionState(), directory),
+      !!state.selectedNode && under(state.selectedNode.id, directory)
+    ),
+    onClear: () => applyRetentionChange({ pins: EMPTY_PIN_SET, openDirectories: new Set(), retentionOrder: [] }, true),
+    onFocus: focusRetained
+  });
   let syncTuningControls = (): void => {};
+
+  function retentionState(): RetainedState {
+    return { pins: state.pins ?? EMPTY_PIN_SET, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder };
+  }
+
+  function applyRetentionChange(next: RetainedState, releaseSubject = false): void {
+    const current = state.selectedNode;
+    const selectedId = subjectAfterRelease(state.pins ?? EMPTY_PIN_SET, next.pins, current?.id ?? null, releaseSubject);
+    const selected = selectedId ? nodesById.get(selectedId) ?? null : null;
+    const inspected = state.focusedNode;
+    const focused = inspected && (inspected.id === selected?.id
+      || next.pins.entries.some(pin => pin.nodeId === inspected.id)) ? inspected : selected;
+    const view = state.perspective === "2d" ? localView : forceGraphView;
+    const anchor = focused ? view.getSubjectAnchor(focused.id) : null;
+    Object.assign(state, next);
+    state.selectedNode = selected;
+    state.focusedNode = focused;
+    persistExploration(!!localView.getActivePath());
+    renderCurrentView();
+    if (focused && anchor) view.placeSubjectAnchor(focused.id, anchor);
+  }
+
+  function focusRetained(item: RetainedItem): void {
+    detailPanel.hide();
+    if (item.kind === "directory") {
+      (state.perspective === "2d" ? localView : forceGraphView).focusDirectory(item.directory);
+      return;
+    }
+    const node = nodesById.get(item.pin.nodeId);
+    if (!node) return;
+    state.focusedNode = node;
+    if (state.perspective === "2d") localView.focusNode(node.id);
+    else forceGraphView.render();
+  }
 
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
     if (contextName) contextName.textContent = (state.focusedNode ?? state.selectedNode)?.codeRelativePath
-      ?? ([...(state.openDirectories ?? [])].join(", ") || "None");
+      ?? ([...(state.openDirectories ?? [])].map(path => path || "Scan root").join(", ") || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
-    layoutSelect.disabled = changingPerspective;
-    layoutSelect.value = layoutPresetOf(state.tuning);
+    const preset = layoutPresetOf(state.tuning);
+    for (const button of [compactButton, relaxedButton, tuningButton, mapButton, graphButton]) button.disabled = changingPerspective;
+    compactButton.setAttribute("aria-pressed", String(preset === "compact"));
+    relaxedButton.setAttribute("aria-pressed", String(preset === "relaxed"));
+    tuningButton.classList.toggle("custom-layout", preset === "custom");
+    tuningButton.title = preset === "custom" ? "Custom layout — open tuning" : "Layout tuning";
+    tuningButton.setAttribute("aria-label", preset === "custom" ? "Layout tuning: Custom" : "Layout tuning");
     mapButton.setAttribute("aria-pressed", String(state.perspective === "2d"));
     graphButton.setAttribute("aria-pressed", String(state.perspective === "3d"));
     const path = localView.getActivePath();
     perspectivePath.textContent = path ? `Path: ${path.nodeIds.length} files` : "";
     perspectivePath.hidden = !path;
-    const count = state.pins?.entries.length ?? 0;
-    clearPinsButton.hidden = count === 0;
-    clearPinsButton.textContent = `${count} ${count === 1 ? "pin" : "pins"} ×`;
+    state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
+    pinTray.sync(retentionState(), state.view === "map", changingPerspective);
   }
 
   let changingPerspective = false;
@@ -350,7 +430,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     const releaseCover = previous && target ? holdPerspective(requireElement(`view-${sourceSurface}`)) : () => {};
     releasePerspectiveCover = releaseCover;
     changingPerspective = true;
-    layoutSelect.disabled = mapButton.disabled = graphButton.disabled = true;
+    syncPerspectiveControls();
     const source = previous === "2d" ? localView : previous === "3d" ? forceGraphView : null;
     let anchor = target && source ? source.getSubjectAnchor(target.id) : null;
     detailPanel.hide();
@@ -380,14 +460,14 @@ function startExplorer(bundle: StaticExplorerData): void {
           if (epoch !== perspectiveEpoch) return;
           transitionDestination = null;
           changingPerspective = false;
-          layoutSelect.disabled = mapButton.disabled = graphButton.disabled = false;
+          syncPerspectiveControls();
           forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
           const pending = pendingPerspective; pendingPerspective = null; pending?.();
         });
       } else {
         transitionDestination = null;
         changingPerspective = false;
-        layoutSelect.disabled = mapButton.disabled = graphButton.disabled = false;
+        syncPerspectiveControls();
       }
       releaseCover();
     });
@@ -706,7 +786,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   const enteredByDirectory = !initialState.nodeId && !persistedNav?.nodeId && state.openDirectories.size > 0;
 
   const initialFocusNodeId = (() => {
-    if (enteredByDirectory) {
+    if (enteredByDirectory || (new URLSearchParams(window.location.search).has("s") && !initialState.nodeId)) {
       return null;
     }
     if (urlRequestedNodeId) {
@@ -750,10 +830,15 @@ function startExplorer(bundle: StaticExplorerData): void {
     state,
     onTuningChange: () => { schedulePersistUi(); persistExploration(); },
     onRender: () => {
+      // The spatial renderer owns both file and directory camera anchors.
+      if (state.perspective === "3d") {
+        renderCurrentView();
+        return;
+      }
       // An explicit tuning action owns the camera from this point, including
       // when the initial automatic framing has not finished yet.
       const subject = state.focusedNode ?? state.selectedNode;
-      const view = state.perspective === "2d" ? localView : forceGraphView;
+      const view = localView;
       const anchor = subject ? view.getSubjectAnchor(subject.id) : null;
       if (subject && anchor) view.placeSubjectAnchor(subject.id, anchor);
       renderCurrentView();
@@ -792,6 +877,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     syncFilterControls();
     state.pins = exploration.pinSet;
     state.openDirectories = exploration.openDirectories;
+    state.retentionOrder = exploration.retentionOrder;
     setActiveView(view, state.perspective);
     const node = place.nodeId ? nodesById.get(place.nodeId) ?? null : null;
     state.selectedNode = node;
@@ -887,7 +973,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     syncPerspectiveControls();
     schedulePersistNav();
     writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, selectedNodeId: state.selectedNode?.id ?? null,
-      pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), filters: state.filters,
+      pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder, filters: state.filters,
       layout: layoutSettingsOf(state.tuning) }, { preservePath: !leavingPath });
   }
 
@@ -897,7 +983,7 @@ function startExplorer(bundle: StaticExplorerData): void {
       perspectiveEpoch++;
       releasePerspectiveCover(); cancelPerspectiveAnimation();
       changingPerspective = false; pendingPerspective = null; transitionDestination = null;
-      layoutSelect.disabled = mapButton.disabled = graphButton.disabled = false;
+      syncPerspectiveControls();
     }
     syncPerspectiveControls();
     syncTuningControls();
@@ -956,6 +1042,11 @@ function startExplorer(bundle: StaticExplorerData): void {
     }
     if (filterToggleRelatedDocs) {
       filterToggleRelatedDocs.checked = state.filters.showRelatedDocs;
+    }
+    if (filterToggleDirectories) filterToggleDirectories.checked = !!state.filters.showDirectories;
+    if (filterToggleDirectoryLinks) {
+      filterToggleDirectoryLinks.checked = !!state.filters.showDirectoryLinks;
+      filterToggleDirectoryLinks.disabled = !state.filters.showDirectories;
     }
   }
 }

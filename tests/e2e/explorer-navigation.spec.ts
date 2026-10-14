@@ -70,7 +70,9 @@ test("old view links migrate, including compressed folders, pins and stale ident
   await ready(page, "2d");
   await expect(page.locator('#map-container .local-directory-label[data-directory="packages/explorer/src/client/persistence"]')).toHaveCount(1);
   await expect(page.locator(`#map-container .node-card[data-id="${PROVIDER}"]`)).toHaveCount(1);
-  await expect(page.getByRole("button", { name: "Clear exploration pins" })).toContainText("1 pin");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+  await page.getByRole("button", { name: "Show pins", exact: true }).click();
+  await expect(page.getByRole("button", { name: `Release explorerGraphOf in ${PROVIDER}`, exact: true })).toBeVisible();
 });
 
 test("World Map folder entry retains 3D, and its shared link restores the folder without a selected file", async ({ page, browser }) => {

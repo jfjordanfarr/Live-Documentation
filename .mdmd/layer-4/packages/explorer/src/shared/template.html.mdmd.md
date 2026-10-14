@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-13T19:38:17.164Z
+- Generated At: 2026-10-14T02:49:21.291Z
 
 ## Authored
 ### Purpose
@@ -55,6 +55,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `filter-toggle-assets` {#symbol-filter-toggle-assets}
+- Type: variable
+
+#### `filter-toggle-directories` {#symbol-filter-toggle-directories}
+- Type: variable
+
+#### `filter-toggle-directory-links` {#symbol-filter-toggle-directory-links}
 - Type: variable
 
 #### `filter-toggle-related-docs` {#symbol-filter-toggle-related-docs}

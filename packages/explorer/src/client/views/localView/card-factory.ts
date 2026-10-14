@@ -80,7 +80,9 @@ export function createNodeCard(
   close.setAttribute("aria-label", `Close ${node.name}`);
   close.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
   close.addEventListener("click", event => { event.stopPropagation(); controller.closeNode(node.id); });
-  card.append(close);
+  const retained = controller.pins.entries.some(pin => pin.nodeId === node.id);
+  const directSelection = !controller.pins.entries.length && controller.options.state.selectedNode?.id === node.id;
+  if (retained || directSelection || controller.expandedCards.has(node.id)) card.append(close);
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";

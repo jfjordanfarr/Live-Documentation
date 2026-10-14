@@ -82,7 +82,7 @@ for (const [base, file] of [["/", "packages/explorer/src/client/index.ts"], [BAS
     const ids = () => page.locator("#map-container .node-card").evaluateAll(cards => cards.map(card => (card as HTMLElement).dataset.id).sort());
     const before = await ids();
     expect(before.length).toBeGreaterThan(2);
-    await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
     await subject.locator(".node-title").click();
     expect(await ids(), "retaining the selected file does not switch to a different neighborhood renderer").toEqual(before);
     await expect(page.locator("#map-container .local-placed")).toBeVisible();

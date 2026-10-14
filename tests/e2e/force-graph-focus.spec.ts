@@ -1,45 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
-import type { Camera, Mesh, Scene, WebGLRenderer } from "three";
 
+import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { localRetainUrl } from "./still-picture";
 
 const GRAPH = "packages/engine/src/live-docs/graph.ts";
 const DOCUMENT = "packages/engine/src/live-docs/document.ts";
-
-type ObservedWindow = Window & { __THREE_DEVTOOLS__: EventTarget; renderedGraph?: { scene: Scene; camera: Camera } };
-type GraphMesh = Mesh & { __graphObjType?: string; __data?: { id: string; name: string } };
-
-/** Read the actual meshes and camera sent to WebGL through Three's development-tool event; no Explorer test API. */
-async function observeGraph(page: Page): Promise<void> {
-  await page.addInitScript(() => {
-    const inspected = window as unknown as ObservedWindow;
-    inspected.__THREE_DEVTOOLS__ = new EventTarget();
-    inspected.__THREE_DEVTOOLS__.addEventListener("observe", event => {
-      const renderer = (event as CustomEvent<WebGLRenderer>).detail;
-      if (!renderer.isWebGLRenderer) return;
-      const render = renderer.render.bind(renderer);
-      renderer.render = (scene, camera) => { inspected.renderedGraph = { scene: scene as Scene, camera }; render(scene, camera); };
-    });
-  });
-}
-
-async function renderedNodes(page: Page) {
-  return page.evaluate(() => {
-    const observed = (window as unknown as ObservedWindow).renderedGraph!;
-    const rect = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
-    const nodes: Array<{ id: string; name: string; x: number; y: number; depth: number; distance: number; opacity: number }> = [];
-    observed.scene.traverse(object => {
-      const mesh = object as GraphMesh;
-      if (mesh.__graphObjType !== "node" || !mesh.__data || Array.isArray(mesh.material)) return;
-      const position = mesh.getWorldPosition(mesh.position.clone());
-      const projected = position.clone().project(observed.camera);
-      nodes.push({ id: mesh.__data.id, name: mesh.__data.name,
-        x: rect.left + (projected.x + 1) * rect.width / 2, y: rect.top + (1 - projected.y) * rect.height / 2,
-        depth: projected.z, distance: position.distanceTo(observed.camera.position), opacity: mesh.material.opacity });
-    });
-    return nodes;
-  });
-}
 
 async function expectFocused(page: Page, id: string): Promise<void> {
   const label = page.locator(".force-graph-focus");
@@ -174,6 +139,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await expect.poll(opacity).toBeGreaterThan(.7);
   await page.mouse.move(30, 50);
   await expect.poll(opacity).toBeLessThan(.3);
+  await page.getByRole("button", { name: "Show pins", exact: true }).click();
   await page.getByRole("button", { name: "Clear exploration pins" }).click();
   await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.7);
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(initialNodes.map(node => node.id).sort());

@@ -32,7 +32,9 @@ export type PersistedUiV1 = {
 export const getDefaultFilters = (): ExplorerFilters => ({
   showTests: true,
   showAssets: false,
-  showRelatedDocs: false
+  showRelatedDocs: false,
+  showDirectories: false,
+  showDirectoryLinks: false
 });
 
 /** Returns the factory-default tuning configuration for bezier curves and the local-map layout. */
@@ -132,10 +134,14 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
       const showTests = readBoolean(parsedFilters.showTests);
       const showAssets = readBoolean(parsedFilters.showAssets);
       const showRelatedDocs = readBoolean(parsedFilters.showRelatedDocs);
+      const showDirectories = readBoolean(parsedFilters.showDirectories);
+      const showDirectoryLinks = readBoolean(parsedFilters.showDirectoryLinks);
       result.filters = {
         ...(showTests !== undefined ? { showTests } : null),
         ...(showAssets !== undefined ? { showAssets } : null),
-        ...(showRelatedDocs !== undefined ? { showRelatedDocs } : null)
+        ...(showRelatedDocs !== undefined ? { showRelatedDocs } : null),
+        ...(showDirectories !== undefined ? { showDirectories } : null),
+        ...(showDirectoryLinks !== undefined ? { showDirectoryLinks } : null)
       };
     }
 

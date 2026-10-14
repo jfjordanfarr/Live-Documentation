@@ -95,17 +95,19 @@ async function main(): Promise<void> {
     const parsed: unknown = JSON.parse(spec.startsWith("@") ? await fs.readFile(spec.slice(1), "utf8") : spec);
     const settings = readLayoutSettings(parsed);
     const tuning = applyLayoutSettings(applyLayoutPreset(getDefaultTuning(), preset), settings).forceGraph;
-    for (const name of ["tests", "assets", "related-docs"] as const) if (options[name] && options[name] !== "true" && options[name] !== "false") throw new Error(`--${name} must be true or false.`);
+    for (const name of ["tests", "assets", "related-docs", "directories", "directory-links"] as const) if (options[name] && options[name] !== "true" && options[name] !== "false") throw new Error(`--${name} must be true or false.`);
     const related = options["related-docs"] === "true" ? (await loadBundleData(run)).relatedDocLinks ?? [] : [];
     const report = spatialReport(graph, run, tuning, Number(options.ticks ?? 300), {
-      showTests: options.tests !== "false", showAssets: options.assets !== "false", showRelatedDocs: options["related-docs"] === "true"
+      showTests: options.tests !== "false", showAssets: options.assets !== "false", showRelatedDocs: options["related-docs"] === "true",
+      showDirectories: options.directories === "true", showDirectoryLinks: options["directory-links"] === "true"
     }, related);
     const label = options.label ?? `spatial-${preset}`;
     await fs.mkdir(out, { recursive: true });
     const stem = path.join(out, `${scopeSlug(run)}-${label}`);
     await fs.writeFile(`${stem}.json`, JSON.stringify(report, null, 2) + "\n");
     await fs.writeFile(`${stem}.md`, renderSpatialReport(report));
-    console.log(`${report.nodes.length} files, ${report.links.length} counted file pairs; ${report.overlaps} sphere overlaps. Report at ${path.relative(process.cwd(), stem)}.{md,json}.`);
+    const memberships = report.links.filter(link => link.kind === "containment").length;
+    console.log(`${report.nodes.length} nodes, ${report.links.length - memberships} reference pairs, ${memberships} membership links; ${report.overlaps} sphere overlaps. Report at ${path.relative(process.cwd(), stem)}.{md,json}.`);
     return;
   }
   if (verb === "capture") {

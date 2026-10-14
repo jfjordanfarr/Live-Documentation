@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 import { closeDirectory, directoryState, NO_OPEN_DIRECTORIES, openDirectory, under } from "./directory-state";
 
 describe("the opened directories", () => {
-  it("opens a directory once and closes it with everything opened under it", () => {
+  it("opens a directory once and releases it without closing independently opened descendants", () => {
     const one = openDirectory(NO_OPEN_DIRECTORIES, "a");
     expect([...one]).toEqual(["a"]);
     expect(openDirectory(one, "a")).toBe(one);
     const three = openDirectory(openDirectory(one, "a/b"), "c");
-    expect([...closeDirectory(three, "a")].sort()).toEqual(["c"]);
+    expect([...closeDirectory(three, "a")].sort()).toEqual(["a/b", "c"]);
     expect(closeDirectory(three, "x")).toBe(three);
     expect([...closeDirectory(three, "a/b")].sort()).toEqual(["a", "c"]);
   });

@@ -172,5 +172,9 @@ export const pinOffset = (metrics: CardMetrics, direction: "inbound" | "outbound
 export function labelHeight(capture: Capture, directory: string, width: number): number {
   const text = capture.labels[directory];
   if (!text) return 0;
-  return textHeight(capture, text, width) + capture.constants.labelPaddingBottom;
+  const controls = capture.labelControls?.[directory];
+  return Math.max(
+    textHeight(capture, text, width - (controls?.width ?? 0)),
+    controls?.height ?? 0
+  ) + capture.constants.labelPaddingBottom;
 }

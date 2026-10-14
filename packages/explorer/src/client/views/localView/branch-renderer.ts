@@ -7,6 +7,7 @@ import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pi
 import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
 import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory";
 import type { LocalViewController } from "./controller";
+import { ancestryButton } from "./directory-ancestry";
 import { membranePath } from "./membrane-outline";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 
@@ -289,7 +290,10 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
       if (event.key === "Enter" || event.key === " ") { event.preventDefault(); name.click(); }
     });
   }
-  label.replaceChildren(name);
+  const caption = document.createElement("span");
+  caption.className = "local-directory-caption";
+  caption.append(name);
+  label.replaceChildren(ancestryButton(controller, directory), caption);
   if (open) {
     const close = document.createElement("button");
     close.type = "button";
@@ -298,13 +302,13 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
     close.setAttribute("aria-label", `Close ${directory}`);
     close.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
     close.addEventListener("click", event => { event.stopPropagation(); controller.closeDirectory(directory); });
-    label.append(" ", close);
+    caption.append(" ", close);
   } else if (disclosure && (disclosure.hiddenFiles || disclosure.hiddenDirectories)) {
     const more = document.createElement("span");
     more.className = "local-directory-more";
     more.textContent = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
     more.title = "Not drawn; open the directory to see them";
-    label.append(" ", more);
+    caption.append(" ", more);
   }
 }
 

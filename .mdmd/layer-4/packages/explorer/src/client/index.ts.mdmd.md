@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-13T19:38:15.639Z
+- Generated At: 2026-10-14T04:03:00.977Z
 
 ## Authored
 ### Purpose
@@ -43,7 +43,9 @@ _No public symbols detected_
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`layout-presets.layoutPresetOf`](./layout-presets.ts.mdmd.md#symbol-layoutpresetof)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
+- [`icon-button.iconButton`](./panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`omnisearch.initOmnisearch`](./panels/omnisearch.ts.mdmd.md#symbol-initomnisearch)
+- [`pin-tray.createPinTray`](./panels/pin-tray.ts.mdmd.md#symbol-createpintray)
 - [`sources-facts.sourcesFacts`](./panels/sources-facts.ts.mdmd.md#symbol-sourcesfacts-function)
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
@@ -77,10 +79,18 @@ _No public symbols detected_
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
 - [`forceGraphView.createForceGraphView`](./views/forceGraphView.ts.mdmd.md#symbol-createforcegraphview)
+- [`directory-state.under`](./views/localView/directory-state.ts.mdmd.md#symbol-under)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
 - [`perspectiveTransition.animatePerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-animateperspective)
 - [`perspectiveTransition.captureLocalScene`](./views/perspectiveTransition.ts.mdmd.md#symbol-capturelocalscene)
 - [`perspectiveTransition.holdPerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-holdperspective)
+- [`pin-state.EMPTY_PIN_SET`](./views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
+- [`retained-state.RetainedItem`](./views/retained-state.ts.mdmd.md#symbol-retaineditem)
+- [`retained-state.RetainedState`](./views/retained-state.ts.mdmd.md#symbol-retainedstate)
+- [`retained-state.clearRetainedDirectory`](./views/retained-state.ts.mdmd.md#symbol-clearretaineddirectory)
+- [`retained-state.reconcileRetained`](./views/retained-state.ts.mdmd.md#symbol-reconcileretained)
+- [`retained-state.releaseRetained`](./views/retained-state.ts.mdmd.md#symbol-releaseretained)
+- [`retained-state.subjectAfterRelease`](./views/retained-state.ts.mdmd.md#symbol-subjectafterrelease)
 - [`index.createWorldMapView`](./views/worldMap/index.ts.mdmd.md#symbol-createworldmapview)
 - [`graph.explorerGraphOf`](../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)

@@ -12,6 +12,10 @@ export interface ExplorerFilters {
   showTests: boolean;
   showAssets: boolean;
   showRelatedDocs: boolean;
+  /** Optional containment nodes in the 3D Local Map. */
+  showDirectories?: boolean;
+  /** Draw containment links at rest as well as on directory hover/focus. */
+  showDirectoryLinks?: boolean;
 }
 
 /**
@@ -159,6 +163,8 @@ export interface ExplorerState {
   pins?: PinSet;
   /** The directories opened in the Local Map, retained with the pins (2026-10-08). */
   openDirectories?: ReadonlySet<string>;
+  /** Oldest-first identities of retained selections, including directory openings. */
+  retentionOrder?: readonly string[];
   view: ViewName;
   perspective: LocalMapPerspective;
   selectedNode: ExplorerNodePayload | null;

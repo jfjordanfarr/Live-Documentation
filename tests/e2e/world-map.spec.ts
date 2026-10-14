@@ -218,7 +218,7 @@ test.describe("World Map", () => {
     await expect(page.locator("#view-map.active")).toHaveCount(1);
     await expect(page.locator('.nav-item.active[data-view="map"]')).toHaveCount(1);
     await expect(page.locator('#view-map .local-directory-label[data-directory="packages/engine"]')).toHaveCount(1);
-    await expect(page.getByRole("button", { name: "Clear exploration pins" })).toBeHidden();
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
     await page.locator('.nav-item[data-view="world"]').click();
     await expect(page.locator("#view-world.active")).toHaveCount(1);
     expect(await page.evaluate(() => window.__worldMap!.state().pinned)).toBeNull();

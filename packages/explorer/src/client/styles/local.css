@@ -268,15 +268,51 @@ span.local-disclosure { cursor: default; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
 .symbol-label-wrapper:focus-visible, .local-file-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-.perspective-controls { position: absolute; bottom: 18px; right: 18px; z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
-/* Keep the representation controls beside the details drawer, which otherwise covers them. */
-#detail-panel.visible ~ .perspective-controls { right: calc(var(--detail-panel-width) + 18px); }
+.perspective-controls { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
+/* Center within the remaining map when Details occupies its right edge. */
+#detail-panel.visible ~ .perspective-controls { left: calc((100% - var(--detail-panel-width)) / 2); bottom: 68px; }
 .perspective-controls[hidden], .perspective-controls button[hidden] { display: none; }
-.perspective-controls button { padding: 7px 10px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; font-size: 12px; }
+.perspective-controls button { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; padding: 7px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; font-size: 13px; }
 .perspective-controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .perspective-controls button:focus-visible { outline: 2px solid var(--accent); }
-.perspective-controls select { font: inherit; font-size: 12px; color: var(--text-primary); background: var(--bg-deep); border: 1px solid var(--border); border-radius: 4px; padding: 7px; max-width: 110px; }
-.perspective-controls select:focus-visible { outline: 2px solid var(--accent); }
+.perspective-controls .custom-layout { border-bottom-color: var(--accent); color: var(--accent); }
+.perspective-controls button:disabled { cursor: default; opacity: .55; }
+
+.pin-tray { position: absolute; right: 18px; bottom: 18px; z-index: 106; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 13px; }
+.pin-tray[hidden], .pin-tray [hidden] { display: none; }
+#detail-panel.visible ~ .pin-tray { right: calc(var(--detail-panel-width) + 18px); }
+.pin-tray button { color: var(--text-primary); font: inherit; background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
+.pin-tray button:hover { background: var(--accent-subtle); }
+.pin-tray button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pin-tray button:disabled { cursor: default; opacity: .45; }
+.pin-tray .pin-tray-toggle { display: flex; gap: 7px; align-items: center; padding: 10px; border-color: var(--border); background: var(--bg-deep); }
+.pin-tray-panel { width: min(340px, calc(100vw - 40px)); max-height: min(60vh, 560px); overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); box-shadow: 0 8px 24px #0006; }
+.pin-tray-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; position: sticky; top: 0; z-index: 1; background: var(--bg-deep); border-bottom: 1px solid var(--border); }
+.pin-tray-header button { padding: 4px 6px; }
+.pin-tray-list { margin: 0; padding: 4px; list-style: none; }
+.pin-tray-row { display: flex; align-items: center; gap: 2px; padding: 3px; border-bottom: 1px solid var(--border); }
+.pin-tray-row:last-child { border-bottom: 0; }
+.pin-tray-row button { padding: 6px; display: flex; align-items: center; justify-content: center; }
+.pin-tray-row svg { flex: 0 0 18px; }
+.pin-tray-row .pin-tray-subject { flex: 1; min-width: 0; gap: 8px; justify-content: flex-start; text-align: left; }
+.pin-tray-words { display: flex; flex-direction: column; min-width: 0; gap: 3px; overflow-wrap: anywhere; }
+.pin-tray-context { color: var(--text-panel-subtle); }
+.pin-tray-empty { padding: 0 12px 12px; margin: 0; color: var(--text-panel-subtle); }
+
+.local-directory-ancestors { display: inline-flex; flex: 0 0 auto; align-self: flex-start; vertical-align: middle; margin-top: -2px; padding: 1px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; }
+.local-directory-caption { flex: 1; min-width: 0; }
+.local-directory-ancestors svg { width: 14px; height: 14px; }
+.local-directory-ancestors:hover, .local-directory-ancestors:focus-visible { border-color: var(--accent); color: var(--accent); }
+.directory-ancestry { position: fixed; inset: auto; margin: 0; width: min(290px, calc(100vw - 32px)); max-height: min(60vh, 460px); overflow: auto; padding: 12px; color: var(--text-primary); border: 1px solid var(--border); border-radius: 9px; background: var(--bg-deep); box-shadow: 0 8px 24px #0008; font-size: 13px; }
+.directory-ancestry strong { display: block; margin-bottom: 10px; overflow-wrap: anywhere; }
+.directory-ancestry-stack { display: flex; flex-direction: column; gap: 4px; }
+.directory-ancestor { margin-left: calc(var(--ancestor-depth) * 8px); padding: 9px 12px; color: inherit; text-align: left; font: inherit; overflow-wrap: anywhere; border: 1px solid var(--border); border-radius: 7px 7px 3px 7px; background: transparent; cursor: pointer; }
+.directory-ancestor:hover, .directory-ancestor:focus-visible { border-color: var(--accent); outline: none; background: var(--accent-subtle); }
+.directory-ancestor-preview { position: absolute; pointer-events: none; z-index: 100; border: 1px solid var(--accent); border-radius: 12px; opacity: .5; }
+.directory-ancestor-preview[hidden] { display: none; }
+@media (max-width: 850px) {
+  .perspective-controls { bottom: 72px; }
+}
 
 /* Directory containment and dependency rank are independent in the reading view. */
 .branch-mode { row-gap: 28px; }
@@ -288,7 +324,7 @@ span.local-disclosure { cursor: default; }
 .local-directory-band > .local-column, .local-directory-band > .local-directory-label { pointer-events: auto; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-membrane-shape { fill: #ffffff03; stroke: var(--border); stroke-width: 1px; stroke-linejoin: round; }
-.local-directory-label { position: absolute; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
+.local-directory-label { position: absolute; display: flex; gap: 4px; align-items: flex-start; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
 /* The label is one text flow: the name, which opens the directory while it is encasing; then what it hides, or the X that
    closes it once open (the owner's grammar, 2026-10-08). One flow, so the label wraps as the one text the layout lab models
    from its capture; the X stands in it, in the room the placement already reserves above the leftmost segment, so an open

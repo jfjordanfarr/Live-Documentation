@@ -4,12 +4,12 @@
  * Renders the 3D force-directed graph view for the Live Docs Explorer using
  * ForceGraph3D. Supports Related Documentation overlay nodes when enabled.
  *
- * Extracted from index.ts during the Feb 2026 refactor to reduce the
- * monolith below the 1000-line threshold.
+ * File references and optional directory membership share the simulation;
+ * retention and hover decide which parts of that graph receive attention.
  */
 
 import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
-import { Box3, Raycaster, Vector2, Vector3, type Object3D } from "three";
+import { Box3, PerspectiveCamera, Raycaster, Vector2, Vector3, type Object3D } from "three";
 
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type {
@@ -19,14 +19,24 @@ import type {
 } from "../../shared/types";
 import { requireElement } from "../dom";
 import type { ExplorerState } from "../types";
-import { spatialGraphOf } from "./forceGraphData";
-import { configureSpatialForces, spatialNodeValue } from "./forceGraphLayout";
+import { directoryNodeId, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
+import { configureSpatialForces, spatialNodeRadius, spatialNodeValue } from "./forceGraphLayout";
 import { layoutPresetOf } from "../layout-presets";
-import { focusedCameraPosition, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
+import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET } from "./pin-state";
 import { wheelPixels } from "./wheel";
+
+const NODE_COLORS: Readonly<Record<string, string>> = {
+  implementation: "#0091ff",
+  test: "#28a745",
+  interface: "#ffc107",
+  config: "#6c757d",
+  script: "#17a2b8",
+  "related-doc": "#9966cc",
+  directory: "#e9984d"
+};
 
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
@@ -36,12 +46,12 @@ import { wheelPixels } from "./wheel";
 export interface ForceGraphLink {
   source: string | ForceGraphNode;
   target: string | ForceGraphNode;
-  kind: ExplorerLinkPayload["kind"] | "related-doc";
+  kind: SpatialLinkKind;
   count: number;
 }
 
 /** A node in the Force Graph, extending the payload with optional archetype. */
-export type ForceGraphNode = ExplorerNodePayload & {
+export type ForceGraphNode = SpatialGraphNode & {
   /** Archetype for Related Documentation nodes */
   archetype?: string;
   x?: number;
@@ -69,6 +79,8 @@ export interface ForceGraphViewOptions {
   relatedDocLinks?: RelatedDocLink[];
   onShowBundledDoc: (docPath: string) => void;
   onFocusNode: (node: ExplorerNodePayload) => void;
+  onRetainNode: (node: ExplorerNodePayload) => void;
+  onOpenDirectory: (directory: string) => void;
   getPath?: () => readonly string[] | undefined;
 }
 
@@ -80,6 +92,7 @@ export interface ForceGraphViewApi {
   setActive(active: boolean): void;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
+  focusDirectory(directory: string): void;
 }
 
 /** Creates the Force Graph (3D) view for the Live Docs Explorer. */
@@ -100,7 +113,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   const raycaster = new Raycaster();
   let membership = "";
   let forceSettings = "";
+  let sizeSettings = "";
+  let attentionSettings = "";
   let focusedId: string | null = null;
+  let selectedId: string | null = null;
+  let focusedDirectory: string | null = null;
   let hoveredId: string | null = null;
   let updateAttention = (): void => {};
   let active = false;
@@ -170,6 +187,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     focusMotion = null;
     following = false;
     focusedId = nodeId;
+    focusedDirectory = node.directoryPath ?? null;
+    if (focusLabel) {
+      focusLabel.textContent = node.name;
+      focusLabel.dataset.nodeId = nodeId;
+      focusLabel.title = focusedDirectory !== null ? `Open ${focusedDirectory || "Scan root"}` : `${node.codeRelativePath} — Show details`;
+    }
     // Track a still-running simulation without introducing a second camera flight.
     if (focusLabel) { focusLabel.style.left = `${anchor.x - rect.left}px`; focusLabel.style.top = `${anchor.y - rect.top}px`; }
   }
@@ -239,7 +262,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function focusSelection(force = false): void {
     const node = state.focusedNode ?? state.selectedNode;
-    if (!force && node?.id === focusedId) return;
+    if (!force && (node?.id ?? null) === selectedId) return;
+    selectedId = node?.id ?? null;
+    focusedDirectory = null;
     focusedId = node?.id ?? null;
     zoomMotion = null;
 
@@ -252,6 +277,40 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       focusLabel.dataset.nodeId = node?.id ?? "";
       focusLabel.hidden = true;
     }
+  }
+
+  function focusDirectory(directory: string): void {
+    focusedDirectory = directory;
+    focusedId = state.filters.showDirectories ? directoryNodeId(directory) : null;
+    following = false;
+    subjectAnchor = null;
+    zoomMotion = null;
+    focusMotion = null;
+    if (focusLabel) {
+      focusLabel.textContent = directory.split("/").pop() || "Scan root";
+      focusLabel.title = `Open ${directory || "Scan root"}`;
+      focusLabel.dataset.nodeId = focusedId ?? "";
+      focusLabel.hidden = true;
+    }
+    const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 500;
+    frameDirectories([directory], duration);
+    updateAttention();
+  }
+
+  function frameDirectories(directories: readonly string[], duration: number): void {
+    if (!forceGraphInstance) return;
+    const instance = forceGraphInstance;
+    const spheres = instance.graphData().nodes
+      .filter(node => Number.isFinite(node.x) && Number.isFinite(node.y) && Number.isFinite(node.z)
+        && directories.some(directory => under(node.directoryPath ?? node.codeRelativePath, directory)))
+      .map(node => ({
+        center: { x: node.x!, y: node.y!, z: node.z! },
+        radius: spatialNodeRadius(node, state.tuning.forceGraph)
+      }));
+    const camera = instance.camera();
+    if (!(camera instanceof PerspectiveCamera)) throw new Error("Directory framing requires a perspective camera.");
+    const framing = frameCameraSpheres(camera, spheres, { width: instance.width(), height: instance.height() });
+    if (framing) instance.cameraPosition(framing.camera, framing.target, duration);
   }
 
   function render(): void {
@@ -276,8 +335,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     };
 
     const filteredNodes = graphData.nodes.filter(includeNode);
-    const data = spatialGraphOf(graphData, includeNode, state.filters.showRelatedDocs ? relatedDocLinks : []);
-    const graphNodes: ForceGraphNode[] = data.nodes.map(node => nodeCache.get(node.id) ?? node);
+    const data = spatialGraphOf(graphData, includeNode, state.filters.showRelatedDocs ? relatedDocLinks : [], !!state.filters.showDirectories);
+    const graphNodes: ForceGraphNode[] = data.nodes.map(node => {
+      const cached = nodeCache.get(node.id);
+      return cached ? Object.assign(cached, node) : node;
+    });
     const dataForGraph: ForceGraphData = { nodes: graphNodes, links: data.links };
     container.dataset.layoutPreset = layoutPresetOf(state.tuning);
 
@@ -285,10 +347,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const instance = forceGraphInstance!;
       const nextSettings = JSON.stringify(state.tuning.forceGraph);
       if (forceSettings === nextSettings) return;
-      const subject = state.focusedNode ?? state.selectedNode;
-      const anchor = subject ? getSubjectAnchor(subject.id) : null;
+      const subjectId = focusedDirectory !== null
+        ? state.filters.showDirectories ? directoryNodeId(focusedDirectory) : null
+        : (state.focusedNode ?? state.selectedNode)?.id;
+      const anchor = subjectId ? getSubjectAnchor(subjectId) : null;
       const tuning = { ...state.tuning.forceGraph };
-      instance.nodeVal(node => spatialNodeValue(node, tuning)).nodeRelSize(tuning.nodeSize);
+      const nextSize = JSON.stringify([tuning.nodeSize, tuning.symbolScale]);
+      if (sizeSettings !== nextSize) {
+        instance.nodeVal(node => spatialNodeValue(node, tuning)).nodeRelSize(tuning.nodeSize);
+        sizeSettings = nextSize;
+      }
       configureSpatialForces<ForceGraphNode>({
         get: name => instance.d3Force(name),
         set: (name, force) => { instance.d3Force(name, force); }
@@ -298,7 +366,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       container.setAttribute("aria-busy", "true");
       instance.d3ReheatSimulation();
       simulationRunning = true;
-      if (subject && anchor) placeSubjectAnchor(subject.id, anchor);
+      if (subjectId && anchor) placeSubjectAnchor(subjectId, anchor);
     };
 
     for (let index = 0; index < graphNodes.length; index++) {
@@ -310,6 +378,20 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const present = new Set(graphNodes.map(node => node.id));
     for (const id of nodeObjects.keys()) if (!present.has(id)) nodeObjects.delete(id);
     if (hoveredId && !present.has(hoveredId)) hoveredId = null;
+    if (focusedDirectory !== null && !state.openDirectories?.has(focusedDirectory)) {
+      focusedDirectory = null;
+      selectedId = null;
+      focusedId = null;
+      if (focusLabel) focusLabel.hidden = true;
+    }
+    if (focusedDirectory !== null) {
+      const id = directoryNodeId(focusedDirectory);
+      focusedId = state.filters.showDirectories && present.has(id) ? id : null;
+      if (focusLabel) {
+        focusLabel.dataset.nodeId = focusedId ?? "";
+        if (!focusedId) focusLabel.hidden = true;
+      }
+    }
     const pins = state.pins ?? EMPTY_PIN_SET;
     const retained = new Set(pins.entries.map(pin => pin.nodeId));
     for (const { link } of getVisibleConnections(pins, graphData.links)) {
@@ -318,10 +400,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     for (const node of filteredNodes) if (directories.some(directory => under(node.id, directory))) retained.add(node.id);
     if (state.selectedNode) retained.add(state.selectedNode.id);
     if (path?.length) { retained.clear(); for (const id of path) retained.add(id); }
+    const retainedFiles = [...retained];
+    for (const node of graphNodes) {
+      if (node.directoryPath !== undefined && retainedFiles.some(id => under(id, node.directoryPath!))) retained.add(node.id);
+    }
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {
-        forceGraphInstance?.zoomToFit(0, 70, node => directories.some(directory => under(String(node.id), directory)));
+        frameDirectories(directories, 0);
       }
       framedDirectoryScope = directoryScope;
     };
@@ -332,27 +418,60 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // directories or path; it never restores a snapshot from graph entry.
       const hovered = hoveredId;
       const attention = hovered ? new Set([hovered]) : hasAttention ? retained : null;
-      if (hovered) for (const link of dataForGraph.links) {
-        const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
-        if (a === hovered || b === hovered) { attention!.add(a); attention!.add(b); }
+      const hoveredDirectory = hovered ? nodeCache.get(hovered)?.directoryPath : undefined;
+      const directoryAttention = hoveredDirectory ?? (hovered ? undefined : focusedDirectory ?? undefined);
+      if (hoveredDirectory !== undefined) {
+        for (const node of graphNodes) {
+          if (under(node.directoryPath ?? node.codeRelativePath, hoveredDirectory)) attention!.add(node.id);
+        }
+      } else if (hovered) {
+        for (const link of dataForGraph.links) {
+          const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+          if (a === hovered || b === hovered) { attention!.add(a); attention!.add(b); }
+        }
       }
+      // Accessor setters rebuild native materials/geometries. A force or
+      // camera edit with identical attention needs no appearance update.
+      const nextAttention = JSON.stringify([
+        attention ? [...attention].sort() : null,
+        hovered,
+        path ?? null,
+        directoryAttention ?? null,
+        !!state.filters.showDirectoryLinks
+      ]);
+      if (attentionSettings === nextAttention) return;
+      attentionSettings = nextAttention;
       forceGraphInstance?.nodeColor(node => {
-        const colors: Record<string, string> = { implementation: "#0091ff", test: "#28a745", interface: "#ffc107", config: "#6c757d", script: "#17a2b8", "related-doc": "#9966cc" };
-        const color = colors[(node.archetype ?? "").toLowerCase()] ?? "#888888";
+        const color = NODE_COLORS[(node.archetype ?? "").toLowerCase()] ?? "#888888";
         return attention && !attention.has(node.id) ? `${color}33` : color;
       });
       forceGraphInstance?.linkColor(link => {
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
         const visible = hovered ? a === hovered || b === hovered
           : path?.length ? pathPairs.has(JSON.stringify([a, b].sort())) : !attention || (attention.has(a) && attention.has(b));
+        if (link.kind === "containment") return `rgba(233, 152, 77, ${visible ? 0.25 : 0.04})`;
         return link.kind === "related-doc"
           ? `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`
           : `rgba(255, 255, 255, ${visible ? 0.2 : 0.025})`;
       });
+      forceGraphInstance?.linkVisibility(link => {
+        if (link.kind !== "containment" || state.filters.showDirectoryLinks) return true;
+        const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+        if (hovered && (a === hovered || b === hovered)) return true;
+        if (directoryAttention === undefined) return false;
+        const source = nodeCache.get(a), target = nodeCache.get(b);
+        return !!source && !!target
+          && under(source.directoryPath ?? source.codeRelativePath, directoryAttention)
+          && under(target.directoryPath ?? target.codeRelativePath, directoryAttention);
+      });
     };
 
     if (forceGraphInstance) {
-      if (nextMembership !== membership) forceGraphInstance.graphData(dataForGraph);
+      if (nextMembership !== membership) {
+        // Warm up only the first picture. Later membership changes evolve
+        // from the visible positions so a type toggle does not jump ahead.
+        forceGraphInstance.warmupTicks(0).graphData(dataForGraph);
+      }
       membership = nextMembership;
       focusSelection();
       updateAttention();
@@ -382,13 +501,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .nodeLabel(node => {
         const file = node;
         const label = document.createElement("span");
-        label.textContent = file.archetype === "related-doc" ? file.name
+        label.textContent = file.directoryPath !== undefined
+          ? `${file.directoryPath || "Scan root"} · ${file.directoryFileCount} visible files`
+          : file.archetype === "related-doc" ? file.name
           : `${file.name} · ${file.publicSymbols.length} public ${file.publicSymbols.length === 1 ? "symbol" : "symbols"}`;
         return label;
       })
-      .linkLabel(link => `${link.count} ${link.kind === "related-doc" ? "documentation" : "documented"} ${link.count === 1 ? "reference" : "references"}`)
+      .linkLabel(link => link.kind === "containment" ? "Directory membership"
+        : `${link.count} ${link.kind === "related-doc" ? "documentation" : "documented"} ${link.count === 1 ? "reference" : "references"}`)
       .linkWidth(link => {
-        if ((link).kind === "related-doc") {
+        if (link.kind === "related-doc" || link.kind === "containment") {
           return 0.5;
         }
         return 1;
@@ -400,6 +522,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     focusLabel.className = "force-graph-focus";
     focusLabel.hidden = true;
     focusLabel.addEventListener("click", () => {
+      if (focusedDirectory !== null) {
+        options.onOpenDirectory(focusedDirectory);
+        return;
+      }
       const node = focusedId ? nodesById.get(focusedId) : undefined;
       if (node) {
         onFocusNode(node);
@@ -425,10 +551,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.addEventListener("pointerup", event => {
       if (!press || event.button !== 0 || event.target !== forceGraphInstance?.renderer().domElement) return;
       const id = nodeAt(event.clientX, event.clientY);
-      if (id?.startsWith("related:")) onShowBundledDoc(id.slice("related:".length));
+      const directory = id ? nodeCache.get(id)?.directoryPath : undefined;
+      if (directory !== undefined) options.onOpenDirectory(directory);
+      else if (id?.startsWith("related:")) onShowBundledDoc(id.slice("related:".length));
       else if (id) {
         const node = nodesById.get(id);
-        if (node) { onFocusNode(node); focusSelection(true); }
+        if (node) {
+          options.onRetainNode(node);
+          onFocusNode(node);
+          focusSelection(true);
+        }
       }
     });
     window.addEventListener("pointerup", () => { press = null; });
@@ -437,8 +569,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       event.preventDefault(); event.stopPropagation();
       const camera = forceGraphInstance.camera();
       const controls = forceGraphInstance.controls() as { target: Vector3 };
-      const subject = state.focusedNode ?? state.selectedNode;
-      const node = subject ? nodeCache.get(subject.id) : null;
+      const node = focusedId ? nodeCache.get(focusedId) : null;
       const point = node && Number.isFinite(node.x) ? new Vector3(node.x, node.y, node.z) : controls.target;
       const previous = zoomMotion;
       const delta = wheelPixels(event.deltaY, event.deltaMode, container.clientHeight);
@@ -479,5 +610,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     return { files, links: instance.graphData().links.map(link => ({ source: resolveLinkEndpoint(link.source as string | { id: string }), target: resolveLinkEndpoint(link.target as string | { id: string }) })) };
   }
 
-  return { render, setActive, getSubjectAnchor, placeSubjectAnchor, captureScene, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusDirectory, getSubjectAnchor, placeSubjectAnchor, captureScene, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

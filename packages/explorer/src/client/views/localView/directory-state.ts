@@ -35,10 +35,12 @@ export function openDirectory(opened: OpenDirectories, directory: string): OpenD
   return new Set([...opened, directory]);
 }
 
-/** The set without the directory and everything opened under it: closing a directory closes what it holds. */
+/** Release this opening, preserving independently opened descendants. Bulk clearing is a separate action. */
 export function closeDirectory(opened: OpenDirectories, directory: string): OpenDirectories {
-  const next = new Set([...opened].filter(path => !under(path, directory)));
-  return next.size === opened.size ? opened : next;
+  if (!opened.has(directory)) return opened;
+  const next = new Set(opened);
+  next.delete(directory);
+  return next;
 }
 
 /**

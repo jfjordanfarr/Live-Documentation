@@ -27,15 +27,15 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
     await localMapSettled(page);
     const before = await facts(page);
     expect(before.files.length).toBeGreaterThan(1);
-    const preset = page.getByRole("combobox", { name: "Local Map layout", exact: true });
-    await expect(preset).toHaveValue("relaxed");
-    await preset.selectOption("compact");
+    const preset = page.getByRole("button", { name: "Compact", exact: true });
+    await expect(page.getByRole("button", { name: "Relaxed", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await preset.click();
     await localMapSettled(page);
     expect(await facts(page)).toEqual(before);
     await page.getByRole("button", { name: "3D", exact: true }).click();
     await page.locator("#view-graph.active canvas").waitFor();
     await expect(preset).toBeEnabled();
-    await expect(preset).toHaveValue("compact");
+    await expect(preset).toHaveAttribute("aria-pressed", "true");
     await page.getByText("Tuning", { exact: true }).click();
     const labels = ["details[data-tuning-perspective][open] .tuning-slider span", "details[data-tuning-perspective][open] output", ".perspective-controls button", ".tuning-export"];
     const boxes = await textBoxes(page, labels);
@@ -47,11 +47,12 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
     await expect(coupling).toBeVisible();
     await coupling.focus(); await page.keyboard.press("ArrowRight");
     await expect(coupling).toHaveValue("1.1");
-    await expect(preset).toHaveValue("compact");
+    await expect(preset).toHaveAttribute("aria-pressed", "true");
     await page.locator("#tuning-force-node-size").focus(); await page.keyboard.press("ArrowRight");
     await page.locator("#tuning-force-link-gap").focus(); await page.keyboard.press("ArrowRight");
-    await expect(preset).toHaveValue("custom");
-    await preset.selectOption("relaxed");
+    await expect(page.getByRole("button", { name: "Layout tuning: Custom", exact: true })).toBeVisible();
+    await expect(preset).toHaveAttribute("aria-pressed", "false");
+    await page.getByRole("button", { name: "Relaxed", exact: true }).click();
     await expect(coupling).toHaveValue("1.1");
     await expect(page.locator("#tuning-force-node-size")).toHaveValue("4.25");
     await page.locator("#filter-toggle-related-docs").check();
@@ -61,16 +62,21 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
     const settings = JSON.parse(await fs.readFile((await download.path())!, "utf8")) as { localMap: object; forceGraph: object };
     expect(settings.localMap).toEqual(LAYOUT_PRESETS.relaxed.localMap);
     expect(settings.forceGraph).toMatchObject({ ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1.1, nodeSize: 4.25, symbolScale: 1 });
+    const shared = page.url();
+    // A share must stand on its own. Close the publisher before starting the
+    // recipient instead of running two unnecessary WebGL simulations at once.
+    await page.close();
     const fresh = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
+    fresh.on("pageerror", error => errors.push(error.message));
     try {
-      await fresh.goto(page.url());
+      await fresh.goto(shared);
       await fresh.locator("#view-graph.active canvas").waitFor();
-      await expect(fresh.locator("#layout-preset")).toHaveValue("relaxed");
+      await expect(fresh.getByRole("button", { name: "Relaxed", exact: true })).toHaveAttribute("aria-pressed", "true");
       await expect(fresh.locator("#filter-toggle-related-docs")).toBeChecked();
       expect(JSON.parse((await fresh.locator("#graph-svg").getAttribute("data-layout-settings"))!)).toEqual(settings.forceGraph);
       await fresh.getByRole("button", { name: "2D", exact: true }).click();
       await localMapSettled(fresh);
-      await expect(fresh.locator("#layout-preset")).toHaveValue("relaxed");
+      await expect(fresh.getByRole("button", { name: "Relaxed", exact: true })).toHaveAttribute("aria-pressed", "true");
       await expect(fresh.locator("#tuning-force-coupling")).toHaveValue("1.1");
     } finally { await fresh.close(); }
     expect(errors).toEqual([]);
@@ -98,8 +104,7 @@ test("preset changes keep the selected file in place through 2D and 3D motion", 
       };
       const before = point();
       const frames: Array<{ x: number; y: number; moving: boolean }> = [];
-      const select = document.querySelector<HTMLSelectElement>("#layout-preset")!;
-      select.value = preset; select.dispatchEvent(new Event("change", { bubbles: true }));
+      document.querySelector<HTMLButtonElement>(`[data-layout-preset="${preset}"]`)!.click();
       await new Promise<void>(resolve => {
         const sample = (): void => {
           const root = document.querySelector<HTMLElement>(".local-placed")!;
@@ -147,12 +152,12 @@ test("Relaxed aligns the three Rosetta cards while both presets preserve their f
       references: [...document.querySelectorAll<SVGElement>(".connection-path[data-source-id]")].map(path =>
         JSON.stringify([path.dataset.sourceId, path.dataset.sourceSymbol, path.dataset.targetId, path.dataset.targetSymbol, path.dataset.kind])).sort() };
   });
-  await page.locator("#layout-preset").selectOption("compact");
+  await page.getByRole("button", { name: "Compact", exact: true }).click();
   await localMapSettled(page);
   const compact = await read();
   expect(compact.ids).toEqual([`${root}main.ts`, `${root}models.ts`, `${root}processor.ts`]);
   expect(compact.references.length).toBeGreaterThan(0);
-  await page.locator("#layout-preset").selectOption("relaxed");
+  await page.getByRole("button", { name: "Relaxed", exact: true }).click();
   await localMapSettled(page);
   const relaxed = await read();
   expect(relaxed.ids).toEqual(compact.ids);

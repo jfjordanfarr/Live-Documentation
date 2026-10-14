@@ -115,6 +115,8 @@ export interface Capture {
   cards: Record<string, CardCapture>;
   /** Each drawn directory's label text, prepared. */
   labels: Record<string, PreparedText>;
+  /** Space reserved beside each label's text for its independently laid-out controls. Absent in older captures. */
+  labelControls?: Record<string, { width: number; height: number }>;
   /** What the page showed at capture: its placement measure, size and each drawn directory's label height. */
   truth: { placementCost: number; pictureWidth: number; pictureHeight: number; labelHeights: Record<string, number> };
   /** Where Pretext's layout of a text at the page's width disagreed with the page by more than half a pixel. */
@@ -330,12 +332,23 @@ function readCapture(page: Page): Promise<PageCapture> {
       };
     });
     const labels: Record<string, PreparedText> = {};
+    const labelControls: Record<string, { width: number; height: number }> = {};
     const labelHeights: Record<string, number> = {};
     for (const label of root.querySelectorAll<HTMLElement>(".local-directory-label")) {
-      // The label says its directory; its text is the name and, on an encasing membrane, the count of what it hides,
-      // one text flow the model lays out as the page does (2026-10-08). An open membrane's X is not modelled: the scopes open nothing.
+      // The caption remains one text flow. Ancestry controls occupy a separate
+      // flex column, whose actual width and height also belong to the model.
       const directory = label.dataset.directory ?? label.textContent ?? "";
-      labels[directory] = prepared(label);
+      const caption = label.querySelector<HTMLElement>(".local-directory-caption");
+      labels[directory] = prepared(caption ?? label);
+      if (caption) {
+        labelControls[directory] = {
+          width: label.offsetWidth - caption.offsetWidth,
+          height: Math.max(0, ...[...label.children].filter(child => child !== caption).map(child => {
+            const style = getComputedStyle(child);
+            return (child as HTMLElement).offsetHeight + px(style.marginTop) + px(style.marginBottom);
+          }))
+        };
+      }
       labelHeights[directory] = label.offsetHeight;
     }
     probe.remove();
@@ -345,6 +358,7 @@ function readCapture(page: Page): Promise<PageCapture> {
       constants: constants!,
       cards,
       labels,
+      labelControls,
       truth: { placementCost: Number(root.dataset.placementCost), pictureWidth: px(root.style.width), pictureHeight: px(root.style.height), labelHeights },
       warnings,
       filters: {

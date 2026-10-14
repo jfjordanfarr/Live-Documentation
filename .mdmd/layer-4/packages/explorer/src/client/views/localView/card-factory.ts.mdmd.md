@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-12T20:19:49.025Z
+- Generated At: 2026-10-14T02:49:19.897Z
 
 ## Authored
 ### Purpose
@@ -39,7 +39,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L151)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L153)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -50,14 +50,14 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L174)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L176)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
 
 #### `createSymbolSection` {#symbol-createsymbolsection}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L190)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L192)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createSymbolSection` — Summary
@@ -74,7 +74,7 @@ The symbol section element
 
 #### `createTypeReferenceIndicator` {#symbol-createtypereferenceindicator}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L362)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L364)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `typeRefs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeReferenceIndicator` — Summary
@@ -89,7 +89,7 @@ The indicator element
 
 #### `createTypeBadge` {#symbol-createtypebadge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L413)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L415)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `refs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeBadge` — Summary

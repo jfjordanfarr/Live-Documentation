@@ -1,7 +1,48 @@
-import { Vector3, type Camera } from "three";
+import { Box3, Vector3, type Camera, type PerspectiveCamera } from "three";
 
 /** A position in the Force Graph's world coordinate system. */
 export interface CameraPoint { x: number; y: number; z: number }
+
+/** A visible body whose full extent must fit when a directory receives focus. */
+export interface CameraSphere {
+  center: CameraPoint;
+  radius: number;
+}
+
+/** Frame a group about its own center, preserving the camera bearing and allowing for sphere radii and viewport padding. */
+export function frameCameraSpheres(
+  camera: PerspectiveCamera,
+  spheres: readonly CameraSphere[],
+  viewport: { width: number; height: number },
+  padding = 70
+): { camera: CameraPoint; target: CameraPoint } | null {
+  if (!spheres.length) return null;
+  const bounds = new Box3();
+  for (const { center, radius } of spheres) {
+    const point = new Vector3(center.x, center.y, center.z);
+    bounds.expandByPoint(point.clone().addScalar(radius));
+    bounds.expandByPoint(point.clone().addScalar(-radius));
+  }
+  const target = bounds.getCenter(new Vector3());
+  const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+  const up = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
+  const back = new Vector3(0, 0, 1).applyQuaternion(camera.quaternion);
+  const tangent = Math.tan(camera.getEffectiveFOV() * Math.PI / 360);
+  const horizontal = tangent * camera.aspect * Math.max(.1, 1 - 2 * padding / viewport.width);
+  const vertical = tangent * Math.max(.1, 1 - 2 * padding / viewport.height);
+  let distance = 140;
+  for (const { center, radius } of spheres) {
+    const offset = new Vector3(center.x, center.y, center.z).sub(target);
+    const front = offset.dot(back) + radius;
+    distance = Math.max(
+      distance,
+      front + (Math.abs(offset.dot(right)) + radius) / horizontal,
+      front + (Math.abs(offset.dot(up)) + radius) / vertical,
+      front + camera.near
+    );
+  }
+  return { camera: target.clone().addScaledVector(back, distance), target };
+}
 
 /** Move toward a file without changing the direction from which the person is looking. */
 export function focusedCameraPosition(

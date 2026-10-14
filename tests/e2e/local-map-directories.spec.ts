@@ -164,7 +164,7 @@ test("an encasing membrane counts what it hides, its name opens it around the pi
   await expect(more).toBeVisible();
 });
 
-test("opening and closing work by keyboard, and a directory with a party file never closes below encasing", async ({ page }) => {
+test("keyboard release preserves an independently opened child and the enclosure required by a pinned file", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   const graph = `${LIVE_DOCS}/graph.ts`;
   await page.goto(localRetainUrl("/", [graph]));
@@ -177,11 +177,12 @@ test("opening and closing work by keyboard, and a directory with a party file ne
   await page.keyboard.press("Space");
   await settled(page);
   await expect(label(page, `${LIVE_DOCS}/adapters`).locator(".local-directory-close")).toBeVisible();
-  // Closing live-docs closes adapters with it; live-docs itself stays as a membrane, since graph.ts is pinned inside it.
+  // Release only this opening. The independently opened child and graph.ts still require their enclosures.
   await label(page, LIVE_DOCS).locator(".local-directory-close").focus();
   await page.keyboard.press("Enter");
   await settled(page);
-  await expect(label(page, `${LIVE_DOCS}/adapters`)).toHaveCount(0);
+  await expect(label(page, `${LIVE_DOCS}/adapters`)).toHaveCount(1);
+  await expect(label(page, `${LIVE_DOCS}/adapters`).locator(".local-directory-close")).toBeVisible();
   await expect(box(page, `${LIVE_DOCS}/adapters`)).toHaveCount(0);
   await expect(label(page, LIVE_DOCS)).toBeVisible();
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toHaveCount(0);

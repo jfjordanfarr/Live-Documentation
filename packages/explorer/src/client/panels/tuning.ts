@@ -27,10 +27,9 @@ export interface TuningPanelConfig {
  */
 export function initTuningPanel(config: TuningPanelConfig): () => void {
   const { state, onTuningChange: persistChange, onRender, drawLocalConnections } = config;
-  const presetSelect = document.getElementById("layout-preset") as HTMLSelectElement | null;
+  const presetButtons = document.querySelectorAll<HTMLButtonElement>("[data-layout-preset]");
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
-    if (presetSelect) presetSelect.value = layoutPresetOf(state.tuning);
     persistChange();
   };
   const packingSliders = [
@@ -133,7 +132,9 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     for (const slider of packingSliders) {
       slider.set(setSlider(document.getElementById(slider.id) as HTMLInputElement | null, `${slider.id}-value`, slider.get()));
     }
-    if (presetSelect) presetSelect.value = layoutPresetOf(state.tuning);
+    for (const button of presetButtons) {
+      button.setAttribute("aria-pressed", String(button.dataset.layoutPreset === layoutPresetOf(state.tuning)));
+    }
     state.tuning.bezier.stubFactor = setSlider(stubFactorInput, "tuning-stub-factor-value", state.tuning.bezier.stubFactor);
     state.tuning.bezier.stubMin = setSlider(stubMinInput, "tuning-stub-min-value", state.tuning.bezier.stubMin);
     state.tuning.bezier.stubMaxOffset = setSlider(stubMaxOffsetInput, "tuning-stub-max-offset-value", state.tuning.bezier.stubMaxOffset);
@@ -236,14 +237,16 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       if (state.view === "map") onRender();
     });
   }
-  presetSelect?.addEventListener("change", () => {
-    const preset = presetSelect.value;
-    if (preset !== "compact" && preset !== "relaxed") return;
-    state.tuning = applyLayoutPreset(state.tuning, preset);
-    syncTuningControlsFromState();
-    onTuningChange();
-    if (state.view === "map") onRender();
-  });
+  for (const button of presetButtons) {
+    button.addEventListener("click", () => {
+      const preset = button.dataset.layoutPreset;
+      if (preset !== "compact" && preset !== "relaxed") return;
+      state.tuning = applyLayoutPreset(state.tuning, preset);
+      syncTuningControlsFromState();
+      onTuningChange();
+      if (state.view === "map") onRender();
+    });
+  }
   document.getElementById("export-layout-settings")?.addEventListener("click", () => {
     const url = URL.createObjectURL(new Blob([JSON.stringify(layoutSettingsOf(state.tuning), null, 2) + "\n"], { type: "application/json" }));
     const anchor = document.createElement("a"); anchor.href = url; anchor.download = "local-map-layout.json"; anchor.click();

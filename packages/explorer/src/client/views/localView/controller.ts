@@ -1,4 +1,5 @@
 import { EMPTY_PIN_SET, retainFile, removePinsForNode, toggleFileSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
+import { subjectAfterRelease } from "../retained-state";
 import { dropStage, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
 import { closeDirectory as closeDirectoryIn, NO_OPEN_DIRECTORIES, openDirectory as openDirectoryIn, type OpenDirectories } from "./directory-state";
@@ -380,6 +381,11 @@ export class LocalViewController implements LocalViewApi {
     );
   }
 
+  /** Retain a whole file from either representation. */
+  retainNode(nodeId: string): void {
+    this.togglePinnedSymbol(nodeId, "*");
+  }
+
   /** Toggle one independent pin, preserving other branches and the clicked symbol’s screen position. */
   togglePinnedSymbol(nodeId: string, symbol: string): void {
     const node = this.resolveNode(nodeId);
@@ -397,8 +403,8 @@ export class LocalViewController implements LocalViewApi {
   closeNode(nodeId: string): void {
     this.expandedCards.delete(nodeId);
     const pins = removePinsForNode(this.pins, nodeId);
-    const next = pins.entries.find(pin => pin.nodeId !== nodeId);
-    if (this.options.state.selectedNode?.id === nodeId || !pins.entries.length) {
+    if (this.options.state.selectedNode?.id === nodeId) {
+      const next = pins.entries.at(-1);
       this.options.state.selectedNode = this.options.state.focusedNode = next ? this.resolveNode(next.nodeId) ?? null : null;
     }
     this.updateRetainedPins(nodeId, "*", pins, false);
@@ -426,7 +432,7 @@ export class LocalViewController implements LocalViewApi {
     this.lastInteracted = directory;
     this.options.state.openDirectories = next;
     this.localMapState.update(s => ({ ...s, activePath: null }));
-    this.render();
+    if (this.options.state.perspective === "2d") this.render();
     const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
     if (before && after) {
       cancelAnimationFrame(this.runtime.mapAnimationFrame);
@@ -438,8 +444,9 @@ export class LocalViewController implements LocalViewApi {
       this.drawConnections();
     }
     if (keyboardFocus) {
-      const element = this.container.querySelector<HTMLElement>(`${selector} [role="button"], ${selector} button, .local-directory-closed[data-directory="${CSS.escape(directory)}"]`)
-        ?? this.container.querySelector<HTMLElement>(".node-card, .empty-hint");
+      const directoryLabel = `.local-directory-label[data-directory="${CSS.escape(directory)}"]`;
+      const element = this.container.querySelector<HTMLElement>(`${directoryLabel} .local-directory-name[role="button"], ${directoryLabel} .local-directory-close, .local-directory-closed[data-directory="${CSS.escape(directory)}"]`)
+        ?? this.container.querySelector<HTMLElement>(".node-card, .local-directory-closed, .empty-hint");
       element?.focus({ preventScroll: true });
     }
     this.options.onExplorationChange?.(leavingPath);
@@ -454,12 +461,15 @@ export class LocalViewController implements LocalViewApi {
       : `.symbol-row[data-node-id="${CSS.escape(nodeId)}"][data-symbol="${CSS.escape(symbol)}"] .symbol-label-wrapper`;
     const before = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
     const keyboardFocus = this.container.contains(document.activeElement);
-    this.options.state.pins = pins;
-    const subject = this.resolveNode(nodeId);
-    if (subject && focus) this.options.state.selectedNode = this.options.state.focusedNode = subject;
-    if (!pins.entries.length) this.options.state.selectedNode = this.options.state.focusedNode = null;
+    const state = this.options.state;
+    const focusTarget = focus && pins.entries.some(pin => pin.nodeId === nodeId);
+    const selectedId = focusTarget ? nodeId : subjectAfterRelease(this.pins, pins, state.selectedNode?.id ?? null);
+    const selected = selectedId ? this.resolveNode(selectedId) ?? null : null;
+    if (focusTarget || selected !== state.selectedNode) state.focusedNode = selected;
+    state.selectedNode = selected;
+    state.pins = pins;
     this.localMapState.update(s => ({ ...s, activePath: null }));
-    this.render();
+    if (this.options.state.perspective === "2d") this.render();
     const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
     if (before && after) {
       cancelAnimationFrame(this.runtime.mapAnimationFrame);
@@ -472,7 +482,7 @@ export class LocalViewController implements LocalViewApi {
     }
     if (keyboardFocus) {
       const focusSelector = symbol === "*" ? `.node-card[data-id="${CSS.escape(nodeId)}"]` : selector;
-      const element = this.container.querySelector<HTMLElement>(focusSelector) ?? this.container.querySelector<HTMLElement>(".node-card, .empty-hint");
+      const element = this.container.querySelector<HTMLElement>(focusSelector) ?? this.container.querySelector<HTMLElement>(".node-card, .local-directory-closed, .empty-hint");
       element?.focus({ preventScroll: true });
     }
     this.options.onExplorationChange?.(leavingPath);
@@ -519,6 +529,32 @@ export class LocalViewController implements LocalViewApi {
    */
   isPinned(nodeId: string, symbol: string): boolean {
     return isExplorationPin(this.pins, nodeId, symbol) || isExplorationPin(this.pins, nodeId, "*");
+  }
+
+  /** Bring a retained file into reading position without changing the retained selections. */
+  focusNode(nodeId: string): void {
+    const element = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(nodeId)}"]`);
+    if (element) this.focusElement(element);
+  }
+
+  /** Bring a directory's label into reading position without opening or pinning anything. */
+  focusDirectory(directory: string): void {
+    const element = this.container.querySelector<HTMLElement>(`.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`);
+    if (element) this.focusElement(element);
+    else if (directory === "") this.fitMapToContent();
+  }
+
+  private focusElement(element: HTMLElement): void {
+    this.cancelInertia();
+    const frame = this.viewport.getBoundingClientRect();
+    const target = element.getBoundingClientRect();
+    const next = {
+      ...this.mapTransform,
+      x: this.mapTransform.x + frame.left + frame.width * 0.4 - (target.left + target.width / 2),
+      y: this.mapTransform.y + frame.top + frame.height * 0.4 - (target.top + target.height / 2)
+    };
+    this.mapUserAdjusted = true;
+    animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
   }
 
   /** Zooms the map in by 20%. */
