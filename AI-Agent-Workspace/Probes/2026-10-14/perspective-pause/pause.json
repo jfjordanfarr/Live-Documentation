@@ -1,0 +1,46 @@
+[
+  {
+    "name": "repository",
+    "url": "http://127.0.0.1:8900/?view=local&node=packages%2Fexplorer%2Fsrc%2Fclient%2Findex.ts",
+    "run": 1,
+    "canvasAtMs": 9880,
+    "firstEngineTickMs": 9880,
+    "engineStopMs": 25909,
+    "longestFreezeMs": 9793,
+    "longestFreezeStartMs": 113,
+    "busyChanges": 290
+  },
+  {
+    "name": "repository",
+    "url": "http://127.0.0.1:8900/?view=local&node=packages%2Fexplorer%2Fsrc%2Fclient%2Findex.ts",
+    "run": 2,
+    "canvasAtMs": 9730,
+    "firstEngineTickMs": 9730,
+    "engineStopMs": 25763,
+    "longestFreezeMs": 9676,
+    "longestFreezeStartMs": 80,
+    "busyChanges": 280
+  },
+  {
+    "name": "estate",
+    "url": "http://127.0.0.1:8900/samples/estate/?view=local&node=Portal%2FServices%2FGatewayClient.cs",
+    "run": 1,
+    "canvasAtMs": 1073,
+    "firstEngineTickMs": 1073,
+    "engineStopMs": 16168,
+    "longestFreezeMs": 1040,
+    "longestFreezeStartMs": 35,
+    "busyChanges": 818
+  },
+  {
+    "name": "estate",
+    "url": "http://127.0.0.1:8900/samples/estate/?view=local&node=Portal%2FServices%2FGatewayClient.cs",
+    "run": 2,
+    "canvasAtMs": 995,
+    "firstEngineTickMs": 995,
+    "engineStopMs": 16093,
+    "longestFreezeMs": 956,
+    "longestFreezeStartMs": 41,
+    "busyChanges": 817
+  }
+]

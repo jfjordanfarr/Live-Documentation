@@ -1,56 +1,47 @@
 /* ============================================
-   PATHFIND TOOLBAR (FROM/TO symbol search)
+   SEARCH BAR (one search at the top of the Explorer; a path's end beside it once anything is pinned)
    ============================================ */
 
-/* The Local Map is a column: the toolbar takes the height it needs (one row of
-   inputs, a status line when there is one, the path strip when a path is drawn)
-   and the map layer fills whatever is left, so nothing overlaps the map. */
-#view-map, #view-graph {
+/* The main area is a column: the bar takes one row and the views fill the rest. */
+#main {
     display: flex;
     flex-direction: column;
 }
 
-.pathfind-toolbar {
+#views {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* Above the views, the path's report and the detail panel, so that the results under a field are never covered */
+.search-bar {
     position: relative;
     flex: none;
-    z-index: 100;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
     background: var(--bg-deep);
     border-bottom: 1px solid var(--border);
-    padding: 12px 20px;
 }
 
-.pathfind-bar {
+.search-field {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    flex: 0 1 360px;
+    min-width: 200px;
 }
 
-.pathfind-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
+.search-field[hidden] {
+    display: none;
 }
 
-.pathfind-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-panel-subtle);
-    min-width: 36px;
-}
-
-.pathfind-input-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.pathfind-input {
-    width: 220px;
+.search-input {
+    width: 100%;
     padding: 8px 12px;
-    padding-right: 28px;
     font-size: 13px;
     font-family: inherit;
     background: var(--bg-surface);
@@ -61,25 +52,53 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.pathfind-input:focus {
+.search-input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 2px rgba(0, 145, 255, 0.2);
 }
 
-.pathfind-input::placeholder {
+.search-input::placeholder {
     color: var(--text-disabled);
 }
 
-.pathfind-input.has-selection {
+/* A chosen thing reads as chosen, as the pathfinder's fields did */
+.search-input.has-selection:not(:focus) {
     background: var(--accent-subtle);
     border-color: var(--accent);
 }
 
-.pathfind-input-clear {
+/* The shortcut, shown while the first field is empty and unfocused */
+.search-shortcut {
+    position: absolute;
+    right: 8px;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    font-family: monospace;
+    color: var(--text-disabled);
+    pointer-events: none;
+}
+
+.search-input:focus ~ .search-shortcut,
+.search-input.has-selection ~ .search-shortcut {
+    display: none;
+}
+
+/* The map marker before the destination: where the path ends */
+.search-marker {
+    flex: none;
+    margin-right: 6px;
+    color: var(--accent);
+}
+
+.search-field--destination .search-input {
+    padding-right: 28px;
+}
+
+.search-clear {
     position: absolute;
     right: 6px;
-    top: 50%;
-    transform: translateY(-50%);
     width: 18px;
     height: 18px;
     padding: 0;
@@ -91,65 +110,26 @@
     color: var(--text-disabled);
     cursor: pointer;
     opacity: 0.7;
-    transition: opacity 0.1s, color 0.1s;
 }
 
-.pathfind-input-clear:hover {
+.search-clear:hover {
     opacity: 1;
     color: var(--text-active);
 }
 
-.pathfind-input-clear[hidden] {
+.search-clear[hidden] {
     display: none;
 }
 
-.pathfind-symbol-dropdown {
-    min-width: 160px;
-    padding: 8px 10px;
-    font-size: 12px;
-    font-family: inherit;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text-active);
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.pathfind-symbol-dropdown:focus {
-    border-color: var(--accent);
-}
-
-.pathfind-symbol-dropdown[hidden] {
-    display: none;
-}
-
-.pathfind-symbol-dropdown option {
-    background: var(--bg-surface);
-    color: var(--text-active);
-}
-
-.pathfind-arrow {
-    font-size: 18px;
-    color: var(--text-panel-subtle);
-    padding: 0 4px;
-}
-
-.pathfind-actions {
-    display: flex;
-    gap: 8px;
-    margin-left: auto;
-}
-
-/* Pathfind Results Dropdown (inline below input) */
-.pathfind-results {
+/* The results under a field: directories, then files, then symbols */
+.search-results {
     position: absolute;
     top: 100%;
     left: 0;
     z-index: 200;
-    width: 360px;
-    max-height: 320px;
+    width: 640px;
+    max-width: calc(100vw - 32px);
+    max-height: min(480px, 60vh);
     margin-top: 4px;
     background: var(--sidebar-bg);
     border: 1px solid var(--border);
@@ -159,78 +139,126 @@
     overflow-x: hidden;
 }
 
-.pathfind-results[hidden] {
+.search-results[hidden] {
     display: none;
 }
 
-/* Position FROM results below the FROM group */
-#pathfind-from-results {
-    left: 0;
+/* Words are never cut: a long path wraps */
+.search-group {
+    padding: 8px 14px 2px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-panel-subtle);
+    overflow-wrap: anywhere;
 }
 
-/* Position TO results below the TO group */
-#pathfind-to-results {
-    left: 0;
-}
-
-.pathfind-result {
+.search-row {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 10px;
-    padding: 10px 14px;
+    padding: 7px 14px;
     cursor: pointer;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    transition: background 0.1s ease;
 }
 
-.pathfind-result:last-child {
+.search-row:last-child {
     border-bottom: none;
 }
 
-.pathfind-result:hover,
-.pathfind-result.selected {
+.search-row:hover,
+.search-row.selected {
     background: var(--accent-subtle);
 }
 
-.pathfind-result-text {
-    flex: 1;
-    min-width: 0;
+/* A directory found by its own name is a heading one can choose: it reads like a group's heading, not like a file in the group above */
+.search-row--directory {
+    margin-top: 4px;
+    padding-top: 9px;
+    border-top: 1px solid var(--border);
 }
 
-.pathfind-result-name {
+.search-row--directory .search-row-name {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.search-row--directory:first-child {
+    margin-top: 0;
+    border-top: none;
+}
+
+.search-row--symbol,
+.search-row--more {
+    padding-left: 34px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.search-row-name {
+    flex: 0 1 auto;
+    min-width: 0;
     font-size: 13px;
     color: var(--text-active);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
 }
 
-.pathfind-result-path {
+.search-row--symbol .search-row-name {
+    font-size: 12px;
+}
+
+.search-row--more .search-row-name {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text-panel-subtle);
+}
+
+.search-row-context {
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: 10px;
     color: var(--text-disabled);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
 }
 
-.pathfind-result-badge {
+.search-row-badge {
+    flex: none;
     font-size: 9px;
     padding: 2px 5px;
     border-radius: 4px;
     background: rgba(0, 145, 255, 0.2);
     color: var(--accent);
     text-transform: uppercase;
-    flex-shrink: 0;
 }
 
-.pathfind-results-empty {
+.search-empty {
     padding: 16px;
     text-align: center;
     color: var(--text-disabled);
     font-size: 12px;
 }
 
-/* The map layer fills the column under the toolbar; its transform pans and zooms the map inside it */
+/* ============================================
+   THE PATH'S REPORT IN THE LOCAL MAP
+   ============================================ */
+
+/* The Local Map is a column: the report takes the height it needs (the status line when there is one, the strip
+   when a path is drawn) and the map layer fills whatever is left, so nothing overlaps the map. */
+#view-map, #view-graph {
+    display: flex;
+    flex-direction: column;
+}
+
+.path-report {
+    position: relative;
+    flex: none;
+    z-index: 100;
+}
+
+/* The map layer fills the column under the report; its transform pans and zooms the map inside it */
 #view-map .viewport-layer {
     position: relative;
     flex: 1 1 auto;
@@ -238,11 +266,11 @@
     height: auto;
 }
 
-/* Pathfind status indicator: its own line under the inputs, as long as the sentence needs */
+/* The status: its own line, as long as the sentence needs */
 .pathfind-status {
     display: block;
     width: fit-content;
-    margin: 8px 0 0;
+    margin: 8px 20px;
     font-size: 11px;
     line-height: 1.4;
     color: var(--text-panel-subtle);
@@ -272,18 +300,14 @@
     cursor: pointer;
 }
 
-/* ============================================
-   PATH VISUALIZATION STRIP
-   ============================================ */
-
+/* The strip of a drawn path's hops */
 .pathfind-path {
     display: flex;
     align-items: center;
     gap: 4px;
-    margin: 8px -20px -12px;
     padding: 12px 20px;
     background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-surface) 100%);
-    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     overflow-x: auto;
     flex-wrap: nowrap;
 }
@@ -343,4 +367,3 @@
     flex-shrink: 0;
     padding: 0 2px;
 }
-

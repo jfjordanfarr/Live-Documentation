@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/index.ts
-- Generated At: 2026-10-14T02:49:20.202Z
+- Generated At: 2026-10-14T18:27:58.951Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Public entry point for the Local Map view module. Exposes `createLocalView` fact
 ### Notes
 - Created 2025-12-04 as the barrel export for the modular localView directory.
 - Delegates to `LocalViewController` for implementation.
+- `retainSymbol` (2026-10-14): a symbol pinned unless it is already, alone or with its whole file; what the search bar chose, never a toggle.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -28,11 +29,11 @@ Creates a Local Map view backed by a {@link LocalViewController}.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L29)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L30)
 
 #### `LocalViewOptions` {#symbol-localviewoptions}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L29)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/index.ts#L30)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

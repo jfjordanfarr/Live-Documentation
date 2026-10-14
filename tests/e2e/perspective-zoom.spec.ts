@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
+import { currentSnapshot, newestKey, pathAddress } from "./search-bar";
 import { localMapSettled } from "./still-picture";
+import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const cardSelector = `#map-container .node-card[data-id="${ROOT}helpers.ts"]`;
@@ -75,7 +77,7 @@ test("scroll zooms within each perspective; only the 2D and 3D buttons change it
 test("a thirteen-file path keeps its ordered steps and constrained symbols through the overview", async ({ page }) => {
   const root = "tests/integration/programs/csharp/estate/";
   const from = `${root}Database/Oracle/CENTRAL.ACCOUNT.sql`, to = `${root}Portal/Pages/Default.aspx`;
-  await page.goto(`/?view=local&node=${from}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
+  await page.goto(pathAddress("/", from, { kind: "file", nodeId: to }));
   await expect(page.locator("#pathfind-status")).toContainText("Path found: 13 files");
   await expect(page.locator("#pathfind-status")).toContainText("3 references between these files run the other way and are not drawn");
   const ids = () => page.locator("#map-container .path-node .node-card").evaluateAll(cards => cards.sort((a, b) => Number((a.closest(".local-column") as HTMLElement).dataset.column) - Number((b.closest(".local-column") as HTMLElement).dataset.column)).map(card => (card as HTMLElement).dataset.id));
@@ -88,8 +90,8 @@ test("a thirteen-file path keeps its ordered steps and constrained symbols throu
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator("#view-map")).toHaveClass(/active/);
   expect(await ids()).toEqual(before);
-  expect(new URL(page.url()).searchParams.get("from")).toBe(from);
-  expect(new URL(page.url()).searchParams.get("to")).toBe(to);
+  expect(currentSnapshot(page).destination).toEqual({ kind: "file", nodeId: to });
+  expect(newestKey(currentSnapshot(page))).toBe(retainedKey({ kind: "pin", pin: { nodeId: from, symbol: "*" } }));
 });
 
 test("native symbol wires gather by file pair and directory shells reverse their containment order", async ({ page }) => {

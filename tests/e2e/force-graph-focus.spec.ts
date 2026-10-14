@@ -40,10 +40,11 @@ test("search moves focus smoothly, survives filtering, and resizes with its cont
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
   await page.keyboard.press("Control+p");
-  await page.locator("#omnisearch-input").fill(DOCUMENT);
-  await page.locator(".omnisearch-result").first().click();
+  await expect(page.locator("#search-subject")).toBeFocused();
+  await page.keyboard.type("document.ts");
+  await page.locator(`#search-subject-results .search-row--file:has(.search-row-context:text-is("${DOCUMENT}"))`).click();
   await expectFocused(page, DOCUMENT);
-  await page.locator("#detail-close").click();
+  await expect(page.locator(".pin-tray-toggle"), "a chosen file is pinned").toHaveText("1 pin");
   await page.locator("#filter-toggle-tests").uncheck();
   await expectFocused(page, DOCUMENT);
   await page.setViewportSize({ width: 1100, height: 800 });

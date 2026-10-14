@@ -222,7 +222,7 @@ export function emitNotFound(
     console.log("Closest reachable frontier:");
     for (const entry of payload.frontier) {
       const docInfo = entry.node.docPath ? ` [${entry.node.docPath}]` : "";
-      const detail = entry.missingDependency ? ` (missing ${entry.missingDependency})` : "";
+      const detail = entry.missingDependency ? ` (${entry.missingDependency} is outside the scan)` : "";
       console.log(`  - ${entry.node.codePath}${docInfo} — ${entry.reason}${detail}`);
     }
   }

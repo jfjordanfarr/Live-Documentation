@@ -386,6 +386,12 @@ export class LocalViewController implements LocalViewApi {
     this.togglePinnedSymbol(nodeId, "*");
   }
 
+  /** Pin one symbol unless it is pinned already, alone or with its whole file: what a search chose, never a toggle. */
+  retainSymbol(nodeId: string, symbol: string): void {
+    if (this.isPinned(nodeId, symbol)) return;
+    this.togglePinnedSymbol(nodeId, symbol);
+  }
+
   /** Toggle one independent pin, preserving other branches and the clicked symbol’s screen position. */
   togglePinnedSymbol(nodeId: string, symbol: string): void {
     const node = this.resolveNode(nodeId);

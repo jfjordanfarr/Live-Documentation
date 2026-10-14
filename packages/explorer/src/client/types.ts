@@ -160,9 +160,16 @@ export interface ForceGraphTuning {
  * Root state object for the Explorer client, managed by
  * `persistence/local-storage.ts` and consumed by every view.
  */
+/** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */
+export type PathDestination =
+  | { kind: "file"; nodeId: string; symbol?: string }
+  | { kind: "directory"; directory: string };
+
 export interface ExplorerState {
   /** Independent exploration branches, retained across perspectives. */
   pins?: PinSet;
+  /** The end of the path asked for, drawn from the newest pin; null or absent when none is asked. */
+  destination?: PathDestination | null;
   /** The directories opened in the Local Map, retained with the pins (2026-10-08). */
   openDirectories?: ReadonlySet<string>;
   /** Oldest-first identities of retained selections, including directory openings. */

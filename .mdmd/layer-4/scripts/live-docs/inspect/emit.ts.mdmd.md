@@ -12,6 +12,7 @@ What the inspect CLI prints: node descriptors, and the text or JSON of a path, a
 
 ### Notes
 - Gathered here on 2026-09-28 from the four description and emission modules extracted from the inspect CLI on 2025-12-19; the JSON payload shapes are unchanged.
+- A frontier entry stopped by a reference with no target in the graph says "(X is outside the scan)" since 2026-10-14, the Explorer's words for the same fact; it had said "missing".
 - With `--verbose`, a node descriptor carries one entry per public symbol with the Summary, Remarks and Parameters sections of its doc; the Parameters bullets are read here from the section text, the one place inspect interprets a documentation section.
 
 ## Generated

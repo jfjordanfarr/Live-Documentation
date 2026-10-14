@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/styles.css
-- Generated At: 2026-10-12T19:21:19.557Z
+- Generated At: 2026-10-14T19:09:46.601Z
 
 ## Authored
 ### Purpose
@@ -26,7 +26,7 @@ _No public symbols detected_
 ### Dependencies
 - [`graph`](./styles/graph.css.mdmd.md)
 - [`local`](./styles/local.css.mdmd.md)
-- [`pathfind`](./styles/pathfind.css.mdmd.md)
+- [`search`](./styles/search.css.mdmd.md)
 - [`shell`](./styles/shell.css.mdmd.md)
 - [`sources`](./styles/sources.css.mdmd.md)
 - [`theme`](./styles/theme.css.mdmd.md)

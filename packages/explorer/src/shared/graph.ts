@@ -43,7 +43,7 @@ const isReference = (edge: GraphEdge): boolean => edge.kind !== "import" && edge
 export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
     const links: ExplorerLinkPayload[] = [];
     const seen = new Map<string, ExplorerLinkPayload>();
-    let missingDependencyCount = 0;
+    let referencesOutsideScan = 0;
 
     const addLink = (
         source: string,
@@ -97,8 +97,9 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
             }
         }
 
+        // A reference with no target inside the scan: a package, a builtin, or a file the scan does not hold.
         const missingDependencies = dependencies.filter(reference => !reference.resolved);
-        missingDependencyCount += missingDependencies.length;
+        referencesOutsideScan += missingDependencies.length;
 
         for (const reference of dependencies) {
             // Signature references remain available in the dependency list, but
@@ -148,7 +149,7 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
         stats: {
             nodes: nodes.length,
             links: links.length,
-            missingDependencies: missingDependencyCount
+            referencesOutsideScan
         }
     };
 }

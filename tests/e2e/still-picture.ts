@@ -773,7 +773,7 @@ async function emptySpot(page: Page, view: ViewReading, dx = 0, dy = 0): Promise
       for (let x = frame.left + 40; x < frame.right - 40; x += 24) {
         const top = document.elementFromPoint(x, y);
         if (!top || !surface?.contains(top)) continue;
-        if (top.closest(`${card}, button, [role="button"], input, select, a, #detail-panel, #controls, .pathfind-toolbar`)) continue;
+        if (top.closest(`${card}, button, [role="button"], input, select, a, #detail-panel, #controls, .search-bar, .path-report`)) continue;
         const fits = x + dx > frame.left + 20 && x + dx < frame.right - 20 && y + dy > frame.top + 20 && y + dy < frame.bottom - 20;
         if (fits) return { x, y };
         fallback ??= { x, y };

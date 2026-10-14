@@ -74,3 +74,33 @@ export function subjectAfterRelease(previous: PinSet, next: PinSet, current: str
     && !next.entries.some(pin => pin.nodeId === current);
   return releaseCurrent || lostPin ? next.entries.at(-1)?.nodeId ?? null : current;
 }
+
+/** The most recently retained item, or null; a path a person asks for starts here. */
+export function newestRetained(state: RetainedState): RetainedItem | null {
+  return retainedItems(state).at(-1) ?? null;
+}
+
+/** The words for a retained item, shared by the tray and the search bar. */
+export interface RetainedWords {
+  /** The name shown: the symbol when one is pinned, else the file or directory name; the scan root is "Scan root". */
+  name: string;
+  /** Where it stands: the file's path, or the directory's, or "Directory" for the scan root. */
+  context: string;
+  /** A sentence fragment for a label: "directory a/b", "run in a/b/main.ts" or "a/b/main.ts". */
+  description: string;
+  /** The pinned symbol, when the item is one symbol of a file. */
+  symbol: string | null;
+  /** The file's id or the directory's path. */
+  path: string;
+}
+
+/** The words for an item; `nameOf` gives a file's name from its id. */
+export function describeRetained(item: RetainedItem, nameOf: (nodeId: string) => string | undefined): RetainedWords {
+  const directory = item.kind === "directory";
+  const path = directory ? item.directory : item.pin.nodeId;
+  const name = directory ? path.split("/").pop() || "Scan root" : nameOf(item.pin.nodeId) ?? item.pin.nodeId;
+  const symbol = !directory && item.pin.symbol !== "*"
+    ? item.pin.symbol === "__internals__" ? "Internals" : item.pin.symbol : null;
+  const description = directory ? `directory ${path || "Scan root"}` : symbol ? `${symbol} in ${path}` : path;
+  return { name: symbol ?? name, context: path || "Directory", description, symbol, path };
+}

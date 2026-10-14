@@ -1,13 +1,18 @@
 import { test, expect, type Page } from "@playwright/test";
 
+import { choose, currentSnapshot, newestKey, pathAddress } from "./search-bar";
 import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, readPicture, scoreExpanded, symbolCounts } from "./still-picture";
+import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { describeRetained, retainedItems, retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
 /**
  * The Local Map's path mode draws a path only in the map's reading direction:
  * what offers stands left of what uses it, every wire leaves a blue pin and
  * enters a green one. Asked the other way round it draws nothing and offers
- * the reverse question as a link (the owner's rule of 2025-12-18). Clear
- * returns to the file that was selected, camera and wires included.
+ * the reverse question as a link (the owner's rule of 2025-12-18). A path is
+ * asked through the search bar (2026-10-14): the newest pin is where it starts,
+ * the destination field, shown once anything is pinned, is where it ends, and
+ * clearing the destination returns to the exploration.
  *
  * Over the estate sample, whose chain GatewayClient.cs -> PaymentsController.cs
  * -> HubProxy.cs -> IPaymentHub.cs runs from the file that depends to the
@@ -25,19 +30,6 @@ async function openLocalMap(page: Page, file: string): Promise<void> {
   await page.waitForSelector(`#map-container .node-card[data-id="${file}"]`);
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
   await page.waitForTimeout(600);
-}
-
-async function pick(page: Page, input: "from" | "to", file: string): Promise<void> {
-  await page.click(`#pathfind-${input}`);
-  await page.keyboard.type(file.split("/").pop()!);
-  await page.waitForSelector(`#pathfind-${input}-results .pathfind-result`);
-  const index = await page.evaluate(
-    ({ input, file }) => [...document.querySelectorAll<HTMLElement>(`#pathfind-${input}-results .pathfind-result`)]
-      .findIndex(el => el.querySelector(".pathfind-result-path")?.textContent?.trim() === file),
-    { input, file }
-  );
-  expect(index, `${file} among the pathfinder's results`).toBeGreaterThanOrEqual(0);
-  await page.click(`#pathfind-${input}-results .pathfind-result[data-index="${index}"]`);
 }
 
 /** Each wire's two ends in screen coordinates with the pin nearest to each, so the grammar can be read off the picture. */
@@ -90,36 +82,47 @@ for (const [base, file] of [["/", "packages/explorer/src/client/index.ts"], [BAS
 }
 
 test.describe("Local Map path mode", () => {
-  test("asked with the dependent first, it draws nothing and offers the reverse; the reverse draws blue to green, and Clear returns", async ({ page }) => {
+  test("asked with the dependent first, it draws nothing and offers the reverse; the reverse pins the destination and draws blue to green; clearing returns to the exploration", async ({ page }) => {
     await openLocalMap(page, DEPENDENT);
     const subject = `#map-container .node-card[data-id="${DEPENDENT}"]`;
+    await expect(page.locator("#search-destination-field")).toBeHidden();
+
+    // Choosing the subject in the bar pins it, and the destination field appears
+    await choose(page, "subject", "GatewayClient", { file: DEPENDENT });
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
+    await expect(page.locator("#search-subject")).toHaveValue("GatewayClient.cs");
+    await expect(page.locator("#search-destination-field")).toBeVisible();
+    await page.waitForTimeout(400);
     const start = await boxOf(page, subject);
     const wiresBefore = await page.locator("#map-connections .connection-path").count();
     expect(wiresBefore).toBeGreaterThan(0);
 
-    await pick(page, "from", DEPENDENT);
-    await pick(page, "to", DEPENDENCY);
-    await page.click("#pathfind-go");
+    await choose(page, "destination", "IPaymentHub", { file: DEPENDENCY });
     await page.waitForSelector("#pathfind-status a");
     await page.waitForTimeout(200);
 
-    // Nothing drawn, the reverse offered as a link that carries the reverse question in its address
+    // Nothing drawn, the reverse offered as a link whose address pins the destination and asks the way back
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
     const status = page.locator("#pathfind-status");
     await expect(status).toContainText("No path runs from GatewayClient.cs to IPaymentHub.cs");
     await expect(status).toContainText("IPaymentHub.cs reaches GatewayClient.cs through 4 files");
     const href = await page.locator("#pathfind-status a").getAttribute("href");
-    expect(href).toContain(`from=${encodeURIComponent(DEPENDENCY)}`);
-    expect(href).toContain(`to=${encodeURIComponent(DEPENDENT)}`);
-    expect(await boxOf(page, subject), "the offer leaves the picture as it was").toEqual(start);
+    const offered = decompressSnapshot(new URL(href!, page.url()).searchParams.get("s")!);
+    expect(offered.destination).toEqual({ kind: "file", nodeId: DEPENDENT });
+    expect(newestKey(offered)).toBe(retainedKey({ kind: "pin", pin: { nodeId: DEPENDENCY, symbol: "*" } }));
+    expect(currentSnapshot(page).destination, "the question asked rides the address").toEqual({ kind: "file", nodeId: DEPENDENCY });
+    expect(centerDistance(start, await boxOf(page, subject)), "the offer leaves the picture as it was").toBeLessThanOrEqual(1);
 
-    // Taking the offer swaps the ends and draws
+    // Taking the offer pins the destination, newest, and draws from it
     await page.click("#pathfind-status a");
     await page.waitForSelector("#view-map.has-path");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
-    expect(page.url()).toContain(`from=${encodeURIComponent(DEPENDENCY)}`);
-    expect(page.url()).toContain(`to=${encodeURIComponent(DEPENDENT)}`);
+    expect(currentSnapshot(page).destination).toEqual({ kind: "file", nodeId: DEPENDENT });
+    expect(newestKey(currentSnapshot(page))).toBe(retainedKey({ kind: "pin", pin: { nodeId: DEPENDENCY, symbol: "*" } }));
+    await expect(page.locator("#search-subject")).toHaveValue("IPaymentHub.cs");
+    await expect(page.locator("#search-destination")).toHaveValue("GatewayClient.cs");
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
     await expect(status).toHaveText("Path found: 4 files");
     expect(await pathFiles(page)).toEqual([DEPENDENCY, "Gateway/Wcf/HubProxy.cs", "Gateway/Controllers/PaymentsController.cs", DEPENDENT]);
     await expect(page.locator(".path-mode.local-placed")).toBeVisible();
@@ -148,24 +151,24 @@ test.describe("Local Map path mode", () => {
     expect(first!.x).toBeGreaterThanOrEqual(260);
     expect(first!.x + first!.width).toBeLessThanOrEqual(FRAME.width);
 
-    // Clear returns to the selected file: same place, same wires, same address
-    await page.click("#pathfind-clear");
+    // Clearing the destination returns to the exploration, both pins kept, the question gone from the address
+    await page.click("#search-destination-clear");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
-    const returned = await boxOf(page, subject);
-    expect(returned).not.toBeNull();
-    expect(centerDistance(start, returned)).toBeLessThanOrEqual(1);
-    expect(await page.locator("#map-connections .connection-path").count()).toBe(wiresBefore);
-    expect(page.url()).toContain(`node=${encodeURIComponent(DEPENDENT)}`);
-    expect(page.url()).not.toContain("from=");
+    await expect(status).toBeHidden();
+    expect(currentSnapshot(page).destination).toBeNull();
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+    await expect(page.locator("#search-destination")).toHaveValue("");
+    await expect(page.locator(subject)).toBeVisible();
+    await expect(page.locator(`#map-container .node-card[data-id="${DEPENDENCY}"]`)).toBeVisible();
+    expect(currentSnapshot(page).selectedNodeId, "the file chosen by the reverse question is the subject now").toBe(DEPENDENCY);
   });
 
   test("asked in the map's direction, it draws at once, and a path from the address draws the same", async ({ page }) => {
     await openLocalMap(page, DEPENDENCY);
-    await pick(page, "from", DEPENDENCY);
-    await pick(page, "to", DEPENDENT);
-    await page.click("#pathfind-go");
+    await choose(page, "subject", "IPaymentHub", { file: DEPENDENCY });
+    await choose(page, "destination", "GatewayClient", { file: DEPENDENT });
     await page.waitForSelector("#view-map.has-path");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
@@ -174,7 +177,7 @@ test.describe("Local Map path mode", () => {
     const drawn = await wireEnds(page);
     expect(drawn.length).toBeGreaterThanOrEqual(3);
 
-    await page.goto(`${BASE}?view=local&node=${encodeURIComponent(DEPENDENCY)}&from=${encodeURIComponent(DEPENDENCY)}&to=${encodeURIComponent(DEPENDENT)}`);
+    await page.goto(pathAddress(BASE, DEPENDENCY, { kind: "file", nodeId: DEPENDENT }));
     await page.waitForSelector("#view-map.has-path");
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached" });
     await page.waitForTimeout(800);
@@ -182,27 +185,60 @@ test.describe("Local Map path mode", () => {
     await expect(page.locator(".path-mode.local-placed")).toBeVisible();
     expect(await page.locator("#map-container .local-membrane").count()).toBeGreaterThan(0);
     expect((await wireEnds(page)).length).toBe(drawn.length);
+    await expect(page.locator("#search-subject")).toHaveValue("IPaymentHub.cs");
+    await expect(page.locator("#search-destination")).toHaveValue("GatewayClient.cs");
   });
 
-  test("a direct dependency asked the wrong way round is offered, and two files that do not connect get no path either way", async ({ page }) => {
+  test("a direct dependency asked the wrong way round is offered, two files that do not connect get no path either way, and a directory is an end of a path too", async ({ page }) => {
     await openLocalMap(page, DEPENDENT);
-    await pick(page, "from", DEPENDENT);
-    await pick(page, "to", "Portal/Models/PaymentRequestModel.cs");
-    await page.click("#pathfind-go");
+    await choose(page, "subject", "GatewayClient", { file: DEPENDENT });
+    await choose(page, "destination", "PaymentRequestModel", { file: "Portal/Models/PaymentRequestModel.cs" });
     await page.waitForSelector("#pathfind-status:not([hidden])");
     // GatewayClient.cs depends on PaymentRequestModel.cs, so the drawable direction is the reverse: offered
     await expect(page.locator("#pathfind-status")).toContainText("PaymentRequestModel.cs reaches GatewayClient.cs through 2 files");
-    await page.click("#pathfind-to-clear");
-    await pick(page, "to", "Portal/Pages/Default.aspx.cs");
-    await page.click("#pathfind-go");
+    await choose(page, "destination", "Default.aspx.cs", { file: "Portal/Pages/Default.aspx.cs" });
     await page.waitForSelector("#pathfind-status.error");
     await expect(page.locator("#pathfind-status")).toContainText("No path either way");
     await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
+
+    // A directory as the end stands for any file inside it: GatewayClient.cs depends on files of Contracts, so the drawable
+    // direction is the reverse, and the nearest file of the directory answers, closer than IPaymentHub.cs alone (4 files)
+    await choose(page, "destination", "Contracts", { directory: "Contracts" });
+    await page.waitForSelector("#pathfind-status a");
+    await expect(page.locator("#pathfind-status")).toContainText("No path runs from GatewayClient.cs to Contracts. Contracts reaches GatewayClient.cs through");
+    const offered = (await page.locator("#pathfind-status").textContent())!.match(/through (\d+) files/)!;
+    const hops = Number(offered[1]);
+    expect(hops, "the nearest file of the directory is nearer than IPaymentHub.cs").toBeLessThan(4);
+    expect(currentSnapshot(page).destination).toEqual({ kind: "directory", directory: "Contracts" });
+    await page.click("#pathfind-status a");
+    await page.waitForSelector("#view-map.has-path");
+    await page.waitForTimeout(800);
+    await expect(page.locator("#pathfind-status")).toHaveText(`Path found: ${hops} files`);
+    const drawn = await pathFiles(page);
+    expect(drawn).toHaveLength(hops);
+    expect(drawn[0].startsWith("Contracts/"), "the path leaves from a file of the directory").toBe(true);
+    expect(drawn.at(-1)).toBe(DEPENDENT);
+    expect(currentSnapshot(page).openDirectories.has("Contracts"), "the reverse question opened the directory as the newest pin").toBe(true);
+    await expect(page.locator("#search-subject")).toHaveValue("Contracts");
+  });
+
+  test("the subject field follows the newest pin, and a new subject chosen in the bar asks the path again from it", async ({ page }) => {
+    await page.goto(pathAddress(BASE, DEPENDENCY, { kind: "file", nodeId: DEPENDENT }, DEPENDENT));
+    await page.locator("#view-map.has-path").waitFor();
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
+    await expect(page.locator("#search-subject")).toHaveValue("IPaymentHub.cs");
+    await choose(page, "subject", "HubProxy", { file: "Gateway/Wcf/HubProxy.cs" });
+    await page.waitForTimeout(800);
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 3 files");
+    expect(await pathFiles(page)).toEqual(["Gateway/Wcf/HubProxy.cs", "Gateway/Controllers/PaymentsController.cs", DEPENDENT]);
+    await expect(page.locator("#search-subject")).toHaveValue("HubProxy.cs");
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+    expect(currentSnapshot(page).destination).toEqual({ kind: "file", nodeId: DEPENDENT });
   });
 });
 
 test("pinning a path symbol opens branches, clears the old path status and keeps the clicked row in place", async ({ page }) => {
-  await page.goto(`${BASE}?view=local&node=${encodeURIComponent(DEPENDENT)}&from=${encodeURIComponent(DEPENDENCY)}&to=${encodeURIComponent(DEPENDENT)}`);
+  await page.goto(pathAddress(BASE, DEPENDENCY, { kind: "file", nodeId: DEPENDENT }, DEPENDENT));
   await page.locator("#view-map.has-path").waitFor();
   await page.waitForTimeout(800);
   const label = page.locator(".path-origin .symbol-row:not(.internals-row) .symbol-label-wrapper").first();
@@ -215,6 +251,12 @@ test("pinning a path symbol opens branches, clears the old path status and keeps
   await page.waitForTimeout(100);
   const after = (await page.locator(`.node-card[data-id="${DEPENDENCY}"] .symbol-row[data-symbol="${symbol}"] .symbol-label-wrapper`).boundingBox())!;
   expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(1);
-  expect(new URL(page.url()).searchParams.has("from")).toBe(false);
-  expect(new URL(page.url()).searchParams.has("to")).toBe(false);
+  expect(currentSnapshot(page).destination, "leaving the path by the picture forgets the question").toBeNull();
+  await expect(page.locator("#search-destination")).toHaveValue("");
+  // The origin was pinned whole, so the click toggled its symbol out and left the others pinned one by one; the field shows whichever is newest
+  const snapshot = currentSnapshot(page);
+  const newest = retainedItems({ pins: snapshot.pinSet, openDirectories: snapshot.openDirectories, retentionOrder: snapshot.retentionOrder }).at(-1)!;
+  expect(newest.kind === "pin" && newest.pin.nodeId).toBe(DEPENDENCY);
+  expect(newest.kind === "pin" && newest.pin.symbol).not.toBe(symbol);
+  await expect(page.locator("#search-subject"), "the field follows the newest pin").toHaveValue(describeRetained(newest, id => id.split("/").pop()).name);
 });

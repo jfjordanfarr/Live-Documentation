@@ -8,16 +8,6 @@
 </head>
 
 <body>
-  <!-- Omnisearch (VS Code Command Palette style) -->
-  <div id="omnisearch" class="omnisearch" hidden>
-    <div class="omnisearch-backdrop"></div>
-    <div class="omnisearch-dialog">
-      <input type="text" id="omnisearch-input" class="omnisearch-input" placeholder="Search files and symbols..."
-        autocomplete="off" />
-      <div id="omnisearch-results" class="omnisearch-results"></div>
-    </div>
-  </div>
-
   <div id="sidebar">
     <div class="sidebar-header">
       <span class="sidebar-title">Live Docs Explorer</span>
@@ -37,14 +27,6 @@
       </button>
       <button class="nav-item" data-view="map" onclick="switchView(event, 'map')">
         <span class="nav-icon"></span><span>Local Map</span>
-      </button>
-    </div>
-
-    <!-- Search Trigger -->
-    <div class="sidebar-section">
-      <button id="omnisearch-trigger" class="sidebar-search-btn" onclick="openOmnisearch()">
-        <span>Search...</span>
-        <kbd class="search-shortcut">Ctrl+P</kbd>
       </button>
     </div>
 
@@ -265,6 +247,29 @@
   </div>
 
   <div id="main">
+    <!-- One search for the whole Explorer; the second field, the end of a path, appears once anything is pinned -->
+    <div id="search-bar" class="search-bar" role="search">
+      <div class="search-field" id="search-subject-field">
+        <input type="text" id="search-subject" class="search-input" placeholder="Search files, symbols and directories"
+          aria-label="Search files, symbols and directories; a chosen one is pinned, and a path starts from the newest pin" autocomplete="off" />
+        <kbd class="search-shortcut" aria-hidden="true">Ctrl+P</kbd>
+        <div id="search-subject-results" class="search-results" role="listbox" hidden></div>
+      </div>
+      <div class="search-field search-field--destination" id="search-destination-field" hidden>
+        <svg class="search-marker" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 21s-6-5.6-6-10a6 6 0 0 1 12 0c0 4.4-6 10-6 10Z" />
+          <circle cx="12" cy="11" r="2.5" />
+        </svg>
+        <input type="text" id="search-destination" class="search-input" placeholder="Path to…"
+          aria-label="The end of a path from the newest pin" autocomplete="off" />
+        <button type="button" id="search-destination-clear" class="search-clear" aria-label="Clear the path" hidden>&times;</button>
+        <div id="search-destination-results" class="search-results" role="listbox" hidden></div>
+      </div>
+    </div>
+
+    <!-- The views, under the bar; the detail panel and the zoom controls stand over them -->
+    <div id="views">
     <div id="view-world" class="view-container">
       <div id="world-root" class="world-root"></div>
     </div>
@@ -274,45 +279,9 @@
     </div>
 
     <div id="view-map" class="view-container">
-      <!-- Pathfind Toolbar for FROM/TO symbol navigation -->
-      <div id="pathfind-toolbar" class="pathfind-toolbar">
-        <div class="pathfind-bar">
-          <div class="pathfind-group" id="pathfind-from-group">
-            <label class="pathfind-label">FROM</label>
-            <div class="pathfind-input-wrapper">
-              <input type="text" id="pathfind-from" class="pathfind-input" placeholder="Search artifact..."
-                autocomplete="off" />
-              <button id="pathfind-from-clear" class="pathfind-input-clear" hidden
-                aria-label="Clear FROM">&times;</button>
-              <!-- Dropdown results for FROM search -->
-              <div id="pathfind-from-results" class="pathfind-results" hidden></div>
-            </div>
-            <select id="pathfind-from-symbol" class="pathfind-symbol-dropdown" hidden>
-              <option value="">All symbols</option>
-            </select>
-          </div>
-          <span class="pathfind-arrow">→</span>
-          <div class="pathfind-group" id="pathfind-to-group">
-            <label class="pathfind-label">TO</label>
-            <div class="pathfind-input-wrapper">
-              <input type="text" id="pathfind-to" class="pathfind-input" placeholder="Search artifact..."
-                autocomplete="off" />
-              <button id="pathfind-to-clear" class="pathfind-input-clear" hidden aria-label="Clear TO">&times;</button>
-              <!-- Dropdown results for TO search -->
-              <div id="pathfind-to-results" class="pathfind-results" hidden></div>
-            </div>
-            <select id="pathfind-to-symbol" class="pathfind-symbol-dropdown" hidden>
-              <option value="">All symbols</option>
-            </select>
-          </div>
-          <div class="pathfind-actions">
-            <button id="pathfind-go" class="action-btn" disabled>Find Path</button>
-            <button id="pathfind-clear" class="action-btn ghost">Clear</button>
-          </div>
-        </div>
-        <!-- What the search found: a count, or no path with the reverse question offered as a link -->
+      <!-- What a path search found: a count, or no path with the reverse question offered as a link; then the drawn path's hops -->
+      <div id="path-report" class="path-report">
         <p id="pathfind-status" class="pathfind-status" hidden></p>
-        <!-- Path visualization strip -->
         <div id="pathfind-path" class="pathfind-path" hidden></div>
       </div>
       <div id="map-viewport" class="viewport-layer">
@@ -345,6 +314,7 @@
         <button class="action-btn ghost" onclick="openInLocalView()">Open in Local Map</button>
         <button class="action-btn ghost" id="download-doc-btn" onclick="downloadCurrentDoc()">Download Markdown</button>
       </div>
+    </div>
     </div>
   </div>
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-14T16:02:17.713Z
+- Generated At: 2026-10-14T18:27:57.949Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ Client-side type definitions for the Explorer UI. Defines view state, filters, b
 - `membraneDepth` (2026-10-07, later in the day): how many levels of directory below the retained files' common directory are membranes, null for every level; the layout lab's lever for pricing the membrane rule, read by the page so the lab can verify it there.
 - `membraneEvenness` (1 by default) and `rowLevelness` (0) since 2026-10-07: what the placement charges for a step in a membrane's outline between neighbouring columns and for a difference between the tops of a membrane's k-th cards in neighbouring columns, in units of a one-reference wire's pixel; the owner's ask for a force against membrane unevenness, as levers of the layout lab.
 - `ExplorerState.openDirectories` (2026-10-08): the directories opened in the Local Map, retained with the pins across perspectives and carried by the share link.
+- `PathDestination` and `ExplorerState.destination` (2026-10-14, [Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)): the end of a path asked through the search bar, a file with perhaps one symbol or a directory; the start is the newest pin.
 - `SpatialLayout` and `ExplorerState.spatialLayout` (2026-10-14): how the 3D Local Map places its files, by their analyzed references (`connections`) or by their declared directories (`structure`), remembered like the perspective and carried by the share link; the two directory filters of that morning are gone.
 
 ## Generated
@@ -101,17 +102,20 @@ Aggregate tuning configuration threading through into every Explorer view.
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
+#### `PathDestination` {#symbol-pathdestination}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L164)
+
+##### `PathDestination` — Summary
+The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
+
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L163)
-
-##### `ExplorerState` — Summary
-Root state object for the Explorer client, managed by
-`persistence/local-storage.ts` and consumed by every view.
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L168)
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L181)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L188)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

@@ -18,19 +18,19 @@ const ids = (hops: ReadonlyArray<{ nodeId: string }>): string[] => hops.map(hop 
 
 describe("findPath", () => {
   it("draws the path when TO depends on FROM, what offers first", () => {
-    const result = findPath("a", "c", nodesById, links);
+    const result = findPath(["a"], ["c"], nodesById, links);
     expect(ids(result.path)).toEqual(["a", "b", "c"]);
     expect(result.reversePath).toEqual([]);
   });
 
   it("draws nothing when only FROM depends on TO, and offers the reverse read provider first", () => {
-    const result = findPath("c", "a", nodesById, links);
+    const result = findPath(["c"], ["a"], nodesById, links);
     expect(result.path).toEqual([]);
     expect(ids(result.reversePath)).toEqual(["a", "b", "c"]);
   });
 
   it("finds neither when the files are not connected, and says how far it looked", () => {
-    const result = findPath("a", "d", nodesById, links);
+    const result = findPath(["a"], ["d"], nodesById, links);
     expect(result.path).toEqual([]);
     expect(result.reversePath).toEqual([]);
     expect(result.searchedNodes).toBeGreaterThan(0);
@@ -42,15 +42,15 @@ describe("findPath", () => {
     const files = new Map([...names, "island"].map(id => [id, node(id)]));
     const chain = names.slice(1).map((id, i) => link(id, names[i]));
     chain.push(link("file3", "file5"));
-    expect(ids(findPath("file0", "file23", files, chain).path)).toEqual(names);
-    const missing = findPath("file0", "island", files, chain);
+    expect(ids(findPath(["file0"], ["file23"], files, chain).path)).toEqual(names);
+    const missing = findPath(["file0"], ["island"], files, chain);
     expect(missing.path).toEqual([]);
     expect(missing.maxDepthReached).toBe(false);
     expect(missing.searchedNodes).toBeLessThanOrEqual(files.size * 2);
   });
 
   it("stops at the hop limit in both directions and says so", () => {
-    const result = findPath("a", "c", nodesById, links, 1);
+    const result = findPath(["a"], ["c"], nodesById, links, 1);
     expect(result.path).toEqual([]);
     expect(result.reversePath).toEqual([]);
     expect(result.maxDepthReached).toBe(true);
@@ -58,15 +58,26 @@ describe("findPath", () => {
 
   it("prefers the drawable direction when the files depend on each other", () => {
     const mutual = [...links, link("a", "c")];
-    expect(ids(findPath("a", "c", nodesById, mutual).path)).toEqual(["a", "b", "c"]);
-    expect(ids(findPath("c", "a", nodesById, mutual).path)).toEqual(["c", "a"]);
+    expect(ids(findPath(["a"], ["c"], nodesById, mutual).path)).toEqual(["a", "b", "c"]);
+    expect(ids(findPath(["c"], ["a"], nodesById, mutual).path)).toEqual(["c", "a"]);
   });
 
   it("finds nothing for a file that is not in the bundle", () => {
-    const result = findPath("a", "zz", nodesById, links);
+    const result = findPath(["a"], ["zz"], nodesById, links);
     expect(result.path).toEqual([]);
     expect(result.reversePath).toEqual([]);
-    expect(result.toEndpoint.node.id).toBe("zz");
+    expect(result.searchedNodes).toBe(0);
+  });
+
+  it("starts from any file of a set and stops at any file of the other, never at a start itself", () => {
+    // From the directory holding a and d, to c: the search leaves from a, since d reaches nothing.
+    expect(ids(findPath(["a", "d"], ["c"], nodesById, links).path)).toEqual(["a", "b", "c"]);
+    // To a set that holds a start: the start is not its own path, so the first hop found is b.
+    expect(ids(findPath(["a"], ["a", "b"], nodesById, links).path)).toEqual(["a", "b"]);
+    // A file alone in both sets has no path either way.
+    const self = findPath(["a"], ["a"], nodesById, links);
+    expect(self.path).toEqual([]);
+    expect(self.reversePath).toEqual([]);
   });
 });
 

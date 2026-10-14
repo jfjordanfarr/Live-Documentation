@@ -9,7 +9,7 @@
 ## Authored
 ### Purpose
 
-Observable state for Local Map hover and explicit FROM/TO pathfinding. Independent exploration pins belong to the shared pin-state module.
+Observable state for Local Map hover and the explicit path from the newest pin to the destination asked in the search bar. Independent exploration pins belong to the shared pin-state module.
 
 ### Notes
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/dom.ts
-- Generated At: 2026-10-12T19:21:19.050Z
+- Generated At: 2026-10-14T18:27:56.946Z
 
 ## Authored
 ### Purpose
@@ -38,5 +38,4 @@ Activates the given view tab and its container while deactivating siblings.
 ### Dependencies
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
-- [`template.pathfind-toolbar`](../shared/template.html.mdmd.md#symbol-pathfind-toolbar)
 <!-- LIVE-DOC:END Dependencies -->

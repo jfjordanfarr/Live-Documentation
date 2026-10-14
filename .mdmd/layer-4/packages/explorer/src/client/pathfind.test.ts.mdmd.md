@@ -9,10 +9,11 @@
 ## Authored
 ### Purpose
 
-Unit tests of the pathfinder's search over a four-file graph: the path is found only when TO depends on FROM, the reverse is returned provider first when only FROM depends on TO, neither is found for unconnected files, the hop limit is reported, a mutual dependency prefers the drawable direction, and the count of references against a path ignores files outside it.
+Unit tests of the pathfinder's search over a four-file graph: the path is found only when the end depends on the start, the reverse is returned provider first when only the start depends on the end, neither is found for unconnected files, the hop limit is reported, a mutual dependency prefers the drawable direction, a start set leaves from whichever file reaches and an end set stops at the first file reached but never at a start itself, and the count of references against a path ignores files outside it.
 
 ### Notes
 
+- The set cases were added on 2026-10-14 when the search took sets for a directory at either end ([Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)).
 - Written on [2026-10-01](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10) with the direction rule; the graph is three files in a line plus one alone, which is enough to tell the two directions apart.
 
 ## Generated

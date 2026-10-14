@@ -7,6 +7,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   return {
     render: () => controller.render(),
     retainNode: nodeId => controller.retainNode(nodeId),
+    retainSymbol: (nodeId, symbol) => controller.retainSymbol(nodeId, symbol),
     openDirectory: directory => controller.openDirectory(directory),
     focusNode: nodeId => controller.focusNode(nodeId),
     focusDirectory: directory => controller.focusDirectory(directory),

@@ -39,9 +39,14 @@ describe("placeOf", () => {
     expect(placeOf("?view=sources&mode=2d")).toBe(placeOf("?view=sources&mode=3d"));
   });
 
-  it("counts a path only once it has both ends", () => {
-    expect(placeOf("?view=local&node=a.ts&from=a.ts")).toBe(placeOf("?view=local&node=a.ts"));
-    expect(placeOf("?view=local&node=a.ts&from=a.ts&to=b.ts")).not.toBe(placeOf("?view=local&node=a.ts"));
+  it("counts the end of a path asked for, a file with or without its symbol or a directory, and not the pins it starts from", () => {
+    const base: UrlStateSnapshot = { ...DEFAULT_SNAPSHOT, selectedNodeId: "a.ts", pinSet: addPin(DEFAULT_SNAPSHOT.pinSet, "a.ts", "*") };
+    const at = (snapshot: UrlStateSnapshot) => placeOf(`?s=${compressSnapshot(snapshot)}`);
+    expect(at(base)).toBe(at({ ...base, pinSet: DEFAULT_SNAPSHOT.pinSet }));
+    expect(at({ ...base, destination: { kind: "file", nodeId: "b.ts" } })).not.toBe(at(base));
+    expect(at({ ...base, destination: { kind: "file", nodeId: "b.ts", symbol: "run" } })).not.toBe(at({ ...base, destination: { kind: "file", nodeId: "b.ts" } }));
+    expect(at({ ...base, destination: { kind: "directory", directory: "src" } })).not.toBe(at({ ...base, destination: { kind: "file", nodeId: "b.ts" } }));
+    expect(at({ ...base, destination: { kind: "directory", directory: "src" } })).toBe(at({ ...base, destination: { kind: "directory", directory: "src" } }));
   });
 
   it("ignores which data file the page was opened on", () => {

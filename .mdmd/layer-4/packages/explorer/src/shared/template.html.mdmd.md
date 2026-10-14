@@ -4,18 +4,19 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-14T16:02:18.799Z
+- Generated At: 2026-10-14T18:27:59.775Z
 
 ## Authored
 ### Purpose
 
-The single-page HTML shell for the Live Docs Explorer static site. Defines the full DOM skeleton — sidebar, Knowledge Sources, World Map, and the Local Map’s 2D/3D containers, pathfinding toolbar, detail panel, and all interactive controls. Every `id` attribute in this file constitutes the Explorer's public DOM API; client TypeScript modules bind to these ids via `getElementById()` at startup.
+The single-page HTML shell for the Live Docs Explorer static site. Defines the full DOM skeleton — sidebar, the search bar, Knowledge Sources, World Map, and the Local Map’s 2D/3D containers with the path's report, detail panel, and all interactive controls. Every `id` attribute in this file constitutes the Explorer's public DOM API; client TypeScript modules bind to these ids via `getElementById()` at startup.
 
 ### Notes
 
 - Created [2025-11-22](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md) as part of the initial Explorer server scaffolding (`f1e2dec0`).
 - Relocated from `server/template.html` to `shared/template.html` on [2026-03-09](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-09.1.md) during the server retirement that consolidated all Explorer build-time utilities into the `shared/` module.
 - Its `id` attributes are extracted as public symbols by the HTML adapter ([html.ts](../../../engine/src/live-docs/adapters/html.ts.mdmd.md)), enabling Live Documentation to track which client modules depend on which DOM elements.
+- The search bar (2026-10-14, [Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)): `search-subject` with its results, and `search-destination-field` with the map marker, `search-destination`, its clear button and its results, at the top of `main`, which is a column with the views in `views` under the bar; the Ctrl+P dialog (`omnisearch`) and the sidebar's Search button, and the FROM/TO toolbar (`pathfind-toolbar` and its fields, dropdowns and buttons), are gone. The path's report (`path-report`) keeps `pathfind-status` and `pathfind-path` at the top of the Local Map.
 - The pathfinder's status (`pathfind-status`) is a line of its own under the input row since [Turn 10 of 2026-10-01](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10), because it can hold a sentence and a link (the reverse question offered when a path runs against the map's direction).
 - The Tuning section's Local Map subsection gained the laces' sliders on 2026-10-06 (`tuning-lace-reach`, `tuning-lace-curl`, `tuning-lace-width`), beside the taper now labelled Lace Taper, each with a title saying what it moves ([Turn 13](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)); a `tuning-lace-inset` slider of the same day was removed on 2026-10-07, when the laces became cut by the card's edge, and the reach's title now says it is measured from that edge.
 - Click Behavior and Visual tuning subsections removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md) as dead code — their checkbox controls were eliminated along with the corresponding `ClickBehaviorTuning`/`VisualTuning` type interfaces.
@@ -84,37 +85,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `map-viewport` {#symbol-map-viewport}
 - Type: variable
 
-#### `omnisearch` {#symbol-omnisearch}
-- Type: variable
-
-#### `omnisearch-input` {#symbol-omnisearch-input}
-- Type: variable
-
-#### `omnisearch-results` {#symbol-omnisearch-results}
-- Type: variable
-
-#### `omnisearch-trigger` {#symbol-omnisearch-trigger}
-- Type: variable
-
-#### `pathfind-clear` {#symbol-pathfind-clear}
-- Type: variable
-
-#### `pathfind-from` {#symbol-pathfind-from}
-- Type: variable
-
-#### `pathfind-from-clear` {#symbol-pathfind-from-clear}
-- Type: variable
-
-#### `pathfind-from-group` {#symbol-pathfind-from-group}
-- Type: variable
-
-#### `pathfind-from-results` {#symbol-pathfind-from-results}
-- Type: variable
-
-#### `pathfind-from-symbol` {#symbol-pathfind-from-symbol}
-- Type: variable
-
-#### `pathfind-go` {#symbol-pathfind-go}
+#### `path-report` {#symbol-path-report}
 - Type: variable
 
 #### `pathfind-path` {#symbol-pathfind-path}
@@ -123,22 +94,28 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 #### `pathfind-status` {#symbol-pathfind-status}
 - Type: variable
 
-#### `pathfind-to` {#symbol-pathfind-to}
+#### `search-bar` {#symbol-search-bar}
 - Type: variable
 
-#### `pathfind-to-clear` {#symbol-pathfind-to-clear}
+#### `search-destination` {#symbol-search-destination}
 - Type: variable
 
-#### `pathfind-to-group` {#symbol-pathfind-to-group}
+#### `search-destination-clear` {#symbol-search-destination-clear}
 - Type: variable
 
-#### `pathfind-to-results` {#symbol-pathfind-to-results}
+#### `search-destination-field` {#symbol-search-destination-field}
 - Type: variable
 
-#### `pathfind-to-symbol` {#symbol-pathfind-to-symbol}
+#### `search-destination-results` {#symbol-search-destination-results}
 - Type: variable
 
-#### `pathfind-toolbar` {#symbol-pathfind-toolbar}
+#### `search-subject` {#symbol-search-subject}
+- Type: variable
+
+#### `search-subject-field` {#symbol-search-subject-field}
+- Type: variable
+
+#### `search-subject-results` {#symbol-search-subject-results}
 - Type: variable
 
 #### `sidebar` {#symbol-sidebar}
@@ -337,6 +314,9 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `view-world` {#symbol-view-world}
+- Type: variable
+
+#### `views` {#symbol-views}
 - Type: variable
 
 #### `world-root` {#symbol-world-root}

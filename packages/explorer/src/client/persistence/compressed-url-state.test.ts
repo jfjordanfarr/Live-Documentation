@@ -148,6 +148,7 @@ describe("compress/decompress round-trip", () => {
       },
       openDirectories: new Set(["packages/server/src", "packages/client"]),
       filters: { showTests: false, showAssets: false },
+      destination: { kind: "file", nodeId: "b.ts", symbol: "fnB" },
     };
 
     const compressed = compressSnapshot(original);
@@ -157,6 +158,7 @@ describe("compress/decompress round-trip", () => {
     expect(restored.perspective).toBe("3d");
     expect(restored.spatialLayout).toBe("structure");
     expect(restored.selectedNodeId).toBe(original.selectedNodeId);
+    expect(restored.destination).toEqual(original.destination);
     expect([...restored.openDirectories].sort()).toEqual(["packages/client", "packages/server/src"]);
     expect(restored.pinSet.entries).toHaveLength(3);
     expect(restored.pinSet.entries[1].hopIndex).toBe(1);
@@ -309,5 +311,35 @@ describe("retired view migration", () => {
   it("retains the representation while another view is active", () => {
     const snapshot = { ...DEFAULT_SNAPSHOT, view: "sources" as const, perspective: "3d" as const };
     expect(decompressSnapshot(compressSnapshot(snapshot))).toEqual(snapshot);
+  });
+});
+
+describe("the path's destination", () => {
+  it("is omitted when none is asked, and rides the payload as a file, a file's symbol or a directory", () => {
+    expect(snapshotToPayload(DEFAULT_SNAPSHOT).x).toBeUndefined();
+    const file = snapshotToPayload({ ...DEFAULT_SNAPSHOT, destination: { kind: "file", nodeId: "b.ts" } });
+    expect(file.x).toEqual({ n: "b.ts" });
+    const symbol = snapshotToPayload({ ...DEFAULT_SNAPSHOT, destination: { kind: "file", nodeId: "b.ts", symbol: "run" } });
+    expect(symbol.x).toEqual({ n: "b.ts", s: "run" });
+    const directory = snapshotToPayload({ ...DEFAULT_SNAPSHOT, destination: { kind: "directory", directory: "src" } });
+    expect(directory.x).toEqual({ d: "src" });
+    for (const snapshot of [
+      { ...DEFAULT_SNAPSHOT, destination: { kind: "file", nodeId: "b.ts", symbol: "run" } as const },
+      { ...DEFAULT_SNAPSHOT, destination: { kind: "directory", directory: "" } as const }
+    ]) {
+      expect(decompressSnapshot(compressSnapshot(snapshot)).destination).toEqual(snapshot.destination);
+    }
+    expect(payloadToSnapshot({ v: 2 }).destination).toBeNull();
+    expect(payloadToSnapshot({ v: 2, x: { n: 7 } as unknown as { n: string } }).destination).toBeNull();
+  });
+
+  it("is scrubbed when its file is gone or its directory holds no live file, and kept otherwise", () => {
+    const nodes = new Map([["src/a.ts", {}], ["src/b.ts", {}]]);
+    const scrub = (destination: UrlStateSnapshot["destination"]) => scrubSnapshot({ ...DEFAULT_SNAPSHOT, destination }, nodes).destination;
+    expect(scrub({ kind: "file", nodeId: "src/b.ts", symbol: "run" })).toEqual({ kind: "file", nodeId: "src/b.ts", symbol: "run" });
+    expect(scrub({ kind: "file", nodeId: "gone.ts" })).toBeNull();
+    expect(scrub({ kind: "directory", directory: "src" })).toEqual({ kind: "directory", directory: "src" });
+    expect(scrub({ kind: "directory", directory: "" })).toEqual({ kind: "directory", directory: "" });
+    expect(scrub({ kind: "directory", directory: "lib" })).toBeNull();
   });
 });

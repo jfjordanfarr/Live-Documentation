@@ -42,6 +42,8 @@ export interface LocalViewOptions {
 export interface LocalViewApi {
   render(): void;
   retainNode(nodeId: string): void;
+  /** Pin one symbol unless it is pinned already, alone or with its whole file; what a search chose, never a toggle. */
+  retainSymbol(nodeId: string, symbol: string): void;
   openDirectory(directory: string): void;
   focusNode(nodeId: string): void;
   focusDirectory(directory: string): void;

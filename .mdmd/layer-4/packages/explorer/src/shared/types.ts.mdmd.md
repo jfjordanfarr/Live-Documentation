@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/types.ts
-- Generated At: 2026-10-13T19:38:17.179Z
+- Generated At: 2026-10-14T18:27:59.796Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ The node-and-link payload the Explorer views render, projected from the graph in
 ### Notes
 - Created 2025-11-21 when the monolithic `visualize-explorer.ts` was split into client, server and shared modules. The HTTP API these types once described was retired on 2026-03-10; the detail payload it answered with went on 2026-09-28.
 - Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
+- `ExplorerGraphStats.referencesOutsideScan` (2026-10-14) is the count the footer shows, renamed from `missingDependencies`: nothing is missing, the targets are outside the scan.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -120,7 +121,7 @@ header and used by the static builder to emit a quick-access overview.
 
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L153)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L154)
 
 ##### `ExplorerGraphPayload` — Summary
 The node-and-link payload the Explorer views render.

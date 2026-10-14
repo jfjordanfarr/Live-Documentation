@@ -6,22 +6,11 @@ import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
-import { initOmnisearch } from "./panels/omnisearch";
 import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
 import { initTuningPanel } from "./panels/tuning";
-import {
-  findPath,
-  initPathfind,
-  parsePathfindFromUrl,
-  pathfindHref,
-  referencesAgainstPath,
-  updatePathfindUrl,
-  type PathHop,
-  type PathfindEndpoint,
-  type PathfindResult
-} from "./pathfind";
+import { findPath, referencesAgainstPath, type PathfindResult } from "./pathfind";
 import {
   parseInitialState,
   updateUrlState,
@@ -33,10 +22,12 @@ import {
   createPersistUiScheduler,
   createPersistNavScheduler
 } from "./persistence";
-import { readUrlState, scrubSnapshot, writeUrlState } from "./persistence/compressed-url-state";
+import { compressSnapshot, readUrlState, scrubSnapshot, writeUrlState } from "./persistence/compressed-url-state";
 import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
 import { placeOf } from "./persistence/place";
-import type { ExplorerState, LocalMapPerspective, SpatialLayout, ViewName } from "./types";
+import { searchIndexOf, type SearchHit } from "./search/graph-search";
+import { createSearchBar, type SearchWords } from "./search/search-bar";
+import type { ExplorerState, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { explorerGraphOf } from "../shared/graph";
@@ -44,8 +35,8 @@ import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
 import { under } from "./views/localView/directory-state";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
-import { EMPTY_PIN_SET } from "./views/pin-state";
-import { clearRetainedDirectory, reconcileRetained, releaseRetained, subjectAfterRelease, type RetainedItem, type RetainedState } from "./views/retained-state";
+import { addPin, EMPTY_PIN_SET, retainFile } from "./views/pin-state";
+import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, type RetainedItem, type RetainedState } from "./views/retained-state";
 import { createWorldMapView } from "./views/worldMap";
 
 declare global {
@@ -53,7 +44,6 @@ declare global {
     __liveDocsExplorerError?: unknown;
     switchView: (event: MouseEvent, viewName: ViewName) => void;
     openInLocalView: () => void;
-    openOmnisearch: () => void;
     downloadCurrentDoc: () => void;
     zoomIn: () => void;
     zoomOut: () => void;
@@ -101,10 +91,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   const graphData = explorerGraphOf(bundle.graph);
   const files = bundle.graph.files;
   const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = bundle;
-  console.log("Live Docs Explorer graph loaded", graphData);
-  if (bundledMarkdown) {
-    console.log(`Bundled markdown: ${Object.keys(bundledMarkdown).length} referenced files`);
-  }
 
   // Related markdown, as the Knowledge Sources view lists it
   const bundledDocs = bundledMarkdownTree && bundledMarkdown
@@ -156,6 +142,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   state.pins = initialExploration.pinSet;
   state.openDirectories = initialExploration.openDirectories;
   state.retentionOrder = initialExploration.retentionOrder;
+  state.destination = initialExploration.destination;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
@@ -195,7 +182,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   const statsLine = document.getElementById("stats-line");
 
   if (statsLine instanceof HTMLElement) {
-    statsLine.textContent = `${graphData.stats.nodes} files, ${graphData.stats.links} references, ${graphData.stats.missingDependencies} missing dependencies`;
+    statsLine.textContent = `${graphData.stats.nodes} files, ${graphData.stats.links} references, ${graphData.stats.referencesOutsideScan} references outside the scan`;
   }
 
   const localView = createLocalView({
@@ -235,9 +222,7 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   // Opening a thing is a new Local Map scope, rendered in the remembered representation.
   const openThingInLocalMap = (thing: { name: string; folder: string }): void => {
-    clearPathResult();
-    pathfindApi.setFrom(undefined);
-    pathfindApi.setTo(undefined);
+    leavePath();
     state.pins = { entries: [] };
     state.openDirectories = new Set([thing.folder]);
     state.selectedNode = state.focusedNode = null;
@@ -350,6 +335,14 @@ function startExplorer(bundle: StaticExplorerData): void {
     onClear: () => applyRetentionChange({ pins: EMPTY_PIN_SET, openDirectories: new Set(), retentionOrder: [] }, true),
     onFocus: focusRetained
   });
+  // One search for the whole Explorer, in place of the Ctrl+P dialog and the FROM/TO toolbar (the owner's ask, 2026-10-14).
+  const searchBar = createSearchBar({
+    index: searchIndexOf(graphData.nodes),
+    onChooseSubject: pinHit,
+    onChooseDestination: askPath,
+    onClearDestination: () => { leavePath(); persistExploration(); },
+    onHopClick: node => handleNodeClick(node)
+  });
   let syncTuningControls = (): void => {};
 
   function retentionState(): RetainedState {
@@ -386,6 +379,139 @@ function startExplorer(bundle: StaticExplorerData): void {
     else forceGraphView.render();
   }
 
+  /** The words a field shows for a retained thing: its name, and where it stands for the tooltip. */
+  function wordsOf(item: RetainedItem): SearchWords {
+    const words = describeRetained(item, id => nodesById.get(id)?.name);
+    return { name: words.name, context: words.description };
+  }
+
+  /** A destination as the retained item it would be once pinned, for its words, its files and the reverse question. */
+  function itemOf(destination: PathDestination): RetainedItem {
+    return destination.kind === "directory" ? { kind: "directory", directory: destination.directory }
+      : { kind: "pin", pin: { nodeId: destination.nodeId, symbol: destination.symbol ?? "*" } };
+  }
+
+  /** A retained item as the destination it would be, for the reverse question. */
+  function destinationOfItem(item: RetainedItem): PathDestination {
+    if (item.kind === "directory") return { kind: "directory", directory: item.directory };
+    return item.pin.symbol === "*" ? { kind: "file", nodeId: item.pin.nodeId } : { kind: "file", nodeId: item.pin.nodeId, symbol: item.pin.symbol };
+  }
+
+  function destinationOfHit(hit: SearchHit): PathDestination {
+    if (hit.kind === "directory") return { kind: "directory", directory: hit.directory };
+    return hit.kind === "symbol" ? { kind: "file", nodeId: hit.node.id, symbol: hit.symbol } : { kind: "file", nodeId: hit.node.id };
+  }
+
+  /** The files an end of a path stands for: one file, or every file of a directory. */
+  function filesOf(item: RetainedItem): string[] {
+    if (item.kind === "pin") return [item.pin.nodeId];
+    return graphData.nodes.filter(node => under(node.id, item.directory)).map(node => node.id);
+  }
+
+  /** Make a retained item the newest, so that a path starts from it. */
+  function promoteRetained(item: RetainedItem): void {
+    const key = retainedKey(item);
+    state.retentionOrder = [...(state.retentionOrder ?? []).filter(other => other !== key), key];
+  }
+
+  /**
+   * Pin what a search found and bring it into view: a file with all its symbols, one symbol, or a directory opened.
+   * The chosen thing becomes the newest pin. A destination already asked is asked again from it.
+   */
+  function pinHit(hit: SearchHit): void {
+    const asked = state.destination ?? null;
+    detailPanel.hide();
+    if (hit.kind === "directory") {
+      if (state.view !== "map") changePerspective(state.perspective);
+      localView.openDirectory(hit.directory);
+      promoteRetained({ kind: "directory", directory: hit.directory });
+      (state.perspective === "2d" ? localView : forceGraphView).focusDirectory(hit.directory);
+    } else {
+      // From another view the Local Map opens on it; inside the map it becomes the subject and the view brings it to the eye.
+      if (state.view !== "map") changePerspective(state.perspective, hit.node);
+      else if (state.selectedNode?.id !== hit.node.id) markSelected(hit.node);
+      if (hit.kind === "file") localView.retainNode(hit.node.id);
+      else localView.retainSymbol(hit.node.id, hit.symbol);
+      const pin = (state.pins ?? EMPTY_PIN_SET).entries.find(entry => entry.nodeId === hit.node.id
+        && (hit.kind === "file" ? entry.symbol === "*" : entry.symbol === hit.symbol || entry.symbol === "*"));
+      if (pin) promoteRetained({ kind: "pin", pin });
+      if (state.perspective === "2d") localView.focusNode(hit.node.id);
+      else forceGraphView.render();
+    }
+    state.destination = asked;
+    if (asked) runPath();
+    else persistExploration();
+  }
+
+  /** Ask for the path from the newest pin to what was chosen; asking is a step in the history. */
+  function askPath(hit: SearchHit): void {
+    state.destination = destinationOfHit(hit);
+    runPath();
+  }
+
+  /** Leave the path: the destination forgotten, the exploration shown again. */
+  function leavePath(): void {
+    state.destination = null;
+    clearPathResult();
+  }
+
+  /** Draw the path from the newest pin to the destination, or say why none is drawn; nothing asked clears the report. */
+  function runPath(): void {
+    const origin = newestRetained(retentionState());
+    const destination = state.destination ?? null;
+    if (!origin || !destination) {
+      clearPathResult();
+      persistExploration();
+      return;
+    }
+    const target = itemOf(destination);
+    const result = findPath(filesOf(origin), filesOf(target), nodesById, graphData.links);
+    const first = result.path[0];
+    const last = result.path.at(-1);
+    if (origin.kind === "pin" && origin.pin.symbol !== "*" && first?.nodeId === origin.pin.nodeId) first.symbol = origin.pin.symbol;
+    if (destination.kind === "file" && destination.symbol && last?.nodeId === destination.nodeId) last.symbol = destination.symbol;
+    showPathResult(result, wordsOf(origin), wordsOf(target));
+    persistExploration();
+  }
+
+  /** The exploration with the destination pinned as the newest item: the state the reverse question leads to. */
+  function retainedWithDestination(destination: PathDestination): RetainedState {
+    const item = itemOf(destination);
+    const pins = state.pins ?? EMPTY_PIN_SET;
+    return reconcileRetained({
+      pins: item.kind === "pin" ? (item.pin.symbol === "*" ? retainFile(pins, item.pin.nodeId) : addPin(pins, item.pin.nodeId, item.pin.symbol)) : pins,
+      openDirectories: item.kind === "directory" ? new Set([...(state.openDirectories ?? []), item.directory]) : state.openDirectories ?? new Set(),
+      retentionOrder: [...(state.retentionOrder ?? []).filter(key => key !== retainedKey(item)), retainedKey(item)]
+    });
+  }
+
+  /** The address of the reverse question, so that the offered link can be opened elsewhere. */
+  function reverseHref(): string {
+    const origin = newestRetained(retentionState());
+    const destination = state.destination ?? null;
+    if (!origin || !destination) return "#";
+    const retained = retainedWithDestination(destination);
+    const url = new URL(window.location.href);
+    url.searchParams.set("s", compressSnapshot({
+      ...readUrlState(), view: "map", perspective: state.perspective, spatialLayout: state.spatialLayout, selectedNodeId: state.selectedNode?.id ?? null,
+      pinSet: retained.pins, openDirectories: retained.openDirectories, retentionOrder: retained.retentionOrder, filters: state.filters,
+      layout: layoutSettingsOf(state.tuning), destination: destinationOfItem(origin)
+    }));
+    return `${url.pathname}?${url.searchParams.toString()}`;
+  }
+
+  /** The reverse question: the destination becomes the newest pin, and the path is asked back to where it started. */
+  function swapPath(): void {
+    const origin = newestRetained(retentionState());
+    const destination = state.destination ?? null;
+    if (!origin || !destination) return;
+    const node = destination.kind === "file" ? nodesById.get(destination.nodeId) : undefined;
+    if (destination.kind === "file" && !node) return;
+    state.destination = destinationOfItem(origin);
+    pinHit(destination.kind === "directory" ? { kind: "directory", directory: destination.directory }
+      : destination.symbol ? { kind: "symbol", node: node!, symbol: destination.symbol } : { kind: "file", node: node! });
+  }
+
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
     if (contextName) contextName.textContent = (state.focusedNode ?? state.selectedNode)?.codeRelativePath
@@ -408,6 +534,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     perspectivePath.hidden = !path;
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     pinTray.sync(retentionState(), state.view === "map", changingPerspective);
+    const newest = newestRetained(retentionState());
+    searchBar.sync(newest ? wordsOf(newest) : null, state.destination ? wordsOf(itemOf(state.destination)) : null);
   }
 
   /** Change how the 3D Local Map places its files; the picture re-settles from where it stands, a step in the history. */
@@ -542,99 +670,21 @@ function startExplorer(bundle: StaticExplorerData): void {
     }
   });
 
-  // Initialize omnisearch (using imported function)
-  initOmnisearch({
-    graphData,
-    onSelect: node => selectNode(node)
-  });
-
   // ==================
-  // PATHFIND STATE
+  // PATHS
   // ==================
 
   let restoringPath = false;
 
-  /** Render the path visualization strip; an empty path hides it. */
-  const renderPathVisualization = (path: PathHop[]): void => {
-    const pathEl = document.getElementById("pathfind-path");
-    const viewMapEl = document.getElementById("view-map");
-    if (!pathEl) return;
-
-    // Clear previous path
-    pathEl.innerHTML = "";
-
-    if (path.length === 0) {
-      pathEl.hidden = true;
-      viewMapEl?.classList.remove("has-path");
-      return;
-    }
-
-    // Build path visualization
-    path.forEach((hop, index) => {
-      // Add arrow between hops (except before first)
-      if (index > 0) {
-        const arrow = document.createElement("span");
-        arrow.className = "pathfind-path-arrow";
-        arrow.textContent = "→";
-        pathEl.appendChild(arrow);
-      }
-
-      // Create hop element
-      const hopEl = document.createElement("div");
-      hopEl.className = "pathfind-path-hop";
-      
-      // Mark endpoints
-      if (index === 0 || index === path.length - 1) {
-        hopEl.classList.add("endpoint");
-      }
-
-      // File name
-      const nameEl = document.createElement("div");
-      nameEl.className = "pathfind-path-hop-name";
-      const fileName = hop.node.id.split("/").pop() || hop.node.id;
-      nameEl.textContent = fileName;
-      nameEl.title = hop.node.id;
-      hopEl.appendChild(nameEl);
-
-      // Symbol (if present)
-      if (hop.symbol) {
-        const symbolEl = document.createElement("div");
-        symbolEl.className = "pathfind-path-hop-symbol";
-        symbolEl.textContent = `→ ${hop.symbol}`;
-        hopEl.appendChild(symbolEl);
-      }
-
-      // Click handler to navigate to this node
-      hopEl.addEventListener("click", () => {
-        handleNodeClick(hop.node);
-      });
-
-      pathEl.appendChild(hopEl);
-    });
-
-    pathEl.hidden = false;
-    viewMapEl?.classList.add("has-path");
-  };
-
-  /** Writes the pathfinder's status line; `tone` colours it. */
-  const setPathStatus = (text: string, tone: "" | "success" | "error"): HTMLElement | null => {
-    const statusEl = document.getElementById("pathfind-status");
-    if (!statusEl) return null;
-    statusEl.textContent = text;
-    statusEl.className = tone ? `pathfind-status ${tone}` : "pathfind-status";
-    statusEl.hidden = false;
-    return statusEl;
-  };
-
   /**
    * Shows what the search found. The Local Map draws a path only in its reading
-   * direction, FROM offering on the left and TO using on the right. When the
+   * direction, the start offering on the left and the end using on the right. When the
    * files connect only the other way, nothing is drawn: the status says so and
    * offers the reverse question as a link, the owner's rule of 2025-12-18.
    */
-  const showPathResult = (result: PathfindResult): void => {
-    const fromName = result.fromEndpoint.node.name;
-    const toName = result.toEndpoint.node.name;
+  const showPathResult = (result: PathfindResult, origin: SearchWords, destination: SearchWords): void => {
+    const fromName = origin.name;
+    const toName = destination.name;
 
     if (result.path.length > 0) {
       // Hide detail panel to avoid blocking the visualization
@@ -653,13 +703,13 @@ function startExplorer(bundle: StaticExplorerData): void {
         selectNode(result.path[0].node, { suppressDetailPanel: true });
       }
 
-      renderPathVisualization(result.path);
+      searchBar.showPath(result.path);
 
       const nodeIds = result.path.map(hop => hop.nodeId);
       localView.setActivePath({
         nodeIds,
-        fromSymbol: result.fromEndpoint.symbol,
-        toSymbol: result.toEndpoint.symbol
+        fromSymbol: result.path[0].symbol,
+        toSymbol: result.path[result.path.length - 1].symbol
       });
 
       const against = referencesAgainstPath(nodeIds, graphData.links);
@@ -669,31 +719,30 @@ function startExplorer(bundle: StaticExplorerData): void {
       updateUrlState(state.view, state.selectedNode?.id ?? null, state.perspective, state.spatialLayout);
       schedulePersistNav();
       renderCurrentView();
-      setPathStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
+      searchBar.setStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
       return;
     }
 
-    renderPathVisualization([]);
+    // Nothing drawn: a path shown before leaves, and the status says why
+    clearPathResult();
 
     if (result.reversePath.length > 0) {
-      const statusEl = setPathStatus(
+      const statusEl = searchBar.setStatus(
         `No path runs from ${fromName} to ${toName}. ${toName} reaches ${fromName} through ${result.reversePath.length} files: `,
         ""
       );
-      if (statusEl) {
-        const reverse = document.createElement("a");
-        reverse.href = pathfindHref({ from: result.toEndpoint, to: result.fromEndpoint });
-        reverse.textContent = `show ${toName} to ${fromName}`;
-        reverse.addEventListener("click", event => {
-          event.preventDefault();
-          pathfindApi.swap();
-        });
-        statusEl.appendChild(reverse);
-      }
+      const reverse = document.createElement("a");
+      reverse.href = reverseHref();
+      reverse.textContent = `show ${toName} to ${fromName}`;
+      reverse.addEventListener("click", event => {
+        event.preventDefault();
+        swapPath();
+      });
+      statusEl.appendChild(reverse);
       return;
     }
 
-    setPathStatus(
+    searchBar.setStatus(
       result.maxDepthReached
         ? `No path within ${Math.max(0, nodesById.size - 1)} hops either way (searched ${result.searchedNodes} files)`
         : `No path either way (searched ${result.searchedNodes} files)`,
@@ -701,92 +750,12 @@ function startExplorer(bundle: StaticExplorerData): void {
     );
   };
 
-  /** Clear path result from UI */
+  /** Take the path's report off the page and the path out of the Local Map; the destination asked is kept by the caller. */
   const clearPathResult = (): void => {
-    const statusEl = document.getElementById("pathfind-status");
-    if (statusEl) {
-      statusEl.hidden = true;
-    }
-    // Clear path visualization
-    const pathEl = document.getElementById("pathfind-path");
-    const viewMapEl = document.getElementById("view-map");
-    if (pathEl) {
-      pathEl.innerHTML = "";
-      pathEl.hidden = true;
-    }
-    viewMapEl?.classList.remove("has-path");
-    // Clear path mode and re-render to restore exploration mode layout
+    searchBar.clearPath();
     localView.setActivePath(null);
     if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
   };
-
-  // Initialize pathfind toolbar (Local Map FROM/TO navigation)
-  const pathfindApi = initPathfind(graphData.nodes, {
-    onFromChange: (endpoint: PathfindEndpoint | undefined) => {
-      console.log("[Pathfind] FROM changed:", endpoint?.node.id, endpoint?.symbol);
-      // Update URL state
-      updatePathfindUrl({ from: endpoint, to: pathfindApi.state.to });
-      // Clear any previous path result when endpoints change
-      clearPathResult();
-    },
-    onToChange: (endpoint: PathfindEndpoint | undefined) => {
-      console.log("[Pathfind] TO changed:", endpoint?.node.id, endpoint?.symbol);
-      // Update URL state
-      updatePathfindUrl({ from: pathfindApi.state.from, to: endpoint });
-      // Clear any previous path result when endpoints change
-      clearPathResult();
-    },
-    onFindPath: (from: PathfindEndpoint, to: PathfindEndpoint) => {
-      console.log("[Pathfind] Find path:", from.node.id, "→", to.node.id);
-
-      // If FROM and TO are the same node, treat as exploration mode (not path mode)
-      if (from.node.id === to.node.id) {
-        console.log("[Pathfind] FROM == TO, treating as exploration mode");
-        detailPanel.hide();
-        localView.setActivePath(null);
-        if (state.view !== "map") {
-          state.view = "map";
-          setActiveView("map", state.perspective);
-        }
-        selectNode(from.node, { suppressDetailPanel: true });
-        setPathStatus(`Exploring: ${from.node.name}`, "success");
-        return;
-      }
-
-      // Execute BFS pathfinding
-      const result = findPath(from.node.id, to.node.id, nodesById, graphData.links);
-
-      // Attach symbol information to result
-      if (result.path.length > 0) {
-        // Annotate first hop with from symbol if specified
-        if (from.symbol && result.path[0]) {
-          result.path[0].symbol = from.symbol;
-        }
-        // Annotate last hop with to symbol if specified
-        if (to.symbol && result.path[result.path.length - 1]) {
-          result.path[result.path.length - 1].symbol = to.symbol;
-        }
-      }
-
-      showPathResult(result);
-    },
-    onClear: () => {
-      console.log("[Pathfind] Cleared");
-      // Clear URL state
-      updatePathfindUrl({});
-      // Clear path result
-      clearPathResult();
-    }
-  });
-
-  // Restore pathfind state from URL if present
-  const urlPathfindState = parsePathfindFromUrl(nodesById);
-  if (urlPathfindState.from) {
-    pathfindApi.setFrom(urlPathfindState.from);
-  }
-  if (urlPathfindState.to) {
-    pathfindApi.setTo(urlPathfindState.to);
-  }
 
   // The node to focus first, chosen before the first drawing so that the page draws the focused picture once, rather
   // than a default picture and then the focused one.
@@ -809,13 +778,6 @@ function startExplorer(bundle: StaticExplorerData): void {
   })();
   const focusNode = initialFocusNodeId ? nodesById.get(initialFocusNodeId) : undefined;
   if (focusNode) {
-    const focusSource =
-      initialState.hasUrlState && initialState.nodeId
-        ? "URL"
-        : !initialState.hasUrlState && persistedNav?.nodeId && nodesById.has(persistedNav.nodeId)
-          ? "localStorage"
-          : "heuristic";
-    console.log(`Focusing initial node from ${focusSource}: ${initialFocusNodeId}`);
     markSelected(focusNode);
   } else if (initialFocusNodeId) {
     console.warn(`Initial focus node not found: ${initialFocusNodeId}`);
@@ -826,9 +788,9 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   // Render initial view
   // Resolve a shared path before drawing, so loading it never paints an unrelated neighborhood first.
-  if (urlPathfindState.from && urlPathfindState.to) {
+  if (state.destination) {
     restoringPath = true;
-    try { pathfindApi.executeFindPath(); } finally { restoringPath = false; }
+    try { runPath(); } finally { restoringPath = false; }
   }
   renderCurrentView();
 
@@ -897,13 +859,11 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (node && contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
-    const path = parsePathfindFromUrl(nodesById);
-    pathfindApi.setFrom(path.from);
-    pathfindApi.setTo(path.to);
+    state.destination = exploration.destination;
     clearPathResult();
-    if (path.from && path.to) {
+    if (state.destination) {
       restoringPath = true;
-      try { pathfindApi.executeFindPath(); } finally { restoringPath = false; }
+      try { runPath(); } finally { restoringPath = false; }
     }
     renderCurrentView();
     schedulePersistNav();
@@ -968,24 +928,20 @@ function startExplorer(bundle: StaticExplorerData): void {
       return;
     }
     // Exit path mode and return to exploration mode
-    localView.setActivePath(null);
-    clearPathResult();
+    leavePath();
     // Hide detail panel to avoid blocking the visualization
     detailPanel.hide();
     changePerspective(state.perspective, node);
-    // Populate FROM field with the node and CLEAR TO field (exploration mode)
-    pathfindApi.setFrom({ node, symbol: undefined });
-    pathfindApi.setTo(undefined);
   }
 
   /** Keep independent branches in the same portable snapshot as selection and filters. */
   function persistExploration(leavingPath = false): void {
-    if (leavingPath) clearPathResult();
+    if (leavingPath) leavePath();
     syncPerspectiveControls();
     schedulePersistNav();
     writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, spatialLayout: state.spatialLayout, selectedNodeId: state.selectedNode?.id ?? null,
       pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder, filters: state.filters,
-      layout: layoutSettingsOf(state.tuning) }, { preservePath: !leavingPath });
+      layout: layoutSettingsOf(state.tuning), destination: state.destination ?? null });
   }
 
   function renderCurrentView(): void {

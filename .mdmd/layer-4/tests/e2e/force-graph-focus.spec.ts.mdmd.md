@@ -11,7 +11,7 @@
 Exercises file focus in the rendered Force Graph through URLs, search, node clicks, filtering, resizing and return from Local Map.
 
 ### Notes
-The canvas-center click verifies the actual sphere’s identity rather than only its HTML label. Manual-pan restoration is measured after the existing force simulation’s 15-second cooldown. The estate case also exercises reduced motion.
+The canvas-center click verifies the actual sphere’s identity rather than only its HTML label. The search case goes through the search bar since 2026-10-14: Ctrl+P focuses its field, and the file chosen is pinned and focused, with no details panel opened. Manual-pan restoration is measured after the existing force simulation’s 15-second cooldown. The estate case also exercises reduced motion.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

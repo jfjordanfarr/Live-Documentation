@@ -1,6 +1,6 @@
 import { CLOSE_ICON, DIRECTORY_ICON, iconButton } from "./icon-button";
 import type { ExplorerNodePayload } from "../../shared/types";
-import { retainedItems, retainedKey, type RetainedItem, type RetainedState } from "../views/retained-state";
+import { describeRetained, retainedItems, retainedKey, type RetainedItem, type RetainedState } from "../views/retained-state";
 
 /** Actions operate on the shared selection; opening the tray or focusing a row does not retain anything. */
 export interface PinTrayOptions {
@@ -82,13 +82,7 @@ export function createPinTray(options: PinTrayOptions): {
     row.className = "pin-tray-row";
     row.dataset.retainedKey = retainedKey(item);
     const directory = item.kind === "directory";
-    const path = directory ? item.directory : item.pin.nodeId;
-    const name = directory ? path.split("/").pop() || "Scan root"
-      : options.nodes.get(item.pin.nodeId)?.name ?? item.pin.nodeId;
-    const symbol = !directory && item.pin.symbol !== "*"
-      ? item.pin.symbol === "__internals__" ? "Internals" : item.pin.symbol : null;
-    const description = directory ? `directory ${path || "Scan root"}`
-      : symbol ? `${symbol} in ${path}` : path;
+    const { name, context, description, symbol, path } = describeRetained(item, id => options.nodes.get(id)?.name);
 
     const focus = iconButton(`Show ${description}`, directory ? DIRECTORY_ICON
       : '<path d="M6 3h8l4 4v14H6ZM14 3v5h4"/>');
@@ -97,12 +91,12 @@ export function createPinTray(options: PinTrayOptions): {
     words.className = "pin-tray-words";
     const title = document.createElement("span");
     title.className = "pin-tray-name";
-    title.textContent = symbol ?? name;
-    const context = document.createElement("span");
-    context.className = "pin-tray-context";
-    context.textContent = path || "Directory";
+    title.textContent = name;
+    const where = document.createElement("span");
+    where.className = "pin-tray-context";
+    where.textContent = context;
     if (!directory && !symbol) focus.title = `${path} · All symbols`;
-    words.append(title, context);
+    words.append(title, where);
     focus.append(words);
     focus.addEventListener("click", () => options.onFocus(item));
     row.append(focus);

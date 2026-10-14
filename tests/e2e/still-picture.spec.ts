@@ -223,7 +223,7 @@ async function localMapJourney(page: Page, run: Run, graph: ExplorerGraphPayload
   };
 }
 
-/** From A selected, ask the pathfinder for the path to D, then read the path picture; Clear is the return move. */
+/** From A selected, pin A in the search bar and ask for the path to D, then read the path picture; clearing the destination is the return move. */
 async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPayload, facts: Fact[], names: Record<string, Record<string, string>>): Promise<{ journey: ChainJourney; pathRow: Scoreboard }> {
   const chain = run.chain!;
   const a = chain[0];
@@ -235,24 +235,24 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
   const start = await boxOf(page, subject);
   const backBefore = await backEnabled(page);
   const moves = new Moves();
-  const pick = async (input: "from" | "to", file: string): Promise<void> => {
-    moves.take(await press(page, `#pathfind-${input}`));
+  const pick = async (field: "subject" | "destination", file: string): Promise<void> => {
+    moves.take(await press(page, `#search-${field}`));
     await page.keyboard.type(byId.get(file)?.name ?? nameOf(file));
     moves.typed();
-    await page.waitForSelector(`#pathfind-${input}-results .pathfind-result`, { timeout: 5_000 });
+    await page.waitForSelector(`#search-${field}-results .search-row--file`, { timeout: 5_000 });
     const index = await page.evaluate(
-      ({ input, file, relative }) => [...document.querySelectorAll<HTMLElement>(`#pathfind-${input}-results .pathfind-result`)].findIndex(el => {
-        const text = el.querySelector(".pathfind-result-path")?.textContent?.trim();
-        return text === file || text === relative;
-      }),
-      { input, file, relative: byId.get(file)?.codeRelativePath ?? file }
+      ({ field, file, relative }) => [...document.querySelectorAll<HTMLElement>(`#search-${field}-results .search-row--file`)].map(el => {
+        const text = el.querySelector(".search-row-context")?.textContent?.trim();
+        return text === file || text === relative ? Number(el.dataset.index) : -1;
+      }).find(at => at >= 0) ?? -1,
+      { field, file, relative: byId.get(file)?.codeRelativePath ?? file }
     );
-    if (index < 0) throw new Error(`${file} is not among the pathfinder's results for its name`);
-    moves.take(await press(page, `#pathfind-${input}-results .pathfind-result[data-index="${index}"]`));
+    if (index < 0) throw new Error(`${file} is not among the search's results for its name`);
+    moves.take(await press(page, `#search-${field}-results .search-row[data-index="${index}"]`));
   };
-  await pick("from", a);
-  await pick("to", d);
-  moves.take(await press(page, "#pathfind-go"));
+  // Choosing A pins it, which makes the destination field appear; choosing D asks the path at once.
+  await pick("subject", a);
+  await pick("destination", d);
   await page.waitForSelector("#view-map.has-path, #pathfind-status a", { timeout: 10_000 });
   // The Local Map draws a path only in its reading direction, what offers left of what uses it.
   // Asked the other way round it offers the reverse question as a link; taking it is one more gesture.
@@ -298,7 +298,7 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
     chain: null,
     notes: ["the Local Map's multi-file state, reached through the pathfinder; the chain journey on the row above ends here"]
   };
-  moves.take(await press(page, "#pathfind-clear"));
+  moves.take(await press(page, "#search-destination-clear"));
   await page.waitForTimeout(900);
   const returned = await boxOf(page, subject);
   await shot(page, run, "Local Map", "chain-return");
@@ -315,10 +315,10 @@ async function localMapChainJourney(page: Page, run: Run, graph: ExplorerGraphPa
       historyEntry,
       returnErrorPx: centerDistance(start, returned),
       notes: [
-        "through the pathfinder: click FROM, type, pick, click TO, type, pick, Find Path",
+        "through the search bar: click the field, type, pick A (pinned), click the destination, type, pick D",
         offered > 0 ? "asked with the dependent first, the map offered the reverse question and one click took it" : "asked in the map's reading direction",
         drawnNote,
-        "return move: Clear, not counted among the gestures"
+        "return move: clearing the destination, not counted among the gestures"
       ]
     },
     pathRow

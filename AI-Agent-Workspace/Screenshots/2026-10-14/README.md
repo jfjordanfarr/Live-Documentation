@@ -1,4 +1,4 @@
-# October 14, 2026 — Pin management in the morning, and the 3D Local Map's two layouts in the afternoon
+# October 14, 2026 — Pin management in the morning, the 3D Local Map's two layouts in the afternoon, and one search bar in the evening
 
 _The first section: pictures by the root Claude Code agent (Fable 5.1) of the build that passed the full gate on 2026-10-14: 997 unit, 52 integration and all 117 browser tests. The work is Turn 11 of the October 13–14 Codex session, approved by the owner in [the October 14 implementation request](../../ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs) and finished by [the October 14 session](../../ChatHistory/2026/10/2026-10-14.1.record.md) after the Codex harness stopped at its usage limit. The capture scripts that session left in scratch were rerun unchanged against the gated build; the close-up pair was added by this session. [The probe record](../../Probes/2026-10-14/pin-management/README.md) keeps the measurements and the gates._
 
@@ -62,3 +62,27 @@ Every picture is 1600×1000, tests shown, assets hidden, no pins. Amber spheres 
 [controls-structure.png](structure-layout/controls-structure.png) is the bottom-centre control in 3D: Compact and Relaxed, the tuning button, 2D and 3D, then the two new buttons, Connections and Structure, with Structure pressed.
 
 What the eye finds: the fold is fast, most of the motion over within 300 ms, and the picture then settles slowly through the library's fifteen-second cooldown. The containment lines are drawn at a third of full strength and read faint in overview; close to, as the retained-hub pictures show, they read as the tree. On this repository the structure layout reads as clusters, one per directory, about the root's hub. The revealed references of a hovered file read in overview only by the files they light; the hub pictures show them as lines.
+
+## One search bar for the whole Explorer, the evening of October 14
+
+_Pictures of the search bar's first build, taken by the root Claude Code agent (Fable 5.1) with a script of its own against both bundles served from `dist/explorer`, before the full gate. The design is the owner's of this evening ([Turns 5 and 6 of the day's record](../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-5); [the decision](../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)): one search at the top in place of the Ctrl+P dialog and the FROM/TO toolbar, grouped directory, file, symbol; a chosen row pinned and newest; once anything is pinned, a map marker and a second field for the end of a path, asked at once from the newest pin._
+
+Every picture is 1600×1000, tests shown, assets hidden.
+
+| State | Picture |
+| --- | --- |
+| This repository, `index.ts` opened by a direct link: the bar empty with its placeholder and the Ctrl+P hint, no second field, no pins | [2d-repository-bar-empty.png](search-bar/2d-repository-bar-empty.png) |
+| "views" typed: the directory `packages/explorer/src/client/views` offered by its name as a heading one can choose, its files under it, then two more groups of files whose paths hold the word; 12 files in 3 groups | [2d-repository-results-grouped.png](search-bar/2d-repository-results-grouped.png) |
+| "index.ts e" typed: files named index.ts in several directories, each with the symbols of it that hold an e, capped at five with the fold "1 more symbol" and "4 more symbols"; 26 symbols listed | [2d-repository-results-symbols.png](search-bar/2d-repository-results-symbols.png) |
+| The first fold chosen: the sixth symbol listed in its place | [2d-repository-results-unfolded.png](search-bar/2d-repository-results-unfolded.png) |
+| The symbol `spatialNodeValue` chosen under `forceGraphLayout.ts`: pinned alone and newest, the field reading its name, the card in reading position with the row marked, the tray at 1 pin, and the marker with the second field appeared | [2d-repository-symbol-pinned.png](search-bar/2d-repository-symbol-pinned.png) |
+| Knowledge Sources with the same bar, the pin still the newest | [sources-repository-bar.png](search-bar/sources-repository-bar.png) |
+| The estate's World Map with the bar above the board | [world-estate-bar.png](search-bar/world-estate-bar.png) |
+| `GatewayClient.cs` chosen on the World Map: the Local Map opened on it, pinned whole, the second field appeared | [2d-estate-chosen-from-world.png](search-bar/2d-estate-chosen-from-world.png) |
+| "Payment" typed in the second field: three groups, files with their matching symbols, routes among them | [2d-estate-destination-results.png](search-bar/2d-estate-destination-results.png) |
+| `IPaymentHub.cs` chosen as the end: GatewayClient.cs depends on it, so nothing is drawn and the status offers the reverse question as a link, the picture as it was | [2d-estate-reverse-offered.png](search-bar/2d-estate-reverse-offered.png) |
+| The offer taken: IPaymentHub.cs pinned and newest, the fields swapped, "Path found: 4 files", the strip and the four cards drawn blue to green | [2d-estate-path.png](search-bar/2d-estate-path.png) |
+| The same path in 3D, the bar above it, the strip's files lit | [3d-estate-path.png](search-bar/3d-estate-path.png) |
+| The end cleared: the exploration back with both pins, the second field empty | [2d-estate-cleared.png](search-bar/2d-estate-cleared.png) |
+| `GatewayClient.cs` chosen again and the directory `Contracts` as the end: a directory stands for any file inside it, and the nearest, `PaymentQuery.cs`, answers in three files where `IPaymentHub.cs` alone took four; offered as the reverse question | [2d-estate-directory-end-offered.png](search-bar/2d-estate-directory-end-offered.png) |
+| The offer taken: Contracts opened as the newest pin, the field reading "Contracts", the three-file path drawn from `PaymentQuery.cs` | [2d-estate-directory-end-path.png](search-bar/2d-estate-directory-end-path.png) |

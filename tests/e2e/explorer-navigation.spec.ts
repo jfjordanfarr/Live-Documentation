@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { compressToEncodedURIComponent } from "lz-string";
 
+import { pathAddress } from "./search-bar";
 import { PERSISTED_NAV_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 
 const SUBJECT = "packages/explorer/src/client/index.ts";
@@ -21,7 +22,7 @@ test("three navigable views, with a board as the fresh landing", async ({ page }
 });
 
 test("3D survives navigation, reload, a fresh shared-link recipient and a return without a URL", async ({ page, browser }) => {
-  await page.goto(`/?view=local&node=${SUBJECT}&from=${PROVIDER}&to=${SUBJECT}`);
+  await page.goto(pathAddress("/", PROVIDER, { kind: "file", nodeId: SUBJECT }, SUBJECT));
   await ready(page, "2d");
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await ready(page, "3d");

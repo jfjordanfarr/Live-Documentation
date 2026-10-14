@@ -1,9 +1,9 @@
 /**
  * Portable exploration state for the Local Map.
  *
- * Encodes the full view state (view, node selection, pins, expanded
- * directories, perspective, filters) into a single `?s=` query parameter
- * using lz-string compression.
+ * Encodes the full view state (view, node selection, pins, opened
+ * directories, the path's destination, perspective, filters) into a single
+ * `?s=` query parameter using lz-string compression.
  *
  * **Forward-compatibility contract:**
  * - Every serialized payload contains a `v` (version) field.
@@ -20,7 +20,7 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
-import type { LocalMapPerspective, SpatialLayout, ViewName } from "../types";
+import type { LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
 import { commitUrl } from "./history";
 import type { PinSet } from "../views/pin-state";
 import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/pin-state";
@@ -69,6 +69,8 @@ export interface CompressedPayload {
   y?: SpatialLayout;
   /** Shared packing and spatial encoding settings, including advanced edits. */
   l?: LayoutSettings;
+  /** The end of the path asked for (2026-10-14): a file `n` with perhaps one symbol `s`, or a directory `d`. The start is the newest pin. */
+  x?: { n: string; s?: string } | { d: string };
 }
 
 // ─── Snapshot (typed application-level state) ──────────────────────
@@ -91,6 +93,8 @@ export interface UrlStateSnapshot {
   filters: { showTests: boolean; showAssets: boolean; showRelatedDocs?: boolean };
   /** Absent on older links; those retain the viewer's existing preferences. */
   layout?: LayoutSettings;
+  /** The end of the path asked for, drawn from the newest pin; null when no path is asked. */
+  destination: PathDestination | null;
 }
 
 /** Default state for cold start (no URL parameter). */
@@ -102,6 +106,7 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   pinSet: EMPTY_PIN_SET,
   openDirectories: new Set(),
   filters: { showTests: true, showAssets: true },
+  destination: null
 };
 
 // ─── Pure Functions (testable) ─────────────────────────────────────
@@ -143,6 +148,9 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
       snapshot.filters.showAssets ? 1 : 0,
     ];
   }
+  const destination = snapshot.destination;
+  if (destination?.kind === "file") payload.x = destination.symbol ? { n: destination.nodeId, s: destination.symbol } : { n: destination.nodeId };
+  else if (destination?.kind === "directory") payload.x = { d: destination.directory };
 
   return payload;
 }
@@ -176,8 +184,19 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
   return {
     view, perspective, spatialLayout, selectedNodeId, pinSet, openDirectories, filters,
     ...(retentionOrder ? { retentionOrder } : {}),
-    ...(layout ? { layout } : {})
+    ...(layout ? { layout } : {}),
+    destination: readDestination(payload.x)
   };
+}
+
+/** The destination a payload names, or null when it names none or names it badly. */
+function readDestination(value: CompressedPayload["x"]): PathDestination | null {
+  if (!value || typeof value !== "object") return null;
+  if ("d" in value && typeof value.d === "string") return { kind: "directory", directory: value.d };
+  if ("n" in value && typeof value.n === "string") {
+    return typeof value.s === "string" && value.s ? { kind: "file", nodeId: value.n, symbol: value.s } : { kind: "file", nodeId: value.n };
+  }
+  return null;
 }
 
 /**
@@ -236,15 +255,26 @@ export function scrubSnapshot(
     ? snapshot.selectedNodeId
     : null;
 
+  // The destination: a file that still exists, or a directory with a live file under it
+  const destination = snapshot.destination && destinationLives(snapshot.destination, nodesById, nodeIds) ? snapshot.destination : null;
+
   return {
     ...snapshot,
     openDirectories,
     pinSet,
     selectedNodeId,
+    destination,
     ...(snapshot.retentionOrder ? {
       retentionOrder: reconcileRetained({ pins: pinSet, openDirectories, retentionOrder: snapshot.retentionOrder }).retentionOrder
     } : {})
   };
+}
+
+/** Whether a destination still names something in the bundle. */
+function destinationLives(destination: PathDestination, nodesById: ReadonlyMap<string, unknown>, nodeIds: readonly string[]): boolean {
+  if (destination.kind === "file") return nodesById.has(destination.nodeId);
+  const prefix = destination.directory === "" ? "" : `${destination.directory}/`;
+  return nodeIds.some(id => id.startsWith(prefix));
 }
 
 // ─── URL Integration ───────────────────────────────────────────────
@@ -266,15 +296,12 @@ export function readUrlState(): UrlStateSnapshot {
  * Write a state snapshot into the URL without reloading the page; the history decides whether it is a new entry.
  * Preserves the `?data=` parameter if present (used for custom data sources).
  */
-export function writeUrlState(snapshot: UrlStateSnapshot, options: { preservePath?: boolean } = {}): void {
+export function writeUrlState(snapshot: UrlStateSnapshot): void {
   const url = new URL(window.location.href);
   const params = url.searchParams;
 
   // Preserve data param
   const dataParam = params.get("data");
-  const pathParams = options.preservePath
-    ? [...params.entries()].filter(([key]) => ["from", "to", "fromSymbol", "toSymbol"].includes(key))
-    : [];
 
   // Clear all existing params
   for (const key of [...params.keys()]) {
@@ -288,7 +315,6 @@ export function writeUrlState(snapshot: UrlStateSnapshot, options: { preservePat
   if (dataParam) {
     params.set("data", dataParam);
   }
-  for (const [key, value] of pathParams) params.set(key, value);
 
   const newUrl = params.toString() ? `${url.pathname}?${params.toString()}` : url.pathname;
   commitUrl(newUrl);

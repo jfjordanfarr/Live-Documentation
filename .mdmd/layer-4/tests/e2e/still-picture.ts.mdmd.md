@@ -23,6 +23,7 @@ The still-picture instrument: quantized measures of one Explorer view in one sta
 - Churn compares the cards' boxes before and after one gesture; the tour plans from the picture as it stands, then makes each pan by mouse and counts what actually became legible, so a plan the view does not honour shows as a difference. A drag starts from an empty spot the whole drag fits from, so one planned pan is one drag.
 - Built on 2026-10-01 after the owner's go-ahead in [Turn 4](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-4); its first run found and the session fixed a clipped Membrane symbol name and an 862 px jump of the Local Map's subject on pinning a symbol. Expanded the same evening under [Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-8).
 - `localMapSettled` (2026-10-07) waits for the branch picture to rest, since a change of pins now moves it over the tuning's move length and the root says `data-moving` while it does; the specs that measure after a click wait on it.
+- A press on the search bar or the path's report counts as a control outside the frame, as the toolbar did (2026-10-14).
 - The Local Map's text audit reads the membrane labels' names and counts and the closed boxes' names and counts since 2026-10-08.
 
 ## Generated

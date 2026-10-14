@@ -141,7 +141,8 @@ export interface ExplorerLinkPayload {
 export interface ExplorerGraphStats {
     nodes: number;
     links: number;
-    missingDependencies: number;
+    /** References whose target is not a file of the scan: packages, builtins, and files the scan does not hold. */
+    referencesOutsideScan: number;
 }
 
 /**

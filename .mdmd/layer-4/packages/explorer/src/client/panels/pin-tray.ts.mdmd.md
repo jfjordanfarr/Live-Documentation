@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/pin-tray.ts
-- Generated At: 2026-10-14T02:49:17.813Z
+- Generated At: 2026-10-14T18:27:57.307Z
 
 ## Authored
 ### Purpose
 Makes retained directories, files and symbols individually reachable and releasable in either Local Map representation.
 
 ### Notes
-Rows use stable selection identities and appear newest first. Updating the list preserves surviving elements and transfers keyboard focus when the selected row disappears. A whole-file selection is one entry; directory bulk clearing is a separately named action. The tray delegates all selection changes to the application, collapses when Details opens and keeps its handle available. Its order comes from the shared exploration snapshot, rather than from the arrangement of cards on screen.
+Rows use stable selection identities and appear newest first. Updating the list preserves surviving elements and transfers keyboard focus when the selected row disappears. A whole-file selection is one entry; directory bulk clearing is a separately named action. The tray delegates all selection changes to the application, collapses when Details opens and keeps its handle available. Its order comes from the shared exploration snapshot, rather than from the arrangement of cards on screen. The words of a row come from `describeRetained` (2026-10-14), shared with the search bar.
 
 Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
@@ -41,6 +41,7 @@ A newest-first working set with stable row elements and a persistent collapse ha
 - [`icon-button.iconButton`](./icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`retained-state.RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem)
 - [`retained-state.RetainedState`](../views/retained-state.ts.mdmd.md#symbol-retainedstate)
+- [`retained-state.describeRetained`](../views/retained-state.ts.mdmd.md#symbol-describeretained)
 - [`retained-state.retainedItems`](../views/retained-state.ts.mdmd.md#symbol-retaineditems)
 - [`retained-state.retainedKey`](../views/retained-state.ts.mdmd.md#symbol-retainedkey)
 - [`template.detail-close`](../../shared/template.html.mdmd.md#symbol-detail-close)
