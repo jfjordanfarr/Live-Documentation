@@ -12,6 +12,7 @@ Exercises the `npm run live-docs:inspect` CLI against representative workspaces 
 
 ### Notes
 - Uses fixture-local workspaces to avoid mutating the main repo; each test shells out via `tsx` to mirror the way users run the CLI.
+- The reachable listing (2026-10-14, [Turn 7](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7)): nearest first, a file never reaching itself, both ways on request with the outbound list first, the text's first lines, and a fan-out asked both ways refused with nothing on stdout.
 - Blazor coverage was added on 2025-11-18 to lock in the `.razor` → partial class → `appsettings.json` chain discussed during the LD-402 expansion.
 
 ## Generated

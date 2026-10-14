@@ -222,6 +222,71 @@ test.describe("Local Map path mode", () => {
     await expect(page.locator("#search-subject")).toHaveValue("Contracts");
   });
 
+  test("the destination field offers only what a path from the newest pin reaches, says how far and which way, and folds the rest", async ({ page }) => {
+    await openLocalMap(page, DEPENDENT);
+    await choose(page, "subject", "GatewayClient", { file: DEPENDENT });
+    const field = page.locator("#search-destination");
+    const results = page.locator("#search-destination-results");
+    await expect(field).toHaveAttribute("placeholder", "Path to…");
+    /** The offered file rows' paths and words, and the fold's words if it stands. */
+    const offered = async (typed: string): Promise<{ rows: Array<[string, string]>; fold: string | null }> => {
+      await page.keyboard.press("Escape");
+      await page.click("#search-destination");
+      await page.keyboard.type(typed);
+      await page.waitForSelector("#search-destination-results .search-row");
+      return results.evaluate(element => ({
+        rows: [...element.querySelectorAll(".search-row--file:not(.is-apart)")].map(row =>
+          [row.querySelector(".search-row-context")!.textContent!, row.querySelector(".search-row-badge")?.textContent ?? ""] as [string, string]),
+        fold: element.querySelector(".search-row--apart")?.textContent ?? null
+      }));
+    };
+
+    // Both controllers connect: the Portal's depends on GatewayClient.cs and would draw, the Gateway's is behind it
+    const controllers = await offered("PaymentsController");
+    expect(controllers.rows).toEqual([
+      ["Gateway/Controllers/PaymentsController.cs", "2 files, the other way"],
+      ["Portal/Controllers/PaymentsController.cs", "2 files"]
+    ]);
+    expect(controllers.fold).toBeNull();
+    expect((await offered("IPaymentHub")).rows).toEqual([[DEPENDENCY, "4 files, the other way"]]);
+
+    // A directory offered by name says what its nearest file says: Contracts answers in three files, the other way
+    await page.keyboard.press("Escape");
+    await page.click("#search-destination");
+    await page.keyboard.type("Contracts");
+    await expect(results.locator('.search-row--directory:has(.search-row-name:text-is("Contracts")) .search-row-badge')).toHaveText("3 files, the other way");
+
+    // The project file matches "Payment" by name but connects to nothing, as do files matched by a symbol alone,
+    // the pin's own file among them: folded under a count, and under the fold once opened, each marked
+    const payment = await offered("Payment");
+    expect(payment.rows.length).toBeGreaterThan(2);
+    for (const [, words] of payment.rows) expect(words).toMatch(/^\d+ files(, the other way)?$/u);
+    expect(payment.rows.map(([file]) => file)).not.toContain("PaymentService/PaymentService.csproj");
+    expect(payment.fold).toMatch(/^\d+ more files match, but no path connects them$/u);
+    await expect(results.locator(".search-row.is-apart")).toHaveCount(0);
+    await results.locator(".search-row--apart").click();
+    const apart = results.locator(".search-row--file.is-apart");
+    expect(await apart.count()).toBe(Number(payment.fold!.match(/^(\d+)/u)![1]));
+    const apartRows = await apart.evaluateAll(rows => rows.map(row =>
+      [row.querySelector(".search-row-context")!.textContent, row.querySelector(".search-row-badge")!.textContent]));
+    expect(apartRows).toContainEqual(["PaymentService/PaymentService.csproj", "no path"]);
+    expect(apartRows).toContainEqual([DEPENDENT, "no path"]);
+    for (const [, words] of apartRows) expect(words).toBe("no path");
+
+    // A file under the fold can still be asked, and the answer is the honest one
+    await page.keyboard.press("Escape");
+    await choose(page, "destination", "Portal.csproj", { file: "Portal/Portal.csproj" });
+    await page.waitForSelector("#pathfind-status.error");
+    await expect(page.locator("#pathfind-status")).toContainText("No path either way");
+
+    // A pin nothing connects to says so, and every match is under the fold
+    await choose(page, "subject", "Portal.csproj", { file: "Portal/Portal.csproj" });
+    await expect(field).toHaveAttribute("placeholder", "Nothing connects to Portal.csproj");
+    const alone = await offered("Gateway");
+    expect(alone.rows).toEqual([]);
+    expect(alone.fold).toMatch(/^\d+ files match, but no path connects them$/u);
+  });
+
   test("the subject field follows the newest pin, and a new subject chosen in the bar asks the path again from it", async ({ page }) => {
     await page.goto(pathAddress(BASE, DEPENDENCY, { kind: "file", nodeId: DEPENDENT }, DEPENDENT));
     await page.locator("#view-map.has-path").waitFor();

@@ -188,6 +188,43 @@ describe("Live Docs inspect CLI", () => {
     );
   });
 
+  it("lists every file a path reaches, nearest first, one way or both, and refuses a fan-out both ways", () => {
+    const outbound = runInspectCli(fixtures.webforms, ["--from", "packages/site/Scripts/app-insights.js", "--reachable", "--json"]);
+    assert.strictEqual(outbound.exitCode, 0, `inspect exited ${outbound.exitCode}:\n${outbound.stderr || outbound.stdout}`);
+    const payload = JSON.parse(outbound.stdout) as {
+      kind: string;
+      maxDepth: number;
+      reached: Array<{ direction: string; files: Array<{ hops: number; node: InspectNodeDescriptor }> }>;
+    };
+    assert.strictEqual(payload.kind, "reachable");
+    assert.strictEqual(payload.maxDepth, 25);
+    assert.deepStrictEqual(payload.reached.map(entry => entry.direction), ["outbound"]);
+    const [reached] = payload.reached;
+    const hops = reached.files.map(file => file.hops);
+    assert.deepStrictEqual(hops, [...hops].sort((a, b) => a - b), "nearest first");
+    assert.deepStrictEqual(
+      reached.files.filter(file => file.hops <= 3).map(file => [file.node.codePath, file.hops]),
+      [["packages/site/Default.aspx", 1], ["packages/site/Default.aspx.cs", 2], ["Web.config", 3]]
+    );
+    assert.ok(reached.files.every(file => file.node.codePath !== "packages/site/Scripts/app-insights.js"), "a file does not reach itself");
+
+    const both = runInspectCli(fixtures.webforms, ["--from", "Web.config", "--reachable", "--direction", "both", "--json"]);
+    assert.strictEqual(both.exitCode, 0, `inspect exited ${both.exitCode}:\n${both.stderr || both.stdout}`);
+    const ways = (JSON.parse(both.stdout) as typeof payload).reached;
+    assert.deepStrictEqual(ways.map(entry => entry.direction), ["outbound", "inbound"]);
+    assert.deepStrictEqual(ways[0].files, []);
+    assert.ok(ways[1].files.some(file => file.node.codePath === "packages/site/Scripts/app-insights.js" && file.hops === 3));
+
+    const text = runInspectCli(fixtures.webforms, ["--from", "Web.config", "--reachable", "--direction", "inbound"]);
+    assert.strictEqual(text.exitCode, 0);
+    assert.match(text.stdout, /^Files a path reaches from Web\.config \(max depth 25\), nearest first\.\ninbound \(what depends on it\): \d+ files\n {2}1 hop {2}/u);
+
+    const fanout = runInspectCli(fixtures.webforms, ["--from", "Web.config", "--direction", "both"]);
+    assert.strictEqual(fanout.exitCode, 1);
+    assert.match(fanout.stderr, /Terminal paths run one way/u);
+    assert.strictEqual(fanout.stdout, "");
+  });
+
   it("traces Razor telemetry chain back to appsettings", () => {
     const run = runInspectCli(fixtures.razor, [
       "--from",

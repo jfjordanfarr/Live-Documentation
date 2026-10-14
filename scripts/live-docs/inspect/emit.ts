@@ -1,6 +1,7 @@
 /**
  * What the inspect CLI prints: node descriptors, and the text or JSON of a
- * path, a symbol path, a fan-out, a dual-direction search, or a miss.
+ * path, a symbol path, a fan-out, the files a path reaches, a dual-direction
+ * search, or a miss.
  *
  * @module
  */
@@ -13,6 +14,7 @@ import {
   MAX_ENUMERATED_PATHS,
   type Direction,
   type FanoutPath,
+  type OneWay,
   type PathSearchResult,
   type SymbolHop,
   type SymbolPathSearchResult,
@@ -276,6 +278,59 @@ export function emitFanoutResult(
       .join(" -> ");
     console.log(`  ${index + 1}. ${descriptors}`);
   });
+}
+
+/** The files a path reaches one way from a file, nearest first, each with the hops to it. */
+export interface ReachedFiles {
+  direction: OneWay;
+  files: Array<{ node: string; hops: number }>;
+}
+
+/**
+ * Emits every file a path reaches from a file, one list per direction asked:
+ * the headless form of the Explorer's destination field, which offers the
+ * same files with the same distances.
+ *
+ * @param from - Source node code path
+ * @param reached - The files reached, per direction, nearest first
+ * @param graph - The Live Doc graph
+ * @param maxDepth - Maximum depth used
+ * @param json - If true, emit JSON format
+ * @param verbose - If true, include symbol details
+ */
+export function emitReachableResult(
+  from: string,
+  reached: ReachedFiles[],
+  graph: LiveDocGraph,
+  maxDepth: number,
+  json: boolean,
+  verbose: boolean
+): void {
+  const payload = {
+    kind: "reachable" as const,
+    from: describeNode(graph, from, verbose),
+    maxDepth,
+    reached: reached.map((entry) => ({
+      direction: entry.direction,
+      files: entry.files.map((file) => ({ hops: file.hops, node: describeNode(graph, file.node, verbose) }))
+    }))
+  };
+
+  if (json) {
+    console.log(JSON.stringify(payload, null, 2));
+    return;
+  }
+
+  console.log(`Files a path reaches from ${from} (max depth ${maxDepth}), nearest first.`);
+  for (const entry of reached) {
+    const way = entry.direction === "outbound" ? "what it depends on" : "what depends on it";
+    console.log(`${entry.direction} (${way}): ${entry.files.length} ${entry.files.length === 1 ? "file" : "files"}`);
+    for (const file of entry.files) {
+      const descriptor = describeNode(graph, file.node, verbose);
+      const where = descriptor.docPath ? `${descriptor.codePath} [${descriptor.docPath}]` : descriptor.codePath;
+      console.log(`  ${file.hops} ${file.hops === 1 ? "hop " : "hops"}  ${where}`);
+    }
+  }
 }
 
 /**

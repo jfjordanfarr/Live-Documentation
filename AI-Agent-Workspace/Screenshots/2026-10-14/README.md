@@ -86,3 +86,17 @@ Every picture is 1600×1000, tests shown, assets hidden.
 | The end cleared: the exploration back with both pins, the second field empty | [2d-estate-cleared.png](search-bar/2d-estate-cleared.png) |
 | `GatewayClient.cs` chosen again and the directory `Contracts` as the end: a directory stands for any file inside it, and the nearest, `PaymentQuery.cs`, answers in three files where `IPaymentHub.cs` alone took four; offered as the reverse question | [2d-estate-directory-end-offered.png](search-bar/2d-estate-directory-end-offered.png) |
 | The offer taken: Contracts opened as the newest pin, the field reading "Contracts", the three-file path drawn from `PaymentQuery.cs` | [2d-estate-directory-end-path.png](search-bar/2d-estate-directory-end-path.png) |
+
+### The destination field offers only what connects, later the same evening
+
+The owner's ask of [Turn 7](../../ChatHistory/2026/10/2026-10-14.1.record.md#turn-7): the second field lists only what a path from the newest pin can reach, each row saying how far and which way, the files the words match but no path connects folded under a count. The pictures are from a scripted look on the built bundles, 1600 by 1000; the words on every row were read off the page into the record, and `inspect --reachable` over the estate's docs lists the same files at the same distances.
+
+| What is shown | Picture |
+| --- | --- |
+| This repository, `graph.ts` of the engine pinned, "inspect" typed in the second field: every offered file says the files a path to it would show, "3 files" for `inspect.ts`, "4 files" for its integration test; the directory `scripts/live-docs/inspect`, offered by its name, says what its nearest file says; nothing is folded, since every match connects | [2d-repository-destination-reach.png](search-bar/2d-repository-destination-reach.png) |
+| "pathfind" typed: the engine's pathfinder and its test two files away, the client's three and four, and under them the fold, "1 more file matches, but no path connects it" | [2d-repository-destination-pathfind.png](search-bar/2d-repository-destination-pathfind.png) |
+| The estate, `GatewayClient.cs` pinned, "Payment" typed: the Contracts files "3 files, the other way" and "4 files, the other way", the Gateway's `PaymentsController.cs` "2 files, the other way", the Portal's "2 files", the one file that depends on the pin among those matched | [2d-estate-destination-reach.png](search-bar/2d-estate-destination-reach.png) |
+| The fold opened: "5 more files match, but no path connects them", the project file, two files matched by a symbol alone and the pin's own file faded under it, each marked "no path" | [2d-estate-destination-fold-open.png](search-bar/2d-estate-destination-fold-open.png) |
+| "Contracts" typed: the directory offered by its name says "3 files, the other way", its nearest file's words, above its five files; its project file under the fold | [2d-estate-directory-nearest.png](search-bar/2d-estate-directory-nearest.png) |
+| The Portal's `PaymentsController.cs` chosen, the one row that said "2 files": drawn at once, as the row said | [2d-estate-destination-drawn.png](search-bar/2d-estate-destination-drawn.png) |
+| `Portal.csproj` pinned, which nothing connects to: the field's placeholder says so, the destination that stood is answered "No path either way", and "Gateway" typed finds ten files, all under the fold | [2d-estate-nothing-connects.png](search-bar/2d-estate-nothing-connects.png) |

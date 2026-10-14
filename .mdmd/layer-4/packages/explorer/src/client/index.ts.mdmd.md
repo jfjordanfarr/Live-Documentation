@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-14T18:27:57.205Z
+- Generated At: 2026-10-14T21:04:58.403Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Bootstrap entry point for the Explorer client: loads the bundle, projects its gr
 - The initial node (from the address, the stored place or the heuristic) is selected before the first drawing (`markSelected`, the selection's bookkeeping without a drawing, which `selectNode` also uses), so the page draws the focused picture once. Until 2026-10-06 it drew a default picture and then, a hundred milliseconds later, the focused one, and every load paid the Local Map's layout twice; found when the layout lab's verify pass read the page's second drawing ([Turn 12](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-12)).
 - The opened directories (2026-10-08, [the decisions log](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): read with the pins from the address at start and after Back, through `scrubSnapshot` with the `?dir=` door folded in, written with the pins by `persistExploration`; an address that opens a directory and names no file puts nothing in focus, so the directory draws alone rather than around a heuristic entry file.
 - The 3D layout (2026-10-14): two icon buttons after 3D in the bottom-centre control, Connections and Structure, shown only in 3D; `changeSpatialLayout` writes the address, so the change is a history step like a perspective change, and re-renders the spatial view, which re-settles from where it stands. The Show Directories and Directory Connections checkboxes of that morning went with it ([the owner's choice](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-4)).
-- The search bar (2026-10-14, [Turns 5 and 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-5); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)): one search at the top in place of the Ctrl+P dialog and the FROM/TO toolbar, whose wiring, strip and status renderers, console logging and `openOmnisearch` global went with them. `pinHit` pins what a search found and makes it the newest pin, `askPath` and `runPath` draw the path from the newest pin to the destination (a directory at either end standing for every file inside it), `swapPath` answers the reverse question by pinning the destination, and `leavePath` forgets the destination when the picture is clicked out of a path. A new subject chosen in the bar while a destination stands asks the path again from it.
+- The search bar (2026-10-14, [Turns 5 and 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-5); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)): one search at the top in place of the Ctrl+P dialog and the FROM/TO toolbar, whose wiring, strip and status renderers, console logging and `openOmnisearch` global went with them. `pinHit` pins what a search found and makes it the newest pin, `askPath` and `runPath` draw the path from the newest pin to the destination (a directory at either end standing for every file inside it), `swapPath` answers the reverse question by pinning the destination, and `leavePath` forgets the destination when the picture is clicked out of a path. A new subject chosen in the bar while a destination stands asks the path again from it. The reach from the newest pin (`reachOf`) is computed once per newest pin in `syncPerspectiveControls` and handed to the bar, so that the destination field offers only what connects ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7)).
 - The footer counts "references outside the scan" (2026-10-14): imports of packages and builtins and files the scan does not hold, which it had called "missing dependencies"; the owner: "Oh man that is nagging isn't it?"
 - The Knowledge Sources panel (2026-10-08) is rendered from the bundle's graph itself rather than the projected payload, and a file named on it goes to the detail panel through `focusSidebar`, which changes the focus without redrawing the view, so the panel keeps its open groups and its scroll.
 
@@ -52,7 +52,9 @@ _No public symbols detected_
 - [`sources-view.renderSourcesView`](./panels/sources-view.ts.mdmd.md#symbol-rendersourcesview)
 - [`tuning.initTuningPanel`](./panels/tuning.ts.mdmd.md#symbol-inittuningpanel)
 - [`pathfind.PathfindResult`](./pathfind.ts.mdmd.md#symbol-pathfindresult)
+- [`pathfind.Reach`](./pathfind.ts.mdmd.md#symbol-reach)
 - [`pathfind.findPath`](./pathfind.ts.mdmd.md#symbol-findpath)
+- [`pathfind.reachOf`](./pathfind.ts.mdmd.md#symbol-reachof)
 - [`pathfind.referencesAgainstPath`](./pathfind.ts.mdmd.md#symbol-referencesagainstpath)
 - [`compressed-url-state.compressSnapshot`](./persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`compressed-url-state.readUrlState`](./persistence/compressed-url-state.ts.mdmd.md#symbol-readurlstate)

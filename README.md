@@ -147,6 +147,7 @@ Traces the dependency graph to answer "What does this touch?" or "What touches t
 
 - **Hop-chain tracing**: `npm run live-docs:inspect -- --from <path> --to <path>`
 - **Reverse lookup**: `--direction inbound` | **Bidirectional**: `--direction both`
+- **Everything a path reaches**: `--reachable` lists every file a path reaches from `--from`, nearest first, with its hops
 - **Machine-readable output**: add `--json` for AI/automation consumption
 
 ### Visualization Explorer

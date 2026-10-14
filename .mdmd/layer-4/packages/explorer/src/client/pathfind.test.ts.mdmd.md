@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/pathfind.test.ts
-- Generated At: 2026-10-01T20:59:22.066Z
+- Generated At: 2026-10-14T21:04:58.568Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`pathfind.findPath`](./pathfind.ts.mdmd.md#symbol-findpath)
+- [`pathfind.reachOf`](./pathfind.ts.mdmd.md#symbol-reachof)
 - [`pathfind.referencesAgainstPath`](./pathfind.ts.mdmd.md#symbol-referencesagainstpath)
 - [`types.ExplorerLinkPayload`](../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

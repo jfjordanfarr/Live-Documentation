@@ -234,6 +234,32 @@
     text-transform: uppercase;
 }
 
+/* The distance to an offered file, and "no path": a sentence of the scope's, read as words */
+.search-row-badge--words {
+    text-transform: none;
+    font-size: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-panel-subtle);
+}
+
+/* The fold under the offered rows: the files the words match but no path connects; opened, their rows fade */
+.search-row--apart {
+    margin-top: 4px;
+    padding-top: 9px;
+    border-top: 1px solid var(--border);
+}
+
+.search-row--apart .search-row-name {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--text-panel-subtle);
+}
+
+.search-row.is-apart,
+.search-group.is-apart {
+    opacity: 0.6;
+}
+
 .search-empty {
     padding: 16px;
     text-align: center;

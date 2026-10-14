@@ -1,7 +1,7 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 
-const sharedSrc = path.resolve(__dirname, "packages/engine/src");
+const engineSrc = path.resolve(__dirname, "packages/engine/src");
 const explorerSrc = path.resolve(__dirname, "packages/explorer/src");
 const generatorSrc = path.resolve(__dirname, "packages/generator/src");
 
@@ -19,8 +19,8 @@ export default defineConfig({
     extensions: [".ts", ".tsx", ".mts", ".mjs", ".js", ".json"],
     alias: [
       {
-        find: /^@live-documentation\/shared\/(.+)$/u,
-        replacement: `${withTrailingSeparator(sharedSrc)}$1`
+        find: /^@live-documentation\/engine\/(.+)$/u,
+        replacement: `${withTrailingSeparator(engineSrc)}$1`
       },
       {
         find: /^@live-documentation\/explorer\/(.+)$/u,

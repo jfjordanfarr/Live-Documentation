@@ -10,7 +10,7 @@ import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
 import { initTuningPanel } from "./panels/tuning";
-import { findPath, referencesAgainstPath, type PathfindResult } from "./pathfind";
+import { findPath, reachOf, referencesAgainstPath, type PathfindResult, type Reach } from "./pathfind";
 import {
   parseInitialState,
   updateUrlState,
@@ -344,6 +344,9 @@ function startExplorer(bundle: StaticExplorerData): void {
     onHopClick: node => handleNodeClick(node)
   });
   let syncTuningControls = (): void => {};
+  // What a path from the newest pin can reach, computed once per newest pin: the destination field offers only that.
+  let reachKey: string | null = null;
+  let reach: Reach | null = null;
 
   function retentionState(): RetainedState {
     return { pins: state.pins ?? EMPTY_PIN_SET, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder };
@@ -535,7 +538,12 @@ function startExplorer(bundle: StaticExplorerData): void {
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     pinTray.sync(retentionState(), state.view === "map", changingPerspective);
     const newest = newestRetained(retentionState());
-    searchBar.sync(newest ? wordsOf(newest) : null, state.destination ? wordsOf(itemOf(state.destination)) : null);
+    const key = newest ? retainedKey(newest) : null;
+    if (key !== reachKey) {
+      reachKey = key;
+      reach = newest ? reachOf(filesOf(newest), nodesById, graphData.links) : null;
+    }
+    searchBar.sync(newest ? wordsOf(newest) : null, state.destination ? wordsOf(itemOf(state.destination)) : null, reach);
   }
 
   /** Change how the 3D Local Map places its files; the picture re-settles from where it stands, a step in the history. */

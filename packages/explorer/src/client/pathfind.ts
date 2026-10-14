@@ -1,7 +1,10 @@
 /**
- * The pathfinder of the Local Map: the breadth-first search between two sets of files, in the direction the map can
- * draw, and the count of what a drawn path leaves out. The bar that asks the question is `search/search-bar.ts`.
+ * The pathfinder of the Local Map: the engine's breadth-first walk over the links the map draws, asked for the
+ * shortest path between two sets of files in the direction the map can draw, for every file a path can reach from
+ * a set, and for the count of what a drawn path leaves out. The bar that asks is `search/search-bar.ts`.
  */
+
+import { pathTo, reachFrom, walk, type Neighbours } from "@live-documentation/engine/live-docs/pathfind";
 
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 
@@ -32,8 +35,49 @@ export interface PathfindResult {
   maxDepthReached: boolean;
 }
 
+/** Every file a path can reach from a set of files, by the number of files on the path, in each direction. */
+export interface Reach {
+  /** The files that depend on the set, directly or through others: a path to any of them is drawn. */
+  forward: Map<string, number>;
+  /** The files the set depends on: a path to any of them exists only the other way, and the reverse question is offered. */
+  reverse: Map<string, number>;
+}
+
+/** The two readings of the bundle's links: a file's dependents, and the files it depends on. */
+export interface Adjacency {
+  /** The files that depend on a file: the direction the map draws. */
+  dependents: Neighbours;
+  /** The files a file depends on. */
+  dependencies: Neighbours;
+}
+
 function endpointId(endpoint: ExplorerLinkPayload["source"]): string {
   return typeof endpoint === "string" ? endpoint : endpoint.id;
+}
+
+/** The links read both ways. A link runs from the file that depends to the file it depends on. */
+export function adjacencyOf(links: readonly ExplorerLinkPayload[]): Adjacency {
+  const dependents = new Map<string, Set<string>>();
+  const dependencies = new Map<string, Set<string>>();
+  const add = (map: Map<string, Set<string>>, key: string, value: string): void => {
+    let set = map.get(key);
+    if (!set) {
+      set = new Set();
+      map.set(key, set);
+    }
+    set.add(value);
+  };
+  for (const link of links) {
+    const dependent = endpointId(link.source);
+    const dependency = endpointId(link.target);
+    add(dependents, dependency, dependent);
+    add(dependencies, dependent, dependency);
+  }
+  const none: string[] = [];
+  return {
+    dependents: id => dependents.get(id) ?? none,
+    dependencies: id => dependencies.get(id) ?? none
+  };
 }
 
 /**
@@ -41,9 +85,9 @@ function endpointId(endpoint: ExplorerLinkPayload["source"]): string {
  * it when only the reverse exists. A set is one file, or every file of a directory.
  *
  * A link runs from the file that depends to the file it depends on, so the map's reading direction, offers on the
- * left and uses on the right, walks a file's dependents. The search from the start along dependents reaches the end
- * exactly when the end depends on the start; the same search from the end reaches the start when the start depends
- * on the end, and that path is returned as `reversePath`, provider first, never drawn. A path has at least one hop:
+ * left and uses on the right, walks a file's dependents. The walk from the start along dependents reaches the end
+ * exactly when the end depends on the start; the same walk from the end reaches the start when the start depends on
+ * the end, and that path is returned as `reversePath`, provider first, never drawn. A path has at least one hop:
  * a file that is in both sets is not its own path.
  */
 export function findPath(
@@ -58,30 +102,35 @@ export function findPath(
   const nothing: PathfindResult = { path: [], reversePath: [], searchedNodes: 0, maxDepthReached: false };
   if (from.size === 0 || to.size === 0) return nothing;
 
-  // dependents: file -> the files that depend on it
-  const dependents = new Map<string, Set<string>>();
-  for (const link of links) {
-    const sourceId = endpointId(link.source);
-    const targetId = endpointId(link.target);
-    let set = dependents.get(targetId);
-    if (!set) {
-      set = new Set();
-      dependents.set(targetId, set);
-    }
-    set.add(sourceId);
-  }
-
-  const forward = directedBFS(from, to, dependents, nodesById, maxHops);
+  const { dependents } = adjacencyOf(links);
+  const forward = search(from, to, dependents, nodesById, maxHops);
   if (forward.path) {
     return { ...nothing, path: forward.path };
   }
-  const reverse = directedBFS(to, from, dependents, nodesById, maxHops);
+  const reverse = search(to, from, dependents, nodesById, maxHops);
   return {
     ...nothing,
     reversePath: reverse.path ?? [],
     searchedNodes: forward.searchedNodes + reverse.searchedNodes,
     maxDepthReached: forward.maxDepthReached || reverse.maxDepthReached
   };
+}
+
+/**
+ * Every file a path can reach from a set of files, forward along dependents, which the map draws, and in reverse
+ * along dependencies, which the reverse question offers, each with the number of files the path would show. The
+ * set's own files are not listed.
+ */
+export function reachOf(
+  fromIds: Iterable<string>,
+  nodesById: Map<string, ExplorerNodePayload>,
+  links: readonly ExplorerLinkPayload[]
+): Reach {
+  const from = [...fromIds].filter(id => nodesById.has(id));
+  const { dependents, dependencies } = adjacencyOf(links);
+  const files = (hops: Map<string, number>): Map<string, number> =>
+    new Map([...hops].filter(([id]) => nodesById.has(id)).map(([id, count]) => [id, count + 1]));
+  return { forward: files(reachFrom(from, dependents)), reverse: files(reachFrom(from, dependencies)) };
 }
 
 /**
@@ -109,49 +158,24 @@ interface Search {
   maxDepthReached: boolean;
 }
 
-/** Breadth-first search from a set of files to another along one adjacency; every start is enqueued at depth 0. */
-function directedBFS(
+/** The walk from a set of files to another; a file in both sets is not its own path, so the starts are never targets. */
+function search(
   starts: ReadonlySet<string>,
   targets: ReadonlySet<string>,
-  adjacency: Map<string, Set<string>>,
+  neighbours: Neighbours,
   nodesById: Map<string, ExplorerNodePayload>,
   maxHops: number
 ): Search {
-  const visited = new Set<string>(starts);
-  const parents = new Map<string, string>();
-  const queue: Array<{ nodeId: string; depth: number }> = [...starts].map(nodeId => ({ nodeId, depth: 0 }));
-  let maxDepthReached = false;
-
-  // Each file is enqueued once; the cursor avoids repeated array shifting.
-  for (let cursor = 0; cursor < queue.length; cursor++) {
-    const { nodeId, depth } = queue[cursor];
-
-    if (depth > 0 && targets.has(nodeId)) {
-      const path: PathHop[] = [];
-      let current: string | undefined = nodeId;
-      while (current !== undefined) {
-        const node = nodesById.get(current);
-        if (node) {
-          path.unshift({ nodeId: current, node });
-        }
-        current = parents.get(current);
-      }
-      return { path, searchedNodes: visited.size, maxDepthReached: false };
-    }
-
-    if (depth >= maxHops) {
-      maxDepthReached ||= [...(adjacency.get(nodeId) ?? [])].some(id => nodesById.has(id) && !visited.has(id));
-      continue;
-    }
-
-    for (const neighborId of adjacency.get(nodeId) ?? []) {
-      if (!visited.has(neighborId)) {
-        visited.add(neighborId);
-        parents.set(neighborId, nodeId);
-        queue.push({ nodeId: neighborId, depth: depth + 1 });
-      }
-    }
+  const goals = new Set([...targets].filter(id => !starts.has(id)));
+  const found = walk(starts, neighbours, maxHops, goals);
+  if (found.reached !== undefined) {
+    const path = pathTo(found, found.reached).flatMap(nodeId => {
+      const node = nodesById.get(nodeId);
+      return node ? [{ nodeId, node }] : [];
+    });
+    return { path, searchedNodes: found.hops.size, maxDepthReached: false };
   }
-
-  return { path: null, searchedNodes: visited.size, maxDepthReached };
+  const maxDepthReached = found.stops.some(stop =>
+    stop.reason === "max-depth" && [...neighbours(stop.id)].some(id => nodesById.has(id) && !found.hops.has(id)));
+  return { path: null, searchedNodes: found.hops.size, maxDepthReached };
 }

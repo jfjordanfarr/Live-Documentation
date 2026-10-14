@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { findPath, referencesAgainstPath } from "./pathfind";
+import { findPath, reachOf, referencesAgainstPath } from "./pathfind";
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../shared/types";
 
 /** A link from the file that depends to the file it depends on, as the bundle stores them. */
@@ -93,5 +93,24 @@ describe("referencesAgainstPath", () => {
 
   it("ignores references to files outside the path", () => {
     expect(referencesAgainstPath(["a", "b"], [...links, link("a", "d")])).toBe(0);
+  });
+});
+
+describe("reachOf", () => {
+  it("lists what a path reaches from a file, forward along dependents and in reverse along dependencies, by files on the path", () => {
+    const reach = reachOf(["a"], nodesById, links);
+    expect([...reach.forward]).toEqual([["b", 2], ["c", 3]]);
+    expect(reach.reverse.size).toBe(0);
+    const fromC = reachOf(["c"], nodesById, links);
+    expect(fromC.forward.size).toBe(0);
+    expect([...fromC.reverse]).toEqual([["b", 2], ["a", 3]]);
+  });
+
+  it("reaches from every file of a set, never listing the set's own files, and ignores files outside the bundle", () => {
+    const reach = reachOf(["a", "b"], nodesById, links);
+    expect([...reach.forward]).toEqual([["c", 2]]);
+    expect(reach.reverse.size).toBe(0);
+    expect(reachOf(["zz"], nodesById, links).forward.size).toBe(0);
+    expect(reachOf(["d"], nodesById, links).forward.size + reachOf(["d"], nodesById, links).reverse.size).toBe(0);
   });
 });

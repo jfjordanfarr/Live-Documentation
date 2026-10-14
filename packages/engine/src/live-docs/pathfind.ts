@@ -2,10 +2,11 @@
  * Pathfinding over the graph index.
  *
  * @remarks
- * Breadth-first search for the shortest path between two files, the same
- * search by symbol, and the enumeration of every terminal path away from a
- * file. Pure functions over a {@link LiveDocGraph}, for the CLI and the
- * Explorer alike.
+ * One breadth-first walk over a neighbour function, and what the CLI and the
+ * Explorer ask of it: the shortest path between files, every file a path
+ * reaches and how far, the same search by symbol, and the enumeration of
+ * every terminal path away from a file. Pure functions: the CLI feeds the walk
+ * the graph's edges, the Explorer the links it draws.
  *
  * @module
  */
@@ -14,6 +15,102 @@ import type { LiveDocGraph } from "./graph";
 
 /** Traversal direction for graph searches. */
 export type Direction = "outbound" | "inbound" | "both";
+
+/** One way through the graph: outbound follows what a file depends on, inbound what depends on it. */
+export type OneWay = Exclude<Direction, "both">;
+
+/** The files one step from a file, in the direction of a walk. */
+export type Neighbours = (id: string) => Iterable<string>;
+
+/** A file the walk did not go on from: nothing new lay beyond it, or it stood at the depth limit. */
+export interface WalkStop {
+  id: string;
+  reason: "terminal" | "max-depth";
+}
+
+/** What one breadth-first walk from a set of files found. */
+export interface Walk {
+  /** Every file reached, by the fewest hops from a start; the starts at 0. */
+  hops: Map<string, number>;
+  /** The file each reached file was first reached from; a start has none. */
+  parents: Map<string, string>;
+  /** The first target met, when targets were given; the walk ends there. */
+  reached?: string;
+  /** Where the walk stopped, in the order it met them. */
+  stops: WalkStop[];
+}
+
+/**
+ * Walks breadth-first from a set of files along the neighbours given: every
+ * start at depth 0, each file visited once. A target is recognised as it is
+ * taken from the queue, a start among the targets at once, and the walk ends
+ * at the first. A file at the depth limit is not expanded and is a `max-depth`
+ * stop; a file with nothing new beyond it is a `terminal` stop.
+ */
+export function walk(
+  starts: Iterable<string>,
+  neighbours: Neighbours,
+  maxDepth: number = Infinity,
+  targets?: ReadonlySet<string>
+): Walk {
+  const hops = new Map<string, number>();
+  const parents = new Map<string, string>();
+  const stops: WalkStop[] = [];
+  const queue: string[] = [];
+  for (const start of starts) {
+    if (!hops.has(start)) {
+      hops.set(start, 0);
+      queue.push(start);
+    }
+  }
+
+  // Each file is enqueued once; the cursor avoids repeated array shifting.
+  for (let cursor = 0; cursor < queue.length; cursor++) {
+    const id = queue[cursor];
+    const depth = hops.get(id)!;
+    if (targets?.has(id)) {
+      return { hops, parents, reached: id, stops };
+    }
+    if (depth >= maxDepth) {
+      stops.push({ id, reason: "max-depth" });
+      continue;
+    }
+    let expanded = false;
+    for (const next of neighbours(id)) {
+      if (hops.has(next)) {
+        continue;
+      }
+      hops.set(next, depth + 1);
+      parents.set(next, id);
+      queue.push(next);
+      expanded = true;
+    }
+    if (!expanded) {
+      stops.push({ id, reason: "terminal" });
+    }
+  }
+
+  return { hops, parents, stops };
+}
+
+/** The files from a start of the walk to a file it reached, the start first. */
+export function pathTo(found: Walk, id: string): string[] {
+  const path: string[] = [];
+  for (let cursor: string | undefined = id; cursor !== undefined; cursor = found.parents.get(cursor)) {
+    path.unshift(cursor);
+  }
+  return path;
+}
+
+/** Every file a path reaches from the starts, with the fewest hops to it; the starts themselves are not listed. */
+export function reachFrom(starts: Iterable<string>, neighbours: Neighbours, maxDepth: number = Infinity): Map<string, number> {
+  const from = [...starts];
+  const reached = walk(from, neighbours, maxDepth).hops;
+  for (const start of from) {
+    reached.delete(start);
+  }
+  return reached;
+}
 
 /** Entry in the search frontier, representing a node that couldn't be explored further. */
 export interface FrontierEntry {
@@ -61,7 +158,9 @@ export const MAX_ENUMERATED_PATHS = 200;
 // ============================================================================
 
 /**
- * Performs a BFS search from a source node to a target node.
+ * The shortest path from one file to another, by the walk, with the frontier
+ * the CLI reports when there is none: where the walk stopped and why, and, on
+ * an outbound search, the dependencies that resolved to no file.
  *
  * @param graph - The Live Doc graph
  * @param from - Source node code path
@@ -74,53 +173,24 @@ export function searchGraph(
   graph: LiveDocGraph,
   from: string,
   to: string,
-  direction: Direction,
+  direction: OneWay,
   maxDepth: number
 ): PathSearchResult {
-  const visited = new Set<string>([from]);
-  const queue: Array<{ node: string; depth: number }> = [{ node: from, depth: 0 }];
-  const parents = new Map<string, string>();
-  const frontierMap = new Map<string, FrontierEntry>();
-
-  while (queue.length > 0) {
-    const current = queue.shift()!;
-    if (current.node === to) {
-      return { path: reconstructPath(parents, from, to), visited, frontier: [] };
-    }
-
-    const neighbors = getNeighbors(graph, current.node, direction);
-
-    if (current.depth >= maxDepth) {
-      frontierMap.set(`${current.node}|max-depth`, {
-        node: current.node,
-        docPath: graph.files[current.node]?.docPath,
-        reason: "max-depth"
-      });
-      continue;
-    }
-
-    let enqueued = false;
-    for (const neighbor of neighbors) {
-      if (visited.has(neighbor)) {
-        continue;
-      }
-      visited.add(neighbor);
-      parents.set(neighbor, current.node);
-      queue.push({ node: neighbor, depth: current.depth + 1 });
-      enqueued = true;
-    }
-
-    if (!enqueued) {
-      frontierMap.set(`${current.node}|terminal`, {
-        node: current.node,
-        docPath: graph.files[current.node]?.docPath,
-        reason: "terminal"
-      });
-    }
+  const found = walk([from], (id) => getNeighbors(graph, id, direction), maxDepth, new Set([to]));
+  const visited = new Set(found.hops.keys());
+  if (found.reached !== undefined) {
+    return { path: pathTo(found, to), visited, frontier: [] };
   }
+
+  const frontier: FrontierEntry[] = found.stops.map((stop) => ({
+    node: stop.id,
+    docPath: graph.files[stop.id]?.docPath,
+    reason: stop.reason
+  }));
 
   // An outbound search also reports what could not be followed: dependencies that resolved to no file.
   if (direction === "outbound") {
+    const missing = new Map<string, FrontierEntry>();
     for (const node of visited) {
       const file = graph.files[node];
       if (!file) {
@@ -128,7 +198,7 @@ export function searchGraph(
       }
       for (const edge of file.edges) {
         if (!edge.to) {
-          frontierMap.set(`${node}|missing|${edge.label}`, {
+          missing.set(`${node}|${edge.label}`, {
             node,
             docPath: file.docPath,
             reason: "missing-doc",
@@ -137,9 +207,10 @@ export function searchGraph(
         }
       }
     }
+    frontier.push(...missing.values());
   }
 
-  return { path: undefined, visited, frontier: Array.from(frontierMap.values()) };
+  return { path: undefined, visited, frontier };
 }
 
 /**
@@ -150,26 +221,12 @@ export function searchGraph(
  * @param direction - "outbound" for dependencies, "inbound" for dependents
  * @returns The neighbouring code paths
  */
-export function getNeighbors(graph: LiveDocGraph, node: string, direction: Direction): readonly string[] {
+export function getNeighbors(graph: LiveDocGraph, node: string, direction: OneWay): readonly string[] {
   const file = graph.files[node];
   if (!file) {
     return [];
   }
   return direction === "outbound" ? file.outbound : file.inbound;
-}
-
-function reconstructPath(parents: Map<string, string>, start: string, target: string): string[] {
-  const reversed: string[] = [target];
-  let cursor = target;
-  while (cursor !== start) {
-    const parent = parents.get(cursor);
-    if (!parent) {
-      break;
-    }
-    reversed.push(parent);
-    cursor = parent;
-  }
-  return reversed.reverse();
 }
 
 /**
@@ -187,7 +244,7 @@ function reconstructPath(parents: Map<string, string>, start: string, target: st
 export function enumerateTerminalPaths(
   graph: LiveDocGraph,
   start: string,
-  direction: Direction,
+  direction: OneWay,
   maxDepth: number
 ): FanoutPath[] {
   const results: FanoutPath[] = [];
@@ -212,6 +269,7 @@ export function enumerateTerminalPaths(
 }
 
 // ============================================================================
+// ============================================================================
 // Symbol-level search
 // ============================================================================
 
@@ -234,7 +292,7 @@ export function searchSymbolPath(
   graph: LiveDocGraph,
   from: SymbolReference,
   to: SymbolReference,
-  direction: Direction,
+  direction: OneWay,
   maxDepth: number
 ): SymbolPathSearchResult {
   const makeKey = (hop: SymbolHop): string =>
@@ -280,7 +338,7 @@ export function searchSymbolPath(
  * its `from` matches the hop's symbol; inbound, only when its `toSymbol` does.
  * Without a symbol, the file-level neighbours are added as well.
  */
-function getSymbolNeighbors(graph: LiveDocGraph, current: SymbolHop, direction: Direction): SymbolHop[] {
+function getSymbolNeighbors(graph: LiveDocGraph, current: SymbolHop, direction: OneWay): SymbolHop[] {
   const neighbors: SymbolHop[] = [];
   const file = graph.files[current.codePath];
   if (!file) {

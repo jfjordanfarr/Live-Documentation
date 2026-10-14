@@ -22,9 +22,12 @@ import {
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
   enumerateTerminalPaths,
+  getNeighbors,
+  reachFrom,
   searchGraph,
   searchSymbolPath,
-  type Direction
+  type Direction,
+  type OneWay
 } from "@live-documentation/engine/live-docs/pathfind";
 
 import {
@@ -33,6 +36,7 @@ import {
   emitFanoutResult,
   emitNotFound,
   emitPathResult,
+  emitReachableResult,
   emitSymbolPathNotFound,
   emitSymbolPathResult
 } from "./inspect/emit";
@@ -50,6 +54,7 @@ interface ParsedArgs {
   extension?: string;
   from?: string;
   to?: string;
+  reachable: boolean;
   direction: Direction;
   maxDepth: number;
 }
@@ -113,6 +118,12 @@ async function main(): Promise<void> {
   }
 
   const direction = args.direction;
+
+  if (args.reachable && args.to) {
+    console.error("--reachable lists what a path reaches from --from; it takes no --to.");
+    process.exit(1);
+    return;
+  }
 
   // Check if either input contains a symbol reference
   const fromHasSymbol = hasSymbolReference(args.from);
@@ -202,6 +213,25 @@ async function main(): Promise<void> {
     return;
   }
 
+  // Every file a path reaches, nearest first: the Explorer's destination field asks the same of the same walk
+  if (args.reachable) {
+    const ways: OneWay[] = direction === "both" ? ["outbound", "inbound"] : [direction];
+    const reached = ways.map((way) => ({
+      direction: way,
+      files: [...reachFrom([fromId], (id) => getNeighbors(graph, id, way), args.maxDepth)]
+        .sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]))
+        .map(([node, hops]) => ({ node, hops }))
+    }));
+    emitReachableResult(fromId, reached, graph, args.maxDepth, args.json, args.verbose);
+    return;
+  }
+
+  if (direction === "both") {
+    console.error("Terminal paths run one way: give --direction outbound or inbound, or add --reachable to list what a path reaches both ways.");
+    process.exit(1);
+    return;
+  }
+
   const fanout = enumerateTerminalPaths(graph, fromId, direction, args.maxDepth);
   emitFanoutResult(fromId, direction, fanout, graph, args.maxDepth, args.json, args.verbose);
 }
@@ -212,6 +242,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     version: false,
     json: false,
     verbose: false,
+    reachable: false,
     direction: "outbound",
     maxDepth: DEFAULT_MAX_DEPTH
   };
@@ -277,6 +308,11 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
+      case "--reachable": {
+        parsed.reachable = true;
+        break;
+      }
+
       case "--direction": {
         const value = expectValue(argv, ++index, current).toLowerCase();
         if (value !== "outbound" && value !== "inbound" && value !== "both") {
@@ -325,7 +361,8 @@ function usage(): string {
     `                           Use path#Symbol syntax for symbol-level search.\n` +
     `  --to <path>              Target artefact. Omit to list terminal paths from --from.\n` +
     `                           Use path#Symbol syntax for symbol-level search.\n` +
-    `  --direction <dir>        Traversal direction: outbound (default) or inbound.\n` +
+    `  --reachable              List every file a path reaches from --from, nearest first, with its hops.\n` +
+    `  --direction <dir>        Traversal direction: outbound (default) or inbound; both with --to or --reachable.\n` +
     `  --max-depth <n>          Maximum traversal depth (default ${DEFAULT_MAX_DEPTH}).\n` +
     `  --config <file>          Load configuration from JSON file.\n` +
     `  --json                   Emit JSON instead of text.\n` +
@@ -342,7 +379,8 @@ function usage(): string {
     `\nExamples:\n` +
     `  npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts\n` +
     `  npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile --json\n` +
-    `  npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound --json\n`;
+    `  npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound --json\n` +
+    `  npm run live-docs:inspect -- --from packages/engine/src/live-docs/graph.ts --reachable --direction both\n`;
 }
 
 main().catch((error) => {

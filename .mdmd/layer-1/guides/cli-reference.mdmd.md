@@ -100,8 +100,11 @@ npm run live-docs:inspect -- --from src/types.ts --direction inbound
 # Fan-out (what does this depend on?)
 npm run live-docs:inspect -- --from src/main.ts --direction outbound
 
-# Bidirectional search
-npm run live-docs:inspect -- --from src/main.ts --direction both
+# Bidirectional search between two files
+npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --direction both
+
+# Everything a path reaches from a file, nearest first, both ways
+npm run live-docs:inspect -- --from src/main.ts --reachable --direction both
 
 # Machine-readable output
 npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
@@ -112,7 +115,8 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 |------|-------------|
 | `--from <path[#symbol]>` | Starting artifact |
 | `--to <path[#symbol]>` | Destination artifact |
-| `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`) |
+| `--reachable` | List every file a path reaches from `--from`, nearest first, with its hops |
+| `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`); `both` with `--to` or `--reachable` |
 | `--max-depth <n>` | Maximum hops (default: 25) |
 | `--json` | Machine-readable output |
 | `--verbose` | Include additional diagnostics |

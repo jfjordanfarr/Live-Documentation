@@ -13,12 +13,26 @@ export type SearchFieldName = "subject" | "destination";
 /** The row wanted: a file by its path, a directory by its path, or a symbol of a file. */
 export type WantedRow = { file: string } | { directory: string } | { file: string; symbol: string };
 
-/** Click a field of the bar, type, and choose the row wanted among the results. */
+/**
+ * Click a field of the bar, type, and choose the row wanted among the results. The destination field keeps the files
+ * no path connects under a fold; when the row wanted is not offered and the fold stands, the fold is opened first.
+ */
 export async function choose(page: Page, field: SearchFieldName, typed: string, wanted: WantedRow): Promise<void> {
   await page.click(`#search-${field}`);
   await page.keyboard.type(typed);
   await page.waitForSelector(`#search-${field}-results .search-row`);
-  const index = await page.evaluate(({ field, wanted }) => {
+  let index = await rowIndex(page, field, wanted);
+  if (index < 0 && await page.locator(`#search-${field}-results .search-row--apart`).count() > 0) {
+    await page.click(`#search-${field}-results .search-row--apart`);
+    index = await rowIndex(page, field, wanted);
+  }
+  expect(index, `${JSON.stringify(wanted)} among the rows for "${typed}"`).toBeGreaterThanOrEqual(0);
+  await page.click(`#search-${field}-results .search-row[data-index="${index}"]`);
+}
+
+/** The index of the row wanted among a field's results, or -1. */
+function rowIndex(page: Page, field: SearchFieldName, wanted: WantedRow): Promise<number> {
+  return page.evaluate(({ field, wanted }) => {
     const rows = [...document.querySelectorAll<HTMLElement>(`#search-${field}-results .search-row`)];
     const text = (row: Element, cls: string): string | undefined => row.querySelector(`.${cls}`)?.textContent?.trim();
     if ("symbol" in wanted) {
@@ -34,8 +48,6 @@ export async function choose(page: Page, field: SearchFieldName, typed: string, 
     }
     return rows.findIndex(row => row.classList.contains("search-row--file") && text(row, "search-row-context") === wanted.file);
   }, { field, wanted });
-  expect(index, `${JSON.stringify(wanted)} among the rows for "${typed}"`).toBeGreaterThanOrEqual(0);
-  await page.click(`#search-${field}-results .search-row[data-index="${index}"]`);
 }
 
 /** An address that asks for a path: the origin pinned as a whole file and newest, the destination named, a file selected. */
