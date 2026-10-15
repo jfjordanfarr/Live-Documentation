@@ -78,11 +78,22 @@ export function createNodeCard(
   close.className = "local-file-close";
   close.title = "Close this expansion; keep symbols needed by other pins";
   close.setAttribute("aria-label", `Close ${node.name}`);
-  close.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+  close.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
   close.addEventListener("click", event => { event.stopPropagation(); controller.closeNode(node.id); });
   const retained = controller.pins.entries.some(pin => pin.nodeId === node.id);
-  const directSelection = !controller.pins.entries.length && controller.options.state.selectedNode?.id === node.id;
-  if (retained || directSelection || controller.expandedCards.has(node.id)) card.append(close);
+  const subject = controller.options.state.selectedNode?.id === node.id;
+  // Every card but the subject's can be made the subject: the one visible way to go there, since a double-click
+  // reached the card's click twice first (the owner's challenge, 2026-10-14; one grammar for every input, 2026-10-15).
+  if (!subject) {
+    const recentre = document.createElement("button");
+    recentre.className = "local-file-recentre";
+    recentre.title = "Make this file the subject: the map draws its neighbourhood around it";
+    recentre.setAttribute("aria-label", `Centre on ${node.name}`);
+    recentre.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></svg>';
+    recentre.addEventListener("click", event => { event.stopPropagation(); void controller.recenterNode(node); });
+    card.append(recentre);
+  }
+  if (retained || subject || controller.expandedCards.has(node.id)) card.append(close);
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";
@@ -134,11 +145,6 @@ export function createNodeCard(
     if (event.target === card && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault(); card.click();
     }
-  });
-
-  card.addEventListener("dblclick", event => {
-    event.stopPropagation();
-    void controller.recenterNode(node);
   });
 
   return card;

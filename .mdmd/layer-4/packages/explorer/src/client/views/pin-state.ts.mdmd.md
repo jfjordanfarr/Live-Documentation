@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/pin-state.ts
-- Generated At: 2026-10-12T19:35:22.889Z
+- Generated At: 2026-10-15T01:42:23.986Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Immutable pure-function state machine for the continuous pin model, managing the
 - All mutations (`addPin`, `removePin`, `togglePin`) return a new `PinSet` object — the immutable API enables React-style re-render-on-change in the imperative controller without reference equality bugs.
 - `getVisibleConnections` is the bridge between pin state and graph data: it filters the full edge list to only those edges touching a pinned (nodeId, symbol) pair, producing the `VisibleConnection[]` used to disclose retained neighborhoods.
 - `serializePins`/`deserializePins` round-trip to a compact JSON array for URL state persistence via `compressed-url-state.ts`.
-- `retainFile` is idempotent and uses a wildcard for complete interface selection. `toggleFileSymbol` can remove one effective row from that selection by materializing the remaining public symbols and Internals; the wildcard therefore cannot conceal an unpin action. These operations support the Local Map's click-to-retain and close-to-prune interaction while the lower-level mutations remain available to other consumers.
+- `retainFile` is idempotent and uses a wildcard for complete interface selection. `pressSymbol` (2026-10-15, [Turns 8 to 10](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-8); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#clicks-pin-what-they-name-and-the-subject-stays-where-it-is-recorded-2026-10-15)) is what a click on a symbol row does: a file pinned whole narrows to the symbol pressed, an unpinned symbol is added, a pinned one released, and releasing the file's last symbol leaves the file pinned whole, the owner's "node-level pin fallback rather than instant loss of the node". It replaced `toggleFileSymbol`, which had read a whole pin as every symbol already pinned and so, pressed on one, released that one and materialized the rest; the night's click-only journey ([the probe record](../../../../../../../AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md)) found that pinning every other symbol of a file was the only thing a click on a whole-pinned card could do.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -98,15 +98,17 @@ Remove all pins for a specific node.
 ##### `retainFile` — Summary
 Retain every interface of a file; repeating the action never releases it.
 
-#### `toggleFileSymbol` {#symbol-togglefilesymbol}
+#### `pressSymbol` {#symbol-presssymbol}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L112)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L114)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
-##### `toggleFileSymbol` — Summary
-Toggle a row in the effective selection. Removing a row from a whole-file
-selection materializes its remaining rows, so the wildcard cannot mask it.
+##### `pressSymbol` — Summary
+The pin set after a symbol of a file is pressed. A file pinned whole narrows to that symbol; a symbol not pinned is
+added beside the file's other pinned symbols; a pinned symbol is released; and releasing the file's last symbol
+leaves the file pinned whole rather than dropping it, so that a card leaves the picture only by its close or the
+tray (the owner's rule of 2026-10-15).
 
 #### `getPinnedNodeIds` {#symbol-getpinnednodeids}
 - Type: function

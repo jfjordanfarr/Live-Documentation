@@ -7,7 +7,7 @@ import {
   togglePin,
   removePinsForNode,
   retainFile,
-  toggleFileSymbol,
+  pressSymbol,
   getPinnedNodeIds,
   isSymbolPinned,
   getVisibleConnections,
@@ -36,17 +36,26 @@ function link(
 // ─── Pin Manipulation ──────────────────────────────────────────────
 
 describe("pin manipulation", () => {
-  it("lets a file click retain all rows and an individual click prune that effective selection", () => {
+  it("narrows a whole file to the symbol pressed, adds the next, releases a pressed one, and falls back to the whole file after the last", () => {
     const other = addPin(EMPTY_PIN_SET, "other.ts", "kept");
     const all = retainFile(other, "a.ts");
     expect(retainFile(all, "a.ts")).toEqual(all);
-    const subset = toggleFileSymbol(all, "a.ts", "first", ["first", "second"]);
-    expect(subset.entries.map(pin => [pin.nodeId, pin.symbol])).toEqual([
-      ["other.ts", "kept"], ["a.ts", "second"], ["a.ts", "__internals__"]
-    ]);
-    const restored = toggleFileSymbol(subset, "a.ts", "first", ["first", "second"]);
-    expect(restored.entries).toContainEqual({ nodeId: "a.ts", symbol: "first", hopIndex: undefined });
-    expect(removePinsForNode(restored, "a.ts")).toEqual(other);
+    const one = pressSymbol(all, "a.ts", "first");
+    expect(one.entries.map(pin => [pin.nodeId, pin.symbol])).toEqual([["other.ts", "kept"], ["a.ts", "first"]]);
+    const two = pressSymbol(one, "a.ts", "second");
+    expect(two.entries.map(pin => [pin.nodeId, pin.symbol])).toEqual([["other.ts", "kept"], ["a.ts", "first"], ["a.ts", "second"]]);
+    const back = pressSymbol(two, "a.ts", "first");
+    expect(back.entries.map(pin => [pin.nodeId, pin.symbol])).toEqual([["other.ts", "kept"], ["a.ts", "second"]]);
+    const whole = pressSymbol(back, "a.ts", "second");
+    expect(whole.entries.map(pin => [pin.nodeId, pin.symbol])).toEqual([["other.ts", "kept"], ["a.ts", "*"]]);
+    expect(retainFile(two, "a.ts").entries.map(pin => [pin.nodeId, pin.symbol]), "a file click pins the whole file again").toEqual([["other.ts", "kept"], ["a.ts", "*"]]);
+    expect(removePinsForNode(whole, "a.ts")).toEqual(other);
+  });
+
+  it("pins a symbol of an unpinned file alone, and nothing else", () => {
+    const one = pressSymbol(EMPTY_PIN_SET, "a.ts", "first");
+    expect(one.entries.map(pin => [pin.nodeId, pin.symbol])).toEqual([["a.ts", "first"]]);
+    expect(pressSymbol(one, "a.ts", "first").entries.map(pin => [pin.nodeId, pin.symbol]), "the last symbol released leaves the file whole").toEqual([["a.ts", "*"]]);
   });
 
   it("starts with an empty pin set", () => {

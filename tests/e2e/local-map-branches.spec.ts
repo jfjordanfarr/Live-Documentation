@@ -40,7 +40,7 @@ function expectLaneBoxes(lanes: ReadonlyArray<{ height: number; slots: number[] 
   }
 }
 
-test("independent symbol branches retain cross-connections, survive reload, and remove only the chosen pin", async ({ page }) => {
+test("independent symbol branches retain cross-connections, survive reload, and releasing a file's only symbol leaves it whole until the tray releases it", async ({ page }) => {
   await page.setViewportSize({ width: 1800, height: 1100 });
   await start(page);
   await branches(page);
@@ -57,11 +57,18 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(pin(page, "processor.ts", "run")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await localMapSettled(page);
+  // Releasing the only pinned symbol of processor.ts leaves the file pinned whole (the owner's rule of 2026-10-15)
   await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}processor.ts"] .symbol-row[data-symbol="run"] .symbol-label-wrapper`);
-  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
+  await expect(pin(page, "processor.ts", "run")).toHaveAttribute("aria-pressed", "true");
+  await expect(pin(page, "processor.ts", "summarize")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
+  await page.getByRole("button", { name: `Release ${ROOT}processor.ts`, exact: true }).click();
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
+  await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
+  await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Clear exploration pins" }).click();
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   await expect(page.locator("#map-container .symbol-label-wrapper[aria-pressed='true']")).toHaveCount(0);
@@ -74,7 +81,8 @@ test("both perspective changes keep the subject at its screen anchor during moti
   await page.setViewportSize({ width: 1600, height: 1000 });
   await start(page);
   await branches(page);
-  const title = card(page, "processor.ts").locator(".node-title");
+  // The subject is still helpers.ts: a pin never moves it (2026-10-15)
+  const title = card(page, "helpers.ts").locator(".node-title");
   const before = (await title.boundingBox())!;
   const anchor = { x: before.x + before.width / 2, y: before.y + before.height / 2 };
   const recording = page.evaluate(async () => {
@@ -101,7 +109,7 @@ test("both perspective changes keep the subject at its screen anchor during moti
   const samples = await recording;
   expect(samples.length).toBeGreaterThan(4);
   expect(Math.max(...samples.map(p => Math.hypot(p.x - anchor.x, p.y - anchor.y)))).toBeLessThan(3);
-  await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}processor.ts`);
+  await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}helpers.ts`);
   await page.getByRole("button", { name: "2D", exact: true }).click();
   const after = (await title.boundingBox())!;
   expect(Math.hypot(after.x + after.width / 2 - anchor.x, after.y + after.height / 2 - anchor.y)).toBeLessThan(3);
@@ -120,14 +128,19 @@ test("file retention, individual pruning and close work by keyboard with reduced
   await file.focus();
   await page.keyboard.press("Enter");
   const symbol = pin(page, "helpers.ts", "format");
+  const other = pin(page, "helpers.ts", "validate");
   await expect(symbol).toHaveAttribute("aria-pressed", "true");
+  await expect(other).toHaveAttribute("aria-pressed", "true");
   await expect(file.getByText(/connections? hidden by filters/)).toBeVisible();
+  // Space on a row of the whole file narrows the pin to it; Space again releases the last symbol, which leaves the file whole
   await symbol.focus();
   await page.keyboard.press("Space");
-  await expect(symbol).toHaveAttribute("aria-pressed", "false");
+  await expect(symbol).toHaveAttribute("aria-pressed", "true");
+  await expect(other).toHaveAttribute("aria-pressed", "false");
   await expect(symbol).toBeFocused();
   await page.keyboard.press("Space");
   await expect(symbol).toHaveAttribute("aria-pressed", "true");
+  await expect(other).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}helpers.ts`);
   await page.getByRole("button", { name: "2D", exact: true }).click();
@@ -150,8 +163,10 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toBeVisible();
   await localMapSettled(page);
   const before = (await file("symbolReferences.ts").boundingBox())!;
+  // The held element is the card's title: the subject's own card wears a highlight border the closed card loses
+  const titleBefore = (await file("symbolReferences.ts").locator(".node-title").boundingBox())!;
   const config = (await file("config.ts").boundingBox())!;
-  expect(Math.abs(config.x - before.x)).toBeLessThan(2);
+  expect(Math.abs(config.x - before.x)).toBeLessThan(4);
   const routes = await page.locator('#map-connections .connection-path[data-target-id="scripts/slopcop/config.ts"]').evaluateAll(paths => paths.map(path => path.getAttribute("d")!));
   expect(routes.length).toBeGreaterThan(0);
   expect(routes.every(route => route.includes(" C ") && !route.includes(" Q "))).toBe(true);
@@ -161,8 +176,9 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   // The closed card is the one last acted on, so the move holds it still; at rest it stands where it stood.
   await localMapSettled(page);
   const after = (await file("symbolReferences.ts").boundingBox())!;
+  const titleAfter = (await file("symbolReferences.ts").locator(".node-title").boundingBox())!;
   expect(after.height).toBeLessThan(before.height);
-  expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(1);
+  expect(Math.hypot(titleAfter.x - titleBefore.x, titleAfter.y - titleBefore.y)).toBeLessThan(1);
   expect(await file("symbolReferences.ts").locator(".symbol-row:not(.branch-symbol-hidden)").evaluateAll(rows => rows.map(row => (row as HTMLElement).dataset.symbol))).toEqual([
     "SymbolRuleSetting", "SymbolReferenceIssue", "findSymbolReferenceAnomalies"
   ]);

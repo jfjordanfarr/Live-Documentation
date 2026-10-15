@@ -318,10 +318,11 @@ test("pinning a path symbol opens branches, clears the old path status and keeps
   expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(1);
   expect(currentSnapshot(page).destination, "leaving the path by the picture forgets the question").toBeNull();
   await expect(page.locator("#search-destination")).toHaveValue("");
-  // The origin was pinned whole, so the click toggled its symbol out and left the others pinned one by one; the field shows whichever is newest
+  // The origin was pinned whole, so the click narrowed its pin to the symbol clicked (2026-10-15); the field shows it, the newest
   const snapshot = currentSnapshot(page);
   const newest = retainedItems({ pins: snapshot.pinSet, openDirectories: snapshot.openDirectories, retentionOrder: snapshot.retentionOrder }).at(-1)!;
   expect(newest.kind === "pin" && newest.pin.nodeId).toBe(DEPENDENCY);
-  expect(newest.kind === "pin" && newest.pin.symbol).not.toBe(symbol);
+  expect(newest.kind === "pin" && newest.pin.symbol).toBe(symbol);
+  expect(snapshot.pinSet.entries.filter(pin => pin.nodeId === DEPENDENCY)).toEqual([{ nodeId: DEPENDENCY, symbol }]);
   await expect(page.locator("#search-subject"), "the field follows the newest pin").toHaveValue(describeRetained(newest, id => id.split("/").pop()).name);
 });

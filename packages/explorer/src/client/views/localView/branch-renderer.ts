@@ -523,6 +523,20 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   const heldElement = elementHeld(controller, stage, from, to);
   const heldRect = heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
+  /** Put the held card back where the eye left it, moved by whatever the camera itself has moved since (a drag, say). */
+  const hold = (): void => {
+    if (!heldElement || !heldRect) return;
+    const camera = controller.mapTransform;
+    const rect = heldElement.getBoundingClientRect();
+    const dx = heldRect.left + (camera.x - cameraAtStart.x) - rect.left;
+    const dy = heldRect.top + (camera.y - cameraAtStart.y) - rect.top;
+    if (dx || dy) {
+      controller.mapTransform = { ...camera, x: camera.x + dx, y: camera.y + dy };
+      cameraAtStart.x += dx;
+      cameraAtStart.y += dy;
+      controller.updateMapTransform();
+    }
+  };
   const start = performance.now();
   const step = (now: number): void => {
     const t = Math.min(1, (now - start) / duration);
@@ -532,24 +546,15 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
     for (const element of move.entering) element.style.opacity = String(eased);
     for (const element of move.leaving) element.style.opacity = String(1 - eased);
     for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta * (1 - eased)}px)`;
-    if (heldElement && heldRect) {
-      // Where the card should be: where it was, moved by whatever the camera itself has moved since (a drag, say).
-      const camera = controller.mapTransform;
-      const rect = heldElement.getBoundingClientRect();
-      const dx = heldRect.left + (camera.x - cameraAtStart.x) - rect.left;
-      const dy = heldRect.top + (camera.y - cameraAtStart.y) - rect.top;
-      if (dx || dy) {
-        controller.mapTransform = { ...camera, x: camera.x + dx, y: camera.y + dy };
-        cameraAtStart.x += dx;
-        cameraAtStart.y += dy;
-        controller.updateMapTransform();
-      }
-    }
+    hold();
     stage.pose = frame;
     controller.drawConnections();
     if (t < 1) move.frame = requestAnimationFrame(step);
     else {
       endMove(stage, true);
+      // The end of a move settles what the frames tweened; the hold is made exact once more on the settled picture
+      // (a residual of two pixels over a long move, measured 2026-10-15).
+      hold();
       controller.drawConnections();
       const hovered = controller.localMapState.getState().hoveredSymbol;
       if (hovered) controller.highlightSymbolConnections(hovered.nodeId, hovered.symbol);

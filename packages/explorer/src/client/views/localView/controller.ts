@@ -1,4 +1,4 @@
-import { EMPTY_PIN_SET, retainFile, removePinsForNode, toggleFileSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
+import { EMPTY_PIN_SET, retainFile, removePinsForNode, pressSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import { subjectAfterRelease } from "../retained-state";
 import { dropStage, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
@@ -22,6 +22,7 @@ import {
 } from "./layout-measure";
 import {
   zoomByFactor as zoomByFactorFn,
+  zoomAtPoint as zoomAtPointFn,
   animateMapTransform as animateMapTransformFn,
   startInertia as startInertiaFn,
   cancelInertia as cancelInertiaFn,
@@ -139,9 +140,32 @@ export class LocalViewController implements LocalViewApi {
   private pendingRender = 0;
   private readonly handlePointerLeave = (): void => this.clearSymbolHighlight();
 
-  private readonly handleWindowMouseMove = (event: MouseEvent): void => {
+  /** The pointers pressed on the viewport, by id: one drags, two pinch. */
+  private readonly pointers = new Map<number, { x: number; y: number }>();
+  private pinch: { distance: number; x: number; y: number } | null = null;
+
+  private readonly handleWindowPointerMove = (event: PointerEvent): void => {
     const { state } = this.options;
-    if (!this.isDragging || !this.runtime.lastDragPosition || (state.view !== "map" || state.perspective !== "2d")) {
+    if (state.view !== "map" || state.perspective !== "2d" || !this.pointers.has(event.pointerId)) {
+      return;
+    }
+    this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (this.pointers.size >= 2 && this.pinch) {
+      // Two fingers: zoom around their midpoint by the change in their distance, and pan with the midpoint.
+      event.preventDefault();
+      const [a, b] = [...this.pointers.values()];
+      const distance = Math.hypot(b.x - a.x, b.y - a.y);
+      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      const frame = this.viewport.getBoundingClientRect();
+      if (this.pinch.distance > 0 && distance > 0) {
+        zoomAtPointFn(this.runtime, mid.x - frame.left, mid.y - frame.top, Math.log(distance / this.pinch.distance), () => this.updateMapTransform());
+      }
+      this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + mid.x - this.pinch.x, y: this.mapTransform.y + mid.y - this.pinch.y };
+      this.updateMapTransform();
+      this.pinch = { distance, ...mid };
+      return;
+    }
+    if (!this.isDragging || !this.runtime.lastDragPosition) {
       return;
     }
     event.preventDefault();
@@ -156,11 +180,19 @@ export class LocalViewController implements LocalViewApi {
     handleWheelFn(this.runtime, event, () => this.updateMapTransform());
   };
 
-  private readonly handleWindowMouseUp = (): void => {
-    if (!this.isDragging) {
+  private readonly handleWindowPointerUp = (event: PointerEvent): void => {
+    if (!this.pointers.delete(event.pointerId)) {
       return;
     }
-    handleDragEnd(this.runtime, this.viewport, () => this.updateMapTransform());
+    if (this.pinch) {
+      // The pinch ends; a finger still down goes on dragging from where it is.
+      this.pinch = null;
+      const remaining = [...this.pointers.values()][0];
+      if (remaining) startDrag(this.runtime, remaining.x, remaining.y, this.viewport);
+      else if (this.isDragging) handleDragEnd(this.runtime, this.viewport, () => this.updateMapTransform());
+      return;
+    }
+    if (this.isDragging) handleDragEnd(this.runtime, this.viewport, () => this.updateMapTransform());
   };
 
   constructor(options: LocalViewOptions) {
@@ -392,16 +424,16 @@ export class LocalViewController implements LocalViewApi {
     this.togglePinnedSymbol(nodeId, symbol);
   }
 
-  /** Toggle one independent pin, preserving other branches and the clicked symbol’s screen position. */
+  /**
+   * A press on a card or a symbol row: the file pinned whole, or the symbol pressed (`pressSymbol`), nothing pinned
+   * on the person's behalf, the pressed row held in its screen position. Until 2026-10-15 the first pin of an
+   * exploration also pinned the subject whole, silently, so that it would not vanish; the picture keeps the subject
+   * disclosed instead.
+   */
   togglePinnedSymbol(nodeId: string, symbol: string): void {
-    const node = this.resolveNode(nodeId);
-    if (!node) return;
-    const previous = this.options.state.selectedNode;
-    const base = !this.pins.entries.length && previous && previous.id !== nodeId
-      ? retainFile(this.pins, previous.id) : this.pins;
-    const pins = symbol === "*" ? retainFile(base, nodeId)
-      : toggleFileSymbol(base, nodeId, symbol, node.publicSymbols);
-    if (pins === this.pins && previous?.id === nodeId && !this.getActivePath()) return;
+    if (!this.resolveNode(nodeId)) return;
+    const pins = symbol === "*" ? retainFile(this.pins, nodeId) : pressSymbol(this.pins, nodeId, symbol);
+    if (pins === this.pins && !this.getActivePath()) return;
     this.updateRetainedPins(nodeId, symbol, pins);
   }
 
@@ -458,7 +490,11 @@ export class LocalViewController implements LocalViewApi {
     this.options.onExplorationChange?.(leavingPath);
   }
 
-  /** Apply retained scope while keeping the acted-on row in its screen position. */
+  /**
+   * Apply retained scope while keeping the acted-on row in its screen position. The subject stays where it is: a
+   * pin never moves it, unless the subject's own pins are released (then the newest pinned file is the subject) or
+   * there was no subject, when the file pinned becomes it.
+   */
   private updateRetainedPins(nodeId: string, symbol: string, pins: PinSet, focus = true): void {
     this.lastInteracted = nodeId;
     const leavingPath = !!this.localMapState.getState().activePath;
@@ -468,11 +504,15 @@ export class LocalViewController implements LocalViewApi {
     const before = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
     const keyboardFocus = this.container.contains(document.activeElement);
     const state = this.options.state;
-    const focusTarget = focus && pins.entries.some(pin => pin.nodeId === nodeId);
-    const selectedId = focusTarget ? nodeId : subjectAfterRelease(this.pins, pins, state.selectedNode?.id ?? null);
+    const pinned = pins.entries.some(pin => pin.nodeId === nodeId);
+    const selectedId = state.selectedNode ? subjectAfterRelease(this.pins, pins, state.selectedNode.id) : focus && pinned ? nodeId : null;
     const selected = selectedId ? this.resolveNode(selectedId) ?? null : null;
-    if (focusTarget || selected !== state.selectedNode) state.focusedNode = selected;
+    if (selected !== state.selectedNode) state.focusedNode = selected;
     state.selectedNode = selected;
+    // A subject that changes as the consequence of a pin change is not a file chosen: the renderer must not re-fit
+    // the camera to it nor hold it through the move in place of the row acted on (closing the subject's card moved
+    // the held card two pixels, measured 2026-10-15).
+    this.lastCenteredNodeId = selected?.id ?? null;
     state.pins = pins;
     this.localMapState.update(s => ({ ...s, activePath: null }));
     if (this.options.state.perspective === "2d") this.render();
@@ -796,20 +836,35 @@ export class LocalViewController implements LocalViewApi {
     return tryBuildNormalizedKeyFromAnchorKey(key);
   }
 
+  /**
+   * The pan and the pinch on pointer events, so that a mouse, a pen and a finger do the same (2026-10-15; the pan had
+   * listened to mouse events alone, which a touch screen's drag never sends). The viewport's `touch-action: none`
+   * keeps the browser's own scrolling and zooming off it.
+   */
   private bindPointerEvents(): void {
-    this.viewport.addEventListener("mousedown", event => {
-      // A press on a card, a directory control or the pathfinder toolbar is not the start of a drag.
+    this.viewport.addEventListener("pointerdown", event => {
+      // A press on a card, a directory control or a button is not the start of a drag; nor is a mouse's other button.
       // A drag marks the camera as the person's own, after which no render re-fits
       // it; toolbar clicks used to do that too, which left Clear unable to bring
       // the subject back into the frame (measured 3,846 px off, 2026-10-01).
+      if (event.pointerType === "mouse" && event.button !== 0) return;
       if ((event.target as HTMLElement | null)?.closest?.(".node-card, .pathfind-toolbar, button, [role=button], input, select, a")) {
         return;
       }
+      this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      if (this.pointers.size === 2) {
+        const [a, b] = [...this.pointers.values()];
+        if (this.isDragging) handleDragEnd(this.runtime, this.viewport, () => this.updateMapTransform());
+        this.pinch = { distance: Math.hypot(b.x - a.x, b.y - a.y), x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+        return;
+      }
+      if (this.pointers.size > 2) return;
       startDrag(this.runtime, event.clientX, event.clientY, this.viewport);
     });
 
-    window.addEventListener("mousemove", this.handleWindowMouseMove);
-    window.addEventListener("mouseup", this.handleWindowMouseUp);
+    window.addEventListener("pointermove", this.handleWindowPointerMove);
+    window.addEventListener("pointerup", this.handleWindowPointerUp);
+    window.addEventListener("pointercancel", this.handleWindowPointerUp);
   }
 
   private bindWheelEvents(): void {

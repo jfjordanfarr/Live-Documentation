@@ -16,13 +16,52 @@ async function expectFocused(page: Page, id: string): Promise<void> {
   })).toBeLessThan(8);
 }
 
+/**
+ * A point on a file's rendered sphere that no nearer sphere covers: its centre when that is clear, else a point
+ * part way out on its disc; null when a bigger neighbour standing in front covers the whole of it (pathfind.ts
+ * came to cover graph.ts at the camera's centre once the graph gained its files, 2026-10-15).
+ */
+async function hittablePoint(page: Page, id: string): Promise<{ x: number; y: number } | null> {
+  const nodes = await renderedNodes(page);
+  const target = nodes.find(node => node.id === id)!;
+  const nearer = nodes.filter(node => node.id !== id && node.depth < target.depth && node.opacity > 0.2);
+  const covered = (x: number, y: number): boolean => nearer.some(node => Math.hypot(node.x - x, node.y - y) <= node.screenRadius + 2);
+  const candidates = [[0, 0], ...Array.from({ length: 8 }, (_, i) => [Math.cos(i * Math.PI / 4), Math.sin(i * Math.PI / 4)])];
+  for (const scale of [0, 0.5, 0.75]) {
+    for (const [dx, dy] of candidates) {
+      const x = target.x + dx * target.screenRadius * scale;
+      const y = target.y + dy * target.screenRadius * scale;
+      if (!covered(x, y)) return { x, y };
+    }
+  }
+  return null;
+}
+
+/** Orbit the camera a little, as a person would, until the file's sphere shows past whatever stands in front of it. */
+async function uncover(page: Page, id: string): Promise<{ x: number; y: number }> {
+  for (let turn = 0; turn < 8; turn++) {
+    const point = await hittablePoint(page, id);
+    if (point) return point;
+    const box = (await page.locator("#graph-svg canvas").boundingBox())!;
+    const cx = box.x + box.width / 2 + 200;
+    const cy = box.y + box.height / 2 + 200;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    await page.mouse.move(cx + 90, cy + 30, { steps: 12 });
+    await page.mouse.up();
+    await page.waitForTimeout(600);
+  }
+  throw new Error(`${id} stayed covered by nearer spheres after eight turns of the camera`);
+}
+
 test("a focused URL centers the actual graph node and opens that file's details", async ({ page }) => {
+  await observeGraph(page);
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
-  const canvas = page.locator("#graph-svg canvas");
-  const box = (await canvas.boundingBox())!;
   // Hit the rendered sphere, not the HTML label, to verify the camera's target.
-  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  const point = await uncover(page, GRAPH);
+  await page.mouse.click(point.x, point.y);
+  await expect(page.locator("#search-subject"), "the sphere hit is the focused file's, now pinned").toHaveValue("graph.ts");
   await expect(page.locator("#detail-panel")).toContainText(GRAPH);
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
   await page.locator('[onclick="openInLocalView()"]').click();

@@ -194,7 +194,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     graphData,
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
-    onRecenterNode: node => handleNodeDoubleClick(node),
+    onRecenterNode: node => recentreOn(node),
     onFocusSidebar: node => focusSidebar(node),
     testCoverage,
     nodesById
@@ -922,8 +922,10 @@ function startExplorer(bundle: StaticExplorerData): void {
     focusSidebar(node, options);
   }
 
-  function handleNodeDoubleClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
-    selectNode(node, options);
+  /** The card's recentre control: the file becomes the subject, the pins kept, the detail panel left closed. */
+  function recentreOn(node: ExplorerNodePayload): void {
+    detailPanel.hide();
+    selectNode(node, { suppressDetailPanel: true });
   }
 
   function highlightSelectedCards(): void {

@@ -106,16 +106,16 @@ export function retainFile(set: PinSet, nodeId: string): PinSet {
 }
 
 /**
- * Toggle a row in the effective selection. Removing a row from a whole-file
- * selection materializes its remaining rows, so the wildcard cannot mask it.
+ * The pin set after a symbol of a file is pressed. A file pinned whole narrows to that symbol; a symbol not pinned is
+ * added beside the file's other pinned symbols; a pinned symbol is released; and releasing the file's last symbol
+ * leaves the file pinned whole rather than dropping it, so that a card leaves the picture only by its close or the
+ * tray (the owner's rule of 2026-10-15).
  */
-export function toggleFileSymbol(set: PinSet, nodeId: string, symbol: string, symbols: readonly string[]): PinSet {
-  if (!isSymbolPinned(set, nodeId, "*")) return togglePin(set, nodeId, symbol);
-  let next = removePinsForNode(set, nodeId);
-  for (const row of new Set([...symbols, "__internals__"])) {
-    if (row !== symbol) next = addPin(next, nodeId, row);
-  }
-  return next;
+export function pressSymbol(set: PinSet, nodeId: string, symbol: string): PinSet {
+  if (isSymbolPinned(set, nodeId, "*")) return addPin(removePinsForNode(set, nodeId), nodeId, symbol);
+  if (!isSymbolPinned(set, nodeId, symbol)) return addPin(set, nodeId, symbol);
+  const released = removePin(set, nodeId, symbol);
+  return released.entries.some(pin => pin.nodeId === nodeId) ? released : addPin(released, nodeId, "*");
 }
 
 // ─── Queries ───────────────────────────────────────────────────────

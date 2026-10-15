@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-14T16:02:19.586Z
+- Generated At: 2026-10-15T02:54:32.671Z
 
 ## Authored
 ### Purpose
@@ -36,7 +36,7 @@ Read native node identity, world/screen coordinates, actual material opacity and
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L75)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L82)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary

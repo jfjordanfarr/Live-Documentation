@@ -13,6 +13,8 @@ Exercises pin management as browser journeys across sharing, directory release, 
 ### Notes
 The tests protect newest-first ordering and surviving DOM identities, independent child selections, external connections after subtree clearing, an actually unpinned root after reload, and legible ancestor controls at reduced diagram scale. Text collision and truncation checks cover the new tray and disclosure after their visual inspection.
 
+The last-symbol test changed on 2026-10-15 ([Turn 10](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-10)): releasing the last pinned symbol on a card leaves the file pinned whole and the subject in place, and the tray's release is what drops it; it had asserted that the symbol's release dropped the file and moved the subject.
+
 Introduced for the owner’s [October 14 pin-management request](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 ## Generated

@@ -212,7 +212,8 @@ export function buildBranches(
 /**
  * The exploration's first two steps: the retained files and references disclosed, the opened directories' contents
  * joined as compact files and closed boxes, and everything ranked into columns. The center, the file in focus, is
- * retained whole; a picture entered by directory has none.
+ * disclosed whole while it holds no pin of its own, so that pinning elsewhere expands the picture without losing
+ * it (2026-10-15); a picture entered by directory has no center.
  */
 export function exploreBranches(
   center: ExplorerNodePayload | null,
@@ -230,8 +231,10 @@ export function exploreBranches(
   // An empty exploration is a browseable scan root, not a hidden directory pin.
   const rootLanding = !path && !center && !pins.entries.length && !options.openDirectories?.size;
   const opened = path ? NO_OPEN_DIRECTORIES : rootLanding ? new Set([""]) : options.openDirectories ?? NO_OPEN_DIRECTORIES;
-  // A direct file link discloses its neighborhood without manufacturing persistent pins.
-  const disclosure = path ? { entries: [] } : !pins.entries.length && center ? retainFile(pins, center.id) : pins;
+  // A direct file link discloses its neighborhood without manufacturing persistent pins, and keeps it while pins
+  // elsewhere grow the picture; the center's own pins, once it has any, say what of it is disclosed.
+  const centerPinned = !!center && pins.entries.some(pin => pin.nodeId === center.id);
+  const disclosure = path ? { entries: [] } : center && !centerPinned ? retainFile(pins, center.id) : pins;
   const retained = path ? new Set(pathColumns!.keys())
     : new Set([...(center ? [center.id] : []), ...pins.entries.map(pin => pin.nodeId)]);
   const relevantSymbols = new Map<string, Set<string>>();

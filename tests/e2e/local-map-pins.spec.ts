@@ -117,14 +117,20 @@ test("closing a neighbor's symbol disclosure preserves the direct-file inspectio
   await expect(neighbor.getByRole("button", { name: "+3 symbols", exact: true })).toBeVisible();
 });
 
-test("unpinning the selected symbol on its card uses the same subject release as the tray", async ({ page }) => {
+test("releasing the last pinned symbol on a card leaves the file pinned whole, the subject in place; the tray releases it", async ({ page }) => {
   await page.goto(sharedUrl({ ...state, openDirectories: new Set() }));
   await localMapSettled(page);
   await page.getByRole("button", { name: "Pin run in processor.ts", exact: true }).click();
   await localMapSettled(page);
-  expect(current(page).selectedNodeId).toBe(MAIN);
+  // The owner's rule of 2026-10-15: a card leaves the picture only by its close or the tray, never by its rows
+  expect(current(page).selectedNodeId).toBe(PROCESSOR);
+  expect(current(page).pinSet.entries).toEqual([{ nodeId: MAIN, symbol: "*" }, { nodeId: PROCESSOR, symbol: "*" }]);
+  await expect(page.locator(`.node-card[data-id="${PROCESSOR}"] .local-file-close`)).toHaveCount(1);
+  await openTray(page);
+  await page.getByRole("button", { name: `Release ${PROCESSOR}`, exact: true }).click();
+  await localMapSettled(page);
   expect(current(page).pinSet.entries).toEqual([{ nodeId: MAIN, symbol: "*" }]);
-  await expect(page.locator(`.node-card[data-id="${PROCESSOR}"] .local-file-close`)).toHaveCount(0);
+  expect(current(page).selectedNodeId, "the subject released goes to the newest pinned file").toBe(MAIN);
 });
 
 test("ancestor disclosure stays readable after zooming and opens an ancestor without changing file pins", async ({ page }) => {

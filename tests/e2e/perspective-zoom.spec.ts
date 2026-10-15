@@ -9,7 +9,7 @@ const cardSelector = `#map-container .node-card[data-id="${ROOT}helpers.ts"]`;
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 
-test("hover isolates within retained files and a row toggles the effective file-wide selection", async ({ page }) => {
+test("hover isolates within retained files, and a row of a whole file narrows the pin to it and back", async ({ page }) => {
   await page.goto(`/?view=local&node=${ROOT}helpers.ts`);
   const card = page.locator(cardSelector);
   await card.locator(".node-title").click();
@@ -25,12 +25,14 @@ test("hover isolates within retained files and a row toggles the effective file-
   await page.mouse.move(900, 60);
   await expect(page.locator("#map-container")).not.toHaveClass(/symbol-hover-active/);
   await expect(label).toHaveAttribute("aria-pressed", "true");
-  await label.click();
-  await expect(label).toHaveAttribute("aria-pressed", "false");
-  const other = card.locator('.symbol-row[data-symbol="sum"] .symbol-label-wrapper');
-  await expect(other).toHaveAttribute("aria-pressed", "true");
+  // A row of a file pinned whole narrows the pin to it; released again, the last symbol leaves the file whole (2026-10-15)
   await label.click();
   await expect(label).toHaveAttribute("aria-pressed", "true");
+  const other = card.locator('.symbol-row[data-symbol="sum"] .symbol-label-wrapper');
+  await expect(other).toHaveAttribute("aria-pressed", "false");
+  await label.click();
+  await expect(label).toHaveAttribute("aria-pressed", "true");
+  await expect(other).toHaveAttribute("aria-pressed", "true");
   expect(await ids()).toEqual(wholeFile);
   await page.reload();
   await expect(label).toHaveAttribute("aria-pressed", "true");

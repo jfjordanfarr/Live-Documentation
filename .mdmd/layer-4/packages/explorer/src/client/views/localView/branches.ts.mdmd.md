@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-10-14T02:49:19.840Z
+- Generated At: 2026-10-15T01:42:23.527Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Discloses Local Map neighborhoods, retained branches, directories and explicit p
 
 ### Notes
 
-A direct file link discloses its neighborhood without writing implicit pins into the shared state. An explicit path ignores exploration pins and opened directories for its temporary picture, retains its endpoint symbols, and draws only forward references between adjacent hops. These scopes share the same ranking, ordering, membranes and placement after the [owner’s walkthrough](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3).
+A direct file link discloses its neighborhood without writing implicit pins into the shared state, and keeps it disclosed while pins elsewhere grow the picture, for as long as the center holds no pin of its own (2026-10-15, [Turn 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-10); [the decision](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#clicks-pin-what-they-name-and-the-subject-stays-where-it-is-recorded-2026-10-15)): until then the controller had pinned the subject whole, silently, on the first pin elsewhere, so that "the thing you were looking at" did not vanish, and the tray showed a pin nobody made. Once the center holds a pin, its pins say what of it is disclosed. An explicit path ignores exploration pins and opened directories for its temporary picture, retains its endpoint symbols, and draws only forward references between adjacent hops. These scopes share the same ranking, ordering, membranes and placement after the [owner’s walkthrough](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3).
 
 Every edge between retained files remains present, including connections not directly requested by a pin. Relevant symbol sets separately identify which rows a compact neighbor must display; the same rows give each wire a height on its card for the ordering. Explicit pins survive category filters. The columns are the exact minimum of the references' column spans, each pair of files weighing the references between them, found by the network simplex of `network-simplex.ts` as Gansner et al. rank a graph; a file that costs the same in several columns takes the one with the fewest cards, the rightmost among equals, every connected group of files ends at the last column, and so does a file no reference reaches. Until 2026-10-06 a column was longest-chain depth, every file as near its consumers as its longest forward chain allowed, which stood a leaf that used only the root at the far right, four lanes from it; the owner accepted the change of meaning ([Turn 7](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-7)). The ranking has two dials for the layout lab, carried in `RankingOptions`: a `pull` toward the last column, a column past every file toward which each is drawn by the pull's weight, so that zero is the span-minimal ranking and a weight above every pair's is the longest-chain ranking of before; and a `tie` rule for a file that costs the same in several columns: the fewest other cards (the default), the rightmost or the leftmost. `buildBranches` takes its dials as one `BranchOptions` object: the symbol order, the ranking's, and the order's sweeps and start. Since the restarts of 2026-10-06 the build is two steps a caller may take apart: `exploreBranches` discloses and ranks (an `Exploration`: the subgraph, the ranking, the hidden connections, the relevant symbols, and the order step's input but its start), and `orderExploration` orders it from one start (the ranking's order, a seed's shuffle, or a previous picture's columns), so that the renderer and the lab run the order step several times over one exploration; `buildBranches` runs both once.
 
@@ -147,18 +147,19 @@ one exploration; this runs both once.
 
 #### `exploreBranches` {#symbol-explorebranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L217)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L218)
 - Returns: [`Exploration`](#symbol-exploration)
 - Parameters: `center`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `graph`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `pins`: [`PinSet`](../pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `exploreBranches` — Summary
 The exploration's first two steps: the retained files and references disclosed, the opened directories' contents
 joined as compact files and closed boxes, and everything ranked into columns. The center, the file in focus, is
-retained whole; a picture entered by directory has none.
+disclosed whole while it holds no pin of its own, so that pinning elsewhere expands the picture without losing
+it (2026-10-15); a picture entered by directory has no center.
 
 #### `orderExploration` {#symbol-orderexploration}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L351)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L354)
 - Returns: [`BranchGraph`](#symbol-branchgraph)
 - Parameters: `exploration`: [`Exploration`](#symbol-exploration); `options`: [`OrderOptions`](#symbol-orderoptions)
 
@@ -167,14 +168,14 @@ The exploration's third step: its columns ordered from the given start, with the
 
 #### `commonDirectory` {#symbol-commondirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L373)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L376)
 
 ##### `commonDirectory` — Summary
 The deepest directory every given directory is in or under; "" when they share none.
 
 #### `membraneDirectory` {#symbol-membranedirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L390)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L393)
 
 ##### `membraneDirectory` — Summary
 The membrane a file's directory belongs to when only `depth` levels below the common directory are membranes: the
@@ -182,14 +183,14 @@ directory cut to that many levels below the root, the root itself at zero, the d
 
 #### `compareSymbolNames` {#symbol-comparesymbolnames}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L418)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L421)
 
 ##### `compareSymbolNames` — Summary
 Alphabetical order of symbol names, case first set aside, then as the names compare.
 
 #### `rankBranches` {#symbol-rankbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L434)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L437)
 - Returns: [`BranchRanking`](#symbol-branchranking)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]; `options`: [`RankingOptions`](#symbol-rankingoptions)
 

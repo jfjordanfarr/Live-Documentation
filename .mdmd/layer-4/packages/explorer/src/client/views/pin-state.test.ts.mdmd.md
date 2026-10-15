@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/pin-state.test.ts
-- Generated At: 2026-10-12T19:21:20.371Z
+- Generated At: 2026-10-15T01:42:23.966Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ Checks immutable pin changes, wildcard file retention, symbol connection visibil
 ### Notes
 
 - Originated with the March 23 continuous pin model. Moved alongside the shared module during [view consolidation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4); tests of the retired hop-label renderer and Membrane expansion helpers were removed with those consumers. Legacy hop indices still round-trip through serialization.
+- `pressSymbol` (2026-10-15, [Turn 10](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-10)): the whole file narrowed to the symbol pressed, the next added, a pressed one released, the last released leaving the file whole, a card click pinning the whole file again, and a symbol of an unpinned file pinned alone.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -29,11 +30,11 @@ _No public symbols detected_
 - [`pin-state.getPinnedNodeIds`](./pin-state.ts.mdmd.md#symbol-getpinnednodeids)
 - [`pin-state.getVisibleConnections`](./pin-state.ts.mdmd.md#symbol-getvisibleconnections)
 - [`pin-state.isSymbolPinned`](./pin-state.ts.mdmd.md#symbol-issymbolpinned)
+- [`pin-state.pressSymbol`](./pin-state.ts.mdmd.md#symbol-presssymbol)
 - [`pin-state.removePin`](./pin-state.ts.mdmd.md#symbol-removepin)
 - [`pin-state.removePinsForNode`](./pin-state.ts.mdmd.md#symbol-removepinsfornode)
 - [`pin-state.retainFile`](./pin-state.ts.mdmd.md#symbol-retainfile)
 - [`pin-state.serializePins`](./pin-state.ts.mdmd.md#symbol-serializepins)
-- [`pin-state.toggleFileSymbol`](./pin-state.ts.mdmd.md#symbol-togglefilesymbol)
 - [`pin-state.togglePin`](./pin-state.ts.mdmd.md#symbol-togglepin)
 - [`types.ExplorerLinkPayload`](../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`

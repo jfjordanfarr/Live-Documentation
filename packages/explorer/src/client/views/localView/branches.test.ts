@@ -140,8 +140,20 @@ describe("independent Local Map branches", () => {
   it("keeps explicit asset pins despite filtering and keeps disconnected pins independently removable", () => {
     const pins = addPin(addPin(EMPTY_PIN_SET, "catalog", "*"), "outside", "value");
     const result = buildBranches(nodes[0], graph, pins, n => n.archetype !== "asset");
-    expect(result.subgraph.nodes.map(n => n.id).sort()).toEqual(["base", "catalog", "join", "outside"]);
+    // base, the center, holds no pin, so its own rows stay disclosed beside the pins: left and right are its dependents
+    expect(result.subgraph.nodes.map(n => n.id).sort()).toEqual(["base", "catalog", "join", "left", "outside", "right"]);
     expect(removePin(pins, "catalog", "*").entries.map(p => p.nodeId)).toEqual(["outside"]);
+  });
+
+  it("keeps the center's own rows disclosed while it holds no pin, and only its pins once it does", () => {
+    // outside#value pinned, base the center without a pin: pinning elsewhere expands the picture, base's dependents stay
+    const elsewhere = addPin(EMPTY_PIN_SET, "outside", "value");
+    expect(buildBranches(nodes[0], graph, elsewhere, () => true).subgraph.nodes.map(n => n.id).sort())
+      .toEqual(["base", "catalog", "join", "left", "outside", "right"]);
+    // base narrowed to a symbol nothing references: left and right, which use base's value, go; catalog stays, since
+    // its reference to base names no symbol and so counts for any pin on base
+    const narrowed = addPin(elsewhere, "base", "other");
+    expect(buildBranches(nodes[0], graph, narrowed, () => true).subgraph.nodes.map(n => n.id).sort()).toEqual(["base", "catalog", "join", "outside"]);
   });
 
   it("breaks a cycle at one reference, ranks the rest forward, and loses no self-reference", () => {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-14T02:49:19.897Z
+- Generated At: 2026-10-15T01:42:23.558Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Creates individual node cards for the Local Map view. Each card displays artifac
 - Since 2026-10-05 the card draws its symbol rows alphabetically when that symbol order is chosen in Tuning, wherever a card is drawn; the layout order is applied afterwards by the branch renderer, for every scope, and the order of appearance is the Live Doc's.
 Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` function builds the DOM structure for each artifact in the shared scene, including symbol sections and type badges.
 
-File bodies retain all interfaces; row buttons toggle individual symbols and support keyboard use. The X releases the file's expansion while leaving any interfaces required by other pins visible. Type badges retain their source row and expose the referenced artifact's evidence.
+File bodies retain all interfaces; row buttons press individual symbols (narrow, add, release, fall back) and support keyboard use. The X releases the file's expansion while leaving any interfaces required by other pins visible, and stands on the subject's card whether or not it is pinned. The recentre control (2026-10-15, [Turns 8 to 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-8); [the decision](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#clicks-pin-what-they-name-and-the-subject-stays-where-it-is-recorded-2026-10-15)) on every card but the subject's makes the file the subject, the one visible way to go there: the double-click that did it reached the card's click twice first and pinned two files whole, as the night's click-only journey found ([the probe record](../../../../../../../../AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md)); one grammar for every input has no double-click. Type badges retain their source row and expose the referenced artifact's evidence.
 - `createClosedDirectory` (2026-10-08, [the decisions log](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): a closed directory's box, a pseudo-node without symbols in the membrane's style, named and counted by `countsOf` ("81 files, 2 directories"), a button that opens the directory in place; it carries no pin, since a directory with a party file under it is at least encasing and no wire ever reaches a closed box. `countsOf` also words a label's count of what an encasing membrane hides.
 
 ## Generated
@@ -39,7 +39,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L153)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L159)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -50,14 +50,14 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L176)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L182)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
 
 #### `createSymbolSection` {#symbol-createsymbolsection}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L192)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L198)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createSymbolSection` — Summary
@@ -74,7 +74,7 @@ The symbol section element
 
 #### `createTypeReferenceIndicator` {#symbol-createtypereferenceindicator}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L364)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L370)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `typeRefs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeReferenceIndicator` — Summary
@@ -89,7 +89,7 @@ The indicator element
 
 #### `createTypeBadge` {#symbol-createtypebadge}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L415)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L421)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `refs`: [`ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference)[]
 
 ##### `createTypeBadge` — Summary

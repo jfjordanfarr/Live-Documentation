@@ -45,6 +45,8 @@ export async function renderedNodes(page: Page) {
     const nodes: Array<{
       id: string; name: string; directory?: string; files?: number;
       x: number; y: number; depth: number; distance: number; opacity: number; radius: number;
+      /** The rendered sphere's radius on the screen, in CSS pixels: its world radius projected along the camera's right. */
+      screenRadius: number;
       world: { x: number; y: number; z: number };
     }> = [];
     observed.scene.traverse(object => {
@@ -53,6 +55,10 @@ export async function renderedNodes(page: Page) {
       const position = mesh.getWorldPosition(mesh.position.clone());
       const projected = position.clone().project(observed.camera);
       if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
+      const radius = (mesh.geometry.boundingSphere?.radius ?? 0) * mesh.scale.x;
+      const right = observed.camera.matrixWorld.elements;
+      const rim = position.clone().add(position.clone().set(right[0], right[1], right[2]).multiplyScalar(radius)).project(observed.camera);
+      const screenRadius = Math.abs(rim.x - projected.x) * rect.width / 2;
       nodes.push({
         id: mesh.__data.id,
         name: mesh.__data.name ?? mesh.__data.id,
@@ -63,7 +69,8 @@ export async function renderedNodes(page: Page) {
         depth: projected.z,
         distance: position.distanceTo(observed.camera.position),
         opacity: mesh.material.opacity,
-        radius: (mesh.geometry.boundingSphere?.radius ?? 0) * mesh.scale.x,
+        radius,
+        screenRadius,
         world: { x: position.x, y: position.y, z: position.z }
       });
     });
