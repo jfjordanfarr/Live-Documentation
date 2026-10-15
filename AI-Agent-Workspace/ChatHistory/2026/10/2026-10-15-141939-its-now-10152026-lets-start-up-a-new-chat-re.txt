@@ -1,0 +1,117 @@
+
+❯ It's now 10/15/2026. Let's start up a new chat record and make sure we
+  summarize the prior before coming back around to describe possible next work
+  for the day.
+
+● I'll bootstrap from the workspace guidance: read the ChatHistory convention
+  and the Memory files, then the recent session summaries, before writing the
+  record for yesterday and starting today's.
+
+  Read 4 files, ran 24 shell commands (ctrl+o to expand)
+
+● I've gathered the guidance and the three Memory files. Next, I'll read the
+  five most recent summaries, the October 14 record with its native capture, the
+  month inventory, and the diff of the re-exported capture. · summary
+
+  Read 2 files, ran 19 shell commands (ctrl+o to expand)
+
+● I've read through all the guidance, memory files, prior summaries, and the
+  full October 14 record plus the native export—the October 14 session still
+  needs a summary, and the re-export has two uncommitted replies at the end. Now
+  I'll check commit facts, export hashes, and the vision's task order before
+  writing yesterday's summary and today's record. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● I'll now gather the commits for each export copy, the full vision and World
+  Map plan for ranking, the two replies with exact line numbers, the evidence
+  record headings, and the audit commands. · summary
+
+  Read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● I'll now verify four remaining details before writing: the commit behind the
+  44,931-byte export copy, the source of this morning's stray scratch file, the
+  current time, and the exact lines in direction.md and the vision doc affected
+  by the status refresh. · summary
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● Now I'll write everything in one pass: the Oct 14–15 summary, the closed Oct
+  14 record with its two recovered replies, the corrected inventory entries, the
+  direction.md/vision status refresh, and the proven-failing link checker.
+  · summary
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● The self-test error turned out to be from my probe file's path, not the
+  checker itself, so I'm re-running it with absolute paths before auditing all
+  changed documents for markdown, asset, symbol, and link issues. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The checker and all four repository audits pass now; the remaining two link
+  failures are just because today's record doesn't exist yet. I'll write that
+  record, re-verify, then commit the bootstrap by path. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The bootstrap is committed as ca67a6ae and the tree is clean. Here is what it
+  produced, where the arc stands, and the day's possible work ranked.
+
+  What landed this morning. The October 14–15 summary (AI-Agent-Workspace/ChatHi
+  story/2026/10/Summarized/2026-10-14.1.SUMMARIZED.md), ten turns and fifteen
+  commits verified against git. Yesterday's record
+  (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md) is closed,
+  with the Turn 9 plan and the Turn 10 closing reply recovered verbatim from
+  your re-export, which is committed as received. Today's record
+  (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md) is open. Two
+  small things on the way: the inventory had credited the wrong commit with one
+  copy of your export, corrected with a dated note; and the vision's status
+  section and direction.md's current statement had stopped at October 13, so
+  each now carries a dated paragraph for what landed since.
+
+  Where the arc stands. Steps 1 and 2 of the vision are done. Step 3, the
+  Explorer folded into the Local Map, is substantially done after the last four
+  days. Step 4, reachable, got most of its machinery yesterday: the
+  breadth-first walk now lives in the engine and already serves the destination
+  field and inspect --reachable. Step 5, the World Map, has its first two
+  tickets closed and five on the frontier, with T8 (how a person moves between
+  the two maps) the one you named as unsettled.
+
+  Possible work today, ranked by the arc, my recommendation first.
+
+  1. reachable, the vision's step 4. What remains is deciding what an entry
+     point is and writing it into the docs: a manifest's scripts, bin and main,
+     a test runner's globs, a dynamic import as an edge, and a declared start
+     file for folders with no manifest. It closes two things you have felt. The
+     Explorer lands on the rosetta sample's main file instead of this
+     repository's own code because the present inference picks it. Knowledge
+     Sources lists what nothing references without saying which are entries and
+     which are orphans. The October 8 hand-curated sweep is the oracle. Forks I
+     would bring before building: which files count as entry declarations for
+     each language in the samples, how an entry is written into a doc, and what
+     the panel and the CLI report.
+  2. The World Map's T8, a talk you lead. It has new inputs since the plan: the
+     explicit 2D and 3D controls replaced the zoom switch you disliked, 3D now
+     has a tree layout, and the switching pause is measured. T3, where declared
+     facts live and who writes positions, is the other candidate, since it
+     unblocks the traded file, which is your use case.
+  3. The pause on switching to 3D. Your two to six seconds is the 3D library's
+     hundred synchronous warm-up ticks before its first paint, separate from the
+     sixteen-second cooldown clock. The probe record
+     (AI-Agent-Workspace/Probes/2026-10-14/perspective-pause/README.md) names
+     the remedies. Small and measurable, and it fits beside item 1 in one day.
+  4. The consolidation pass you expect "in a matter of days". It inherits the
+     tray's place, the ancestor disclosure, the Connections and Structure
+     buttons, the bottom-centre control, and the text-size unification you
+     named. You said it was still too early on the 14th, so this one is yours to
+     call.
+
+  Waiting on your eye, listed in the summary's open ends (AI-Agent-Workspace/Cha
+  tHistory/2026/10/Summarized/2026-10-14.1.SUMMARIZED.md#open-ends): the
+  structure layout's containment lines and chain names, the search bar's and
+  destination field's wording, and the pin rules' folded rows, recentre icon and
+  finger pan.
+
+  I would take item 1 now and fold item 3 in if the day allows. Say which, or
+  reorder, and I plan the files in the chat before building.
