@@ -1507,3 +1507,407 @@ the scratchpad" completed (exit code 0)
   eighty lines with its test.
 
   Say yes, or strike a line, and I build.
+
+❯ >Fork 1, the other direction. Files reachable only the other way could be
+  listed with the mark, or left out. I recommend listing them marked. The
+  reverse question is a real navigation under your rule of 2025-12-18, and the
+  mark tells you before you choose which of the two will happen.
+
+  I remember thinking that giving the user an indication that _some directional
+  relationship existed_, even if it wasn't in the FROM/TO direction they
+  listed, would be valuable.
+
+  At the same time, it doesn't bother me for the "TO" textinput field to
+  recognize that certain targets _do_ exist, even if unreachable.
+
+  >The headless peer. The CLI's inspect --from X without --to lists terminal
+  paths, capped at 200, which is not this answer. I would add a listing of
+  every file a path reaches from X with its distance, in the direction asked,
+  text and JSON, from an engine function. The vision's step 4, reachable, is
+  the same walk from a system's entry points, so this is a piece of it rather
+  than a detour.
+
+  If we wish to maintain the headless peer, it should perform,
+  programmatically, the equivalent of whatever the explorer is doing. Better
+  yet, only one pure implementation should underlie both. If such utility is
+  unuseful in the headless implementation, or you feel strongly that the
+  headless implementation, for some assemblage of reasons, is no longer
+  worthwhile to maintain in parallel, please make that case.
+
+● Both answers are clear: list the files reachable only the other way, marked,
+  and let one pure implementation serve the Explorer and the CLI. Checking how
+  the client can share the engine's pathfinder before I write the file plan.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Last facts before building: the estate's reach from the chain's ends for the
+  spec, the emitter's node descriptor, the engine graph's file shape, and every
+  place that documents the inspect options.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● I've mapped the dependencies: GatewayClient.cs has 3 dependents and 22
+  downstream files, Portal.csproj is isolated, and the lone "Payment" match is
+  unreachable from any path. I'll record this file plan now and start building
+  from the core outward. · summary
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Writing the engine's one walk now, with its wrapper for the CLI's search kept
+  output-identical, and the first unit tests the engine pathfinder has had.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The engine built successfully. I noticed the vitest config was missing an
+  alias for the engine package, causing client tests to run against a stale
+  compiled copy, so I'm adding that alias and moving on to the search modules
+  next—covering the field scope, the bar's destination scope, the entry point's
+  memoized reach, and the styles. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Type-check and the thirty unit tests pass. Moving the destination scope into
+  the pure search module where a Vitest test can hold it, then the CLI's
+  reachable listing with its integration tests.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● CLI and unit tests pass; the tsconfig warning is just old gitignored scratch
+  files the gate doesn't compile, so no real issue there. Next up: the
+  browser-spec helper for the fold, the new path-spec test, lint on changed
+  files, then running the focused browser specs in the background. · summary
+
+  Listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● Test twelve, the new one, failed. Reading its error and the failure picture.
+
+  Read 1 file, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● I noticed I'd assumed the match count instead of reading it from the page—five
+  files match "Payment," including the pin's own file. I'll fix the spec to
+  read from the page, style the distance badges more subtly, update the mirror
+  notes, and check the browser-spec server settings for the look. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the spec run finishes, I'll locate the estate sample so I can run the
+  CLI's reachable listing over the same docs the field reads, then do a lint
+  pass on the files changed since the last run. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 28 tests passed with only the already-fixed failure remaining. I'll rerun the
+  path spec on a rebuilt bundle, generate the estate's docs in scratch to
+  compare the CLI listing against the field's rows, and checkpoint progress.
+  · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Found a mismatch: PaymentService is incorrectly flagged "no path" because the
+  directory index is built only from unconnected files, ignoring that a
+  directory with any connected file should count as connected too. I'll fix this
+  at the source, rebuild, and recheck. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the pictures, all seven at once.
+
+  Read 7 files (ctrl+o to expand)
+● Verification confirms everything checks out correctly. I'm now saving the
+  evidence to today's screenshot record, checkpointing, and kicking off the full
+  gate. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The full gate is running: lint, builds, unit and integration tests, docs
+  generation and lint, the three audits, then all browser tests over both
+  bundles. I will hold edits until it reports, then record its outcome, commit,
+  and close out.
+
+● Background command "Wait for the full gate to finish and report its exit"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All checks passed cleanly—lint, 1,024 unit tests, 53 integration tests,
+  audits, and 122 browser tests. I'm wrapping up now: removing scratch files,
+  recording the gate, finalizing two commits, and updating the landing note with
+  the hash. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Landed. The tree is clean.
+
+  ┌──────────┬───────────────────────────────────────────────────────────────┐
+  │  Commit  │                           Contents                            │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ d2af43fb │ The one walk in the engine, the Explorer's field over it,     │
+  │          │ inspect --reachable, tests, docs, guides and seven pictures   │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 16830ba8 │ Today's record, the direction note, the inventory and your    │
+  │          │ re-exported capture                                           │
+  └──────────┴───────────────────────────────────────────────────────────────┘
+
+  What you get. Once anything is pinned, the second field offers only what a
+  path from that pin can reach. Each row says how far: "4 files" when the path
+  would draw, "4 files, the other way" when the reverse question would come
+  instead. A directory offered by name says what its nearest file says. The
+  files your words match but no path connects stand under a fold, "5 more files
+  match, but no path connects them", which opens into faded rows marked "no
+  path" that you can still choose. A pin nothing connects to says so in the
+  placeholder. Pictures are in the day's screenshot record
+  (AI-Agent-Workspace/Screenshots/2026-10-14/README.md#the-destination-field-off
+  ers-only-what-connects-later-the-same-evening).
+
+  Your condition on the peer, met. I made no case against the headless side. One
+  breadth-first walk now lives in the engine's pathfinder and serves both: the
+  CLI's searches are wrappers over it with their output unchanged, and the
+  Explorer feeds it the links the map draws. inspect --reachable lists what a
+  path reaches from a file, nearest first with hops, one list per direction. Run
+  over the estate's docs it names the same files at the same distances the
+  field shows.
+
+  Found on the way. A fan-out asked for both directions had silently listed the
+  inbound paths, and the tracing guide printed that as "both directions". It
+  refuses now with a message, and --reachable takes both. The vitest config had
+  no alias for the engine package, so client unit tests ran against its stale
+  compiled copy; it has one. A stale ignored build folder under the Explorer
+  package went too.
+
+  Two corrections of my own, stated plainly. My new spec assumed one file under
+  the "Payment" fold; the page had five, because a file matched by a symbol
+  alone counts on both sides and the pin's own file is one of them. The page was
+  right and the spec now reads the count. My first look showed a directory
+  offered again under the fold as "no path" when a file inside it connected; the
+  scope now keeps such a directory on the offered side only.
+
+  Verification. The complete gate passed: 1,024 unit, 53 integration and 122
+  browser tests, lint and the three audits clean.
+
+  For your eye. The distance words in each row, the fold's wording, and whether
+  the pin's own file belongs under that fold or should be left out. All three
+  are a line each.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AGENTS.md in the IDE. This may or may not be
+  related to the current task.</ide_opened_file>
+
+❯ This is ever better. Thank you. The next challenge from me: with clicks
+  alone, attempt to pin only one symbol in branches.ts without accidentally
+  pinning any other symbol. If it is impossible, let's discuss UX.
+
+● Recording your message and my last reply first, then finding branches.ts and
+  reading what each click on a card does before I try the journey in the
+  browser.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Now I'll test this live on the built bundle by scripting clicks through each
+  user flow—double-clicking the Local Map, clicking a neighbour card's symbol,
+  the card itself, the Knowledge Sources panel, and the tray—checking the pins
+  after each action. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The rosetta sample's main file is disconnected from the Explorer's code,
+  blocking the first route to branches.ts, and the other two routes reveal that
+  clicking a symbol or card pins entire files instead of specific targets. I'll
+  now check the tray's and World Map's click behaviors to test the remaining
+  routes. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Two reads before the next run: how the World Map spec opens a thing into the
+  Local Map, and the tray's release button.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now I'll check the World Map's click behavior for entering an item, then run
+  through the remaining routes: double-clicking a neighbor, the card and its
+  symbol, the Knowledge Sources panel, the World Map, and the tray as a way
+  back. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I've mapped out how pinning behaves across the tray: single symbol pinning
+  takes three clicks, double-click and card clicks pin whole files, and clicking
+  a symbol on a whole-pinned card pins all other symbols. Next I'll try the
+  Knowledge Sources panel (opening its groups first) and the World Map.
+  · summary
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● The World Map route performs worst: five directory pins, then a title click
+  pins the entire file, then a symbol click pins twenty more. Next I'll trace
+  the origins of the three rules so I can explain why they exist before
+  proposing changes. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Done with the attempt. The answer, then the UX discussion.
+
+  It is possible by one route only, and that route is not in the Local Map.
+  Knowledge Sources, open the folded groups, click branches.ts, click the detail
+  panel's Local Map action, click one symbol on the card: five clicks, one pin,
+  nothing else. Every direct route inside the map pins more. The attempt was
+  five scripted journeys of clicks on the built bundle, pins read from the
+  address after each click, kept with four pictures and the log in the probe
+  record (AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md), committed
+  as 8251e1bd. Nothing in the Explorer changed.
+
+  ┌──────────────────────────────────┬──────────────────────────────────────┐
+  │              Route               │                Result                │
+  ├──────────────────────────────────┼──────────────────────────────────────┤
+  │                                  │ Two whole files pinned, the old      │
+  │ Double-click a neighbour card to │ subject and the new. The two clicks  │
+  │  make it the subject             │ reach the card before the            │
+  │                                  │ double-click recentres.              │
+  ├──────────────────────────────────┼──────────────────────────────────────┤
+  │                                  │ The symbol, plus the subject pinned  │
+  │ Click one symbol on a neighbour  │ whole. The tray's release then       │
+  │ card                             │ leaves the symbol alone, three       │
+  │                                  │ clicks later.                        │
+  ├──────────────────────────────────┼──────────────────────────────────────┤
+  │ Click a card, then one of its    │ Five pins. The clicked symbol is the │
+  │ symbols                          │  only one of the card not pinned.    │
+  ├──────────────────────────────────┼──────────────────────────────────────┤
+  │ World Map, open explorer, four   │ Twenty-five pins: five directories,  │
+  │ closed boxes down to localView,  │ the card's other nineteen symbols    │
+  │ the compact card's title, then a │ and its Internals.                   │
+  │  symbol                          │                                      │
+  └──────────────────────────────────┴──────────────────────────────────────┘
+
+  The three rules behind it all trace to your own words of October 3, when you
+  asked that a click on a node pin all its symbols and a click on a symbol pin
+  just that symbol, "because clicking a node in the Local Map suddenly makes the
+  thing you were looking at disappear." The agent of that day read them three
+  ways that now collide:
+
+  1. The first pin retains the subject whole, silently. That is how the thing
+     you were looking at was kept from disappearing. The tray then shows a pin
+     you never made. I would keep the selected file drawn as the subject while
+     pins exist, unpinned, which the design already does for filtering, and let
+     only your clicks make pins.
+  2. A symbol clicked on a file pinned whole toggles that symbol out and pins
+     the rest one by one. A whole pin was read as every symbol already pinned,
+     so the click became your "un-pin" sentence. I would read a whole pin as
+     "the file" instead: a symbol clicked on it narrows the pin to that symbol,
+     further symbols add, and the last one clicked again un-pins. That is your
+     "just that symbol" sentence, and it makes the compact cards inside an
+     opened directory a two-click case rather than a twenty-pin one.
+  3. The double-click recentres, but its two clicks pin first. Either the
+     recentre gets an icon on the card beside the close, which is the
+     card-action style you asked for on October 1, and the double-click goes, or
+     card-body clicks wait a quarter second to see whether a second click
+     follows. I prefer the icon: no latency, and nothing hidden.
+
+  Two forks for you, then: whether a whole pin narrows on a symbol click (my
+  recommendation) or keeps today's toggle-out, and the icon or the delay for
+  recentring. The first rule I would change without asking, unless you want the
+  silent pin kept.
+
+  One thing on the side: the bundle's landing subject is the rosetta sample's
+  main.ts, the inferred entry point, which connects only to that sample. From
+  the landing, the Explorer's own code cannot be reached by any number of
+  double-clicks.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AGENTS.md in the IDE. This may or may not be
+  related to the current task.</ide_opened_file>
+
+❯ >Two forks for you, then: whether a whole pin narrows on a symbol click (my
+  recommendation) or keeps today's toggle-out, and the icon or the delay for
+  recentring. The first rule I would change without asking, unless you want the
+  silent pin kept.
+
+  I think I agree with this. Narrow on symbol click, add more symbols pinned on
+  additional symbol clicks within the same node, and on click all symbols on
+  that node, re-highlight all symbols from that node (node-level pin fallback
+  rather than instant loss of the node on unpinning last symbol?)
+
+  >One thing on the side: the bundle's landing subject is the rosetta sample's
+  main.ts, the inferred entry point, which connects only to that sample. From
+  the landing, the Explorer's own code cannot be reached by any number of
+  double-clicks.
+
+  How might we try, in your estimation, to make the interaction semantically
+  more universal for input format? Or should we maybe have different semantics
+  for mobile (tap) versus mouse/keyboard clicks?
+
+● Recording your answers and my last reply, then checking what the Local Map
+  already does for touch and keyboard before I answer the input question.
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Your yes is taken, with one semantic of yours I want to say back before
+  building, and your input question answered as an estimation. Nothing is built
+  yet.
+
+  The pin rules as I read them now
+  - A symbol clicked on a card that is not pinned pins that symbol alone.
+    Nothing else is pinned on your behalf: the first rule goes, and the file you
+    were looking at stays drawn as the subject, unpinned.
+  - A symbol clicked on a file pinned whole narrows the pin to that symbol.
+    Further symbols add. A pinned symbol clicked again un-pins it.
+  - A click on the card's body or title pins the file whole again, every row
+    lit.
+  - Un-pinning the last pinned symbol falls back to the whole-file pin instead
+    of dropping the card. The consequence, which your question mark seems to
+    weigh: a file then leaves the picture only by its X or by the tray's
+    release, never by clicks on its rows. I think that is right, since it is
+    your October 3 reason stated as a rule, but say so if you meant the fallback
+    only when the card would otherwise vanish.
+  - The recentre gets its own icon on the card beside the X, and the
+    double-click goes. With narrowing, a double-click would no longer be a
+    disaster, only a whole pin you did not ask for, which is still a hidden
+    meaning.
+
+  Input formats, my estimation. One grammar for every input, not two. The pins
+  went wrong because one target carried two meanings: a card meant "pin" on one
+  click and "go there" on two, and a symbol row meant "just this" on one card
+  and "all but this" on another. Touch and keyboard cannot express the second
+  meaning at all. A tap is a click, Enter is a click, and there is no double-tap
+  worth having since the browser spends it on zoom, nor a hover. So the rule I
+  would write down: every meaning has a visible target, and activating that
+  target by any input does the same thing. Hover may preview what the click
+  would do, as the symbol rows already do, but never carries a meaning of its
+  own. Drag pans, wheel and pinch zoom.
+
+  Measured against that, the Explorer is closer than it looks:
+  - Cards, closed boxes, symbol rows and the tray's buttons already take Enter
+    and Space and carry accessible names.
+  - Hover only highlights, in the Local Map and on the World Map.
+  - The 3D map and the World Map pan and zoom by pointer events, so a finger
+    works. The 2D Local Map pans by mouse events alone, which is the one real
+    gap for a tablet: taps land, drags do not.
+  - The hidden gestures are two: the double-click in the Local Map, which this
+    plan removes, and the double-click on a World Map piece, which has a visible
+    twin already, the "open" link in its panel.
+  - Symbol rows are about twenty pixels tall, below a fingertip. The map zooms,
+    so I would not thicken the rows; a tablet pass is where that gets tested by
+    hand rather than guessed.
+
+  The landing. The subject on arrival is the inferred entry point, and the
+  inference picks the rosetta sample's main file over this repository's own. The
+  vision's step 4 names the fix, entry points read from the root manifest's
+  scripts, bin and main. Until then the World Map and Knowledge Sources are the
+  entrances that reach everything, and the Local Map's walk is local by nature.
+  I would leave this for the reachable step rather than patch the inference now.
+
+  If you say yes, this is the build: the three rules in the pin state and the
+  Local Map controller with their unit tests; the recentre icon; the click-only
+  journey of last night turned into a Playwright spec so that one pin stays one
+  pin on every route; the design doc's exploration section and a decisions-log
+  entry quoting you; pictures; and pointer events for the 2D map's pan if you
+  want the tablet gap closed in the same pass. Strike a line or correct the
+  fallback, and I build.
+
+❯ >If you say yes, this is the build: the three rules in the pin state and the
+  Local Map controller with their unit tests; the recentre icon; the click-only
+  journey of last night turned into a Playwright spec so that one pin stays
+  one pin on every route; the design doc's exploration section and a
+  decisions-log entry quoting you; pictures; and pointer events for the 2D
+  map's pan if you want the tablet gap closed in the same pass. Strike a line
+  or correct the fallback, and I build.
+
+  This sounds great! Let's go ahead and give it a go!
