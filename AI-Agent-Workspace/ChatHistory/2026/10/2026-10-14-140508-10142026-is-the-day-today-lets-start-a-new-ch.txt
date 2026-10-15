@@ -1911,3 +1911,278 @@ completed (exit code 0)
   or correct the fallback, and I build.
 
   This sounds great! Let's go ahead and give it a go!
+
+● Your yes is recorded. Reading the pin state, the controller's picture-building
+  and its mouse-only pan, the card's close button, and every spec that clicks a
+  card or a symbol, so the file plan is exact.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● I need to pin down two more design decisions: how the image is constructed
+  when a subject lacks its own pin, and whether clicking a pin should move the
+  subject—both of which the 3D view and the five specs may depend on. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checking the remaining build pieces: recentre wiring, 3D click path, close
+  button styles, drag/zoom handlers, and the pin-state tests to confirm pin
+  semantics. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● I've confirmed the design: the subject already roots the tree when pins exist,
+  so I just need to disclose its rows when pinless, and pin clicks shouldn't
+  move it. Now recording the file plan, then building the pure modules and
+  controller. · summary
+
+  Read 1 file (ctrl+o to expand)
+
+● One branch test still expects the old behavior where subject rows stayed
+  hidden once a pin existed elsewhere—I'll check if that's an intended change.
+  Meanwhile, I'll add the recentre icon, remove the double-click, and wire up
+  recentring without touching the panel. · summary
+  Ran 4 shell commands (ctrl+o to expand)
+
+● I found that catalog stays pinned since its file-level reference to base
+  counts for any pin, which I hadn't accounted for. I'll fix the test and
+  viewport id in the spec, then run the eight affected browser specs in the
+  background. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Four tests in the branches spec fail; reading them now, and the errors once
+  the run prints them.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The affected specs are finishing. The five failures so far are all the old
+  rules written into tests, now rewritten to the new ones. One failure, the
+  close test in the branches spec, still needs its error text, which the run
+  prints at the end. I am waiting on that.
+
+● Background command "Wait for the browser-spec run to finish and report its
+summary" completed (exit code 0)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I identified three issues: main.ts's dependency direction is inverted,
+  narrowing to a single symbol collapses other rows (requiring the "+N symbols"
+  reveal before adding a second), and the close test is measuring the wrong
+  element since the closed card becomes the subject. I'll fix all three and
+  rerun the specs. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The three specs are rerunning on the corrected tests. When they report, I take
+  the pictures, then run the full gate.
+
+● Background command "Wait for the three specs to finish and report" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The hold still misses by two pixels after the close. Measuring where the drift
+  comes from with a sampled run, and reading what the subject's highlight does
+  to a card's box.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The sampled run shows the hold is exact at the start but drifts two pixels by
+  the end, a residual left by the move rather than a bad target. I'll fix this
+  in the move logic so the hold stays exact once the move finishes. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Measuring where the two pixels come from. The sampler hit a tooling quirk;
+  passing the page-side function as text instead.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Found it: closing the subject moves it to a new file, and the renderer
+  mistakenly treats that changed subject as the "chosen" file instead of keeping
+  the originally closed card. I'll dig into the rule governing this behavior
+  next. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The closed card now holds to the pixel through the move. Taking the pictures
+  on the rebuilt bundle, then rerunning the specs.
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● The look produced no pictures, so it failed before its first picture, with its
+  error hidden by my filter. I will rerun it with full output once the specs
+  finish, to keep the timing tests clear of contention.
+
+● Background command "Wait for the four specs to finish and report" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 26 passed, and the look produced its eight pictures. Reading the remaining
+  facts and looking at six of the pictures.
+
+  Read 6 files, ran 1 shell command (ctrl+o to expand)
+
+● The screenshots mostly confirm expected behavior, but I spotted an
+  inconsistency: the subject's own main row is unexpectedly collapsing into "+1
+  symbols" in the fallback view despite having no pin. I'll check the renderer's
+  logic for deciding which rows a card displays. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The trace shows the subject's rows never fold at rest, so the picture caught
+  the layout mid-move. Retaking the pictures with a settle that waits for the
+  move to end, then checking that picture again.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The fallback image confirms the subject's rows at rest, so the earlier capture
+  caught a mid-move state. I'll copy the screenshots into today's record, write
+  the README and index entry, lint the two changed files, log progress, and
+  then kick off the full gate. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The full gate is running over the finished tree. The wait I set expires after
+  ten minutes, before a twenty-minute gate ends, so I will re-arm it once when
+  it reports. After the gate: commit, the direction note's landing line, the
+  record, and the reply.
+
+● Background command "Wait for the full gate to finish and report its exit"
+completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Three specs I had not run failed. Reading the three tests and the drift they
+  report, and how the five-file scope is built.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I need to measure two issues: the 3D focus label mistakenly targeting the
+  hovered sphere after a pin click, and a card that's 15px taller in the
+  five-file scope, likely due to the title wrapping under wider padding.
+  · summary
+  Searched for 1 pattern, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The card width (212px) with 48px padding causes "PaymentService.cs" to wrap to
+  two lines, but the layout lab's card model doesn't account for this. I'll
+  check how the lab calculates card height before deciding where to place the
+  control. · summary
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● I'll give card titles a fixed padding and controls a constant-size slot placed
+  side by side, avoiding mismatched spacing and wrapping behind controls. For
+  the 3D test, I'll click on the uncovered focused sphere instead of the camera
+  center, since a larger neighbor now occludes it. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The five specs are running on the resized controls and the sphere-aware click.
+  When they report, I retake the eight pictures, since the controls changed
+  size, and then run the full gate again.
+
+● Background command "Wait for the five specs to finish and report" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The 3D test still fails because the larger neighboring sphere fully blocks the
+  focused sphere from this camera angle, leaving no visible point to click.
+  I'll orbit the camera slightly, like a real user would, until the focused
+  sphere becomes visible, then click it. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The focus spec is rerunning with the orbit. Nothing else can move until it
+  reports: the pictures need the server free, and the gate needs every spec
+  green.
+
+● Background command "Wait for the focus spec and report" completed (exit code
+0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The occlusion test compared a world-space radius with screen pixels, so it
+  judged wrongly. The observation helper will project the sphere's radius to the
+  screen, and the test will use that.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The focus spec is rerunning with the projected radii. When it reports: retake
+  the pictures, run the full gate, commit.
+
+● Background command "Wait for the focus spec and report" completed (exit code
+0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● All six pass. Retaking the pictures on the current bundle, recording, and
+  running the full gate again.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The pictures are retaken and verified, and the full gate is running again over
+  the whole tree. The wait expires after ten minutes, so I will re-arm it once;
+  after a clean gate come the commits, the direction note's landing line, and
+  the reply.
+
+● Background command "Wait for the full gate to finish and report its exit"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate passed clean: no lint errors, 1,026 unit and 53 integration tests,
+  audits clean, 127 browser tests. Closing out with the two commits.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Landed. The tree is clean.
+
+  ┌──────────┬───────────────────────────────────────────────────────────────┐
+  │  Commit  │                           Contents                            │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │          │ The pin rules, the recentre control, the subject's            │
+  │ 6a0293f3 │ disclosure, the pointer-event pan, the click-only spec, the   │
+  │          │ rewritten specs, docs and eight pictures                      │
+  ├──────────┼───────────────────────────────────────────────────────────────┤
+  │ 97a2d992 │ Today's record and the direction note                         │
+  └──────────┴───────────────────────────────────────────────────────────────┘
+
+  What a click does now. A symbol clicked on any card pins that symbol and
+  nothing else; the file you were looking at stays drawn whole, unpinned, and
+  the tray shows only what you made. A card clicked pins the file whole. A
+  symbol clicked on a whole-pinned card narrows the pin to it, further symbols
+  add, a pinned one clicked again is released, and releasing the last leaves the
+  file whole rather than dropping it, as you proposed. No pin moves the
+  subject. Every card but the subject's wears a recentre control beside its
+  close, and the double-click is gone. The 2D map pans with a finger and pinches
+  with two. The challenge now passes inside the map: one symbol of branches.ts
+  is one pin by every route, and the night's journey is a spec. Pictures are in
+  the day's screenshot record
+  (AI-Agent-Workspace/Screenshots/2026-10-15/README.md).
+
+  Three things found on the way, fixed at their cause.
+  - Closing the subject's card moved the subject to the newest pinned file, and
+    the renderer took that for a file chosen: it re-fitted the camera and held
+    the new subject through the move, letting the closed card slip two pixels. A
+    subject changed by a pin change no longer does either.
+  - The two controls widened the title's padding on some cards, which wrapped
+    "PaymentService.cs" on a narrow card and broke the layout lab's card model,
+    which lays the title out with one constant read from the page. The controls
+    are smaller and share a constant slot on every card.
+  - The 3D focus test clicked the canvas centre, where a bigger neighbour now
+    stands in front of graph.ts since the graph gained files this week. It
+    clicks the focused sphere where nothing covers it, orbiting first when
+    something does.
+
+  Verification. The full gate passed: 1,026 unit, 53 integration and 127 browser
+  tests, lint and the three audits clean. Seven existing tests held the old
+  rules and were rewritten to yours; two of my own spec's assertions were wrong
+  and corrected.
+
+  For your eye. After narrowing to one symbol, the card folds its other rows, so
+  adding a second takes the "+N symbols" reveal first, the existing disclosure.
+  The recentre control's icon and place. And the finger pan, which I could only
+  test with dispatched pointer events, not a hand.
