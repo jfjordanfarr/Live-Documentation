@@ -1872,3 +1872,167 @@ anywhere, then walk from the entry points with inspect" failed with exit code 1
 
   Say yes to either or both, choose the forks, or reorder, and I plan the files
   before building.
+
+❯ A phenomenal stress test!
+
+  >Our C adapter never registers C++. Its docstring claims .cpp, .hpp, .cc and
+  .cxx; its registration lists .c and .h. The game's 521 files got empty docs.
+  >Root-relative includes do not resolve. The reconstruction writes #include
+  "src/shared/hardware/graphics.hpp" as a compiler with an include directory
+  sees it; the adapter tries only the including file's directory.
+  >A C++ main is not marked, so the entry points are 536 Python tooling scripts
+  and the game is "unreachable from any entry."
+  >The shipped globs carry no *.hpp or *.inl.
+
+  WOW! What shall we do about it? Furthermore, which languages, especially
+  relative to our wasm tree sitter, should we _really_ have support for given
+  how low-hanging of fruit they are?
+
+  >Where the no-brainer thins. A stripped binary decompiles to functions
+  without files or names, so its map is a map of addresses until someone names
+  them, which is the work REA's showcases show an agent doing by hand. A bundle
+  without source maps is a map of numbered modules. Reconstructions and
+  source-mapped bundles map well. What we add that REA leaves to prose is the
+  picture, the walk from the entry, what nothing reaches, and a committed
+  mirror that diffs.
+
+  Foundational true intended names plausibly never resolve in many situations.
+  One can only hope that certain Game-Of-Life-like patterns emerge in Live
+  Documentations visualization such that visual inspection shows clearly that
+  "ah, it uses the same overall shape as {other thing}!".
+
+  >Where. A folder at .claude/skills/live-documentation/ with a SKILL.md, which
+  Claude Code, Cursor, Copilot and VS Code all read. Codex and Gemini CLI read
+  .agents/skills/ instead. Fork: add that second path now, or wait until
+  someone uses those tools here.
+
+  Vendor-neutral path. Always.
+
+  >What triggers it. A description plus trigger phrases: "show me how X works
+  in our project," "what does X touch," "what uses X," "where does this start."
+
+  Sounds like a good baseline
+
+  >and hand you a link into the Explorer with X pinned, so you look at it
+  together. Say what the docs cannot see, such as local uses, rather than
+  guess.
+
+  Bingo. That's what's important.
+
+● Recording your message first, then two things in parallel: the facts the skill
+  needs (this repository's configuration, the Explorer's link forms, the CLI's
+  exact flags) and the facts the language question needs (what our tree-sitter
+  packaging already carries, and what the world uses).
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Web Search("GitHub Octoverse 2025 top programming languages ranking TypeScript
+            Python")
+  ⎿  Did 1 search in 5s
+
+● Web Search("Stack Overflow Developer Survey 2026 most used programming
+            languages results")
+  ⎿  Did 1 search in 6s
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Fetch(https://github.blog/news-insights/octoverse/octoverse-a-new-developer-jo
+       ins-github-every-second-as-ai-leads-typescript-to-1/)
+  ⎿  Received 296.4KB (200 OK)
+
+● Fetch(https://survey.stackoverflow.co/2026/technology)
+  ⎿  Received 138.2KB (200 OK)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Web Search("SCIP indexers list scip-clang scip-php scip-ruby scip-dotnet
+            sourcegraph code intelligence 2026")
+  ⎿  Did 1 search in 6s
+
+  Searched for 1 pattern, read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Skill(live-documentation)
+  ⎿  Initializing…
+  ⎿  Error: Unknown skill: live-documentation
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The owner's export changed once more on disk, so I'm checking that copy,
+  writing its inventory entry, and committing everything, then replying.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The skill is in the repository, and the C++ work and the language question
+  come back as a plan with its forks, for your yes. Committed as cbca9542; the
+  product is unchanged since 5cee2716.
+
+  The skill, landed. It lives at .agents/skills/live-documentation/SKILL.md, the
+  vendor-neutral path, with reference.md
+  (.agents/skills/live-documentation/reference.md) beside it (the grammar, every
+  CLI flag, the Explorer's addresses). Claude Code does not read that path, so
+  .claude/skills/live-documentation/SKILL.md is a pointer carrying the same
+  description and one line, the way CLAUDE.md points at AGENTS.md; a symlink
+  would not survive a Windows checkout. Your trigger phrases sit inside the
+  description, so no vendor-specific frontmatter is needed. The rule is now a
+  workspace fact in AGENTS.md and a dated bullet in owner.md. One caveat: this
+  running session's skill tool did not list it after it was written, so your
+  first "show me how X works in our project" belongs in a fresh chat.
+
+  What I'd do about C++. One pass, gated like reachable, with four forks:
+
+  1. Replace the scanner, or extend it? The C++ grammar is already on disk in
+     our tree-sitter bundle and parses C too. My recommendation: a tree-sitter C
+     and C++ adapter registered for .c .h .cpp .cc .cxx .hpp .hh .hxx .inl,
+     retiring the hand scanner, with a C++ rosetta sample as the ninth language
+     in the parity test.
+  2. Include directories. Resolve against the including file's directory, then
+     each ancestor up to the workspace root, which covers the -I root and -I src
+     layouts without reading build files. Build files (CMake, vcxproj) later,
+     as a declared basis, if ever.
+  3. The oracle. scip-clang exists and is generally available but wants a
+     compilation database, so: install it for the sample, or hand-verify the
+     fixture. The vision allows the hand-verified fixture as the measure for
+     replacing a scanner, and the TH04 clone is a ready stress test either way.
+  4. The shipped defaults. They are this repository's layout verbatim
+     (packages/**/src/**, scripts/**, tests/**), which is why a cold run over
+     TH04 found 49 files. Make the defaults suffix-anywhere (gitignore filtering
+     already exists) and move this repository's path-shaped globs into its own
+     .live-docs.config.json. Its doc set stays byte-identical.
+
+  Plus main, wmain and WinMain as program entries in non-header files, and the
+  card's "+1 symbols" counting public symbols only.
+
+  Which languages are really within reach. The survey is
+  2026-10-15-languages-within-reach.md
+  (AI-Agent-Workspace/Research/2026-10-15-languages-within-reach.md). The bundle
+  ships sixteen grammars; we use five. On disk and unused: cpp, bash, php,
+  powershell, ruby, css, ini, regex, javascript. Against what the world uses
+  (GitHub's 2025 top ten and Stack Overflow's 2026 list) and which oracles
+  exist, my order:
+
+  ┌──────────────┬──────────────────────────────────────┬───────────────────┐
+  │              │                 Why                  │      Oracle       │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │ C and C++    │ mends a broken promise; grammar on   │ scip-clang or a   │
+  │              │ disk                                 │ hand fixture      │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │ Bash         │ half of all developers use it; wires │ hand fixture only │
+  │              │  are source and scripts run by name  │                   │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │ PHP          │ GitHub top ten; grammar on disk      │ scip-php          │
+  ├──────────────┼──────────────────────────────────────┼───────────────────┤
+  │ Ruby,        │ replace the provisional scanners     │ scip-ruby; hand   │
+  │ PowerShell   │                                      │ fixture           │
+  └──────────────┴──────────────────────────────────────┴───────────────────┘
+
+  Not in the bundle, so not low-hanging: Kotlin, Swift, Dart, Scala, Lua, and
+  HCL and YAML, which belong to the World Map's deployment shapes rather than to
+  code. The rule I'd keep: no language ahead of its sample and its oracle, or
+  it is a scanner by another name.
+
+  Your Game-of-Life hope is in ideas.md in your words: the map as a shape before
+  it is a list of names, with the Gallery's sheets and the layout lab as where
+  one shape could be set beside another's. Nothing built for it.
+
+  Say yes to the C++ pass with your picks on the four forks, and whether Bash
+  follows it, and I plan the files before building.
