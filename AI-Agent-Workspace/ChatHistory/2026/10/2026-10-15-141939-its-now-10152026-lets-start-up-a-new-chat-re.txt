@@ -2036,3 +2036,169 @@ anywhere, then walk from the entry points with inspect" failed with exit code 1
 
   Say yes to the C++ pass with your picks on the four forks, and whether Bash
   follows it, and I plan the files before building.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -15-141939-its-now-10152026-lets-start-up-a-new-chat-re.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ > My recommendation: a tree-sitter C and C++ adapter registered for .c .h
+  .cpp .cc .cxx .hpp .hh .hxx .inl, retiring the hand scanner, with a C++
+  rosetta sample as the ninth language in the parity test.
+
+  Let's try it!
+
+  >Include directories. Resolve against the including file's directory, then
+  each ancestor up to the workspace root, which covers the -I root and -I src
+  layouts without reading build files. Build files (CMake, vcxproj) later, as a
+  declared basis, if ever.
+
+  Testable as to whether it's not better than an alternative?
+
+  >The oracle. scip-clang exists and is generally available but wants a
+  compilation database, so: install it for the sample, or hand-verify the
+  fixture. The vision allows the hand-verified fixture as the measure for
+  replacing a scanner, and the TH04 clone is a ready stress test either way.
+
+  Hand-verify only if it's not a moving target. Otherwise, use an install only
+  if it's for this project and not at runtime for users of Live Documentation
+
+  >The shipped defaults. They are this repository's layout verbatim
+  (packages//src/, scripts/, tests/), which is why a cold run over TH04 found
+  49 files. Make the defaults suffix-anywhere (gitignore filtering already
+  exists) and move this repository's path-shaped globs into its own
+  .live-docs.config.json. Its doc set stays byte-identical.
+
+  Expand for me? What are the pros and cons here? What decisions am I really
+  comparing? What is the possibility space in your mind here?
+
+● Recording your message, then gathering what the two questions need before I
+  answer: how this repository installs its other oracle indexers (for
+  scip-clang), and what this repository itself would gain or lose under each
+  default-globs option, so the possibility space comes with numbers.
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Fetch(https://github.com/sourcegraph/scip-clang)  ⎿  Received 355.2KB (200 OK)
+  ⎿  1 skill available
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Three answers taken, two questions answered below, and the file plan at the
+  end for your go. The record is committed as 680047bc; the product is still
+  unchanged.
+
+  The include rule is testable, and the plan builds the test first. The oracle
+  is the test: scip-clang resolves every include exactly as the compiler did,
+  given the compilation database's -I flags, and oracle:compare prints
+  disagreements as a list, never a score. So the C++ sample gets written with
+  the layouts that separate the rules (a src/ beside an include/, a
+  root-relative include, a sibling include), the oracle indexes it, and each
+  candidate runs against it:
+
+  - (a) the including file's directory only, which is today's rule;
+  - (b) that directory, then each ancestor up to the workspace root;
+  - (c) any directory in the workspace whose tail matches the include, which is
+    greedy and can hit twice;
+  - (d) include directories declared in build files, exact but needing a reader
+    per build system.
+
+  Whichever disagrees least wins, and the TH04 clone adds a by-hand check on a
+  sample of its 1,947 includes, since a Borland-era DOS build has no compilation
+  database.
+
+  The oracle, by your rule. scip-clang is a release binary (v0.4.0 of February
+  2026, 149 MB for x86_64 Linux, glibc 2.16 or newer) installed by the
+  devcontainer's post-create script beside scip-java and the others, for this
+  project's development only, never a runtime dependency. It needs a compilation
+  database; for a fixed sample that is a hand-written compile_commands.json in
+  the fixture, and gcc 14 is already in the container for the system headers.
+  The rosetta samples are fixed targets, so hand verification stays as a second
+  check there; the TH04 clone moves, so nothing from it is committed as an
+  expectation.
+
+  The shipped defaults, expanded
+
+  What exists. The default is a list of 80 path-shaped patterns:
+  packages/**/src/** with eighteen suffixes, scripts/** with ten, tests/** with
+  thirty-nine including the sample languages and the asset types. That is this
+  repository's layout, written when the generator served only this repository.
+  Discovery applies the workspace's .gitignore on top. This repository's
+  configuration sets no globs, so it rides the defaults; so does every other
+  repository, which is how TH04 matched 49 of 1,842 files, by the accident of
+  having scripts/*.py and tests/*.py.
+
+  Decision 1: who decides what counts as source when the person has said
+  nothing?
+
+  - A guess at layouts. Today's list, or a broader one (src/**, lib/**, cmd/**,
+    internal/**). Pro: a repository that fits gets a tidy set. Con: one that
+    does not fit gets a silent near-empty map, the worst failure because it
+    looks like a result; the list never ends; and it is a hardcode of someone's
+    conventions, the thing we forbid ourselves.
+  - Every suffix an adapter reads, anywhere. Minus .gitignore, and minus
+    node_modules, .git and the docs root even without one. Pro: the cold-run
+    promise holds, and the failure mode flips from silent to visible: too much
+    is seen and excluded, too little is not. Con: vendored or generated code
+    that nobody gitignored gets documented, and so does every image anywhere.
+  - Derived from the adapters rather than listed. The same as the previous
+    option, but computed from the registered adapters' extensions, so a new
+    adapter extends discovery by itself. Assets stay a named list, since an
+    asset is an archetype and not an adapter. This is the maintenance form of
+    the option above, and my recommendation.
+  - Read the build files. tsconfig include and exclude, csproj items, Cargo,
+    go.mod, pyproject. Pro: exactly what the compiler compiles, a declared
+    basis, no guess. Con: a reader per ecosystem, and scripts outside any
+    project vanish. It layers on the suffix rule later rather than replacing it,
+    in the same pass as include directories from build files.
+  - No defaults. Refuse to run without globs. Never wrong, and the end of "runs
+    cold".
+
+  Decision 2: what happens to this repository's own doc set. Under the suffix
+  rule it would gain docs for nine root tooling files (both tsconfigs, the
+  eslint, vitest, slopcop and Live Docs configurations, the devcontainer and VS
+  Code settings, and package-lock.json), 584 pictures under AI-Agent-Workspace,
+  and 27 code files under Probes, Gallery and its scripts. Three ways out:
+
+  - move today's 80 patterns into .live-docs.config.json: byte-identical, this
+    repository keeping its shape explicitly;
+  - take the suffix rule and add an exclude option (AI-Agent-Workspace/**),
+    gaining the eight root tooling docs, which the entries walk cannot see today
+    and arguably should;
+  - take it whole: 620 new docs, most of them pictures. No.
+
+  I recommend the middle one. It makes this repository the first cold run of its
+  own product, and the root tsconfigs become tooling entries.
+
+  Decision 3: two product rules under the suffix option. Pictures and fonts are
+  documented only where the configuration names them, since every screenshot in
+  a repository is rarely wanted; and lockfiles (package-lock.json, yarn.lock,
+  pnpm-lock.yaml, Cargo.lock) are skipped by a named rule, being generated. Both
+  are product rules applied everywhere, not this workspace's conventions.
+
+  The file plan, for your go
+
+  1. adapters/cpp.ts, a tree-sitter adapter over the C++ grammar on disk,
+     registered for .c .h .cpp .cc .cxx .hpp .hh .hxx .inl: file-scope
+     functions, structs, classes, enums, unions, typedefs and macros as symbols,
+     with the docstring forms the scanner reads today; includes resolved by the
+     rule the measurement picks, with symbol-level uses of the included
+     headers' symbols as now, and <system> includes listed as external; main,
+     wmain, WinMain and wWinMain as program entries in non-header files. The
+     scanner adapters/c.ts and its two test files retire, their cases carried
+     into the new tests; languages/c.ts stays for the registry.
+  2. tests/integration/programs/cpp/rosetta, the ninth language in the parity
+     test's type-safe tier, laid out to separate the include rules, with a
+     compile_commands.json; the C sample gets one too.
+  3. The oracle: index-fixture.ts selects scip-clang when a compilation database
+     is at the root; post-create.sh installs v0.4.0; expected edges written for
+     both samples; the rule comparison recorded as a probe with its table.
+  4. The defaults and exclude, per your picks on the three decisions; this
+     repository's configuration accordingly; .gitignore filtering kept.
+  5. The card's count in the Local Map renderer, public symbols only.
+  6. Regeneration (the C samples' docs change), the polyglot-adapters, pipeline
+     and vision pages, a decisions entry, the full gate with Playwright, one
+     commit per buildable state.
+
+  Give me your picks on the three decisions, or "your recommendations", and say
+  clear to build.
