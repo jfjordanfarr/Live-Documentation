@@ -561,3 +561,751 @@
   ⎿  Referenced file
      AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md
   ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+
+❯ <ide_selection>The user selected the lines 1 to 563 from
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -15-141939-its-now-10152026-lets-start-up-a-new-chat-re.txt:
+
+  ❯ It's now 10/15/2026. Let's start up a new chat record and make sure we
+    summarize the prior before coming back around to describe possible next
+  work
+    for the day.
+
+  ● I'll bootstrap from the workspace guidance: read the ChatHistory convention
+    and the Memory files, then the recent session summaries, before writing the
+    record for yesterday and starting today's.
+
+    Read 4 files, ran 24 shell commands (ctrl+o to expand)
+
+  ● I've gathered the guidance and the three Memory files. Next, I'll read the
+    five most recent summaries, the October 14 record with its native capture,
+  the
+    month inventory, and the diff of the re-exported capture. · summary
+
+    Read 2 files, ran 19 shell commands (ctrl+o to expand)
+
+  ● I've read through all the guidance, memory files, prior summaries, and the
+    full October 14 record plus the native export—the October 14 session still
+    needs a summary, and the re-export has two uncommitted replies at the end.
+  Now
+    I'll check commit facts, export hashes, and the vision's task order before
+    writing yesterday's summary and today's record. · summary
+
+    Ran 5 shell commands (ctrl+o to expand)
+
+  ● I'll now gather the commits for each export copy, the full vision and World
+    Map plan for ranking, the two replies with exact line numbers, the evidence
+    record headings, and the audit commands. · summary
+
+    Read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+  ● I'll now verify four remaining details before writing: the commit behind
+  the
+    44,931-byte export copy, the source of this morning's stray scratch file,
+  the
+    current time, and the exact lines in direction.md and the vision doc
+  affected
+    by the status refresh. · summary
+
+    Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+  ● Now I'll write everything in one pass: the Oct 14–15 summary, the closed
+  Oct
+    14 record with its two recovered replies, the corrected inventory entries,
+  the
+    direction.md/vision status refresh, and the proven-failing link checker.
+    · summary
+
+    Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+  ● The self-test error turned out to be from my probe file's path, not the
+    checker itself, so I'm re-running it with absolute paths before auditing
+  all
+    changed documents for markdown, asset, symbol, and link issues. · summary
+
+    Ran 5 shell commands (ctrl+o
+  ──── (470 lines hidden) ─────────────────────────────────────────────────────
+   One function, used by the
+    CLI and the panel.
+
+    The CLI. inspect --reachable with no --from walks from the entries and
+  prints
+    them, the reached files nearest first and the unreachable ones, in text and
+    JSON; the guides and the README say so.
+
+    The Explorer. The bundle's data gains the configuration's sample roots. The
+    panel's "Nothing references these" becomes "Entry points" grouped by
+  reason,
+    with sample programs' entries grouped under their root, then "Unreachable
+  from
+    any entry" by archetype, "Reached only from tests", the field and the copy
+    action; the JSON export carries the same shape the CLI prints. The landing:
+    exactly one entry outside the sample roots lands on it; several land on the
+    root with nothing pinned; none falls back to the guess.
+
+    Tests and the oracle. Unit tests for the grammar, the walk, the JSON
+  adapter's
+    mapping, each adapter's program mark, the composition rules and the panel's
+    facts. Integration: a small fixture workspace with scripts, a tsconfig and
+  a
+    declared file; the rosetta parity test asserting each variant's main
+  carries
+    program and nothing else in it does; the estate test asserting the served
+    openings' files; the CLI test for the new form; and
+    tests/integration/live-docs/expected/repository-entries.json, this
+    repository's entries written by hand with a reason each, compared against
+  the
+    committed docs. Playwright: the panel's sections and field under the design
+    audit, and the landing. Pictures under today's folder.
+
+    Docs. The pipeline and openings docs for the new line, the Explorer
+  design's
+    Knowledge Sources section, the CLI guides, a decisions-log entry quoting
+  you,
+    the vision's step 4, and the authored notes of every changed module.
+  Several
+    dozen Live Docs gain a line when regenerated.
+
+    I would land it as two commits, each after the full gate: the engine,
+    generator and CLI with the oracle tests first, then the Explorer with its
+    pictures. Say yes, or strike or rename anything above, and I build.
+
+  ❯ /compact
+    ⎿  Compacted
+    ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+    ⎿  Referenced file .mdmd/layer-1/vision.mdmd.md
+    ⎿  Referenced file
+  AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14-140508-10
+       142026-is-the-day-today-lets-start-a-new-ch.txt
+    ⎿  Referenced file
+       AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md
+    ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ We are aligned. You're clear to build.
+
+● Your yes is recorded first, then I read the seams again and build.
+
+  Listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● I'm reading the engine's grammar, graph, walk, adapters, configuration,
+  generator and CLI in full before writing any code.
+
+  Read 6 files (ctrl+o to expand)
+
+● I'll now pull in the archetype rules, engine compose/core types, generator
+  loop, CLI inspect/emitter/resolver, repo config, the October 8 hand table, and
+  the TypeScript dependency reader — fetching all of these at once since
+  they're independent. · summary
+
+  Searched for 1 pattern, read 9 files, listed 3 directories, ran 6 shell commands (ctrl+o to expand)
+
+● I'll now go through the remaining pieces: the Oct 8 hand table, each language
+  adapter's analyze logic, the Explorer's panel/link-state wiring, the static
+  builder, e2e specs, affected docs, and the oracle test pattern. · summary
+
+  Searched for 5 patterns, listed 5 directories, ran 19 shell commands (ctrl+o to expand)
+
+● I'll delegate the program mark in each language adapter to three parallel
+  subagents, while I handle the grammar, graph, walk, configuration, manifest
+  reading, generator, and CLI myself. · summary
+
+● 3 background agents launched (↓ to manage)
+   ├ Program marks: C, Go, Rust adapters
+   ├ Program marks: Java, C# adapters
+   └ Program marks: Python, Ruby, PowerShell
+
+● I'm writing the grammar now: the Entry model, its rendering and parsing in the
+  engine's document module, with the round-trip tests, then the graph and the
+  walk.
+
+  Ran 16 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Done: Java and C# adapters report the program entry point
+
+  ### Files changed (nothing else touched, nothing committed)
+  -
+  /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/java.ts
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/csharp
+  .ts
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/java.t
+  est.ts
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/csharp
+  .test.ts
+
+  Note: the working tree also has modifications to `adapters/powershell.ts`,
+  `python.ts`, `ruby.ts`, and to `document.ts`, `pathfind.ts`, `graph.ts`,
+  `archetype.ts`, `dependencies.ts`, `liveDocumentationConfig.ts` and their
+  tests. Those are not mine (they were not in the starting git status either); I
+  left them alone.
+
+  ### How it is wired (both adapters the same way)
+  - `FileFacts` gained `program?: ProgramEntry`, filled during the one existing
+  extraction pass (so it is cached with the facts; no second parse).
+  - `analyze` builds the result as before and does `if (facts.program)
+  result.program = facts.program;`, so the key is absent (not `undefined`) when
+  there is no entry. Symbols and dependencies output is untouched.
+  - `ProgramEntry` is imported from `../coreTypes`, not `../core`: `core.ts`
+  re-exports an explicit list that does not include `ProgramEntry`, and
+  `core.ts` was outside my scope. (`csharp.ts` already imported
+  `WorkspaceSymbolIndex` from `../coreTypes`, so this follows an existing
+  pattern.) You may want to add `ProgramEntry` and `DeclaredEntry` to
+  `core.ts`'s export list.
+  - Each adapter's header comment gained one sentence saying the entry point is
+  reported.
+
+  ### Exact detection rules implemented
+
+  **Java** (`isProgramEntry` helper, called from `readMember`'s
+  `method_declaration` case): a `method_declaration` whose name is `main`, whose
+  modifiers include `static`, that is public either written (`public` modifier)
+  or implicitly (the extractor's existing `implicitlyPublic`, true for members
+  of an interface or annotation type, since an interface's `static void main` is
+  public by the language), and whose return type node is `void_type`.
+  Parameters are not checked. Checked per method, so the rosetta `public static
+  String main(int seed)` overload does not count while its `public static void
+  main(String[] args)` does. Nested types are covered (same reader);
+  local/anonymous classes in method bodies are not read as types, so a `main`
+  there is not an entry. Result: `program: { symbol: "main" }`. A non-static,
+  non-public, or non-void `main`, or no `main`, leaves `program` absent.
+  - One deliberate refinement over the brief: "public" means public per the
+  language, i.e. an interface's `static void main(String[] args)` counts without
+  the word `public`. Tested.
+  - Outside the rule as given: Java 25's instance `main` (JEP 512, `void main()`
+  without `public static`) is not an entry here; the brief said a non-static
+  `main` is not an entry, so I followed it. Worth knowing when documenting.
+
+  **C#** (two places in `FileExtractor`):
+  1. `extract`: any `global_statement` node directly under `compilation_unit`
+  (C# 9 top-level statements) sets `program = {}` (no symbol).
+  2. `visitMember`'s `method_declaration` case: a method named `Main` whose
+  modifiers include `static`, any accessibility, any return type (`void`, `int`,
+  `Task`, `Task<int>` all fine), in any type including nested ones, sets
+  `program ??= { symbol: "Main" }`.
+  - Precedence: when a file has both top-level statements and a static `Main`,
+  top-level statements are the entry (`program: {}`), which is what the compiler
+  does (CS7022 ignores `Main` when global code is the entry point). The `??=`
+  plus unconditional assignment in `extract` makes this order-independent. The
+  brief did not say what to do with both present; I followed the compiler and
+  documented it on the `FileFacts` field.
+  - A type merely named `Main` (rosetta's `public static class Main` with `Run`)
+  and a non-static `Main` leave `program` absent.
+
+  ### Tree-sitter shapes confirmed against the bundled grammars (scratch dump,
+  deleted)
+  Java: `method_declaration` > `modifiers` holds anonymous `public`/`static`
+  tokens (so `modifiersOf` yields them), field `type` is `void_type` for `void`.
+  C#: `method_declaration` has `modifier` nodes with text
+  `static`/`async`/`private`…, field `name`; top-level statements appear as
+  `global_statement` directly under `compilation_unit` (expression statements,
+  local functions and `return` alike).
+
+  ### Tests added
+  java.test.ts (temporary workspaces, the file's convention):
+  - `reports public static void main as the program's entry, written public or
+  public as an interface member` (a class with both `public static String
+  main(int)` and `public static void main(String[])`, mirroring the rosetta
+  sample, plus an interface with `static void main(String[] args)`; both give `{
+  symbol: "main" }`)
+  - `leaves program absent when no main is public, static and void` (`public
+  static String main(int)`, `static void main()`, `public void main(String[])`;
+  and a class with no `main`; `not.toHaveProperty("program")`)
+
+  csharp.test.ts, new `describe("program")`:
+  - `reports a static Main as the program's entry, whatever its accessibility
+  and return type` (`class Program { static void Main(string[] args) { } }` and
+  `private static async Task<int> Main() => 0;`)
+  - `reports top-level statements as the program's entry, naming no symbol`
+  (`using System; Console.WriteLine("hi");` → `toStrictEqual({})`)
+  - `leaves program absent for a type named Main, and for a Main that is not
+  static` (temp file with `public void Main()` + `public static void Run()`, and
+  the real `tests/integration/programs/csharp/rosetta/src/App/Main.cs` analyzed
+  with the rosetta folder as workspace root, via `path.resolve(__dirname,
+  "../../../../..")` as `powershell.test.ts` does; `not.toBeNull()` then
+  `not.toHaveProperty("program")`)
+
+  ### Verification output
+  `npx vitest run --project unit
+  packages/engine/src/live-docs/adapters/java.test.ts
+  packages/engine/src/live-docs/adapters/csharp.test.ts`:
+  ```
+   Test Files  2 passed (2)
+        Tests  26 passed (26)
+     Duration  7.05s (transform 1.02s, setup 0ms, import 1.60s, tests 454ms,
+  environment 0ms)
+  ```
+  `npx eslint <the four files>`:
+  ```
+  Multiple projects found, consider using a single `tsconfig` with `references`
+  to speed up, or use `noWarnOnMultipleProjects` to suppress this warning
+  eslint exit: 0
+  ```
+  Extra end-to-end check over the cited samples (scratch script, deleted):
+  ```
+  java/rosetta/src/com/rosetta/app/Main.java: {"symbol":"main"}
+  java/warehouse/src/main/java/com/acme/warehouse/App.java: {"symbol":"main"}
+  csharp/rosetta: 12 files, 0 with program
+  csharp/estate: 21 files, 0 with program
+  ```
+  Nothing in the brief conflicted with the code or samples. I did not run the
+  full unit suite or integration suite (only what was asked); other tests
+  calling these adapters (`csharp.hangfire.test.ts`, `java.typeref.test.ts`)
+  assert specific properties, not whole results, so the additive key cannot
+  break them. Scratch files removed from the scratchpad.
+
+● Agent "Program marks: Java, C# adapters" finished · 9m 52s
+
+● The Java and C# marks are in. Fixing the two compose test failures: an
+  existing doc literal needs the new entries field, and my expected links
+  counted one directory too many.
+
+  Searched for 2 patterns, ran 10 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  Done. Three adapters now report `program: {}` on the analysis result when the
+  file holds the language's entry point and omit the property otherwise. Nothing
+  committed; no file outside the six below was touched; my scratch files are
+  removed. The mirror (`.mdmd/layer-4`) was not regenerated since the generator
+  and other adapters are changing concurrently in the working tree.
+
+  ## Files changed
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/python
+  .ts (+31/-6)
+  -
+  /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/ruby.ts
+  (+27/-14)
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/powers
+  hell.ts (+9/-9)
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/python
+  .test.ts (+29)
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/ruby.d
+  ocstring.test.ts (+41, a new `describe("rubyAdapter program entry")`)
+  - /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/powers
+  hell.test.ts (+34/-2)
+
+  ## Detection rule per language (as implemented)
+
+  **Python** (`isMainGuard`, a new `ModuleFacts.mainGuard` set in
+  `extractFacts`; `analyze` returns `{ symbols, dependencies, program: {} }`
+  when true). A module is an entry when a *direct child of the module root* is
+  an `if_statement` whose `condition` field, after unwrapping a
+  `parenthesized_expression`, is a `comparison_operator` with exactly three
+  children `[operand, "==", operand]` where one operand is the identifier
+  `__name__` and the other a `string` node whose joined `string_content` is
+  `__main__`. Hence either quote style, either operand order, with or without
+  parentheses. Does not count: `!=`/`is`, a compound condition (`... and x`), a
+  chained comparison, `elif`, and anything not at module level (inside a
+  function or class, or text in a string/comment, which the parser never sees as
+  an `if_statement`). The string prefix is not inspected (`b"__main__"` would
+  count; nobody writes it). Incidental: a `stringContent(node)` helper now
+  replaces the same three inline `string_content` joins in `docstringOf`,
+  `typeNames` and `readAll` plus the new use; behavior identical.
+
+  **Ruby** (`hasMainGuard(content)` + `MAIN_GUARD_PATTERN`). Lines are walked;
+  `=begin`/`=end` blocks are skipped with the existing `consumeBlockComment`,
+  and `^\s*#` lines are skipped. A file is an entry when some remaining line
+  matches: starts at column 0, is either `if <guard>` or `<statement> if
+  <guard>` (the `if` preceded by whitespace), where guard is `__FILE__ == $0`,
+  `__FILE__ == $PROGRAM_NAME`, `$0 == __FILE__` or `$PROGRAM_NAME == __FILE__`,
+  optionally parenthesized, followed only by whitespace, `then ...`, or a `#
+  comment`. So an indented guard (inside a def/class under this adapter's
+  indentation heuristic) does not count; a guard inside a string on one line
+  does not count because the closing quote follows it; a compound condition (`if
+  __FILE__ == $0 && ...`) does not count; a heredoc body line at column 0
+  cannot be told apart. The regex:
+  `/^(?:\S.*\s)?if\s+\(?\s*(?:__FILE__\s*==\s*\$(?:0|PROGRAM_NAME)|\$(?:0|PROGRA
+  M_NAME)\s*==\s*__FILE__)\s*\)?(?:\s+then\b.*|\s*#.*)?\s*$/`.
+
+  **PowerShell**: `path.extname(absolutePath).toLowerCase() === ".ps1"` →
+  `program: {}`, spread into every `.ps1` return including the `payload`-null
+  branch; `.psm1` and `.psd1` never carry it. In both ruby.ts and powershell.ts
+  I collapsed the redundant "both arrays empty" return branch, which returned a
+  value identical to the general return; symbols/dependencies output is
+  unchanged.
+
+  ## Tests added
+  - python.test.ts: "reports the module whose top level holds the main guard as
+  the program entry, in either quote style and operand order" (double quotes;
+  `'__main__' == __name__`; the repo sample
+  tests/integration/programs/python/rosetta/src/main.py; also asserts symbols
+  stay `["main"]`), and "leaves program absent for a module without the guard,
+  with it inside a function, or with its text only in a string or comment" (no
+  guard; guard inside `def`; guard in a docstring and a comment; `!=`), each
+  negative via `not.toHaveProperty("program")`.
+  - ruby.docstring.test.ts: "reports a file guarded by __FILE__ == $0 or
+  $PROGRAM_NAME, on its own line or as a statement modifier, as the program
+  entry" (own line; `puts ... if __FILE__ == $PROGRAM_NAME`; `if $PROGRAM_NAME
+  == __FILE__ then`; `main if $0 == __FILE__ # run`; the repo sample
+  tests/integration/programs/ruby/rosetta/lib/main.rb), and "leaves program
+  absent for a file without the guard, with it commented out, inside a method,
+  or in a string" (plain class; `#`-commented guard; `=begin` block; guard
+  inside `def`; guard inside a string literal).
+  - powershell.test.ts: inside the existing runtime-gated describe, "reports
+  every script as the program entry, even one with nothing else to report, and
+  no module" (deploy.ps1 → `program` `{}`; a bare `Write-Output 'hello'` script
+  → `toStrictEqual({ symbols: [], dependencies: [], program: {} })`;
+  Inventory.psm1 → no property); and a new ungated `describe("powershellAdapter
+  manifests")` with "does not report a manifest as the program entry, with or
+  without a runtime" (settings.psd1 → `toStrictEqual({ symbols: [],
+  dependencies: [] })` and `not.toHaveProperty`). `repoRoot`/`fixtureRoot` moved
+  to module scope for the shared use.
+
+  ## One mismatch with the brief, flagged rather than guessed around
+  The brief says the `.ps1` test "must pass without pwsh". Through `analyze`
+  that is not possible: every `.ps1`/`.psm1` goes through
+  `invokePowerShellEmitter`, which throws "PowerShell runtime not found" when no
+  runtime exists. I did not change that error behavior (swallowing it would be
+  a workaround), so the positive `.ps1` and the `.psm1` negative sit inside the
+  file's existing `describeIfRuntime` gate (skipped with the existing console
+  warning when no runtime), and only the `.psd1` negative runs unconditionally.
+  In this environment `pwsh` is at /usr/bin/pwsh, so all PowerShell tests
+  actually ran (the earlier `which` line that said "no pwsh" was `which` failing
+  on `powershell` only).
+
+  ## Verification output (last lines)
+  - `npx vitest run --project unit` over the four named test files: `Test Files
+  4 passed (4)` / `Tests  25 passed (25)`. A wider verbose run adding
+  python.docstring/resolution/typeref (they exercise the refactored
+  `stringContent` sites): `Test Files  7 passed (7)` / `Tests  47 passed (47)`,
+  no skips; the three PowerShell runtime tests show 808ms/737ms/1980ms, i.e.
+  they ran.
+  - `npx eslint` over the six files: exit 0; only output is the resolver's
+  "Multiple projects found" warning.
+  - `npx tsc --noEmit -p packages/engine/tsconfig.json`: 4 errors, none in my
+  files; all in other files modified concurrently in the working tree by someone
+  else (json.ts imports `DeclaredEntry` from `../core` which does not re-export
+  it yet; boardGraph.test.ts, document.test.ts, estateGraph.test.ts). About 20
+  other files are modified in the tree that were clean at my start; I left them
+  alone.
+
+  ## Observations, not fixed (pre-existing, outside the task)
+  - ruby.ts's adapter JSDoc says it covers `.rake`, `Gemfile`, `Rakefile` but
+  `extensions` is `[".rb"]` only.
+  - powershell.ts's adapter JSDoc says it extracts "cmdlets, aliases"; it
+  extracts functions and module/dot-source dependencies only.
+
+● Agent "Program marks: Python, Ruby, PowerShell" finished · 15m 10s
+
+› Message from general-purpose
+  Done: the C, Go and Rust adapters now report the program entry point on
+  `SourceAnalysisResult.program`, purely additively (symbols and dependencies
+  untouched), with unit tests. Not committed.
+
+  ## Files changed (6, all under
+  /workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/)
+  - `c.ts` — new `MAIN_DEFINITION_PATTERN` and `programEntry()`; `analyze`
+  builds one result object and sets `program` only when found (the old two
+  identical return branches merged; output unchanged). Imports `ProgramEntry`
+  from `../coreTypes`, as csharp.ts does (`core.ts` does not re-export it).
+  - `go.ts` — new `toProgram(facts)` in the "Adapter output" section; `analyze`
+  sets `program` conditionally. One sentence added to the header comment.
+  - `rust.ts` — new `isBinaryRoot(relative)` (and `isConventionalRoot` now calls
+  it, same truth table as before), new `toProgram(facts, absolutePath,
+  workspaceRoot)`; `analyze` sets `program` conditionally. One sentence added to
+  the header comment.
+  - `c.docstring.test.ts`, `go.test.ts`, `rust.test.ts` — tests below.
+
+  In every adapter the property is assigned only when an entry exists (`if
+  (program) result.program = program;`), so a non-entry file has no `program`
+  key at all; the tests assert that with `not.toHaveProperty("program")`, which
+  in vitest uses `Object.hasOwn` and therefore fails on an `undefined`-valued
+  key.
+
+  ## The detection rule implemented, per language
+  - **C**: the file's extension is `.c` (case-insensitive; `.h` never), and,
+  after `cSyntax.stripComments` (so a commented-out definition does not count),
+  some line starts with `int` or `void`, then `main`, a parameter list that may
+  span lines, then `{` — i.e. `/^[ \t]*(?:int|void)\s+main\s*\([^)]*\)\s*\{/mu`.
+  The brace may be on a later line. `int main(void);` (declaration) does not
+  match. Result `{ symbol: "main" }`. Not matched: `static int main`, a
+  macro-prefixed return type, K&R parameter declarations.
+  - **Go**: `package main` and a top-level `function_declaration` named `main`
+  (the facts record methods as kind `"method"`, so a method named `main` is
+  excluded; `func main` in any other package is excluded). Result `{ symbol:
+  "main" }`.
+  - **Rust**: the file's own module (not an inline `mod {}` and not an
+  `impl`/trait body) has an item `main` of kind `function`, public or not, AND
+  the file is a binary crate root: relative to the nearest `Cargo.toml`
+  directory it is `src/main.rs`, `src/bin/<name>.rs` or
+  `src/bin/<name>/main.rs`; with no `Cargo.toml` found, any file named
+  `main.rs`. Result `{ symbol: "main" }`. `src/lib.rs`, module files, `tests/`,
+  `examples/`, `benches/` never.
+
+  ## Where the brief and the code differ (please decide; I did not stop the task
+  over these)
+  1. **Rust without Cargo.toml.** The brief said "relative to the nearest `src`
+  directory". The adapter's own `crateRoots` already says: with no package, a
+  file is a root when it is `lib.rs` or `main.rs`, by name alone. I followed the
+  code so the `program` field agrees with the module tree (and it is also more
+  correct when the workspace root sits inside a crate, e.g. pointed at
+  `my-crate/src`, or for bare `rustc main.rs` folders). It is one line in
+  `toProgram` (`path.basename(absolutePath) === "main.rs"`) and one test
+  ("treats a main.rs outside any package as a binary root, as the module tree
+  does", which asserts `app/src/main.rs` and `tool/main.rs` are entries and
+  `app/src/lib.rs` is not). Flip the line and that test if you want the brief's
+  rule.
+  2. **`MULTILINE_FUNC_START` in c.ts** handles a parameter list that continues
+  on later lines, not a brace on the next line. The existing symbol extraction
+  does not record `main` as a symbol at all for Allman style (`int main(void)`
+  newline `{`): `FUNCTION_PATTERN` needs `;`/`{` on the same line. `program`
+  does report such a file (the file does hold the entry); the symbol gap is
+  pre-existing and I left symbols untouched as instructed. Worth a separate fix.
+  3. **`examples/<name>.rs`** files are runnable binaries with `fn main` too;
+  the brief's rule excludes them, so they are excluded. Open question for you.
+  4. Rosetta's `src/main.rs` has `pub fn main(seed: i32) -> String`, which rustc
+  would reject as an entry (main takes no parameters); per the brief it counts,
+  and the test asserts it.
+
+  ## Tests added
+  `c.docstring.test.ts`, new describe "cAdapter program entry":
+  - "reports main as the program entry of a .c file that defines it, however the
+  definition is laid out" (one-line, Allman brace, split parameter list with
+  `void`; rosetta `src/main.c` and `src/test_helpers.c`)
+  - "leaves program absent for a declaration of main, a commented-out
+  definition, a header, and a file without main" (`int main(void);`, a `/*
+  */`-wrapped definition, `single.h` with a definition, rosetta `src/helpers.c`)
+  `go.test.ts`:
+  - "reports main as the program entry of a top-level func main in package main"
+  (temp `cmd/depot/main.go`; samples rosetta `src/main/main.go` and depot
+  `cmd/depot/main.go`)
+  - "leaves program absent for a func main outside package main, a package main
+  without one, and a method named main" (`package tool` with `func main`;
+  `package main` with `func (a App) main()`; rosetta
+  `src/main/pipeline_test.go`)
+  `rust.test.ts`:
+  - "reports main as the program entry of src/main.rs and the binaries under
+  src/bin, public or not, and not of the library or a module file"
+  (`src/main.rs`, `src/bin/tool.rs` with `pub fn main`, `src/bin/serve/main.rs`
+  are entries; `src/lib.rs` with `pub fn main` and module `src/cli.rs` with `fn
+  main` are not; rosetta `src/main.rs` is, `src/processor.rs` is not)
+  - "leaves program absent for a main inside a mod block or an impl, and for a
+  binary root without one"
+  - "treats a main.rs outside any package as a binary root, as the module tree
+  does"
+
+  ## Output
+  `npx vitest run --project unit` over the three test files:
+  ```
+   Test Files  3 passed (3)
+        Tests  24 passed (24)
+     Duration  8.17s
+  ```
+  `npx eslint` over the six files: no findings, exit 0 (only the usual "Multiple
+  projects found" warning).
+
+  Workspace: `git status` shows exactly the six files above as modified; no
+  untracked files; `coverage/` written by the project's vitest config is
+  gitignored. My scratch edit scripts were removed. Note that the working tree
+  holds many other agents' uncommitted changes (csharp, java, python, ruby,
+  json, compose, document, generator, ...); I did not touch them.
+
+● Agent "Program marks: C, Go, Rust adapters" finished · 16m 17s
+
+● All three adapter reports are complete and passing their tests. Now I'll write
+  the integration tests, including the entry-points fixture, CLI entries mode,
+  rosetta/estate assertions, and the hand-read oracle for this repo. · summary
+
+  Searched for 3 patterns, read 1 file, ran 14 shell commands (ctrl+o to expand)
+
+● Now I'm fixing the overload ambiguity: the adapters will report the entry
+  symbol's declaration line so that the composition links the right heading.
+
+  Searched for 2 patterns, ran 8 shell commands (ctrl+o to expand)
+
+● Background command "Regenerate the docs and run the whole integration suite"
+completed (exit code 0)
+
+● Integration tests pass for the engine, generator, and CLI on the regenerated
+  docs. Next, I'll rewrite the Knowledge Sources panel based on the entry-point
+  walk and ensure the "Reachable from" choice persists in the share link.
+  · summary
+
+  Read 3 files, ran 7 shell commands (ctrl+o to expand)
+
+● The build is clean. Now I'm starting the browser tests and the lint in the
+  background, and in the meantime I'll take the pictures and write the docs.
+  Ran 9 shell commands (ctrl+o to expand)
+
+● Background command "Lint the whole repository" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The docs are written. Now I'm running the markdown audits and the oracle test
+  again on the final docs, and writing the record and Memory, while the browser
+  suite finishes in the background.
+
+  Searched for 1 pattern, read 8 files, ran 8 shell commands (ctrl+o to expand)
+
+● Background command "Build both Explorer bundles and run the Playwright suite"
+completed (exit code 0)
+
+● The Playwright run has finished. I'm reading its report, then the regenerated
+  config change held the docs unchanged as expected.
+
+  Searched for 2 patterns, read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● I'm verifying the layout test still holds on a picture where tests are
+  hidden—since a new test importing the generator changed the scene—while also
+  recapturing pictures with the sample folds clicked one by one. · summary
+
+  Searched for 2 patterns, read 2 files, ran 8 shell commands (ctrl+o to expand)
+
+● While the full gate runs in the background, I'll review the Memory file's
+  structure for the owner's new words and check the inventory line to update
+  once the commit exists. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate is running in the background (about fifteen minutes: lint, the three
+  builds, unit and integration suites, docs regeneration, the four audits,
+  Playwright). When it reports, I commit the landing, close the record and
+  Memory, and report back.
+
+● Background command "Run the full pre-commit gate with Playwright" completed
+(exit code 0)
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● The gate is running again after the four lint fixes (an unbound compiler
+  callback, three import orders). I'll hold file edits until it reports, then
+  commit and close the record.
+
+● Background command "Run the full pre-commit gate again with Playwright"
+completed (exit code 0)
+
+  Searched for 2 patterns, ran 5 shell commands (ctrl+o to expand)
+
+● The third full gate is running: the second one was green everywhere except one
+  layout spec whose five-file picture changed because the grammar module grew
+  three symbols, and that spec now accepts the search's settled outcome as it
+  already did later in the same test. Nothing is edited while the audits run;
+  the commit, the record's closing and the Memory lines follow its report.
+
+● Background command "Run the full pre-commit gate a third time with Playwright"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate is green: lint, 1,067 unit tests, 64 integration tests, the four
+  audits, and 131 browser tests. Committing the landing by path, then closing
+  the record and Memory with the commit named.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● reachable is built, gated and committed. Two commits: 5cee2716 carries the
+  landing, 77e04ce2 the record and Memory. The tree is clean.
+
+  What landed. Every Live Doc's Metadata block can now say why something outside
+  the code starts the file, as Entry lines with six reasons: program, command,
+  module, opening, tooling, declared. Tests stay entries by their archetype. The
+  eight language adapters report their program entry point (C, Go, Rust, Java,
+  C#, Python, Ruby, PowerShell), the generator's first pass reads every
+  package.json's scripts, bin and main and maps built paths back through the
+  tsconfig beside the manifest, served openings and the kinds of file a tool
+  reads come from the symbol kinds and a name rule, and .live-docs.config.json
+  gained entryPoints, which here declares the Explorer client's index.ts and
+  styles.css. A dynamic import() with a literal path is an edge now, so
+  buildAssets.ts is reached. The engine's pathfinder gained reachability, and
+  inspect --reachable with no --from prints the entries, what they reach, what
+  nothing reaches and what only a test reaches, in text or JSON.
+
+  In the Explorer. The Knowledge Sources panel's "Nothing references these"
+  became "Entry points", grouped by reason with the sample programs' and
+  fixtures' entries folded under their roots, then "Unreachable from any entry"
+  by archetype and "Reached only from tests". Your field is there as "Reachable
+  from": it starts at every entry point, takes any file or directory, rides the
+  share link, and beside a chosen file shows the entryPoints line with a copy
+  action, since a static page cannot write the configuration. The landing
+  follows the docs: this repository opens on the root, because it declares many
+  entries; a bundle with exactly one program, command, module or declared entry
+  opens on it; the file-name guess remains only for docs with no entries at all.
+  The eight pictures are named in the day's screenshots README.
+
+  What the oracles found on their first run. Your "it's our repo" oracle is
+  tests/integration/live-docs/expected/repository-entries.json, read by hand and
+  compared against the committed docs. It corrected the hand twice: the
+  generator package's main names generator.ts, which the October 8 table had not
+  listed, and the estate's Portal controller serves a GET route a truncated
+  reading had hidden. It corrected the tool twice: a script's flag followed by
+  another flag had made a tsconfig a command, and a file with two symbols named
+  main had linked the wrong overload, so the adapters now report the
+  declaration's line. Every implementation file of this repository's own code is
+  reached from its entries.
+
+  Two things to know. I landed one commit rather than the two I had named,
+  because the grammar's entries field is required on every doc and the
+  Explorer's tests belonged to the first buildable state. Two layout specs over
+  this repository's own files changed their pictures as a consequence of the
+  work (a new test imports the generator; document.ts grew three symbols), and
+  each now asserts the property that holds on any picture rather than the
+  picture-specific one; the reasons are in their comments and in the record.
+
+  Left for a later pass. Manifest adapters for Cargo, pom, pyproject, go.mod and
+  gemspec; Rust's examples/*.rs binaries; the manifests' wires in the picture
+  if you want them; and two gaps the subagents found: the C symbol extractor
+  misses an Allman-style main as a symbol, and Java 25's instance main is not
+  marked.
+
+● reachable is built, gated and committed. Two commits: 5cee2716 carries the
+  landing, 77e04ce2 the record and Memory. The tree is clean.
+
+  What landed. Every Live Doc's Metadata block can now say why something outside
+  the code starts the file, as Entry lines with six reasons: program, command,
+  module, opening, tooling, declared. Tests stay entries by their archetype. The
+  eight language adapters report their program entry point (C, Go, Rust, Java,
+  C#, Python, Ruby, PowerShell), the generator's first pass reads every
+  package.json's scripts, bin and main and maps built paths back through the
+  tsconfig beside the manifest, served openings and the kinds of file a tool
+  reads come from the symbol kinds and a name rule, and .live-docs.config.json
+  gained entryPoints, which here declares the Explorer client's index.ts and
+  styles.css. A dynamic import() with a literal path is an edge now, so
+  buildAssets.ts is reached. The engine's pathfinder gained reachability, and
+  inspect --reachable with no --from prints the entries, what they reach, what
+  nothing reaches and what only a test reaches, in text or JSON.
+
+  In the Explorer. The Knowledge Sources panel's "Nothing references these"
+  became "Entry points", grouped by reason with the sample programs' and
+  fixtures' entries folded under their roots, then "Unreachable from any entry"
+  by archetype and "Reached only from tests". Your field is there as "Reachable
+  from": it starts at every entry point, takes any file or directory, rides the
+  share link, and beside a chosen file shows the entryPoints line with a copy
+  action, since a static page cannot write the configuration. The landing
+  follows the docs: this repository opens on the root, because it declares many
+  entries; a bundle with exactly one program, command, module or declared entry
+  opens on it; the file-name guess remains only for docs with no entries at all.
+  The eight pictures are named in the day's screenshots README.
+
+  What the oracles found on their first run. Your "it's our repo" oracle is
+  tests/integration/live-docs/expected/repository-entries.json, read by hand and
+  compared against the committed docs. It corrected the hand twice: the
+  generator package's main names generator.ts, which the October 8 table had not
+  listed, and the estate's Portal controller serves a GET route a truncated
+  reading had hidden. It corrected the tool twice: a script's flag followed by
+  another flag had made a tsconfig a command, and a file with two symbols named
+  main had linked the wrong overload, so the adapters now report the
+  declaration's line. Every implementation file of this repository's own code is
+  reached from its entries.
+
+  Two things to know. I landed one commit rather than the two I had named,
+  because the grammar's entries field is required on every doc and the
+  Explorer's tests belonged to the first buildable state. Two layout specs over
+  this repository's own files changed their pictures as a consequence of the
+  work (a new test imports the generator; document.ts grew three symbols), and
+  each now asserts the property that holds on any picture rather than the
+  picture-specific one; the reasons are in their comments and in the record.
+
+  Left for a later pass. Manifest adapters for Cargo, pom, pyproject, go.mod and
+  gemspec; Rust's examples/*.rs binaries; the manifests' wires in the picture
+  if you want them; and two gaps the subagents found: the C symbol extractor
+  misses an Allman-style main as a symbol, and Java 25's instance main is not
+  marked.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read .mdmd/layer-3/live-documentation-pipeline.mdmd.md (40 lines)
+  ⎿  Referenced file packages/explorer/src/client/panels/sources-view.ts
+  ⎿  Read packages/explorer/src/client/panels/sources-facts.ts (243 lines)
+  ⎿  Referenced file tests/integration/live-docs/rosettaParity.test.ts
+  ⎿  Referenced file tests/integration/live-docs/inspect-cli.test.ts

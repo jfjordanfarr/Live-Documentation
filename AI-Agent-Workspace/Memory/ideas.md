@@ -1,6 +1,6 @@
 # Ideas and observations without a home yet
 
-_Current as of 2026-10-08. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
+_Current as of 2026-10-15. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
 
 ## Asked for or loved by the owner
 
@@ -77,6 +77,7 @@ Inputs to the consolidation (vision step 3), not a backlog:
 
 - The peers as the owner sees them: GitLab Knowledge Graph (first named 2025-10-16), Windsurf's code graph (with GitLab's, 2025-11-06), and Google CodeWiki (all three by 2025-11-19); Windsurf's is now Codemaps. What they care about: MIT licence, offline, markdown-first, "vastly more secure". The README carries a comparison table.
 - The README's agent framing was rewritten on 2026-10-03 along the owner's words that day: the old surface, structured output as context for coding agents, has "much much less use than ever imagined", while an agent given a link to a hosted Explorer, or the bundle in a chat harness, could "reason over it together" with a person; `--json` stays as a fact, not a headline, and the release-time promise of agent-steering files is gone. The words are under "Humans are the audience" in [direction.md](direction.md).
+- **Four open questions from REA's evidence contract** (2026-10-15, the agent's reading in [the REA survey](../Research/2026-10-15-rea-reverse-engineer-anything.md), not the owner's). Asked whether "Reverse Engineer Anything", the October 2026 reverse-engineering MCP, relates to this project, the survey found a shared instinct and a different subject: REA's own skill hands "ordinary analysis of a complete source repository" back to normal tools, and every edge it records carries an authority, an epistemic state (`observed`, `inferred`, `unknown`, `unavailable`), a confidence, a location, coverage and limitations, so that "absence of evidence cannot silently become evidence of absence". What that suggests here, undecided: write on a doc the references its adapter could not follow; say on a doc or in the panel how a file was read, by a compiler-backed adapter or a hand-written scanner; an artifact such as a vendor's .NET assembly as the subject of a World Map piece with no source, a later adapter at most; and a skill file, one page of plain text telling an agent where the mirror is and which commands answer which questions, the door the owner's "plain text with the easiest-to-copy utilities" rule allows.
 
 
 ## Continuous file perspectives — October 3, 2026
