@@ -125,6 +125,9 @@ export async function buildStaticExplorer(
         staticData.board = board;
         logger.log(`Board: ${board.path}`);
     }
+    if (config.sampleRoots.length > 0) {
+        staticData.sampleRoots = [...config.sampleRoots];
+    }
 
     const dataFile = path.join(outputDir, "explorer-data.json");
     const jsonContent = prettyPrint

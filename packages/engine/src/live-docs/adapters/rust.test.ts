@@ -34,6 +34,7 @@ describe("rustAdapter", () => {
   }
 
   const CARGO = '[package]\nname = "stockroom"\nversion = "0.1.0"\nedition = "2021"\n';
+  const PROGRAMS = path.resolve(__dirname, "../../../../..", "tests", "integration", "programs", "rust");
 
   it("publishes public items, impl and trait methods, public fields and variants, with their rustdoc", async () => {
     await write({
@@ -202,5 +203,51 @@ describe("rustAdapter", () => {
       { specifier: "regex", symbols: ["Regex"], kind: "import" },
       { specifier: "serde", symbols: ["Deserialize", "Serialize"], kind: "import" }
     ]);
+  });
+
+  it("reports main as the program entry of src/main.rs and the binaries under src/bin, public or not, and not of the library or a module file", async () => {
+    await write({
+      "Cargo.toml": CARGO,
+      "src/main.rs":           "mod cli;\n\nfn main() { cli::run(); }\n",
+      "src/cli.rs":            "pub fn run() {}\n\nfn main() {}\n",
+      "src/lib.rs":            "pub fn main() {}\n",
+      "src/bin/tool.rs":       "pub fn main() {}\n",
+      "src/bin/serve/main.rs": "fn main() {}\n"
+    });
+
+    for (const file of ["src/main.rs", "src/bin/tool.rs", "src/bin/serve/main.rs"]) {
+      expect((await analyze(file)).program).toMatchObject({ symbol: "main" });
+    }
+    for (const file of ["src/lib.rs", "src/cli.rs"]) {
+      expect(await analyze(file)).not.toHaveProperty("program");
+    }
+
+    const rosetta   = path.join(PROGRAMS, "rosetta");
+    const main      = await rustAdapter.analyze({ absolutePath: path.join(rosetta, "src", "main.rs"), workspaceRoot: rosetta });
+    const processor = await rustAdapter.analyze({ absolutePath: path.join(rosetta, "src", "processor.rs"), workspaceRoot: rosetta });
+    expect(main?.program).toEqual({ symbol: "main", line: 28 });
+    expect(processor).not.toBeNull();
+    expect(processor).not.toHaveProperty("program");
+  });
+
+  it("leaves program absent for a main inside a mod block or an impl, and for a binary root without one", async () => {
+    await write({
+      "Cargo.toml": CARGO,
+      "src/main.rs": "mod inner { pub fn main() {} }\n\nstruct App;\n\nimpl App { fn main(&self) {} }\n\npub fn run() { inner::main(); }\n"
+    });
+
+    expect(await analyze("src/main.rs")).not.toHaveProperty("program");
+  });
+
+  it("treats a main.rs outside any package as a binary root, as the module tree does", async () => {
+    await write({
+      "app/src/main.rs": "fn main() {}\n",
+      "app/src/lib.rs":  "pub fn main() {}\n",
+      "tool/main.rs":    "fn main() {}\n"
+    });
+
+    expect((await analyze("app/src/main.rs")).program).toMatchObject({ symbol: "main" });
+    expect((await analyze("tool/main.rs")).program).toMatchObject({ symbol: "main" });
+    expect(await analyze("app/src/lib.rs")).not.toHaveProperty("program");
   });
 });

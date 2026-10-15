@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/playwright.config.ts
-- Generated At: 2026-10-07T13:20:49.700Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:43.091Z
 
 ## Authored
 ### Purpose

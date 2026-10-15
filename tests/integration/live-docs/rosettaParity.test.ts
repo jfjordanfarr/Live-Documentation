@@ -26,6 +26,7 @@ import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
   normalizeLiveDocumentationConfig
 } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { parseLiveDoc } from "../../../packages/engine/src/live-docs/document";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
 
 // ---------------------------------------------------------------------------
@@ -706,6 +707,32 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
       assert.fail(
         `Symbol presence below consensus threshold (${CONSENSUS_THRESHOLD}/8):\n${failures.join("\n")}`
       );
+    }
+  });
+
+  it("marks the main file as the program's entry in the six languages whose main is one, and nothing else, with the two library-shaped variants carrying no entry", () => {
+    // Read from the sources: C's `int main(void)` (and each test program's), Go's `func main` in package main, Python's
+    // `__name__` guard, Ruby's `$PROGRAM_NAME` guard, Java's `public static void main`, Rust's `fn main` in src/main.rs.
+    // TypeScript's `export function main` and C#'s `static class Main { Run }` are library modules with no entry form.
+    const programs: Record<string, Record<string, string | undefined>> = {
+      c: { "src/main.c": "main", "src/test_helpers.c": "main", "src/test_pipeline.c": "main", "src/test_processor.c": "main" },
+      go: { "src/main/main.go": "main" },
+      python: { "src/main.py": undefined },
+      ruby: { "lib/main.rb": undefined },
+      java: { "src/com/rosetta/app/Main.java": "main" },
+      rust: { "src/main.rs": "main" },
+      typescript: {},
+      csharp: {}
+    };
+    for (const result of allResults) {
+      const found: Record<string, string | undefined> = {};
+      for (const [sourcePath, extract] of result.liveDocs) {
+        const doc = parseLiveDoc(extract.content);
+        assert.deepStrictEqual(doc.entries.filter((entry) => entry.reason !== "program"), [], `${result.language}: ${sourcePath} carries only program entries`);
+        const program = doc.entries.find((entry) => entry.reason === "program");
+        if (program) found[sourcePath] = program.symbol?.name;
+      }
+      assert.deepStrictEqual(found, programs[result.language], `${result.language}: the program entries`);
     }
   });
 });

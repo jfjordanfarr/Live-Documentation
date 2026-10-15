@@ -4,7 +4,9 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Gateway/Controllers/PaymentsController.cs
-- Generated At: 2026-10-02T20:20:04.860Z
+- Entry: opening [`POST api/payments`](#symbol-post-apipayments)
+- Entry: opening [`GET api/payments/{paymentId}`](#symbol-get-apipaymentspaymentid)
+- Generated At: 2026-10-15T15:49:44.981Z
 
 ## Authored
 ### Purpose

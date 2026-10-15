@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/ruby/rosetta/lib/main.rb
-- Generated At: 2026-10-02T20:20:08.325Z
+- Entry: program
+- Generated At: 2026-10-15T15:49:47.298Z
 
 ## Authored
 ### Purpose

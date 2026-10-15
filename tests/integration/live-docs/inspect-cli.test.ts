@@ -38,7 +38,8 @@ const fixtureFolders = {
   reflection: "csharp-reflection",
   blazor: "blazor-telemetry",
   queueWorker: "queue-worker",
-  powershell: "powershell-compendium"
+  powershell: "powershell-compendium",
+  entryPoints: "entry-points"
 } as const;
 
 /**
@@ -55,7 +56,7 @@ beforeAll(async () => {
     const workspace = fs.mkdtempSync(path.join(os.tmpdir(), `inspect-${folder}-`));
     temporaryWorkspaces.push(workspace);
     fs.cpSync(source, workspace, { recursive: true });
-    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", glob: ["**/*"] };
+    const config = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", glob: ["**/*"], ...(folder === "entry-points" ? { entryPoints: ["styles.css"] } : {}) };
     fs.writeFileSync(path.join(workspace, ".live-docs.config.json"), JSON.stringify(config), "utf8");
     await generateLiveDocs({
       workspaceRoot: workspace,
@@ -504,5 +505,65 @@ describe("Live Docs inspect CLI", () => {
       payload.frontier.some(entry => entry.reason === "max-depth"),
       "expected max-depth frontier marker"
     );
+  });
+
+  it("lists, without --from, the entry points with their reasons, what they reach, what nothing reaches and what only a test reaches", () => {
+    const run = runInspectCli(fixtures.entryPoints, ["--reachable", "--json"]);
+    assert.strictEqual(run.exitCode, 0, run.stderr);
+    const payload = JSON.parse(run.stdout) as {
+      kind: string;
+      from: string;
+      maxDepth: number;
+      starts: Array<{ codePath: string; test: boolean; entries: Array<{ reason: string; command?: string; declarer?: { label: string } }> }>;
+      reached: Array<{ codePath: string; hops: number }>;
+      unreachable: string[];
+      testsOnly: string[];
+    };
+    assert.strictEqual(payload.kind, "reachable");
+    assert.strictEqual(payload.from, "entries");
+    assert.strictEqual(payload.maxDepth, 25);
+    assert.deepStrictEqual(payload.starts.map((start) => start.codePath), ["package.json", "src/cli.ts", "src/lib.test.ts", "src/lib.ts", "styles.css", "tsconfig.json"]);
+    const cli = payload.starts.find((start) => start.codePath === "src/cli.ts")!;
+    assert.deepStrictEqual(cli.entries.map((entry) => [entry.reason, entry.command, entry.declarer?.label]), [["command", "demo", "package.json"], ["command", "start", "package.json"]]);
+    assert.strictEqual(payload.starts.find((start) => start.codePath === "src/lib.test.ts")!.test, true);
+    assert.deepStrictEqual(payload.reached, [
+      { codePath: "src/helper.ts", hops: 1 },
+      { codePath: "src/loader.ts", hops: 1 },
+      { codePath: "src/util.ts", hops: 1 },
+      { codePath: "src/plugin.ts", hops: 2 }
+    ]);
+    assert.deepStrictEqual(payload.unreachable, ["src/orphan.ts"]);
+    assert.deepStrictEqual(payload.testsOnly, ["src/helper.ts"]);
+
+    const text = runInspectCli(fixtures.entryPoints, ["--reachable"]);
+    assert.strictEqual(text.exitCode, 0, text.stderr);
+    const lines = text.stdout.split("\n");
+    assert.strictEqual(lines[0], "Files a path reaches from the entry points (max depth 25), nearest first.");
+    assert.strictEqual(lines[1], "Entry points: 6 files");
+    assert.ok(lines.includes("  src/cli.ts [.mdmd/layer-4/src/cli.ts.mdmd.md]  command demo of package.json; command start of package.json"), text.stdout);
+    assert.ok(lines.includes("  src/lib.test.ts [.mdmd/layer-4/src/lib.test.ts.mdmd.md]  test"), text.stdout);
+    assert.ok(lines.includes("Reached: 4 files"), text.stdout);
+    assert.ok(lines.includes("  2 hops  src/plugin.ts [.mdmd/layer-4/src/plugin.ts.mdmd.md]"), text.stdout);
+    assert.ok(lines.includes("Unreachable from any entry: 1 file"), text.stdout);
+    assert.ok(lines.includes("  src/orphan.ts [.mdmd/layer-4/src/orphan.ts.mdmd.md]  implementation"), text.stdout);
+    assert.ok(lines.includes("Reached only from tests: 1 file"), text.stdout);
+    assert.ok(lines.includes("  src/helper.ts [.mdmd/layer-4/src/helper.ts.mdmd.md]"), text.stdout);
+  });
+
+  it("refuses the entries walk with a --to or a --direction, and still requires --from for everything else", () => {
+    const withTo = runInspectCli(fixtures.entryPoints, ["--reachable", "--to", "src/lib.ts"]);
+    assert.strictEqual(withTo.exitCode, 1);
+    assert.match(withTo.stderr, /takes no --to/u);
+    const withDirection = runInspectCli(fixtures.entryPoints, ["--reachable", "--direction", "inbound"]);
+    assert.strictEqual(withDirection.exitCode, 1);
+    assert.match(withDirection.stderr, /takes no --direction/u);
+    const nothing = runInspectCli(fixtures.entryPoints, []);
+    assert.strictEqual(nothing.exitCode, 1);
+    assert.match(nothing.stderr, /--from is required, unless --reachable/u);
+    const fromFile = runInspectCli(fixtures.entryPoints, ["--reachable", "--from", "src/cli.ts", "--json"]);
+    assert.strictEqual(fromFile.exitCode, 0, fromFile.stderr);
+    const payload = JSON.parse(fromFile.stdout) as { kind: string; reached: Array<{ direction: string; files: Array<{ hops: number; node: { codePath: string } }> }> };
+    assert.strictEqual(payload.kind, "reachable");
+    assert.deepStrictEqual(payload.reached[0].files.map((file) => [file.node.codePath, file.hops]), [["src/lib.ts", 1], ["src/loader.ts", 1], ["src/plugin.ts", 2], ["src/util.ts", 2]]);
   });
 });

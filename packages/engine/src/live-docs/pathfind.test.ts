@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import type { GraphEdge, GraphFile, LiveDocGraph } from "./graph";
-import { enumerateTerminalPaths, getNeighbors, pathTo, reachFrom, searchGraph, walk } from "./pathfind";
+import { enumerateTerminalPaths, getNeighbors, isEntry, pathTo, reachFrom, reachability, searchGraph, walk } from "./pathfind";
 
 /** A graph from the files each file depends on, and the dependencies of each that resolved to no file. */
 function graphOf(dependencies: Record<string, string[]>, unresolved: Record<string, string[]> = {}): LiveDocGraph {
   const files: Record<string, GraphFile> = {};
   const fileOf = (codePath: string): GraphFile => {
-    files[codePath] ??= { codePath, docPath: `${codePath}.md`, edges: [], outbound: [], inbound: [], symbols: [] } as unknown as GraphFile;
+    files[codePath] ??= { codePath, docPath: `${codePath}.md`, archetype: "implementation", entries: [], edges: [], outbound: [], inbound: [], symbols: [] } as unknown as GraphFile;
     return files[codePath];
   };
   for (const [from, targets] of Object.entries(dependencies)) {
@@ -68,6 +68,49 @@ describe("reachFrom", () => {
     expect([...reachFrom(["a", "b"], outbound)]).toEqual([["c", 1]]);
     expect(reachFrom(["e"], outbound).size).toBe(0);
     expect([...reachFrom(["c"], inbound, 1)]).toEqual([["b", 1], ["d", 1]]);
+  });
+});
+
+describe("reachability", () => {
+  // cli (a command) depends on core, which depends on util; a test depends on core and on a helper; a manifest
+  // (tooling) stands alone; spare depends on util and nothing names it; orphan depends on nothing.
+  const entries = graphOf({ cli: ["core"], core: ["util"], "core.test": ["core", "helper"], manifest: [], spare: ["util"], orphan: [] });
+  entries.files.cli.entries = [{ reason: "command", command: "run", declarer: { label: "package.json", link: "../package.json.md" } }];
+  entries.files["core.test"].archetype = "test";
+  entries.files.manifest.entries = [{ reason: "tooling" }];
+
+  it("knows an entry by its lines or by the test archetype", () => {
+    expect(isEntry(entries.files.cli)).toBe(true);
+    expect(isEntry(entries.files["core.test"])).toBe(true);
+    expect(isEntry(entries.files.manifest)).toBe(true);
+    expect(isEntry(entries.files.core)).toBe(false);
+  });
+
+  it("walks from every entry, lists what is reached nearest first, what nothing reaches, and what only a test reaches", () => {
+    const result = reachability(entries);
+    expect(result.from).toBe("entries");
+    expect(result.starts).toEqual([
+      { codePath: "cli", entries: entries.files.cli.entries, test: false },
+      { codePath: "core.test", entries: [], test: true },
+      { codePath: "manifest", entries: [{ reason: "tooling" }], test: false }
+    ]);
+    expect(result.reached).toEqual([{ codePath: "core", hops: 1 }, { codePath: "helper", hops: 1 }, { codePath: "util", hops: 2 }]);
+    expect(result.unreachable).toEqual(["orphan", "spare"]);
+    expect(result.testsOnly).toEqual(["helper"]);
+  });
+
+  it("walks from the files asked for instead, in path order, with no test reading and no unknown file", () => {
+    const result = reachability(entries, ["spare", "missing", "cli", "spare"]);
+    expect(result.from).toBe("asked");
+    expect(result.starts.map((start) => start.codePath)).toEqual(["cli", "spare"]);
+    expect(result.reached).toEqual([{ codePath: "core", hops: 1 }, { codePath: "util", hops: 1 }]);
+    expect(result.unreachable).toEqual(["core.test", "helper", "manifest", "orphan"]);
+    expect(result.testsOnly).toEqual([]);
+  });
+
+  it("holds the walk at the depth limit", () => {
+    expect(reachability(entries, ["cli"], 1).reached).toEqual([{ codePath: "core", hops: 1 }]);
+    expect(reachability(entries, ["cli"], 1).unreachable).toContain("util");
   });
 });
 

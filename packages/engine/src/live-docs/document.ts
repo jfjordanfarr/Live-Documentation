@@ -23,6 +23,8 @@ export interface LiveDoc {
   codePath: string;
   layer: number;
   archetype?: string;
+  /** The `Entry` lines: why something outside the code starts this file; empty when nothing is known to. */
+  entries: Entry[];
   /** When the generated sections last changed. */
   generatedAt?: string;
   /** The authored block, verbatim, with no leading or trailing blank lines. */
@@ -91,6 +93,31 @@ export interface Dependency {
   qualifiers: string[];
 }
 
+/**
+ * Why a file is an entry: something outside the code starts it.
+ *
+ * - `program`: the file holds the language's program entry point.
+ * - `command`: a manifest's script or binary runs it, by the script's or binary's name.
+ * - `module`: a manifest's `main` names it as the package's module.
+ * - `opening`: the file serves a route, an address, a procedure or a table that a caller outside the scan names.
+ * - `tooling`: a tool reads it: a manifest, a compiler or runner configuration.
+ * - `declared`: the configuration names it as an entry.
+ *
+ * A test is an entry by its archetype and carries no line.
+ */
+export type EntryReason = "program" | "command" | "module" | "opening" | "tooling" | "declared";
+
+/** One `Entry` line of the Metadata block: the reason and its evidence. */
+export interface Entry {
+  reason: EntryReason;
+  /** For `program`, the symbol that starts the program when the language names one; for `opening`, the opening served. Linked when the doc has the symbol. */
+  symbol?: { name: string; link?: string };
+  /** For `command`, the script's or binary's name. */
+  command?: string;
+  /** For `command` and `module`, the manifest that names the file: its workspace path and the link to its doc. */
+  declarer?: { label: string; link: string };
+}
+
 /** One entry of the `Re-Exported Symbol Anchors` section. */
 export interface ReExport {
   name: string;
@@ -121,6 +148,27 @@ const EXTERNAL_RE_EXPORT = "- Re-exported from external module";
 export const DEFAULT_AUTHORED_BLOCK = ["### Purpose", "_Pending authored purpose_", "", "### Notes", "_Pending notes_"].join("\n");
 
 /**
+ * An entry's reason and evidence in words, as the CLI prints them and the
+ * Explorer shows them: "program main", "command build of package.json",
+ * "module of packages/cli/package.json", "opening GET api/payments",
+ * "tooling", "declared".
+ */
+export function entryWords(entry: Entry): string {
+  switch (entry.reason) {
+    case "program":
+      return entry.symbol ? `program ${entry.symbol.name}` : "program";
+    case "command":
+      return `command ${entry.command} of ${entry.declarer?.label}`;
+    case "module":
+      return `module of ${entry.declarer?.label}`;
+    case "opening":
+      return `opening ${entry.symbol?.name}`;
+    default:
+      return entry.reason;
+  }
+}
+
+/**
  * The name of a symbol without the parenthesised suffix a heading carries to
  * tell it from another of the same name, such as `Widget (interface)` or
  * `parse (method overload 2)`.
@@ -143,6 +191,9 @@ export function renderLiveDoc(doc: LiveDoc): string {
   if (doc.layer === 4) {
     lines.push(`- Code Path: ${doc.codePath}`);
   }
+  for (const entry of doc.entries) {
+    lines.push(renderEntry(entry));
+  }
   if (doc.generatedAt) {
     lines.push(`- Generated At: ${doc.generatedAt}`);
   }
@@ -155,6 +206,27 @@ export function renderLiveDoc(doc: LiveDoc): string {
     pushSection(lines, RE_EXPORTS, renderReExports(doc.reExports));
   }
   return `${lines.join("\n")}\n`;
+}
+
+function renderEntry(entry: Entry): string {
+  const symbol = entry.symbol ? renderSymbolRef(entry.symbol) : "";
+  const declarer = entry.declarer ? `[\`${entry.declarer.label}\`](${entry.declarer.link})` : "";
+  switch (entry.reason) {
+    case "program":
+      return `- Entry: program${symbol ? ` ${symbol}` : ""}`;
+    case "command":
+      return `- Entry: command \`${entry.command}\` of ${declarer}`;
+    case "module":
+      return `- Entry: module of ${declarer}`;
+    case "opening":
+      return `- Entry: opening ${symbol}`;
+    default:
+      return `- Entry: ${entry.reason}`;
+  }
+}
+
+function renderSymbolRef(symbol: { name: string; link?: string }): string {
+  return symbol.link ? `[\`${symbol.name}\`](${symbol.link})` : `\`${symbol.name}\``;
 }
 
 function pushSection(lines: string[], name: string, body: string[]): void {
@@ -254,6 +326,10 @@ export function parseLiveDoc(text: string): LiveDoc {
       reader.fail(`the Code Path (${declared}) differs from the title (${codePath})`);
     }
   }
+  const entries: Entry[] = [];
+  for (let line = reader.take(ENTRY_LINE); line; line = reader.take(ENTRY_LINE)) {
+    entries.push(parseEntry(line, reader.lineNumber() - 1));
+  }
   const generatedAt = reader.take(/^- Generated At: (.+)$/u)?.[1];
   reader.expectBlank();
   reader.expectLine("## Authored");
@@ -281,7 +357,53 @@ export function parseLiveDoc(text: string): LiveDoc {
   if (!reader.atEnd()) {
     reader.fail("text after the last generated section");
   }
-  return { codePath, layer, archetype, generatedAt, authored: authored.join("\n"), symbols, dependencies, reExports };
+  return { codePath, layer, archetype, entries, generatedAt, authored: authored.join("\n"), symbols, dependencies, reExports };
+}
+
+const ENTRY_LINE = /^- Entry: (program|command|module|opening|tooling|declared)(?: (.+))?$/u;
+const SYMBOL_REF = /^(?:\[`([^`]+)`\]\(([^)]+)\)|`([^`]+)`)$/u;
+const DECLARER = /^\[`([^`]+)`\]\(([^)]+)\)$/u;
+const COMMAND_EVIDENCE = /^`([^`]+)` of (\[`[^`]+`\]\([^)]+\))$/u;
+const MODULE_EVIDENCE = /^of (\[`[^`]+`\]\([^)]+\))$/u;
+
+function parseEntry(match: RegExpExecArray, lineNumber: number): Entry {
+  const reason = match[1] as EntryReason;
+  const evidence = match[2];
+  const fail = (): never => {
+    throw new LiveDocSyntaxError(lineNumber, `unexpected evidence on the ${reason} entry ${JSON.stringify(match[0])}`);
+  };
+  const symbolOf = (text: string): { name: string; link?: string } => {
+    const ref = SYMBOL_REF.exec(text) ?? fail();
+    return ref[3] !== undefined ? { name: ref[3] } : { name: ref[1], link: ref[2] };
+  };
+  const declarerOf = (text: string): { label: string; link: string } => {
+    const ref = DECLARER.exec(text) ?? fail();
+    return { label: ref[1], link: ref[2] };
+  };
+  switch (reason) {
+    case "program":
+      return evidence === undefined ? { reason } : { reason, symbol: symbolOf(evidence) };
+    case "command": {
+      const command = COMMAND_EVIDENCE.exec(evidence ?? "") ?? fail();
+      return { reason, command: command[1], declarer: declarerOf(command[2]) };
+    }
+    case "module": {
+      const module = MODULE_EVIDENCE.exec(evidence ?? "") ?? fail();
+      return { reason, declarer: declarerOf(module[1]) };
+    }
+    case "opening": {
+      const symbol = symbolOf(evidence ?? "");
+      if (!symbol.link) {
+        fail();
+      }
+      return { reason, symbol };
+    }
+    default:
+      if (evidence !== undefined) {
+        fail();
+      }
+      return { reason };
+  }
 }
 
 /** The lines of a section body and the one-based line number of the first. */

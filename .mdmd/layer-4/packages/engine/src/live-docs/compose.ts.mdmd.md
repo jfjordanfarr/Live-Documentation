@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-09-28T17:01:35.415Z
+- Generated At: 2026-10-15T15:58:58.522Z
 
 ## Authored
 ### Purpose
@@ -15,13 +15,14 @@ Turns a source file's analysis into the document model: headings with unique anc
 - `computePublicSymbolHeadingInfo` disambiguates symbols that share a name (`Widget (interface)`, `draw (function overload 2)`) and keeps every anchor unique within a doc.
 - A type reference resolves through the workspace symbol index. A type the file itself declares links within the doc, whatever other files declare under that name. Otherwise, among files of the same language, a declaration wins over a barrel that only re-exports the name, then the nearest file. A name never resolves into a file of another language (decided 2026-09-28 after the Local Map drew a wire no code justified).
 - Dependencies are grouped by resolved file: an imported symbol links to its anchor, an alias links to the original name, and an external module keeps its specifier and the symbols taken from it.
+- `composeEntries` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) writes the `Entry` lines in a fixed order so that a doc is written the same way every run: `program` from the file's analysis, the heading at the declaration's line so that a namesake overload is not linked (found on Java's rosetta `Main.java`); the commands by name and the module from the entry index, each linking the manifest's doc; one `opening` per route, address, procedure, table, view or function served; `tooling` for a manifest symbol or a file name a tool reads (`isToolingFile`); `declared` for a configuration pattern matched by the archetype overrides' rule.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L56)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L60)
 - Returns: [`PublicSymbolHeadingInfo`](./coreTypes.ts.mdmd.md#symbol-publicsymbolheadinginfo)[]
 - Parameters: `symbols`: [`PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry)[]
 
@@ -40,7 +41,7 @@ Array of heading info with display names and slugs
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L191)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L195)
 - Returns: [`SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock)[]
 
 ##### `composeSymbolBlocks` — Summary
@@ -56,7 +57,7 @@ Composes the `Public Symbols` section of a Live Doc.
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L522)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L526)
 - Returns: [`Dependency`](./document.ts.mdmd.md#symbol-dependency)[]
 
 ##### `composeDependencies` — Summary
@@ -78,9 +79,37 @@ its own even when a source-observed dependency names the same file.
 - `args.liveDocsRootAbsolute`: Absolute path to the Live Docs mirror root.
 - `args.symbolIndex`: The workspace symbol index, for anchors in other files.
 
+#### `composeEntries` {#symbol-composeentries}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L733)
+- Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
+
+##### `composeEntries` — Summary
+Composes the `Entry` lines of a doc: why something outside the code starts
+the file, in a fixed order so that a doc is written the same way every run.
+
+##### `composeEntries` — Remarks
+`program` comes from the file's own analysis, its symbol linked when the doc
+has it. `command` and `module` come from the manifests that declare the file,
+as the workspace entry index recorded them. `opening` is one line per route,
+address, procedure, table, view or function the file serves. `tooling` is a
+rule by kind: a manifest, or a file name a tool reads. `declared` is the
+configuration's `entryPoints`. A test is an entry by its archetype and gets
+no line here.
+
+##### `composeEntries` — Parameters
+- `args.analysis`: The file's analysis, for the program entry point.
+- `args.config`: The configuration, for the declared entry points.
+- `args.declaredBy`: What manifests declare about the file.
+- `args.docDir`: Absolute directory of the Live Doc being written; links are relative to it.
+- `args.docExtension`: File extension for Live Docs.
+- `args.headings`: The symbols with their anchors, for the program's symbol and the openings.
+- `args.liveDocsRootAbsolute`: Absolute path to the Live Docs root.
+- `args.sourceRelativePath`: Workspace-relative source path, for the rules by name.
+
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L711)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L797)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
@@ -91,8 +120,11 @@ barrel re-exports, linking to the module it comes from.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `node:path` - `path`
+- [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`index.getSyntaxByPath`](../languages/index.ts.mdmd.md#symbol-getsyntaxbypath)
+- [`archetype.matchesPathPattern`](./archetype.ts.mdmd.md#symbol-matchespathpattern)
 - [`coreConstants.RESERVED_HEADING_NAMES`](./coreConstants.ts.mdmd.md#symbol-reserved_heading_names)
+- [`coreTypes.DeclaredBy`](./coreTypes.ts.mdmd.md#symbol-declaredby) (type-only)
 - [`coreTypes.DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry) (type-only)
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.PublicSymbolHeadingInfo`](./coreTypes.ts.mdmd.md#symbol-publicsymbolheadinginfo) (type-only)
@@ -109,8 +141,12 @@ barrel re-exports, linking to the module it comes from.
 - [`coreUtils.toModuleLabel`](./coreUtils.ts.mdmd.md#symbol-tomodulelabel)
 - [`document.Dependency`](./document.ts.mdmd.md#symbol-dependency) (type-only)
 - [`document.DocSection`](./document.ts.mdmd.md#symbol-docsection) (type-only)
+- [`document.Entry`](./document.ts.mdmd.md#symbol-entry) (type-only)
 - [`document.ReExport`](./document.ts.mdmd.md#symbol-reexport) (type-only)
 - [`document.ReferenceLine`](./document.ts.mdmd.md#symbol-referenceline) (type-only)
 - [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock) (type-only)
 - [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref) (type-only)
+- [`openings.MANIFEST_KINDS`](./openings.ts.mdmd.md#symbol-manifest_kinds)
+- [`openings.OPENING_KINDS`](./openings.ts.mdmd.md#symbol-opening_kinds)
+- [`openings.isToolingFile`](./openings.ts.mdmd.md#symbol-istoolingfile)
 <!-- LIVE-DOC:END Dependencies -->

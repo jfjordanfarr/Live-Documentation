@@ -4,7 +4,9 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/cli/src/index.ts
-- Generated At: 2026-09-27T23:21:26.735Z
+- Entry: command `live-docs` of [`packages/cli/package.json`](../package.json.mdmd.md)
+- Entry: module of [`packages/cli/package.json`](../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:38.287Z
 
 ## Authored
 ### Purpose

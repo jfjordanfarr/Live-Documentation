@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/openings.ts
-- Generated At: 2026-10-09T20:42:16.370Z
+- Generated At: 2026-10-15T15:58:58.883Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ The vocabulary of what a file serves across a process boundary, and how a call f
 - Home and away is a presumption: a browser script calls its own site, so a server at home wins; a C# client calls other systems, so one away wins; when only one side serves the route it is taken, and several servers on the chosen side are all kept, since the files cannot say which answers. It decides the estate's one ambiguity, `api/payments` served by both the portal and the gateway. Confirming the host from configuration instead is a gap the design doc names.
 - The caches are `WeakMap`s keyed on the symbol index and on the file index, so an index is scanned once per generation run and nothing outlives it; `homeOf` takes its file index as an object for that reason.
 - The SQL scanner is regular expressions over text whose comments and string literals are replaced by spaces of the same length, so the line numbers of declarations stay right. A written name folds to its last two parts, lowercased; four parts, or an empty part in the middle, mark a linked server. Measured by `openings.test.ts`.
+- `OPENING_KINDS` and `isToolingFile` (2026-10-15): the symbol kinds that make a file an entry by what it serves, and the file names a tool reads and no file imports (`tsconfig*.json`, `*.config.*`, `Web.config`, `App.config`, `packages.config`), shared by the composition of the `Entry` lines and by the manifest reader, which passes such a file over when it looks for what a command runs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -65,16 +66,36 @@ The kind of the symbol a package manifest publishes.
 ##### `MANIFEST_KINDS` — Summary
 The kinds that mark a doc as a manifest's, whose external dependencies are what a thing stands on.
 
+#### `OPENING_KINDS` {#symbol-opening_kinds}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L36)
+- Returns: `ReadonlySet`
+
+##### `OPENING_KINDS` — Summary
+The kinds of symbols that are openings: a file that serves one is an entry, since its caller is outside the scan.
+
+#### `isToolingFile` {#symbol-istoolingfile}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L48)
+
+##### `isToolingFile` — Summary
+True when a file is one a tool reads and no file imports, by its name: a
+compiler's or a runner's configuration (`tsconfig.json`, `tsconfig.base.json`,
+`vitest.config.ts`, `playwright.config.ts`), a .NET configuration
+(`Web.config`, `App.config`) or package list (`packages.config`). Such a file
+is an entry by the `tooling` reason, and a command that names one names an
+input, not the file it runs.
+
 #### `RoutePattern` {#symbol-routepattern}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L43)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L59)
 
 ##### `RoutePattern` — Summary
 A route as a call names it or a controller serves it: the method, when known, and the path's segments.
 
 #### `routeSegments` {#symbol-routesegments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L53)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L69)
 
 ##### `routeSegments` — Summary
 The segments of a route template, without its scheme and host, leading `~/`
@@ -82,21 +103,21 @@ or `/`, query string, parameter constraints or optional marks.
 
 #### `isHttpMethod` {#symbol-ishttpmethod}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L74)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L90)
 
 ##### `isHttpMethod` — Summary
 True when the text looks like an HTTP method.
 
 #### `routeSymbolName` {#symbol-routesymbolname}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L79)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L95)
 
 ##### `routeSymbolName` — Summary
 The name of a route symbol: the method, when known, then the normalised path.
 
 #### `parseRouteSymbol` {#symbol-parseroutesymbol}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L85)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L101)
 - Returns: [`RoutePattern`](#symbol-routepattern)
 
 ##### `parseRouteSymbol` — Summary
@@ -104,7 +125,7 @@ Reads a route symbol's name back into a pattern.
 
 #### `routesMatch` {#symbol-routesmatch}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L95)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L111)
 - Parameters: `call`: [`RoutePattern`](#symbol-routepattern); `served`: [`RoutePattern`](#symbol-routepattern)
 
 ##### `routesMatch` — Summary
@@ -112,14 +133,14 @@ True when a call names the served route: the same method when both are known, th
 
 #### `ServedRoute` {#symbol-servedroute}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L118)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L134)
 
 ##### `ServedRoute` — Summary
 A route some file serves, as the symbol index records it.
 
 #### `servedRoutes` {#symbol-servedroutes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L127)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L143)
 - Returns: [`ServedRoute`](#symbol-servedroute)[]
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -128,7 +149,7 @@ Every route symbol of the workspace, read once per index.
 
 #### `matchRoute` {#symbol-matchroute}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L144)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L160)
 - Returns: [`ServedRoute`](#symbol-servedroute)[]
 - Parameters: `call`: [`RoutePattern`](#symbol-routepattern); `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -137,7 +158,7 @@ The served routes a call matches, in index order.
 
 #### `homeOf` {#symbol-homeof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L179)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L195)
 - Parameters: `fileIndex`: `Iterable`
 
 ##### `homeOf` — Summary
@@ -146,7 +167,7 @@ among the workspace's files, or the workspace root when there is none.
 
 #### `chooseServers` {#symbol-chooseservers}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L206)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L222)
 - Returns: [`ServedRoute`](#symbol-servedroute)[]
 - Parameters: `matches`: [`ServedRoute`](#symbol-servedroute)[]; `fileIndex`: `Iterable`
 
@@ -162,14 +183,14 @@ cannot say which one answers.
 
 #### `SqlObjectName (interface)` {#symbol-sqlobjectname-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L219)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L235)
 
 ##### `SqlObjectName (interface)` — Summary
 An object a database script declares or names: its last two name parts, lowercased, and whether a linked server carries it.
 
 #### `sqlObjectName (function)` {#symbol-sqlobjectname-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L231)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L247)
 - Returns: [`SqlObjectName`](#symbol-sqlobjectname-interface)
 
 ##### `sqlObjectName (function)` — Summary
@@ -177,28 +198,28 @@ Reads a written object name: brackets and quotes off, server and database qualif
 
 #### `sqlDeclaredName` {#symbol-sqldeclaredname}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L239)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L255)
 
 ##### `sqlDeclaredName` — Summary
 The name of a database object as written, brackets and quotes off.
 
 #### `stripSql` {#symbol-stripsql}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L250)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L266)
 
 ##### `stripSql` — Summary
 SQL text without its comments and string literals, positions kept.
 
 #### `SqlDeclaration` {#symbol-sqldeclaration}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L255)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L271)
 
 ##### `SqlDeclaration` — Summary
 One object a script declares.
 
 #### `sqlDeclarations` {#symbol-sqldeclarations}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L262)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L278)
 - Returns: [`SqlDeclaration`](#symbol-sqldeclaration)[]
 
 ##### `sqlDeclarations` — Summary
@@ -206,14 +227,14 @@ Every object a script creates.
 
 #### `SqlReference` {#symbol-sqlreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L272)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L288)
 
 ##### `SqlReference` — Summary
 One object a script or a query names.
 
 #### `sqlReferences` {#symbol-sqlreferences}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L280)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L296)
 - Returns: [`SqlReference`](#symbol-sqlreference)[]
 
 ##### `sqlReferences` — Summary
@@ -221,14 +242,14 @@ Every object the text names after a verb that reads, writes, calls or alters it.
 
 #### `DeclaredSqlObject` {#symbol-declaredsqlobject}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L304)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L320)
 
 ##### `DeclaredSqlObject` — Summary
 A database object some script declares, as the symbol index records it.
 
 #### `declaredSqlObjects` {#symbol-declaredsqlobjects}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L313)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L329)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 
@@ -237,7 +258,7 @@ Every procedure, table, view and function symbol of the workspace, read once per
 
 #### `sqlNameMatches` {#symbol-sqlnamematches}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L330)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L346)
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `declared`: [`SqlObjectName`](#symbol-sqlobjectname-interface)
 
 ##### `sqlNameMatches` — Summary
@@ -245,7 +266,7 @@ True when a written name names the declared object: schema and object when both 
 
 #### `matchSqlObject` {#symbol-matchsqlobject}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L338)
+- Source: [source](../../../../../../packages/engine/src/live-docs/openings.ts#L354)
 - Returns: [`DeclaredSqlObject`](#symbol-declaredsqlobject)[]
 - Parameters: `name`: [`SqlObjectName`](#symbol-sqlobjectname-interface); `index`: [`WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex)
 

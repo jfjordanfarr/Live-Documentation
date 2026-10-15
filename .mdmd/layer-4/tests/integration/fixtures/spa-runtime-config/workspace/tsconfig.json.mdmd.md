@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json
-- Generated At: 2026-09-27T23:21:33.718Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:44.236Z
 
 ## Authored
 ### Purpose

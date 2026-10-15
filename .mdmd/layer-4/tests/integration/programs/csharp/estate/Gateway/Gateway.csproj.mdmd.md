@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/csharp/estate/Gateway/Gateway.csproj
-- Generated At: 2026-10-02T20:20:04.876Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:44.997Z
 
 ## Authored
 ### Purpose

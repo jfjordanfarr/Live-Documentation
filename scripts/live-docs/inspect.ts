@@ -3,7 +3,8 @@
  * Live Documentation inspect CLI.
  * 
  * Provides pathfinding capabilities across the Live Doc dependency graph.
- * Supports both file-level and symbol-level searches.
+ * Supports both file-level and symbol-level searches, and the walk from the
+ * entry points that the Knowledge Sources panel shows.
  * 
  * Usage: npm run live-docs:inspect -- [options]
  * 
@@ -24,6 +25,7 @@ import {
   enumerateTerminalPaths,
   getNeighbors,
   reachFrom,
+  reachability,
   searchGraph,
   searchSymbolPath,
   type Direction,
@@ -36,6 +38,7 @@ import {
   emitFanoutResult,
   emitNotFound,
   emitPathResult,
+  emitReachableFromEntries,
   emitReachableResult,
   emitSymbolPathNotFound,
   emitSymbolPathResult
@@ -75,8 +78,8 @@ async function main(): Promise<void> {
     return;
   }
 
-  if (!args.from) {
-    console.error("--from is required. See --help for usage details.");
+  if (!args.from && !args.reachable) {
+    console.error("--from is required, unless --reachable asks what the entry points reach. See --help for usage details.");
     process.exit(1);
     return;
   }
@@ -120,20 +123,32 @@ async function main(): Promise<void> {
   const direction = args.direction;
 
   if (args.reachable && args.to) {
-    console.error("--reachable lists what a path reaches from --from; it takes no --to.");
+    console.error("--reachable lists what a path reaches from --from, or from the entry points; it takes no --to.");
     process.exit(1);
     return;
   }
 
+  // What the entry points reach: every file something outside the code starts, walked along what it depends on.
+  if (args.reachable && !args.from) {
+    if (direction !== "outbound") {
+      console.error("From the entry points the walk runs along what they depend on; --reachable without --from takes no --direction.");
+      process.exit(1);
+      return;
+    }
+    emitReachableFromEntries(reachability(graph, undefined, args.maxDepth), graph, args.maxDepth, args.json);
+    return;
+  }
+  const from = args.from!;
+
   // Check if either input contains a symbol reference
-  const fromHasSymbol = hasSymbolReference(args.from);
+  const fromHasSymbol = hasSymbolReference(from);
   const toHasSymbol = args.to ? hasSymbolReference(args.to) : false;
 
   // Symbol-aware pathfinding when symbols are specified
   if (fromHasSymbol || toHasSymbol) {
-    const fromRef = resolveSymbolReference(args.from, workspaceRoot, configInput, graph);
+    const fromRef = resolveSymbolReference(from, workspaceRoot, configInput, graph);
     if (!fromRef) {
-      console.error(`Unable to resolve --from '${args.from}'.`);
+      console.error(`Unable to resolve --from '${from}'.`);
       process.exit(1);
       return;
     }
@@ -175,9 +190,9 @@ async function main(): Promise<void> {
   }
 
   // Standard file-level pathfinding
-  const fromId = resolveArtifactIdentifier(args.from, workspaceRoot, configInput, graph);
+  const fromId = resolveArtifactIdentifier(from, workspaceRoot, configInput, graph);
   if (!fromId) {
-    console.error(`Unable to resolve --from '${args.from}'.`);
+    console.error(`Unable to resolve --from '${from}'.`);
     process.exit(1);
     return;
   }
@@ -362,6 +377,8 @@ function usage(): string {
     `  --to <path>              Target artefact. Omit to list terminal paths from --from.\n` +
     `                           Use path#Symbol syntax for symbol-level search.\n` +
     `  --reachable              List every file a path reaches from --from, nearest first, with its hops.\n` +
+    `                           Without --from: the entry points, what they reach, what nothing reaches,\n` +
+    `                           and what only a test reaches.\n` +
     `  --direction <dir>        Traversal direction: outbound (default) or inbound; both with --to or --reachable.\n` +
     `  --max-depth <n>          Maximum traversal depth (default ${DEFAULT_MAX_DEPTH}).\n` +
     `  --config <file>          Load configuration from JSON file.\n` +
@@ -380,7 +397,8 @@ function usage(): string {
     `  npm run live-docs:inspect -- --from scripts/live-docs/generate.ts --to packages/engine/src/live-docs/core.ts\n` +
     `  npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile --json\n` +
     `  npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound --json\n` +
-    `  npm run live-docs:inspect -- --from packages/engine/src/live-docs/graph.ts --reachable --direction both\n`;
+    `  npm run live-docs:inspect -- --from packages/engine/src/live-docs/graph.ts --reachable --direction both\n` +
+    `  npm run live-docs:inspect -- --reachable --json\n`;
 }
 
 main().catch((error) => {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/go.ts
-- Generated At: 2026-09-27T23:21:30.585Z
+- Generated At: 2026-10-15T15:49:38.792Z
 
 ## Authored
 ### Purpose
@@ -14,13 +14,14 @@ The Go adapter: tree-sitter symbols (exported declarations, methods, fields and 
 - Measured against `scip-go` on `go/depot` and `go/rosetta`; the misses it keeps are scip-go's package-symbol artifact and one promoted method that needs type inference, both recorded in the decisions log.
 - Locals are tracked per function (parameters, results, `:=`, `var`, `range`, type switches, labels) so a local that shadows a package-level name of a sibling file does not link; block-level scoping inside a function is not modelled.
 - The package table is keyed by directory and package clause, built once per generation run on the file index; per-file facts are cached by modification time.
+- The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a top-level `func main` in `package main`, with its line; a `main` of another package, or a method named `main`, is none.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `goAdapter` {#symbol-goadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L619)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/go.ts#L629)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `goAdapter` — Summary
@@ -42,5 +43,6 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
+- [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

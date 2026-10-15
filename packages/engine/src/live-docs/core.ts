@@ -16,6 +16,7 @@
 
 export type {
   SourceAnalysisResult,
+  WorkspaceEntryIndex,
   WorkspaceSymbolIndex,
   TypeReference,
   PublicSymbolEntry,
@@ -37,13 +38,14 @@ export {
 
 export {
   discoverTargetFiles,
-  buildWorkspaceSymbolIndex
+  buildWorkspaceIndexes
 } from "./discovery";
 
 export { collectExportedSymbols } from "./symbolExtraction";
 
 export {
   computePublicSymbolHeadingInfo,
+  composeEntries,
   composeSymbolBlocks,
   composeDependencies,
   composeReExports

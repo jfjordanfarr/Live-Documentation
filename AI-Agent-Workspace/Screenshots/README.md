@@ -4,7 +4,7 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 ## 2026-10-15
 
-Named in [the day's record](2026-10-15/README.md): the Local Map's pin rules after the owner's challenge, on this repository's bundle: the recentre control on every card but the subject's, one symbol on a neighbour as one pin with the subject still drawn whole, a card pinned whole and narrowed to a symbol, a second symbol added, the last released leaving the file whole, the subject moved by the control, and one symbol of `branches.ts` reached through the Knowledge Sources panel.
+Named in [the day's record](2026-10-15/README.md): the Local Map's pin rules after the owner's challenge, on this repository's bundle: the recentre control on every card but the subject's, one symbol on a neighbour as one pin with the subject still drawn whole, a card pinned whole and narrowed to a symbol, a second symbol added, the last released leaving the file whole, the subject moved by the control, and one symbol of `branches.ts` reached through the Knowledge Sources panel. Then, from the `reachable` build: the Knowledge Sources panel's entry points by reason on this repository and the estate, the walk's status line, the groups opened with each file's reasons, what nothing reaches, the "Reachable from" field typed into and holding a chosen file with the configuration line to copy, and the root landing the entries decide.
 
 ## 2026-10-14
 

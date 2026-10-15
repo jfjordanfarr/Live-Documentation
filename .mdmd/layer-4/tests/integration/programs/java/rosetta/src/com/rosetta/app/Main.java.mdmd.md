@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/java/rosetta/src/com/rosetta/app/Main.java
-- Generated At: 2026-10-02T20:20:06.276Z
+- Entry: program [`main`](#symbol-main-method-overload-2)
+- Generated At: 2026-10-15T15:59:04.580Z
 
 ## Authored
 ### Purpose

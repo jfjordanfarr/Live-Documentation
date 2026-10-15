@@ -1,14 +1,14 @@
 /**
  * What the inspect CLI prints: node descriptors, and the text or JSON of a
- * path, a symbol path, a fan-out, the files a path reaches, a dual-direction
- * search, or a miss.
+ * path, a symbol path, a fan-out, the files a path reaches from a file or from
+ * the entry points, a dual-direction search, or a miss.
  *
  * @module
  */
 
 import path from "node:path";
 
-import { symbolName } from "@live-documentation/engine/live-docs/document";
+import { entryWords, symbolName } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 import {
   MAX_ENUMERATED_PATHS,
@@ -16,6 +16,7 @@ import {
   type FanoutPath,
   type OneWay,
   type PathSearchResult,
+  type Reachability,
   type SymbolHop,
   type SymbolPathSearchResult,
   type SymbolReference
@@ -330,6 +331,49 @@ export function emitReachableResult(
       const where = descriptor.docPath ? `${descriptor.codePath} [${descriptor.docPath}]` : descriptor.codePath;
       console.log(`  ${file.hops} ${file.hops === 1 ? "hop " : "hops"}  ${where}`);
     }
+  }
+}
+
+/**
+ * Emits what the entry points reach: the headless form of the Knowledge Sources
+ * panel, whose JSON export carries the same object. The text names every entry
+ * with its reasons, then the files reached nearest first, the files no entry
+ * reaches with their archetypes, and the files only a test reaches.
+ *
+ * @param result - The engine's reachability from the graph's entry points
+ * @param graph - The Live Doc graph
+ * @param maxDepth - Maximum depth used
+ * @param json - If true, emit JSON format
+ */
+export function emitReachableFromEntries(result: Reachability, graph: LiveDocGraph, maxDepth: number, json: boolean): void {
+  if (json) {
+    console.log(JSON.stringify({ kind: "reachable" as const, maxDepth, ...result }, null, 2));
+    return;
+  }
+
+  const where = (codePath: string): string => {
+    const docPath = graph.files[codePath]?.docPath;
+    return docPath ? `${codePath} [${docPath}]` : codePath;
+  };
+  const count = (n: number, noun: string): string => `${n} ${noun}${n === 1 ? "" : "s"}`;
+
+  console.log(`Files a path reaches from the entry points (max depth ${maxDepth}), nearest first.`);
+  console.log(`Entry points: ${count(result.starts.length, "file")}`);
+  for (const start of result.starts) {
+    const reasons = [...start.entries.map(entryWords), ...(start.test ? ["test"] : [])].join("; ");
+    console.log(`  ${where(start.codePath)}  ${reasons}`);
+  }
+  console.log(`Reached: ${count(result.reached.length, "file")}`);
+  for (const file of result.reached) {
+    console.log(`  ${file.hops} ${file.hops === 1 ? "hop " : "hops"}  ${where(file.codePath)}`);
+  }
+  console.log(`Unreachable from any entry: ${count(result.unreachable.length, "file")}`);
+  for (const codePath of result.unreachable) {
+    console.log(`  ${where(codePath)}  ${graph.files[codePath]?.archetype ?? "implementation"}`);
+  }
+  console.log(`Reached only from tests: ${count(result.testsOnly.length, "file")}`);
+  for (const codePath of result.testsOnly) {
+    console.log(`  ${where(codePath)}`);
   }
 }
 

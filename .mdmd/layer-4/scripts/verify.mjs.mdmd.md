@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/verify.mjs
-- Generated At: 2026-09-27T23:21:32.053Z
+- Entry: command `verify` of [`package.json`](../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.582Z
 
 ## Authored
 ### Purpose

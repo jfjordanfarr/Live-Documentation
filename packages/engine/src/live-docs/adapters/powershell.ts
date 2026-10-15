@@ -49,7 +49,7 @@ interface PowerShellExtractionPayload {
 
 const cache = new Map<string, Promise<PowerShellExtractionPayload | null>>();
 
-/** Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`). Extracts functions, cmdlets, aliases, and dot-source/`Import-Module` dependencies. */
+/** Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`). Extracts functions, cmdlets, aliases, and dot-source/`Import-Module` dependencies; a `.ps1` script is the program's entry, a module or manifest is not. */
 export const powershellAdapter: LanguageAdapter = {
   id: "powershell-basic",
   extensions: [".ps1", ".psm1", ".psd1"],
@@ -63,11 +63,15 @@ export const powershellAdapter: LanguageAdapter = {
       };
     }
 
+    // A script is what `pwsh` runs, so every `.ps1` is the program's entry, whatever its parse yields; a `.psm1` module is not.
+    const entry: Pick<SourceAnalysisResult, "program"> = extension === ".ps1" ? { program: {} } : {};
+
     const payload = await parsePowerShellFile(absolutePath);
     if (!payload) {
       return {
         symbols: [],
-        dependencies: []
+        dependencies: [],
+        ...entry
       };
     }
 
@@ -121,16 +125,10 @@ export const powershellAdapter: LanguageAdapter = {
 
     const dependencies = Array.from(dependencyMap.values());
 
-    if (symbols.length === 0 && dependencies.length === 0) {
-      return {
-        symbols: [],
-        dependencies: []
-      };
-    }
-
     return {
       symbols,
-      dependencies
+      dependencies,
+      ...entry
     };
   }
 };

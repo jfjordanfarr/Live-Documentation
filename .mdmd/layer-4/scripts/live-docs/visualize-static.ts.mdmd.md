@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-static.ts
-- Generated At: 2026-09-28T01:00:43.562Z
+- Entry: command `live-docs:visualize` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.399Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/tsconfig.json
-- Generated At: 2026-09-27T23:21:39.755Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:47.837Z
 
 ## Authored
 ### Purpose

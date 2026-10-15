@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/core.ts
-- Generated At: 2026-10-08T16:03:27.230Z
+- Generated At: 2026-10-15T15:49:39.487Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - Extended on Nov 12 to power adapter registries and polyglot fixture generation, adding hooks the co-activation analytics now depend on.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-12.SUMMARIZED.md#turn-08-stand-up-co-activation-infrastructure-lines-1101-1220]
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.
 - Trimmed on 2026-10-08 from 58 re-exported names to the 24 some file imports through it, in [the dead code sweep](../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md): the rest were imported from their origins by every consumer.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
+- On 2026-10-15 `buildWorkspaceSymbolIndex` gave way to `buildWorkspaceIndexes`, which returns the symbol index and the entry index from one pass, and `composeEntries` and `WorkspaceEntryIndex` joined the names offered here, each imported by the generator.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -23,97 +24,105 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L18)
 
-#### `WorkspaceSymbolIndex` {#symbol-workspacesymbolindex}
+#### `WorkspaceEntryIndex` {#symbol-workspaceentryindex}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L19)
 
-#### `TypeReference` {#symbol-typereference}
+#### `WorkspaceSymbolIndex` {#symbol-workspacesymbolindex}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L20)
 
-#### `PublicSymbolEntry` {#symbol-publicsymbolentry}
+#### `TypeReference` {#symbol-typereference}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L21)
 
-#### `DependencyEntry` {#symbol-dependencyentry}
+#### `PublicSymbolEntry` {#symbol-publicsymbolentry}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L22)
 
-#### `SymbolDocumentationParameter` {#symbol-symboldocumentationparameter}
+#### `DependencyEntry` {#symbol-dependencyentry}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L23)
 
-#### `SymbolDocumentationException` {#symbol-symboldocumentationexception}
+#### `SymbolDocumentationParameter` {#symbol-symboldocumentationparameter}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L24)
 
-#### `SymbolDocumentationExample` {#symbol-symboldocumentationexample}
+#### `SymbolDocumentationException` {#symbol-symboldocumentationexception}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L25)
 
-#### `SymbolDocumentationLinkKind` {#symbol-symboldocumentationlinkkind}
+#### `SymbolDocumentationExample` {#symbol-symboldocumentationexample}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L26)
 
-#### `SymbolDocumentationLink` {#symbol-symboldocumentationlink}
+#### `SymbolDocumentationLinkKind` {#symbol-symboldocumentationlinkkind}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L27)
 
-#### `SymbolDocumentation` {#symbol-symboldocumentation}
+#### `SymbolDocumentationLink` {#symbol-symboldocumentationlink}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L28)
 
+#### `SymbolDocumentation` {#symbol-symboldocumentation}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L29)
+
 #### `WorkspaceFileIndex` {#symbol-workspacefileindex}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L31)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L32)
 
 #### `resolveArchetype` {#symbol-resolvearchetype}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L34)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L35)
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L35)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L36)
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L39)
-
-#### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
-- Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L40)
+
+#### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L41)
 
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L43)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L44)
 
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L46)
-
-#### `composeSymbolBlocks` {#symbol-composesymbolblocks}
-- Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L47)
 
-#### `composeDependencies` {#symbol-composedependencies}
+#### `composeEntries` {#symbol-composeentries}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L48)
 
-#### `composeReExports` {#symbol-composereexports}
+#### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L49)
 
+#### `composeDependencies` {#symbol-composedependencies}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L50)
+
+#### `composeReExports` {#symbol-composereexports}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L51)
+
 #### `directoryExists` {#symbol-directoryexists}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L53)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L55)
 
 #### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L54)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L56)
 
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L57)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L59)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -122,6 +131,7 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - [`archetype.hasMeaningfulAuthoredContent`](./archetype.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent) (re-export)
 - [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype) (re-export)
 - [`compose.composeDependencies`](./compose.ts.mdmd.md#symbol-composedependencies) (re-export)
+- [`compose.composeEntries`](./compose.ts.mdmd.md#symbol-composeentries) (re-export)
 - [`compose.composeReExports`](./compose.ts.mdmd.md#symbol-composereexports) (re-export)
 - [`compose.composeSymbolBlocks`](./compose.ts.mdmd.md#symbol-composesymbolblocks) (re-export)
 - [`compose.computePublicSymbolHeadingInfo`](./compose.ts.mdmd.md#symbol-computepublicsymbolheadinginfo) (re-export)
@@ -135,8 +145,9 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - [`coreTypes.SymbolDocumentationLinkKind`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationlinkkind) (re-export, type-only)
 - [`coreTypes.SymbolDocumentationParameter`](./coreTypes.ts.mdmd.md#symbol-symboldocumentationparameter) (re-export, type-only)
 - [`coreTypes.TypeReference`](./coreTypes.ts.mdmd.md#symbol-typereference) (re-export, type-only)
+- [`coreTypes.WorkspaceEntryIndex`](./coreTypes.ts.mdmd.md#symbol-workspaceentryindex) (re-export, type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (re-export, type-only)
-- [`discovery.buildWorkspaceSymbolIndex`](./discovery.ts.mdmd.md#symbol-buildworkspacesymbolindex) (re-export)
+- [`discovery.buildWorkspaceIndexes`](./discovery.ts.mdmd.md#symbol-buildworkspaceindexes) (re-export)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles) (re-export)
 - [`fileUtils.cleanupEmptyParents`](./fileUtils.ts.mdmd.md#symbol-cleanupemptyparents) (re-export)
 - [`fileUtils.directoryExists`](./fileUtils.ts.mdmd.md#symbol-directoryexists) (re-export)

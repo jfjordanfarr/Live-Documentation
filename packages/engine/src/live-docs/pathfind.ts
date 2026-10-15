@@ -5,13 +5,15 @@
  * One breadth-first walk over a neighbour function, and what the CLI and the
  * Explorer ask of it: the shortest path between files, every file a path
  * reaches and how far, the same search by symbol, and the enumeration of
- * every terminal path away from a file. Pure functions: the CLI feeds the walk
- * the graph's edges, the Explorer the links it draws.
+ * every terminal path away from a file, and what the graph's entry points
+ * reach. Pure functions: the CLI feeds the walk the graph's edges, the
+ * Explorer the links it draws.
  *
  * @module
  */
 
-import type { LiveDocGraph } from "./graph";
+import type { Entry } from "./document";
+import type { GraphFile, LiveDocGraph } from "./graph";
 
 /** Traversal direction for graph searches. */
 export type Direction = "outbound" | "inbound" | "both";
@@ -110,6 +112,64 @@ export function reachFrom(starts: Iterable<string>, neighbours: Neighbours, maxD
     reached.delete(start);
   }
   return reached;
+}
+
+// ============================================================================
+// Reachability from the entry points
+// ============================================================================
+
+/** True when something outside the code starts the file: its doc carries an Entry line, or it is a test, which a runner starts. */
+export function isEntry(file: GraphFile): boolean {
+  return file.entries.length > 0 || file.archetype === "test";
+}
+
+/** A file a reachability walk starts from: an entry of the docs with its lines, or a file asked for. */
+export interface Start {
+  codePath: string;
+  entries: Entry[];
+  /** The file is a test, an entry by its archetype. */
+  test: boolean;
+}
+
+/** What is reachable along dependencies from the graph's entry points, or from the files asked for. */
+export interface Reachability {
+  /** `entries` when the starts are the graph's entry points; `asked` when they were given. */
+  from: "entries" | "asked";
+  /** The files walked from, in path order. */
+  starts: Start[];
+  /** Every file a path reaches from a start, nearest first and then by path; the starts themselves are not listed. */
+  reached: { codePath: string; hops: number }[];
+  /** The files of the graph that no path from a start reaches, in path order. */
+  unreachable: string[];
+  /** The files that only a path from a test reaches, in path order; empty when the starts were given. */
+  testsOnly: string[];
+}
+
+/**
+ * Walks from the graph's entry points, or from the files asked for, along what
+ * each depends on: one walk from every start, and, from the entries, a second
+ * from the entries that are not tests, so that what only a test reaches is told
+ * apart. A file asked for that the graph does not hold is left out.
+ */
+export function reachability(graph: LiveDocGraph, asked?: readonly string[], maxDepth: number = Infinity): Reachability {
+  const files = Object.keys(graph.files).sort(compare);
+  const startPaths = asked ? [...new Set(asked)].filter((id) => graph.files[id]).sort(compare) : files.filter((id) => isEntry(graph.files[id]));
+  const starts: Start[] = startPaths.map((codePath) => ({ codePath, entries: graph.files[codePath].entries, test: graph.files[codePath].archetype === "test" }));
+  const neighbours = (id: string): readonly string[] => getNeighbors(graph, id, "outbound");
+  const fromAll = reachFrom(startPaths, neighbours, maxDepth);
+  const reached = [...fromAll].map(([codePath, hops]) => ({ codePath, hops })).sort((a, b) => a.hops - b.hops || compare(a.codePath, b.codePath));
+  const startSet = new Set(startPaths);
+  const unreachable = files.filter((id) => !startSet.has(id) && !fromAll.has(id));
+  let testsOnly: string[] = [];
+  if (!asked) {
+    const fromCode = reachFrom(starts.filter((start) => !start.test).map((start) => start.codePath), neighbours, maxDepth);
+    testsOnly = files.filter((id) => fromAll.has(id) && !fromCode.has(id));
+  }
+  return { from: asked ? "asked" : "entries", starts, reached, unreachable, testsOnly };
+}
+
+function compare(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 /** Entry in the search frontier, representing a node that couldn't be explored further. */

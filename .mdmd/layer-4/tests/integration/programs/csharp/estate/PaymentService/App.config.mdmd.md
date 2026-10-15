@@ -4,7 +4,9 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/csharp/estate/PaymentService/App.config
-- Generated At: 2026-10-02T20:20:05.019Z
+- Entry: opening [`net.tcp://payments.onprem.example:8732/PaymentService`](#symbol-nettcppaymentsonpremexample8732paymentservice)
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:45.103Z
 
 ## Authored
 ### Purpose

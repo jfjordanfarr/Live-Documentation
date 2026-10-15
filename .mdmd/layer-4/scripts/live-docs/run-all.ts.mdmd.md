@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/run-all.ts
-- Generated At: 2026-09-27T23:21:31.919Z
+- Entry: command `livedocs` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.367Z
 
 ## Authored
 ### Purpose

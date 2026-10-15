@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/typescript/layered/tsconfig.json
-- Generated At: 2026-10-02T20:20:09.095Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:47.714Z
 
 ## Authored
 ### Purpose

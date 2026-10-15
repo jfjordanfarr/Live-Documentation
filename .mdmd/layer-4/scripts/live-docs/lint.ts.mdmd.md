@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/lint.ts
-- Generated At: 2026-09-28T00:41:40.762Z
+- Entry: command `live-docs:lint` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.357Z
 
 ## Authored
 ### Purpose

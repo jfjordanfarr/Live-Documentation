@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/go/depot/cmd/depot/main.go
-- Generated At: 2026-10-02T20:20:05.751Z
+- Entry: program [`main`](#symbol-main)
+- Generated At: 2026-10-15T15:49:45.561Z
 
 ## Authored
 ### Purpose

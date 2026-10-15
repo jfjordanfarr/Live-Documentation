@@ -14,23 +14,26 @@
  * A `package.json` is a manifest rather than configuration: its package is its
  * one public symbol, and what it depends on is a dependency, linked to the
  * workspace package of that name when there is one and external otherwise,
- * with the range as written.
+ * with the range as written. What its scripts run, its binaries and its main
+ * module are the files it declares as entries, each written on that file's doc.
  *
  * @module
  */
 
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import ts from "typescript";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
-import { PACKAGE_KIND } from "../openings";
+import type { DeclaredEntry } from "../coreTypes";
+import { PACKAGE_KIND, isToolingFile } from "../openings";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 
 const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"] as const;
 
-/** What a `package.json` says: the package it names and the packages it stands on. */
-function analyzePackageManifest(parsed: unknown, thisFile: string, symbolIndex: WorkspaceSymbolIndex | undefined): SourceAnalysisResult {
+/** What a `package.json` says: the package it names, the packages it stands on, and the files its scripts, binaries and main module start. */
+function analyzePackageManifest(parsed: unknown, thisFile: string, manifestAbsolute: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined, symbolIndex: WorkspaceSymbolIndex | undefined): SourceAnalysisResult {
   const manifest = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? (parsed as Record<string, unknown>) : {};
   const symbols: PublicSymbolEntry[] = typeof manifest.name === "string" && manifest.name ? [{ name: manifest.name, kind: PACKAGE_KIND, location: { line: 1, character: 1 } }] : [];
 
@@ -59,7 +62,124 @@ function analyzePackageManifest(parsed: unknown, thisFile: string, symbolIndex: 
   for (const specifier of Array.from(external).sort()) {
     dependencies.push({ specifier, symbols: [], kind: "import" });
   }
-  return { symbols, dependencies };
+  const declares = fileIndex ? declaredEntries(manifest, manifestAbsolute, workspaceRoot, fileIndex) : [];
+  return declares.length > 0 ? { symbols, dependencies, declares } : { symbols, dependencies };
+}
+
+// ============================================================================
+// What a manifest starts
+// ============================================================================
+
+/** The separators between the commands of one script. */
+const COMMAND_SEPARATOR = /\s*(?:&&|\|\||;|\|)\s*/u;
+
+/**
+ * The files a manifest declares as entries: the workspace file each script
+ * runs, each binary, and the main module, in path order.
+ *
+ * @remarks
+ * A script is read command by command; in each, the first token that names a
+ * workspace file is what the command runs, flags passed over and a tooling
+ * input passed over too, since a command names one as an input, never as what
+ * it runs (`tsx --tsconfig ./tsconfig.base.json scripts/run.ts` runs the
+ * script; `tsc -p tsconfig.json` runs nothing of the workspace). A built path
+ * is mapped back to its source through the tsconfig beside the manifest: a
+ * file under `outDir` is looked for under `rootDir` with the TypeScript
+ * extension that compiles to it.
+ */
+function declaredEntries(manifest: Record<string, unknown>, manifestAbsolute: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): DeclaredEntry[] {
+  const directory = path.dirname(manifestAbsolute);
+  const toSource = sourceMapper(directory, workspaceRoot, fileIndex);
+  const declared = new Map<string, DeclaredEntry>();
+  const declare = (entry: DeclaredEntry): void => {
+    declared.set(`${entry.reason}\u0000${entry.file}\u0000${entry.name ?? ""}`, entry);
+  };
+
+  const scripts = manifest.scripts;
+  if (scripts && typeof scripts === "object" && !Array.isArray(scripts)) {
+    for (const [name, command] of Object.entries(scripts as Record<string, unknown>)) {
+      if (typeof command !== "string") continue;
+      for (const segment of command.split(COMMAND_SEPARATOR)) {
+        const file = runFileOf(segment, toSource);
+        if (file) declare({ reason: "command", file, name });
+      }
+    }
+  }
+
+  const bin = manifest.bin;
+  const binaries: Array<[string, unknown]> = typeof bin === "string"
+    ? [[typeof manifest.name === "string" ? manifest.name : "", bin]]
+    : bin && typeof bin === "object" && !Array.isArray(bin) ? Object.entries(bin as Record<string, unknown>) : [];
+  for (const [name, target] of binaries) {
+    const file = typeof target === "string" ? toSource(target) : undefined;
+    if (file && name) declare({ reason: "command", file, name });
+  }
+
+  if (typeof manifest.main === "string") {
+    const file = toSource(manifest.main);
+    if (file) declare({ reason: "module", file });
+  }
+
+  return Array.from(declared.values()).sort((a, b) => a.file.localeCompare(b.file) || a.reason.localeCompare(b.reason) || (a.name ?? "").localeCompare(b.name ?? ""));
+}
+
+/** The workspace file one command runs: the first token naming one that is not a tooling input, flags passed over. */
+function runFileOf(command: string, toSource: (candidate: string) => string | undefined): string | undefined {
+  for (const token of command.trim().split(/\s+/u)) {
+    if (token.length === 0 || token.startsWith("-")) continue;
+    const candidate = token.replace(/^["']|["']$/gu, "");
+    if (!candidate.includes("/") && !/\.[A-Za-z0-9]+$/u.test(candidate)) continue;
+    const file = toSource(candidate);
+    if (file && !isToolingFile(file)) return file;
+  }
+  return undefined;
+}
+
+/** Maps a path a manifest names, relative to the manifest, to the workspace source file it stands for, through the tsconfig beside the manifest. */
+function sourceMapper(directory: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex): (candidate: string) => string | undefined {
+  const compiled = compilerPaths(directory);
+  const inIndex = (absolute: string): string | undefined => {
+    const relative = normalizeWorkspacePath(path.relative(workspaceRoot, absolute));
+    return fileIndex.has(relative) ? relative : undefined;
+  };
+  return (candidate: string): string | undefined => {
+    const normalized = candidate.replace(/\\/gu, "/");
+    if (normalized.includes("node_modules/")) return undefined;
+    const absolute = path.resolve(directory, normalized);
+    const direct = inIndex(absolute);
+    if (direct) return direct;
+    if (!compiled) return undefined;
+    const relative = path.relative(compiled.outDir, absolute);
+    if (relative.startsWith("..") || path.isAbsolute(relative)) return undefined;
+    for (const root of compiled.rootDirs) {
+      const built = path.join(root, relative);
+      for (const source of sourcesOf(built)) {
+        const found = inIndex(source);
+        if (found) return found;
+      }
+    }
+    return undefined;
+  };
+}
+
+/** The source files a built file may compile from, the file itself first. */
+function sourcesOf(built: string): string[] {
+  const extension = path.extname(built).toLowerCase();
+  const base = built.slice(0, built.length - extension.length);
+  const sources: Record<string, string[]> = { ".js": [".ts", ".tsx"], ".mjs": [".mts"], ".cjs": [".cts"], ".jsx": [".tsx"] };
+  return [built, ...(sources[extension] ?? []).map((candidate) => `${base}${candidate}`)];
+}
+
+/** Where the tsconfig beside a manifest writes its output and reads its sources, as absolute paths; absent without a tsconfig or an outDir. */
+function compilerPaths(directory: string): { outDir: string; rootDirs: string[] } | undefined {
+  const tsconfig = path.join(directory, "tsconfig.json");
+  if (!ts.sys.fileExists(tsconfig)) return undefined;
+  const read = ts.readConfigFile(tsconfig, (file) => ts.sys.readFile(file));
+  if (read.error || !read.config) return undefined;
+  const options = ts.parseJsonConfigFileContent(read.config, ts.sys, directory, undefined, tsconfig).options;
+  if (!options.outDir) return undefined;
+  const rootDirs = options.rootDir ? [options.rootDir] : [directory, path.join(directory, "src")];
+  return { outDir: path.resolve(directory, options.outDir), rootDirs: rootDirs.map((root) => path.resolve(directory, root)) };
 }
 
 // ============================================================================
@@ -244,7 +364,7 @@ export const jsonAdapter: LanguageAdapter = {
     }
 
     if (path.basename(absolutePath) === "package.json") {
-      return analyzePackageManifest(parsed, normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath)), symbolIndex);
+      return analyzePackageManifest(parsed, normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath)), absolutePath, workspaceRoot, fileIndex, symbolIndex);
     }
 
     const symbols: PublicSymbolEntry[] = collectKeyPaths(parsed).map((keyPath) => ({ name: keyPath, kind: "key" }));

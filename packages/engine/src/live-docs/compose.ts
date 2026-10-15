@@ -13,9 +13,12 @@
 
 import path from "node:path";
 
+import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { getSyntaxByPath } from "../languages";
+import { matchesPathPattern } from "./archetype";
 import { RESERVED_HEADING_NAMES } from "./coreConstants";
 import type {
+  DeclaredBy,
   PublicSymbolEntry,
   PublicSymbolHeadingInfo,
   SourceAnalysisResult,
@@ -33,7 +36,8 @@ import {
   displayDependencyKey,
   createProximityAwareComparator
 } from "./coreUtils";
-import type { Dependency, DocSection, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
+import type { Dependency, DocSection, Entry, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
+import { MANIFEST_KINDS, OPENING_KINDS, isToolingFile } from "./openings";
 
 // ============================================================================
 // Public Symbol Heading Computation
@@ -698,6 +702,88 @@ function resolveSymbolSlugFromIndex(
 
   const matchingLocation = locations.find((loc) => loc.sourcePath.replace(/\\/gu, "/") === normalizedTarget);
   return matchingLocation?.anchor;
+}
+
+// ============================================================================
+// Entries
+// ============================================================================
+
+/**
+ * Composes the `Entry` lines of a doc: why something outside the code starts
+ * the file, in a fixed order so that a doc is written the same way every run.
+ *
+ * @remarks
+ * `program` comes from the file's own analysis, its symbol linked when the doc
+ * has it. `command` and `module` come from the manifests that declare the file,
+ * as the workspace entry index recorded them. `opening` is one line per route,
+ * address, procedure, table, view or function the file serves. `tooling` is a
+ * rule by kind: a manifest, or a file name a tool reads. `declared` is the
+ * configuration's `entryPoints`. A test is an entry by its archetype and gets
+ * no line here.
+ *
+ * @param args.analysis - The file's analysis, for the program entry point.
+ * @param args.sourceRelativePath - Workspace-relative source path, for the rules by name.
+ * @param args.headings - The symbols with their anchors, for the program's symbol and the openings.
+ * @param args.declaredBy - What manifests declare about the file.
+ * @param args.config - The configuration, for the declared entry points.
+ * @param args.docDir - Absolute directory of the Live Doc being written; links are relative to it.
+ * @param args.liveDocsRootAbsolute - Absolute path to the Live Docs root.
+ * @param args.docExtension - File extension for Live Docs.
+ */
+export function composeEntries(args: {
+  analysis: SourceAnalysisResult;
+  sourceRelativePath: string;
+  headings: PublicSymbolHeadingInfo[];
+  declaredBy: readonly DeclaredBy[];
+  config: Pick<LiveDocumentationConfig, "entryPoints">;
+  docDir: string;
+  liveDocsRootAbsolute: string;
+  docExtension: string;
+}): Entry[] {
+  const entries: Entry[] = [];
+
+  const program = args.analysis.program;
+  if (program) {
+    if (program.symbol === undefined) {
+      entries.push({ reason: "program" });
+    } else {
+      // The heading at the declaration's line tells the entry from a namesake; without a line, the first by name.
+      const named = args.headings.filter((info) => info.symbol.name === program.symbol);
+      const heading = named.find((info) => program.line !== undefined && info.symbol.location?.line === program.line) ?? named[0];
+      entries.push({ reason: "program", symbol: heading?.slug ? { name: program.symbol, link: `#${heading.slug}` } : { name: program.symbol } });
+    }
+  }
+
+  const declarerOf = (declarer: string): { label: string; link: string } => ({
+    label: declarer,
+    link: formatRelativePathFromDoc(args.docDir, path.resolve(args.liveDocsRootAbsolute, `${declarer}${args.docExtension}`))
+  });
+  const commands = args.declaredBy
+    .filter((declared) => declared.reason === "command")
+    .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "") || a.declarer.localeCompare(b.declarer));
+  for (const declared of commands) {
+    entries.push({ reason: "command", command: declared.name ?? "", declarer: declarerOf(declared.declarer) });
+  }
+  const modules = args.declaredBy.filter((declared) => declared.reason === "module").sort((a, b) => a.declarer.localeCompare(b.declarer));
+  for (const declared of modules) {
+    entries.push({ reason: "module", declarer: declarerOf(declared.declarer) });
+  }
+
+  for (const info of args.headings) {
+    if (OPENING_KINDS.has(info.symbol.kind) && info.slug) {
+      entries.push({ reason: "opening", symbol: { name: info.symbol.name, link: `#${info.slug}` } });
+    }
+  }
+
+  if (args.headings.some((info) => MANIFEST_KINDS.has(info.symbol.kind)) || isToolingFile(args.sourceRelativePath)) {
+    entries.push({ reason: "tooling" });
+  }
+
+  if (args.config.entryPoints.some((pattern) => matchesPathPattern(args.sourceRelativePath, pattern))) {
+    entries.push({ reason: "declared" });
+  }
+
+  return entries;
 }
 
 // ============================================================================

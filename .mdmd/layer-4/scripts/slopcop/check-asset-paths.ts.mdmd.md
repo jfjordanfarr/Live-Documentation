@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-asset-paths.ts
-- Generated At: 2026-09-28T01:00:43.662Z
+- Entry: command `slopcop:assets` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.501Z
 
 ## Authored
 ### Purpose

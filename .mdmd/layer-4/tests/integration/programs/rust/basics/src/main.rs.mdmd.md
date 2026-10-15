@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/rust/basics/src/main.rs
-- Generated At: 2026-10-02T20:20:08.547Z
+- Entry: program `main`
+- Generated At: 2026-10-15T15:49:47.437Z
 
 ## Authored
 ### Purpose

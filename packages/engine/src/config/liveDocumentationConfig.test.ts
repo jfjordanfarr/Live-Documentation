@@ -35,6 +35,14 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.sampleRoots).toEqual(["tests/scenarios", ".", "examples"]);
   });
 
+  it("keeps the declared entry points as workspace-relative paths or globs, deduplicated", () => {
+    const config = normalizeLiveDocumentationConfig({
+      entryPoints: [" ./packages/explorer/src/client/index.ts ", "packages\\explorer\\src\\client\\styles.css", "", "packages/explorer/src/client/index.ts", "scripts/**/*.mjs"]
+    });
+    expect(config.entryPoints).toEqual(["packages/explorer/src/client/index.ts", "packages/explorer/src/client/styles.css", "scripts/**/*.mjs"]);
+    expect(normalizeLiveDocumentationConfig({}).entryPoints).toEqual([]);
+  });
+
   it("merges overrides and de-duplicates glob patterns", () => {
     const config = normalizeLiveDocumentationConfig({
       root: "  docs/ld  ",

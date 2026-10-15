@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/estate.test.ts
-- Generated At: 2026-10-09T20:42:20.715Z
+- Generated At: 2026-10-15T15:49:44.373Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 - [`board.parseBoard`](../../../packages/engine/src/live-docs/board.ts.mdmd.md#symbol-parseboard)
 - [`boardGraph.Wire`](../../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-wire)
 - [`boardGraph.deriveBoardGraph`](../../../packages/engine/src/live-docs/boardGraph.ts.mdmd.md#symbol-deriveboardgraph)
+- [`document.entryWords`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-entrywords)
 - [`graphFiles.readEstateGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readestategraph)
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)

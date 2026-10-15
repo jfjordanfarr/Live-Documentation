@@ -74,13 +74,18 @@ test("the simplicity slider restarts competition and removes unnecessary generat
   expect(after.steps).toBeLessThan(before.steps);
   expect(after.score, "the accepted picture beats the old picture under the new weight").toBeLessThan(before.score + 50 * before.steps);
   // Reusing the previous order finds shorter wires than the fresh entry's
-  // starts, but aligning this remaining top needs more picture height. At
-  // 50 its compactness cost wins; the inspected weight100 pays for the join.
+  // starts, but aligning a remaining top needs more picture height. When the
+  // inspected picture was drawn (2026-10-13) weight 50 left one such top for
+  // weight 100 to pay for; since a test importing the generator joined this
+  // neighbourhood (2026-10-15) weight 50 pays for every join itself, and the
+  // competition at 100 keeps that picture. The property that holds in both
+  // cases: the accepted picture is never worse than the previous one under
+  // the new weight, and the engine band's top is joined.
   await slider.evaluate(input => { input.value = "100"; input.dispatchEvent(new Event("input", { bubbles: true })); });
   await localMapSettled(page);
   const geometric = await picture(page);
   expect(geometric.identity).toEqual(before.identity);
-  expect(geometric.score).toBeLessThan(after.score + 50 * after.steps);
+  expect(geometric.score).toBeLessThanOrEqual(after.score + 50 * after.steps);
   const engine = geometric.membranes.find(band => band.directory === "packages/engine/src")!;
   expect(engine.segments.length).toBeGreaterThan(1);
   expect(engine.segments[0].top).toBe(engine.segments[1].top);

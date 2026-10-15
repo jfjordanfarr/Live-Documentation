@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/board.ts
-- Generated At: 2026-10-09T20:42:18.848Z
+- Entry: command `live-docs:board` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.259Z
 
 ## Authored
 ### Purpose

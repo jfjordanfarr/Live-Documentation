@@ -427,3 +427,83 @@
   white-space: nowrap;
   flex: 1;
 }
+
+/* The entry points: the "Reachable from" field, the reasons beside each start, and the line to copy */
+.sources-reach {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.sources-reach-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  flex: none;
+}
+
+.sources-reach-field {
+  position: relative;
+  flex: 1;
+  max-width: 420px;
+}
+
+.sources-reach-field .search-input {
+  width: 100%;
+}
+
+.sources-reach-status {
+  font-size: 13px;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.sources-reasons {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+  flex: 0 1 auto;
+  max-width: 55%;
+  text-align: right;
+  line-height: 1.4;
+}
+
+.sources-group--sample {
+  margin-left: 22px;
+}
+
+.sources-group--sample:last-child {
+  margin-bottom: 10px;
+}
+
+.sources-declare {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 12px 0;
+}
+
+.sources-declare-line {
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 12px;
+  color: var(--text-active);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: 6px;
+  padding: 6px 10px;
+  user-select: all;
+}
+
+.sources-declare .action-btn {
+  width: auto;
+  flex: none;
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+.sources-declare-status {
+  font-size: 12px;
+  color: var(--text-muted);
+}

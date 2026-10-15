@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
-- Generated At: 2026-10-14T21:04:58.403Z
+- Entry: declared
+- Generated At: 2026-10-15T16:17:52.544Z
 
 ## Authored
 ### Purpose
@@ -21,6 +22,7 @@ Bootstrap entry point for the Explorer client: loads the bundle, projects its gr
 - The search bar (2026-10-14, [Turns 5 and 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-5); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)): one search at the top in place of the Ctrl+P dialog and the FROM/TO toolbar, whose wiring, strip and status renderers, console logging and `openOmnisearch` global went with them. `pinHit` pins what a search found and makes it the newest pin, `askPath` and `runPath` draw the path from the newest pin to the destination (a directory at either end standing for every file inside it), `swapPath` answers the reverse question by pinning the destination, and `leavePath` forgets the destination when the picture is clicked out of a path. A new subject chosen in the bar while a destination stands asks the path again from it. The reach from the newest pin (`reachOf`) is computed once per newest pin in `syncPerspectiveControls` and handed to the bar, so that the destination field offers only what connects ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7)).
 - The footer counts "references outside the scan" (2026-10-14): imports of packages and builtins and files the scan does not hold, which it had called "missing dependencies"; the owner: "Oh man that is nagging isn't it?"
 - The Knowledge Sources panel (2026-10-08) is rendered from the bundle's graph itself rather than the projected payload, and a file named on it goes to the detail panel through `focusSidebar`, which changes the focus without redrawing the view, so the panel keeps its open groups and its scroll.
+- Since 2026-10-15 ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) the first subject is decided by `landingOf` over the bundle's graph and sample roots, the file-name guess remaining only when the docs declare no entry; and the Knowledge Sources panel's start (`state.reachFrom`, a file or a directory) is exploration state that rides the share link and redraws the panel from `sourcesFacts` walked from the files it names.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -31,6 +33,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
+- [`landing.landingOf`](./bootstrap/landing.ts.mdmd.md#symbol-landingof)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`dom.setActiveView`](./dom.ts.mdmd.md#symbol-setactiveview)

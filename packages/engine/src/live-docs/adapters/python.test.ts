@@ -207,4 +207,33 @@ describe("pythonAdapter", () => {
       { specifier: "pkg", resolvedPath: "pkg/__init__.py", symbols: [], kind: "import" }
     ]);
   });
+
+  it("reports the module whose top level holds the main guard as the program entry, in either quote style and operand order", async () => {
+    await write({
+      "run.py":      'def main():\n    pass\n\nif __name__ == "__main__":\n    main()\n',
+      "reversed.py": "if '__main__' == __name__:\n    print('hi')\n"
+    });
+
+    const run = await analyze("run.py");
+    expect(run.program).toEqual({});
+    expect(run.symbols.map((symbol) => symbol.name)).toEqual(["main"]);
+    expect((await analyze("reversed.py")).program).toEqual({});
+
+    const sample = path.resolve(__dirname, "../../../../../tests/integration/programs/python/rosetta");
+    const main   = await pythonAdapter.analyze({ absolutePath: path.join(sample, "src", "main.py"), workspaceRoot: sample });
+    expect(main?.program).toEqual({});
+  });
+
+  it("leaves program absent for a module without the guard, with it inside a function, or with its text only in a string or comment", async () => {
+    await write({
+      "lib.py":      "def main():\n    pass\n",
+      "nested.py":   'def run():\n    if __name__ == "__main__":\n        main()\n',
+      "text.py":     '"""if __name__ == "__main__":"""\n# if __name__ == "__main__":\nx = 1\n',
+      "inverted.py": 'if __name__ != "__main__":\n    raise SystemExit()\n'
+    });
+
+    for (const file of ["lib.py", "nested.py", "text.py", "inverted.py"]) {
+      expect(await analyze(file), file).not.toHaveProperty("program");
+    }
+  });
 });

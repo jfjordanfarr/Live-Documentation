@@ -24,6 +24,14 @@ export interface StaticExplorerData {
 
     /** The board the World Map draws, as its text and its workspace-relative path, so that the client parses and joins it itself. */
     board?: BundledBoard;
+
+    /**
+     * The configuration's sample roots: workspace-relative directories whose
+     * programs are inputs to the tool, not the scanned system's own code. The
+     * Knowledge Sources panel groups their entry points apart, and the landing
+     * leaves them out when it chooses where to open.
+     */
+    sampleRoots?: string[];
 }
 
 /** A board's text, verbatim, and where it sits in the workspace. */

@@ -1,7 +1,7 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { composeDependencies, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
+import { composeDependencies, composeEntries, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
 import type { WorkspaceSymbolIndex } from "./coreTypes";
 import { renderLiveDoc, parseLiveDoc } from "./document";
 
@@ -180,6 +180,7 @@ describe("composeDependencies", () => {
       codePath: sourceRelativePath,
       layer: 4,
       archetype: "implementation",
+      entries: [],
       authored: "### Purpose\nWalks.\n\n### Notes\nNone.",
       symbols: composeSymbolBlocks({ headings, docDir, sourceAbsolute, sourceRelativePath }),
       dependencies: composeDependencies({
@@ -191,5 +192,82 @@ describe("composeDependencies", () => {
       })
     };
     expect(parseLiveDoc(renderLiveDoc(doc))).toEqual(doc);
+  });
+});
+
+describe("composeEntries", () => {
+  const compose = (args: Partial<Parameters<typeof composeEntries>[0]>) => composeEntries({
+    analysis: { symbols: [], dependencies: [] },
+    sourceRelativePath,
+    headings: [],
+    declaredBy: [],
+    config: { entryPoints: [] },
+    docDir,
+    liveDocsRootAbsolute,
+    docExtension: ".md",
+    ...args
+  });
+
+  it("writes nothing for a file nothing starts", () => {
+    expect(compose({})).toEqual([]);
+  });
+
+  it("links the program's symbol when the doc has it, names it bare when it does not, and writes none when the language names none", () => {
+    const headings = computePublicSymbolHeadingInfo([{ name: "main", kind: "function" }]);
+    expect(compose({ analysis: { symbols: [], dependencies: [], program: { symbol: "main" } }, headings })).toEqual([{ reason: "program", symbol: { name: "main", link: "#symbol-main" } }]);
+    expect(compose({ analysis: { symbols: [], dependencies: [], program: { symbol: "main" } } })).toEqual([{ reason: "program", symbol: { name: "main" } }]);
+    expect(compose({ analysis: { symbols: [], dependencies: [], program: {} } })).toEqual([{ reason: "program" }]);
+    // Two symbols named main, as Java's `String main(int)` beside `void main(String[])`: the line picks the heading.
+    const overloads = computePublicSymbolHeadingInfo([
+      { name: "main", kind: "method", location: { line: 10, character: 1 } },
+      { name: "main", kind: "method", location: { line: 20, character: 1 } }
+    ]);
+    expect(compose({ analysis: { symbols: [], dependencies: [], program: { symbol: "main", line: 20 } }, headings: overloads })).toEqual([{ reason: "program", symbol: { name: "main", link: "#symbol-main-method-overload-2" } }]);
+    expect(compose({ analysis: { symbols: [], dependencies: [], program: { symbol: "main", line: 99 } }, headings: overloads })).toEqual([{ reason: "program", symbol: { name: "main", link: "#symbol-main-method-overload-1" } }]);
+  });
+
+  it("writes the commands by name and the module, each linking the manifest that declares it", () => {
+    const declaredBy = [
+      { declarer: "package.json", reason: "command" as const, name: "lint" },
+      { declarer: "packages/engine/package.json", reason: "module" as const },
+      { declarer: "package.json", reason: "command" as const, name: "build" }
+    ];
+    expect(compose({ declaredBy })).toEqual([
+      { reason: "command", command: "build", declarer: { label: "package.json", link: "../../../../package.json.md" } },
+      { reason: "command", command: "lint", declarer: { label: "package.json", link: "../../../../package.json.md" } },
+      { reason: "module", declarer: { label: "packages/engine/package.json", link: "../../package.json.md" } }
+    ]);
+  });
+
+  it("writes one opening per route, address, procedure or table the file serves, and tooling for a manifest or a configuration a tool reads", () => {
+    const headings = computePublicSymbolHeadingInfo([
+      { name: "GET api/payments", kind: "route" },
+      { name: "PaymentsController", kind: "class" },
+      { name: "dbo.Payment", kind: "table" }
+    ]);
+    expect(compose({ headings })).toEqual([
+      { reason: "opening", symbol: { name: "GET api/payments", link: "#symbol-get-apipayments" } },
+      { reason: "opening", symbol: { name: "dbo.Payment", link: "#symbol-dbopayment" } }
+    ]);
+    expect(compose({ headings: computePublicSymbolHeadingInfo([{ name: "@scope/engine", kind: "package" }]) })).toEqual([{ reason: "tooling" }]);
+    expect(compose({ headings: computePublicSymbolHeadingInfo([{ name: "Hub", kind: "program" }]) })).toEqual([{ reason: "tooling" }]);
+    for (const name of ["tests/e2e/playwright.config.ts", "tsconfig.json", "packages/cli/tsconfig.build.json", "Hub/App.config", "Portal/Web.config", "Portal/packages.config", "vitest.config.mts"]) {
+      expect(compose({ sourceRelativePath: name }), name).toEqual([{ reason: "tooling" }]);
+    }
+    for (const name of ["src/config.ts", "src/app.config/settings.ts", "appsettings.json"]) {
+      expect(compose({ sourceRelativePath: name }), name).toEqual([]);
+    }
+  });
+
+  it("writes declared for a file the configuration names, by path or by glob, after every other reason", () => {
+    expect(compose({ config: { entryPoints: ["packages/engine/src/contracts/dependencies.ts"] } })).toEqual([{ reason: "declared" }]);
+    expect(compose({ config: { entryPoints: ["packages/**/contracts/*.ts"] } })).toEqual([{ reason: "declared" }]);
+    expect(compose({ config: { entryPoints: ["packages/*/contracts/*.ts"] } })).toEqual([]);
+    expect(compose({
+      analysis: { symbols: [], dependencies: [], program: {} },
+      declaredBy: [{ declarer: "package.json", reason: "command", name: "start" }],
+      sourceRelativePath: "tsconfig.json",
+      config: { entryPoints: ["tsconfig.json"] }
+    }).map((entry) => entry.reason)).toEqual(["program", "command", "tooling", "declared"]);
   });
 });

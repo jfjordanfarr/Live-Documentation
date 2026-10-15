@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/graph-search.ts
-- Generated At: 2026-10-14T21:04:58.810Z
+- Generated At: 2026-10-15T16:17:52.983Z
 
 ## Authored
 ### Purpose
@@ -124,7 +124,7 @@ The rows of the groups in reading order: a matched directory, each file, its sym
 #### `reachWords` {#symbol-reachwords}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L193)
-- Parameters: `reach`: [`Reach`](../pathfind.ts.mdmd.md#symbol-reach)
+- Parameters: `reach`: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach)
 
 ##### `reachWords` — Summary
 The words a destination row carries: the files a path to it would show, and whether it runs the other way.
@@ -133,7 +133,7 @@ The words a destination row carries: the files a path to it would show, and whet
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L203)
 - Returns: [`SearchScope`](#symbol-searchscope)
-- Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `reach`: [`Reach`](../pathfind.ts.mdmd.md#symbol-reach)
+- Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `reach`: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach)
 
 ##### `destinationScope` — Summary
 The destination's scope from the reach of the newest pin: the connected files offered with their distance, a

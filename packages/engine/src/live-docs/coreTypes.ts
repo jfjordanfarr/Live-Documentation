@@ -20,7 +20,54 @@ export interface SourceAnalysisResult {
   symbols: PublicSymbolEntry[];
   dependencies: DependencyEntry[];
   reExportedSymbols?: ReExportedSymbolInfo[];
+  /** Present when the file holds the language's program entry point. */
+  program?: ProgramEntry;
+  /** The files this file declares as entries: a manifest's scripts, binaries and main module. */
+  declares?: DeclaredEntry[];
 }
+
+/**
+ * The language's program entry point, read from the file's own text.
+ *
+ * @remarks
+ * A language that names the function which starts the program gives its
+ * name (`main`, `Main`), whether or not the function is public; a guard
+ * (`if __name__ == "__main__"`, `if __FILE__ == $0`), top-level statements or
+ * a script file kind (`.ps1`) name none.
+ */
+export interface ProgramEntry {
+  symbol?: string;
+  /** The line the symbol is declared on, which tells the entry apart from a namesake in the same file. */
+  line?: number;
+}
+
+/**
+ * A file that another file declares as an entry: a manifest's script or
+ * binary runs it (`command`), or a manifest's `main` names it as the package's
+ * module (`module`).
+ */
+export interface DeclaredEntry {
+  reason: "command" | "module";
+  /** Workspace-relative path of the file declared, with forward slashes. */
+  file: string;
+  /** The script's or binary's name; absent for a module. */
+  name?: string;
+}
+
+/** What one manifest declares about a file, as the workspace entry index records it. */
+export interface DeclaredBy {
+  /** Workspace-relative path of the manifest. */
+  declarer: string;
+  reason: "command" | "module";
+  name?: string;
+}
+
+/**
+ * The files that manifests declare as entries, keyed by the declared file's
+ * workspace-relative path, built in the first pass beside the symbol index so
+ * that the second pass writes each file's `Entry` lines from it.
+ */
+export type WorkspaceEntryIndex = Map<string, DeclaredBy[]>;
 
 // ============================================================================
 // Symbol Location & Index Types
@@ -82,7 +129,7 @@ export interface ResolvedSymbolLocation {
  * ```
  *
  * @see ResolvedSymbolLocation
- * @see buildWorkspaceSymbolIndex
+ * @see buildWorkspaceIndexes
  */
 export type WorkspaceSymbolIndex = Map<string, ResolvedSymbolLocation[]>;
 

@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/fixtures/slopcop-symbols/workspace/slopcop.config.json
-- Generated At: 2026-09-27T23:21:33.648Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:44.197Z
 
 ## Authored
 ### Purpose

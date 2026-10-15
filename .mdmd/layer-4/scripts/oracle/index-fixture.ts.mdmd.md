@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/index-fixture.ts
-- Generated At: 2026-10-02T20:20:02.647Z
+- Entry: command `oracle:index` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.452Z
 
 ## Authored
 ### Purpose

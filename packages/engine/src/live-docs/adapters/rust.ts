@@ -18,6 +18,9 @@
  * `alloc`) is not listed; other crates the workspace does not contain are listed
  * by name. Names inside strings and comments are never references; names inside
  * macro invocations are.
+ *
+ * The program's entry point is reported too: a top-level `fn main` in a binary
+ * crate root.
  */
 import { glob } from "glob";
 import { promises as fs } from "node:fs";
@@ -26,6 +29,7 @@ import path from "node:path";
 import { rustSyntax } from "../../languages";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
+import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseRustDocumentation } from "./rust.rustdoc";
 import { parseSource, type SyntaxNode } from "./treeSitter";
@@ -603,9 +607,13 @@ async function packageDirOf(directory: string, workspaceRoot: string): Promise<s
   return found;
 }
 
+/** `src/main.rs` and the files under `src/bin/`, relative to the package: the roots of its binary targets. */
+function isBinaryRoot(relative: string): boolean {
+  return relative === "src/main.rs" || /^src\/bin\/[^/]+\.rs$/u.test(relative) || /^src\/bin\/[^/]+\/main\.rs$/u.test(relative);
+}
+
 function isConventionalRoot(relative: string): boolean {
-  return relative === "src/main.rs" || relative === "src/lib.rs" ||
-    /^src\/bin\/[^/]+\.rs$/u.test(relative) || /^src\/bin\/[^/]+\/main\.rs$/u.test(relative) ||
+  return relative === "src/lib.rs" || isBinaryRoot(relative) ||
     /^(tests|examples|benches)\/[^/]+\.rs$/u.test(relative) || /^(tests|examples|benches)\/[^/]+\/main\.rs$/u.test(relative);
 }
 
@@ -808,6 +816,24 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
     );
 }
 
+/**
+ * The program's entry point: a function `main` at the top level of a binary
+ * crate root, public or not. The root is `src/main.rs` or a file under
+ * `src/bin/` of its package or, outside any package, a `main.rs`, as
+ * `crateRoots` reads them. A `main` in `src/lib.rs` or a module file, or
+ * inside a `mod` block or an `impl`, is none.
+ */
+async function toProgram(facts: FileFacts, absolutePath: string, workspaceRoot: string): Promise<ProgramEntry | undefined> {
+  if (facts.module.items.get("main") !== "function") return undefined;
+  const packageDir = await packageDirOf(path.dirname(absolutePath), workspaceRoot);
+  const binary = packageDir
+    ? isBinaryRoot(normalizeWorkspacePath(path.relative(packageDir, absolutePath)))
+    : path.basename(absolutePath) === "main.rs";
+  if (!binary) return undefined;
+  const declared = facts.declarations.find((candidate) => candidate.kind === "function" && candidate.name === "main" && (candidate.qualifiedName ?? "main") === "main");
+  return declared ? { symbol: "main", line: declared.line } : { symbol: "main" };
+}
+
 function toDependencies(thisFile: string, table: ModuleTable): DependencyEntry[] {
   const byTarget = new Map<string, Set<string>>();
   const external = new Map<string, Set<string>>();
@@ -866,9 +892,12 @@ export const rustAdapter: LanguageAdapter = {
     const facts    = await fileFacts(absolutePath);
     const table    = await moduleTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
-    return {
+    const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
       dependencies: toDependencies(thisFile, table)
     };
+    const program = await toProgram(facts, absolutePath, workspaceRoot);
+    if (program) result.program = program;
+    return result;
   }
 };

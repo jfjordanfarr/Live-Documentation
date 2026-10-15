@@ -12,6 +12,7 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG, normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { parseBoard } from "@live-documentation/engine/live-docs/board";
 import { deriveBoardGraph, type Wire } from "@live-documentation/engine/live-docs/boardGraph";
+import { entryWords } from "@live-documentation/engine/live-docs/document";
 import { readEstateGraph, readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
@@ -103,6 +104,42 @@ describe("the estate scanned as seven things", () => {
       expect(reading.scans).toEqual([""]);
       expect(reading.issues).toEqual(["the scan at Hub lies inside the scan at the workspace root and is not read; a scan never lies inside another scan"]);
       expect(Object.keys(reading.graph.files)).toContain("Hub/App.config");
+    } finally {
+      fs.rmSync(workDir, { recursive: true, force: true });
+    }
+  });
+
+  it("marks as entries the files that serve an opening, read from the sources: the routes, the listening addresses, the procedure and the tables, with the manifests and configurations as tooling", async () => {
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
+    const workDir = copyFixture(ESTATE, "estate-entries-");
+    try {
+      await generateLiveDocs({ workspaceRoot: workDir, config, logger: quiet });
+      const graph = await readLiveDocGraph({ workspaceRoot: workDir, config });
+      const openings: Record<string, string[]> = {};
+      const tooling: string[] = [];
+      for (const file of Object.values(graph.files)) {
+        const served = file.entries.filter((entry) => entry.reason === "opening").map((entry) => entry.symbol!.name);
+        if (served.length > 0) openings[file.codePath] = served;
+        if (file.entries.some((entry) => entry.reason === "tooling")) tooling.push(file.codePath);
+        expect(file.entries.map((entry) => entry.reason).filter((reason) => reason !== "opening" && reason !== "tooling"), file.codePath).toEqual([]);
+      }
+      // [Route("api/payments")] under [HttpPost] and [Route("api/payments/{paymentId}")] under [HttpGet] in both controllers; the
+      // endpoint each service listens on in its App.config; CREATE TABLE and CREATE PROCEDURE in the SQL Server scripts and
+      // CREATE TABLE in the Oracle one.
+      expect(openings).toEqual({
+        "Database/Oracle/CENTRAL.ACCOUNT.sql": ["CENTRAL.ACCOUNT"],
+        "Database/SqlServer/dbo.Payment.sql": ["dbo.Payment"],
+        "Database/SqlServer/dbo.usp_PostPayment.sql": ["dbo.usp_PostPayment"],
+        "Gateway/Controllers/PaymentsController.cs": ["POST api/payments", "GET api/payments/{paymentId}"],
+        "Hub/App.config": ["net.tcp://hub.onprem.example:8731/PaymentHub"],
+        "PaymentService/App.config": ["net.tcp://payments.onprem.example:8732/PaymentService"],
+        "Portal/Controllers/PaymentsController.cs": ["POST api/payments", "GET api/payments/{paymentId}"]
+      });
+      expect(tooling.sort()).toEqual([
+        "Contracts/Contracts.csproj", "Gateway/Gateway.csproj", "Gateway/Web.config", "Hub/App.config", "Hub/Hub.csproj",
+        "PaymentService/App.config", "PaymentService/PaymentService.csproj", "Portal/Portal.csproj", "Portal/Web.config"
+      ]);
+      expect(graph.files["Hub/App.config"].entries.map(entryWords)).toEqual(["opening net.tcp://hub.onprem.example:8731/PaymentHub", "tooling"]);
     } finally {
       fs.rmSync(workDir, { recursive: true, force: true });
     }

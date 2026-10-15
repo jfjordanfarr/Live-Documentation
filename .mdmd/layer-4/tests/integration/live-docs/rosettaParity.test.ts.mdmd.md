@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/rosettaParity.test.ts
-- Generated At: 2026-09-28T01:00:44.857Z
+- Generated At: 2026-10-15T15:59:03.346Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,7 @@ _No public symbols detected_
 - `node:path`
 - [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`document.parseLiveDoc`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - `vitest` - `beforeAll`, `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->

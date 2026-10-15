@@ -3,7 +3,8 @@
  *
  * @remarks
  * This module handles discovering target files for Live Doc generation
- * and building the workspace-wide symbol index for cross-file type linking.
+ * and building the workspace-wide indexes: the symbols, for cross-file type
+ * linking, and the entries manifests declare, for the `Entry` lines.
  *
  * @module
  */
@@ -17,8 +18,10 @@ import ts from "typescript";
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
 import { computePublicSymbolHeadingInfo } from "./compose";
 import type {
+  DeclaredEntry,
   PublicSymbolEntry,
   ResolvedSymbolLocation,
+  WorkspaceEntryIndex,
   WorkspaceSymbolIndex
 } from "./coreTypes";
 import { detectChangedFiles } from "./gitUtils";
@@ -138,50 +141,43 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
 }
 
 // ============================================================================
-// Symbol Index Building
+// Index Building
 // ============================================================================
 
+/** The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries. */
+export interface WorkspaceIndexes {
+  symbols: WorkspaceSymbolIndex;
+  entries: WorkspaceEntryIndex;
+}
+
 /**
- * Builds a workspace-wide symbol index for cross-Live-Doc type reference resolution.
+ * Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
+ * over the target files.
  *
  * @remarks
- * This function performs a lightweight pre-scan of all target files to collect
- * exported symbols and their locations. The resulting index enables type references
- * in one Live Doc to link to type definitions in other Live Docs.
+ * The symbol index maps each exported symbol's name (case-sensitive) to its
+ * locations, so that a type reference in one Live Doc links to the type's
+ * definition in another; several files may publish one name. The entry index
+ * maps each file a manifest declares as an entry (a script it runs, a binary,
+ * its main module) to what declares it, so that the file's doc carries the
+ * `Entry` line. TypeScript and JavaScript files are read with the built-in
+ * parser; every other file is read by its language adapter.
  *
- * The index is keyed by symbol name (case-sensitive) and maps to an array of
- * locations, allowing for multiple symbols with the same name from different files.
- *
- * @param options - Configuration for the index build.
  * @param options.targetFiles - Absolute paths to all files being processed.
  * @param options.workspaceRoot - Absolute path to the workspace root.
  * @param options.liveDocsRoot - Workspace-relative path to the Live Docs root (e.g., ".live-documentation/source").
  * @param options.docExtension - File extension for Live Docs (e.g., ".md").
- *
- * @returns A map from symbol names to their resolved Live Doc locations.
- *
- * @example
- * ```typescript
- * const index = await buildWorkspaceSymbolIndex({
- *   targetFiles: ["/workspace/src/types.ts", "/workspace/src/core.ts"],
- *   workspaceRoot: "/workspace",
- *   liveDocsRoot: ".live-documentation/source",
- *   docExtension: ".md"
- * });
- * // index.get("Widget") => [{ liveDocPath: ".live-documentation/source/src/types.ts.md", ... }]
- * ```
- *
- * @see WorkspaceSymbolIndex
- * @see ResolvedSymbolLocation
+ * @param options.fileIndex - The workspace file index, for the adapters that resolve string references.
  */
-export async function buildWorkspaceSymbolIndex(options: {
+export async function buildWorkspaceIndexes(options: {
   targetFiles: string[];
   workspaceRoot: string;
   liveDocsRoot: string;
   docExtension: string;
   fileIndex?: WorkspaceFileIndex;
-}): Promise<WorkspaceSymbolIndex> {
+}): Promise<WorkspaceIndexes> {
   const index: WorkspaceSymbolIndex = new Map();
+  const entries: WorkspaceEntryIndex = new Map();
 
   for (const absolutePath of options.targetFiles) {
     const sourcePath = normalizeWorkspacePath(
@@ -195,6 +191,7 @@ export async function buildWorkspaceSymbolIndex(options: {
 
     // Try to extract symbols from the file
     let symbols: PublicSymbolEntry[] = [];
+    let declares: DeclaredEntry[] = [];
     try {
       const ext = path.extname(absolutePath).toLowerCase();
 
@@ -219,11 +216,18 @@ export async function buildWorkspaceSymbolIndex(options: {
         });
         if (adapterResult) {
           symbols = adapterResult.symbols;
+          declares = adapterResult.declares ?? [];
         }
       }
     } catch {
       // Skip files that can't be read or parsed
       continue;
+    }
+
+    for (const declared of declares) {
+      const by = entries.get(declared.file) ?? [];
+      by.push({ declarer: sourcePath, reason: declared.reason, ...(declared.name !== undefined ? { name: declared.name } : {}) });
+      entries.set(declared.file, by);
     }
 
     // Compute heading info for proper anchor slugs
@@ -254,5 +258,5 @@ export async function buildWorkspaceSymbolIndex(options: {
     }
   }
 
-  return index;
+  return { symbols: index, entries };
 }

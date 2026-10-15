@@ -4,11 +4,11 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/pathfind.ts
-- Generated At: 2026-10-14T21:04:58.029Z
+- Generated At: 2026-10-15T15:49:39.824Z
 
 ## Authored
 ### Purpose
-Pathfinding over the graph index: one breadth-first walk over a neighbour function, and what the CLI and the Explorer ask of it: the shortest path between files, every file a path reaches and how far, the same search by symbol, and the enumeration of every terminal path away from a file. Pure functions: the CLI feeds the walk the graph's edges, the Explorer the links the Local Map draws.
+Pathfinding over the graph index: one breadth-first walk over a neighbour function, and what the CLI and the Explorer ask of it: the shortest path between files, every file a path reaches and how far, the same search by symbol, the enumeration of every terminal path away from a file, and what the graph's entry points reach. Pure functions: the CLI feeds the walk the graph's edges, the Explorer the links the Local Map draws.
 
 ### Notes
 - Gathered here on 2026-09-28 from the three pathfinding modules that lived beside the Explorer in `packages/scripts`; the searches were extracted from the inspect CLI on 2025-12-19. They are engine code because the Explorer client's own pathfinding (`client/pathfind.ts`) did the same job over a different shape. Since 2026-10-14 ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-walk-under-the-cli-and-the-explorer-and-a-destination-field-that-offers-only-what-connects-recorded-2026-10-14)) the walk is the one implementation under both, on the owner's condition that "only one pure implementation should underlie both": `searchGraph` is a wrapper over `walk` that keeps the CLI's frontier and visited set as they were, and the client reads its links through `walk` and `reachFrom`.
@@ -16,27 +16,28 @@ Pathfinding over the graph index: one breadth-first walk over a neighbour functi
 - `getNeighbors`, the terminal paths and the symbol search take one way. "both" had read as inbound in the neighbour function, so a fan-out asked both ways silently listed the inbound paths (found 2026-10-14); the CLI answers "both" by two searches, and refuses it for a fan-out.
 - A symbol-level hop follows an edge by anchor at both ends (`from` and `toSymbol`), so a multi-hop symbol path stays on symbols across files; without a symbol, the file-level neighbours are added as well.
 - An outbound search that finds nothing also reports what could not be followed: the dependencies that resolved to no file.
+- `isEntry` and `reachability` (2026-10-15, [Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)): the walk from the docs' entry points, a file with an `Entry` line or a test, or from the files asked for, along what each depends on, with the files no start reaches and, from the entries, a second walk from the entries that are not tests so that what only a test reaches is told apart. `inspect --reachable` without `--from` and the Knowledge Sources panel share it, and the panel's JSON export is the same object.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Direction` {#symbol-direction}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L17)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L19)
 
 ##### `Direction` — Summary
 Traversal direction for graph searches.
 
 #### `OneWay` {#symbol-oneway}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L20)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L22)
 
 ##### `OneWay` — Summary
 One way through the graph: outbound follows what a file depends on, inbound what depends on it.
 
 #### `Neighbours` {#symbol-neighbours}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L23)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L25)
 - Returns: `Iterable`
 
 ##### `Neighbours` — Summary
@@ -44,21 +45,21 @@ The files one step from a file, in the direction of a walk.
 
 #### `WalkStop` {#symbol-walkstop}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L26)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L28)
 
 ##### `WalkStop` — Summary
 A file the walk did not go on from: nothing new lay beyond it, or it stood at the depth limit.
 
 #### `Walk (interface)` {#symbol-walk-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L32)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L34)
 
 ##### `Walk (interface)` — Summary
 What one breadth-first walk from a set of files found.
 
 #### `walk (function)` {#symbol-walk-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L50)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L52)
 - Returns: [`Walk`](#symbol-walk-interface)
 - Parameters: `starts`: `Iterable`; `neighbours`: [`Neighbours`](#symbol-neighbours); `targets`: `ReadonlySet`
 
@@ -71,7 +72,7 @@ stop; a file with nothing new beyond it is a `terminal` stop.
 
 #### `pathTo` {#symbol-pathto}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L97)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L99)
 - Parameters: `found`: [`Walk`](#symbol-walk-interface)
 
 ##### `pathTo` — Summary
@@ -79,64 +80,98 @@ The files from a start of the walk to a file it reached, the start first.
 
 #### `reachFrom` {#symbol-reachfrom}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L106)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L108)
 - Parameters: `starts`: `Iterable`; `neighbours`: [`Neighbours`](#symbol-neighbours)
 
 ##### `reachFrom` — Summary
 Every file a path reaches from the starts, with the fewest hops to it; the starts themselves are not listed.
 
+#### `isEntry` {#symbol-isentry}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L122)
+- Parameters: `file`: [`GraphFile`](./graph.ts.mdmd.md#symbol-graphfile)
+
+##### `isEntry` — Summary
+True when something outside the code starts the file: its doc carries an Entry line, or it is a test, which a runner starts.
+
+#### `Start` {#symbol-start}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L127)
+
+##### `Start` — Summary
+A file a reachability walk starts from: an entry of the docs with its lines, or a file asked for.
+
+#### `Reachability (interface)` {#symbol-reachability-interface}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L135)
+
+##### `Reachability (interface)` — Summary
+What is reachable along dependencies from the graph's entry points, or from the files asked for.
+
+#### `reachability (function)` {#symbol-reachability-function}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L154)
+- Returns: [`Reachability`](#symbol-reachability-interface)
+- Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
+
+##### `reachability (function)` — Summary
+Walks from the graph's entry points, or from the files asked for, along what
+each depends on: one walk from every start, and, from the entries, a second
+from the entries that are not tests, so that what only a test reaches is told
+apart. A file asked for that the graph does not hold is left out.
+
 #### `FrontierEntry` {#symbol-frontierentry}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L116)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L176)
 
 ##### `FrontierEntry` — Summary
 Entry in the search frontier, representing a node that couldn't be explored further.
 
 #### `PathSearchResult` {#symbol-pathsearchresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L124)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L184)
 
 ##### `PathSearchResult` — Summary
 Result of a file-level path search.
 
 #### `FanoutPath` {#symbol-fanoutpath}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L131)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L191)
 
 ##### `FanoutPath` — Summary
 A terminal path in fanout enumeration.
 
 #### `SymbolReference` {#symbol-symbolreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L136)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L196)
 
 ##### `SymbolReference` — Summary
 A reference that may include a symbol (e.g., "file.ts#SymbolName").
 
 #### `SymbolHop` {#symbol-symbolhop}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L142)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L202)
 
 ##### `SymbolHop` — Summary
 A node in a symbol-aware path, tracking both file and symbol at each hop.
 
 #### `SymbolPathSearchResult` {#symbol-symbolpathsearchresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L148)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L208)
 
 ##### `SymbolPathSearchResult` — Summary
 Result of a symbol-aware path search.
 
 #### `MAX_ENUMERATED_PATHS` {#symbol-max_enumerated_paths}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L154)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L214)
 
 ##### `MAX_ENUMERATED_PATHS` — Summary
 Maximum number of paths to enumerate to avoid combinatorial explosion.
 
 #### `searchGraph` {#symbol-searchgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L172)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L232)
 - Returns: [`PathSearchResult`](#symbol-pathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -157,7 +192,7 @@ Search result with path (if found), visited nodes, and frontier
 
 #### `getNeighbors` {#symbol-getneighbors}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L224)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L284)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
 ##### `getNeighbors` — Summary
@@ -173,7 +208,7 @@ The neighbouring code paths
 
 #### `enumerateTerminalPaths` {#symbol-enumerateterminalpaths}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L244)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L304)
 - Returns: [`FanoutPath`](#symbol-fanoutpath)[]
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -194,7 +229,7 @@ Array of terminal paths (limited to MAX_ENUMERATED_PATHS)
 
 #### `searchSymbolPath` {#symbol-searchsymbolpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L291)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L351)
 - Returns: [`SymbolPathSearchResult`](#symbol-symbolpathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `from`: [`SymbolReference`](#symbol-symbolreference); `to`: [`SymbolReference`](#symbol-symbolreference); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -218,7 +253,7 @@ Search result with path and found status
 
 #### `symbolMatchesAnchor` {#symbol-symbolmatchesanchor}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L389)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L449)
 
 ##### `symbolMatchesAnchor` — Summary
 Whether a symbol name or anchor matches an anchor slug: exactly, or by name
@@ -227,5 +262,7 @@ once the `symbol-` prefix is removed and case ignored.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`document.Entry`](./document.ts.mdmd.md#symbol-entry) (type-only)
+- [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

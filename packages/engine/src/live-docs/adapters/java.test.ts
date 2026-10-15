@@ -213,4 +213,41 @@ describe("javaAdapter", () => {
       { specifier: "org.junit.jupiter.api.Test", symbols: ["Test"], kind: "import" }
     ]);
   });
+
+  it("reports public static void main as the program's entry, written public or public as an interface member", async () => {
+    await write({
+      "p/App.java": [
+        "package p;",
+        "",
+        "public final class App {",
+        "    public static String main(int seed) { return \"\" + seed; }",
+        "    public static void main(String[] args) { System.out.println(main(10)); }",
+        "}",
+        ""
+      ].join("\n"),
+      "p/Runner.java": "package p;\n\ninterface Runner {\n    static void main(String[] args) {}\n}\n"
+    });
+
+    expect((await analyze("p/App.java")).program).toMatchObject({ symbol: "main" });
+    expect((await analyze("p/Runner.java")).program).toMatchObject({ symbol: "main" });
+  });
+
+  it("leaves program absent when no main is public, static and void", async () => {
+    await write({
+      "p/Tool.java": [
+        "package p;",
+        "",
+        "public class Tool {",
+        "    public static String main(int seed) { return \"\"; }",
+        "    static void main() {}",
+        "    public void main(String[] args) {}",
+        "}",
+        ""
+      ].join("\n"),
+      "p/Plain.java": "package p;\n\npublic class Plain {\n    public void run() {}\n}\n"
+    });
+
+    expect(await analyze("p/Tool.java")).not.toHaveProperty("program");
+    expect(await analyze("p/Plain.java")).not.toHaveProperty("program");
+  });
 });

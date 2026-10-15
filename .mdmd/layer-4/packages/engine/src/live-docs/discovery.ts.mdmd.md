@@ -4,11 +4,11 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-09-29T19:54:52.675Z
+- Generated At: 2026-10-15T15:49:39.602Z
 
 ## Authored
 ### Purpose
-File discovery and symbol indexing for Live Documentation. Locates workspace files matching configured globs for Live Doc generation and builds the workspace-wide symbol index that enables cross-file type reference linking.
+File discovery and the workspace-wide indexes for Live Documentation. Locates workspace files matching configured globs for Live Doc generation and, in one pass over them, builds the symbol index that enables cross-file type reference linking and the entry index of the files manifests declare as entries.
 
 ### Notes
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
@@ -16,13 +16,14 @@ File discovery and symbol indexing for Live Documentation. Locates workspace fil
 - `buildWorkspaceSymbolIndex()` performs a lightweight pre-scan of all targets to collect exported symbols
 - `resolveTypeToLiveDoc()` in `compose.ts` looks up a type name in the index; each location records whether its file declares the symbol or only re-exports it
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
+- `buildWorkspaceSymbolIndex()` became `buildWorkspaceIndexes()` on 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)): the same pass also collects what each manifest declares (`declares` on the analysis result: the files its scripts run, its binaries, its main module) into the entry index, keyed by the declared file, from which the second pass writes each file's `Entry` lines.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L94)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L97)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -55,45 +56,36 @@ const files = await discoverTargetFiles({
 ##### `discoverTargetFiles` — Links
 - `detectChangedFiles` — *
 
-#### `buildWorkspaceSymbolIndex` {#symbol-buildworkspacesymbolindex}
+#### `WorkspaceIndexes` {#symbol-workspaceindexes}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L148)
+
+##### `WorkspaceIndexes` — Summary
+The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
+
+#### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L177)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L172)
 
-##### `buildWorkspaceSymbolIndex` — Summary
-Builds a workspace-wide symbol index for cross-Live-Doc type reference resolution.
+##### `buildWorkspaceIndexes` — Summary
+Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
+over the target files.
 
-##### `buildWorkspaceSymbolIndex` — Remarks
-This function performs a lightweight pre-scan of all target files to collect
-exported symbols and their locations. The resulting index enables type references
-in one Live Doc to link to type definitions in other Live Docs.
+##### `buildWorkspaceIndexes` — Remarks
+The symbol index maps each exported symbol's name (case-sensitive) to its
+locations, so that a type reference in one Live Doc links to the type's
+definition in another; several files may publish one name. The entry index
+maps each file a manifest declares as an entry (a script it runs, a binary,
+its main module) to what declares it, so that the file's doc carries the
+`Entry` line. TypeScript and JavaScript files are read with the built-in
+parser; every other file is read by its language adapter.
 
-The index is keyed by symbol name (case-sensitive) and maps to an array of
-locations, allowing for multiple symbols with the same name from different files.
-
-##### `buildWorkspaceSymbolIndex` — Parameters
-- `options`: Configuration for the index build.
+##### `buildWorkspaceIndexes` — Parameters
 - `options.docExtension`: File extension for Live Docs (e.g., ".md").
+- `options.fileIndex`: The workspace file index, for the adapters that resolve string references.
 - `options.liveDocsRoot`: Workspace-relative path to the Live Docs root (e.g., ".live-documentation/source").
 - `options.targetFiles`: Absolute paths to all files being processed.
 - `options.workspaceRoot`: Absolute path to the workspace root.
-
-##### `buildWorkspaceSymbolIndex` — Returns
-A map from symbol names to their resolved Live Doc locations.
-
-##### `buildWorkspaceSymbolIndex` — Examples
-```typescript
-const index = await buildWorkspaceSymbolIndex({
-  targetFiles: ["/workspace/src/types.ts", "/workspace/src/core.ts"],
-  workspaceRoot: "/workspace",
-  liveDocsRoot: ".live-documentation/source",
-  docExtension: ".md"
-});
-// index.get("Widget") => [{ liveDocPath: ".live-documentation/source/src/types.ts.md", ... }]
-```
-
-##### `buildWorkspaceSymbolIndex` — Links
-- `ResolvedSymbolLocation`
-- `WorkspaceSymbolIndex` — *
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -106,8 +98,10 @@ const index = await buildWorkspaceSymbolIndex({
 - [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex)
 - [`index.analyzeWithLanguageAdapters`](./adapters/index.ts.mdmd.md#symbol-analyzewithlanguageadapters)
 - [`compose.computePublicSymbolHeadingInfo`](./compose.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
+- [`coreTypes.DeclaredEntry`](./coreTypes.ts.mdmd.md#symbol-declaredentry) (type-only)
 - [`coreTypes.PublicSymbolEntry`](./coreTypes.ts.mdmd.md#symbol-publicsymbolentry) (type-only)
 - [`coreTypes.ResolvedSymbolLocation`](./coreTypes.ts.mdmd.md#symbol-resolvedsymbollocation) (type-only)
+- [`coreTypes.WorkspaceEntryIndex`](./coreTypes.ts.mdmd.md#symbol-workspaceentryindex) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)

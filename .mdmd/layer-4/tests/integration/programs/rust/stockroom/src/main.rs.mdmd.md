@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/rust/stockroom/src/main.rs
-- Generated At: 2026-10-02T20:20:08.727Z
+- Entry: program `main`
+- Generated At: 2026-10-15T15:49:47.536Z
 
 ## Authored
 ### Purpose

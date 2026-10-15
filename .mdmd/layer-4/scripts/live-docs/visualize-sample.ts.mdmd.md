@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-sample.ts
-- Generated At: 2026-09-29T14:19:43.867Z
+- Entry: command `live-docs:visualize:estate` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.385Z
 
 ## Authored
 ### Purpose

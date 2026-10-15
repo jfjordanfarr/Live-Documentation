@@ -36,8 +36,15 @@ const LINE_COMMENT_PATTERN = /^\s*#/;
 const BLOCK_COMMENT_BEGIN = /^\s*=begin\b/i;
 const BLOCK_COMMENT_END = /^\s*=end\b/i;
 const DIRECTIVE_PATTERN = /^#\s*(?:frozen_string_literal|rubocop)/i;
+/**
+ * The guard that runs a file only as the program, at the top level (column 0): `if __FILE__ == $0`
+ * on its own line or as a statement modifier, with `$PROGRAM_NAME` for `$0` and the operands in
+ * either order, optionally in parentheses, followed by nothing but `then`, a comment or the line's end.
+ * Comment lines are skipped before this is tried.
+ */
+const MAIN_GUARD_PATTERN = /^(?:\S.*\s)?if\s+\(?\s*(?:__FILE__\s*==\s*\$(?:0|PROGRAM_NAME)|\$(?:0|PROGRAM_NAME)\s*==\s*__FILE__)\s*\)?(?:\s+then\b.*|\s*#.*)?\s*$/;
 
-/** Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts classes, modules, methods, and `require`/`require_relative` dependencies. */
+/** Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts classes, modules, methods, and `require`/`require_relative` dependencies, and reports a file guarded by `__FILE__ == $0` as the program's entry. */
 export const rubyAdapter: LanguageAdapter = {
   id: "ruby-basic",
   extensions: [".rb"],
@@ -45,18 +52,7 @@ export const rubyAdapter: LanguageAdapter = {
     const content = await fs.readFile(absolutePath, "utf8");
     const symbols = extractSymbols(content);
     const dependencies = extractDependencies(content, absolutePath, workspaceRoot);
-
-    if (!symbols.length && !dependencies.length) {
-      return {
-        symbols: [],
-        dependencies: []
-      };
-    }
-
-    return {
-      symbols,
-      dependencies
-    };
+    return hasMainGuard(content) ? { symbols, dependencies, program: {} } : { symbols, dependencies };
   }
 };
 
@@ -280,6 +276,25 @@ function extractDependencies(content: string, absolutePath: string, workspaceRoo
   }
 
   return Array.from(dependencies.values()).sort((left, right) => left.specifier.localeCompare(right.specifier));
+}
+
+/** Whether a top-level line outside comments is the guard that runs the file only as the program. */
+function hasMainGuard(content: string): boolean {
+  const lines = content.split(/\r?\n/);
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (BLOCK_COMMENT_BEGIN.test(line)) {
+      index = consumeBlockComment(lines, index).nextIndex;
+      continue;
+    }
+    if (LINE_COMMENT_PATTERN.test(line)) {
+      continue;
+    }
+    if (MAIN_GUARD_PATTERN.test(line)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function consumeBlockComment(lines: string[], startIndex: number): { lines: string[]; nextIndex: number } {

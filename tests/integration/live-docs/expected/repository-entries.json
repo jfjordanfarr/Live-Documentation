@@ -1,0 +1,101 @@
+{
+  "convention": "Every file of this repository's own code that something outside the code starts, read by hand on 2026-10-15 from the manifests' scripts, bin and main, the configuration's entryPoints, and the kinds of file a tool reads, with the reasons as the docs write them. A test is an entry by its archetype and is not listed. The sample programs under tests/integration/programs and the fixtures under tests/integration/fixtures are inputs to the tool, not code of this workspace, and are not listed; a doc of this repository's own code with an Entry line that this list does not name is a finding. The seed was the October 8 dead code sweep's hand table (AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep/candidates.md), refreshed against the manifests and the tree as they stand.",
+  "entries": {
+    "package.json": [
+      "tooling"
+    ],
+    "packages/cli/package.json": [
+      "tooling"
+    ],
+    "packages/cli/src/index.ts": [
+      "command live-docs of packages/cli/package.json",
+      "module of packages/cli/package.json"
+    ],
+    "packages/engine/package.json": [
+      "tooling"
+    ],
+    "packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1": [
+      "program"
+    ],
+    "packages/explorer/package.json": [
+      "tooling"
+    ],
+    "packages/explorer/src/client/index.ts": [
+      "declared"
+    ],
+    "packages/explorer/src/client/styles.css": [
+      "declared"
+    ],
+    "packages/explorer/src/client/tsconfig.json": [
+      "tooling"
+    ],
+    "packages/generator/package.json": [
+      "tooling"
+    ],
+    "packages/generator/src/generator.ts": [
+      "module of packages/generator/package.json"
+    ],
+    "scripts/doc-tools/enforce-documentation-links.ts": [
+      "command docs:links:enforce of package.json"
+    ],
+    "scripts/layout-lab/lab.ts": [
+      "command layout:lab of package.json"
+    ],
+    "scripts/live-docs/board.ts": [
+      "command live-docs:board of package.json"
+    ],
+    "scripts/live-docs/find-orphans.ts": [
+      "command live-docs:orphans of package.json"
+    ],
+    "scripts/live-docs/generate.ts": [
+      "command live-docs:generate of package.json"
+    ],
+    "scripts/live-docs/inspect.ts": [
+      "command live-docs:inspect of package.json"
+    ],
+    "scripts/live-docs/lint.ts": [
+      "command live-docs:lint of package.json"
+    ],
+    "scripts/live-docs/run-all.ts": [
+      "command livedocs of package.json"
+    ],
+    "scripts/live-docs/visualize-sample.ts": [
+      "command live-docs:visualize:estate of package.json"
+    ],
+    "scripts/live-docs/visualize-static.ts": [
+      "command live-docs:visualize of package.json"
+    ],
+    "scripts/oracle/compare.ts": [
+      "command oracle:compare of package.json"
+    ],
+    "scripts/oracle/index-fixture.ts": [
+      "command oracle:index of package.json"
+    ],
+    "scripts/safe-to-commit.mjs": [
+      "command ci-check of package.json",
+      "command safe:commit of package.json"
+    ],
+    "scripts/slopcop/check-asset-paths.ts": [
+      "command slopcop:assets of package.json"
+    ],
+    "scripts/slopcop/check-markdown-links.ts": [
+      "command slopcop:markdown of package.json"
+    ],
+    "scripts/slopcop/check-symbols.ts": [
+      "command slopcop:symbols of package.json"
+    ],
+    "scripts/verify.mjs": [
+      "command verify of package.json"
+    ],
+    "tests/e2e/playwright.config.ts": [
+      "tooling"
+    ],
+    "tests/integration/tsconfig.json": [
+      "tooling"
+    ]
+  },
+  "reachedThroughDynamicImport": {
+    "packages/explorer/src/shared/buildAssets.ts": "packages/explorer/src/shared/staticBuilder.ts"
+  },
+  "unreachableByHand": []
+}

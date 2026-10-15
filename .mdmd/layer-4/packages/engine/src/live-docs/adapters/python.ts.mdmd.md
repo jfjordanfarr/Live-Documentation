@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/python.ts
-- Generated At: 2026-09-27T23:21:30.994Z
+- Generated At: 2026-10-15T15:49:39.115Z
 
 ## Authored
 ### Purpose
@@ -14,17 +14,18 @@ The Python adapter: tree-sitter symbols (classes, functions, assignments and pub
 - Measured against `scip-python` on the four Python sample programs; `python/ledger` is the one built to defeat a line scanner. The one edge it misses there needs type inference: `account.balance()` on an object a repository lookup returned.
 - A module named in a relative `from ..pkg import x` is a dependency even though scip-python emits no occurrence for it; `oracle:compare` lists that as one extra edge on the ledger.
 - File existence is checked against the directory listing, not `stat` alone, because the workspace may sit on a case-insensitive mount and Python imports are case-sensitive.
+- The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a module-level `if __name__ == "__main__"`, read from the tree (either quote style, either operand order, parentheses allowed; `!=`, a compound condition, `elif` and a guard inside a function or in a string do not count).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `pythonAdapter` {#symbol-pythonadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L636)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/python.ts#L660)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `pythonAdapter` — Summary
-Language adapter for Python (`.py`): tree-sitter symbols and import resolution that follows re-exports to where a name is defined.
+Language adapter for Python (`.py`): tree-sitter symbols, import resolution that follows re-exports to where a name is defined, and the `__main__` guard that marks a program's entry.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

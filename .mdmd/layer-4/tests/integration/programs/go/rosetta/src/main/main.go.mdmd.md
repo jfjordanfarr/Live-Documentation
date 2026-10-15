@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/go/rosetta/src/main/main.go
-- Generated At: 2026-10-02T20:20:06.046Z
+- Entry: program [`main`](#symbol-main-function-overload-2)
+- Generated At: 2026-10-15T15:49:45.743Z
 
 ## Authored
 ### Purpose

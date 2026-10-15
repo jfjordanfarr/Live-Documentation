@@ -372,5 +372,73 @@ describe("JSON Adapter on package.json", () => {
       { specifier: "typescript",     symbols: [], kind: "import" },
       { specifier: "vitest@^3.0.0",  symbols: [], kind: "import" }
     ]);
+    expect(result?.declares).toEqual([{ reason: "module", file: "packages/explorer/src/index.ts" }]);
+  });
+
+  it("declares the file each script runs, flags and tooling inputs passed over, and nothing for a script that runs no workspace file", async () => {
+    const manifestPath = path.join(tempDir, "package.json");
+    fs.writeFileSync(manifestPath, JSON.stringify({
+      name: "root",
+      scripts: {
+        "live-docs:generate": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/generate.ts --config ./.live-docs.config.json",
+        verify: "node ./scripts/verify.mjs",
+        lint: "eslint .",
+        "test:unit": "vitest run --project unit",
+        both: "npm run lint && node scripts/verify.mjs && tsx scripts/live-docs/lint.ts",
+        quoted: 'node "scripts/verify.mjs" --json',
+        config: "tsc -p tsconfig.base.json",
+        vendored: "node node_modules/tsx/dist/cli.mjs scripts/verify.mjs",
+        typed: "tsc -p tsconfig.json && tsc --noEmit -p src/client/tsconfig.json",
+        quiet: "tsx --quiet scripts/live-docs/lint.ts",
+        tested: "npx playwright test --config tests/e2e/playwright.config.ts"
+      }
+    }));
+    const fileIndex = new Set(["tsconfig.base.json", "tsconfig.json", "src/client/tsconfig.json", "tests/e2e/playwright.config.ts", "scripts/live-docs/generate.ts", "scripts/verify.mjs", "scripts/live-docs/lint.ts", "node_modules/tsx/dist/cli.mjs"]);
+
+    const result = await jsonAdapter.analyze({ absolutePath: manifestPath, workspaceRoot: tempDir, fileIndex });
+
+    expect(result?.declares).toEqual([
+      { reason: "command", file: "scripts/live-docs/generate.ts", name: "live-docs:generate" },
+      { reason: "command", file: "scripts/live-docs/lint.ts", name: "both" },
+      { reason: "command", file: "scripts/live-docs/lint.ts", name: "quiet" },
+      { reason: "command", file: "scripts/verify.mjs", name: "both" },
+      { reason: "command", file: "scripts/verify.mjs", name: "quoted" },
+      { reason: "command", file: "scripts/verify.mjs", name: "vendored" },
+      { reason: "command", file: "scripts/verify.mjs", name: "verify" }
+    ]);
+  });
+
+  it("maps a built binary and main module back to their sources through the tsconfig beside the manifest", async () => {
+    const packageDir = path.join(tempDir, "packages", "cli");
+    fs.mkdirSync(path.join(packageDir, "src"), { recursive: true });
+    fs.writeFileSync(path.join(packageDir, "package.json"), JSON.stringify({
+      name: "@live-documentation/cli",
+      main: "dist/index.js",
+      bin: { "live-docs": "./dist/index.js", "live-docs-serve": "./dist/serve.mjs" }
+    }));
+    fs.writeFileSync(path.join(packageDir, "tsconfig.json"), JSON.stringify({ compilerOptions: { rootDir: "src", outDir: "dist" }, include: ["src/**/*.ts"] }));
+    const fileIndex = new Set(["packages/cli/src/index.ts", "packages/cli/src/serve.mts", "packages/cli/package.json", "packages/cli/tsconfig.json"]);
+
+    const result = await jsonAdapter.analyze({ absolutePath: path.join(packageDir, "package.json"), workspaceRoot: tempDir, fileIndex });
+
+    expect(result?.declares).toEqual([
+      { reason: "command", file: "packages/cli/src/index.ts", name: "live-docs" },
+      { reason: "module", file: "packages/cli/src/index.ts" },
+      { reason: "command", file: "packages/cli/src/serve.mts", name: "live-docs-serve" }
+    ]);
+  });
+
+  it("declares a string bin under the package's name, looks under the package and its src without a rootDir, and declares nothing without a file index", async () => {
+    const packageDir = path.join(tempDir, "tool");
+    fs.mkdirSync(path.join(packageDir, "src"), { recursive: true });
+    fs.writeFileSync(path.join(packageDir, "package.json"), JSON.stringify({ name: "tool", bin: "dist/run.js" }));
+    fs.writeFileSync(path.join(packageDir, "tsconfig.json"), JSON.stringify({ compilerOptions: { outDir: "dist" } }));
+    const fileIndex = new Set(["tool/src/run.ts"]);
+
+    const result = await jsonAdapter.analyze({ absolutePath: path.join(packageDir, "package.json"), workspaceRoot: tempDir, fileIndex });
+    expect(result?.declares).toEqual([{ reason: "command", file: "tool/src/run.ts", name: "tool" }]);
+
+    const without = await jsonAdapter.analyze({ absolutePath: path.join(packageDir, "package.json"), workspaceRoot: tempDir });
+    expect(without).not.toHaveProperty("declares");
   });
 });

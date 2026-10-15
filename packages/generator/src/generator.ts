@@ -8,17 +8,19 @@ import {
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import {
   analyzeSourceFile,
-  buildWorkspaceSymbolIndex,
+  buildWorkspaceIndexes,
   cleanupEmptyParents,
   directoryExists,
   discoverTargetFiles,
   hasMeaningfulAuthoredContent,
   computePublicSymbolHeadingInfo,
   composeDependencies,
+  composeEntries,
   composeReExports,
   composeSymbolBlocks,
   resolveArchetype,
   type SourceAnalysisResult,
+  type WorkspaceEntryIndex,
   type WorkspaceFileIndex,
   type WorkspaceSymbolIndex
 } from "@live-documentation/engine/live-docs/core";
@@ -98,7 +100,8 @@ const DEFAULT_LOGGER: LiveDocGeneratorLogger = {
  * files no longer exist are pruned automatically (unless `changedOnly` is set).
  *
  * Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
- * (2026-01-28), and cross-platform hash fix (2026-02-03).
+ * (2026-01-28), cross-platform hash fix (2026-02-03) and the entry index
+ * behind the `Entry` lines (2026-10-15).
  *
  * @param options - Generation configuration including workspace root, config overrides, and logger.
  */
@@ -147,18 +150,18 @@ export async function generateLiveDocs(
   );
   logger.info(`Built file index with ${fileIndex.size} workspace paths`);
 
-  // Build workspace-wide symbol index for cross-Live-Doc type reference resolution
+  // Build the workspace-wide indexes: the symbols, for cross-Live-Doc type reference resolution, and the entries manifests declare
   const liveDocsRoot = normalizeWorkspacePath(
     path.join(normalizedConfig.root, normalizedConfig.baseLayer)
   );
-  const symbolIndex = await buildWorkspaceSymbolIndex({
+  const { symbols: symbolIndex, entries: entryIndex } = await buildWorkspaceIndexes({
     targetFiles,
     workspaceRoot,
     liveDocsRoot,
     docExtension: normalizedConfig.extension,
     fileIndex
   });
-  logger.info(`Built symbol index with ${symbolIndex.size} unique symbol names`);
+  logger.info(`Built symbol index with ${symbolIndex.size} unique symbol names and an entry index with ${entryIndex.size} declared files`);
 
   const results: LiveDocWriteRecord[] = [];
   let written = 0;
@@ -213,7 +216,9 @@ export async function generateLiveDocs(
       sourceRelativePath: normalizedSourcePath,
       liveDocsRootAbsolute,
       docExtension,
-      symbolIndex
+      symbolIndex,
+      entryIndex,
+      config: normalizedConfig
     });
 
     const renderDocument = (generatedAt: string): string =>
@@ -408,7 +413,7 @@ async function readFileIfExists(filePath: string): Promise<string | undefined> {
   }
 }
 
-/** Composes the generated sections of a doc from its source analysis. */
+/** Composes the generated parts of a doc from its source analysis: the Entry lines and the three sections. */
 function composeGenerated(params: {
   analysis: SourceAnalysisResult;
   docAbsolutePath: string;
@@ -417,10 +422,23 @@ function composeGenerated(params: {
   liveDocsRootAbsolute: string;
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
-}): Pick<LiveDoc, "symbols" | "dependencies" | "reExports"> {
+  entryIndex: WorkspaceEntryIndex;
+  config: LiveDocumentationConfig;
+}): Pick<LiveDoc, "entries" | "symbols" | "dependencies" | "reExports"> {
   const docDir = path.dirname(params.docAbsolutePath);
   const sourceAbsolute = path.resolve(params.workspaceRoot, params.sourceRelativePath);
   const headings = computePublicSymbolHeadingInfo(params.analysis.symbols);
+
+  const entries = composeEntries({
+    analysis: params.analysis,
+    sourceRelativePath: params.sourceRelativePath,
+    headings,
+    declaredBy: params.entryIndex.get(params.sourceRelativePath) ?? [],
+    config: params.config,
+    docDir,
+    liveDocsRootAbsolute: params.liveDocsRootAbsolute,
+    docExtension: params.docExtension
+  });
 
   const symbols = composeSymbolBlocks({
     headings,
@@ -447,7 +465,7 @@ function composeGenerated(params: {
     docExtension: params.docExtension
   });
 
-  return reExports.length > 0 ? { symbols, dependencies, reExports } : { symbols, dependencies };
+  return reExports.length > 0 ? { entries, symbols, dependencies, reExports } : { entries, symbols, dependencies };
 }
 
 /**

@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-Infers the best default entry node when launching the Explorer without a specific artifact selected. Scores nodes based on centrality, archetype, and naming patterns to surface the most "interesting" starting point.
+Guesses the first subject by file name, path and centrality when nothing else names one: the landing's last fallback since 2026-10-15, used only when the docs declare no entry point at all.
 
 ### Notes
 Extracted from client/index.ts during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. The `inferDefaultEntryNodeId()` function is called during bootstrap when no node ID is in the URL.
+
+- On 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) the docs' `Entry` lines took over the landing through `landing.ts`; this guess, "wrong for our repo but not a stupid guess" in the owner's words, remains for a bundle whose docs declare no entry, such as one generated before the lines existed. On this repository it had picked the rosetta sample's `main.ts`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

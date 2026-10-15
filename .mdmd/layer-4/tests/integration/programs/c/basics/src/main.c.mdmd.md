@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/c/basics/src/main.c
-- Generated At: 2026-10-02T20:20:04.145Z
+- Entry: program [`main`](#symbol-main)
+- Generated At: 2026-10-15T15:49:44.496Z
 
 ## Authored
 ### Purpose

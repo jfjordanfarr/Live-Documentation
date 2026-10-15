@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/programs/c/rosetta/src/test_pipeline.c
-- Generated At: 2026-09-27T23:21:34.399Z
+- Entry: program [`main`](#symbol-main)
+- Generated At: 2026-10-15T15:49:44.751Z
 
 ## Authored
 ### Purpose

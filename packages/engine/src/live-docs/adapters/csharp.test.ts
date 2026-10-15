@@ -400,4 +400,57 @@ describe("csharpAdapter", () => {
       ]);
     });
   });
+
+  describe("program", () => {
+    const repoRoot = path.resolve(__dirname, "../../../../..");
+
+    it("reports a static Main as the program's entry, whatever its accessibility and return type", async () => {
+      await write("Program.cs", [
+        "namespace Shop",
+        "{",
+        "    class Program",
+        "    {",
+        "        static void Main(string[] args) { }",
+        "    }",
+        "}"
+      ]);
+      await write("Host.cs", [
+        "using System.Threading.Tasks;",
+        "namespace Shop;",
+        "public class Host",
+        "{",
+        "    private static async Task<int> Main() => 0;",
+        "}"
+      ]);
+
+      expect((await analyze("Program.cs")).program).toMatchObject({ symbol: "Main" });
+      expect((await analyze("Host.cs")).program).toMatchObject({ symbol: "Main" });
+    });
+
+    it("reports top-level statements as the program's entry, naming no symbol", async () => {
+      await write("Program.cs", [
+        "using System;",
+        "Console.WriteLine(\"hi\");"
+      ]);
+
+      expect((await analyze("Program.cs")).program).toStrictEqual({});
+    });
+
+    it("leaves program absent for a type named Main, and for a Main that is not static", async () => {
+      await write("Tool.cs", [
+        "namespace Shop;",
+        "public class Tool",
+        "{",
+        "    public void Main() { }",
+        "    public static void Run() { }",
+        "}"
+      ]);
+      const rosetta = path.join(repoRoot, "tests", "integration", "programs", "csharp", "rosetta");
+
+      expect(await analyze("Tool.cs")).not.toHaveProperty("program");
+      const main = await csharpAdapter.analyze({ absolutePath: path.join(rosetta, "src", "App", "Main.cs"), workspaceRoot: rosetta });
+      expect(main).not.toBeNull();
+      expect(main).not.toHaveProperty("program");
+    });
+  });
 });

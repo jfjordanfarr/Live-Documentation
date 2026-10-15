@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/archetype.ts
-- Generated At: 2026-10-02T22:17:28.312Z
+- Generated At: 2026-10-15T15:49:39.315Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 - Priority order: explicit `archetypeOverrides` > `.test.`/`.spec.` suffix > fixture directory > test directory > default `implementation`
 - `hasMeaningfulAuthoredContent()` detects whether authored sections contain real content vs placeholder text
 - `globPatternToRegExp()` internal helper converts glob patterns to regex for override matching
+- `matchesPathPattern` (2026-10-15) exports the glob rule the archetype overrides use, so that the configuration's declared entry points are read by the same rule.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -58,6 +59,16 @@ Checks whether an authored markdown block carries information beyond the default
 
 ##### `hasMeaningfulAuthoredContent` — Returns
 `true` when the block contains substantive content, otherwise `false`.
+
+#### `matchesPathPattern` {#symbol-matchespathpattern}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L141)
+
+##### `matchesPathPattern` — Summary
+True when a workspace-relative path matches a configuration pattern: a path
+exactly, or a glob in which `*` stands for anything within one segment and
+`**` for anything across segments. The archetype overrides and the declared
+entry points are read by this rule.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

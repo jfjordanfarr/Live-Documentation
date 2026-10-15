@@ -160,3 +160,45 @@ int tracker_increment(metrics_tracker *tracker);
     ]);
   });
 });
+
+describe("cAdapter program entry", () => {
+  let workspaceRoot: string;
+  const rosetta = path.resolve(__dirname, "../../../../..", "tests", "integration", "programs", "c", "rosetta");
+
+  beforeEach(async () => {
+    workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "c-program-"));
+  });
+
+  afterEach(async () => {
+    await fs.rm(workspaceRoot, { recursive: true, force: true });
+  });
+
+  async function analyze(relativePath: string, content: string) {
+    const absolutePath = path.join(workspaceRoot, relativePath);
+    await fs.writeFile(absolutePath, content, "utf8");
+    const result = await cAdapter.analyze({ absolutePath, workspaceRoot });
+    if (!result) throw new Error("adapter returned null");
+    return result;
+  }
+
+  it("reports main as the program entry of a .c file that defines it, however the definition is laid out", async () => {
+    expect((await analyze("one.c", "#include <stdio.h>\n\nint main(void) {\n  return 0;\n}\n")).program).toEqual({ symbol: "main", line: 3 });
+    expect((await analyze("allman.c", "int main(int argc, char **argv)\n{\n  (void)argc;\n  (void)argv;\n  return 0;\n}\n")).program).toMatchObject({ symbol: "main" });
+    expect((await analyze("split.c", "void main(int argc,\n          char *argv[]) {\n  (void)argc;\n  (void)argv;\n}\n")).program).toMatchObject({ symbol: "main" });
+
+    for (const file of ["main.c", "test_helpers.c"]) {
+      const result = await cAdapter.analyze({ absolutePath: path.join(rosetta, "src", file), workspaceRoot: rosetta });
+      expect(result?.program).toMatchObject({ symbol: "main" });
+    }
+  });
+
+  it("leaves program absent for a declaration of main, a commented-out definition, a header, and a file without main", async () => {
+    expect(await analyze("declared.c", "int main(void);\n")).not.toHaveProperty("program");
+    expect(await analyze("commented.c", "/*\nint main(void) {\n  return 0;\n}\n*/\nint helper(void) {\n  return 1;\n}\n")).not.toHaveProperty("program");
+    expect(await analyze("single.h", "int main(void) {\n  return 0;\n}\n")).not.toHaveProperty("program");
+
+    const helpers = await cAdapter.analyze({ absolutePath: path.join(rosetta, "src", "helpers.c"), workspaceRoot: rosetta });
+    expect(helpers).not.toBeNull();
+    expect(helpers).not.toHaveProperty("program");
+  });
+});

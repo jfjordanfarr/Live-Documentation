@@ -34,6 +34,7 @@ describe("goAdapter", () => {
   }
 
   const GO_MOD = "module example.com/depot\n\ngo 1.21\n";
+  const PROGRAMS = path.resolve(__dirname, "../../../../..", "tests", "integration", "programs", "go");
 
   it("publishes package-level declarations, exported methods and fields, and interface methods, with their doc comments", async () => {
     await write({
@@ -217,5 +218,35 @@ describe("goAdapter", () => {
     });
 
     expect((await analyze("report/quiet.go")).dependencies).toEqual([]);
+  });
+
+  it("reports main as the program entry of a top-level func main in package main", async () => {
+    await write({
+      "go.mod": GO_MOD,
+      "cmd/depot/main.go": "package main\n\nfunc main() {}\n"
+    });
+
+    expect((await analyze("cmd/depot/main.go")).program).toEqual({ symbol: "main", line: 3 });
+    for (const [sample, file, line] of [["rosetta", "src/main/main.go", 32], ["depot", "cmd/depot/main.go", undefined]] as const) {
+      const root   = path.join(PROGRAMS, sample);
+      const result = await goAdapter.analyze({ absolutePath: path.join(root, file), workspaceRoot: root });
+      expect(result?.program).toMatchObject({ symbol: "main" });
+      if (line) expect(result?.program?.line).toBe(line);
+    }
+  });
+
+  it("leaves program absent for a func main outside package main, a package main without one, and a method named main", async () => {
+    await write({
+      "go.mod": GO_MOD,
+      "tool/tool.go":     "package tool\n\nfunc main() {}\n",
+      "cmd/serve/app.go": "package main\n\ntype App struct{}\n\nfunc (a App) main() {}\n\nfunc run() {}\n"
+    });
+    const rosetta = path.join(PROGRAMS, "rosetta");
+
+    expect(await analyze("tool/tool.go")).not.toHaveProperty("program");
+    expect(await analyze("cmd/serve/app.go")).not.toHaveProperty("program");
+    const test = await goAdapter.analyze({ absolutePath: path.join(rosetta, "src", "main", "pipeline_test.go"), workspaceRoot: rosetta });
+    expect(test).not.toBeNull();
+    expect(test).not.toHaveProperty("program");
   });
 });

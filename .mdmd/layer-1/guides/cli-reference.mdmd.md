@@ -106,6 +106,9 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --direction both
 # Everything a path reaches from a file, nearest first, both ways
 npm run live-docs:inspect -- --from src/main.ts --reachable --direction both
 
+# The entry points, what they reach, what nothing reaches, and what only a test reaches
+npm run live-docs:inspect -- --reachable
+
 # Machine-readable output
 npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 ```
@@ -115,7 +118,7 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 |------|-------------|
 | `--from <path[#symbol]>` | Starting artifact |
 | `--to <path[#symbol]>` | Destination artifact |
-| `--reachable` | List every file a path reaches from `--from`, nearest first, with its hops |
+| `--reachable` | List every file a path reaches from `--from`, nearest first, with its hops; without `--from`, the entry points the docs declare, what they reach, what nothing reaches and what only a test reaches |
 | `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`); `both` with `--to` or `--reachable` |
 | `--max-depth <n>` | Maximum hops (default: 25) |
 | `--json` | Machine-readable output |

@@ -32,6 +32,9 @@ import { normalizeWorkspacePath } from "../tooling/pathUtils";
  * @remarks
  * Relative specifiers are resolved against the workspace using Node-style extension
  * fallbacks so the resulting Live Docs can point to concrete files when possible.
+ * A dynamic `import("...")` with a string literal, anywhere in the file, is an
+ * import of the whole module, as the compiler records it; one whose argument
+ * is computed names nothing the docs can carry.
  *
  * @param params.sourceFile - Parsed source file that acts as the dependency origin.
  * @param params.absolutePath - Absolute path to the origin file, used for resolution.
@@ -100,8 +103,35 @@ export async function collectDependencies(params: {
     }
   }
 
+  for (const call of dynamicImports(params.sourceFile)) {
+    const specifier = call.specifier.text;
+    entries.push({
+      specifier,
+      resolvedPath: await resolveDependency(specifier, params.absolutePath, params.workspaceRoot),
+      symbols: [],
+      kind: "import",
+      location: getNodeLocation(call.node, params.sourceFile)
+    });
+  }
+
   entries.sort((a, b) => displayDependencyKey(a).localeCompare(displayDependencyKey(b)));
   return entries;
+}
+
+/** Every `import("literal")` call in the file, in source order. */
+function dynamicImports(sourceFile: ts.SourceFile): Array<{ node: ts.CallExpression; specifier: ts.StringLiteral }> {
+  const calls: Array<{ node: ts.CallExpression; specifier: ts.StringLiteral }> = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+      const argument = node.arguments[0];
+      if (argument && ts.isStringLiteral(argument)) {
+        calls.push({ node, specifier: argument });
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return calls;
 }
 
 function extractImportNames(importClause: ts.ImportClause | undefined): string[] {

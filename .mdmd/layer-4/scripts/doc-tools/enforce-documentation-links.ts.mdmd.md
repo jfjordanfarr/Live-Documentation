@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/doc-tools/enforce-documentation-links.ts
-- Generated At: 2026-09-28T01:00:43.474Z
+- Entry: command `docs:links:enforce` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:41.856Z
 
 ## Authored
 ### Purpose

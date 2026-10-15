@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs
-- Generated At: 2026-09-28T16:48:41.456Z
+- Entry: opening [`POST api/telemetry`](#symbol-post-apitelemetry)
+- Generated At: 2026-10-15T15:49:43.717Z
 
 ## Authored
 ### Purpose

@@ -1,0 +1,15 @@
+{
+  "name": "entry-points",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A fixture for the entry points the docs declare: a manifest's scripts, binary and main module, a tsconfig a tool reads, a stylesheet the configuration declares, a test, a dynamic import, and a file nothing starts.",
+  "main": "dist/lib.js",
+  "bin": {
+    "demo": "./dist/cli.js"
+  },
+  "scripts": {
+    "start": "tsx src/cli.ts --quiet",
+    "check": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  }
+}

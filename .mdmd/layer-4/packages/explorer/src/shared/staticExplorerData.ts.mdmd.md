@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/staticExplorerData.ts
-- Generated At: 2026-09-28T23:04:10.238Z
+- Generated At: 2026-10-15T15:59:00.969Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ What `explorer-data.json` holds: the graph index and the related markdown that L
 ### Notes
 - Created 2025-12-07. On 2026-09-28 the provenance stamp, the symbol index, the treemap layout, the viewer configuration and the schema version went: nothing produced or read them.
 - The client loads the bundle from `explorer-data.json` beside the page, or from the URL named by `?data=`.
+- `sampleRoots` (2026-10-15): the configuration's sample roots, so that the Knowledge Sources panel groups a sample program's entries apart and the landing leaves them out.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -26,21 +27,21 @@ The bundle.
 
 #### `BundledBoard` {#symbol-bundledboard}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L30)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L38)
 
 ##### `BundledBoard` — Summary
 A board's text, verbatim, and where it sits in the workspace.
 
 #### `BundledMarkdownTreeNode` {#symbol-bundledmarkdowntreenode}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L38)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L46)
 
 ##### `BundledMarkdownTreeNode` — Summary
 A node in the bundled markdown directory tree.
 
 #### `RelatedDocLink` {#symbol-relateddoclink}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L64)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticExplorerData.ts#L72)
 
 ##### `RelatedDocLink` — Summary
 A link from a Live Doc to a bundled markdown file.

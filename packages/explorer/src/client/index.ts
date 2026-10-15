@@ -1,4 +1,5 @@
 import { inferDefaultEntryNodeId } from "./bootstrap";
+import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel } from "./detailPanel";
 import { requireElement, setActiveView } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
@@ -143,6 +144,7 @@ function startExplorer(bundle: StaticExplorerData): void {
   state.openDirectories = initialExploration.openDirectories;
   state.retentionOrder = initialExploration.retentionOrder;
   state.destination = initialExploration.destination;
+  state.reachFrom = initialExploration.reachFrom;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
@@ -336,8 +338,9 @@ function startExplorer(bundle: StaticExplorerData): void {
     onFocus: focusRetained
   });
   // One search for the whole Explorer, in place of the Ctrl+P dialog and the FROM/TO toolbar (the owner's ask, 2026-10-14).
+  const searchIndex = searchIndexOf(graphData.nodes);
   const searchBar = createSearchBar({
-    index: searchIndexOf(graphData.nodes),
+    index: searchIndex,
     onChooseSubject: pinHit,
     onChooseDestination: askPath,
     onClearDestination: () => { leavePath(); persistExploration(); },
@@ -782,6 +785,11 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (storedOrConfiguredNodeId && nodesById.has(storedOrConfiguredNodeId)) {
       return storedOrConfiguredNodeId;
     }
+    // The docs' entry points decide the landing: the one entry outside the sample roots, or the root when there are
+    // several or none a reading starts at; the guess by file name only when the docs declare no entry at all.
+    const landing = landingOf(bundle.graph, bundle.sampleRoots ?? []);
+    if (landing.kind === "file") return landing.codePath;
+    if (landing.kind === "root") return null;
     return inferDefaultEntryNodeId(graphData, resolveLinkEndpoint, nodesById);
   })();
   const focusNode = initialFocusNodeId ? nodesById.get(initialFocusNodeId) : undefined;
@@ -951,7 +959,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     schedulePersistNav();
     writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, spatialLayout: state.spatialLayout, selectedNodeId: state.selectedNode?.id ?? null,
       pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder, filters: state.filters,
-      layout: layoutSettingsOf(state.tuning), destination: state.destination ?? null });
+      layout: layoutSettingsOf(state.tuning), destination: state.destination ?? null, reachFrom: state.reachFrom ?? null });
   }
 
   function renderCurrentView(): void {
@@ -983,10 +991,24 @@ function startExplorer(bundle: StaticExplorerData): void {
 
   const downloadCtx = { files, bundledMarkdown };
 
+  /** The files a chosen start of the panel's walk names: the file, or every file under the directory. */
+  function startFilesOf(start: PathDestination): string[] {
+    return start.kind === "file" ? [start.nodeId] : graphData.nodes.map(node => node.id).filter(id => under(id, start.directory));
+  }
+
   function doRenderSourcesView(): void {
+    const reachFrom = state.reachFrom ?? null;
     renderSourcesView({
-      facts: sourcesFacts(bundle.graph),
+      facts: sourcesFacts(bundle.graph, { ...(reachFrom ? { from: startFilesOf(reachFrom) } : {}), sampleRoots: bundle.sampleRoots ?? [] }),
       perspective: state.perspective,
+      search: searchIndex,
+      reachFrom,
+      // The chosen start is exploration state: it rides the share link and the panel is drawn again from it.
+      onReachFrom: (start: PathDestination | null) => {
+        state.reachFrom = start;
+        persistExploration();
+        doRenderSourcesView();
+      },
       bundledDocs,
       // A file named on the panel goes to the detail panel, where its doc and its doors are; the panel itself stays as it is.
       onFocusNode: (nodeId: string) => {

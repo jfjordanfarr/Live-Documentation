@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/csharp/estate/Database/Oracle/CENTRAL.ACCOUNT.sql
-- Generated At: 2026-10-02T20:20:04.810Z
+- Entry: opening [`CENTRAL.ACCOUNT`](#symbol-centralaccount)
+- Generated At: 2026-10-15T15:49:44.930Z
 
 ## Authored
 ### Purpose

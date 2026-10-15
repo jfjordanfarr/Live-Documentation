@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/csharp/estate/Database/SqlServer/dbo.Payment.sql
-- Generated At: 2026-10-02T20:20:04.826Z
+- Entry: opening [`dbo.Payment`](#symbol-dbopayment)
+- Generated At: 2026-10-15T15:49:44.946Z
 
 ## Authored
 ### Purpose

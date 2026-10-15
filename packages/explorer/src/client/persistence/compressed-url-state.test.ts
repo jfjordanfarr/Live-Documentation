@@ -149,6 +149,7 @@ describe("compress/decompress round-trip", () => {
       openDirectories: new Set(["packages/server/src", "packages/client"]),
       filters: { showTests: false, showAssets: false },
       destination: { kind: "file", nodeId: "b.ts", symbol: "fnB" },
+      reachFrom: { kind: "directory", directory: "packages/client" },
     };
 
     const compressed = compressSnapshot(original);
@@ -159,6 +160,7 @@ describe("compress/decompress round-trip", () => {
     expect(restored.spatialLayout).toBe("structure");
     expect(restored.selectedNodeId).toBe(original.selectedNodeId);
     expect(restored.destination).toEqual(original.destination);
+    expect(restored.reachFrom).toEqual(original.reachFrom);
     expect([...restored.openDirectories].sort()).toEqual(["packages/client", "packages/server/src"]);
     expect(restored.pinSet.entries).toHaveLength(3);
     expect(restored.pinSet.entries[1].hopIndex).toBe(1);
@@ -341,5 +343,22 @@ describe("the path's destination", () => {
     expect(scrub({ kind: "directory", directory: "src" })).toEqual({ kind: "directory", directory: "src" });
     expect(scrub({ kind: "directory", directory: "" })).toEqual({ kind: "directory", directory: "" });
     expect(scrub({ kind: "directory", directory: "lib" })).toBeNull();
+  });
+});
+
+describe("the Knowledge Sources panel's start", () => {
+  it("is omitted for the entry points, rides the payload apart from the path's destination, and is scrubbed like it", () => {
+    expect(snapshotToPayload(DEFAULT_SNAPSHOT).a).toBeUndefined();
+    const file = snapshotToPayload({ ...DEFAULT_SNAPSHOT, reachFrom: { kind: "file", nodeId: "src/cli.ts" }, destination: { kind: "directory", directory: "src" } });
+    expect(file.a).toEqual({ n: "src/cli.ts" });
+    expect(file.x).toEqual({ d: "src" });
+    for (const reachFrom of [{ kind: "file", nodeId: "src/cli.ts" } as const, { kind: "directory", directory: "scripts" } as const]) {
+      expect(decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, reachFrom })).reachFrom).toEqual(reachFrom);
+    }
+    expect(payloadToSnapshot({ v: 2 }).reachFrom).toBeNull();
+    const nodes = new Map([["src/a.ts", {}]]);
+    expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, reachFrom: { kind: "file", nodeId: "src/a.ts" } }, nodes).reachFrom).toEqual({ kind: "file", nodeId: "src/a.ts" });
+    expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, reachFrom: { kind: "file", nodeId: "gone.ts" } }, nodes).reachFrom).toBeNull();
+    expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, reachFrom: { kind: "directory", directory: "lib" } }, nodes).reachFrom).toBeNull();
   });
 });

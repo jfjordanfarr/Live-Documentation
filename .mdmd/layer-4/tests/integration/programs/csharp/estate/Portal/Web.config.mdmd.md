@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/csharp/estate/Portal/Web.config
-- Generated At: 2026-10-02T20:20:05.347Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:45.316Z
 
 ## Authored
 ### Purpose

@@ -20,6 +20,9 @@
  * as the opening's name. String expressions are folded through the `const`
  * members the compiler would fold them through.
  *
+ * The program's entry point is reported too: a static `Main`, or the file's
+ * top-level statements.
+ *
  * Nothing here grades itself: `npm run oracle:compare` measures this adapter
  * against the compiler on the C# fixtures.
  */
@@ -35,7 +38,7 @@ import type {
   SymbolDocumentation,
   TypeReference
 } from "../core";
-import type { WorkspaceSymbolIndex } from "../coreTypes";
+import type { ProgramEntry, WorkspaceSymbolIndex } from "../coreTypes";
 import {
   ROUTE_KIND,
   chooseServers,
@@ -138,6 +141,8 @@ interface FileFacts {
   sqlUses:        StringUse[];
   /** Tables named by `Table` attributes, schema first when given. */
   tableUses:      StringUse[];
+  /** The program's entry point: top-level statements, or a static `Main`. Top-level statements are the entry even beside a `Main`, as they are to the compiler. */
+  program?:       ProgramEntry;
 }
 
 const HTTP_VERB_ATTRIBUTES: Record<string, string> = {
@@ -465,6 +470,7 @@ class FileExtractor {
         this.facts.namespaces.add(scope.namespace);
         continue;
       }
+      if (child.type === "global_statement") this.facts.program = {};
       this.visitDeclaration(child, scope);
     }
     return this.facts;
@@ -615,6 +621,7 @@ class FileExtractor {
           ...parameterReferences(node.childForFieldName("parameters"))
         ];
         if (nameNode && published) this.recordRoutes(node, nameNode.text, owner);
+        if (nameNode?.text === "Main" && modifiers.has("static")) this.facts.program ??= { symbol: "Main", line: nameNode.startPosition.row + 1 };
         break;
       }
       case "constructor_declaration": {
@@ -1240,9 +1247,11 @@ export const csharpAdapter: LanguageAdapter = {
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
     const content  = await fs.readFile(absolutePath, "utf8");
-    return {
+    const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
       dependencies: await toDependencies(facts, thisFile, absolutePath, workspaceRoot, content, table, fileIndex, symbolIndex)
     };
+    if (facts.program) result.program = facts.program;
+    return result;
   }
 };

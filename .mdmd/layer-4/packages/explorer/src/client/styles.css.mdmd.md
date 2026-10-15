@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/styles.css
-- Generated At: 2026-10-14T19:09:46.601Z
+- Entry: declared
+- Generated At: 2026-10-15T15:49:40.547Z
 
 ## Authored
 ### Purpose

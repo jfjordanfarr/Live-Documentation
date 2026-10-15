@@ -67,11 +67,13 @@ test("after the first picture the search tries further starts in idle time and m
 });
 
 test("a change of pins starts the search afresh, from the seed after the first paint's last", async ({ page }) => {
-  // The first paint takes the ranking's order alone, so a seed is adopted and the search runs to its cap (see above).
+  // The first paint takes the ranking's order alone; four starts and a patience of four then end capped, or settled when
+  // none of the four bettered the seed, which this picture does since document.ts grew its Entry lines (2026-10-15).
+  // Either way the search is over, which is what the change of pins must start afresh.
   await open(page, { orderStarts: 0, searchStarts: 4, searchPatience: 4, moveMs: 0 });
   await localMapSettled(page);
   const before = await readSearch(page);
-  expect(before.status).toBe("capped");
+  expect(["capped", "settled"]).toContain(before.status);
   expect(before.tried).toBe(4);
   // A row on a card wholly in the frame, since the map does not scroll and a click lands only on what is shown.
   const found = await page.evaluate(() => {

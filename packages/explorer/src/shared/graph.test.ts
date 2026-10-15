@@ -9,7 +9,7 @@ describe("documented reference multiplicity in the Explorer projection", () => {
     const location = { root: ".live-documentation", baseLayer: "source", extension: ".md" };
     const doc = (codePath: string, parts: Partial<LiveDoc>) => ({
       docPath: `${location.root}/${location.baseLayer}/${codePath}.md`,
-      doc: parseLiveDoc(renderLiveDoc({ codePath, layer: 4, archetype: "implementation", authored: "### Purpose\nTest.\n\n### Notes\nNone.", symbols: [], dependencies: [], ...parts }))
+      doc: parseLiveDoc(renderLiveDoc({ codePath, layer: 4, archetype: "implementation", entries: [], authored: "### Purpose\nTest.\n\n### Notes\nNone.", symbols: [], dependencies: [], ...parts }))
     });
     const target = { name: "Widget", link: "./types.ts.md#symbol-widget" };
     const graph = deriveLiveDocGraph([

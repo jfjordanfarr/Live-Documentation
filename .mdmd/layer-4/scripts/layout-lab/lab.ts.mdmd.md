@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/lab.ts
-- Generated At: 2026-10-13T19:38:17.413Z
+- Entry: command `layout:lab` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.005Z
 
 ## Authored
 ### Purpose

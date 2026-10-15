@@ -97,6 +97,7 @@ export function deriveLiveDocGraph(docs: Iterable<{ docPath: string; doc: LiveDo
       docPath,
       layer: doc.layer,
       archetype: doc.archetype,
+      entries: doc.entries,
       generatedAt: doc.generatedAt,
       authored: doc.authored,
       symbols: doc.symbols,

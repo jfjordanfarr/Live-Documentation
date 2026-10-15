@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/generate.ts
-- Generated At: 2026-09-28T01:00:43.495Z
+- Entry: command `live-docs:generate` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.284Z
 
 ## Authored
 ### Purpose

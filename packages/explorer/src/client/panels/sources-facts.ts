@@ -1,18 +1,21 @@
 /**
  * What the Knowledge Sources panel says about a bundle, computed from the
  * graph index alone: the bundle's shape, the files most used and most using,
- * the files and public symbols that nothing references or only tests
- * reference. These are the classes the dead code sweep of 2026-10-08 found
- * computable from the docs; what the docs cannot see (an entry point a
- * manifest script names, a runner's glob, a template's link, a use within a
- * symbol's own file) is said in the panel, not guessed here.
+ * the entry points and what a walk from them reaches, and the public symbols
+ * that nothing references or only tests reference. The entries and the walk
+ * are the engine's, the same the CLI prints for `inspect --reachable`; the
+ * symbol classes are the ones the dead code sweep of 2026-10-08 found
+ * computable from the docs. What the docs cannot see (a use within a symbol's
+ * own file) is said in the panel, not guessed here.
  *
  * Pure-function module: no DOM. The renderer draws what this returns.
  *
  * @module sources-facts
  */
 
+import { entryWords, type Entry } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { reachability } from "@live-documentation/engine/live-docs/pathfind";
 
 /** A name and how many of something it has. */
 export interface Count {
@@ -56,10 +59,34 @@ export interface FileUsing {
   uses: number;
 }
 
-/** A file that nothing references, or that only test files reference. */
-export interface UnreferencedFile {
+/** A file named in a class of the walk, with its archetype for grouping. */
+export interface FileByArchetype {
   path: string;
   archetype: string;
+}
+
+/** A file the walk starts from: an entry point of the docs, or a file the person asked about. */
+export interface StartFile extends FileByArchetype {
+  /** Why it is an entry, in words: the Entry lines', and `test` for a test, which a runner starts. */
+  reasons: string[];
+  /** The Entry lines themselves. */
+  entries: Entry[];
+  test: boolean;
+  /** The sample root the file lies under, when it is a sample program's rather than the scanned system's. */
+  sample?: string;
+}
+
+/** What a walk along dependencies reaches from the entry points, or from the files asked about. */
+export interface Reach {
+  /** `entries` when the starts are the docs' entry points; `asked` when the person chose them. */
+  from: "entries" | "asked";
+  starts: StartFile[];
+  /** Every file a path from a start reaches, nearest first; the starts are not among them. */
+  reached: { path: string; hops: number }[];
+  /** The files no path from a start reaches, in path order. */
+  unreachable: FileByArchetype[];
+  /** The files only a path from a test reaches, in path order; empty when the starts were asked for. */
+  testsOnly: FileByArchetype[];
 }
 
 /** A file's public symbols in one class. */
@@ -74,14 +101,22 @@ export interface SourcesFacts {
   shape: BundleShape;
   mostUsed: FileUse[];
   mostUsing: FileUsing[];
-  /** Files no other file has a resolved edge to, in path order. */
-  unreferenced: UnreferencedFile[];
-  /** Files that are not tests and whose every referencing file is a test. */
-  testsOnly: UnreferencedFile[];
+  /** The entry points and what they reach, or what the files asked about reach. */
+  reach: Reach;
   /** Public symbols of non-test files that no edge from another file names, by file. A symbol its own file uses is among them: the docs carry no local uses. */
   symbolsUnreferenced: SymbolsOfFile[];
   /** Public symbols of non-test files named only by edges from test files, by file. */
   symbolsTestsOnly: SymbolsOfFile[];
+}
+
+/** What the facts are computed for. */
+export interface SourcesFactsOptions {
+  /** The files to walk from in place of the entry points: the person's choice. */
+  from?: readonly string[];
+  /** The configuration's sample roots, so that a sample program's entries are told from the system's. */
+  sampleRoots?: readonly string[];
+  /** Caps the most-used and most-using lists. */
+  limit?: number;
 }
 
 const byCountThenName = (a: Count, b: Count): number => b.count - a.count || a.name.localeCompare(b.name);
@@ -104,13 +139,13 @@ const extensionOf = (file: GraphFile): string => {
 };
 
 /**
- * The facts of a graph. `limit` caps the most-used and most-using lists; the
+ * The facts of a graph. The most-used and most-using lists are capped; the
  * other lists are whole, since a cut list hides exactly what a person came to
  * see.
  */
-export function sourcesFacts(graph: LiveDocGraph, limit = 8): SourcesFacts {
+export function sourcesFacts(graph: LiveDocGraph, options: SourcesFactsOptions = {}): SourcesFacts {
+  const limit = options.limit ?? 8;
   const files = Object.values(graph.files).sort((a, b) => a.codePath.localeCompare(b.codePath));
-  const isTest = (path: string): boolean => archetypeOf(graph.files[path]) === "test";
 
   // Which symbols of each file are named by edges from other files, and whether every such edge comes from a test.
   const namedBy = new Map<string, Map<string, { fromTests: boolean }>>();
@@ -153,14 +188,10 @@ export function sourcesFacts(graph: LiveDocGraph, limit = 8): SourcesFacts {
     .map(file => ({ path: file.codePath, archetype: archetypeOf(file), uses: file.outbound.length }))
     .sort((a, b) => b.uses - a.uses || a.path.localeCompare(b.path));
 
-  const unreferenced: UnreferencedFile[] = [];
-  const testsOnly: UnreferencedFile[] = [];
   const symbolsUnreferenced: SymbolsOfFile[] = [];
   const symbolsTestsOnly: SymbolsOfFile[] = [];
   for (const file of files) {
     const archetype = archetypeOf(file);
-    if (file.inbound.length === 0) unreferenced.push({ path: file.codePath, archetype });
-    else if (archetype !== "test" && file.inbound.every(isTest)) testsOnly.push({ path: file.codePath, archetype });
     if (archetype === "test" || file.symbols.length === 0) continue;
     const named = namedBy.get(file.codePath);
     const unnamed = file.symbols.filter(symbol => !symbol.slug || !named?.has(symbol.slug));
@@ -174,10 +205,36 @@ export function sourcesFacts(graph: LiveDocGraph, limit = 8): SourcesFacts {
     shape,
     mostUsed: used.slice(0, limit),
     mostUsing: using.slice(0, limit),
-    unreferenced,
-    testsOnly,
+    reach: reachOf(graph, options.from, options.sampleRoots ?? []),
     symbolsUnreferenced,
     symbolsTestsOnly
+  };
+}
+
+/** The sample root a path lies under, when any. */
+function sampleOf(path: string, sampleRoots: readonly string[]): string | undefined {
+  return sampleRoots.find(root => root === "." || path === root || path.startsWith(`${root}/`));
+}
+
+/** The engine's walk from the entry points, or from the files asked about, with each file's archetype for grouping. */
+function reachOf(graph: LiveDocGraph, from: readonly string[] | undefined, sampleRoots: readonly string[]): Reach {
+  const result = reachability(graph, from);
+  const classed = (path: string): FileByArchetype => ({ path, archetype: archetypeOf(graph.files[path]) });
+  return {
+    from: result.from,
+    starts: result.starts.map(start => {
+      const sample = sampleOf(start.codePath, sampleRoots);
+      return {
+        ...classed(start.codePath),
+        reasons: [...start.entries.map(entryWords), ...(start.test ? ["test"] : [])],
+        entries: start.entries,
+        test: start.test,
+        ...(sample !== undefined ? { sample } : {})
+      };
+    }),
+    reached: result.reached.map(file => ({ path: file.codePath, hops: file.hops })),
+    unreachable: result.unreachable.map(classed),
+    testsOnly: result.testsOnly.map(classed)
   };
 }
 

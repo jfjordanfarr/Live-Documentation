@@ -102,6 +102,34 @@ test("World Map folder entry retains 3D, and its shared link restores the folder
   } finally { await context.close(); }
 });
 
+test("this repository lands on the root with nothing pinned, since its docs declare several entry points", async ({ page }) => {
+  // The landing rule of 2026-10-15: one program, command, module or declared entry outside the sample roots lands on it;
+  // several land on the root; the file-name guess remains only for docs that declare no entry at all.
+  const data = await (await page.request.get("/explorer-data.json")).json() as { graph: { files: Record<string, { codePath: string; entries: { reason: string }[] }> } };
+  const landing = Object.values(data.graph.files).filter(file => file.entries.some(entry => ["program", "command", "module", "declared"].includes(entry.reason)) && !file.codePath.startsWith("tests/integration/programs/"));
+  expect(landing.length).toBeGreaterThan(1);
+  await page.goto("/?view=local");
+  await ready(page, "2d");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
+  await expect(page.locator("#map-container .node-card.selected")).toHaveCount(0);
+  await expect(page.locator(".local-directory-closed").first()).toBeVisible();
+  await expect(page.locator("#context-name")).not.toHaveText(/rosetta/u);
+});
+
+test("a bundle whose docs declare one entry point lands on it", async ({ page }) => {
+  await page.route("**/explorer-data.json", async route => {
+    const response = await route.fetch();
+    const bundle = await response.json() as { graph: { files: Record<string, { entries: { reason: string }[] }> }; board?: unknown };
+    delete bundle.board;
+    for (const file of Object.values(bundle.graph.files)) file.entries = [];
+    bundle.graph.files["packages/engine/src/live-docs/graph.ts"].entries = [{ reason: "command", command: "graph", declarer: { label: "package.json", link: "../../../../package.json.mdmd.md" } } as { reason: string }];
+    await route.fulfill({ response, json: bundle });
+  });
+  await page.goto("/");
+  await ready(page, "2d");
+  await expect(page.locator("#context-name")).toHaveText("packages/engine/src/live-docs/graph.ts");
+});
+
 test("a bundle without a board lands on the Local Map", async ({ page }) => {
   await page.route("**/explorer-data.json", async route => {
     const response = await route.fetch();

@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
-- Generated At: 2026-09-28T01:00:41.558Z
+- Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:41.808Z
 
 ## Authored
 ### Purpose
@@ -14,13 +15,14 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - After the docs are written, every doc on disk is read back through the grammar and the graph derived from them is written to `<root>/index.json` (since 2026-09-28). A preserved orphan the grammar refuses fails that step with its path and line; the docs already written stay written. A dry run writes nothing, the index included.
 - A doc is rewritten only when its rendered text differs from what is on disk, and only then does its `Generated At` line move.
 - Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) a run warns when the folder lies inside a scan, a docs root or a configuration file of this tool above it, and when a scan lies inside the folder, found by one walk for the docs root's and the configuration file's names below it; a scan never lies inside another scan, the owner's rule for the World Map, and the warning says to point at one of them. It warns and does not refuse, since the generator cannot know whether the other scan is current or abandoned.
+- Since 2026-10-15 ([Turn 4](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)) the first pass builds the entry index beside the symbol index, and `composeGenerated` writes each doc's `Entry` lines from the file's own analysis, the index, its symbol kinds, the tooling rule and the configuration's `entryPoints`, before the three sections.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L61)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L63)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -30,7 +32,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L105)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L108)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -48,7 +50,8 @@ and `--include` (explicit file subset) modes. Stale Live Docs whose source
 files no longer exist are pruned automatically (unless `changedOnly` is set).
 
 Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
-(2026-01-28), and cross-platform hash fix (2026-02-03).
+(2026-01-28), cross-platform hash fix (2026-02-03) and the entry index
+behind the `Entry` lines (2026-10-15).
 
 ##### `generateLiveDocs` — Parameters
 - `options`: Generation configuration including workspace root, config overrides, and logger.
@@ -62,12 +65,14 @@ Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 - [`LiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`core.SourceAnalysisResult`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-sourceanalysisresult)
+- [`core.WorkspaceEntryIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspaceentryindex)
 - [`core.WorkspaceFileIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacefileindex)
 - [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
 - [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
-- [`core.buildWorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspacesymbolindex)
+- [`core.buildWorkspaceIndexes`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspaceindexes)
 - [`core.cleanupEmptyParents`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)
 - [`core.composeDependencies`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composedependencies)
+- [`core.composeEntries`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composeentries)
 - [`core.composeReExports`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composereexports)
 - [`core.composeSymbolBlocks`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composesymbolblocks)
 - [`core.computePublicSymbolHeadingInfo`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)

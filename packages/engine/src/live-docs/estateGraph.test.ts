@@ -7,7 +7,7 @@ import { deriveLiveDocGraph, type LiveDocGraph } from "./graph";
 const location = { root: ".live-documentation", baseLayer: "source", extension: ".md" };
 
 function doc(codePath: string, parts: Partial<LiveDoc>): { docPath: string; doc: LiveDoc } {
-  const text = renderLiveDoc({ codePath, layer: 4, archetype: "implementation", authored: "### Purpose\nX.\n\n### Notes\nNone.", symbols: [], dependencies: [], ...parts });
+  const text = renderLiveDoc({ codePath, layer: 4, archetype: "implementation", entries: [], authored: "### Purpose\nX.\n\n### Notes\nNone.", symbols: [], dependencies: [], ...parts });
   return { docPath: `${location.root}/${location.baseLayer}/${codePath}${location.extension}`, doc: parseLiveDoc(text) };
 }
 

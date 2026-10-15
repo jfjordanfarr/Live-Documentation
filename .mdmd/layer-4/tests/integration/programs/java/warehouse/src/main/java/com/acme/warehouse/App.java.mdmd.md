@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/App.java
-- Generated At: 2026-10-02T20:20:06.651Z
+- Entry: program [`main`](#symbol-main)
+- Generated At: 2026-10-15T15:49:46.043Z
 
 ## Authored
 ### Purpose

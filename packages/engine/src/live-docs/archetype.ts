@@ -42,7 +42,7 @@ export function resolveArchetype(
 ): LiveDocumentationArchetype {
   const overrides = config.archetypeOverrides ?? {};
   for (const [pattern, archetype] of Object.entries(overrides)) {
-    if (new RegExp(globPatternToRegExp(pattern)).test(sourcePath)) {
+    if (matchesPathPattern(sourcePath, pattern)) {
       return archetype;
     }
   }
@@ -130,6 +130,16 @@ export function hasMeaningfulAuthoredContent(authoredBlock?: string): boolean {
     .replace(/\s+/g, "");
 
   return sanitized.length > 0;
+}
+
+/**
+ * True when a workspace-relative path matches a configuration pattern: a path
+ * exactly, or a glob in which `*` stands for anything within one segment and
+ * `**` for anything across segments. The archetype overrides and the declared
+ * entry points are read by this rule.
+ */
+export function matchesPathPattern(sourcePath: string, pattern: string): boolean {
+  return new RegExp(globPatternToRegExp(pattern)).test(sourcePath);
 }
 
 // ============================================================================

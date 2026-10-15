@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/tsconfig.json
-- Generated At: 2026-09-27T23:21:27.668Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:58:59.835Z
 
 ## Authored
 ### Purpose

@@ -12,6 +12,7 @@ import type {
   SymbolDocumentationLink,
   SymbolDocumentationParameter
 } from "../core";
+import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter } from "./index";
 
 interface PendingDocBlock {
@@ -33,29 +34,45 @@ const ANON_TYPEDEF_STRUCT_START = /^(\s*)typedef\s+struct\s*\{/;
 const ANON_TYPEDEF_ENUM_START = /^(\s*)typedef\s+enum\s*\{/;
 const TYPEDEF_CLOSE = /^\}\s*([A-Za-z_][A-Za-z0-9_]*)\s*;/;
 const INCLUDE_PATTERN = /#\s*include\s+([<"])([^>"]+)[>"]/g;
+/**
+ * `int main(…)` or `void main(…)` followed by its body. The parameter list may
+ * run over several lines and the brace may open on a later one; a declaration
+ * ends in `;` instead and does not match.
+ */
+const MAIN_DEFINITION_PATTERN = /^[ \t]*(?:int|void)\s+main\s*\([^)]*\)\s*\{/mu;
 
-/** Language adapter for C and C++ (`.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx`). Extracts function/struct/typedef symbols and `#include` dependencies. */
+/** Language adapter for C and C++ (`.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx`). Extracts function/struct/typedef symbols, `#include` dependencies and the program entry point. */
 export const cAdapter: LanguageAdapter = {
   id: "c-basic",
   extensions: [".c", ".h"],
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await fs.readFile(absolutePath, "utf8");
-    const symbols = extractSymbols(content);
-    const dependencies = await extractDependenciesWithSymbols(content, absolutePath, workspaceRoot);
-
-    if (!symbols.length && !dependencies.length) {
-      return {
-        symbols: [],
-        dependencies: []
-      };
-    }
-
-    return {
-      symbols,
-      dependencies
+    const result: SourceAnalysisResult = {
+      symbols: extractSymbols(content),
+      dependencies: await extractDependenciesWithSymbols(content, absolutePath, workspaceRoot)
     };
+    const program = await programEntry(content, absolutePath);
+    if (program) result.program = program;
+    return result;
   }
 };
+
+/**
+ * The program's entry point: a `.c` file, not a header, that defines `main`.
+ * Comments are stripped first, so a commented-out definition does not count.
+ */
+async function programEntry(content: string, absolutePath: string): Promise<ProgramEntry | undefined> {
+  if (path.extname(absolutePath).toLowerCase() !== ".c") {
+    return undefined;
+  }
+  const code = await cSyntax.stripComments(content);
+  const match = MAIN_DEFINITION_PATTERN.exec(code);
+  if (!match) {
+    return undefined;
+  }
+  const line = code.slice(0, match.index).split("\n").length;
+  return { symbol: "main", line };
+}
 
 function extractSymbols(content: string): PublicSymbolEntry[] {
   const lines = content.split(/\r?\n/);

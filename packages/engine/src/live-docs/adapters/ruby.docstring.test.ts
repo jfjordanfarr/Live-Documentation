@@ -133,3 +133,44 @@ end
     expect(properties).toEqual(["key", "value"]);
   });
 });
+
+describe("rubyAdapter program entry", () => {
+  let workspaceRoot: string;
+
+  beforeEach(async () => {
+    workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "ruby-program-"));
+  });
+
+  afterEach(async () => {
+    if (workspaceRoot) {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  async function analyze(name: string, content: string) {
+    const filePath = path.join(workspaceRoot, name);
+    await fs.writeFile(filePath, content, "utf8");
+    const analysis = await rubyAdapter.analyze({ absolutePath: filePath, workspaceRoot });
+    expect(analysis).not.toBeNull();
+    return analysis!;
+  }
+
+  it("reports a file guarded by __FILE__ == $0 or $PROGRAM_NAME, on its own line or as a statement modifier, as the program entry", async () => {
+    expect((await analyze("own_line.rb", "def main\nend\n\nif __FILE__ == $0\n  main\nend\n")).program).toEqual({});
+    expect((await analyze("modifier.rb", "puts Rosetta.main(10) if __FILE__ == $PROGRAM_NAME\n")).program).toEqual({});
+    expect((await analyze("reversed.rb", "if $PROGRAM_NAME == __FILE__ then\n  main\nend\n")).program).toEqual({});
+    expect((await analyze("dollar_zero_first.rb", "main if $0 == __FILE__ # run\n")).program).toEqual({});
+
+    const sample = path.resolve(__dirname, "../../../../../tests/integration/programs/ruby/rosetta");
+    const analysis = await rubyAdapter.analyze({ absolutePath: path.join(sample, "lib", "main.rb"), workspaceRoot: sample });
+    expect(analysis?.program).toEqual({});
+  });
+
+  it("leaves program absent for a file without the guard, with it commented out, inside a method, or in a string", async () => {
+    expect(await analyze("plain.rb", "class Foo\n  def run; end\nend\n")).not.toHaveProperty("program");
+    expect(await analyze("commented.rb", "# if __FILE__ == $0\n#   main\n# end\n")).not.toHaveProperty("program");
+    expect(await analyze("block_commented.rb", "=begin\nif __FILE__ == $0\n  main\nend\n=end\n")).not.toHaveProperty("program");
+    expect(await analyze("nested.rb", "def run\n  main if __FILE__ == $0\nend\n")).not.toHaveProperty("program");
+    expect(await analyze("string.rb", "USAGE = 'run me if __FILE__ == $0'\n")).not.toHaveProperty("program");
+  });
+});

@@ -7,13 +7,14 @@ const location = { root: ".live-documentation", baseLayer: "source", extension: 
 
 /** A doc at `docPath` for `codePath`, rendered and parsed so the test reads what a consumer reads. */
 function doc(codePath: string, parts: Partial<LiveDoc>): { docPath: string; doc: LiveDoc } {
-  const text = renderLiveDoc({ codePath, layer: 4, archetype: "implementation", authored: "### Purpose\nX.\n\n### Notes\nNone.", symbols: [], dependencies: [], ...parts });
+  const text = renderLiveDoc({ codePath, layer: 4, archetype: "implementation", entries: [], authored: "### Purpose\nX.\n\n### Notes\nNone.", symbols: [], dependencies: [], ...parts });
   return { docPath: `${location.root}/${location.baseLayer}/${codePath}${location.extension}`, doc: parseLiveDoc(text) };
 }
 
 describe("deriveLiveDocGraph", () => {
   const types = doc("src/types.ts", {
-    symbols: [{ name: "Widget", slug: "symbol-widget", kind: "interface", flags: [], references: [], sections: [] }]
+    symbols: [{ name: "Widget", slug: "symbol-widget", kind: "interface", flags: [], references: [], sections: [] }],
+    entries: [{ reason: "command", command: "types", declarer: { label: "package.json", link: "../package.json.md" } }]
   });
   const walk = doc("src/graph/walk.ts", {
     symbols: [
@@ -48,9 +49,11 @@ describe("deriveLiveDocGraph", () => {
   const index = doc("src/index.ts", { dependencies: [{ label: "walk", link: "./graph/walk.ts.md", qualifiers: ["re-export"] }] });
   const graph = deriveLiveDocGraph([walk, index, types], location);
 
-  it("keys the files by code path, in order, each carrying its parsed doc", () => {
+  it("keys the files by code path, in order, each carrying its parsed doc, Entry lines included", () => {
     expect(Object.keys(graph.files)).toEqual(["src/graph/walk.ts", "src/index.ts", "src/types.ts"]);
     expect(graph.files["src/types.ts"]).toMatchObject({ ...types.doc, docPath: types.docPath });
+    expect(graph.files["src/types.ts"].entries).toEqual([{ reason: "command", command: "types", declarer: { label: "package.json", link: "../package.json.md" } }]);
+    expect(graph.files["src/index.ts"].entries).toEqual([]);
   });
 
   it("makes one edge per dependency line and per linked type reference, resolved where a doc answers", () => {

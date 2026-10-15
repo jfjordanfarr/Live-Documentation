@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-14T18:27:57.949Z
+- Generated At: 2026-10-15T16:17:53.165Z
 
 ## Authored
 ### Purpose
@@ -115,7 +115,7 @@ The end of a path a person asked for: a file, perhaps one symbol of it, or a dir
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L188)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L190)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

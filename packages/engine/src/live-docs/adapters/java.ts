@@ -14,6 +14,9 @@
  * declarations of every `.java` file, so a package split across `src/main` and
  * `src/test` is one package, as it is to the compiler. Names inside strings and
  * comments are never references.
+ *
+ * A `public static void main`, written public or public as an interface
+ * member, is reported as the program's entry point.
  */
 import { glob } from "glob";
 import { promises as fs } from "node:fs";
@@ -22,6 +25,7 @@ import path from "node:path";
 import { javaSyntax } from "../../languages";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
+import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseJavaDoc } from "./java.javadoc";
 import { parseSource, type SyntaxNode } from "./treeSitter";
@@ -71,6 +75,8 @@ interface FileFacts {
   imports:  JavaImport[];
   types:    DeclaredType[];
   typeUses: TypeUse[];
+  /** Present when a type declares `public static void main`. */
+  program?: ProgramEntry;
 }
 
 const TYPE_DECLARATIONS: Record<string, string> = {
@@ -126,6 +132,11 @@ function modifiersOf(node: SyntaxNode): Set<string> {
 function javadocOf(node: SyntaxNode): SymbolDocumentation | undefined {
   const previous = node.previousNamedSibling;
   return previous?.type === "block_comment" ? parseJavaDoc(previous.text) : undefined;
+}
+
+/** `public static void main`, the method the launcher calls; an interface's `static void main` is public implicitly. */
+function isProgramEntry(name: string, modifiers: Set<string>, implicitlyPublic: boolean, returnType: SyntaxNode | null): boolean {
+  return name === "main" && modifiers.has("static") && (implicitlyPublic || modifiers.has("public")) && returnType?.type === "void_type";
 }
 
 class FileExtractor {
@@ -228,6 +239,7 @@ class FileExtractor {
         const typeReferences: TypeReference[] = [];
         const returnType = node.childForFieldName("type");
         if (returnType) this.collectTypeNames(returnType, "return", typeReferences, ownTypeParameters, scope);
+        if (node.type === "method_declaration" && isProgramEntry(nameNode.text, modifiers, implicitlyPublic, returnType)) this.facts.program = { symbol: "main", line: position(nameNode).line };
         for (const parameter of node.childForFieldName("parameters")?.namedChildren ?? []) {
           const type = parameter.childForFieldName("type") ?? parameter.namedChildren.find((child) => child.type.endsWith("type") || child.type === "type_identifier" || child.type === "scoped_type_identifier");
           const parameterName = parameter.childForFieldName("name")?.text ?? parameter.namedChildren.find((child) => child.type === "variable_declarator")?.childForFieldName("name")?.text;
@@ -602,9 +614,11 @@ export const javaAdapter: LanguageAdapter = {
     const facts    = await fileFacts(absolutePath);
     const table    = await typeTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
-    return {
+    const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
       dependencies: toDependencies(facts, thisFile, table)
     };
+    if (facts.program) result.program = facts.program;
+    return result;
   }
 };

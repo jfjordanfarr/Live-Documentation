@@ -14,6 +14,14 @@ const FULL: LiveDoc = {
   codePath: "src/widgets/widget.ts",
   layer: 4,
   archetype: "implementation",
+  entries: [
+    { reason: "program", symbol: { name: "main", link: "#symbol-main" } },
+    { reason: "command", command: "build", declarer: { label: "package.json", link: "../../package.json.md" } },
+    { reason: "module", declarer: { label: "src/widgets/package.json", link: "./package.json.md" } },
+    { reason: "opening", symbol: { name: "GET api/widgets", link: "#symbol-get-apiwidgets" } },
+    { reason: "tooling" },
+    { reason: "declared" }
+  ],
   generatedAt: "2026-09-27T12:00:00.000Z",
   authored: ["### Purpose", "Draws widgets.", "", "### Notes", "- Keep it small.", "- A line with `code` and a [link](../other.md)."].join("\n"),
   symbols: [
@@ -73,6 +81,7 @@ const EMPTY: LiveDoc = {
   codePath: "assets/logo.png",
   layer: 4,
   archetype: "asset",
+  entries: [],
   authored: DEFAULT_AUTHORED_BLOCK,
   symbols: [],
   dependencies: []
@@ -121,6 +130,41 @@ describe("the Live Doc grammar", () => {
       "<!-- LIVE-DOC:END Dependencies -->",
       ""
     ].join("\n"));
+  });
+
+  it("writes the Entry lines between the Code Path and the Generated At, one per reason with its evidence", () => {
+    const lines = renderLiveDoc(FULL).split("\n");
+    const codePath = lines.indexOf("- Code Path: src/widgets/widget.ts");
+    expect(lines.slice(codePath + 1, codePath + 8)).toEqual([
+      "- Entry: program [`main`](#symbol-main)",
+      "- Entry: command `build` of [`package.json`](../../package.json.md)",
+      "- Entry: module of [`src/widgets/package.json`](./package.json.md)",
+      "- Entry: opening [`GET api/widgets`](#symbol-get-apiwidgets)",
+      "- Entry: tooling",
+      "- Entry: declared",
+      "- Generated At: 2026-09-27T12:00:00.000Z"
+    ]);
+  });
+
+  it("reads a program entry with a bare symbol, or with none, back as written", () => {
+    const forms: LiveDoc["entries"][] = [[{ reason: "program" }], [{ reason: "program", symbol: { name: "main" } }]];
+    for (const entries of forms) {
+      const doc: LiveDoc = { ...EMPTY, entries };
+      const text = renderLiveDoc(doc);
+      expect(text).toContain(entries[0].symbol ? "- Entry: program `main`\n" : "- Entry: program\n");
+      expect(parseLiveDoc(text)).toEqual(doc);
+    }
+  });
+
+  it("refuses an Entry line whose evidence does not fit its reason", () => {
+    const text = renderLiveDoc(EMPTY);
+    const withLine = (line: string): string => text.replace("- Code Path: assets/logo.png\n", `- Code Path: assets/logo.png\n${line}\n`);
+    expect(() => parseLiveDoc(withLine("- Entry: opening `GET api/widgets`"))).toThrow(/line 7: unexpected evidence on the opening entry/u);
+    expect(() => parseLiveDoc(withLine("- Entry: command `build`"))).toThrow(/unexpected evidence on the command entry/u);
+    expect(() => parseLiveDoc(withLine("- Entry: module [`package.json`](../package.json.md)"))).toThrow(/unexpected evidence on the module entry/u);
+    expect(() => parseLiveDoc(withLine("- Entry: tooling by hand"))).toThrow(/unexpected evidence on the tooling entry/u);
+    expect(() => parseLiveDoc(withLine("- Entry: program main"))).toThrow(/unexpected evidence on the program entry/u);
+    expect(() => parseLiveDoc(withLine("- Entry: whim"))).toThrow(LiveDocSyntaxError);
   });
 
   it("names the line of anything outside the grammar", () => {

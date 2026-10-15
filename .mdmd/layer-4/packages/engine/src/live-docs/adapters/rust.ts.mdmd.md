@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/rust.ts
-- Generated At: 2026-09-27T23:21:31.172Z
+- Generated At: 2026-10-15T15:58:58.292Z
 
 ## Authored
 ### Purpose
@@ -14,13 +14,14 @@ The Rust adapter: tree-sitter symbols (public items, impl and trait methods, pub
 - Measured against `rust-analyzer` on the four Rust sample programs; `rust/stockroom` is the one with a library and a binary in one package. The misses it keeps are a method call that needs type inference and a `crate/` reference that comes from a macro expansion; the extras are the library root named by the package name.
 - Crate roots are found from the nearest `Cargo.toml` on disk, not from the file index, which carries only the files the configuration globs. `#[path]` attributes on `mod` declarations are not read.
 - Inside a macro invocation the source is a token tree; `a::b::c` is read back from the tokens, so paths in `println!` and `assert_eq!` count.
+- The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a top-level `fn main` in a binary crate root, public or not, with its line: `src/main.rs`, `src/bin/<name>.rs` or `src/bin/<name>/main.rs` relative to the nearest `Cargo.toml`, or any `main.rs` outside a package, as `crateRoots` reads roots; `src/lib.rs`, module files, `tests/`, `examples/` and `benches/` never, so an `examples/*.rs` binary is not marked.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `rustAdapter` {#symbol-rustadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L862)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/rust.ts#L888)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `rustAdapter` — Summary
@@ -43,5 +44,6 @@ Language adapter for Rust (`.rs`): tree-sitter symbols and path resolution throu
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
+- [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

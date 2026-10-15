@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/find-orphans.ts
-- Generated At: 2026-09-27T23:21:31.808Z
+- Entry: command `live-docs:orphans` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.271Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/package.json
-- Generated At: 2026-10-13T19:38:15.407Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:39.932Z
 
 ## Authored
 ### Purpose

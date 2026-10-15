@@ -17,6 +17,9 @@
  * depends on the whole package. A path that resolves to no directory is
  * external, and one whose first element has no dot is the standard library and
  * is not listed. Names inside strings and comments are never references.
+ *
+ * The program's entry point is reported too: a top-level `func main` in
+ * `package main`.
  */
 import { glob } from "glob";
 import { promises as fs } from "node:fs";
@@ -25,6 +28,7 @@ import path from "node:path";
 import { goSyntax } from "../../languages";
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
 import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, SymbolDocumentation, TypeReference } from "../core";
+import type { ProgramEntry } from "../coreTypes";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
 import { parseSource, type SyntaxNode } from "./treeSitter";
 
@@ -543,6 +547,12 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
     );
 }
 
+/** The program's entry point: a top-level `func main` in `package main`. A `main` of another package, or a method named `main`, is none. */
+function toProgram(facts: FileFacts): ProgramEntry | undefined {
+  const declared = facts.packageName === "main" ? facts.declarations.find((candidate) => candidate.kind === "function" && candidate.name === "main") : undefined;
+  return declared ? { symbol: "main", line: declared.line } : undefined;
+}
+
 interface Binding {
   files: PackageFile[];
 }
@@ -623,9 +633,12 @@ export const goAdapter: LanguageAdapter = {
     const facts    = await fileFacts(absolutePath);
     const table    = await packageTable(workspaceRoot, fileIndex);
     const thisFile = normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath));
-    return {
+    const result: SourceAnalysisResult = {
       symbols:      toSymbols(facts),
       dependencies: await toDependencies(facts, thisFile, absolutePath, workspaceRoot, table)
     };
+    const program = toProgram(facts);
+    if (program) result.program = program;
+    return result;
   }
 };

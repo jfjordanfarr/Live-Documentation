@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1
-- Generated At: 2026-09-30T16:22:03.189Z
+- Entry: program
+- Generated At: 2026-10-15T15:49:38.968Z
 
 ## Authored
 ### Purpose

@@ -32,6 +32,22 @@ export const PROJECT_KINDS: ReadonlySet<string> = new Set(["library", "program",
 export const PACKAGE_KIND = "package";
 /** The kinds that mark a doc as a manifest's, whose external dependencies are what a thing stands on. */
 export const MANIFEST_KINDS: ReadonlySet<string> = new Set([...PROJECT_KINDS, PACKAGE_KIND]);
+/** The kinds of symbols that are openings: a file that serves one is an entry, since its caller is outside the scan. */
+export const OPENING_KINDS: ReadonlySet<string> = new Set([ROUTE_KIND, ADDRESS_KIND, ...SQL_OBJECT_KINDS]);
+
+const TOOLING_FILE = /^(?:packages\.config|tsconfig(?:\.[^/]+)?\.json|web\.config|app\.config|[^/]+\.config\.(?:[cm]?[jt]s|json))$/iu;
+
+/**
+ * True when a file is one a tool reads and no file imports, by its name: a
+ * compiler's or a runner's configuration (`tsconfig.json`, `tsconfig.base.json`,
+ * `vitest.config.ts`, `playwright.config.ts`), a .NET configuration
+ * (`Web.config`, `App.config`) or package list (`packages.config`). Such a file
+ * is an entry by the `tooling` reason, and a command that names one names an
+ * input, not the file it runs.
+ */
+export function isToolingFile(sourcePath: string): boolean {
+  return TOOLING_FILE.test(sourcePath.slice(sourcePath.lastIndexOf("/") + 1));
+}
 
 const HTTP_METHODS: ReadonlySet<string> = new Set(["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]);
 

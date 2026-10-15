@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/compose.test.ts
-- Generated At: 2026-09-27T23:21:31.233Z
+- Generated At: 2026-10-15T15:49:39.389Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,7 @@ _No public symbols detected_
 ### Dependencies
 - `node:path` - `path`
 - [`compose.composeDependencies`](./compose.ts.mdmd.md#symbol-composedependencies)
+- [`compose.composeEntries`](./compose.ts.mdmd.md#symbol-composeentries)
 - [`compose.composeSymbolBlocks`](./compose.ts.mdmd.md#symbol-composesymbolblocks)
 - [`compose.computePublicSymbolHeadingInfo`](./compose.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)

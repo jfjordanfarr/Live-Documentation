@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/powershell.ts
-- Generated At: 2026-09-27T23:21:30.859Z
+- Generated At: 2026-10-15T15:49:38.997Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,8 @@ The adapter shells out to the emitter script beside it, `powershell.emit-ast.ps1
 Dot-sourced paths are normalized to workspace-relative form so downstream graph tooling can reason about cross-script hops, and comment-based help is translated into `symbolDocumentation` summaries and parameter blurbs for downstream renderers.
 Runtime extraction depends on [`powershell.emit-ast.ps1`](./powershell.emit-ast.ps1.mdmd.md) to describe PowerShell symbols, references, and help metadata. Until 2026-09-27 the adapter looked for that script inside the workspace being documented, so only this repository, and a fixture that shipped a shim pointing back at it, could analyse PowerShell at all; the emitter is part of the product and ships with the adapter.
 
+- The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: every `.ps1` script, since a script is what `pwsh` runs, even one with no functions and no dependencies; a `.psm1` module and a `.psd1` manifest are none.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -24,7 +26,7 @@ Runtime extraction depends on [`powershell.emit-ast.ps1`](./powershell.emit-ast.
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `powershellAdapter` — Summary
-Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`). Extracts functions, cmdlets, aliases, and dot-source/`Import-Module` dependencies.
+Language adapter for PowerShell (`.ps1`, `.psm1`, `.psd1`). Extracts functions, cmdlets, aliases, and dot-source/`Import-Module` dependencies; a `.ps1` script is the program's entry, a module or manifest is not.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

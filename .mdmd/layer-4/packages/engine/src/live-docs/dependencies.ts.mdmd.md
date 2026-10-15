@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/dependencies.ts
-- Generated At: 2026-09-28T16:48:38.917Z
+- Generated At: 2026-10-15T15:49:39.563Z
 
 ## Authored
 ### Purpose
@@ -17,13 +17,14 @@ Dependency collection and resolution for Live Documentation. Extracts import/exp
 - `mergeDependencyEntries()` combines symbol lists when multiple imports reference the same module
 - `augmentWithReExportedSymbols()` handles star exports (`export * from`) by parsing target modules
 - 561 lines — largest extraction from core.ts, reflecting the complexity of module resolution
+- A dynamic `import("literal")`, wherever it stands in the file, is an import of the whole module since 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)), as the compiler oracle records it; one whose argument is computed names nothing the docs can carry. The dead code sweep of 2026-10-08 had found `staticBuilder.ts`'s lazy import of `buildAssets.ts` missing from the docs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `collectDependencies` {#symbol-collectdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L44)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L47)
 
 ##### `collectDependencies` — Summary
 Enumerates import and export dependencies declared within a TypeScript source file.
@@ -31,6 +32,9 @@ Enumerates import and export dependencies declared within a TypeScript source fi
 ##### `collectDependencies` — Remarks
 Relative specifiers are resolved against the workspace using Node-style extension
 fallbacks so the resulting Live Docs can point to concrete files when possible.
+A dynamic `import("...")` with a string literal, anywhere in the file, is an
+import of the whole module, as the compiler records it; one whose argument
+is computed names nothing the docs can carry.
 
 ##### `collectDependencies` — Parameters
 - `params.absolutePath`: Absolute path to the origin file, used for resolution.
@@ -45,7 +49,7 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L149)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L179)
 - Returns: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `base`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
@@ -61,7 +65,7 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L241)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L271)
 
 ##### `resolveDependency` — Summary
 Resolves a relative module specifier to a workspace-relative file path.
@@ -79,14 +83,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L382)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L412)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L406)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L436)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.

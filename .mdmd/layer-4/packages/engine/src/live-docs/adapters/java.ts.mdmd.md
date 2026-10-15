@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/java.ts
-- Generated At: 2026-09-27T23:21:30.749Z
+- Generated At: 2026-10-15T15:49:38.911Z
 
 ## Authored
 ### Purpose
@@ -14,13 +14,14 @@ The Java adapter: tree-sitter symbols (types, nested types and the members they 
 - Measured against `scip-java` on the four Java sample programs; `java/warehouse` is the one built to defeat a line scanner, and the adapter matches every compiler edge on all four.
 - The table is keyed by package as declared, not by directory, so `src/main/java` and `src/test/java` halves of a package see each other; it is built once per generation run on the file index, and per-file facts are cached by modification time.
 - The qualifier of a static call or field access (`Registry.register(...)`, `Unit.EACH`) is resolved as a type name; a local variable that shadows a type name would be mistaken for it.
+- The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a method `main` that is `static`, `void` and public, written `public` or public by the language as an interface member, with its line; the rosetta sample's `String main(int)` overload beside it does not count, and the line tells the doc's heading apart. Java 25's instance `main` is not marked.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L598)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L610)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `javaAdapter` — Summary
@@ -43,5 +44,6 @@ Language adapter for Java (`.java`): tree-sitter symbols and javac-style name re
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
+- [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->

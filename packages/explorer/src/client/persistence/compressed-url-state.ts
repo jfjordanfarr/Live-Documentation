@@ -71,6 +71,8 @@ export interface CompressedPayload {
   l?: LayoutSettings;
   /** The end of the path asked for (2026-10-14): a file `n` with perhaps one symbol `s`, or a directory `d`. The start is the newest pin. */
   x?: { n: string; s?: string } | { d: string };
+  /** What the Knowledge Sources panel walks from in place of the entry points (2026-10-15): a file `n` or a directory `d`. */
+  a?: { n: string; s?: string } | { d: string };
 }
 
 // ─── Snapshot (typed application-level state) ──────────────────────
@@ -95,6 +97,8 @@ export interface UrlStateSnapshot {
   layout?: LayoutSettings;
   /** The end of the path asked for, drawn from the newest pin; null when no path is asked. */
   destination: PathDestination | null;
+  /** The file or directory the Knowledge Sources panel walks from in place of the entry points; null for the entry points. */
+  reachFrom: PathDestination | null;
 }
 
 /** Default state for cold start (no URL parameter). */
@@ -106,7 +110,8 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   pinSet: EMPTY_PIN_SET,
   openDirectories: new Set(),
   filters: { showTests: true, showAssets: true },
-  destination: null
+  destination: null,
+  reachFrom: null
 };
 
 // ─── Pure Functions (testable) ─────────────────────────────────────
@@ -148,11 +153,19 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
       snapshot.filters.showAssets ? 1 : 0,
     ];
   }
-  const destination = snapshot.destination;
-  if (destination?.kind === "file") payload.x = destination.symbol ? { n: destination.nodeId, s: destination.symbol } : { n: destination.nodeId };
-  else if (destination?.kind === "directory") payload.x = { d: destination.directory };
+  const destination = writeDestination(snapshot.destination);
+  if (destination) payload.x = destination;
+  const reachFrom = writeDestination(snapshot.reachFrom);
+  if (reachFrom) payload.a = reachFrom;
 
   return payload;
+}
+
+/** A file, a file's symbol or a directory as the payload carries it; nothing for none. */
+function writeDestination(destination: PathDestination | null): CompressedPayload["x"] | undefined {
+  if (destination?.kind === "file") return destination.symbol ? { n: destination.nodeId, s: destination.symbol } : { n: destination.nodeId };
+  if (destination?.kind === "directory") return { d: destination.directory };
+  return undefined;
 }
 
 /**
@@ -185,7 +198,8 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     view, perspective, spatialLayout, selectedNodeId, pinSet, openDirectories, filters,
     ...(retentionOrder ? { retentionOrder } : {}),
     ...(layout ? { layout } : {}),
-    destination: readDestination(payload.x)
+    destination: readDestination(payload.x),
+    reachFrom: readDestination(payload.a)
   };
 }
 
@@ -255,8 +269,9 @@ export function scrubSnapshot(
     ? snapshot.selectedNodeId
     : null;
 
-  // The destination: a file that still exists, or a directory with a live file under it
+  // The destination and the panel's start: a file that still exists, or a directory with a live file under it
   const destination = snapshot.destination && destinationLives(snapshot.destination, nodesById, nodeIds) ? snapshot.destination : null;
+  const reachFrom = snapshot.reachFrom && destinationLives(snapshot.reachFrom, nodesById, nodeIds) ? snapshot.reachFrom : null;
 
   return {
     ...snapshot,
@@ -264,6 +279,7 @@ export function scrubSnapshot(
     pinSet,
     selectedNodeId,
     destination,
+    reachFrom,
     ...(snapshot.retentionOrder ? {
       retentionOrder: reconcileRetained({ pins: pinSet, openDirectories, retentionOrder: snapshot.retentionOrder }).retentionOrder
     } : {})

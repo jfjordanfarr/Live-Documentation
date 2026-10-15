@@ -40,10 +40,12 @@ Document the language adapters that turn a source file into its public symbols, 
 | **PowerShell**  | `powershell.ts`          | `.ps1`, `.psm1`              | Comment-based help blocks                                                            |
 | **HTML**        | `html.ts`                | `.html`, `.htm`              | Asset references; element ids as symbols                                             |
 | **CSS**         | `css.ts`                 | `.css`                       | `@import`, `url()` references                                                        |
-| **JSON**        | `json.ts`                | `.json`                      | Key paths as symbols; file-path references; a `package.json` as a manifest           |
+| **JSON**        | `json.ts`                | `.json`                      | Key paths as symbols; file-path references; a `package.json` as a manifest, and the files its scripts, binaries and main module start |
 | **ASP.NET**     | `aspnet.ts`              | `.aspx`, `.ascx`, `.master`  | Code-behind and script links; element ids as symbols                                 |
 | **SQL**         | `sql.ts`                 | `.sql`                       | Procedures, tables, views and functions created; objects named, linked servers as contracts |
 | **.NET project** | `project.ts`            | `.csproj`, `.vbproj`, `.fsproj` | The project as library, program or web; project, package and assembly references |
+
+Every language adapter also reports the program's entry point on the analysis result (`program`, since 2026-10-15), from which the generator writes `- Entry: program` on the file's doc: C, an `int` or `void` `main` defined in a `.c` file (comments stripped, a declaration alone not counting); Go, a top-level `func main` in `package main`; Rust, a top-level `fn main` in a binary crate root (`src/main.rs`, `src/bin/*.rs`, `src/bin/*/main.rs`, or any `main.rs` outside a package, as the module tree reads roots); Java, a `public static void main`, public by the language for an interface member; C#, a static `Main` of any accessibility and return type, or top-level statements, which take precedence as the compiler gives it; Python, a module-level `if __name__ == "__main__"` read from the tree; Ruby, a column-0 `__FILE__ == $0` or `$PROGRAM_NAME` guard, on its own line or as a statement modifier, comments and strings skipped; PowerShell, every `.ps1` script. Where the language names the symbol, its declaration line is reported too, so that the doc links the right heading when a namesake overload exists. Not marked: Rust's `examples/*.rs`, Java 25's instance `main`, and a C `main` whose return type is a macro.
 
 ### Supporting Modules
 

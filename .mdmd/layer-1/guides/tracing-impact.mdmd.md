@@ -86,6 +86,32 @@ inbound (what depends on it): 13 files
 
 Where a fan-out lists paths, `--reachable` lists files: each once, with the fewest hops to it, nearest first, one list per direction. It is the same walk the Explorer's destination field runs from the newest pin, which offers these files and says how far. A fan-out runs one way only; asked for both it says so.
 
+### What the entry points reach
+
+```bash
+npm run live-docs:inspect -- --reachable
+```
+
+```
+Files a path reaches from the entry points (max depth 25), nearest first.
+Entry points: 190 files
+  package.json [.mdmd/layer-4/package.json.mdmd.md]  tooling
+  packages/cli/src/index.ts [.mdmd/layer-4/packages/cli/src/index.ts.mdmd.md]  command live-docs of packages/cli/package.json; module of packages/cli/package.json
+  ...
+  scripts/live-docs/inspect.ts [.mdmd/layer-4/scripts/live-docs/inspect.ts.mdmd.md]  command live-docs:inspect of package.json
+  ...
+  tests/e2e/search-bar.spec.ts [.mdmd/layer-4/tests/e2e/search-bar.spec.ts.mdmd.md]  test
+Reached: 455 files
+  1 hop   packages/engine/src/config/liveDocumentationConfig.ts […]
+  ...
+Unreachable from any entry: 27 files
+  tests/integration/programs/csharp/estate/Portal/App_Code/Site.master […]  implementation
+  ...
+Reached only from tests: 0 files
+```
+
+Without `--from`, `--reachable` walks from every file something outside the code starts, as the docs' `Entry` lines say: a program, a script a manifest runs, a package's module, a route or table served, a file a tool reads, one the configuration declares, or a test. It lists the entries with their reasons, what they reach, what no entry reaches (with its archetype: a dead file, or one loaded by a path the docs cannot read until it is declared), and what only a test reaches. The Knowledge Sources panel shows the same walk and exports the same object as JSON; `--json` prints it here.
+
 ### Before refactoring a utility
 
 See every consumer before changing a shared function:

@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
-- Generated At: 2026-10-02T20:20:02.606Z
+- Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.419Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/csharp/rosetta/Rosetta.csproj
-- Generated At: 2026-10-02T20:20:05.391Z
+- Entry: tooling
+- Generated At: 2026-10-15T15:49:45.345Z
 
 ## Authored
 ### Purpose

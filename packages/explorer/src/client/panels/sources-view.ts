@@ -1,24 +1,31 @@
 /**
  * The Knowledge Sources panel: what this bundle is, the files most used and
- * most using, what nothing references, the related documentation and the
- * export. Everything it says about the graph comes as the facts that
- * `sources-facts.ts` computed from the bundle's graph; the tree of related
- * markdown comes from the bundle. Each file named is a
- * button that puts the file in the detail panel, where its doc and its doors
- * are; each directory counted is a link to the Local Map's directory door.
+ * most using, the entry points and what a walk from them reaches, the symbols
+ * nothing references, the related documentation and the export. Everything it
+ * says about the graph comes as the facts that `sources-facts.ts` computed
+ * from the bundle's graph; the tree of related markdown comes from the bundle.
+ * Each file named is a button that puts the file in the detail panel, where
+ * its doc and its doors are; each directory counted is a link to the Local
+ * Map's directory door.
  *
- * Rewritten on 2026-10-08 from the dead code sweep's findings: the fixed
- * thresholds that called a file a "potential barrel" or "heavily
- * depended-upon" went, with the cut list of "disconnected nodes", the tagline,
- * the "How to Improve" text that named this repository's npm scripts, and the
- * export's prose.
+ * The "Reachable from" field (the owner's thought, 2026-10-15) lets a person
+ * walk from any file or directory in place of the entry points; the choice is
+ * exploration state and rides the share link, and the line that would declare
+ * the file in the configuration is offered to copy, since a static page cannot
+ * write the file.
+ *
+ * Rewritten on 2026-10-08 from the dead code sweep's findings, and on
+ * 2026-10-15 around the entry points the docs now declare, in place of the
+ * one-hop list of what nothing references.
  */
 
 import type { BundledMarkdownTreeNode } from "../../shared/staticExplorerData";
 import { requireElement } from "../dom";
 import { escapeHtml } from "../graph-helpers";
-import type { LocalMapPerspective } from "../types";
-import { symbolCount, type SourcesFacts, type SymbolsOfFile, type UnreferencedFile } from "./sources-facts";
+import type { SearchHit, SearchIndex } from "../search/graph-search";
+import { createSearchField } from "../search/search-field";
+import type { LocalMapPerspective, PathDestination } from "../types";
+import { symbolCount, type FileByArchetype, type SourcesFacts, type StartFile, type SymbolsOfFile } from "./sources-facts";
 
 /** Which documents the export takes: the Live Docs, the related markdown, or both. */
 export type DownloadBundleType = "live" | "related" | "all";
@@ -30,6 +37,12 @@ export type DownloadFormat = "markdown" | "zip";
 export interface SourcesViewConfig {
   facts: SourcesFacts;
   perspective: LocalMapPerspective;
+  /** The search over the bundle's files, symbols and directories, for the "Reachable from" field. */
+  search: SearchIndex;
+  /** The file or directory the facts were walked from in place of the entry points; null for the entry points. */
+  reachFrom: PathDestination | null;
+  /** The person chose a start for the walk, or went back to the entry points. */
+  onReachFrom: (destination: PathDestination | null) => void;
   /** Put a file in the detail panel without leaving the panel. */
   onFocusNode: (nodeId: string) => void;
   onDownload: (bundleType: DownloadBundleType, format: DownloadFormat) => void;
@@ -89,8 +102,95 @@ function renderUse(facts: SourcesFacts): string {
     </section>`;
 }
 
-function renderFileGroup(files: readonly UnreferencedFile[], open: boolean): string {
-  const byArchetype = new Map<string, UnreferencedFile[]>();
+/** The groups of the entry points, by reason; a file with several reasons stands in each. */
+const REASON_GROUPS: ReadonlyArray<{ key: string; title: string; holds: (start: StartFile) => boolean }> = [
+  { key: "program", title: "Programs", holds: start => start.entries.some(entry => entry.reason === "program") },
+  { key: "command", title: "Commands", holds: start => start.entries.some(entry => entry.reason === "command") },
+  { key: "module", title: "Modules", holds: start => start.entries.some(entry => entry.reason === "module") },
+  { key: "opening", title: "Openings served", holds: start => start.entries.some(entry => entry.reason === "opening") },
+  { key: "tooling", title: "Tooling inputs", holds: start => start.entries.some(entry => entry.reason === "tooling") },
+  { key: "declared", title: "Declared", holds: start => start.entries.some(entry => entry.reason === "declared") },
+  { key: "test", title: "Tests", holds: start => start.test }
+];
+
+/** A start as a row: its name, where it is, and why it is an entry. */
+function startRow(start: StartFile): string {
+  return `<li>${fileButton(start.path)}<span class="sources-reasons">${escapeHtml(start.reasons.join("; "))}</span></li>`;
+}
+
+/** One reason's group: the scanned system's files, then each sample root's files folded under its name. */
+function renderReasonGroup(group: (typeof REASON_GROUPS)[number], starts: readonly StartFile[]): string {
+  const own = starts.filter(start => start.sample === undefined);
+  const samples = new Map<string, StartFile[]>();
+  for (const start of starts) {
+    if (start.sample === undefined) continue;
+    const list = samples.get(start.sample) ?? [];
+    list.push(start);
+    samples.set(start.sample, list);
+  }
+  const sampleGroups = [...samples.entries()].map(([root, files]) => `
+      <details class="sources-group sources-group--sample" data-sample="${escapeHtml(root)}">
+        <summary><span class="sources-group-name">${escapeHtml(root)}</span><span class="sources-count">${files.length.toLocaleString()} sample ${files.length === 1 ? "entry" : "entries"}</span></summary>
+        <ul class="sources-list">${files.map(startRow).join("")}</ul>
+      </details>`).join("");
+  return `
+    <details class="sources-group" data-reason="${group.key}">
+      <summary><span class="sources-group-name">${group.title}</span><span class="sources-count">${starts.length.toLocaleString()}</span></summary>
+      ${own.length ? `<ul class="sources-list">${own.map(startRow).join("")}</ul>` : ""}
+      ${sampleGroups}
+    </details>`;
+}
+
+/** The words of a start the person chose: a file's name, or a directory's. */
+function reachFromWords(reachFrom: PathDestination): string {
+  return reachFrom.kind === "file" ? reachFrom.nodeId : reachFrom.directory || "the scan root";
+}
+
+/** The line that would declare the chosen start in `.live-docs.config.json`. */
+function declarationOf(reachFrom: PathDestination): string {
+  const pattern = reachFrom.kind === "file" ? reachFrom.nodeId : reachFrom.directory ? `${reachFrom.directory}/**` : "**";
+  return `"entryPoints": [${JSON.stringify(pattern)}]`;
+}
+
+function renderEntries(config: SourcesViewConfig): string {
+  const { reach } = config.facts;
+  const others = config.facts.shape.files - reach.starts.length;
+  const status = reach.from === "entries"
+    ? `${plural(reach.starts.length, "entry point")} reach ${reach.reached.length.toLocaleString()} of the other ${plural(others, "file")}.`
+    : `${escapeHtml(reachFromWords(config.reachFrom!))} reaches ${reach.reached.length.toLocaleString()} of the other ${plural(others, "file")}.`;
+  const groups = reach.from === "entries"
+    ? REASON_GROUPS.map(group => ({ group, starts: reach.starts.filter(group.holds) })).filter(({ starts }) => starts.length > 0).map(({ group, starts }) => renderReasonGroup(group, starts)).join("")
+    : "";
+  const declaration = config.reachFrom
+    ? `
+      <div class="sources-declare">
+        <code class="sources-declare-line">${escapeHtml(declarationOf(config.reachFrom))}</code>
+        <button type="button" class="action-btn" id="sources-declare-copy">Copy as declaration</button>
+        <span class="sources-declare-status" aria-live="polite"></span>
+      </div>`
+    : "";
+  return `
+    <section class="sources-panel" data-section="entries">
+      <h2><span class="sources-title">Entry points</span>${reach.from === "entries" ? `<span class="sources-count">${reach.starts.length.toLocaleString()}</span>` : ""}</h2>
+      <div class="sources-reach">
+        <label class="sources-reach-label" for="sources-reach-from">Reachable from</label>
+        <div class="search-field sources-reach-field">
+          <input type="text" id="sources-reach-from" class="search-input" placeholder="every entry point" autocomplete="off" spellcheck="false">
+          <button type="button" id="sources-reach-clear" class="search-clear" aria-label="Back to the entry points"${config.reachFrom ? "" : " hidden"}>&times;</button>
+          <div id="sources-reach-results" class="search-results" role="listbox" hidden></div>
+        </div>
+      </div>
+      <p class="sources-reach-status" data-row="reach">${status}</p>
+      ${declaration}
+      ${reach.from === "entries"
+        ? (groups || '<p class="sources-empty">The docs declare no entry point; a test is one by its archetype, and there is none.</p>')
+        : ""}
+      ${reach.from === "entries" ? '<p class="sources-note">An entry point is a file something outside the code starts: a program, a script a manifest runs, a package\'s module, a route or table served, a file a tool reads, one the configuration declares, or a test. A file loaded by a path the docs cannot read is not among them until it is declared.</p>' : ""}
+    </section>`;
+}
+
+function renderFileGroup(files: readonly FileByArchetype[], open: boolean): string {
+  const byArchetype = new Map<string, FileByArchetype[]>();
   for (const file of files) {
     const group = byArchetype.get(file.archetype) ?? [];
     group.push(file);
@@ -103,15 +203,20 @@ function renderFileGroup(files: readonly UnreferencedFile[], open: boolean): str
     </details>`).join("");
 }
 
-function renderUnreferenced(facts: SourcesFacts): string {
-  const { unreferenced, testsOnly } = facts;
+function renderUnreachable(config: SourcesViewConfig): string {
+  const { reach } = config.facts;
+  const title = reach.from === "entries" ? "Unreachable from any entry" : `Unreachable from ${escapeHtml(reachFromWords(config.reachFrom!))}`;
+  const testsOnly = reach.from === "entries"
+    ? `
+      <h3><span class="sources-title">Reached only from tests</span><span class="sources-count">${reach.testsOnly.length.toLocaleString()}</span></h3>
+      <div class="sources-files" data-list="tests-only">${reach.testsOnly.length ? renderFileGroup(reach.testsOnly, true) : '<p class="sources-empty">None.</p>'}</div>`
+    : "";
   return `
-    <section class="sources-panel" data-section="unreferenced">
-      <h2><span class="sources-title">Nothing references these</span><span class="sources-count">${unreferenced.length.toLocaleString()}</span></h2>
-      <div class="sources-files" data-list="unreferenced">${unreferenced.length ? renderFileGroup(unreferenced, false) : '<p class="sources-empty">Every file is referenced by another.</p>'}</div>
-      <p class="sources-note">An entry point a script or a test runner names, a file a template links, and a file nothing needs look alike here: the docs carry the references the code makes, and no more.</p>
-      <h3><span class="sources-title">Only tests reference these</span><span class="sources-count">${testsOnly.length.toLocaleString()}</span></h3>
-      <div class="sources-files" data-list="tests-only">${testsOnly.length ? renderFileGroup(testsOnly, true) : '<p class="sources-empty">None.</p>'}</div>
+    <section class="sources-panel" data-section="unreachable">
+      <h2><span class="sources-title">${title}</span><span class="sources-count">${reach.unreachable.length.toLocaleString()}</span></h2>
+      <div class="sources-files" data-list="unreachable">${reach.unreachable.length ? renderFileGroup(reach.unreachable, false) : '<p class="sources-empty">Every file is reached.</p>'}</div>
+      <p class="sources-note">No path along the references the docs record leads here from a start. A file reached by a path string the docs cannot read, a template's link or a tool's own rule looks the same until the configuration declares it.</p>
+      ${testsOnly}
     </section>`;
 }
 
@@ -218,7 +323,12 @@ function renderExport(facts: SourcesFacts, bundledDocs: SourcesViewConfig["bundl
     </section>`;
 }
 
-/** Render the panel into its container and wire its buttons. */
+/** The start a search hit names: a file, a symbol's file, or a directory. */
+function startOfHit(hit: SearchHit): PathDestination {
+  return hit.kind === "directory" ? { kind: "directory", directory: hit.directory } : { kind: "file", nodeId: hit.node.id };
+}
+
+/** Render the panel into its container and wire its buttons and its field. */
 export function renderSourcesView(config: SourcesViewConfig): void {
   const { facts, onFocusNode, onDownload, onDownloadFacts, bundledDocs, onViewBundledDoc } = config;
   const container = requireElement<HTMLDivElement>("sources-container");
@@ -227,7 +337,8 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     <div class="sources-header"><h1>Knowledge Sources</h1></div>
     ${renderShape(facts, config.perspective)}
     ${renderUse(facts)}
-    ${renderUnreferenced(facts)}
+    ${renderEntries(config)}
+    ${renderUnreachable(config)}
     ${renderSymbols(facts)}
     ${renderRelated(bundledDocs)}
     ${renderExport(facts, bundledDocs)}
@@ -241,6 +352,24 @@ export function renderSourcesView(config: SourcesViewConfig): void {
       const nodeId = button.dataset.nodeId;
       if (nodeId) onFocusNode(nodeId);
     });
+  });
+
+  // The "Reachable from" field: a search over the bundle; a choice walks from it, the clear goes back to the entry points.
+  const field = createSearchField({
+    input: container.querySelector<HTMLInputElement>("#sources-reach-from")!,
+    results: container.querySelector<HTMLElement>("#sources-reach-results")!,
+    scope: () => ({ index: config.search }),
+    onChoose: hit => config.onReachFrom(startOfHit(hit))
+  });
+  field.show(config.reachFrom ? reachFromWords(config.reachFrom) : "");
+  container.querySelector<HTMLButtonElement>("#sources-reach-clear")?.addEventListener("click", () => config.onReachFrom(null));
+  container.querySelector<HTMLButtonElement>("#sources-declare-copy")?.addEventListener("click", () => {
+    const line = container.querySelector<HTMLElement>(".sources-declare-line")?.textContent ?? "";
+    const status = container.querySelector<HTMLElement>(".sources-declare-status");
+    const done = (): void => { if (status) status.textContent = "Copied"; };
+    const failed = (): void => { if (status) status.textContent = "Select the line and copy it"; };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(line).then(done, failed);
+    else failed();
   });
 
   container.querySelector<HTMLButtonElement>("#download-btn")?.addEventListener("click", () => {

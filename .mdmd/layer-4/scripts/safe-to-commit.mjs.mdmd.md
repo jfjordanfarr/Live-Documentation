@@ -4,7 +4,9 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/safe-to-commit.mjs
-- Generated At: 2026-09-27T23:21:31.994Z
+- Entry: command `ci-check` of [`package.json`](../package.json.mdmd.md)
+- Entry: command `safe:commit` of [`package.json`](../package.json.mdmd.md)
+- Generated At: 2026-10-15T15:49:42.474Z
 
 ## Authored
 ### Purpose

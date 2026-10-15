@@ -21,6 +21,10 @@
  * An absolute module is looked up, in order, beside the importing file, at the
  * root of the package the file belongs to, at the workspace root and under its
  * `src/`; a module found nowhere is recorded by name as an external dependency.
+ *
+ * A module whose top level holds `if __name__ == "__main__":` is the program's
+ * entry point; the guard inside a function or a class, or in a string or a
+ * comment, is not.
  */
 import { promises as fs, readdirSync, statSync } from "node:fs";
 import path from "node:path";
@@ -74,6 +78,8 @@ interface ModuleFacts {
   identifiers:  Set<string>;
   /** Every `a.b.c` chain the module uses, longest form only. */
   chains:       string[][];
+  /** Whether the module's top level holds the `if __name__ == "__main__":` guard. */
+  mainGuard:    boolean;
 }
 
 const FUTURE_MODULE = "__future__";
@@ -146,10 +152,15 @@ function* moduleStatements(block: SyntaxNode): Generator<SyntaxNode> {
   }
 }
 
+/** The literal text of a string node: its `string_content` parts, without quotes, prefix or interpolations. */
+function stringContent(node: SyntaxNode): string {
+  return node.namedChildren.filter((child) => child.type === "string_content").map((child) => child.text).join("");
+}
+
 function docstringOf(body: SyntaxNode | null): SymbolDocumentation | undefined {
   const first = body?.namedChildren[0];
   const text  = first?.type === "expression_statement" && first.namedChildren[0]?.type === "string"
-    ? first.namedChildren[0].namedChildren.filter((child) => child.type === "string_content").map((child) => child.text).join("")
+    ? stringContent(first.namedChildren[0])
     : undefined;
   const normalized = text ? normalizeDocstring(text) : "";
   return normalized ? parseDocstring(normalized) : undefined;
@@ -187,7 +198,7 @@ function typeNames(node: SyntaxNode, role: TypeReference["role"], parameterName?
         add(current.text, currentRole);
         return;
       case "string":
-        add(current.namedChildren.filter((child) => child.type === "string_content").map((child) => child.text).join(""), currentRole);
+        add(stringContent(current), currentRole);
         return;
       case "type_parameter":
         for (const child of current.namedChildren) visit(child, "type-argument");
@@ -291,7 +302,7 @@ function readAll(statement: SyntaxNode): string[] | undefined {
   if (right?.type !== "list" && right?.type !== "tuple") return undefined;
   return right.namedChildren
     .filter((child) => child.type === "string")
-    .map((child) => child.namedChildren.filter((part) => part.type === "string_content").map((part) => part.text).join(""));
+    .map((child) => stringContent(child));
 }
 
 /** Collects every identifier and attribute chain used anywhere in the module. */
@@ -327,9 +338,21 @@ function attributeChain(node: SyntaxNode): string[] | undefined {
   return undefined;
 }
 
+/** Whether `condition` is the main guard, `__name__ == "__main__"`: either quote style, either operand order, in parentheses or not. */
+function isMainGuard(condition: SyntaxNode | null): boolean {
+  if (!condition) return false;
+  if (condition.type === "parenthesized_expression") return isMainGuard(condition.namedChildren[0] ?? null);
+  if (condition.type !== "comparison_operator" || condition.children.length !== 3) return false;
+  const [left, operator, right] = condition.children;
+  if (operator.type !== "==") return false;
+  const isName = (node: SyntaxNode): boolean => node.type === "identifier" && node.text === "__name__";
+  const isMain = (node: SyntaxNode): boolean => node.type === "string" && stringContent(node) === "__main__";
+  return (isName(left) && isMain(right)) || (isMain(left) && isName(right));
+}
+
 async function extractFacts(source: string): Promise<ModuleFacts> {
   const tree  = await parseSource("python", source);
-  const facts: ModuleFacts = { imports: [], declarations: [], boundNames: new Set(), identifiers: new Set(), chains: [] };
+  const facts: ModuleFacts = { imports: [], declarations: [], boundNames: new Set(), identifiers: new Set(), chains: [], mainGuard: false };
   try {
     const root = tree.rootNode;
 
@@ -359,6 +382,7 @@ async function extractFacts(source: string): Promise<ModuleFacts> {
     }
 
     collectUses(root, facts);
+    facts.mainGuard = root.namedChildren.some((statement) => statement.type === "if_statement" && isMainGuard(statement.childForFieldName("condition")));
   } finally {
     tree.delete();
   }
@@ -632,13 +656,14 @@ async function toDependencies(
   return { dependencies, bindings };
 }
 
-/** Language adapter for Python (`.py`): tree-sitter symbols and import resolution that follows re-exports to where a name is defined. */
+/** Language adapter for Python (`.py`): tree-sitter symbols, import resolution that follows re-exports to where a name is defined, and the `__main__` guard that marks a program's entry. */
 export const pythonAdapter: LanguageAdapter = {
   id:         "python",
   extensions: [".py"],
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const facts = await moduleFacts(absolutePath);
     const { dependencies, bindings } = await toDependencies(facts, absolutePath, workspaceRoot);
-    return { symbols: toSymbols(facts, bindings), dependencies };
+    const symbols = toSymbols(facts, bindings);
+    return facts.mainGuard ? { symbols, dependencies, program: {} } : { symbols, dependencies };
   }
 };

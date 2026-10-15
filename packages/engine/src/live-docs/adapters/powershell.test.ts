@@ -13,10 +13,10 @@ if (!POWERSHELL_RUNTIME_AVAILABLE) {
   console.warn("Skipping powershellAdapter tests because no PowerShell runtime was detected.");
 }
 
-describeIfRuntime("powershellAdapter", () => {
-  const repoRoot = path.resolve(__dirname, "../../../../..");
-  const fixtureRoot = path.join(repoRoot, "tests", "integration", "fixtures", "powershell-compendium");
+const repoRoot = path.resolve(__dirname, "../../../../..");
+const fixtureRoot = path.join(repoRoot, "tests", "integration", "fixtures", "powershell-compendium");
 
+describeIfRuntime("powershellAdapter", () => {
   let workspaceRoot: string;
 
   beforeEach(async () => {
@@ -73,6 +73,36 @@ describeIfRuntime("powershellAdapter", () => {
     expect(analysis).not.toBeNull();
     const symbolNames = analysis?.symbols.map((symbol) => symbol.name) ?? [];
     expect(symbolNames).toEqual(["Get-InventorySnapshot"]);
+  });
+
+  it("reports every script as the program entry, even one with nothing else to report, and no module", { timeout: 30000 }, async () => {
+    const script = await powershellAdapter.analyze({
+      absolutePath: path.join(workspaceRoot, "powershell-compendium", "scripts", "deploy.ps1"),
+      workspaceRoot
+    });
+    expect(script?.program).toEqual({});
+
+    const barePath = path.join(workspaceRoot, "bare.ps1");
+    await fs.writeFile(barePath, "Write-Output 'hello'\n", "utf8");
+    const bare = await powershellAdapter.analyze({ absolutePath: barePath, workspaceRoot });
+    expect(bare).toStrictEqual({ symbols: [], dependencies: [], program: {} });
+
+    const module = await powershellAdapter.analyze({
+      absolutePath: path.join(workspaceRoot, "powershell-compendium", "modules", "Inventory.psm1"),
+      workspaceRoot
+    });
+    expect(module).not.toHaveProperty("program");
+  });
+});
+
+describe("powershellAdapter manifests", () => {
+  it("does not report a manifest as the program entry, with or without a runtime", async () => {
+    const analysis = await powershellAdapter.analyze({
+      absolutePath: path.join(fixtureRoot, "config", "settings.psd1"),
+      workspaceRoot: fixtureRoot
+    });
+    expect(analysis).toStrictEqual({ symbols: [], dependencies: [] });
+    expect(analysis).not.toHaveProperty("program");
   });
 });
 

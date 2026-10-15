@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/scripts/deploy.ps1
-- Generated At: 2026-09-30T16:22:06.393Z
+- Entry: program
+- Generated At: 2026-10-15T15:49:43.669Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,8 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/python/rosetta/src/main.py
-- Generated At: 2026-10-02T20:20:07.860Z
+- Entry: program
+- Generated At: 2026-10-15T15:49:46.954Z
 
 ## Authored
 ### Purpose
