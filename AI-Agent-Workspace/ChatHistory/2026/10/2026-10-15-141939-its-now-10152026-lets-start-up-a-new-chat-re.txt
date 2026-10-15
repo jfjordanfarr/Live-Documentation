@@ -115,3 +115,449 @@
 
   I would take item 1 now and fold item 3 in if the day allows. Say which, or
   reorder, and I plan the files in the chat before building.
+
+❯ > Two small things on the way: the inventory had credited the wrong commit
+  with one copy of your export, corrected with a dated note; and the vision's
+  status section and direction.md's current statement had stopped at October
+  13, so each now carries a dated paragraph for what landed since.
+
+  Oh, well if you see something false in the record please fix it, especially
+  if it's easy.
+
+  >reachable, the vision's step 4. What remains is deciding what an entry point
+  is and writing it into the docs: a manifest's scripts, bin and main, a test
+  runner's globs, a dynamic import as an edge, and a declared start file for
+  folders with no manifest. It closes two things you have felt. The Explorer
+  lands on the rosetta sample's main file instead of this repository's own code
+  because the present inference picks it. Knowledge Sources lists what nothing
+  references without saying which are entries and which are orphans. The
+  October 8 hand-curated sweep is the oracle. Forks I would bring before
+  building: which files count as entry declarations for each language in the
+  samples, how an entry is written into a doc, and what the panel and the CLI
+  report.
+
+  Sounds great!
+
+  With respect to the forks, I see what you've written (including in the
+  summary) but I've been awash in other context and feel that it would be
+  simpler to me if you expanded on them verbally here in the chat, and helped
+  me understand what the possible decision spaces are on these, so I can best
+  recollect the context in which these decisions were needed once more.
+
+● Your choice and your note on corrections are recorded first, then I'll read
+  the code the forks touch so the decision spaces are exact rather than
+  remembered.
+
+  Searched for 2 patterns, listed 2 directories, ran 1 shell command (ctrl+o to expand)
+
+● Records and Memory are updated. Next, I'll read through the October 8 sweep's
+  oracle and rules, the Explorer's landing inference and Knowledge Sources
+  facts, the manifest adapters, the doc grammar, the engine and CLI emitter, the
+  test runner configs, and each sample program's declarations. · summary
+
+  Searched for 2 patterns, read 4 files, ran 5 shell commands (ctrl+o to expand)
+
+● I found the Playwright config under tests/e2e instead of the root—fetching it
+  now to check how it's documented, what the adapters do with main functions,
+  the config fields, and where the Explorer applies its landing heuristic.
+  · summary
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● I'll check a few last things before writing: whether each sample's main is
+  actually a documented symbol, the terminology the docs use for served vs.
+  called kinds, how estate pages are structured, and the shape of the October 8
+  hand-curated list to use as the oracle. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The owner's terminal export of today's chat has just appeared in the folder.
+  I'll measure it so the inventory can register it as received, then commit it
+  with its entry before answering on the forks.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both records are committed (3dd4560b, and 5793c37f for your export of this
+  chat). Here are the forks, from the ground up.
+
+  Where this comes from. reachable is the vision's step 4: start at a system's
+  entry points, follow the references, and see what is reached. It is the dual
+  of "what does my change touch". The docs today record every import and type
+  reference between files, and nothing else. So the Knowledge Sources panel can
+  list the files nothing references, but it cannot tell an entry from an orphan,
+  because a script npm runs, a main, a route a browser calls and a dead file
+  all look the same: no inbound reference. On October 8 you asked for a
+  dead-code sweep. I measured the graph against a hand reading of this
+  repository, and the graph had missed no import. Of the implementation files it
+  called unreferenced, nearly all were entries or tooling inputs, one was dead
+  and one redundant. That sweep named where entries come from. Yesterday the
+  walk itself landed in the engine, under the destination field and inspect
+  --reachable. What remains is the fact "this file is an entry, and here is
+  why", written into the docs so every reader can use it. The forks are where
+  that fact comes from, where it is written, and what gets reported from it.
+
+  Fork 1: what counts as an entry declaration
+
+  An entry is a file that something outside the code starts. Six kinds exist,
+  and each needs its own reading:
+
+  1. A manifest's commands. In package.json, the scripts that name a path, and
+     bin and main. This repository has about twenty such scripts, and the CLI
+     package's bin points at a built file that maps back to its source through
+     tsconfig. Other ecosystems declare the same thing differently: a .csproj
+     with an executable output type, a web project, Cargo's bin targets,
+     pyproject's scripts, a gemspec's executables. Adapters exist today only for
+     package.json and .csproj. Cargo, pom, pyproject and go.mod have no Live
+     Docs at all yet.
+  2. The language's own main. C, Go, Rust, Java, C# and Python each have one. No
+     adapter marks any of them today, and in Go and Rust main is not even
+     public, so it is absent from the docs.
+  3. An opening served. A route, an address, a procedure, a table. These are
+     already symbols with kinds in the docs since the September openings work. A
+     file that serves one is an entry by definition, because its caller is
+     outside. This costs nothing new. The one gap is WebForms pages, whose docs
+     carry no route.
+  4. Tests. A runner starts them. Either trust the test archetype the generator
+     already assigns by naming convention, or read the runner configurations'
+     include globs. The sweep found the globs matched all but two test files,
+     and those two were tooling inputs. Reading the globs means evaluating
+     TypeScript config files, which I would rather not build as a special case.
+  5. Tooling inputs. Manifests and compiler or runner configurations are roots
+     by their kind, never orphans. A rule by file kind.
+  6. What no rule can infer. The bundler entry named by a path string inside
+     code, and the stylesheet the page template links. For these, a declared
+     list in the configuration file, which is the fallback you accepted on
+     October 8.
+
+  One more thing the sweep found that is not an entry but an adapter miss: a
+  dynamic import("./file") with a literal path is not recorded as an edge. The
+  compiler oracle records it, so it is measurable.
+
+  My recommendation: read all six kinds, but limit the manifest reading to the
+  two adapters that exist, add main marks to every language adapter we ship,
+  take openings as they are, take tests by archetype, and add the declared list.
+  New manifest adapters for the other ecosystems are a later pass.
+
+  Fork 2: how the fact is written into the docs
+
+  The rule is that markdown is canonical and consumers read the derived graph,
+  so a fact the picture needs has to live in the docs. Two shapes fit:
+
+  - An edge on the declarer. The manifest's doc gains a dependency line linking
+    to each script, with the existing (configuration) qualifier, meaning "this
+    manifest runs that file". The walk then starts at manifests, and the Local
+    Map draws package.json wired to twenty scripts. This matches how a served
+    route and its caller are already written. Its weakness is that a language
+    main has no declarer other than its own file, so this shape cannot carry it,
+    and a runner config's doc would gain over a hundred lines.
+  - A mark on the entry. The entry file's own doc says it, in its Metadata
+    block, with the reason and a link to the declarer: a script name and its
+    manifest, main, a route, a test runner, or "declared". The precedent is the
+    Archetype: line, which the generator also decides from configuration and
+    naming rather than from the file's text. One line, one vocabulary, and every
+    reader finds "is this an entry and why" on the file itself.
+
+  A hybrid is possible, edges where a declarer exists and marks where the file
+  declares itself, but that is three mechanisms for one fact. I recommend the
+  mark. The manifest's wires can be added later if you want them in the picture.
+
+  Fork 3: what is reported, and where the Explorer lands
+
+  - The panel. An "Entry points" section grouped by how each is known, and
+    "Unreachable from any entry" in place of today's "Nothing references these".
+    The difference matters: a file referenced only by an orphan is unreachable,
+    and the one-hop list cannot see that. "Reached only from tests" stays. I
+    would replace the one-hop list rather than keep both.
+  - The CLI. inspect --reachable with no --from would mean "from the entries",
+    in text and JSON, computed by the same engine function the panel's JSON
+    export uses. The alternative is a new command. I recommend the option.
+  - The landing. Today a filename-scoring heuristic picks the rosetta sample's
+    main file. Options: the entry with the largest reach, the manifest's main or
+    bin, the root landing built yesterday with nothing pinned, or the heuristic
+    kept. I recommend: when the scan declares exactly one entry outside the
+    sample roots, land on it; otherwise land on the root with the entries listed
+    in the panel. The configuration already names the sample roots, so
+    excluding them fixes the rosetta landing on its own.
+
+  How we would know it is right. Three oracles, none of them the analyzer
+  grading itself: the October 8 hand table of this repository's unreferenced
+  files with the hand's class for each; the rosetta manifest, which names main
+  as the entry role in eight languages, so each variant's main must come out an
+  entry and nothing else in it; and the estate sample's served openings, the
+  Portal's page and controller, the Gateway's routes, the Hub's address, the
+  service's procedure and tables.
+
+  Answer the three, or say "your recommendations", and I will write the file
+  plan in the chat before building.
+
+❯ >My recommendation: read all six kinds, but limit the manifest reading to the
+  two adapters that exist, add main marks to every language adapter we ship,
+  take openings as they are, take tests by archetype, and add the declared
+  list. New manifest adapters for the other ecosystems are a later pass.
+
+  Perhaps in the Knowledge Sources panel, a user could manually input which
+  node is their program entry point if the system couldn't infer it? Or perhaps
+  the system inferred one sits in an omnisearch textinput ready for the user
+  to adjust if they think the inferred entry point was wrong? Otherwise this
+  all sounds good.
+
+  >A mark on the entry. The entry file's own doc says it, in its Metadata
+  block, with the reason and a link to the declarer: a script name and its
+  manifest, main, a route, a test runner, or "declared". The precedent is the
+  Archetype: line, which the generator also decides from configuration and
+  naming rather than from the file's text. One line, one vocabulary, and every
+  reader finds "is this an entry and why" on the file itself.
+
+  Ah, I see I was actually answering this as well!
+
+  >Today a filename-scoring heuristic picks the rosetta sample's main file.
+
+  Indeed; wrong for our repo but not a stupid guess.
+
+  >How we would know it is right.
+
+  One valid answer might be: "Because it's our repo, and we know the shape of
+  our repo" (meaning: subject of the oracle is own repo)
+
+  Your thoughts?
+
+● Your answers settle all three forks, and your two ideas each change a piece of
+  the plan. Before I write the file plan I'm reading the seams it touches: the
+  grammar's metadata lines, the generator's two passes, the adapter interface,
+  the configuration, the Explorer's landing and panel, the CLI's option flow,
+  and the integration tests that would hold the oracle.
+
+  Listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● I've mapped out the overall structure, but I still need to check how symbols
+  are collected in the first pass, the generator's doc assembly, bundle access
+  to sample roots, Go/Rust unexported function handling, and the three
+  integration tests—I'll dig into these next. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● The reads are done; before answering I'll record the fork explanation and your
+  message in today's record, as the convention asks at the start of each turn.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing more to read; here are my thoughts on your two ideas, then the file
+  plan for your yes.
+
+  "Because it's our repo, and we know the shape of our repo." Yes, with two
+  cautions. The hand table from October 8 is the oracle's seed, but it is a week
+  old, one file in it has since been deleted and the search modules have been
+  added, so the first job is to refresh it by reading, not by running the tool,
+  and to commit it as an expectation file that a test compares the generated
+  docs against, the way the estate sample's hand-verified edges are compared.
+  And one repository exercises only some kinds of entry: npm scripts, tests,
+  tooling inputs, two declared files. It has no main, no routes and no stored
+  procedures. So the rosetta samples (eight mains) and the estate (served
+  routes, an address, a procedure and tables) stay beside it as the oracles for
+  the other kinds. Three subjects, each judged by a reading that never ran the
+  analyzer.
+
+  The field in the panel. I read your idea as two things that should stay
+  distinct. The set of entries is a fact, and it lives in the docs. Which file a
+  person is asking "what does this reach?" about is exploration state, like a
+  pin. So the panel gets a "Reachable from" field, built from the search bar's
+  field module, which starts at "every entry point" and accepts any file or
+  directory. Change it and the panel's lists re-walk from there; the choice
+  rides the share link. When the docs declare exactly one entry, the field shows
+  it, which is your "inferred one sits in the field ready to adjust". What the
+  field cannot do is write the configuration file, since the Explorer is a
+  static page and a change must be persisted to a file. So beside it stands
+  "Copy as declaration", which hands the person the line for
+  .live-docs.config.json, by your October 3 rule that people take things out as
+  exports. The CLI gets the same question as inspect --reachable --from X, which
+  already exists, and the same answer from the same engine function.
+
+  The heuristic. Kept as the last fallback. When the docs declare no entry at
+  all, the page still lands on its filename guess, and the panel says it was
+  guessed.
+
+  The file plan
+
+  The grammar and the model. A doc's Metadata block gains zero or more - Entry:
+  lines between Code Path and Generated At, each a reason and its evidence:
+  program (the file holds the language's entry point, naming the symbol when
+  there is one), command (a manifest script or bin runs it, naming the script
+  and linking the manifest's doc), module (a manifest's main names it as the
+  package's entry), opening (one line per route, address, procedure or table the
+  file serves, linking the symbol), tooling (a manifest or a compiler or runner
+  configuration a tool reads) and declared (the configuration names it). Tests
+  are not written as entries: Archetype: test already says a runner starts the
+  file, and the index treats that archetype as an entry. document.ts renders and
+  parses the lines and the round-trip test over the whole corpus proves them;
+  the LiveDoc and GraphFile types carry entries.
+
+  Where each reason comes from. program: each language adapter reports it from
+  its own syntax, as a new entries field on the analysis result. C's int main,
+  Go's func main in package main, Rust's fn main in src/main.rs or under
+  src/bin, Java's public static void main, C#'s static Main or top-level
+  statements, Python's __main__ guard, Ruby's __FILE__ guard, and every
+  PowerShell .ps1 file. command and module: the JSON adapter's package.json
+  branch reads scripts, bin and main, resolves the paths a command names against
+  the file index, and maps a built path through the package's tsconfig outDir
+  and rootDir back to its source. Those are declarations about other files, so
+  the generator's first pass, which already runs every adapter to build the
+  symbol index, also builds an entry index from them, and the second pass writes
+  each file's lines from its own analysis plus that index. opening is composed
+  from the file's symbol kinds. tooling is a rule by kind: the manifest symbol
+  kinds, packages.config, tsconfig*.json, *.config.*, Web.config and App.config.
+  declared comes from a new entryPoints list in the configuration, paths or
+  globs like archetypeOverrides; this repository's lists the Explorer's bundler
+  entry and its stylesheet. The dynamic import() with a literal path becomes an
+  import edge in the TypeScript dependency reader, measured on the oracle.
+
+  The walk. pathfind.ts gains reachability(graph, from?): the entries with their
+  reasons, every file reached with its hops, the files no entry reaches by
+  archetype, and the files only test entries reach. One function, used by the
+  CLI and the panel.
+
+  The CLI. inspect --reachable with no --from walks from the entries and prints
+  them, the reached files nearest first and the unreachable ones, in text and
+  JSON; the guides and the README say so.
+
+  The Explorer. The bundle's data gains the configuration's sample roots. The
+  panel's "Nothing references these" becomes "Entry points" grouped by reason,
+  with sample programs' entries grouped under their root, then "Unreachable from
+  any entry" by archetype, "Reached only from tests", the field and the copy
+  action; the JSON export carries the same shape the CLI prints. The landing:
+  exactly one entry outside the sample roots lands on it; several land on the
+  root with nothing pinned; none falls back to the guess.
+
+  Tests and the oracle. Unit tests for the grammar, the walk, the JSON adapter's
+  mapping, each adapter's program mark, the composition rules and the panel's
+  facts. Integration: a small fixture workspace with scripts, a tsconfig and a
+  declared file; the rosetta parity test asserting each variant's main carries
+  program and nothing else in it does; the estate test asserting the served
+  openings' files; the CLI test for the new form; and
+  tests/integration/live-docs/expected/repository-entries.json, this
+  repository's entries written by hand with a reason each, compared against the
+  committed docs. Playwright: the panel's sections and field under the design
+  audit, and the landing. Pictures under today's folder.
+
+  Docs. The pipeline and openings docs for the new line, the Explorer design's
+  Knowledge Sources section, the CLI guides, a decisions-log entry quoting you,
+  the vision's step 4, and the authored notes of every changed module. Several
+  dozen Live Docs gain a line when regenerated.
+
+  I would land it as two commits, each after the full gate: the engine,
+  generator and CLI with the oracle tests first, then the Explorer with its
+  pictures. Say yes, or strike or rename anything above, and I build.
+● Nothing more to read; here are my thoughts on your two ideas, then the file
+  plan for your yes.
+
+  "Because it's our repo, and we know the shape of our repo." Yes, with two
+  cautions. The hand table from October 8 is the oracle's seed, but it is a week
+  old, one file in it has since been deleted and the search modules have been
+  added, so the first job is to refresh it by reading, not by running the tool,
+  and to commit it as an expectation file that a test compares the generated
+  docs against, the way the estate sample's hand-verified edges are compared.
+  And one repository exercises only some kinds of entry: npm scripts, tests,
+  tooling inputs, two declared files. It has no main, no routes and no stored
+  procedures. So the rosetta samples (eight mains) and the estate (served
+  routes, an address, a procedure and tables) stay beside it as the oracles for
+  the other kinds. Three subjects, each judged by a reading that never ran the
+  analyzer.
+
+  The field in the panel. I read your idea as two things that should stay
+  distinct. The set of entries is a fact, and it lives in the docs. Which file a
+  person is asking "what does this reach?" about is exploration state, like a
+  pin. So the panel gets a "Reachable from" field, built from the search bar's
+  field module, which starts at "every entry point" and accepts any file or
+  directory. Change it and the panel's lists re-walk from there; the choice
+  rides the share link. When the docs declare exactly one entry, the field shows
+  it, which is your "inferred one sits in the field ready to adjust". What the
+  field cannot do is write the configuration file, since the Explorer is a
+  static page and a change must be persisted to a file. So beside it stands
+  "Copy as declaration", which hands the person the line for
+  .live-docs.config.json, by your October 3 rule that people take things out as
+  exports. The CLI gets the same question as inspect --reachable --from X, which
+  already exists, and the same answer from the same engine function.
+
+  The heuristic. Kept as the last fallback. When the docs declare no entry at
+  all, the page still lands on its filename guess, and the panel says it was
+  guessed.
+
+  The file plan
+
+  The grammar and the model. A doc's Metadata block gains zero or more - Entry:
+  lines between Code Path and Generated At, each a reason and its evidence:
+  program (the file holds the language's entry point, naming the symbol when
+  there is one), command (a manifest script or bin runs it, naming the script
+  and linking the manifest's doc), module (a manifest's main names it as the
+  package's entry), opening (one line per route, address, procedure or table the
+  file serves, linking the symbol), tooling (a manifest or a compiler or runner
+  configuration a tool reads) and declared (the configuration names it). Tests
+  are not written as entries: Archetype: test already says a runner starts the
+  file, and the index treats that archetype as an entry. document.ts renders and
+  parses the lines and the round-trip test over the whole corpus proves them;
+  the LiveDoc and GraphFile types carry entries.
+
+  Where each reason comes from. program: each language adapter reports it from
+  its own syntax, as a new entries field on the analysis result. C's int main,
+  Go's func main in package main, Rust's fn main in src/main.rs or under
+  src/bin, Java's public static void main, C#'s static Main or top-level
+  statements, Python's __main__ guard, Ruby's __FILE__ guard, and every
+  PowerShell .ps1 file. command and module: the JSON adapter's package.json
+  branch reads scripts, bin and main, resolves the paths a command names against
+  the file index, and maps a built path through the package's tsconfig outDir
+  and rootDir back to its source. Those are declarations about other files, so
+  the generator's first pass, which already runs every adapter to build the
+  symbol index, also builds an entry index from them, and the second pass writes
+  each file's lines from its own analysis plus that index. opening is composed
+  from the file's symbol kinds. tooling is a rule by kind: the manifest symbol
+  kinds, packages.config, tsconfig*.json, *.config.*, Web.config and App.config.
+  declared comes from a new entryPoints list in the configuration, paths or
+  globs like archetypeOverrides; this repository's lists the Explorer's bundler
+  entry and its stylesheet. The dynamic import() with a literal path becomes an
+  import edge in the TypeScript dependency reader, measured on the oracle.
+
+  The walk. pathfind.ts gains reachability(graph, from?): the entries with their
+  reasons, every file reached with its hops, the files no entry reaches by
+  archetype, and the files only test entries reach. One function, used by the
+  CLI and the panel.
+
+  The CLI. inspect --reachable with no --from walks from the entries and prints
+  them, the reached files nearest first and the unreachable ones, in text and
+  JSON; the guides and the README say so.
+
+  The Explorer. The bundle's data gains the configuration's sample roots. The
+  panel's "Nothing references these" becomes "Entry points" grouped by reason,
+  with sample programs' entries grouped under their root, then "Unreachable from
+  any entry" by archetype, "Reached only from tests", the field and the copy
+  action; the JSON export carries the same shape the CLI prints. The landing:
+  exactly one entry outside the sample roots lands on it; several land on the
+  root with nothing pinned; none falls back to the guess.
+
+  Tests and the oracle. Unit tests for the grammar, the walk, the JSON adapter's
+  mapping, each adapter's program mark, the composition rules and the panel's
+  facts. Integration: a small fixture workspace with scripts, a tsconfig and a
+  declared file; the rosetta parity test asserting each variant's main carries
+  program and nothing else in it does; the estate test asserting the served
+  openings' files; the CLI test for the new form; and
+  tests/integration/live-docs/expected/repository-entries.json, this
+  repository's entries written by hand with a reason each, compared against the
+  committed docs. Playwright: the panel's sections and field under the design
+  audit, and the landing. Pictures under today's folder.
+
+  Docs. The pipeline and openings docs for the new line, the Explorer design's
+  Knowledge Sources section, the CLI guides, a decisions-log entry quoting you,
+  the vision's step 4, and the authored notes of every changed module. Several
+  dozen Live Docs gain a line when regenerated.
+
+  I would land it as two commits, each after the full gate: the engine,
+  generator and CLI with the oracle tests first, then the Explorer with its
+  pictures. Say yes, or strike or rename anything above, and I build.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+  ⎿  Referenced file .mdmd/layer-1/vision.mdmd.md
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14-140508-10
+     142026-is-the-day-today-lets-start-a-new-ch.txt
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
