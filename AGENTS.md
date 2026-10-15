@@ -42,6 +42,7 @@ The owner's standing preferences, their answers at every fork so far, and ideas 
 - `AI-Agent-Workspace/Research/` holds dated surveys of formats and prior art, gathered for a design step, with a source for every claim. A survey records what existed on its date and decides nothing.
 - `AI-Agent-Workspace/ChatHistory/` is the development system of record. Preserve raw captures; summaries provide a stable, harness-neutral path from a file's provenance to the conversation and verified commits. The naming, source-coverage rules and session handoff routine are in [its README](AI-Agent-Workspace/ChatHistory/README.md). Historical statements are evidence of what was said, never automatically current facts. Never extract private reasoning blocks.
 - The workspace mount is case-insensitive (a Windows-backed volume), so a file-existence probe must check the directory listing: `Account.py` finds `account.py`.
+- Agent skills live at the vendor-neutral path, `.agents/skills/<name>/SKILL.md`, the owner's standing rule ("Vendor-neutral path. Always.", 2026-10-15). A vendor's own location, such as `.claude/skills/`, holds only a pointer to it, as `CLAUDE.md` points here. The first is `live-documentation`, for answering "how does X work in our project" from the docs, the CLI and a link into the Explorer.
 
 ## Commands that matter
 

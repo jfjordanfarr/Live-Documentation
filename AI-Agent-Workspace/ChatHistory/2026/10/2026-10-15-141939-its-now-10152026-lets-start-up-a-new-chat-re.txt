@@ -1490,3 +1490,385 @@ completed (exit code 0)
   (https://rea.tools/showcase/notion/), the Hacker News thread
   (https://news.ycombinator.com/item?id=50028275), MindStudio's reading
   (https://www.mindstudio.ai/blog/reverse-engineer-anything-mcp).
+
+❯ 3 and 4 are definitely the most interesting parts of the above response. I
+  think that we absolutely could produce a skill for Live Documentation.
+  Furthermore, that skill could be the skill relied upon when I ask things like
+  "can you show me how {x} works in our project?".
+
+  3 is interesting insofar as there are potentially more places to ground
+  understanding that we aren't tapping, and those "somewhere"s may come with
+  tradeoffs relative to our project's aims (no internet, highly portable,
+  minimal dependencies, blah blah blah).
+
+  All that said, I honestly am a little surprised that your instinct wasn't:
+  "REA produces something code-like and then Live Documentation can render that
+  something understandable to humans". I could be wrong but that was my
+  "no-brainer" thought when I heard about what the project is. I dunno.
+
+● Recording your message and my last reply first, then I want to check two
+  things before answering the "no-brainer" point properly: what our C adapter
+  actually records as wires, and whether I can run Live Documentation over one
+  of the reconstruction repositories REA's showcases produced, so the answer
+  rests on a picture rather than an instinct.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Web Search("Agent Skills specification SKILL.md frontmatter ".claude/skills"
+            ".agents/skills" Codex Cursor agentskills.io")
+  ⎿  Did 1 search in 7s
+
+● claude-code-guide(Claude Code project skills facts)  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+› Message from claude-code-guide
+  Claude Code project skills: documented facts as of 2026-10-15
+
+  Method: I downloaded the raw markdown of the Claude Code skills, memory, and
+  commands pages and the Agent Skills spec and checked every quote by search. I
+  also downloaded the Codex, Gemini CLI, Cursor, GitHub Copilot, and VS Code
+  skill pages and checked their folder paths by text search. Raw copies:
+  /tmp/claude-1000/-workspaces-Live-Documentation/0a57dbfd-3a23-40e9-8c99-e6fc8a
+  f972b3/scratchpad/docs/
+
+  ## 1. Where project skills are discovered
+
+  - Project skills: `.claude/skills/<skill-name>/SKILL.md`, relative to the
+  repository root. "Sessions in this repository. Commit it so your team gets it
+  too." (https://code.claude.com/docs/en/skills, "Choose where skills load")
+  - Starting in a subdirectory still loads root skills: Claude Code loads
+  project skills "in the directory where you start it and in every parent
+  directory up to the repository root."
+  - Nested: `<subdir>/.claude/skills/<skill-name>/SKILL.md`. These load the
+  first time Claude reads or edits a file in that subdirectory, or sooner with
+  `/add-dir`.
+  - Other locations: personal `~/.claude/skills/<skill-name>/SKILL.md` (not in
+  Cowork or cloud sessions); enterprise (managed settings directory); plugin
+  `<plugin>/skills/<skill-name>/SKILL.md`; `.claude/skills/` inside a directory
+  passed with `--add-dir`. Cloud sessions also load project skills committed to
+  the cloned repo's `.claude/skills/`.
+  - Legacy `.claude/commands/<name>.md` still works, with the same frontmatter
+  except `name` and `paths`.
+  - Name clash: enterprise beats personal, and personal beats project.
+  - A `<skill-name>` entry in the enterprise, personal, or project location can
+  be a symlink to a directory elsewhere; Claude Code reads SKILL.md from the
+  target.
+  - Reserved: a folder named `synced`, and `anthropic-skills` or
+  `anthropic-skills:*` outside a plugin.
+  - Edits under `.claude/skills/` are picked up in the running session without a
+  restart.
+
+  `.agents/skills/`: not documented for Claude Code. The skills page has no
+  `.agents/` path and no AGENTS.md reference. The memory page says that for
+  AGENTS.md instructions Claude does not read "anything under a `.agents/`
+  directory" (https://code.claude.com/docs/en/memory#agents-md).
+
+  AGENTS.md: read as project instructions, not as skills. By default Claude
+  reads it only when there is no CLAUDE.md or CLAUDE.local.md in the working
+  directory or above it. Reading it directly needs v2.1.277 or later. The docs
+  define no skill discovery tied to AGENTS.md location.
+
+  Repo state: `/workspaces/Live-Documentation/.claude/` and `.agents/` exist but
+  are empty, with no SKILL.md files. CLAUDE.md is the single line `@AGENTS.md`.
+
+  ## 2. Frontmatter fields
+
+  All fields are optional, and the docs recommend only `description`. Unknown
+  fields are ignored without an error. The opening `---` must be the file's
+  first line. If the YAML does not parse, the skill loads with no fields;
+  `--debug` shows the error, and `claude plugin validate .claude/skills` finds
+  unparseable files (v2.1.233 or later).
+
+  | Field | Meaning | Default |
+  |---|---|---|
+  | `name` | Command name in the `/` menu | Directory name. Claude Code accepts
+  another value; the spec requires the folder name to match |
+  | `description` | What the skill does and when to use it; Claude uses it to
+  decide when to apply the skill | First non-empty body line if omitted |
+  | `when_to_use` | Trigger phrases or example requests; appended to
+  `description` | None; counts toward the 1,536-character cap |
+  | `argument-hint` | Autocomplete hint, e.g. `[issue-number]` | None |
+  | `arguments` | Named positional arguments for `$name` substitution | None |
+  | `disable-model-invocation` | `true`: Claude does not load it automatically;
+  it stays out of context | `false` |
+  | `user-invocable` | `false`: hidden from the `/` menu; only Claude invokes it
+  | `true` |
+  | `allowed-tools` | Tools usable without prompts during the invoking turn; the
+  grant clears at your next message; it does not restrict other tools. Space-
+  or comma-separated string, or YAML list | None |
+  | `disallowed-tools` | Removes tools from the pool while the skill is active |
+  None |
+  | `model` | Model for the turn; accepts `/model` values or `inherit` | Session
+  model |
+  | `effort` | `low`, `medium`, `high`, `xhigh`, `max` | Effort resolution order
+  |
+  | `context` | `fork` runs the skill in a subagent | Inline |
+  | `agent` | Subagent type when `context: fork` | `general-purpose` |
+  | `background` | With `context: fork`: `false` waits for the result in the
+  invoking turn | `true` |
+  | `hooks` | Hooks registered on invocation, active for the rest of the session
+  | None |
+  | `paths` | Glob patterns; the skill auto-loads only for matching files | No
+  path limit |
+  | `shell` | `bash` or `powershell` for `` !`cmd` `` blocks | `bash` |
+  | `metadata` | Free-form map for your own tooling; Claude Code ignores it |
+  None |
+  | `license`, `compatibility` | Spec fields; accepted, not acted on.
+  `compatibility` is up to 500 characters | None |
+
+  Spec `name` rule (https://agentskills.io/specification): 1 to 64 characters,
+  lowercase letters, digits, and hyphens; no leading, trailing, or doubled
+  hyphen; must match the parent directory name.
+
+  ## 3. Invocation and description
+
+  - User: `/name` at the start of a message runs the skill directly. A name
+  placed after plain text gives Claude permission to run it but does not run it.
+  - Model: by default "Claude can load it automatically when relevant to your
+  conversation." `disable-model-invocation: true` turns that off. Descriptions
+  are always in context; the body loads only when invoked.
+  - Good descriptions (docs guidance; the docs describe no scoring rule): say
+  what the skill does and when to use it; put the key use case first; include
+  the words users would naturally say; put trigger phrases or example requests
+  in `when_to_use`; narrow it if it fires too often. Docs example: "Summarizes
+  uncommitted changes and flags anything risky. Use when the user asks what
+  changed, wants a commit message, or asks to review their diff." Spec's poor
+  example: "Helps with PDFs."
+  - Limits:
+    - Claude Code: `description` plus `when_to_use` is truncated at 1,536
+  characters in the skill listing.
+    - Claude Code: the listing budget is 1% of the model's context window. Tune
+  with `skillListingBudgetFraction`, `SLASH_COMMAND_TOOL_CHAR_BUDGET`, or
+  `skillListingMaxDescChars`.
+    - Claude Code: "Keep SKILL.md under 500 lines" (a tip, not a hard limit).
+    - Claude Code: after compaction, the first 5,000 tokens of each invoked
+  skill are kept, and re-attached skills share a 25,000-token budget. Put key
+  instructions near the top.
+    - Spec: `description` 1 to 1024 characters; main SKILL.md under 500 lines;
+  instructions under about 5,000 tokens recommended.
+
+  ## 4. Supporting files
+
+  Yes. The docs' layout is `SKILL.md` plus `reference.md`, `examples.md`, and
+  `scripts/helper.py` ("executed, not loaded").
+
+  - Refer to them from SKILL.md with relative Markdown links and say when to
+  load each: "For complete API details, see [reference.md](reference.md)."
+  - `${CLAUDE_SKILL_DIR}` expands to the directory containing SKILL.md. It works
+  in the body and in `allowed-tools` Bash rules, e.g. `allowed-tools:
+  Bash(${CLAUDE_SKILL_DIR}/scripts/render.sh *)`. `${CLAUDE_PROJECT_DIR}` also
+  exists. For `!` command blocks, which run in the session's current directory,
+  use these variables for paths.
+  - Spec: paths are relative to the skill root and one level deep. `scripts/`,
+  `references/`, and `assets/` are recommended conventions, not requirements.
+
+  ## 5. The Agent Skills standard and other tools
+
+  - Claude Code skills "follow the [Agent Skills](https://agentskills.io) open
+  standard, which works across multiple AI tools," extended with invocation
+  control, subagent execution, and dynamic context injection
+  (https://code.claude.com/docs/en/skills).
+  - The spec defines the file format, not the location
+  (https://agentskills.io/specification). The client guide calls
+  `.agents/skills/` "a widely-adopted convention for cross-client skill sharing"
+  and says "some implementations also scan `.claude/skills/`"
+  (https://agentskills.io/client-implementation/adding-skills-support).
+  - Outside Claude Code, claude.ai uploads, the Skills API, and
+  `package_skill.py` accept only `name`, `description`, `license`,
+  `compatibility`, `metadata`, and `allowed-tools`. Other keys fail with
+  "Unexpected key(s) in SKILL.md frontmatter" (skills page, "Using skill
+  frontmatter outside Claude Code").
+  - The client showcase (https://agentskills.io/clients) lists 46 products that
+  "support the Agent Skills format," including Claude Code, Cursor, Gemini CLI,
+  GitHub Copilot, VS Code, and ChatGPT & Codex. It does not say how entries are
+  verified.
+
+  Folder paths each product documents:
+
+  | Product (page) | Project folders | User folders | Notes |
+  |---|---|---|---|
+  | Claude Code (https://code.claude.com/docs/en/skills) | `.claude/skills/` |
+  `~/.claude/skills/` | `.agents/` not mentioned |
+  | Codex (https://learn.chatgpt.com/docs/build-skills; redirected from
+  developers.openai.com/codex/skills) | `$CWD/.agents/skills`, and parent
+  folders up to `$REPO_ROOT/.agents/skills` | `$HOME/.agents/skills`; admin
+  `/etc/codex/skills` | `.claude/` not listed; starts with each skill's name and
+  description, then loads the full SKILL.md |
+  | Gemini CLI (https://geminicli.com/docs/cli/skills/) | `.gemini/skills/`,
+  alias `.agents/skills/` | `~/.gemini/skills/`, alias `~/.agents/skills/` |
+  Within a tier the `.agents/skills/` alias takes precedence; `.claude/` not
+  mentioned |
+  | Cursor (https://cursor.com/docs/context/skills) | `.agents/skills/`,
+  `.cursor/skills/`; also reads `.claude/skills/`, `.codex/skills/` |
+  `~/.agents/skills/`, `~/.cursor/skills/`; also `~/.claude/skills/`,
+  `~/.codex/skills/` | `name` and `description` required; `name` "Must match the
+  parent folder name" |
+  | GitHub Copilot
+  (https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) |
+  `.github/skills`, `.claude/skills`, `.agents/skills` | `~/.copilot/skills`,
+  `~/.agents/skills` | Page never mentions SKILL.md |
+  | VS Code
+  (https://code.visualstudio.com/docs/copilot/customization/agent-skills) |
+  `.github/skills/`, `.claude/skills/`, `.agents/skills/` |
+  `~/.copilot/skills/`, `~/.claude/skills/`, `~/.agents/skills/` | Skills follow
+  the Agent Skills specification |
+
+  Read-across:
+  - `.agents/skills/` is documented by Codex, Gemini CLI, Cursor, Copilot, and
+  VS Code. It is not documented by Claude Code.
+  - `.claude/skills/` is documented by Claude Code, Cursor, Copilot, and VS
+  Code. It is not listed by Codex or Gemini CLI.
+  - No page documents a layout that serves all of them. Two documented pieces
+  could combine: Claude Code reads a symlinked skill entry, and Codex "follows
+  the symlink target when scanning these locations." I have not tested this. The
+  memory page notes that Git on Windows checks symlinks out as plain text
+  unless `core.symlinks` is enabled.
+  - `/import [codex|gemini|cursor]` brings instruction files, MCP servers,
+  commands, subagents, and skills from those tools into Claude Code
+  (https://code.claude.com/docs/en/commands; Cursor import needs v2.1.265 or
+  later). The docs do not say where imported skills are written.
+  - The skills page says project skills committed to a repo "also load when that
+  repo is used in a Claude Tag channel"
+  (https://claude.com/docs/claude-tag/admins/skills-repo). I did not open that
+  page.
+
+  ## Planning notes from the docs
+
+  - Keep frontmatter `name` equal to the folder name. The spec and Cursor's page
+  both require it, and Claude Code defaults to the folder name.
+  - Repo skills' `allowed-tools` apply even in an untrusted folder under `-p`.
+  The docs say to review them before running Claude Code there.
+  - For a baseline run of a project skill, the docs say to set it to `"off"` in
+  `skillOverrides` in a fresh session. `claude plugin eval` is for skills
+  shipped in a plugin. `skillOverrides` can also hide a checked-in skill per
+  user without editing it.
+
+  ## Where the docs are silent
+
+  - Claude Code docs: no `.agents/skills/` or AGENTS.md-based skill discovery.
+  - Claude Code docs: no hard maximum for SKILL.md body length, and no length
+  limit for `name`.
+  - Claude Code docs: no rule for descriptions longer than the spec's 1,024
+  characters. The listing truncates at 1,536.
+  - Claude Code docs: no description of how Claude selects a skill beyond the
+  description text.
+  - Claude Code docs: where `/import` writes skills.
+  - GitHub Copilot page: no SKILL.md or frontmatter details. Gemini CLI page: no
+  frontmatter reference.
+  - Other tools' handling of Claude-only frontmatter keys: not documented in the
+  pages I read.
+
+● Agent "Claude Code project skills facts" finished · 12m 16s
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Background command "Serve the built Explorer bundles on port 8766 for the
+pictures" failed with exit code 1
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Regenerate the TH04 docs with every default suffix matched
+anywhere, then walk from the entry points with inspect" failed with exit code 1
+
+● I ran the live documentation search cold over REA's TH04 reconstruction,
+  pulling 1,112 docs in about ten seconds. The initial results look lopsided in
+  a telling way, so I'll dig into why before assembling the final bundle.
+  · summary
+
+  Read 6 files, ran 7 shell commands (ctrl+o to expand)
+
+● Confirmed the lopsidedness is on our end: the C adapter never registers C++
+  files, not an REA issue. Writing up the probe record, dated survey addendum,
+  and notes, then auditing and committing. · summary
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● You're right, and I tested it rather than argue it. Everything is committed as
+  e4bd6319; the product is unchanged since 5cee2716.
+
+  Why my instinct was elsewhere. I judged REA by its own record, the evidence
+  ledger, and not by what its engines emit: pseudocode and reconstructed C from
+  a binary, recovered modules from a bundle, decompiled Java from an APK, and in
+  its showcases whole source repositories kept by an agent. A folder of
+  code-like files is Live Documentation's input, so your layer exists without a
+  line of integration: the decompiler or the reconstruction runs outside, and
+  Live Documentation reads the folder. The survey now carries a dated addendum
+  correcting "neither above nor below" to "above the output, with nothing
+  between."
+
+  The probe. I cloned the TH04 reconstruction REA's own showcase links (1,842
+  files, MIT) into the scratchpad and ran the shipped generator over it cold. It
+  wrote 941 docs and built an Explorer bundle in ten seconds. The picture was
+  lopsided, and every reason is ours:
+
+  ┌───────────┬───────┬──────────────┬──────────────────┐
+  │ Extension │ Files │ With symbols │ Imports resolved │
+  ├───────────┼───────┼──────────────┼──────────────────┤
+  │ .py       │   562 │          552 │   3,171 of 8,075 │
+  ├───────────┼───────┼──────────────┼──────────────────┤
+  │ .cpp      │   349 │            0 │                0 │
+  ├───────────┼───────┼──────────────┼──────────────────┤
+  │ .hpp      │   172 │            0 │                0 │
+  └───────────┴───────┴──────────────┴──────────────────┘
+
+  - Our C adapter never registers C++. Its docstring claims .cpp, .hpp, .cc and
+    .cxx; its registration lists .c and .h. The game's 521 files got empty docs.
+  - Root-relative includes do not resolve. The reconstruction writes #include
+    "src/shared/hardware/graphics.hpp" as a compiler with an include directory
+    sees it; the adapter tries only the including file's directory.
+  - A C++ main is not marked, so the entry points are 536 Python tooling scripts
+    and the game is "unreachable from any entry."
+  - The shipped globs carry no *.hpp or *.inl.
+
+  The six pictures and the numbers are in the probe record
+  (AI-Agent-Workspace/Probes/2026-10-15/live-docs-over-th04/README.md). By eye,
+  one more small thing: a card with no public symbols reads "+1 symbols" because
+  the count takes in the Internals row.
+
+  Where the no-brainer thins. A stripped binary decompiles to functions without
+  files or names, so its map is a map of addresses until someone names them,
+  which is the work REA's showcases show an agent doing by hand. A bundle
+  without source maps is a map of numbered modules. Reconstructions and
+  source-mapped bundles map well. What we add that REA leaves to prose is the
+  picture, the walk from the entry, what nothing reaches, and a committed mirror
+  that diffs.
+
+  The other grounds, and the one rule that prices them. Live Documentation reads
+  folders of files someone produced and never runs the thing. So every new
+  ground enters as files with its basis written on the edge, and the trade-off
+  is the same question each time: who produces the files, and can the basis be
+  stated honestly? A decompiler's export is a heavy tool that runs elsewhere and
+  costs us no dependency. A schema dump is SQL, which we read already. A saved
+  network capture would give wires an observed basis, which is a new basis value
+  in the grammar. Git history is already on the list as the trajectory.
+
+  The skill, as a plan for your yes.
+
+  1. Where. A folder at .claude/skills/live-documentation/ with a SKILL.md,
+     which Claude Code, Cursor, Copilot and VS Code all read. Codex and Gemini
+     CLI read .agents/skills/ instead. Fork: add that second path now, or wait
+     until someone uses those tools here.
+  2. What triggers it. A description plus trigger phrases: "show me how X works
+     in our project," "what does X touch," "what uses X," "where does this
+     start."
+  3. What it tells the agent to do. Find X's Live Doc under the configured base
+     layer, reading the configuration rather than assuming a path. Read its
+     Purpose, Notes, symbols and dependencies. Run inspect --from X outbound and
+     inbound, and --reachable to say whether X is an entry and how far from
+     one. Answer in plain words citing the doc lines, and hand you a link into
+     the Explorer with X pinned, so you look at it together. Say what the docs
+     cannot see, such as local uses, rather than guess.
+  4. What ships. This repository's skill first, dogfooded by you asking the
+     question. A product-shipped copy waits on the delivery shape, with a fork
+     of its own: the generator writes it beside the mirror, or the package
+     carries it.
+
+  The C++ reading, as the first step of "render what REA produces." Register the
+  extensions with a fixture and tests, try the workspace root as an include
+  candidate, mark main in .cpp, add the suffixes to the defaults, and fix the
+  card's count. One fork: whether to read include directories from build files
+  too, or stop at the root for now.
+
+  Say yes to either or both, choose the forks, or reorder, and I plan the files
+  before building.
