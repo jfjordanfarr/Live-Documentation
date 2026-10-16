@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-branches.spec.ts
-- Generated At: 2026-10-13T20:25:44.542Z
+- Generated At: 2026-10-16T19:54:35.450Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,9 @@ _No public symbols detected_
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
+- [`still-picture.boxOf`](./still-picture.ts.mdmd.md#symbol-boxof)
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
+- [`still-picture.dragBy`](./still-picture.ts.mdmd.md#symbol-dragby)
 - [`still-picture.gesture`](./still-picture.ts.mdmd.md#symbol-gesture)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)

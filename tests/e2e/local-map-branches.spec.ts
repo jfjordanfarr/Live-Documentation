@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { displayNames, gesture, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
+import { boxOf, displayNames, dragBy, gesture, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);
@@ -162,6 +162,21 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   await file("check-symbols.ts").locator(".node-title").click();
   await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toBeVisible();
   await localMapSettled(page);
+  // The picture outgrew the frame when the SlopCop scripts gained a dependency on the engine's tooling (2026-10-16),
+  // and the map holds its camera after a pin rather than re-fitting; a person pans until the card is in view, so does
+  // the test, dragging an empty spot as a person would.
+  const closeButton = file("symbolReferences.ts").getByRole("button", { name: "Close symbolReferences.ts", exact: true });
+  for (let panned = 0; panned < 4; panned += 1) {
+    const frame = (await boxOf(page, "#main"))!;
+    const box = (await closeButton.boundingBox())!;
+    // The search bar lies over the frame's top, so the button must stand well below the frame's edge to be clickable.
+    const top = frame.y + 80, bottom = frame.y + frame.height - 40, left = frame.x + 40, right = frame.x + frame.width - 40;
+    const dx = box.x < left ? left - box.x : box.x + box.width > right ? right - box.x - box.width : 0;
+    const dy = box.y < top ? top - box.y : box.y + box.height > bottom ? bottom - box.y - box.height : 0;
+    if (dx === 0 && dy === 0) break;
+    await dragBy(page, LOCAL_MAP, dx, dy);
+    await localMapSettled(page);
+  }
   const before = (await file("symbolReferences.ts").boundingBox())!;
   // The held element is the card's title: the subject's own card wears a highlight border the closed card loses
   const titleBefore = (await file("symbolReferences.ts").locator(".node-title").boundingBox())!;
@@ -172,7 +187,7 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
   expect(routes.every(route => route.includes(" C ") && !route.includes(" Q "))).toBe(true);
   // The perspective choice carries no unsolicited density message.
   await expect(page.locator(".perspective-strain")).toHaveCount(0);
-  await file("symbolReferences.ts").getByRole("button", { name: "Close symbolReferences.ts", exact: true }).click();
+  await closeButton.click();
   // The closed card is the one last acted on, so the move holds it still; at rest it stands where it stood.
   await localMapSettled(page);
   const after = (await file("symbolReferences.ts").boundingBox())!;
