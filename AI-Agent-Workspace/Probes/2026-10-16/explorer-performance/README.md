@@ -40,6 +40,17 @@ On the chain scope the trace counts about 10 animation frames per 500 ms move: a
 
 Hover highlight 1 to 2 ms a row. The sidebar's arrow 0.2 ms. Typing in the search: no long task. The World Map: ready 294 ms after navigation with one long task of 93 ms, a pin 9 ms, entering a thing into the Local Map 55 ms to the first picture. The bundle loads in under 200 ms on localhost; `explorer-data.json` is 5.0 MB and `index.js` 1.8 MB minified (1.2 MB of it three.js), a cost only over a network. The 3D view's own frame rate was not measured: headless Chromium draws WebGL in software, which says nothing about the owner's machine. The 2D/3D transition was excluded by the owner.
 
+### Behind the other views
+
+The owner asked at Turn 12 whether a click in Knowledge Sources, on a file the Local Map could draw, runs the exploration and the simplex, and whether the layout should be lazier. Measured with a fourth driver on the same bundle:
+
+- **Knowledge Sources as the landing, a click on a file name:** 4 ms, no long task, and no Local Map root exists in the page; the click opens the detail panel. The World Map as the landing: no Local Map root either, no long task. `renderCurrentView` draws only the view shown, so the layout is already deferred until the Local Map is looked at.
+- **Leaving the Local Map while its search runs:** the switch to Knowledge Sources takes 19 ms, and the search goes on behind it, since a view is hidden by opacity, not removed: in six seconds hidden it tried 8 seeds and 10 joins and settled, 179 ms of long tasks on the 34-card neighbourhood, which on the retained scope would be the 8 to 15 s tail measured above.
+- **Coming back:** the switch to the map takes 240 ms synchronous, a full render of the picture that was still in the page unchanged, and the search begins again from seed one, discarding what it found while hidden.
+- **A recentre from inside the map** on a file with a small neighbourhood: 23 ms, a 9 ms layout; the cost is the wires and constraints, not the cards.
+
+So the eagerness is inside the map, not across the views: every change of state while the map is shown re-explores, rebuilds every card's element and re-solves every start from scratch, a return to the view re-renders an unchanged picture, and the search spends its budget on a view no one is looking at and loses it on return.
+
 ### The suite
 
 The gate's Playwright run took 966 s for 131 tests on one worker (the working notes' "about 3 min" is stale). By kind: the still-picture deck 337 s; the 3D specs 187 s (`force-graph-focus` alone waits 16 s on one timer and 19.8 s in all); the specs that cross 2D and 3D (presets, perspective zoom, navigation) 144 s; the 2D Local Map specs about 230 s; the World Map 31 s. Literal fixed waits total 49 s at their call sites, more where they sit in loops. The suite runs with the continuing search off, so none of the tail above is in it.
