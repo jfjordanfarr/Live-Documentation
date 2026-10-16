@@ -2157,3 +2157,243 @@ work · 2h 4m 46s
     pictures, a recording, and seven defects found in the Explorer's own 3D
     view, one serious: in the structure layout the on-demand wires are never
     drawn, and the test that should catch it only checks a flag.
+
+❯ When you're ready to show me your changes, make sure to provide me with
+  hyperlinks which work and show me through that work. If such a request is
+  impossible to serve, consider whether or not changes might be necessary to
+  make such a thing possible. (Unless current is part of a probe rather than a
+  genuine application change)
+
+● Understood: the report will carry working hyperlinks into the files, the
+  pictures and the Explorer. I'm recording your instruction and checking how the
+  Explorer's links are formed while the gate finishes.
+
+  Read 3 files, listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Taking two better pictures of the manifests in the Local Map and checking the
+  gate's log.
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Two things to run down before the manifests can land: one Playwright failure
+  in the gate, and the Local Map pictures showing no wires between the fixture's
+  manifests. Checking both now.
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● The reset control only restores the first fit, so the test will zoom out as a
+  person would until the card is in view. Editing the test, running its spec,
+  and starting the full gate if it passes.
+
+  Searched for 3 patterns, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Still failing; looking at the new failure picture to see where the card stands
+  after the pan.
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● The branches spec passes with the pan. Starting the full gate over the tree
+  with the test fix and the manifests, with a waiter on its log, and
+  checkpointing the record.
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● The archetype rule turns out to be deliberate and tested (sample-root JSON as
+  test data), so changing it is a fork for your eye rather than a fix I land
+  unasked. I'll put it to you with the pictures. Nothing else can move until the
+  gate's verdict arrives.
+
+● Background command "Wait for the third gate's verdict line in its log, then
+summarize the run" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● The gate is green: lint, 1,135 unit and 77 integration tests, the docs
+  pipeline, the three audits and 134 browser tests. Committing the test fix, the
+  manifests, and then the records.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Everything is landed, gated and recorded, and the tree is clean. Two decisions
+  wait on you, and the probe's findings are in. The Explorer links below open
+  the bundle served from dist/explorer on port 8766 in this container; if one
+  does not open, serve it with npx http-server dist/explorer -p 8766 -c-1.
+
+  What landed, and where to look
+
+  The manifests of four ecosystems, 29c83910. Cargo.toml, pyproject.toml, go.mod
+  and pom.xml are Live Docs now, the way package.json and .csproj are: one
+  package symbol, what the package stands on as dependencies linked to the
+  workspace manifest of its own kind or kept external, and the files its
+  targets, scripts or main class start as command and module entries. Walk it in
+  this order:
+
+  1. The shared rules in manifest.ts
+     (packages/engine/src/live-docs/adapters/manifest.ts), then one reader each:
+     cargo.ts (packages/engine/src/live-docs/adapters/cargo.ts), pyproject.ts
+     (packages/engine/src/live-docs/adapters/pyproject.ts), gomod.ts
+     (packages/engine/src/live-docs/adapters/gomod.ts) and pom.ts
+     (packages/engine/src/live-docs/adapters/pom.ts), whose own element reader
+     tells a project's dependencies from dependencyManagement without an XML
+     library. The registry chooses an adapter by exact file name before
+     extension, so no other TOML or XML file is read: index.ts:100
+     (packages/engine/src/live-docs/adapters/index.ts#L100).
+  2. The fixture of four ecosystems,
+     tests/integration/fixtures/manifests/workspace/, checked with cargo, mvn,
+     go and Python's own TOML reader, and the test that reads its docs,
+     manifests.test.ts (tests/integration/live-docs/manifests.test.ts).
+  3. The docs it produces, for example stockctl/Cargo.toml (.mdmd/layer-4/tests/
+     integration/fixtures/manifests/workspace/rust/stockctl/Cargo.toml.mdmd.md)
+     and the count command on its main.rs (.mdmd/layer-4/tests/integration/fixtu
+     res/manifests/workspace/rust/stockctl/src/main.rs.mdmd.md), and the
+     decision in the log
+     (.mdmd/layer-3/architectural-decisions.mdmd.md#the-manifests-of-rust-python
+     -go-and-maven-read-as-live-docs-toml-by-a-library-recorded-2026-10-16). One
+     correction to what I told you: smol-toml is BSD 3-clause, not MIT.
+  4. In the Explorer: the app's pom pinned
+     (http://localhost:8766/?view=local&mode=2d&node=tests/integration/fixtures/
+     manifests/workspace/java/app/pom.xml), the Rust workspace opened
+     (http://localhost:8766/?view=local&mode=2d&dir=tests/integration/fixtures/m
+     anifests/workspace/rust), and Knowledge Sources
+     (http://localhost:8766/?view=sources), where the bundle now counts .toml 9,
+     .xml 7 and .mod 4. The pictures are in today's screenshots
+     (AI-Agent-Workspace/Screenshots/2026-10-16/README.md#the-manifests-of-four-
+     more-ecosystems-as-live-docs).
+
+  Showing it through the Explorer found something: the Local Map hides every one
+  of those manifests and draws no wire between them unless you tick "Show
+  Assets", as picture 2 (AI-Agent-Workspace/Screenshots/2026-10-16/manifests/02-
+  java-modules-opened.png) shows. The cause is a deliberate, tested rule from
+  the fixtures era at archetype.ts:95
+  (packages/engine/src/live-docs/archetype.ts#L95): under a sample root every
+  file without a code extension is an asset. In this bundle 85 of the 96
+  "assets" are the samples' manifests, .config, SQL, CSS and JSON, the estate's
+  project files among them, while the generator's own idea of an asset is an
+  image, a font or a media file. That is your fork, below.
+
+  The hygiene pass, cf82b2c3, found while landing. Discovery read the root
+  .gitignore alone and the audits only their own globs, so a regeneration
+  documented 2,727 files of the two builders' worktrees nested under
+  .claude/worktrees/. The engine now asks git itself through gitIgnored.ts
+  (packages/engine/src/tooling/gitIgnored.ts), which honours nested ignore
+  files, info/exclude and the global excludes, and never ignores a tracked file;
+  discovery and the three audits use it. Two audits had passed only on a
+  checkout that happened to hold an ignored file: the .vscode/ ignore line also
+  hid the settings doc (.mdmd/layer-4/.vscode/settings.json.mdmd.md), now
+  tracked, and the October 14 probe linked a journey.log that *.log kept out of
+  git, now tracked as evidence. That commit broke one browser test, because the
+  audit scripts gained a real wire and the branches test's card slid under the
+  search bar; 1f100905 makes the test pan as a person would. I had committed the
+  hygiene pass without Playwright, judging it outside the Explorer; it was not,
+  and the full gate is the rule.
+
+  The probe
+
+  The probe record
+  (AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md) holds the
+  brief, fourteen scenarios walked on paper, the measurements, fourteen pictures
+  and the recording
+  (AI-Agent-Workspace/Probes/2026-10-16/change-over-time/history-setting-B.webm)
+  of this repository's 122 sampled commits in the structure layout, one step a
+  second. The shape you wanted holds. Fed rather than restarted, with renamed
+  files and hubs keeping their objects and the hubs held through a step, the
+  unchanged spheres barely move, and the three package renames read as a name
+  changing in place: compare before (AI-Agent-Workspace/Probes/2026-10-16/change
+  -over-time/09-shared-to-engine-before-B.png) and after (AI-Agent-Workspace/Pro
+  bes/2026-10-16/change-over-time/06-shared-to-engine.png) with today's update
+  path on the same step (AI-Agent-Workspace/Probes/2026-10-16/change-over-time/1
+  1-shared-to-engine-after-A.png), which rebuilds the picture.
+
+  ┌─────────────────────────┬─────────────────────────────┬─────────────────┐
+  │   Measure, 121 steps    │       Today's update        │  Gentle, hubs   │
+  │                         │                             │      held       │
+  ├─────────────────────────┼─────────────────────────────┼─────────────────┤
+  │ Unchanged files, mean   │ 75 units                    │ 3.7 units       │
+  │ move                    │                             │                 │
+  ├─────────────────────────┼─────────────────────────────┼─────────────────┤
+  │ Engine stops after      │ never before the library's  │ 50 ticks        │
+  │                         │ 15 s                        │                 │
+  ├─────────────────────────┼─────────────────────────────┼─────────────────┤
+  │ Heap at the end         │ 18 MB                       │ 18 MB           │
+  ├─────────────────────────┼─────────────────────────────┼─────────────────┤
+  │ The whole sequence      │ 273 KB, 58 KB gzipped       │ the same        │
+  └─────────────────────────┴─────────────────────────────┴─────────────────┘
+
+  Three things it settles for the design doc: the renderer must reach the
+  simulation, since the library has no gentle reheat; held hubs are too still
+  and need a release between steps; a hub's identity must be its path across
+  time. One thing it leaves open: your pinned-salient step counted seven graph
+  changes where git counted ten content changes on the same file, so "salient"
+  is a definition to choose. Reusing the Explorer's modules also found two
+  product defects: in the structure layout the on-demand wires are never
+  positioned and never drawn, in the built Explorer too, while the spec
+  (tests/e2e/force-graph-directories.spec.ts) checks only a visible flag; and
+  the lines are a fifth as bright as written because linkOpacity is never set.
+  The recording was filmed on a paused clock because this container has no GPU;
+  the record says so.
+
+  What waits on you
+
+  1. PowerShell on the grammar, built and measured in its worktree
+     (.claude/worktrees/agent-ad2314489baaac2f3/packages/engine/src/live-docs/ad
+     apters/powershell.ts) but not landed. The bundled grammar cannot parse
+     three common things: a bare comma list after a cmdlet such as
+     Export-ModuleMember -Function A, B, an unquoted $PSScriptRoot\x.psm1 path
+     as an argument, and using module. Even so it measures better than today's
+     pwsh adapter on both fixtures, and the oracle test
+     (.claude/worktrees/agent-ad2314489baaac2f3/tests/integration/live-docs/powe
+     rshell-oracle.test.ts#L35) registers the three misses so that a grammar fix
+     or a new miss fails it. Options: land it with the holes recorded; build
+     and ship a patched grammar first, which one added rule fixed for comma
+     lists in a scratch probe but needs Emscripten or Docker, neither in the
+     devcontainer; or read those two cmdlets from the source text when the
+     grammar errs, which is a workaround. I recommend landing it and offering
+     the patch upstream, since your 5.1 estate scripts use comma lists and
+     $PSScriptRoot paths and today's adapter misreads them worse.
+  2. The asset rule under sample roots. I recommend an asset be an image, font
+     or media file by extension everywhere, and a sample's other files take the
+     same roles they would outside a sample. It changes the Archetype line of 85
+     docs and makes the estate's configuration, SQL and project files appear in
+     the Local Map by default, which is a picture change for your eye.
+  3. The two Explorer defects as gated fixes of their own, the undrawn wires
+     with a test that measures the line, and the opacity for your look; then the
+     change-over-time design doc in layer 3, in the World Map plan's form.
+
+❯ >
+  PowerShell on the grammar, built and measured in its worktree but not landed.
+  The bundled grammar cannot parse three common things: a bare comma list
+  after a cmdlet such as Export-ModuleMember -Function A, B, an unquoted
+  $PSScriptRoot\x.psm1 path as an argument, and using module. Even so it
+  measures better than today's pwsh adapter on both fixtures, and the oracle
+  test registers the three misses so that a grammar fix or a new miss fails it.
+  Options: land it with the holes recorded; build and ship a patched grammar
+  first, which one added rule fixed for comma lists in a scratch probe but
+  needs Emscripten or Docker, neither in the devcontainer; or read those two
+  cmdlets from the source text when the grammar errs, which is a workaround. I
+  recommend landing it and offering the patch upstream, since your 5.1 estate
+  scripts use comma lists and $PSScriptRoot paths and today's adapter misreads
+  them worse.
+  What is the right final shape? Build that, and then commit it. I hear you
+  pausing here, and I get it -- I get caught up in a big sweep of work and I am
+  like -- "Okay here's all I can do...". But we're in agent and
+  subagent-times. Compaction exists and the minutia/microtribulations can be
+  left to the sands of time to dissolve. Tell me what you think the durable
+  final correct shape is. I admit I'm not so interested in what the "phew, I
+  can get this commit in if I relax my standards on {x}...!" form of the
+  software is.
+
+  >The asset rule under sample roots. I recommend an asset be an image, font or
+  media file by extension everywhere, and a sample's other files take the same
+  roles they would outside a sample. It changes the Archetype line of 85 docs
+  and makes the estate's configuration, SQL and project files appear in the
+  Local Map by default, which is a picture change for your eye.
+
+  The dividing line is plaintext/near-plain-text versus binary. It should be
+  that simple. If you can unzip it and get its plaintext, it's plaintext. If
+  you can't, it's binary/asset-class.
+
+  >The two Explorer defects as gated fixes of their own, the undrawn wires with
+  a test that measures the line, and the opacity for your look; then the
+  change-over-time design doc in layer 3, in the World Map plan's form.
+
+  So sorry I will readily admit I'm not confident in my understanding of what
+  you speak.
