@@ -67,7 +67,8 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
     const visible = (row: RowCapture): boolean => all || !options.collapseOnPin || connected.has(key(card.id, row.symbol));
     const shown = rows.filter(visible);
     const collapsed = rows.filter(row => !visible(row));
-    const hidden = collapsed.length;
+    // The page's reveal counts the public symbols it folded, never the Internals row (2026-10-16).
+    const hidden = collapsed.filter(row => row.symbol !== "__internals__").length;
     const noteFont = card.notes[0]?.font ?? card.directory.font;
     const notes: Array<(width: number) => number> = [];
     if (hidden) notes.push(synthesizedHeight(capture, noteFont, `+${hidden} symbols`));

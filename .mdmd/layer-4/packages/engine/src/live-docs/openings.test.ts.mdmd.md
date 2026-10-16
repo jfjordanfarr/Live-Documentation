@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/openings.test.ts
-- Generated At: 2026-09-28T16:48:39.118Z
+- Generated At: 2026-10-16T01:11:32.664Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ _No public symbols detected_
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`openings.chooseServers`](./openings.ts.mdmd.md#symbol-chooseservers)
 - [`openings.homeOf`](./openings.ts.mdmd.md#symbol-homeof)
+- [`openings.isToolingFile`](./openings.ts.mdmd.md#symbol-istoolingfile)
 - [`openings.matchRoute`](./openings.ts.mdmd.md#symbol-matchroute)
 - [`openings.matchSqlObject`](./openings.ts.mdmd.md#symbol-matchsqlobject)
 - [`openings.parseRouteSymbol`](./openings.ts.mdmd.md#symbol-parseroutesymbol)

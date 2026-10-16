@@ -1,0 +1,52 @@
+{
+  "tool": "scip-clang 0.4.0",
+  "projectFile": "../compile_commands.json",
+  "projects": [
+    {
+      "name": "basics",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../src/main.c",
+    "../src/util.c",
+    "../src/util.h"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../src/main.c",
+      "to": "../src/util.c",
+      "symbols": [
+        "build_widget(a8c3fd61de763f05)."
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/util.h",
+      "symbols": [
+        "`<file>/src/util.h`/",
+        "widget#",
+        "widget#value."
+      ]
+    },
+    {
+      "from": "../src/util.c",
+      "to": "../src/util.h",
+      "symbols": [
+        "`<file>/src/util.h`/",
+        "widget#",
+        "widget#value."
+      ]
+    },
+    {
+      "from": "../src/util.h",
+      "to": "../src/util.c",
+      "symbols": [
+        "build_widget(a8c3fd61de763f05)."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

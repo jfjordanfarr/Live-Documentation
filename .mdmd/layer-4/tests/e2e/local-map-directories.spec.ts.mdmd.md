@@ -12,6 +12,7 @@ Playwright over the Local Map's directories opening and closing: entry by direct
 
 ### Notes
 Four tests on this repository's bundle ([the decisions log](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): a directory entered with nothing pinned is a grid of compact cards and closed boxes with no wire, kept whole in the frame, whose address round-trips through the share link; a box opens in place with the membrane growing from the box early in the move and its label held where the box was, and its X closes it back to a box; an encasing membrane counts what it hides, its name opens it around the pinned files with the wires unchanged, no wire's end lies inside a closed box, a compact member retains on a click and the X steps the directory down to encasing, keeping the member; and opening and closing work by keyboard with reduced motion, a directory with a party file never closing below encasing. The text audit of `design-audit.ts` runs over the opened pictures. Two clicks in the wide opened picture are dispatched to their elements rather than aimed at the frame, since the map does not scroll and a click lands only on what is shown.
+- The box-opening test also asserts the reveal's count (2026-10-16): `graph.ts` reads "+N symbols" with N its public rows only, and `graph.test.ts`, which has no public symbol, shows no reveal.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

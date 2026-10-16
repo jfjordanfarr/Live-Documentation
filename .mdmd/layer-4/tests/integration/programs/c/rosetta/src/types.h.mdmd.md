@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/c/rosetta/src/types.h
-- Generated At: 2026-10-02T20:20:04.548Z
+- Generated At: 2026-10-16T00:58:49.233Z
 
 ## Authored
 ### Purpose
@@ -22,21 +22,21 @@ See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/202
 
 #### `Status` {#symbol-status}
 - Type: enum
-- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/types.h#L18)
+- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/types.h#L22)
 
 ##### `Status` — Summary
 Status enumeration for records.
 
 #### `Entry` {#symbol-entry}
 - Type: struct
-- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/types.h#L27)
+- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/types.h#L31)
 
 ##### `Entry` — Summary
 A timestamped entry in the data pipeline.
 
 #### `ProcessorConfig` {#symbol-processorconfig}
 - Type: struct
-- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/types.h#L36)
+- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/types.h#L40)
 
 ##### `ProcessorConfig` — Summary
 Configuration for processing operations.

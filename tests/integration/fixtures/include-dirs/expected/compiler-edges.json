@@ -1,0 +1,137 @@
+{
+  "tool": "scip-clang 0.4.0",
+  "projectFile": "../compile_commands.json",
+  "projects": [
+    {
+      "name": "include-dirs",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../include/core/engine.hpp",
+    "../include/core/engine_detail.hpp",
+    "../src/app/main.cpp",
+    "../src/app/util.cpp",
+    "../src/app/util.hpp",
+    "../src/core/engine.cpp",
+    "../src/shared/log.cpp",
+    "../src/shared/log.hpp"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../include/core/engine.hpp",
+      "to": "../include/core/engine_detail.hpp",
+      "symbols": [
+        "`<file>/include/core/engine_detail.hpp`/"
+      ]
+    },
+    {
+      "from": "../include/core/engine.hpp",
+      "to": "../src/core/engine.cpp",
+      "symbols": [
+        "engine_run(b126dc7c1de90089)."
+      ]
+    },
+    {
+      "from": "../include/core/engine.hpp",
+      "to": "../src/shared/log.hpp",
+      "symbols": [
+        "`<file>/src/shared/log.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/app/main.cpp",
+      "to": "../include/core/engine.hpp",
+      "symbols": [
+        "`<file>/include/core/engine.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/app/main.cpp",
+      "to": "../src/app/util.cpp",
+      "symbols": [
+        "app_util(b126dc7c1de90089)."
+      ]
+    },
+    {
+      "from": "../src/app/main.cpp",
+      "to": "../src/app/util.hpp",
+      "symbols": [
+        "`<file>/src/app/util.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/app/main.cpp",
+      "to": "../src/core/engine.cpp",
+      "symbols": [
+        "engine_run(b126dc7c1de90089)."
+      ]
+    },
+    {
+      "from": "../src/app/main.cpp",
+      "to": "../src/shared/log.cpp",
+      "symbols": [
+        "log_line(85c52e162fed56f9)."
+      ]
+    },
+    {
+      "from": "../src/app/main.cpp",
+      "to": "../src/shared/log.hpp",
+      "symbols": [
+        "`<file>/src/shared/log.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/app/util.cpp",
+      "to": "../src/app/util.hpp",
+      "symbols": [
+        "`<file>/src/app/util.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/app/util.hpp",
+      "to": "../src/app/util.cpp",
+      "symbols": [
+        "app_util(b126dc7c1de90089)."
+      ]
+    },
+    {
+      "from": "../src/core/engine.cpp",
+      "to": "../include/core/engine_detail.hpp",
+      "symbols": [
+        "engine_detail_step(7864480464b09eea)."
+      ]
+    },
+    {
+      "from": "../src/core/engine.cpp",
+      "to": "../include/core/engine.hpp",
+      "symbols": [
+        "`<file>/include/core/engine.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/core/engine.cpp",
+      "to": "../src/shared/log.cpp",
+      "symbols": [
+        "log_line(85c52e162fed56f9)."
+      ]
+    },
+    {
+      "from": "../src/shared/log.cpp",
+      "to": "../src/shared/log.hpp",
+      "symbols": [
+        "`<file>/src/shared/log.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/shared/log.hpp",
+      "to": "../src/shared/log.cpp",
+      "symbols": [
+        "log_line(85c52e162fed56f9)."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

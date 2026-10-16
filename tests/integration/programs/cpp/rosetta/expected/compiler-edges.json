@@ -1,0 +1,292 @@
+{
+  "tool": "scip-clang 0.4.0",
+  "projectFile": "../compile_commands.json",
+  "projects": [
+    {
+      "name": "rosetta",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../src/helpers.cpp",
+    "../src/helpers.hpp",
+    "../src/main.cpp",
+    "../src/models.cpp",
+    "../src/models.hpp",
+    "../src/processor.cpp",
+    "../src/processor.hpp",
+    "../src/test_helpers.cpp",
+    "../src/test_pipeline.cpp",
+    "../src/test_processor.cpp",
+    "../src/types.hpp"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../src/helpers.cpp",
+      "to": "../src/helpers.hpp",
+      "symbols": [
+        "`<file>/src/helpers.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/helpers.hpp",
+      "to": "../src/helpers.cpp",
+      "symbols": [
+        "rosetta/average_values(9ca345681dcf9dce).",
+        "rosetta/format_value(ecc478f4b56c5f74).",
+        "rosetta/sum_values(9ca345681dcf9dce).",
+        "rosetta/validate_id(7c222eea44a24d43)."
+      ]
+    },
+    {
+      "from": "../src/main.cpp",
+      "to": "../src/models.cpp",
+      "symbols": [
+        "rosetta/create_record(bdb5409566acaf2)."
+      ]
+    },
+    {
+      "from": "../src/main.cpp",
+      "to": "../src/models.hpp",
+      "symbols": [
+        "`<file>/src/models.hpp`/",
+        "rosetta/Record#",
+        "rosetta/Report#"
+      ]
+    },
+    {
+      "from": "../src/main.cpp",
+      "to": "../src/processor.cpp",
+      "symbols": [
+        "rosetta/free_report(bbe290be699d3c98).",
+        "rosetta/run_processor(8d987f783de4b6a1).",
+        "rosetta/summarize_report(37e53b8037ab3001)."
+      ]
+    },
+    {
+      "from": "../src/main.cpp",
+      "to": "../src/processor.hpp",
+      "symbols": [
+        "`<file>/src/processor.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/models.cpp",
+      "to": "../src/models.hpp",
+      "symbols": [
+        "`<file>/src/models.hpp`/",
+        "rosetta/Record#",
+        "rosetta/Record#entry.",
+        "rosetta/Record#value."
+      ]
+    },
+    {
+      "from": "../src/models.cpp",
+      "to": "../src/types.hpp",
+      "symbols": [
+        "rosetta/Entry#id.",
+        "rosetta/Entry#status.",
+        "rosetta/Entry#timestamp.",
+        "rosetta/ProcessorConfig#",
+        "rosetta/ProcessorConfig#batch_size.",
+        "rosetta/ProcessorConfig#timeout.",
+        "rosetta/Status#",
+        "rosetta/Status#Pending."
+      ]
+    },
+    {
+      "from": "../src/models.hpp",
+      "to": "../src/models.cpp",
+      "symbols": [
+        "rosetta/create_record(bdb5409566acaf2).",
+        "rosetta/validate_config(5d2db9c01d6ed268)."
+      ]
+    },
+    {
+      "from": "../src/models.hpp",
+      "to": "../src/types.hpp",
+      "symbols": [
+        "`<file>/src/types.hpp`/",
+        "rosetta/Entry#",
+        "rosetta/ProcessorConfig#"
+      ]
+    },
+    {
+      "from": "../src/processor.cpp",
+      "to": "../src/helpers.cpp",
+      "symbols": [
+        "rosetta/average_values(9ca345681dcf9dce).",
+        "rosetta/format_value(ecc478f4b56c5f74).",
+        "rosetta/sum_values(9ca345681dcf9dce)."
+      ]
+    },
+    {
+      "from": "../src/processor.cpp",
+      "to": "../src/helpers.hpp",
+      "symbols": [
+        "`<file>/src/helpers.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/processor.cpp",
+      "to": "../src/models.cpp",
+      "symbols": [
+        "rosetta/validate_config(5d2db9c01d6ed268)."
+      ]
+    },
+    {
+      "from": "../src/processor.cpp",
+      "to": "../src/models.hpp",
+      "symbols": [
+        "rosetta/Record#",
+        "rosetta/Record#value.",
+        "rosetta/Report#",
+        "rosetta/Report#average.",
+        "rosetta/Report#generated_at.",
+        "rosetta/Report#records.",
+        "rosetta/Report#total."
+      ]
+    },
+    {
+      "from": "../src/processor.cpp",
+      "to": "../src/processor.hpp",
+      "symbols": [
+        "`<file>/src/processor.hpp`/",
+        "rosetta/Processor#",
+        "rosetta/Processor#config_."
+      ]
+    },
+    {
+      "from": "../src/processor.cpp",
+      "to": "../src/types.hpp",
+      "symbols": [
+        "rosetta/ProcessorConfig#"
+      ]
+    },
+    {
+      "from": "../src/processor.hpp",
+      "to": "../src/models.hpp",
+      "symbols": [
+        "`<file>/src/models.hpp`/",
+        "rosetta/Record#",
+        "rosetta/Report#"
+      ]
+    },
+    {
+      "from": "../src/processor.hpp",
+      "to": "../src/processor.cpp",
+      "symbols": [
+        "rosetta/Processor#Processor(ce93879c17f2b1d6).",
+        "rosetta/Processor#run(d7753e6719841d3c).",
+        "rosetta/free_report(bbe290be699d3c98).",
+        "rosetta/run_processor(8d987f783de4b6a1).",
+        "rosetta/summarize_report(37e53b8037ab3001)."
+      ]
+    },
+    {
+      "from": "../src/processor.hpp",
+      "to": "../src/types.hpp",
+      "symbols": [
+        "`<file>/src/types.hpp`/",
+        "rosetta/ProcessorConfig#"
+      ]
+    },
+    {
+      "from": "../src/test_helpers.cpp",
+      "to": "../src/helpers.cpp",
+      "symbols": [
+        "rosetta/average_values(9ca345681dcf9dce).",
+        "rosetta/format_value(ecc478f4b56c5f74).",
+        "rosetta/sum_values(9ca345681dcf9dce)."
+      ]
+    },
+    {
+      "from": "../src/test_helpers.cpp",
+      "to": "../src/helpers.hpp",
+      "symbols": [
+        "`<file>/src/helpers.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.cpp",
+      "to": "../src/models.cpp",
+      "symbols": [
+        "rosetta/create_record(bdb5409566acaf2).",
+        "rosetta/validate_config(5d2db9c01d6ed268)."
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.cpp",
+      "to": "../src/models.hpp",
+      "symbols": [
+        "`<file>/src/models.hpp`/",
+        "rosetta/Record#",
+        "rosetta/Report#",
+        "rosetta/Report#average.",
+        "rosetta/Report#records.",
+        "rosetta/Report#total."
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.cpp",
+      "to": "../src/processor.cpp",
+      "symbols": [
+        "rosetta/run_processor(8d987f783de4b6a1).",
+        "rosetta/summarize_report(37e53b8037ab3001)."
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.cpp",
+      "to": "../src/processor.hpp",
+      "symbols": [
+        "`<file>/src/processor.hpp`/"
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.cpp",
+      "to": "../src/types.hpp",
+      "symbols": [
+        "`<file>/src/types.hpp`/",
+        "rosetta/ProcessorConfig#"
+      ]
+    },
+    {
+      "from": "../src/test_processor.cpp",
+      "to": "../src/models.cpp",
+      "symbols": [
+        "rosetta/create_record(bdb5409566acaf2)."
+      ]
+    },
+    {
+      "from": "../src/test_processor.cpp",
+      "to": "../src/models.hpp",
+      "symbols": [
+        "`<file>/src/models.hpp`/",
+        "rosetta/Record#",
+        "rosetta/Report#",
+        "rosetta/Report#average.",
+        "rosetta/Report#records.",
+        "rosetta/Report#total."
+      ]
+    },
+    {
+      "from": "../src/test_processor.cpp",
+      "to": "../src/processor.cpp",
+      "symbols": [
+        "rosetta/free_report(bbe290be699d3c98).",
+        "rosetta/run_processor(8d987f783de4b6a1).",
+        "rosetta/summarize_report(37e53b8037ab3001)."
+      ]
+    },
+    {
+      "from": "../src/test_processor.cpp",
+      "to": "../src/processor.hpp",
+      "symbols": [
+        "`<file>/src/processor.hpp`/"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

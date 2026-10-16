@@ -1,6 +1,6 @@
 # Integration Testing
 
-_Current as of 2026-10-15._
+_Current as of 2026-10-16._
 
 Integration suites run the real generator and the real CLI over fixture workspaces. They live under `tests/integration/live-docs/` and run as the `integration` Vitest project (`npm run test:integration`). Nothing in them touches the VS Code API; the Electron harness that once hosted them was retired on 2026-09-27.
 
@@ -16,15 +16,16 @@ Integration suites run the real generator and the real CLI over fixture workspac
 | `entries.test.ts`           | Over the entry-points fixture: the `Entry` lines a manifest's scripts, binary and main module, a tsconfig, a declared stylesheet and a test produce, the dynamic import recorded as an edge, and the walk from the entries                            |
 | `repository-entries.test.ts` | This repository as the oracle's subject: its own entry points read by hand into `expected/repository-entries.json` against the committed docs, every implementation file of its own code reached from them, the dynamic imports among the edges        |
 | `estate.test.ts`            | The estate scanned as seven things draws the one-scan build's wires; and its files that serve an opening, read from the sources, carry `opening` entries, its manifests and configurations `tooling`                                                   |
-| `rosettaParity.test.ts`     | The same program in eight languages yields the same topology; a canonical edge must be found in at least 6 of 8 languages; the main file carries the `program` entry in the six languages whose main is one, and the two library-shaped variants carry none |
+| `rosettaParity.test.ts`     | The same program in nine languages yields the same topology; a canonical edge must be found in at least 6 of 9 languages; the main file carries the `program` entry in the seven languages whose main is one, and the two library-shaped variants carry none |
 | `oracle.test.ts`            | `oracle:compare` runs over every sample program that carries expectations and accounts for every expected edge as found or missing                                                  |
+| `include-dirs.test.ts`      | The C and C++ adapter's include rule against the compiler: over the include-directories fixture, every quoted include the docs resolve is the file scip-clang resolved under `-I include -I src -I .`, and no other       |
 
 Rosetta parity is a smoke alarm for a regression in one adapter. It is not a measure of correctness; that is the job of the compiler-backed oracle described in [Architectural Decisions](architectural-decisions.mdmd.md) under "Accuracy Measurement".
 
 ## Fixtures
 
-- `tests/integration/fixtures/`: hand-authored scenario workspaces (WebForms and Razor configuration chains, a queue worker, reflection, PowerShell, the C# XML-doc stress workspace, the entry-points workspace, and the SlopCop dogfood workspaces).
-- `tests/integration/programs/`: per-language sample programs, including the eight Rosetta implementations. Seventeen of the twenty-one carry an `expected/` directory written by the oracle; see [Sample Programs](sample-programs.mdmd.md).
+- `tests/integration/fixtures/`: hand-authored scenario workspaces (WebForms and Razor configuration chains, a queue worker, reflection, PowerShell, the C# XML-doc stress workspace, the entry-points workspace, the include-directories workspace with its compiler expectations, and the SlopCop dogfood workspaces).
+- `tests/integration/programs/`: per-language sample programs, including the nine Rosetta implementations. Twenty-one of the twenty-five carry an `expected/` directory written by the oracle, the C and C++ ones by scip-clang from a hand-written compilation database since 2026-10-16; see [Sample Programs](sample-programs.mdmd.md).
 
 Each suite copies its fixture into a temporary directory before generating, so fixtures are never written to.
 

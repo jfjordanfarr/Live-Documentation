@@ -91,6 +91,15 @@ const DEFINITION_ROLE = 1;
 /** rust-analyzer's symbol for a crate root; the same in every crate of a package. */
 const CRATE_ROOT = "crate/";
 
+/** A file's own symbol, as scip-clang writes one for every `#include` it resolves; it names the file, so it is never a namespace. */
+const FILE_SYMBOL = /^`<file>\//u;
+
+/** A namespace or package symbol: its last descriptor ends with a slash. */
+function isNamespace(symbol: string): boolean {
+  const shown = displaySymbol(symbol);
+  return shown.endsWith("/") && !FILE_SYMBOL.test(shown);
+}
+
 /** A symbol is `<scheme> <manager> <package-name> <version> <descriptors>`, with a space inside the first four fields doubled. Only the descriptors are shown. */
 const PACKAGE_FIELDS = /^(?:(?:[^ ]| {2})+ ){4}/;
 
@@ -225,6 +234,10 @@ export function edgesFromIndex(index: ScipIndex, context: IndexContext): OracleE
       if ((occurrence.symbol_roles & DEFINITION_ROLE) !== 0 || symbol.startsWith("local ")) continue;
       const holders = definitions.get(symbol);
       if (!holders || holders.has(from)) continue;
+      // A namespace is declared again in every file that reopens it (C++'s `namespace rosetta` in each
+      // translation unit), so a reference to it points at no one file: it makes no edge and no ambiguity.
+      // A crate root is the exception, narrowed below to the referencing file's own crate.
+      if (holders.size > 1 && isNamespace(symbol) && displaySymbol(symbol) !== CRATE_ROOT) continue;
 
       const own        = projectOf(projects, from)?.name ?? "";
       const candidates = Array.from(holders)

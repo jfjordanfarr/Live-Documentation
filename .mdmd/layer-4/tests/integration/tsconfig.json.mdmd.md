@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/integration/tsconfig.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:47.837Z
+- Generated At: 2026-10-16T00:58:52.519Z
 
 ## Authored
 ### Purpose
@@ -52,5 +52,5 @@ A `noEmit` TypeScript project that type-checks the integration suites under `tes
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`tsconfig.base`](../../tsconfig.base.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

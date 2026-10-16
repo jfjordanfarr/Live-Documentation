@@ -1,0 +1,22 @@
+[
+  {
+    "directory": ".",
+    "file": "src/app/main.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "include", "-I", "src", "-I", ".", "-c", "src/app/main.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/app/util.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "include", "-I", "src", "-I", ".", "-c", "src/app/util.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/core/engine.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "include", "-I", "src", "-I", ".", "-c", "src/core/engine.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/shared/log.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "include", "-I", "src", "-I", ".", "-c", "src/shared/log.cpp"]
+  }
+]

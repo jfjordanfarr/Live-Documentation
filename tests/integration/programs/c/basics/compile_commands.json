@@ -1,0 +1,26 @@
+[
+  {
+    "directory": ".",
+    "file": "src/main.c",
+    "arguments": [
+      "gcc",
+      "-std=c11",
+      "-I",
+      "src",
+      "-c",
+      "src/main.c"
+    ]
+  },
+  {
+    "directory": ".",
+    "file": "src/util.c",
+    "arguments": [
+      "gcc",
+      "-std=c11",
+      "-I",
+      "src",
+      "-c",
+      "src/util.c"
+    ]
+  }
+]

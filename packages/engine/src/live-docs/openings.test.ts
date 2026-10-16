@@ -4,12 +4,13 @@ import type { WorkspaceSymbolIndex } from "./coreTypes";
 import {
   chooseServers,
   homeOf,
+  isToolingFile,
   matchRoute,
   matchSqlObject,
   parseRouteSymbol,
   routeSegments,
-  routeSymbolName,
   routesMatch,
+  routeSymbolName,
   sqlDeclarations,
   sqlObjectName,
   sqlReferences,
@@ -123,5 +124,22 @@ describe("database objects", () => {
     expect(matchSqlObject(sqlObjectName("ORACLE_CENTRAL..CENTRAL.ACCOUNT"), index).map((object) => object.name)).toEqual(["CENTRAL.ACCOUNT"]);
     expect(matchSqlObject(sqlObjectName("Payment"), index).map((object) => object.name)).toEqual(["dbo.Payment"]);
     expect(matchSqlObject(sqlObjectName("other.Payment"), index)).toEqual([]);
+  });
+});
+
+describe("isToolingFile", () => {
+  it("knows a compiler's, a runner's and a .NET configuration by its name, anywhere", () => {
+    for (const file of ["tsconfig.json", "packages/app/tsconfig.base.json", "vitest.config.ts", "tests/e2e/playwright.config.ts", "eslint.config.js", "src/Web.config", "packages.config", ".live-docs.config.json"]) {
+      expect(isToolingFile(file), file).toBe(true);
+    }
+  });
+
+  it("knows an editor's and a development container's configuration by its place", () => {
+    for (const file of [".vscode/settings.json", ".vscode/tasks.json", "tools/.vscode/launch.json", ".devcontainer/devcontainer.json", ".devcontainer.json"]) {
+      expect(isToolingFile(file), file).toBe(true);
+    }
+    for (const file of ["settings.json", "devcontainer.json", "src/vscode/settings.json", ".vscode/README.md", "config.json"]) {
+      expect(isToolingFile(file), file).toBe(false);
+    }
   });
 });

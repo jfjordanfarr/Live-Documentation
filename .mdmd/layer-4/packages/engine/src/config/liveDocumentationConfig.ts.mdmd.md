@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/config/liveDocumentationConfig.ts
-- Generated At: 2026-10-15T15:49:38.369Z
+- Generated At: 2026-10-16T00:58:41.777Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,8 @@ Centralizes Live Documentation defaults—root, base layer, slug dialect—so th
 Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
 
 - `entryPoints` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)): workspace-relative paths or globs of files declared as entry points, for what no rule infers, such as a bundler's entry named by a path string in code or a stylesheet a template links; each matching file's doc carries `- Entry: declared`. This repository declares the Explorer client's `index.ts` and `styles.css`.
+- The shipped default globs are every file an adapter or the TypeScript parser can read, and every static asset, anywhere in the workspace (`**/*<ext>` from `LIVE_DOCUMENTATION_SOURCE_EXTENSIONS` and `LIVE_DOCUMENTATION_ASSET_EXTENSIONS`, since 2026-10-16, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#c-and-c-read-by-the-grammar-the-include-rule-chosen-by-measurement-and-discovery-that-reads-every-suffix-anywhere-recorded-2026-10-16)). The eighty path-shaped patterns they replaced were this repository's own layout, which is why a cold run over another shape matched 49 of 1,842 files; `adapters/index.test.ts` holds every adapter's extensions to the list, so a new adapter without a default glob fails a test. Assets are a project's content, documented wherever they are found (the owner, 2026-10-15).
+- `exclude` (2026-10-16): workspace-relative paths or globs discovery skips, a folder that documents itself or a vendored tree the `.gitignore` does not cover, normalized as `entryPoints` is; this repository excludes `AI-Agent-Workspace/**`, its development record.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -58,7 +60,7 @@ dialect to use.
 
 #### `LiveDocumentationConfigInput` {#symbol-livedocumentationconfiginput}
 - Type: type
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L82)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L90)
 
 ##### `LiveDocumentationConfigInput` — Summary
 Partial input shape accepted by {@link normalizeLiveDocumentationConfig}.
@@ -69,40 +71,60 @@ want to override; everything else falls back to
 
 #### `LIVE_DOCUMENTATION_DEFAULT_ROOT` {#symbol-live_documentation_default_root}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L89)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L97)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_ROOT` — Summary
 Default root directory for the Live Docs mirror (`".live-documentation"`).
 
 #### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` {#symbol-live_documentation_default_base_layer}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L91)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L99)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER` — Summary
 Default base-layer subdirectory within the root (`"source"`).
 
 #### `LIVE_DOCUMENTATION_FILE_EXTENSION` {#symbol-live_documentation_file_extension}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L93)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L101)
 
 ##### `LIVE_DOCUMENTATION_FILE_EXTENSION` — Summary
 Default file extension for generated Live Doc files (`".md"`).
 
+#### `LIVE_DOCUMENTATION_SOURCE_EXTENSIONS` {#symbol-live_documentation_source_extensions}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L108)
+
+##### `LIVE_DOCUMENTATION_SOURCE_EXTENSIONS` — Summary
+The extensions of every file the generator can read: the scripts the
+built-in TypeScript parser reads, then each language adapter's files. Every
+adapter's extensions are here, a test holds the registry to it, and each has
+a default glob.
+
+#### `LIVE_DOCUMENTATION_ASSET_EXTENSIONS` {#symbol-live_documentation_asset_extensions}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L130)
+
+##### `LIVE_DOCUMENTATION_ASSET_EXTENSIONS` — Summary
+The extensions of the static assets, images, fonts and media, that receive stub Live Docs so that the graph reaches them.
+
 #### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` {#symbol-live_documentation_default_globs}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L102)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L147)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` — Summary
-Default glob patterns selecting workspace artifacts that receive Live Docs.
-
-Covers TypeScript, JavaScript, PowerShell, C#/.NET view files, Python, Java,
-Ruby, Rust, C/C++, Go, HTML/CSS, JSON, SQL scripts, .NET project files, npm
-package manifests, and static assets (images, fonts, media). Static assets
-receive stub-only Live Docs for graph connectivity.
+Default glob patterns selecting the workspace files that receive Live Docs:
+every file an adapter or the TypeScript parser can read, and every static
+asset, anywhere in the workspace, so that a cold run over any repository is
+honest about what it holds. Assets are a project's content and are
+documented wherever they are found (the owner's decision, 2026-10-15).
+Discovery removes what no project wants documented, `.git`, `node_modules`,
+the docs root, lock files and what `.gitignore` ignores, and what the
+configuration's `exclude` names. A repository that wants a narrower set
+names its own globs.
 
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L192)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L160)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 
 ##### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` — Summary
@@ -115,7 +137,7 @@ config file.
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L217)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L186)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 - Parameters: `input`: [`LiveDocumentationConfigInput`](#symbol-livedocumentationconfiginput)
 

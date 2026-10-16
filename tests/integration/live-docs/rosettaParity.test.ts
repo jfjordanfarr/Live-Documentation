@@ -2,14 +2,14 @@
  * Rosetta Parity Test
  *
  * Runs the full Live Documentation pipeline over the same small program written
- * in eight languages (the Rosetta fixtures) and compares the generated markdown
+ * in nine languages (the Rosetta fixtures) and compares the generated markdown
  * across languages, asserting:
  *
  * 1. All source files receive a Live Doc (file coverage)
  * 2. Public Symbols sections contain the canonical symbol names
  * 3. Dependencies sections resolve the canonical topology
  * 4. Leaf/foundation node invariants hold (helpers has no deps, types has no deps)
- * 5. Cross-language consensus: if 6+ of 8 languages agree, outliers are flagged
+ * 5. Cross-language consensus: if 6+ of 9 languages agree, outliers are flagged
  *
  * Parity is a smoke alarm for a regression in any one adapter, not a proof that
  * the edges are right; that is the job of the compiler-backed oracle.
@@ -93,6 +93,12 @@ const ROSETTA_FIXTURES: RosettaFixtureConfig[] = [
     glob: ["src/**/*.c", "src/**/*.h"]
   },
   {
+    language: "cpp",
+    fixturePath: "cpp/rosetta",
+    sourceDir: "src",
+    glob: ["src/**/*.cpp", "src/**/*.hpp"]
+  },
+  {
     language: "ruby",
     fixturePath: "ruby/rosetta",
     sourceDir: "lib",
@@ -104,7 +110,7 @@ const ROSETTA_FIXTURES: RosettaFixtureConfig[] = [
 // Canonical program topology (from rosetta-manifest.json)
 // ---------------------------------------------------------------------------
 
-/** Canonical node identifiers shared across all 8 Rosetta implementations. */
+/** Canonical node identifiers shared across all 9 Rosetta implementations. */
 type CanonicalNodeId =
   | "main"
   | "processor"
@@ -220,6 +226,7 @@ function isTestFile(filePath: string): boolean {
  * - Go: `src/processor/processor.go`
  * - Python: `test_helpers.py`, `core_types.py`
  * - C: `processor.c`, `processor.h`, `test_pipeline.c`
+ * - C++: `processor.cpp`, `processor.hpp`, `test_pipeline.cpp`
  * - Ruby: `lib/processor.rb`, `spec/helpers_spec.rb`
  * - Rust: `processor.rs`, `helpers_test.rs`
  */
@@ -322,7 +329,7 @@ function extractSection(content: string, sectionName: string): string {
  *
  * Handles two rendering forms:
  *
- * 1. **Resolved links** (TypeScript, Java, Go, Python, Rust, Ruby, C):
+ * 1. **Resolved links** (TypeScript, Java, Go, Python, Rust, Ruby, C, C++):
  *    `- [\`models.Record\`](../models.ts.md#symbol-record)`
  *    → extract relative path, classify to canonical node.
  *
@@ -530,11 +537,11 @@ function formatComparisonMatrix(results: FixtureResult[]): string {
 // ---------------------------------------------------------------------------
 
 describe("Rosetta Parity: cross-language Live Documentation generation", () => {
-  const GENERATION_TIMEOUT = 120_000; // 2 minutes for all 8 fixtures
+  const GENERATION_TIMEOUT = 120_000; // 2 minutes for all 9 fixtures
   const allResults: FixtureResult[] = [];
 
   beforeAll(async () => {
-    // Generate Live Docs for all 8 fixtures sequentially
+    // Generate Live Docs for all 9 fixtures sequentially
     // (sequential to avoid file system contention and to isolate failures)
     for (const fixtureConfig of ROSETTA_FIXTURES) {
       const result = await generateAndExtract(fixtureConfig);
@@ -551,7 +558,7 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
     await fs.writeFile(tmpOutput, matrix, "utf8");
   }, GENERATION_TIMEOUT);
 
-  it("all 8 fixtures generate without errors", () => {
+  it("all 9 fixtures generate without errors", () => {
     const failures = allResults.filter(r => r.error);
     if (failures.length > 0) {
       const details = failures.map(r => `${r.language}: ${r.error}`).join("\n");
@@ -559,7 +566,7 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  it("all 8 fixtures process at least one source file", () => {
+  it("all 9 fixtures process at least one source file", () => {
     for (const result of allResults) {
       assert.ok(
         result.processed > 0,
@@ -642,7 +649,7 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
     }
   });
 
-  it("canonical edges are detected with cross-language consensus (≥6/8)", () => {
+  it("canonical edges are detected with cross-language consensus (≥6/9)", () => {
     const CONSENSUS_THRESHOLD = 6;
     const canonicalEdgeKeys = CANONICAL_EDGES.map(e => `${e.from}→${e.to}`);
     const failures: string[] = [];
@@ -664,7 +671,7 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
 
     if (failures.length > 0) {
       assert.fail(
-        `Canonical edges below consensus threshold (${CONSENSUS_THRESHOLD}/8):\n${failures.join("\n")}`
+        `Canonical edges below consensus threshold (${CONSENSUS_THRESHOLD}/${allResults.length}):\n${failures.join("\n")}`
       );
     }
   });
@@ -705,17 +712,19 @@ describe("Rosetta Parity: cross-language Live Documentation generation", () => {
 
     if (failures.length > 0) {
       assert.fail(
-        `Symbol presence below consensus threshold (${CONSENSUS_THRESHOLD}/8):\n${failures.join("\n")}`
+        `Symbol presence below consensus threshold (${CONSENSUS_THRESHOLD}/${allResults.length}):\n${failures.join("\n")}`
       );
     }
   });
 
-  it("marks the main file as the program's entry in the six languages whose main is one, and nothing else, with the two library-shaped variants carrying no entry", () => {
-    // Read from the sources: C's `int main(void)` (and each test program's), Go's `func main` in package main, Python's
-    // `__name__` guard, Ruby's `$PROGRAM_NAME` guard, Java's `public static void main`, Rust's `fn main` in src/main.rs.
-    // TypeScript's `export function main` and C#'s `static class Main { Run }` are library modules with no entry form.
+  it("marks the main file as the program's entry in the seven languages whose main is one, and nothing else, with the two library-shaped variants carrying no entry", () => {
+    // Read from the sources: C's `int main(void)` and C++'s `int main()` (and each test program's in both), Go's
+    // `func main` in package main, Python's `__name__` guard, Ruby's `$PROGRAM_NAME` guard, Java's `public static void
+    // main`, Rust's `fn main` in src/main.rs. TypeScript's `export function main` and C#'s `static class Main { Run }`
+    // are library modules with no entry form.
     const programs: Record<string, Record<string, string | undefined>> = {
       c: { "src/main.c": "main", "src/test_helpers.c": "main", "src/test_pipeline.c": "main", "src/test_processor.c": "main" },
+      cpp: { "src/main.cpp": "main", "src/test_helpers.cpp": "main", "src/test_pipeline.cpp": "main", "src/test_processor.cpp": "main" },
       go: { "src/main/main.go": "main" },
       python: { "src/main.py": undefined },
       ruby: { "lib/main.rb": undefined },

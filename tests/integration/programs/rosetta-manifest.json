@@ -5,7 +5,7 @@
   "tiers": {
     "type-safe": {
       "description": "Languages with symbol-to-symbol connectivity. Adapters should resolve individual imported symbols.",
-      "languages": ["typescript", "java", "csharp", "rust", "c", "go"]
+      "languages": ["typescript", "java", "csharp", "rust", "c", "cpp", "go"]
     },
     "dynamic": {
       "description": "Languages with file-to-file connectivity. Adapters resolve module imports without individual symbols.",
@@ -140,7 +140,17 @@
       "tier": "type-safe",
       "sourceDir": "c/rosetta/src",
       "entryPoint": "c/rosetta/src/main.c",
+      "compilerEdges": "c/rosetta/expected/compiler-edges.json",
       "notes": "Header file includes with implementation files."
+    },
+    {
+      "language": "cpp",
+      "path": "cpp/rosetta",
+      "tier": "type-safe",
+      "sourceDir": "cpp/rosetta/src",
+      "entryPoint": "cpp/rosetta/src/main.cpp",
+      "compilerEdges": "cpp/rosetta/expected/compiler-edges.json",
+      "notes": "Header includes within a namespace; a Processor class behind free functions that keep the C variant's names."
     },
     {
       "language": "go",

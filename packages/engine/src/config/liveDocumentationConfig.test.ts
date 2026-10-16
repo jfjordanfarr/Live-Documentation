@@ -2,8 +2,24 @@ import { describe, expect, it } from "vitest";
 
 import {
   DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+  LIVE_DOCUMENTATION_ASSET_EXTENSIONS,
+  LIVE_DOCUMENTATION_DEFAULT_GLOBS,
+  LIVE_DOCUMENTATION_SOURCE_EXTENSIONS,
   normalizeLiveDocumentationConfig
 } from "./liveDocumentationConfig";
+import { SUPPORTED_SCRIPT_EXTENSIONS } from "../live-docs/coreConstants";
+
+describe("the default globs", () => {
+  it("reach every file the TypeScript parser or an adapter can read, and every asset, anywhere in the workspace", () => {
+    const extensions = [...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS, ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS];
+    expect(LIVE_DOCUMENTATION_DEFAULT_GLOBS).toEqual(extensions.map((extension) => `**/*${extension}`));
+    expect(new Set(extensions).size).toBe(extensions.length);
+    expect(extensions.every((extension) => /^\.[a-z0-9]+$/u.test(extension))).toBe(true);
+    for (const extension of SUPPORTED_SCRIPT_EXTENSIONS) {
+      expect(LIVE_DOCUMENTATION_SOURCE_EXTENSIONS, `${extension} is read by the TypeScript parser`).toContain(extension);
+    }
+  });
+});
 
 describe("normalizeLiveDocumentationConfig", () => {
   it("returns defaults when no input is provided", () => {
@@ -15,6 +31,8 @@ describe("normalizeLiveDocumentationConfig", () => {
     expect(config.glob).toEqual(DEFAULT_LIVE_DOCUMENTATION_CONFIG.glob);
     expect(config.archetypeOverrides).toEqual({});
     expect(config.sampleRoots).toEqual([]);
+    expect(config.entryPoints).toEqual([]);
+    expect(config.exclude).toEqual([]);
     expect(config.requireRelativeLinks).toBe(true);
     expect(config.slugDialect).toBe("github");
     expect(config.bundleExclude).toEqual([]);
@@ -41,6 +59,14 @@ describe("normalizeLiveDocumentationConfig", () => {
     });
     expect(config.entryPoints).toEqual(["packages/explorer/src/client/index.ts", "packages/explorer/src/client/styles.css", "scripts/**/*.mjs"]);
     expect(normalizeLiveDocumentationConfig({}).entryPoints).toEqual([]);
+  });
+
+  it("keeps the excluded paths and globs workspace-relative, deduplicated", () => {
+    const config = normalizeLiveDocumentationConfig({
+      exclude: [" ./AI-Agent-Workspace/** ", "vendor\\third-party\\**", "", "AI-Agent-Workspace/**", "tools/self/x.ts"]
+    });
+    expect(config.exclude).toEqual(["AI-Agent-Workspace/**", "vendor/third-party/**", "tools/self/x.ts"]);
+    expect(normalizeLiveDocumentationConfig({}).exclude).toEqual([]);
   });
 
   it("merges overrides and de-duplicates glob patterns", () => {

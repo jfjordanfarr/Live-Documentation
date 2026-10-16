@@ -889,7 +889,8 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       const collapse = !all && (path || state.tuning.localMap.collapseOnPin) && !connected.has(key(id, row.dataset.symbol));
       row.classList.toggle("branch-symbol-hidden", collapse);
       row.classList.toggle("branch-symbol-muted", !controller.isPinned(id, "*") && !connected.has(key(id, row.dataset.symbol)));
-      if (collapse) hidden++;
+      // The Internals row stands for the file's private contents, not for a symbol: it is not counted on the reveal.
+      if (collapse && !row.classList.contains("internals-row")) hidden++;
     });
     if (hidden) {
       const reveal = document.createElement("button");

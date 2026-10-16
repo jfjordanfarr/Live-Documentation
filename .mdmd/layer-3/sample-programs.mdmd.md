@@ -1,6 +1,6 @@
 # Sample Programs
 
-_Current as of 2026-10-02._
+_Current as of 2026-10-16._
 
 ## Purpose
 
@@ -13,7 +13,8 @@ Every directory below holds committed source. The seven vendored fixtures that w
 | Language   | Fixtures                                      | Read by                                                                 |
 | ---------- | --------------------------------------------- | ----------------------------------------------------------------------- |
 | TypeScript | `basic`, `layered`, `rosetta`                 | all: the oracle; `rosetta`: Rosetta parity                              |
-| C          | `basics`, `modular`, `rosetta`                | `rosetta`: Rosetta parity. No indexer for C is installed                |
+| C          | `basics`, `modular`, `rosetta`                | all: the oracle (scip-clang, since 2026-10-16); `rosetta`: Rosetta parity |
+| C++        | `rosetta`                                     | all: the oracle; `rosetta`: Rosetta parity (the ninth language, 2026-10-16) |
 | C#         | `basic`, `webforms`, `estate`, `rosetta`      | all: the oracle; `rosetta`: Rosetta parity                              |
 | Go         | `rosetta`, `depot`                            | all: the oracle; `rosetta`: Rosetta parity                              |
 | Java       | `basic`, `service`, `rosetta`, `warehouse`    | all: the oracle; `basic`: polyglot fixtures; `rosetta`: Rosetta parity  |
@@ -21,7 +22,7 @@ Every directory below holds committed source. The seven vendored fixtures that w
 | Ruby       | `basic`, `cli`, `rosetta`                     | `rosetta`: Rosetta parity. No indexer for Ruby is installed             |
 | Rust       | `basics`, `analytics`, `rosetta`, `stockroom` | all: the oracle; `rosetta`: Rosetta parity                              |
 
-`rosetta-manifest.json` at the root describes the canonical program the eight Rosetta implementations share: the nodes, the ten edges, and the symbols each edge travels through. The parity suite's constants are drawn from it. Its concrete paths are relative to the manifest: each variant names its source directory, entry point and, where present, compiler expectations.
+`rosetta-manifest.json` at the root describes the canonical program the nine Rosetta implementations share: the nodes, the ten edges, and the symbols each edge travels through. The parity suite's constants are drawn from it. Its concrete paths are relative to the manifest: each variant names its source directory, entry point and, where present, compiler expectations.
 
 The paired "trivial, then incrementally less trivial" programs of the retired accuracy benchmark (`basic`, `layered`, `basics`, `modular`, `pipeline`, `service`, `cli`, `analytics`) found a reader again on 2026-09-27: every one whose language has an indexer carries oracle expectations. C's `basics` and `modular` and Ruby's `basic` and `cli` still have none; `scip-clang` needs a compilation database and `scip-ruby` a Sorbet project, and neither is installed.
 
@@ -31,7 +32,7 @@ The repository declares this collection in `sampleRoots` in `.live-docs.config.j
 
 A fixture that has been measured carries an `expected/` directory.
 
-- `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. The indexer is chosen by the program's project file: `scip-dotnet` for `.sln` or `.csproj`, `scip-go` for `go.mod`, `rust-analyzer` for `Cargo.toml`, `scip-java` for `pom.xml`, `scip-typescript` for `tsconfig.json`, and `scip-python` for a directory of `.py` files. Documents an indexer produces from outside the program (`scip-go` indexes the test binaries it generates in the build cache) are listed under `outside` and carry no edges, since no source exists for the generator to read. For a Cargo package the crates are read from the conventional layout, so a `crate::` reference resolves to the referencing file's own crate root instead of every root of the package.
+- `compiler-edges.json` is written by `npm run oracle:index -- <fixture>`: every file-to-file edge the language's compiler resolved, with the symbols that carry it, and every document the index contained. Nothing is trimmed. The indexer is chosen by the program's project file: `scip-dotnet` for `.sln` or `.csproj`, `scip-go` for `go.mod`, `rust-analyzer` for `Cargo.toml`, `scip-java` for `pom.xml`, `scip-typescript` for `tsconfig.json`, `scip-clang` for a `compile_commands.json` (a compilation database the C and C++ programs carry by hand, with `"directory": "."`, rewritten to the working copy before indexing), and `scip-python` for a directory of `.py` files. Documents an indexer produces from outside the program (`scip-go` indexes the test binaries it generates in the build cache) are listed under `outside` and carry no edges, since no source exists for the generator to read. For a Cargo package the crates are read from the conventional layout, so a `crate::` reference resolves to the referencing file's own crate root instead of every root of the package.
 - `hand-verified-edges.json` is authored: the hops no compiler can see, each with the evidence a reader can check, and `remote: true` where the hop crosses a deployment.
 
 Filesystem locations in both expectation files are relative to the JSON file containing them: for example, `../src/main.ts` refers to the program’s source from its `expected/` folder. The writer and reader translate these locations to and from the fixture-relative coordinates used by the compiler comparison. Opaque compiler symbol identifiers, project reference names, evidence and all observations are preserved.

@@ -37,16 +37,23 @@ export const OPENING_KINDS: ReadonlySet<string> = new Set([ROUTE_KIND, ADDRESS_K
 
 const TOOLING_FILE = /^(?:packages\.config|tsconfig(?:\.[^/]+)?\.json|web\.config|app\.config|[^/]+\.config\.(?:[cm]?[jt]s|json))$/iu;
 
+/** The files an editor or a development container reads, by the documented places they live: `.vscode/settings.json`, `.vscode/tasks.json`, `.devcontainer/devcontainer.json`, `.devcontainer.json`. */
+const TOOLING_PATH = /(?:^|\/)(?:\.vscode\/[^/]+\.json|\.devcontainer\/devcontainer\.json|\.devcontainer\.json)$/iu;
+
 /**
- * True when a file is one a tool reads and no file imports, by its name: a
+ * True when a file is one a tool reads and no file imports: by its name, a
  * compiler's or a runner's configuration (`tsconfig.json`, `tsconfig.base.json`,
  * `vitest.config.ts`, `playwright.config.ts`), a .NET configuration
- * (`Web.config`, `App.config`) or package list (`packages.config`). Such a file
- * is an entry by the `tooling` reason, and a command that names one names an
- * input, not the file it runs.
+ * (`Web.config`, `App.config`) or package list (`packages.config`); by its
+ * place, an editor's or a development container's configuration
+ * (`.vscode/*.json`, `.devcontainer/devcontainer.json`), which discovery reads
+ * since 2026-10-16 and nothing else names. Such a file is an entry by the
+ * `tooling` reason, and a command that names one names an input, not the file
+ * it runs.
  */
 export function isToolingFile(sourcePath: string): boolean {
-  return TOOLING_FILE.test(sourcePath.slice(sourcePath.lastIndexOf("/") + 1));
+  const normalized = sourcePath.replace(/\\/g, "/");
+  return TOOLING_FILE.test(normalized.slice(normalized.lastIndexOf("/") + 1)) || TOOLING_PATH.test(normalized);
 }
 
 const HTTP_METHODS: ReadonlySet<string> = new Set(["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]);

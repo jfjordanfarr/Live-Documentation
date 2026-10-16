@@ -8,8 +8,7 @@
 
 ## Authored
 ### Purpose
-
-Cross-language integration test that runs the full Live Documentation pipeline (`generateLiveDocs`) against the eight Rosetta fixtures (TypeScript, Java, C#, Python, Rust, Go, C, Ruby) and compares the generated markdown across languages, so a regression in any one adapter shows up as an outlier.
+Cross-language integration test that runs the full Live Documentation pipeline (`generateLiveDocs`) against the nine Rosetta fixtures (TypeScript, Java, C#, Python, Rust, Go, C, C++, Ruby) and compares the generated markdown across languages, so a regression in any one adapter shows up as an outlier.
 
 ### Notes
 
@@ -17,6 +16,7 @@ Cross-language integration test that runs the full Live Documentation pipeline (
 - Parses generated markdown to extract Dependencies and Public Symbols sections and classifies dependency targets into canonical roles. Namespace segments use exact matching (`classifyNamespaceSegment`) because substring matching once classified `ctype.h` as "types".
 - Each fixture runs in an isolated temp directory. The test writes a diagnostic matrix (`AI-Agent-Workspace/tmp/rosetta-parity-matrix.md`) with per-language, per-assertion results.
 - Parity is a smoke alarm, not a correctness measure; the compiler-backed oracle described in the architectural decisions is the measure. Created 2026-03-11; moved off the VS Code Electron harness 2026-09-27.
+- C++ joined as the ninth language on 2026-10-16 ([Turn 10 of the October 15 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-10)): the type-safe tier, `src/**/*.cpp` and `src/**/*.hpp`, and four files carrying `main` (the program and three tests); the thresholds now count the fixtures rather than a hardcoded eight.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

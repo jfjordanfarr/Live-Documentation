@@ -310,6 +310,65 @@ describe("JSON Adapter", () => {
     });
   });
 
+  describe("JSON with comments", () => {
+    it("reads line comments, block comments and trailing commas as an editor does, keys and references alike", async () => {
+      const jsonPath = path.join(tempDir, "tsconfig.json");
+      fs.writeFileSync(jsonPath, [
+        "// The compiler's options.",
+        "{",
+        '  "extends": "./tsconfig.base.json", // the shared base',
+        '  "compilerOptions": {',
+        '    /* emitted beside the sources */ "outDir": "dist",',
+        '    "strict": true,',
+        "  },",
+        '  "include": ["src/index.ts", "src/**/*.ts",],',
+        '  "homepage": "https://example.test/docs", // a string with slashes is not a comment',
+        '  "note": "a, ]", /* nor is a comma before a bracket inside one a trailing comma */',
+        "}",
+        ""
+      ].join("\n"));
+
+      const fileIndex: WorkspaceFileIndex = new Set(["tsconfig.base.json", "src/index.ts"]);
+      const result = await jsonAdapter.analyze({
+        absolutePath: jsonPath,
+        workspaceRoot: tempDir,
+        fileIndex
+      });
+
+      expect(result?.symbols.map((symbol) => symbol.name)).toEqual([
+        "extends",
+        "compilerOptions",
+        "compilerOptions:outDir",
+        "compilerOptions:strict",
+        "include",
+        "homepage",
+        "note"
+      ]);
+      expect(result?.dependencies.map((dependency) => [dependency.specifier, dependency.resolvedPath])).toEqual([
+        ["src/index.ts", "src/index.ts"],
+        ["./tsconfig.base.json", "tsconfig.base.json"]
+      ]);
+    });
+
+    it("keeps a malformed document unread: a doubled comma is not a trailing comma", async () => {
+      const jsonPath = path.join(tempDir, "broken.json");
+      fs.writeFileSync(jsonPath, '{ "a": [1,,], }');
+
+      const result = await jsonAdapter.analyze({ absolutePath: jsonPath, workspaceRoot: tempDir });
+
+      expect(result).toEqual({ symbols: [], dependencies: [] });
+    });
+
+    it("reads a document that opens with a byte order mark", async () => {
+      const jsonPath = path.join(tempDir, "settings.json");
+      fs.writeFileSync(jsonPath, "\uFEFF{ \"editor.formatOnSave\": true }");
+
+      const result = await jsonAdapter.analyze({ absolutePath: jsonPath, workspaceRoot: tempDir });
+
+      expect(result?.symbols.map((symbol) => symbol.name)).toEqual(["editor.formatOnSave"]);
+    });
+  });
+
   describe("symbols output", () => {
     it("publishes every key path, joined the way IConfiguration addresses nested settings", async () => {
       const jsonPath = path.join(tempDir, "appsettings.json");

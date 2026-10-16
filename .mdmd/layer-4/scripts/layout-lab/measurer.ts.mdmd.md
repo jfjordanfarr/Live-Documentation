@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/measurer.ts
-- Generated At: 2026-10-13T16:52:35.790Z
+- Generated At: 2026-10-16T01:55:41.304Z
 
 ## Authored
 ### Purpose
@@ -39,7 +39,7 @@ Every card's view under an exploration, as `dressCards` would dress it.
 
 #### `capturedMeasurer` {#symbol-capturedmeasurer}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L87)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L88)
 - Returns: [`SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 

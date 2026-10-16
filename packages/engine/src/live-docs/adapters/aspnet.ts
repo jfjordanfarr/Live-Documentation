@@ -13,7 +13,7 @@ const MARKUP_EXTENSIONS = new Set([".aspx", ".cshtml", ".razor", ".ascx"]);
 /** Language adapter for ASP.NET markup files (`.aspx`, `.cshtml`, `.razor`, `.ascx`). Extracts `CodeFile`/`CodeBehind` and `<script src>` references as dependencies, and element ids (server controls and plain HTML alike) as public symbols. */
 export const aspNetMarkupAdapter: LanguageAdapter = {
   id: "aspnet-markup",
-  extensions: [".aspx", ".cshtml", ".razor"],
+  extensions: [".aspx", ".ascx", ".cshtml", ".razor"],
   async analyze({ absolutePath, workspaceRoot }): Promise<SourceAnalysisResult | null> {
     const content = await fs.readFile(absolutePath, "utf8");
     const dependencies: DependencyEntry[] = [];

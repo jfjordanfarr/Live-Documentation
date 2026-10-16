@@ -1,0 +1,37 @@
+[
+  {
+    "directory": ".",
+    "file": "src/main.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "src", "-c", "src/main.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/processor.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "src", "-c", "src/processor.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/models.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "src", "-c", "src/models.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/helpers.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "src", "-c", "src/helpers.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/test_helpers.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "src", "-c", "src/test_helpers.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/test_processor.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "src", "-c", "src/test_processor.cpp"]
+  },
+  {
+    "directory": ".",
+    "file": "src/test_pipeline.cpp",
+    "arguments": ["g++", "-std=c++17", "-I", "src", "-c", "src/test_pipeline.cpp"]
+  }
+]

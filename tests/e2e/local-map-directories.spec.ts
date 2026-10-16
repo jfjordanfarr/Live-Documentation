@@ -96,6 +96,15 @@ test("a closed box opens in place, the membrane growing from the box while the p
   expect(compact).toBeGreaterThan(20);
   await expect(page.locator("#map-container .node-card .symbol-row:not(.branch-symbol-hidden)")).toHaveCount(0);
   await expect(wires(page)).toHaveCount(0);
+  // A compact card counts its collapsed public symbols on its reveal; a file with none, a test file, has no reveal, since the Internals row is not a symbol.
+  const graphCard = page.locator(`#map-container .node-card[data-id="${LIVE_DOCS}/graph.ts"]`);
+  const publicRows = await graphCard.locator(".symbol-row:not(.internals-row)").count();
+  expect(publicRows).toBeGreaterThan(0);
+  await expect(graphCard.getByRole("button", { name: /^\+\d+ symbols$/ })).toHaveText(`+${publicRows} symbols`);
+  const testCard = page.locator(`#map-container .node-card[data-id="${LIVE_DOCS}/graph.test.ts"]`);
+  await expect(testCard).toHaveCount(1);
+  await expect(testCard.locator(".symbol-row:not(.internals-row)")).toHaveCount(0);
+  await expect(testCard.getByRole("button", { name: /^\+\d+ symbols$/ })).toHaveCount(0);
   // The label the person clicked through to stands where the box was: what was acted on keeps its place.
   const opened = (await label(page, LIVE_DOCS).boundingBox())!;
   expect(Math.abs(opened.x - before.x)).toBeLessThan(40);

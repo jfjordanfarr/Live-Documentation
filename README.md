@@ -102,8 +102,8 @@ Every view generates stable URLs. When you need to explain a complex dependency 
 Live Documentation is polyglot. Support varies by language (some have richer symbol graphs than others), but all are unified into the same markdown mirror format.
 
 - **TypeScript / JavaScript**: the TypeScript compiler API resolves public symbols and module dependencies.
-- **C#, Python, Java, Go, Rust**: tree-sitter parsers, with names resolved by each language's own rules (namespaces, packages, modules, crates) and measured against the compiler's resolution through SCIP indexers.
-- **C / C++, Ruby, PowerShell**: hand-written scanners for symbols and for includes, requires and module imports; no compiler oracle yet for C or Ruby.
+- **C#, Python, Java, Go, Rust, C and C++**: tree-sitter parsers, with names resolved by each language's own rules (namespaces, packages, modules, crates, include directories) and measured against the compiler's resolution through SCIP indexers.
+- **Ruby, PowerShell**: hand-written scanners for symbols and for requires and module imports; no compiler oracle yet for Ruby.
 - **ASP.NET markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor`, connected to code-behind and configuration conventions.
 - **.NET configuration and SQL**: the addresses and connection strings of `web.config` and `app.config`, and the procedures, tables and views of `.sql` files, read as the openings a system offers and uses.
 - **Manifests**: `.csproj`, `packages.config` and `package.json`, read as what a project stands on.

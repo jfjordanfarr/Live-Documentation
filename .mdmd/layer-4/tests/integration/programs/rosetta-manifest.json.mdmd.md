@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/rosetta-manifest.json
-- Generated At: 2026-10-02T20:20:08.067Z
+- Generated At: 2026-10-16T00:58:51.885Z
 
 ## Authored
 ### Purpose
@@ -81,7 +81,10 @@ Catalog of the eight Rosetta sample programs: their common roles and relationshi
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`compiler-edges`](./c/rosetta/expected/compiler-edges.json.mdmd.md)
 - [`main`](./c/rosetta/src/main.c.mdmd.md)
+- [`compiler-edges`](./cpp/rosetta/expected/compiler-edges.json.mdmd.md)
+- [`main`](./cpp/rosetta/src/main.cpp.mdmd.md)
 - [`compiler-edges`](./csharp/rosetta/expected/compiler-edges.json.mdmd.md)
 - [`Main`](./csharp/rosetta/src/App/Main.cs.mdmd.md)
 - [`compiler-edges`](./go/rosetta/expected/compiler-edges.json.mdmd.md)

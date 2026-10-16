@@ -12,8 +12,8 @@
 The `oracle:index` command: picks the SCIP indexer a sample program's project file calls for, runs it over a temporary copy, and writes every compiler-resolved edge to the program's `expected/compiler-edges.json`.
 
 ### Notes
-- The indexer table is the one place that knows each tool's command line and quirks: `scip-dotnet` needs `DOTNET_ROLL_FORWARD=Major` and misreports its version inside the index, `scip-python` crashes without a `--project-version`, and `scip-typescript` is run from this repository's `node_modules`.
-- C and Ruby programs have no indexer here (`scip-clang` needs a compilation database, `scip-ruby` a Sorbet project), so the command refuses them rather than guessing.
+- The indexer table is the one place that knows each tool's command line and quirks: `scip-dotnet` needs `DOTNET_ROLL_FORWARD=Major` and misreports its version inside the index, `scip-python` crashes without a `--project-version`, `scip-typescript` is run from this repository's `node_modules`, and `scip-clang` (since 2026-10-16) is selected by a `compile_commands.json` at the fixture root, whose `"directory": "."` entries the indexer's `prepare` step rewrites to the working copy, since a fixture cannot know where it will be copied.
+- Ruby programs have no indexer here (`scip-ruby` needs a Sorbet project), so the command refuses them rather than guessing. scip-clang is installed by the devcontainer's post-create script, a release binary pinned by version and checksum, for this project's development only.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -70,6 +70,18 @@ cs bootstrap --standalone \
   --main com.sourcegraph.scip_java.ScipJava
 sudo mv /tmp/scip-java /usr/local/bin/scip-java
 
+# scip-clang: a release binary for x86_64 Linux (glibc 2.16 or newer), pinned by version
+# and checksum. It indexes C and C++ from a JSON compilation database; the fixtures carry
+# theirs. For this project's oracle only; never a runtime dependency of Live Documentation.
+# Releases: https://github.com/sourcegraph/scip-clang/releases
+SCIP_CLANG_VERSION="v0.4.0"
+SCIP_CLANG_SHA256="06fd18c576f979a726c651594644ec4a35db4f471f2160b3f72eb89fa6001784"
+echo "→ Installing scip-clang ${SCIP_CLANG_VERSION}..."
+curl -fsSL -o /tmp/scip-clang "https://github.com/sourcegraph/scip-clang/releases/download/${SCIP_CLANG_VERSION}/scip-clang-x86_64-linux"
+echo "${SCIP_CLANG_SHA256}  /tmp/scip-clang" | sha256sum --check --quiet
+sudo install -m 0755 /tmp/scip-clang /usr/local/bin/scip-clang
+rm -f /tmp/scip-clang
+
 # rust-analyzer: Verify it's available (installed via Rust feature)
 echo "→ Verifying rust-analyzer..."
 if command -v rust-analyzer &> /dev/null; then
@@ -87,6 +99,7 @@ echo "scip-go:         $(scip-go version 2>/dev/null || echo 'installed')"
 echo "scip-dotnet:     $(dotnet tool list -g | grep scip-dotnet | awk '{print $2}' || echo 'installed')"
 echo "scip-java:       $(scip-java version 2>/dev/null || echo 'installed')"
 echo "rust-analyzer:   $(rust-analyzer --version 2>/dev/null || echo 'available')"
+echo "scip-clang:      $(scip-clang --version 2>/dev/null | head -1 || echo 'installed')"
 
 echo ""
 echo "=== Language Versions ==="

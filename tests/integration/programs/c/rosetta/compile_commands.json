@@ -1,0 +1,37 @@
+[
+  {
+    "directory": ".",
+    "file": "src/main.c",
+    "arguments": ["gcc", "-std=c11", "-I", "src", "-c", "src/main.c"]
+  },
+  {
+    "directory": ".",
+    "file": "src/processor.c",
+    "arguments": ["gcc", "-std=c11", "-I", "src", "-c", "src/processor.c"]
+  },
+  {
+    "directory": ".",
+    "file": "src/models.c",
+    "arguments": ["gcc", "-std=c11", "-I", "src", "-c", "src/models.c"]
+  },
+  {
+    "directory": ".",
+    "file": "src/helpers.c",
+    "arguments": ["gcc", "-std=c11", "-I", "src", "-c", "src/helpers.c"]
+  },
+  {
+    "directory": ".",
+    "file": "src/test_helpers.c",
+    "arguments": ["gcc", "-std=c11", "-I", "src", "-c", "src/test_helpers.c"]
+  },
+  {
+    "directory": ".",
+    "file": "src/test_processor.c",
+    "arguments": ["gcc", "-std=c11", "-I", "src", "-c", "src/test_processor.c"]
+  },
+  {
+    "directory": ".",
+    "file": "src/test_pipeline.c",
+    "arguments": ["gcc", "-std=c11", "-I", "src", "-c", "src/test_pipeline.c"]
+  }
+]

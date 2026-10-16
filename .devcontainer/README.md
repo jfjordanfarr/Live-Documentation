@@ -54,6 +54,7 @@ No special setup is required — the same `.devcontainer/devcontainer.json` work
 | scip-java       | Coursier           | `scip-java index`           |
 | scip-go         | go install         | `scip-go`                   |
 | scip-python     | npm global         | `scip-python index`         |
+| scip-clang      | release binary     | `scip-clang --compdb-path=compile_commands.json` |
 | rust-analyzer   | rustup component   | `rust-analyzer scip .`      |
 
 ## Verifying the Environment

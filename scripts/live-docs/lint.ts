@@ -162,6 +162,8 @@ async function main(): Promise<void> {
     cwd: workspaceRoot,
     absolute: true,
     nodir: true,
+    // A hidden file's doc lives under a hidden path segment (`.vscode/settings.json`).
+    dot: true,
     windowsPathsNoEscape: true
   });
 

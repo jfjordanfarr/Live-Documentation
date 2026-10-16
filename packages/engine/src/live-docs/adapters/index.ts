@@ -59,7 +59,8 @@ export interface LanguageAdapter {
   }): Promise<SourceAnalysisResult | null>;
 }
 
-const ADAPTERS: readonly LanguageAdapter[] = [
+/** Every language adapter, in the order they are asked: the first whose extensions include a file's reads it. */
+export const LANGUAGE_ADAPTERS: readonly LanguageAdapter[] = [
   cAdapter,
   csharpAdapter,
   aspNetMarkupAdapter,
@@ -97,7 +98,7 @@ export async function analyzeWithLanguageAdapters(options: {
     return null;
   }
 
-  for (const adapter of ADAPTERS) {
+  for (const adapter of LANGUAGE_ADAPTERS) {
     if (adapter.extensions.includes(extension)) {
       return adapter.analyze(options);
     }

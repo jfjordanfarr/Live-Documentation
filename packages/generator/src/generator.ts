@@ -367,7 +367,8 @@ async function pruneStaleLiveDocs(args: {
     cwd: baseLayerRoot,
     absolute: true,
     nodir: true,
-    dot: false,
+    // A hidden file's doc lives under a hidden path segment (`.vscode/settings.json`), and is pruned like any other.
+    dot: true,
     windowsPathsNoEscape: true
   });
 

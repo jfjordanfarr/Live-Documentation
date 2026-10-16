@@ -41,12 +41,14 @@ const C_FRAMEWORK_TYPES = new Set([
 /**
  * C/C++ language syntax configuration.
  *
- * Covers `.c`, `.h`, `.cpp`, `.hpp`, `.cc`, `.cxx` extensions.
- * Comment stripping uses the shared C-style default.
+ * Covers the C sources and headers `.c` and `.h`, the C++ sources `.cpp`,
+ * `.cc` and `.cxx`, and the C++ headers `.hpp`, `.hh`, `.hxx` and `.inl`.
+ * The C adapter reads the same list, so a file the registry knows is a file
+ * the adapter analyzes. Comment stripping uses the shared C-style default.
  */
 export const cSyntax = createLanguageSyntax({
   id: "c",
-  extensions: [".c", ".h", ".cpp", ".hpp", ".cc", ".cxx"],
+  extensions: [".c", ".h", ".cpp", ".cc", ".cxx", ".hpp", ".hh", ".hxx", ".inl"],
   comments: C_COMMENTS,
   strings: C_STRINGS,
   frameworkTypes: C_FRAMEWORK_TYPES,

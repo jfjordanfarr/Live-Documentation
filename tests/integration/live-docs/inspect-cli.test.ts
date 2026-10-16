@@ -522,7 +522,8 @@ describe("Live Docs inspect CLI", () => {
     assert.strictEqual(payload.kind, "reachable");
     assert.strictEqual(payload.from, "entries");
     assert.strictEqual(payload.maxDepth, 25);
-    assert.deepStrictEqual(payload.starts.map((start) => start.codePath), ["package.json", "src/cli.ts", "src/lib.test.ts", "src/lib.ts", "styles.css", "tsconfig.json"]);
+    // The fixture's own `.live-docs.config.json` is a tooling input too, read since discovery looks into hidden paths (2026-10-16).
+    assert.deepStrictEqual(payload.starts.map((start) => start.codePath), [".live-docs.config.json", "package.json", "src/cli.ts", "src/lib.test.ts", "src/lib.ts", "styles.css", "tsconfig.json"]);
     const cli = payload.starts.find((start) => start.codePath === "src/cli.ts")!;
     assert.deepStrictEqual(cli.entries.map((entry) => [entry.reason, entry.command, entry.declarer?.label]), [["command", "demo", "package.json"], ["command", "start", "package.json"]]);
     assert.strictEqual(payload.starts.find((start) => start.codePath === "src/lib.test.ts")!.test, true);
@@ -539,7 +540,7 @@ describe("Live Docs inspect CLI", () => {
     assert.strictEqual(text.exitCode, 0, text.stderr);
     const lines = text.stdout.split("\n");
     assert.strictEqual(lines[0], "Files a path reaches from the entry points (max depth 25), nearest first.");
-    assert.strictEqual(lines[1], "Entry points: 6 files");
+    assert.strictEqual(lines[1], "Entry points: 7 files");
     assert.ok(lines.includes("  src/cli.ts [.mdmd/layer-4/src/cli.ts.mdmd.md]  command demo of package.json; command start of package.json"), text.stdout);
     assert.ok(lines.includes("  src/lib.test.ts [.mdmd/layer-4/src/lib.test.ts.mdmd.md]  test"), text.stdout);
     assert.ok(lines.includes("Reached: 4 files"), text.stdout);

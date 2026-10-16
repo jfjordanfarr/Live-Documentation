@@ -19,6 +19,9 @@
  *   tsconfig.json                 scip-typescript  the copy in this repository's node_modules
  *   any .py file                  scip-python      the fixture directory's name is the project name;
  *                                                  the tool crashes without a --project-version
+ *   compile_commands.json         scip-clang       C and C++ from the fixture's own compilation
+ *                                                  database, whose `directory` entries say "." and are
+ *                                                  rewritten to the working copy before indexing
  *
  * Usage:
  *   npm run oracle:index -- <fixture-dir>
@@ -40,6 +43,8 @@ interface Indexer {
   name: string;
   /** Recognises the fixture from its file list; the project file when the language has one. */
   detect(files: string[]): Detected | undefined;
+  /** Makes the working copy ready for the indexer, when the fixture cannot be indexed as it lies. */
+  prepare?(workDir: string): void;
   /** The command that writes `index.scip` into the working copy. */
   command(fixture: { name: string; projectFile?: string }): { command: string; args: string[] };
   /** The version the CLI reports, for a tool that misreports its own inside the index. */
@@ -100,6 +105,19 @@ const INDEXERS: Indexer[] = [
     command: () => ({ command: process.execPath, args: [SCIP_TYPESCRIPT, "index", "--output", "index.scip"] })
   },
   {
+    name:   "scip-clang",
+    detect: (files) => marker(files, "compile_commands.json"),
+    prepare(workDir) {
+      // A fixture's compilation database cannot know where it will be copied, so its entries say
+      // `"directory": "."`; scip-clang resolves every path against that directory and wants it absolute.
+      const databasePath = path.join(workDir, "compile_commands.json");
+      const database     = JSON.parse(fs.readFileSync(databasePath, "utf8")) as Array<Record<string, unknown>>;
+      const prepared     = database.map((entry) => ({ ...entry, directory: workDir }));
+      fs.writeFileSync(databasePath, `${JSON.stringify(prepared, null, 2)}\n`);
+    },
+    command: () => ({ command: "scip-clang", args: ["--compdb-path=compile_commands.json", "--index-output-path=index.scip", "--no-progress-report"] })
+  },
+  {
     name:    "scip-python",
     detect:  (files) => (files.some((file) => file.endsWith(".py")) ? {} : undefined),
     command: ({ name }) => ({ command: "scip-python", args: ["index", ".", "--project-name", name, "--project-version", "0", "--output", "index.scip"] })
@@ -114,7 +132,7 @@ function detectIndexer(fixtureDir: string): { indexer: Indexer; projectFile?: st
       return { indexer, ...detected };
     }
   }
-  throw new Error(`no indexer applies to ${fixtureDir}: it has no .sln, .csproj, go.mod, Cargo.toml, pom.xml, tsconfig.json or .py file`);
+  throw new Error(`no indexer applies to ${fixtureDir}: it has no .sln, .csproj, go.mod, Cargo.toml, pom.xml, tsconfig.json, compile_commands.json or .py file`);
 }
 
 function main(): void {
@@ -130,6 +148,7 @@ function main(): void {
   const workDir                = copyFixture(fixtureDir, "oracle-index-");
 
   try {
+    indexer.prepare?.(workDir);
     const { command, args } = indexer.command({ name, projectFile });
     const indexed = spawnSync(command, args, { cwd: workDir, env: ENV, encoding: "utf8" });
     if (indexed.error) {

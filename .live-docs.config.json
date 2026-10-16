@@ -4,6 +4,7 @@
   "extension": ".mdmd.md",
   "sampleRoots": ["tests/integration/programs", "tests/integration/fixtures"],
   "entryPoints": ["packages/explorer/src/client/index.ts", "packages/explorer/src/client/styles.css"],
+  "exclude": ["AI-Agent-Workspace/**"],
   "bundleExclude": [
     "AI-Agent-Workspace/ChatHistory/**/!(*.SUMMARIZED).md",
     "AI-Agent-Workspace/ChatHistory/**/*.txt"

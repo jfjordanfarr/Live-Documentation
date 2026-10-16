@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/c/rosetta/src/models.h
-- Generated At: 2026-10-02T20:20:04.417Z
+- Generated At: 2026-10-16T00:58:49.043Z
 
 ## Authored
 ### Purpose
@@ -22,14 +22,14 @@ See [2026-01-14.1.md](../../../../../../../../AI-Agent-Workspace/ChatHistory/202
 
 #### `Record` {#symbol-record}
 - Type: struct
-- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/models.h#L17)
+- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/models.h#L22)
 
 ##### `Record` — Summary
 A data record to be processed.
 
 #### `Report` {#symbol-report}
 - Type: struct
-- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/models.h#L27)
+- Source: [source](../../../../../../../../tests/integration/programs/c/rosetta/src/models.h#L33)
 
 ##### `Report` — Summary
 Summary report produced by the processor.

@@ -147,6 +147,36 @@ describe("edgesFromIndex", () => {
   });
 });
 
+describe("edgesFromIndex on C++ namespaces", () => {
+  it("makes no edge and no ambiguity from a namespace that several files reopen, and keeps the edge a member makes", () => {
+    const namespace = "cxx . . $ rosetta/";
+    const member    = "cxx . . $ rosetta/run().";
+    const result = edgesFromIndex(
+      index([
+        { relative_path: "src/a.cpp", occurrences: [occurrence(namespace, DEFINITION), occurrence(member, DEFINITION)] },
+        { relative_path: "src/b.cpp", occurrences: [occurrence(namespace, DEFINITION), occurrence(namespace, REFERENCE), occurrence(member, REFERENCE)] }
+      ], "scip-clang"),
+      { projects: [{ name: "rosetta", directory: ".", references: [] }] }
+    );
+
+    expect(result.edges).toEqual([{ from: "src/b.cpp", to: "src/a.cpp", symbols: ["rosetta/run()."] }]);
+    expect(result.ambiguous).toEqual([]);
+  });
+
+  it("keeps a file's own symbol, which ends with a slash too, as the edge an include makes", () => {
+    const file = "cxx . . $ `<file>/src/models.h`/";
+    const result = edgesFromIndex(
+      index([
+        { relative_path: "src/models.h", occurrences: [occurrence(file, DEFINITION)] },
+        { relative_path: "src/main.c",   occurrences: [occurrence(file, REFERENCE)] }
+      ], "scip-clang"),
+      { projects: [{ name: "rosetta", directory: ".", references: [] }] }
+    );
+
+    expect(result.edges).toEqual([{ from: "src/main.c", to: "src/models.h", symbols: ["`<file>/src/models.h`/"] }]);
+  });
+});
+
 describe("edgesFromIndex on Cargo crates", () => {
   it("narrows a crate-root reference to the referencing file's own crate", () => {
     const projects: OracleProject[] = [

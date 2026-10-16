@@ -26,52 +26,62 @@ static int tests_passed = 0;
     } \
 } while (0)
 
-void test_run_processes_records_and_returns_report(void) {
-    printf("test_run_processes_records_and_returns_report:\n");
+void test_run_processor_processes_records_and_fills_report(void) {
+    printf("test_run_processor_processes_records_and_fills_report:\n");
 
     Record records[3];
-    records[0] = create_record(1, "A", 100.0);
-    records[1] = create_record(2, "B", 200.0);
-    records[2] = create_record(3, "C", 150.0);
+    records[0] = create_record("A", 100.0);
+    records[1] = create_record("B", 200.0);
+    records[2] = create_record("C", 150.0);
 
-    Report report = run(records, 3, NULL);
+    Report report;
+    int status = run_processor(records, 3, NULL, &report);
 
+    ASSERT(status == 0, "run_processor should succeed");
     ASSERT(fabs(report.total - 450.0) < 0.001, "total should be 450");
     ASSERT(fabs(report.average - 150.0) < 0.001, "average should be 150");
     ASSERT(report.record_count == 3, "should have 3 records");
+
+    free_report(&report);
 }
 
-void test_run_handles_empty_record_set(void) {
-    printf("test_run_handles_empty_record_set:\n");
+void test_run_processor_handles_empty_record_set(void) {
+    printf("test_run_processor_handles_empty_record_set:\n");
 
-    Report report = run(NULL, 0, NULL);
+    Report report;
+    int status = run_processor(NULL, 0, NULL, &report);
 
+    ASSERT(status == 0, "run_processor should succeed on no records");
     ASSERT(fabs(report.total - 0.0) < 0.001, "total should be 0");
     ASSERT(report.record_count == 0, "should have 0 records");
+
+    free_report(&report);
 }
 
-void test_summarize_formats_report(void) {
-    printf("test_summarize_formats_report:\n");
+void test_summarize_report_formats_report(void) {
+    printf("test_summarize_report_formats_report:\n");
 
     Report report;
     report.total = 450.0;
     report.average = 150.0;
+    report.records = NULL;
     report.record_count = 0;
+    report.generated_at = 0;
 
-    char* summary = summarize(&report);
+    char summary[128];
+    int written = summarize_report(&report, summary, sizeof summary);
 
-    ASSERT(summary != NULL, "summary should not be NULL");
+    ASSERT(written > 0, "summarize_report should write something");
     ASSERT(strlen(summary) > 0, "summary should not be empty");
-
-    free(summary);
+    ASSERT(strstr(summary, "450") != NULL, "summary should contain the total");
 }
 
 int main(void) {
     printf("=== Processor Tests ===\n\n");
 
-    test_run_processes_records_and_returns_report();
-    test_run_handles_empty_record_set();
-    test_summarize_formats_report();
+    test_run_processor_processes_records_and_fills_report();
+    test_run_processor_handles_empty_record_set();
+    test_summarize_report_formats_report();
 
     printf("\n=== Results: %d/%d passed ===\n", tests_passed, tests_run);
     return tests_passed == tests_run ? 0 : 1;

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/index.ts
-- Generated At: 2026-09-28T16:48:38.336Z
+- Generated At: 2026-10-16T00:58:42.338Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Owns the shared language-adapter registry and `analyzeWithLanguageAdapters`, let
 ### Notes
 - Migrated from the server generator into `packages/engine` on Nov 16 so both the CLI and extension consume the same registry surface <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L878-L918>.
 - Docstring harnesses for each adapter exercise this entry point, keeping registry coverage visible during the Nov 14 verification sweep <../../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-14.md#L2792-L2808>.
+- The registry is exported as `LANGUAGE_ADAPTERS` (2026-10-16) so that `index.test.ts` can hold every adapter's extensions to the configuration's default list.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -42,9 +43,16 @@ structured metadata from a single source file.  The adapter registry
 ({@link analyzeWithLanguageAdapters}) dispatches to the first adapter
 whose `extensions` list matches the file under inspection.
 
+#### `LANGUAGE_ADAPTERS` {#symbol-language_adapters}
+- Type: const
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L63)
+
+##### `LANGUAGE_ADAPTERS` — Summary
+Every language adapter, in the order they are asked: the first whose extensions include a file's reads it.
+
 #### `analyzeWithLanguageAdapters` {#symbol-analyzewithlanguageadapters}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L89)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/index.ts#L90)
 
 ##### `analyzeWithLanguageAdapters` — Summary
 Attempts to analyse a source file using the configured language adapters.

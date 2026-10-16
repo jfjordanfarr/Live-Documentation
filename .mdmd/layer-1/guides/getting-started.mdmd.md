@@ -88,7 +88,7 @@ Create `.live-docs.config.json` at the repository root and pass it with `--confi
   "extension": ".md",
   "slugDialect": "github",
   "requireRelativeLinks": true,
-  "glob": ["src/**/*.{ts,tsx,js,jsx}", "lib/**/*.{ts,tsx,js,jsx}"],
+  "exclude": ["vendor/**"],
   "bundleExclude": ["docs/archive/**"]
 }
 ```
@@ -100,7 +100,8 @@ Create `.live-docs.config.json` at the repository root and pass it with `--confi
 | `extension`            | `.md`                 | File extension for Live Docs                                                       |
 | `slugDialect`          | `github`              | Header anchor style (`github`, `azure-devops`, `gitlab`)                           |
 | `requireRelativeLinks` | `true`                | Enforce relative links so the mirror works as a repo-hosted wiki                   |
-| `glob`                 | `[...]`               | Which files receive Live Docs                                                      |
+| `glob`                 | every readable file   | Which files receive Live Docs; by default every file an adapter can read, anywhere  |
+| `exclude`              | `[]`                  | Paths or globs discovery skips: a folder that documents itself, a vendored tree     |
 | `bundleExclude`        | `[]`                  | Linked markdown the Explorer bundle must leave out (large archives, private notes) |
 
 ```bash

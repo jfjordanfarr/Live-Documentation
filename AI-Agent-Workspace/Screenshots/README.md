@@ -114,3 +114,8 @@ Taken by the agent at 02:31 UTC from `dist/explorer`, this repository's bundle (
 - `2026-09-28/08-force-graph-core-selected.png`: the same after `core.ts` became the context: nothing in the picture marks it.
 - `2026-09-28/09-crop-local-map-corset-card.png`: the centre card of the fourth picture at twice the scale: a green pin before and a blue pin after every symbol, and small arrow badges beside some of them.
 - `2026-09-28/10-crop-membrane-back-connection-stubs.png`: the third picture at the same scale: `state.ts`'s `PathResult` wired to `connection-geometry.ts`, its other symbols faded, and a short stub in place of a full curve on `setActivePath`'s green pin.
+- `2026-10-16/suffix-anywhere-and-cpp/01-knowledge-sources-shape.png`: Knowledge Sources after the suffix-anywhere defaults: 722 files, the root's tooling files and the C++ sample among them, the agent workspace excluded.
+- `2026-10-16/suffix-anywhere-and-cpp/02-tooling-inputs-with-the-root-files.png`: the entry points' Tooling inputs opened, the root's and the packages' configuration files listed.
+- `2026-10-16/suffix-anywhere-and-cpp/03-directory-with-test-cards.png`: `packages/engine/src/live-docs` opened with tests shown; test cards read "No public symbols" with no reveal.
+- `2026-10-16/suffix-anywhere-and-cpp/04-test-card-without-a-reveal.png`: the `graph.test.ts` card at reading size, no "+1 symbols".
+- `2026-10-16/suffix-anywhere-and-cpp/05-cpp-rosetta-main-pinned.png`: the C++ rosetta `main.cpp` pinned, its two includes resolved and their used symbols wired.

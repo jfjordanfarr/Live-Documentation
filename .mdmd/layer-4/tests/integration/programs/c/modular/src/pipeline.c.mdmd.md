@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/programs/c/modular/src/pipeline.c
-- Generated At: 2026-10-02T20:20:04.303Z
+- Generated At: 2026-10-16T00:58:48.899Z
 
 ## Authored
 ### Purpose
@@ -16,19 +16,6 @@ Preserve the clamp helper and logging branches—they ensure the analyzer sees b
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
-#### `normalize` {#symbol-normalize}
-- Type: function
-- Source: [source](../../../../../../../../tests/integration/programs/c/modular/src/pipeline.c#L11)
-
-##### `normalize` — Summary
-Keeps normalized samples within a 0-100 range.
-
-##### `normalize` — Parameters
-- `value`: Candidate value.
-
-##### `normalize` — Returns
-double Clamped value used for alerts.
-
 #### `run_pipeline` {#symbol-run_pipeline}
 - Type: function
 - Source: [source](../../../../../../../../tests/integration/programs/c/modular/src/pipeline.c#L22)

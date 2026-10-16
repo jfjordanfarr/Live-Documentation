@@ -24,7 +24,8 @@ import { GRAPH_INDEX_FILE, deriveLiveDocGraph, type DocLocation, type LiveDocGra
 export async function readLiveDocGraph(args: { workspaceRoot: string; config: DocLocation }): Promise<LiveDocGraph> {
   const workspaceRoot = path.resolve(args.workspaceRoot);
   const pattern = path.posix.join(args.config.root, args.config.baseLayer, "**", `*${args.config.extension}`);
-  const absolutePaths = await glob(pattern, { cwd: workspaceRoot, absolute: true, nodir: true, windowsPathsNoEscape: true });
+  // `dot`, since a hidden file's doc lives under a hidden path segment (`.vscode/settings.json`).
+  const absolutePaths = await glob(pattern, { cwd: workspaceRoot, absolute: true, nodir: true, dot: true, windowsPathsNoEscape: true });
   const docs = await Promise.all(
     absolutePaths.map(async (absolutePath) => {
       const docPath = path.relative(workspaceRoot, absolutePath).split(path.sep).join("/");

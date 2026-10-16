@@ -16,7 +16,9 @@ import path from "node:path";
 import ts from "typescript";
 
 import { analyzeWithLanguageAdapters, type WorkspaceFileIndex } from "./adapters";
+import { matchesPathPattern } from "./archetype";
 import { computePublicSymbolHeadingInfo } from "./compose";
+import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DeclaredEntry,
   PublicSymbolEntry,
@@ -24,7 +26,7 @@ import type {
   WorkspaceEntryIndex,
   WorkspaceSymbolIndex
 } from "./coreTypes";
-import { detectChangedFiles } from "./gitUtils";
+import { detectChangedFiles, listTrackedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
@@ -68,12 +70,86 @@ async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | nu
 // ============================================================================
 
 /**
+ * The files a package manager writes and no person edits, by name. A lock
+ * file carries no authorial decision, so discovery never documents one,
+ * whatever the globs or an include name.
+ */
+const LOCK_FILE_NAMES: ReadonlySet<string> = new Set([
+  "package-lock.json",
+  "npm-shrinkwrap.json",
+  "yarn.lock",
+  "pnpm-lock.yaml",
+  "bun.lock",
+  "bun.lockb",
+  "Cargo.lock",
+  "composer.lock",
+  "poetry.lock",
+  "uv.lock",
+  "Pipfile.lock",
+  "Gemfile.lock",
+  "Package.resolved",
+  "packages.lock.json",
+  ".terraform.lock.hcl",
+  "Chart.lock",
+  "pubspec.lock",
+  "go.sum"
+]);
+
+/**
+ * True for a file no configuration can have documented. These are product
+ * rules, applied to every match whether a configured glob or an include named
+ * it, and nothing switches them off:
+ *
+ * - `.git` at any depth: the repository's own store.
+ * - `node_modules` at any depth: installed packages, not the project's source.
+ * - The configured docs root, where the generated docs and the graph index
+ *   are written (`.live-documentation` by default): the generator never
+ *   documents its own output.
+ * - Lock files, by name: {@link LOCK_FILE_NAMES}.
+ *
+ * @param relativePath - Workspace-relative path with forward slashes.
+ * @param docsRoot - The configured docs root as a workspace-relative path, or `undefined` when it is not a folder within the workspace.
+ */
+function isNeverDocumented(relativePath: string, docsRoot: string | undefined): boolean {
+  const segments = relativePath.split("/");
+  if (segments.includes(".git") || segments.includes("node_modules")) {
+    return true;
+  }
+  if (LOCK_FILE_NAMES.has(segments[segments.length - 1])) {
+    return true;
+  }
+  return docsRoot !== undefined && (relativePath === docsRoot || relativePath.startsWith(`${docsRoot}/`));
+}
+
+/**
+ * The configured docs root as a workspace-relative path, however the
+ * configuration spells it (`.mdmd`, `./.mdmd/`, an absolute path), or
+ * `undefined` when it is not a folder within the workspace: the workspace
+ * itself, or somewhere outside it.
+ */
+function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig): string | undefined {
+  const relative = normalizeWorkspacePath(path.relative(workspaceRoot, path.resolve(workspaceRoot, config.root)));
+  if (relative === "" || relative === ".." || relative.startsWith("../") || path.isAbsolute(relative)) {
+    return undefined;
+  }
+  return relative;
+}
+
+/**
  * Locates workspace files that should receive Live Documentation generation.
  *
  * @remarks
- * When `options.changedOnly` is `true`, the discovery set is intersected with
- * files currently marked as changed in git, allowing quick iterations that only
- * regenerate touched artifacts.
+ * The configured globs, or the include set when one is given, are matched
+ * over the whole workspace in one walk, hidden files and folders included, so
+ * that `.devcontainer/devcontainer.json` or `.vscode/settings.json` is read
+ * like any other file. Then, in this order, the matches are dropped that are
+ * never documented ({@link isNeverDocumented}: `.git`, `node_modules`, the
+ * docs root, lock files), that the workspace's `.gitignore` ignores unless git
+ * tracks them (a file committed under an ignored folder is part of the
+ * repository, as git itself holds), and that the configuration's `exclude`
+ * names by path or glob. When
+ * `options.changedOnly` is `true`, the result is intersected with the files
+ * git marks as changed, for quick iterations over touched files.
  *
  * @param options.workspaceRoot - Absolute path to the repository root the CLI is operating in.
  * @param options.config - Live Documentation configuration describing default globs and overrides.
@@ -96,48 +172,40 @@ async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | nu
  */
 export async function discoverTargetFiles(options: DiscoverOptions): Promise<string[]> {
   const patterns = options.include.size > 0 ? Array.from(options.include) : options.config.glob;
-  const absoluteFiles = new Set<string>();
+  const matches = await glob(patterns, {
+    cwd: options.workspaceRoot,
+    absolute: true,
+    nodir: true,
+    dot: true,
+    windowsPathsNoEscape: true
+  });
 
-  for (const pattern of patterns) {
-    const matches = await glob(pattern, {
-      cwd: options.workspaceRoot,
-      absolute: true,
-      nodir: true,
-      dot: false,
-      windowsPathsNoEscape: true
-    });
-    for (const match of matches) {
-      absoluteFiles.add(path.resolve(options.workspaceRoot, match));
-    }
-  }
-
-  let candidates = Array.from(absoluteFiles);
-
-  // Apply gitignore filtering to exclude build artifacts and other ignored paths
+  const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
   const gitignoreFilter = await createGitignoreFilter(options.workspaceRoot);
-  if (gitignoreFilter) {
-    candidates = candidates.filter((absolute) => {
-      const relative = normalizeWorkspacePath(
-        path.relative(options.workspaceRoot, absolute)
-      );
-      return !gitignoreFilter.ignores(relative);
-    });
-  }
+  // A tracked file is never ignored, as git itself has it: committing a file under an ignored folder is a decision.
+  const tracked = gitignoreFilter ? await listTrackedFiles(options.workspaceRoot) : new Set<string>();
+  const changed = options.changedOnly ? await detectChangedFiles(options.workspaceRoot) : new Set<string>();
 
-  if (options.changedOnly) {
-    const changed = await detectChangedFiles(options.workspaceRoot);
-    if (changed.size > 0) {
-      candidates = candidates.filter((absolute) => {
-        const relative = normalizeWorkspacePath(
-          path.relative(options.workspaceRoot, absolute)
-        );
-        return changed.has(relative);
-      });
+  const candidates = new Set<string>();
+  for (const match of matches) {
+    const absolute = path.resolve(options.workspaceRoot, match);
+    const relative = normalizeWorkspacePath(path.relative(options.workspaceRoot, absolute));
+    if (isNeverDocumented(relative, docsRoot)) {
+      continue;
     }
+    if (gitignoreFilter?.ignores(relative) && !tracked.has(relative)) {
+      continue;
+    }
+    if (options.config.exclude.some((pattern) => matchesPathPattern(relative, pattern))) {
+      continue;
+    }
+    if (changed.size > 0 && !changed.has(relative)) {
+      continue;
+    }
+    candidates.add(absolute);
   }
 
-  candidates.sort();
-  return candidates;
+  return Array.from(candidates).sort();
 }
 
 // ============================================================================
@@ -196,9 +264,9 @@ export async function buildWorkspaceIndexes(options: {
       const ext = path.extname(absolutePath).toLowerCase();
 
       // Process JavaScript/TypeScript files with the built-in TypeScript parser
-      if ([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"].includes(ext)) {
+      if (SUPPORTED_SCRIPT_EXTENSIONS.has(ext)) {
         const content = await fs.readFile(absolutePath, "utf8");
-        const scriptKind = inferScriptKind(absolutePath);
+        const scriptKind = inferScriptKind(ext);
         const sourceFile = ts.createSourceFile(
           absolutePath,
           content,

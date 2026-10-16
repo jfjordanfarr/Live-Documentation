@@ -32,7 +32,7 @@ export const IMPLEMENTATION_CODE_EXTENSIONS = new Set([
   ".ts", ".tsx", ".mts", ".cts",
   ".js", ".jsx", ".mjs", ".cjs",
   // C/C++
-  ".c", ".h", ".cpp", ".hpp", ".cc", ".hh", ".cxx", ".hxx",
+  ".c", ".h", ".cpp", ".hpp", ".cc", ".hh", ".cxx", ".hxx", ".inl",
   // C#
   ".cs",
   // Java

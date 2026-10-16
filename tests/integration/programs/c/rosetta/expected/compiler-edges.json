@@ -1,0 +1,293 @@
+{
+  "tool": "scip-clang 0.4.0",
+  "projectFile": "../compile_commands.json",
+  "projects": [
+    {
+      "name": "rosetta",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../src/helpers.c",
+    "../src/helpers.h",
+    "../src/main.c",
+    "../src/models.c",
+    "../src/models.h",
+    "../src/processor.c",
+    "../src/processor.h",
+    "../src/test_helpers.c",
+    "../src/test_pipeline.c",
+    "../src/test_processor.c",
+    "../src/types.h"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../src/helpers.c",
+      "to": "../src/helpers.h",
+      "symbols": [
+        "`<file>/src/helpers.h`/"
+      ]
+    },
+    {
+      "from": "../src/helpers.h",
+      "to": "../src/helpers.c",
+      "symbols": [
+        "average_values(de703aa9d2047d72).",
+        "format_value(8b6623b5c22fb6a4).",
+        "sum_values(de703aa9d2047d72).",
+        "validate_id(c5f7da30cbc0f4e9)."
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/models.c",
+      "symbols": [
+        "create_record(b82c855e852ff3ee)."
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/models.h",
+      "symbols": [
+        "Record#",
+        "Report#",
+        "`<file>/src/models.h`/"
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/processor.c",
+      "symbols": [
+        "free_report(f3290d4878a71118).",
+        "run_processor(e52df593bcb82a2e).",
+        "summarize_report(e53deedf6b9a003)."
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/processor.h",
+      "symbols": [
+        "`<file>/src/processor.h`/"
+      ]
+    },
+    {
+      "from": "../src/models.c",
+      "to": "../src/models.h",
+      "symbols": [
+        "$anonymous_type_8910b2bf8bb3bf69_0#entry.",
+        "$anonymous_type_8910b2bf8bb3bf69_0#tag_count.",
+        "$anonymous_type_8910b2bf8bb3bf69_0#value.",
+        "Record#",
+        "`<file>/src/models.h`/"
+      ]
+    },
+    {
+      "from": "../src/models.c",
+      "to": "../src/types.h",
+      "symbols": [
+        "$anonymous_type_7bccb1308de2712c_1#id.",
+        "$anonymous_type_7bccb1308de2712c_1#status.",
+        "$anonymous_type_7bccb1308de2712c_1#timestamp.",
+        "$anonymous_type_7bccb1308de2712c_2#batch_size.",
+        "$anonymous_type_7bccb1308de2712c_2#timeout.",
+        "ProcessorConfig#",
+        "STATUS_PENDING."
+      ]
+    },
+    {
+      "from": "../src/models.h",
+      "to": "../src/models.c",
+      "symbols": [
+        "create_record(b82c855e852ff3ee).",
+        "validate_config(e1a38595c346115e)."
+      ]
+    },
+    {
+      "from": "../src/models.h",
+      "to": "../src/types.h",
+      "symbols": [
+        "Entry#",
+        "ProcessorConfig#",
+        "`<file>/src/types.h`/"
+      ]
+    },
+    {
+      "from": "../src/processor.c",
+      "to": "../src/helpers.c",
+      "symbols": [
+        "average_values(de703aa9d2047d72).",
+        "format_value(8b6623b5c22fb6a4).",
+        "sum_values(de703aa9d2047d72)."
+      ]
+    },
+    {
+      "from": "../src/processor.c",
+      "to": "../src/helpers.h",
+      "symbols": [
+        "`<file>/src/helpers.h`/"
+      ]
+    },
+    {
+      "from": "../src/processor.c",
+      "to": "../src/models.c",
+      "symbols": [
+        "validate_config(e1a38595c346115e)."
+      ]
+    },
+    {
+      "from": "../src/processor.c",
+      "to": "../src/models.h",
+      "symbols": [
+        "$anonymous_type_8910b2bf8bb3bf69_0#value.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#average.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#generated_at.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#record_count.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#records.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#total.",
+        "Record#",
+        "Report#"
+      ]
+    },
+    {
+      "from": "../src/processor.c",
+      "to": "../src/processor.h",
+      "symbols": [
+        "`<file>/src/processor.h`/"
+      ]
+    },
+    {
+      "from": "../src/processor.c",
+      "to": "../src/types.h",
+      "symbols": [
+        "ProcessorConfig#"
+      ]
+    },
+    {
+      "from": "../src/processor.h",
+      "to": "../src/models.h",
+      "symbols": [
+        "Record#",
+        "Report#",
+        "`<file>/src/models.h`/"
+      ]
+    },
+    {
+      "from": "../src/processor.h",
+      "to": "../src/processor.c",
+      "symbols": [
+        "free_report(f3290d4878a71118).",
+        "run_processor(e52df593bcb82a2e).",
+        "summarize_report(e53deedf6b9a003)."
+      ]
+    },
+    {
+      "from": "../src/processor.h",
+      "to": "../src/types.h",
+      "symbols": [
+        "ProcessorConfig#",
+        "`<file>/src/types.h`/"
+      ]
+    },
+    {
+      "from": "../src/test_helpers.c",
+      "to": "../src/helpers.c",
+      "symbols": [
+        "average_values(de703aa9d2047d72).",
+        "format_value(8b6623b5c22fb6a4).",
+        "sum_values(de703aa9d2047d72).",
+        "validate_id(c5f7da30cbc0f4e9)."
+      ]
+    },
+    {
+      "from": "../src/test_helpers.c",
+      "to": "../src/helpers.h",
+      "symbols": [
+        "`<file>/src/helpers.h`/"
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.c",
+      "to": "../src/models.c",
+      "symbols": [
+        "create_record(b82c855e852ff3ee).",
+        "validate_config(e1a38595c346115e)."
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.c",
+      "to": "../src/models.h",
+      "symbols": [
+        "$anonymous_type_8910b2bf8bb3bf69_1#average.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#record_count.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#total.",
+        "Record#",
+        "Report#",
+        "`<file>/src/models.h`/"
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.c",
+      "to": "../src/processor.c",
+      "symbols": [
+        "free_report(f3290d4878a71118).",
+        "run_processor(e52df593bcb82a2e).",
+        "summarize_report(e53deedf6b9a003)."
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.c",
+      "to": "../src/processor.h",
+      "symbols": [
+        "`<file>/src/processor.h`/"
+      ]
+    },
+    {
+      "from": "../src/test_pipeline.c",
+      "to": "../src/types.h",
+      "symbols": [
+        "ProcessorConfig#",
+        "`<file>/src/types.h`/"
+      ]
+    },
+    {
+      "from": "../src/test_processor.c",
+      "to": "../src/models.c",
+      "symbols": [
+        "create_record(b82c855e852ff3ee)."
+      ]
+    },
+    {
+      "from": "../src/test_processor.c",
+      "to": "../src/models.h",
+      "symbols": [
+        "$anonymous_type_8910b2bf8bb3bf69_1#average.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#generated_at.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#record_count.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#records.",
+        "$anonymous_type_8910b2bf8bb3bf69_1#total.",
+        "Record#",
+        "Report#",
+        "`<file>/src/models.h`/"
+      ]
+    },
+    {
+      "from": "../src/test_processor.c",
+      "to": "../src/processor.c",
+      "symbols": [
+        "free_report(f3290d4878a71118).",
+        "run_processor(e52df593bcb82a2e).",
+        "summarize_report(e53deedf6b9a003)."
+      ]
+    },
+    {
+      "from": "../src/test_processor.c",
+      "to": "../src/processor.h",
+      "symbols": [
+        "`<file>/src/processor.h`/"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

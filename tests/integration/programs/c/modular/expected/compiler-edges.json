@@ -1,0 +1,131 @@
+{
+  "tool": "scip-clang 0.4.0",
+  "projectFile": "../compile_commands.json",
+  "projects": [
+    {
+      "name": "modular",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../src/logger.c",
+    "../src/logger.h",
+    "../src/main.c",
+    "../src/metrics.c",
+    "../src/metrics.h",
+    "../src/pipeline.c",
+    "../src/pipeline.h"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../src/logger.c",
+      "to": "../src/logger.h",
+      "symbols": [
+        "`<file>/src/logger.h`/"
+      ]
+    },
+    {
+      "from": "../src/logger.h",
+      "to": "../src/logger.c",
+      "symbols": [
+        "log_message(85c52e162fed56f9)."
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/logger.c",
+      "symbols": [
+        "log_message(85c52e162fed56f9)."
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/logger.h",
+      "symbols": [
+        "`<file>/src/logger.h`/"
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/pipeline.c",
+      "symbols": [
+        "run_pipeline(de703aa9d2047d72)."
+      ]
+    },
+    {
+      "from": "../src/main.c",
+      "to": "../src/pipeline.h",
+      "symbols": [
+        "`<file>/src/pipeline.h`/"
+      ]
+    },
+    {
+      "from": "../src/metrics.c",
+      "to": "../src/metrics.h",
+      "symbols": [
+        "`<file>/src/metrics.h`/"
+      ]
+    },
+    {
+      "from": "../src/metrics.h",
+      "to": "../src/metrics.c",
+      "symbols": [
+        "clamp(7678bba071383ab).",
+        "compute_average(de703aa9d2047d72)."
+      ]
+    },
+    {
+      "from": "../src/pipeline.c",
+      "to": "../src/logger.c",
+      "symbols": [
+        "log_message(85c52e162fed56f9)."
+      ]
+    },
+    {
+      "from": "../src/pipeline.c",
+      "to": "../src/logger.h",
+      "symbols": [
+        "`<file>/src/logger.h`/"
+      ]
+    },
+    {
+      "from": "../src/pipeline.c",
+      "to": "../src/metrics.c",
+      "symbols": [
+        "clamp(7678bba071383ab).",
+        "compute_average(de703aa9d2047d72)."
+      ]
+    },
+    {
+      "from": "../src/pipeline.c",
+      "to": "../src/metrics.h",
+      "symbols": [
+        "`<file>/src/metrics.h`/"
+      ]
+    },
+    {
+      "from": "../src/pipeline.c",
+      "to": "../src/pipeline.h",
+      "symbols": [
+        "`<file>/src/pipeline.h`/"
+      ]
+    },
+    {
+      "from": "../src/pipeline.h",
+      "to": "../src/metrics.h",
+      "symbols": [
+        "`<file>/src/metrics.h`/"
+      ]
+    },
+    {
+      "from": "../src/pipeline.h",
+      "to": "../src/pipeline.c",
+      "symbols": [
+        "run_pipeline(de703aa9d2047d72)."
+      ]
+    }
+  ],
+  "ambiguous": []
+}

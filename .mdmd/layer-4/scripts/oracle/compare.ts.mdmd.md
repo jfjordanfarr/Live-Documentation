@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:42.419Z
+- Generated At: 2026-10-16T00:58:46.077Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 - Prints a list, never a score, and exits 0 either way; the integration suite `oracle.test.ts` asserts only that every expected edge is accounted for.
 - Reads the adapter's edges from the graph derived from the generated docs (since 2026-09-28). Only dependency-line edges count, not type references, so the measurement is the one recorded in the decisions log.
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
+- `fixtureGlobs()` keeps only the suffix of each default glob; since 2026-10-16 the defaults already read every suffix anywhere, so the fixture's globs equal the product's.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -31,7 +32,7 @@ What the comparison found, bucket by bucket.
 - Source: [source](../../../../scripts/oracle/compare.ts#L58)
 
 ##### `fixtureGlobs` — Summary
-The default globs anchor on this workspace's layout; a fixture is its own workspace, so keep only the extensions.
+The default globs already read every suffix anywhere; a fixture is its own workspace, so the same suffixes serve it.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function

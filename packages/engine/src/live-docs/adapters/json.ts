@@ -4,7 +4,9 @@
  * @remarks
  * Extracts dependencies from JSON files by detecting string values that
  * reference other workspace files. Uses a file index to resolve references
- * precisely without filesystem crawling.
+ * precisely without filesystem crawling. The comments and trailing commas
+ * that a `tsconfig*.json`, a `devcontainer.json` or a `.vscode/settings.json`
+ * carries are read as editors read them.
  *
  * Supported patterns:
  * - Relative paths: `"./src/utils.ts"`, `"../config/settings.json"`
@@ -324,6 +326,67 @@ function resolveToWorkspaceFile(
 // ============================================================================
 
 /**
+ * Reduces JSON with the comments and trailing commas an editor allows (a
+ * `tsconfig.json`, a `devcontainer.json`, a `.vscode/settings.json`) to the
+ * JSON that `JSON.parse` reads: a comment goes, a comma that only precedes a
+ * closing bracket goes, a byte order mark goes, and a string passes through
+ * intact, so a `//` or a `,]` inside one is left alone. What remains is parsed
+ * strictly, so a malformed document still fails as it did.
+ */
+function toStrictJson(text: string): string {
+  let strict = "";
+  // Where in `strict` the last comma stands while nothing but whitespace and comments has followed it.
+  let trailingComma = -1;
+  let index = text.charCodeAt(0) === 0xfeff ? 1 : 0;
+  while (index < text.length) {
+    const char = text[index];
+    if (char === "/" && text[index + 1] === "/") {
+      index += 2;
+      while (index < text.length && text[index] !== "\n" && text[index] !== "\r") {
+        index += 1;
+      }
+    } else if (char === "/" && text[index + 1] === "*") {
+      const close = text.indexOf("*/", index + 2);
+      index = close === -1 ? text.length : close + 2;
+    } else if (char === '"') {
+      const end = endOfStringLiteral(text, index);
+      strict += text.slice(index, end);
+      index = end;
+      trailingComma = -1;
+    } else {
+      if (char === ",") {
+        trailingComma = strict.length;
+      } else if (char === "]" || char === "}") {
+        if (trailingComma !== -1) {
+          strict = strict.slice(0, trailingComma) + strict.slice(trailingComma + 1);
+        }
+        trailingComma = -1;
+      } else if (!/\s/u.test(char)) {
+        trailingComma = -1;
+      }
+      strict += char;
+      index += 1;
+    }
+  }
+  return strict;
+}
+
+/** The index just past the string literal opening at `start`, its escapes passed over; the text's end when it never closes. */
+function endOfStringLiteral(text: string, start: number): number {
+  let index = start + 1;
+  while (index < text.length) {
+    if (text[index] === "\\") {
+      index += 2;
+    } else if (text[index] === '"') {
+      return index + 1;
+    } else {
+      index += 1;
+    }
+  }
+  return text.length;
+}
+
+/**
  * Every key path in a JSON document, joined with `:` the way `IConfiguration` addresses
  * nested settings (`Hangfire:Queue`). Arrays are not descended into.
  */
@@ -354,9 +417,9 @@ export const jsonAdapter: LanguageAdapter = {
 
     let parsed: unknown;
     try {
-      parsed = JSON.parse(content);
+      parsed = JSON.parse(toStrictJson(content));
     } catch {
-      // Invalid JSON - skip silently
+      // A malformed document is not read: an empty analysis, as for one that cannot be read at all.
       return {
         symbols: [],
         dependencies: []

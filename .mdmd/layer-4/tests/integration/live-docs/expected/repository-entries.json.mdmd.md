@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-10-15T15:59:03.274Z
+- Generated At: 2026-10-16T01:11:37.115Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,18 @@ The hand's reading of this repository's own entry points, with the reasons as th
 #### `entries` {#symbol-entries}
 - Type: key
 
+#### `entries:.devcontainer/devcontainer.json` {#symbol-entriesdevcontainerdevcontainerjson}
+- Type: key
+
+#### `entries:.live-docs.config.json` {#symbol-entrieslive-docsconfigjson}
+- Type: key
+
+#### `entries:.vscode/settings.json` {#symbol-entriesvscodesettingsjson}
+- Type: key
+
+#### `entries:eslint.config.js` {#symbol-entrieseslintconfigjs}
+- Type: key
+
 #### `entries:package.json` {#symbol-entriespackagejson}
 - Type: key
 
@@ -31,10 +43,16 @@ The hand's reading of this repository's own entry points, with the reasons as th
 #### `entries:packages/cli/src/index.ts` {#symbol-entriespackagesclisrcindexts}
 - Type: key
 
+#### `entries:packages/cli/tsconfig.json` {#symbol-entriespackagesclitsconfigjson}
+- Type: key
+
 #### `entries:packages/engine/package.json` {#symbol-entriespackagesenginepackagejson}
 - Type: key
 
 #### `entries:packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1` {#symbol-entriespackagesenginesrclive-docsadapterspowershellemit-astps1}
+- Type: key
+
+#### `entries:packages/engine/tsconfig.json` {#symbol-entriespackagesenginetsconfigjson}
 - Type: key
 
 #### `entries:packages/explorer/package.json` {#symbol-entriespackagesexplorerpackagejson}
@@ -49,10 +67,16 @@ The hand's reading of this repository's own entry points, with the reasons as th
 #### `entries:packages/explorer/src/client/tsconfig.json` {#symbol-entriespackagesexplorersrcclienttsconfigjson}
 - Type: key
 
+#### `entries:packages/explorer/tsconfig.json` {#symbol-entriespackagesexplorertsconfigjson}
+- Type: key
+
 #### `entries:packages/generator/package.json` {#symbol-entriespackagesgeneratorpackagejson}
 - Type: key
 
 #### `entries:packages/generator/src/generator.ts` {#symbol-entriespackagesgeneratorsrcgeneratorts}
+- Type: key
+
+#### `entries:packages/generator/tsconfig.json` {#symbol-entriespackagesgeneratortsconfigjson}
 - Type: key
 
 #### `entries:scripts/doc-tools/enforce-documentation-links.ts` {#symbol-entriesscriptsdoc-toolsenforce-documentation-linksts}
@@ -106,10 +130,22 @@ The hand's reading of this repository's own entry points, with the reasons as th
 #### `entries:scripts/verify.mjs` {#symbol-entriesscriptsverifymjs}
 - Type: key
 
+#### `entries:slopcop.config.json` {#symbol-entriesslopcopconfigjson}
+- Type: key
+
 #### `entries:tests/e2e/playwright.config.ts` {#symbol-entriestestse2eplaywrightconfigts}
 - Type: key
 
 #### `entries:tests/integration/tsconfig.json` {#symbol-entriestestsintegrationtsconfigjson}
+- Type: key
+
+#### `entries:tsconfig.base.json` {#symbol-entriestsconfigbasejson}
+- Type: key
+
+#### `entries:tsconfig.json` {#symbol-entriestsconfigjson}
+- Type: key
+
+#### `entries:vitest.config.ts` {#symbol-entriesvitestconfigts}
 - Type: key
 
 #### `reachedThroughDynamicImport` {#symbol-reachedthroughdynamicimport}

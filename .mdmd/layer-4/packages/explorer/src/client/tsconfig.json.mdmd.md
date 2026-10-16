@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/tsconfig.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:58:59.835Z
+- Generated At: 2026-10-16T00:58:44.131Z
 
 ## Authored
 ### Purpose
@@ -52,5 +52,5 @@ TypeScript project configuration for the Explorer client bundle. Extends the wor
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-_No dependencies documented yet_
+- [`tsconfig.base`](../../../../tsconfig.base.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

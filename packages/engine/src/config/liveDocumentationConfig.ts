@@ -60,6 +60,14 @@ export interface LiveDocumentationConfig {
    * `- Entry: declared`.
    */
   entryPoints: string[];
+  /**
+   * Workspace-relative paths or globs that discovery skips: a folder that
+   * documents itself, a vendored tree the `.gitignore` does not cover. Read by
+   * the rule the archetype overrides and the entry points use (`*` stands for
+   * anything within one segment, `**` for anything across segments), so a
+   * folder is named with its contents, as `vendor/**`.
+   */
+  exclude: string[];
   /** Enforce workspace-relative markdown links for wiki portability. */
   requireRelativeLinks: boolean;
   /** Header-slug dialect used when generating anchors. */
@@ -92,94 +100,54 @@ export const LIVE_DOCUMENTATION_DEFAULT_BASE_LAYER = "source";
 /** Default file extension for generated Live Doc files (`".md"`). */
 export const LIVE_DOCUMENTATION_FILE_EXTENSION = ".md";
 /**
- * Default glob patterns selecting workspace artifacts that receive Live Docs.
- *
- * Covers TypeScript, JavaScript, PowerShell, C#/.NET view files, Python, Java,
- * Ruby, Rust, C/C++, Go, HTML/CSS, JSON, SQL scripts, .NET project files, npm
- * package manifests, and static assets (images, fonts, media). Static assets
- * receive stub-only Live Docs for graph connectivity.
+ * The extensions of every file the generator can read: the scripts the
+ * built-in TypeScript parser reads, then each language adapter's files. Every
+ * adapter's extensions are here, a test holds the registry to it, and each has
+ * a default glob.
  */
-export const LIVE_DOCUMENTATION_DEFAULT_GLOBS = [
-  "package.json",
-  "packages/*/package.json",
-  "packages/**/src/**/*.ts",
-  "packages/**/src/**/*.tsx",
-  "packages/**/src/**/*.js",
-  "packages/**/src/**/*.jsx",
-  "packages/**/src/**/*.mjs",
-  "packages/**/src/**/*.cjs",
-  "packages/**/src/**/*.mts",
-  "packages/**/src/**/*.cts",
-  "packages/**/src/**/*.ps1",
-  "packages/**/src/**/*.psm1",
-  "packages/**/src/**/*.psd1",
-  "packages/**/src/**/*.aspx",
-  "packages/**/src/**/*.ascx",
-  "packages/**/src/**/*.cshtml",
-  "packages/**/src/**/*.razor",
-  "packages/**/src/**/*.config",
-  "packages/**/src/**/*.html",
-  "packages/**/src/**/*.css",
-  "packages/**/src/**/*.json",
-  "scripts/**/*.ts",
-  "scripts/**/*.tsx",
-  "scripts/**/*.mjs",
-  "scripts/**/*.cjs",
-  "scripts/**/*.ps1",
-  "scripts/**/*.psm1",
-  "scripts/**/*.psd1",
-  "scripts/**/*.html",
-  "scripts/**/*.css",
-  "scripts/**/*.json",
-  "tests/**/*.ts",
-  "tests/**/*.tsx",
-  "tests/**/*.js",
-  "tests/**/*.jsx",
-  "tests/**/*.mjs",
-  "tests/**/*.cjs",
-  "tests/**/*.mts",
-  "tests/**/*.cts",
-  "tests/**/*.ps1",
-  "tests/**/*.psm1",
-  "tests/**/*.psd1",
-  "tests/**/*.aspx",
-  "tests/**/*.ascx",
-  "tests/**/*.razor",
-  "tests/**/*.config",
-  "tests/**/*.cs",
-  "tests/**/*.cshtml",
-  "tests/**/*.cshtml.cs",
-  "tests/**/*.py",
-  "tests/**/*.java",
-  "tests/**/*.rb",
-  "tests/**/*.rs",
-  "tests/**/*.c",
-  "tests/**/*.h",
-  "tests/**/*.cpp",
-  "tests/**/*.go",
-  "tests/**/*.html",
-  "tests/**/*.css",
-  "tests/**/*.json",
-  "tests/**/*.sql",
-  "tests/**/*.csproj",
-  // Static assets — stub-like Live Docs for graph connectivity (2025-11-08 vision)
-  "tests/**/*.png",
-  "tests/**/*.jpg",
-  "tests/**/*.jpeg",
-  "tests/**/*.gif",
-  "tests/**/*.svg",
-  "tests/**/*.ico",
-  "tests/**/*.webp",
-  "tests/**/*.woff",
-  "tests/**/*.woff2",
-  "tests/**/*.ttf",
-  "tests/**/*.eot",
-  "tests/**/*.mp4",
-  "tests/**/*.webm",
-  "tests/**/*.mp3",
-  "tests/**/*.wav",
-  "tests/**/*.ogg"
+export const LIVE_DOCUMENTATION_SOURCE_EXTENSIONS: readonly string[] = [
+  // The built-in TypeScript parser
+  ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts",
+  // C and C++
+  ".c", ".h", ".cpp", ".cc", ".cxx", ".hpp", ".hh", ".hxx", ".inl",
+  // C# and ASP.NET markup
+  ".cs", ".aspx", ".ascx", ".cshtml", ".razor",
+  // .NET configuration and project files
+  ".config", ".csproj", ".vbproj", ".fsproj",
+  ".css",
+  ".go",
+  ".html", ".htm",
+  ".java",
+  ".json",
+  ".ps1", ".psm1", ".psd1",
+  ".py",
+  ".rb",
+  ".rs",
+  ".sql"
 ];
+
+/** The extensions of the static assets, images, fonts and media, that receive stub Live Docs so that the graph reaches them. */
+export const LIVE_DOCUMENTATION_ASSET_EXTENSIONS: readonly string[] = [
+  ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp",
+  ".woff", ".woff2", ".ttf", ".eot",
+  ".mp4", ".webm", ".mp3", ".wav", ".ogg"
+];
+
+/**
+ * Default glob patterns selecting the workspace files that receive Live Docs:
+ * every file an adapter or the TypeScript parser can read, and every static
+ * asset, anywhere in the workspace, so that a cold run over any repository is
+ * honest about what it holds. Assets are a project's content and are
+ * documented wherever they are found (the owner's decision, 2026-10-15).
+ * Discovery removes what no project wants documented, `.git`, `node_modules`,
+ * the docs root, lock files and what `.gitignore` ignores, and what the
+ * configuration's `exclude` names. A repository that wants a narrower set
+ * names its own globs.
+ */
+export const LIVE_DOCUMENTATION_DEFAULT_GLOBS: readonly string[] = [
+  ...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS,
+  ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS
+].map((extension) => `**/*${extension}`);
 
 /**
  * Fully-resolved default configuration used when no `.live-docs.config.json`
@@ -197,6 +165,7 @@ export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   archetypeOverrides: {},
   sampleRoots: [],
   entryPoints: [],
+  exclude: [],
   requireRelativeLinks: true,
   slugDialect: "github",
   bundleExclude: []
@@ -230,8 +199,8 @@ export function normalizeLiveDocumentationConfig(
   const bundleExclude = inputBundleExclude ? dedupeStrings(inputBundleExclude) : [];
   const sampleRoots = dedupeStrings(Array.isArray(input?.sampleRoots) ? input.sampleRoots : [])
     .map(root => root.replace(/\\/g, "/").replace(/^(?:\.\/)+/, "").replace(/\/+$/, "") || ".");
-  const entryPoints = dedupeStrings(Array.isArray(input?.entryPoints) ? input.entryPoints : [])
-    .map(entry => entry.replace(/\\/g, "/").replace(/^(?:\.\/)+/, ""));
+  const entryPoints = normalizeWorkspacePatterns(input?.entryPoints);
+  const exclude = normalizeWorkspacePatterns(input?.exclude);
 
   return {
     root: normalizeStringOption(input?.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root),
@@ -246,7 +215,8 @@ export function normalizeLiveDocumentationConfig(
     glob,
     archetypeOverrides,
     sampleRoots: [...new Set(sampleRoots)],
-    entryPoints: [...new Set(entryPoints)],
+    entryPoints,
+    exclude,
     requireRelativeLinks:
       input?.requireRelativeLinks ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.requireRelativeLinks,
     slugDialect: input?.slugDialect ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.slugDialect,
@@ -267,6 +237,13 @@ function normalizeExtensionOption(value: string | undefined, fallback: string): 
 
   const ensured = normalized.startsWith(".") ? normalized : `.${normalized}`;
   return ensured.length > 1 ? ensured : fallback;
+}
+
+/** Workspace-relative paths or globs as a configuration names them: trimmed, with forward slashes, without a leading `./`, deduplicated. */
+function normalizeWorkspacePatterns(source: string[] | undefined): string[] {
+  const patterns = dedupeStrings(Array.isArray(source) ? source : [])
+    .map((pattern) => pattern.replace(/\\/g, "/").replace(/^(?:\.\/)+/, ""));
+  return [...new Set(patterns)];
 }
 
 function dedupeStrings(source: string[]): string[] {

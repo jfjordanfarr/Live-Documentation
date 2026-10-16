@@ -31,7 +31,7 @@ describe("the Live Doc grammar over real docs", () => {
     const config = normalizeLiveDocumentationConfig(
       JSON.parse(fs.readFileSync(path.join(REPO_ROOT, ".live-docs.config.json"), "utf8"))
     );
-    const docs = await glob(`${config.root}/${config.baseLayer}/**/*${config.extension}`, { cwd: REPO_ROOT, absolute: true, nodir: true });
+    const docs = await glob(`${config.root}/${config.baseLayer}/**/*${config.extension}`, { cwd: REPO_ROOT, absolute: true, nodir: true, dot: true });
     expect(docs.length).toBeGreaterThan(100);
     for (const doc of docs.sort()) {
       expectRoundTrip(doc);

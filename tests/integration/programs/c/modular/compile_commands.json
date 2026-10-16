@@ -1,0 +1,50 @@
+[
+  {
+    "directory": ".",
+    "file": "src/logger.c",
+    "arguments": [
+      "gcc",
+      "-std=c11",
+      "-I",
+      "src",
+      "-c",
+      "src/logger.c"
+    ]
+  },
+  {
+    "directory": ".",
+    "file": "src/main.c",
+    "arguments": [
+      "gcc",
+      "-std=c11",
+      "-I",
+      "src",
+      "-c",
+      "src/main.c"
+    ]
+  },
+  {
+    "directory": ".",
+    "file": "src/metrics.c",
+    "arguments": [
+      "gcc",
+      "-std=c11",
+      "-I",
+      "src",
+      "-c",
+      "src/metrics.c"
+    ]
+  },
+  {
+    "directory": ".",
+    "file": "src/pipeline.c",
+    "arguments": [
+      "gcc",
+      "-std=c11",
+      "-I",
+      "src",
+      "-c",
+      "src/pipeline.c"
+    ]
+  }
+]

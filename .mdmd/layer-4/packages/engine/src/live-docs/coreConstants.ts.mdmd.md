@@ -16,6 +16,7 @@ Central repository of file extension constants for Live Documentation. Defines w
 - `IMPLEMENTATION_CODE_EXTENSIONS`: Polyglot coverage (TS, C/C++, C#, Java, Python, Ruby, Rust, PowerShell, ASP.NET)
 - `MODULE_RESOLUTION_EXTENSIONS`: Order matters for TypeScript-style resolution
 - `RESERVED_HEADING_NAMES`: Prevents user-authored sections from colliding with generated sections
+- `.inl` joined the implementation extensions on 2026-10-16 with the C and C++ adapter's registration, so an inline file under a sample root is code and not an asset.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

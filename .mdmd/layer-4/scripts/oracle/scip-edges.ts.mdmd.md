@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/scip-edges.ts
-- Generated At: 2026-10-02T20:20:02.665Z
+- Generated At: 2026-10-16T00:58:46.127Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Turns a SCIP index into the file-to-file edges a fixture's `expected/compiler-ed
 ### Notes
 - Nothing is filtered to fit an analyzer. The indexer quirks it handles are recorded in the output instead of hidden: scip-dotnet's namespace-only type names are disambiguated by project visibility with the leftovers listed under `ambiguous`, scip-go's generated test binaries are listed under `outside` with no edges, and rust-analyzer's one `crate/` symbol for every crate root of a package is narrowed to the referencing file's own crate, with crates read from Cargo's layout by `cargoProjects`.
 - Symbols are shown by their descriptors alone, with the scheme, package manager, package name and version stripped, so one converter reads every indexer's output.
+- A namespace or package symbol that several files define (C++'s `namespace rosetta`, reopened in every translation unit) makes no edge and no ambiguity, since it names no file; a crate root is the exception, narrowed to the referencing file's own crate; a file's own symbol, which scip-clang writes for every `#include` it resolves and which also ends in a slash, is kept, as it is the include edge the measurement of the include rule reads (2026-10-16).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -68,7 +69,7 @@ What the caller knows about the fixture that the index does not.
 
 #### `readProjects` {#symbol-readprojects}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L110)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L119)
 - Returns: [`OracleProject`](#symbol-oracleproject)[]
 
 ##### `readProjects` — Summary
@@ -76,7 +77,7 @@ Reads the projects of a .sln, or the one project of a .csproj, with their direct
 
 #### `cargoProjects` {#symbol-cargoprojects}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L175)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L184)
 - Returns: [`OracleProject`](#symbol-oracleproject)[]
 
 ##### `cargoProjects` — Summary
@@ -84,7 +85,7 @@ Cargo's conventional targets of the package at `packageDir`: the library owns ev
 
 #### `edgesFromIndex` {#symbol-edgesfromindex}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L195)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L204)
 - Returns: [`OracleEdges`](#symbol-oracleedges)
 - Parameters: `index`: [`ScipIndex`](#symbol-scipindex); `context`: [`IndexContext`](#symbol-indexcontext)
 
@@ -93,7 +94,7 @@ Derives the edges from an already-decoded index. Pure; the unit test drives it w
 
 #### `convertScipIndex` {#symbol-convertscipindex}
 - Type: function
-- Source: [source](../../../../scripts/oracle/scip-edges.ts#L277)
+- Source: [source](../../../../scripts/oracle/scip-edges.ts#L290)
 - Returns: [`OracleEdges`](#symbol-oracleedges)
 - Parameters: `context`: [`IndexContext`](#symbol-indexcontext)
 

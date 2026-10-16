@@ -1,6 +1,18 @@
 {
-  "convention": "Every file of this repository's own code that something outside the code starts, read by hand on 2026-10-15 from the manifests' scripts, bin and main, the configuration's entryPoints, and the kinds of file a tool reads, with the reasons as the docs write them. A test is an entry by its archetype and is not listed. The sample programs under tests/integration/programs and the fixtures under tests/integration/fixtures are inputs to the tool, not code of this workspace, and are not listed; a doc of this repository's own code with an Entry line that this list does not name is a finding. The seed was the October 8 dead code sweep's hand table (AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep/candidates.md), refreshed against the manifests and the tree as they stand.",
+  "convention": "Every file of this repository's own code that something outside the code starts, read by hand on 2026-10-15 and refreshed on 2026-10-16, when discovery began reading every file an adapter can read anywhere in the workspace and the root's tooling files, the packages' project files, the Live Docs configuration and the editor's and the dev container's files gained docs and tooling entries by their names and places, from the manifests' scripts, bin and main, the configuration's entryPoints, and the kinds of file a tool reads, with the reasons as the docs write them. A test is an entry by its archetype and is not listed. The sample programs under tests/integration/programs and the fixtures under tests/integration/fixtures are inputs to the tool, not code of this workspace, and are not listed; a doc of this repository's own code with an Entry line that this list does not name is a finding. The seed was the October 8 dead code sweep's hand table (AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep/candidates.md), refreshed against the manifests and the tree as they stand.",
   "entries": {
+    ".devcontainer/devcontainer.json": [
+      "tooling"
+    ],
+    ".live-docs.config.json": [
+      "tooling"
+    ],
+    ".vscode/settings.json": [
+      "tooling"
+    ],
+    "eslint.config.js": [
+      "tooling"
+    ],
     "package.json": [
       "tooling"
     ],
@@ -11,11 +23,17 @@
       "command live-docs of packages/cli/package.json",
       "module of packages/cli/package.json"
     ],
+    "packages/cli/tsconfig.json": [
+      "tooling"
+    ],
     "packages/engine/package.json": [
       "tooling"
     ],
     "packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1": [
       "program"
+    ],
+    "packages/engine/tsconfig.json": [
+      "tooling"
     ],
     "packages/explorer/package.json": [
       "tooling"
@@ -29,11 +47,17 @@
     "packages/explorer/src/client/tsconfig.json": [
       "tooling"
     ],
+    "packages/explorer/tsconfig.json": [
+      "tooling"
+    ],
     "packages/generator/package.json": [
       "tooling"
     ],
     "packages/generator/src/generator.ts": [
       "module of packages/generator/package.json"
+    ],
+    "packages/generator/tsconfig.json": [
+      "tooling"
     ],
     "scripts/doc-tools/enforce-documentation-links.ts": [
       "command docs:links:enforce of package.json"
@@ -87,10 +111,22 @@
     "scripts/verify.mjs": [
       "command verify of package.json"
     ],
+    "slopcop.config.json": [
+      "tooling"
+    ],
     "tests/e2e/playwright.config.ts": [
       "tooling"
     ],
     "tests/integration/tsconfig.json": [
+      "tooling"
+    ],
+    "tsconfig.base.json": [
+      "tooling"
+    ],
+    "tsconfig.json": [
+      "tooling"
+    ],
+    "vitest.config.ts": [
       "tooling"
     ]
   },

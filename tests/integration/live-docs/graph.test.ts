@@ -15,6 +15,16 @@ const config = normalizeLiveDocumentationConfig(
  * generator writes to `<root>/index.json` is this, serialized.
  */
 describe("the graph of this repository", () => {
+  it("holds the docs of hidden files, which a glob skips unless told to look", async () => {
+    // Found on 2026-10-16: the generator wrote the docs of `.vscode/settings.json`, `.devcontainer/devcontainer.json`
+    // and `.live-docs.config.json`, and the graph, the lint and the bundle read 719 docs of 722, since the doc
+    // enumerators globbed without `dot`. Every reader of the docs folder lets hidden path segments through now.
+    const graph = await readLiveDocGraph({ workspaceRoot: repoRoot, config });
+    for (const hidden of [".vscode/settings.json", ".devcontainer/devcontainer.json", ".live-docs.config.json"]) {
+      expect(graph.files[hidden], hidden).toBeDefined();
+    }
+  });
+
   it("resolves every link a doc writes to a file in the graph, and mirrors every edge inbound", async () => {
     const graph = await readLiveDocGraph({ workspaceRoot: repoRoot, config });
     const files = Object.values(graph.files);

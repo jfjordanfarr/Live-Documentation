@@ -13,6 +13,7 @@ Surfaces script and code-behind dependencies for ASP.NET markup assets so the LD
 ### Notes
 - Covers legacy WebForms `<%@ Page %>` directives alongside Razor/Blazor partial class detection, keeping the same adapter usable across all fixtures exercised in `tests/integration/live-docs/inspect-cli.test.ts`.
 - Intentional filesystem probes ensure we only yield dependencies for files that actually exist, preventing noisy edges during Stage-0 regeneration.
+- Registers `.ascx` since 2026-10-16: its own `MARKUP_EXTENSIONS` had named user controls while the registration had not, found when the shipped defaults were held to the registry.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
