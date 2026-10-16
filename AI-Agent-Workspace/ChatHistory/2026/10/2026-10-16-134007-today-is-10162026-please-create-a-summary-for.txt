@@ -100,3 +100,2060 @@
   whether the performance probe's driver becomes a kept instrument, and the
   skill's first question in a fresh chat. direction.md's Next names the
   archetypes design step as the next thing to plan.
+
+❯ I looked at all the screenshots from the last chat and used the site as well
+  for a good while.  Apologies for not indicating as much. I think the changes
+  made are enhancements and the application is inching its way towards
+  "perfect" ever more (slowly and steadily! The narrative of this workspace is
+  long!)
+
+  >Whether Bash follows C++ among the languages (asked in Turn 7, not
+  answered); the languages survey's order stands as the agent's.
+
+  Is Bash low-hanging fruit relative to how our software works? If not, are
+  there other low-hanging fruit we might be able to add support for?
+
+  >Whether the four scripts under the agent workspace deserve docs of their own
+  under the owner's rule ("that is your call", Turn 9); the exclude covers
+  them today.
+
+  Eh. Probably not.
+
+  >The simplicity competition's sensitivity to the neighbourhood at a strong
+  weight, a finding for the layout work the owner paused on October 8 (Turn
+  10).
+
+  The relaxed/compact layout thing is something I will definitely want to
+  revisit, same with the levers which control the speed of first render for the
+  2D local map (the amount of searching/bootstrapping to be done initially
+  before first render). But I'm not yet 100% sure how exactly I want that to
+  go. All I know is that there is nearly no difference between Relaxed and
+  Compact right now, and that feels to me like they are insufficently distinct
+  from one another. Whether that means we should keep the good default emerging
+  or whether we should push to further separate the two layouts is not yet
+  clear to me.
+
+  >Whether the performance probe's driver becomes a kept instrument beside the
+  layout lab; it stays in the scratchpad (Turns 11, 13 and 15).
+
+  I don't think perf stats are bad to know in our e2e suite. That seems a
+  reasonable addition so long as it doesn't pile on a bunch of new tech debt
+  that slows us down.
+
+  >The move's frames and the return after the retained wires (the pictures,
+  Turn 15): the owner expected to notice the change visually, "at least
+  slightly".
+
+  Pshh yeah not to my eye! Not yet anyway! I can't tell the missed work is
+  missing at all! Nice optimizing!
+
+  >Left for a later pass from reachable (Turn 4): manifest adapters for Cargo,
+  pom, pyproject, go.mod and gemspec; Rust examples/*.rs; the manifests' wires
+  in the picture if wanted; the C symbol extractor's miss of an Allman-style
+  main as a symbol; Java 25's instance main.
+
+  A very worthy effort and one you could send off subagents to do. Don't be
+  scared to dispatch a subagent or two to tackle these things. Opus 5.5 on High
+  or XHigh is a phenomenal workhorse and delivers steady quality (you can spin
+  up another fable if you prefer, though -- your subagent know-how is stronger
+  than mine -- I have not used that feature much at all).
+
+  >From the REA survey (Turn 5), the agent's open questions, not the owner's:
+  write on a doc the references an adapter could not follow; say how each file
+  was read; an artifact as the subject of a World Map piece with no source.
+
+  Hmmm... this feels a little like busywork to me. Prove to me that the work is
+  going to produce something of lasting value to our workspace and I'll give
+  the go-ahead. Otherwise, let's let it be.
+
+  >Open work, by the arc: the archetypes design step, next to plan, starting
+  from the two markers already parsed (package.json with its tsconfig, .csproj
+  with its solution) with the four edge families and the sidecars as its design
+  question (the survey); the languages beyond C++ waiting behind it (the
+  survey); the World Map's remaining tickets, T3, T4, T5, T8 and T9, with T8
+  the one the owner named as unsettled; the directories' next pass on bearings
+  across the two perspectives, the compute time measured on October 14 and the
+  click's cost on October 16; the consolidation pass the owner expects, and the
+  style unification of text sizes.
+
+  So I actually think the next big thing that might be really fun to tackle
+  from a design perspective is the rendering of change over time. Having our
+  software know how to look in a `.git/` (hah! and maybe one day even look at
+  TFS history, but I don't think it's as simple to do or as localized to the
+  directory being scanned). I think our "declared layout" (directory-oriented)
+  3D force graph will perform really nicely going snapshot by snapshot to show
+  us the history of this repo. And -- doing so will force us to deal with
+  improving continuity in 3D, speed of re-renders, limitations on what a
+  browser application can do in terms of memory potentially(? maybe some
+  localStorage stuff needs to be done to offload RAM if we see overuse or
+  something? this dev box is beefy but my dev machine at work has a measly 8GB
+  of RAM), that kind of thing.
+
+● Recording your message and my previous reply first, then gathering the facts
+  your questions need and dispatching two subagents: one to research prior art
+  on change over time, one to build the two small reachable leftovers.
+
+  Read 2 files, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ Survey prior art on change over time
+   └ Build Java 25 and Rust examples entries
+
+❯ >research prior art on change over time
+
+  Whoa whoa make sure you have a good idea of what we've already talked about
+  with respect to this feature. Indeed, there may even already be preexisting
+  research on this front.
+
+● I'll hold off on design discussion for now and first log your message, then
+  search chat history, Research, design docs, and archived git files for
+  everything previously said on this topic. · summary
+
+  Searched for 3 patterns, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Confirmed the mined scenarios index has a "Git history and change over time"
+  section per month, including a February 2026 cluster. I'll read those sections
+  and trace their sources before discussing design. · summary
+
+  Searched for 1 pattern, ran 6 shell commands (ctrl+o to expand)
+
+❯ Oh well hahahaha! Hopefully they explore the history we already have with
+  respect to change over time. Gource is of course the gold standard for git
+  history visualization.
+
+● Good finds so far: a December 2025 wish for multiple raw data copies to watch
+  workspace evolution, a November 2025 decision against traversing local git
+  history, and a CodeCity evolution section in the September prior-art survey.
+  I'll read these in full and direct the research agent to our existing
+  material. · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Now I'll have the research agent assess what it'd cost to build a repo
+  timeline—checking old-commit parsing, rename detection, churn, and renderer
+  updates—and log today's owner notes into Memory. · summary
+  ⎿  Message queued for delivery to a524bb599c560da1f at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● The parse test confirms the committed mirror only parses correctly from the
+  September 27 grammar commit onward, meaning earlier history needs
+  regeneration. I'll now test timing at an old commit via a worktree, check how
+  the 3D renderer updates its data, and log the findings. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+● Mining and measurements are complete, and both subagents are still running.
+  I'm now timing a regeneration at an old commit (using an alternative since
+  /usr/bin/time isn't installed) while drafting the first part of the survey
+  covering what this workspace has already established. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  Both changes are in and every check passes. The Java adapter now marks every
+  `main` the Java 25 launcher can run, and the Rust adapter now marks
+  `examples/<name>.rs` and `examples/<name>/main.rs` that have an `fn main`.
+  Nothing is committed and the mirror is not regenerated. One existing Java test
+  asserted the old rule and I had to rewrite it (point 1 under "Where the brief
+  and the code or grammar disagreed").
+
+  ## Files changed (only these four)
+
+  **`/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/java.
+  ts`**
+  - `isProgramEntry` is replaced by `launchableMain`, called through a new
+  `FileExtractor.considerMain`. A method counts when:
+    - it is named `main` and returns `void`;
+    - it is not `private` and has a body (an abstract class's `abstract void
+  main();` or an interface's bodiless `void main();` is never what runs);
+    - it takes no parameters, or exactly one `String[]` parameter. Accepted
+  spellings are `String[] args`, `String args[]`, `String... args` and
+  `java.lang.String`. `String`, `String[][]`, `List<String>`, `int` and two
+  parameters are rejected.
+    - it is static, or an instance method of a type `new T()` can make.
+  - "A type `new T()` can make" is decided by the new `isInstantiable`. It is a
+  record, or a class that is not abstract and is `static` when nested in a
+  class, enum or record. It also needs a non-private constructor with no
+  parameters, either declared or implicit: a class with no constructors, or a
+  record with no components. Interfaces and enums are never instantiable.
+  - When one type declares both, the `String[]` form wins over the no-parameter
+  form, as the launcher chooses. Otherwise the first launchable `main` in the
+  file wins (the old code kept the last).
+  - **Compact source files:** the bundled grammar parses them.
+  `@vscode/tree-sitter-wasm` 0.3.0 gives top-level `method_declaration` nodes
+  under `program`; top-level fields come out as `local_variable_declaration`. So
+  `extract()` looks at top-level methods first, as members of the implicit
+  class (instantiable, not interface), and their `main` comes before any nested
+  class's.
+  - Classes declared in a compact file are read as members of the implicit
+  class, so non-static ones are inner classes.
+  - The `implicitlyPublic` flag now travels in a small `Container` record.
+  Symbol publication is unchanged.
+  - The header sentence now reads: "The program's entry point is a `main` the
+  launcher can run (JEP 512): `void`, not private, static or instance, taking
+  one `String[]` or nothing."
+
+  **`/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/java.
+  test.ts`**
+  - The existing `public static void main` test is kept. It now asserts exact
+  lines and adds the real rosetta `Main.java`, which gives `{symbol:"main",
+  line:41}` and skips the `String main(int)` overload at line 26.
+  - New tests:
+    - **Counted:** instance `void main()`, instance `void main(String[] args)`,
+  `static void main()` without `public`, `protected void main(final String...
+  args)`, `static void main(java.lang.String args[])`, a static main in an
+  abstract class, a zero-component record, a class with an extra no-arg
+  constructor, and a static nested class.
+    - **Precedence:** the `String[]` main beats `void main()` in the same class.
+    - **Not counted:** `private` mains; `int`, `String[][]`, `List<String>`,
+  two-`String` and single plain `String` parameters; non-void mains; an
+  interface's bodiless main and its default main; an abstract class; a class
+  whose only no-arg constructor is private; a class with only a parameterised
+  constructor; a record with components; an enum; a non-static inner class; a
+  class with no main.
+    - **Compact source files:** a bare `void main()`; a top-level `void
+  main(String[])` chosen over a nested `Helper`'s static main; a private
+  top-level main with a non-static nested class gives none; a `static class`
+  with an instance main counts.
+  - Mutation checks: removing the instantiable check, the `String[]` preference,
+  the compact-file pass, or the one-array-dimension check each fails a test.
+
+  **`/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/rust.
+  ts`**
+  - `isBinaryRoot` now matches `^(src/bin|examples)/<name>.rs` and
+  `^(src/bin|examples)/<name>/main.rs`, so `toProgram` reports an example's
+  top-level `fn main` exactly as it does for bins.
+  - `examples` moved out of `isConventionalRoot`'s second regex and into
+  `isBinaryRoot`. The set of crate roots is the same (lib, main, bins, examples,
+  tests, benches), so its truth table did not change.
+  - `tests/` and `benches/` are not binary roots. The comments on `isBinaryRoot`
+  and `toProgram` and the header sentence say so.
+
+  **`/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/rust.
+  test.ts`**
+  - New test:
+    - `examples/demo.rs` → `{main, line 3}`;
+    - `examples/tool/main.rs` → `{main, line 3}`, and its `mod args;` resolves
+  to `examples/tool/args.rs`;
+    - no program for `examples/helper.rs` (no main), `examples/tool/args.rs` (a
+  module of the example, with a `pub fn main`), `benches/x.rs` and
+  `tests/it.rs`.
+  - Mutation checks: dropping `examples` from `isBinaryRoot`, or adding
+  `benches` or `tests` to it, each fails the test.
+
+  ## Sources (fetched 2026-10-16)
+
+  **JEP 512, https://openjdk.org/jeps/512, "Instance main methods":**
+  > "If the class declares or inherits a main method with a String[] parameter
+  then the launcher chooses that method. Otherwise, if the class declares or
+  inherits a main method with no parameters then the launcher chooses that
+  method. Otherwise, the launcher reports an error and terminates. If the chosen
+  method is static then the launcher invokes it. Otherwise, the chosen method
+  is an instance main method. The class must have a non-private constructor with
+  no parameters. The launcher invokes that constructor and then invokes the
+  chosen main method of the resulting object. If there is no such constructor
+  then the launcher reports an error and terminates."
+
+  **The JEP does not state the "non-private" and "void" rules from the brief;
+  the JLS does.** JLS SE 25 §12.1.4,
+  https://docs.oracle.com/javase/specs/jls/se25/html/jls-12.html#jls-12.1.4:
+  > "A main method declared in, or inherited by, a given class is a candidate
+  main method if either: It has a single formal parameter (§8.4.1) whose
+  declared type is an array of String, a void result, and public, protected or
+  package access; or It has no formal parameters, a void result, and public,
+  protected or package access. Note that a candidate main method may be either a
+  static or an instance method. … The type of the single formal parameter may
+  be given as either String[] or String... as they denote the same type."
+
+  JLS SE 25 §7.3 (compact files): "A compact compilation unit implicitly
+  declares a top level class (§7.6) whose members are the methods, fields,
+  classes, and interfaces declared in the compact compilation unit."
+
+  **Cargo, https://doc.rust-lang.org/cargo/reference/cargo-targets.html#target-a
+  uto-discovery:**
+  > "By default, Cargo automatically determines the targets to build based on
+  the layout of the files on the filesystem. The target configuration tables,
+  such as [lib], [[bin]], [[test]], [[bench]], or [[example]], can be used to
+  add additional targets that don't follow the standard directory layout."
+
+  That section names neither `examples/<name>.rs` nor the subdirectory form; the
+  layout comes from these two pages:
+  - Same page, "Examples": "By default, examples are executable binaries (with a
+  main() function). You can specify the crate-type field to make an example be
+  compiled as a library".
+  - https://doc.rust-lang.org/cargo/guide/project-layout.html lists
+  `examples/simple.rs` and `examples/multi-file-example/main.rs`, and says: "If
+  a binary, example, bench, or integration test consists of multiple source
+  files, place a main.rs file along with the extra modules within a subdirectory
+  of the src/bin, examples, benches, or tests directory."
+
+  ## Where the brief and the code or grammar disagreed
+  1. **An old test conflicted with the brief.** "Leaves program absent when no
+  main is public, static and void" asserted that `static void main()` and
+  `public void main(String[] args)` do not count; under JEP 512 both do. I
+  rewrote it as the new negative test and moved those two cases into the
+  positive test. Your two named cases are kept: `public static String main(int)`
+  does not count and `public static void main(String[])` does.
+  2. **The brief's rule was incomplete in two places, and I followed the
+  specs:**
+     - an instance `main` counts only when its type can be made with `new T()`,
+  which is the JEP's constructor clause;
+     - a bodiless (abstract) `main` never counts.
+
+     Without these, `interface X { void main(); }`, enums and inner classes
+  would have been marked.
+  3. **Which `main` wins changed.** Within a type, the `String[]` form beats the
+  no-parameter form. Otherwise the first in the file wins, where the old code
+  kept the last. In a compact file the implicit class's own `main` comes first.
+
+  ## Verification (the last lines of each)
+  - `npx vitest run --project unit …/java …/rust`: `Test Files 5 passed (5)`,
+  `Tests 38 passed (38)`.
+  - `npx eslint` on the four files: exit 0. The only output was the usual
+  "Multiple projects found" notice.
+  - `npm run build -w packages/engine`: `tsc -p tsconfig.json && node -e
+  "...copyFileSync(...powershell.emit-ast.ps1...)"`, exit 0.
+  - `npm run test:integration`: `Test Files 13 passed (13)`, `Tests 72 passed
+  (72)`, `Duration 30.05s`. Rosetta parity is among them.
+  - `npm run live-docs:generate -- --dry-run`: "Base layer processed 723 file(s)
+  (dry-run): 0 created, 2 updated, 721 unchanged, 0 skipped, 0 deleted." **2
+  docs would change**, presumably the mirrors of `java.ts` and `rust.ts`.
+
+  ## Not done (outside this scope)
+  - **Compact Java files only get entry detection.** Their top-level methods and
+  fields are not published as symbols, and type uses inside those methods are
+  not collected as dependencies. So the entry has a line but no heading, and its
+  edges are missed. Classes in a compact file are still qualified as
+  package-level top-level types rather than as members of the implicit class.
+  - **Java inheritance is not followed.** A class that inherits a launchable
+  `main` is not marked.
+  - **Rust: `Cargo.toml` is not read for these targets.** An example compiled as
+  a library via `[[example]] crate-type`, `autoexamples = false`, and explicit
+  `[[example]] path =` are not handled. Bins have the same gap today. A library
+  example usually has no `fn main`, which limits the first case.
+
+  Scratchpad: I removed what I created. The other files there predate this task
+  and were left alone. `git status` also shows modified `AI-Agent-Workspace`
+  files; they are yours, not mine.
+
+● Agent "Build Java 25 and Rust examples entries" finished · 16m 27s
+
+● Java 25's launchable main rule and Rust's example binaries are implemented,
+  with 38 adapter tests and the integration suite passing. I'll review the diff,
+  regenerate the two affected docs, and kick off the full gate in the
+  background while redoing the timing with shell arithmetic. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The builder's diff checks out—the Java rule matches JLS §12.1.4 and JEP 512,
+  the Rust change is minor, and timings show the generator runs 12–16 seconds on
+  older trees in this repo. Next I'll regenerate the two affected docs, measure
+  the new chat export, and record the measured facts in the survey. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Leftover docs are regenerated with notes updated. I'm now kicking off the full
+  Playwright gate in the background (~20 min) while the research agent wraps
+  up, and I'll reply once both finish. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the gate runs and the research agent finishes, one more fact for the
+  continuity question: how the structure layout already seeds a node new to the
+  picture.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both background pieces are still running: the full gate over the two
+  leftovers, and the research agent on the field's prior art, now also set
+  against our own earlier words. Interim findings for you while they finish:
+
+  - The history we already have is real and older than I had in view. On
+    2025-12-19 you proposed nearly today's design: "many copies of the raw
+    underlying data" behind the static site, "Watching the evolution of a
+    workspace commit-by-commit." On 2025-11-10 you retired git-derived churn
+    from the committed docs because two clones' local histories differ, and on
+    2025-11-11 allowed local history for views nothing permanent depends on. The
+    September 28 prior-art survey already holds CodeCity's evolution rules
+    (fixed real estate, empty lots, an age map) and Gource's controls. All of it
+    is now gathered, dated and sourced, in the first part of a survey for
+    today, with the field's part to follow from the agent.
+  - This repository's own history, measured. 563 commits; the committed mirror
+    parses under today's grammar only from September 27 on (about 280 commits,
+    the rebuild and the renames included); earlier history needs regeneration,
+    which today's generator does in 12 to 16 seconds per old commit, so the
+    whole history is a few hours of headless work once. Git already sees the
+    three package renames as renames. A snapshot is 439 KB as ids and edges, so
+    a whole history as deltas is a few megabytes. The 3D view already keeps node
+    positions by id across data updates and seeds a new hub at its members'
+    centroid.
+
+  The reply with the forks, the Bash answer, the REA answer and the leftovers'
+  landing comes when the gate and the survey are in.
+
+› Message from general-purpose
+  The survey is written. It covers all six questions, puts Gource first and at
+  the greatest length, and has a read-across that makes no recommendation.
+  Nothing in the repository was edited or committed.
+
+  - **Path:** /tmp/claude-1000/-workspaces-Live-Documentation/1b33ae22-268b-41e9
+  -8bc9-40fab997e27a/scratchpad/change-over-time-prior-art.md
+  - **Length:** 186 lines. Most lines are long paragraphs, so this is well under
+  the limit of about 450. It contains no em or en dashes.
+  - **Sources:** 78 distinct URLs cited. That is roughly 70 distinct works,
+  because some tools are cited through several of their own pages (README, wiki,
+  source files, ChangeLog, issues).
+  - **Internal sources read:** all 7 you named, read-only:
+    - `Research/2026-09-28-declared-facts-prior-art.md`, lines 565–580, 725–765
+  and 829
+    - every "Git history and change over time" section of
+  `Research/2026-10-09-owner-scenarios-mined.md`
+    - the "graph over time" bullet in `Memory/ideas.md` (line 32)
+    - the 2026-10-08 Gource entry in `Memory/direction.md` (line 290)
+    - the Snapshots section of `.mdmd/layer-1/vision.mdmd.md` (line 72)
+    - `ChatHistory/2025/11/2025-11-10.md`, lines 2186–2192
+    - `ChatHistory/2025/11/2025-11-11.md`, lines 1530–1536
+
+    Each section has an "Already said here" line giving the file and line.
+  Earlier work is cited as "already surveyed here on 2026-09-28" rather than
+  repeated.
+
+  **Two things to know about the files:**
+  - `git status` now shows `ideas.md` and `direction.md` as modified. That was
+  not me. If those edits moved text, the line numbers I cite for them (32 and
+  290, read during this run) may need checking.
+  - `Research/2026-10-16-change-over-time.md` also exists, and the harness
+  reported that my scratchpad file was changed on disk after I wrote it. I left
+  both as they are.
+
+  **What is new beyond the earlier survey:**
+  - **Gource reads an event log, not snapshots.** Each line is
+  `timestamp|user|A/M/D|path|colour`, and there is no rename type.
+  - **Gource turns rename detection off on purpose.** It runs `git log
+  --no-renames`; its ChangeLog says renames "don't display correctly". A renamed
+  file therefore disappears and reappears, and a renamed directory empties out
+  entirely (issue #61).
+  - **A Gource seek rebuilds from scratch.** `seekTo` resets the whole scene and
+  replays from a byte offset in the log; the tree as it stood on that date is
+  never reconstructed.
+  - **How Gource holds the tree still:** each directory is pulled toward its
+  parent, pushed outward and repelled by its siblings, and a new directory
+  starts next to its parent at an offset taken from a hash of its path. Files
+  also vanish after 60 seconds untouched, and its documentation gives no limit
+  for very long histories.
+  - **Two earlier tools already animate a dependency graph rather than a file
+  tree:**
+    - Evolution Storyboards (Beyer and Hassan, 2006) seeds each panel's layout
+  with the previous panel's positions and draws how far each node moved.
+    - Repo Visualizer (Jany-M, created May 2026) is a d3-force import graph
+  clustered by top-level directory, stepped commit by commit. It seeks backward
+  by replaying from the start and also turns rename detection off.
+  - **3d-force-graph keeps positions only by object identity.** Every
+  `graphData` update reheats the whole simulation. Nodes passed back as the same
+  objects keep their positions; new objects start in d3's default spiral
+  (phyllotaxis) arrangement.
+  - **The mental-map evidence is mixed.** Most comprehension experiments found
+  no conclusive benefit, but orientation tasks were faster with fewer errors
+  when positions were preserved. Small multiples beat animation for speed, while
+  animation made fewer errors on "what was added in this step".
+  - **Browser numbers with dates:**
+    - localStorage holds 5 MiB per origin and is synchronous.
+    - IndexedDB quotas are large and left to each browser (MDN page last changed
+  2026-01-05; Storage Standard updated 2026-10-06).
+    - V8 caps the JavaScript heap in Chrome at 2 or 4 GB (V8 blog, 2020).
+    - Chrome caps single allocations at 1 GB (deck.gl guide, last changed
+  2025-04-10).
+    - Chrome and Firefox give `file://` pages opaque origins, so `fetch` and
+  modules hit CORS errors.
+
+  **Pages I could not load** (each is also listed in the file):
+  - Misue et al. 1995 on ScienceDirect (403, no free copy found). I used the
+  Beck et al. survey's summary of it instead.
+  - Archambault and Purchase 2013 on ScienceDirect (403). Read from Glasgow
+  eprints instead.
+  - The Springer chapter pages (bot challenge). Read from Glasgow eprints
+  instead.
+  - The Beck et al. 2017 full text (the UCSC host did not resolve; the
+  Eurographics copy is gated). I read the 2014 EuroVis survey's full text and
+  the 2017 abstract.
+  - The GEVOL PDF (404).
+  - The GitTree page at Cal Poly (certificate failure). Only a search snippet
+  was seen.
+  - michaelogawa.com/code_swarm, which is now an unrelated site.
+  - The m3.material.io sliders page (did not render). I used Material Web's
+  slider doc instead.
+  - Lanza's PDF on inf.usi.ch (Cloudflare challenge). The same paper was read
+  from scg.unibe.ch.
+  - The CVSscan SoftVis 2005 paper and the van Hees and Hage abstract (no
+  loadable copy found).
+  - The YouTube shortcuts page went through a summarising fetcher rather than
+  raw HTML, and the file says so.
+
+  I deleted my download and extraction folders from the scratchpad; the survey
+  file is the only output.
+
+● The research agent has returned its survey: 186 lines, 78 sources, Gource
+  first. I'll read it whole before folding it into the Research file as its
+  second part.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Agent "Survey prior art on change over time" finished · 31m 51s
+
+● The survey is well-written and sourced, but its two line-number citations into
+  the Memory files need updating since those files moved today. I'll add it as
+  the second part of the survey, include the agent's reading as a fourth
+  section, and verify all links. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● While the gate finishes, I'll run the four documentation audits over the
+  markdown written since it started, so the records' commit is checked too.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● At 11 minutes into the gate, I confirmed the asset audit's three findings are
+  just Playwright's ignored trace artifacts, not actual tree files, so I'll
+  re-run that audit after the gate finishes. For now, I'll wait for the gate's
+  exit line. · summary
+
+● Writing the reply's draft to the scratchpad now, so a compaction cannot take
+  it; the gate's result fills in the last numbers.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The only remaining dependency is the gate's exit. I'll glance at where its log
+  stands rather than poll it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lint, unit, and integration tests are all passing, but lint still shows the
+  same five warnings carried over from previous sessions. I'll review them now
+  and fix them instead of letting them persist. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The five warnings are missing doc comments on exports from the October 14
+  search bar work, and since that's ours to fix, I'll handle them now. I'm
+  reviewing the five declarations and will add the comments once the running
+  gate finishes, so its result stays accurate for the current tree. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The five are: an options interface and two interfaces plus the factory of the
+  search field, the search options in the graph search, and a doc comment on the
+  Explorer state that the October 14 PathDestination type was inserted under,
+  leaving the state type bare. All small and clear. The gate is in its
+  Playwright stage; when it reports I'll commit the leftovers, make these five
+  fixes with a regeneration and a second gate, and then send the full reply with
+  the questions on change over time.
+
+● Background command "Run the full pre-commit gate with Playwright over the
+leftovers, logging to the scratchpad" completed (exit code 0)
+
+● The gate has finished. I'll read its result and, if green, commit the
+  leftovers.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All checks pass: lint, 1,101 unit and 72 integration tests, unchanged docs,
+  audits, and 134 browser tests in 16.7 minutes. Now committing the remaining
+  files by path while adding the five missing doc comments and clearing the
+  runner's folder for the next gate. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Leftovers are committed as f77b58a9 and the five comments pass lint cleanly.
+  I'll now regenerate the docs, kick off the second gate in the background, and
+  save the full reply draft while logging this step. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The second gate's first step, the regeneration, has run; I'll check what the
+  three doc comments changed in the docs while the gate proceeds.
+  Ran 1 shell command (ctrl+o to expand)
+
+● The regeneration surprisingly left the docs unchanged, even though doc
+  comments should update symbol summaries. I'll check the generator output and
+  the doc content for createSearchField. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The generator did update three docs; my status check had run while it was
+  still writing. The docs now carry the summaries. Nothing else is left but the
+  gate, so I'll wait for its notification.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The second gate started at 14:48 UTC and will take about twenty minutes; the
+  three source files and their three regenerated docs are what it tests.
+  Everything left depends on its result: the commit of the five doc comments,
+  the commit of today's records and the survey, and the full reply, which is
+  drafted. I'll continue when it reports.
+
+● Background command "Regenerate the docs for the five doc comments, then run
+the full gate with Playwright, logging to the scratchpad" completed (exit code
+0)
+
+● The second gate has finished; reading its result.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Second gate passes clean: 1,101 unit tests, 72 integration tests, no lint
+  warnings, docs regenerated (three updated), plus three audits and 134 browser
+  tests all good. I'll now commit the five doc comments, update the resumption
+  record, and commit today's records, Memory, and the survey. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Everything you answered is recorded, both subagents have reported, and the
+  tree is clean after three commits. Here is the state, then the Bash and other
+  answers, then change over time: what we already had, what the field adds, and
+  the questions for you.
+
+  The leftovers and your other points
+
+  Landed as f77b58a9: Java 25's main and Rust's examples. A subagent on Opus 5.5
+  at high effort rewrote the Java rule to what the launcher actually runs,
+  reading JLS §12.1.4 and JEP 512 rather than my brief: a void main that is not
+  private and has a body, taking one String[] or nothing, static or an instance
+  method of a type the launcher can construct. The bundled grammar parses Java
+  25's compact source files, so a top-level main counts. The Rust adapter now
+  marks examples/<name>.rs and examples/<name>/main.rs that hold an fn main;
+  tests and benches stay out. One Java test had asserted the old rule and was
+  rewritten. The full gate passed: lint, 1,101 unit and 72 integration tests,
+  the docs unchanged on regeneration, the three audits and 134 browser tests.
+  The two docs say what is not followed: an inherited main, the symbols of a
+  compact file's top-level methods, Cargo's example tables. The C extractor's
+  Allman-style miss was already fixed by yesterday's tree-sitter rewrite.
+
+  Landed as 2fa8544a: five lint warnings carried since October 14. The gate
+  reported five missing doc comments on the search bar's exports and the
+  Explorer state, which the last two sessions called pre-existing. By your rule
+  all messes are ours, so they are written, and lint now reports nothing. One
+  was a small real defect: the state type's comment had been stranded above the
+  PathDestination type inserted beneath it. Second full gate green, same counts.
+
+  Held for your word: the manifest adapters. go.mod and pom.xml need no new
+  dependency; pom.xml reads the way the project adapter already reads a .csproj.
+  Cargo.toml and pyproject.toml are TOML, which Node cannot parse on its own,
+  so there is a fork: a small MIT TOML 1.0 library as an engine dependency,
+  which I recommend because a hand-written subset reader is a scanner by another
+  name, or leaving those two out. I would drop gemspec from the list, since it
+  is Ruby code and no sample has one. "The manifests' wires in the picture" is a
+  design change for your eye, not a leftover, and I would leave it out unless
+  you want it. Say go, with or without the TOML pair, and a subagent takes it.
+
+  Bash is low-hanging in mechanism and poor in fit. The grammar is on disk and
+  an adapter has a shape to copy. But our software draws file-to-file references
+  with a basis, and a shell script's references are source "$(dirname
+  "$0")/lib.sh" and commands run by name: dynamic strings a static reading
+  cannot follow, so most of its wires would be missing and the map would have to
+  say so. No indexer exists, this repository has two shell scripts, and your
+  estate scripts in PowerShell. Not now.
+
+  What is low-hanging relative to how our software works: PowerShell on the
+  grammar. Today's PowerShell adapter runs pwsh at generation time to get the
+  AST, a runtime dependency a user's machine must satisfy. The grammar is on
+  disk, the samples are fixed, and it is your day-job language. The current pwsh
+  output can become the oracle: generated once for the fixed samples and
+  committed as expectations, with pwsh needed only for this project's
+  development, which is exactly your October 15 rule. After it, Ruby on the
+  grammar replaces the regex scanner. PHP has a grammar and an indexer but no
+  need here. TypeScript on the grammar would cut nine megabytes from a
+  scanner-in-file but is a parser swap of the largest adapter, not low-hanging.
+
+  The REA questions: let them be. None of the three has a scenario in hand. The
+  one with value, a doc saying "this file has references the docs cannot
+  follow", overlaps what exists, since unresolved imports are already written
+  and counted as references outside the scan; what is silently absent is only
+  the truly dynamic reference, which this repository barely has. The proof you
+  asked for would come from a cold run over a codebase where it bites, a
+  WebForms estate with reflection and configuration-bound WCF. Until then there
+  is nothing to show.
+
+  Performance statistics in the suite: agreed, as an instrument and not a test.
+  A timing assertion flakes, and a test that cannot fail is a hallucination. The
+  probe's driver becomes a kept script beside the layout lab that prints the
+  click and frame table into a probe report, folded into the change-over-time
+  probe, since a snapshot step's frame rate is the same measurement. Small, and
+  not today. Relaxed and Compact, the first-render levers and the four scripts
+  are recorded as you said them.
+
+  Change over time: what we already have
+
+  You were right to stop me. The workspace has said more than I had in view, and
+  the September 28 survey already researched it. All of it is in
+  2026-10-16-change-over-time.md
+  (AI-Agent-Workspace/Research/2026-10-16-change-over-time.md): Part 1 our own
+  words, Part 2 the field's answers from the research agent with 78 sources and
+  Gource first, Part 3 this repository measured, Part 4 my reading.
+
+  What we had said. On 2025-12-19 you stated the feature in nearly today's
+  shape: write "many copies of the raw underlying data" behind the static site
+  and grow into "Watching the evolution of a workspace commit-by-commit." On
+  2025-11-10 you retired git-derived churn from the committed docs because two
+  clones' local histories differ, with no remote traversal and no auth; on
+  2025-11-11 you allowed local history for views nothing permanent depends on. A
+  timeline is such a view, so the sequence is derived data beside the bundle
+  and never a line in a Live Doc, and today's words and those stand together. On
+  2026-09-27 you hoped to "track the inflation and deflation of the universe";
+  on 2026-10-08 you placed the timelapse in the 3D graph and kept the World Map
+  for connectivity and deployment. The flyover of 2026-09-26 is a different
+  axis, a system in action rather than its history; the September 27 reply had
+  conflated them. And on 2026-02-24 you had already watched the application's
+  shape change over weeks in the Force Graph.
+
+  What the field adds. Gource reads an event log of adds, modifies and deletes
+  with no rename type, and runs git log --no-renames on purpose because renames
+  "don't display correctly", so a renamed directory empties and refills; a seek
+  rebuilds the scene from a byte offset; the tree holds still by parent
+  attraction, outward push and sibling repulsion, with a new directory hashed
+  beside its parent. Two tools animate a dependency graph rather than a file
+  tree: Evolution Storyboards in 2006, seeding each panel with the last
+  positions and drawing how far each node moved, and Repo Visualizer from May
+  this year, a d3-force import graph stepped by commit that seeks backward by
+  replaying from the start. The 3D force library keeps positions only by object
+  identity and reheats on every update. The evidence on the "mental map" is
+  mixed, but orientation, which is what a scrubber asks of a reader, was
+  measurably faster with fewer errors when positions were kept; small multiples
+  beat animation for speed, and animation makes fewer errors on "what was added
+  in this step". localStorage is 5 MiB and synchronous; a file:// page cannot
+  fetch its siblings, so the single file must inline the sequence.
+
+  What this repository offers as the first subject.
+
+  ┌───────────────────────────┬─────────────────────────────────────────────┐
+  │           Fact            │                  Measured                   │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Commits since 2025-10-16  │ 563, of which 253 touch the mirror          │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Committed mirror readable │ from 13f66380 on 2026-09-27, about 280      │
+  │  by today's grammar       │ commits; before it none                     │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Regenerating an older     │ 11.6 s for the April 2026 tree, 15.6 s for  │
+  │ commit with today's       │ December 2025, 32.6 s for today's           │
+  │ generator                 │                                             │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ The three September       │ detected by git as renames: 7, 198 and 200  │
+  │ package renames           │ paths                                       │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Docs changed per commit   │ mean 34, maximum 563                        │
+  │ touching the mirror       │                                             │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ One snapshot as ids and   │ 439 KB; the whole index.json is 4.8 MB      │
+  │ edges                     │                                             │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │                           │ keeps node objects by id, seeds a new hub   │
+  │ The 3D renderer today     │ at its members' centroid, has an update     │
+  │                           │ path with no warm-up                        │
+  └───────────────────────────┴─────────────────────────────────────────────┘
+
+  So the whole history is a few hours of headless computation once, a few
+  megabytes as deltas, and the stretch you most want to watch, the rebuild and
+  renames of September 27 and 28, is the stretch the committed mirror already
+  covers.
+
+  Change over time: the questions I would put to you
+
+  Each with my recommendation, so you can answer by exception.
+
+  1. One lens or the committed mirror? The mirror at a commit carries the
+     generator of that day, and the adapters changed a lot since September 27,
+     so a sequence read from the committed docs would mix the tool's growth with
+     the code's. I recommend regenerating every commit with one generator
+     version, which is what "through its own lens" asks; the mirror is a
+     shortcut only where the generator is the same.
+  2. What a step is. Every commit as the unit of truth, cheap as a delta; played
+     at Gource's seconds-per-day with quiet stretches skipped; stepped one
+     commit at a time by key.
+  3. Renames. Trust git's inference as the identity signal, so a renamed file
+     slides to its new hub and a renamed directory moves whole. A file below the
+     similarity threshold is a death and a birth, shown as such rather than
+     invented. Gource chose to drop renames and pays with vanishing directories.
+  4. What holds still. The structure layout's hubs are the skeleton, as
+     CodeCity's lots and Gource's branches are: a file is born at its hub, dies
+     in place, slides on a rename; hub volumes breathe with exposed surface; no
+     re-layout per step. The connections layout is not the timeline's first
+     home, since every edge change would move everything.
+  5. Where the sequence lives. A base graph plus per-commit deltas with interned
+     ids, materialized one snapshot at a time, beside the bundle and inline in
+     the single file, never in the Live Docs. Memory is a question of shape
+     before place: a few megabytes of deltas before any IndexedDB, and never
+     localStorage.
+  6. Continuity in 3D. Feed the running simulation rather than restart it. A
+     born file is placed at its hub before the update, as a new hub already is,
+     so a step is a small reheat and not the hundred-tick warm-up that costs two
+     to six seconds today.
+  7. The control. A scrubber in the slider grammar with the date and the commit
+     spoken; play and pause; beside the picture, what changed in the step, the
+     commit message and the files and edges that came and went, since that is
+     the one task animation measurably helps. The address carries the commit, so
+     a link shares a moment.
+  8. The headless twin and the oracle. A history command in the generator
+     produces the sequence, reading the configuration as it stood at each
+     commit; inspect answers "at commit X" and "between X and Y" in text and
+     JSON; git itself is the oracle for births, deaths and renames, with this
+     repository's September renames read by hand as the first expectation.
+  9. How to proceed. A probe first: regenerate a sample of this repository's
+     commits, a disposable page over the structure layout with a scrubber,
+     pictures and a recording for your eye; then the design doc in layer 3 as
+     the World Map's is, and the build in gated commits. Before the probe, the
+     scenarios to walk on paper: September 26 to 28 here; one file's life; a
+     directory renamed whole; a repository with ten thousand commits; one
+     without a committed mirror, such as TH04; the 8 GB machine; the single
+     file; a shallow clone, whose truncated history must be said; a link to a
+     moment.
+  10. Out of scope for now: TFS, whose history lives on a server and not in the
+      folder; the 2D Local Map; the World Map's two-snapshot board; the flyover.
+
+  The name stays loose: timeline, history and trajectory are the candidates so
+  far. Say which of these you would answer differently, whether the probe is the
+  next step, and give me the word on the manifest adapters.
+
+● Everything you answered is recorded, both subagents have reported, and the
+  tree is clean after three commits. Here is the state, then the Bash and other
+  answers, then change over time: what we already had, what the field adds, and
+  the questions for you.
+
+  The leftovers and your other points
+
+  Landed as f77b58a9: Java 25's main and Rust's examples. A subagent on Opus 5.5
+  at high effort rewrote the Java rule to what the launcher actually runs,
+  reading JLS §12.1.4 and JEP 512 rather than my brief: a void main that is not
+  private and has a body, taking one String[] or nothing, static or an instance
+  method of a type the launcher can construct. The bundled grammar parses Java
+  25's compact source files, so a top-level main counts. The Rust adapter now
+  marks examples/<name>.rs and examples/<name>/main.rs that hold an fn main;
+  tests and benches stay out. One Java test had asserted the old rule and was
+  rewritten. The full gate passed: lint, 1,101 unit and 72 integration tests,
+  the docs unchanged on regeneration, the three audits and 134 browser tests.
+  The two docs say what is not followed: an inherited main, the symbols of a
+  compact file's top-level methods, Cargo's example tables. The C extractor's
+  Allman-style miss was already fixed by yesterday's tree-sitter rewrite.
+
+  Landed as 2fa8544a: five lint warnings carried since October 14. The gate
+  reported five missing doc comments on the search bar's exports and the
+  Explorer state, which the last two sessions called pre-existing. By your rule
+  all messes are ours, so they are written, and lint now reports nothing. One
+  was a small real defect: the state type's comment had been stranded above the
+  PathDestination type inserted beneath it. Second full gate green, same counts.
+
+  Held for your word: the manifest adapters. go.mod and pom.xml need no new
+  dependency; pom.xml reads the way the project adapter already reads a .csproj.
+  Cargo.toml and pyproject.toml are TOML, which Node cannot parse on its own,
+  so there is a fork: a small MIT TOML 1.0 library as an engine dependency,
+  which I recommend because a hand-written subset reader is a scanner by another
+  name, or leaving those two out. I would drop gemspec from the list, since it
+  is Ruby code and no sample has one. "The manifests' wires in the picture" is a
+  design change for your eye, not a leftover, and I would leave it out unless
+  you want it. Say go, with or without the TOML pair, and a subagent takes it.
+
+  Bash is low-hanging in mechanism and poor in fit. The grammar is on disk and
+  an adapter has a shape to copy. But our software draws file-to-file references
+  with a basis, and a shell script's references are source "$(dirname
+  "$0")/lib.sh" and commands run by name: dynamic strings a static reading
+  cannot follow, so most of its wires would be missing and the map would have to
+  say so. No indexer exists, this repository has two shell scripts, and your
+  estate scripts in PowerShell. Not now.
+
+  What is low-hanging relative to how our software works: PowerShell on the
+  grammar. Today's PowerShell adapter runs pwsh at generation time to get the
+  AST, a runtime dependency a user's machine must satisfy. The grammar is on
+  disk, the samples are fixed, and it is your day-job language. The current pwsh
+  output can become the oracle: generated once for the fixed samples and
+  committed as expectations, with pwsh needed only for this project's
+  development, which is exactly your October 15 rule. After it, Ruby on the
+  grammar replaces the regex scanner. PHP has a grammar and an indexer but no
+  need here. TypeScript on the grammar would cut nine megabytes from a
+  scanner-in-file but is a parser swap of the largest adapter, not low-hanging.
+
+  The REA questions: let them be. None of the three has a scenario in hand. The
+  one with value, a doc saying "this file has references the docs cannot
+  follow", overlaps what exists, since unresolved imports are already written
+  and counted as references outside the scan; what is silently absent is only
+  the truly dynamic reference, which this repository barely has. The proof you
+  asked for would come from a cold run over a codebase where it bites, a
+  WebForms estate with reflection and configuration-bound WCF. Until then there
+  is nothing to show.
+
+  Performance statistics in the suite: agreed, as an instrument and not a test.
+  A timing assertion flakes, and a test that cannot fail is a hallucination. The
+  probe's driver becomes a kept script beside the layout lab that prints the
+  click and frame table into a probe report, folded into the change-over-time
+  probe, since a snapshot step's frame rate is the same measurement. Small, and
+  not today. Relaxed and Compact, the first-render levers and the four scripts
+  are recorded as you said them.
+
+  Change over time: what we already have
+
+  You were right to stop me. The workspace has said more than I had in view, and
+  the September 28 survey already researched it. All of it is in
+  2026-10-16-change-over-time.md
+  (AI-Agent-Workspace/Research/2026-10-16-change-over-time.md): Part 1 our own
+  words, Part 2 the field's answers from the research agent with 78 sources and
+  Gource first, Part 3 this repository measured, Part 4 my reading.
+
+  What we had said. On 2025-12-19 you stated the feature in nearly today's
+  shape: write "many copies of the raw underlying data" behind the static site
+  and grow into "Watching the evolution of a workspace commit-by-commit." On
+  2025-11-10 you retired git-derived churn from the committed docs because two
+  clones' local histories differ, with no remote traversal and no auth; on
+  2025-11-11 you allowed local history for views nothing permanent depends on. A
+  timeline is such a view, so the sequence is derived data beside the bundle
+  and never a line in a Live Doc, and today's words and those stand together. On
+  2026-09-27 you hoped to "track the inflation and deflation of the universe";
+  on 2026-10-08 you placed the timelapse in the 3D graph and kept the World Map
+  for connectivity and deployment. The flyover of 2026-09-26 is a different
+  axis, a system in action rather than its history; the September 27 reply had
+  conflated them. And on 2026-02-24 you had already watched the application's
+  shape change over weeks in the Force Graph.
+
+  What the field adds. Gource reads an event log of adds, modifies and deletes
+  with no rename type, and runs git log --no-renames on purpose because renames
+  "don't display correctly", so a renamed directory empties and refills; a seek
+  rebuilds the scene from a byte offset; the tree holds still by parent
+  attraction, outward push and sibling repulsion, with a new directory hashed
+  beside its parent. Two tools animate a dependency graph rather than a file
+  tree: Evolution Storyboards in 2006, seeding each panel with the last
+  positions and drawing how far each node moved, and Repo Visualizer from May
+  this year, a d3-force import graph stepped by commit that seeks backward by
+  replaying from the start. The 3D force library keeps positions only by object
+  identity and reheats on every update. The evidence on the "mental map" is
+  mixed, but orientation, which is what a scrubber asks of a reader, was
+  measurably faster with fewer errors when positions were kept; small multiples
+  beat animation for speed, and animation makes fewer errors on "what was added
+  in this step". localStorage is 5 MiB and synchronous; a file:// page cannot
+  fetch its siblings, so the single file must inline the sequence.
+
+  What this repository offers as the first subject.
+
+  ┌───────────────────────────┬─────────────────────────────────────────────┐
+  │           Fact            │                  Measured                   │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Commits since 2025-10-16  │ 563, of which 253 touch the mirror          │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Committed mirror readable │ from 13f66380 on 2026-09-27, about 280      │
+  │  by today's grammar       │ commits; before it none                     │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Regenerating an older     │ 11.6 s for the April 2026 tree, 15.6 s for  │
+  │ commit with today's       │ December 2025, 32.6 s for today's           │
+  │ generator                 │                                             │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ The three September       │ detected by git as renames: 7, 198 and 200  │
+  │ package renames           │ paths                                       │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ Docs changed per commit   │ mean 34, maximum 563                        │
+  │ touching the mirror       │                                             │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │ One snapshot as ids and   │ 439 KB; the whole index.json is 4.8 MB      │
+  │ edges                     │                                             │
+  ├───────────────────────────┼─────────────────────────────────────────────┤
+  │                           │ keeps node objects by id, seeds a new hub   │
+  │ The 3D renderer today     │ at its members' centroid, has an update     │
+  │                           │ path with no warm-up                        │
+  └───────────────────────────┴─────────────────────────────────────────────┘
+
+  So the whole history is a few hours of headless computation once, a few
+  megabytes as deltas, and the stretch you most want to watch, the rebuild and
+  renames of September 27 and 28, is the stretch the committed mirror already
+  covers.
+
+  Change over time: the questions I would put to you
+
+  Each with my recommendation, so you can answer by exception.
+
+  1. One lens or the committed mirror? The mirror at a commit carries the
+     generator of that day, and the adapters changed a lot since September 27,
+     so a sequence read from the committed docs would mix the tool's growth with
+     the code's. I recommend regenerating every commit with one generator
+     version, which is what "through its own lens" asks; the mirror is a
+     shortcut only where the generator is the same.
+  2. What a step is. Every commit as the unit of truth, cheap as a delta; played
+     at Gource's seconds-per-day with quiet stretches skipped; stepped one
+     commit at a time by key.
+  3. Renames. Trust git's inference as the identity signal, so a renamed file
+     slides to its new hub and a renamed directory moves whole. A file below the
+     similarity threshold is a death and a birth, shown as such rather than
+     invented. Gource chose to drop renames and pays with vanishing directories.
+  4. What holds still. The structure layout's hubs are the skeleton, as
+     CodeCity's lots and Gource's branches are: a file is born at its hub, dies
+     in place, slides on a rename; hub volumes breathe with exposed surface; no
+     re-layout per step. The connections layout is not the timeline's first
+     home, since every edge change would move everything.
+  5. Where the sequence lives. A base graph plus per-commit deltas with interned
+     ids, materialized one snapshot at a time, beside the bundle and inline in
+     the single file, never in the Live Docs. Memory is a question of shape
+     before place: a few megabytes of deltas before any IndexedDB, and never
+     localStorage.
+  6. Continuity in 3D. Feed the running simulation rather than restart it. A
+     born file is placed at its hub before the update, as a new hub already is,
+     so a step is a small reheat and not the hundred-tick warm-up that costs two
+     to six seconds today.
+  7. The control. A scrubber in the slider grammar with the date and the commit
+     spoken; play and pause; beside the picture, what changed in the step, the
+     commit message and the files and edges that came and went, since that is
+     the one task animation measurably helps. The address carries the commit, so
+     a link shares a moment.
+  8. The headless twin and the oracle. A history command in the generator
+     produces the sequence, reading the configuration as it stood at each
+     commit; inspect answers "at commit X" and "between X and Y" in text and
+     JSON; git itself is the oracle for births, deaths and renames, with this
+     repository's September renames read by hand as the first expectation.
+  9. How to proceed. A probe first: regenerate a sample of this repository's
+     commits, a disposable page over the structure layout with a scrubber,
+     pictures and a recording for your eye; then the design doc in layer 3 as
+     the World Map's is, and the build in gated commits. Before the probe, the
+     scenarios to walk on paper: September 26 to 28 here; one file's life; a
+     directory renamed whole; a repository with ten thousand commits; one
+     without a committed mirror, such as TH04; the 8 GB machine; the single
+     file; a shallow clone, whose truncated history must be said; a link to a
+     moment.
+  10. Out of scope for now: TFS, whose history lives on a server and not in the
+      folder; the 2D Local Map; the World Map's two-snapshot board; the flyover.
+
+  The name stays loose: timeline, history and trajectory are the candidates so
+  far. Say which of these you would answer differently, whether the probe is the
+  next step, and give me the word on the manifest adapters.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file AI-Agent-Workspace/Memory/ideas.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/owner.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Read AI-Agent-Workspace/Research/2026-10-15-languages-within-reach.md (46
+     lines)
+  ⎿  Read packages/explorer/src/client/types.ts (191 lines)
+
+❯ >What this repository offers as the first subject.
+
+  WOW we can do so much better! What a valuable thing to pursue! Holy moly!
+
+  >One lens or the committed mirror? The mirror at a commit carries the
+  generator of that day, and the adapters changed a lot since September 27, so
+  a sequence read from the committed docs would mix the tool's growth with the
+  code's. I recommend regenerating every commit with one generator version,
+  which is what "through its own lens" asks; the mirror is a shortcut only
+  where the generator is the same.
+
+  Agreed. One lens. One generator over old snapshots. The point is that Live
+  Documentation, as it gets better and better, will be capable of producing a
+  more and more accurate timeline reconstruction of its past.
+
+  >What a step is. Every commit as the unit of truth, cheap as a delta; played
+  at Gource's seconds-per-day with quiet stretches skipped; stepped one commit
+  at a time by key.
+
+  What do you think about giving the user the ability to scrub through time on
+  a timeline along the bottom or something? Perhaps once a view (3D or 2D Local
+  Map, maaaaybe even world map?) is created, perhaps the history-fetching
+  machinery gets to work trying to locate the precomputed cached shape of prior
+  deltas or computing them itself for the first time. The timeline might only
+  appear when such computation is done, or perhaps some other way of indicating
+  that processing is ongoing could be useful there. In any case, we should
+  encourage ourselves to really think outside the box on this. A step is almost
+  certainly a commit -- the 3D galaxy of the workspace growing and shrinking
+  and recombining over time -- but don't be afraid to interrogate whether we
+  _could_ use the understanding of what the user has pinned as a means of
+  developing some more useful temporal step, such that the user maybe doesn't
+  have to scrub through the timeline of the whole repo, but instead through
+  only commits salient to the pinned items.
+
+  >Renames. Trust git's inference as the identity signal, so a renamed file
+  slides to its new hub and a renamed directory moves whole. A file below the
+  similarity threshold is a death and a birth, shown as such rather than
+  invented. Gource chose to drop renames and pays with vanishing directories.
+
+  Agreed 100%. We should handle renames just fine. Trust what git says.
+
+  >What holds still. The structure layout's hubs are the skeleton, as
+  CodeCity's lots and Gource's branches are: a file is born at its hub, dies in
+  place, slides on a rename; hub volumes breathe with exposed surface; no
+  re-layout per step. The connections layout is not the timeline's first home,
+  since every edge change would move everything.
+
+  Indeed, and we will have to toy around with how to keep things from wiggling
+  around too much too quickly, if possible.
+
+  >Continuity in 3D. Feed the running simulation rather than restart it. A born
+  file is placed at its hub before the update, as a new hub already is, so a
+  step is a small reheat and not the hundred-tick warm-up that costs two to six
+  seconds today.
+
+  That was a quick mysery hahahahaha! uhhhh yeah that makes perfect sense. Gosh
+  dangit why didn't I think of that hahahaha!
+
+  >The headless twin and the oracle. A history command in the generator
+  produces the sequence, reading the configuration as it stood at each commit;
+  inspect answers "at commit X" and "between X and Y" in text and JSON; git
+  itself is the oracle for births, deaths and renames, with this repository's
+  September renames read by hand as the first expectation.
+
+  Sounds reasonable. No big opinion from me on this.
+
+  >How to proceed. A probe first: regenerate a sample of this repository's
+  commits, a disposable page over the structure layout with a scrubber,
+  pictures and a recording for your eye; then the design doc in layer 3 as the
+  World Map's is, and the build in gated commits. Before the probe, the
+  scenarios to walk on paper: September 26 to 28 here; one file's life; a
+  directory renamed whole; a repository with ten thousand commits; one without
+  a committed mirror, such as TH04; the 8 GB machine; the single file; a
+  shallow clone, whose truncated history must be said; a link to a moment.
+
+  Sounds good
+
+  >Held for your word: the manifest adapters. go.mod and pom.xml need no new
+  dependency; pom.xml reads the way the project adapter already reads a
+  .csproj. Cargo.toml and pyproject.toml are TOML, which Node cannot parse on
+  its own, so there is a fork: a small MIT TOML 1.0 library as an engine
+  dependency, which I recommend because a hand-written subset reader is a
+  scanner by another name, or leaving those two out. I would drop gemspec from
+  the list, since it is Ruby code and no sample has one. "The manifests' wires
+  in the picture" is a design change for your eye, not a leftover, and I would
+  leave it out unless you want it. Say go, with or without the TOML pair, and a
+  subagent takes it.
+
+  That's a worthy dependency. Go ahead and do so.
+
+  >What is low-hanging relative to how our software works: PowerShell on the
+  grammar.
+
+  AWESOME! Yeah! That would be great!
+
+● Recording first: the Turn 2 reply and your Turn 3 message go into the record
+  before anything else, then the two go-aheads become subagent work while I
+  start the history regeneration for the probe.
+
+  Searched for 2 patterns, read 1 file, listed 2 directories, ran 22 shell commands (ctrl+o to expand)
+
+● Facts are in hand. Now I start the history regeneration in the background and
+  dispatch the two builders in their own worktrees.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ Build manifest adapters: Cargo, pyproject, go.mod, pom
+   └ PowerShell adapter on tree-sitter, pwsh as oracle
+
+  Ran 9 shell commands (ctrl+o to expand)
+
+● Regeneration is at 89 of 122 and the sequence derives the whole-directory
+  renames the September moves made. I'm preparing the probe builder's brief
+  while the last commits finish.
+
+  Searched for 1 pattern, ran 10 shell commands (ctrl+o to expand)
+
+● Agent(Build change-over-time probe page) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While the manifest adapters, PowerShell adapter, and probe page build in
+  parallel in their worktrees, I'll check the probe folder's index. · summary
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Your answers are recorded, all three builds are running, and the probe's
+  groundwork is done. The rest of this turn waits on the builders.
+
+  Done so far
+
+  - The record holds your Turn 3 message verbatim and the Turn 2 reply; the
+    three Memory files carry your words (one lens with its point, "Trust what
+    git says", the TOML dependency, the pinned-salient step). Your re-exported
+    chat is registered in the inventory as received.
+  - The probe record
+    (AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md) opens with
+    the brief and fourteen scenarios walked on paper: your nine, your two
+    additions, and three of mine (the wiggle's levers, the lens named on the
+    sequence, merges and time). One of your images needed a fact against it: the
+    static Explorer cannot read a repository's history, so the generator
+    computes and the Explorer finds, and the VS Code panel is the one host where
+    a view could start the computation. That mapping goes to you in the design
+    doc, not assumed.
+  - Today's generator regenerated 122 sampled commits of this repository's 566,
+    every eighth plus all of September 26 to 28, with no failures. The sequence
+    derived from them is 273 KB as deltas against 4.8 MB for one index today,
+    and git's renames let it find the three package renames and the sample move
+    as whole-directory renames.
+
+  Running now
+
+  - Manifest adapters for Cargo.toml, pyproject.toml, go.mod and pom.xml with
+    smol-toml, in a worktree. One correction to what I told you: smol-toml is
+    BSD 3-clause, not MIT. It is permissive and compatible, and I kept the
+    choice.
+  - PowerShell on the tree-sitter grammar with pwsh as the development-time
+    oracle, a new sample program and committed expectations, in a second
+    worktree.
+  - The probe page over the structure layout with a scrubber, three continuity
+    settings, measurements, eight pictures and a recording.
+
+  When each builder reports, I review the diff, run the full gate serially,
+  commit, and then write the probe's findings into its record. The design doc in
+  layer 3 follows the probe, in the World Map plan's form.
+
+› Message from general-purpose
+  ## Manifest adapters for Cargo, pyproject, go.mod and pom: builder's report
+
+  Worktree:
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-ac1b4512936d60144`.
+  Nothing is committed.
+
+  All four manifests are now read as Live Docs. Every check you listed passes.
+  Lint has no errors but still shows 5 warnings that were there before me. No
+  integration expectation moved. Two places in the brief were not followed as
+  written; they are under "Choices I made" (the Poetry groups and the tooling
+  rule).
+
+  ### Verification (run from the worktree root)
+  - **`npm ci`:** done first.
+  - **`npm run build`:** clean.
+  - **`npm run lint`:** 0 errors, 5 warnings. All 5 are `jsdoc/require-jsdoc` in
+  Explorer files I did not touch:
+    - `packages/explorer/src/client/search/graph-search.ts:64`
+    - `packages/explorer/src/client/search/search-field.ts:10,19,35`
+    - `packages/explorer/src/client/types.ts:168`
+    - I left them because they are outside my scope, so lint does not yet report
+  nothing.
+  - **`npm run test:unit`:** 112 files, 1129 tests passed. The new adapter tests
+  are 33 of them: cargo 8, pyproject 10, gomod 4, pom 7, registry 4.
+  - **`npm run test:integration`:** 14 files, 77 tests passed, including the new
+  `manifests.test.ts` (5 tests).
+  - **`npm run live-docs:generate`, then `-- --dry-run`:** 761 files, 0 created,
+  0 updated, 761 unchanged.
+  - **`npm run live-docs:lint`:** 761 files validated. The one pending-authored
+  warning left is `.mdmd/layer-4/.vscode/settings.json.mdmd.md` (see the
+  findings list).
+  - **SlopCop audits, also part of the gate:**
+    - Markdown: 1 broken link, already there:
+  `AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md` points at
+  `journey.log`, which `*.log` in `.gitignore` keeps out of the checkout.
+    - Assets: 0 issues. Symbols: 0 issues.
+  - **Fixture checked with the real tools, on scratch copies (since deleted):**
+    - `cargo run --offline` prints 7, and `cargo metadata` lists the targets the
+  test expects.
+    - `mvn -o package` builds both modules.
+    - `go run .` prints 7, and `go mod tidy` leaves `go.mod` unchanged.
+    - The pyproject parses with `tomllib`, and `tally.cli` resolves under
+  `src/`. `click` is not installed here, so the Python program was not run.
+  - Playwright was not run, as instructed.
+
+  ### Files
+
+  **Dependency**
+  - `packages/engine/package.json` and `package-lock.json`: add
+  `smol-toml@^1.9.1`.
+
+  **New adapters** (all under `packages/engine/src/live-docs/adapters/`)
+  - `manifest.ts`: shared by all five manifest readers. It holds the context,
+  the package symbol, the TOML read, finding a workspace file through the file
+  index, finding a manifest of the same kind by name, the `ManifestDependencies`
+  collector, and the sorting of declared entries.
+  - `cargo.ts`, `pyproject.ts`, `gomod.ts`, `pom.ts` (the pom adapter includes
+  `readXmlElements`, `childAt`, `childrenAt`, `textAt`), each with a test file
+  beside it.
+
+  **Registry, configuration and tooling rule**
+  - `adapters/index.ts`: optional `fileNames`, matched before extensions; the
+  four new adapters registered.
+  - `adapters/index.test.ts`: file names held to the configuration; a test that
+  `Cargo.toml` is read while `rustfmt.toml`, `cargo.toml` and `settings.xml` are
+  not.
+  - `config/liveDocumentationConfig.ts`: new
+  `LIVE_DOCUMENTATION_SOURCE_FILE_NAMES`, giving the default globs
+  `**/Cargo.toml`, `**/go.mod`, `**/pom.xml`, `**/pyproject.toml`. Its test is
+  updated.
+  - `live-docs/openings.ts`: a private `isManifestFile` now serves both `homeOf`
+  and `isToolingFile`.
+  - `live-docs/compose.ts`: `tooling` is decided by `isToolingFile` alone.
+  - `compose.test.ts` and `openings.test.ts`: updated to the rule by name.
+
+  **Changed adapter and script**
+  - `adapters/json.ts`: the `package.json` branch now uses `manifest.ts` and
+  links only to another `package.json`. `json.test.ts` covers this.
+  - `scripts/oracle/compare.ts`: a doc comment only.
+
+  **Fixture and integration test**
+  - `tests/integration/fixtures/manifests/workspace/`, 17 files:
+    - `rust/`: a workspace root plus the crates `stock` (`[lib]` with a path)
+  and `stockctl` (`[[bin]] count`, path `src/main.rs`, a path dependency on
+  `stock`).
+    - `python/`: `pyproject.toml` with a `tally` script, using the src layout.
+    - `java/`: a parent plus the modules `core` and `app`. `app` depends on
+  `core` at `${project.version}` and names its main class through
+  `maven-jar-plugin`.
+    - `go/`: `app` with a `replace` to `../ledger`, plus `ledger`.
+  - `tests/integration/live-docs/manifests.test.ts`: generates the fixture with
+  the shipped default globs.
+
+  **Docs**
+  - Generated docs:
+    - all new files, the 11 sample manifests and the 17 fixture files;
+    - the touched modules;
+    - 10 sample `expected/compiler-edges.json` docs, whose references to their
+  `pom.xml`, `Cargo.toml` or `go.mod` now resolve to a doc.
+  - Authored Purpose and Notes written for all 38 new docs.
+  - Authored notes updated on the docs of `index.ts`, `index.test.ts`,
+  `openings.ts`, `compose.ts`, `liveDocumentationConfig.ts`, `json.ts`,
+  `json.test.ts` and `packages/engine/package.json`.
+  - `.mdmd/layer-1/vision.mdmd.md`: status line lists the four new manifests.
+  - `.mdmd/layer-3/architectural-decisions.mdmd.md`: new entry "The Manifests of
+  Rust, Python, Go and Maven Read as Live Docs, TOML by a Library _(Recorded
+  2026-10-16)_", placed before "Clicks Pin What They Name", with the owner's
+  quote.
+  - Also edited, beyond the brief, because their text was no longer true: the
+  manifests line in `README.md`, and the manifest bullet in
+  `.mdmd/layer-3/openings.mdmd.md`.
+  - Several docs link `2026-10-16.1.record.md#turn-3`. That anchor does not
+  exist yet in this checkout, which has only Turn 1; the root's recording of
+  Turn 3 will create it.
+
+  ### Integration expectations moved
+  None. `repository-entries.json` is unchanged because every new manifest doc
+  sits under a sample root or a fixture.
+
+  ### What each format reads and leaves unread
+  - **Cargo**
+    - Reads: `[package].name`; dependencies, dev-dependencies and
+  build-dependencies, including the same three under `[target.<cfg>]`, in inline
+  and table form; `package` renames; a `path` linked to the `Cargo.toml` there;
+  `workspace = true` looked up in the root's `[workspace.dependencies]`, where
+  the root is the manifest `[package].workspace` names or else the nearest
+  ancestor with `[workspace]`.
+    - Declares: `[[bin]]` and `[[example]]` on their path or Cargo's default
+  location; `[lib]` on its path or `src/lib.rs`.
+    - Leaves: `members`, `[patch]`, `[replace]`, features, `[[test]]`,
+  `[[bench]]`.
+  - **pyproject**
+    - Reads: `[project].dependencies`, optional-dependencies,
+  `[dependency-groups]` (skipping `include-group`); Poetry's main table only
+  when `[project]` has no list; Poetry groups and `dev-dependencies`; path
+  sources from Poetry and from `[tool.uv.sources]`.
+    - Writes requirements per PEP 508 (name and specifier, extras and markers
+  dropped, direct references as `name@url`) and compares names the way Python
+  does (PEP 503).
+    - Declares: `[project.scripts]`, `[project.gui-scripts]` and
+  `[tool.poetry.scripts]`, as a string or a `callable` table.
+    - Leaves: `[build-system].requires`, and Poetry `type = "file"` scripts.
+  - **go.mod**
+    - Reads: `module`; `require` in both forms; `replace` to a folder or to
+  another module, a versioned `replace` applying only to that version.
+    - Leaves: `// indirect` requirements, `exclude`, `retract`, `toolchain`,
+  `godebug`, `tool`. Declares nothing.
+  - **pom**
+    - Reads: `groupId:artifactId` (groupId inherited from the parent);
+  `<parent>` through `relativePath` (a folder gets `pom.xml` appended; an empty
+  one sends it to the repository); the project's own `<dependencies>`; `${…}`
+  from `<properties>`, the project's and parent's coordinates and `basedir`,
+  with anything unresolved kept as written.
+    - Declares: the main class from the five named plugins (`mainClass` or
+  `Main-Class` anywhere in the plugin or its executions) or from `start-class`,
+  as a command named by the artifactId; several that agree make one entry.
+    - Leaves: `dependencyManagement`, plugin dependencies, `profiles`,
+  `modules`, `pluginManagement`, and properties a parent defines.
+
+  ### Choices I made
+  - **Tooling rule, one mechanism by name.** One list of manifest names now
+  serves both `homeOf` and `isToolingFile`. That list was already in `homeOf`
+  and includes `build.gradle(.kts)` and `Gemfile`, so those also become tooling
+  files. No adapter reads them, so nothing in this repo changes. The rule by
+  symbol kind is gone. `.csproj`, `.vbproj` and `.fsproj` are matched
+  case-insensitively, as the registry did.
+  - **Poetry groups (departs from the brief).** I read Poetry's groups even when
+  `[project]` has a dependency list, because a group appears nowhere else. Only
+  Poetry's main table is skipped then. Its `path` entries still serve as
+  sources.
+  - **Linking by name for all four.** Each format links by the symbol index as a
+  second way, filtered to manifests of the same file name. I applied the same
+  filter to `package.json`. Without it, a `package.json` dependency would now
+  link to a crate or a Python distribution that happened to publish the same
+  name.
+  - **Cargo details:**
+    - `[[bin]]` without a path also looks at `src/main.rs` when the binary is
+  named after the package, as Cargo does.
+    - `[target]` dev- and build-dependencies are read too.
+    - A missing `workspace = true` entry is still looked up by name before
+  falling back to the name alone.
+  - **Smaller decisions:**
+    - go.mod: a local `replace` whose folder is missing is written as the module
+  path alone.
+    - pom: a project without any groupId publishes no symbol.
+    - pom: a nested class's main class (`Outer$Inner`) is placed in
+  `Outer.java`.
+  - **Fixture choices:**
+    - The Rust binary sits at `src/main.rs` and the library at `src/lib.rs`,
+  because the Rust adapter knows crate roots only at conventional paths (see the
+  findings list).
+    - The Java module uses `maven-jar-plugin`, because `exec-maven-plugin` is
+  not in this machine's Maven cache, so the build could not be checked offline
+  with it.
+
+  No fork was left open, and nothing is unfinished.
+
+  ### Findings beyond scope, left alone
+  1. **Rust adapter, `rust.ts`:**
+     - It knows crate roots only at conventional paths. A `[lib]` or `[[bin]]`
+  at another path is neither marked `program` nor used as a root for module
+  resolution.
+     - Its regex for `[package].name` (`[^[]*?`) fails when a `[` comes before
+  `name` in `[package]`, for example `authors = ["x"]`, and also when the name
+  is in single quotes. It then falls back to the folder name.
+  2. **Go adapter, `go.ts`:** it does not follow `replace` to a local module, so
+  `go/app/main.go`'s import of the ledger stays external. Its `module` regex
+  does not unquote a quoted module path.
+  3. **`.vscode/settings.json` doc never committed.** `.gitignore:18`
+  (`.vscode/`) also ignores `.mdmd/layer-4/.vscode/`. So the doc is never
+  committed, its authored sections stay pending, and
+  `repository-entries.test.ts` (which expects `.vscode/settings.json: tooling`)
+  only passes because the doc exists on disk. A fresh clone that runs
+  integration before generating would fail.
+  4. **Dependency labels on manifests.** Linked manifest dependencies are
+  labelled with the target file's stem, giving `pom.com.acme…`, `Cargo.stock`
+  and `go.example.com/…`, the same way `package.@live-documentation/engine` is
+  labelled today. They read oddly.
+  5. **Generator warning in worktrees.** The generator warns "This folder lies
+  inside a scan at /workspaces/Live-Documentation" when run here, because the
+  worktree lives inside the main checkout.
+
+
+● The manifest builder has reported. I'm reviewing its worktree diff before
+  bringing it into the main tree for the gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+● Agent "Build manifest adapters: Cargo, pyproject, go.mod, pom" finished · 44m
+28s
+
+  Listed 1 directory, ran 13 shell commands (ctrl+o to expand)
+
+● Found another issue: audits were walking into the other builder's worktree
+  within this checkout. I'll check what the gate tools do, then fix the
+  underlying checks instead of just the paths. · summary
+
+  Searched for 1 pattern, ran 11 shell commands (ctrl+o to expand)
+
+● ESLint was linting 765 files in nested worktrees it should've ignored. I'll
+  make ESLint respect gitignore, regenerate the audit module docs, then commit
+  this hygiene fix before the manifests land. · summary
+
+  Searched for 2 patterns, listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Deleting the function discovery no longer needs, then running the unit and
+  integration suites and regenerating the docs to confirm the bad run's 85 edits
+  revert.
+
+  Ran 9 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## PowerShell adapter on the tree-sitter grammar, measured against
+  PowerShell's own parser
+
+  **Worktree:**
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-ad2314489baaac2f3`.
+  Everything is uncommitted; the two deletions are staged by `git rm`. Nothing
+  was pushed, Playwright was not run, and the conversation record and Memory
+  were not touched.
+
+  The approved plan is built and the gates pass, but there is a fork you need to
+  decide (first section): the bundled grammar cannot parse some common
+  PowerShell. The new adapter still measures better than the old `pwsh` one on
+  both fixtures. Three misses remain on the sample program, and they are
+  recorded in the comparison test.
+
+  ### The fork you need to decide
+
+  The bundled `tree-sitter-powershell.wasm` (identical in
+  `@vscode/tree-sitter-wasm` 0.3.0 and 0.3.1) fails on three things:
+  - **Bare-word comma lists given to a command**, such as `Export-ModuleMember
+  -Function A, B` or `Format-Table Name, Status`. The grammar's
+  `_command_argument` has no rule for them. Its error recovery sometimes stays
+  inside the command and sometimes swallows every following statement. My probes
+  lost functions this way: a top-level `Import-Module Foo, Bar` followed by
+  `function X {}`, and a `Format-Table Name, Status` followed by a nested
+  function.
+  - **Unquoted variable-led paths as an argument**, such as `Import-Module
+  $PSScriptRoot\x.psm1`, and `${PSScriptRoot}/x.ps1` even as a dot-source
+  target. `. $PSScriptRoot\x.ps1` itself parses.
+  - **`using` statements.** The grammar has none, so `using module x` is read as
+  a command, and a script's `[CmdletBinding()] param()` after it parses as an
+  expression full of errors.
+
+  The upstream npm package `tree-sitter-powershell` 0.26.4 has the same defects.
+  Options:
+  1. **Land as is.** It is better than the `pwsh` adapter on every measure. The
+  risk is that in real estate code a comma list can still hide whatever follows
+  it.
+  2. **Fix the cause: build and ship our own patched grammar wasm, and offer the
+  patch upstream.** In a scratch probe, one added rule removed every comma-list
+  error with the native CLI:
+     - `seq($.command_argument_sep, $.command_argument_list)` added to
+  `_command_argument`
+     - `command_argument_list: prec.left(seq($.generic_token, repeat1(seq(',',
+  choice($.generic_token, $.unary_expression)))))`
+
+     `using` and variable-led paths would need more rules. Building wasm needs
+  Emscripten or Docker, and neither is in the devcontainer.
+  3. **Read these two cmdlets' argument lists from the source text when the
+  grammar errs.** That is a second reading of the same text, which the
+  no-workarounds rule argues against.
+
+  **A policy choice inside option 1:** an `Export-ModuleMember` the grammar
+  cannot read in full narrows nothing. A misreading therefore shows private
+  functions rather than hiding public ones. The alternative is to apply the
+  partial list, which hides public functions.
+
+  ### Measurements
+
+  | | Rollout program | Compendium |
+  |---|---|---|
+  | `oracle:compare` edges | 5 found, 2 missing, 0 extra | 3 found, 0 missing, 0
+  extra |
+  | Published functions (name, line, column, help) | 12 of 12 agree, plus 2
+  extra (`Get-StepAction`, `Get-StepCount`) | 6 of 6 agree |
+  | Dependencies | 7 of 8, nothing extra | 8 of 8 |
+  | Old `pwsh` adapter, same comparison | 7 of 12 functions plus 2 extra; 3 of 8
+  dependencies plus 4 wrong | 6 of 6 functions; 5 of 8 dependencies plus 1
+  extra |
+
+  - **The two missing rollout edges:**
+    - `Rollout.Steps.psd1 -> Rollout.Steps.psm1` via `RootModule =
+  'Rollout.Steps.psm1'`. The `.psd1` is not read yet, as briefed.
+    - `scripts/Show-RolloutPlan.ps1 -> modules/Rollout.Steps/Rollout.Steps.psm1`
+  via `Import-Module $PSScriptRoot\..\modules\Rollout.Steps\Rollout.Steps.psm1
+  -Force`. This is the grammar defect.
+    - Adapter dependencies that resolved to no file: `Invoke-Rollout.ps1:
+  Microsoft.PowerShell.Management` and `Microsoft.PowerShell.Utility` (names, by
+  design).
+  - **Compendium unresolved names:** `scripts/deploy.ps1` has
+  `Microsoft.PowerShell.Management`, `Microsoft.PowerShell.Utility`,
+  `MyCompany.Inventory`; `workspace/scripts/deploy.ps1` has
+  `Microsoft.PowerShell.Management`, `Microsoft.PowerShell.Utility`.
+  - **Why the old adapter scored worse:**
+    - Its emitter joined any list argument into one space-separated string, so a
+  module exporting several functions published none, and `-ErrorAction Stop`
+  became part of a module's name.
+    - It never recorded `using module`.
+    - It resolved `$PSScriptRoot` paths to files that do not exist.
+    - It reported a class's constructor and method as functions.
+  - **Help rules:** checked against PowerShell 7.5.4 on about fifty probe
+  functions, with no disagreement.
+  - **Grammar errors in the fixtures:**
+    - `Invoke-Rollout.ps1`: lines 21 to 31 (`using module` then `param`).
+    - `Rollout.Steps.psm1`: line 64 (`Format-Table Number, Target, Action`,
+  harmless) and line 71 (the `Export-ModuleMember` list).
+    - `Show-RolloutPlan.ps1`: line 13.
+    - Compendium `scripts/deploy.ps1`: line 4 (`[CmdletBinding()]` after `Using
+  module`).
+
+  ### Verification
+  - **`npm run build`:** exit 0.
+  - **`npm run lint`:** exit 0, 0 errors. The 5 jsdoc warnings are all in
+  Explorer files I did not touch: `search/graph-search.ts:64`,
+  `search/search-field.ts:10,19,35`, `types.ts:168`.
+  - **`npm run test:unit`:** 109 files, 1113 tests passed.
+  - **`npm run test:integration`:** 14 files, 76 tests passed. The first run
+  failed 2 tests because I had deleted the gitignored `.vscode` doc; see the
+  first finding below.
+  - **`live-docs:generate`, then `--dry-run`:** 0 created, 0 updated, 738
+  unchanged.
+  - **`live-docs:lint`:** exit 0. Its warnings are the gitignored `.vscode`
+  doc's empty authored sections and 30 disconnected nodes; `powershell-ast.ps1`
+  is disconnected, as the emitter was.
+  - **SlopCop:** assets 0 and symbols 0. Markdown fails (exit 3) on one link
+  from earlier work (`journey.log`, in the findings below).
+  - **Without `pwsh`:** with `PATH=/usr/local/bin`, `pwsh` gives ENOENT, and 4
+  files with 50 tests pass: the comparison test, the adapter's tests, the
+  converter's tests and `oracle.test.ts`.
+  - **Other checks:**
+    - Two `oracle:index` runs gave byte-identical output.
+    - Re-indexing `typescript/layered` left its expectations unchanged.
+    - A deliberate column mutation made the comparison test fail.
+    - The sample program runs under `pwsh` 7.5.4 (three invocations, exit 0).
+
+  ### Files
+  - **Adapter:**
+    - Rewrote `packages/engine/src/live-docs/adapters/powershell.ts`.
+    - Rewrote its tests, `powershell.test.ts` (18, no skip, previous assertions
+  kept).
+    - Deleted `powershell.emit-ast.ps1` and the copy step in
+  `packages/engine/package.json`.
+    - Exported `powershellSyntax` from `packages/engine/src/languages/index.ts`.
+  I kept `languages/powershell.ts` whole: the registry reads its id and the
+  adapter its extensions.
+  - **Oracle:**
+    - New: `scripts/oracle/powershell-ast.ps1`,
+  `scripts/oracle/powershell-edges.ts`,
+  `scripts/oracle/powershell-edges.test.ts`.
+    - Changed: `scripts/oracle/index-fixture.ts` (an indexer may now read the
+  copy itself and write a record beside the edges) and
+  `scripts/oracle/files.ts`.
+  - **Program, expectations and test:**
+    - `tests/integration/programs/powershell/rollout/`: 8 source files, a
+  README, and `expected/compiler-edges.json` plus
+  `expected/powershell-ast.json`.
+    - `tests/integration/fixtures/powershell-compendium/expected/` with the same
+  two files.
+    - `tests/integration/live-docs/powershell-oracle.test.ts`, with the register
+  of 3 misses.
+    - `tests/integration/live-docs/expected/repository-entries.json`: the
+  emitter's `program` entry is gone and `scripts/oracle/powershell-ast.ps1` is
+  added as `program`.
+  - **Docs:**
+    - Regenerated layer-4 docs. Authored sections written for every new doc and
+  for the adapter, its test, `languages/powershell.ts`, the engine
+  `package.json`, `devcontainer.json`, `index-fixture.ts` and `files.ts`. The
+  emitter's doc was deleted after its history was carried into the oracle's doc.
+    - Layer-1 and layer-3: `vision.mdmd.md`, `architectural-decisions.mdmd.md`
+  (a new entry, plus one sentence under Accuracy Measurement),
+  `sample-programs.mdmd.md`, `polyglot-adapters.mdmd.md`,
+  `testing-integration-architecture.mdmd.md`.
+    - Elsewhere: `README.md`, `.agents/skills/live-documentation/SKILL.md` (also
+  no longer lists C as a scanner), `.devcontainer/devcontainer.json` comment,
+  `.devcontainer/README.md`.
+    - The dated record `AI-Agent-Workspace/Research/2026-09-29-bearings/readers/
+  layer-4-authored-engine-and-scripts.md`: its link to the deleted doc now
+  points at the permalink for `429065a6`, as was done in `1e36b33e`.
+
+  ### Choices made beyond the brief
+  - **Path matching is exact-case**, as the C adapter and Linux PowerShell do
+  it. On Windows, PowerShell would also match a different case.
+  - **A class's constructors and methods are not functions.** The old emitter's
+  `FindAll` counted them; the oracle marks them as members and leaves them out
+  of what a file publishes.
+  - **The adapter binds `Import-Module` and `Export-ModuleMember` arguments**
+  using the PowerShell 7.5 parameter list, matching the oracle's
+  `StaticParameterBinder`.
+  - **`Export-ModuleMember` patterns follow PowerShell's wildcard rules**, such
+  as `Get-*`.
+  - **The oracle adds an edge from a manifest's `RootModule` and similar
+  entries** to the file they name, so the comparison lists what not reading
+  `.psd1` files misses.
+
+  ### Not followed by the adapter
+  - A module found by name on a machine's module path.
+  - A path built from any variable other than `$PSScriptRoot`, or from an
+  expression.
+  - A `.psd1`'s tables.
+  - A script run with `&`.
+
+  Relative dot-source and `Import-Module` paths are resolved from the script's
+  own directory; PowerShell actually resolves them from the caller's location at
+  run time.
+
+  ### Follow-ups not built
+  - Reading `.psd1` tables (`RootModule`, `NestedModules`, `FunctionsToExport`).
+  - Classes and enums as symbols.
+  - Script-level help as the file's documentation.
+  - Help's `.EXAMPLE`, `.LINK`, `.NOTES` and `.OUTPUTS` sections.
+  - Scripts run with `&` as dependencies.
+  - The names used from a dot-sourced file or module carried on the edge.
+  - Case-insensitive resolution for Windows.
+  - The grammar fork above.
+
+  ### Findings outside my scope
+  - **`.vscode` doc kept out of git:** the `.vscode/` line in `.gitignore` also
+  ignores `.mdmd/layer-4/.vscode/settings.json.mdmd.md`. The tracked file's doc,
+  authored in the main checkout, is therefore never committed. On a fresh
+  checkout `graph.test.ts` and `repository-entries.test.ts` fail, and
+  `safe:commit` runs `verify` before `livedocs`, so CI from a clean checkout
+  would fail them too.
+  - **Broken link in a probe record:**
+  `AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md` links
+  `journey.log`, which `*.log` in `.gitignore` keeps out of git.
+  `slopcop:markdown` fails on any fresh checkout.
+  - **`LanguageSyntax` asks for fields nothing reads:** it requires delimiters,
+  framework types and a comment stripper of every language, and for PowerShell
+  nothing reads them. I kept them and corrected the doc, which had claimed a
+  `$_` blocklist the code lacks.
+  - **The vision mislabelled the old adapter:** it called the `pwsh` adapter a
+  "hand-written scanner", but it ran PowerShell's parser. The status line now
+  says what it was.
+  - **Generator warning in a worktree:** run from a worktree under
+  `.claude/worktrees`, the generator warns that it "lies inside a scan".
+
+● Agent "PowerShell adapter on tree-sitter, pwsh as oracle" finished · 1h 18m
+50s
+
+● The PowerShell builder finished but has a fork on the bundled grammar that
+  needs your decision, so I'll hold that worktree aside for now. I'll handle the
+  hygiene commit next, then merge the manifests into the main tree and run
+  their gate. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Manifests applied cleanly to the main tree. Regenerating the docs there and
+  checking the tree before starting the full gate.
+
+  Listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● The manifests are in the main tree and their full gate is running in the
+  background. The PowerShell build is held in its worktree for your decision on
+  the grammar, and the probe builder is still working. Both completions will
+  wake me; the next message carries the commits and the fork.
+
+› Message from general-purpose
+  ## Report: the change-over-time probe (page, driver, measurements, pictures,
+  recording)
+
+  ### What I added to the repository
+  Only the probe folder changed. `/workspaces/Live-Documentation/AI-Agent-Worksp
+  ace/Probes/2026-10-16/change-over-time/` now holds 14 PNGs and one WebM.
+  Nothing is committed, and I touched no tracked file. The staged changes in
+  `git status` (manifest adapters and the rest) are not mine.
+
+  ### Before building
+  - **The sequence checks out.** I replayed every delta from the base and
+  compared each step with its `snap/<sha>/index.json`. All 122 snapshots match
+  exactly on files, symbol counts, archetypes and pair counts. The final state
+  is 723 files and 1,676 pairs (`verify-sequence.mjs`).
+  - **The pinned file.** It first exists at sampled step 32 (`8c2b5fc8`,
+  2026-02-23; `0e8f034f` itself is not in the sample). It exists for 90 of the
+  121 steps.
+
+  ### The page and how each setting was built
+  The page uses the Explorer's own modules:
+  - `spatialGraphOf(…, "structure")`, `configureSpatialForces`,
+  `spatialNodeValue`/`spatialNodeRadius`, `frameCameraSpheres`, `under`,
+  `parentDirectory`.
+  - The default tuning, from `getDefaultTuning()`.
+  - `NODE_COLORS`, copied because it is not exported.
+  - The Explorer's node cache, and its rule that a new hub starts at its
+  members' centroid.
+
+  Every setting's first picture uses the same start: warm-up 100, then run until
+  alpha falls below 0.001.
+
+  **A (today's update).** `graphData` plus `d3ReheatSimulation`, as the Explorer
+  does it. With nothing to keep their identity, renamed files and hubs die and
+  are born again.
+
+  **B (gentle).** What it does:
+  - Renamed files and hubs are re-keyed, so they keep their objects.
+  - A born file is placed at its hub plus the containment spring's rest length,
+  in a seeded random direction.
+  - Every hub that stood before the step is held (`fx`/`fy`/`fz`) and released
+  when the engine stops.
+  - I chose to let a hub new to the picture float in its first step; otherwise
+  it could never move at all.
+
+  The library offers no gentle reheat (see "What the library allows" below), so
+  I built one from the public API:
+  - The link and charge forces are wrapped through `d3Force` so they see alpha ×
+  0.1.
+  - `d3AlphaMin` is 0.1 and `d3AlphaDecay` is 0.0456, so the engine stops after
+  exactly 50 ticks (0.83 s at 60 fps).
+  - The library's centring force is dropped. It shifts every free sphere each
+  tick while the held hubs snap back; keeping it raised the mean file
+  displacement from 21.5 to 31.3 over steps 2–12.
+
+  I picked these values from short runs over steps 2–12:
+
+  | B variant | Ticks to stop | Mean unchanged-file move (max) |
+  |---|---|---|
+  | k 0.1, alpha min 0.03, decay 0.0228 | 153 | 22.2 (158) |
+  | k 0.1, alpha min 0.1, decay 0.0456 (chosen) | 50 | 22.1 (100) |
+  | k 0.05, alpha min 0.1, decay 0.0456 | 50 | 17.9 (87) |
+
+  **C (placement).** Same re-keying and placement as B, then `cooldownTicks(0)`,
+  so the engine stops on the first frame without ticking.
+
+  ### How the measurements were taken
+  - **Measuring window.** There is no GPU in the container; Chromium renders
+  WebGL in software (SwiftShader). Frames took 42–85 ms, so the library's one
+  tick per frame came 12–24 times a second, not 60. A 3-second wall-clock cap
+  would have measured different amounts of simulation per setting. So the window
+  ends when the engine stops, at 180 ticks (3 s at 60 fps), or at 15 s of wall
+  clock. Settle is reported in ticks and in this machine's milliseconds.
+  - **"Still"** means the largest per-tick movement of any sphere is under 0.1
+  units. For B and C, "still" is the engine stopping. In the 11-step trial, B's
+  spheres were still moving more than 0.1 per tick when the engine stopped, so B
+  freezes them in place rather than letting them settle.
+  - **Heap** is read with `--enable-precise-memory-info` and with `gc()` forced
+  before each read (`--expose-gc`).
+
+  ### The measurement tables (121 steps each)
+
+  | | A | B | C |
+  |---|---|---|---|
+  | Ticks to settle, median / max | 180 / 180 (all 121 steps hit the cap; the
+  engine never stops before the library's 15 s) | 50 / 50 | 0 / 0 |
+  | Settle ms on this machine, median / max | 7,505 / 10,485 | 4,348 / 5,129 |
+  85 / 126 |
+  | Still: ticks, median | 159 (44 steps not still by tick 180) | 50 (engine
+  stop) | 0 |
+  | Frame interval ms: median of step means / median p95 / max | 42 / 50 / 167 |
+  85 / 100 / 183 | none (no frames ran) |
+  | Apply delta + build data ms, median / max | 5.5 / 13.5 | 5.5 / 11.4 | 5.4 /
+  9.7 |
+  | `graphData` until the library's update ran, ms median / max | 65 / 136 | 84
+  / 125 | 88 / 128 |
+  | Unchanged files: mean / greatest move (units) | 75.4 / 990 | 3.7 / 105 | 0 /
+  0 |
+  | Unchanged hubs: mean / greatest move | 65.2 / 967 | 0 / 0 (held) | 0 / 0 |
+  | Heap before load / after first render / step 121 | 6.2 / 10.0 / 17.7 MB |
+  6.2 / 10.0 / 18.3 MB | 6.2 / 9.9 / 19.1 MB |
+  | Nodes / links at the end | 978 / 2,653 | same | same |
+
+  - **Frame rate depends on the picture.** A's frames are faster because its
+  layout spreads past the fixed camera, so less is filled. The frame rate
+  measures software fill rate, not the simulation.
+  - **Under B, 63 of 121 steps moved more than 10 unchanged files by more than
+  10 units.** The larger moves come from collision, which ignores alpha and
+  stays at full strength.
+  - **Under A at the renames:**
+
+  | Step | Unchanged files: mean / max move | Born |
+  |---|---|---|
+  | `690f5d27` | 333 / 424 | 108 |
+  | `d23a6f90` | 528 / 990 | 117 |
+  | `aec5f74b` | 565 / 701 | 290 |
+
+  - **Under B and C, re-keying worked:**
+
+  | Step | Files re-keyed | Hubs re-keyed | Born |
+  |---|---|---|---|
+  | `cad63bdd` | 6 | 2 | 0 |
+  | `aec5f74b` | 195 | 95 | 0 |
+  | `690f5d27` | 99 | 9 | 0 |
+  | `d23a6f90` | 101 | 11 | 5 |
+
+  - **Measurements predate two rendering fixes.** The runs used the page before
+  I fixed label measuring and wire drawing (below). Ticks, displacements and
+  data timings do not depend on those fixes; frame intervals may shift slightly.
+
+  ### Scenario 6: the sequence's bytes and the heap
+  - **Sequence.** 272,627 bytes: 99.6 KB is the interned path table, 297 B the
+  base and 172 KB the deltas. The median delta is 646 B; the largest is 10.2 KB
+  (`d23a6f90`). Gzipped it is 58 KB.
+  - **Heap.** About 6 MB before the sequence loads, 10 MB after the first
+  picture, 16–17 MB through the middle and 18–19 MB at the end. That is roughly
+  9 MB of renderer for 978 spheres and 2,653 lines.
+
+  ### Scenario 10: the pinned-salient step
+  - **The count.** 7 of the 90 steps where the file exists are salient: 32, 61,
+  63, 102, 103, 115, 116.
+  - **Against git.** Git shows the file's content changed in 10 of the sampled
+  steps (32, 33, 61, 63, 95, 102, 103, 115, 116, 117). The graph misses the
+  content-only changes. `git log --follow` finds 14 commits on the file across
+  the whole history.
+
+  ### What the library allows for a gentle reheat
+  - **Versions.** 3d-force-graph 1.80.0, over three-forcegraph 1.43.5.
+  - **There is no gentle reheat in the public API.** `graphData()` always runs
+  `d3ForceLayout.stop().alpha(1)` in its update, which kapsule defers by 1 ms.
+  So every membership change is a full reheat whether or not
+  `d3ReheatSimulation` is called, and that method also sets alpha to 1.
+  - **There is no alpha setter.** three-forcegraph has `d3AlphaTarget`, which it
+  uses for dragging, but 3d-force-graph does not expose it.
+  - **The levers that do exist:** `d3AlphaDecay`, `d3AlphaMin` (the engine stops
+  below it, only when it is above 0), `d3VelocityDecay`, `cooldownTicks`,
+  `cooldownTime` (default 15,000 ms) and `d3Force` for replacing forces. B's
+  gentleness is the alpha-scaling force wrapper plus `d3AlphaMin`.
+
+  ### What the eye sees, by scenario
+  1. **September 26–28.**
+     - Under B, the three package renames read only as a hub's name changing
+  where the hub stands: shared → engine (pictures 09 → 06, same spot), scripts →
+  explorer (06 → 07), server → generator (03 → 04, the name moved from beside
+  the hub to above it). No sphere moves.
+     - The sample move (`aec5f74b`) is invisible in the picture. Its hubs sit
+  three or more levels deep, so they are unnamed, and they keep their places;
+  only the panel says 195 renames.
+     - Under A (10 → 11), the rename of `packages/shared` rebuilds the picture.
+  180 ticks later everything has moved, and the 99 re-born files gather round a
+  new "engine" hub far from where "shared" stood.
+     - In the recording, names churn at rename steps. My labeller places the
+  hubs a step touched first, so at step 62 "engine" appears about 50 px below
+  where "shared" was while about six other names disappear or appear. The rename
+  reads, but as one of several label changes.
+  2. **One file's life.**
+     - Under B the pinned sphere holds its place through its move into
+  `packages/explorer`; its hub was re-keyed too.
+     - Its wires, once fixed, are short faint white strokes in the whole-history
+  framing. They read in the close-ups 12–14: 6 wires at its first step, 5 at
+  the move, 13 today.
+     - Its 6 symbols never change in the sample, so the sphere never grows.
+  3. **A directory renamed whole.**
+     - Re-keying from `dirsRenamed` works for the three package renames.
+     - Two `dirsRenamed` entries are merges into a directory that already exists
+  and cannot be re-keyed: step 9 (`scripts/doc-tools/__tests__` →
+  `scripts/doc-tools`) and step 115 (`views/membraneView` → `views`). The old
+  hub dies.
+     - `packages/server/src/features/live-docs` → `packages/generator/src` is a
+  flattening the derivation lists separately.
+  4. **Born files.**
+     - Under B they appear at their hub's spring length and drift a few units;
+  nothing erupts (seen in recording stills at step 1).
+     - Under A, born files start where the library puts unplaced nodes, near the
+  origin. I did not film A, so I can only point to its displacement numbers and
+  pictures 10–11.
+  5. **The wiggle.**
+     - A stirs everything on every step: mean 75 units, and the engine runs the
+  library's full 15 s.
+     - B is nearly still, but hubs never move after the step they are born. The
+  tree never re-balances, and from step 34 (picture 02) to today (08) the
+  picture's shape barely changes; growth reads mostly in the first 30 steps.
+     - C never relaxes at all.
+  6. **The six-month gap.** It reads only in the scrubber: a band three steps
+  wide between "Feb 26" and "Sept 26", plus the date line. In the picture, step
+  34 → 35 is an ordinary one-second step adding 15 files.
+
+  ### Pictures (setting B, 1600×1000, settled, fixed camera on the final extent,
+  unless noted)
+  - **01-first-code.png:** `8c7b4d47`, 68 files, a small cluster in the middle
+  of the whole-history frame.
+  - **02-eve-of-return.png:** `da151a49`, the March 29 picture; the pin is in
+  `packages/scripts`.
+  - **03-return.png:** `29d58b50`, 15 e2e files added; the "server" hub is
+  named.
+  - **04-server-to-generator.png:** `cad63bdd`, "generator" where "server"
+  stood.
+  - **05-samples-to-programs.png:** `aec5f74b`, 195 renames with no visible
+  change.
+  - **06-shared-to-engine.png:** `690f5d27` under B; "engine" in place of
+  "shared".
+  - **07-scripts-to-explorer.png:** `d23a6f90`; "explorer" in place of
+  `packages/scripts`; the pin unmoved.
+  - **08-today.png:** `6bcaa6bb`, 723 files; the pin with 13 wires.
+  - **09-shared-to-engine-before-B.png:** step 61 (`399b07ee`) under B, the pair
+  to 06.
+  - **10-shared-to-engine-before-A.png:** step 61 under A at the 180-tick cap,
+  still moving; the layout is wider than the camera.
+  - **11-shared-to-engine-after-A.png:** step 62 under A; the picture rebuilt
+  and the engine files clustered round a new hub.
+  - **12-pin-born-close.png:** the pin's first sampled step (32), framed on it
+  and its partners, 6 wires.
+  - **13-pin-moved-close.png:** the pin at `d23a6f90`, 5 wires visible.
+  - **14-pin-today-close.png:** the pin today, close.
+
+  ### The recording
+  `history-setting-B.webm`: 2:04, 11.8 MB, 1280×800, setting B playing steps 1
+  to 121 at one step per second.
+
+  **This is not `recordVideo` output, and it should be your call.** In real time
+  on this machine each one-second step got about 12 ticks, while B needs 50. So
+  I ran the page on Playwright's paused clock, advanced 40 ms per picture
+  (about 2.5 ticks), and joined the pictures with Playwright's own ffmpeg. A
+  step therefore gets about 62 ticks, as it would at 60 fps.
+
+  The real-time `recordVideo` version (2:23, 15.9 MB, motion cut short every
+  step) is in the scratchpad as `video/realtime-recordVideo-B.webm`. Swap it in
+  if you want the brief's tool exactly.
+
+  ### What went wrong or could not be done
+  - **No GPU,** so the frame and millisecond figures are software-renderer
+  numbers.
+  - **I widened two things on the probe page beyond today's Explorer:**
+    - Reference wires are given node objects so they are drawn (defect 1 below);
+  `?wires=explorer` reproduces today's behaviour.
+    - Containment is drawn at the Explorer's effective 0.07 opacity and wires at
+  its written 0.5 (defect 2).
+  - **The page does not fade non-pinned spheres,** which the Explorer would.
+  - **Labels can still be hidden where they overlap,** with a count shown at the
+  top left. Names below depth 2 are never shown, which is why the samples move
+  is invisible.
+  - **The first-picture rule differs from the Explorer's 15-second run.**
+  - **I made no A recording.**
+  - **My second Python server failed to bind port 8766.** The Explorer check
+  below ran against an already-running `npx http-server dist/explorer` on that
+  port, which serves the same folder.
+
+  ### Defects in the Explorer's modules, met while reusing them
+  1. **In the structure layout, reference wires drawn on demand are never
+  positioned.**
+     - Cause: `pullingLinkForce` hands d3 only the containment links, so only
+  their endpoints become node objects. three-forcegraph then skips any line
+  whose endpoints have no coordinates.
+     - In the probe page: 0 of 791 references resolved; their line objects sat
+  at the origin with length 1.
+     - In the built Explorer (`dist/explorer`, built 14:52 today): hovering
+  `.live-docs.config.json` gives two visible reference objects at (0,0,0) with
+  length 1, and no wire on screen (`explorer-structure-hover.png`).
+     - `tests/e2e/force-graph-directories.spec.ts` checks only each line's
+  `visible` flag, so it passes while nothing is drawn.
+  2. **Link colours are dimmed five-fold.** `forceGraphView.ts` writes alphas
+  (0.35 / 0.5 / 0.2 / 0.025 …) but never sets `linkOpacity`, and the library
+  multiplies them by its default of 0.2. Containment shows at 0.07 and a
+  revealed wire at 0.1.
+  3. **Every render rebuilds every line.** `spatialGraphOf` returns new link
+  objects each time, and the library binds render objects to data-object
+  identity. That is the 65–88 ms per step here with about 2,650 links.
+  4. **The engine runs 15 s after every change.** The Explorer never sets
+  `d3AlphaMin`, so the engine only stops at the library's 15-second cooldown,
+  and `aria-busy` stays true that long.
+  5. **`NODE_COLORS` is not exported and has no `asset` colour,** so assets fall
+  back to grey.
+  6. **The two cold-start filter defaults disagree:** `DEFAULT_SNAPSHOT` has
+  `showAssets: true`, `getDefaultFilters` has `false`. I did not check which one
+  governs.
+  7. **Hub identity breaks over time.** A collapsed directory chain is
+  identified by its deepest path, so a directory gaining or losing its only
+  child changes hub ids (a birth and a death).
+
+  ### Left in the scratchpad
+  `/tmp/claude-1000/-workspaces-Live-Documentation/1b33ae22-268b-41e9-8bc9-40fab
+  997e27a/scratchpad/probe-page/` (no servers left running from me):
+  - **The page:** `entry.ts`, `index.html`, `page.js`, plus `sequence.json` and
+  `framing.json`.
+  - **The driver:** `driver.mjs`, with modes `measure`, `pictures`, `film`,
+  `record` and `table`.
+  - **Measurements and logs:** `measurements-A.json`, `measurements-B.json`,
+  `measurements-C.json`, `run-*.log`.
+  - **Checks:** `verify-sequence.mjs`, `trial.mjs`, `debuglinks.mjs`.
+  - **The Explorer wire check:** `explorer-wires.mjs`, `snap-param.txt`,
+  `explorer-structure-hover.png`.
+  - **The real-time recording:** `video/realtime-recordVideo-B.webm`.
+
+● The probe builder has reported with measurements, pictures and a recording,
+  plus seven defects it met in the Explorer's own 3D modules, one of them
+  serious. I'm looking at the pictures myself before writing the probe's
+  findings.
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Build change-over-time probe page" is waiting on its own background
+work · 2h 4m 46s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate failed on one broken link in a doc I wrote in the hygiene pass, which
+  the audit had reported and I misread. Fixing it, re-running the gate, and
+  writing the probe's findings while it runs.
+
+  Ran 8 shell commands (ctrl+o to expand)
+
+● Waiting on the manifests gate; I'll be woken when it exits, then commit and
+  write the report.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The manifests' second gate is running with everything else ready: the commit
+  message, the records commit, and the probe's record written. The gate's exit
+  will wake me to commit and report.
+
+❯ Prompt cache expires in 9 minutes. Status update?
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Status: the manifests gate has passed every stage but the last and is now in
+  the Playwright suite (about 16 minutes of its ~20). When it exits I commit the
+  manifests, then the records with the probe's pictures and recording, and send
+  the full report.
+
+  What stands at this moment:
+
+  - Committed: the hygiene pass (cf82b2c3) and the link correction (45cceb5e).
+  - Staged, waiting on the gate: the four manifest adapters with smol-toml, 102
+    files.
+  - Held in its worktree for your decision: the PowerShell adapter on the
+    grammar. The bundled grammar cannot parse comma lists after a cmdlet,
+    unquoted variable-led paths, or using statements, and the builder measured
+    the new adapter as better than the current one anyway. The fork is whether
+    to land it with those holes recorded, or first build and ship a patched
+    grammar, which needs Emscripten or Docker.
+  - Done and written up: the change-over-time probe, with measurements, fourteen
+    pictures, a recording, and seven defects found in the Explorer's own 3D
+    view, one serious: in the structure layout the on-demand wires are never
+    drawn, and the test that should catch it only checks a flag.

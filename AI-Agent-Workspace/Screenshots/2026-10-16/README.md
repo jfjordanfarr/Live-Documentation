@@ -29,3 +29,15 @@ Pictures of the built Explorer after the two changes the owner gave the go on at
 | Back on the map: the picture that stood, drawn by no one in between; the script compared the map's pixels after this return and after a second one byte for byte and found them identical | [07-back-on-the-map.png](retained-wires/07-back-on-the-map.png) |
 
 By eye: in every frame the wires meet their pins, the laces stay cut by their cards' edges, and the bundles' shared runs stay beneath their wires; the frames differ from the morning's only in how many of them there are (a frame's callback 41 to 11.5 ms on this scope, [the probe](../../Probes/2026-10-16/explorer-performance/README.md#after-the-two-changes)). The first frames taken had opened a directory that moved the picture by a pixel, which proved nothing, and were replaced.
+
+## The manifests of four more ecosystems as Live Docs
+
+Pictures of the built Explorer after the manifest adapters landed ([Turn 3 of the October 16 session](../../ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)): `Cargo.toml`, `pyproject.toml`, `go.mod` and `pom.xml` read as Live Docs with the package each names, what it stands on and the files its targets, scripts or main class start. Taken over this repository's own bundle, served from `dist/explorer` as the gate built it, at the addresses the session's report links.
+
+| What is shown | Picture |
+| --- | --- |
+| The manifests fixture's `app/pom.xml` pinned in the Local Map: its one symbol is the artifact `com.acme.tally:tally-app`, and its two connections, to the sibling module's pom and the parent's, are counted outside the view | [01-pom-pinned-local-map.png](manifests/01-pom-pinned-local-map.png) |
+| The fixture's `java` directory opened: the two modules as directory cards and no parent `pom.xml` card and no wire between them, because the archetype rule calls every non-code file under a sample root an asset and the Local Map hides assets by default; the finding of this turn, to be fixed | [02-java-modules-opened.png](manifests/02-java-modules-opened.png) |
+| The fixture's `rust` directory opened: the two crates as directory cards, their manifests and the path dependency between them hidden for the same reason | [03-rust-workspace-opened.png](manifests/03-rust-workspace-opened.png) |
+| Knowledge Sources, the bundle's shape: 763 files, and by extension `.toml 9`, `.xml 7` and `.mod 4` now among them | [04-knowledge-sources.png](manifests/04-knowledge-sources.png) |
+
