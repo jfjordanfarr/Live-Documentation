@@ -214,7 +214,9 @@ describe("javaAdapter", () => {
     ]);
   });
 
-  it("reports public static void main as the program's entry, written public or public as an interface member", async () => {
+  const ROSETTA = path.resolve(__dirname, "../../../../..", "tests", "integration", "programs", "java", "rosetta");
+
+  it("reports public static void main as the program's entry, written public or public as an interface member, and not an overload of another shape", async () => {
     await write({
       "p/App.java": [
         "package p;",
@@ -228,26 +230,87 @@ describe("javaAdapter", () => {
       "p/Runner.java": "package p;\n\ninterface Runner {\n    static void main(String[] args) {}\n}\n"
     });
 
-    expect((await analyze("p/App.java")).program).toMatchObject({ symbol: "main" });
-    expect((await analyze("p/Runner.java")).program).toMatchObject({ symbol: "main" });
+    expect((await analyze("p/App.java")).program).toEqual({ symbol: "main", line: 5 });
+    expect((await analyze("p/Runner.java")).program).toEqual({ symbol: "main", line: 4 });
+
+    const rosetta = await javaAdapter.analyze({ absolutePath: path.join(ROSETTA, "src", "com", "rosetta", "app", "Main.java"), workspaceRoot: ROSETTA });
+    expect(rosetta?.program).toEqual({ symbol: "main", line: 41 });
   });
 
-  it("leaves program absent when no main is public, static and void", async () => {
+  it("reports the mains JEP 512 lets the launcher run: instance or static, not public, taking String[], String... or nothing", async () => {
     await write({
-      "p/Tool.java": [
-        "package p;",
+      "p/Hello.java":    "package p;\n\nclass Hello {\n    void main() {}\n}\n",
+      "p/Echo.java":     "package p;\n\nclass Echo {\n    void main(String[] args) {}\n}\n",
+      "p/Quiet.java":    "package p;\n\nclass Quiet {\n    static void main() {}\n}\n",
+      "p/Spread.java":   "package p;\n\nclass Spread {\n    protected void main(final String... args) {}\n}\n",
+      "p/OldStyle.java": "package p;\n\nclass OldStyle {\n    static void main(java.lang.String args[]) {}\n}\n",
+      "p/Shape.java":    "package p;\n\nabstract class Shape {\n    static void main() {}\n}\n",
+      "p/Unit.java":     "package p;\n\nrecord Unit() {\n    void main() {}\n}\n",
+      "p/Built.java":    "package p;\n\nclass Built {\n    Built(int seed) {}\n    Built() { this(1); }\n    void main() {}\n}\n",
+      "p/Outer.java":    "package p;\n\nclass Outer {\n    static class Inner {\n        void main() {}\n    }\n}\n"
+    });
+
+    const lines: Record<string, number> = {
+      "p/Hello.java": 4, "p/Echo.java": 4, "p/Quiet.java": 4, "p/Spread.java": 4, "p/OldStyle.java": 4,
+      "p/Shape.java": 4, "p/Unit.java": 4, "p/Built.java": 6, "p/Outer.java": 5
+    };
+    for (const [file, line] of Object.entries(lines)) {
+      expect((await analyze(file)).program, file).toEqual({ symbol: "main", line });
+    }
+  });
+
+  it("reports the main taking the arguments when a class declares both, as the launcher chooses it", async () => {
+    await write({
+      "p/Both.java": "package p;\n\nclass Both {\n    void main() {}\n    static void main(String[] args) {}\n}\n"
+    });
+
+    expect((await analyze("p/Both.java")).program).toEqual({ symbol: "main", line: 5 });
+  });
+
+  it("leaves program absent for a main the launcher cannot run", async () => {
+    await write({
+      "p/Hidden.java":   "package p;\n\nclass Hidden {\n    private void main() {}\n    private static void main(String[] args) {}\n}\n",
+      "p/Counted.java":  "package p;\n\nclass Counted {\n    void main(int count) {}\n    void main(String[][] grid) {}\n    void main(java.util.List<String> args) {}\n    void main(String first, String second) {}\n    void main(String name) {}\n}\n",
+      "p/Valued.java":   "package p;\n\nclass Valued {\n    int main() { return 0; }\n    static String main(String[] args) { return \"\"; }\n}\n",
+      "p/Contract.java": "package p;\n\ninterface Contract {\n    void main();\n    default void main(String[] args) {}\n}\n",
+      "p/Draft.java":    "package p;\n\nabstract class Draft {\n    abstract void main();\n    void main(String[] args) {}\n}\n",
+      "p/Sealed.java":   "package p;\n\nclass Sealed {\n    private Sealed() {}\n    void main() {}\n}\n",
+      "p/Seeded.java":   "package p;\n\nclass Seeded {\n    Seeded(int seed) {}\n    void main() {}\n}\n",
+      "p/Point.java":    "package p;\n\nrecord Point(int x) {\n    void main() {}\n}\n",
+      "p/Mode.java":     "package p;\n\nenum Mode {\n    ON;\n    void main() {}\n}\n",
+      "p/Host.java":     "package p;\n\nclass Host {\n    class Guest {\n        void main() {}\n    }\n}\n",
+      "p/Plain.java":    "package p;\n\npublic class Plain {\n    public void run() {}\n}\n"
+    });
+
+    for (const file of ["p/Hidden.java", "p/Counted.java", "p/Valued.java", "p/Contract.java", "p/Draft.java", "p/Sealed.java", "p/Seeded.java", "p/Point.java", "p/Mode.java", "p/Host.java", "p/Plain.java"]) {
+      expect(await analyze(file), file).not.toHaveProperty("program");
+    }
+  });
+
+  it("reports the top-level main of a compact source file, before a main of a class nested in it", async () => {
+    await write({
+      "Hello.java": "void main() {\n    IO.println(\"Hello\");\n}\n",
+      "Tool.java": [
+        "import java.util.List;",
         "",
-        "public class Tool {",
-        "    public static String main(int seed) { return \"\"; }",
-        "    static void main() {}",
-        "    public void main(String[] args) {}",
+        "class Helper {",
+        "    static void main(String[] args) {}",
+        "}",
+        "",
+        "String greeting = \"hi\";",
+        "",
+        "void main(String[] args) {",
+        "    IO.println(greeting);",
         "}",
         ""
       ].join("\n"),
-      "p/Plain.java": "package p;\n\npublic class Plain {\n    public void run() {}\n}\n"
+      "Inner.java":  "class Nested {\n    void main() {}\n}\n\nprivate void main() {}\n",
+      "Static.java": "static class Nested {\n    void main() {}\n}\n\nprivate void main() {}\n"
     });
 
-    expect(await analyze("p/Tool.java")).not.toHaveProperty("program");
-    expect(await analyze("p/Plain.java")).not.toHaveProperty("program");
+    expect((await analyze("Hello.java")).program).toEqual({ symbol: "main", line: 1 });
+    expect((await analyze("Tool.java")).program).toEqual({ symbol: "main", line: 9 });
+    expect(await analyze("Inner.java")).not.toHaveProperty("program");
+    expect((await analyze("Static.java")).program).toEqual({ symbol: "main", line: 2 });
   });
 });

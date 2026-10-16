@@ -15,8 +15,8 @@
  * `src/test` is one package, as it is to the compiler. Names inside strings and
  * comments are never references.
  *
- * A `public static void main`, written public or public as an interface
- * member, is reported as the program's entry point.
+ * The program's entry point is a `main` the launcher can run (JEP 512): `void`,
+ * not private, static or instance, taking one `String[]` or nothing.
  */
 import { glob } from "glob";
 import { promises as fs } from "node:fs";
@@ -75,7 +75,7 @@ interface FileFacts {
   imports:  JavaImport[];
   types:    DeclaredType[];
   typeUses: TypeUse[];
-  /** Present when a type declares `public static void main`. */
+  /** Present when the file declares a `main` the launcher can run. */
   program?: ProgramEntry;
 }
 
@@ -134,25 +134,104 @@ function javadocOf(node: SyntaxNode): SymbolDocumentation | undefined {
   return previous?.type === "block_comment" ? parseJavaDoc(previous.text) : undefined;
 }
 
-/** `public static void main`, the method the launcher calls; an interface's `static void main` is public implicitly. */
-function isProgramEntry(name: string, modifiers: Set<string>, implicitlyPublic: boolean, returnType: SyntaxNode | null): boolean {
-  return name === "main" && modifiers.has("static") && (implicitlyPublic || modifiers.has("public")) && returnType?.type === "void_type";
+/** The declared parameters of a method, constructor or record header, leaving out a receiver parameter and comments. */
+function formalParameters(node: SyntaxNode): SyntaxNode[] {
+  return (node.childForFieldName("parameters")?.namedChildren ?? []).filter((child) => child.type === "formal_parameter" || child.type === "spread_parameter");
+}
+
+function bracketCount(node: SyntaxNode | null | undefined): number {
+  return node?.children.filter((child) => child.type === "[").length ?? 0;
+}
+
+function isStringType(node: SyntaxNode | null | undefined): boolean {
+  const name = nameChain(node ?? null)?.join(".");
+  return name === "String" || name === "java.lang.String";
+}
+
+/** `String[] args`, `String args[]` or `String... args`: the one parameter type a launchable `main` may take. */
+function isStringArray(parameter: SyntaxNode): boolean {
+  if (parameter.type === "spread_parameter") {
+    const type = parameter.namedChildren.find((child) => child.type !== "modifiers" && !child.type.endsWith("annotation") && child.type !== "variable_declarator");
+    const declarator = parameter.namedChildren.find((child) => child.type === "variable_declarator");
+    return isStringType(type) && bracketCount(declarator?.childForFieldName("dimensions")) === 0;
+  }
+  const type  = parameter.childForFieldName("type");
+  const outer = bracketCount(parameter.childForFieldName("dimensions"));
+  if (type?.type === "array_type") return isStringType(type.childForFieldName("element")) && bracketCount(type.childForFieldName("dimensions")) + outer === 1;
+  return isStringType(type) && outer === 1;
+}
+
+/**
+ * Whether the launcher can make an instance with `new T()` to call an
+ * instance `main` on: a record, or a class that is not abstract and, nested in
+ * a class, enum or record, is static; and either with a non-private
+ * constructor of no parameters, declared or implicit.
+ */
+function isInstantiable(node: SyntaxNode, kind: string, outerKind: string | undefined): boolean {
+  if (kind !== "class" && kind !== "record") return false;
+  const modifiers = modifiersOf(node);
+  if (modifiers.has("abstract")) return false;
+  if (kind === "class" && outerKind !== undefined && outerKind !== "interface" && outerKind !== "annotation" && !modifiers.has("static")) return false;
+  const constructors = (node.childForFieldName("body")?.namedChildren ?? []).filter((child) => child.type === "constructor_declaration");
+  if (constructors.some((constructor) => formalParameters(constructor).length === 0 && !modifiersOf(constructor).has("private"))) return true;
+  return kind === "class" ? constructors.length === 0 : formalParameters(node).length === 0;
+}
+
+/**
+ * A `main` the launcher can choose (JLS 25 §12.1.4, JEP 512): a `void`
+ * method that is not private, with a body, taking either one `String[]` or
+ * nothing; static, or an instance method of a type the launcher can make.
+ * Returns whether it takes the arguments, which the launcher prefers, or
+ * `undefined` when it is none.
+ */
+function launchableMain(node: SyntaxNode, modifiers: Set<string>, instantiable: boolean): { takesArguments: boolean } | undefined {
+  if (node.childForFieldName("name")?.text !== "main" || node.childForFieldName("type")?.type !== "void_type") return undefined;
+  if (modifiers.has("private") || !node.childForFieldName("body")) return undefined;
+  if (!modifiers.has("static") && !instantiable) return undefined;
+  const parameters = formalParameters(node);
+  if (parameters.length === 0) return { takesArguments: false };
+  return parameters.length === 1 && isStringArray(parameters[0]) ? { takesArguments: true } : undefined;
+}
+
+/** A type's facts its members need: who declares them, whether they are public unwritten, and whether `new T()` makes one. */
+interface Container {
+  qualifiedName:    string;
+  implicitlyPublic: boolean;
+  instantiable:     boolean;
 }
 
 class FileExtractor {
   private readonly facts: FileFacts = { package: "", imports: [], types: [], typeUses: [] };
+  /** Who declares the entry chosen so far, and whether it takes the arguments. */
+  private programOwner?: { qualifiedName: string; takesArguments: boolean };
 
   extract(root: SyntaxNode): FileFacts {
+    // A compact source file's top-level members belong to a class it declares implicitly, which `new` can make
+    // and the launcher runs; its own `main` comes before any of the classes nested in it.
+    const methods = root.namedChildren.filter((child) => child.type === "method_declaration");
+    const compact = methods.length > 0;
+    const implicit: Container = { qualifiedName: "", implicitlyPublic: false, instantiable: true };
+    for (const method of methods) this.considerMain(method, modifiersOf(method), implicit);
     for (const child of root.namedChildren) {
       if (child.type === "package_declaration") {
         this.facts.package = nameChain(child.namedChildren.find((part) => part.type !== "modifiers" && !part.type.endsWith("annotation")) ?? null)?.join(".") ?? "";
       } else if (child.type === "import_declaration") {
         this.readImport(child);
       } else if (child.type in TYPE_DECLARATIONS) {
-        this.facts.types.push(this.readType(child, [], []));
+        this.facts.types.push(this.readType(child, [], [], compact ? "class" : undefined));
       }
     }
     return this.facts;
+  }
+
+  /** The first launchable `main` in the file, unless its own type also declares the one taking arguments, which the launcher chooses first. */
+  private considerMain(node: SyntaxNode, modifiers: Set<string>, container: Container): void {
+    const main = launchableMain(node, modifiers, container.instantiable);
+    if (!main) return;
+    const current = this.programOwner;
+    if (current && !(current.qualifiedName === container.qualifiedName && main.takesArguments && !current.takesArguments)) return;
+    this.programOwner  = { qualifiedName: container.qualifiedName, takesArguments: main.takesArguments };
+    this.facts.program = { symbol: "main", line: position(node.childForFieldName("name")!).line };
   }
 
   private readImport(node: SyntaxNode): void {
@@ -166,7 +245,7 @@ class FileExtractor {
     });
   }
 
-  private readType(node: SyntaxNode, enclosing: string[], outerTypeParameters: string[]): DeclaredType {
+  private readType(node: SyntaxNode, enclosing: string[], outerTypeParameters: string[], outerKind?: string): DeclaredType {
     const nameNode      = node.childForFieldName("name")!;
     const name          = nameNode.text;
     const qualifiedName = [enclosing[0] ?? this.facts.package, name].filter(Boolean).join(".");
@@ -198,25 +277,29 @@ class FileExtractor {
       nested:  []
     };
 
-    const implicitlyPublic = kind === "interface" || kind === "annotation";
+    const container: Container = {
+      qualifiedName,
+      implicitlyPublic: kind === "interface" || kind === "annotation",
+      instantiable:     isInstantiable(node, kind, outerKind)
+    };
     for (const parameter of node.childForFieldName("parameters")?.namedChildren ?? []) {
       const member = this.readParameterAsField(parameter, typeParameters, scope);
       if (member) declared.members.push(member);
     }
     const body = node.childForFieldName("body");
     for (const child of body?.namedChildren ?? []) {
-      this.readMember(child, declared, scope, typeParameters, implicitlyPublic);
+      this.readMember(child, declared, scope, typeParameters, container);
     }
     return declared;
   }
 
-  private readMember(node: SyntaxNode, owner: DeclaredType, scope: string[], typeParameters: string[], implicitlyPublic: boolean): void {
+  private readMember(node: SyntaxNode, owner: DeclaredType, scope: string[], typeParameters: string[], container: Container): void {
     if (node.type in TYPE_DECLARATIONS) {
-      owner.nested.push(this.readType(node, scope, typeParameters));
+      owner.nested.push(this.readType(node, scope, typeParameters, owner.kind));
       return;
     }
     if (node.type === "enum_body_declarations") {
-      for (const child of node.namedChildren) this.readMember(child, owner, scope, typeParameters, implicitlyPublic);
+      for (const child of node.namedChildren) this.readMember(child, owner, scope, typeParameters, container);
       return;
     }
     if (node.type === "enum_constant") {
@@ -227,7 +310,7 @@ class FileExtractor {
     }
 
     const modifiers = modifiersOf(node);
-    const published = implicitlyPublic || modifiers.has("public") || modifiers.has("protected");
+    const published = container.implicitlyPublic || modifiers.has("public") || modifiers.has("protected");
     this.visitAnnotations(node, scope);
 
     switch (node.type) {
@@ -239,7 +322,7 @@ class FileExtractor {
         const typeReferences: TypeReference[] = [];
         const returnType = node.childForFieldName("type");
         if (returnType) this.collectTypeNames(returnType, "return", typeReferences, ownTypeParameters, scope);
-        if (node.type === "method_declaration" && isProgramEntry(nameNode.text, modifiers, implicitlyPublic, returnType)) this.facts.program = { symbol: "main", line: position(nameNode).line };
+        if (node.type === "method_declaration") this.considerMain(node, modifiers, container);
         for (const parameter of node.childForFieldName("parameters")?.namedChildren ?? []) {
           const type = parameter.childForFieldName("type") ?? parameter.namedChildren.find((child) => child.type.endsWith("type") || child.type === "type_identifier" || child.type === "scoped_type_identifier");
           const parameterName = parameter.childForFieldName("name")?.text ?? parameter.namedChildren.find((child) => child.type === "variable_declarator")?.childForFieldName("name")?.text;

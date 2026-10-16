@@ -230,6 +230,26 @@ describe("rustAdapter", () => {
     expect(processor).not.toHaveProperty("program");
   });
 
+  it("reports main as the program entry of an example, single-file or in its own directory, and not of an example without one, a module of an example, a bench or a test", async () => {
+    await write({
+      "Cargo.toml": CARGO,
+      "src/lib.rs":            "pub fn run() {}\n",
+      "examples/demo.rs":      "use stockroom::run;\n\nfn main() { run(); }\n",
+      "examples/tool/main.rs": "mod args;\n\nfn main() { args::parse(); }\n",
+      "examples/tool/args.rs": "pub fn parse() {}\n\npub fn main() {}\n",
+      "examples/helper.rs":    "pub fn assist() {}\n",
+      "benches/x.rs":          "fn main() {}\n",
+      "tests/it.rs":           "fn main() {}\n"
+    });
+
+    expect((await analyze("examples/demo.rs")).program).toEqual({ symbol: "main", line: 3 });
+    expect((await analyze("examples/tool/main.rs")).program).toEqual({ symbol: "main", line: 3 });
+    expect(edges((await analyze("examples/tool/main.rs")).dependencies)).toEqual([["examples/tool/args.rs", ["parse"]]]);
+    for (const file of ["examples/helper.rs", "examples/tool/args.rs", "benches/x.rs", "tests/it.rs"]) {
+      expect(await analyze(file), file).not.toHaveProperty("program");
+    }
+  });
+
   it("leaves program absent for a main inside a mod block or an impl, and for a binary root without one", async () => {
     await write({
       "Cargo.toml": CARGO,

@@ -20,7 +20,7 @@
  * macro invocations are.
  *
  * The program's entry point is reported too: a top-level `fn main` in a binary
- * crate root.
+ * crate root, an example's among them.
  */
 import { glob } from "glob";
 import { promises as fs } from "node:fs";
@@ -607,14 +607,19 @@ async function packageDirOf(directory: string, workspaceRoot: string): Promise<s
   return found;
 }
 
-/** `src/main.rs` and the files under `src/bin/`, relative to the package: the roots of its binary targets. */
+/**
+ * `src/main.rs` and the files under `src/bin/` and `examples/`, relative to
+ * the package: the roots of its binary targets, an example being an
+ * executable by default. A test's `main` is its harness's, and a bench is not
+ * a program a person runs.
+ */
 function isBinaryRoot(relative: string): boolean {
-  return relative === "src/main.rs" || /^src\/bin\/[^/]+\.rs$/u.test(relative) || /^src\/bin\/[^/]+\/main\.rs$/u.test(relative);
+  return relative === "src/main.rs" || /^(src\/bin|examples)\/[^/]+\.rs$/u.test(relative) || /^(src\/bin|examples)\/[^/]+\/main\.rs$/u.test(relative);
 }
 
 function isConventionalRoot(relative: string): boolean {
   return relative === "src/lib.rs" || isBinaryRoot(relative) ||
-    /^(tests|examples|benches)\/[^/]+\.rs$/u.test(relative) || /^(tests|examples|benches)\/[^/]+\/main\.rs$/u.test(relative);
+    /^(tests|benches)\/[^/]+\.rs$/u.test(relative) || /^(tests|benches)\/[^/]+\/main\.rs$/u.test(relative);
 }
 
 /** Cargo's conventional targets under each package (lib, main, bins, tests, examples, benches); a file with no package is a root when it is a `main.rs` or `lib.rs`. */
@@ -818,10 +823,10 @@ function toSymbols(facts: FileFacts): PublicSymbolEntry[] {
 
 /**
  * The program's entry point: a function `main` at the top level of a binary
- * crate root, public or not. The root is `src/main.rs` or a file under
- * `src/bin/` of its package or, outside any package, a `main.rs`, as
- * `crateRoots` reads them. A `main` in `src/lib.rs` or a module file, or
- * inside a `mod` block or an `impl`, is none.
+ * crate root, public or not. The root is `src/main.rs`, a file under
+ * `src/bin/` or an example of its package or, outside any package, a
+ * `main.rs`, as `crateRoots` reads them. A `main` in `src/lib.rs`, a test, a
+ * bench or a module file, or inside a `mod` block or an `impl`, is none.
  */
 async function toProgram(facts: FileFacts, absolutePath: string, workspaceRoot: string): Promise<ProgramEntry | undefined> {
   if (facts.module.items.get("main") !== "function") return undefined;

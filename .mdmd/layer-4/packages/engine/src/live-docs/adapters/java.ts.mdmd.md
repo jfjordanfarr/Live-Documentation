@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/java.ts
-- Generated At: 2026-10-15T15:49:38.911Z
+- Generated At: 2026-10-16T14:20:48.438Z
 
 ## Authored
 ### Purpose
@@ -14,14 +14,14 @@ The Java adapter: tree-sitter symbols (types, nested types and the members they 
 - Measured against `scip-java` on the four Java sample programs; `java/warehouse` is the one built to defeat a line scanner, and the adapter matches every compiler edge on all four.
 - The table is keyed by package as declared, not by directory, so `src/main/java` and `src/test/java` halves of a package see each other; it is built once per generation run on the file index, and per-file facts are cached by modification time.
 - The qualifier of a static call or field access (`Registry.register(...)`, `Unit.EACH`) is resolved as a type name; a local variable that shadows a type name would be mistaken for it.
-- The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: a method `main` that is `static`, `void` and public, written `public` or public by the language as an interface member, with its line; the rosetta sample's `String main(int)` overload beside it does not count, and the line tells the doc's heading apart. Java 25's instance `main` is not marked.
+- The program's entry point is reported on the analysis result since 2026-10-15 ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)), from which the doc carries `- Entry: program`: since 2026-10-16 any `main` the Java 25 launcher can run (JLS SE 25 §12.1.4 and JEP 512): `void`, not private, with a body, taking one `String[]` or nothing, static or an instance method of a type `new T()` can make, with its line; within one type the `String[]` form is preferred, otherwise the first in the file; a compact source file's top-level methods belong to its implicit class, which the bundled grammar parses as `method_declaration` under `program`. The rosetta sample's `String main(int)` overload beside its `main` does not count, and the line tells the doc's heading apart. Not followed: an inherited `main`; a compact file's top-level methods are not published as symbols nor their uses collected.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `javaAdapter` {#symbol-javaadapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L610)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.ts#L693)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `javaAdapter` — Summary
