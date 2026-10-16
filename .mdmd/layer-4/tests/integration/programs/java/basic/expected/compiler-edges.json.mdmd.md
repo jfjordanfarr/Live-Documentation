@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/java/basic/expected/compiler-edges.json
-- Generated At: 2026-10-02T20:20:06.153Z
+- Generated At: 2026-10-16T16:21:54.304Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ The file-to-file edges the compiler resolved for the `programs/java` sample prog
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`pom`](../pom.xml.mdmd.md)
 - [`App`](../src/com/example/app/App.java.mdmd.md)
 - [`Catalog`](../src/com/example/data/Catalog.java.mdmd.md)
 - [`Reader`](../src/com/example/data/Reader.java.mdmd.md)

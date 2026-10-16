@@ -126,6 +126,20 @@ export const LIVE_DOCUMENTATION_SOURCE_EXTENSIONS: readonly string[] = [
   ".sql"
 ];
 
+/**
+ * The names of the files an adapter reads by name rather than by extension:
+ * the package manifests whose extension (`.toml`, `.xml`, `.mod`) is shared by
+ * files that are not manifests. Each has a default glob for that name alone,
+ * so that no other TOML or XML file of a workspace is discovered by default.
+ * A test holds the registry's file names to this list.
+ */
+export const LIVE_DOCUMENTATION_SOURCE_FILE_NAMES: readonly string[] = [
+  "Cargo.toml",
+  "go.mod",
+  "pom.xml",
+  "pyproject.toml"
+];
+
 /** The extensions of the static assets, images, fonts and media, that receive stub Live Docs so that the graph reaches them. */
 export const LIVE_DOCUMENTATION_ASSET_EXTENSIONS: readonly string[] = [
   ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp",
@@ -135,8 +149,9 @@ export const LIVE_DOCUMENTATION_ASSET_EXTENSIONS: readonly string[] = [
 
 /**
  * Default glob patterns selecting the workspace files that receive Live Docs:
- * every file an adapter or the TypeScript parser can read, and every static
- * asset, anywhere in the workspace, so that a cold run over any repository is
+ * every file an adapter or the TypeScript parser can read, by its extension
+ * or, for a manifest, by its name, and every static asset, anywhere in the
+ * workspace, so that a cold run over any repository is
  * honest about what it holds. Assets are a project's content and are
  * documented wherever they are found (the owner's decision, 2026-10-15).
  * Discovery removes what no project wants documented, `.git`, `node_modules`,
@@ -145,9 +160,10 @@ export const LIVE_DOCUMENTATION_ASSET_EXTENSIONS: readonly string[] = [
  * names its own globs.
  */
 export const LIVE_DOCUMENTATION_DEFAULT_GLOBS: readonly string[] = [
-  ...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS,
-  ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS
-].map((extension) => `**/*${extension}`);
+  ...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS.map((extension) => `**/*${extension}`),
+  ...LIVE_DOCUMENTATION_SOURCE_FILE_NAMES.map((name) => `**/${name}`),
+  ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS.map((extension) => `**/*${extension}`)
+];
 
 /**
  * Fully-resolved default configuration used when no `.live-docs.config.json`

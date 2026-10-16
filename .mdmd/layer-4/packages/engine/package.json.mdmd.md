@@ -5,14 +5,14 @@
 - Archetype: implementation
 - Code Path: packages/engine/package.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:38.344Z
+- Generated At: 2026-10-16T16:21:39.435Z
 
 ## Authored
 ### Purpose
 The manifest of the engine package: configuration, language adapters, the analysis of a source file, the grammar of a Live Doc and the graph derived from the docs. Every module is exported by its path (`@live-documentation/engine/<path>`), so the generator, the Explorer, the CLI scripts and the tests import the module they need and no barrel.
 
 ### Notes
-- Born 2025-10-16 as `packages/shared` and renamed to the engine on 2026-09-28 (`690f5d27`), when the shared package was understood as the one that does the analysis. Its build copies the PowerShell AST emitter beside its compiled adapter, since the adapter runs it as a script. The tree-sitter grammars come from `@vscode/tree-sitter-wasm` on `web-tree-sitter`; `glob` and `ignore` walk the workspace by the configured globs and its `.gitignore` in `discovery.ts`.
+- Born 2025-10-16 as `packages/shared` and renamed to the engine on 2026-09-28 (`690f5d27`), when the shared package was understood as the one that does the analysis. Its build copies the PowerShell AST emitter beside its compiled adapter, since the adapter runs it as a script. The tree-sitter grammars come from `@vscode/tree-sitter-wasm` on `web-tree-sitter`; `glob` and `ignore` walk the workspace by the configured globs and its `.gitignore` in `discovery.ts`. `smol-toml` (2026-10-16) reads the Cargo and Python manifests, the one library added for the four manifest adapters, which the owner approved: "That's a worthy dependency." ([Turn 3 of the October 16 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -27,6 +27,7 @@ The manifest of the engine package: configuration, language adapters, the analys
 - `@vscode/tree-sitter-wasm@^0.3.0`
 - `glob@^13.0.6`
 - `ignore@^7.0.5`
+- `smol-toml@^1.9.1`
 - `typescript@^5.4.0`
 - `web-tree-sitter@^0.27.0`
 <!-- LIVE-DOC:END Dependencies -->

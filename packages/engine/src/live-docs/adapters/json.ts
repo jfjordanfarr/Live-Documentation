@@ -16,8 +16,10 @@
  * A `package.json` is a manifest rather than configuration: its package is its
  * one public symbol, and what it depends on is a dependency, linked to the
  * workspace package of that name when there is one and external otherwise,
- * with the range as written. What its scripts run, its binaries and its main
- * module are the files it declares as entries, each written on that file's doc.
+ * with the range as written; only another `package.json` is matched, so that
+ * a crate or a Maven artifact of the same name is never taken for a package.
+ * What its scripts run, its binaries and its main module are the files it
+ * declares as entries, each written on that file's doc.
  *
  * @module
  */
@@ -27,45 +29,29 @@ import path from "node:path";
 import ts from "typescript";
 
 import { normalizeWorkspacePath } from "../../tooling/pathUtils";
-import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult, WorkspaceSymbolIndex } from "../core";
+import type { DependencyEntry, PublicSymbolEntry, SourceAnalysisResult } from "../core";
 import type { DeclaredEntry } from "../coreTypes";
-import { PACKAGE_KIND, isToolingFile } from "../openings";
+import { isToolingFile } from "../openings";
 import type { LanguageAdapter, WorkspaceFileIndex } from "./index";
+import { ManifestDependencies, manifestContext, packageSymbols, stringOf, tableOf, type ManifestContext } from "./manifest";
 
+const PACKAGE_JSON = "package.json";
 const DEPENDENCY_FIELDS = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"] as const;
 
 /** What a `package.json` says: the package it names, the packages it stands on, and the files its scripts, binaries and main module start. */
-function analyzePackageManifest(parsed: unknown, thisFile: string, manifestAbsolute: string, workspaceRoot: string, fileIndex: WorkspaceFileIndex | undefined, symbolIndex: WorkspaceSymbolIndex | undefined): SourceAnalysisResult {
-  const manifest = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? (parsed as Record<string, unknown>) : {};
-  const symbols: PublicSymbolEntry[] = typeof manifest.name === "string" && manifest.name ? [{ name: manifest.name, kind: PACKAGE_KIND, location: { line: 1, character: 1 } }] : [];
+function analyzePackageManifest(parsed: unknown, context: ManifestContext): SourceAnalysisResult {
+  const manifest = tableOf(parsed) ?? {};
+  const symbols = packageSymbols(stringOf(manifest.name));
 
-  const linked = new Map<string, Set<string>>();
-  const external = new Set<string>();
+  const dependencies = new ManifestDependencies();
   for (const field of DEPENDENCY_FIELDS) {
-    const block = manifest[field];
-    if (!block || typeof block !== "object" || Array.isArray(block)) continue;
-    for (const [name, range] of Object.entries(block as Record<string, unknown>)) {
-      const packages = (symbolIndex?.get(name) ?? []).filter((location) => location.kind === PACKAGE_KIND && location.sourcePath !== thisFile);
-      if (packages.length > 0) {
-        for (const location of packages) {
-          const names = linked.get(location.sourcePath) ?? new Set<string>();
-          names.add(name);
-          linked.set(location.sourcePath, names);
-        }
-      } else {
-        external.add(typeof range === "string" && range ? `${name}@${range}` : name);
-      }
+    for (const [name, range] of Object.entries(tableOf(manifest[field]) ?? {})) {
+      dependencies.byName(name, stringOf(range), PACKAGE_JSON, context);
     }
   }
 
-  const dependencies: DependencyEntry[] = Array.from(linked.entries())
-    .sort(([left], [right]) => left.localeCompare(right))
-    .map(([file, names]) => ({ specifier: file, resolvedPath: file, symbols: Array.from(names).sort(), kind: "import" as const }));
-  for (const specifier of Array.from(external).sort()) {
-    dependencies.push({ specifier, symbols: [], kind: "import" });
-  }
-  const declares = fileIndex ? declaredEntries(manifest, manifestAbsolute, workspaceRoot, fileIndex) : [];
-  return declares.length > 0 ? { symbols, dependencies, declares } : { symbols, dependencies };
+  const declares = context.fileIndex ? declaredEntries(manifest, context.absolutePath, context.workspaceRoot, context.fileIndex) : [];
+  return declares.length > 0 ? { symbols, dependencies: dependencies.entries(), declares } : { symbols, dependencies: dependencies.entries() };
 }
 
 // ============================================================================
@@ -426,8 +412,8 @@ export const jsonAdapter: LanguageAdapter = {
       };
     }
 
-    if (path.basename(absolutePath) === "package.json") {
-      return analyzePackageManifest(parsed, normalizeWorkspacePath(path.relative(workspaceRoot, absolutePath)), absolutePath, workspaceRoot, fileIndex, symbolIndex);
+    if (path.basename(absolutePath) === PACKAGE_JSON) {
+      return analyzePackageManifest(parsed, manifestContext({ absolutePath, workspaceRoot, fileIndex, symbolIndex }));
     }
 
     const symbols: PublicSymbolEntry[] = collectKeyPaths(parsed).map((keyPath) => ({ name: keyPath, kind: "key" }));

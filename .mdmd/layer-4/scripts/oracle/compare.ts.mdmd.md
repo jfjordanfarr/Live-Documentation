@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-16T00:58:46.077Z
+- Generated At: 2026-10-16T16:40:52.397Z
 
 ## Authored
 ### Purpose
@@ -32,7 +32,7 @@ What the comparison found, bucket by bucket.
 - Source: [source](../../../../scripts/oracle/compare.ts#L58)
 
 ##### `fixtureGlobs` — Summary
-The default globs already read every suffix anywhere; a fixture is its own workspace, so the same suffixes serve it.
+The default globs already read every suffix and every manifest name anywhere; a fixture is its own workspace, so the same patterns serve it.
 
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function

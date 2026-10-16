@@ -1,0 +1,11 @@
+[package]
+name = "stockctl"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "count"
+path = "src/main.rs"
+
+[dependencies]
+stock = { path = "../stock" }

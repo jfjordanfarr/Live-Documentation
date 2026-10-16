@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/config/liveDocumentationConfig.test.ts
-- Generated At: 2026-10-16T00:58:41.757Z
+- Generated At: 2026-10-16T16:21:39.492Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ _No public symbols detected_
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_ASSET_EXTENSIONS`](./liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_asset_extensions)
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_DEFAULT_GLOBS`](./liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_default_globs)
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_SOURCE_EXTENSIONS`](./liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_source_extensions)
+- [`liveDocumentationConfig.LIVE_DOCUMENTATION_SOURCE_FILE_NAMES`](./liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_source_file_names)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](./liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`coreConstants.SUPPORTED_SCRIPT_EXTENSIONS`](../live-docs/coreConstants.ts.mdmd.md#symbol-supported_script_extensions)
 - `vitest` - `describe`, `expect`, `it`

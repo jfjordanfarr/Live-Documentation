@@ -5,14 +5,19 @@ import {
   LIVE_DOCUMENTATION_ASSET_EXTENSIONS,
   LIVE_DOCUMENTATION_DEFAULT_GLOBS,
   LIVE_DOCUMENTATION_SOURCE_EXTENSIONS,
+  LIVE_DOCUMENTATION_SOURCE_FILE_NAMES,
   normalizeLiveDocumentationConfig
 } from "./liveDocumentationConfig";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "../live-docs/coreConstants";
 
 describe("the default globs", () => {
-  it("reach every file the TypeScript parser or an adapter can read, and every asset, anywhere in the workspace", () => {
+  it("reach every file the TypeScript parser or an adapter can read, by extension or by name, and every asset, anywhere in the workspace", () => {
     const extensions = [...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS, ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS];
-    expect(LIVE_DOCUMENTATION_DEFAULT_GLOBS).toEqual(extensions.map((extension) => `**/*${extension}`));
+    expect(LIVE_DOCUMENTATION_DEFAULT_GLOBS).toEqual([
+      ...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS.map((extension) => `**/*${extension}`),
+      ...LIVE_DOCUMENTATION_SOURCE_FILE_NAMES.map((name) => `**/${name}`),
+      ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS.map((extension) => `**/*${extension}`)
+    ]);
     expect(new Set(extensions).size).toBe(extensions.length);
     expect(extensions.every((extension) => /^\.[a-z0-9]+$/u.test(extension))).toBe(true);
     for (const extension of SUPPORTED_SCRIPT_EXTENSIONS) {

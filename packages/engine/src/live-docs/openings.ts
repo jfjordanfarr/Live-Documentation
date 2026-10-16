@@ -35,6 +35,21 @@ export const MANIFEST_KINDS: ReadonlySet<string> = new Set([...PROJECT_KINDS, PA
 /** The kinds of symbols that are openings: a file that serves one is an entry, since its caller is outside the scan. */
 export const OPENING_KINDS: ReadonlySet<string> = new Set([ROUTE_KIND, ADDRESS_KIND, ...SQL_OBJECT_KINDS]);
 
+const MANIFEST_NAMES: ReadonlySet<string> = new Set(["package.json", "pom.xml", "build.gradle", "build.gradle.kts", "go.mod", "Cargo.toml", "pyproject.toml", "Gemfile"]);
+const PROJECT_FILE = /\.(?:csproj|vbproj|fsproj)$/iu;
+
+/**
+ * True for a package manifest, by its name: a .NET project file,
+ * `package.json`, `pom.xml`, a Gradle build, `go.mod`, `Cargo.toml`,
+ * `pyproject.toml` or a `Gemfile`. Its folder is a system's home, and a tool
+ * reads it.
+ */
+function isManifestFile(sourcePath: string): boolean {
+  const normalized = sourcePath.replace(/\\/g, "/");
+  const name = normalized.slice(normalized.lastIndexOf("/") + 1);
+  return MANIFEST_NAMES.has(name) || PROJECT_FILE.test(name);
+}
+
 const TOOLING_FILE = /^(?:packages\.config|tsconfig(?:\.[^/]+)?\.json|web\.config|app\.config|[^/]+\.config\.(?:[cm]?[jt]s|json))$/iu;
 
 /** The files an editor or a development container reads, by the documented places they live: `.vscode/settings.json`, `.vscode/tasks.json`, `.devcontainer/devcontainer.json`, `.devcontainer.json`. */
@@ -42,7 +57,9 @@ const TOOLING_PATH = /(?:^|\/)(?:\.vscode\/[^/]+\.json|\.devcontainer\/devcontai
 
 /**
  * True when a file is one a tool reads and no file imports: by its name, a
- * compiler's or a runner's configuration (`tsconfig.json`, `tsconfig.base.json`,
+ * package manifest ({@link isManifestFile}, whether or not it names a package, so
+ * that a workspace's root `Cargo.toml` is one too), a compiler's or a runner's
+ * configuration (`tsconfig.json`, `tsconfig.base.json`,
  * `vitest.config.ts`, `playwright.config.ts`), a .NET configuration
  * (`Web.config`, `App.config`) or package list (`packages.config`); by its
  * place, an editor's or a development container's configuration
@@ -53,7 +70,7 @@ const TOOLING_PATH = /(?:^|\/)(?:\.vscode\/[^/]+\.json|\.devcontainer\/devcontai
  */
 export function isToolingFile(sourcePath: string): boolean {
   const normalized = sourcePath.replace(/\\/g, "/");
-  return TOOLING_FILE.test(normalized.slice(normalized.lastIndexOf("/") + 1)) || TOOLING_PATH.test(normalized);
+  return isManifestFile(normalized) || TOOLING_FILE.test(normalized.slice(normalized.lastIndexOf("/") + 1)) || TOOLING_PATH.test(normalized);
 }
 
 const HTTP_METHODS: ReadonlySet<string> = new Set(["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]);
@@ -172,8 +189,6 @@ export function matchRoute(call: RoutePattern, index: WorkspaceSymbolIndex): Ser
 // Home: the system a file belongs to
 // ============================================================================
 
-const MANIFEST = /(^|\/)(?:[^/]+\.(?:csproj|vbproj|fsproj)|package\.json|pom\.xml|build\.gradle(?:\.kts)?|go\.mod|Cargo\.toml|pyproject\.toml|Gemfile)$/u;
-
 const manifestDirectoriesCache = new WeakMap<object, Set<string>>();
 
 function manifestDirectories(fileIndex: Iterable<string> & object): Set<string> {
@@ -181,7 +196,7 @@ function manifestDirectories(fileIndex: Iterable<string> & object): Set<string> 
   if (!directories) {
     directories = new Set();
     for (const file of fileIndex) {
-      if (MANIFEST.test(file)) {
+      if (isManifestFile(file)) {
         directories.add(dirname(file));
       }
     }

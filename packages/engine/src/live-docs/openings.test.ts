@@ -134,6 +134,15 @@ describe("isToolingFile", () => {
     }
   });
 
+  it("knows every package manifest by its name, and nothing else of its format", () => {
+    for (const file of ["package.json", "packages/engine/package.json", "Hub/Hub.csproj", "Lib/Lib.fsproj", "Old/Old.VBPROJ", "Cargo.toml", "crates/core/Cargo.toml", "pyproject.toml", "go.mod", "svc/pom.xml", "build.gradle.kts", "Gemfile"]) {
+      expect(isToolingFile(file), file).toBe(true);
+    }
+    for (const file of ["rustfmt.toml", "cargo.toml", "src/pyproject.py", "go.sum", "log4j2.xml", "package.json5", "Hub/Hub.csproj.user"]) {
+      expect(isToolingFile(file), file).toBe(false);
+    }
+  });
+
   it("knows an editor's and a development container's configuration by its place", () => {
     for (const file of [".vscode/settings.json", ".vscode/tasks.json", "tools/.vscode/launch.json", ".devcontainer/devcontainer.json", ".devcontainer.json"]) {
       expect(isToolingFile(file), file).toBe(true);

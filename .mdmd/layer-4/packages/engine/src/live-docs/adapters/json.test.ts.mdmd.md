@@ -13,7 +13,7 @@ Unit tests for the JSON adapter, verifying file reference detection, non-path fi
 ### Notes
 - Tests cover: file index requirement (empty index returns empty deps), relative path resolution (./path, ../path), workspace-relative paths, bare filenames, nested JSON structures, non-path filtering (URLs, versions, globs, npm scopes), file index validation (only known files produce deps), deduplication, and error handling.
 - Uses temp directories to simulate workspace structure without polluting the real workspace.
-- Created 2026-01-15 alongside the JSON adapter implementation.
+- Created 2026-01-15 alongside the JSON adapter implementation. The `package.json` case holds, since 2026-10-16, that a crate of a dependency's name in the symbol index is not linked.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

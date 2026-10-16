@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/rust/analytics/expected/compiler-edges.json
-- Generated At: 2026-10-02T20:20:08.439Z
+- Generated At: 2026-10-16T16:21:56.938Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ The file-to-file edges the compiler resolved for the `programs/rust` sample prog
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`Cargo`](../Cargo.toml.mdmd.md)
 - [`analytics`](../src/analytics.rs.mdmd.md)
 - [`io`](../src/io.rs.mdmd.md)
 - [`main`](../src/main.rs.mdmd.md)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/go/depot/expected/compiler-edges.json
-- Generated At: 2026-10-02T20:20:05.770Z
+- Generated At: 2026-10-16T16:21:53.817Z
 
 ## Authored
 ### Purpose
@@ -41,6 +41,7 @@ The file-to-file edges the compiler resolved for the `go/depot` sample program, 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`main`](../cmd/depot/main.go.mdmd.md)
+- [`go`](../go.mod.mdmd.md)
 - [`audit`](../internal/audit/audit.go.mdmd.md)
 - [`count`](../report/count.go.mdmd.md)
 - [`format`](../report/format.go.mdmd.md)

@@ -419,7 +419,9 @@ describe("JSON Adapter on package.json", () => {
       peerDependencies: { typescript: "" }
     }));
     const symbolIndex = new Map([
-      ["@live-documentation/engine", [{ liveDocPath: "d", sourcePath: "packages/engine/package.json", anchor: "symbol-live-documentationengine", kind: "package" }]]
+      ["@live-documentation/engine", [{ liveDocPath: "d", sourcePath: "packages/engine/package.json", anchor: "symbol-live-documentationengine", kind: "package" }]],
+      // A crate of the same name as an npm package is not that package.
+      ["d3", [{ liveDocPath: "d", sourcePath: "native/d3/Cargo.toml", anchor: "symbol-d3", kind: "package" }]]
     ]);
 
     const result = await jsonAdapter.analyze({ absolutePath: manifestPath, workspaceRoot: tempDir, fileIndex: new Set(["packages/explorer/src/index.ts"]), symbolIndex });

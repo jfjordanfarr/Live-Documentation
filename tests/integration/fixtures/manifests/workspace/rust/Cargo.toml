@@ -1,0 +1,3 @@
+[workspace]
+members = ["stock", "stockctl"]
+resolver = "2"

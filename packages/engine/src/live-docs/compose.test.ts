@@ -249,12 +249,15 @@ describe("composeEntries", () => {
       { reason: "opening", symbol: { name: "GET api/payments", link: "#symbol-get-apipayments" } },
       { reason: "opening", symbol: { name: "dbo.Payment", link: "#symbol-dbopayment" } }
     ]);
-    expect(compose({ headings: computePublicSymbolHeadingInfo([{ name: "@scope/engine", kind: "package" }]) })).toEqual([{ reason: "tooling" }]);
-    expect(compose({ headings: computePublicSymbolHeadingInfo([{ name: "Hub", kind: "program" }]) })).toEqual([{ reason: "tooling" }]);
+    // A manifest is tooling by its name, whether or not it publishes a package: a workspace's root Cargo.toml publishes none.
+    for (const name of ["package.json", "Hub/Hub.csproj", "Legacy/Legacy.VBPROJ", "crates/Cargo.toml", "Cargo.toml", "app/pyproject.toml", "go.mod", "parent/pom.xml"]) {
+      expect(compose({ sourceRelativePath: name }), name).toEqual([{ reason: "tooling" }]);
+    }
+    expect(compose({ sourceRelativePath: "src/package.ts", headings: computePublicSymbolHeadingInfo([{ name: "@scope/engine", kind: "package" }]) })).toEqual([]);
     for (const name of ["tests/e2e/playwright.config.ts", "tsconfig.json", "packages/cli/tsconfig.build.json", "Hub/App.config", "Portal/Web.config", "Portal/packages.config", "vitest.config.mts"]) {
       expect(compose({ sourceRelativePath: name }), name).toEqual([{ reason: "tooling" }]);
     }
-    for (const name of ["src/config.ts", "src/app.config/settings.ts", "appsettings.json"]) {
+    for (const name of ["src/config.ts", "src/app.config/settings.ts", "appsettings.json", "rustfmt.toml", "cargo.toml", "settings.xml", "go.mod.bak"]) {
       expect(compose({ sourceRelativePath: name }), name).toEqual([]);
     }
   });

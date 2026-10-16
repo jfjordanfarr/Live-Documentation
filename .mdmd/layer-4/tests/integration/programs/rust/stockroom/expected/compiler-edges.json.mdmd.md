@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/rust/stockroom/expected/compiler-edges.json
-- Generated At: 2026-10-02T20:20:08.700Z
+- Generated At: 2026-10-16T16:21:57.237Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ The file-to-file edges the compiler resolved for the `rust/stockroom` sample pro
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`Cargo`](../Cargo.toml.mdmd.md)
 - [`lib`](../src/lib.rs.mdmd.md)
 - [`main`](../src/main.rs.mdmd.md)
 - [`report`](../src/report.rs.mdmd.md)

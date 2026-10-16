@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/rust/rosetta/expected/compiler-edges.json
-- Generated At: 2026-10-02T20:20:08.590Z
+- Generated At: 2026-10-16T16:21:57.100Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ The file-to-file edges the compiler resolved for the `programs/rust` sample prog
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`Cargo`](../Cargo.toml.mdmd.md)
 - [`helpers`](../src/helpers.rs.mdmd.md)
 - [`helpers_test`](../src/helpers_test.rs.mdmd.md)
 - [`main`](../src/main.rs.mdmd.md)

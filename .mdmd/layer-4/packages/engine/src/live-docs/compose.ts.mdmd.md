@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-10-15T15:58:58.522Z
+- Generated At: 2026-10-16T16:21:42.033Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Turns a source file's analysis into the document model: headings with unique anc
 - `computePublicSymbolHeadingInfo` disambiguates symbols that share a name (`Widget (interface)`, `draw (function overload 2)`) and keeps every anchor unique within a doc.
 - A type reference resolves through the workspace symbol index. A type the file itself declares links within the doc, whatever other files declare under that name. Otherwise, among files of the same language, a declaration wins over a barrel that only re-exports the name, then the nearest file. A name never resolves into a file of another language (decided 2026-09-28 after the Local Map drew a wire no code justified).
 - Dependencies are grouped by resolved file: an imported symbol links to its anchor, an alias links to the original name, and an external module keeps its specifier and the symbols taken from it.
-- `composeEntries` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) writes the `Entry` lines in a fixed order so that a doc is written the same way every run: `program` from the file's analysis, the heading at the declaration's line so that a namesake overload is not linked (found on Java's rosetta `Main.java`); the commands by name and the module from the entry index, each linking the manifest's doc; one `opening` per route, address, procedure, table, view or function served; `tooling` for a manifest symbol or a file name a tool reads (`isToolingFile`); `declared` for a configuration pattern matched by the archetype overrides' rule.
+- `composeEntries` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) writes the `Entry` lines in a fixed order so that a doc is written the same way every run: `program` from the file's analysis, the heading at the declaration's line so that a namesake overload is not linked (found on Java's rosetta `Main.java`); the commands by name and the module from the entry index, each linking the manifest's doc; one `opening` per route, address, procedure, table, view or function served; `tooling` for a file a tool reads, by its name or place (`isToolingFile`), a manifest included by its name since 2026-10-16, when a Cargo workspace's root manifest, which publishes no package, showed the earlier rule by the manifest symbol's kind incomplete; `declared` for a configuration pattern matched by the archetype overrides' rule.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -81,7 +81,7 @@ its own even when a source-observed dependency names the same file.
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L733)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L734)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -93,7 +93,8 @@ the file, in a fixed order so that a doc is written the same way every run.
 has it. `command` and `module` come from the manifests that declare the file,
 as the workspace entry index recorded them. `opening` is one line per route,
 address, procedure, table, view or function the file serves. `tooling` is a
-rule by kind: a manifest, or a file name a tool reads. `declared` is the
+rule by name and place: a manifest, or a configuration a tool reads
+({@link isToolingFile}). `declared` is the
 configuration's `entryPoints`. A test is an entry by its archetype and gets
 no line here.
 
@@ -109,7 +110,7 @@ no line here.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L797)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L798)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
@@ -146,7 +147,6 @@ barrel re-exports, linking to the module it comes from.
 - [`document.ReferenceLine`](./document.ts.mdmd.md#symbol-referenceline) (type-only)
 - [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock) (type-only)
 - [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref) (type-only)
-- [`openings.MANIFEST_KINDS`](./openings.ts.mdmd.md#symbol-manifest_kinds)
 - [`openings.OPENING_KINDS`](./openings.ts.mdmd.md#symbol-opening_kinds)
 - [`openings.isToolingFile`](./openings.ts.mdmd.md#symbol-istoolingfile)
 <!-- LIVE-DOC:END Dependencies -->

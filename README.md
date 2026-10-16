@@ -106,7 +106,7 @@ Live Documentation is polyglot. Support varies by language (some have richer sym
 - **Ruby, PowerShell**: hand-written scanners for symbols and for requires and module imports; no compiler oracle yet for Ruby.
 - **ASP.NET markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor`, connected to code-behind and configuration conventions.
 - **.NET configuration and SQL**: the addresses and connection strings of `web.config` and `app.config`, and the procedures, tables and views of `.sql` files, read as the openings a system offers and uses.
-- **Manifests**: `.csproj`, `packages.config` and `package.json`, read as what a project stands on.
+- **Manifests**: `.csproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod` and `pom.xml`, read as what a project stands on and what it starts.
 - **HTML / CSS / JSON**: asset and reference extraction.
 
 ---

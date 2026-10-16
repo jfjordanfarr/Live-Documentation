@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/go/rosetta/expected/compiler-edges.json
-- Generated At: 2026-10-02T20:20:05.989Z
+- Generated At: 2026-10-16T16:21:54.079Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ The file-to-file edges the compiler resolved for the `programs/go` sample progra
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`go`](../go.mod.mdmd.md)
 - [`helpers`](../src/helpers/helpers.go.mdmd.md)
 - [`helpers_test`](../src/helpers/helpers_test.go.mdmd.md)
 - [`main`](../src/main/main.go.mdmd.md)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: asset
 - Code Path: tests/integration/programs/java/rosetta/expected/compiler-edges.json
-- Generated At: 2026-10-02T20:20:06.257Z
+- Generated At: 2026-10-16T16:21:54.416Z
 
 ## Authored
 ### Purpose
@@ -40,6 +40,7 @@ The file-to-file edges the compiler resolved for the `programs/java` sample prog
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`pom`](../pom.xml.mdmd.md)
 - [`Main`](../src/com/rosetta/app/Main.java.mdmd.md)
 - [`PipelineTest`](../src/com/rosetta/app/PipelineTest.java.mdmd.md)
 - [`Helpers`](../src/com/rosetta/helpers/Helpers.java.mdmd.md)

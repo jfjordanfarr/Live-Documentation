@@ -54,7 +54,7 @@ export interface Report {
   unresolved:     Array<{ from: string; raw: string }>;
 }
 
-/** The default globs already read every suffix anywhere; a fixture is its own workspace, so the same suffixes serve it. */
+/** The default globs already read every suffix and every manifest name anywhere; a fixture is its own workspace, so the same patterns serve it. */
 export function fixtureGlobs(): string[] {
   const extensions = new Set(LIVE_DOCUMENTATION_DEFAULT_GLOBS.map((pattern) => pattern.slice(pattern.lastIndexOf("/") + 1)));
   return Array.from(extensions).map((suffix) => `**/${suffix}`);

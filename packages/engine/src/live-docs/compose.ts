@@ -37,7 +37,7 @@ import {
   createProximityAwareComparator
 } from "./coreUtils";
 import type { Dependency, DocSection, Entry, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
-import { MANIFEST_KINDS, OPENING_KINDS, isToolingFile } from "./openings";
+import { OPENING_KINDS, isToolingFile } from "./openings";
 
 // ============================================================================
 // Public Symbol Heading Computation
@@ -717,7 +717,8 @@ function resolveSymbolSlugFromIndex(
  * has it. `command` and `module` come from the manifests that declare the file,
  * as the workspace entry index recorded them. `opening` is one line per route,
  * address, procedure, table, view or function the file serves. `tooling` is a
- * rule by kind: a manifest, or a file name a tool reads. `declared` is the
+ * rule by name and place: a manifest, or a configuration a tool reads
+ * ({@link isToolingFile}). `declared` is the
  * configuration's `entryPoints`. A test is an entry by its archetype and gets
  * no line here.
  *
@@ -775,7 +776,7 @@ export function composeEntries(args: {
     }
   }
 
-  if (args.headings.some((info) => MANIFEST_KINDS.has(info.symbol.kind)) || isToolingFile(args.sourceRelativePath)) {
+  if (isToolingFile(args.sourceRelativePath)) {
     entries.push({ reason: "tooling" });
   }
 
