@@ -2511,3 +2511,976 @@ files" completed (exit code 0)
   pass, and I build.
 
   Let's do it!
+
+● Recording your go, then reading what the briefs need before I split the build
+  across subagents: the adapter interface and the Go adapter as the pattern, the
+  C scanner's tests to carry over, the rosetta sample's shape, the config and
+  discovery modules, and the JSON adapter.
+
+  Searched for 1 pattern, read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● I'll dispatch three subagents to handle the C/C++ adapter, the C++ sample with
+  include fixture, and the discovery defaults with exclude/card fix, while I
+  install scip-clang, wire it into the oracle, and draft the authored docs
+  myself. First I'll log a checkpoint, then write the briefs. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● 3 background agents launched (↓ to manage)
+   ├ Tree-sitter C and C++ adapter
+   ├ C++ rosetta sample and include fixture
+   └ Discovery defaults, exclude, JSONC, card count
+
+  Searched for 1 pattern, ran 9 shell commands (ctrl+o to expand)
+
+● The oracle now runs scip-clang end to end on a compilation database, verified
+  on a scratch copy of the C sample (11 documents, 27 edges, 15 from the
+  compiler's own include resolutions). While the three subagents work, I'm
+  drafting the authored docs for the eight root files and the include-rule
+  measurement script. · summary
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● I'll run the oracle over the C and C++ samples and fixture to generate their
+  compiler expectations while the adapter and discovery subagents finish up.
+  · summary
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● I found two issues: the C++ expectations have false ambiguities from the
+  reopened rosetta namespace, which I'll fix by applying the same rule the
+  converter uses for Rust's crate root and re-indexing; and the include fixture
+  reveals the ancestors rule misses -I include/-I src layouts, so I'll ask the
+  adapter subagent for a fourth candidate covering ancestors with their
+  include/src subdirectories. · summary  ⎿  Message queued for delivery to a134308555fac278f at its next tool
+     round.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Adding the namespace rule to the oracle's converter with its test, then
+  re-indexing the C++ sample.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Report: C++ rosetta sample, compilation databases, include-dirs fixture,
+  manifest and parity test
+
+  ### Files created
+  -
+  `/workspaces/Live-Documentation/tests/integration/programs/cpp/rosetta/src/`:
+  `types.hpp`, `models.hpp`, `models.cpp`, `helpers.hpp`, `helpers.cpp`,
+  `processor.hpp`, `processor.cpp`, `main.cpp`, `test_helpers.cpp`,
+  `test_processor.cpp`, `test_pipeline.cpp`. Plain C++17 in `namespace rosetta`:
+  `enum class Status`, `struct Entry`, `struct ProcessorConfig`, `struct
+  Record`, `struct Report` (a `std::vector<Record>` instead of C's pointer and
+  count), free functions with the C names (`create_record`, `validate_config`,
+  `format_value`, `validate_id`, `sum_values`, `average_values`,
+  `run_processor`, `summarize_report`, `free_report`, `rosetta_main`), and a
+  small `Processor` class whose public `run` is called by `run_processor`.
+  `run_processor` returns `std::optional<Report>` (empty on an invalid
+  configuration). Doxygen comments on every public function. Includes mirror the
+  C variant file for file, so the twelve canonical edges hold by the same
+  symbols and `helpers`/`types` stay leaves. Each test defines its own `main`.
+  - `/workspaces/Live-Documentation/tests/integration/programs/cpp/rosetta/compi
+  le_commands.json`: seven entries (every `.cpp`), `"directory": "."`, `g++
+  -std=c++17 -I src -c src/<name>.cpp`.
+  - `/workspaces/Live-Documentation/tests/integration/programs/c/rosetta/compile
+  _commands.json`: seven entries (every `.c`), `gcc -std=c11 -I src -c
+  src/<name>.c`.
+  - `/workspaces/Live-Documentation/tests/integration/fixtures/include-dirs/`:
+  `README.md`, `compile_commands.json` (four entries, `-I include -I src -I .`),
+  `src/app/main.cpp`, `src/app/util.hpp`, `src/app/util.cpp`,
+  `include/core/engine.hpp`, `include/core/engine_detail.hpp`,
+  `src/core/engine.cpp`, `src/shared/log.hpp`, `src/shared/log.cpp`, and the two
+  decoys `vendor/other/util.hpp` (`other_util()`) and `tests/core/engine.hpp`
+  (`test_engine_run()`), which nothing includes. The README describes the
+  layout, the three rules, and a table of every include with what the compiler
+  finds and what each rule would find (correct, nothing, or the decoy); it
+  decides nothing. No `expected/` written.
+
+  ### Files edited
+  - `/workspaces/Live-Documentation/tests/integration/programs/rosetta-manifest.
+  json`: `"cpp"` added to the `type-safe` tier after `"c"`; a `cpp` variant
+  entry after the `c` one (`path`, `tier`, `sourceDir`, `entryPoint`, `notes`).
+  No `compilerEdges` key, since the C entry has none and the brief said the root
+  writes `expected/`; add it to both once the files exist (C's exists now, see
+  below).
+  - `/workspaces/Live-Documentation/tests/integration/live-docs/rosettaParity.te
+  st.ts`: cpp fixture entry after c (`glob: ["src/**/*.cpp", "src/**/*.hpp"]`);
+  cpp program record; counts "eight"/"all 8"/"6/8" changed to nine where they
+  count languages (the "all 8 canonical node roles" title counts nodes and
+  stays); the two threshold failure messages now say
+  `${CONSENSUS_THRESHOLD}/${allResults.length}` instead of a hardcoded 8; the
+  program-entries title says "seven languages" and its comment names C++'s `int
+  main()`; the classifyFile and extractDependencyTargets comments mention C++.
+  ESLint (type-aware) passes on the file. Diff: 33 insertions, 16 deletions
+  across both files.
+
+  ### One deviation from the brief, flagged
+  The brief listed `test_helpers.cpp` and `test_pipeline.cpp` only and spoke of
+  "both `test_*.c` files", but the C variant has three (`test_processor.c` too)
+  and the parity test's node coverage requires `processor_test` in every
+  fixture. I wrote `test_processor.cpp` as well, and the cpp program record
+  lists four files carrying `main`: `src/main.cpp`, `src/test_helpers.cpp`,
+  `src/test_pipeline.cpp`, `src/test_processor.cpp`, exactly as the C record
+  does.
+
+  ### Compile and run results
+  - cpp/rosetta: all 7 database entries, run exactly as written plus
+  `-fsyntax-only -Wall -Wextra -pedantic`, clean. The program links and prints
+  `Total: 60.00, Average: 20.00, Count: 3`, exit 0. Tests: `test_helpers` 7/7,
+  `test_processor` 11/11, `test_pipeline` 10/10, each exit 0. Binaries deleted.
+  - include-dirs: all 4 entries clean; links and runs (`engine_run`,
+  `include-dirs: done`, exit 0). `g++ -H` confirms the compiler's resolution
+  matches the README: `util.hpp` to `src/app/util.hpp`, `core/engine.hpp` to
+  `include/core/engine.hpp` (from both `main.cpp` and `engine.cpp`),
+  `src/shared/log.hpp` to `./src/shared/log.hpp`, `engine_detail.hpp` to
+  `include/core/engine_detail.hpp`, `shared/log.hpp` to `src/shared/log.hpp`.
+  Binary deleted.
+  - c/rosetta: 4 of 7 entries clean. `test_helpers.c`, `test_processor.c` and
+  `test_pipeline.c` fail under gcc 14 (implicit function declarations are errors
+  now): they call `format`, `sum`, `average`, `run`, `summarize`, none declared
+  by the headers (which declare `format_value`, `sum_values`, `average_values`,
+  `run_processor`, `summarize_report`), and `create_record(1, "A", 100.0)` with
+  three arguments against `create_record(const char*, double)`. The tests also
+  assume `run` returns a `Report` by value and `summarize` returns a `char*`, so
+  they need rewriting against the real API, not just renaming. Pre-existing
+  since 2026-01-16, outside my scope, untouched. Not a blocker for the oracle:
+  the `expected/compiler-edges.json` that appeared under `c/rosetta` at 00:23
+  (not mine; scip-clang 0.4.0) lists all eleven C documents, though calls to
+  undeclared functions resolve to nothing there.
+
+  ### Integration test (`npm run test:integration`)
+  12 files, 66 tests: 65 passed, 1 failed, 29.7 s. The failure is the predicted
+  one: rosettaParity "marks the main file as the program's entry in the seven
+  languages...": cpp found `{}`, expected the four `main`s. Cause: the shipped
+  adapter registers only `.c` and `.h` (`id: "c-basic"` in
+  `packages/engine/src/live-docs/adapters/c.ts`), so `.cpp`/`.hpp` get empty
+  docs (0 symbols, no dependencies). The other seven parity assertions pass with
+  cpp present: all eleven cpp files classify to the eight nodes, and the
+  consensus checks hold at 8/9. The C column still detects all 12 canonical
+  edges; its extras are the same three self-links as before. Everything else
+  (oracle, entries, repository-entries, inspect CLI, polyglot, estate, board,
+  round-trip, graph, generation, sample-metadata) passes.
+
+  ### Drift for the regeneration step
+  `npm run live-docs:generate -- --dry-run --changed` lists 3 would-be docs: my
+  `c/rosetta/compile_commands.json` plus `adapters/index.test.ts` and
+  `discovery.test.ts` from the other subagent. `--changed` reads `git status`,
+  which shows my new directories as single untracked entries, so the cpp and
+  include-dirs files are not in that listing. The full `--dry-run` reports 647
+  creations and 5 updates, almost all PNGs under
+  `AI-Agent-Workspace/ChatHistory`, which is the concurrent discovery/config
+  change, not my files. Under today's default globs the new `.cpp` and `.json`
+  files would get docs and the `.hpp` files would not (`tests/**/*.hpp` is not
+  in the defaults).
+
+  ### Also worth the root's attention (outside my scope, untouched)
+  - `.mdmd/layer-3/sample-programs.mdmd.md` says "eight Rosetta implementations"
+  and "No indexer for C is installed"; both are now stale.
+  - `rosettaParity.test.ts` around line 128 says the edges were "validated
+  against all 8 SCIP/oracle ground-truth expected.json files"; a historical
+  claim (six languages have expected files, cpp none yet), left as is.
+  - The parity test writes `AI-Agent-Workspace/tmp/rosetta-parity-matrix.md`
+  itself; that path is gitignored and the behaviour is pre-existing.
+  - No em dashes or CRLF in any file I wrote. Nothing committed. My two
+  scratchpad helper scripts are removed; the other files in the shared
+  scratchpad are not mine.
+
+● Agent "C++ rosetta sample and include fixture" finished · 21m 35s
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Fixing the C sample revealed its tests had never actually compiled—now they do
+  and pass. Next I'll extend the oracle to the remaining two C samples and
+  update the sample-programs page while the adapter and discovery subagents wrap
+  up. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## C/C++ adapter rewritten on tree-sitter: report
+
+  ### Files
+  -
+  `/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/c.ts`:
+  rewritten in place (762 lines of regex scanner replaced by a 810-line
+  tree-sitter adapter over `parseSource("cpp", ...)`). Exports kept: `cAdapter`
+  (id `c-basic`, extensions now read from `cSyntax.extensions` so the registry
+  and the adapter share one list). New exports: `IncludeStrategy`,
+  `DEFAULT_INCLUDE_STRATEGY = "ancestors"` (one module constant, change it in
+  one line), `resolveInclude(options)`, `analyzeCSource({ content, absolutePath,
+  workspaceRoot, strategy? })` (what `cAdapter.analyze` calls after reading the
+  file).
+  - `/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/c.tes
+  t.ts`: new, 11 cases (C file scope; C++ classes, enum class, namespaces,
+  templates, aliases, extern "C"; a method's Doxygen; the four include
+  strategies over the brief's tree plus a decoy and a `vendor/tool/main.cpp`
+  that the greedy rule serves the decoy to; exact-name and outside-workspace
+  refusals; include de-duplication and used names; symbol-level uses excluding
+  comments, strings and member access; program entries for `main` in `.cpp` and
+  `WinMain` in `.c`, none for a header, a prototype, a commented-out or
+  string-quoted definition, or a `main` inside a namespace or class).
+  - `/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/c.doc
+  string.test.ts`: untouched, passes unchanged.
+  - `/workspaces/Live-Documentation/packages/engine/src/languages/c.ts`:
+  `cSyntax.extensions` is now `.c .h .cpp .cc .cxx .hpp .hh .hxx .inl`, doc
+  comment updated. Git warns this file's working copy is CRLF; that is this
+  checkout's pre-existing state (many untouched engine files are CRLF here, HEAD
+  is LF, `.gitattributes` normalises on commit), not something my edit
+  introduced, so I left it.
+
+  ### The coordinator's fourth strategy
+  `"ancestors-with-include-directories"` is in: at each directory the ancestors
+  walk visits (including dir, then each ancestor up to and including the root),
+  it tries the directory itself, then its `include/`, then its `src/`, nearest
+  first, first existing file inside the workspace wins. Tested:
+  `"core/engine.hpp"` from `src/app/main.cpp` resolves to
+  `include/core/engine.hpp`; `"shared/log.hpp"` from `include/core/engine.hpp`
+  resolves to `src/shared/log.hpp`; `"lost.hpp"` (only under `vendor/other/`)
+  stays unresolved. Default left at `"ancestors"`.
+
+  ### Command results (in the brief's order)
+  1. `npx vitest run --project unit packages/engine/src/live-docs/adapters/c`: 7
+  files (the filter also matches csharp/css), 148 tests, all pass. Verbose run
+  of `c.test.ts` + `c.docstring.test.ts`: 15/15 pass.
+  2. `npm run build -w packages/engine`: clean.
+  3. `npx eslint` on the three files: no findings (exit 0).
+  4. `npm run test:integration`: 12 files, 66 tests, all pass (rosetta parity
+  for C included; nothing names `cpp/rosetta`).
+  5. `npm run live-docs:generate -- --dry-run`: 715 files, 41 created, 14
+  updated, 660 unchanged, 0 skipped, nothing written. The dry run lists
+  creations only (my `c.test.ts` doc among them, the rest belong to the other
+  subagents' files), not updates, so to show the C sample's diffs I mirrored
+  `tests/integration/programs/c` and its committed docs into my scratchpad at
+  the same depth, ran the generator there with the repo's config, and diffed
+  (mirror removed afterwards). Over the 24 C sample files: 16 unchanged, 6
+  differ:
+     - Attributable to the adapter (3): `modular/src/pipeline.c` loses
+  `normalize` (it is `static`); `rosetta/src/models.h` and `types.h` keep every
+  symbol and summary but the anonymous typedef'd structs/enums now link to the
+  line of the typedef name (`Record` L17 -> L22, `Status` L18 -> L22, `Entry`
+  L27 -> L31, `ProcessorConfig` L36 -> L40), the name-node rule Go uses and the
+  composition's program-line matching needs.
+     - Not mine (3): `rosetta/src/test_helpers.c`, `test_pipeline.c`,
+  `test_processor.c` show renamed test functions, shifted lines and new
+  `helpers.format_value`-style edges because those sources were edited
+  concurrently in the working tree (git shows them modified, plus new
+  `rosetta/compile_commands.json` and `rosetta/expected/`); the committed docs
+  are simply stale against those edits.
+     Additionally, a read-only smoke run of `analyzeCSource` over
+  `tests/integration/programs/cpp/rosetta` and
+  `tests/integration/fixtures/include-dirs` (21 files) produced namespaced
+  symbols (`rosetta.Processor` class, `rosetta.Processor.run` method,
+  `rosetta.create_record` function), resolved includes with used names, and
+  program entries for the four `.cpp` mains; under the `ancestors` default the
+  fixture's `"core/engine.hpp"` stays unresolved from `src/app/main.cpp`, as
+  designed for measurement.
+  6. Also ran the whole unit suite: 108 files, 1092 tests, all pass.
+
+  ### Behaviour changes a maintainer must know (C docs, against the scanner)
+  - `static` file-scope functions and variables are no longer listed (the
+  scanner listed static functions).
+  - Non-static file-scope variables (definitions and `extern` declarations) are
+  now listed as `variable`; the scanner listed none.
+  - Forward declarations (`struct foo;`, `class X;`) are no longer listed;
+  `typedef struct foo foo;` still yields `foo` as `type`.
+  - `typedef struct tag { } alias;` now yields both `tag` (struct) and `alias`
+  (type); the scanner yielded only `tag`. When the names are equal, one symbol.
+  - Unions are now `union`. Function-like and object-like macros both stay
+  `const` (the docstring test's contract); include guards are still listed as
+  macros.
+  - Any comment immediately above a declaration documents it, `//` included (the
+  scanner ignored plain `//`); a blank line between comment and declaration
+  breaks the association (Go's rule; no sample has such a gap, verified).
+  - Symbol locations are the name node's line, not the declaration's first line
+  (differs only for split definitions and typedef'd anonymous types, see above).
+  - Used-symbol matching now comes from the tree: identifiers and type names
+  outside comments and strings, including tokens of `#define` bodies, never
+  member accesses (`x.value`) or a macro's own name/parameters. The scanner's
+  include-guard (`*_H`) and framework-type blocklists are gone: with exact
+  matching against what the header declares they filtered nothing real.
+  - Quoted includes are resolved under `DEFAULT_INCLUDE_STRATEGY` ("ancestors")
+  instead of the including directory only; a root-relative include now resolves.
+  Names are checked against directory listings, so `Util.hpp` never finds
+  `util.hpp` on the case-insensitive mount (the scanner's `statSync` did).
+  Listings are cached per directory by mtime (the Python adapter's precedent);
+  header facts are cached by file mtime. `any-directory` walks the workspace,
+  never entering `.git` or `node_modules`, ordering candidates by path distance
+  from the including directory, then alphabetically.
+  - Program entries: `main`, `wmain`, `WinMain`, `wWinMain` with a body in `.c
+  .cpp .cc .cxx`, any return type (the scanner required `int`/`void` `main` in
+  `.c`).
+
+  ### C++ choices worth the root's eye
+  - Qualified names use `.` throughout (`app.Engine.run`), the house convention
+  of the Go, Rust and Java adapters and what the heading/alias machinery already
+  consumes. Namespaces are scopes, not symbols (as in the C# adapter); an
+  anonymous namespace's contents are not listed; `namespace a::b` opens two.
+  - Only `class` bodies contribute members (public ones: methods, fields,
+  constructors as `constructor`, destructors and operators as `method`, nested
+  types); C++ `struct`/`union` bodies do not, so C docs do not gain a symbol per
+  field. A C++ struct with methods therefore shows only its name.
+  - An out-of-line definition with a qualified name (`void app::Engine::secret()
+  {}`) is listed as `method` with the full qualified name, whatever its access
+  was in the class; an out-of-line namespace function defined that way (`void
+  app::deep() {}`) is also labelled `method`, since the tree alone cannot tell a
+  class scope from a namespace scope.
+  - Templates contribute the inner declaration under its own kind; `extern "C"`
+  blocks are descended; `#if`/`#ifdef` regions are transparent.
+
+  ### Unfinished
+  Nothing in scope. The other subagent's `cpp/rosetta` sample is not yet in the
+  parity test's fixture list; the adapter reads it cleanly (smoke run above).
+
+● Agent "Tree-sitter C and C++ adapter" finished · 33m 35s
+
+› Message from general-purpose
+  ## Files changed or created (all paths under /workspaces/Live-Documentation)
+
+  - `packages/engine/src/config/liveDocumentationConfig.ts`:
+  `LIVE_DOCUMENTATION_SOURCE_EXTENSIONS` (40, with the dot, matching how
+  adapters and `path.extname` spell them) and
+  `LIVE_DOCUMENTATION_ASSET_EXTENSIONS` (16) exported;
+  `LIVE_DOCUMENTATION_DEFAULT_GLOBS` is now `**/*<ext>` for each (56 patterns),
+  with the JSDoc rewritten as asked; `exclude: string[]` on the interface with
+  JSDoc, default `[]`; `normalizeWorkspacePatterns()` (trim, dedupe, forward
+  slashes, strip `./`) now serves both `entryPoints` and `exclude`, replacing
+  the inline entryPoints pipeline (same behaviour, existing test passes).
+  - `packages/engine/src/config/liveDocumentationConfig.test.ts`: defaults equal
+  the two lists mapped to `**/*<ext>`, no duplicates, every entry
+  `^\.[a-z0-9]+$`, every `SUPPORTED_SCRIPT_EXTENSIONS` entry present; `exclude`
+  defaults and normalization.
+  - `packages/engine/src/live-docs/adapters/index.ts`: the registry array is now
+  the exported `LANGUAGE_ADAPTERS` (was private `ADAPTERS`).
+  - `packages/engine/src/live-docs/adapters/index.test.ts` (new): every adapter
+  extension is in the source extensions (failure names the adapter and
+  extension); every extension is lowercase with its dot.
+  - `packages/engine/src/live-docs/discovery.ts`: one `glob(patterns, ...)` call
+  with `dot: true`; `LOCK_FILE_NAMES`, `isNeverDocumented()` (`.git` and
+  `node_modules` at any depth by segment, lock files by basename, the docs root
+  by prefix) and `docsRootWithin()` (derives the root from `config.root`
+  relative to the workspace, any spelling), each with JSDoc stating the product
+  rule; then `.gitignore` as before, then `config.exclude` via
+  `matchesPathPattern`, then `changedOnly`. Two small fixes in
+  `buildWorkspaceIndexes` in the same file: the TypeScript branch uses
+  `SUPPORTED_SCRIPT_EXTENSIONS` (the old hardcoded six-item list missed
+  `.mts`/`.cts`, so their symbols were never indexed although the main pass
+  reads them), and `inferScriptKind(ext)` instead of
+  `inferScriptKind(absolutePath)` (which fell to `Unknown` and only worked
+  because `createSourceFile` re-infers from the file name).
+  - `packages/engine/src/live-docs/discovery.test.ts` (new, 5 tests over a temp
+  workspace of 18 files): hidden files read; `.git`, nested `node_modules`, docs
+  root, three lock files and a gitignored build absent; the same rules hold for
+  an include set (`**/*`, with `Pipfile.lock` proving the basename rule beyond
+  `.json`); docs root derived from `root` spelled `docs/ld`, `./docs/ld/` and
+  absolute; build appears once `.gitignore` is removed; `exclude` by glob and by
+  `./`-prefixed path.
+  - `packages/engine/src/live-docs/adapters/json.ts`: `toStrictJson()` and
+  `endOfStringLiteral()` reduce JSON with comments and trailing commas (and a
+  BOM) to strict JSON fed to `JSON.parse`; module JSDoc updated. Why not
+  `ts.parseJsonText` + `ts.convertToObject`: `JsonSourceFile.parseDiagnostics`
+  is `@internal` (absent from the public d.ts; ESLint flagged it, tsc would
+  too), without it malformed JSON is read leniently (`{"a": "abc` becomes
+  `{"a":"abc"}`), and `ts.parseConfigFileTextToJson` rejects array roots. The
+  reduction keeps `JSON.parse` semantics exactly and the contract that a
+  malformed document gets an empty analysis. The adapter never used positions.
+  `ts` stays imported for `compilerPaths`.
+  - `packages/engine/src/live-docs/adapters/json.test.ts`: comments, trailing
+  commas in object and array, a `https://` string and an `"a, ]"` string left
+  intact, keys and references both; a doubled comma stays malformed; a BOM
+  document is read.
+  - `packages/explorer/src/client/views/localView/branch-renderer.ts` line 893:
+  `if (collapse && !row.classList.contains("internals-row")) hidden++;`. Note
+  the internals row carries `data-symbol="__internals__"`, so counting rows with
+  `dataset.symbol` (the brief's wording) would not have separated it; the class
+  does.
+  - `tests/e2e/local-map-directories.spec.ts`, test "a closed box opens in
+  place...": after the box opens, `graph.ts`'s reveal reads `+N symbols` with N
+  its `.symbol-row:not(.internals-row)` count, and `graph.test.ts`'s card
+  exists, has no public row and no `+N symbols` button.
+  - `.live-docs.config.json`: `"exclude": ["AI-Agent-Workspace/**"]` after
+  `entryPoints`.
+  - `scripts/live-docs/generate.ts`: untouched; its `--help` lists CLI flags
+  only, not config fields or default globs.
+
+  ## Command results
+
+  - `npx vitest run --project unit packages/engine/src/config
+  packages/engine/src/live-docs/discovery
+  packages/engine/src/live-docs/adapters/json
+  packages/engine/src/live-docs/adapters/index`: 4 files, 39 tests pass.
+  - `npm run test:unit`: 108 files, 1092 tests pass. `npm run test:integration`:
+  12 files, 68 tests pass (run because the glob and `dot: true` changes reach
+  the generator's fixture suites).
+  - `npx eslint` over all ten changed files: clean.
+  - `npm run build`: clean.
+  - `npm run live-docs:generate -- --dry-run`: `Base layer processed 715 file(s)
+  (dry-run): 41 created, 14 updated, 660 unchanged, 0 skipped, 0 deleted.` The
+  script prints only ten names then `+31 more`, so for the full record I
+  generated for real into a throwaway copy of the workspace (tar without
+  node_modules, .git, dist, AI-Agent-Workspace) and diffed its `layer-4` against
+  ours: 41 created, 0 deleted, 17 updated (3 more updated than the dry run saw,
+  since the other subagents' files moved between the two runs). Copy removed
+  afterwards.
+  - `npm run live-docs:visualize` then `npx playwright test --config
+  tests/e2e/playwright.config.ts tests/e2e/local-map-directories.spec.ts -g "a
+  closed box opens in place"`: 1 passed. With the renderer line reverted and the
+  Explorer rebuilt, the same test fails (`Expected "+10 symbols", Received "+11
+  symbols"`); restored, rebuilt, passes again. `dist/explorer` is left built
+  with the fix; the failing run's `test-results/` folder was removed.
+
+  ## The dry run's full record
+
+  Created (41):
+  - The root tooling files (7 of the expected 8):
+  `.devcontainer/devcontainer.json`, `.live-docs.config.json`,
+  `eslint.config.js`, `slopcop.config.json`, `tsconfig.base.json`,
+  `tsconfig.json`, `vitest.config.ts`.
+  - NOT created: `.vscode/settings.json`. It is tracked (force-added), but
+  `.gitignore` has `.vscode/`, and the unchanged gitignore filter (the `ignore`
+  package, verified directly: `ig.ignores(".vscode/settings.json") === true`)
+  drops it. I did not add an exclude or touch the filter. This is a fork for the
+  root: drop `.vscode/` from `.gitignore` (the file is tracked on purpose; the
+  untracked `.vscode/tasks.json` would then need its own line), or have
+  discovery respect git's index.
+  - Four more, not in the expected list: `packages/cli/tsconfig.json`,
+  `packages/engine/tsconfig.json`, `packages/explorer/tsconfig.json`,
+  `packages/generator/tsconfig.json`. The old globs reached only
+  `packages/**/src/**/*.json`; a package's own tsconfig sits above `src`.
+  - New test files (3): `packages/engine/src/live-docs/adapters/c.test.ts` (the
+  C subagent's), `packages/engine/src/live-docs/adapters/index.test.ts` and
+  `packages/engine/src/live-docs/discovery.test.ts` (mine; both will need
+  authored Purpose and Notes).
+  - The other subagents' files (27 at copy time):
+  `tests/integration/fixtures/include-dirs/` (12: `compile_commands.json`,
+  `expected/compiler-edges.json`, `include/core/engine.hpp`,
+  `include/core/engine_detail.hpp`, `src/app/main.cpp`, `src/app/util.cpp`,
+  `src/app/util.hpp`, `src/core/engine.cpp`, `src/shared/log.cpp`,
+  `src/shared/log.hpp`, `tests/core/engine.hpp`, `vendor/other/util.hpp`);
+  `tests/integration/programs/cpp/rosetta/` (13: `compile_commands.json`,
+  `expected/compiler-edges.json`, `src/helpers.cpp`, `src/helpers.hpp`,
+  `src/main.cpp`, `src/models.cpp`, `src/models.hpp`, `src/processor.cpp`,
+  `src/processor.hpp`, `src/test_helpers.cpp`, `src/test_pipeline.cpp`,
+  `src/test_processor.cpp`, `src/types.hpp`);
+  `tests/integration/programs/c/rosetta/compile_commands.json` and
+  `expected/compiler-edges.json` (untracked, the C subagent's). `git status` now
+  also shows untracked `c/basics/` and `c/modular/` `compile_commands.json` and
+  `expected/`, which appeared after my copy and will be created too.
+
+  Deleted: none. `package-lock.json` is absent by the lock-file rule.
+
+  Updated (17): from my changes, 5 docs with new symbols, dependencies or line
+  numbers (`liveDocumentationConfig.ts`, its test, `adapters/index.ts`,
+  `json.ts`, `discovery.ts`); from the JSON reader plus the newly discovered
+  `tsconfig.base.json`, 2 (`packages/explorer/src/client/tsconfig.json` and
+  `tests/integration/tsconfig.json` now parse and link `extends` to
+  `tsconfig.base.json`); from the other subagents, 10
+  (`packages/engine/src/languages/c.ts`, `adapters/c.ts`,
+  `scripts/oracle/scip-edges.ts`,
+  `tests/integration/programs/rosetta-manifest.json` gaining a link to
+  `cpp/rosetta/src/main.cpp`, and six C program docs under
+  `tests/integration/programs/c/`).
+
+  ## Behaviour a maintainer must know
+
+  - Discovery now issues one `glob()` call for every pattern. The old
+  per-pattern loop, measured over this repository with the `**/*<ext>` patterns,
+  took 72 s (27 s even with pruning); one call takes 1.3 s. The walk still
+  enters `node_modules` and `.git`; passing them as glob `ignore` patterns would
+  cut 1.3 s to 0.5 s here, but I kept the rules as post-filters as asked, and
+  because a docs root containing glob metacharacters would need escaping as an
+  ignore pattern while a prefix test needs none. Worth a decision if a cold run
+  over a huge `node_modules` proves slow.
+  - The docs-root rule: when `config.root` resolves to the workspace itself
+  (root `.`) or outside it, the rule excludes nothing; otherwise root `.` would
+  exclude every file.
+  - `exclude` has `matchesPathPattern` semantics (`**` is `(.+?)`, `*` is
+  `([^/]*)`): `AI-Agent-Workspace/**` matches everything beneath; a bare folder
+  name matches only a file of that name. The JSDoc says so.
+  - `.ascx` is in the source extensions per the brief, but no adapter registers
+  it: `aspnet.ts` registers `.aspx .cshtml .razor` while its own
+  `MARKUP_EXTENSIONS` set lists `.ascx`. One-line fix in `aspnet.ts`, outside my
+  scope. `.inl` is absent from `IMPLEMENTATION_CODE_EXTENSIONS` in
+  `coreConstants.ts`, so an `.inl` under a sample root is classed as an asset;
+  also outside my scope.
+  - `scripts/oracle/compare.ts` `fixtureGlobs()` still works (it slices the
+  suffix after the last `/`) and now reproduces the defaults exactly; its
+  comment "The default globs anchor on this workspace's layout" is stale. Not
+  edited.
+  - The JSON reduction is lenient in one corner: an unterminated block comment
+  at the very end of an otherwise valid document is dropped rather than failing
+  the parse.
+
+  ## Unfinished
+
+  Nothing within scope. For the root: regenerate (41 created, 7 updated from my
+  work, two new test files to author), decide the `.vscode/settings.json` fork,
+  and the three out-of-scope notes above.
+
+● Agent "Discovery defaults, exclude, JSONC, card count" finished · 35m 21s
+
+● All three subagents (adapter, sample/fixture, and discovery changes) have
+  finished with passing tests. Now I'll review their code, measure the
+  include-rule against the compiler, resolve the open forks, regenerate outputs,
+  write the docs, and run the gate. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● So far today's rule resolves 4/8 and ancestors 5/8 on the include fixture,
+  with greedy only hitting 8 by tie-break luck. Now I'll add a decoy rule to the
+  script to break that luck, plus the git-tracked .vscode/settings.json
+  exception and the two extension gaps from the subagents. · summary
+  ⎿  Resuming agent a134308
+
+  Ran 3 shell commands (ctrl+o to expand)
+  ⎿  Message queued for delivery to a134308555fac278f at its next tool
+     round.
+
+  Searched for 2 patterns, ran 9 shell commands (ctrl+o to expand)
+
+● Docs are moving to the pass; now the decisions-log entry and the oracle's
+  "where this stands" line, while the adapter subagent finishes its last two
+  changes.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Follow-up: C++ struct/union members, the measured default strategy
+
+  Both coordinator messages are addressed in
+  `/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/c.ts`
+  and `/workspaces/Live-Documentation/packages/engine/src/live-docs/adapters/c.t
+  est.ts`. Nothing else touched.
+
+  ### Struct and union members in C++ files
+  - The extractor now knows whether the file is C++ (`CPP_EXTENSIONS`: `.cpp .cc
+  .cxx .hpp .hh .hxx .inl`; `.c` and `.h` are C). A new `readMembers(specifier,
+  typeName, scope)` reads a type's body under its default access: a class's
+  members start `private`, and in a C++ file a struct's or union's start
+  `public`, changing at each access specifier; a C struct's or union's body, and
+  any enum's, contribute nothing. Methods, fields, constructors and nested
+  types are listed exactly as for classes (`Point.x` field, `Point.length`
+  method, `Point.Point` constructor, `Pack.i` field). A C++ `typedef struct {
+  ... } Extent;` lists its members under `Extent` too.
+  - Header facts use the same rule, so a C++ header's struct fields are members
+  and never count as names an including file "uses" (`rosetta::Record`'s `value`
+  will not link `models.hpp` by field name).
+  - Symbol order: the earlier position sort put a typedef'd anonymous struct's
+  members before the struct (its name sits after the body), so `toSymbols` now
+  keeps traversal order, which is source order with each type followed by its
+  members. C docs are unaffected by this (no members there); the committed
+  rosetta docs' order is unchanged.
+  - Module doc updated to state the C++/C distinction.
+
+  ### Default include strategy
+  - `DEFAULT_INCLUDE_STRATEGY` is now `"ancestors-with-include-directories"`;
+  its JSDoc says it is the one that matched the compiler on every measured
+  include (2026-10-16). The module doc states the rule in one sentence
+  (including dir and each ancestor up to the root, each directory itself then
+  its `include/` then its `src/`, nearest first) and that it was chosen on
+  2026-10-16 by measuring the four strategies against scip-clang over five
+  fixtures. The other three strategies remain exported through `IncludeStrategy`
+  and `resolveInclude` for the measurement script.
+
+  ### Tests added
+  - "lists a C++ struct's and union's public members as a class's, public until
+  an access specifier says otherwise" (`shape.hpp`: struct with two fields, a
+  documented method, a constructor and a private field; a union; a typedef'd
+  anonymous struct).
+  - "lists no members for a C struct or union, so a C doc gains no symbol per
+  field" (the identical source as `shape.h` yields only `Point`, `Pack`,
+  `Extent`).
+  - The existing C++ class case's expectations now include `app.Engine.Inner.x`,
+  `app.Box.item`, `plain.method` and `plain.field`.
+
+  ### Command results
+  1. `npx vitest run --project unit` on `c.test.ts` + `c.docstring.test.ts`:
+  17/17 pass (13 + 4).
+  2. `npm run build -w packages/engine`: fails on one error that is not mine:
+  `src/live-docs/gitUtils.ts(55,93): error TS2353: 'maxBuffer' does not exist in
+  type '{ cwd: string; }'`, from the discovery subagent's uncommitted
+  `listTrackedFiles` (git shows `gitUtils.ts` modified; its `execFileAsync`
+  typing rejects the option). `npx tsc -p packages/engine/tsconfig.json
+  --noEmit` reports no error in `adapters/c.ts` or `languages/c.ts`; the build
+  passed earlier today before that edit landed.
+  3. `npx eslint` on `c.ts` and `c.test.ts`: clean (exit 0).
+  4. `npm run test:integration`: 13 files, 71 tests, all pass, the cpp rosetta
+  parity now among them.
+
+  ### What the root should expect when regenerating
+  - C docs: no change from this follow-up beyond the first report (static
+  `normalize` dropped in `pipeline.c`; anonymous typedef locations at the
+  typedef name in `models.h` and `types.h`).
+  - C++ sample docs: structs now carry their members (`rosetta.Record.entry`,
+  `rosetta.Record.value`, ... as `field`; `rosetta.Processor.run` etc. as
+  before), each type's members listed right after it.
+  - Include fixture: under the new default, `"core/engine.hpp"` from
+  `src/app/main.cpp` and from `src/core/engine.cpp` resolves to
+  `include/core/engine.hpp`, and `"shared/log.hpp"` from
+  `include/core/engine.hpp` to `src/shared/log.hpp`, matching the measurement.
+
+● Agent "Tree-sitter C and C++ adapter" finished · 6m 14s
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Regeneration is done: 48 docs created and all but one authored. Now I'm
+  authoring that last doc, reading the lint's listed files, and rebuilding the
+  Explorer for the pictures.
+
+  Searched for 1 pattern, read 4 files, ran 8 shell commands (ctrl+o to expand)
+
+● Found the issue: the graph reader's glob skips hidden path segments, so docs
+  for .vscode/settings.json, .devcontainer/devcontainer.json, and
+  .live-docs.config.json get written but never indexed, linted, or bundled. I'll
+  now fix every doc enumerator with the same issue. · summary
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Index, lint and bundle now agree on 722 docs. Next: retake the two Knowledge
+  Sources pictures with the right count, checkpoint the hidden-docs finding, and
+  start the full gate in the background.
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● The pictures hold up by eye: the tooling group now lists
+  .live-docs.config.json first and the footer counts 722 files. The gate is
+  running; I'm watching its log until it finishes.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full local gate with Playwright, logging to the
+scratchpad" completed (exit code 0)
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Rerun the full local gate with Playwright" completed (exit
+code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Three integration test failures are surfacing because new defaults now pick up
+  extra config files, including the fixture's own config and the repo's root
+  tooling files. I'll review the tooling rule, its tests, and the two affected
+  expectation files to fix this. · summary
+  Listed 1 directory, ran 8 shell commands (ctrl+o to expand)
+
+● The gate is running a third time; meanwhile I'm correcting one sentence in the
+  inventory about the export's reach and watching the gate's log.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full local gate with Playwright a third time"
+completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Audits are clean apart from duplicate-heading warnings in the survey. Waiting
+  on the fourth gate run, which now reaches Playwright.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full local gate with Playwright a fourth time"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The symbol audit flagged duplicate sub-headings in the project-archetypes
+  survey, where each ecosystem repeated the same "(a) Markers" through "(e)
+  Silences" labels. I'll rename each heading to include its ecosystem name, then
+  re-run the audit. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Playwright is still running inside the fifth gate; nothing to do but wait on
+  its log.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Run the full local gate with Playwright a fifth time"
+completed (exit code 0)
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● The card fix caused three Playwright failures by removing a line in cards that
+  hide only internals, affecting the layout lab's height model, a pin test's
+  expected count, and a layout score bound. I'll look at each of the three
+  affected spots now. · summary
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● I've flagged three items to address: the lab's hidden-symbols synthesis logic,
+  the pin test's outdated count (needs a fix), and the simplicity bound, which
+  requires reviewing the search's restart logic first. I'll read those two
+  pieces and apply the pin count fix together. · summary
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● I'll fix the hidden-row count to match the renderer's rule and verify it
+  against the spec, while running a diagnostic in parallel to get the search
+  stage numbers needed to evaluate the simplicity bound. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The lab spec now passes with the corrected model. I noticed the simplicity
+  probe used the wrong storage key and ended up measuring the default tuning
+  instead of the test's own, so I'm rerunning it under the correct tuning to
+  find the stage where it breaks. · summary
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● I'll run one probe to check whether the engine band's top is still joined at
+  weight 100 under the test's tuning, and to see what the first paint at weight
+  100 chose and priced before the search ran. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll build a comparison bundle with the old card line served alongside the new
+  one to determine whether the card change affected the weight-100 first paint,
+  then write the test's third stage based on what the design guarantees.
+  · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The comparison confirms my October 15 edit's claimed bound was never actually
+  guaranteed by the search—it only held with the old card count, and the new
+  docs exposed the gap. I'll rewrite that stage to reflect the real guarantee,
+  clean up the comparison files, log the finding, and rerun the gate. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Serve the comparison bundle on a second port" failed with
+exit code 144
+
+  Ran 8 shell commands (ctrl+o to expand)
+
+● Background command "Run the full local gate with Playwright a sixth time"
+completed (exit code 0)
+
+● The gate is green at last: lint, build, type-check, 1,097 unit tests, 72
+  integration tests, the audits and 131 browser tests. Committing the pass now,
+  then the record.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The pass is in: e254096f after the full gate went green (lint with no errors,
+  1,097 unit, 72 integration, three audits, 131 browser tests), and the record
+  follows as 79807e7a. The expansion you asked for first, then what landed.
+
+  The four families of edges, and the sidecars
+
+  Every file-to-file reference the survey found falls into one of four families,
+  by how the referring file names the referred one.
+
+  1. By path. HTML's src, CSS's url(), markdown's link, C's #include "…", Rust's
+     mod to a file, PHP's include, Ruby's require_relative, Kustomize's
+     resources, Terraform's ./modules, Compose's context, Godot's res://. The
+     referring file alone says where the other file is, up to a search list (-I
+     directories, $LOAD_PATH, sys.path). This is the family the adapters read
+     today; the include rule chosen last night is the search-list half of it.
+  2. By name through a convention. Java's import a.b.C reaches a/b/C.java; Go's
+     package path reaches a directory; Python's module path walks sys.path;
+     PSR-4 maps a namespace to a directory; Rails maps a constant to a file. The
+     referring file names a symbol and the ecosystem's rule turns it into a
+     path. The compiler-backed adapters already do this; it is the other half of
+     what makes an import edge.
+  3. By an opaque identifier through a sidecar or a database. Unity's scenes
+     point at a script by a GUID that lives in the script's .meta file; Godot's
+     uid:// lives in the .import or .uid sidecar; Android's R.drawable.icon is
+     derived from a file name by the build; DVC's .dvc pointer stands for a data
+     file. The referring file cannot be read alone. A first pass over the
+     workspace must collect the identifiers, exactly as the generator's first
+     pass collects symbols and entries today. The sidecar is content, since
+     deleting it breaks the edge, and a Unity script's doc would say "referenced
+     by scene X through GUID", with the .meta as the evidence.
+  4. By a name resolved at build or run time. An Xcode asset set, a Helm chart
+     name, an Unreal module, a Swift target, a Unity Resources path in a string,
+     a Terraform registry source, uses: owner/repo@ref. The manifest or a
+     registry decides what the name means; some are external by nature and stay
+     external dependencies.
+
+  What the grammar has today is one notion of how an edge is known within a
+  folder (an import or type reference) and three bases across a process boundary
+  (contract, configuration, declared). Families three and four would each want
+  a basis of their own written on the edge, with the sidecar or manifest that
+  carried it as the evidence, and the Explorer would draw them as it draws every
+  wire. The second family's rule and the third's first pass are mechanism we
+  already own in other forms. None of this is proposed for building now. It is
+  what the archetypes design step opens, and a text-serialized Unity project is
+  the natural first sample: its edges are legible YAML and its GUIDs sit in
+  sidecars we can read.
+
+  What landed
+
+  - C and C++ by the grammar. The adapter is rewritten over the tree-sitter C++
+    grammar already in the bundle, registered for every C and C++ suffix. The
+    include rule was chosen by which of four candidates disagreed least with
+    scip-clang:
+
+  ┌─────────────────┬──────────┬───────────┬───────────┬──────────────────┐
+  │    Fixture      │ today's  │           │  greedy   │ ancestors with   │
+  │   (includes)    │   rule   │ ancestors │   tail    │  include/ and    │
+  │                 │          │           │   match   │       src/       │
+  ├─────────────────┼──────────┼───────────┼───────────┼──────────────────┤
+  │ include fixture │        4 │         5 │ 6, two to │                8 │
+  │  (8)            │          │           │   a decoy │                  │
+  ├─────────────────┼──────────┼───────────┼───────────┼──────────────────┤
+  │ the four flat   │       40 │        40 │        40 │               40 │
+  │ samples (40)    │          │           │           │                  │
+  └─────────────────┴──────────┴───────────┴───────────┴──────────────────┘
+
+    The greedy rule had scored 8 until a decoy that sorts first was added, so
+  the measurement told luck from a rule. The winner is the default; an
+  integration test holds it to the compiler's resolutions from now on.
+  scip-clang is installed by the devcontainer for this project only, C++ is the
+  ninth rosetta language, and the C samples carry compilation databases too.
+  - Discovery reads every suffix anywhere. The shipped defaults are every file
+    an adapter can read, hidden folders included, minus .git, node_modules, the
+    docs root and lock files; the .gitignore is honoured except for a file git
+    tracks; exclude is in the configuration, and this repository excludes its
+    agent workspace. Assets are documented wherever found. The root's tooling
+    files, the packages' project files and the editor's files have docs written
+    from their origins, and the editor's files are tooling entries by their
+    place.
+  - Found and fixed on the way. The C sample's three test files had never
+    compiled. The docs of hidden files were written and never read, because
+    every doc enumerator globbed without dot. .ascx was unregistered, .inl was
+    an asset, .mts and .cts symbols were never indexed, and the oracle's
+    converter mistook a reopened C++ namespace for a definition. The card's "+N
+    symbols" now counts public symbols only.
+
+  The gate took six runs, each failure fixed at its cause rather than the gate:
+  a wrong constant, the hand list of entries behind the new defaults, the editor
+  files no rule named, authored links at the wrong depth, duplicate headings in
+  the archetypes survey, and three browser tests the card's count moved. One of
+  those deserves your attention: the simplicity spec's third stage asserted a
+  bound I wrote on October 15 as "the property that holds on any picture".
+  Replayed under its tuning, with the new card and with the old, the weight-100
+  first paint takes a nine-step start over the previous four-step picture and
+  settles at six. The bound was never the competition's promise. The stage now
+  asserts what is promised (the facts unchanged, alignment still adopted, the
+  engine band's top joined), and the sensitivity is noted for the layout work
+  you paused.
+
+  Waiting on your eye: the five pictures in Screenshots/2026-10-16
+  (AI-Agent-Workspace/Screenshots/2026-10-16/README.md), the tooling group with
+  the root's files, a test card with no reveal, and the C++ sample's main pinned
+  with its includes wired. Next to plan is the archetypes design step, with the
+  edge families above as its design question.
+
+● The pass is in: e254096f after the full gate went green (lint with no errors,
+  1,097 unit, 72 integration, three audits, 131 browser tests), and the record
+  follows as 79807e7a. The expansion you asked for first, then what landed.
+
+  The four families of edges, and the sidecars
+
+  Every file-to-file reference the survey found falls into one of four families,
+  by how the referring file names the referred one.
+
+  1. By path. HTML's src, CSS's url(), markdown's link, C's #include "…", Rust's
+     mod to a file, PHP's include, Ruby's require_relative, Kustomize's
+     resources, Terraform's ./modules, Compose's context, Godot's res://. The
+     referring file alone says where the other file is, up to a search list (-I
+     directories, $LOAD_PATH, sys.path). This is the family the adapters read
+     today; the include rule chosen last night is the search-list half of it.
+  2. By name through a convention. Java's import a.b.C reaches a/b/C.java; Go's
+     package path reaches a directory; Python's module path walks sys.path;
+     PSR-4 maps a namespace to a directory; Rails maps a constant to a file. The
+     referring file names a symbol and the ecosystem's rule turns it into a
+     path. The compiler-backed adapters already do this; it is the other half of
+     what makes an import edge.
+  3. By an opaque identifier through a sidecar or a database. Unity's scenes
+     point at a script by a GUID that lives in the script's .meta file; Godot's
+     uid:// lives in the .import or .uid sidecar; Android's R.drawable.icon is
+     derived from a file name by the build; DVC's .dvc pointer stands for a data
+     file. The referring file cannot be read alone. A first pass over the
+     workspace must collect the identifiers, exactly as the generator's first
+     pass collects symbols and entries today. The sidecar is content, since
+     deleting it breaks the edge, and a Unity script's doc would say "referenced
+     by scene X through GUID", with the .meta as the evidence.
+  4. By a name resolved at build or run time. An Xcode asset set, a Helm chart
+     name, an Unreal module, a Swift target, a Unity Resources path in a string,
+     a Terraform registry source, uses: owner/repo@ref. The manifest or a
+     registry decides what the name means; some are external by nature and stay
+     external dependencies.
+
+  What the grammar has today is one notion of how an edge is known within a
+  folder (an import or type reference) and three bases across a process boundary
+  (contract, configuration, declared). Families three and four would each want
+  a basis of their own written on the edge, with the sidecar or manifest that
+  carried it as the evidence, and the Explorer would draw them as it draws every
+  wire. The second family's rule and the third's first pass are mechanism we
+  already own in other forms. None of this is proposed for building now. It is
+  what the archetypes design step opens, and a text-serialized Unity project is
+  the natural first sample: its edges are legible YAML and its GUIDs sit in
+  sidecars we can read.
+
+  What landed
+
+  - C and C++ by the grammar. The adapter is rewritten over the tree-sitter C++
+    grammar already in the bundle, registered for every C and C++ suffix. The
+    include rule was chosen by which of four candidates disagreed least with
+    scip-clang:
+
+  ┌─────────────────┬──────────┬───────────┬───────────┬──────────────────┐
+  │    Fixture      │ today's  │           │  greedy   │ ancestors with   │
+  │   (includes)    │   rule   │ ancestors │   tail    │  include/ and    │
+  │                 │          │           │   match   │       src/       │
+  ├─────────────────┼──────────┼───────────┼───────────┼──────────────────┤
+  │ include fixture │        4 │         5 │ 6, two to │                8 │
+  │  (8)            │          │           │   a decoy │                  │
+  ├─────────────────┼──────────┼───────────┼───────────┼──────────────────┤
+  │ the four flat   │       40 │        40 │        40 │               40 │
+  │ samples (40)    │          │           │           │                  │
+  └─────────────────┴──────────┴───────────┴───────────┴──────────────────┘
+
+    The greedy rule had scored 8 until a decoy that sorts first was added, so
+  the measurement told luck from a rule. The winner is the default; an
+  integration test holds it to the compiler's resolutions from now on.
+  scip-clang is installed by the devcontainer for this project only, C++ is the
+  ninth rosetta language, and the C samples carry compilation databases too.
+  - Discovery reads every suffix anywhere. The shipped defaults are every file
+    an adapter can read, hidden folders included, minus .git, node_modules, the
+    docs root and lock files; the .gitignore is honoured except for a file git
+    tracks; exclude is in the configuration, and this repository excludes its
+    agent workspace. Assets are documented wherever found. The root's tooling
+    files, the packages' project files and the editor's files have docs written
+    from their origins, and the editor's files are tooling entries by their
+    place.
+  - Found and fixed on the way. The C sample's three test files had never
+    compiled. The docs of hidden files were written and never read, because
+    every doc enumerator globbed without dot. .ascx was unregistered, .inl was
+    an asset, .mts and .cts symbols were never indexed, and the oracle's
+    converter mistook a reopened C++ namespace for a definition. The card's "+N
+    symbols" now counts public symbols only.
+
+  The gate took six runs, each failure fixed at its cause rather than the gate:
+  a wrong constant, the hand list of entries behind the new defaults, the editor
+  files no rule named, authored links at the wrong depth, duplicate headings in
+  the archetypes survey, and three browser tests the card's count moved. One of
+  those deserves your attention: the simplicity spec's third stage asserted a
+  bound I wrote on October 15 as "the property that holds on any picture".
+  Replayed under its tuning, with the new card and with the old, the weight-100
+  first paint takes a nine-step start over the previous four-step picture and
+  settles at six. The bound was never the competition's promise. The stage now
+  asserts what is promised (the facts unchanged, alignment still adopted, the
+  engine band's top joined), and the sensitivity is noted for the layout work
+  you paused.
+
+  Waiting on your eye: the five pictures in Screenshots/2026-10-16
+  (AI-Agent-Workspace/Screenshots/2026-10-16/README.md), the tooling group with
+  the root's files, a test card with no reveal, and the C++ sample's main pinned
+  with its includes wired. Next to plan is the archetypes design step, with the
+  edge families above as its design question.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read packages/engine/src/live-docs/gitUtils.ts (136 lines)  ⎿  Referenced file
+     packages/explorer/src/client/views/localView/branch-renderer.ts
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/0a57db
+     fd-3a23-40e9-8c99-e6fc8af972b3/scratchpad/archetypes-code.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/0a57db
+     fd-3a23-40e9-8c99-e6fc8af972b3/scratchpad/archetypes-assets.md
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/0a57dbfd-3a23-40e
+     9-8c99-e6fc8af972b3/tasks/bfu3hmitg.output (6 lines)
