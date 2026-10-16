@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-10-16T00:58:43.032Z
+- Generated At: 2026-10-16T17:10:16.258Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 - `resolveTypeToLiveDoc()` in `compose.ts` looks up a type name in the index; each location records whether its file declares the symbol or only re-exports it
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 - `buildWorkspaceSymbolIndex()` became `buildWorkspaceIndexes()` on 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)): the same pass also collects what each manifest declares (`declares` on the analysis result: the files its scripts run, its binaries, its main module) into the entry index, keyed by the declared file, from which the second pass writes each file's `Entry` lines.
-- Discovery reads every file the shipped globs name, hidden folders included, in one `glob` call (since 2026-10-16, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#c-and-c-read-by-the-grammar-the-include-rule-chosen-by-measurement-and-discovery-that-reads-every-suffix-anywhere-recorded-2026-10-16); the per-pattern loop took 72 s over this repository where one call takes 1.3 s). Four product rules then remove what no project wants documented, `.git`, `node_modules`, the configured docs root (derived from `config.root` in any spelling) and lock files by name; the `.gitignore` removes what it ignores unless git tracks the file, as git itself holds (`listTrackedFiles`, so a `.vscode/settings.json` committed under an ignored `.vscode/` is read); and the configuration's `exclude` removes what the person names, by path or glob. Each rule has a case in `discovery.test.ts`.
+- Discovery reads every file the shipped globs name, hidden folders included, in one `glob` call (since 2026-10-16, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#c-and-c-read-by-the-grammar-the-include-rule-chosen-by-measurement-and-discovery-that-reads-every-suffix-anywhere-recorded-2026-10-16); the per-pattern loop took 72 s over this repository where one call takes 1.3 s). Four product rules then remove what no project wants documented, `.git`, `node_modules`, the configured docs root (derived from `config.root` in any spelling) and lock files by name; git's own word removes what it ignores (`gitIgnored` in the engine's tooling asks `git check-ignore` once for every candidate, so a nested `.gitignore`, `.git/info/exclude` and the global excludes file count, and a tracked file is never ignored: a `.vscode/settings.json` committed under an ignored folder is read), the root `.gitignore` alone standing in when git cannot answer; and the configuration's `exclude` removes what the person names, by path or glob. Each rule has a case in `discovery.test.ts`. The git rule replaced a reading of the root `.gitignore` with `git ls-files` on 2026-10-16, when a regeneration documented 2,727 files of two agent worktrees nested under `.claude/worktrees/`, which `.git/info/exclude` names and the root `.gitignore` did not ([Turn 3 of the October 16 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)).
 - Two latent faults found with the change: the first pass had read `.ts .tsx .js .jsx .mjs .cjs` by a hardcoded list, so `.mts` and `.cts` symbols were never indexed although the main pass read them (now `SUPPORTED_SCRIPT_EXTENSIONS`); and `inferScriptKind` was handed the path where it wanted the extension.
 
 ## Generated
@@ -25,7 +25,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L173)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L175)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -37,10 +37,11 @@ over the whole workspace in one walk, hidden files and folders included, so
 that `.devcontainer/devcontainer.json` or `.vscode/settings.json` is read
 like any other file. Then, in this order, the matches are dropped that are
 never documented ({@link isNeverDocumented}: `.git`, `node_modules`, the
-docs root, lock files), that the workspace's `.gitignore` ignores unless git
-tracks them (a file committed under an ignored folder is part of the
-repository, as git itself holds), and that the configuration's `exclude`
-names by path or glob. When
+docs root, lock files), that git ignores by its own word (a `.gitignore` at
+any level, `.git/info/exclude` and the global excludes file, with a tracked
+file never ignored: a file committed under an ignored folder is part of the
+repository, as git itself holds; without git, the workspace's `.gitignore`
+alone), and that the configuration's `exclude` names by path or glob. When
 `options.changedOnly` is `true`, the result is intersected with the files
 git marks as changed, for quick iterations over touched files.
 
@@ -68,14 +69,14 @@ const files = await discoverTargetFiles({
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L216)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L222)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L240)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L246)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -116,9 +117,9 @@ parser; every other file is read by its language adapter.
 - [`coreTypes.WorkspaceEntryIndex`](./coreTypes.ts.mdmd.md#symbol-workspaceentryindex) (type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - [`gitUtils.detectChangedFiles`](./gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
-- [`gitUtils.listTrackedFiles`](./gitUtils.ts.mdmd.md#symbol-listtrackedfiles)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - [`symbolExtraction.inferScriptKind`](./symbolExtraction.ts.mdmd.md#symbol-inferscriptkind)
+- [`gitIgnored`](../tooling/gitIgnored.ts.mdmd.md#symbol-gitignored)
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->

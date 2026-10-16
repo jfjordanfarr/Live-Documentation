@@ -26,9 +26,10 @@ import type {
   WorkspaceEntryIndex,
   WorkspaceSymbolIndex
 } from "./coreTypes";
-import { detectChangedFiles, listTrackedFiles } from "./gitUtils";
+import { detectChangedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
+import { gitIgnored } from "../tooling/gitIgnored";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
 // ============================================================================
@@ -144,10 +145,11 @@ function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig):
  * that `.devcontainer/devcontainer.json` or `.vscode/settings.json` is read
  * like any other file. Then, in this order, the matches are dropped that are
  * never documented ({@link isNeverDocumented}: `.git`, `node_modules`, the
- * docs root, lock files), that the workspace's `.gitignore` ignores unless git
- * tracks them (a file committed under an ignored folder is part of the
- * repository, as git itself holds), and that the configuration's `exclude`
- * names by path or glob. When
+ * docs root, lock files), that git ignores by its own word (a `.gitignore` at
+ * any level, `.git/info/exclude` and the global excludes file, with a tracked
+ * file never ignored: a file committed under an ignored folder is part of the
+ * repository, as git itself holds; without git, the workspace's `.gitignore`
+ * alone), and that the configuration's `exclude` names by path or glob. When
  * `options.changedOnly` is `true`, the result is intersected with the files
  * git marks as changed, for quick iterations over touched files.
  *
@@ -181,19 +183,23 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
   });
 
   const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
-  const gitignoreFilter = await createGitignoreFilter(options.workspaceRoot);
-  // A tracked file is never ignored, as git itself has it: committing a file under an ignored folder is a decision.
-  const tracked = gitignoreFilter ? await listTrackedFiles(options.workspaceRoot) : new Set<string>();
   const changed = options.changedOnly ? await detectChangedFiles(options.workspaceRoot) : new Set<string>();
 
-  const candidates = new Set<string>();
+  const considered: Array<{ absolute: string; relative: string }> = [];
   for (const match of matches) {
     const absolute = path.resolve(options.workspaceRoot, match);
     const relative = normalizeWorkspacePath(path.relative(options.workspaceRoot, absolute));
-    if (isNeverDocumented(relative, docsRoot)) {
-      continue;
-    }
-    if (gitignoreFilter?.ignores(relative) && !tracked.has(relative)) {
+    if (!isNeverDocumented(relative, docsRoot)) considered.push({ absolute, relative });
+  }
+  // What git ignores, by git's own word when the workspace is a repository: a nested `.gitignore`, `.git/info/exclude` and
+  // the global excludes file count, and a tracked file is never ignored, as git itself has it (committing a file under an
+  // ignored folder is a decision). Without git, the workspace's `.gitignore` alone.
+  const ignoredByGit = gitIgnored(options.workspaceRoot, considered.map((entry) => entry.relative));
+  const gitignoreFilter = ignoredByGit ? null : await createGitignoreFilter(options.workspaceRoot);
+
+  const candidates = new Set<string>();
+  for (const { absolute, relative } of considered) {
+    if (ignoredByGit ? ignoredByGit.has(relative) : gitignoreFilter?.ignores(relative)) {
       continue;
     }
     if (options.config.exclude.some((pattern) => matchesPathPattern(relative, pattern))) {

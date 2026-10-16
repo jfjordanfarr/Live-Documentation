@@ -18,6 +18,8 @@ module.exports = tseslint.config(
       "**/*.d.ts",
       "eslint.config.js",
       "AI-Agent-Workspace/**",
+      // Nested worktrees other agents work in are other checkouts, not this one's files; git excludes them too.
+      ".claude/worktrees/**",
       // Generated CommonJS shims that live alongside TypeScript sources in the engine package.
       "packages/engine/src/**/*.js",
     ]

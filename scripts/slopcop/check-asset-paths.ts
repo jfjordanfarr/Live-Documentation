@@ -4,6 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
+import { withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+
 import {
   findBrokenAssetReferences,
   type AssetReferenceIssue
@@ -67,7 +69,7 @@ const DEFAULT_PATTERNS = ["**/*.html", "**/*.htm", "**/*.css", "**/*.scss", "**/
       path.isAbsolute(entry) ? entry : path.resolve(workspaceRoot, entry)
     );
 
-    const files = collectAssetFiles(workspaceRoot, includeGlobs, ignoreGlobs);
+    const files = withoutGitIgnored(workspaceRoot, collectAssetFiles(workspaceRoot, includeGlobs, ignoreGlobs));
     const issues = files.flatMap((file) =>
       findBrokenAssetReferences(file, {
         workspaceRoot,

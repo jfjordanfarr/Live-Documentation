@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-asset-paths.ts
 - Entry: command `slopcop:assets` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:42.501Z
+- Generated At: 2026-10-16T17:10:20.891Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`gitIgnored.withoutGitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-withoutgitignored)
 - [`assetPaths.AssetReferenceIssue`](./assetPaths.ts.mdmd.md#symbol-assetreferenceissue)
 - [`assetPaths.findBrokenAssetReferences`](./assetPaths.ts.mdmd.md#symbol-findbrokenassetreferences)
 - [`config.compileIgnorePatterns`](./config.ts.mdmd.md#symbol-compileignorepatterns)

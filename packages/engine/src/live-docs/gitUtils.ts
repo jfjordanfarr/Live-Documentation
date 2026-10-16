@@ -41,31 +41,6 @@ export async function detectChangedFiles(workspaceRoot: string): Promise<Set<str
 }
 
 /**
- * The files git tracks, as workspace-relative paths, so that discovery keeps a
- * tracked file the `.gitignore` would otherwise drop: git itself ignores a
- * tracked file's ignore rules, and a file committed on purpose (a
- * `.vscode/settings.json` under an ignored `.vscode/`) is part of the
- * repository. Empty when the workspace is not a git repository or git is not
- * available, in which case the `.gitignore` is the only word.
- *
- * @param workspaceRoot - Absolute path to the repository root
- */
-export async function listTrackedFiles(workspaceRoot: string): Promise<Set<string>> {
-  try {
-    const { stdout } = await execFileAsync("git", ["ls-files", "-z"], { cwd: workspaceRoot, maxBuffer: 64 * 1024 * 1024 });
-    const tracked = new Set<string>();
-    for (const entry of stdout.split("\0")) {
-      if (entry) {
-        tracked.add(normalizeWorkspacePath(entry));
-      }
-    }
-    return tracked;
-  } catch {
-    return new Set<string>();
-  }
-}
-
-/**
  * Parses a git status --porcelain line to extract the file path.
  *
  * @remarks

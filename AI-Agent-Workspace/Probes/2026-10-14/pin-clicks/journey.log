@@ -1,0 +1,58 @@
+ROUTE 1: land, Local Map, double-click a neighbour card to make it the subject
+landed on /
+    -> subject=tests/integration/programs/typescript/rosetta/src/main.ts 0 pins pins=(no snapshot) tray=?
+clicked Local Map
+    -> subject=tests/integration/programs/typescript/rosetta/src/main.ts 0 pins pins=(no snapshot) tray=?
+    cards: src/models.ts, src/processor.ts, src/main.ts
+double-clicked the title of models.ts
+    -> subject=tests/integration/programs/typescript/rosetta/src/models.ts 2 pins pins=["main.ts#*","models.ts#*"] subject=models.ts
+ROUTE 2: Local Map, click a symbol on a neighbour card; then release the accidental pin in the tray
+clicked the symbol Report on the neighbour card models.ts
+    -> subject=tests/integration/programs/typescript/rosetta/src/models.ts 2 pins pins=["main.ts#*","models.ts#Report"] subject=models.ts
+    tray rows: Release Report in tests/integration/programs/typescript/rosetta/src/models.ts | Release tests/integration/programs/typescript/rosetta/src/main.ts
+clicked Release on the tray row of main.ts
+    -> subject=tests/integration/programs/typescript/rosetta/src/models.ts 1 pin pins=["models.ts#Report"] subject=models.ts
+ROUTE 3: Local Map, single-click a neighbour card (its body), then one of its symbols
+clicked the card models.ts (its directory line)
+    -> subject=tests/integration/programs/typescript/rosetta/src/models.ts 2 pins pins=["main.ts#*","models.ts#*"] subject=models.ts
+clicked its symbol Record
+    -> subject=tests/integration/programs/typescript/rosetta/src/models.ts 5 pins pins=["main.ts#*","models.ts#Report","models.ts#createRecord","models.ts#validateConfig","models.ts#__internals__"] subject=models.ts
+ROUTE 4: Knowledge Sources panel, branches.ts if listed, the detail panel, its Local Map action, then one symbol
+    branches.ts listed on the panel: 2 time(s)
+    panel groups: This bundle | By directory | By extension | Most used | Uses the most | Nothing references these224 | implementation55 | test143 | asset26 | Only tests reference these1 | implementation1 | Symbols nothing references1,023 on 313 files
+    groups clicked open: branches.tspackages/explorer/src/client/ > packages252 on 78 files
+clicked branches.ts on the panel
+    -> subject=packages/explorer/src/client/views/localView/branches.ts 0 pins pins=(no snapshot) tray=?
+    detail panel Local Map action visible: true
+clicked the detail panel's Local Map action
+    -> subject=packages/explorer/src/client/views/localView/branches.ts 0 pins pins=(no snapshot) tray=?
+clicked the symbol row closedDirectoryNode of branches.ts
+    -> subject=packages/explorer/src/client/views/localView/branches.ts 1 pin pins=["branches.ts#closedDirectoryNode"] subject=branches.ts
+ROUTE 5: World Map, click a thing, open it by the panel's link, then reach branches.ts inside
+    pieces: registry | vscode-panel | publish-workflow | live-docs | ci-workflow | engine | action | pages-workflow | generator | pages | explorer | scripts | tests | programs | fixtures
+clicked the piece explorer
+    -> subject=tests/integration/programs/typescript/rosetta/src/main.ts 0 pins pins=(no snapshot) tray=?
+    open link in the panel: 1 (open explorer)
+clicked "open explorer"
+    -> subject=packages/explorer 1 pin pins=[] subject=undefined
+    closed boxes: packages/explorer/src
+    cards: 1
+clicked the closed box src
+    -> subject=packages/explorer, packages/explorer/src 2 pins pins=[] subject=undefined
+    closed boxes now: client, shared; cards: 1
+clicked the closed box client
+    -> subject=packages/explorer, packages/explorer/src, packages/explorer/src/client 3 pins pins=[] subject=undefined
+    closed boxes now: bootstrap, views, panels, persistence, search, styles, shared; cards: 15
+clicked the closed box views
+    -> subject=packages/explorer, packages/explorer/src, packages/explorer/src/client, packages/explorer/src/client/views 4 pins pins=[] subject=undefined
+    closed boxes now: localView, worldMap, bootstrap, panels, persistence, search, styles, shared; cards: 37
+clicked the closed box localView
+    -> subject=packages/explorer, packages/explorer/src, packages/explorer/src/client, packages/explorer/src/client/views, packages/explorer/src/client/views/localView 5 pins pins=[] subject=undefined
+    closed boxes now: worldMap, bootstrap, panels, persistence, search, styles, shared; cards: 84
+    branches.ts card present: 1
+    branches.ts card classes: node-card test-backed focus-node branch-member; symbol rows: 21
+no symbol rows on the compact card; clicked its title
+    -> subject=packages/explorer/src/client/views/localView/branches.ts 6 pins pins=["branches.ts#*"] subject=branches.ts
+    symbol rows now: 21
+clicked the symbol closedDirectoryNode on the branches.ts card
+    -> subject=packages/explorer/src/client/views/localView/branches.ts 25 pins pins=["branches.ts#BranchGraph","branches.ts#BranchRanking","branches.ts#RankingOptions","branches.ts#OrderOptions","branches.ts#BranchOptions","branches.ts#ClosedDirectory","branches.ts#DirectoryDisclosure","branches.ts#Exploration","branches.ts#isClosedDirectory","branches.ts#directoryIndex","branches.ts#placeMembers","branches.ts#edgeKey","branches.ts#buildBranches","branches.ts#exploreBranches","branches.ts#orderExploration","branches.ts#commonDirectory","branches.ts#membraneDirectory","branches.ts#compareSymbolNames","branches.ts#rankBranches","branches.ts#__internals__"] subject=branches.ts

@@ -15,8 +15,10 @@ coverage/
 # OS/editor cruft
 .DS_Store
 Thumbs.db
-.vscode/
+/.vscode/
 .idea/
+# Nested worktrees an agent harness creates inside the checkout
+.claude/worktrees/
 
 # SQLite caches
 *.sqlite

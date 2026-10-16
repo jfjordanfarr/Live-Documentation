@@ -4,6 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
+import { withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+
 import {
   compileIgnorePatterns,
   loadSlopcopConfig,
@@ -63,7 +65,7 @@ const DEFAULT_PATTERNS = ["**/*.md", "**/*.mdmd", "**/README", "**/README.md"];
     const patterns = resolveIncludeGlobs(config, "markdown", DEFAULT_PATTERNS);
     const ignoreTargetPatterns = compileIgnorePatterns(config, "markdown");
 
-    const files = collectMarkdownFiles(workspaceRoot, patterns, ignoreGlobs);
+    const files = withoutGitIgnored(workspaceRoot, collectMarkdownFiles(workspaceRoot, patterns, ignoreGlobs));
     const issues = files.flatMap(file =>
       findBrokenMarkdownLinks(file, {
         workspaceRoot,

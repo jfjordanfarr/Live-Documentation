@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-markdown-links.ts
 - Entry: command `slopcop:markdown` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:42.514Z
+- Generated At: 2026-10-16T17:10:20.915Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 - `node:fs` - `fs`
 - `node:path` - `path`
 - `node:process` - `process`
+- [`gitIgnored.withoutGitIgnored`](../../packages/engine/src/tooling/gitIgnored.ts.mdmd.md#symbol-withoutgitignored)
 - [`config.compileIgnorePatterns`](./config.ts.mdmd.md#symbol-compileignorepatterns)
 - [`config.loadSlopcopConfig`](./config.ts.mdmd.md#symbol-loadslopcopconfig)
 - [`config.resolveIgnoreGlobs`](./config.ts.mdmd.md#symbol-resolveignoreglobs)

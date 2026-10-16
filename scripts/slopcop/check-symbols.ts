@@ -4,6 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
+import { withoutGitIgnored } from "@live-documentation/engine/tooling/gitIgnored";
+
 import {
   compileIgnorePatterns,
   loadSlopcopConfig,
@@ -86,7 +88,7 @@ const DEFAULT_PATTERNS = ["**/*.md", "**/*.mdmd", "**/README", "**/README.md"];
     const patterns = resolveIncludeGlobs(config, "symbols", DEFAULT_PATTERNS);
     const ignoreSlugPatterns = compileIgnorePatterns(config, "symbols");
 
-    const files = collectMarkdownFiles(workspaceRoot, patterns, ignoreGlobs);
+    const files = withoutGitIgnored(workspaceRoot, collectMarkdownFiles(workspaceRoot, patterns, ignoreGlobs));
     const issues = findSymbolReferenceAnomalies({
       workspaceRoot,
       files,
