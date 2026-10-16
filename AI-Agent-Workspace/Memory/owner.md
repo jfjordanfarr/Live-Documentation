@@ -1,6 +1,6 @@
 # The owner
 
-_Current as of 2026-10-15. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
+_Current as of 2026-10-16. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
 
 The owner of this repository is its only human contributor. They act as product manager and architect and expect the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
 

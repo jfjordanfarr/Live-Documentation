@@ -3871,3 +3871,82 @@ completed (exit code 0)
   renders. The full gate is running in the background (lint, unit, integration,
   audits, 131 browser tests plus the three new ones); I'll commit and report
   when it finishes.
+
+● Background command "Run the full gate with Playwright, logging to the
+scratchpad" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate is green: lint with no errors, 1,097 unit tests, 72 integration
+  tests, the three audits and 134 browser tests (131 plus the three new).
+  Committing the pass, then the record.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both are in: the build as ad5aaccc after one green gate, the record as
+  2695ceaf. Your eleventh re-export rode the build's commit (my whole-tree add
+  caught it), and the inventory says so; it extends the tenth byte for byte.
+
+  What landed.
+
+  - The render is owed, not forced. The Local Map renders only while it is the
+    view shown. A render asked for while Knowledge Sources, the World Map or 3D
+    is showing is owed, and runs when the map is shown again; shown again with
+    nothing owed, the picture stands and the search resumes where it paused. The
+    search schedules a step only while the map is shown and the page visible.
+    The first run of the new spec caught a step that was already waiting when
+    you switched away and ran once anyway, so the gate now stands in the waiting
+    step too.
+  - The wires keep their elements. Each wire, lace and bundle run is made once
+    under its key and thereafter has its d, its gradient's four numbers and its
+    presence written in place from the measured page; the fresh SVG and its diff
+    are deleted. Hover state survives because the elements do. The module is
+    shorter than it was.
+
+  Measured after, same driver, same machine:
+
+  ┌──────────────────────────────┬──────────────────────┬───────────────────┐
+  │                              │        before        │       after       │
+  ├──────────────────────────────┼──────────────────────┼───────────────────┤
+  │ a frame of a move, chain     │                      │                   │
+  │ scope (418 wires), median /  │           41 / 56 ms │    11.5 / 14.7 ms │
+  │ p90                          │                      │                   │
+  ├──────────────────────────────┼──────────────────────┼───────────────────┤
+  │ a frame of a move, 34-card   │       12.7 / 38.5 ms │     5.9 / 11.9 ms │
+  │ neighbourhood                │                      │                   │
+  ├──────────────────────────────┼──────────────────────┼───────────────────┤
+  │ leaving the map mid-search:  │    8 seeds, 10 joins │              none │
+  │ steps taken while hidden     │                      │                   │
+  ├──────────────────────────────┼──────────────────────┼───────────────────┤
+  │                              │ 240 ms, full render, │    2 ms, picture  │
+  │ the switch back to the map   │    search from seed  │     kept, search  │
+  │                              │                  one │           resumed │
+  ├──────────────────────────────┼──────────────────────┼───────────────────┤
+  │ the click's own handler      │            unchanged │         unchanged │
+  └──────────────────────────────┴──────────────────────┴───────────────────┘
+
+  The move now runs at the display's rate on the retained scope, which is the
+  thing you said you'd notice. What you will not notice: the click's own 0.3 to
+  1 s and the search's tail inside the map are what they were, by your choice to
+  leave the solver and the budget alone.
+
+  Pictures, in Screenshots/2026-10-16 (AI-Agent-Workspace/Screenshots/2026-10-16
+  /README.md#the-wires-keep-their-elements-and-the-search-stays-with-the-view):
+  the chain scope at rest, three frames of opening the biggest directory with
+  the move slowed to 1.2 s so the frames could be taken (every wire on its pin
+  in each), the picture after, Knowledge Sources meanwhile, and the return. The
+  script compared the map's pixels after one return and after a second byte for
+  byte: identical. My first frames opened a directory that moved the picture by
+  a pixel and proved nothing; I replaced them.
+
+  Gate: lint clean (the five old JSDoc warnings), 1,097 unit, 72 integration,
+  three audits, 134 browser tests in 16.5 minutes. AGENTS.md now says sixteen
+  minutes for that suite, not three. The decision, the alternatives declined and
+  your words are in the decisions log
+  (.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-
+  the-view-and-the-wires-keep-their-elements-recorded-2026-10-16); the
+  before-and-after table is in the probe record.
+
+  Left open, for whenever: whether the probe's driver should become a kept
+  script beside the layout lab (it is still in my scratchpad), and the levers
+  you kept.

@@ -84,7 +84,7 @@ The map's edges are checked against oracles that share no mechanism with the ana
 
 ## Where this stands
 
-_As of 2026-10-15._
+_As of 2026-10-16._
 
 Works today: the single-folder map for TypeScript and JavaScript through the compiler API, and for C#, Python, Java, Go, Rust, C and C++ through tree-sitter, each measured against its compiler's own resolution; hand-written scanners for Ruby, PowerShell, SQL, ASP.NET markup, .NET configuration, HTML, CSS and JSON, with no oracle yet for Ruby; manifests (`.csproj`, `packages.config`, `package.json`) as Live Docs; one grammar that renders and parses every Live Doc, proved by a round trip over the whole corpus; deterministic regeneration with authored sections preserved; one graph index derived from the docs, which `inspect`, lint, the oracle and the Explorer all read; and the board text, one file of things and connections that lint checks and the CLI joins to the docs. The static Explorer draws three navigable views over that graph: Knowledge Sources, the inventory and exports; World Map, the landing view when the bundle carries a board; and Local Map, which keeps pinned file neighborhoods, opens directories and traces paths. Local Map has 2D and 3D representations with shared selection and pins, remembered in browser storage and shared links. The 3D renderer is the force graph. Explicit 2D/3D controls join them: cards fold into named points that take their force positions, and unfold again on the way back. Two instruments keep the pictures honest: the design audit fails a test when words collide or are cut off, and the still-picture deck measures what one picture shows legibly.
 
