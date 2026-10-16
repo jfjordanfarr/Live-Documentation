@@ -36,6 +36,21 @@ The search-off profile (15.8 s sampled over 13 renders and their moves): `render
 
 On the chain scope the trace counts about 10 animation frames per 500 ms move: at 418 wires a frame's redraw exceeds 16 ms, and the move runs near 20 frames a second.
 
+### A frame of a move
+
+The owner called the wires "the big one" at Turn 13 and asked what can be done. The traces, bucketed per animation-frame callback:
+
+| | retained chain scope, 418 wires | 34-card neighbourhood, 130 wires |
+| --- | ---: | ---: |
+| frame callbacks measured | 1,051 | 267 |
+| callback length, median / 90th percentile / longest | 41 / 56 / 104 ms | 14 / 37 / 92 ms |
+| forced layouts inside a callback, count and cost | 3.3, 0.6 ms | 3.1, 0.8 ms |
+| style recalculations inside a callback, count and cost | 3.3, 0.7 ms | 3.1, 0.8 ms |
+
+So the browser's layout is not the cost: a frame on the chain scope spends about 40 ms in JavaScript. Each frame `drawConnections` measures about 900 rectangles, builds a fresh SVG of some 2,500 elements (a path and a five-element gradient per wire, polygons for the laces, the bundle runs), diffs it against the previous frame's elements by key, reparents every kept element and removes the rest; its own body, the diff, is the largest single bucket of the profile. Outside the callback the browser then spends about 5 ms of style and 8 ms of paint per frame on the chain scope, which stays whatever the JavaScript does.
+
+The arithmetic alternative: every input of a wire's geometry during a move is known without the page. The cards' places are the tweened pose; a pin's place on its card is the rows' measurement the search already uses (`rowsOf`, `pinFor`), plus a sliding row's offset the move already computes; the lanes' slots and the columns' extents follow the pose; the routing functions (`curveTo`, `threadedRoute`, the laces) are pure. A move could build its wire elements once, write each wire's `d` and its gradient's four numbers per frame from the pose, and draw the final frame from the page exactly as now. That leaves a few milliseconds of JavaScript per frame against the browser's own 13 ms.
+
 ### What is not slow
 
 Hover highlight 1 to 2 ms a row. The sidebar's arrow 0.2 ms. Typing in the search: no long task. The World Map: ready 294 ms after navigation with one long task of 93 ms, a pin 9 ms, entering a thing into the Local Map 55 ms to the first picture. The bundle loads in under 200 ms on localhost; `explorer-data.json` is 5.0 MB and `index.js` 1.8 MB minified (1.2 MB of it three.js), a cost only over a network. The 3D view's own frame rate was not measured: headless Chromium draws WebGL in software, which says nothing about the owner's machine. The 2D/3D transition was excluded by the owner.
