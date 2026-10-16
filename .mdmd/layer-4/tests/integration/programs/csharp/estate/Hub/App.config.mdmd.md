@@ -2,11 +2,11 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Hub/App.config
 - Entry: opening [`net.tcp://hub.onprem.example:8731/PaymentHub`](#symbol-nettcphubonpremexample8731paymenthub)
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:45.057Z
+- Generated At: 2026-10-16T20:40:28.788Z
 
 ## Authored
 ### Purpose

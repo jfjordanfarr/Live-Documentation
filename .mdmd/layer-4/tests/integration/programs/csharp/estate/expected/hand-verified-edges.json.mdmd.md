@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/expected/hand-verified-edges.json
-- Generated At: 2026-10-02T20:20:05.377Z
+- Generated At: 2026-10-16T20:40:29.178Z
 
 ## Authored
 ### Purpose

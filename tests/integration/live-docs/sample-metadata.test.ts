@@ -30,8 +30,8 @@ it("keeps sample roles and connects a catalog through its nested compiler JSON t
     const graph = await readLiveDocGraph({ workspaceRoot: root, config });
     expect(graph.files["tests/samples/demo/src/main.ts"].archetype).toBe("implementation");
     expect(graph.files["tests/samples/demo/src/value.test.ts"].archetype).toBe("test");
-    expect(graph.files["tests/samples/catalog.json"].archetype).toBe("asset");
-    expect(graph.files["tests/samples/demo/expected/compiler-edges.json"].archetype).toBe("asset");
+    expect(graph.files["tests/samples/catalog.json"].archetype).toBe("implementation");
+    expect(graph.files["tests/samples/demo/expected/compiler-edges.json"].archetype).toBe("implementation");
     expect(graph.files["tests/samples/catalog.json"].outbound).toEqual([
       "tests/samples/demo/expected/compiler-edges.json", "tests/samples/demo/src/main.ts"
     ]);

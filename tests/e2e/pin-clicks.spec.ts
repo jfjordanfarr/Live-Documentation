@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapSettled } from "./still-picture";
+import { localMapSettled, panIntoView } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
@@ -31,6 +31,7 @@ test("a symbol clicked on a neighbour is one pin; the subject stays, drawn whole
   await page.goto(`/?view=local&node=${MAIN}`);
   await localMapSettled(page);
   expect(pins(page)).toEqual([]);
+  await panIntoView(page, card(page, MODELS));
   await row(page, MODELS, "Report").click();
   await localMapSettled(page);
   expect(pins(page)).toEqual([`${MODELS}#Report`]);
@@ -45,6 +46,7 @@ test("a symbol clicked on a neighbour is one pin; the subject stays, drawn whole
 test("a card pins its file whole; its symbols narrow, add, release, and the last one released leaves the file whole", async ({ page }) => {
   await page.goto(`/?view=local&node=${MAIN}`);
   await localMapSettled(page);
+  await panIntoView(page, card(page, MODELS));
   await card(page, MODELS).locator(".node-directory").click();
   await localMapSettled(page);
   expect(pins(page)).toEqual([`${MODELS}#*`]);
@@ -74,6 +76,7 @@ test("the recentre control makes a neighbour the subject without a pin or the pa
   await page.goto(`/?view=local&node=${MAIN}`);
   await localMapSettled(page);
   await expect(card(page, MAIN).getByRole("button", { name: "Centre on main.ts", exact: true }), "the subject's card has no recentre control").toHaveCount(0);
+  await panIntoView(page, card(page, MODELS));
   await card(page, MODELS).getByRole("button", { name: "Centre on models.ts", exact: true }).click();
   await localMapSettled(page);
   expect(await subject(page)).toBe(MODELS);

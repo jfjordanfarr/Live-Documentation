@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/razor-appsettings/workspace/appsettings.json
-- Generated At: 2026-09-27T23:21:33.046Z
+- Generated At: 2026-10-16T20:40:25.324Z
 
 ## Authored
 ### Purpose

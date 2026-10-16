@@ -148,14 +148,18 @@ test("Relaxed aligns the three Rosetta cards while both presets preserve their f
   await page.locator(".local-placed").waitFor();
   const read = async () => page.locator(".local-placed").evaluate(element => {
     const cards = [...element.querySelectorAll<HTMLElement>(".node-card")];
-    return { ids: cards.map(card => card.dataset.id).sort(), tops: cards.map(card => card.getBoundingClientRect().top),
+    // The three source cards stand in one row under Relaxed; the sample's data files, cards since the asset rule of
+    // 2026-10-16, stand in their own directories and are not measured for the row.
+    const source = cards.filter(card => card.dataset.id?.startsWith("tests/integration/programs/typescript/rosetta/src/"));
+    return { ids: cards.map(card => card.dataset.id).sort(), tops: source.map(card => card.getBoundingClientRect().top),
       references: [...document.querySelectorAll<SVGElement>(".connection-path[data-source-id]")].map(path =>
         JSON.stringify([path.dataset.sourceId, path.dataset.sourceSymbol, path.dataset.targetId, path.dataset.targetSymbol, path.dataset.kind])).sort() };
   });
   await page.getByRole("button", { name: "Compact", exact: true }).click();
   await localMapSettled(page);
   const compact = await read();
-  expect(compact.ids).toEqual([`${root}main.ts`, `${root}models.ts`, `${root}processor.ts`]);
+  expect(compact.ids).toEqual(expect.arrayContaining([`${root}main.ts`, `${root}models.ts`, `${root}processor.ts`]));
+  expect(compact.tops).toHaveLength(3);
   expect(compact.references.length).toBeGreaterThan(0);
   await page.getByRole("button", { name: "Relaxed", exact: true }).click();
   await localMapSettled(page);

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture.ts
-- Generated At: 2026-10-12T19:21:21.676Z
+- Generated At: 2026-10-16T21:50:08.724Z
 
 ## Authored
 ### Purpose
@@ -279,9 +279,19 @@ The screen box of the first card of each file.
 ##### `scoreText` — Summary
 Test 3: the design audit over the view's text.
 
+#### `panIntoView` {#symbol-panintoview}
+- Type: function
+- Source: [source](../../../../tests/e2e/still-picture.ts#L795)
+- Parameters: `page`: `Page`; `element`: `Locator`
+
+##### `panIntoView` — Summary
+Pans the Local Map, as a person would, until the element stands inside the frame and clear of the search bar over
+its top: the map holds its camera after a pin rather than re-fitting, and never zooms below one while branches are
+shown, so a picture that outgrew the frame is reached by dragging (2026-10-16).
+
 #### `dragBy` {#symbol-dragby}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L791)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L809)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `dragBy` — Summary
@@ -289,11 +299,11 @@ Pans the view by dragging an empty spot of it with the mouse, as a person would;
 
 #### `RouteScore` {#symbol-routescore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L808)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L826)
 
 #### `scoreRoutes` {#symbol-scoreroutes}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L818)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L836)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `scoreRoutes` — Summary
@@ -301,11 +311,11 @@ Test 4: the shape of every wire across six pans by mouse, translation removed.
 
 #### `TourScore` {#symbol-tourscore}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L844)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L862)
 
 #### `runTour` {#symbol-runtour}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L864)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L882)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `runTour` — Summary
@@ -314,22 +324,22 @@ The camera is left where the tour ends.
 
 #### `Journey` {#symbol-journey}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L900)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L918)
 
 #### `ChainJourney` {#symbol-chainjourney}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L917)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L935)
 
 ##### `ChainJourney` — Summary
 The chain scope's journey: from A's single-file state to a picture in which the hops are legible.
 
 #### `Box` {#symbol-box}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L933)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L951)
 
 #### `boxOf` {#symbol-boxof}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L941)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L959)
 - Parameters: `page`: `Page`
 
 ##### `boxOf` — Summary
@@ -337,18 +347,18 @@ The screen box of the first element the selector names, or null.
 
 #### `centerDistance` {#symbol-centerdistance}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L950)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L968)
 
 #### `Move` {#symbol-move}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L954)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L972)
 
 ##### `Move` — Summary
 What one move of a journey cost: the gestures it took, counting the pans that brought the target into the frame, and the short side of the target hit.
 
 #### `gesture` {#symbol-gesture}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L963)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L981)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `gesture` — Summary
@@ -357,7 +367,7 @@ target is inside the frame, each pan a gesture, then clicking its center. Report
 
 #### `legibleNames` {#symbol-legiblenames}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L986)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1004)
 - Parameters: `page`: `Page`; `view`: [`ViewReading`](#symbol-viewreading)
 
 ##### `legibleNames` — Summary
@@ -365,29 +375,29 @@ How many of the files' names are legible on their cards now: in frame, uncovered
 
 #### `backEnabled` {#symbol-backenabled}
 - Type: const
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1011)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1029)
 
 #### `Scoreboard` {#symbol-scoreboard}
 - Type: interface
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1015)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1033)
 
 #### `scoreboardTable` {#symbol-scoreboardtable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1049)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1067)
 
 ##### `scoreboardTable` — Summary
 The scoreboard of one bundle as a markdown table, one row per view, one column per number the deck defines.
 
 #### `expandedTable` {#symbol-expandedtable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1092)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1110)
 
 ##### `expandedTable` — Summary
 The expanded measures of one bundle as a second table, one row per view.
 
 #### `chainTable` {#symbol-chaintable}
 - Type: function
-- Source: [source](../../../../tests/e2e/still-picture.ts#L1124)
+- Source: [source](../../../../tests/e2e/still-picture.ts#L1142)
 
 ##### `chainTable` — Summary
 The chain journeys of one bundle as a table.
@@ -395,7 +405,7 @@ The chain journeys of one bundle as a table.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@playwright/test` - `Page` (type-only)
+- `@playwright/test` - `Locator`, `Page` (type-only)
 - `lz-string` - `compressToEncodedURIComponent`
 - [`symbolAnchors.normalizeSymbolIdentifier`](../../packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`graph.explorerGraphOf`](../../packages/explorer/src/shared/graph.ts.mdmd.md#symbol-explorergraphof)

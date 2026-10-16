@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/entry-points/workspace/styles.css
-- Generated At: 2026-10-15T15:49:43.630Z
+- Generated At: 2026-10-16T20:40:23.208Z
 
 ## Authored
 ### Purpose

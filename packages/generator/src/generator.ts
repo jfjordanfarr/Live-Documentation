@@ -6,24 +6,7 @@ import {
   type LiveDocumentationConfig,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import {
-  analyzeSourceFile,
-  buildWorkspaceIndexes,
-  cleanupEmptyParents,
-  directoryExists,
-  discoverTargetFiles,
-  hasMeaningfulAuthoredContent,
-  computePublicSymbolHeadingInfo,
-  composeDependencies,
-  composeEntries,
-  composeReExports,
-  composeSymbolBlocks,
-  resolveArchetype,
-  type SourceAnalysisResult,
-  type WorkspaceEntryIndex,
-  type WorkspaceFileIndex,
-  type WorkspaceSymbolIndex
-} from "@live-documentation/engine/live-docs/core";
+import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, cleanupEmptyParents, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, directoryExists, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
 import {
   LiveDocSyntaxError,
   authoredBlockOf,
@@ -193,7 +176,7 @@ export async function generateLiveDocs(
     }
 
     const normalizedSourcePath = normalizeWorkspacePath(relativeSourcePath);
-    const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig);
+    const archetype = resolveArchetype(normalizedSourcePath, normalizedConfig, isBinaryContent(await readFileHead(absoluteSourcePath, BINARY_SNIFF_BYTES)));
 
     const analysis = await analyzeSourceFile(absoluteSourcePath, workspaceRoot, fileIndex, symbolIndex);
 
@@ -401,6 +384,18 @@ async function pruneStaleLiveDocs(args: {
   }
 
   return removed;
+}
+
+/** The first `bytes` of a file, for the content's say on what the file is; fewer when the file is shorter. */
+async function readFileHead(filePath: string, bytes: number): Promise<Uint8Array> {
+  const handle = await fs.open(filePath, "r");
+  try {
+    const buffer = new Uint8Array(bytes);
+    const { bytesRead } = await handle.read(buffer, 0, bytes, 0);
+    return buffer.subarray(0, bytesRead);
+  } finally {
+    await handle.close();
+  }
 }
 
 async function readFileIfExists(filePath: string): Promise<string | undefined> {

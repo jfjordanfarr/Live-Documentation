@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/banner-hash.123abc456def7890.png
-- Generated At: 2026-09-27T23:21:33.384Z
+- Generated At: 2026-10-16T20:40:25.922Z
 
 ## Authored
 ### Purpose

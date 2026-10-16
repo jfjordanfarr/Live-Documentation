@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/queue-worker/workspace/appsettings.json
-- Generated At: 2026-09-27T23:21:32.976Z
+- Generated At: 2026-10-16T20:40:25.190Z
 
 ## Authored
 ### Purpose

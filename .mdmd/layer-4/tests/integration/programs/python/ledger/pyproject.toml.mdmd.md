@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/python/ledger/pyproject.toml
 - Entry: tooling
-- Generated At: 2026-10-16T16:21:55.812Z
+- Generated At: 2026-10-16T20:40:31.194Z
 
 ## Authored
 ### Purpose

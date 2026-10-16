@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Contracts/Contracts.csproj
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:44.872Z
+- Generated At: 2026-10-16T20:40:28.464Z
 
 ## Authored
 ### Purpose

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-branches.spec.ts
-- Generated At: 2026-10-16T19:54:35.450Z
+- Generated At: 2026-10-16T21:50:07.988Z
 
 ## Authored
 ### Purpose
@@ -28,13 +28,12 @@ _No public symbols detected_
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
-- [`still-picture.boxOf`](./still-picture.ts.mdmd.md#symbol-boxof)
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
-- [`still-picture.dragBy`](./still-picture.ts.mdmd.md#symbol-dragby)
 - [`still-picture.gesture`](./still-picture.ts.mdmd.md#symbol-gesture)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
+- [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 - [`still-picture.readPicture`](./still-picture.ts.mdmd.md#symbol-readpicture)
 - [`still-picture.scoreExpanded`](./still-picture.ts.mdmd.md#symbol-scoreexpanded)
 - [`still-picture.scoreForeign`](./still-picture.ts.mdmd.md#symbol-scoreforeign)

@@ -31,10 +31,7 @@ export type {
 
 export type { WorkspaceFileIndex } from "./adapters";
 
-export {
-  resolveArchetype,
-  hasMeaningfulAuthoredContent
-} from "./archetype";
+export { BINARY_SNIFF_BYTES, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype } from "./archetype";
 
 export {
   discoverTargetFiles,

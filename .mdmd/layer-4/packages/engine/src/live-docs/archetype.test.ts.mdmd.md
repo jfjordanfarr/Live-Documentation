@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/archetype.test.ts
-- Generated At: 2026-10-02T20:20:00.195Z
+- Generated At: 2026-10-16T20:40:17.763Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`archetype.isBinaryContent`](./archetype.ts.mdmd.md#symbol-isbinarycontent)
 - [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

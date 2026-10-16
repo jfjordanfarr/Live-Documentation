@@ -16,7 +16,7 @@
  * frame, uncovered, at a rendered font of at least {@link READING_PX}.
  */
 
-import type { Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { compressToEncodedURIComponent } from "lz-string";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
@@ -785,6 +785,24 @@ async function emptySpot(page: Page, view: ViewReading, dx = 0, dy = 0): Promise
     throw new Error("no empty spot in the frame to drag");
   }
   return spot;
+}
+
+/**
+ * Pans the Local Map, as a person would, until the element stands inside the frame and clear of the search bar over
+ * its top: the map holds its camera after a pin rather than re-fitting, and never zooms below one while branches are
+ * shown, so a picture that outgrew the frame is reached by dragging (2026-10-16).
+ */
+export async function panIntoView(page: Page, element: Locator): Promise<void> {
+  for (let panned = 0; panned < 4; panned += 1) {
+    const frame = (await boxOf(page, FRAME))!;
+    const box = (await element.boundingBox())!;
+    const top = frame.y + 80, bottom = frame.y + frame.height - 40, left = frame.x + 40, right = frame.x + frame.width - 40;
+    const dx = box.x < left ? left - box.x : box.x + box.width > right ? right - box.x - box.width : 0;
+    const dy = box.y < top ? top - box.y : box.y + box.height > bottom ? bottom - box.y - box.height : 0;
+    if (dx === 0 && dy === 0) return;
+    await dragBy(page, LOCAL_MAP, dx, dy);
+    await localMapSettled(page);
+  }
 }
 
 /** Pans the view by dragging an empty spot of it with the mouse, as a person would; the drag stays inside the frame. */

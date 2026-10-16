@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/entry-points/workspace/package.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:43.485Z
+- Generated At: 2026-10-16T20:40:23.033Z
 
 ## Authored
 ### Purpose

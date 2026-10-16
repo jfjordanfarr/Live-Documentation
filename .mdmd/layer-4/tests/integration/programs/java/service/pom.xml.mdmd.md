@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/java/service/pom.xml
 - Entry: tooling
-- Generated At: 2026-10-16T16:21:54.621Z
+- Generated At: 2026-10-16T20:40:30.202Z
 
 ## Authored
 ### Purpose

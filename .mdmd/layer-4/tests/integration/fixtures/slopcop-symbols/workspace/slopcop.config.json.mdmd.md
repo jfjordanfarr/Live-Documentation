@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/slopcop-symbols/workspace/slopcop.config.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:44.197Z
+- Generated At: 2026-10-16T20:40:26.548Z
 
 ## Authored
 ### Purpose

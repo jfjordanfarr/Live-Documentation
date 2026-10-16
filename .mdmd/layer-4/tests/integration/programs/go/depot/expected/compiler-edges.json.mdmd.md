@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/go/depot/expected/compiler-edges.json
-- Generated At: 2026-10-16T16:21:53.817Z
+- Generated At: 2026-10-16T20:40:29.528Z
 
 ## Authored
 ### Purpose

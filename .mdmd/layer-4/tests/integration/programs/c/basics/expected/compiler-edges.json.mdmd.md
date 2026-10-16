@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/c/basics/expected/compiler-edges.json
-- Generated At: 2026-10-16T00:58:48.704Z
+- Generated At: 2026-10-16T20:40:27.139Z
 
 ## Authored
 ### Purpose

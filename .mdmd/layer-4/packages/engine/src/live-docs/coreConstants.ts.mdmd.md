@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/coreConstants.ts
-- Generated At: 2026-09-27T23:21:31.329Z
+- Generated At: 2026-10-16T20:40:17.951Z
 
 ## Authored
 ### Purpose
@@ -28,24 +28,16 @@ Central repository of file extension constants for Live Documentation. Defines w
 ##### `SUPPORTED_SCRIPT_EXTENSIONS` — Summary
 Extensions supported by the TypeScript parser for script analysis.
 
-#### `IMPLEMENTATION_CODE_EXTENSIONS` {#symbol-implementation_code_extensions}
-- Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreConstants.ts#L30)
-
-##### `IMPLEMENTATION_CODE_EXTENSIONS` — Summary
-Extensions that are always treated as implementation code, even under fixture directories.
-These files contain analyzable source code with symbols and dependencies.
-
 #### `MODULE_RESOLUTION_EXTENSIONS` {#symbol-module_resolution_extensions}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreConstants.ts#L57)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreConstants.ts#L29)
 
 ##### `MODULE_RESOLUTION_EXTENSIONS` — Summary
 Extensions tried in order during module resolution (TypeScript-style).
 
 #### `RESERVED_HEADING_NAMES` {#symbol-reserved_heading_names}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/coreConstants.ts#L73)
+- Source: [source](../../../../../../packages/engine/src/live-docs/coreConstants.ts#L45)
 
 ##### `RESERVED_HEADING_NAMES` — Summary
 Reserved heading names that cannot be used as user-authored sections.

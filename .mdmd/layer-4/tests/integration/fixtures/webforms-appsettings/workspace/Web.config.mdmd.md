@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/webforms-appsettings/workspace/Web.config
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:44.251Z
+- Generated At: 2026-10-16T20:40:26.652Z
 
 ## Authored
 ### Purpose

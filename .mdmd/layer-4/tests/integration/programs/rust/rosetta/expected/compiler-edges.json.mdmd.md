@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/rust/rosetta/expected/compiler-edges.json
-- Generated At: 2026-10-16T16:21:57.100Z
+- Generated At: 2026-10-16T20:40:32.787Z
 
 ## Authored
 ### Purpose

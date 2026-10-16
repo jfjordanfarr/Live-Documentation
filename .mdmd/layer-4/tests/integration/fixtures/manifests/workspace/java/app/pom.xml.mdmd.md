@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/manifests/workspace/java/app/pom.xml
 - Entry: tooling
-- Generated At: 2026-10-16T16:21:49.988Z
+- Generated At: 2026-10-16T20:40:24.441Z
 
 ## Authored
 ### Purpose

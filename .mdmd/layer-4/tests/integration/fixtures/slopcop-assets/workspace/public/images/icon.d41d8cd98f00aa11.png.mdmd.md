@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/public/images/icon.d41d8cd98f00aa11.png
-- Generated At: 2026-09-27T23:21:33.442Z
+- Generated At: 2026-10-16T20:40:26.083Z
 
 ## Authored
 ### Purpose

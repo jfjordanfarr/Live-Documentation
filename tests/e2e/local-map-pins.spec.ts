@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { localMapSettled } from "./still-picture";
+import { localMapSettled, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
@@ -90,6 +90,7 @@ test("directory bulk clearing preserves an outside pin and the inside file its r
 test("releasing a directory preserves the direct-file neighborhood that was already being inspected", async ({ page }) => {
   await page.goto(`/?view=local&node=${MAIN}`);
   await localMapSettled(page);
+  await panIntoView(page, page.getByRole("button", { name: `Open ${SRC}`, exact: true }));
   await page.getByRole("button", { name: `Open ${SRC}`, exact: true }).click();
   await localMapSettled(page);
   await openTray(page);
@@ -107,6 +108,7 @@ test("closing a neighbor's symbol disclosure preserves the direct-file inspectio
   await localMapSettled(page);
   const neighbor = page.locator(`.node-card[data-id="${SRC}/models.ts"]`);
   await expect(neighbor.locator(".local-file-close")).toHaveCount(0);
+  await panIntoView(page, neighbor);
   // models.ts offers four symbols; two are wired to main.ts and shown, two are folded. The reveal counts public
   // symbols only since 2026-10-16; it had read "+3" while it counted the Internals row too.
   await neighbor.getByRole("button", { name: "+2 symbols", exact: true }).click();

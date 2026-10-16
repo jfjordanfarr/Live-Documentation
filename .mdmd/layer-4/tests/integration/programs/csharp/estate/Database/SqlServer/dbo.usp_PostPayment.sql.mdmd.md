@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Database/SqlServer/dbo.usp_PostPayment.sql
 - Entry: opening [`dbo.usp_PostPayment`](#symbol-dbousp_postpayment)
-- Generated At: 2026-10-15T15:49:44.963Z
+- Generated At: 2026-10-16T20:40:28.634Z
 
 ## Authored
 ### Purpose

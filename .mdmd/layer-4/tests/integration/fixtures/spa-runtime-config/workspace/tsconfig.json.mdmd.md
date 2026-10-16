@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:44.236Z
+- Generated At: 2026-10-16T20:40:26.632Z
 
 ## Authored
 ### Purpose

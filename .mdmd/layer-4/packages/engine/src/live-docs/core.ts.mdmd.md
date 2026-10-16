@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/core.ts
-- Generated At: 2026-10-15T15:49:39.487Z
+- Generated At: 2026-10-16T20:40:17.936Z
 
 ## Authored
 ### Purpose
@@ -72,63 +72,73 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L32)
 
-#### `resolveArchetype` {#symbol-resolvearchetype}
+#### `BINARY_SNIFF_BYTES` {#symbol-binary_sniff_bytes}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L35)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L34)
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L36)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L34)
+
+#### `isBinaryContent` {#symbol-isbinarycontent}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L34)
+
+#### `resolveArchetype` {#symbol-resolvearchetype}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L34)
 
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L40)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L37)
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L41)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L38)
 
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L44)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L41)
 
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L47)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L44)
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L48)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L45)
 
 #### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L49)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L46)
 
 #### `composeDependencies` {#symbol-composedependencies}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L50)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L47)
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L51)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L48)
 
 #### `directoryExists` {#symbol-directoryexists}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L55)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L52)
 
 #### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L56)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L53)
 
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L59)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L56)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`index.WorkspaceFileIndex`](./adapters/index.ts.mdmd.md#symbol-workspacefileindex) (re-export, type-only)
+- [`archetype.BINARY_SNIFF_BYTES`](./archetype.ts.mdmd.md#symbol-binary_sniff_bytes) (re-export)
 - [`archetype.hasMeaningfulAuthoredContent`](./archetype.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent) (re-export)
+- [`archetype.isBinaryContent`](./archetype.ts.mdmd.md#symbol-isbinarycontent) (re-export)
 - [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype) (re-export)
 - [`compose.composeDependencies`](./compose.ts.mdmd.md#symbol-composedependencies) (re-export)
 - [`compose.composeEntries`](./compose.ts.mdmd.md#symbol-composeentries) (re-export)

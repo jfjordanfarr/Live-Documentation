@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/basic/CSharpBasic.csproj
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:44.796Z
+- Generated At: 2026-10-16T20:40:28.273Z
 
 ## Authored
 ### Purpose

@@ -24,34 +24,6 @@ export const SUPPORTED_SCRIPT_EXTENSIONS = new Set([
 ]);
 
 /**
- * Extensions that are always treated as implementation code, even under fixture directories.
- * These files contain analyzable source code with symbols and dependencies.
- */
-export const IMPLEMENTATION_CODE_EXTENSIONS = new Set([
-  // TypeScript/JavaScript
-  ".ts", ".tsx", ".mts", ".cts",
-  ".js", ".jsx", ".mjs", ".cjs",
-  // C/C++
-  ".c", ".h", ".cpp", ".hpp", ".cc", ".hh", ".cxx", ".hxx", ".inl",
-  // C#
-  ".cs",
-  // Java
-  ".java",
-  // Python
-  ".py",
-  // Ruby
-  ".rb",
-  // Rust
-  ".rs",
-  // Go
-  ".go",
-  // PowerShell
-  ".ps1", ".psm1", ".psd1",
-  // ASP.NET Markup (code-behind)
-  ".aspx", ".cshtml", ".razor", ".ascx"
-]);
-
-/**
  * Extensions tried in order during module resolution (TypeScript-style).
  */
 export const MODULE_RESOLUTION_EXTENSIONS = [

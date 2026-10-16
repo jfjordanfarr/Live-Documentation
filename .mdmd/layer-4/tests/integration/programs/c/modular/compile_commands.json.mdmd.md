@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/c/modular/compile_commands.json
-- Generated At: 2026-10-16T00:58:48.764Z
+- Generated At: 2026-10-16T20:40:27.237Z
 
 ## Authored
 ### Purpose

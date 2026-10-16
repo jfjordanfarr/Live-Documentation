@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/pin-clicks.spec.ts
-- Generated At: 2026-10-15T01:42:25.501Z
+- Generated At: 2026-10-16T21:50:08.451Z
 
 ## Authored
 ### Purpose
@@ -25,4 +25,5 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->

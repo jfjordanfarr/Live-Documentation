@@ -2,9 +2,9 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/slopcop-assets/workspace/styles/site.css
-- Generated At: 2026-09-27T23:21:33.634Z
+- Generated At: 2026-10-16T20:40:26.527Z
 
 ## Authored
 ### Purpose

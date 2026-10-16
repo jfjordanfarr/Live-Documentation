@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/estate/Portal/Portal.csproj
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:45.270Z
+- Generated At: 2026-10-16T20:40:29.077Z
 
 ## Authored
 ### Purpose

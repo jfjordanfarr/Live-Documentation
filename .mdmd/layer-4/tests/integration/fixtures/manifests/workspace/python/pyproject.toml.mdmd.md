@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/fixtures/manifests/workspace/python/pyproject.toml
 - Entry: tooling
-- Generated At: 2026-10-16T16:21:50.248Z
+- Generated At: 2026-10-16T20:40:24.664Z
 
 ## Authored
 ### Purpose

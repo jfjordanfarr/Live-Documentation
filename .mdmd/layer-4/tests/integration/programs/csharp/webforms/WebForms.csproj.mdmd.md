@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/webforms/WebForms.csproj
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:45.475Z
+- Generated At: 2026-10-16T20:40:29.386Z
 
 ## Authored
 ### Purpose

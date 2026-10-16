@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/rust/rosetta/Cargo.toml
 - Entry: tooling
-- Generated At: 2026-10-16T16:21:57.077Z
+- Generated At: 2026-10-16T20:40:32.767Z
 
 ## Authored
 ### Purpose

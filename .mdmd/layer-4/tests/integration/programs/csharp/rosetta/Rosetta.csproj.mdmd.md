@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/csharp/rosetta/Rosetta.csproj
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:45.345Z
+- Generated At: 2026-10-16T20:40:29.196Z
 
 ## Authored
 ### Purpose

@@ -2,10 +2,10 @@
 
 ## Metadata
 - Layer: 4
-- Archetype: asset
+- Archetype: implementation
 - Code Path: tests/integration/programs/typescript/rosetta/tsconfig.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:47.813Z
+- Generated At: 2026-10-16T20:40:33.389Z
 
 ## Authored
 ### Purpose
