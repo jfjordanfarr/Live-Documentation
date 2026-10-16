@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/languages/index.ts
-- Generated At: 2026-10-08T16:03:26.425Z
+- Generated At: 2026-10-16T16:49:35.816Z
 
 ## Authored
 ### Purpose
@@ -32,21 +32,25 @@ Origin: [2026-01-29.1.md](../../../../../../AI-Agent-Workspace/ChatHistory/2026/
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/languages/index.ts#L24)
 
-#### `pythonSyntax` {#symbol-pythonsyntax}
+#### `powershellSyntax` {#symbol-powershellsyntax}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/languages/index.ts#L25)
 
-#### `rustSyntax` {#symbol-rustsyntax}
+#### `pythonSyntax` {#symbol-pythonsyntax}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/languages/index.ts#L26)
 
-#### `typescriptSyntax` {#symbol-typescriptsyntax}
+#### `rustSyntax` {#symbol-rustsyntax}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/languages/index.ts#L27)
 
+#### `typescriptSyntax` {#symbol-typescriptsyntax}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L28)
+
 #### `getSyntaxById` {#symbol-getsyntaxbyid}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L67)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L68)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxById` — Summary
@@ -60,7 +64,7 @@ The syntax configuration, or undefined if not found
 
 #### `getSyntaxByExtension` {#symbol-getsyntaxbyextension}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L77)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L78)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxByExtension` — Summary
@@ -74,7 +78,7 @@ The syntax configuration, or undefined if not found
 
 #### `getSyntaxByPath` {#symbol-getsyntaxbypath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L87)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L88)
 - Returns: [`LanguageSyntax`](./syntax.ts.mdmd.md#symbol-languagesyntax)
 
 ##### `getSyntaxByPath` — Summary
@@ -88,7 +92,7 @@ The syntax configuration, or undefined if not found
 
 #### `isLanguageSupported` {#symbol-islanguagesupported}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L97)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L98)
 
 ##### `isLanguageSupported` — Summary
 Checks if a language is supported.
@@ -98,7 +102,7 @@ Checks if a language is supported.
 
 #### `isExtensionSupported` {#symbol-isextensionsupported}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L106)
+- Source: [source](../../../../../../packages/engine/src/languages/index.ts#L107)
 
 ##### `isExtensionSupported` — Summary
 Checks if a file extension is supported.

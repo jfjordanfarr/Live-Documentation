@@ -1,0 +1,44 @@
+{
+  "tool": "pwsh 7.5.4",
+  "projects": [
+    {
+      "name": "powershell-compendium",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../common/logging.ps1",
+    "../config/settings.psd1",
+    "../modules/Inventory.psm1",
+    "../scripts/deploy.ps1",
+    "../workspace/scripts/common/logging.ps1",
+    "../workspace/scripts/deploy.ps1",
+    "../workspace/scripts/modules/Inventory.psm1"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../scripts/deploy.ps1",
+      "to": "../common/logging.ps1",
+      "symbols": [
+        ". \"../common/logging.ps1\""
+      ]
+    },
+    {
+      "from": "../workspace/scripts/deploy.ps1",
+      "to": "../workspace/scripts/common/logging.ps1",
+      "symbols": [
+        ". \"./Common/Logging.ps1\""
+      ]
+    },
+    {
+      "from": "../workspace/scripts/deploy.ps1",
+      "to": "../workspace/scripts/modules/Inventory.psm1",
+      "symbols": [
+        "Import-Module \"./modules/Inventory.psm1\""
+      ]
+    }
+  ],
+  "ambiguous": []
+}

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-10-16T01:11:37.115Z
+- Generated At: 2026-10-16T17:00:51.492Z
 
 ## Authored
 ### Purpose
@@ -47,9 +47,6 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:packages/engine/package.json` {#symbol-entriespackagesenginepackagejson}
-- Type: key
-
-#### `entries:packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1` {#symbol-entriespackagesenginesrclive-docsadapterspowershellemit-astps1}
 - Type: key
 
 #### `entries:packages/engine/tsconfig.json` {#symbol-entriespackagesenginetsconfigjson}
@@ -113,6 +110,9 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:scripts/oracle/index-fixture.ts` {#symbol-entriesscriptsoracleindex-fixturets}
+- Type: key
+
+#### `entries:scripts/oracle/powershell-ast.ps1` {#symbol-entriesscriptsoraclepowershell-astps1}
 - Type: key
 
 #### `entries:scripts/safe-to-commit.mjs` {#symbol-entriesscriptssafe-to-commitmjs}

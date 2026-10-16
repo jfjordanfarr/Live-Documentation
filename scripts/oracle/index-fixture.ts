@@ -2,13 +2,15 @@
 /**
  * Produces a fixture's compiler-derived expected edges.
  *
- * Copies the fixture to a temporary directory, runs the SCIP indexer for its language
+ * Copies the fixture to a temporary directory, runs the indexer for its language
  * over the copy, and writes every file-to-file edge the compiler resolved to
  * `<fixture>/expected/compiler-edges.json`. Nothing is trimmed to fit an analyzer: the
  * file lists all indexed documents, all edges with the symbols that carry them, and any
- * symbol whose definition the project leaves ambiguous.
+ * symbol whose definition the project leaves ambiguous. An indexer that is not a SCIP
+ * indexer reads the copy itself and keeps the rest of what its tool said in a record
+ * beside the edges.
  *
- * The indexer is chosen by what the fixture contains:
+ * The indexer is chosen by what the fixture contains, in this order:
  *
  *   .sln or .csproj at the root   scip-dotnet      needs the dotnet SDK; the tool is built for an
  *                                                  older runtime, so it runs with DOTNET_ROLL_FORWARD=Major
@@ -17,11 +19,14 @@
  *                                                  conventional layout (lib, main, src/bin, tests, examples, benches)
  *   pom.xml                       scip-java        drives Maven, which downloads its plugins on first use
  *   tsconfig.json                 scip-typescript  the copy in this repository's node_modules
- *   any .py file                  scip-python      the fixture directory's name is the project name;
- *                                                  the tool crashes without a --project-version
  *   compile_commands.json         scip-clang       C and C++ from the fixture's own compilation
  *                                                  database, whose `directory` entries say "." and are
  *                                                  rewritten to the working copy before indexing
+ *   any .py file                  scip-python      the fixture directory's name is the project name;
+ *                                                  the tool crashes without a --project-version
+ *   any .ps1 or .psm1 file        pwsh             PowerShell's own parser over every .ps1, .psm1 and
+ *                                                  .psd1, through `powershell-ast.ps1`; its whole record
+ *                                                  is written beside the edges as `powershell-ast.json`
  *
  * Usage:
  *   npm run oracle:index -- <fixture-dir>
@@ -31,18 +36,23 @@ import * as fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-import { writeOracleEdges } from "./files";
+import { writeOracleEdges, writePowerShellAst } from "./files";
 import { copyFixture, listFixtureFiles } from "./fixture";
-import { cargoProjects, convertScipIndex, readProjects, type IndexContext, type OracleProject } from "./scip-edges";
+import { edgesFromPowerShellAst, parsePowerShellFixture, POWERSHELL_EXTENSIONS } from "./powershell-edges";
+import { cargoProjects, convertScipIndex, readProjects, type OracleEdges, type OracleProject } from "./scip-edges";
 
 interface Detected {
   projectFile?: string;
 }
 
-interface Indexer {
+interface IndexerBase {
   name: string;
   /** Recognises the fixture from its file list; the project file when the language has one. */
   detect(files: string[]): Detected | undefined;
+}
+
+/** A SCIP indexer: a command that writes `index.scip`, whose edges `scip-edges` derives. */
+interface ScipIndexer extends IndexerBase {
   /** Makes the working copy ready for the indexer, when the fixture cannot be indexed as it lies. */
   prepare?(workDir: string): void;
   /** The command that writes `index.scip` into the working copy. */
@@ -52,6 +62,20 @@ interface Indexer {
   /** The fixture's projects and their references, when the language has a solution structure. */
   projects?(workDir: string, projectFile: string): OracleProject[];
 }
+
+/** What an indexer that reads the working copy itself found: the edges, and the rest of what its tool said, written beside them. */
+interface Reading {
+  edges: OracleEdges;
+  /** Writes the tool's whole record into the expectations directory and returns the file it wrote. */
+  writeBeside(outputDir: string, fixtureDir: string): string;
+}
+
+/** An indexer that is not SCIP: it reads the working copy's files itself. */
+interface ReadingIndexer extends IndexerBase {
+  read(workDir: string, files: string[], projects: OracleProject[]): Reading;
+}
+
+type Indexer = ScipIndexer | ReadingIndexer;
 
 const ENV             = { ...process.env, DOTNET_ROLL_FORWARD: "Major", DOTNET_CLI_TELEMETRY_OPTOUT: "1", DOTNET_NOLOGO: "1" };
 const SCIP_TYPESCRIPT = path.join(path.dirname(require.resolve("@sourcegraph/scip-typescript/package.json")), "dist", "src", "main.js");
@@ -121,8 +145,48 @@ const INDEXERS: Indexer[] = [
     name:    "scip-python",
     detect:  (files) => (files.some((file) => file.endsWith(".py")) ? {} : undefined),
     command: ({ name }) => ({ command: "scip-python", args: ["index", ".", "--project-name", name, "--project-version", "0", "--output", "index.scip"] })
+  },
+  {
+    name:   "pwsh",
+    detect: (files) => (files.some((file) => /\.(ps1|psm1)$/iu.test(file)) ? {} : undefined),
+    read(workDir, files, projects) {
+      const ast = parsePowerShellFixture(workDir, files.filter((file) => POWERSHELL_EXTENSIONS.includes(path.extname(file).toLowerCase())));
+      return {
+        edges: edgesFromPowerShellAst(ast, projects),
+        writeBeside(outputDir, fixtureDir) {
+          const file = path.join(outputDir, "powershell-ast.json");
+          writePowerShellAst(file, fixtureDir, ast);
+          return file;
+        }
+      };
+    }
   }
 ];
+
+/** The one project of a fixture without a solution structure. */
+function wholeFixture(name: string): OracleProject[] {
+  return [{ name, directory: ".", references: [] }];
+}
+
+/** Runs a SCIP indexer over the working copy and derives its edges. */
+function indexWithScip(indexer: ScipIndexer, workDir: string, fixture: { name: string; projectFile?: string }): OracleEdges {
+  indexer.prepare?.(workDir);
+  const { command, args } = indexer.command(fixture);
+  const indexed = spawnSync(command, args, { cwd: workDir, env: ENV, encoding: "utf8" });
+  if (indexed.error) {
+    throw new Error(`${indexer.name} could not be run: ${indexed.error.message}`);
+  }
+  if (indexed.status !== 0) {
+    process.stderr.write(indexed.stdout);
+    process.stderr.write(indexed.stderr);
+    throw new Error(`${indexer.name} exited with ${indexed.status}`);
+  }
+  return convertScipIndex(fs.readFileSync(path.join(workDir, "index.scip")), {
+    projects:    fixture.projectFile && indexer.projects ? indexer.projects(workDir, fixture.projectFile) : wholeFixture(fixture.name),
+    projectFile: fixture.projectFile,
+    tool:        indexer.reportedVersion?.(ENV)
+  });
+}
 
 function detectIndexer(fixtureDir: string): { indexer: Indexer; projectFile?: string } {
   const files = listFixtureFiles(fixtureDir);
@@ -132,7 +196,7 @@ function detectIndexer(fixtureDir: string): { indexer: Indexer; projectFile?: st
       return { indexer, ...detected };
     }
   }
-  throw new Error(`no indexer applies to ${fixtureDir}: it has no .sln, .csproj, go.mod, Cargo.toml, pom.xml, tsconfig.json, compile_commands.json or .py file`);
+  throw new Error(`no indexer applies to ${fixtureDir}: it has no .sln, .csproj, go.mod, Cargo.toml, pom.xml, tsconfig.json, compile_commands.json, .py, .ps1 or .psm1 file`);
 }
 
 function main(): void {
@@ -148,32 +212,24 @@ function main(): void {
   const workDir                = copyFixture(fixtureDir, "oracle-index-");
 
   try {
-    indexer.prepare?.(workDir);
-    const { command, args } = indexer.command({ name, projectFile });
-    const indexed = spawnSync(command, args, { cwd: workDir, env: ENV, encoding: "utf8" });
-    if (indexed.error) {
-      throw new Error(`${indexer.name} could not be run: ${indexed.error.message}`);
+    let reading: Reading | undefined;
+    let result: OracleEdges;
+    if ("read" in indexer) {
+      reading = indexer.read(workDir, listFixtureFiles(workDir), wholeFixture(name));
+      result  = reading.edges;
+    } else {
+      result = indexWithScip(indexer, workDir, { name, projectFile });
     }
-    if (indexed.status !== 0) {
-      process.stderr.write(indexed.stdout);
-      process.stderr.write(indexed.stderr);
-      throw new Error(`${indexer.name} exited with ${indexed.status}`);
-    }
-
-    const context: IndexContext = {
-      projects:    projectFile && indexer.projects ? indexer.projects(workDir, projectFile) : [{ name, directory: ".", references: [] }],
-      projectFile,
-      tool:        indexer.reportedVersion?.(ENV)
-    };
-    const result = convertScipIndex(fs.readFileSync(path.join(workDir, "index.scip")), context);
 
     const outputDir  = path.join(fixtureDir, "expected");
     const outputPath = path.join(outputDir, "compiler-edges.json");
     writeOracleEdges(outputPath, fixtureDir, result);
+    const beside = reading?.writeBeside(outputDir, fixtureDir);
 
     const outside = result.outside.length > 0 ? `, ${result.outside.length} outside the fixture` : "";
     console.log(`${result.tool}: ${result.documents.length} documents, ${result.edges.length} edges, ${result.ambiguous.length} ambiguous${outside}`);
     console.log(`Wrote ${path.relative(process.cwd(), outputPath)}`);
+    if (beside) console.log(`Wrote ${path.relative(process.cwd(), beside)}`);
   } finally {
     fs.rmSync(workDir, { recursive: true, force: true });
   }

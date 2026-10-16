@@ -103,10 +103,11 @@ Live Documentation is polyglot. Support varies by language (some have richer sym
 
 - **TypeScript / JavaScript**: the TypeScript compiler API resolves public symbols and module dependencies.
 - **C#, Python, Java, Go, Rust, C and C++**: tree-sitter parsers, with names resolved by each language's own rules (namespaces, packages, modules, crates, include directories) and measured against the compiler's resolution through SCIP indexers.
-- **Ruby, PowerShell**: hand-written scanners for symbols and for requires and module imports; no compiler oracle yet for Ruby.
+- **PowerShell**: a tree-sitter parser, on a grammar the engine builds and ships until upstream takes its fix, for functions with their comment-based help, classes and enums, what a module exports, and dot-sources, module imports, `using module` and `#requires`, paths found as Windows finds them; a module manifest (`.psd1`) is read as a manifest. Measured against PowerShell's own parser. No PowerShell installation is needed to generate docs.
+- **Ruby**: a hand-written scanner for symbols and for requires; no compiler oracle yet.
 - **ASP.NET markup**: `.aspx`, `.ascx`, `.cshtml`, `.razor`, connected to code-behind and configuration conventions.
 - **.NET configuration and SQL**: the addresses and connection strings of `web.config` and `app.config`, and the procedures, tables and views of `.sql` files, read as the openings a system offers and uses.
-- **Manifests**: `.csproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod` and `pom.xml`, read as what a project stands on and what it starts.
+- **Manifests**: `.csproj`, `packages.config`, `package.json`, `Cargo.toml`, `pyproject.toml`, `go.mod`, `pom.xml` and a PowerShell module's `.psd1`, read as what a project stands on and what it starts.
 - **HTML / CSS / JSON**: asset and reference extraction.
 
 ---

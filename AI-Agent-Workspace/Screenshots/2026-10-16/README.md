@@ -67,3 +67,13 @@ Pictures after the asset rule of the evening ([Turn 4 of the October 16 session]
 | The TypeScript rosetta sample's landing on `main.ts`: the oracle's `expected/compiler-edges.json`, a card now, wired to the files it names, and the picture wider than the frame, so that `models.ts` stands off screen to the left; a person pans, and the browser tests now do the same | [01-rosetta-landing.png](asset-rule/01-rosetta-landing.png) |
 | The estate sample's `Portal` opened: `Portal.csproj` and `Web.config` as cards beside the directories, where the old rule had hidden them as assets | [02-estate-portal-opened.png](asset-rule/02-estate-portal-opened.png) |
 
+## PowerShell read by a grammar of our own
+
+Pictures of the rollout sample program, the one the PowerShell adapter is measured on, after the adapter moved to the tree-sitter grammar the engine builds itself ([Turn 4 of the October 16 session](../../ChatHistory/2026/10/2026-10-16.1.record.md#turn-4)). Taken over this repository's own bundle at 1600 by 1000.
+
+| What is shown | Picture |
+| --- | --- |
+| The rollout program opened in the Local Map: its scripts, modules, library, configuration and the oracle's expectations as directories, and `Invoke-Rollout.ps1` with its six connections outside the view | [01-rollout-opened.png](powershell/01-rollout-opened.png) |
+| `Rollout.Targets.psm1` pinned: its enum `TargetTier`, its class `RolloutTarget`, a function and a `script:`-scoped function as the symbols it offers, wired to the script that loads it through `using module` and to the oracle's two expectation files, which name it | [02-targets-module-pinned.png](powershell/02-targets-module-pinned.png) |
+| The module manifest `Rollout.Steps.psd1` pinned: the module `Rollout.Steps` as its one symbol, wired to its root module `Rollout.Steps.psm1`, which it declares the module entry, and to the script that imports it by path | [03-steps-manifest-pinned.png](powershell/03-steps-manifest-pinned.png) |
+

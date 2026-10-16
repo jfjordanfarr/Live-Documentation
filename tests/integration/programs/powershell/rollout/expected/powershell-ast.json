@@ -1,0 +1,777 @@
+{
+  "tool": "pwsh 7.5.4",
+  "files": {
+    "../config/targets.psd1": {
+      "parseErrors": [],
+      "data": {
+        "production": [
+          {
+            "Name": "prod-web-01",
+            "Tier": "Web"
+          },
+          {
+            "Name": "prod-web-02",
+            "Tier": "Web"
+          },
+          {
+            "Name": "prod-worker-01",
+            "Tier": "Worker"
+          }
+        ],
+        "staging": [
+          {
+            "Name": "stage-web-01",
+            "Tier": "Web"
+          },
+          {
+            "Name": "stage-worker-01",
+            "Tier": "Worker"
+          }
+        ]
+      },
+      "references": []
+    },
+    "../Invoke-Rollout.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Assert-RolloutTarget",
+          "keyword": "function",
+          "member": false,
+          "line": 47,
+          "column": 1,
+          "parameters": [
+            "Targets"
+          ],
+          "help": {
+            "synopsis": "Stops the rollout when an environment has no targets.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "TARGETS",
+                "name": "Targets",
+                "description": "The targets read for the environment.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        }
+      ],
+      "published": [
+        "Assert-RolloutTarget"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 33,
+          "column": 1,
+          "text": ". \"$PSScriptRoot/lib/Logging.ps1\"",
+          "target": "$PSScriptRoot/lib/Logging.ps1",
+          "resolved": "../lib/Logging.ps1"
+        },
+        {
+          "line": 34,
+          "column": 1,
+          "text": ". ./lib/Settings.ps1",
+          "target": "./lib/Settings.ps1",
+          "resolved": "../lib/Settings.ps1"
+        }
+      ],
+      "importModules": [
+        {
+          "line": 35,
+          "column": 1,
+          "text": "Import-Module \"$PSScriptRoot/modules/Rollout.Steps/Rollout.Steps.psd1\" -Force -ErrorAction Stop",
+          "command": "Import-Module",
+          "names": [
+            {
+              "name": "$PSScriptRoot/modules/Rollout.Steps/Rollout.Steps.psd1",
+              "text": "\"$PSScriptRoot/modules/Rollout.Steps/Rollout.Steps.psd1\"",
+              "resolved": "../modules/Rollout.Steps/Rollout.Steps.psd1"
+            }
+          ],
+          "parameters": {
+            "ErrorAction": {
+              "text": "Stop",
+              "values": [
+                "Stop"
+              ]
+            },
+            "Force": {
+              "text": null,
+              "values": null
+            },
+            "Name": {
+              "text": "\"$PSScriptRoot/modules/Rollout.Steps/Rollout.Steps.psd1\"",
+              "values": [
+                "$PSScriptRoot/modules/Rollout.Steps/Rollout.Steps.psd1"
+              ]
+            }
+          },
+          "bindingErrors": []
+        },
+        {
+          "line": 36,
+          "column": 1,
+          "text": "Import-Module Microsoft.PowerShell.Utility",
+          "command": "Import-Module",
+          "names": [
+            {
+              "name": "Microsoft.PowerShell.Utility",
+              "text": "Microsoft.PowerShell.Utility",
+              "resolved": null
+            }
+          ],
+          "parameters": {
+            "Name": {
+              "text": "Microsoft.PowerShell.Utility",
+              "values": [
+                "Microsoft.PowerShell.Utility"
+              ]
+            }
+          },
+          "bindingErrors": []
+        },
+        {
+          "line": 37,
+          "column": 1,
+          "text": "Import-Module $PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1 -Force",
+          "command": "Import-Module",
+          "names": [
+            {
+              "name": "$PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1",
+              "text": "$PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1",
+              "resolved": "../modules/Rollout.Notify/Rollout.Notify.psm1"
+            }
+          ],
+          "parameters": {
+            "Force": {
+              "text": null,
+              "values": null
+            },
+            "Name": {
+              "text": "$PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1",
+              "values": [
+                "$PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "usingStatements": [
+        {
+          "line": 1,
+          "column": 1,
+          "text": "using module ./modules/Rollout.Targets/Rollout.Targets.psm1",
+          "kind": "Module",
+          "name": "./modules/Rollout.Targets/Rollout.Targets.psm1",
+          "resolved": "../modules/Rollout.Targets/Rollout.Targets.psm1"
+        }
+      ],
+      "requiredModules": [
+        {
+          "name": "Microsoft.PowerShell.Utility",
+          "version": null,
+          "requiredVersion": null,
+          "maximumVersion": null,
+          "guid": null,
+          "resolved": null
+        },
+        {
+          "name": "Microsoft.PowerShell.Management",
+          "version": "1.0",
+          "requiredVersion": null,
+          "maximumVersion": null,
+          "guid": null,
+          "resolved": null
+        }
+      ]
+    },
+    "../lib/Logging.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Write-RolloutLog",
+          "keyword": "function",
+          "member": false,
+          "line": 8,
+          "column": 1,
+          "parameters": [
+            "Message"
+          ],
+          "help": {
+            "synopsis": "Writes one line of the rollout log, stamped with the time.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "MESSAGE",
+                "name": "Message",
+                "description": "The line to write.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        },
+        {
+          "name": "Write-RolloutBanner",
+          "keyword": "function",
+          "member": false,
+          "line": 16,
+          "column": 1,
+          "parameters": [
+            "Title"
+          ],
+          "help": null
+        },
+        {
+          "name": "script:Get-LogPrefix",
+          "keyword": "function",
+          "member": false,
+          "line": 27,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "Write-RolloutLog",
+        "Write-RolloutBanner",
+        "script:Get-LogPrefix"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../lib/Settings.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Read-RolloutSettings",
+          "keyword": "function",
+          "member": false,
+          "line": 1,
+          "column": 1,
+          "parameters": [
+            "Path"
+          ],
+          "help": null
+        }
+      ],
+      "published": [
+        "Read-RolloutSettings"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../modules/Rollout.Notify/Rollout.Notify.psm1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Send-RolloutNotice",
+          "keyword": "function",
+          "member": false,
+          "line": 13,
+          "column": 1,
+          "parameters": [
+            "Message"
+          ],
+          "help": {
+            "synopsis": "Writes a notice of the rollout for the operators.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "MESSAGE",
+                "name": "Message",
+                "description": "What the notice says.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        },
+        {
+          "name": "Format-RolloutNotice",
+          "keyword": "function",
+          "member": false,
+          "line": 25,
+          "column": 1,
+          "parameters": [
+            "Message"
+          ],
+          "help": {
+            "synopsis": "Formats a notice: the prefix and the message.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "MESSAGE",
+                "name": "Message",
+                "description": "What the notice says.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        },
+        {
+          "name": "Get-NoticePrefix",
+          "keyword": "function",
+          "member": false,
+          "line": 30,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "Send-RolloutNotice",
+        "Format-RolloutNotice",
+        "Get-NoticePrefix"
+      ],
+      "types": [],
+      "exportModuleMembers": [
+        {
+          "line": 34,
+          "column": 1,
+          "text": "Export-ModuleMember -Function $public",
+          "parameters": {
+            "Function": {
+              "text": "$public",
+              "values": null
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../modules/Rollout.Steps/Rollout.Steps.psd1": {
+      "parseErrors": [],
+      "data": {
+        "AliasesToExport": [],
+        "Author": "Live Documentation",
+        "CmdletsToExport": [],
+        "Description": "Plans the steps of a rollout and runs them.",
+        "FunctionsToExport": [
+          "New-RolloutStep",
+          "Get-RolloutPlan",
+          "Select-PendingStep",
+          "Invoke-RolloutStep",
+          "Format-RolloutReport"
+        ],
+        "GUID": "6f0c2a52-3b7e-4c1d-9a51-2d7f6b8e4c10",
+        "ModuleVersion": "1.0.0",
+        "PowerShellVersion": "7.0",
+        "RequiredModules": [
+          {
+            "ModuleName": "Microsoft.PowerShell.Utility",
+            "ModuleVersion": "7.0.0.0"
+          }
+        ],
+        "RootModule": "Rollout.Steps.psm1",
+        "VariablesToExport": []
+      },
+      "references": [
+        {
+          "key": "RootModule",
+          "value": "Rollout.Steps.psm1",
+          "version": null,
+          "resolved": "../modules/Rollout.Steps/Rollout.Steps.psm1"
+        },
+        {
+          "key": "RequiredModules",
+          "value": "Microsoft.PowerShell.Utility",
+          "version": "7.0.0.0",
+          "resolved": null
+        }
+      ]
+    },
+    "../modules/Rollout.Steps/Rollout.Steps.psm1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "New-RolloutStep",
+          "keyword": "function",
+          "member": false,
+          "line": 5,
+          "column": 1,
+          "parameters": [
+            "Target",
+            "Action"
+          ],
+          "help": {
+            "synopsis": "Describes one step of a rollout: a target and the action taken on it.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "TARGET",
+                "name": "Target",
+                "description": "The host the step acts on.\n\n"
+              },
+              {
+                "key": "ACTION",
+                "name": "Action",
+                "description": "What the step does: copy, restart or verify.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        },
+        {
+          "name": "Get-RolloutPlan",
+          "keyword": "function",
+          "member": false,
+          "line": 29,
+          "column": 1,
+          "parameters": [
+            "Targets"
+          ],
+          "help": {
+            "synopsis": "Plans a rollout: a copy, a restart and a verification for each target.\n\n",
+            "description": null,
+            "parameters": [],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        },
+        {
+          "name": "Get-StepAction",
+          "keyword": "function",
+          "member": false,
+          "line": 32,
+          "column": 5,
+          "parameters": [],
+          "help": null
+        },
+        {
+          "name": "Select-PendingStep",
+          "keyword": "filter",
+          "member": false,
+          "line": 43,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        },
+        {
+          "name": "Invoke-RolloutStep",
+          "keyword": "function",
+          "member": false,
+          "line": 47,
+          "column": 1,
+          "parameters": [
+            "Step"
+          ],
+          "help": {
+            "synopsis": "Runs one step and passes it on.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "STEP",
+                "name": "Step",
+                "description": "The step, as New-RolloutStep made it.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        },
+        {
+          "name": "Format-RolloutReport",
+          "keyword": "function",
+          "member": false,
+          "line": 62,
+          "column": 1,
+          "parameters": [
+            "Steps"
+          ],
+          "help": null
+        },
+        {
+          "name": "Get-StepCount",
+          "keyword": "function",
+          "member": false,
+          "line": 67,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "New-RolloutStep",
+        "Get-RolloutPlan",
+        "Select-PendingStep",
+        "Invoke-RolloutStep",
+        "Format-RolloutReport"
+      ],
+      "types": [],
+      "exportModuleMembers": [
+        {
+          "line": 71,
+          "column": 1,
+          "text": "Export-ModuleMember -Function New-RolloutStep, Get-RolloutPlan, Select-PendingStep, Invoke-RolloutStep, Format-RolloutReport",
+          "parameters": {
+            "Function": {
+              "text": "New-RolloutStep, Get-RolloutPlan, Select-PendingStep, Invoke-RolloutStep, Format-RolloutReport",
+              "values": [
+                "New-RolloutStep",
+                "Get-RolloutPlan",
+                "Select-PendingStep",
+                "Invoke-RolloutStep",
+                "Format-RolloutReport"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../modules/Rollout.Targets/Rollout.Targets.psm1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "RolloutTarget",
+          "keyword": "function",
+          "member": true,
+          "line": 13,
+          "column": 5,
+          "parameters": [
+            "name",
+            "tier"
+          ],
+          "help": null
+        },
+        {
+          "name": "ToString",
+          "keyword": "function",
+          "member": true,
+          "line": 18,
+          "column": 14,
+          "parameters": [],
+          "help": null
+        },
+        {
+          "name": "Get-RolloutTarget",
+          "keyword": "function",
+          "member": false,
+          "line": 33,
+          "column": 1,
+          "parameters": [
+            "Settings",
+            "Environment"
+          ],
+          "help": {
+            "synopsis": "Reads the targets of one environment from the settings.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "SETTINGS",
+                "name": "Settings",
+                "description": "The settings, as config/targets.psd1 holds them.\n\n"
+              },
+              {
+                "key": "ENVIRONMENT",
+                "name": "Environment",
+                "description": "The environment whose targets are wanted.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        },
+        {
+          "name": "script:ConvertTo-TargetTier",
+          "keyword": "function",
+          "member": false,
+          "line": 40,
+          "column": 1,
+          "parameters": [
+            "Name"
+          ],
+          "help": null
+        }
+      ],
+      "published": [
+        "Get-RolloutTarget",
+        "script:ConvertTo-TargetTier"
+      ],
+      "types": [
+        {
+          "name": "TargetTier",
+          "kind": "enum",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "name": "RolloutTarget",
+          "kind": "class",
+          "line": 9,
+          "column": 1
+        }
+      ],
+      "exportModuleMembers": [
+        {
+          "line": 45,
+          "column": 1,
+          "text": "Export-ModuleMember -Function *",
+          "parameters": {
+            "Function": {
+              "text": "*",
+              "values": [
+                "*"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../scripts/Show-RolloutPlan.ps1": {
+      "parseErrors": [],
+      "functions": [],
+      "published": [],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 12,
+          "column": 1,
+          "text": ". $PSScriptRoot\\..\\lib\\Logging.ps1",
+          "target": "$PSScriptRoot\\..\\lib\\Logging.ps1",
+          "resolved": "../lib/Logging.ps1"
+        }
+      ],
+      "importModules": [
+        {
+          "line": 13,
+          "column": 1,
+          "text": "Import-Module $PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1 -Force",
+          "command": "Import-Module",
+          "names": [
+            {
+              "name": "$PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1",
+              "text": "$PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1",
+              "resolved": "../modules/Rollout.Steps/Rollout.Steps.psm1"
+            }
+          ],
+          "parameters": {
+            "Force": {
+              "text": null,
+              "values": null
+            },
+            "Name": {
+              "text": "$PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1",
+              "values": [
+                "$PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "usingStatements": [],
+      "requiredModules": []
+    }
+  }
+}

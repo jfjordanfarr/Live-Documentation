@@ -1,0 +1,141 @@
+diff -ruN a/grammar.js b/grammar.js
+--- a/grammar.js
++++ b/grammar.js
+@@ -26,10 +26,47 @@
+     [$.class_method_definition, $.attribute],
+     [$.expandable_string_literal],
+     [$.path_command_name, $._value],
++    [$.array_literal_expression, $.command_argument_list],
++    [$._using_statements],
+   ],
+ 
+   rules: {
+-    program: ($) => seq(optional($.param_block), $.statement_list),
++    program: ($) =>
++      seq(
++        optional($._using_statements),
++        optional($.param_block),
++        optional($.statement_list),
++      ),
++
++    // The using statements that open a script; a semicolon after one is theirs
++    // rather than an empty statement's
++    _using_statements: ($) =>
++      seq(
++        $.using_statement,
++        repeat(
++          seq(
++            $._statement_terminator,
++            optional(prec.dynamic(1, ';')),
++            $.using_statement,
++          ),
++        ),
++        $._statement_terminator,
++        optional(prec.dynamic(1, ';')),
++      ),
++
++    // A using statement, which PowerShell allows only at the start of a script
++    using_statement: ($) =>
++      seq(
++        reservedWord('using'),
++        choice(
++          seq(reservedWord('namespace'), $.generic_token),
++          seq(
++            reservedWord('module'),
++            choice($.generic_token, $.string_literal, $.hash_literal_expression),
++          ),
++          seq(reservedWord('assembly'), choice($.generic_token, $.string_literal)),
++        ),
++      ),
+ 
+     // Comments
+     comment: ($) =>
+@@ -103,7 +140,8 @@
+         /\"(\s*\#*)*/, // this is a trick to avoid tree-sitter allowing comment between tokens, as string should be tokenize but powershell allow subexpression inside it...
+         repeat(
+           choice(
+-            token.immediate(/[^\$\"`]+/),
++            // Text of the string, which is never a comment: `"<#x"` opens no block comment
++            token.immediate(prec(1, /[^\$\"`]+/)),
+             $.variable,
+             $.sub_expression,
+             token.immediate(/\$(`.{1}|`\r?\n|[\s\\])/),
+@@ -306,12 +344,21 @@
+ 
+     // Commands
+     generic_token: ($) =>
+-      token(/[^\(\)\$\"\'\-\{\}@\|\[`\&\s][^\&\s\(\)\}\|;,]*/),
++      choice(
++        token(/[^\(\)\$\"\'\-\{\}@\|\[`\&\s][^\&\s\(\)\}\|;,]*/),
++        // A bare word that begins with a variable, as argument mode reads `$PSScriptRoot\x.psm1`
++        seq(
++          $.variable,
++          token.immediate(/[^\s\(\)\{\}\[\]\|;,&\.:<>`"'\$][^\&\s\(\)\}\|;,]*/),
++        ),
++      ),
+ 
+     _command_token: ($) => token(/[^\(\)\{\}\s;\&]+/),
+ 
+     // Parameters
+-    command_parameter: ($) => token(choice(/-+[a-zA-Z_?\-`]+/, '--')),
++    // A parameter, or a native command's `--name=value`
++    command_parameter: ($) =>
++      token(choice(/-+[a-zA-Z_?\-`]+(=[^\&\s\(\)\}\|;,]*)?/, '--')),
+ 
+     _verbatim_command_argument_chars: ($) =>
+       repeat1(choice(/"[^"]*"/, /&[^&]*/, /[^\|\r\n]+/)),
+@@ -738,6 +785,7 @@
+           new RegExp(caseInsensitive('for-')),
+           new RegExp(caseInsensitive('while-')),
+           new RegExp(caseInsensitive('parallel-')),
++          new RegExp(caseInsensitive('using-')),
+         ),
+         repeat(
+           choice(
+@@ -750,7 +798,7 @@
+         ),
+       ),
+ 
+-    path_command_name_token: ($) => /[0-9a-zA-Z_?\-\.\\]+/,
++    path_command_name_token: ($) => /[0-9a-zA-Z_?\-\.\\\/]+/,
+ 
+     // Use to parse command path
+     path_command_name: ($) =>
+@@ -786,11 +834,23 @@
+         choice(
+           seq($.command_argument_sep, optional($.generic_token)),
+           seq($.command_argument_sep, $.array_literal_expression),
++          seq($.command_argument_sep, $.command_argument_list),
+           $.parenthesized_expression,
+           $.script_block_expression,
+         ),
+       ),
+ 
++    // A comma list in argument mode, whose elements may be bare words: `Format-Table Name, Status`.
++    // A list of expressions alone stays an array_literal_expression.
++    command_argument_list: ($) =>
++      prec.dynamic(
++        -1,
++        seq(
++          choice($.generic_token, $.unary_expression),
++          repeat1(seq(',', choice($.generic_token, $.unary_expression))),
++        ),
++      ),
++
+     verbatim_command_argument: ($) =>
+       seq('--%', $._verbatim_command_argument_chars),
+ 
+diff -ruN a/queries/highlights.scm b/queries/highlights.scm
+--- a/queries/highlights.scm
++++ b/queries/highlights.scm
+@@ -28,6 +28,10 @@
+ "inlinescript" @keyword
+ "parallel" @keyword
+ "sequence" @keyword
++"using" @keyword
++"namespace" @keyword
++"module" @keyword
++"assembly" @keyword
+ 
+ "-as" @operator
+ "-ccontains" @operator

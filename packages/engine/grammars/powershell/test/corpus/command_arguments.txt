@@ -1,0 +1,214 @@
+===
+Comma list of bare words as a command argument
+===
+
+Export-ModuleMember -Function Get-Alpha, Get-Beta
+Format-Table Name, Status -AutoSize
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (command_parameter)
+            (command_argument_sep)
+            (command_argument_list
+              (generic_token)
+              (generic_token))))))
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (command_argument_list
+              (generic_token)
+              (generic_token))
+            (command_argument_sep)
+            (command_parameter)))))))
+
+===
+Comma list that mixes bare words and expressions
+===
+
+Write-Output 'a', b, $c
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (command_argument_list
+              (unary_expression
+                (string_literal
+                  (verbatim_string_characters)))
+              (generic_token)
+              (unary_expression
+                (variable)))))))))
+
+===
+Comma list continued on the next line
+===
+
+Export-ModuleMember -Function Get-Alpha,
+    Get-Beta
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (command_parameter)
+            (command_argument_sep)
+            (command_argument_list
+              (generic_token)
+              (generic_token))))))))
+
+===
+Comma list of expressions stays an array literal
+===
+
+Write-Output 'a', $b
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (array_literal_expression
+              (unary_expression
+                (string_literal
+                  (verbatim_string_characters)))
+              (unary_expression
+                (variable)))))))))
+
+===
+Bare word that begins with a variable
+===
+
+Import-Module $PSScriptRoot\..\lib\Tools.psm1 -Force
+Get-Content ${env:TEMP}/out.txt
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (generic_token
+              (variable))
+            (command_argument_sep)
+            (command_parameter)))))
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (generic_token
+              (variable
+                (braced_variable)))))))))
+
+===
+Variable followed by a member stays an expression
+===
+
+Write-Output $item.Name
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (array_literal_expression
+              (unary_expression
+                (member_access
+                  (variable)
+                  (member_name
+                    (simple_name)))))))))))
+
+===
+Dot-sourcing a path with forward slashes
+===
+
+. $PSScriptRoot/lib/Logging.ps1
+. ${PSScriptRoot}/lib/Settings.ps1
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_invokation_operator)
+          (command_name_expr
+            (path_command_name
+              (variable)
+              (path_command_name_token))))))
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_invokation_operator)
+          (command_name_expr
+            (path_command_name
+              (variable
+                (braced_variable))
+              (path_command_name_token))))))))
+
+===
+Native command argument joined by an equals sign
+===
+
+git log --pretty=oneline
+Get-Item x
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (generic_token)
+            (command_argument_sep)
+            (command_parameter)))))
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (generic_token)))))))

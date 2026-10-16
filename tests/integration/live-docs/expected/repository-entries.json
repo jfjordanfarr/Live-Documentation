@@ -29,9 +29,6 @@
     "packages/engine/package.json": [
       "tooling"
     ],
-    "packages/engine/src/live-docs/adapters/powershell.emit-ast.ps1": [
-      "program"
-    ],
     "packages/engine/tsconfig.json": [
       "tooling"
     ],
@@ -94,6 +91,9 @@
     ],
     "scripts/oracle/index-fixture.ts": [
       "command oracle:index of package.json"
+    ],
+    "scripts/oracle/powershell-ast.ps1": [
+      "program"
     ],
     "scripts/safe-to-commit.mjs": [
       "command ci-check of package.json",

@@ -22,6 +22,7 @@ export { cSyntax } from "./c";
 export { csharpSyntax } from "./csharp";
 export { goSyntax } from "./go";
 export { javaSyntax } from "./java";
+export { powershellSyntax } from "./powershell";
 export { pythonSyntax } from "./python";
 export { rustSyntax } from "./rust";
 export { typescriptSyntax } from "./typescript";

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/powershell-compendium/workspace/scripts/deploy.ps1
 - Entry: program
-- Generated At: 2026-10-15T15:49:43.694Z
+- Generated At: 2026-10-16T16:49:43.844Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Fixture entry point that simulates an ops deployment script for inspect CLI regr
 
 ### Notes
 - Dot-sources the logging helper and imports the inventory module so graph pathfinding can prove PowerShell edges are materialised from Live Docs.
+- Dot-sources `./Common/Logging.ps1` for the file `common/logging.ps1` (since 2026-10-16), as a script written on Windows may: the inspect test copies this workspace to a case-sensitive folder, so the edge it finds proves resolution without regard to case through the generator, and the oracle resolves the path as Windows would.
 - Lives under the `powershell-compendium` fixture workspace and mirrors the patterns covered by the unit-level adapter tests.
 
 ## Generated
@@ -34,7 +35,8 @@ Wraps shared logging and inventory refresh helpers so deployments stay observabl
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `./modules/Inventory.psm1`
 - `Microsoft.PowerShell.Management`
+- `Microsoft.PowerShell.Utility`
 - [`logging`](./common/logging.ps1.mdmd.md)
+- [`Inventory`](./modules/Inventory.psm1.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

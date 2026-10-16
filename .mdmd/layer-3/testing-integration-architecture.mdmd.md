@@ -19,13 +19,14 @@ Integration suites run the real generator and the real CLI over fixture workspac
 | `rosettaParity.test.ts`     | The same program in nine languages yields the same topology; a canonical edge must be found in at least 6 of 9 languages; the main file carries the `program` entry in the seven languages whose main is one, and the two library-shaped variants carry none |
 | `oracle.test.ts`            | `oracle:compare` runs over every sample program that carries expectations and accounts for every expected edge as found or missing                                                  |
 | `include-dirs.test.ts`      | The C and C++ adapter's include rule against the compiler: over the include-directories fixture, every quoted include the docs resolve is the file scip-clang resolved under `-I include -I src -I .`, and no other       |
+| `powershell-oracle.test.ts` | The PowerShell adapter against PowerShell's own parser, without `pwsh`: over every fixture that carries `expected/powershell-ast.json`, the functions each file publishes (name, line, column, help), the classes and enums it defines, its dependencies and its program mark, and a `.psd1`'s manifest reading (its module, what it names, the root module it declares), agree with the parser's record, but for a register of measured misses that must match exactly; the register is empty |
 
 Rosetta parity is a smoke alarm for a regression in one adapter. It is not a measure of correctness; that is the job of the compiler-backed oracle described in [Architectural Decisions](architectural-decisions.mdmd.md) under "Accuracy Measurement".
 
 ## Fixtures
 
-- `tests/integration/fixtures/`: hand-authored scenario workspaces (WebForms and Razor configuration chains, a queue worker, reflection, PowerShell, the C# XML-doc stress workspace, the entry-points workspace, the include-directories workspace with its compiler expectations, and the SlopCop dogfood workspaces).
-- `tests/integration/programs/`: per-language sample programs, including the nine Rosetta implementations. Twenty-one of the twenty-five carry an `expected/` directory written by the oracle, the C and C++ ones by scip-clang from a hand-written compilation database since 2026-10-16; see [Sample Programs](sample-programs.mdmd.md).
+- `tests/integration/fixtures/`: hand-authored scenario workspaces (WebForms and Razor configuration chains, a queue worker, reflection, the PowerShell compendium with PowerShell's parser's expectations, the C# XML-doc stress workspace, the entry-points workspace, the include-directories workspace with its compiler expectations, and the SlopCop dogfood workspaces).
+- `tests/integration/programs/`: per-language sample programs, including the nine Rosetta implementations. Twenty-six of the twenty-nine carry an `expected/` directory written by the oracle, the C and C++ ones by scip-clang from a hand-written compilation database and the PowerShell one by PowerShell's own parser, both since 2026-10-16; Ruby's three have none. See [Sample Programs](sample-programs.mdmd.md).
 
 Each suite copies its fixture into a temporary directory before generating, so fixtures are never written to.
 

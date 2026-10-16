@@ -253,13 +253,23 @@ describe("composeEntries", () => {
     for (const name of ["package.json", "Hub/Hub.csproj", "Legacy/Legacy.VBPROJ", "crates/Cargo.toml", "Cargo.toml", "app/pyproject.toml", "go.mod", "parent/pom.xml"]) {
       expect(compose({ sourceRelativePath: name }), name).toEqual([{ reason: "tooling" }]);
     }
-    expect(compose({ sourceRelativePath: "src/package.ts", headings: computePublicSymbolHeadingInfo([{ name: "@scope/engine", kind: "package" }]) })).toEqual([]);
     for (const name of ["tests/e2e/playwright.config.ts", "tsconfig.json", "packages/cli/tsconfig.build.json", "Hub/App.config", "Portal/Web.config", "Portal/packages.config", "vitest.config.mts"]) {
       expect(compose({ sourceRelativePath: name }), name).toEqual([{ reason: "tooling" }]);
     }
     for (const name of ["src/config.ts", "src/app.config/settings.ts", "appsettings.json", "rustfmt.toml", "cargo.toml", "settings.xml", "go.mod.bak"]) {
       expect(compose({ sourceRelativePath: name }), name).toEqual([]);
     }
+  });
+
+  it("writes tooling for a manifest known only by its content, by the package or project it publishes", () => {
+    // A PowerShell module's .psd1 publishes its module as a package; its name could be a data file's.
+    expect(compose({ sourceRelativePath: "Modules/Tools/Tools.psd1", headings: computePublicSymbolHeadingInfo([{ name: "Tools", kind: "package" }]) })).toEqual([{ reason: "tooling" }]);
+    expect(compose({ sourceRelativePath: "src/Hub.proj", headings: computePublicSymbolHeadingInfo([{ name: "Hub", kind: "library" }]) })).toEqual([{ reason: "tooling" }]);
+  });
+
+  it("writes no tooling for a file of a manifest's kind that publishes nothing, as a PowerShell data file", () => {
+    expect(compose({ sourceRelativePath: "config/settings.psd1" })).toEqual([]);
+    expect(compose({ sourceRelativePath: "config/settings.psd1", headings: computePublicSymbolHeadingInfo([{ name: "Settings", kind: "function" }]) })).toEqual([]);
   });
 
   it("writes declared for a file the configuration names, by path or by glob, after every other reason", () => {

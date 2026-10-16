@@ -1,0 +1,124 @@
+===
+Using namespace, module and assembly
+===
+
+using namespace System.Text
+using module ./Tools.psm1
+using assembly System.Windows.Forms
+
+---
+
+(program
+  (using_statement
+    (generic_token))
+  (using_statement
+    (generic_token))
+  (using_statement
+    (generic_token)))
+
+===
+Using module by string and by module specification
+===
+
+using module 'Tools'
+using module @{ ModuleName = 'Tools' }
+
+---
+
+(program
+  (using_statement
+    (string_literal
+      (verbatim_string_characters)))
+  (using_statement
+    (hash_literal_expression
+      (hash_literal_body
+        (hash_entry
+          (key_expression
+            (simple_name))
+          (pipeline
+            (pipeline_chain
+              (logical_expression
+                (bitwise_expression
+                  (comparison_expression
+                    (additive_expression
+                      (multiplicative_expression
+                        (format_expression
+                          (range_expression
+                            (array_literal_expression
+                              (unary_expression
+                                (string_literal
+                                  (verbatim_string_characters))))))))))))))))))
+
+===
+Using statements before the param block
+===
+
+using module ..\Tools\Tools.psd1
+[CmdletBinding()]
+param($Name)
+Write-Output $Name
+
+---
+
+(program
+  (using_statement
+    (generic_token))
+  (param_block
+    (attribute_list
+      (attribute
+        (attribute_name
+          (type_spec
+            (type_name
+              (type_identifier))))))
+    (parameter_list
+      (script_parameter
+        (variable))))
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (array_literal_expression
+              (unary_expression
+                (variable)))))))))
+
+===
+Using statements ended by semicolons
+===
+
+using namespace System.Text; using namespace System.IO;
+param($Name)
+
+---
+
+(program
+  (using_statement
+    (generic_token))
+  (using_statement
+    (generic_token))
+  (param_block
+    (parameter_list
+      (script_parameter
+        (variable)))))
+
+===
+Command whose name begins with using
+===
+
+Using-Thing -Name x
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (pipeline_chain
+        (command
+          (command_name)
+          (command_elements
+            (command_argument_sep)
+            (command_parameter)
+            (command_argument_sep)
+            (generic_token)))))))

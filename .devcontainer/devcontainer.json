@@ -53,7 +53,7 @@
     },
 
     // PowerShell 7+
-    // Used by: Live Docs generator for PowerShell fixture analysis
+    // Used by: oracle:index, whose PowerShell parser measures the PowerShell adapter (development only)
     "ghcr.io/devcontainers/features/powershell:1": {
       "version": "latest"
     },

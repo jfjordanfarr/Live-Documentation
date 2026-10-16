@@ -40,7 +40,7 @@ The guide to the command is [cli-reference](../../../.mdmd/layer-1/guides/cli-re
 
 - A use inside the file itself. The docs carry no local uses, so "nothing references this symbol" means nothing in another file does.
 - A reference that is not an import or a type reference: reflection, a path held in a string, a computed `import()`. A dynamic import with a literal path is recorded.
-- The languages read by hand-written scanners (C, Ruby, PowerShell, SQL, ASP.NET markup, .NET configuration, HTML, CSS, JSON) have no compiler behind them. TypeScript, JavaScript, C#, Python, Java, Go and Rust are measured against their compilers.
+- The languages read by hand-written scanners (Ruby, SQL, ASP.NET markup, .NET configuration, HTML, CSS, JSON) have no compiler behind them. TypeScript, JavaScript, C#, Python, Java, Go, Rust, C and C++ are measured against their compilers, and PowerShell against its own parser. A PowerShell module named rather than pathed (`Import-Module Az.Accounts`) stays external, since a machine's module path finds it; a path built from a variable other than `$PSScriptRoot` stays text.
 - A doc whose generated sections are empty means no adapter read the file. Say so; do not conclude the file is isolated.
 - The generated regions are never edited by hand. A wrong fact is fixed in the generator; `Purpose` and `Notes` are where a person writes.
 

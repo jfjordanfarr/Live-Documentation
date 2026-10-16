@@ -2,6 +2,7 @@
 import * as fs from "node:fs";
 import path from "node:path";
 
+import { rebasePowerShellAst, type PowerShellAst } from "./powershell-edges";
 import type { OracleEdges } from "./scip-edges";
 
 /** A manually verified source relationship, with its evidence and optional deployment crossing. */
@@ -65,6 +66,20 @@ export function readOracleEdges(file: string, fixtureDirectory: string): OracleE
   if (!fs.existsSync(file)) return undefined;
   const graph = JSON.parse(fs.readFileSync(file, "utf8")) as OracleEdges;
   return rebaseOracleEdges(graph, path.dirname(file), fixtureDirectory);
+}
+
+/** Write PowerShell's parser record with every file and resolved path relative to the JSON file. */
+export function writePowerShellAst(file: string, fixtureDirectory: string, ast: PowerShellAst): void {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  const rebased = rebasePowerShellAst(ast, (value) => rebasePath(value, fixtureDirectory, path.dirname(file)));
+  fs.writeFileSync(file, `${JSON.stringify(rebased, null, 2)}\n`, "utf8");
+}
+
+/** Read PowerShell's parser record into fixture-relative coordinates. */
+export function readPowerShellAst(file: string, fixtureDirectory: string): PowerShellAst | undefined {
+  if (!fs.existsSync(file)) return undefined;
+  const ast = JSON.parse(fs.readFileSync(file, "utf8")) as PowerShellAst;
+  return rebasePowerShellAst(ast, (value) => rebasePath(value, path.dirname(file), fixtureDirectory));
 }
 
 /** Read hand-verified observations into fixture-relative coordinates. */

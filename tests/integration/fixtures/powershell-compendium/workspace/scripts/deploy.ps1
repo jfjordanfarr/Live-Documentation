@@ -1,7 +1,7 @@
 Using module Microsoft.PowerShell.Utility
 #requires -Modules Microsoft.PowerShell.Management
 
-. "./common/logging.ps1"
+. "./Common/Logging.ps1"
 Import-Module "./modules/Inventory.psm1"
 
 <#

@@ -44,6 +44,7 @@ No special setup is required — the same `.devcontainer/devcontainer.json` work
 | Go       | latest                  | scip-go for Go fixtures         |
 | Python   | 3.12                    | scip-python for Python fixtures |
 | Rust     | stable                  | rust-analyzer for Rust fixtures |
+| PowerShell | 7 (latest)            | PowerShell's own parser for PowerShell fixtures, through `oracle:index`; generating docs needs no PowerShell |
 
 ### SCIP Indexers (installed via post-create.sh)
 
@@ -76,6 +77,10 @@ rust-analyzer --version
 ## The SCIP Indexers
 
 The indexers above are the compiler-backed oracle for measuring the analyzers: they resolve symbols with each language's own compiler, so their output can be compared with what Live Documentation generates without either side grading itself. `npm run oracle:index -- <fixture>` picks the indexer from the fixture's project file (`.sln` or `.csproj`, `go.mod`, `Cargo.toml`, `pom.xml`, `tsconfig.json`) or, for Python, from the presence of `.py` files. `scip-dotnet` is built for an older runtime than the container's .NET 10, so the script runs it with `DOTNET_ROLL_FORWARD=Major`; do the same when running it by hand.
+
+## The Engine's PowerShell Grammar
+
+`packages/engine/grammars/powershell/build.sh` rebuilds the committed `tree-sitter-powershell.wasm` from the pinned upstream grammar and this project's patch, after running both their corpus tests. It needs what the container already has: `git`, Node, the base image's C compiler (for the native parser the tests build), and the `tree-sitter-cli` that `npm install` puts in `node_modules`. The CLI compiles the wasm with wasi-sdk 34 and binaryen 132, which it downloads into `~/.cache/tree-sitter` on the first build; it needs no Emscripten, so `post-create.sh` installs nothing for it.
 
 ## Troubleshooting
 

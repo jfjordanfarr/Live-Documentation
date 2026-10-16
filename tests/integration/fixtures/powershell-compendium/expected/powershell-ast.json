@@ -1,0 +1,369 @@
+{
+  "tool": "pwsh 7.5.4",
+  "files": {
+    "../common/logging.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Write-DeploymentLog",
+          "keyword": "function",
+          "member": false,
+          "line": 1,
+          "column": 1,
+          "parameters": [
+            "Message"
+          ],
+          "help": null
+        }
+      ],
+      "published": [
+        "Write-DeploymentLog"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../config/settings.psd1": {
+      "parseErrors": [],
+      "data": {
+        "DefaultRegion": "us-east",
+        "NotificationRecipients": [
+          "ops@example.test"
+        ],
+        "RequireApproval": true
+      },
+      "references": []
+    },
+    "../modules/Inventory.psm1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Get-InventorySnapshot",
+          "keyword": "function",
+          "member": false,
+          "line": 1,
+          "column": 1,
+          "parameters": [
+            "Region"
+          ],
+          "help": null
+        },
+        {
+          "name": "Get-InventorySecret",
+          "keyword": "function",
+          "member": false,
+          "line": 12,
+          "column": 1,
+          "parameters": [],
+          "help": null
+        }
+      ],
+      "published": [
+        "Get-InventorySnapshot"
+      ],
+      "types": [],
+      "exportModuleMembers": [
+        {
+          "line": 16,
+          "column": 1,
+          "text": "Export-ModuleMember -Function Get-InventorySnapshot",
+          "parameters": {
+            "Function": {
+              "text": "Get-InventorySnapshot",
+              "values": [
+                "Get-InventorySnapshot"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../scripts/deploy.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Invoke-Deployment",
+          "keyword": "function",
+          "member": false,
+          "line": 12,
+          "column": 1,
+          "parameters": [
+            "Environment"
+          ],
+          "help": null
+        }
+      ],
+      "published": [
+        "Invoke-Deployment"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 9,
+          "column": 1,
+          "text": ". \"../common/logging.ps1\"",
+          "target": "../common/logging.ps1",
+          "resolved": "../common/logging.ps1"
+        }
+      ],
+      "importModules": [
+        {
+          "line": 10,
+          "column": 1,
+          "text": "Import-Module MyCompany.Inventory",
+          "command": "Import-Module",
+          "names": [
+            {
+              "name": "MyCompany.Inventory",
+              "text": "MyCompany.Inventory",
+              "resolved": null
+            }
+          ],
+          "parameters": {
+            "Name": {
+              "text": "MyCompany.Inventory",
+              "values": [
+                "MyCompany.Inventory"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "usingStatements": [
+        {
+          "line": 1,
+          "column": 1,
+          "text": "Using module Microsoft.PowerShell.Utility",
+          "kind": "Module",
+          "name": "Microsoft.PowerShell.Utility",
+          "resolved": null
+        }
+      ],
+      "requiredModules": [
+        {
+          "name": "Microsoft.PowerShell.Management",
+          "version": null,
+          "requiredVersion": null,
+          "maximumVersion": null,
+          "guid": null,
+          "resolved": null
+        }
+      ]
+    },
+    "../workspace/scripts/common/logging.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Write-DeploymentLog",
+          "keyword": "function",
+          "member": false,
+          "line": 8,
+          "column": 1,
+          "parameters": [
+            "Message"
+          ],
+          "help": {
+            "synopsis": "Writes a deployment log entry to standard output.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "MESSAGE",
+                "name": "Message",
+                "description": "The content to emit in the log entry.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        }
+      ],
+      "published": [
+        "Write-DeploymentLog"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    },
+    "../workspace/scripts/deploy.ps1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Invoke-Deployment",
+          "keyword": "function",
+          "member": false,
+          "line": 17,
+          "column": 1,
+          "parameters": [
+            "Region"
+          ],
+          "help": {
+            "synopsis": "Deploys compiled artifacts to the requested region.\n\n",
+            "description": "Wraps shared logging and inventory refresh helpers so deployments stay observable.\n\n",
+            "parameters": [
+              {
+                "key": "REGION",
+                "name": "Region",
+                "description": "The geographic region to target during deployment operations.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        }
+      ],
+      "published": [
+        "Invoke-Deployment"
+      ],
+      "types": [],
+      "exportModuleMembers": [],
+      "dotSources": [
+        {
+          "line": 4,
+          "column": 1,
+          "text": ". \"./Common/Logging.ps1\"",
+          "target": "./Common/Logging.ps1",
+          "resolved": "../workspace/scripts/common/logging.ps1"
+        }
+      ],
+      "importModules": [
+        {
+          "line": 5,
+          "column": 1,
+          "text": "Import-Module \"./modules/Inventory.psm1\"",
+          "command": "Import-Module",
+          "names": [
+            {
+              "name": "./modules/Inventory.psm1",
+              "text": "\"./modules/Inventory.psm1\"",
+              "resolved": "../workspace/scripts/modules/Inventory.psm1"
+            }
+          ],
+          "parameters": {
+            "Name": {
+              "text": "\"./modules/Inventory.psm1\"",
+              "values": [
+                "./modules/Inventory.psm1"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "usingStatements": [
+        {
+          "line": 1,
+          "column": 1,
+          "text": "Using module Microsoft.PowerShell.Utility",
+          "kind": "Module",
+          "name": "Microsoft.PowerShell.Utility",
+          "resolved": null
+        }
+      ],
+      "requiredModules": [
+        {
+          "name": "Microsoft.PowerShell.Management",
+          "version": null,
+          "requiredVersion": null,
+          "maximumVersion": null,
+          "guid": null,
+          "resolved": null
+        }
+      ]
+    },
+    "../workspace/scripts/modules/Inventory.psm1": {
+      "parseErrors": [],
+      "functions": [
+        {
+          "name": "Get-InventorySnapshot",
+          "keyword": "function",
+          "member": false,
+          "line": 8,
+          "column": 1,
+          "parameters": [
+            "Region"
+          ],
+          "help": {
+            "synopsis": "Retrieves the latest deployment inventory snapshot for a region.\n\n",
+            "description": null,
+            "parameters": [
+              {
+                "key": "REGION",
+                "name": "Region",
+                "description": "The region identifier used to scope the inventory query.\n\n"
+              }
+            ],
+            "notes": null,
+            "examples": [],
+            "inputs": [],
+            "outputs": [],
+            "links": [],
+            "component": null,
+            "role": null,
+            "functionality": null,
+            "forwardHelpTargetName": null,
+            "forwardHelpCategory": null,
+            "remoteHelpRunspace": null,
+            "externalHelp": null
+          }
+        }
+      ],
+      "published": [
+        "Get-InventorySnapshot"
+      ],
+      "types": [],
+      "exportModuleMembers": [
+        {
+          "line": 19,
+          "column": 1,
+          "text": "Export-ModuleMember -Function Get-InventorySnapshot",
+          "parameters": {
+            "Function": {
+              "text": "Get-InventorySnapshot",
+              "values": [
+                "Get-InventorySnapshot"
+              ]
+            }
+          },
+          "bindingErrors": []
+        }
+      ],
+      "dotSources": [],
+      "importModules": [],
+      "usingStatements": [],
+      "requiredModules": []
+    }
+  }
+}

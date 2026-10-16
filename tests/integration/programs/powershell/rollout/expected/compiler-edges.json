@@ -1,0 +1,81 @@
+{
+  "tool": "pwsh 7.5.4",
+  "projects": [
+    {
+      "name": "rollout",
+      "directory": "..",
+      "references": []
+    }
+  ],
+  "documents": [
+    "../Invoke-Rollout.ps1",
+    "../config/targets.psd1",
+    "../lib/Logging.ps1",
+    "../lib/Settings.ps1",
+    "../modules/Rollout.Notify/Rollout.Notify.psm1",
+    "../modules/Rollout.Steps/Rollout.Steps.psd1",
+    "../modules/Rollout.Steps/Rollout.Steps.psm1",
+    "../modules/Rollout.Targets/Rollout.Targets.psm1",
+    "../scripts/Show-RolloutPlan.ps1"
+  ],
+  "outside": [],
+  "edges": [
+    {
+      "from": "../Invoke-Rollout.ps1",
+      "to": "../lib/Logging.ps1",
+      "symbols": [
+        ". \"$PSScriptRoot/lib/Logging.ps1\""
+      ]
+    },
+    {
+      "from": "../Invoke-Rollout.ps1",
+      "to": "../lib/Settings.ps1",
+      "symbols": [
+        ". ./lib/Settings.ps1"
+      ]
+    },
+    {
+      "from": "../Invoke-Rollout.ps1",
+      "to": "../modules/Rollout.Notify/Rollout.Notify.psm1",
+      "symbols": [
+        "Import-Module $PSScriptRoot\\modules\\Rollout.Notify\\Rollout.Notify.psm1 -Force"
+      ]
+    },
+    {
+      "from": "../Invoke-Rollout.ps1",
+      "to": "../modules/Rollout.Steps/Rollout.Steps.psd1",
+      "symbols": [
+        "Import-Module \"$PSScriptRoot/modules/Rollout.Steps/Rollout.Steps.psd1\" -Force -ErrorAction Stop"
+      ]
+    },
+    {
+      "from": "../Invoke-Rollout.ps1",
+      "to": "../modules/Rollout.Targets/Rollout.Targets.psm1",
+      "symbols": [
+        "using module ./modules/Rollout.Targets/Rollout.Targets.psm1"
+      ]
+    },
+    {
+      "from": "../modules/Rollout.Steps/Rollout.Steps.psd1",
+      "to": "../modules/Rollout.Steps/Rollout.Steps.psm1",
+      "symbols": [
+        "RootModule = 'Rollout.Steps.psm1'"
+      ]
+    },
+    {
+      "from": "../scripts/Show-RolloutPlan.ps1",
+      "to": "../lib/Logging.ps1",
+      "symbols": [
+        ". $PSScriptRoot\\..\\lib\\Logging.ps1"
+      ]
+    },
+    {
+      "from": "../scripts/Show-RolloutPlan.ps1",
+      "to": "../modules/Rollout.Steps/Rollout.Steps.psm1",
+      "symbols": [
+        "Import-Module $PSScriptRoot\\..\\modules\\Rollout.Steps\\Rollout.Steps.psm1 -Force"
+      ]
+    }
+  ],
+  "ambiguous": []
+}

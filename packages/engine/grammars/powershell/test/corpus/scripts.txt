@@ -1,0 +1,75 @@
+===
+Empty script
+===
+
+---
+
+(program)
+
+===
+Script of comments only
+===
+
+# Nothing to run.
+
+---
+
+(program
+  (comment))
+
+===
+Script of a param block only
+===
+
+param($Name)
+
+---
+
+(program
+  (param_block
+    (parameter_list
+      (script_parameter
+        (variable)))))
+
+===
+Expandable string that begins with a block comment opener
+===
+
+$marker = "<#PSScriptInfo"
+<# .SYNOPSIS Help. #>
+function Get-Thing { }
+
+---
+
+(program
+  (statement_list
+    (pipeline
+      (assignment_expression
+        (left_assignment_expression
+          (logical_expression
+            (bitwise_expression
+              (comparison_expression
+                (additive_expression
+                  (multiplicative_expression
+                    (format_expression
+                      (range_expression
+                        (array_literal_expression
+                          (unary_expression
+                            (variable)))))))))))
+        (assignement_operator)
+        (pipeline
+          (pipeline_chain
+            (logical_expression
+              (bitwise_expression
+                (comparison_expression
+                  (additive_expression
+                    (multiplicative_expression
+                      (format_expression
+                        (range_expression
+                          (array_literal_expression
+                            (unary_expression
+                              (string_literal
+                                (expandable_string_literal)))))))))))))))
+    (comment)
+    (function_statement
+      (function_name))))

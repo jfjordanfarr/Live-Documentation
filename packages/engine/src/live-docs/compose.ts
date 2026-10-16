@@ -37,7 +37,7 @@ import {
   createProximityAwareComparator
 } from "./coreUtils";
 import type { Dependency, DocSection, Entry, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
-import { OPENING_KINDS, isToolingFile } from "./openings";
+import { MANIFEST_KINDS, OPENING_KINDS, isToolingFile } from "./openings";
 
 // ============================================================================
 // Public Symbol Heading Computation
@@ -716,15 +716,16 @@ function resolveSymbolSlugFromIndex(
  * `program` comes from the file's own analysis, its symbol linked when the doc
  * has it. `command` and `module` come from the manifests that declare the file,
  * as the workspace entry index recorded them. `opening` is one line per route,
- * address, procedure, table, view or function the file serves. `tooling` is a
- * rule by name and place: a manifest, or a configuration a tool reads
- * ({@link isToolingFile}). `declared` is the
+ * address, procedure, table, view or function the file serves. A file is
+ * `tooling` by its name or place ({@link isToolingFile}) or by what it
+ * publishes, a package or a project, which makes a manifest known only by its
+ * content, a PowerShell module's `.psd1`, one. `declared` is the
  * configuration's `entryPoints`. A test is an entry by its archetype and gets
  * no line here.
  *
  * @param args.analysis - The file's analysis, for the program entry point.
  * @param args.sourceRelativePath - Workspace-relative source path, for the rules by name.
- * @param args.headings - The symbols with their anchors, for the program's symbol and the openings.
+ * @param args.headings - The symbols with their anchors, for the program's symbol, the openings and a manifest's package.
  * @param args.declaredBy - What manifests declare about the file.
  * @param args.config - The configuration, for the declared entry points.
  * @param args.docDir - Absolute directory of the Live Doc being written; links are relative to it.
@@ -776,7 +777,7 @@ export function composeEntries(args: {
     }
   }
 
-  if (isToolingFile(args.sourceRelativePath)) {
+  if (isToolingFile(args.sourceRelativePath) || args.headings.some((info) => MANIFEST_KINDS.has(info.symbol.kind))) {
     entries.push({ reason: "tooling" });
   }
 
