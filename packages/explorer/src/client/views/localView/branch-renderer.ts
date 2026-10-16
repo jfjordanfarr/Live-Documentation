@@ -608,21 +608,29 @@ function elementHeld(controller: LocalViewController, stage: BranchStage, from: 
 
 /**
  * Waits for the page's next idle moment and runs the search's next start in
- * it, one start a moment, unless the search is over, a move runs, or a
- * step is already waiting. Without `requestIdleCallback` a short timer
- * stands in.
+ * it, one start a moment, unless the search is over, a move runs, a step is
+ * already waiting, or no one is looking: the search runs only while the map
+ * is the view shown and the page visible, and the controller resumes it when
+ * the map is shown again (the owner's choice, 2026-10-16; before, the search
+ * went on behind another view and was begun anew on return). Without
+ * `requestIdleCallback` a short timer stands in.
  */
 function scheduleSearch(controller: LocalViewController, stage: BranchStage): void {
   const search = stage.search;
   if (!search || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment) || stage.move || search.handle) return;
+  if (!searchAllowed(controller)) return;
   const run = (): void => {
     search.handle = 0;
-    if (stage.search !== search) return;
+    // A step whose moment comes after the map was hidden does nothing; the controller's resume schedules the next.
+    if (stage.search !== search || !searchAllowed(controller)) return;
     searchStep(controller, stage, search);
     scheduleSearch(controller, stage);
   };
   search.handle = typeof requestIdleCallback === "function" ? requestIdleCallback(run, { timeout: 1000 }) : window.setTimeout(run, 32);
 }
+
+/** Whether a search may step now: the map is the view shown and the page is visible. */
+const searchAllowed = (controller: LocalViewController): boolean => controller.isShown() && document.visibilityState !== "hidden";
 
 /** Ends the stage's search, if one runs, and lets any waiting step go. */
 function stopSearch(stage: BranchStage): void {

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/runtime.ts
-- Generated At: 2026-10-12T18:02:21.956Z
+- Generated At: 2026-10-16T04:41:10.689Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ One card represents each file in the shared scene, including a path. No hop-spec
 - Created 2025-12-04 during the localView modularisation.
 - `AnchorRegistry` maps composite keys (column:nodeId) to the live DOM anchor elements.
 - `LocalViewRuntime` bundles the registry, DOM refs, drag state, the transform and `mapAnimationTarget`, where a running animation is heading (null when none runs), so that a shift applied while it runs is not lost.
+- `WireLayer` and `wires` (2026-10-16): the overlay's one SVG with the wires' elements by key and their gradients, kept across drawings so that `connections.ts` writes geometry in place; null until the first drawing and again after `clearConnections`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -42,16 +43,25 @@ direction-qualified symbol identifier (e.g. `"inbound:MyClass"`).
 Builds the composite registry key for anchor storage.
 Format: `{columnRole}:{nodeId}` to disambiguate nodes appearing in multiple columns.
 
+#### `WireLayer` {#symbol-wirelayer}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L38)
+
+##### `WireLayer` — Summary
+The wires' elements kept across drawings, by the key each wire, lace and bundle run is drawn under, with each wire's
+gradient, so that a drawing writes geometry in place; null until the first drawing, and again when the overlay is
+cleared (2026-10-16).
+
 #### `DragPosition` {#symbol-dragposition}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L34)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L48)
 
 ##### `DragPosition` — Summary
 Ephemeral pointer position captured during drag interactions.
 
 #### `LocalViewRuntime` {#symbol-localviewruntime}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L45)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L59)
 
 ##### `LocalViewRuntime` — Summary
 Mutable runtime bag for the Local Map view, holding references to
@@ -60,7 +70,7 @@ current anchor registry. Created by {@link createRuntime}.
 
 #### `createRuntime` {#symbol-createruntime}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L71)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L86)
 - Returns: [`LocalViewRuntime`](#symbol-localviewruntime)
 - Parameters: `viewport`: `HTMLDivElement`; `container`: `HTMLDivElement`; `overlay`: `HTMLDivElement`
 
@@ -71,7 +81,7 @@ starts empty.
 
 #### `registerAnchor` {#symbol-registeranchor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L104)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L120)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `registerAnchor` — Summary
@@ -83,7 +93,7 @@ by either original or canonical symbol name.
 
 #### `getAnchor` {#symbol-getanchor}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L133)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L149)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `getAnchor` — Summary
@@ -97,7 +107,7 @@ Look-up priority:
 
 #### `clearAnchorRegistry` {#symbol-clearanchorregistry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L167)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/runtime.ts#L183)
 - Parameters: `registry`: [`AnchorRegistry`](#symbol-anchorregistry)
 
 ##### `clearAnchorRegistry` — Summary

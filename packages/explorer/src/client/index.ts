@@ -568,7 +568,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   /** Change Local Map representation around the identity the person was last inspecting. */
   function changePerspective(perspective: LocalMapPerspective, target = state.focusedNode ?? state.selectedNode): void {
     if (changingPerspective) { pendingPerspective = () => changePerspective(perspective, target); return; }
-    if (state.view === "map" && state.perspective === perspective && target?.id === state.selectedNode?.id) return;
+    const subjectChanged = target?.id !== state.selectedNode?.id;
+    if (state.view === "map" && state.perspective === perspective && !subjectChanged) return;
     const epoch = ++perspectiveEpoch;
     transitionDestination = perspective;
     const previous = state.view === "map" ? state.perspective : null;
@@ -590,7 +591,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     setActiveView(state.view, perspective);
     updateUrlState(state.view, target?.id ?? null, perspective, state.spatialLayout);
     schedulePersistNav();
-    renderCurrentView();
+    renderCurrentView(subjectChanged ? "change" : "show");
     if (target && anchor) {
       const viewport = requireElement(`view-${destination}`).getBoundingClientRect();
       if (anchor.x >= viewport.left && anchor.x <= viewport.right && anchor.y >= viewport.top && anchor.y <= viewport.bottom) {
@@ -630,7 +631,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     state.view = viewName;
     updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null, state.perspective, state.spatialLayout);
     schedulePersistNav();
-    renderCurrentView();
+    renderCurrentView("show");
   };
 
   globalWindow.downloadCurrentDoc = () => {
@@ -962,7 +963,12 @@ function startExplorer(bundle: StaticExplorerData): void {
       layout: layoutSettingsOf(state.tuning), destination: state.destination ?? null, reachFrom: state.reachFrom ?? null });
   }
 
-  function renderCurrentView(): void {
+  /**
+   * Draws the view shown. Called for a change of state, the Local Map is told to render, which it does at once when it
+   * is the view shown and otherwise owes until it is; called to show a view, the Local Map runs an owed render or keeps
+   * its picture and resumes its search (the owner's choice, 2026-10-16).
+   */
+  function renderCurrentView(reason: "change" | "show" = "change"): void {
     // History and navigation can interrupt an animated perspective change.
     if (changingPerspective && (state.view !== "map" || state.perspective !== transitionDestination)) {
       perspectiveEpoch++;
@@ -973,6 +979,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     syncPerspectiveControls();
     syncTuningControls();
     forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
+    if (reason === "change") localView.render();
     if (state.view === "sources") {
       doRenderSourcesView();
       return;
@@ -984,7 +991,7 @@ function startExplorer(bundle: StaticExplorerData): void {
     if (graphData.nodes.length === 0) {
       return;
     }
-    if (state.perspective === "2d") localView.render();
+    if (state.perspective === "2d") localView.show();
     else forceGraphView.render();
     syncPerspectiveControls();
   }

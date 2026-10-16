@@ -13,3 +13,19 @@ Pictures of the built Explorer after the pass the owner gave the go on [Turn 10 
 | The C++ rosetta sample's `main.cpp` pinned: its includes of `models.hpp` and `processor.hpp` resolved by the new adapter, the symbols it uses wired to it (`Record`, `Report`, `create_record`; `run_processor`, `summarize_report`, `free_report`), `rosetta_main` and `main` offered | [05-cpp-rosetta-main-pinned.png](suffix-anywhere-and-cpp/05-cpp-rosetta-main-pinned.png) |
 
 By eye: the tooling group holds the root's files; the test cards carry no reveal; the C++ wires land. `.live-docs.config.json` is a tooling entry by the `*.config.json` rule, and `.devcontainer/devcontainer.json` and `.vscode/settings.json` by their place, a rule added the same night when the hand found them unreachable from any entry.
+
+## The wires keep their elements, and the search stays with the view
+
+Pictures of the built Explorer after the two changes the owner gave the go on at [Turn 15](../../ChatHistory/2026/10/2026-10-15.1.record.md#turn-15): the wires' elements kept by key and their geometry written in place every frame of a move, and the Local Map's render owed while another view is shown with the search paused meanwhile. Taken over this repository's bundle on the deck's retained chain scope (four files of the Explorer's client pinned whole, 65 cards, 418 wires), the move slowed from 450 ms to 1.2 s so that three frames of it could be taken; the continuing search off, so that the frames are the one move's.
+
+| What is shown | Picture |
+| --- | --- |
+| The chain scope at rest before the click | [01-chain-scope-at-rest.png](retained-wires/01-chain-scope-at-rest.png) |
+| 150 ms into opening `packages/explorer/src/client/views/localView` (+37 files): the cards have begun to slide and every wire ends on its pin where the pin now is | [02-move-frame-at-150ms.png](retained-wires/02-move-frame-at-150ms.png) |
+| 500 ms in: the subject's card half way to its new place at the right, the `worldMap/index.ts` card low in the picture, the wires between them stretched to both | [03-move-frame-at-500ms.png](retained-wires/03-move-frame-at-500ms.png) |
+| 900 ms in: near the new arrangement, the `persistence/index.ts` card and its ten pins wired, nothing detached | [04-move-frame-at-900ms.png](retained-wires/04-move-frame-at-900ms.png) |
+| After the move, at rest | [05-after-the-move.png](retained-wires/05-after-the-move.png) |
+| Knowledge Sources shown meanwhile: the search is paused behind it, not running | [06-knowledge-sources-meanwhile.png](retained-wires/06-knowledge-sources-meanwhile.png) |
+| Back on the map: the picture that stood, drawn by no one in between; the script compared the map's pixels after this return and after a second one byte for byte and found them identical | [07-back-on-the-map.png](retained-wires/07-back-on-the-map.png) |
+
+By eye: in every frame the wires meet their pins, the laces stay cut by their cards' edges, and the bundles' shared runs stay beneath their wires; the frames differ from the morning's only in how many of them there are (a frame's callback 41 to 11.5 ms on this scope, [the probe](../../Probes/2026-10-16/explorer-performance/README.md#after-the-two-changes)). The first frames taken had opened a directory that moved the picture by a pixel, which proved nothing, and were replaced.

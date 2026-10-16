@@ -30,6 +30,20 @@ export function buildRegistryKey(columnRole: ColumnRole, nodeId: string): string
   return `${columnRole}:${nodeId}`;
 }
 
+/**
+ * The wires' elements kept across drawings, by the key each wire, lace and bundle run is drawn under, with each wire's
+ * gradient, so that a drawing writes geometry in place; null until the first drawing, and again when the overlay is
+ * cleared (2026-10-16).
+ */
+export interface WireLayer {
+  svg: SVGSVGElement;
+  defs: SVGDefsElement;
+  elements: Map<string, SVGElement>;
+  gradients: Map<string, SVGLinearGradientElement>;
+  /** How many gradients the layer has made, for their ids, which must be unique in the page. */
+  gradientsMade: number;
+}
+
 /** Ephemeral pointer position captured during drag interactions. */
 export interface DragPosition {
   x: number;
@@ -61,6 +75,7 @@ export interface LocalViewRuntime {
   mapInitialTransform: MapTransform | null;
   contentRoot: HTMLElement | null;
   anchorRegistry: AnchorRegistry;
+  wires: WireLayer | null;
 }
 
 /**
@@ -90,7 +105,8 @@ export function createRuntime(
     lastCenteredNodeId: null,
     mapInitialTransform: null,
     contentRoot: null,
-    anchorRegistry: new Map()
+    anchorRegistry: new Map(),
+    wires: null
   };
 }
 

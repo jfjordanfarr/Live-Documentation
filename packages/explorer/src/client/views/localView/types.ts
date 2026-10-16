@@ -41,6 +41,10 @@ export interface LocalViewOptions {
  */
 export interface LocalViewApi {
   render(): void;
+  /** Whether the Local Map is the view the page shows: the map view in its 2D perspective. */
+  isShown(): boolean;
+  /** The map shown again: an owed render runs; else the picture stands and its search resumes. */
+  show(): void;
   retainNode(nodeId: string): void;
   /** Pin one symbol unless it is pinned already, alone or with its whole file; what a search chose, never a toggle. */
   retainSymbol(nodeId: string, symbol: string): void;

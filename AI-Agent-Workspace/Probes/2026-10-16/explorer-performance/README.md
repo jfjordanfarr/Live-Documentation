@@ -81,7 +81,23 @@ The retained deck test's steps on the repository's scopes (31 and 49 s in the ti
 
 Nine tenths of the deck's time is the instrument reading and panning the page; the site's own layout is under 5% of it. A faster render would not move the deck or the 3D specs. It would shorten the 2D specs by the renders they perform, each 0.3 to 1 s today, bounded below by the 450 ms moves the tests wait for and the fixed waits.
 
-## The possibility space, undecided
+## After the two changes
+
+Built the same evening, by the owner's go at Turn 15 after the judgment of Turn 14 ([the decision](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-the-view-and-the-wires-keep-their-elements-recorded-2026-10-16)): the render owed while the map is not the view shown and the search gated to it, and the wires' elements kept by key and written in place. The same driver, the same bundle otherwise, the same machine:
+
+| | before | after |
+| --- | ---: | ---: |
+| a frame of a move, chain scope (418 wires), median / 90th percentile | 41 / 56 ms | 11.5 / 14.7 ms |
+| a frame of a move, 34-card neighbourhood (130 wires), median / 90th percentile | 12.7 / 38.5 ms | 5.9 / 11.9 ms |
+| frame callbacks over the same scenario on the chain scope | 1,051 | 2,502 |
+| leaving the map mid-search: starts tried in six seconds hidden | 8 seeds, 10 joins | none |
+| the switch back to the map | 240 ms, a full render, the search from seed one | 2 ms, the picture kept, the search resumed |
+| long tasks after a click on the chain scope (open a directory) | 8.8 s | 5.6 s |
+| the click's own handler | unchanged | unchanged |
+
+The moves now run at the display's rate on the chain scope. The click's handler and the search's tail are what they were, since neither was changed; the tail is shorter only because each adoption's move costs less. The pictures at rest are the same; the map's pixels after a return are byte-identical to those after another.
+
+## The possibility space, as it stood before the decision
 
 Each of these is testable against today's behaviour with the layout lab and the probe above; none is proposed here.
 

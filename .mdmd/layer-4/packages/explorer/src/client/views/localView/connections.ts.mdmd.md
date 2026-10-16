@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-10-13T22:20:24.105Z
+- Generated At: 2026-10-16T04:41:10.342Z
 
 ## Authored
 ### Purpose
@@ -20,7 +20,7 @@ SVG wire drawing for the Local Map: Bézier splines between the symbol pins of t
 - The wires of one offering pin that pass a column together share one slot of its lane, so their paths coincide there; beneath them the branch drawer draws the bundle's shared run once more, the curve into the lane and the run along it, as wide as the member count on a logarithmic scale and stamped `data-members`, so the picture says how many a bundle carries before they part. The run carries no reference: it has no endpoint attributes, the deck does not read it as a wire, and it never highlights (2026-10-05, after the owner's review of the first pass).
 - Uses the `BezierTuning` parameters from `ExplorerState` for curve aesthetics, through the pure `curveTo` of `branch-routing.ts`.
 - The branch drawer measures every pin before it writes any wire (2026-10-07), so that a drawing lays the page out once rather than once per wire: a move of the picture redraws the wires every frame.
-- Prepare each drawing off the visible layer, then update retained paths by reference identity. Clearing the live SVG or toggling its active state during measurement restarts opacity transitions and loses hover state. New wires inherit the entering presence of their endpoint cards; they must not appear attached to an invisible card. These constraints follow the owner's [connector-motion review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-7--owner-review-of-alignment-and-motion).
+- Since 2026-10-16 the overlay holds one SVG kept across drawings, with every wire's, lace's and bundle run's element by its key on the runtime's `WireLayer` and each wire's gradient with it: a drawing writes each element's geometry in place (a path's `d`, a polygon's `points`, the gradient's ends, the presence), makes an element only when its key is new, placed after the others or beneath them all for a bundle's run, and removes it with its gradient when its wire is gone. The fresh SVG and the reconciliation by key of 2026-10-07 went: a frame of a move spent 41 ms at 418 wires building and reconciling them against under 1.5 ms of the browser's own layout, and 11.5 after ([the probe](../../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/explorer-performance/README.md), [the decision](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-the-view-and-the-wires-keep-their-elements-recorded-2026-10-16)). The constraints of the owner's [connector-motion review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-7--owner-review-of-alignment-and-motion) hold by construction: an element's hover class survives because the element does, the layer's opacity is never toggled, and a new wire inherits the entering presence of its endpoint cards. `clearConnections` empties the overlay and forgets the layer.
 - A column's horizontal extent is read from the wrappers that say their column (`data-column`), a card's and a closed directory's box alike, rather than from the cards' pins (2026-10-08): a box has no pin, and a column of boxes alone is passed by lanes like any other.
 
 ## Generated
@@ -36,11 +36,25 @@ anchors, read explorer state, and emit SVG paths.
 
 #### `drawConnections` {#symbol-drawconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L63)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L71)
 - Parameters: `context`: [`ConnectionsContext`](#symbol-connectionscontext)
 
 ##### `drawConnections` — Summary
-Draw every Local Map scope with the shared directory-aware router.
+Draw every Local Map scope with the shared directory-aware router. The
+wires' elements are kept by key across drawings and their geometry written
+in place, so that a move, which draws every frame, measures the page and
+writes each wire's shape and nothing else; an element whose wire the picture
+no longer has leaves with its gradient (2026-10-16; the drawing of
+2026-10-07 built the SVG anew each frame and reconciled it by key, which
+cost more than the measuring and the routing together).
+
+#### `clearConnections` {#symbol-clearconnections}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L101)
+- Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
+
+##### `clearConnections` — Summary
+Takes every wire off the overlay and forgets the layer; the next drawing makes a new one.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -60,6 +74,7 @@ Draw every Local Map scope with the shared directory-aware router.
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)
 - [`runtime.LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime) (type-only)
+- [`runtime.WireLayer`](./runtime.ts.mdmd.md#symbol-wirelayer) (type-only)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
 - [`types.LayoutExtents`](./types.ts.mdmd.md#symbol-layoutextents) (type-only)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)

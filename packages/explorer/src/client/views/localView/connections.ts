@@ -1,6 +1,6 @@
 import { curveTo, LANE_MARGIN, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
-import type { LocalViewRuntime } from "./runtime";
+import type { LocalViewRuntime, WireLayer } from "./runtime";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
 import type { BezierTuning, ExplorerState, LocalMapTuning } from "../../types";
 import { computeSelfLoopStubs, DEFAULT_SELF_LOOP_PARAMS, type LaceEdges, type SelfLoopParams } from "../connection-geometry";
@@ -59,44 +59,66 @@ function cardEdgesOf(provider: AnchorMeasurement, consumer: AnchorMeasurement, b
   return { provider: provider.cardRight - bounds.left, consumer: consumer.cardLeft - bounds.left };
 }
 
-/** Draw every Local Map scope with the shared directory-aware router. */
+/**
+ * Draw every Local Map scope with the shared directory-aware router. The
+ * wires' elements are kept by key across drawings and their geometry written
+ * in place, so that a move, which draws every frame, measures the page and
+ * writes each wire's shape and nothing else; an element whose wire the picture
+ * no longer has leaves with its gradient (2026-10-16; the drawing of
+ * 2026-10-07 built the SVG anew each frame and reconciled it by key, which
+ * cost more than the measuring and the routing together).
+ */
 export function drawConnections(context: ConnectionsContext): void {
-  const overlay = context.runtime.overlay;
-  // Measure and prepare the next drawing without toggling the visible layer's
-  // opacity or removing its paths in the middle of every animation frame.
-  const next = document.createElement("div");
-  next.dataset.active = "false";
-  if (context.branches) drawBranchConnections({ ...context, runtime: { ...context.runtime, overlay: next } });
-  const fresh = next.querySelector<SVGSVGElement>("svg");
-  const current = overlay.querySelector<SVGSVGElement>("svg");
-  if (fresh && current) {
-    copyAttributes(current, fresh);
-    const previous = new Map([...current.querySelectorAll<SVGElement>("[data-connection-key]")].map(element => [element.dataset.connectionKey!, element]));
-    const kept = new Set<Element>();
-    for (const child of [...fresh.children]) {
-      const key = (child as SVGElement).dataset.connectionKey;
-      const existing = key ? previous.get(key) : undefined;
-      const element = existing?.tagName === child.tagName ? existing : child;
-      if (element !== child) {
-        const highlighted = element.classList.contains("connection-highlighted");
-        copyAttributes(element, child);
-        element.classList.toggle("connection-highlighted", highlighted);
-      }
-      current.append(element);
-      kept.add(element);
-    }
-    for (const child of [...current.children]) if (!kept.has(child)) child.remove();
-  } else overlay.replaceChildren(...next.childNodes);
-  overlay.dataset.active = next.dataset.active;
+  const layer = layerOf(context.runtime, context.svgNamespace);
+  const seen = new Set<string>();
+  const drawn = context.branches ? drawBranchConnections(context, layer, seen) : 0;
+  for (const [key, element] of layer.elements) {
+    if (seen.has(key)) continue;
+    element.remove();
+    layer.elements.delete(key);
+    layer.gradients.get(key)?.remove();
+    layer.gradients.delete(key);
+  }
+  context.runtime.overlay.dataset.active = String(drawn > 0);
 }
 
-/** Update a kept SVG element without discarding its identity or transient hover state. */
-function copyAttributes(target: Element, source: Element): void {
-  for (const name of target.getAttributeNames()) if (!source.hasAttribute(name)) target.removeAttribute(name);
-  for (const name of source.getAttributeNames()) {
-    const value = source.getAttribute(name)!;
-    if (target.getAttribute(name) !== value) target.setAttribute(name, value);
+/** The overlay's one SVG, with the wires' elements by key, made at the first drawing and kept until the overlay is cleared. */
+function layerOf(runtime: LocalViewRuntime, svgNamespace: string): WireLayer {
+  const existing = runtime.wires;
+  if (existing && existing.svg.parentNode === runtime.overlay) return existing;
+  const svg = document.createElementNS(svgNamespace, "svg") as SVGSVGElement;
+  svg.classList.add("connection-svg");
+  svg.style.position = "absolute";
+  svg.style.pointerEvents = "none";
+  const defs = document.createElementNS(svgNamespace, "defs") as SVGDefsElement;
+  svg.appendChild(defs);
+  runtime.overlay.replaceChildren(svg);
+  runtime.wires = { svg, defs, elements: new Map(), gradients: new Map(), gradientsMade: 0 };
+  return runtime.wires;
+}
+
+/** Takes every wire off the overlay and forgets the layer; the next drawing makes a new one. */
+export function clearConnections(runtime: LocalViewRuntime): void {
+  runtime.overlay.replaceChildren();
+  runtime.overlay.dataset.active = "false";
+  runtime.wires = null;
+}
+
+/**
+ * The element a key names, made by `create` when the key is new and placed after the others, or beneath them all when
+ * `beneath`; an element the layer has keeps its place and whatever classes a hover gave it.
+ */
+function elementFor<T extends SVGElement>(layer: WireLayer, seen: Set<string>, key: string, create: () => T, beneath = false): T {
+  let element = layer.elements.get(key) as T | undefined;
+  if (!element) {
+    element = create();
+    element.dataset.connectionKey = key;
+    if (beneath) layer.svg.insertBefore(element, layer.defs.nextSibling);
+    else layer.svg.appendChild(element);
+    layer.elements.set(key, element);
   }
+  seen.add(key);
+  return element;
 }
 
 /**
@@ -162,83 +184,79 @@ function offsetToEdge(anchor: AnchorMeasurement, pinDirection: "inbound" | "outb
   return { x: offsetX, y: anchor.centerY };
 }
 
-/** Creates the overlay's SVG, sized and placed over the content bounds, with its gradient defs. */
-function createOverlaySvg(
-  context: ConnectionsContext,
-  bounds: { left: number; top: number; width: number; height: number }
-): { svg: SVGSVGElement; defs: SVGDefsElement } {
+/** Sizes and places the layer's SVG over the content bounds. */
+function placeOverlay(layer: WireLayer, bounds: { left: number; top: number; width: number; height: number }): void {
   const width = Math.max(bounds.width, 1);
   const height = Math.max(bounds.height, 1);
-  const svg = document.createElementNS(context.svgNamespace, "svg") as SVGSVGElement;
-  svg.classList.add("connection-svg");
+  const { svg } = layer;
   svg.setAttribute("width", `${width}`);
   svg.setAttribute("height", `${height}`);
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.style.position = "absolute";
   svg.style.left = `${bounds.left}px`;
   svg.style.top = `${bounds.top}px`;
   svg.style.width = `${width}px`;
   svg.style.height = `${height}px`;
-  svg.style.pointerEvents = "none";
-
-  const defs = document.createElementNS(context.svgNamespace, "defs") as SVGDefsElement;
-  svg.appendChild(defs);
-  context.runtime.overlay.appendChild(svg);
-  return { svg, defs };
 }
 
-function appendConnectionPath(
-  svg: SVGSVGElement,
-  defs: SVGDefsElement,
+/** Draws a wire between two pins: the path kept by its key, the gradient with it; returns the gradient's id for a bundle's run. */
+function drawWire(
+  layer: WireLayer,
+  seen: Set<string>,
   source: Point,
   target: Point,
   renderDirection: "inbound" | "outbound",
   edge: LocalEdge,
   svgNamespace: string,
   tuning: BezierTuning,
-  gradientId: string,
   routedPath?: string,
   extraClass?: string,
   presence = 1
-): void {
-  const commands: string[] = [`M ${source.x} ${source.y}`, curveTo(source, target, tuning)];
-  appendGradient(defs, gradientId, source, target, svgNamespace);
-  const path = document.createElementNS(svgNamespace, "path") as SVGPathElement;
-  path.setAttribute("d", routedPath ?? commands.join(" "));
-  path.setAttribute("stroke", `url(#${gradientId})`);
-  path.classList.add("connection-path", renderDirection);
-  if (extraClass) path.classList.add(extraClass);
-  path.dataset.connectionKey = JSON.stringify([edgeKey(edge), extraClass ?? "wire"]);
+): string {
+  const key = JSON.stringify([edgeKey(edge), extraClass ?? "wire"]);
+  const gradientId = gradientFor(layer, key, source, target, svgNamespace);
+  const path = elementFor(layer, seen, key, () => {
+    const made = document.createElementNS(svgNamespace, "path") as SVGPathElement;
+    made.classList.add("connection-path", renderDirection);
+    if (extraClass) made.classList.add(extraClass);
+    made.setAttribute("stroke", `url(#${gradientId})`);
+    made.dataset.kind = edge.kind;
+    // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
+    made.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
+    made.dataset.targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
+    made.dataset.sourceId = edge.sourceId;
+    made.dataset.targetId = edge.targetId;
+    return made;
+  });
+  path.setAttribute("d", routedPath ?? `M ${source.x} ${source.y} ${curveTo(source, target, tuning)}`);
   path.style.strokeOpacity = String(presence);
-  path.dataset.kind = edge.kind;
-  // Normalize symbols for consistent selector matching (fixes duplicate edge format mismatch)
-  path.dataset.sourceSymbol = normalizeSymbolIdentifier(edge.sourceSymbol) ?? "";
-  path.dataset.targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
-  path.dataset.sourceId = edge.sourceId;
-  path.dataset.targetId = edge.targetId;
-  svg.appendChild(path);
+  return gradientId;
 }
 
 /**
  * A wire's gradient, from the offering side's blue at `source` to the using side's green at `target`, in the overlay's
  * own coordinates: the first and last tenth pure, the transition between. The colours match the stylesheet's
- * `--outbound-color` and `--inbound-color`.
+ * `--outbound-color` and `--inbound-color`. Kept with the wire by its key; each drawing moves it to the wire's ends.
  */
-function appendGradient(defs: SVGDefsElement, gradientId: string, source: Point, target: Point, svgNamespace: string): void {
-  const gradient = document.createElementNS(svgNamespace, "linearGradient");
-  gradient.setAttribute("id", gradientId);
-  gradient.setAttribute("gradientUnits", "userSpaceOnUse");
+function gradientFor(layer: WireLayer, key: string, source: Point, target: Point, svgNamespace: string): string {
+  let gradient = layer.gradients.get(key);
+  if (!gradient) {
+    gradient = document.createElementNS(svgNamespace, "linearGradient") as SVGLinearGradientElement;
+    gradient.id = `wire-gradient-${layer.gradientsMade++}`;
+    gradient.setAttribute("gradientUnits", "userSpaceOnUse");
+    for (const [offset, color] of [["0%", "#38bdf8"], ["10%", "#38bdf8"], ["90%", "#34d399"], ["100%", "#34d399"]] as const) {
+      const stop = document.createElementNS(svgNamespace, "stop");
+      stop.setAttribute("offset", offset);
+      stop.setAttribute("stop-color", color);
+      gradient.appendChild(stop);
+    }
+    layer.defs.appendChild(gradient);
+    layer.gradients.set(key, gradient);
+  }
   gradient.setAttribute("x1", String(source.x));
   gradient.setAttribute("y1", String(source.y));
   gradient.setAttribute("x2", String(target.x));
   gradient.setAttribute("y2", String(target.y));
-  for (const [offset, color] of [["0%", "#38bdf8"], ["10%", "#38bdf8"], ["90%", "#34d399"], ["100%", "#34d399"]] as const) {
-    const stop = document.createElementNS(svgNamespace, "stop");
-    stop.setAttribute("offset", offset);
-    stop.setAttribute("stop-color", color);
-    gradient.appendChild(stop);
-  }
-  defs.appendChild(gradient);
+  return gradient.id;
 }
 
 /**
@@ -252,8 +270,9 @@ function appendGradient(defs: SVGDefsElement, gradientId: string, source: Point,
  * reference's symbols for hover. A back reference between two cards gets
  * the same pair, each lace cut by its own card.
  */
-function appendSelfLoopPath(
-  svg: SVGSVGElement,
+function drawLaces(
+  layer: WireLayer,
+  seen: Set<string>,
   source: Point,
   target: Point,
   cardEdges: LaceEdges,
@@ -267,9 +286,9 @@ function appendSelfLoopPath(
   const targetSymbol = normalizeSymbolIdentifier(edge.targetSymbol) ?? "";
   const down = target.y >= source.y;
   const rank = (key: string): number => {
-    const seen = ranks.get(key) ?? 0;
-    ranks.set(key, seen + 1);
-    return seen;
+    const seenRanks = ranks.get(key) ?? 0;
+    ranks.set(key, seenRanks + 1);
+    return seenRanks;
   };
   const laces = computeSelfLoopStubs(source, target, cardEdges, shape, {
     provider: rank(`${edge.targetId}\0out\0${targetSymbol}\0${down ? "down" : "up"}`),
@@ -278,20 +297,21 @@ function appendSelfLoopPath(
   const PROVIDER_COLOR = "#38bdf8"; // sky-400, the offering side
   const CONSUMER_COLOR = "#34d399"; // emerald-400, the using side
   for (const [points, color, role] of [[laces.providerPoints, PROVIDER_COLOR, "provider"], [laces.consumerPoints, CONSUMER_COLOR, "consumer"]] as const) {
-    const polygon = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
+    const polygon = elementFor(layer, seen, JSON.stringify([edgeKey(edge), role]), () => {
+      const made = document.createElementNS(svgNamespace, "polygon") as SVGPolygonElement;
+      // Inline, since the stylesheet's base rule gives every connection path no fill.
+      made.style.fill = color;
+      made.style.stroke = "none";
+      made.classList.add("connection-path", "self-loop", `self-loop-${role}`);
+      made.dataset.kind = edge.kind;
+      made.dataset.sourceId = edge.sourceId;
+      made.dataset.targetId = edge.targetId;
+      made.dataset.sourceSymbol = sourceSymbol;
+      made.dataset.targetSymbol = targetSymbol;
+      return made;
+    });
     polygon.setAttribute("points", points);
-    // Inline, since the stylesheet's base rule gives every connection path no fill.
-    polygon.style.fill = color;
-    polygon.style.stroke = "none";
     polygon.style.fillOpacity = String(presence);
-    polygon.dataset.connectionKey = JSON.stringify([edgeKey(edge), role]);
-    polygon.classList.add("connection-path", "self-loop", `self-loop-${role}`);
-    polygon.dataset.kind = edge.kind;
-    polygon.dataset.sourceId = edge.sourceId;
-    polygon.dataset.targetId = edge.targetId;
-    polygon.dataset.sourceSymbol = sourceSymbol;
-    polygon.dataset.targetSymbol = targetSymbol;
-    svg.appendChild(polygon);
   }
 }
 
@@ -305,15 +325,15 @@ function appendSelfLoopPath(
  * their shared run is drawn once more beneath them, as wide as their number,
  * so a bundle says how many it carries before they part.
  */
-function drawBranchConnections(context: ConnectionsContext): void {
+function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, seen: Set<string>): number {
   const { runtime, branches, state } = context;
-  if (!branches) return;
+  if (!branches) return 0;
   const extents = context.measureLayoutExtents();
-  if (!extents) return;
+  if (!extents) return 0;
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
   const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1);
   const bounds = extents.content;
-  const { svg, defs } = createOverlaySvg(context, bounds);
+  placeOverlay(layer, bounds);
   // Each column's horizontal extent, from the wrappers of its items as the renderer placed them: a card's and a
   // closed directory's box alike, which has no pin to measure (2026-10-08).
   const columnBounds = branches.columns.map((_, column) => {
@@ -338,7 +358,7 @@ function drawBranchConnections(context: ConnectionsContext): void {
   const shape = laceShape(state.tuning.localMap);
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
   const runs = new Map<string, { curve: RoutePiece; lane: RoutePiece; gradient: string; members: number; presence: number }>();
-  branches.subgraph.links.forEach((edge, index) => {
+  branches.subgraph.links.forEach(edge => {
     const provider = measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
     const consumer = measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
     if (!provider || !consumer) return;
@@ -348,18 +368,19 @@ function drawBranchConnections(context: ConnectionsContext): void {
     const from = { x: p.x - bounds.left, y: p.y - bounds.top };
     const to = { x: q.x - bounds.left, y: q.y - bounds.top };
     if (edge.sourceId === edge.targetId) {
-      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
+      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
       return;
     }
     const key = edgeKey(edge);
     if (branches.back.has(key)) {
-      appendSelfLoopPath(svg, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
-      appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, `back-${index}`, undefined, "back-route", presence);
+      drawLaces(layer, seen, from, to, cardEdgesOf(provider, consumer, bounds), edge, context.svgNamespace, shape, laceRanks, presence);
+      drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, undefined, "back-route", presence);
       return;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
     let route: string | undefined;
-    const gradientId = `branch-${index}`;
+    const threadedSlots: string[] = [];
+    let threaded: { d: string; pieces: RoutePiece[] } | null = null;
     if (b > a + 1) {
       const passages: Passage[] = [];
       const slots: string[] = [];
@@ -376,24 +397,26 @@ function drawBranchConnections(context: ConnectionsContext): void {
         slots.push(`${passage.lane}\0${passage.index}`);
       }
       if (passages.length === b - a - 1) {
-        const threaded = threadedRoute(from, to, passages, state.tuning.bezier);
+        threaded = threadedRoute(from, to, passages, state.tuning.bezier);
         route = threaded.d;
-        slots.forEach((slot, i) => {
-          const existing = runs.get(slot);
-          if (existing) { existing.presence = Math.max(existing.presence, presence); return; }
-          const passage = branches.order.passages.get(`${key}\0${a + 1 + i}`)!;
-          const members = branches.order.lanes.get(passage.lane)?.bundles[passage.index]?.edges.length ?? 1;
-          runs.set(slot, { curve: threaded.pieces[2 * i], lane: threaded.pieces[2 * i + 1], gradient: gradientId, members, presence });
-        });
+        threadedSlots.push(...slots);
       }
     }
-    appendConnectionPath(svg, defs, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, gradientId, route, undefined, presence);
+    const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, route, undefined, presence);
+    // The first wire drawn through a slot lends its run and its gradient to the bundle's shared run there.
+    threadedSlots.forEach((slot, i) => {
+      const existing = runs.get(slot);
+      if (existing) { existing.presence = Math.max(existing.presence, presence); return; }
+      const passage = branches.order.passages.get(`${key}\0${a + 1 + i}`)!;
+      const members = branches.order.lanes.get(passage.lane)?.bundles[passage.index]?.edges.length ?? 1;
+      runs.set(slot, { curve: threaded!.pieces[2 * i], lane: threaded!.pieces[2 * i + 1], gradient: gradientId, members, presence });
+    });
   });
   for (const [key, run] of runs) {
     if (run.members < 2) continue;
-    appendBundleRun(svg, defs, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier, key, run.presence);
+    drawBundleRun(layer, seen, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier, key, run.presence);
   }
-  runtime.overlay.dataset.active = String(drawn > 0);
+  return drawn;
 }
 
 /**
@@ -401,25 +424,26 @@ function drawBranchConnections(context: ConnectionsContext): void {
  * into the lane and the run along it, drawn as wide as the bundle's member
  * count on a logarithmic scale. Carries no reference of its own.
  */
-function appendBundleRun(
-  svg: SVGSVGElement,
-  defs: SVGDefsElement,
+function drawBundleRun(
+  layer: WireLayer,
+  seen: Set<string>,
   curve: RoutePiece,
   lane: RoutePiece,
   gradientId: string,
   members: number,
   svgNamespace: string,
   tuning: BezierTuning,
-  key: string,
+  slotKey: string,
   presence: number
 ): void {
-  const path = document.createElementNS(svgNamespace, "path") as SVGPathElement;
+  const path = elementFor(layer, seen, JSON.stringify([slotKey, "bundle"]), () => {
+    const made = document.createElementNS(svgNamespace, "path") as SVGPathElement;
+    made.classList.add("connection-path", "bundle-run");
+    return made;
+  }, true);
   path.setAttribute("d", `M ${curve.from.x} ${curve.from.y} ${curveTo(curve.from, curve.to, tuning)} L ${lane.to.x} ${lane.to.y}`);
   path.setAttribute("stroke", `url(#${gradientId})`);
   path.style.strokeWidth = `${(2.2 + 1.3 * Math.log(members)).toFixed(2)}px`;
-  path.classList.add("connection-path", "bundle-run");
-  path.dataset.connectionKey = JSON.stringify([key, "bundle"]);
   path.style.strokeOpacity = String(presence);
   path.dataset.members = String(members);
-  svg.insertBefore(path, defs.nextSibling);
 }

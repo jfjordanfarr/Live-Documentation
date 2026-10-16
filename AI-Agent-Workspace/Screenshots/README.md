@@ -119,3 +119,10 @@ Taken by the agent at 02:31 UTC from `dist/explorer`, this repository's bundle (
 - `2026-10-16/suffix-anywhere-and-cpp/03-directory-with-test-cards.png`: `packages/engine/src/live-docs` opened with tests shown; test cards read "No public symbols" with no reveal.
 - `2026-10-16/suffix-anywhere-and-cpp/04-test-card-without-a-reveal.png`: the `graph.test.ts` card at reading size, no "+1 symbols".
 - `2026-10-16/suffix-anywhere-and-cpp/05-cpp-rosetta-main-pinned.png`: the C++ rosetta `main.cpp` pinned, its two includes resolved and their used symbols wired.
+- `2026-10-16/retained-wires/01-chain-scope-at-rest.png`: the retained chain scope (four of the Explorer's client files pinned whole) at rest, before a directory is opened.
+- `2026-10-16/retained-wires/02-move-frame-at-150ms.png`: 150 ms into opening the biggest directory, the move slowed to 1.2 s: the cards sliding, every wire on its pin.
+- `2026-10-16/retained-wires/03-move-frame-at-500ms.png`: 500 ms in: the subject's card half way to the right, the wires stretched between moving cards.
+- `2026-10-16/retained-wires/04-move-frame-at-900ms.png`: 900 ms in: near the new arrangement, nothing detached.
+- `2026-10-16/retained-wires/05-after-the-move.png`: the new arrangement at rest.
+- `2026-10-16/retained-wires/06-knowledge-sources-meanwhile.png`: Knowledge Sources shown while the map's search is paused behind it.
+- `2026-10-16/retained-wires/07-back-on-the-map.png`: the map after the return, the picture kept rather than drawn again; its pixels byte-identical to those after a second return.

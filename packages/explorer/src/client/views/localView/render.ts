@@ -1,4 +1,5 @@
 import { createStage, renderBranches } from "./branch-renderer";
+import { clearConnections } from "./connections";
 import type { LocalViewController } from "./controller";
 
 /** Draw every Local Map scope with the same cards, directory membranes and optimized layout. */
@@ -28,8 +29,7 @@ export function renderLocalView(controller: LocalViewController): void {
   }
 
   if (!controller.options.graphData.nodes.length) {
-    overlay.replaceChildren();
-    overlay.dataset.active = "false";
+    clearConnections(controller.runtime);
     container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">No files in this graph.</div>';
     controller.mapTransform = { x: 0, y: 0, k: 1 };
     controller.mapHasInitialFit = false;

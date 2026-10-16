@@ -6,6 +6,8 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
   const controller = new LocalViewController(options);
   return {
     render: () => controller.render(),
+    isShown: () => controller.isShown(),
+    show: () => controller.show(),
     retainNode: nodeId => controller.retainNode(nodeId),
     retainSymbol: (nodeId, symbol) => controller.retainSymbol(nodeId, symbol),
     openDirectory: directory => controller.openDirectory(directory),

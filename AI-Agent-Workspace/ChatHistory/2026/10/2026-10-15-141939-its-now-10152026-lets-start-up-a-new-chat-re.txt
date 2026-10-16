@@ -3605,3 +3605,269 @@ completed (exit code 0)
 
   Say which you want built first, or whether to plan the lazy render and the
   paused search together as one pass.
+❯ >The search works on a view you have left, then throws it away. Views are
+  hidden by opacity, not removed. Leave the map for Knowledge Sources
+  mid-search and the search keeps solving behind it (8 seeds and 10 joins in
+  six seconds on the small neighbourhood; on the retained scope that is the
+  whole 8 to 15 s tail). Come back and the switch costs a full 240 ms render of
+  a picture that was still there unchanged, and the search starts again from
+  seed one.
+
+  Yeah let's fix that.
+
+  Point 2 sounds complex and probably an optimization to only add if we need
+  it. 3 seems like an optimization we culd reasonably take on.
+
+  >The wires are redrawn from nothing every frame of every move. At 418 wires
+  that is more than a frame's budget, so the move you asked for on October 7
+  runs at about 20 frames a second on a retained scope.
+
+  Aaaand that's the big one! What can we do here?
+
+● Recording the turn, then pulling the per-frame numbers out of the chain
+  scope's trace and reading the routing and measuring modules the wire fix would
+  touch, so the answer on the wires is concrete.
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● The trace settles it: the frame's cost is JavaScript, not the browser's
+  layout. Writing that into the probe and the record, then the answer.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The frame numbers are in the probe (93514f68), and your tenth re-export is
+  committed as received; it is the first that does not extend the previous byte
+  for byte, because the ninth had printed my Turn 10 reply twice after your
+  /compact and this one prints it once, which the inventory entry now says.
+
+  What a frame costs, and where. I bucketed the traces per animation-frame
+  callback:
+
+  ┌────────────────────────────────────────────────┬─────────────────────┐
+  │        retained chain scope, 418 wires         │      per frame      │
+  ├────────────────────────────────────────────────┼─────────────────────┤
+  │ the frame's callback, median / 90th percentile │          41 / 56 ms │
+  ├────────────────────────────────────────────────┼─────────────────────┤
+  │ forced layouts inside it                       │ 3.3, costing 0.6 ms │
+  ├────────────────────────────────────────────────┼─────────────────────┤
+  │ style recalculations inside it                 │ 3.3, costing 0.7 ms │
+  ├────────────────────────────────────────────────┼─────────────────────┤
+  │ the browser's own style and paint afterwards   │         about 13 ms │
+  └────────────────────────────────────────────────┴─────────────────────┘
+
+  So it is not the browser's layout. Forty milliseconds of each frame is
+  JavaScript: drawConnections measures about 900 rectangles, builds a fresh SVG
+  of some 2,500 elements (a path and a five-element gradient per wire, the
+  laces, the bundle runs), diffs it against the previous frame's elements by
+  key, reparents every kept element and removes the rest. The diff loop alone is
+  the largest bucket in the whole profile.
+
+  What we can do: route once, tween the geometry. Every input of a wire's shape
+  during a move is already known without asking the page. The cards' places are
+  the tweened pose. A pin's place on its card is the rows' measurement the
+  search already prices from (rowsOf, pinFor), plus the sliding row's offset the
+  move already computes. The lanes' slots and the columns' extents follow the
+  pose. The routing itself (curveTo, threadedRoute, the laces) is pure. So a
+  move would build its wire elements once, at its start, and each frame write
+  each wire's d and its gradient's four numbers onto elements that already
+  exist, reading nothing. The last frame stays what it is today, drawn exactly
+  from the page, so the picture at rest is identical by construction. Expected:
+  a few milliseconds of JavaScript per frame against the browser's own 13, which
+  is near 60 frames a second on the chain scope and at it on smaller ones. The
+  motion spec's promises hold (wires keep their elements, follow their pins,
+  fade in with entering cards).
+
+  The alternatives I would not take: routing every other frame (half the cost,
+  visible stutter); hiding the wires during motion (against the motion you asked
+  for on October 7 and its spec); CSS-animated d (the browser interpolates only
+  paths of the same shape, so a wire that changes lanes would jump, and
+  Safari's support is uncertain); canvas (loses the DOM that hover and the tests
+  read).
+
+  The pass, for your go, in this order, each with the full gate:
+
+  1. The search stays with the view. The search schedules a step only while the
+     Local Map is the view shown and the document visible, and resumes on
+     return. A render whose inputs are unchanged (subject, pins, open
+     directories, filters, the layout tuning, the path, the expanded cards)
+     keeps its picture and resumes the search instead of rebuilding; the check
+     stands before renderLocalView clears anything. Tests: the counters stop
+     while hidden and advance after return; the cards are the same elements
+     after return; a filter changed while away re-renders.
+  2. The wires as above. A pure module for a wire's geometry from a pose, tested
+     against today's measured drawing frame by frame (same d within a pixel),
+     the renderer using it for the frames, rowsOf recording each pin's
+     horizontal offset once. The probe's driver takes the before and after at
+     130 and 418 wires.
+  3. The simplex kept incremental. The tree index renumbered and the cut values
+     updated per pivot instead of rebuilt, with the leaving and entering rules
+     kept identical so every pivot, and so every placement, is the same as
+     today: tested as identical positions on the unit suite's graphs and the
+     lab's captures. About a fifth of a click, and the same share of every
+     search step.
+
+  The search's budget stays as it is; that is your choice to make separately.
+  One small fork: the probe's driver can stay in the scratchpad or become a kept
+  script beside the layout lab. Say go, and whether to keep the driver.
+
+❯ How much of what you're proposing feels, to you, like technical debt or undue
+  complexity accrual? Will such changes make it significantly more difficult
+  to iterate on the design of the 2D Local Map, for instance? What among
+  optimizations feels like low-hanging fruit to you? Anything from your list of
+  3, all, none? Something different? I'm okay with the right answer being
+  "don't build it".
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Honest answer: two of the three I proposed carry real debt, and one of my own
+  details was the worst of it. Here is each, judged on your criteria.
+
+  The search gate (1). The gate itself is a boolean: no step scheduled unless
+  the Local Map is the view shown and the document visible, resumed on return.
+  Structural, no model of anything. The debt was in my proposal, not the
+  problem: the "input signature" I offered is a second list of what the renderer
+  depends on, and every new lever anyone adds to the layout would have to
+  remember it or the picture goes stale silently on return. The simpler complete
+  form is a deferred-render flag: a render asked for while the map is hidden is
+  noted and owed on return; if none was owed, the picture stands and the search
+  resumes. Any caller that renders today keeps rendering; nothing new to keep
+  in step. About thirty lines. Low-hanging, no drag on design iteration.
+
+  The arithmetic wire frames (2). This is the one I would not build now, and I
+  was wrong to lead with it. It is a second model of the page's geometry,
+  sitting beside the page: a pin's place on its card reproduced from
+  measurements, kept in step with every change to a card's CSS, a row's height,
+  a badge, a pin's position. The layout lab already has one such model, and it
+  needed fixing this week when the card's reveal count changed. You iterate on
+  exactly the things that model would mirror, so yes, it would make the 2D
+  design harder to change, and a drift shows as a snap at the end of every move.
+
+  What is low-hanging in the same place is smaller and is a deletion: keep the
+  wires' elements by key and write their attributes in place from the measured
+  page, instead of building a fresh SVG every frame and diffing it against the
+  last. By the profile's buckets the diff is 54% of the wire time and the
+  element creation 15%; measuring the page, which is the truth, is 17% and
+  stays. Roughly 40 ms of JavaScript a frame becomes 12 on the chain scope,
+  which with the browser's own 13 is about 40 frames a second there and 60 on
+  anything smaller, and the code that remains is less than today's. Same truth,
+  fewer moving parts, no second model.
+
+  The incremental simplex (3). Contained behind its interface, so it would not
+  touch design iteration, but it is the subtle kind of code: the known
+  implementations of the method took years to get the pivot bookkeeping right, a
+  wrong pivot gives a plausible-looking picture, and it buys about a fifth of a
+  click. Our solver is slow because it is obviously correct. I would keep it
+  that way until the two changes above have been felt and a click still hurts.
+
+  Something different. The handler's size is the number of starts solved before
+  paint, and the tail's length is the search's seeds, patience and joins. Those
+  are design choices you made on October 7 and the lab prices them; turning them
+  is zero code and more effect than the solver. I am not recommending a value,
+  only that it is a lever and not a defect.
+
+  So: build the gate with the deferred flag, and the retained wire elements.
+  Don't build the arithmetic frames or the incremental solver now. If that is
+  right to you, say go.
+
+❯ >The simpler complete form is a deferred-render flag: a render asked for
+  while the map is hidden is noted and owed on return; if none was owed, the
+  picture stands and the search resumes. Any caller that renders today keeps
+  rendering; nothing new to keep in step. About thirty lines. Low-hanging, no
+  drag on design iteration.
+
+  NICE! I like this.
+
+  >What is low-hanging in the same place is smaller and is a deletion: keep the
+  wires' elements by key and write their attributes in place from the measured
+  page, instead of building a fresh SVG every frame and diffing it against the
+  last. By the profile's buckets the diff is 54% of the wire time and the
+  element creation 15%; measuring the page, which is the truth, is 17% and
+  stays. Roughly 40 ms of JavaScript a frame becomes 12 on the chain scope,
+  which with the browser's own 13 is about 40 frames a second there and 60 on
+  anything smaller, and the code that remains is less than today's. Same truth,
+  fewer moving parts, no second model.
+
+  Let's try it, but I expect I'll be able to notice this one visually, at least
+  slightly.
+
+  >The incremental simplex (3). Contained behind its interface, so it would not
+  touch design iteration, but it is the subtle kind of code: the known
+  implementations of the method took years to get the pivot bookkeeping right,
+  a wrong pivot gives a plausible-looking picture, and it buys about a fifth of
+  a click. Our solver is slow because it is obviously correct. I would keep it
+  that way until the two changes above have been felt and a click still hurts.
+
+  Agreed! Adding and subtracting from the 2D local map (pins) has not been too
+  rough>
+
+  >So: build the gate with the deferred flag, and the retained wire elements.
+  Don't build the arithmetic frames or the incremental solver now. If that is
+  right to you, say go.
+
+  Solid. Go ahead.
+
+● Go received. Recording the turn, then reading the wires' other consumers
+  before touching connections.ts.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● The highlight and transition logic are compatible as-is. Now I'll implement
+  the search gate and deferred render, then check the spec that depends on the
+  wires' keys. · summary
+
+  Read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+● The wrapper that exposes the controller to the app didn't list the two new
+  methods, so the bundle had no show. Adding them, rebuilding, and rerunning the
+  five specs.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The gate stopped new steps but a step already waiting still ran once after the
+  switch. Moving the check into the waiting step itself, then rerunning the
+  spec.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All three pass. Now the after-measurements with the same driver, and in
+  parallel the docs I'll need to update.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● The after-numbers are in: frames on the chain scope went from 41 to 11.5 ms
+  median, the return from 240 ms to 2, and the search no longer runs behind
+  another view. Now the pictures and the docs.
+
+  Read 5 files, ran 2 shell commands (ctrl+o to expand)
+
+● The frames barely moved: that directory open shifted the picture by a pixel,
+  so the pictures prove nothing. Retaking them on the biggest directory, and
+  writing the docs meanwhile.
+
+  Read 4 files, ran 4 shell commands (ctrl+o to expand)
+
+● The frames confirm everything is wired correctly, and the map output matches
+  byte-for-byte across two runs. I'll name the images now and check the modified
+  modules' docs to update their notes. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Docs and links are clean. Starting the full gate in the background and
+  checkpointing the record while it runs.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the gate runs, one Memory note: the owner's stance at Turn 14 is a
+  standing way of working worth keeping in owner.md.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● While the gate runs, a self-review of the code diff by eye.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The diff reads right: the wire module lost its build-and-diff machinery and
+  gained a keyed layer, the controller owes and shows, and the app says why it
+  renders. The full gate is running in the background (lint, unit, integration,
+  audits, 131 browser tests plus the three new ones); I'll commit and report
+  when it finishes.

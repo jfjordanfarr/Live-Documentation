@@ -139,6 +139,16 @@ export class LocalViewController implements LocalViewApi {
   private stateUnsubscribe: (() => void) | null = null;
   private pendingRender = 0;
   private readonly handlePointerLeave = (): void => this.clearSymbolHighlight();
+  /**
+   * A render asked for while the map was not the view shown, owed when it is shown again (the owner's choice,
+   * 2026-10-16): the picture is drawn for a view someone is looking at, and a return to an unchanged picture draws
+   * nothing.
+   */
+  private renderOwed = false;
+  /** The continuing search runs only while the page is visible; a tab brought back resumes it. */
+  private readonly handleVisibilityChange = (): void => {
+    if (document.visibilityState === "visible" && this.isShown()) this.stage?.search?.resume();
+  };
 
   /** The pointers pressed on the viewport, by id: one drags, two pinch. */
   private readonly pointers = new Map<number, { x: number; y: number }>();
@@ -203,8 +213,27 @@ export class LocalViewController implements LocalViewApi {
     this.bindPointerEvents();
     this.bindWheelEvents();
     this.viewport.addEventListener("pointerleave", this.handlePointerLeave);
+    document.addEventListener("visibilitychange", this.handleVisibilityChange);
     this.subscribeToStateChanges();
     this.bindLayerObserver();
+  }
+
+  /** Whether the Local Map is the view the page shows: the map view in its 2D perspective. */
+  isShown(): boolean {
+    const { state } = this.options;
+    return state.view === "map" && state.perspective === "2d";
+  }
+
+  /**
+   * The map shown again after another view: an owed render runs now; otherwise the picture stands as it was and its
+   * search, paused while the map was hidden, goes on from where it stopped.
+   */
+  show(): void {
+    if (this.renderOwed || !this.stage) {
+      this.render();
+      return;
+    }
+    this.stage.search?.resume();
   }
 
   /**
@@ -268,6 +297,7 @@ export class LocalViewController implements LocalViewApi {
   dispose(): void {
     cancelAnimationFrame(this.pendingRender);
     this.viewport.removeEventListener("pointerleave", this.handlePointerLeave);
+    document.removeEventListener("visibilitychange", this.handleVisibilityChange);
     if (this.stateUnsubscribe) {
       this.stateUnsubscribe();
       this.stateUnsubscribe = null;
@@ -284,10 +314,18 @@ export class LocalViewController implements LocalViewApi {
     this.stage = null;
   }
 
-  /** Triggers a full re-render of the Local Map view via {@link renderLocalView}. */
+  /**
+   * Triggers a full re-render of the Local Map view via {@link renderLocalView}, while the map is the view shown;
+   * otherwise the render is owed and {@link show} runs it when the map is shown again.
+   */
   render(): void {
     cancelAnimationFrame(this.pendingRender);
     this.pendingRender = 0;
+    if (!this.isShown()) {
+      this.renderOwed = true;
+      return;
+    }
+    this.renderOwed = false;
     // Apply pending toolbar displacement before capturing the visible subject.
     this.keepContentPutWhenLayerMoves();
     const id = this.options.state.selectedNode?.id;
@@ -464,13 +502,13 @@ export class LocalViewController implements LocalViewApi {
   private updateOpenDirectories(directory: string, next: OpenDirectories): void {
     const leavingPath = !!this.localMapState.getState().activePath;
     const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
-    const before = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+    const before = this.isShown() ? this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect() : undefined;
     const keyboardFocus = this.container.contains(document.activeElement);
     // The directory is what was acted on: a move of the picture holds its label, or its box, still.
     this.lastInteracted = directory;
     this.options.state.openDirectories = next;
     this.localMapState.update(s => ({ ...s, activePath: null }));
-    if (this.options.state.perspective === "2d") this.render();
+    this.render();
     const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
     if (before && after) {
       cancelAnimationFrame(this.runtime.mapAnimationFrame);
@@ -501,7 +539,7 @@ export class LocalViewController implements LocalViewApi {
     const selector = symbol === "*"
       ? `.node-card[data-id="${CSS.escape(nodeId)}"] .node-title`
       : `.symbol-row[data-node-id="${CSS.escape(nodeId)}"][data-symbol="${CSS.escape(symbol)}"] .symbol-label-wrapper`;
-    const before = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+    const before = this.isShown() ? this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect() : undefined;
     const keyboardFocus = this.container.contains(document.activeElement);
     const state = this.options.state;
     const pinned = pins.entries.some(pin => pin.nodeId === nodeId);
@@ -515,7 +553,7 @@ export class LocalViewController implements LocalViewApi {
     this.lastCenteredNodeId = selected?.id ?? null;
     state.pins = pins;
     this.localMapState.update(s => ({ ...s, activePath: null }));
-    if (this.options.state.perspective === "2d") this.render();
+    this.render();
     const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
     if (before && after) {
       cancelAnimationFrame(this.runtime.mapAnimationFrame);
