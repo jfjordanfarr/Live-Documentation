@@ -22,7 +22,7 @@ Reading the tables: "Kind" is one of **explicit list** (the manifest names files
 
 ### 1. npm / Node
 
-#### (a) Markers
+#### npm / Node: markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ Reading the tables: "Kind" is one of **explicit list** (the manifest names files
 | `index.html` (Vite) | "index.html is the entry point to your application"; running `vite` uses "the current working directory as root". | https://vite.dev/guide/ |
 | `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock` | Listed among files that are "always ignored by default" when publishing and "can not be included". Their presence marks which package manager is in use; the npm page does not say that. | https://docs.npmjs.com/cli/v10/configuring-npm/package-json |
 
-#### (b) What the manifest declares
+#### npm / Node: what the manifest declares
 
 `package.json` does not list source files. It declares entry points, executables, the publish set and workspace locations.
 
@@ -62,7 +62,7 @@ Bundler entry points:
 | Vite | Vite "treats index.html as source code and part of the module graph" and "resolves `<script type="module" src="...'>` that references your JavaScript source code." Multi-page: "specify multiple `.html` files as entry points." Library mode: "`entry` defaults to the top-level `input` option, and one of them is required since the library cannot use HTML as entry." "If `build.rolldownOptions.input` is set, it overrides the top-level `input` option for build only." `build.rollupOptions` is a deprecated alias of `build.rolldownOptions`. | https://vite.dev/guide/ ; https://vite.dev/guide/build.html ; https://vite.dev/config/build-options.html |
 | webpack | "an entry point tells webpack where to start building its internal dependency graph. Starting from this file, webpack recursively follows all imported modules and assets to determine what should be included in the final bundle." "When running webpack without a configuration file, the entry defaults to `'./src'`, which webpack resolves to `./src/index.js` through `resolve.mainFiles` and `resolve.extensions`." The single-entry string is shorthand for `{ main: ... }`; the object form names several entries. | https://webpack.js.org/concepts/entry-points/ |
 
-#### (c) Non-source by convention
+#### npm / Node: non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -73,7 +73,7 @@ Bundler entry points:
 | `outDir` (TypeScript) | Excluded from `include` by default (see `exclude` above). | https://www.typescriptlang.org/tsconfig/ |
 | Lockfiles, `.git`, `.npmrc` | Always ignored on publish. | https://docs.npmjs.com/cli/v10/configuring-npm/package-json |
 
-#### (d) Edges
+#### npm / Node: edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -84,7 +84,7 @@ Bundler entry points:
 | HTML to script (Vite) | `index.html` is part of the module graph; `<script type="module" src>` is resolved to source. | https://vite.dev/guide/ |
 | Bundle graph (webpack) | Follows "all imported modules and assets" from the entry. | https://webpack.js.org/concepts/entry-points/ |
 
-#### (e) Silences
+#### npm / Node: silences
 
 - The npm `package.json` page has no default for `exports`.
 - The Node packages page does not state that `main` defaults to `index.js`; the npm page does.
@@ -94,7 +94,7 @@ Bundler entry points:
 
 ### 2. .NET
 
-#### (a) Markers
+#### .NET: markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -106,7 +106,7 @@ Bundler entry points:
 | `global.json` | Pins an SDK: "specify the name and version in the *global.json* file." | https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview |
 | `packages.config` vs `PackageReference` | "Package references, using `<PackageReference>` MSBuild items, specify NuGet package dependencies directly within project files, as opposed to having a separate `packages.config` file." ".NET Framework projects support PackageReference, but currently default to `packages.config`." | https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files |
 
-#### (b) What the manifest declares
+#### .NET: what the manifest declares
 
 SDK-style projects: **glob**, with these defaults.
 
@@ -135,7 +135,7 @@ Solution: the `.sln` `Project(...)` line "contains the unique project GUID and t
 
 `Directory.Build.props`: "MSBuild walks the directory structure upwards from your project location `$(MSBuildProjectFullPath)`, stopping after it locates a *Directory.Build.props* file." "The location of the solution file is irrelevant to *Directory.Build.props*." "once MSBuild finds a *Directory.Build.props* file, it stops further scanning"; chaining needs an explicit `<Import Project="$([MSBuild]::GetPathOfFileAbove(...))">`. Imported "early in *Microsoft.Common.props*"; `Directory.Build.targets` "is imported from *Microsoft.Common.targets* after importing `.targets` files from NuGet packages." Source: https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory
 
-#### (c) Non-source by convention
+#### .NET: non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -145,7 +145,7 @@ Solution: the `.sln` `Project(...)` line "contains the unique project GUID and t
 | NuGet packages | "in PackageReference, the packages are consumed from the *global-packages* folder, which can vary from machine to machine." With `packages.config`, "the packages are installed in a folder relative to the project file." | https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files |
 | `*.user`, `*.*proj`, `*.sln(x)`, `*.vssscc` | Default exclude globs. | https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview |
 
-#### (d) Edges
+#### .NET: edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -157,7 +157,7 @@ Solution: the `.sln` `Project(...)` line "contains the unique project GUID and t
 | File to resource | `EmbeddedResource` (`*.resx`) embedded in the assembly; `DependentUpon` metadata "Specifies the file this file depends on to compile correctly." | https://learn.microsoft.com/en-us/visualstudio/msbuild/common-msbuild-project-items |
 | Solution to project | `Project(...)` blocks and `GlobalSection(ProjectDependencies)`. | https://learn.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file |
 
-#### (e) Silences
+#### .NET: silences
 
 - No fetched page states a file-to-file dependency inside a project; C# references types by name within the compilation, and the `using` page says the directive imports a namespace.
 - The `.sln` page does not mention `.slnx`; the `.slnx` facts come from the `dotnet sln` page and the Microsoft .NET blog.
@@ -167,7 +167,7 @@ Solution: the `.sln` `Project(...)` line "contains the unique project GUID and t
 
 ### 3. Java (Maven, Gradle)
 
-#### (a) Markers
+#### Java (Maven, Gradle): markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -176,7 +176,7 @@ Solution: the `.sln` `Project(...)` line "contains the unique project GUID and t
 | `build.gradle(.kts)` | "Each subproject has its own Gradle build script." | https://docs.gradle.org/current/userguide/directory_layout.html |
 | `gradle/` | "Contains the JAR file and configuration of the Gradle Wrapper." | https://docs.gradle.org/current/userguide/directory_layout.html |
 
-#### (b) What the manifest declares
+#### Java (Maven, Gradle): what the manifest declares
 
 Both tools use **convention** with overridable directories.
 
@@ -204,7 +204,7 @@ Gradle Java plugin: "The Java plugin assumes the project layout shown below. Non
 
 Gradle multi-project: "A multi-project build consists of a root project and one or more subprojects"; "By default, a project path corresponds to the relative physical location of the project directory." A descriptor "can change the name, project directory, and build file of a project". Source: https://docs.gradle.org/current/userguide/multi_project_builds.html
 
-#### (c) Non-source by convention
+#### Java (Maven, Gradle): non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -213,7 +213,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `.gradle/` | "Project-specific cache directory generated by Gradle." | https://docs.gradle.org/current/userguide/directory_layout.html |
 | Dependencies | Not in the tree: "Maven will first attempt to use a local copy of the specified artifact. If that artifact does not exist in the local repository, it will then attempt to download from a remote repository." | https://maven.apache.org/pom.html |
 
-#### (d) Edges
+#### Java (Maven, Gradle): edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -224,7 +224,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | Project to project (Gradle) | "You declare these relationships using the project path, which uses colons (`:`) to indicate nesting." "A project dependency affects both the build order and classpath". Configurations: `implementation` "required both at compile time and runtime for the main source set", `compileOnly`, `runtimeOnly`, `testImplementation`. | https://docs.gradle.org/current/userguide/multi_project_builds.html ; https://docs.gradle.org/current/userguide/java_plugin.html |
 | Resources | `src/main/resources` are "Application/Library resources"; Gradle `resources.srcDirs`. The pages do not describe how code addresses a resource by path. | https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html ; https://docs.gradle.org/current/userguide/java_plugin.html |
 
-#### (e) Silences
+#### Java (Maven, Gradle): silences
 
 - Neither Maven page states a default for `<relativePath>`; the POM intro says omission works "if the parent project was already installed in our local repository or was in that specific directory structure (parent `pom.xml` is one directory higher than that of the module's `pom.xml`)."
 - The Gradle Java plugin page never states in prose that the build directory is `build`; the directory layout page does.
@@ -235,7 +235,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 
 ### 4. Go
 
-#### (a) Markers
+#### Go: markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -243,7 +243,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `go.work` | "A workspace is defined by a UTF-8 encoded text file named `go.work`." The command "will search the current working directory, and then successive parent directories, for a file `go.work`"; `GOWORK=off` forces single-module context. | https://go.dev/ref/mod |
 | `vendor/modules.txt` | "`go mod vendor` also creates the file `vendor/modules.txt` that contains a list of vendored packages and the module versions they were copied from." | https://go.dev/ref/mod |
 
-#### (b) What the manifest declares
+#### Go: what the manifest declares
 
 **Convention**: the manifest names the module; packages are directories.
 
@@ -256,7 +256,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | Test files | "'Go test' recompiles each package along with any files with names matching the file pattern "*_test.go"." "When compiling packages, build ignores files that end in '_test.go'." | https://pkg.go.dev/cmd/go |
 | Workspace members | "A `use` adds a module on disk to the set of main modules in a workspace. Its argument is a relative path to the directory containing the module’s `go.mod` file. A `use` directive does not add modules contained in subdirectories of its argument directory." | https://go.dev/ref/mod |
 
-#### (c) Non-source by convention
+#### Go: non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -265,7 +265,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `vendor/` | "The `go mod vendor` command constructs a directory named `vendor` in the main module’s root directory containing copies of all packages needed to build and test packages in the main module." Used automatically "if the go version in the main module’s `go.mod` file is `1.14` or higher"; "the `go` command ignores vendor directories in locations other than the main module’s root directory." `...` patterns exclude "Directories named "vendor"". | https://go.dev/ref/mod ; https://pkg.go.dev/cmd/go |
 | Nested modules | `...` patterns exclude "Directories that contain a go.mod file". | https://pkg.go.dev/cmd/go |
 
-#### (d) Edges
+#### Go: edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -274,7 +274,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | Within a package | Files "together declare constants, types, variables and functions belonging to the package and which are accessible in all files of the same package." No file-to-file edge is declared. | https://go.dev/ref/spec |
 | Module to module | `require` "declares a minimum required version of a given module dependency"; `replace` with a local path "is interpreted as the local file path to the replacement module root directory, which must contain a `go.mod` file." | https://go.dev/ref/mod |
 
-#### (e) Silences
+#### Go: silences
 
 - The pages read do not name a build output directory for `go build`.
 - The `go/build` page lists only the `source_windows.go` example for filename constraints; the full suffix rule is on the `cmd/go` page.
@@ -283,7 +283,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 
 ### 5. Rust (Cargo)
 
-#### (a) Markers
+#### Rust (Cargo): markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -291,7 +291,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `[workspace]` in `Cargo.toml` | "The _workspace root_ is the directory where the workspace's `Cargo.toml` is located." A `Cargo.toml` "with a `[workspace]` section but without a `[package]` section" is "a _virtual manifest_". "Cargo will automatically search the parent directories for a `Cargo.toml` file with a `[workspace]` definition to determine which workspace to use." | https://doc.rust-lang.org/cargo/reference/workspaces.html |
 | `build.rs` | "Placing a file named `build.rs` in the root of a package will cause Cargo to compile that script and execute it just before building the package." | https://doc.rust-lang.org/cargo/reference/build-scripts.html |
 
-#### (b) What the manifest declares
+#### Rust (Cargo): what the manifest declares
 
 **Convention** (target auto-discovery), overridable by explicit target tables.
 
@@ -305,7 +305,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `path` | "The `path` field specifies where the source for the crate is located, relative to the `Cargo.toml` file." | https://doc.rust-lang.org/cargo/reference/cargo-targets.html |
 | Workspace members | "`members` key, which should be an array of strings containing directories with `Cargo.toml` files." "The `members` list also supports globs". "All `path` dependencies residing in the workspace directory automatically become members." `exclude` "can be used to prevent paths from being included in a workspace." `default-members` names what commands act on from the root. | https://doc.rust-lang.org/cargo/reference/workspaces.html |
 
-#### (c) Non-source by convention
+#### Rust (Cargo): non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -313,7 +313,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `OUT_DIR` | "Build scripts may save any output files or intermediate artifacts in the directory specified in the `OUT_DIR` environment variable. Scripts should not modify any files outside of that directory." | https://doc.rust-lang.org/cargo/reference/build-scripts.html |
 | `Cargo.lock` | Shared: "All packages share a common `Cargo.lock` file which resides in the _workspace root_." | https://doc.rust-lang.org/cargo/reference/workspaces.html |
 
-#### (d) Edges
+#### Rust (Cargo): edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -323,7 +323,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | Package to dependency | "Cargo is configured to look for dependencies on crates.io by default. Only the name and a version string are required in this case." Git: "the location of the repository with the `git` key". Path: `hello_utils = { path = "hello_utils" }` means the crate "is found in the `hello_utils` folder, relative to the `Cargo.toml` file it's written in." | https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html |
 | Generated code | Build scripts write to `OUT_DIR`; the build-scripts page shows no `include!` example. | https://doc.rust-lang.org/cargo/reference/build-scripts.html |
 
-#### (e) Silences
+#### Rust (Cargo): silences
 
 - The cargo-targets page does not list the `*/main.rs` discovery forms; the layout guide does.
 - The modules reference never names `src/`; its table maps `crate` to `lib.rs`.
@@ -334,7 +334,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 
 ### 6. Python (pyproject.toml, setuptools)
 
-#### (a) Markers
+#### Python (pyproject.toml, setuptools): markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -343,7 +343,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `__init__.py` | "A regular package is typically implemented as a directory containing an `__init__.py` file." | https://docs.python.org/3/reference/import.html |
 | `pyvenv.cfg` | `venv` "places a `pyvenv.cfg` file in it with a `home` key pointing to the Python installation from which the command was run." | https://docs.python.org/3/library/venv.html |
 
-#### (b) What the manifest declares
+#### Python (pyproject.toml, setuptools): what the manifest declares
 
 **Convention** (automatic discovery) or **glob** (`packages.find`), or **explicit list** (`packages`).
 
@@ -357,7 +357,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | Layout trade-off | "The src layout requires installation of the project to be able to run its code, and the flat layout does not." "the Python interpreter includes the current working directory as the first item on the import path." "The src layout helps prevent accidental usage of the in-development copy of the code." | https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/ |
 | Regular vs namespace package | "The `__init__.py` files are required to make Python treat directories containing the file as packages (unless using a namespace package, a relatively advanced feature)." "A namespace package is a composite of various portions, where each portion contributes a subpackage to the parent package. Portions may reside in different locations on the file system." "A subdirectory inside a regular package that does not contain an `__init__.py` file is treated as an implicit namespace package (a "namespace subpackage") rooted in that parent." | https://docs.python.org/3/tutorial/modules.html ; https://docs.python.org/3/reference/import.html |
 
-#### (c) Non-source by convention
+#### Python (pyproject.toml, setuptools): non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -365,7 +365,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `.venv/`, `venv/` | A virtual environment is "Contained in a directory, conventionally named `.venv` or `venv` in the project directory"; "Not checked into source control systems such as Git."; "Considered as disposable". Layout: `bin` (or `Scripts`) and `lib/pythonX.Y/site-packages`. "Changed in version 3.13: `venv` now creates a `.gitignore` file for Git by default." | https://docs.python.org/3/library/venv.html |
 | `build/`, `dist/`, `docs/`, `tests/`, `[._]*` and the rest of the reserved lists | Excluded from flat-layout auto-discovery (a discovery rule, not a statement that they are never source). | https://setuptools.pypa.io/en/latest/userguide/package_discovery.html |
 
-#### (d) Edges
+#### Python (pyproject.toml, setuptools): edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -374,7 +374,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | Package init | "Importing `parent.one` will implicitly execute `parent/__init__.py` and `parent/one/__init__.py`." | https://docs.python.org/3/reference/import.html |
 | Project to dependency | `[project]` "specifies the project’s core metadata"; `[build-system].requires` lists build dependencies. | https://packaging.python.org/en/latest/specifications/pyproject-toml/ |
 
-#### (e) Silences
+#### Python (pyproject.toml, setuptools): silences
 
 - The pyproject.toml specification page (as fetched) describes `requires` and not `build-backend`; PEP 517 documents `build-backend`.
 - The `build` front-end page does not state its output directory.
@@ -384,7 +384,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 
 ### 7. Ruby (RubyGems, Bundler, Rails)
 
-#### (a) Markers
+#### Ruby (RubyGems, Bundler, Rails): markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -392,7 +392,7 @@ Gradle multi-project: "A multi-project build consists of a root project and one 
 | `Gemfile`, `Gemfile.lock` | "A `Gemfile` describes the gem dependencies required to execute associated Ruby code." "you `SHOULD` check your `Gemfile.lock` into version control, in both applications and gems." Rails: "These files allow you to specify what gem dependencies are needed for your Rails application." | https://guides.rubygems.org/gemfile/ ; https://guides.rubygems.org/command-reference/bundle-install/ ; https://guides.rubyonrails.org/getting_started.html |
 | Rails tree | `app/`, `bin/` ("Contains the `rails` script that starts your app"), `config/`, `config.ru` ("Rack configuration for Rack-based servers used to start the application."), `db/`, `lib/`, `log/`, `public/`, `Rakefile`, `script/`, `storage/`, `test/`, `tmp/`, `vendor/`, `.ruby-version`. | https://guides.rubyonrails.org/getting_started.html |
 
-#### (b) What the manifest declares
+#### Ruby (RubyGems, Bundler, Rails): what the manifest declares
 
 Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). Rails: **convention** (autoload paths).
 
@@ -408,7 +408,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | Rails autoload paths | "By default, the autoload paths of an application consist of all the subdirectories of `app` that exist when the application boots", excluding `assets`, `javascript`, and `views`. "By default, the `lib` directory does not belong to the autoload paths of applications or engines." `config.autoload_lib(ignore: %w(assets tasks))` adds it. "The array of default autoload paths can be extended by pushing to `config.autoload_paths`". | https://guides.rubyonrails.org/autoloading_and_reloading_constants.html |
 | Rails naming | "In a Rails application file names have to match the constants they define, with directories acting as namespaces." `app/helpers/users_helper.rb` defines `UsersHelper`; `app/controllers/admin/payments_controller.rb` defines `Admin::PaymentsController`. | https://guides.rubyonrails.org/autoloading_and_reloading_constants.html |
 
-#### (c) Non-source by convention
+#### Ruby (RubyGems, Bundler, Rails): non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -417,7 +417,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | `log/`, `tmp/`, `storage/`, `public/` | "Application log files."; "Temporary files (like cache and pid files)."; "Contains SQLite databases and Active Storage files for Disk Service."; "Contains static files and compiled assets. When your app is running, this directory will be exposed as-is." | https://guides.rubyonrails.org/getting_started.html |
 | `db/` | "Contains your current database schema, as well as the database migrations." (The guide does not call this non-source.) | https://guides.rubyonrails.org/getting_started.html |
 
-#### (d) Edges
+#### Ruby (RubyGems, Bundler, Rails): edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -428,7 +428,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | Rails constant to file | "application classes and modules are just available everywhere without `require` calls"; the file-name-to-constant rule above is the edge. | https://guides.rubyonrails.org/autoloading_and_reloading_constants.html |
 | Gemfile to gem | `gem` lines with `path:`, `git:`, or the declared `source`. | https://guides.rubygems.org/gemfile/ |
 
-#### (e) Silences
+#### Ruby (RubyGems, Bundler, Rails): silences
 
 - The bundle-install page does not state the default system install location outright and does not mention `.bundle/config`; it says deployment installs to `vendor/bundle` and "This may be overridden using the `path` setting."
 - The specification reference does not state a default for `bindir` ("Usually ‘exe’") and does not cover `test_files`.
@@ -439,7 +439,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 
 ### 8. PHP (Composer)
 
-#### (a) Markers
+#### PHP (Composer): markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -447,7 +447,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | `composer.lock` | "You should commit the `composer.lock` file to your project repo". | https://getcomposer.org/doc/01-basic-usage.md |
 | `vendor/autoload.php` | "For libraries that specify autoload information, Composer generates a `vendor/autoload.php` file." | https://getcomposer.org/doc/01-basic-usage.md |
 
-#### (b) What the manifest declares
+#### PHP (Composer): what the manifest declares
 
 **Explicit mapping** from namespaces to directories (PSR-4/PSR-0), **directory scan** (classmap), and **explicit list** (files).
 
@@ -463,7 +463,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | `type` | "The type of the package. It defaults to `library`." | https://getcomposer.org/doc/04-schema.md |
 | PSR-4 mapping | A namespace prefix "corresponds to at least one "base directory""; sub-namespaces "correspond to a subdirectory within a "base directory"" "in which the namespace separators represent directory separators"; "The terminating class name corresponds to a file name ending in `.php`."; "The file name MUST match the case of the terminating class name." Example: `\Aura\Web\Response\Status`, prefix `Aura\Web`, base `/path/to/aura-web/src/`, file `/path/to/aura-web/src/Response/Status.php`. | https://www.php-fig.org/psr/psr-4/ |
 
-#### (c) Non-source by convention
+#### PHP (Composer): non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -471,7 +471,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | `vendor/bin` | `bin-dir` "Defaults to `vendor/bin`. If a project includes binaries, they will be symlinked into this directory." | https://getcomposer.org/doc/06-config.md |
 | `vendor/autoload.php` | Generated; `dump-autoload` "will re-generate the `vendor/autoload.php` file." | https://getcomposer.org/doc/01-basic-usage.md |
 
-#### (d) Edges
+#### PHP (Composer): edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -480,7 +480,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | Class to file | Through the autoloader: PSR-4 mapping of the fully qualified class name to a file (above). | https://www.php-fig.org/psr/psr-4/ ; https://getcomposer.org/doc/04-schema.md |
 | Package to package | `require`: "Map of packages required by this package."; `require-dev`: "Map of packages required for developing this package, or running tests, etc." | https://getcomposer.org/doc/04-schema.md |
 
-#### (e) Silences
+#### PHP (Composer): silences
 
 - The manual's `use` page does not say that importing a name loads no file; only a user note says so.
 - The config page does not say whether `vendor-dir` is relative to the project root.
@@ -490,7 +490,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 
 ### 9. C and C++ (CMake, Meson, Make, compile_commands.json)
 
-#### (a) Markers
+#### C and C++ (CMake, Meson, Make, compile_commands.json): markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -500,7 +500,7 @@ Gems: **explicit list** (`files`) plus **convention** (`lib` on the load path). 
 | `compile_commands.json` | "The convention is to name the file compile_commands.json and put it at the top of the build directory." | https://clang.llvm.org/docs/JSONCompilationDatabase.html |
 | `compile_flags.txt` | "Clang tools also recognize a compile_flags.txt file" for simple projects. | https://clang.llvm.org/docs/JSONCompilationDatabase.html |
 
-#### (b) What the manifest declares
+#### C and C++ (CMake, Meson, Make, compile_commands.json): what the manifest declares
 
 CMake: **explicit list** per target.
 
@@ -531,7 +531,7 @@ Make: no source declaration; rules name targets and prerequisites.
 | `VPATH` | "The value of the make variable VPATH specifies a list of directories that make should search." "make uses VPATH as a search list for both prerequisites and targets of rules." "directory names are separated by colons or blanks." Example `VPATH = src:../headers`; `foo.o : foo.c` becomes `foo.o : src/foo.c` when `foo.c` is found in `src`. | https://www.gnu.org/software/make/manual/html_node/General-Search.html |
 | `vpath` directive | "allows you to specify a search path for a particular class of file names: those that match a particular pattern." `vpath %.h ../headers`. Directories in a matching `vpath` are searched "just like (and before) the directories in the VPATH variable." | https://www.gnu.org/software/make/manual/html_node/Selective-Search.html |
 
-#### (c) Non-source by convention
+#### C and C++ (CMake, Meson, Make, compile_commands.json): non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
@@ -539,7 +539,7 @@ Make: no source declaration; rules name targets and prerequisites.
 | Meson build dir | "Meson uses out of source builds"; "The build directory is mandatory."; `meson setup builddir`. "All the resources required for such an IDE integration can be found in the `meson-info` directory in the build directory." `intro-targets.json`: "Here each target with its sources and compiler parameters is specified." | https://mesonbuild.com/Running-Meson.html ; https://mesonbuild.com/IDE-integration.html |
 | `compile_commands.json` | Lives "at the top of the build directory"; CMake: "If enabled, generates a `compile_commands.json` file containing the exact compiler calls" "for all translation units of the project in machine-readable form." "This option is implemented only by Makefile Generators and Ninja Generators." "It is ignored on other generators." | https://clang.llvm.org/docs/JSONCompilationDatabase.html ; https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html |
 
-#### (d) Edges
+#### C and C++ (CMake, Meson, Make, compile_commands.json): edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -552,7 +552,7 @@ Make: no source declaration; rules name targets and prerequisites.
 | Compilation database | "A compilation database is a JSON file, which consists of an array of “command objects”": `directory` ("The working directory of the compilation." "All paths specified in the command or file fields must be either absolute or relative to this directory."), `file` ("The main translation unit source processed by this compilation step."), `arguments` or `command` ("Either arguments or command is required."), `output` (optional). CMake's entries carry `directory`, `command`, `file`, `output`. | https://clang.llvm.org/docs/JSONCompilationDatabase.html ; https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html |
 | Make prerequisites | Rules list prerequisites; `VPATH`/`vpath` decide where a named prerequisite is found. | https://www.gnu.org/software/make/manual/html_node/General-Search.html |
 
-#### (e) Silences
+#### C and C++ (CMake, Meson, Make, compile_commands.json): silences
 
 - The `add_executable` and `add_library` pages do not say that sources are relative to the current source directory; `target_sources` does.
 - The Meson IDE-integration page does not mention `compile_commands.json`; the Clang page attributes generation to CMake.
@@ -565,7 +565,7 @@ Make: no source declaration; rules name targets and prerequisites.
 
 ### 10. Monorepo tools (npm, Yarn, pnpm, Lerna, Nx, Turborepo)
 
-#### (a) Markers
+#### Monorepo tools (npm, Yarn, pnpm, Lerna, Nx, Turborepo): markers
 
 | File | What the docs say | Source |
 | --- | --- | --- |
@@ -575,7 +575,7 @@ Make: no source declaration; rules name targets and prerequisites.
 | `nx.json`, `project.json` | "The `nx.json` file configures the Nx CLI and project defaults."; "Individual project level configuration files (`package.json` and `project.json`)". | https://nx.dev/reference/nx-json ; https://nx.dev/reference/project-configuration |
 | `turbo.json` | "`turbo.json` is used to configure the behavior of `turbo`." "The root `package.json` is the base for your workspace." | https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository |
 
-#### (b) How each enumerates packages
+#### Monorepo tools (npm, Yarn, pnpm, Lerna, Nx, Turborepo): how each enumerates packages
 
 | Tool | Kind | Text | Source |
 | --- | --- | --- | --- |
@@ -587,14 +587,14 @@ Make: no source declaration; rules name targets and prerequisites.
 | Nx | file scan | "Nx analyzes your file system to detect projects." "It identifies projects from a `project.json` file or a `package.json` file". "Any `package.json` file that is referenced by the `workspaces` property" is included; "If you are using pnpm, projects defined in `pnpm-workspace.yml` will be included." "Nx merges the two files to get each project's configuration." Plugins "use config files to infer tasks for projects." | https://nx.dev/concepts/mental-model ; https://nx.dev/reference/project-configuration ; https://nx.dev/reference/nx-json |
 | Turborepo | package manager's config | "First, your package manager needs to describe the locations of your packages." "Using this configuration, every directory **with a `package.json`** in the `apps` or `packages` directories will be considered a package." "In the directory of the package, there must be a `package.json` to make the package discoverable to your package manager and `turbo`." "Turborepo does not support nested packages like `apps/**` or `packages/**`"; a package at `apps/a` and another at `apps/a/b` "will result in an error." | https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository |
 
-#### (c) Non-source by convention
+#### Monorepo tools (npm, Yarn, pnpm, Lerna, Nx, Turborepo): non-source by convention
 
 | Path | Why | Source |
 | --- | --- | --- |
 | Root `node_modules/` | Workspaces are symlinked into it (npm, Yarn classic). | https://docs.npmjs.com/cli/v10/using-npm/workspaces ; https://classic.yarnpkg.com/lang/en/docs/workspaces/ |
 | Per-package `dist/` | "Packages commonly use a `src` directory to store their source code and compile to a `dist` directory" "although this is not a requirement." | https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository |
 
-#### (d) Edges
+#### Monorepo tools (npm, Yarn, pnpm, Lerna, Nx, Turborepo): edges
 
 | Edge kind | Rule | Source |
 | --- | --- | --- |
@@ -604,7 +604,7 @@ Make: no source declaration; rules name targets and prerequisites.
 | Project graph (Nx) | "Nx analyzes source code, your installed dependencies, and TypeScript configuration to figure out these dependencies for you." `implicitDependencies`: "Some dependencies cannot be deduced statically, so you can set them manually like this." Task graph: "Each node is a task, which is a specific target invoked for a project, such as `myapp:build`." "Edges represent the dependencies between tasks." | https://nx.dev/concepts/mental-model ; https://nx.dev/reference/project-configuration |
 | Resolution mechanics | Symlinked workspaces are found by Node's `node_modules` walk (section 1). | https://nodejs.org/api/modules.html |
 
-#### (e) Silences
+#### Monorepo tools (npm, Yarn, pnpm, Lerna, Nx, Turborepo): silences
 
 - The npm workspaces page shows literal paths only; glob support is stated on the package.json reference.
 - The Turborepo page does not explicitly list `name` as a hard requirement; it says the name "should be unique within your workspace."

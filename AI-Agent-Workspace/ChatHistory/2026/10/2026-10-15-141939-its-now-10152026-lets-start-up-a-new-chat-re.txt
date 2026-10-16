@@ -2202,3 +2202,312 @@ anywhere, then walk from the entry points with inspect" failed with exit code 1
 
   Give me your picks on the three decisions, or "your recommendations", and say
   clear to build.
+
+❯ >Whichever disagrees least wins
+
+  Profound. I quite like this.
+
+  >installed by the devcontainer's post-create script beside scip-java and the
+  others, for this project's development only, never a runtime dependency.
+
+  No problem at all. Indeed, the prompt cache is warm for an average of 1 hour,
+  meaning that anything under that time limit is a reasonable expenditure of
+  computation. It is 0% a problem if it takes a while to prove the correctness
+  or improve our confidence in our commits. That's less pressure on the LLM
+  providers, wise reuse of cache, and heavy loading of good useful rich
+  contexext before handfoff. That's economical and plausibly a wise way to
+  maintain a repo that has AI agents workingin it.
+
+  >Decision 1: who decides what counts as source when the person has said
+  nothing?
+
+  Back up even further. I read your options and my first thought was "zoom out.
+  Hold on."
+
+  Look. If you're opening a "blank" Live Documentation HTML file, launching it
+  in your browser, and seeing through some manner of UI/UX that it wants to be
+  pointed at a directory in order to perform scans and mapping.... could the
+  user not then at that point provide the additionals which nail down such
+  things? Alternatively, is there not some finite set of heuristics that might
+  decisively and accurately conclude such "source" versus "non-source" layouts?
+  What are the archetypes of _projects_ (we have archetypes for files)? What
+  pre-baked shapes might a user reasonably open recursively as a directory and
+  plausibly expect us to connect the dots on which files talk to which other
+  files?
+
+  >Decision 2: what happens to this repository's own doc set. Under the suffix
+  rule it would gain docs for nine root tooling files (both tsconfigs, the
+  eslint, vitest, slopcop and Live Docs configurations, the devcontainer and VS
+  Code settings, and package-lock.json),
+
+  Is there authorial decisionmaking to convey here? If so, there should be a
+  live documentation file for it. If not, we can talk about excludes.
+
+  >Decision 3: two product rules under the suffix option. Pictures and fonts
+  are documented only where the configuration names them, since every
+  screenshot in a repository is rarely wanted; and lockfiles
+  (package-lock.json, yarn.lock, pnpm-lock.yaml, Cargo.lock) are skipped by a
+  named rule, being generated. Both are product rules applied everywhere, not
+  this workspace's conventions.
+
+  Since every screenshot in a repository is rarely wanted? I don't understand
+  at all. A repository generally contains content not intended to be in the
+  repository? Or is this an impression of the respository in which we curently
+  work? (If so, what cleaning might reasonably be done to avoid this?) Imagine
+  opening up Live Documentation, it wants to be pointed at a directory, and you
+  open a web project or a Unity project. You want the images to... not be...
+  assets?
+
+● Recording your message, then two research agents go out in parallel on the
+  question you zoomed out to, the archetypes of projects and what each declares
+  as its source, while I take the two decisions you settled into the record and
+  Memory.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ Survey code project archetypes
+   └ Survey asset-heavy project archetypes
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Fetch(https://developer.mozilla.org/en-US/docs/Web/API/Window/showDirectoryPic
+       ker)
+  ⎿  Received 172.3KB (200 OK)
+
+● Fetch(https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkit
+       directory)
+  ⎿  Received 156.1KB (200 OK)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the research agents keep gathering the ecosystem sections, I'll
+  checkpoint this turn's progress and start drafting the survey's judgement,
+  since that part doesn't depend on their findings. · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Both research agents have finished and written their sections (about 150 KB
+  together). I'm reading them whole now, then folding them with the frame and
+  judgement into the dated survey.
+
+  Read 2 files (ctrl+o to expand)
+
+● Background command "Wait until both research agents have written their survey
+files" completed (exit code 0)
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  <persisted-output>
+  Output too large (61.5KB). Full output saved to:
+  /home/node/.claude/projects/-workspaces-Live-Documentation/0a57dbfd-3a23-40e9-
+  8c99-e6fc8af972b3/tool-results/toolu_015UyEte3DGc4XqSk8s1MVzu.txt
+
+  Preview (first 2KB):
+  Survey written to /tmp/claude-1000/-workspaces-Live-Documentation/0a57dbfd-3a2
+  3-40e9-8c99-e6fc8af972b3/scratchpad/archetypes-assets.md (249 lines, markdown,
+  no em dashes). Every claim cites an official URL; quotes are verbatim from
+  the fetched pages. Sources were official docs for Unity, Epic, Godot, Vite,
+  webpack, CRA, Next.js, MDN, Apache, Android, Gradle, Apple (DocC JSON
+  endpoints where the HTML rendered empty), SwiftPM (DocC sources on GitHub,
+  since docs.swift.org is JS-rendered), HashiCorp, Kubernetes/Kustomize, Helm,
+  Docker, GitHub Docs, MkDocs, Docusaurus, Sphinx, CommonMark, nbformat, Jupyter
+  Server source, pip, conda, PyPA, DVC, git-scm, EditorConfig, VS Code, and
+  GitHub Linguist's default lists (flagged as GitHub's convention, not each
+  vendor's).
+
+  Where official docs are silent, the document says so explicitly: Unity's
+  `obj/` and the YAML `type:` field; whether `.uasset` is binary and its on-disk
+  reference layout; the pbxproj format and the current DerivedData location
+  (only a retired Xcode 3 page exists); Godot's TSCN page on script entries;
+  edges between plain Kubernetes manifests; notebook-to-data paths (nbformat has
+  no field for them). Unreal's official pages carry no version-control ignore
+  list; the directory-structure page says only that Intermediate and Saved "can
+  be deleted and rebuilt" and the DDC page says DDC content "is disposable".
+
+  The full document follows.
+
+  ---
+
+  # Project archetypes beyond plain code: markers, own content, generated files,
+  and edges
+
+  Survey date: 2026-10-15. Question: when a person points Live Documentation at
+  a directory and says nothing else, which project archetypes can be recognized
+  from marker files, which of their files are the project's own content
+  (including assets), which are generated or cached, and how their files
+  reference each other.
+
+  ...
+  </persisted-output>
+
+● Agent "Survey asset-heavy project archetypes" finished · 23m 31s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Everything is committed as c0150d14, and the three answers are below. The C++
+  pass stands as agreed: the tree-sitter adapter, the ninth rosetta language,
+  scip-clang installed by the devcontainer for this project only, and the
+  include rule chosen by which candidate disagrees least. Your words on that and
+  on machine time are in owner.md.
+
+  Zoomed out: the archetypes of projects. I had two agents read the official
+  documentation of twenty shapes, and the result is
+  2026-10-15-project-archetypes.md
+  (AI-Agent-Workspace/Research/2026-10-15-project-archetypes.md): npm and
+  tsconfig, .NET, Maven and Gradle, Go, Cargo, Python, Ruby, Composer, CMake and
+  Meson, the monorepo tools, Unity, Unreal, Godot, static sites, Android, iOS
+  and Swift, infrastructure as code, documentation sites, notebooks, and a bare
+  folder, with a source on every claim. The finite set you asked for exists, and
+  its members are not heuristics. They are the marker files, and each says
+  which files are the project's own in one of three ways:
+
+  1. A list or a glob. tsconfig's include, the SDK csproj's **/*.cs minus bin
+     and obj, CMake's per-target sources, Composer's namespace map, a gemspec's
+     files.
+  2. A convention the ecosystem documents. Maven's src/main/java, Go's
+     package-is-a-directory with its named exclusions, Cargo's target discovery,
+     setuptools' two layouts, Rails' autoload paths.
+  3. An entry and what it reaches. package.json names only entry points; Vite's
+     index.html and webpack's ./src/index.js are entries whose graph is the
+     bundle; Unreal and Unity reach their assets by reference. The source set is
+     the reachable set, which is the walk we already do.
+
+  So a project archetype would be a fact on a folder as a file archetype is on a
+  file, read from the marker in the same tier the vision gives cross-system
+  edges, observed from configuration. The panel would show the projects found
+  and what each claimed; what no marker claims (TH04's C++, a plain folder of
+  scripts) is the fallback, shown as unclaimed so the guess is visible. The
+  blank's moment is this same question in its UI form: list the folder, show
+  what was concluded, take the adjustments; the configuration carries the same
+  decisions headlessly. Two things the survey adds that I had not weighed:
+  sidecars are content (Unity's .meta holds the GUID; delete it and edges
+  break), and edges come in four families, of which our adapters read one,
+  paths; the identifier, name and versioned families each need a basis the
+  grammar does not yet have.
+
+  Decision 2, by your rule. Of the nine root files, eight carry decisions and
+  get docs: the two tsconfigs (compiler options and project references), the
+  ESLint configuration (the rules, including the JSDoc ones), the Vitest
+  configuration (the unit and integration projects), the SlopCop configuration
+  (what the audits enforce), the Live Docs configuration itself, the
+  devcontainer (which indexers the oracle has), and the VS Code settings.
+  package-lock.json carries none and is generated, so no doc. For the agent
+  workspace: its 23 code-suffixed files are JSON measurement records, its four
+  scripts are the record's own tooling, and its 584 pictures are evidence; the
+  folder documents itself in its READMEs, so I'd exclude it from the product's
+  scan with exclude: ["AI-Agent-Workspace/**"]. The four scripts would be
+  defensible under your rule; I'd leave them with the folder, and that is your
+  call.
+
+  Decision 3, withdrawn. You are right, and the "rarely wanted" was this
+  repository talking. A web or Unity project's images are assets and get
+  documented wherever they are found, like code. Nothing here needs cleaning:
+  the pictures are the evidence you asked for on September 29, and the exclude
+  above does the rest. Lockfiles stay out by the rule you set for Decision 2,
+  since every ecosystem's docs say to commit them and they still carry no
+  decision.
+
+  The split I propose. This pass takes the honest fallback (every suffix an
+  adapter reads, anywhere, minus .gitignore and the markers' documented
+  outputs), an exclude option, and this repository's configuration as above, so
+  the cold run is honest and we are our own first case. The archetypes become
+  the next design step after the C++ pass, starting from the two markers we
+  already parse, package.json with its tsconfig and .csproj with its solution,
+  measured against what the compilers compile; the asset-heavy shapes come with
+  their own edge bases later.
+
+  Say go on that split, or tell me to fold the first two archetypes into this
+  pass, and I build.
+
+› Message from general-purpose
+  <persisted-output>
+  Output too large (89.8KB). Full output saved to:
+  /home/node/.claude/projects/-workspaces-Live-Documentation/0a57dbfd-3a23-40e9-
+  8c99-e6fc8af972b3/tool-results/toolu_01Mk53JZRCBvjqaigxtiqUGP.txt
+
+  Preview (first 2KB):
+  Survey written to /tmp/claude-1000/-workspaces-Live-Documentation/0a57dbfd-3a2
+  3-40e9-8c99-e6fc8af972b3/scratchpad/archetypes-code.md (630 lines). Every
+  claim cites the official page it was read from on 2026-10-15; quotes are
+  verbatim; each section ends with an explicit "Silences" list. Notes on
+  sourcing: three GNU make manual pages rate-limited the fetch tool and were
+  downloaded with curl from the same official URLs; Bundler's man pages now
+  redirect to guides.rubygems.org and are cited there; the .slnx facts rest on
+  the `dotnet sln` learn page plus the Microsoft .NET blog because
+  learn.microsoft.com has no .slnx format page; the Nx "inferred tasks" page
+  returns 404 at every current URL and is absent from the Nx sitemap, so only
+  the Nx pages I could open are cited. Temporary downloads were deleted; only
+  the markdown remains in the scratchpad. The full document follows.
+
+  ---
+
+  # Project archetypes in code ecosystems: markers, source rules, non-source,
+  and edges
+
+  A survey gathered on 2026-10-15 for one design question in Live Documentation:
+  when a person points the tool at a directory and says nothing else, which
+  finite set of project archetypes, recognized from marker files, can decisively
+  say what is source, what is not, and how files of that kind reference each
+  other.
+
+  Method: every claim below was read from the cited page on 2026-10-15, and
+  quoted text is verbatim from that page. Where a page did not state a point,
+  the section says "silent". Nothing here is a decision; it records what the
+  official documentation says. Pages were read through a fetch tool that returns
+  page text; three GNU make pages that rate-limited the fetch tool were
+  downloaded with curl from the same URLs.
+
+  Reading the tables: "Kind" is one of **explicit list** (the manifest names
+  files), **glob** (the manifest holds patterns), or **convention** (the tool
+  decides from the file layout with no manifest entry).
+
+  ---
+
+  ## 1. npm / Node
+
+  ### (a) Markers
+
+  | File | What the docs say | Source |
+  ...
+  </persisted-output>
+
+● The second research agent's hand-back has arrived; it is the same
+  code-ecosystems document I already read from its file and folded whole into
+  the survey as Part 1, so nothing changes. The tree is clean at c0150d14, and
+  the ask stands: go on the split, or fold the first two archetypes into the C++
+  pass.
+
+● Agent "Survey code project archetypes" finished · 27m 10s
+
+❯ >So a project archetype would be a fact on a folder as a file archetype is on
+  a file
+
+  Bingo
+
+  >Two things the survey adds that I had not weighed: sidecars are content
+  (Unity's .meta holds the GUID; delete it and edges break), and edges come in
+  four families, of which our adapters read one, paths; the identifier, name
+  and versioned families each need a basis the grammar does not yet have.
+
+  Expand. This sounds wonderfully rich and worth exploring.
+
+  >the folder documents itself in its READMEs, so I'd exclude it from the
+  product's scan with exclude: ["AI-Agent-Workspace/**"]
+
+  Very defensible exclude. Let's do so.
+
+  > This pass takes the honest fallback (every suffix an adapter reads,
+  anywhere, minus .gitignore and the markers' documented outputs), an exclude
+  option, and this repository's configuration as above, so the cold run is
+  honest and we are our own first case. The archetypes become the next design
+  step after the C++ pass, starting from the two markers we already parse,
+  package.json with its tsconfig and .csproj with its solution, measured
+  against what the compilers compile; the asset-heavy shapes come with their
+  own edge bases later.
+
+  >Say go on that split, or tell me to fold the first two archetypes into this
+  pass, and I build.
+
+  Let's do it!
