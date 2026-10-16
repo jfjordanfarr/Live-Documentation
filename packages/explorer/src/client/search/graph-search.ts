@@ -61,6 +61,7 @@ export interface SearchIndex {
   directories: readonly string[];
 }
 
+/** What a search is told beyond its words: which files list their matched symbols in full, and how many files, directories and symbols are offered. */
 export interface SearchOptions {
   /** Files whose matched symbols are listed in full. */
   expanded?: ReadonlySet<string>;

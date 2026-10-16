@@ -7,6 +7,7 @@
 import { escapeHtml } from "../graph-helpers";
 import { searchGraph, searchRows, type SearchGroup, type SearchHit, type SearchRow, type SearchScope } from "./graph-search";
 
+/** What a search field is made from: its input and its results element, the scope it searches, and what is done with the thing chosen. */
 export interface SearchFieldOptions {
   input: HTMLInputElement;
   results: HTMLElement;
@@ -16,6 +17,7 @@ export interface SearchFieldOptions {
   onChoose: (hit: SearchHit) => void;
 }
 
+/** A search field as the bar drives it: show words while nobody types, take focus, and settle back to the shown words. */
 export interface SearchField {
   /** The words the field shows while nobody types in it; an empty string shows the placeholder. */
   show(text: string): void;
@@ -32,6 +34,7 @@ function plainBadge(hit: SearchHit): string {
   return hit.kind === "file" ? hit.node.archetype : hit.kind === "directory" ? "directory" : "";
 }
 
+/** Make a search field over an input and a results element: typing searches the scope, the arrows walk the rows, Enter or a click chooses, Escape settles. */
 export function createSearchField(options: SearchFieldOptions): SearchField {
   const { input, results, onChoose } = options;
   let shown = "";

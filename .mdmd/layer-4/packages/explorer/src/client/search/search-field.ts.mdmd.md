@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/search-field.ts
-- Generated At: 2026-10-14T21:04:58.864Z
+- Generated At: 2026-10-16T14:48:53.699Z
 
 ## Authored
 ### Purpose
@@ -22,17 +22,26 @@ One search field with its results under it, made twice by the bar: the words typ
 ### Public Symbols
 #### `SearchFieldOptions` {#symbol-searchfieldoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L10)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L11)
+
+##### `SearchFieldOptions` — Summary
+What a search field is made from: its input and its results element, the scope it searches, and what is done with the thing chosen.
 
 #### `SearchField` {#symbol-searchfield}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L19)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L21)
+
+##### `SearchField` — Summary
+A search field as the bar drives it: show words while nobody types, take focus, and settle back to the shown words.
 
 #### `createSearchField` {#symbol-createsearchfield}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L35)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-field.ts#L38)
 - Returns: [`SearchField`](#symbol-searchfield)
 - Parameters: `options`: [`SearchFieldOptions`](#symbol-searchfieldoptions)
+
+##### `createSearchField` — Summary
+Make a search field over an input and a results element: typing searches the scope, the arrows walk the rows, Enter or a click chooses, Escape settles.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

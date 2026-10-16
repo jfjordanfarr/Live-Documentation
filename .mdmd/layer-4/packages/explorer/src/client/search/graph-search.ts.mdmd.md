@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/graph-search.ts
-- Generated At: 2026-10-15T16:17:52.983Z
+- Generated At: 2026-10-16T14:48:53.651Z
 
 ## Authored
 ### Purpose
@@ -72,18 +72,21 @@ What a search is run over: the files, and every directory above them, computed o
 
 #### `SearchOptions` {#symbol-searchoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L64)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L65)
+
+##### `SearchOptions` — Summary
+What a search is told beyond its words: which files list their matched symbols in full, and how many files, directories and symbols are offered.
 
 #### `directoriesOf` {#symbol-directoriesof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L80)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L81)
 
 ##### `directoriesOf` — Summary
 Every directory above the files, the scan root as "", deepest last within a branch.
 
 #### `searchIndexOf` {#symbol-searchindexof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L90)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L91)
 - Returns: [`SearchIndex`](#symbol-searchindex)
 
 ##### `searchIndexOf` — Summary
@@ -91,21 +94,21 @@ The index a bar searches, built once from the bundle's files.
 
 #### `directoryOf` {#symbol-directoryof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L95)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L96)
 
 ##### `directoryOf` — Summary
 The directory a file stands in.
 
 #### `termsOf` {#symbol-termsof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L101)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L102)
 
 ##### `termsOf` — Summary
 The words of a query, lowercased; an empty query has none.
 
 #### `searchGraph` {#symbol-searchgraph}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L120)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L121)
 - Returns: [`SearchResult`](#symbol-searchresult)
 - Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `options`: [`SearchOptions`](#symbol-searchoptions)
 
@@ -115,7 +118,7 @@ symbols after, as the Explorer's searches always have; a directory by its last s
 
 #### `searchRows` {#symbol-searchrows}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L179)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L180)
 - Returns: [`SearchRow`](#symbol-searchrow)[]
 
 ##### `searchRows` — Summary
@@ -123,7 +126,7 @@ The rows of the groups in reading order: a matched directory, each file, its sym
 
 #### `reachWords` {#symbol-reachwords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L193)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L194)
 - Parameters: `reach`: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach)
 
 ##### `reachWords` — Summary
@@ -131,7 +134,7 @@ The words a destination row carries: the files a path to it would show, and whet
 
 #### `destinationScope` {#symbol-destinationscope}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L203)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L204)
 - Returns: [`SearchScope`](#symbol-searchscope)
 - Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `reach`: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach)
 

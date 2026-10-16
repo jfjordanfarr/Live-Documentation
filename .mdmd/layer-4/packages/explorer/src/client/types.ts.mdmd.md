@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-15T16:17:53.165Z
+- Generated At: 2026-10-16T14:48:53.834Z
 
 ## Authored
 ### Purpose
@@ -104,7 +104,7 @@ The 3D Local Map's packing and stable visual encodings, shared with the headless
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L164)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L160)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
@@ -112,6 +112,10 @@ The end of a path a person asked for: a file, perhaps one symbol of it, or a dir
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
 - Source: [source](../../../../../../packages/explorer/src/client/types.ts#L168)
+
+##### `ExplorerState` — Summary
+Root state object for the Explorer client, managed by
+`persistence/local-storage.ts` and consumed by every view.
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type

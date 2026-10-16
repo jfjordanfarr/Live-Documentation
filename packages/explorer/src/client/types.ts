@@ -156,15 +156,15 @@ export interface ForceGraphTuning {
   symbolScale: number;
 }
 
-/**
- * Root state object for the Explorer client, managed by
- * `persistence/local-storage.ts` and consumed by every view.
- */
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */
 export type PathDestination =
   | { kind: "file"; nodeId: string; symbol?: string }
   | { kind: "directory"; directory: string };
 
+/**
+ * Root state object for the Explorer client, managed by
+ * `persistence/local-storage.ts` and consumed by every view.
+ */
 export interface ExplorerState {
   /** Independent exploration branches, retained across perspectives. */
   pins?: PinSet;
