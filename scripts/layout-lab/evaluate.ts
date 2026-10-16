@@ -14,7 +14,7 @@ import { routeScene, type Route } from "./routes";
 import { retainedSubject, type ScopeRun } from "./scopes";
 import { measureScene, type Signals } from "./signals";
 import { applyLayoutPreset, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
-import { DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { payloadToSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { LocalMapTuning, SymbolOrder } from "../../packages/explorer/src/client/types";
 import type { BoundaryAlignment } from "../../packages/explorer/src/client/views/localView/branch-placement";
@@ -77,8 +77,11 @@ export function scopePins(run: ScopeRun): PinSet {
   return run.scope.reduce((set, file) => addPin(set, file, "*"), EMPTY_PIN_SET);
 }
 
-/** The captured filters, or the retained URL's defaults for older captures; a pinned or selected file is always kept. */
-export function includeNode(pins: PinSet, subject: string, filters = DEFAULT_SNAPSHOT.filters): (node: ExplorerNodePayload) => boolean {
+/**
+ * The captured filters, or for older captures the filters the page read from the retained URL they were taken at (a
+ * version 1 payload without filters, which means both shown); a pinned or selected file is always kept.
+ */
+export function includeNode(pins: PinSet, subject: string, filters = payloadToSnapshot({ v: 1 }).filters): (node: ExplorerNodePayload) => boolean {
   const pinned = new Set(pins.entries.map(pin => pin.nodeId));
   return node => {
     if (pinned.has(node.id) || node.id === subject) return true;

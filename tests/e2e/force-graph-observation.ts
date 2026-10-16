@@ -78,21 +78,34 @@ export async function renderedNodes(page: Page) {
   });
 }
 
-/** Read relationship kinds and visibility without reaching into the Explorer's own state. */
+/**
+ * Read relationship kinds, visibility and where each line is drawn, without reaching into the Explorer's own state. A
+ * link is a unit tube the library stands at its source, turns toward its target and stretches by `scale.z`; its drawn
+ * ends are the tube's two ends in world space, and a line the library never positioned stays at the origin with length 1.
+ */
 export async function renderedLinks(page: Page) {
   return page.evaluate(() => {
     const observed = (window as unknown as ObservedWindow).renderedGraph!;
-    const links: Array<{ source: string; target: string; kind: string; count: number; visible: boolean }> = [];
+    type Point = { x: number; y: number; z: number };
+    const links: Array<{ source: string; target: string; kind: string; count: number; visible: boolean; start: Point; end: Point; length: number }> = [];
     observed.scene.traverse(object => {
       const mesh = object as GraphMesh;
       const data = mesh.__data;
       if (mesh.__graphObjType !== "link" || !data?.source || !data.target) return;
+      mesh.updateWorldMatrix(true, false);
+      const point = (z: number): Point => {
+        const world = mesh.localToWorld(mesh.position.clone().set(0, 0, z));
+        return { x: world.x, y: world.y, z: world.z };
+      };
       links.push({
         source: typeof data.source === "string" ? data.source : data.source.id,
         target: typeof data.target === "string" ? data.target : data.target.id,
         kind: data.kind ?? "",
         count: data.count ?? 0,
-        visible: mesh.visible
+        visible: mesh.visible,
+        start: point(0),
+        end: point(1),
+        length: mesh.scale.z
       });
     });
     return links;

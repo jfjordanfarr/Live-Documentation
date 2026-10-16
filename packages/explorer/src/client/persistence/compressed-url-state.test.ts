@@ -17,7 +17,7 @@ import type { PinSet } from "../views/pin-state";
 describe("snapshotToPayload", () => {
   it("omits all optional fields for default snapshot", () => {
     const payload = snapshotToPayload(DEFAULT_SNAPSHOT);
-    expect(payload).toEqual({ v: 2 });
+    expect(payload).toEqual({ v: 3 });
   });
 
   it("includes view when non-default", () => {
@@ -61,9 +61,10 @@ describe("snapshotToPayload", () => {
     expect(payload.f).toEqual([0, 1]);
   });
 
-  it("does not include filters when both are true (default)", () => {
-    const payload = snapshotToPayload(DEFAULT_SNAPSHOT);
-    expect(payload.f).toBeUndefined();
+  it("leaves out the filters when they are the cold start's, tests shown and assets hidden, and writes them otherwise", () => {
+    expect(DEFAULT_SNAPSHOT.filters).toEqual({ showTests: true, showAssets: false });
+    expect(snapshotToPayload(DEFAULT_SNAPSHOT).f).toBeUndefined();
+    expect(snapshotToPayload({ ...DEFAULT_SNAPSHOT, filters: { showTests: true, showAssets: true } }).f).toEqual([1, 1]);
   });
 });
 
@@ -71,12 +72,18 @@ describe("snapshotToPayload", () => {
 
 describe("payloadToSnapshot", () => {
   it("returns defaults for minimal payload", () => {
-    const snap = payloadToSnapshot({ v: 1 });
+    const snap = payloadToSnapshot({ v: 3 });
     expect(snap.view).toBe("map");
     expect(snap.selectedNodeId).toBeNull();
     expect(snap.pinSet).toEqual(EMPTY_PIN_SET);
     expect(snap.openDirectories.size).toBe(0);
-    expect(snap.filters).toEqual({ showTests: true, showAssets: true });
+    expect(snap.filters).toEqual({ showTests: true, showAssets: false });
+  });
+
+  it("reads an older link without filters as both shown, which is what it meant when it was written", () => {
+    expect(payloadToSnapshot({ v: 1 }).filters).toEqual({ showTests: true, showAssets: true });
+    expect(payloadToSnapshot({ v: 2 }).filters).toEqual({ showTests: true, showAssets: true });
+    expect(payloadToSnapshot({ v: 2, f: [1, 0] }).filters).toEqual({ showTests: true, showAssets: false });
   });
 
   it("restores all fields from a full payload", () => {
@@ -308,7 +315,7 @@ describe("retired view migration", () => {
     expect(migrated.perspective).toBe("2d");
     expect(migrated.openDirectories).toEqual(new Set(["a/b", "other"]));
     expect(migrated.pinSet.entries).toEqual([{ nodeId: "a/b/file.ts", symbol: "run" }]);
-    expect(snapshotToPayload(migrated)).toEqual({ v: 2, n: "a/b/file.ts", d: ["a/b", "other"], p: [{ n: "a/b/file.ts", s: "run" }] });
+    expect(snapshotToPayload(migrated)).toEqual({ v: 3, n: "a/b/file.ts", d: ["a/b", "other"], p: [{ n: "a/b/file.ts", s: "run" }], f: [1, 1] });
   });
   it("retains the representation while another view is active", () => {
     const snapshot = { ...DEFAULT_SNAPSHOT, view: "sources" as const, perspective: "3d" as const };

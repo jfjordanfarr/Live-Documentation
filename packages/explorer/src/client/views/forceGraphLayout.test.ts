@@ -1,4 +1,4 @@
-import { forceLink } from "d3-force-3d";
+import { forceLink, forceSimulation } from "d3-force-3d";
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
@@ -65,6 +65,33 @@ describe("spatial layout grammar", () => {
     const analyzed = simulateSpatialLayout(nodes, links, tuning, 300, "connections");
     expect(separation(analyzed.nodes.slice(1))).toBeLessThan(separation(declared.nodes.slice(1)));
     expect(nodes.every(file => file.x === undefined)).toBe(true);
+  });
+
+  it("resolves the endpoints of the links that do not pull, in the order the browser's engine sets nodes and links", () => {
+    // three-forcegraph sets the simulation's nodes and then the link force's links, and draws no line whose endpoints
+    // are still ids; a reference drawn on demand in the structure layout must end on its two spheres (2026-10-16).
+    const nodes: SpatialNode[] = [{ id: "directory:", publicSymbols: [], containedSymbolCounts: [3, 7] }, node("a", 3), node("b", 7)];
+    const links: SpatialLink[] = [
+      { source: "directory:", target: "a", count: 1, kind: "containment" },
+      { source: "directory:", target: "b", count: 1, kind: "containment" },
+      { source: "a", target: "b", count: 2, kind: "dependency" }
+    ];
+    const tree = pullingLinkForce(forceLink<SpatialNode, SpatialLink>(), "structure");
+    const simulation = forceSimulation<SpatialNode>([], 3).stop().force("link", tree);
+    simulation.nodes(nodes);
+    tree.id(file => file.id).links(links);
+    const [, a, b] = nodes;
+    expect(links[2].source).toBe(a);
+    expect(links[2].target).toBe(b);
+    expect(links.every(link => typeof link.source === "object" && typeof link.target === "object")).toBe(true);
+    simulation.tick(10);
+    expect([a, b].every(file => [file.x, file.y, file.z].every(Number.isFinite))).toBe(true);
+    // A layout change wraps the wrapper and sets it again; every link stays resolved.
+    const network = pullingLinkForce(tree, "connections");
+    simulation.force("link", network);
+    expect(network.links().every(link => typeof link.source === "object" && typeof link.target === "object")).toBe(true);
+    // An id the nodes do not hold fails as D3 fails for the links it holds.
+    expect(() => tree.links([{ source: "a", target: "gone", count: 1, kind: "dependency" }])).toThrow("node not found: gone");
   });
 
   it("actually settles more strongly coupled pairs closer, and Compact tighter, using the shared engine", () => {

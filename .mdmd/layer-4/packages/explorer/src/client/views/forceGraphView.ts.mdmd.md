@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-14T16:02:17.863Z
+- Generated At: 2026-10-16T21:14:09.571Z
 
 ## Authored
 ### Purpose
@@ -24,21 +24,21 @@ In the structure layout (2026-10-14) the amber directory hubs and their containm
 
 The native accessor setters can rebuild geometries and materials even when a newly supplied function returns the same values. Appearance therefore updates only when effective attention, the path or the layout changes; sphere geometry updates only when its size settings change. Force-only tuning still reheats the simulation with the same mathematical configuration, without rebuilding an unchanged appearance.
 
-The shared spatial projection supplies counted file pairs and optional related documents. Sphere volume encodes public-symbol count plus a baseline unit, and a hub's the sum of its members'; preferred link gaps encode documented coupling with diminishing returns and collision clearance. Packing changes reheat existing positions while keeping the selected screen anchor; unchanged settings do not reheat. Hover labels expose counts. The graph reports its simulation activity with aria-busy, and the renderer’s actual spheres supply perspective-transition sizes. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+The shared spatial projection supplies counted file pairs and optional related documents. Sphere volume encodes public-symbol count plus a baseline unit, and a hub's the sum of its members'; preferred link gaps encode documented coupling with diminishing returns and collision clearance. Packing changes reheat existing positions while keeping the selected screen anchor; unchanged settings do not reheat. Hover labels expose counts. The graph reports its simulation activity with aria-busy, and the renderer’s actual spheres supply perspective-transition sizes. The engine stops at D3's own minimum alpha, 0.001, some three hundred ticks after a reheat, so aria-busy falls when the layout has settled; until 2026-10-16 no minimum was set and the engine ran out the library's fifteen-second cooldown after every change. The link opacity is 1, so that the alphas the link colours carry are the ones drawn; the library's default of 0.2 had multiplied them five-fold until the same day, a revealed reference at 0.1 and containment at 0.07. An asset's sphere has its own colour rather than the fallback grey. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L49)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L50)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L57)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L58)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -46,28 +46,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L66)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L67)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L77)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L78)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L91)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L92)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L102)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L103)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 

@@ -18,6 +18,7 @@
 
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
+import { getDefaultFilters } from "./local-storage";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
 import type { LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
@@ -28,8 +29,11 @@ import { reconcileRetained } from "../views/retained-state";
 
 // ─── Current Payload Version ───────────────────────────────────────
 
-/** Bump when the payload shape changes in a backward-incompatible way. */
-const CURRENT_VERSION = 2;
+/**
+ * Bump when the payload shape changes in a backward-incompatible way. Version 3 (2026-10-16) changed what an omitted
+ * `f` means: before it, both filters shown; from it, the default filters.
+ */
+const CURRENT_VERSION = 3;
 
 // ─── Payload Shape ─────────────────────────────────────────────────
 
@@ -55,7 +59,7 @@ export interface CompressedPayload {
   e?: string[];
   /** Version 1 camera; no longer written. */
   t?: [number, number, number];
-  /** Filters: [showTests, showAssets]. Stored as 0/1 for compactness. */
+  /** Filters: [showTests, showAssets]. Stored as 0/1 for compactness; omitted when they are the default's (both shown before version 3). */
   f?: [number, number];
   /** Whether related documentation participates in the spatial graph; omitted by older links. */
   r?: boolean;
@@ -101,7 +105,13 @@ export interface UrlStateSnapshot {
   reachFrom: PathDestination | null;
 }
 
-/** Default state for cold start (no URL parameter). */
+const COLD_FILTERS = getDefaultFilters();
+
+/**
+ * Default state for cold start (no URL parameter). Its filters are the cold start's own, tests shown and assets hidden:
+ * a page opened without an address reads `getDefaultFilters`, so a link that omits the filters shows what a fresh page
+ * shows (2026-10-16; until then this said assets shown and every written link carried them hidden).
+ */
 export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   view: "map",
   perspective: "2d",
@@ -109,7 +119,7 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   selectedNodeId: null,
   pinSet: EMPTY_PIN_SET,
   openDirectories: new Set(),
-  filters: { showTests: true, showAssets: true },
+  filters: { showTests: COLD_FILTERS.showTests, showAssets: COLD_FILTERS.showAssets },
   destination: null,
   reachFrom: null
 };
@@ -147,7 +157,7 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   if (snapshot.openDirectories.size > 0) {
     payload.d = [...snapshot.openDirectories].sort();
   }
-  if (!snapshot.filters.showTests || !snapshot.filters.showAssets) {
+  if (snapshot.filters.showTests !== DEFAULT_SNAPSHOT.filters.showTests || snapshot.filters.showAssets !== DEFAULT_SNAPSHOT.filters.showAssets) {
     payload.f = [
       snapshot.filters.showTests ? 1 : 0,
       snapshot.filters.showAssets ? 1 : 0,
@@ -188,7 +198,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
   const openDirectories = new Set([...(payload.d ?? []), ...legacyDirectories].filter((entry): entry is string => typeof entry === "string"));
   const filters: UrlStateSnapshot["filters"] = payload.f
     ? { showTests: payload.f[0] === 1, showAssets: payload.f[1] === 1 }
-    : { ...DEFAULT_SNAPSHOT.filters };
+    : payload.v < 3 ? { showTests: true, showAssets: true } : { ...DEFAULT_SNAPSHOT.filters };
   if (typeof payload.r === "boolean") filters.showRelatedDocs = payload.r;
   const retentionOrder = Array.isArray(payload.o)
     ? payload.o.filter((key): key is string => typeof key === "string") : undefined;

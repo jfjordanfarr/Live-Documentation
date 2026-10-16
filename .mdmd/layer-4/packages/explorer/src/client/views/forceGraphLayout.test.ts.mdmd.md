@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.test.ts
-- Generated At: 2026-10-14T16:02:17.807Z
+- Generated At: 2026-10-16T21:14:09.487Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `d3-force-3d` - `forceLink`
+- `d3-force-3d` - `forceLink`, `forceSimulation`
 - [`layout-presets.applyLayoutPreset`](../layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)

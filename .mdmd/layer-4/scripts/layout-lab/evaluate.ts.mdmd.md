@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/evaluate.ts
-- Generated At: 2026-10-13T19:38:17.386Z
+- Generated At: 2026-10-16T21:14:11.374Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ One configuration of the layout's levers, laid out and scored: the page's own ra
 
 ### Notes
 
-The levers are the Local Map tuning the layout reads (`LabConfig`), the baseline the page's defaults. Since the restarts of 2026-10-06 an evaluation runs the page's own starts and choice (`exploreBranches` once, then `orderExploration` from each start of `candidateStarts`, each measured by the capture's card model and placed, the cheapest by the shared wire, crossing, height and shape score kept by `layoutStarts`; the lab has no previous picture, so the churn is nothing), and reports which start it drew and every start's cheap signals and price beside the chosen picture's full signals. `orderStarts` at 0 is the ranking's order alone; `orderSeed` set is that one start alone. The exploration is the retained picture's: every file of the scope pinned whole, the first file the subject as `localRetainUrl` opens it, the captured filters (the retained URL's defaults for older captures). `driftOf` holds a baseline evaluation to the capture's truth in every card's width, height and pin, the placement measure, the picture's size and every label's height: nothing, when the model is right, which `tests/e2e/layout-lab.spec.ts` asserts on every deck scope.
+The levers are the Local Map tuning the layout reads (`LabConfig`), the baseline the page's defaults. Since the restarts of 2026-10-06 an evaluation runs the page's own starts and choice (`exploreBranches` once, then `orderExploration` from each start of `candidateStarts`, each measured by the capture's card model and placed, the cheapest by the shared wire, crossing, height and shape score kept by `layoutStarts`; the lab has no previous picture, so the churn is nothing), and reports which start it drew and every start's cheap signals and price beside the chosen picture's full signals. `orderStarts` at 0 is the ranking's order alone; `orderSeed` set is that one start alone. The exploration is the retained picture's: every file of the scope pinned whole, the first file the subject as `localRetainUrl` opens it, the captured filters (for older captures, the filters the version 1 retained URL without filters reads as, both shown; the snapshot's own default hides assets since 2026-10-16). `driftOf` holds a baseline evaluation to the capture's truth in every card's width, height and pin, the placement measure, the picture's size and every label's height: nothing, when the model is right, which `tests/e2e/layout-lab.spec.ts` asserts on every deck scope.
 - `membraneDepth` (2026-10-07) is a lever like the others, passed to the exploration; `none` in a grid is every level.
 - `membraneEvenness` and `rowLevelness` are levers since 2026-10-07, passed to the scene as its evenness and levelness and included in the competition score.
 
@@ -64,15 +64,16 @@ The scope's pins, every file retained whole, and its subject.
 
 #### `includeNode` {#symbol-includenode}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L81)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L84)
 - Parameters: `pins`: [`PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset); `node`: [`ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload)
 
 ##### `includeNode` — Summary
-The captured filters, or the retained URL's defaults for older captures; a pinned or selected file is always kept.
+The captured filters, or for older captures the filters the page read from the retained URL they were taken at (a
+version 1 payload without filters, which means both shown); a pinned or selected file is always kept.
 
 #### `evaluate` {#symbol-evaluate}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L102)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L105)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `config`: [`LabConfig`](#symbol-labconfig)
 
@@ -81,7 +82,7 @@ Lays out and scores one configuration of the levers over a capture.
 
 #### `evaluateAlignment` {#symbol-evaluatealignment}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L135)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L138)
 - Returns: [`Evaluation`](#symbol-evaluation)
 - Parameters: `previous`: [`Evaluation`](#symbol-evaluation); `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
@@ -90,7 +91,7 @@ Re-solves a shown order with explicit alignment constraints, preserving its sour
 
 #### `driftOf` {#symbol-driftof}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L149)
+- Source: [source](../../../../scripts/layout-lab/evaluate.ts#L152)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `evaluation`: [`Evaluation`](#symbol-evaluation)
 
 ##### `driftOf` — Summary
@@ -101,7 +102,7 @@ Where the baseline evaluation differs from what the page showed at capture: noth
 ### Dependencies
 - [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 - [`layout-presets.applyLayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
-- [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
+- [`compressed-url-state.payloadToSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-payloadtosnapshot)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.LocalMapTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`types.SymbolOrder`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-symbolorder) (type-only)

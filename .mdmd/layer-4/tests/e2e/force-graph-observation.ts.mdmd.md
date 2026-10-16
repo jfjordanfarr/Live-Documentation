@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-15T02:54:32.671Z
+- Generated At: 2026-10-16T21:14:12.386Z
 
 ## Authored
 ### Purpose
 Observes the native Three.js meshes and camera used by the spatial-view browser regressions.
 
 ### Notes
-The helper listens to Three’s development-tool event inside the test page, then reads rendered node identity, material opacity, world and screen positions, the rendered sphere's radius, and link kinds/visibility. This lets tests compare what reaches WebGL instead of accepting an application-maintained diagnostic as evidence of its own correctness. It introduces no product endpoint or browser-global application API. The original observation lived in the force-graph focus regression; directory-hub checks need the same measurements.
+The helper listens to Three’s development-tool event inside the test page, then reads rendered node identity, material opacity, world and screen positions, the rendered sphere's radius, and link kinds, visibility and drawn ends: a link is a unit tube the library stands at its source and stretches toward its target, so its two ends in world space and its length say where it is drawn, and a line never positioned reads as length 1 at the origin (2026-10-16). This lets tests compare what reaches WebGL instead of accepting an application-maintained diagnostic as evidence of its own correctness. It introduces no product endpoint or browser-global application API. The original observation lived in the force-graph focus regression; directory-hub checks need the same measurements.
 
 Introduced for the owner’s [October 14 pin-management request](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
@@ -36,11 +36,13 @@ Read native node identity, world/screen coordinates, actual material opacity and
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L82)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L86)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
-Read relationship kinds and visibility without reaching into the Explorer's own state.
+Read relationship kinds, visibility and where each line is drawn, without reaching into the Explorer's own state. A
+link is a unit tube the library stands at its source, turns toward its target and stretches by `scale.z`; its drawn
+ends are the tube's two ends in world space, and a line the library never positioned stays at the origin with length 1.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

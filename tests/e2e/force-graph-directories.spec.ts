@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { localMapSettled } from "./still-picture";
@@ -18,11 +18,31 @@ type Rendered = Awaited<ReturnType<typeof renderedNodes>>;
 const referenceFacts = (links: Awaited<ReturnType<typeof renderedLinks>>) => links
   .filter(link => link.kind !== "containment")
   .map(({ source, target, kind, count }) => JSON.stringify([source, target, kind, count])).sort();
+const gap = (a: { x: number; y: number; z: number }, b: { x: number; y: number; z: number }): number => Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
+
+/**
+ * Every line shown is drawn: it has a length and runs from the sphere of one end to the sphere of the other. Visibility
+ * alone passed while every reference revealed in the structure layout sat unpositioned at the origin (2026-10-16).
+ */
+async function expectDrawnBetweenSpheres(page: Page): Promise<number> {
+  const spheres = new Map((await renderedNodes(page)).map(node => [node.id, node.world]));
+  const shown = (await renderedLinks(page)).filter(line => line.visible);
+  for (const link of shown) {
+    const source = spheres.get(link.source)!, target = spheres.get(link.target)!;
+    const name = `${link.kind} ${link.source} to ${link.target}`;
+    expect(link.length, name).toBeGreaterThan(0);
+    expect(link.length, name).toBeCloseTo(gap(source, target), 1);
+    expect(gap(link.start, source), `${name} starts at its source`).toBeLessThan(.05);
+    expect(gap(link.end, target), `${name} ends at its target`).toBeLessThan(.05);
+  }
+  return shown.filter(link => link.kind !== "containment").length;
+}
+
 const extent = (nodes: Rendered): number => Math.max(...["x", "y", "z"].map(axis =>
   Math.max(...nodes.map(node => node.world[axis as "x" | "y" | "z"])) - Math.min(...nodes.map(node => node.world[axis as "x" | "y" | "z"]))));
 
 test("the structure layout hangs every file from its directory from where it stood, sizes a hub by its members, and draws a reference only on demand", async ({ page }) => {
-  test.setTimeout(90_000); // Two complete native simulation cooldowns and a hover search.
+  test.setTimeout(90_000); // Two complete settlings of the native simulation and a hover search.
   await observeGraph(page);
   await page.goto(entry("connections"));
   const graph = page.locator("#graph-svg");
@@ -33,6 +53,7 @@ test("the structure layout hangs every file from its directory from where it sto
   const references = referenceFacts(networkLinks);
   expect(references.length).toBeGreaterThan(0);
   expect(networkLinks.every(link => link.visible)).toBe(true);
+  expect(await expectDrawnBetweenSpheres(page)).toBe(references.length);
   const structure = page.getByRole("button", { name: "Structure", exact: true });
   await expect(structure).toHaveAttribute("aria-pressed", "false");
   await expect(page.getByRole("button", { name: "Connections", exact: true })).toHaveAttribute("aria-pressed", "true");
@@ -69,7 +90,7 @@ test("the structure layout hangs every file from its directory from where it sto
   expect(links.filter(link => link.kind !== "containment").every(link => !link.visible)).toBe(true);
   const parent = tree.find(node => node.directory === "Portal")!;
   const child = tree.find(node => node.directory === "Portal/Models")!;
-  expect(membership).toContainEqual({ source: parent.id, target: child.id, kind: "containment", count: 1, visible: true });
+  expect(membership).toContainEqual(expect.objectContaining({ source: parent.id, target: child.id, kind: "containment", count: 1, visible: true }));
   // A hub's volume is the sum of its members' volumes, read from the rendered spheres themselves.
   const volume = (node: Rendered[number]): number => Math.pow(node.radius, 3);
   const files = tree.filter(node => node.directory === undefined);
@@ -94,6 +115,7 @@ test("the structure layout hangs every file from its directory from where it sto
   expect(incident.length).toBeGreaterThan(0);
   expect(incident.every(link => link.visible)).toBe(true);
   expect((await renderedLinks(page)).filter(link => link.kind !== "containment" && link.visible)).toHaveLength(incident.length);
+  expect(await expectDrawnBetweenSpheres(page)).toBe(incident.length);
   await page.mouse.move(30, 50);
   await expect.poll(async () => (await renderedLinks(page)).filter(link => link.kind !== "containment" && link.visible).length).toBe(0);
 
@@ -174,6 +196,8 @@ test("changing a preset keeps the directory being inspected in place even when a
     filters: { showTests: true, showAssets: false }
   })}`);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  // The pinned file's references are drawn among the retained files, each between its two spheres.
+  expect(await expectDrawnBetweenSpheres(page)).toBeGreaterThan(0);
   const id = (await renderedNodes(page)).find(node => node.directory === directory)!.id;
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
   await page.getByRole("button", { name: `Show directory ${directory}`, exact: true }).click();

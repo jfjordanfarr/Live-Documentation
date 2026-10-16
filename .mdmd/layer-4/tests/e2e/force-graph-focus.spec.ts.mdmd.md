@@ -13,7 +13,7 @@ Exercises file focus in the rendered Force Graph through URLs, search, node clic
 ### Notes
 
 - The first test clicks the focused sphere at a point no nearer sphere covers, read from the rendered scene (2026-10-15, [Turn 10](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-10)): it had clicked the canvas centre, where `pathfind.ts`, a bigger neighbour, came to stand in front of `graph.ts` once the graph gained its files, and the panel's text check passed because `pathfind.ts`'s doc names `graph.ts`; the search bar's field now says which file the click pinned.
-The canvas-center click verifies the actual sphere’s identity rather than only its HTML label. The search case goes through the search bar since 2026-10-14: Ctrl+P focuses its field, and the file chosen is pinned and focused, with no details panel opened. Manual-pan restoration is measured after the existing force simulation’s 15-second cooldown. The estate case also exercises reduced motion.
+The canvas-center click verifies the actual sphere’s identity rather than only its HTML label. The search case goes through the search bar since 2026-10-14: Ctrl+P focuses its field, and the file chosen is pinned and focused, with no details panel opened. Manual-pan restoration is measured once the container says the simulation has settled; until 2026-10-16 the test waited out the library's fifteen-second cooldown, which the view no longer runs. The estate case also exercises reduced motion.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

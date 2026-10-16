@@ -51,13 +51,17 @@ export function linkPulls(link: Pick<SpatialLink, "kind">, layout: SpatialLayout
   return layout === "structure" ? link.kind === "containment" : link.kind !== "containment";
 }
 
-type PullingLinkForce<N extends SpatialNode, L extends SpatialLink<N>> = ForceLink<N, L> & { readonly inner: ForceLink<N, L>; all: L[] };
+type PullingLinkForce<N extends SpatialNode, L extends SpatialLink<N>> = ForceLink<N, L> & { readonly inner: ForceLink<N, L>; all: L[]; nodes?: N[] };
 
 /**
  * D3's link force over the links that pull in a layout. It accepts every link like the force it wraps and hands the
  * inner force only the pulling ones, so that a documented reference drawn on demand in the structure layout neither
  * pulls nor counts in a spring's degree, and containment never does in the connections layout. Wrapping a wrapper for
  * another layout starts again from the complete list it was given.
+ *
+ * D3 resolves the endpoints of only the links it holds, and three-forcegraph draws no line whose endpoints have no
+ * coordinates, so the wrapper resolves the others against the same nodes, as D3 would and with D3's error for an id
+ * it cannot find: a reference revealed in the structure layout runs between its two spheres (2026-10-16).
  */
 export function pullingLinkForce<N extends SpatialNode, L extends SpatialLink<N>>(link: ForceLink<N, L>, layout: SpatialLayout): ForceLink<N, L> {
   const wrapped = link as unknown as Partial<PullingLinkForce<N, L>>;
@@ -65,14 +69,37 @@ export function pullingLinkForce<N extends SpatialNode, L extends SpatialLink<N>
   const all = wrapped.all ?? link.links();
   const force = ((alpha: number): void => { inner(alpha); }) as PullingLinkForce<N, L>;
   type Setter = number | ((edge: L, index: number, links: L[]) => number);
+  const resolveHeldBack = (): void => {
+    const nodes = force.nodes;
+    if (!nodes) return;
+    const id = inner.id();
+    const byId = new Map(nodes.map((node, index) => [id(node, index, nodes), node]));
+    const find = (endpoint: string | N): N => {
+      if (typeof endpoint === "object") return endpoint;
+      const node = byId.get(endpoint);
+      if (!node) throw new Error(`node not found: ${endpoint}`);
+      return node;
+    };
+    for (const edge of force.all) {
+      if (linkPulls(edge, layout)) continue;
+      edge.source = find(edge.source);
+      edge.target = find(edge.target);
+    }
+  };
   Object.assign(force, {
     inner,
     all,
-    initialize: (nodes: N[], ...rest: unknown[]): void => { (inner.initialize as ((nodes: N[], ...rest: unknown[]) => void) | undefined)?.(nodes, ...rest); },
+    nodes: wrapped.nodes,
+    initialize: (nodes: N[], ...rest: unknown[]): void => {
+      (inner.initialize as ((nodes: N[], ...rest: unknown[]) => void) | undefined)?.(nodes, ...rest);
+      force.nodes = nodes;
+      resolveHeldBack();
+    },
     links: (...args: [L[]?]): L[] | typeof force => {
       if (!args.length) return force.all;
       force.all = args[0]!;
       inner.links(force.all.filter(edge => linkPulls(edge, layout)));
+      resolveHeldBack();
       return force;
     },
     id: (by: (node: N, index: number, nodes: N[]) => string | number): typeof force => { inner.id(by); return force; },
@@ -112,11 +139,5 @@ export function simulateSpatialLayout(nodes: readonly SpatialNode[], links: read
     .force("center", forceCenter<SpatialNode>());
   configureSpatialForces({ get: name => simulation.force(name), set: (name, force) => { simulation.force(name, force); } }, tuning, layout);
   simulation.tick(ticks);
-  // The engine resolves the endpoints of the links that pull; the rest are resolved here so that every link reports alike.
-  const byId = new Map(placed.map(node => [node.id, node]));
-  for (const edge of edges) {
-    if (typeof edge.source === "string") edge.source = byId.get(edge.source) ?? edge.source;
-    if (typeof edge.target === "string") edge.target = byId.get(edge.target) ?? edge.target;
-  }
   return { nodes: placed, links: edges };
 }

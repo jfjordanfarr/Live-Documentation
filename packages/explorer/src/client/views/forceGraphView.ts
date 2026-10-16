@@ -34,6 +34,7 @@ import { wheelPixels } from "./wheel";
 const NODE_COLORS: Readonly<Record<string, string>> = {
   implementation: "#0091ff",
   test: "#28a745",
+  asset: "#e83e8c",
   interface: "#ffc107",
   config: "#6c757d",
   script: "#17a2b8",
@@ -508,6 +509,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .height(container.clientHeight)
       .graphData(dataForGraph)
       .warmupTicks(100)
+      // The engine stops when the layout has settled, at D3's own minimum alpha, rather than at the library's fifteen
+      // seconds after every change.
+      .d3AlphaMin(0.001)
+      // The alphas the link colours carry are the real ones; the library's default opacity of 0.2 multiplied them.
+      .linkOpacity(1)
       // The simulation moves nodes immediately before painting. Track that
       // position in the same frame so the sphere and its projected label agree.
       .onEngineTick(() => { simulationRunning = true; ready = true; container.setAttribute("aria-busy", "true"); frameDirectory(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })

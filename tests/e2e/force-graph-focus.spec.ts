@@ -98,8 +98,8 @@ test("manual pan survives a 2D and 3D round trip without restarting the settled 
   test.setTimeout(45_000);
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
-  // The existing force simulation has a 15-second cooldown. Compare a settled graph.
-  await page.waitForTimeout(16_000);
+  // Compare a settled graph: the container is busy until the simulation's alpha falls below its minimum.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   const canvas = (await page.locator("#graph-svg canvas").boundingBox())!;
   // File-pair aggregation changes placement. Pan the background: a press on
   // a sphere invokes the library's node drag and reheats the simulation.

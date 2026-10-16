@@ -41,3 +41,29 @@ Pictures of the built Explorer after the manifest adapters landed ([Turn 3 of th
 | The fixture's `rust` directory opened: the two crates as directory cards, their manifests and the path dependency between them hidden for the same reason | [03-rust-workspace-opened.png](manifests/03-rust-workspace-opened.png) |
 | Knowledge Sources, the bundle's shape: 763 files, and by extension `.toml 9`, `.xml 7` and `.mod 4` now among them | [04-knowledge-sources.png](manifests/04-knowledge-sources.png) |
 
+## The 3D Local Map's wires drawn, at the opacity their colours say
+
+Pictures of the built Explorer before and after four fixes to the 3D Local Map found by a probe over its modules: in the structure layout a revealed reference was made visible but never positioned, so a hovered or pinned file showed no wire; the library's default link opacity of 0.2 multiplied every link colour's alpha; the engine ran out the library's fifteen seconds after every change; an asset had no colour of its own. Taken over this repository's bundle, served from this worktree's `dist/explorer`, at 1600 by 1000; each pair is the same address, the before from the unchanged code, the after from the changed. The hovered file is `packages/explorer/src/client/views/forceGraphData.ts`, selected by the address so that the camera stands at it; the pinned file is `packages/explorer/src/client/views/forceGraphLayout.ts`.
+
+| What is shown | Picture |
+| --- | --- |
+| Structure layout, `forceGraphData.ts` hovered, before: its eight references visible but drawn nowhere, each a unit tube at the origin; the containment lines barely there at 0.07 | [01-structure-hover-before.png](structure-wires/01-structure-hover-before.png) |
+| The same, after: the eight wires run from its sphere to each neighbour's, at 0.5; its own membership line in amber at 0.35 and the rest of the tree at 0.08 | [02-structure-hover-after.png](structure-wires/02-structure-hover-after.png) |
+| Structure layout, `forceGraphLayout.ts` pinned, before: its seven references to the retained files not drawn; only faint membership lines | [03-structure-pinned-before.png](structure-wires/03-structure-pinned-before.png) |
+| The same, after: the seven wires drawn to its neighbours, its own membership line to its directory's hub in amber | [04-structure-pinned-after.png](structure-wires/04-structure-pinned-after.png) |
+| Connections layout at rest, before: the web of 1,352 file pairs at an effective 0.04, nearly black between the spheres | [05-connections-at-rest-before.png](structure-wires/05-connections-at-rest-before.png) |
+| The same, after: the web at 0.2, the clusters' internal wiring readable and the long links between them traceable | [06-connections-at-rest-after.png](structure-wires/06-connections-at-rest-after.png) |
+| Connections layout with `forceGraphLayout.ts` pinned, before: its wires at 0.04, the rest at 0.005, both close to invisible | [07-connections-pinned-before.png](structure-wires/07-connections-pinned-before.png) |
+| The same, after: its wires at 0.2 stand out from the rest of the web at 0.025, which stays as a faint context | [08-connections-pinned-after.png](structure-wires/08-connections-pinned-after.png) |
+
+By eye: the written alphas read as written now, and none looks too strong to me at this size; close up the structure layout's revealed wires at 0.5 are heavy beside the spheres, and the owner's eye decides the numbers. Measured from the rendered scene: before, every shown reference in the structure layout had length 1 at the origin (8 of 8 hovered, 7 of 7 pinned); after, all had the length between their spheres. The page reported itself busy for 16.8 s before and 7.2 to 7.6 s after on the structure scenes with a file selected; on the connections layout at rest it stayed near 16 s after, because this machine's headless renderer draws the 722-file bundle at about 12 frames a second and the 300 ticks to the minimum alpha take that long; on the estate sample, at about 50 frames a second, it settles in 3.7 s (connections) and 4.0 s (structure).
+
+## An asset is a binary file: what the Local Map shows now
+
+Pictures after the asset rule of the evening ([Turn 4 of the October 16 session](../../ChatHistory/2026/10/2026-10-16.1.record.md#turn-4)), the owner's line "The dividing line is plaintext/near-plain-text versus binary." Under the fixtures-era rule every file without a code extension under a sample root was an asset and hidden by default; now a text file takes the role it would anywhere, and the pictures the samples give changed accordingly. Taken over this repository's own bundle at 1600 by 1000.
+
+| What is shown | Picture |
+| --- | --- |
+| The TypeScript rosetta sample's landing on `main.ts`: the oracle's `expected/compiler-edges.json`, a card now, wired to the files it names, and the picture wider than the frame, so that `models.ts` stands off screen to the left; a person pans, and the browser tests now do the same | [01-rosetta-landing.png](asset-rule/01-rosetta-landing.png) |
+| The estate sample's `Portal` opened: `Portal.csproj` and `Web.config` as cards beside the directories, where the old rule had hidden them as assets | [02-estate-portal-opened.png](asset-rule/02-estate-portal-opened.png) |
+
