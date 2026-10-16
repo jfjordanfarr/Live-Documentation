@@ -3369,114 +3369,10 @@ completed (exit code 0)
   with its includes wired. Next to plan is the archetypes design step, with the
   edge families above as its design question.
 
-● The pass is in: e254096f after the full gate went green (lint with no errors,
-  1,097 unit, 72 integration, three audits, 131 browser tests), and the record
-  follows as 79807e7a. The expansion you asked for first, then what landed.
-
-  The four families of edges, and the sidecars
-
-  Every file-to-file reference the survey found falls into one of four families,
-  by how the referring file names the referred one.
-
-  1. By path. HTML's src, CSS's url(), markdown's link, C's #include "…", Rust's
-     mod to a file, PHP's include, Ruby's require_relative, Kustomize's
-     resources, Terraform's ./modules, Compose's context, Godot's res://. The
-     referring file alone says where the other file is, up to a search list (-I
-     directories, $LOAD_PATH, sys.path). This is the family the adapters read
-     today; the include rule chosen last night is the search-list half of it.
-  2. By name through a convention. Java's import a.b.C reaches a/b/C.java; Go's
-     package path reaches a directory; Python's module path walks sys.path;
-     PSR-4 maps a namespace to a directory; Rails maps a constant to a file. The
-     referring file names a symbol and the ecosystem's rule turns it into a
-     path. The compiler-backed adapters already do this; it is the other half of
-     what makes an import edge.
-  3. By an opaque identifier through a sidecar or a database. Unity's scenes
-     point at a script by a GUID that lives in the script's .meta file; Godot's
-     uid:// lives in the .import or .uid sidecar; Android's R.drawable.icon is
-     derived from a file name by the build; DVC's .dvc pointer stands for a data
-     file. The referring file cannot be read alone. A first pass over the
-     workspace must collect the identifiers, exactly as the generator's first
-     pass collects symbols and entries today. The sidecar is content, since
-     deleting it breaks the edge, and a Unity script's doc would say "referenced
-     by scene X through GUID", with the .meta as the evidence.
-  4. By a name resolved at build or run time. An Xcode asset set, a Helm chart
-     name, an Unreal module, a Swift target, a Unity Resources path in a string,
-     a Terraform registry source, uses: owner/repo@ref. The manifest or a
-     registry decides what the name means; some are external by nature and stay
-     external dependencies.
-
-  What the grammar has today is one notion of how an edge is known within a
-  folder (an import or type reference) and three bases across a process boundary
-  (contract, configuration, declared). Families three and four would each want
-  a basis of their own written on the edge, with the sidecar or manifest that
-  carried it as the evidence, and the Explorer would draw them as it draws every
-  wire. The second family's rule and the third's first pass are mechanism we
-  already own in other forms. None of this is proposed for building now. It is
-  what the archetypes design step opens, and a text-serialized Unity project is
-  the natural first sample: its edges are legible YAML and its GUIDs sit in
-  sidecars we can read.
-
-  What landed
-
-  - C and C++ by the grammar. The adapter is rewritten over the tree-sitter C++
-    grammar already in the bundle, registered for every C and C++ suffix. The
-    include rule was chosen by which of four candidates disagreed least with
-    scip-clang:
-
-  ┌─────────────────┬──────────┬───────────┬───────────┬──────────────────┐
-  │    Fixture      │ today's  │           │  greedy   │ ancestors with   │
-  │   (includes)    │   rule   │ ancestors │   tail    │  include/ and    │
-  │                 │          │           │   match   │       src/       │
-  ├─────────────────┼──────────┼───────────┼───────────┼──────────────────┤
-  │ include fixture │        4 │         5 │ 6, two to │                8 │
-  │  (8)            │          │           │   a decoy │                  │
-  ├─────────────────┼──────────┼───────────┼───────────┼──────────────────┤
-  │ the four flat   │       40 │        40 │        40 │               40 │
-  │ samples (40)    │          │           │           │                  │
-  └─────────────────┴──────────┴───────────┴───────────┴──────────────────┘
-
-    The greedy rule had scored 8 until a decoy that sorts first was added, so
-  the measurement told luck from a rule. The winner is the default; an
-  integration test holds it to the compiler's resolutions from now on.
-  scip-clang is installed by the devcontainer for this project only, C++ is the
-  ninth rosetta language, and the C samples carry compilation databases too.
-  - Discovery reads every suffix anywhere. The shipped defaults are every file
-    an adapter can read, hidden folders included, minus .git, node_modules, the
-    docs root and lock files; the .gitignore is honoured except for a file git
-    tracks; exclude is in the configuration, and this repository excludes its
-    agent workspace. Assets are documented wherever found. The root's tooling
-    files, the packages' project files and the editor's files have docs written
-    from their origins, and the editor's files are tooling entries by their
-    place.
-  - Found and fixed on the way. The C sample's three test files had never
-    compiled. The docs of hidden files were written and never read, because
-    every doc enumerator globbed without dot. .ascx was unregistered, .inl was
-    an asset, .mts and .cts symbols were never indexed, and the oracle's
-    converter mistook a reopened C++ namespace for a definition. The card's "+N
-    symbols" now counts public symbols only.
-
-  The gate took six runs, each failure fixed at its cause rather than the gate:
-  a wrong constant, the hand list of entries behind the new defaults, the editor
-  files no rule named, authored links at the wrong depth, duplicate headings in
-  the archetypes survey, and three browser tests the card's count moved. One of
-  those deserves your attention: the simplicity spec's third stage asserted a
-  bound I wrote on October 15 as "the property that holds on any picture".
-  Replayed under its tuning, with the new card and with the old, the weight-100
-  first paint takes a nine-step start over the previous four-step picture and
-  settles at six. The bound was never the competition's promise. The stage now
-  asserts what is promised (the facts unchanged, alignment still adopted, the
-  engine band's top joined), and the sensitivity is noted for the layout work
-  you paused.
-
-  Waiting on your eye: the five pictures in Screenshots/2026-10-16
-  (AI-Agent-Workspace/Screenshots/2026-10-16/README.md), the tooling group with
-  the root's files, a test card with no reveal, and the C++ sample's main pinned
-  with its includes wired. Next to plan is the archetypes design step, with the
-  edge families above as its design question.
-
 ❯ /compact
   ⎿  Compacted
-  ⎿  Read packages/engine/src/live-docs/gitUtils.ts (136 lines)  ⎿  Referenced file
+  ⎿  Read packages/engine/src/live-docs/gitUtils.ts (136 lines)
+  ⎿  Referenced file
      packages/explorer/src/client/views/localView/branch-renderer.ts
   ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/0a57db
      fd-3a23-40e9-8c99-e6fc8af972b3/scratchpad/archetypes-code.md
@@ -3484,3 +3380,228 @@ completed (exit code 0)
      fd-3a23-40e9-8c99-e6fc8af972b3/scratchpad/archetypes-assets.md
   ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/0a57dbfd-3a23-40e
      9-8c99-e6fc8af972b3/tasks/bfu3hmitg.output (6 lines)
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -15-141939-its-now-10152026-lets-start-up-a-new-chat-re.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ Really really slick. The only major thing I'm noticing as troubling me is
+  that clicks in certain collapse elements (arrow or name) appears to cause a
+  big delay, especially when chained together. It appears to me that my
+  requests for so much in the way of functionality has been causative for much
+  in the way of performance. To what performance tools do you have access, and
+  aside from the 2D/3D transition, what other performance pain points are you
+  able to locate while exercising the site? Could our playwright suite be
+  reasonbly sped up incidentally, say, by getting the site to run a little
+  faster? And if so, at what costs/tradeoffs, if any?
+
+● Recording the turn first, then I'll profile the built Explorer under real
+  clicks before answering.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● I'll note that the ninth export matches the eighth byte for byte, then log
+  this turn while checking the collapse code, Playwright config, and bundle
+  state in parallel. · summary
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Pulling the per-test timings out of the last gate run's report (the Playwright
+  run alone took 16 minutes, not the 3 the notes claim), and reading the Local
+  Map controller where the clicks land.
+
+  Searched for 2 patterns, read 4 files, ran 15 shell commands (ctrl+o to expand)
+
+● I'll write a profiling harness that uses Playwright to drive the built bundle
+  while capturing a CPU profile and Chrome trace, clicking directory names,
+  boxes, and close buttons individually and in sequence, then reading the
+  renderer's own counters after each click. · summary
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● I'm building the harness: a Playwright driver to capture a CPU profile and
+  Chrome trace during clicks, plus analyzers to map the minified profile back
+  through the sourcemap and bucket layout work per click. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The driver and analyzers are written. Running the probe over this repository's
+  bundle now, and reading the layout's algorithmic modules alongside so the
+  profile's names land on known code.
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● I got concrete numbers from the probe. Next I'll run the analyzers on its
+  profile and trace, do two more probe runs (with search disabled and the deck's
+  retained scope), and write a harness to time the still-picture test's
+  individual steps. · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● The click itself blocks for 0.3–1 second, and with the shipped tuning the
+  follow-up search keeps the main thread busy for another 5–15 seconds across
+  all three runs. Next I'll isolate the click's own cost with a search-off
+  profile and time the deck test's instrument separately. · summary
+
+  Searched for 2 patterns, read 1 file, ran 8 shell commands (ctrl+o to expand)
+
+● The deck test's runtime is dominated by the instrument reading the page rather
+  than the site rendering it. I'll check the instrument's slow steps, look at
+  the bundle's build options, and log the numbers in the record. · summary
+
+  Searched for 1 pattern, ran 10 shell commands (ctrl+o to expand)
+
+● Audits are clean. Adding the dated note to direction.md, then committing the
+  record, the export and the probe, and then the reply.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Measured, nothing changed; the numbers and the method are committed as
+  a914010d in the probe record
+  (AI-Agent-Workspace/Probes/2026-10-16/explorer-performance/README.md).
+
+  Tools I have here. Playwright driving the built bundle with the Chrome
+  DevTools Protocol underneath it: a V8 CPU profiler mapped back through the
+  bundle's sourcemap, a Chrome trace bucketed per click into layouts, style
+  recalculations, paints and frames, and a long-task observer. The renderer's
+  own counters on the root (data-layout-ms, the starts tried, the search's
+  trials and adoptions). The layout lab for headless layout costs. The gate's
+  Playwright report for every test's duration. Not here: a GPU, so the 3D view's
+  frame rate can't be judged headless; and no Lighthouse-style tool, which
+  wouldn't help a static page anyway.
+
+  What your click costs. Every collapse control (a directory's name, a closed
+  box, the X) runs the same render, and it is two delays in a row:
+
+  ┌─────────────────────────────┬──────────┬─────────────┬────────────────┐
+  │                             │  click   │    then     │ main thread in │
+  │            Scope            │  blocks  │  settles    │   long tasks   │
+  │                             │          │    after    │                │
+  ├─────────────────────────────┼──────────┼─────────────┼────────────────┤
+  │ 34 cards, 130 wires, open a │   0.28 s │ 1.8 to 5.5  │   0.4 to 1.5 s │
+  │  directory                  │          │           s │                │
+  ├─────────────────────────────┼──────────┼─────────────┼────────────────┤
+  │ the biggest directory one   │   0.45 s │       4.3 s │          1.5 s │
+  │ click reaches (92 cards)    │          │             │                │
+  ├─────────────────────────────┼──────────┼─────────────┼────────────────┤
+  │ retained chain scope, 65 to │  0.7 to  │   6 to 15 s │  5.5 to 15.7 s │
+  │  108 cards, 418 wires       │    1.0 s │             │                │
+  ├─────────────────────────────┼──────────┼─────────────┼────────────────┤
+  │ pin types.ts (72 cards, 383 │    1.0 s │      23.7 s │           20 s │
+  │  wires)                     │          │             │                │
+  ├─────────────────────────────┼──────────┼─────────────┼────────────────┤
+  │ any of these with the       │ the same │      0.48 s │           none │
+  │ continuing search off       │          │             │                │
+  └─────────────────────────────┴──────────┴─────────────┴────────────────┘
+
+  The first delay is the render itself: three or four starts, each solved by the
+  network simplex, on the main thread. The second is the continuing search you
+  asked for on October 7: up to 32 seeds plus every boundary join of each
+  incumbent, one full solve per trial in idle callbacks, each adoption a page
+  measurement and another 450 ms move. The join trials don't consume the
+  patience, so a click on the retained scope is followed by 30 to 43 of them. A
+  chained click lands behind the running trial, then stops the search and starts
+  it over, which is why chaining feels worst. So your reading is half right:
+  the functionality that costs is specifically the search's thoroughness, not
+  the pins or directories themselves.
+
+  Where the time goes, by the profile. With the search off, the render is 45% of
+  sampled time, and the simplex alone 27% of it, against 6% for measuring the
+  page and 2% for building the cards. Inside the simplex, TreeIndex.rebuild is
+  12% by itself: the spanning tree and its cut values are rebuilt from scratch
+  every iteration, where the method's known form updates them per pivot. The
+  other 31% is drawConnections, which measures, routes and rebuilds every wire
+  as SVG on every animation frame of every move; at 418 wires a move runs near
+  20 frames a second.
+
+  Other pain points. None of the rest is slow. Hover 1 to 2 ms, the sidebar
+  arrow 0.2 ms, search typing no long task, the World Map ready in 0.3 s with a
+  9 ms pin. The bundle is 5 MB of data and 1.8 MB of script, 1.2 MB of that
+  three.js, a cost only over a network.
+
+  The suite. The gate's Playwright run took 966 s, not the 3 minutes the notes
+  claim. Of that: the still-picture deck 337 s, the 3D specs 187 s, the specs
+  crossing 2D and 3D 144 s, the 2D Local Map specs about 230 s. I timed the
+  deck's retained test step by step: the page's own layout is under 5% of it;
+  nine tenths is the instrument sampling every wire with hit tests and panning
+  six times with 160 and 700 ms rests each. The 3D specs wait on timers, 16 s in
+  one place. So a faster render shortens only the 2D specs' renders, 0.3 to 1 s
+  each, bounded by the 450 ms moves the tests wait for. The suite already runs
+  with the search off.
+
+  The possibility space, undecided. Each is testable against today with the lab
+  and the probe. Bounding the search's joins by the patience, or spending it
+  where no click is expected, trades picture improvement after a click against
+  quiet. Keeping the simplex incremental and reusing a solve for a repeated
+  order is a pure speedup with the same optimum. Routing the wires every other
+  frame, or only those whose endpoints moved, trades the motion's fidelity for
+  its frame rate. Measuring once per render is about 6%. For the suite,
+  condition waits in place of timers and more than one worker, which the deck's
+  report writing assumes not to have.
+
+  Say which of these you want weighed or built, and whether the probe's driver
+  should become a kept instrument beside the layout lab.
+
+❯ Maybe a dumb question on my part, but should clicks in the Knowledge Sources
+  tab, even if to a thing which can be visualized in the local map, cause the
+  exploration/simplex stuff to happen? Or should that happen more lazily/when
+  needed? Your response indicates you scanned but it doesn't show me a lot
+  standing out.
+
+● Recording the turn, then reading how the views are wired: whether a click in
+  Knowledge Sources, or any state change while the Local Map is hidden, runs the
+  layout at all.
+
+  Searched for 3 patterns, ran 11 shell commands (ctrl+o to expand)
+
+● The measurements answer it directly. Writing them into the probe record and
+  the session record, then committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Not a dumb question, and the answer is no: a Knowledge Sources click runs none
+  of it. I measured it rather than trust the code (committed as 0e8daa0f, in
+  the probe record (AI-Agent-Workspace/Probes/2026-10-16/explorer-performance/RE
+  ADME.md#behind-the-other-views)):
+
+  - Knowledge Sources as the landing, click a file name: 4 ms, no long task, and
+    no Local Map exists in the page at all. The click opens the detail panel.
+    The World Map landing draws no Local Map either. The app draws only the view
+    shown, so the layout is already deferred until you look at the map.
+
+  So the eagerness is inside the map, and that is what should stand out. Four
+  things, in the order I'd rank them:
+
+  1. The search works on a view you have left, then throws it away. Views are
+     hidden by opacity, not removed. Leave the map for Knowledge Sources
+     mid-search and the search keeps solving behind it (8 seeds and 10 joins in
+     six seconds on the small neighbourhood; on the retained scope that is the
+     whole 8 to 15 s tail). Come back and the switch costs a full 240 ms render
+     of a picture that was still there unchanged, and the search starts again
+     from seed one.
+  2. Nothing is incremental. Every click re-explores the graph, rebuilds every
+     card's element and re-solves every start from scratch, whether the click
+     added one card or forty. The previous picture survives only as a starting
+     order for the sweep. "When needed" today means "on every state change while
+     the map is shown", including a change that arrives while the last one's
+     move is still running.
+  3. The solver rebuilds its own bookkeeping every iteration. Inside the
+     simplex, the spanning tree and its cut values are recomputed from scratch
+     each pivot. That one habit is 12% of a render on its own, and the known
+     form of the method updates them incrementally with the same answer.
+  4. The wires are redrawn from nothing every frame of every move. At 418 wires
+     that is more than a frame's budget, so the move you asked for on October 7
+     runs at about 20 frames a second on a retained scope.
+
+  The lazier shape you are pointing at would be: render only when the picture's
+  inputs changed (pins, open directories, subject, filters, tuning), pause the
+  search while the map is hidden and resume it on return instead of restarting,
+  and give each search step the idle deadline it already receives but ignores.
+  None of that changes what the picture looks like, so each is testable as "the
+  same pixels, less time". The simplex and the per-frame wires are the two
+  places where the time itself lives; the search's budget is the one place where
+  a design choice of yours is being spent.
+
+  Say which you want built first, or whether to plan the lazy render and the
+  paused search together as one pass.
