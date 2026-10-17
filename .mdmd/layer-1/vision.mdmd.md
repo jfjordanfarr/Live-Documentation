@@ -10,7 +10,7 @@ _View consolidation, 2026-10-12: the owner [retired the Circuit Board and Membra
 
 **Live Documentation turns a folder of source files into a map you can look at.**
 
-It writes one markdown file per source file, describing what that file exposes and what it is wired to. Everything else the tool shows, whether the Explorer picture, the CLI answers, or the VS Code panel, is a rendering of those files and nothing more.
+It writes one markdown file per source file, describing what that file exposes and what it is wired to. Everything else the tool shows, whether the Explorer picture or the CLI answers, is a rendering of those files and nothing more, and so would any later host be.
 
 It exists so that a person can see how a system's pieces connect without reading the code or drawing the diagram by hand: the author checking a change's blast radius, a colleague learning the codebase, or someone from the business who needs to understand what the software does.
 
@@ -79,7 +79,7 @@ The map's edges are checked against oracles that share no mechanism with the ana
 
 - Not an LLM tool. It calls no model and makes no network requests. Agents may read its output like anyone else.
 - Not a server. The Explorer is a static page.
-- Not editor-bound. The VS Code panel hosts the same static Explorer with a file watcher; nothing works only there.
+- Not editor-bound. An editor panel, if one returns, hosts the same static Explorer with a file watcher; nothing works only there. The 2025 extension was removed on 2026-09-27, and the owner holds the panel as an early idea, "Maybe one day it will happen" (2026-10-17): the tool stays portable and simple so that presenting it in a new context is no great hassle.
 - Not a specification. The map records interface and wiring, not behavior.
 
 ## Where this stands

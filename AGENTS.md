@@ -4,7 +4,7 @@ This is the one place agents are told how to work in this repository. Vendor-spe
 
 ## What this is
 
-Live Documentation turns a folder of source files into a map you can look at. It writes one markdown file per source file describing what that file exposes and what it is wired to. The Explorer (a static web page), the CLI, and the VS Code panel are renderings of those files and nothing more. It exists so a person can see how a system's pieces connect without reading the code or drawing the diagram by hand.
+Live Documentation turns a folder of source files into a map you can look at. It writes one markdown file per source file describing what that file exposes and what it is wired to. The Explorer (a static web page) and the CLI are renderings of those files and nothing more, and so would any later host be, such as an editor panel. It exists so a person can see how a system's pieces connect without reading the code or drawing the diagram by hand.
 
 The full statement of intent is [the vision](.mdmd/layer-1/vision.mdmd.md). Read it before proposing features.
 
