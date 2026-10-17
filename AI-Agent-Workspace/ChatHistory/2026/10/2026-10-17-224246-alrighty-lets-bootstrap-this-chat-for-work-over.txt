@@ -276,3 +276,287 @@
   With your answers I write them into direction.md and the doc's decisions, and
   the first build ticket is C1, the sequence and the history command, with C9's
   scripted-repository test and your September renames as its oracles.
+
+❯ >
+  C2. The gentle update and the renderer's reach into the simulation. Build, in
+  forceGraphLayout.ts and forceGraphView.ts; the probe's B setting is the
+  prototype. Scenarios 1, 2, 12. The library's graphData reheats to full alpha
+  on every call and exposes no alpha target, so the gentle reheat is a wrapper
+  that scales the link and charge forces by a fraction of alpha with d3AlphaMin
+  set so the engine stops in about fifty ticks, and the library's centring
+  force is dropped while hubs are held. A fork for the owner's eye: whether
+  every membership change (a pin, a filter, a directory opened, the layout
+  switched) takes the gentle update too, so that a type toggle no longer stirs
+  the whole picture, or only a history step does. Recommended: every membership
+  change, one update path, the hundred-tick warm-up kept for the first picture
+  alone; the probe's numbers (75 units to 3.7) say what the eye will see, and
+  the pictures decide.
+  I 100% agree with "pictures decide" (or more generally, "let the user decide
+  to taste after presenting a few options", where "user" is developer, me, in
+  this case).
+
+  >C3. The salient step (the owner's question). Talk, then build with C4.
+  Scenarios 2, 10. The graph's changes to a pinned file (born, dead, renamed,
+  resized, an edge of it added or removed) are what the map can show; git's
+  content-only changes to it are the file's own business, three of the ten in
+  the probe. Recommended: both marked, the graph's as the ticks the step key
+  moves between, git's as fainter ticks beneath them, so that the whole life of
+  a pinned file is on the scrubber and the map never claims a change it cannot
+  show; for a pinned directory, any file under it; with nothing pinned, every
+  step is a tick.
+
+  Ohhhh okay okay so you're saying that the kind of quantum leap events are
+  major ticks and the update-only changes are minor ticks? I actually think
+  that's visually quite clever! Wish you'd described it that way (unless that's
+  not what you meant?)
+
+  >
+  C4. The scrubber, the step panel and the address. Build, after C1 and C2.
+  Scenarios 9, 10, 14. The control's place is a question for the consolidation
+  pass the owner expects, so it goes beside the Connections and Structure
+  buttons for now, as those went beside 3D. Open inside it: the play rate's
+  default and whether quiet stretches are skipped in play (recommended: one
+  step per second, every step played, since every step is one delta and a quiet
+  stretch has no steps); how a step is laid on the scrubber, evenly by index
+  or by time with gaps (recommended: evenly by index, so that every step is one
+  key press and one pixel band, with a ruler of months beneath it so that the
+  six-month gap of 2026 reads as a gap, and a by-time layout as a later lever
+  if the owner's eye wants it); what the panel shows for a file that no longer
+  exists today (recommended: its name, its archetype and its symbol count at
+  the step, and "gone since ", since the docs of that day are not in the
+  bundle).
+  The ability to "play" is cool, but I'm not gonna lie, the ability to scrub
+  and have it feel good and useful sounds _way_ more useful to me as someone
+  who wants to leverage this tooling to better understand our own repository.
+  (And others, of course! This could be quite a window into structures that
+  would not be obvious to the eye without our tool!)
+
+  >C4, the scrubber's defaults. Steps laid out evenly, one key press each, with
+  a ruler of months beneath so the six-month gap reads as a gap; play at one
+  step a second, every step played; a file that no longer exists shows its
+  name, kind and symbol count at the step and "gone since", because the docs of
+  that day are not in the bundle.
+
+  I strongly suspect that there is no one right granularity, depending on the
+  size of the history. You try to run this over the VS Code repo and it
+  probably explodes. You try to run this over a 5-commit throwaway project repo
+  and every commit is precious. I strongly suspect that we will need to set
+  ourselves up, with an architectural seam of some sort(? set of levers of some
+  sort?) to independently improve this aspect of granularity, such that we may
+  carefully and intelligently balance the competing concerns of completeness
+  and legibility.
+
+  >C5. The wiggle's levers and the hubs' release. Lab, then the owner's eye.
+  Scenario 12. The probe's finding that held hubs never re-balance: a tree that
+  never moves reads as growth only while it is small. Recommended: hubs held
+  through a step and released at the engine's stop into a second gentle
+  relaxation of the hubs alone, measured as the probe measured (settle,
+  displacement of the unchanged), with the alpha fraction, the hold and the
+  release as advanced levers under Tuning beside the force graph's, so that the
+  owner can "toy around with how to keep things from wiggling around too much
+  too quickly" by hand.
+
+  Correct me if I'm wrong, but my interpretation is that this feels like
+  something of a workaround. I have noticed the same "ever-expanding" behavior
+  in the 3D force graph -- it's trivial to trigger this -- just enable and
+  disable certain archetypes/file types over and over and see the microgalaxies
+  drift further apart. What this tells me is that whatever simulation drives
+  tension in the 3D force graph is highly lax (and I can certainly convince
+  myself of this by physically grabbing a node and tugging the graph around.
+  The defaults prefer to let the node rest where I left it, and have the rest
+  of the graph update gently in response to acclimate). It occurs to me that
+  the more parsimonious solution is to get a better understanding of the
+  physics drivers underlying the 3D force graph simulation, and try as best we
+  can, to introduce forces/behaviors which attempt to pull the elements back
+  together. Our many considerations for what we minimize/maximize in the 2D
+  Local Map layout is a great example of how we've balanced many concerns,
+  continuity of view among them, to produce something which is as useful and
+  legible as possible.
+
+  >
+  The fact: the static Explorer cannot read .git, so the generator computes,
+  the bundle carries, and the Explorer shows the control when the bundle holds
+  a sequence and otherwise one line in Knowledge Sources naming the command to
+  copy, as the entry points' field already offers its configuration line. The
+  owner's image of history machinery that "gets to work" once a view is created
+  needs a host that can run a process: the editor panel the decisions log
+  expects to return (Explorer Panel in the Editor), which does not exist today,
+  or a person at the command line. The fork that is live now is this
+  repository's own site: the Pages workflow builds the bundle on every push
+  with no cache, so the history is either computed in that workflow with the
+  cache kept between runs (the first run about an hour, each later run the new
+  commits only), or computed locally and committed as a file (against the rule
+  that nothing derived from local history is committed), or left to local
+  builds while the hosted site plays no history. Recommended: the first, the
+  cache keyed by the lens and restored by the workflow, so that the hosted
+  panopticon shows its own history and the rule holds.
+  OOF! A great fork. DANG! The tradeoffs between what we can enjoy when we are
+  actively connected to the scannable directory versus when we are not (the
+  static site). No doubt, we will need to pre-write some of this, potentially
+  optionally to the person who is performing such an export, as I suspect that
+  it is liable to make certain sizes of things absolutely explode hahaha! But
+  you're right, if we want the static site to be able to explore the _salient_
+  history of a pin set, we have to have the entire set of commits all baked
+  into the Live Documentation static site data in some manner or other, and if
+  we want to ensure that our difference-over-time machinery is sufficiently
+  decoupled from the source control mechanism that we can aim to support TFS
+  and other versioning systems' change formats later, how do we leverage a
+  preexisting common format or mint a new common format for change to enjoy
+  independent improvement in this domain?
+
+  >C8, authors. Git records a name on every commit, and a bundle travels.
+  Recommended: carry the author's name and show it in the step panel, with
+  --no-authors on the command for a bundle that will be shared; no avatars,
+  nothing drawn by person.
+
+  Maaaybe user-configurable? I don't feel strongly about it either way. I could
+  easily see scenarios where that's useful for presenting/sharing ideas about
+  a system, and I could just as easily see scenarios where that's distracting.
+  Therefore, that's almost certainly a toggle we'd need to provide to the end
+  user (especially, or perhaps only, to the end user who wishes to generate the
+  export? but all the better if we can just flip it on and off even in the
+  static site and include that in share links!)
+
+● I'll record this turn first, then start a short survey of change formats
+  across version-control systems for your new question, and update the plan with
+  your answers while it runs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent(Survey change formats across VCSs) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● Recorded, and the format survey is running in the background. Now the plan,
+  direction.md and owner.md take your answers; I'll check and commit them next.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Edits are in. Now the link check and audits over them, and the record's
+  checkpoint, in parallel; the commit follows.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The plan's revision is committed as 538bacd7, and your export of this chat has
+  arrived in the folder. I'll register and commit it as received, then give you
+  the answers.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The inventory entry I just wrote overstates the export's coverage: it ends at
+  the Turn 2 reply and holds two prompts, not your Turn 3 answers. Correcting it
+  on sight and amending that commit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Your answers are in the plan and committed as 538bacd7; your export of this
+  chat is kept as received in 400f5fb5. One honest note on that commit: my first
+  inventory entry claimed the export held your Turn 3 answers and the harness's
+  summary markers, which it does not, so I corrected it on sight before the
+  commit stood.
+
+  What you decided, as the plan now reads it
+
+  - Major and minor ticks. Yes, that is exactly what I meant, and your words are
+    now the design: a quantum leap in the shape of what you pinned is a tall
+    tick the arrow keys jump between, and a content-only edit is a short tick
+    beneath it. I should have said it that way the first time; the lesson is in
+    owner.md.
+  - The drag first. The scrubber is built for how dragging feels. While your
+    thumb moves, each frame jumps the picture straight to the thumb's commit
+    with no simulation at all, so it never lags; when the thumb rests, the
+    picture settles gently. A jump across the whole history costs the same as
+    one step, because a full snapshot is kept every 256 steps. Play stays as a
+    second control.
+  - Granularity is a seam, C14. Two levers, improvable on their own. At
+    generation: which commits are regenerated, every one, every nth, one a day
+    or a week, every tag, with the rule written into the sequence so the picture
+    knows. In the view: a pure tick model that turns the steps, your pins and a
+    chosen granularity into the tall and short ticks, with an automatic choice
+    by history size, so a five-commit repository shows five ticks and a
+    hundred-thousand-commit one shows months, while the drag still passes
+    through every step the sequence holds.
+  - The physics, not held hubs. You are right, and the hold is struck as a
+    workaround. What the 3D picture is made of today: a spring on each line
+    pulling to its preferred length, a repulsion between every pair of spheres
+    with no limit to its reach, a collision that keeps spheres apart, and a
+    centring force that only slides the whole picture so its middle stays at the
+    origin. Nothing pulls two unconnected galaxies toward each other, and
+    nothing pulls the whole inward, so every reheat gives the repulsion another
+    push and the galaxies drift apart forever while the centring keeps their
+    midpoint still. That is the drift you trigger by toggling a file type. The
+    fix is a weak gravity, toward the origin or toward a sphere's parent hub,
+    and a cap on how far repulsion reaches, chosen in the headless lab by two
+    measures: toggling a filter ten times must leave the picture the size it
+    began, and a history step must move the unchanged spheres least. Then
+    pictures for your eye. This is C5, and it comes before the update path's
+    energy (C2), which becomes a lever you pick by taste as you asked.
+  - The export's history is the exporter's choice, sized: none, all, since a
+    date, or the last so many steps, with the bundle saying what it carries.
+    Authors ride in the sequence, can be left out at export, and are a toggle in
+    the page that rides a share link.
+
+  Two things still open
+
+  - Your format question is C13. My first reading: what the history reader needs
+    from a version control is small, a list of changes on the mainline with
+    date and message, a working tree at a change, and the renames between two
+    changes. Git gives all three through its executable, and TFVC records
+    renames explicitly rather than guessing them, so that three-operation seam
+    is where other systems plug in. The sequence itself describes change to a
+    dependency graph, which no version control records and no format I know of
+    carries; Gource's log is the nearest shared shape and carries neither
+    renames nor anything inside a file. So the sequence is minted here, and a
+    Gource log can be written from it as a courtesy. A research agent is
+    surveying the formats and seams of git, TFVC, Subversion, Mercurial,
+    Perforce and the tools that read several of them; it is still running, and I
+    will set my reading against it when it reports.
+  - Where the hosted site's history is computed. You welcomed the fork without
+    choosing, so the recommendation stands unless you say otherwise: computed in
+    the Pages workflow with the cache kept between runs. The AGENTS.md and
+    vision lines naming a VS Code panel that does not exist still wait on your
+    word to correct.
+
+  Next. C5 (the physics, in the lab) and C1 (the sequence and the history
+  command) do not depend on each other or on the survey. I recommend starting
+  both now, each landing after the full gate with pictures and a recording, and
+  folding C13 in when the survey returns. Say go, or steer.
+
+❯ haha I should have waited to push sorry! Totally fine if you want to issue
+  just a simple linear follow-up commit if you're doing a simple correction.
+
+● Understood. I'll check what the remote holds against my amended commit, record
+  this turn, and then make the correction a plain follow-up commit on top of
+  what you pushed.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The remote already has my original commit with just the inventory line
+  corrected, so I'll reset the local branch to match the pushed version and
+  commit the fix as a follow-up. I'll also add the preference to owner.md and
+  the git rule in AGENTS.md. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Linear again: the correction is 7095e1fa on top of your pushed commit, nothing
+  rewritten. Now the record, the checks and the records commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No harm done. Your push held the first form of the export's commit, and the
+  only difference was one corrected line in the inventory, so I moved my branch
+  back onto what you pushed without touching any file and made the correction a
+  plain follow-up commit.
+
+  The branch is linear again and two commits ahead of the remote, ready to push:
+
+  - 7095e1fa says what your export really holds: the first prompt through my
+    Turn 2 reply, with no summary markers.
+  - dec184ec records this turn and your preference. owner.md carries your words,
+    and AGENTS.md's git rule now reads that you push at any moment, so a commit
+    once made is never amended or rewritten, and a correction is the next
+    commit. The two amended forms are unreachable and nothing of theirs is lost.
+
+  Everything from the last message still stands: the plan is revised with your
+  answers, the format survey is still running in the background, and the
+  hosted-site recommendation and the two panel lines wait on your word. My
+  recommendation is unchanged, to start C5 and C1 now. Say go, or steer.
