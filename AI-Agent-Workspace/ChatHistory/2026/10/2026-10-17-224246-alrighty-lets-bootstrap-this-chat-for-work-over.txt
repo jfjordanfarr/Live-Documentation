@@ -1,0 +1,278 @@
+
+❯ Alrighty, let's bootstrap this chat for work over the 10/17-10/18 weekend. It
+  is around 6PM eastern on 10/17 at time of me writing this first message.
+  Please ensure that you add "maintain narrative.md" to the chat bootstrap
+  instructions. (I had a side chat create that the other day -- the summaries
+  are like medium-term memory and the narrative is like long-term memory.
+  Something kinda like that).
+
+● I'll bootstrap per AGENTS.md: read Memory and the narrative in full, then the
+  five most recent session summaries, check the preceding session's summary,
+  start this session's record, and add the narrative-maintenance rule to the
+  bootstrap instructions.
+
+  Read 4 files, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Memory files read in full except the narrative, which was cut at line 109 of
+  305. Continuing it, then the five most recent summaries.
+
+  Read 1 file (ctrl+o to expand)
+
+● I've read the memory and narrative in full. Now I'll go through the five most
+  recent summaries (Oct 9, 12, 13, 14, 15) oldest first, then check the Oct 16
+  record and its refreshed export since that session still lacks a summary.
+  · summary
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● Three of the five summaries are read. Now the remaining two, the month
+  inventory, and I'll open this session's record first so the progress is on
+  disk.
+
+  Read 2 files (ctrl+o to expand)
+
+● All five summaries are read. Now the October 16 record in full and the month
+  inventory, with a checkpoint written first.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Next I'll review the record's remaining 160 lines, page through the 3,223-line
+  export, verify the session's commits against git, and byte-check that the
+  modified export extends the committed copy. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed the record and all fourteen session commits match git, with the
+  committed export matching a byte prefix of the working copy. Now I'll export
+  the Turn 4 reply tail and the opening, writing a checkpoint first. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I'll pull the middle section of the export (lines 1128–2398), check the end to
+  confirm the closing reply wasn't cut off, and gather the heading anchors from
+  the documents I need to link in the summary. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The middle page exceeds one read's cap, so it goes in two halves. The export
+  ends mid-line without a newline but with the Turn 4 reply complete at 3,224
+  text lines.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The export's full 3,224 lines check out against the record wherever they
+  overlap. Next I'll write up the October 16 summary and the record's closure
+  with its recovered closing reply, then check the repo's commit-message
+  conventions. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Summary and record closure are complete, with commits carrying the
+  Co-Authored-By trailer. Next I'll update the remaining files: the month
+  inventory, AGENTS.md, the archive README, owner.md, and the narrative.
+  · summary
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Edits are in. Next: prove a link-and-anchor checker on a probe and run it over
+  the changed documents, run the four documentation audits, and checkpoint the
+  record.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● All checks pass—the probe failed as expected, all 542 links in the changed
+  documents resolve, and the four audits are clean. Next I'll update the
+  record's verification notes and review the guidance diffs before committing.
+  · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The diffs read as intended. Committing by path, with the owner's re-export as
+  received.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The bootstrap is complete and committed as ee5920be; the tree is clean.
+
+  What landed
+
+  - The October 16 summary (AI-Agent-Workspace/ChatHistory/2026/10/Summarized/20
+    26-10-16.1.SUMMARIZED.md): four turns and fourteen verified commits. It
+    covers the October 15 summary, your answers at its open ends and your pick
+    of change over time, the probe over 122 of this repository's commits, the
+    manifests of four ecosystems, your standard of the durable final shape, and
+    the asset rule, the 3D wires and PowerShell on a grammar of our own landing
+    that evening.
+  - The October 16 record (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.r
+    ecord.md#delivered-root-response-recovered-2026-10-17) is closed. Its Turn 4
+    closing reply existed only in your re-export, so it is recovered there
+    verbatim under a dated heading. Your re-export is committed as received and
+    registered in the inventory
+    (AI-Agent-Workspace/ChatHistory/2026/10/README.md), beside entries for the
+    closed record, the summary and this chat's record
+    (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md).
+  - Your ask is done in both places that describe the bootstrap. AGENTS.md's
+    bootstrap bullet (AGENTS.md#L27) now says to maintain the narrative: add the
+    preceding session to its last chapter when it changed the story, and
+    correct it in place with a dated note where a source shows it wrong. The
+    archive's handoff routine
+    (AI-Agent-Workspace/ChatHistory/README.md#session-handoff-routine) gains the
+    same as its step 5, with your framing quoted: the summaries are the
+    medium-term memory and the narrative the long-term one. Your words are in
+    owner.md (AI-Agent-Workspace/Memory/owner.md), and the narrative
+    (AI-Agent-Workspace/Memory/narrative.md) now tells the October 16 session's
+    end and this ask in its last chapter.
+
+  What was checked. Both captures of October 16 were read in full and agree
+  wherever they overlap. A link checker proven to fail on a probe found all 542
+  relative links in the changed documents sound, and the four documentation
+  audits pass. One small discrepancy is noted in the summary: the recovered
+  reply says "eleven commits since your Turn 2 message", where git shows
+  thirteen, one of them the parallel narrative session's.
+
+  Where the arc stands. By direction.md's Next, the change-over-time design doc
+  in layer 3 is the next step, in the World Map plan's form, drawn from the
+  probe record
+  (AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md). Waiting on
+  your eye from October 16 are the 3D lines at their written strength, the asset
+  colour, and the samples' data files now shown as cards, all in the day's
+  screenshots (AI-Agent-Workspace/Screenshots/2026-10-16/README.md). I recommend
+  the design doc as the weekend's first piece of work. What would you like to
+  take up?
+
+❯ I watched the video of the change over time and saw the screenshots as they
+  arrived. I'm super stoked! Let's work on the design doc so we can bring that
+  out from being a probe and into being a part of Live Documentation.
+
+● I'll record this turn first, then read the sources the design doc is drawn
+  from: the World Map plan for its form, the probe record and the survey for the
+  substance, and the 3D Local Map's code for what the design must touch.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The VS Code panel referenced in AGENTS.md's opening paragraph no longer exists
+  in the codebase, which affects where the history computation can run. I'll
+  verify this against git while reviewing the plan form, probe record, and 3D
+  layout modules. · summary
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● The World Map plan and probe record together show the VS Code panel referenced
+  in AGENTS.md was removed on 2026-09-27, so the design needs to reflect
+  current hosts accurately. Next I'll review the full survey, the 3D view's
+  code, and the state/distribution sections of the Explorer doc. · summary
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed the structure layout's data path from the survey and 3D view.
+  Next, I'll verify the underlying facts—bundle/index contents, address grammar,
+  the decisions log, vision status, and CLI shape—before drafting tickets.
+  · summary
+  Searched for 1 pattern, read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● I have most of what's needed for the design. I'll check a few final details:
+  the deployment setup for running history computation in CI, what the e2e
+  instrument measures, the generator's programmatic surface, and whether the
+  probe's driver still exists in the old scratchpad. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed the key facts: the pages workflow rebuilds the bundle on every
+  push with no caching, the probe's page/driver remain in the old scratchpad,
+  and the repo has 577 commits and isn't shallow. I'll log a checkpoint and then
+  write the design doc. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Doc written. Now, in parallel: the link check and audits over it, direction.md
+  brought to the day, and the record checkpointed.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● All green: 28 links in the doc resolve, and the audits report nothing.
+  Committing the plan with its records.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The plan is committed as 3a499438 and the tree is clean. Here is the design
+  doc, how to read it, and the forks that are yours.
+
+  Where to read. change-over-time.mdmd.md
+  (.mdmd/layer-3/change-over-time.mdmd.md) follows the World Map plan's form.
+  The scenarios (.mdmd/layer-3/change-over-time.mdmd.md#the-scenarios) are the
+  probe's fourteen with what each checked, plus a stranger's repository run cold
+  and one git-backed system of your estate. Decisions so far
+  (.mdmd/layer-3/change-over-time.mdmd.md#decisions-so-far) are your October 16
+  answers and the three things the probe settled. The shape
+  (.mdmd/layer-3/change-over-time.mdmd.md#the-shape-as-this-plan-reads-it) is
+  one picture to argue with, and the open questions
+  (.mdmd/layer-3/change-over-time.mdmd.md#open-questions) are twelve tickets, C1
+  to C12, each with a recommendation. direction.md now points at it, with your
+  words from this turn.
+
+  The shape in plain words. A new command, live-docs:history, walks the
+  repository's mainline commit by commit, checks each one out into a scratch
+  worktree, runs today's generator over it with today's configuration, and keeps
+  a small summary of that commit's graph in a cache beside index.json, which
+  git ignores. From the cached summaries it writes one file, history.json: the
+  first snapshot in full, then one step per commit saying which files were born,
+  died, were renamed or changed size, and which file-to-file edges came and
+  went, with a full snapshot repeated every 256 steps so that jumping to any
+  commit never replays the whole history. The static bundle carries that file
+  beside explorer-data.json, and the 3D Local Map fetches it only when you open
+  the history control, so a page without history is no slower. At each step the
+  picture is fed rather than restarted, exactly as the probe's gentle setting
+  did it: renamed files and hubs keep their objects, a born file appears at its
+  hub, the hubs are held through the step and released after. A scrubber along
+  the bottom carries the steps, a panel beside the picture says what the step
+  changed, and the address carries the commit so a link shares a moment. The CLI
+  answers the same facts: inspect --at <commit> and inspect --between <a> <b>.
+
+  One fact that changes a premise. On October 16 I said the VS Code panel was
+  the one host where a view could start the computation. That panel does not
+  exist: the extension was removed on September 27, and the decisions log only
+  says one "is expected to return". Today's hosts are the static page and the
+  command line. AGENTS.md's first paragraph and the vision's "Not editor-bound"
+  line still name the panel as if it existed. I recommend correcting both lines
+  to say the panel is a host to come, and I will do it on your word.
+
+  The forks, to answer by exception. Anything you leave unmentioned stands as
+  recommended.
+
+  1. C2, the gentle update. The probe's gentle feeding cuts the movement of
+     unchanged spheres from 75 units a step to under 4. Should every change to
+     the 3D picture take it, a pin, a filter, a directory opened, the layout
+     switched, so that a type toggle stops stirring the whole picture? Or only a
+     history step? Recommended: every change, one update path, with the
+     hundred-tick warm-up kept for the first picture alone. The pictures decide.
+  2. C3, your salient step. For a pinned file, the graph saw 7 changes where git
+     saw 10 content changes. Recommended: both on the scrubber, the graph's
+     changes as the ticks the step key jumps between, git's content-only changes
+     as fainter ticks beneath, so the map never claims a change it cannot show.
+     For a pinned directory, any file under it. With nothing pinned, every step
+     is a tick.
+  3. C4, the scrubber's defaults. Steps laid out evenly, one key press each,
+     with a ruler of months beneath so the six-month gap reads as a gap; play at
+     one step a second, every step played; a file that no longer exists shows
+     its name, kind and symbol count at the step and "gone since", because the
+     docs of that day are not in the bundle.
+  4. C5, the wiggle. Held hubs never re-balance, so the tree only reads as
+     growth while small. Recommended: hubs held through a step and released at
+     the stop into a second gentle relaxation of the hubs alone, with the alpha
+     fraction, the hold and the release as advanced levers under Tuning so you
+     can toy with them by hand.
+  5. C7, where the history gets computed for the hosted site. The Pages workflow
+     builds the bundle on every push with no cache. The choices: compute the
+     history in that workflow with the cache kept between runs (the first run
+     about an hour, later runs only the new commits); or compute locally and
+     commit history.json (against the rule that nothing derived from local
+     history is committed); or leave the hosted site without history.
+     Recommended: the first.
+  6. C8, authors. Git records a name on every commit, and a bundle travels.
+     Recommended: carry the author's name and show it in the step panel, with
+     --no-authors on the command for a bundle that will be shared; no avatars,
+     nothing drawn by person.
+
+  With your answers I write them into direction.md and the doc's decisions, and
+  the first build ticket is C1, the sequence and the history command, with C9's
+  scripted-repository test and your September renames as its oracles.
