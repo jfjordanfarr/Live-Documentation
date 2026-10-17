@@ -2397,3 +2397,828 @@ summarize the run" completed (exit code 0)
 
   So sorry I will readily admit I'm not confident in my understanding of what
   you speak.
+
+● Recording your message first, then the groundwork for the durable shape: the
+  grammar build's toolchain, the PowerShell patch, and the asset rule's code
+  paths.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ PowerShell grammar fork, adapter completed
+   └ Fix the 3D structure layout's wires
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Builders are running and the Emscripten SDK install is underway. Next I'll
+  apply the asset rule: binary files count as assets regardless of location,
+  while a sample's text files keep their normal non-sample roles. · summary
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Wiring the two new functions through the engine's core barrel the generator
+  imports from, then regenerating; and measuring your re-exported chat, which
+  changed on disk again.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The rule flipped all 96, the binaries too, so the sniff is not seeing their
+  bytes. Checking which files and why before going further.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+❯ Just FYI: Another agent session is underway to create a better root narrative
+  doc for the workspace. Just if you see anything in that respect. :)
+
+● Noted: I'll keep clear of the root narrative doc and watch for the other
+  session's files in the tree, committing only paths that are mine. Continuing
+  with the asset rule's docs and its gate.
+
+  Ran 7 shell commands (ctrl+o to expand)
+
+● The Emscripten clone got CRLF line endings from the global autocrlf setting,
+  so its launcher could not run. Re-cloning it with LF endings and installing,
+  in the background.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All work is in flight and nothing else is independent right now:
+
+  - The asset rule's full gate is running in the main tree, with the commit
+    ready to land when it is green.
+  - The PowerShell builder is making the grammar of our own and completing the
+    adapter; the Emscripten SDK it needs is installing (version 6.0.12).
+  - The Explorer builder is fixing the structure layout's wires, the dimmed
+    lines and the fifteen-second engine run, with pictures.
+
+  Each will wake me; the commits, the records and the report with the plain
+  explanation you asked for follow.
+
+› Message from general-purpose
+  ## Report: 3D Local Map wire, opacity, cooldown and default fixes
+
+  **Worktree:**
+  /workspaces/Live-Documentation/.claude/worktrees/agent-ab3e7427991f7978f.
+  Nothing is committed and the worktree is still in place.
+
+  All four defects are fixed. The extended spec fails on the old code and passes
+  on the new. Lint reports 0 errors but 5 warnings, all in files I did not
+  touch, so it does not meet "must report nothing". Defect 4 changed the URL
+  format (version 2 to 3), which you should look at before committing.
+
+  ### Files changed (no files deleted)
+  - `packages/explorer/src/client/views/forceGraphLayout.ts`: the wrapper fix; I
+  also removed the headless helper's own endpoint resolution.
+  - `packages/explorer/src/client/views/forceGraphLayout.test.ts`: one new test.
+  - `packages/explorer/src/client/views/forceGraphView.ts`: `d3AlphaMin(0.001)`,
+  `linkOpacity(1)`, an asset colour.
+  - `packages/explorer/src/shared/d3-force-3d.ts`: added the `id()` getter
+  overload, which d3-force-3d's source has.
+  - `packages/explorer/src/client/persistence/compressed-url-state.ts` and its
+  `.test.ts`.
+  - `scripts/layout-lab/evaluate.ts`.
+  - `tests/e2e/force-graph-observation.ts`: `renderedLinks` now also reports
+  each link's `start`, `end` and `length`, read from the rendered tube.
+  - `tests/e2e/force-graph-directories.spec.ts` and
+  `tests/e2e/force-graph-focus.spec.ts`.
+  - The regenerated Live Docs for those files, with authored Notes updated in
+  eight of them (`forceGraphView`, `forceGraphLayout`, `compressed-url-state`,
+  `evaluate`, `force-graph-observation`, `force-graph-directories`,
+  `force-graph-focus`; the eighth, the layout test's doc, is regenerated only).
+  - Pictures: `AI-Agent-Workspace/Screenshots/2026-10-16/structure-wires/` (8
+  new files) and a new section in
+  `AI-Agent-Workspace/Screenshots/2026-10-16/README.md`.
+
+  ### Causes and changes
+  1. **Revealed wires never drawn.**
+     - **Cause:** the browser's engine sets the nodes, then hands the link force
+  all links. `pullingLinkForce` passed D3 only the links that pull, so D3
+  resolved only their endpoint ids to nodes. A reference held back in the
+  structure layout kept string endpoints, and three-forcegraph skips drawing a
+  line whose endpoints have no coordinates. It sat at the origin with length 1.
+     - **Change:** the wrapper now keeps the nodes it is initialized with.
+  Whenever it is initialized or given links, it resolves the held-back links
+  against those nodes, using D3's own error ("node not found: id") for an
+  unknown id.
+     - **Headless path:** the post-tick resolution in `simulateSpatialLayout`
+  was dead code. D3 had already resolved every link there, and the existing test
+  still passed with the loop removed and the fix disabled. So I removed it.
+     - **Unit test:** reproduces the browser's order (nodes, then links), checks
+  a layout switch, and checks the error for an unknown id. It fails with the
+  fix disabled.
+     - **E2E spec:** a new helper, `expectDrawnBetweenSpheres`, asserts that
+  every shown line has a length equal to the distance between its spheres and
+  starts and ends within 0.05 of them. It runs in three places: the connections
+  layout at rest, a hovered file in the structure layout, and the pinned
+  `IPaymentService.cs` with its retained neighbours. With the fix disabled it
+  failed in two tests, for example "Expected 62.16, Received 1".
+  2. **Link colours dimmed five-fold.** Added `linkOpacity(1)`. Measured from
+  the scene, before and after:
+
+     | Link | Before | After |
+     | --- | --- | --- |
+     | Revealed reference (structure layout) | 0.1 | 0.5 |
+     | Containment, shown | 0.07 | 0.35 |
+     | Containment, faded | 0.016 | 0.08 |
+     | Connections web at rest | 0.04 | 0.2 |
+     | Connections web, faded | 0.005 | 0.025 |
+  3. **Engine ran for fifteen seconds.**
+     - **Change:** added `d3AlphaMin(0.001)`. The engine now stops about 300
+  ticks after a reheat; `warmupTicks(100)` is unchanged.
+     - **Estate sample:** busy for 3.7 s (connections layout) and 4.0 s
+  (structure layout), at about 50 fps.
+     - **This repository's 722-file bundle, structure layout with a file
+  selected:** busy for 7.2–7.6 s, down from 16.8 s.
+     - **This bundle, connections layout at rest:** still about 16 s here,
+  because this machine's headless renderer draws it at about 12.5 fps. 300 ticks
+  take that long, so the old cap and the new minimum coincide.
+  4. **Asset colour and the two filter defaults.**
+     - Added `asset: "#e83e8c"`, a pink distinct from the other archetype
+  colours. The hue is my choice, so it is the owner's to change.
+     - **Which governs a cold start:** a page opened without `?s=` uses
+  `getDefaultFilters` (assets hidden). `DEFAULT_SNAPSHOT`'s filters were only
+  what a link without `f` meant (assets shown); in practice every written link
+  already carried `f=[1,0]`.
+     - **Change:** `DEFAULT_SNAPSHOT.filters` now comes from
+  `getDefaultFilters`, and its doc comment says which is the default and why.
+  The writer leaves out `f` when the filters equal the default.
+     - **Old links:** a link without `f` meant "both shown" when it was written.
+  To keep that meaning I bumped the payload version to 3; links of version 1 or
+  2 without `f` still read as both shown. This is what the module's own
+  compatibility contract prescribes, but it is a change to the URL format.
+     - **Layout lab:** its fallback for old captures was
+  `DEFAULT_SNAPSHOT.filters`, which would have flipped silently. It now reads
+  `payloadToSnapshot({ v: 1 }).filters`, the filters the version 1 retained URL
+  actually gave those captures.
+
+  ### What relied on the fifteen seconds
+  - `force-graph-focus.spec.ts` "manual pan" waited a fixed 16 s; it now waits
+  for `aria-busy="false"`.
+  - The 90 s timeout comment in `force-graph-directories.spec.ts` mentioned
+  cooldowns and was reworded.
+  - Nothing in the client depended on it. `onEngineStop` still fires after every
+  redraw that follows settling, as before.
+  - The preset test that samples frames while the engine is busy still sees more
+  than 4 frames.
+
+  ### Pictures
+  All are of this repository's bundle at 1600×1000, before and after on the same
+  address. The hovered file is `forceGraphData.ts`, selected so the camera
+  stands at it; the pinned file is `forceGraphLayout.ts`.
+  - `01-structure-hover-before.png`: hovered, its 8 wires visible but drawn
+  nowhere.
+  - `02-structure-hover-after.png`: the 8 wires run from its sphere to each
+  neighbour; its own membership line shows in amber.
+  - `03-structure-pinned-before.png`: pinned, no reference wires.
+  - `04-structure-pinned-after.png`: its 7 wires drawn, plus its amber line to
+  its directory's hub.
+  - `05-connections-at-rest-before.png`: the web of 1,352 file pairs, nearly
+  black.
+  - `06-connections-at-rest-after.png`: the web readable at 0.2.
+  - `07-connections-pinned-before.png`: everything near-invisible.
+  - `08-connections-pinned-after.png`: its wires at 0.2 stand out from the rest
+  at 0.025.
+
+  ### The alphas at full opacity, by my eye
+  None looks too strong at overview distance. Close up, the structure layout's
+  revealed wires at 0.5 are heavy beside the spheres. The connections web at 0.2
+  reads as a haze in the dense clusters, but the long links stay traceable. I
+  did not retune any number; the owner decides them.
+
+  ### Verification
+  - **`npm run build`:** exit 0.
+  - **`npm run lint`:** 0 errors, 5 `jsdoc/require-jsdoc` warnings in
+  `client/search/graph-search.ts:64`, `client/search/search-field.ts:10,19,35`
+  and `client/types.ts:168`. I did not touch these files.
+  - **`npm run test:unit`:** 108 files, 1099 tests passed.
+  - **`npm run live-docs:generate`:** run and kept. `live-docs:lint` validates
+  722 files with only the existing "disconnected node" warnings.
+  - **Playwright:** port 8766 was served by another checkout's `dist`, so I used
+  a temporary config (since deleted) pointing at this worktree's own server on
+  8767.
+    - `force-graph-directories` and `force-graph-focus`: 9 of 9 passed, and 3 of
+  3 for directories after the final rebuild.
+    - Specs whose addresses use `DEFAULT_SNAPSHOT` (`local-map-pins`,
+  `local-map-path`, `search-bar`, `explorer-navigation`, `perspective-zoom`): 29
+  of 29 passed.
+    - `local-map-presets` and `local-map-branches`, which also cover 3D: 15 of
+  15 passed.
+    - I did not run `still-picture.spec.ts`. Its Force Graph test does not wait
+  on the cooldown.
+
+  ### Forks and unfinished
+  The only judgement call is the version bump in defect 4, explained above.
+  Nothing is unfinished in scope. I did not add a 2026-10-16 entry to the
+  top-level `AI-Agent-Workspace/Screenshots/README.md`.
+
+  ### Findings beyond scope
+  - `.gitignore`'s `.vscode/` pattern also ignores `.mdmd/layer-4/.vscode/`. So
+  the tracked `.vscode/settings.json` never gets a committed Live Doc: every
+  `generate` run creates it in an ignored path, and `--dry-run` always reports
+  "Would create 1". I deleted my generated copy.
+  - `--color-asset` and `--color-implementation`, used in `shell.css`, are
+  defined nowhere.
+  - Other archetypes (`stub`, `component`, `interaction`, `data-model`,
+  `workflow`, `integration`, `testing`) still fall back to grey in the 3D view.
+  - In 3D the sidebar legend reads "Offers"/"Uses", but the spheres are coloured
+  by archetype (blue implementation, green test, amber directory). The revealed
+  wires are white-grey rather than following the blue/green grammar.
+  - When a selected file is hovered, its hover tooltip and the focus label
+  repeat its name one above the other (visible in 01 and 02).
+
+
+● The Explorer builder has reported: all four defects fixed, with a spec that
+  fails on the old code. Reviewing its diff and pictures while the asset gate
+  runs.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Agent "Fix the 3D structure layout's wires" finished · 46m 24s
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Emscripten SDK is installed for the grammar build, and the asset rule's
+  gate is in its browser stage. The Explorer fix is reviewed and queued to land
+  after it, each with its own gate; the PowerShell builder continues. The next
+  notification wakes me.
+
+● Background command "Wait for the asset-rule gate's verdict and summarize it"
+completed (exit code 0)
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Nine browser tests failed in the asset gate, all related to the TypeScript
+  rosetta sample's Local Map where JSON data files now show as cards. I'll check
+  whether this is a legitimate visual change or a loading issue before deciding
+  how to proceed. · summary
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● The failing tests originate from the rosetta landing page, which now has two
+  JSON data cards overflowing the 1600x1000 frame. I'll check how the Local
+  Map's first-fit logic determines scale before adjusting the tests. · summary
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Found that the Local Map's first fit never zooms below 1.0 with branches
+  shown, causing the rosetta landing to overflow and require panning. I'll
+  update the failing specs to match this panning behavior and remove the
+  expectation that data files stay hidden. · summary
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Writing one shared pan helper into the browser-test library and making the
+  five specs use it, with the two expectations that encoded hidden data files
+  changed; then running those specs.
+
+  Ran 2 shell commands (ctrl+o to expand)
+● The five adapted specs are running in the background under the PowerShell
+  builder's load; their result decides whether the asset rule's gate runs again.
+  Nothing else is independent at this point, so I'm waiting on that
+  notification and the builder's.
+
+● Background command "Add the pan helper, adapt the five specs to the picture
+the asset rule gives, lint them and run them" completed (exit code 0)
+
+  Searched for 1 pattern, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The edit script aborted at its first assertion, so the specs ran unchanged.
+  Checking the import lines it tripped on, then redoing the edits and the run.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The edits are in and lint is clean. Running the five specs in the background
+  and waiting on the result.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing else is independent of that run: the gate, the commit and the Explorer
+  landing all follow it, and the PowerShell builder reports on its own. Waiting
+  for the notification.
+
+› Message from general-purpose
+  ## PowerShell on a grammar of our own: report
+
+  **Worktree:**
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a4aa33af08b6acd2d`,
+  branch `worktree-agent-a4aa33af08b6acd2d`. Nothing is committed and everything
+  is staged: 79 files, +5974/−797. `build.sh` is staged as 100755, because
+  `core.fileMode=false`.
+
+  **First thing to know:** the worktree was cut from `429065a6`, six commits
+  behind `main` (`fc668043`). `cargo.ts`/`manifest.ts` were missing there. I
+  undid my first apply of the patch, fast-forwarded the branch to `main`, and
+  re-applied with `git apply --3way`. Only two files conflicted:
+  `vision.mdmd.md` (kept PowerShell's move to tree-sitter and main's longer
+  manifest list) and `.mdmd/layer-4/packages/engine/package.json.mdmd.md` (kept
+  both notes). README and the decisions log merged cleanly.
+
+  ### Verification (from the worktree root)
+  - **`npm run build`:** exit 0.
+  - **`npm run lint`:** exit 0, nothing reported. The resolver's "Multiple
+  projects found" notice was already there.
+  - **`npm run test:unit`:** 115 files, 1163 tests passed.
+  - **`npm run test:integration`:** 15 files, 81 tests passed. This includes
+  `inspect-cli` over the compendium; its case-mismatched dot-source now resolves
+  through the generator on case-sensitive `/tmp`.
+  - **Type-checking the integration tests** (`tsc -p
+  tests/integration/tsconfig.json`): exit 0.
+  - **`npm run live-docs:generate`:** first run 779 files, 1 created, 12
+  updated. Final run and `-- --dry-run` both: 0 created, 0 updated, 779
+  unchanged.
+  - **`npm run live-docs:lint`:** exit 0, 779 validated. One warning: 37
+  disconnected nodes; `scripts/oracle/powershell-ast.ps1` is one of them,
+  because it is spawned by path and nothing imports it.
+  - **slopcop audits and `docs:links:enforce`:** markdown 0 broken links,
+  symbols 0 issues, assets 0 broken, docs links satisfied.
+  - **`npm run oracle:compare --
+  tests/integration/programs/powershell/rollout`:**
+    ```
+    Compiler edges (pwsh 7.5.4): 7 found, 0 missing, 0 extra
+    Adapter dependencies that resolved to no file (3):
+      Invoke-Rollout.ps1: Microsoft.PowerShell.Management
+      Invoke-Rollout.ps1: Microsoft.PowerShell.Utility
+      modules/Rollout.Steps/Rollout.Steps.psd1:
+  Microsoft.PowerShell.Utility@7.0.0.0
+    ```
+    The compendium: 3 found, 0 missing, 0 extra; 5 module names left unresolved,
+  as expected.
+  - **Comparison test with `pwsh` off the path:** with `PATH=/usr/local/bin`,
+  spawning `pwsh` gives ENOENT, and the test passes 3/3.
+  - **Grammar build run twice:** byte-identical, sha256
+  `9626b3341e2623b6922466138bc53486dbd94cc58de70438be80505b01acf1ce`. Each run:
+  164 corpus parses, 0 failed (upstream's 147 plus our 17).
+
+  ### The toolchain (this changes your plan)
+  - **No Emscripten is needed.** `tree-sitter-cli` 0.27.1 compiles wasm with
+  wasi-sdk 34 (clang 22.1) and binaryen 132, which it downloads into
+  `~/.cache/tree-sitter` on first use. 0.25.10 still used Emscripten 4.0.4; I
+  checked its binary.
+  - So I added nothing to `post-create.sh`. Instead, `.devcontainer/README.md`
+  has a section saying what a rebuild needs (git, Node, the base image's gcc,
+  `npm install`), and the `build.sh` header says the same in place of an
+  Emscripten version.
+  - **Your `/home/node/emsdk` install failed and isn't needed.** Its log shows
+  `./emsdk: cannot execute: required file not found`: the global
+  `core.autocrlf=true` checked its scripts out with CRLF. You can delete it.
+  That global setting hits every clone in this container, so `build.sh` fetches
+  with `-c core.autocrlf=false`.
+
+  ### The grammar patch, rule by rule
+  It is applied to Airbus CERT's `tree-sitter-powershell` at
+  `e7bd348c49fdfd5c853a146a670965ba516a6239`, the master tip, past v0.26.5. It
+  changes `grammar.js` and four keyword lines in `queries/highlights.scm`; the
+  scanner is untouched.
+
+  1. **Comma lists:** a new `command_argument_list` lets a command argument be a
+  comma list whose elements are bare words or expressions. `A, B`, `'a', b`,
+  `@{…}, Name` and lists continued over several lines all work. A list of
+  expressions alone stays `array_literal_expression`, through a declared
+  conflict and dynamic precedence −1, so upstream's existing trees are
+  unchanged.
+  2. **Variable-led bare words:** `generic_token` may now be a variable
+  immediately followed by path characters, the way argument mode reads
+  `$PSScriptRoot\x.psm1` or `${PSScriptRoot}/x.psm1`. Member access (`$x.Name`),
+  indexing (`$x[0]`) and `::` stay expressions.
+  3. **Forward slashes in dot-source paths:** `path_command_name_token` now
+  accepts `/`, so `. ${PSScriptRoot}/x.ps1` parses.
+  4. **`using` statements:** a new `using_statement` covers `using namespace`,
+  `using module` (by name, path, string or module specification) and `using
+  assembly`. These sit in a `_using_statements` prefix of `program`, before the
+  param block. A semicolon after a using statement belongs to the statements
+  rather than becoming an empty statement; this needed a declared conflict plus
+  dynamic precedence, because static precedence lost to `empty_statement`.
+  `using-` joins the keyword-prefixed command names, so `Using-Thing` still
+  parses as a command.
+  5. **Empty programs:** `program` may be empty, comments only, or `param()`
+  only. The stock grammar gave an ERROR or a MISSING node for each.
+  6. **`--name=value` (beyond the brief, cascading):** `command_parameter` may
+  carry `=value`. Stock `git log --pretty=oneline` swallowed the rest of the
+  file.
+  7. **`"<#` strings (beyond the brief, cascading):** the text token of an
+  expandable string gets lexical precedence 1. A string starting with `<#` used
+  to open a block comment that ran to the next `#>`.
+
+  Items 6 and 7 came from measuring 56 PowerShell files on this machine (39,128
+  lines: the pwsh modules, the VS Code PowerShell extension, EF6's tools):
+
+  | Measure | Stock | Patched |
+  |---|---|---|
+  | Files with no error | 33 / 56 | 43 / 56 |
+  | Innermost errors | 140 | 44 |
+  | PowerShell's functions found | 259 / 263 | 262 / 263 (the one miss is in a
+  file PowerShell itself rejects) |
+  | Parse speed | same | same |
+
+  **Corpus tests** in `packages/engine/grammars/powershell/test/corpus/`, three
+  files, 17 tests:
+  - `command_arguments.txt` (8): bare-word lists, mixed lists, multi-line,
+  expressions-only list, variable-led bare words, member access unchanged,
+  dot-source with `/`, `--name=value`.
+  - `using_statements.txt` (5): the three kinds, by string and specification,
+  before `param`, semicolon-separated, `Using-Thing`.
+  - `scripts.txt` (4): empty, comments only, `param` only, `"<#PSScriptInfo"`.
+
+  `build.sh` refuses to run if one of our corpus file names would overwrite an
+  upstream one.
+
+  **What to send upstream:** the `grammar.js` and `highlights.scm` hunks of
+  `grammar.patch` plus the three corpus files, with `src/` regenerated by their
+  tree-sitter version. Their 147 tests pass untouched. A clean copy of upstream
+  sits in `/tmp/claude-1000/-workspaces-Live-Documentation/1b33ae22-268b-41e9-8b
+  c9-40fab997e27a/scratchpad/ps-grammar/upstream` for preparing the PR.
+
+  ### What was built
+  - **Grammar folder** `packages/engine/grammars/powershell/`: `build.sh`,
+  `upstream.env` (the pin), `grammar.patch`, the corpus files, the committed
+  `tree-sitter-powershell.wasm`, and upstream's MIT `LICENSE`, which `build.sh`
+  copies in because the wasm is a derivative.
+  - **Root `package.json`:** `tree-sitter-cli` pinned exactly at 0.27.1.
+  - **Engine `package.json`:** `files` now carries `grammars`.
+  - **Loader:** `treeSitter.ts` loads `grammars/<name>/tree-sitter-<name>.wasm`
+  when it exists, otherwise the bundled grammar. The new `treeSitter.test.ts`
+  shows the three constructs parse with no ERROR node; with the wasm moved
+  aside, 3 of its 4 tests fail.
+  - **Adapter** `powershell.ts`:
+    - Reads comma lists, variable-led paths and `using` statements from the new
+  nodes.
+    - Classes and enums become symbols of kind `class`/`enum`, in document order
+  with the functions.
+    - `.psd1` manifests are read through the grammar by a small data-language
+  reader. The module's stem is the `package` symbol. Entries are linked from the
+  manifest's folder (or a directory holding the module), the oracle's rule;
+  anything else becomes `name@version` (RequiredVersion, else ModuleVersion).
+  The root module is declared a `module` entry. `ModuleToProcess` counts as a
+  root module. Any other `.psd1` stays empty.
+    - Paths resolve against the file index, without regard to case: an exact
+  match first, otherwise the only case-folded match, otherwise unresolved. One
+  folded map is built per index (a WeakMap). The filesystem crawling is gone.
+    - Files are decoded by byte order mark (UTF-16 LE/BE, otherwise UTF-8). This
+  was a finding: two big pwsh modules are UTF-16 and read as noise before.
+  - **Oracle:**
+    - `powershell-ast.ps1` records type definitions and a manifest reference's
+  version, and resolves each path segment as Windows does (`Find-Entry`).
+    - `powershell-edges.ts` and its test take the new types.
+    - Both fixtures were re-indexed.
+  - **Fixtures:**
+    - The compendium's `workspace/scripts/deploy.ps1` now dot-sources
+  `./Common/Logging.ps1` against an on-disk `common/logging.ps1`, to prove
+  case-insensitive resolution through the generator.
+    - The rollout manifest gained `RequiredModules = @(@{ ModuleName =
+  'Microsoft.PowerShell.Utility'; ModuleVersion = '7.0.0.0' })`. The program
+  still runs under pwsh; I ran both scripts.
+  - **Comparison test:** `powershell-oracle.test.ts` reads through
+  `powershellAdapter.analyze` with the fixture's files as the index, and
+  compares types and manifest readings too. **`MEASURED_MISSES` is empty on both
+  fixtures.** With the bundled grammar it would list 4 misses (rollout) and 2
+  (compendium).
+  - **Unit tests:** `powershell.test.ts` has 26 tests. The old "named only as
+  spelled on disk" test is now the reverse, case-insensitive with an ambiguous
+  pair. Added: byte order mark, classes and enums, comma-list narrowing,
+  manifests, data files, escapes. "Narrows nothing" now uses `[Type, Assembly]`,
+  which the grammar still reads with an error.
+  - **Docs:**
+    - Authored sections of 18 layer-4 docs, including the new
+  `treeSitter.test.ts` doc.
+    - Layer 3: polyglot-adapters, sample-programs,
+  testing-integration-architecture.
+    - The decisions log's PowerShell entry is replaced by one entry, "PowerShell
+  Read by a Grammar of Our Own, Measured Against PowerShell's Own Parser", with
+  your 2026-10-16 words and the upstream patch as the exit.
+    - Also: the vision status, README, `.devcontainer/README.md`, the skill, and
+  the rollout README.
+  - **Deleted** by the earlier builder's patch: `powershell.emit-ast.ps1` and
+  its doc.
+
+  The full file list is in `git status` inside the worktree.
+
+  ### What the adapter does not follow
+  - A module named rather than pathed. A `RequiredModules` name stays external
+  even when the workspace holds that module.
+  - `Import-Module Name.psm1`, with an extension but no separator, is read as a
+  name (as the oracle does). PowerShell treats it as a path.
+  - Paths built from other variables or expressions.
+  - A manifest's `FunctionsToExport` narrowing its root module.
+  - Scripts run with `&`.
+
+  Constructs that still error, all locally, none swallowing later statements:
+  - `.Where{ }` / `::Create{ }`
+  - `[Type, Assembly]`
+  - `[OutputType([bool], ParameterSetName='x')]`
+  - commands starting with `do-`
+  - DSL `Task X { }`
+
+  ### Decisions for you (left as they are)
+  1. **Dynamic `Export-ModuleMember` patterns.** `Export-ModuleMember -Function
+  $names` makes a module publish none of its functions, in both the adapter and
+  the oracle's `published`. That pattern is common in estates. I'd suggest "a
+  pattern not written out narrows nothing", changed in both emitter and adapter
+  together, but that's your call.
+  2. **Is a `.psd1` manifest an entry?** The tooling rule is by file name, so a
+  `.psd1` isn't an entry. A module imported by name from outside the workspace
+  will show as unreachable.
+
+  ### Other things you'll hit
+  - The new docs link `2026-10-16.1.record.md#turn-4`, which exists only in your
+  uncommitted record. My worktree's copy stops at Turn 3. slopcop didn't flag
+  it, but commit the record with this.
+  - `--changed`/`--include` shrink the generator's file index to the changed
+  files, so index-based resolution (PowerShell now, JSON and manifests before
+  it) drops links on partial runs. This predates this work.
+  - The Write tool turned a ` ` escape into a literal no-break space, which lint
+  caught; it's fixed. Worth knowing when reviewing generated edits.
+
+  ### Not finished
+  Nothing in scope. The measurement helpers (corpus list, error and function
+  counters) are in `/tmp/claude-1000/-workspaces-Live-Documentation/1b33ae22-268
+  b-41e9-8bc9-40fab997e27a/scratchpad/ps-grammar/`. Playwright was not run, as
+  instructed.
+
+● The PowerShell builder has delivered the durable shape: a grammar of our own,
+  built reproducibly without Emscripten, with the adapter completed and no
+  measured miss left. Two small decisions it left I can settle by the project's
+  own principles, so I'm sending them back to it, removing the SDK install it
+  showed to be unneeded, and recording.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "PowerShell grammar fork, adapter completed" finished · 1h 12m 12s
+  ⎿  Resuming agent a4aa33a
+
+● The PowerShell builder is resumed on the two remaining points, and the adapted
+  specs are still running. Everything else waits on those two notifications.
+
+● Background command "Run the five adapted specs against the served build"
+completed (exit code 0)
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Two commit messages are ready for the landings to come. The asset gate's
+  verdict and the PowerShell builder's follow-up are the only things pending,
+  and both arrive as notifications.
+
+› Message from general-purpose
+  Both rulings are in and every check passes. Worktree:
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a4aa33af08b6acd2d`.
+  Nothing is committed; everything is staged (84 files, +6278/−812), and
+  `build.sh` is still staged as 100755.
+
+  **Yes: the `.psd1` manifest's doc now carries `- Entry: tooling`**
+  (`.mdmd/layer-4/tests/integration/programs/powershell/rollout/modules/Rollout.
+  Steps/Rollout.Steps.psd1.mdmd.md`, line 7). The two data `.psd1` docs
+  (`rollout/config/targets.psd1`, `powershell-compendium/config/settings.psd1`)
+  have no Entry line. When regenerating, no other doc in the repository gained
+  or lost an Entry line.
+
+  ### 1. An export list that isn't written out narrows nothing
+  - **Adapter** (`powershell.ts`): an `Export-ModuleMember` whose `-Function`
+  holds anything not written out now narrows nothing, the same as a command the
+  grammar misread. That covers `-Function $public`, a list mixing names and a
+  variable, and a sub-expression. The header comment and the `exports` field's
+  comment say why: a misreading shows private functions rather than hiding
+  public ones.
+  - **Oracle** (`powershell-ast.ps1`): when any `Export-ModuleMember` has an
+  unresolved `-Function`, its `published` list now holds every function except a
+  class's members. The same reason is in its `.DESCRIPTION` and beside the
+  computation. The comment on the `published` field in `powershell-edges.ts`
+  says it too.
+  - **New module** `rollout/modules/Rollout.Notify/Rollout.Notify.psm1`: two
+  public functions listed in `$public`, a private `Get-NoticePrefix`, and
+  `Export-ModuleMember -Function $public`.
+    - `Invoke-Rollout.ps1` imports it by an unquoted `$PSScriptRoot\...` path
+  and sends one notice at the end.
+    - I ran it once: `pwsh ./Invoke-Rollout.ps1 -Environment staging -WhatIf`
+  exits 0 and prints `[rollout notice] planned 6 steps of 1.0.0 for staging`. At
+  run time PowerShell exports only `Format-RolloutNotice` and
+  `Send-RolloutNotice`.
+    - The sample's README has a row for it.
+  - **Re-indexed both fixtures**: rollout now has 9 documents and 8 edges. For
+  the new module the oracle publishes all three functions, with `values: null`
+  for `$public`. The compendium came out byte-for-byte the same.
+  - **`MEASURED_MISSES` is empty** on both fixtures. On the bundled grammar it
+  would now list 5 misses on rollout (the new import adds one) and 2 on the
+  compendium; the docs say so.
+  - **New unit test** in `powershell.test.ts` covers `$public`, a mixed list, a
+  sub-expression, and a literal command followed by a dynamic one. It would fail
+  under the old rule, where such a module published nothing.
+
+  ### 2. A file is tooling by its name or by what it publishes
+  - **`composeEntries`**: tooling is now `isToolingFile(path) ||
+  headings.some(kind in MANIFEST_KINDS)`, the rule by name kept as it was. Its
+  doc comment says it in one sentence.
+  - **Two new tests** in `compose.test.ts`:
+    - A `.psd1` publishing a package, and a `.proj` publishing a library, are
+  tooling. I checked that this test fails without the rule.
+    - A data `.psd1` publishing nothing, or only a function, gets no entry.
+  - I reversed one existing assertion, written this morning, that a file
+  publishing a package is not tooling.
+  - **Fixture checks**: `manifests.test.ts` passes 5/5,
+  `repository-entries.test.ts` passes 2/2, and `repository-entries.json` is
+  unchanged.
+
+  ### Verification, from the worktree root
+  | Check | Result |
+  |---|---|
+  | `npm run build` | exit 0 |
+  | `npm run lint` | exit 0, nothing reported (only the "Multiple projects
+  found" notice, which was already there) |
+  | `npm run test:unit` | 115 files, 1166 tests passed |
+  | `npm run test:integration` | 15 files, 81 tests passed |
+  | `npm run live-docs:generate` | 780 files; the first run after the changes
+  created 1 doc and updated 7; final run 0 created, 0 updated, 780 unchanged |
+  | `npm run live-docs:generate -- --dry-run` | 0 created, 0 updated, 780
+  unchanged |
+  | `npm run live-docs:lint` | exit 0, 780 validated; same single warning as
+  before (37 disconnected nodes) |
+  | `npm run oracle:compare -- tests/integration/programs/powershell/rollout` |
+  `Compiler edges (pwsh 7.5.4): 8 found, 0 missing, 0 extra`; 3 dependencies
+  resolve to no file (Microsoft.PowerShell.Management,
+  Microsoft.PowerShell.Utility, Microsoft.PowerShell.Utility@7.0.0.0), as
+  expected |
+  | Integration test type-check | exit 0 |
+  | slopcop / docs links | 0 broken links, 0 symbol issues, all documentation
+  links satisfied |
+
+  The grammar wasm is unchanged (sha256 `9626b334…`).
+
+  ### Files changed in this round
+  - **Code:**
+    - `packages/engine/src/live-docs/adapters/powershell.ts`
+    - `packages/engine/src/live-docs/adapters/powershell.test.ts`
+    - `packages/engine/src/live-docs/compose.ts`
+    - `packages/engine/src/live-docs/compose.test.ts`
+    - `scripts/oracle/powershell-ast.ps1`
+    - `scripts/oracle/powershell-edges.ts`
+  - **Program:** under `tests/integration/programs/powershell/rollout/`:
+    - `modules/Rollout.Notify/Rollout.Notify.psm1` (new)
+    - `Invoke-Rollout.ps1`
+    - `README.md`
+    - `expected/compiler-edges.json`
+    - `expected/powershell-ast.json`
+  - **Docs:**
+    - The new `Rollout.Notify.psm1` doc, with Purpose and Notes written.
+    - Authored or generated updates to the docs of `powershell.ts`,
+  `powershell.test.ts`, `compose.ts`, `powershell-ast.ps1`,
+  `powershell-oracle.test.ts`, `Invoke-Rollout.ps1`, `Rollout.Steps.psd1`, and
+  the rollout `expected/*` docs.
+    - Layer 3: the decisions log entry now records both rules, and its counts
+  are corrected to 8 of 8 edges and 5 misses on the bundled grammar.
+  `polyglot-adapters` and `sample-programs` are updated too.
+
+● The PowerShell builder has finished both rulings with every check green.
+  Writing its final patch out now; it lands together with the Explorer fix after
+  the asset rule commits.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "PowerShell grammar fork, adapter completed" finished · 23m 16s
+
+● Both patches are written out with their file lists. The only thing pending now
+  is the asset rule's gate, whose verdict wakes me.
+
+● Background command "Wait for the second asset gate's verdict and summarize it"
+completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● The asset gate is green. Committing the asset rule, then applying the Explorer
+  and PowerShell patches onto it and regenerating.
+
+  Searched for 1 pattern, ran 7 shell commands (ctrl+o to expand)
+
+● I'll capture screenshots of the PowerShell work and the asset rule's effect
+  while the browser stage runs, then check the staging lists for both commits.
+  · summary
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Writing the screenshots README section for the asset rule's two pictures now;
+  the PowerShell pictures get retaken once the gate's build is the combined
+  tree.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The combined gate is the only thing outstanding; its verdict triggers the
+  pictures, the two commits, the records and the report. Waiting on it.
+
+● Background command "Wait for the combined gate's verdict and summarize it"
+completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● All checks pass — lint, 1,171 unit and 81 integration tests, docs, audits, and
+  134 browser tests are green. I'll commit the Explorer fix and retake the
+  PowerShell screenshots from the rebuilt bundle. · summary
+
+  Searched for 1 pattern, read 3 files, ran 5 shell commands (ctrl+o to expand)
+
+● Finishing the Memory entry for your Turn 4 words, closing the record for the
+  turn, and committing the records; then the report.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Everything you asked for is built, gated and committed, and the tree is clean.
+  The parallel session's story commit (af98a5e0, AGENTS.md and the summaries)
+  landed under mine without conflict, and I left the root narrative alone. Here
+  is the work, in the order to walk it.
+
+  PowerShell: the durable shape, dc60acba
+
+  The right final shape is a PowerShell reader that needs nothing at run time
+  and parses what your estate writes, measured against PowerShell's own parser.
+  The bundled grammar could not do that, so the engine now carries a grammar of
+  its own until upstream takes the fix.
+
+  1. The grammar folder (packages/engine/grammars/powershell/): build.sh
+     (packages/engine/grammars/powershell/build.sh) fetches Airbus CERT's
+     grammar at the pinned commit
+     (packages/engine/grammars/powershell/upstream.env), applies grammar.patch
+     (packages/engine/grammars/powershell/grammar.patch), runs upstream's 147
+     corpus tests and our 17 (packages/engine/grammars/powershell/test/corpus/),
+     and compiles the wasm with the pinned tree-sitter CLI. Two builds are
+     byte-identical; the wasm is committed, so a user installs nothing. No
+     Emscripten after all: the current CLI brings its own toolchain.
+  2. The patch's seven rules, in prose, are in the decision
+     (.mdmd/layer-3/architectural-decisions.mdmd.md#powershell-read-by-a-grammar
+     -of-our-own-measured-against-powershells-own-parser-recorded-2026-10-16),
+     with the exit: the patch and its tests are offered upstream, and the folder
+     goes when a release carries them. On 56 PowerShell files found on this
+     machine, files with no parse error went from 33 to 43 and innermost errors
+     from 140 to 44.
+  3. The adapter (packages/engine/src/live-docs/adapters/powershell.ts) reads
+     functions with their help, classes and enums, module manifests as
+     manifests, paths without regard to case, and UTF-16 files by their byte
+     order mark. The oracle script (scripts/oracle/powershell-ast.ps1) runs pwsh
+     at development time only; the comparison test
+     (tests/integration/live-docs/powershell-oracle.test.ts) holds the adapter
+     to it, and its register of misses is empty on both fixtures.
+  4. In the Explorer: the rollout program opened (http://localhost:8766/?view=lo
+     cal&mode=2d&dir=tests/integration/programs/powershell/rollout), a module
+     with its enum and class
+     (http://localhost:8766/?view=local&mode=2d&node=tests/integration/programs/
+     powershell/rollout/modules/Rollout.Targets/Rollout.Targets.psm1), and its
+     manifest wired to its root module
+     (http://localhost:8766/?view=local&mode=2d&node=tests/integration/programs/
+     powershell/rollout/modules/Rollout.Steps/Rollout.Steps.psd1). The pictures
+     are here (AI-Agent-Workspace/Screenshots/2026-10-16/README.md#powershell-re
+     ad-by-a-grammar-of-our-own).
+
+  Two rulings I made from principles already written: an export list given as a
+  variable narrows nothing, as an unreadable one already did, and a module
+  manifest is a tooling entry by what it publishes.
+
+  The asset line, 22a899a6
+
+  Your line is the rule now: isBinaryContent
+  (packages/engine/src/live-docs/archetype.ts) reads a file's head as git does,
+  a NUL byte means binary, a UTF-16 or UTF-32 byte order mark means text, and a
+  binary file is an asset wherever it lies. The fixtures-era branch that called
+  a sample's non-code files assets is gone. Ninety-six docs changed their
+  Archetype line, and this repository's bundle now has no asset at all, because
+  its only images and fonts are a fixture's text placeholders. What you will
+  see: the estate's Portal shows its project file and Web.config (AI-Agent-Works
+  pace/Screenshots/2026-10-16/asset-rule/02-estate-portal-opened.png), and the
+  rosetta landing shows the oracle's expectation JSON as a card
+  (AI-Agent-Workspace/Screenshots/2026-10-16/asset-rule/01-rosetta-landing.png),
+  wired to every file it names and pushing the picture past the frame. That is
+  honest by the docs, and it is for your eye. Nine browser tests that had
+  assumed the old picture now pan as a person does.
+
+  The two Explorer defects, in plain words, 73503843
+
+  In the 3D Local Map's Structure layout, hovering or pinning a file is meant to
+  draw its wires to the files it references. Since that layout was built on
+  October 14 those wires were never on screen: the objects existed, but the
+  library had not been given their endpoints, so each sat at the origin with no
+  length, and the test only checked an on/off flag. Now they are drawn, and the
+  spec (tests/e2e/force-graph-directories.spec.ts) measures each line against
+  its two spheres. Compare before (AI-Agent-Workspace/Screenshots/2026-10-16/str
+  ucture-wires/01-structure-hover-before.png) and after (AI-Agent-Workspace/Scre
+  enshots/2026-10-16/structure-wires/02-structure-hover-after.png), or look live
+  (http://localhost:8766/?view=local&mode=3d&node=packages/explorer/src/client/
+  views/forceGraphData.ts) and hover the selected file with Structure chosen.
+
+  The second defect: the code wrote line brightnesses such as 0.35, but the
+  library multiplied them by its own default of 0.2, so every 3D line was a
+  fifth as bright as intended. Now the written numbers are the real ones: before
+  (AI-Agent-Workspace/Screenshots/2026-10-16/structure-wires/05-connections-at-
+  rest-before.png) and after (AI-Agent-Workspace/Screenshots/2026-10-16/structur
+  e-wires/06-connections-at-rest-after.png). The builder's eye found the
+  revealed wires heavy close up; the numbers are yours to tune. The engine also
+  stops when the layout settles instead of running fifteen seconds after every
+  change, and assets got a pink of the builder's choosing.
+
+  "The design doc in layer 3, in the World Map plan's form" means a written plan
+  for change over time, like the World Map's (.mdmd/layer-3/world-map.mdmd.md):
+  scenarios, the decisions so far, the open questions, before any build. That
+  is the next piece of work, drawn from the probe record
+  (AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md).
+
+  Also landed on the way
+
+  The manifests of four ecosystems (29c83910), and a hygiene pass (cf82b2c3)
+  after a regeneration documented the builders' nested worktrees: discovery and
+  the audits now ask git what it ignores. The full record of the day is the
+  October 16 record
+  (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-4), and
+  the eleven commits since your Turn 2 message are on main, unpushed.
