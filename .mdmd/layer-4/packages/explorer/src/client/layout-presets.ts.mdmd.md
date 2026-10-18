@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-10-13T19:38:15.671Z
+- Generated At: 2026-10-17T23:33:28.138Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Each profile sets the 2D packing costs and 3D spacing together. Coupling, base s
 Created for [the October 13 shared-preset implementation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
 Both packing profiles value card-top alignment. Relaxed gives it greater weight so that extra connector length can buy clearer composition, following the owner's [review of the initial defaults](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-8--relaxed-should-spend-wire-length-on-composition). These remain weighted preferences rather than mandatory rows or a forced routing pattern.
+
+`LAYOUT_RANGES.forceGraph` gained `gravity` (0 to 0.3 by 0.005) and `chargeRange` (0 to 1,000 by 10) on 2026-10-17, so that the two restoring levers ride in saved and shared settings bounded like the others; neither belongs to a packing profile, as coupling and size do not ([the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -43,14 +45,14 @@ Public control minimum, maximum and step, also used when reading saved or shared
 
 #### `LAYOUT_PRESETS` {#symbol-layout_presets}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L27)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L28)
 
 ##### `LAYOUT_PRESETS` — Summary
 Packing defaults only: selecting a preset preserves coupling, symbol scaling and unrelated controls.
 
 #### `applyLayoutPreset` {#symbol-applylayoutpreset}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L39)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L40)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `preset`: [`LayoutPreset`](#symbol-layoutpreset)
 
@@ -59,7 +61,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `layoutPresetOf` {#symbol-layoutpresetof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L45)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L46)
 - Returns: [`LayoutPreset`](#symbol-layoutpreset)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -68,7 +70,7 @@ Derive the label from actual settings, so advanced edits never masquerade as a s
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L55)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L56)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -76,7 +78,7 @@ Read only known, finite settings and bound them to their public control ranges.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L76)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L77)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -85,7 +87,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L81)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L82)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 

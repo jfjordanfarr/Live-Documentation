@@ -94,6 +94,37 @@ describe("spatial layout grammar", () => {
     expect(() => tree.links([{ source: "a", target: "gone", count: 1, kind: "dependency" }])).toThrow("node not found: gone");
   });
 
+  it("has a compact equilibrium under the shipped tuning: a cluster toggled out and back in leaves the picture's extent where it began", () => {
+    // Two clusters that never reference each other, each with one test file. Before 2026-10-17 nothing drew them
+    // together and every reheat pushed them apart; the owner saw "the microgalaxies drift further apart" under repeated
+    // type toggles. With gravity the extent after five toggle cycles stays within a tenth of the settled start. This
+    // toy is harsher than the real bundles: the lab measured it at 3.17 times without gravity and 1.18 at 0.02, where
+    // this repository's bundle gave 2.55 and 1.07; the shipped 0.05 held every measured shape within 7 percent.
+    const tuning = getDefaultTuning().forceGraph;
+    const files = ["a/one", "a/two", "a/one.test", "b/three", "b/four", "b/three.test"].map(id => node(id, 1));
+    const links: SpatialLink[] = [
+      { source: "a/one", target: "a/two", count: 1 }, { source: "a/one.test", target: "a/one", count: 1 },
+      { source: "b/three", target: "b/four", count: 1 }, { source: "b/three.test", target: "b/three", count: 1 }
+    ];
+    const isTest = (file: SpatialNode): boolean => file.id.endsWith(".test");
+    const extent = (nodes: readonly SpatialNode[]): number => {
+      const centre = { x: 0, y: 0, z: 0 };
+      for (const point of nodes) { centre.x += point.x! / nodes.length; centre.y += point.y! / nodes.length; centre.z += point.z! / nodes.length; }
+      return Math.sqrt(nodes.reduce((sum, point) => sum + (point.x! - centre.x) ** 2 + (point.y! - centre.y) ** 2 + (point.z! - centre.z) ** 2, 0) / nodes.length);
+    };
+    let placed = simulateSpatialLayout(files, links, tuning, 300).nodes;
+    const start = extent(placed);
+    for (let cycle = 0; cycle < 5; cycle++) {
+      // The toggled files leave with their links and come back where they stood, as the page's node cache keeps them.
+      const kept = placed.filter(file => !isTest(file));
+      const reduced = simulateSpatialLayout(kept, links.filter(link => !isTest(files.find(f => f.id === link.source)!) && !isTest(files.find(f => f.id === link.target)!)), tuning, 300).nodes;
+      const restored = [...reduced, ...placed.filter(isTest)];
+      placed = simulateSpatialLayout(restored, links, tuning, 300).nodes;
+    }
+    expect(extent(placed) / start).toBeLessThan(1.1);
+    expect(extent(placed) / start).toBeGreaterThan(0.9);
+  });
+
   it("actually settles more strongly coupled pairs closer, and Compact tighter, using the shared engine", () => {
     const relaxed = getDefaultTuning().forceGraph;
     const compact = applyLayoutPreset(getDefaultTuning(), "compact").forceGraph;

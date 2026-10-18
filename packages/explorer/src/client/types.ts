@@ -154,6 +154,17 @@ export interface ForceGraphTuning {
   nodeSize: number;
   /** Exponent of symbol count in sphere volume; one gives cube-root radius growth. */
   symbolScale: number;
+  /**
+   * How strongly every sphere is drawn toward the picture's centre, in proportion to its distance from it: the restoring
+   * force the simulation lacked, so that a picture pushed apart by a reheat returns and two unconnected clusters are not
+   * left to repel each other without end (the owner's "weak gravity", 2026-10-17). Zero is no pull.
+   */
+  gravity: number;
+  /**
+   * How far a sphere's repulsion reaches, in layout units; zero is unbounded, the library's default. A bound keeps far
+   * clusters from pushing on one another while the springs and the collision still shape the near picture.
+   */
+  chargeRange: number;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

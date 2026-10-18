@@ -37,7 +37,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       id: `tuning-${name}`, get: () => state.tuning.localMap[key], set: (value: number) => { state.tuning.localMap[key] = value; }
     })),
     ...([ ["linkGap", "link-gap"], ["charge", "charge"], ["collisionGap", "collision-gap"],
-      ["coupling", "coupling"], ["nodeSize", "node-size"], ["symbolScale", "symbol-scale"] ] as const).map(([key, name]) => ({
+      ["coupling", "coupling"], ["nodeSize", "node-size"], ["symbolScale", "symbol-scale"],
+      ["gravity", "gravity"], ["chargeRange", "charge-range"] ] as const).map(([key, name]) => ({
       id: `tuning-force-${name}`, get: () => state.tuning.forceGraph[key], set: (value: number) => { state.tuning.forceGraph[key] = value; }
     }))
   ];

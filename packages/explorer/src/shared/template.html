@@ -209,6 +209,14 @@
             <span>Symbol Scaling</span><input type="range" id="tuning-force-symbol-scale" min="0" max="2" step="0.1" value="1" />
             <output id="tuning-force-symbol-scale-value">1</output>
           </label>
+          <label class="tuning-slider" title="How strongly every sphere is drawn toward the picture's centre, so that clusters pushed apart by a change come back; zero is no pull">
+            <span>Gravity</span><input type="range" id="tuning-force-gravity" min="0" max="0.3" step="0.005" value="0.05" />
+            <output id="tuning-force-gravity-value">0.05</output>
+          </label>
+          <label class="tuning-slider" title="How far a sphere's repulsion reaches, in layout units; zero is unbounded">
+            <span>Repulsion Reach</span><input type="range" id="tuning-force-charge-range" min="0" max="1000" step="10" value="0" />
+            <output id="tuning-force-charge-range-value">0</output>
+          </label>
         </details>
         <button id="export-layout-settings" type="button" class="tuning-export">Export layout settings</button>
       </div>

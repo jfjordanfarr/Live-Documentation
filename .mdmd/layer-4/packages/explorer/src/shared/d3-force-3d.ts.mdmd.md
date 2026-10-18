@@ -11,7 +11,7 @@
 Supplies the verified TypeScript contract for the untyped d3-force-3d library used by the Local Map and layout lab.
 
 ### Notes
-The installed library publishes no declarations, and no corresponding DefinitelyTyped package was available when this binding was added. This ambient source module covers the API actually used, checked against version 3.0.6; importing it contributes types and emits no implementation. The simulation itself remains the packaged upstream library.
+The installed library publishes no declarations, and no corresponding DefinitelyTyped package was available when this binding was added. This ambient source module covers the API actually used, checked against version 3.0.6; importing it contributes types and emits no implementation. On 2026-10-17 it gained `forceRadial`, the many-body force's `distanceMax`, `distanceMin` and `theta`, and the simulation's `alphaMin` and `alphaTarget`, each read from the library's source for the restoring forces of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) (C5, and C2 to come). The simulation itself remains the packaged upstream library.
 
 Created for [the October 13 shared-preset implementation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 

@@ -43,6 +43,20 @@ declare module "d3-force-3d" {
   export interface ForceManyBody<N extends SimulationNodeDatum> extends Force<N> {
     strength(): (node: N, index: number, nodes: N[]) => number;
     strength(strength: number | ((node: N, index: number, nodes: N[]) => number)): this;
+    /** The distance beyond which two bodies no longer act on each other; the library's default is unbounded. */
+    distanceMax(): number;
+    distanceMax(distance: number): this;
+    distanceMin(): number;
+    distanceMin(distance: number): this;
+    theta(): number;
+    theta(theta: number): this;
+  }
+  /** A positioning force toward a sphere of the given radius about a point: at radius zero, a pull toward the point in proportion to distance. */
+  export interface ForceRadial<N extends SimulationNodeDatum> extends Force<N> {
+    strength(): (node: N, index: number, nodes: N[]) => number;
+    strength(strength: number | ((node: N, index: number, nodes: N[]) => number)): this;
+    radius(): (node: N, index: number, nodes: N[]) => number;
+    radius(radius: number | ((node: N, index: number, nodes: N[]) => number)): this;
   }
   /**
    *
@@ -64,7 +78,11 @@ declare module "d3-force-3d" {
     stop(): this;
     alpha(): number;
     alpha(alpha: number): this;
+    alphaMin(): number;
+    alphaMin(min: number): this;
     alphaDecay(decay: number): this;
+    alphaTarget(): number;
+    alphaTarget(target: number): this;
     velocityDecay(decay: number): this;
     randomSource(random: () => number): this;
   }
@@ -73,4 +91,5 @@ declare module "d3-force-3d" {
   export function forceManyBody<N extends SimulationNodeDatum>(): ForceManyBody<N>;
   export function forceCenter<N extends SimulationNodeDatum>(x?: number, y?: number, z?: number): Force<N>;
   export function forceCollide<N extends SimulationNodeDatum>(radius?: number | ((node: N) => number)): ForceCollide<N>;
+  export function forceRadial<N extends SimulationNodeDatum>(radius: number | ((node: N, index: number, nodes: N[]) => number), x?: number, y?: number, z?: number): ForceRadial<N>;
 }

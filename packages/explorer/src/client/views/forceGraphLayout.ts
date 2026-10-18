@@ -1,5 +1,5 @@
 import "../../shared/d3-force-3d";
-import { forceCenter, forceCollide, forceLink, forceManyBody, forceSimulation, type Force, type ForceLink, type ForceManyBody, type SimulationNodeDatum } from "d3-force-3d";
+import { forceCenter, forceCollide, forceLink, forceManyBody, forceRadial, forceSimulation, type Force, type ForceLink, type ForceManyBody, type SimulationNodeDatum } from "d3-force-3d";
 
 import type { ForceGraphTuning, SpatialLayout } from "../types";
 
@@ -110,20 +110,30 @@ export function pullingLinkForce<N extends SpatialNode, L extends SpatialLink<N>
   return force;
 }
 
-/** The force getter/setter shared by D3's simulation and the browser's public force API. */
+/** The force getter/setter shared by D3's simulation and the browser's public force API; setting null removes a force. */
 export interface SpatialForceAccess<N extends SpatialNode> {
   get(name: string): Force<N> | undefined;
-  set(name: string, force: Force<N>): void;
+  set(name: string, force: Force<N> | null): void;
 }
 
-/** Apply the same forces in the browser and headlessly; the layout says which links pull. */
+/**
+ * Apply the same forces in the browser and headlessly; the layout says which links pull.
+ *
+ * Four forces made the picture before 2026-10-17: the spring on each pulling link, the repulsion of every sphere on
+ * every other with unbounded reach, the collision that keeps spheres apart, and the library's centring, which only
+ * translates the whole so that its mean sits at the origin. Nothing drew two unconnected clusters together or the whole
+ * inward, so every reheat pushed the clusters a little further apart. Gravity is the restoring force: a pull on every
+ * sphere toward the origin in proportion to its distance, so that the picture has a compact equilibrium it returns to;
+ * the repulsion's reach can be bounded beside it.
+ */
 export function configureSpatialForces<N extends SpatialNode>(engine: SpatialForceAccess<N>, tuning: ForceGraphTuning, layout: SpatialLayout = "connections"): void {
   const link = engine.get("link") as ForceLink<N, SpatialLink<N>> | undefined;
   const charge = engine.get("charge") as ForceManyBody<N> | undefined;
   if (!link || !charge) throw new Error("The spatial layout requires its link and charge forces.");
   engine.set("link", pullingLinkForce(link, layout).distance(edge => spatialLinkDistance(edge, tuning)));
-  charge.strength(-tuning.charge);
+  charge.strength(-tuning.charge).distanceMax(tuning.chargeRange > 0 ? tuning.chargeRange : Infinity);
   engine.set("collide", forceCollide<N>(node => spatialNodeRadius(node, tuning) + tuning.collisionGap / 2).iterations(3));
+  engine.set("gravity", tuning.gravity > 0 ? forceRadial<N>(0, 0, 0, 0).strength(tuning.gravity) : null);
 }
 
 /** Deterministic cold layout, using the browser's D3 engine and force configuration; inputs are not mutated. */

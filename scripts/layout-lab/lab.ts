@@ -13,6 +13,7 @@
  *   npm run layout:lab -- refine <bundle/scope> [--capture <file>] [--starts <n>] [--churn <n>] [--patience <n>] [--config <json or @file>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
  *   npm run layout:lab -- spatial <bundle/scope> [--preset compact|relaxed] [--config @export.json] [--ticks <n>] [--tests true|false] [--assets true|false] [--related-docs true|false] [--layout connections|structure] [--out <dir>]
+ *   npm run layout:lab -- drift <bundle/scope> [--preset compact|relaxed] [--layout connections|structure|both] [--gravity a,b,c] [--range a,b,c] [--cycles <n>] [--ticks <n>] [--toggle tests|assets] [--label <name>] [--out <dir>]
  *
  * Every command accepts --preset compact|relaxed; refinement, verification and
  * spatial layout also accept the settings JSON exported by the page.
@@ -22,13 +23,18 @@
  * and `:estate`). Reports go under the day's probe folder unless `--out` says
  * otherwise. `widen` tabulates the starts at every setting of the ranking's
  * pull and tie rule and the order's sweeps (its default grid, or `--grid`)
- * and reports which start each judge would keep at each.
+ * and reports which start each judge would keep at each. `drift` toggles one
+ * file type out of the full 3D picture and back in for a number of cycles,
+ * each change a full reheat as the page does it, at every setting of gravity
+ * and the repulsion's reach named, and tabulates the picture's extent after
+ * each cycle beside how far the unchanged spheres moved (2026-10-17).
  */
 import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
+import { measureDrift, renderDriftReports, toggledArchetype, type DriftReport } from "./drift";
 import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
 import { refine, refinementJson, renderRefinement } from "./refine";
 import { differences, renderMarkdown, toJson, type ReportRow, type RunReport } from "./report";
@@ -109,6 +115,47 @@ async function main(): Promise<void> {
     await fs.writeFile(`${stem}.md`, renderSpatialReport(report));
     const memberships = report.links.filter(link => link.kind === "containment").length;
     console.log(`${report.nodes.length} nodes, ${report.links.length - memberships} reference pairs, ${memberships} containment links in the ${layout} layout; ${report.overlaps} sphere overlaps. Report at ${path.relative(process.cwd(), stem)}.{md,json}.`);
+    return;
+  }
+  if (verb === "drift") {
+    const graph = await loadBundleGraph(run);
+    const base = applyLayoutPreset(getDefaultTuning(), preset).forceGraph;
+    const layouts = options.layout === "both" || !options.layout ? ["connections", "structure"] as const
+      : options.layout === "connections" || options.layout === "structure" ? [options.layout] as const
+      : (() => { throw new Error("--layout must be connections, structure or both."); })();
+    const numbers = (spec: string | undefined, fallback: readonly number[]): number[] =>
+      spec ? spec.split(",").map(part => { const n = Number(part); if (!Number.isFinite(n)) throw new Error(`Not a number: ${part}`); return n; }) : [...fallback];
+    const gravities = numbers(options.gravity, [0, 0.02, 0.05, 0.1]);
+    const ranges = numbers(options.range, [0]);
+    const cycles = Number(options.cycles ?? 5);
+    const ticks = Number(options.ticks ?? 300);
+    const toggle = options.toggle ?? "tests";
+    const toggledKind = toggledArchetype(toggle);
+    // The full picture is the cold start's (tests shown, assets hidden) with the toggled type shown, so that the toggle
+    // has something to remove; `none` is the control, a reheat with no change at all.
+    const include = (node: { archetype: string }): boolean => {
+      const archetype = node.archetype.toLowerCase();
+      if (archetype === toggledKind) return true;
+      if (archetype === "asset") return options.assets === "true";
+      if (archetype === "test") return options.tests !== "false";
+      return true;
+    };
+    const toggled = (node: { archetype: string }): boolean => toggledKind !== null && node.archetype.toLowerCase() === toggledKind;
+    const reports: DriftReport[] = [];
+    for (const layout of layouts) for (const gravity of gravities) for (const chargeRange of ranges) {
+      const started = Date.now();
+      const report = measureDrift(graph, include, toggled, { ...base, gravity, chargeRange }, layout, cycles, ticks);
+      reports.push(report);
+      const last = report.cycles[report.cycles.length - 1];
+      console.log(`${layout}, gravity ${gravity}, reach ${chargeRange || "unbounded"}: extent ${report.start.extent.toFixed(1)} to ${last.extent.toFixed(1)} (${(last.extent / report.start.extent).toFixed(2)}x) over ${cycles} cycles; unchanged spheres moved a mean of ${(report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / cycles).toFixed(1)} per restore; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
+    }
+    const label = options.label ?? `drift-${toggle}-${preset}`;
+    const title = toggledKind === null ? `3D Local Map drift: ${run.bundle}, a reheat with nothing toggled, the ${preset} preset` : `3D Local Map drift: ${run.bundle}, toggling ${toggle}, the ${preset} preset`;
+    await fs.mkdir(out, { recursive: true });
+    const stem = path.join(out, `${run.bundle}-${label}`);
+    await fs.writeFile(`${stem}.json`, JSON.stringify(reports, null, 2) + "\n");
+    await fs.writeFile(`${stem}.md`, renderDriftReports(reports, title));
+    console.log(`Report at ${path.relative(process.cwd(), stem)}.{md,json}.`);
     return;
   }
   if (verb === "capture") {

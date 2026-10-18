@@ -25,6 +25,8 @@ Retired density-nudge values in older stored settings are ignored; no automatic 
 - The navigation store remembers the 3D layout beside the perspective (2026-10-14), read by `readSpatialLayout`; the two directory filters of that morning are gone from the filters.
 - `membraneEvenness` initially defaulted to 1 and `rowLevelness` to 0 on 2026-10-07, each read like the other dials; the evenness default is the layout lab's reading that day, half the outline's steps on every scope for a tenth of a percent of wire and far fewer wires escaping their membrane.
 
+The force graph's `gravity` defaults to 0.05 and `chargeRange` to 0, unbounded (2026-10-17): the layout lab's drift measure's reading, the smallest gravity that held every measured shape within a tenth over five membership changes ([the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-3d-picture-has-gravity-a-restoring-force-in-place-of-held-hubs-recorded-2026-10-17)); an older stored tuning without them takes the defaults.
+
 Cold defaults use the shared Relaxed profile. The forceGraph tuning group is merged independently for older stored settings; explicit older numeric preferences remain overrides. Portable packing and spatial values are normalized to the public control ranges and increments before use, so a slider and the layout cannot disagree about the active number. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
 ## Generated
