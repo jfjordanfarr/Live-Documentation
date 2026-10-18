@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { applyLayoutPreset } from "../layout-presets";
 import { configureSpatialForces, LIBRARY_ALPHA_DECAY, linkPulls, placeNewSpheres, pullingLinkForce, scaledForce, seededDirection, SETTLED_ALPHA, settleSpatialUpdate, settleTicksOf, simulateSpatialLayout, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, updateSchedule, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
 import { getDefaultTuning } from "../persistence/local-storage";
+import type { ForceGraphTuning } from "../types";
 
 const node = (id: string, symbols: number): SpatialNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, index) => `symbol${index}`) });
 const separation = (nodes: SpatialNode[]): number => Math.hypot(nodes[0].x! - nodes[1].x!, nodes[0].y! - nodes[1].y!, nodes[0].z! - nodes[1].z!);
@@ -95,35 +96,46 @@ describe("spatial layout grammar", () => {
     expect(() => tree.links([{ source: "a", target: "gone", count: 1, kind: "dependency" }])).toThrow("node not found: gone");
   });
 
-  it("has a compact equilibrium under the shipped tuning: a cluster toggled out and back in leaves the picture's extent where it began", () => {
-    // Two clusters that never reference each other, each with one test file. Before 2026-10-17 nothing drew them
-    // together and every reheat pushed them apart; the owner saw "the microgalaxies drift further apart" under repeated
-    // type toggles. With gravity the extent after five toggle cycles stays within a tenth of the settled start. This
-    // toy is harsher than the real bundles: the lab measured it at 3.17 times without gravity and 1.18 at 0.02, where
-    // this repository's bundle gave 2.55 and 1.07; the shipped 0.05 held every measured shape within 7 percent.
+  it("has a compact equilibrium under the shipped tuning: a cluster toggled out and back in settles the picture's extent, where the forces as they were let it grow without end", () => {
+    // Two clusters that never reference each other, a test file in each, toggled out and back in twenty times, as a type
+    // toggle does. Under the forces as they were (no gravity) the extent grows with every cycle and never settles; with
+    // gravity it settles at an equilibrium a little wider than the cold start's and stays there. The shipped tuning is
+    // the owner's by eye since 2026-10-18 (gravity 0.01, springs at a quarter), chosen for room to breathe over the
+    // tighter 0.05 the lab first shipped; this toy is harsher than the real bundles, whose extent grew 4 to 6 percent
+    // over five cycles at these settings in the lab. So the test asks whether the extent settles, not whether it stays
+    // at the cold start's: bounded well under the twofold mark, and moving less than a twentieth between the tenth and
+    // the twentieth cycle, where without gravity it is past sixfold by the twentieth and still growing.
     const tuning = getDefaultTuning().forceGraph;
     const files = ["a/one", "a/two", "a/one.test", "b/three", "b/four", "b/three.test"].map(id => node(id, 1));
     const links: SpatialLink[] = [
       { source: "a/one", target: "a/two", count: 1 }, { source: "a/one.test", target: "a/one", count: 1 },
       { source: "b/three", target: "b/four", count: 1 }, { source: "b/three.test", target: "b/three", count: 1 }
     ];
-    const isTest = (file: SpatialNode): boolean => file.id.endsWith(".test");
     const extent = (nodes: readonly SpatialNode[]): number => {
-      const centre = { x: 0, y: 0, z: 0 };
-      for (const point of nodes) { centre.x += point.x! / nodes.length; centre.y += point.y! / nodes.length; centre.z += point.z! / nodes.length; }
-      return Math.sqrt(nodes.reduce((sum, point) => sum + (point.x! - centre.x) ** 2 + (point.y! - centre.y) ** 2 + (point.z! - centre.z) ** 2, 0) / nodes.length);
+      const centroid = { x: 0, y: 0, z: 0 };
+      for (const point of nodes) { centroid.x += point.x! / nodes.length; centroid.y += point.y! / nodes.length; centroid.z += point.z! / nodes.length; }
+      return Math.sqrt(nodes.reduce((sum, point) => sum + (point.x! - centroid.x) ** 2 + (point.y! - centroid.y) ** 2 + (point.z! - centroid.z) ** 2, 0) / nodes.length);
     };
-    let placed = simulateSpatialLayout(files, links, tuning, 300).nodes;
-    const start = extent(placed);
-    for (let cycle = 0; cycle < 5; cycle++) {
-      // The toggled files leave with their links and come back where they stood, as the page's node cache keeps them.
-      const kept = placed.filter(file => !isTest(file));
-      const reduced = simulateSpatialLayout(kept, links.filter(link => !isTest(files.find(f => f.id === link.source)!) && !isTest(files.find(f => f.id === link.target)!)), tuning, 300).nodes;
-      const restored = [...reduced, ...placed.filter(isTest)];
-      placed = simulateSpatialLayout(restored, links, tuning, 300).nodes;
-    }
-    expect(extent(placed) / start).toBeLessThan(1.1);
-    expect(extent(placed) / start).toBeGreaterThan(0.9);
+    const isTest = (file: SpatialNode): boolean => file.id.endsWith(".test");
+    /** The extent after each of twenty toggle cycles, over the cold start's. */
+    const growth = (forces: ForceGraphTuning): number[] => {
+      let placed = simulateSpatialLayout(files, links, forces, 300).nodes;
+      const start = extent(placed);
+      const series: number[] = [];
+      for (let cycle = 1; cycle <= 20; cycle++) {
+        const reduced = simulateSpatialLayout(placed.filter(file => !isTest(file)), links.filter(link => !String(link.source).endsWith(".test")), forces, 300).nodes;
+        placed = simulateSpatialLayout([...reduced, ...placed.filter(isTest)], links, forces, 300).nodes;
+        series.push(extent(placed) / start);
+      }
+      return series;
+    };
+    const shipped = growth(tuning);
+    expect(shipped[19]).toBeLessThan(1.5);
+    expect(shipped[19] / shipped[9]).toBeLessThan(1.05);
+    expect(shipped[19] / shipped[9]).toBeGreaterThan(0.95);
+    const lax = growth({ ...tuning, gravity: 0, chargeRange: 0 });
+    expect(lax[19]).toBeGreaterThan(3);
+    expect(lax[19] / lax[9]).toBeGreaterThan(1.2);
   });
 
   it("actually settles more strongly coupled pairs closer, and Compact tighter, using the shared engine", () => {

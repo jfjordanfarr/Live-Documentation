@@ -70,7 +70,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.05, chargeRange: 0, linkStrength: 1, updateEnergy: 0.1 },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.01, chargeRange: 0, linkStrength: 0.25, updateEnergy: 0.1 },
   // The history's scrubber: steps laid out evenly, the ticks chosen by the number of steps, two steps a second when played.
   history: { axis: "steps", granularity: "auto", playRate: 2 }
 });

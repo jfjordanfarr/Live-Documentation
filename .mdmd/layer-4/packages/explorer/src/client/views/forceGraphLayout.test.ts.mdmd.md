@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.test.ts
-- Generated At: 2026-10-18T20:50:50.607Z
+- Generated At: 2026-10-18T22:52:54.340Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,8 @@ The update energy's tests (2026-10-18, ticket C2 of [the change-over-time plan](
 
 The springs' strength tests (2026-10-18) hold the lever to D3's rule: one tick of the springs alone draws a pair half as far at a half, twice as far at two and not at all at zero, and the rule inside the lever gives a wire between two files of two wires each half a lone pair's strength, a hub's wire to a leaf the leaf's one.
 
+The equilibrium test was restated on the evening of 2026-10-18, when the owner's settings by eye (gravity 0.01, springs at a quarter) became the defaults: it asks whether the toy's extent settles over twenty toggle cycles, bounded under 1.5 and moving less than a twentieth between the tenth and the twentieth cycle, where without gravity it passes threefold and keeps growing by more than a fifth; at the tenth of the cold start it had asked, the owner's room to breathe fails on the toy while this repository's bundles hold within it, as the lab measured.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -32,6 +34,7 @@ _No public symbols detected_
 - `d3-force-3d` - `forceLink`, `forceManyBody`, `forceSimulation`
 - [`layout-presets.applyLayoutPreset`](../layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
+- [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`forceGraphLayout.LIBRARY_ALPHA_DECAY`](./forceGraphLayout.ts.mdmd.md#symbol-library_alpha_decay)
 - [`forceGraphLayout.PlaceableNode`](./forceGraphLayout.ts.mdmd.md#symbol-placeablenode)
 - [`forceGraphLayout.SETTLED_ALPHA`](./forceGraphLayout.ts.mdmd.md#symbol-settled_alpha)

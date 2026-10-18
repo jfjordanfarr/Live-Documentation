@@ -29,3 +29,19 @@ The carry across a change is the page's rule, now shared with the lab in one fun
 ## What was chosen
 
 Energy 0.1 as the shipped default, with the owner's choice open among the four pictured settings. The reasons: the lab's reading, that the unchanged spheres stir about a quarter as much as under the full reheat on this repository's bundles (14.7 against 60.9 units in the connections layout, 23.4 against 88.9 in the structure layout) with the picture's extent held, settling in two hundred ticks instead of three hundred; the eye's, that a type toggle leaves the picture recognisably itself with the gaps closing where the full reheat reshuffles the tree and placement alone never closes them; and the switch's, that the tree still forms. Energy 0.3 keeps more of the full reheat's rearrangement for little gain in time; 0.02 and 0.05 are stiller still (6 and 10 units) and are a slider's move away for whoever prefers them; zero is the drag's setting of the plan's C4, where the picture is placed without a tick while the thumb moves and the gentle update settles it at rest. The three settings the plan named are three values of the one lever, as the owner asked for options rather than a choice made for them. Kept by `forceGraphLayout.test.ts` (the schedule, the ticks, the share, the placement, the headless feed), `drift.test.ts` (the measure's energy column) and `tests/e2e/force-graph-update.spec.ts` (placement alone moving nothing and seating births by the rule, the full reheat and the gentle update settling in their ticks with the gentle stir under six tenths of the full, the lines' objects kept).
+
+## The owner's settings, measured (the evening of 2026-10-18)
+
+After a day with the levers the owner found "nice settings of 0.01 for gravity and 0.25 for spring strength to give the 3D force graph a bit of room to breathe so users can better explore it" ([Turn 9 of the October 17 session](../../../ChatHistory/2026/10/2026-10-17.1.record.md#turn-9)). The drift verb gained `--spring` for the measurement: `npm run layout:lab -- drift repository/five --layout both --gravity 0.01 --range 0,300,600 --spring 0.25 --energy 0.1 --cycles 5` ([repository-drift-tests-owner-settings.md](repository-drift-tests-owner-settings.md)).
+
+| Layout | Reach | Start extent | Extent after five cycles | Growth | Unchanged mean move |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| connections | unbounded | 764.5 | 807.9 | 1.06 | 25.7 |
+| connections | 300 | 365.7 | 366.7 | 1.00 | 13.9 |
+| connections | 600 | 527.1 | 529.2 | 1.00 | 18.6 |
+| structure | unbounded | 875.2 | 912.6 | 1.04 | 37.3 |
+| structure | 300 | 396.3 | 399.4 | 1.01 | 14.8 |
+| structure | 600 | 566.5 | 575.3 | 1.02 | 22.0 |
+
+What it says: at the owner's settings with the reach unbounded the picture is about 1.8 times as wide as the shipped 0.05 gave it (764 against 415 in the connections layout) and its extent grows 4 to 6 percent over five toggle cycles, within the tenth the drift measure asks and about a third of the growth under the forces as they were before gravity (2.55 times). A bounded reach holds the extent exactly but halves the spread, which is the opposite of what the owner asked for, so the reach stays unbounded. The settings became the defaults the same evening. The unit test's toy of six spheres, harsher than the bundles, grows 1.21 times at these settings; what it does over more cycles is in the session record, and the test was restated to ask whether the toy's extent settles rather than whether it stays at the cold start's.
+

@@ -15,6 +15,8 @@ The cycle is the page's own: the full picture settled by the shared forces, one 
 
 Since 2026-10-18, for ticket C2 of the same plan, each change is fed by the tuning's update energy through the page's own `settleSpatialUpdate`, a full reheat at one (which reproduces the measurements of 2026-10-17), a reheat to the fraction at a fraction, placement alone at zero, and every cycle reports the ticks the engine took to settle the removal and the restore beside the moves. The carry is the page's rule and no longer a copy of it: `carryPositions` restores the known positions and hands the rest to `placeNewSpheres`, so that a hub new to the picture starts at its members' centroid and a born file beside its hub, as the page places them. The sweep that chose the energy's default is under `AI-Agent-Workspace/Probes/2026-10-18/layout-lab/`.
 
+The table gained a Spring column on 2026-10-18, the springs' strength the report was measured at, beside the energy, the gravity and the reach.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

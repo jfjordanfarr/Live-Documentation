@@ -35,6 +35,8 @@ The history tuning (2026-10-18, the plan's C4 and C14) is read with the rest: an
 
 The force graph's `linkStrength` defaults to 1 (2026-10-18), D3's own spring rule unchanged, until the owner's eye picks the numbers they asked to tune by hand ([Turn 7](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)); an older stored tuning without the value takes the default.
 
+Gravity 0.01 and the springs' strength 0.25 are the defaults since the evening of 2026-10-18, the owner's own settings by eye after a day with the levers ("a bit of room to breathe so users can better explore it", [Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-9)), measured by the lab at a 4 to 6 percent growth of the extent over five toggle cycles on this repository's bundles with the reach unbounded ([the lab record](../../../../../../../AI-Agent-Workspace/Probes/2026-10-18/layout-lab/README.md)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -53,7 +53,7 @@ describe("the drift measure", () => {
     expect(tenth.cycles[0].meanMoveOfUnchanged).toBeGreaterThan(0);
     expect(tenth.cycles[0].meanMoveOfUnchanged).toBeLessThan(full.cycles[0].meanMoveOfUnchanged / 2);
     const table = renderDriftReports([full, tenth, placement], "toy");
-    expect(table).toContain("| connections | 1 | 0.05 | unbounded | 6 (2) |");
+    expect(table).toContain(`| connections | 1 | ${tuning.linkStrength} | 0.05 | unbounded | 6 (2) |`);
     expect(table).toContain("| 300 |");
     expect(table).toContain("| 0 |\n");
   });

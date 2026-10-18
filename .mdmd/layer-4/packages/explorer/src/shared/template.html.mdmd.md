@@ -29,6 +29,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 
 Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis, its ticks and the play rate, shown with the 3D groups.
 - The 3D group gained Spring Strength (`tuning-force-link-strength`, 0 to 2 by 0.05, 1 by default) on 2026-10-18, with a title that says what one and zero mean, so that the owner can tune the pull between connected neighbours by eye beside Gravity and Repulsion Reach ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
+- The Gravity and Spring Strength sliders start at 0.01 and 0.25 since the evening of 2026-10-18, the owner's settings by eye ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-9)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

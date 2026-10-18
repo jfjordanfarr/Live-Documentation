@@ -15,6 +15,8 @@ The third test is the measure's reason to exist and can fail either way: with th
 
 The carry test (2026-10-18) reads the page's own rule through the lab's `carryPositions`: a sphere that stood keeps its place, a new hub starts at its members' centroid, and a born file starts beside its hub and not on it. The energy test holds the measure's new column: at placement alone no tick is taken and no unchanged sphere moves, so the extent never changes; at a tenth the changes settle in two hundred ticks and stir the unchanged less than half as much as the full reheat's three hundred; and the rendered table carries the energy, the settle and the toggled count where it says it does. Made for ticket C2 of [the change-over-time plan](../../../layer-3/change-over-time.mdmd.md#open-questions).
 
+Since 2026-10-18 the rendered table's expected row reads the spring from the tuning it was measured at, not from a constant, so that the shipped default may change without the test saying anything about it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
