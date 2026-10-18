@@ -8,7 +8,7 @@ import { edgeKey, type Shape } from "@live-documentation/engine/live-docs/histor
 import { changeCount, stepSummary } from "./step-summary";
 
 const HEAD = {
-  lens: { key: "k", generator: { version: "0.0.0", commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },
+  lens: { key: "k", generator: { version: "0.0.0", code: null, commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },
   source: { system: "git" as const, root: ".", branch: "main", head: "c3", shallow: false, knowledgeBegins: "c0", sampling: { rule: "every-commit" as const }, authors: true }
 };
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/format.ts
-- Generated At: 2026-10-18T00:39:18.816Z
+- Generated At: 2026-10-18T22:17:31.775Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ The format of `history.json`, the sequence a repository's history is read into u
 - The entry mark is one boolean per file, as C1 recommended, so that the walk from a past commit's entries can run; the Entry lines' reasons were in the docs of that day, which the sequence does not keep.
 - `HistoryHead` is what the bundle's data says of the history it carries, so that the client knows the lens, the window and where knowledge begins before it fetches the file.
 - The format's version is `live-docs-history/1`; the CLI and the static builder refuse another and name the command that writes this one.
+- `GeneratorIdentity.code` (the evening of 2026-10-18) is a hash of the generator's code as committed, the tree ids of `packages/engine` and `packages/generator`, and it keys the lens in place of the commit, which still rides in the head for the reader: until then every commit of this repository, even one touching no generator code, was a new lens and a regeneration of the whole cache, which the owner's first day with the history met at once.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -121,53 +122,53 @@ A snapshot repeated whole after a step, so that a seek need not replay from the 
 - Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L112)
 
 ##### `GeneratorIdentity` — Summary
-Which generator made the summaries: its package version, its commit and any uncommitted change to it.
+Which generator made the summaries: its package version, its code as committed, the commit it runs from and any uncommitted change to it.
 
 #### `HistoryLens` {#symbol-historylens}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L122)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L128)
 
 ##### `HistoryLens` — Summary
 The lens: one generator and one configuration, applied to every change of the sequence.
 
 #### `Sampling` {#symbol-sampling}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L131)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L137)
 
 ##### `Sampling` — Summary
 Which changes of the mainline were regenerated.
 
 #### `HistorySource` {#symbol-historysource}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L146)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L152)
 
 ##### `HistorySource` — Summary
 Where the sequence was read from.
 
 #### `HistoryWindow` {#symbol-historywindow}
 - Type: type
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L165)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L171)
 
 ##### `HistoryWindow` — Summary
 The part of a sequence an export carries, when it carries less than the whole.
 
 #### `HistorySequence` {#symbol-historysequence}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L168)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L174)
 
 ##### `HistorySequence` — Summary
 The sequence: `history.json`.
 
 #### `HistoryHead` {#symbol-historyhead}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L186)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L192)
 
 ##### `HistoryHead` — Summary
 What a sequence says of itself without its body, which the bundle's data carries beside the history file's name.
 
 #### `CommitSummary` {#symbol-commitsummary}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L200)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L206)
 
 ##### `CommitSummary` — Summary
 One change's shape as the cache keeps it: `<docsRoot>/history/<lens>/<change>.json`.

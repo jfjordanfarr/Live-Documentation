@@ -6,7 +6,7 @@ import { changeAt, commitAt, headOf, seek, SequenceBuilder } from "./sequence";
 import { edgeKey, shapeDifferences, type Shape } from "./shape";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 
-const LENS: HistoryLens = { key: "0123456789abcdef", generator: { version: "0.0.0", commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG };
+const LENS: HistoryLens = { key: "0123456789abcdef", generator: { version: "0.0.0", code: null, commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG };
 const SOURCE: HistorySource = { system: "git", root: ".", branch: "main", head: "c9", shallow: false, knowledgeBegins: "c0", sampling: { rule: "every-commit" }, authors: true };
 
 function commit(index: number): CommitInfo {

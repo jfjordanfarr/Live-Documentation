@@ -108,11 +108,17 @@ export interface Keyframe extends SnapshotTuples {
   step: number;
 }
 
-/** Which generator made the summaries: its package version, its commit and any uncommitted change to it. */
+/** Which generator made the summaries: its package version, its code as committed, the commit it runs from and any uncommitted change to it. */
 export interface GeneratorIdentity {
   /** The generator package's version. */
   version: string;
-  /** The commit of this repository the generator runs from, or null when it does not run from a checkout of it. */
+  /**
+   * A hash of the generator's code as committed, the tree ids of `packages/engine` and `packages/generator` at the
+   * commit, so that a commit which touches neither is the same lens and keeps the cache (2026-10-18); null when the
+   * generator does not run from a checkout of this repository.
+   */
+  code: string | null;
+  /** The commit of this repository the generator runs from, for the reader; it does not key the lens. Null when it does not run from a checkout. */
   commit: string | null;
   /** A hash of the generator's uncommitted changes in that checkout, or null when there are none. */
   modified: string | null;

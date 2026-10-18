@@ -15,7 +15,7 @@ function shape(files: Record<string, number>, edges: Array<[string, string]> = [
 }
 
 const HEAD = {
-  lens: { key: "k", generator: { version: "0.0.0", commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },
+  lens: { key: "k", generator: { version: "0.0.0", code: null, commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },
   source: { system: "git" as const, root: ".", branch: "main", head: "c6", shallow: false, knowledgeBegins: "c0", sampling: { rule: "every-commit" as const }, authors: false }
 };
 

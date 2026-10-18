@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { canonicalJson, lensOf } from "./lens";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG, normalizeLiveDocumentationConfig } from "../../config/liveDocumentationConfig";
 
-const GENERATOR = { version: "0.0.0", commit: "dec184ec", modified: null };
+const GENERATOR = { version: "0.0.0", code: "0a1b2c3d4e5f6a7b", commit: "dec184ec", modified: null };
 
 describe("lensOf", () => {
   it("keys the same generator and configuration alike, whatever the order of their keys", () => {
@@ -12,11 +12,16 @@ describe("lensOf", () => {
     expect(lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key).toMatch(/^[0-9a-f]{16}$/u);
   });
 
-  it("keys a new lens apart: another configuration, another commit, an uncommitted change", () => {
+  it("keeps the lens across a commit that touches no generator code, since the commit rides in the lens but does not key it", () => {
+    expect(lensOf({ ...GENERATOR, commit: "cad63bdd" }, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key).toBe(lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key);
+    expect(lensOf({ ...GENERATOR, commit: "cad63bdd" }, DEFAULT_LIVE_DOCUMENTATION_CONFIG).generator.commit).toBe("cad63bdd");
+  });
+
+  it("keys a new lens apart: another configuration, other code, an uncommitted change", () => {
     const base = lensOf(GENERATOR, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key;
     const keys = [
       lensOf(GENERATOR, normalizeLiveDocumentationConfig({ exclude: ["vendor/**"] })).key,
-      lensOf({ ...GENERATOR, commit: "cad63bdd" }, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key,
+      lensOf({ ...GENERATOR, code: "ffffffffffffffff" }, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key,
       lensOf({ ...GENERATOR, modified: "0011223344556677" }, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key,
       lensOf({ ...GENERATOR, version: "0.1.0" }, DEFAULT_LIVE_DOCUMENTATION_CONFIG).key
     ];

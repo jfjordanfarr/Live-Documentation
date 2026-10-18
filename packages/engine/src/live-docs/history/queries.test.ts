@@ -9,7 +9,7 @@ import { edgeKey, emptyChange, type Shape } from "./shape";
 import type { VersionChanges } from "./versionControl";
 
 const HEAD = {
-  lens: { key: "k", generator: { version: "0.0.0", commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },
+  lens: { key: "k", generator: { version: "0.0.0", code: null, commit: null, modified: null }, configuration: DEFAULT_LIVE_DOCUMENTATION_CONFIG },
   source: { system: "git" as const, root: ".", branch: "main", head: "", shallow: false, knowledgeBegins: "", sampling: { rule: "every-commit" as const }, authors: true }
 };
 

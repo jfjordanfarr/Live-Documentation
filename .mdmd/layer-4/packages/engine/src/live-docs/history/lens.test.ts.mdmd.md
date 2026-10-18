@@ -13,6 +13,8 @@ Vitest over the lens's key: the same for the same generator and configuration wh
 ### Notes
 - Written 2026-10-17 for C1.
 
+The lens's tests since the evening of 2026-10-18 hold that a commit which touches no generator code keeps the key while the commit still rides in the lens, and that other code is another lens.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

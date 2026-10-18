@@ -24,17 +24,19 @@ const GENERATOR_FOLDERS = ["packages/engine", "packages/generator"];
 
 /**
  * The generator's package version and, when it runs from a checkout of this
- * repository, the commit it runs from and a hash of any uncommitted change to
- * the engine or the generator there, so that a generator edited in place is a
- * new lens rather than the commit it started from.
+ * repository, a hash of its code as committed (the tree ids of the engine and
+ * the generator at the commit, so that a commit touching neither keeps the
+ * lens; 2026-10-18), the commit it runs from, and a hash of any uncommitted
+ * change to the engine or the generator there, so that a generator edited in
+ * place is a new lens rather than the commit it started from.
  */
 export async function generatorIdentity(): Promise<GeneratorIdentity> {
   const manifest = JSON.parse(await fs.readFile(path.join(PACKAGE_ROOT, "package.json"), "utf8")) as { version: string };
   const checkout = await checkoutOf(PACKAGE_ROOT);
-  return { version: manifest.version, commit: checkout?.commit ?? null, modified: checkout?.modified ?? null };
+  return { version: manifest.version, code: checkout?.code ?? null, commit: checkout?.commit ?? null, modified: checkout?.modified ?? null };
 }
 
-async function checkoutOf(packageRoot: string): Promise<{ commit: string; modified: string | null } | undefined> {
+async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: string; modified: string | null } | undefined> {
   let topLevel: string;
   try {
     topLevel = (await git(packageRoot, ["rev-parse", "--show-toplevel"])).trim();
@@ -47,9 +49,12 @@ async function checkoutOf(packageRoot: string): Promise<{ commit: string; modifi
     return undefined;
   }
   const commit = (await git(topLevel, ["rev-parse", "HEAD"])).trim();
+  // The code as committed: the tree ids of the two folders, which change only when something under them does.
+  const trees = await git(topLevel, ["rev-parse", ...GENERATOR_FOLDERS.map((folder) => `HEAD:${folder}`)]);
+  const code = createHash("sha256").update(trees).digest("hex").slice(0, 16);
   const status = await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS]);
   if (status === "") {
-    return { commit, modified: null };
+    return { code, commit, modified: null };
   }
   const hash = createHash("sha256");
   hash.update(await git(topLevel, ["diff", "--binary", "HEAD", "--", ...GENERATOR_FOLDERS]));
@@ -60,7 +65,7 @@ async function checkoutOf(packageRoot: string): Promise<{ commit: string; modifi
       hash.update(await fs.readFile(path.join(topLevel, untracked)));
     }
   }
-  return { commit, modified: hash.digest("hex").slice(0, 16) };
+  return { code, commit, modified: hash.digest("hex").slice(0, 16) };
 }
 
 async function git(cwd: string, args: readonly string[]): Promise<string> {
