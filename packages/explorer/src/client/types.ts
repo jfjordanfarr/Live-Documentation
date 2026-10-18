@@ -165,6 +165,13 @@ export interface ForceGraphTuning {
    * clusters from pushing on one another while the springs and the collision still shape the near picture.
    */
   chargeRange: number;
+  /**
+   * How much a change to what is shown (a filter, a pin, a layout, a step of history) stirs the picture: the alpha the
+   * simulation is reheated to, in D3's own terms. One is the full reheat the library makes of every change, a fraction a
+   * reheat to that alpha, which cools to the same stillness sooner, and zero places the new spheres and ticks nothing. The
+   * lever of ticket C2 of the change-over-time plan (2026-10-18); the first picture always warms up in full.
+   */
+  updateEnergy: number;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

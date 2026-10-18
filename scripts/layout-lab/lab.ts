@@ -13,7 +13,7 @@
  *   npm run layout:lab -- refine <bundle/scope> [--capture <file>] [--starts <n>] [--churn <n>] [--patience <n>] [--config <json or @file>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
  *   npm run layout:lab -- spatial <bundle/scope> [--preset compact|relaxed] [--config @export.json] [--ticks <n>] [--tests true|false] [--assets true|false] [--related-docs true|false] [--layout connections|structure] [--out <dir>]
- *   npm run layout:lab -- drift <bundle/scope> [--preset compact|relaxed] [--layout connections|structure|both] [--gravity a,b,c] [--range a,b,c] [--cycles <n>] [--ticks <n>] [--toggle tests|assets] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- drift <bundle/scope> [--preset compact|relaxed] [--layout connections|structure|both] [--gravity a,b,c] [--range a,b,c] [--energy a,b,c] [--cycles <n>] [--ticks <n>] [--toggle tests|assets|none] [--label <name>] [--out <dir>]
  *
  * Every command accepts --preset compact|relaxed; refinement, verification and
  * spatial layout also accept the settings JSON exported by the page.
@@ -25,9 +25,12 @@
  * pull and tie rule and the order's sweeps (its default grid, or `--grid`)
  * and reports which start each judge would keep at each. `drift` toggles one
  * file type out of the full 3D picture and back in for a number of cycles,
- * each change a full reheat as the page does it, at every setting of gravity
- * and the repulsion's reach named, and tabulates the picture's extent after
- * each cycle beside how far the unchanged spheres moved (2026-10-17).
+ * each change fed as the page feeds it at every setting of the update energy
+ * named (`--energy`, the page's default alone by default; 1 is the full
+ * reheat the page made of every change before 2026-10-18), of gravity and of
+ * the repulsion's reach, and tabulates the picture's extent after each cycle
+ * beside how far the unchanged spheres moved and how many ticks each change
+ * took to settle (2026-10-17, the energy 2026-10-18).
  */
 import * as fs from "node:fs/promises";
 import path from "node:path";
@@ -127,6 +130,7 @@ async function main(): Promise<void> {
       spec ? spec.split(",").map(part => { const n = Number(part); if (!Number.isFinite(n)) throw new Error(`Not a number: ${part}`); return n; }) : [...fallback];
     const gravities = numbers(options.gravity, [0, 0.02, 0.05, 0.1]);
     const ranges = numbers(options.range, [0]);
+    const energies = numbers(options.energy, [base.updateEnergy]);
     const cycles = Number(options.cycles ?? 5);
     const ticks = Number(options.ticks ?? 300);
     const toggle = options.toggle ?? "tests";
@@ -142,12 +146,13 @@ async function main(): Promise<void> {
     };
     const toggled = (node: { archetype: string }): boolean => toggledKind !== null && node.archetype.toLowerCase() === toggledKind;
     const reports: DriftReport[] = [];
-    for (const layout of layouts) for (const gravity of gravities) for (const chargeRange of ranges) {
+    for (const layout of layouts) for (const updateEnergy of energies) for (const gravity of gravities) for (const chargeRange of ranges) {
       const started = Date.now();
-      const report = measureDrift(graph, include, toggled, { ...base, gravity, chargeRange }, layout, cycles, ticks);
+      const report = measureDrift(graph, include, toggled, { ...base, gravity, chargeRange, updateEnergy }, layout, cycles, ticks);
       reports.push(report);
       const last = report.cycles[report.cycles.length - 1];
-      console.log(`${layout}, gravity ${gravity}, reach ${chargeRange || "unbounded"}: extent ${report.start.extent.toFixed(1)} to ${last.extent.toFixed(1)} (${(last.extent / report.start.extent).toFixed(2)}x) over ${cycles} cycles; unchanged spheres moved a mean of ${(report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / cycles).toFixed(1)} per restore; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
+      const settles = [...new Set(report.cycles.flatMap(cycle => [cycle.settleTicks.removed, cycle.settleTicks.restored]))].sort((a, b) => a - b);
+      console.log(`${layout}, energy ${updateEnergy}, gravity ${gravity}, reach ${chargeRange || "unbounded"}: extent ${report.start.extent.toFixed(1)} to ${last.extent.toFixed(1)} (${(last.extent / report.start.extent).toFixed(2)}x) over ${cycles} cycles; unchanged spheres moved a mean of ${(report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / cycles).toFixed(1)} per restore; a change settled in ${settles.join(" to ")} ticks; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
     }
     const label = options.label ?? `drift-${toggle}-${preset}`;
     const title = toggledKind === null ? `3D Local Map drift: ${run.bundle}, a reheat with nothing toggled, the ${preset} preset` : `3D Local Map drift: ${run.bundle}, toggling ${toggle}, the ${preset} preset`;

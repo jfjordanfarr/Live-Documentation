@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-17T23:33:30.363Z
+- Generated At: 2026-10-18T02:59:04.162Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - The Local Map subsection gained the Churn Cost slider (`tuning-churn-cost`, 0 to 400 by 10) later on 2026-10-07, and the Order Starts slider's default fell to 2.
 - The Membrane Evenness and Row Levelness sliders (2026-10-07) stand after Column Gap in the Local Map group, 0 to 5 by a quarter, evenness at 1 by default.
 - The 3D Layout group gained Gravity (`tuning-force-gravity`, 0 to 0.3 by 0.005) and Repulsion Reach (`tuning-force-charge-range`, 0 to 1,000 by 10, zero unbounded) on 2026-10-17, so that the owner can "toy around with how to keep things from wiggling around too much too quickly" by hand ([the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)).
+- The same group gained Update Energy (`tuning-force-update-energy`, 0 to 1 by 0.01, 0.1 by default) on 2026-10-18 for ticket C2 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions): how much a change to what is shown stirs the picture, the full reheat at 1, placement alone at 0, with a title that says so; the three settings the plan named are three places on one slider, as the owner asked for options to taste rather than a choice made for them.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -195,6 +196,12 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Type: variable
 
 #### `tuning-force-symbol-scale-value` {#symbol-tuning-force-symbol-scale-value}
+- Type: variable
+
+#### `tuning-force-update-energy` {#symbol-tuning-force-update-energy}
+- Type: variable
+
+#### `tuning-force-update-energy-value` {#symbol-tuning-force-update-energy-value}
 - Type: variable
 
 #### `tuning-height-cost` {#symbol-tuning-height-cost}

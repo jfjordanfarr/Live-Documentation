@@ -17,7 +17,7 @@ Created for [the October 13 shared-preset implementation](../../../../../../AI-A
 
 Both packing profiles value card-top alignment. Relaxed gives it greater weight so that extra connector length can buy clearer composition, following the owner's [review of the initial defaults](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-8--relaxed-should-spend-wire-length-on-composition). These remain weighted preferences rather than mandatory rows or a forced routing pattern.
 
-`LAYOUT_RANGES.forceGraph` gained `gravity` (0 to 0.3 by 0.005) and `chargeRange` (0 to 1,000 by 10) on 2026-10-17, so that the two restoring levers ride in saved and shared settings bounded like the others; neither belongs to a packing profile, as coupling and size do not ([the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)).
+`LAYOUT_RANGES.forceGraph` gained `gravity` (0 to 0.3 by 0.005) and `chargeRange` (0 to 1,000 by 10) on 2026-10-17, so that the two restoring levers ride in saved and shared settings bounded like the others; neither belongs to a packing profile, as coupling and size do not ([the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)). `updateEnergy` (0 to 1 by 0.01) joined them on 2026-10-18 for ticket C2 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions): the energy a membership change puts into the simulation rides in the saved and the shared settings the same way, and is no part of a packing profile either.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

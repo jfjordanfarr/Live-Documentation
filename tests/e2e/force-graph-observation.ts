@@ -4,6 +4,10 @@ import type { Camera, Mesh, Scene, WebGLRenderer } from "three";
 type ObservedWindow = Window & {
   __THREE_DEVTOOLS__: EventTarget;
   renderedGraph?: { scene: Scene; camera: Camera };
+  /** Frames drawn since the page opened; the library ticks its engine at most once per frame. */
+  renderedFrames?: number;
+  /** Every change of the graph container's aria-busy, with the frame it happened on. */
+  busyChanges?: Array<{ busy: boolean; frame: number }>;
 };
 
 type GraphMesh = Mesh & {
@@ -20,10 +24,16 @@ type GraphMesh = Mesh & {
   };
 };
 
-/** Observe the meshes and camera actually sent to WebGL through Three's development-tool event. */
+/**
+ * Observe the meshes and camera actually sent to WebGL through Three's development-tool event, count the frames drawn, and
+ * note on which frame the graph container said it was busy or settled, so that a spec can count the engine's ticks between
+ * a change and its settle without reaching into the Explorer's state (2026-10-18).
+ */
 export async function observeGraph(page: Page): Promise<void> {
   await page.addInitScript(() => {
     const inspected = window as unknown as ObservedWindow;
+    inspected.renderedFrames = 0;
+    inspected.busyChanges = [];
     inspected.__THREE_DEVTOOLS__ = new EventTarget();
     inspected.__THREE_DEVTOOLS__.addEventListener("observe", event => {
       const renderer = (event as CustomEvent<WebGLRenderer>).detail;
@@ -31,10 +41,58 @@ export async function observeGraph(page: Page): Promise<void> {
       const render = renderer.render.bind(renderer);
       renderer.render = (scene, camera) => {
         inspected.renderedGraph = { scene: scene as Scene, camera };
+        inspected.renderedFrames = (inspected.renderedFrames ?? 0) + 1;
         render(scene, camera);
       };
     });
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("graph-svg");
+      if (!container) return;
+      new MutationObserver(() => {
+        const busy = container.getAttribute("aria-busy") === "true";
+        const last = inspected.busyChanges![inspected.busyChanges!.length - 1];
+        if (!last || last.busy !== busy) inspected.busyChanges!.push({ busy, frame: inspected.renderedFrames ?? 0 });
+      }).observe(container, { attributes: true, attributeFilter: ["aria-busy"] });
+    });
   });
+}
+
+/** The frames drawn so far, and when the graph last became busy and last settled, by frame. */
+export async function engineActivity(page: Page): Promise<{ frames: number; changes: Array<{ busy: boolean; frame: number }> }> {
+  return page.evaluate(() => {
+    const inspected = window as unknown as ObservedWindow;
+    return { frames: inspected.renderedFrames ?? 0, changes: [...(inspected.busyChanges ?? [])] };
+  });
+}
+
+/** Mark every rendered line's object with a token, so that a later count says how many objects a change kept; returns how many were marked. */
+export async function markRenderedLinks(page: Page, token: string): Promise<number> {
+  return page.evaluate(mark => {
+    const observed = (window as unknown as ObservedWindow).renderedGraph!;
+    let marked = 0;
+    observed.scene.traverse(object => {
+      const mesh = object as GraphMesh;
+      if (mesh.__graphObjType !== "link" || !mesh.__data?.source) return;
+      mesh.userData.observationMark = mark;
+      marked++;
+    });
+    return marked;
+  }, token);
+}
+
+/** How many rendered lines carry the token, beside how many there are. */
+export async function markedRenderedLinks(page: Page, token: string): Promise<{ marked: number; total: number }> {
+  return page.evaluate(mark => {
+    const observed = (window as unknown as ObservedWindow).renderedGraph!;
+    let marked = 0, total = 0;
+    observed.scene.traverse(object => {
+      const mesh = object as GraphMesh;
+      if (mesh.__graphObjType !== "link" || !mesh.__data?.source) return;
+      total++;
+      if (mesh.userData.observationMark === mark) marked++;
+    });
+    return { marked, total };
+  }, token);
 }
 
 /** Read native node identity, world/screen coordinates, actual material opacity and the rendered sphere's radius. */

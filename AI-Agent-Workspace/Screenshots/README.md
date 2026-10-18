@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-10-18
+
+Named in [the day's record](2026-10-18/README.md): the 3D Local Map before and after one toggle of Show Tests on this repository's bundle, in both layouts, under update energy 1 (the full reheat), 0.3, 0.1 (the shipped default) and 0 (placement alone), with the ticks to settle, the unchanged spheres' move and the extent read from the scene; a strip of frames of the toggle under each energy; a directory opened after each; and the switch into the structure layout under each, with how far the tree formed; taken for ticket C2 of the change-over-time plan, for the owner's choice of the energy by eye.
+
 ## 2026-10-17
 
 Named in [the day's record](2026-10-17/README.md): the 3D Local Map before and after ten toggles of Show Tests on this repository's bundle, in the connections and the structure layout, under the forces as they were and under gravity 0.02, 0.05 and 0.1, with the rendered spheres' extent measured before and after; sixteen pictures for the owner's choice of the restoring force's strength, taken for ticket C5 of the change-over-time plan.

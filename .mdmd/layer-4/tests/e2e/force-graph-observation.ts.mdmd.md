@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-16T21:14:12.386Z
+- Generated At: 2026-10-18T02:59:05.952Z
 
 ## Authored
 ### Purpose
@@ -15,20 +15,48 @@ The helper listens to Three’s development-tool event inside the test page, the
 
 Introduced for the owner’s [October 14 pin-management request](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
+Since 2026-10-18, for ticket C2 of [the change-over-time plan](../../../layer-3/change-over-time.mdmd.md#open-questions), the instrument also counts the frames drawn and notes on which frame the graph container said it was busy or settled (`engineActivity`), so that a spec can count the engine's ticks for a change from the outside, since the library ticks at most once per frame; and it can mark every line's object with a token and count the marks later (`markRenderedLinks`, `markedRenderedLinks`), which is how a spec shows that a membership change kept the lines' objects rather than rebuilding them. All of it reads the scene and the DOM; none of it reaches the Explorer's state.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `observeGraph` {#symbol-observegraph}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L24)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L32)
 - Parameters: `page`: `Page`
 
 ##### `observeGraph` — Summary
-Observe the meshes and camera actually sent to WebGL through Three's development-tool event.
+Observe the meshes and camera actually sent to WebGL through Three's development-tool event, count the frames drawn, and
+note on which frame the graph container said it was busy or settled, so that a spec can count the engine's ticks between
+a change and its settle without reaching into the Explorer's state (2026-10-18).
+
+#### `engineActivity` {#symbol-engineactivity}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L61)
+- Parameters: `page`: `Page`
+
+##### `engineActivity` — Summary
+The frames drawn so far, and when the graph last became busy and last settled, by frame.
+
+#### `markRenderedLinks` {#symbol-markrenderedlinks}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L69)
+- Parameters: `page`: `Page`
+
+##### `markRenderedLinks` — Summary
+Mark every rendered line's object with a token, so that a later count says how many objects a change kept; returns how many were marked.
+
+#### `markedRenderedLinks` {#symbol-markedrenderedlinks}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L84)
+- Parameters: `page`: `Page`
+
+##### `markedRenderedLinks` — Summary
+How many rendered lines carry the token, beside how many there are.
 
 #### `renderedNodes` {#symbol-renderednodes}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L41)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L99)
 - Parameters: `page`: `Page`
 
 ##### `renderedNodes` — Summary
@@ -36,7 +64,7 @@ Read native node identity, world/screen coordinates, actual material opacity and
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L86)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L144)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary

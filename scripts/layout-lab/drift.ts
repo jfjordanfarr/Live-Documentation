@@ -4,23 +4,22 @@
  * The owner saw it in the product on 2026-10-17: toggle a file type on and off a few times and "the microgalaxies
  * drift further apart". Each toggle is a full reheat of the simulation, and nothing in it pulled two unconnected
  * clusters together, so every reheat pushed them apart a little more. This module plays that cycle over the page's
- * own spatial data and forces, with the page's rules for what carries across a membership change (a sphere keeps its
- * place; a hub new to the picture starts at its members' centroid), and reports the picture's extent after every cycle
- * and how far the spheres that never left moved when the others came back. A simulation with a compact equilibrium
- * leaves the extent where it began; one without lets it grow.
+ * own spatial data and forces, with the page's rule for what carries across a membership change (a sphere keeps its
+ * place; a new one starts beside what holds it), each change fed as the page feeds it by the update energy of ticket C2
+ * (2026-10-18; a full reheat at one), and reports the picture's extent after every cycle, how far the spheres that never
+ * left moved when the others came back, and how many ticks each change took to settle. A simulation with a compact
+ * equilibrium leaves the extent where it began; one without lets it grow.
  *
  * @module layout-lab/drift
  */
 import type { ForceGraphTuning, SpatialLayout } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf, type SpatialGraphNode } from "../../packages/explorer/src/client/views/forceGraphData";
-import { simulateSpatialLayout, type SpatialLink, type SpatialNode } from "../../packages/explorer/src/client/views/forceGraphLayout";
-import { under } from "../../packages/explorer/src/client/views/localView/directory-state";
+import { placeNewSpheres, settleSpatialUpdate, simulateSpatialLayout, type Placed, type SpatialLink, type SpatialNode } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
-/** A point the simulation placed. */
-export interface Placed { x: number; y: number; z: number }
+export type { Placed };
 
-/** The measure of one cycle: the picture's extent after the toggled files came back, and how far the others moved. */
+/** The measure of one cycle: the picture's extent after the toggled files came back, how far the others moved, and how long each change took to settle. */
 export interface DriftCycle {
   cycle: number;
   /** Root-mean-square distance of every sphere from the picture's centroid, after the restore. */
@@ -31,6 +30,8 @@ export interface DriftCycle {
   meanMoveOfUnchanged: number;
   /** The greatest such move. */
   greatestMoveOfUnchanged: number;
+  /** The ticks the engine took to settle the removal and the restore, under the update energy (2026-10-18). */
+  settleTicks: { removed: number; restored: number };
 }
 
 /** What one setting of the forces does over the cycles. */
@@ -76,21 +77,17 @@ export function toggledArchetype(option: string): string | null {
 }
 
 /**
- * Carry positions across a membership change as the page does: a sphere that was in the picture keeps its place, and a
- * hub new to the picture starts at the centroid of the members that already stand somewhere (forceGraphView.ts, 2026-10-14).
+ * Carry positions across a membership change as the page does: a sphere that was in the picture keeps its place, and the
+ * spheres new to it start beside what holds them by the page's own rule, `placeNewSpheres` (a hub at its members' centroid,
+ * a file at its hub's or its neighbours' rest length), which this measure shares with the page since 2026-10-18.
  */
-export function carryPositions(nodes: readonly SpatialGraphNode[], previous: ReadonlyMap<string, Placed>): SpatialNode[] {
+export function carryPositions(nodes: readonly SpatialGraphNode[], links: readonly SpatialLink[], previous: ReadonlyMap<string, Placed>, tuning: ForceGraphTuning, layout: SpatialLayout): SpatialNode[] {
   const carried: Array<SpatialGraphNode & Partial<Placed>> = nodes.map(node => {
     const known = previous.get(node.id);
     return known ? { ...node, x: known.x, y: known.y, z: known.z } : { ...node };
   });
-  for (const hub of carried) {
-    if (hub.directoryPath === undefined || Number.isFinite(hub.x)) continue;
-    const members = carried.filter(node => node !== hub && placed(node) && under(node.directoryPath ?? node.codeRelativePath, hub.directoryPath!)) as Array<SpatialGraphNode & Placed>;
-    if (!members.length) continue;
-    hub.x = members.reduce((sum, node) => sum + node.x, 0) / members.length;
-    hub.y = members.reduce((sum, node) => sum + node.y, 0) / members.length;
-    hub.z = members.reduce((sum, node) => sum + node.z, 0) / members.length;
+  for (const [id, start] of placeNewSpheres(carried, links as readonly SpatialLink<SpatialGraphNode & Partial<Placed>>[], tuning, layout)) {
+    Object.assign(carried.find(node => node.id === id)!, start);
   }
   return carried;
 }
@@ -99,8 +96,9 @@ const positionsOf = (nodes: readonly SpatialNode[]): Map<string, Placed> =>
   new Map(nodes.filter(placed).map(node => [node.id, { x: node.x, y: node.y, z: node.z }]));
 
 /**
- * Settle the full picture, then toggle the given files out and back in for the given number of cycles, each change a
- * full reheat of the page's forces from the carried positions, and measure the picture after every restore.
+ * Settle the full picture, then toggle the given files out and back in for the given number of cycles, each change fed
+ * from the carried positions by the tuning's update energy as the page feeds it (a full reheat at one), and measure the
+ * picture after every restore. The first settle is the picture's own, over the given ticks at full energy.
  */
 export function measureDrift(graph: ExplorerGraphPayload, include: (node: ExplorerNodePayload) => boolean, toggled: (node: ExplorerNodePayload) => boolean,
   tuning: ForceGraphTuning, layout: SpatialLayout, cycles: number, ticks: number): DriftReport {
@@ -110,15 +108,18 @@ export function measureDrift(graph: ExplorerGraphPayload, include: (node: Explor
   const toggledIds = new Set(full.nodes.filter(node => !reduced.nodes.some(other => other.id === node.id)).map(node => node.id));
   if (toggledIds.size === 0 && graph.nodes.some(node => include(node) && toggled(node))) throw new Error("The toggle names files the picture does not hold.");
   const unchangedIds = full.nodes.filter(node => !toggledIds.has(node.id)).map(node => node.id);
-  const settle = (nodes: SpatialNode[], links: readonly SpatialLink[]): Map<string, Placed> =>
-    positionsOf(simulateSpatialLayout(nodes, links, tuning, ticks, layout).nodes);
-  let positions = settle(full.nodes.map(node => ({ ...node })), full.links);
+  let positions = positionsOf(simulateSpatialLayout(full.nodes.map(node => ({ ...node })), full.links, tuning, ticks, layout).nodes);
+  const feed = (nodes: SpatialNode[], links: readonly SpatialLink[]): { positions: Map<string, Placed>; ticks: number } => {
+    const settled = settleSpatialUpdate(nodes, links, tuning, layout);
+    return { positions: positionsOf(settled.nodes), ticks: settled.ticks };
+  };
   const start = { extent: extentOf([...positions.values()]), diagonal: diagonalOf([...positions.values()]) };
   const report: DriftReport = { layout, tuning, ticks, toggled: toggledIds.size, total: full.nodes.length, start, cycles: [] };
   for (let cycle = 1; cycle <= cycles; cycle++) {
     const before = positions;
-    const removed = settle(carryPositions(reduced.nodes, positions), reduced.links);
-    positions = settle(carryPositions(full.nodes, new Map([...positions, ...removed])), full.links);
+    const removed = feed(carryPositions(reduced.nodes, reduced.links, positions, tuning, layout), reduced.links);
+    const restored = feed(carryPositions(full.nodes, full.links, new Map([...positions, ...removed.positions]), tuning, layout), full.links);
+    positions = restored.positions;
     const moves = unchangedIds.map(id => {
       const was = before.get(id)!, is = positions.get(id)!;
       return Math.hypot(is.x - was.x, is.y - was.y, is.z - was.z);
@@ -128,23 +129,25 @@ export function measureDrift(graph: ExplorerGraphPayload, include: (node: Explor
       extent: extentOf([...positions.values()]),
       diagonal: diagonalOf([...positions.values()]),
       meanMoveOfUnchanged: moves.reduce((sum, move) => sum + move, 0) / Math.max(1, moves.length),
-      greatestMoveOfUnchanged: moves.length ? Math.max(...moves) : 0
+      greatestMoveOfUnchanged: moves.length ? Math.max(...moves) : 0,
+      settleTicks: { removed: removed.ticks, restored: restored.ticks }
     });
   }
   return report;
 }
 
-/** A table a person reads: one row per setting, the extent's growth across the cycles and the unchanged spheres' moves. */
+/** A table a person reads: one row per setting, the extent's growth across the cycles, the unchanged spheres' moves and the ticks each change took to settle. */
 export function renderDriftReports(reports: readonly DriftReport[], title: string): string {
   const fixed = (number: number): string => number.toFixed(1);
-  const lines = [`# ${title}`, "", `Historical layout-lab measurement, ${new Date().toISOString()}. Each row settles the full picture, then toggles the same spheres out and back in for every cycle, each change a full reheat from the carried positions, as the page does today. Extent is the root-mean-square distance of every sphere from the picture's centroid; growth is the last extent over the start's. The unchanged spheres' mean move is averaged over the cycles.`, ""];
-  lines.push("| Layout | Gravity | Reach | Spheres (toggled) | Start extent | Extent by cycle | Growth | Unchanged mean move | Greatest move |");
-  lines.push("| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |");
+  const lines = [`# ${title}`, "", `Historical layout-lab measurement, ${new Date().toISOString()}. Each row settles the full picture, then toggles the same spheres out and back in for every cycle, each change fed from the carried positions by the update energy as the page feeds it: at 1 the library's full reheat, at a fraction a reheat to that alpha, at 0 placement alone. Extent is the root-mean-square distance of every sphere from the picture's centroid; growth is the last extent over the start's. The unchanged spheres' mean move is averaged over the cycles; the settle is the ticks the engine took for a change, the removal and the restore alike.`, ""];
+  lines.push("| Layout | Energy | Gravity | Reach | Spheres (toggled) | Start extent | Extent by cycle | Growth | Unchanged mean move | Greatest move | Settle ticks |");
+  lines.push("| --- | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |");
   for (const report of reports) {
     const last = report.cycles[report.cycles.length - 1];
     const meanMove = report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / report.cycles.length;
     const greatest = Math.max(...report.cycles.map(cycle => cycle.greatestMoveOfUnchanged));
-    lines.push(`| ${report.layout} | ${report.tuning.gravity} | ${report.tuning.chargeRange || "unbounded"} | ${report.total} (${report.toggled}) | ${fixed(report.start.extent)} | ${report.cycles.map(cycle => fixed(cycle.extent)).join(", ")} | ${(last.extent / report.start.extent).toFixed(2)}× | ${fixed(meanMove)} | ${fixed(greatest)} |`);
+    const settles = new Set(report.cycles.flatMap(cycle => [cycle.settleTicks.removed, cycle.settleTicks.restored]));
+    lines.push(`| ${report.layout} | ${report.tuning.updateEnergy} | ${report.tuning.gravity} | ${report.tuning.chargeRange || "unbounded"} | ${report.total} (${report.toggled}) | ${fixed(report.start.extent)} | ${report.cycles.map(cycle => fixed(cycle.extent)).join(", ")} | ${(last.extent / report.start.extent).toFixed(2)}× | ${fixed(meanMove)} | ${fixed(greatest)} | ${[...settles].sort((a, b) => a - b).join(" to ")} |`);
   }
   return lines.join("\n") + "\n";
 }
