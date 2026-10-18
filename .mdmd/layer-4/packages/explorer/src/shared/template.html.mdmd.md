@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-18T05:36:04.136Z
+- Generated At: 2026-10-18T20:50:52.294Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - The same group gained Update Energy (`tuning-force-update-energy`, 0 to 1 by 0.01, 0.1 by default) on 2026-10-18 for ticket C2 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions): how much a change to what is shown stirs the picture, the full reheat at 1, placement alone at 0, with a title that says so; the three settings the plan named are three places on one slider, as the owner asked for options to taste rather than a choice made for them.
 
 Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis, its ticks and the play rate, shown with the 3D groups.
+- The 3D group gained Spring Strength (`tuning-force-link-strength`, 0 to 2 by 0.05, 1 by default) on 2026-10-18, with a title that says what one and zero mean, so that the owner can tune the pull between connected neighbours by eye beside Gravity and Repulsion Reach ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -186,6 +187,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-force-link-gap-value` {#symbol-tuning-force-link-gap-value}
+- Type: variable
+
+#### `tuning-force-link-strength` {#symbol-tuning-force-link-strength}
+- Type: variable
+
+#### `tuning-force-link-strength-value` {#symbol-tuning-force-link-strength-value}
 - Type: variable
 
 #### `tuning-force-node-size` {#symbol-tuning-force-node-size}

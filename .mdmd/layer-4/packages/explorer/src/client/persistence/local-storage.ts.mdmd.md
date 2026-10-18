@@ -33,6 +33,8 @@ Cold defaults use the shared Relaxed profile. The forceGraph tuning group is mer
 
 The history tuning (2026-10-18, the plan's C4 and C14) is read with the rest: an axis of `steps` or `time`, a granularity among the six, a play rate finite and positive, each falling back to its default alone.
 
+The force graph's `linkStrength` defaults to 1 (2026-10-18), D3's own spring rule unchanged, until the owner's eye picks the numbers they asked to tune by hand ([Turn 7](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)); an older stored tuning without the value takes the default.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

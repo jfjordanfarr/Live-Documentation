@@ -253,6 +253,27 @@ export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], li
   return starts;
 }
 
+/**
+ * The strength of each spring: D3's own rule, one over the smaller of the two ends' pulling-link counts, so that a file
+ * with many wires is pulled less by each, times the tuning's lever (`linkStrength`, one for the rule as it is). The
+ * counts are read from the links the force holds, which are the pulling ones, and counted once per set of links.
+ */
+export function springStrength<N extends SpatialNode, L extends SpatialLink<N>>(multiplier: number): (edge: L, index: number, links: L[]) => number {
+  let counted: readonly L[] | null = null;
+  const degrees = new Map<string | N, number>();
+  return (edge, _index, links) => {
+    if (counted !== links) {
+      counted = links;
+      degrees.clear();
+      for (const link of links) {
+        degrees.set(link.source, (degrees.get(link.source) ?? 0) + 1);
+        degrees.set(link.target, (degrees.get(link.target) ?? 0) + 1);
+      }
+    }
+    return multiplier / Math.min(degrees.get(edge.source) ?? 1, degrees.get(edge.target) ?? 1);
+  };
+}
+
 /** The force getter/setter shared by D3's simulation and the browser's public force API; setting null removes a force. */
 export interface SpatialForceAccess<N extends SpatialNode> {
   get(name: string): Force<N> | undefined;
@@ -269,13 +290,13 @@ export interface SpatialForceAccess<N extends SpatialNode> {
  * sphere toward the origin in proportion to its distance, so that the picture has a compact equilibrium it returns to;
  * the repulsion's reach can be bounded beside it. The spring, the repulsion and the gravity see the given share of alpha,
  * read at every tick, which is how a membership change is fed less than a full reheat (`updateSchedule`); the collision
- * ignores alpha and is never scaled.
+ * ignores alpha and is never scaled. The springs' strength is D3's rule times the tuning's lever (`springStrength`).
  */
 export function configureSpatialForces<N extends SpatialNode>(engine: SpatialForceAccess<N>, tuning: ForceGraphTuning, layout: SpatialLayout = "connections", share: () => number = FULL_SHARE): void {
   const link = engine.get("link") as ForceLink<N, SpatialLink<N>> | undefined;
   const charge = engine.get("charge") as ForceManyBody<N> | undefined;
   if (!link || !charge) throw new Error("The spatial layout requires its link and charge forces.");
-  engine.set("link", pullingLinkForce(link, layout, share).distance(edge => spatialLinkDistance(edge, tuning)));
+  engine.set("link", pullingLinkForce(link, layout, share).distance(edge => spatialLinkDistance(edge, tuning)).strength(springStrength(tuning.linkStrength)));
   engine.set("charge", scaledForce(charge, share).strength(-tuning.charge).distanceMax(tuning.chargeRange > 0 ? tuning.chargeRange : Infinity));
   engine.set("collide", forceCollide<N>(node => spatialNodeRadius(node, tuning) + tuning.collisionGap / 2).iterations(3));
   engine.set("gravity", tuning.gravity > 0 ? scaledForce(forceRadial<N>(0, 0, 0, 0), share).strength(tuning.gravity) : null);

@@ -188,6 +188,13 @@ export interface ForceGraphTuning {
    */
   chargeRange: number;
   /**
+   * How hard a wire's spring pulls its two files together, as a multiple of D3's own rule, which gives each link one
+   * over the smaller of its two ends' link counts, so that a file with many wires is pulled less by each. One is the
+   * picture as it was before this lever existed; zero lets every wire go slack. The owner's ask of 2026-10-18, to tune
+   * the pull between connected neighbours by eye against the pull to the centre.
+   */
+  linkStrength: number;
+  /**
    * How much a change to what is shown (a filter, a pin, a layout, a step of history) stirs the picture: the alpha the
    * simulation is reheated to, in D3's own terms. One is the full reheat the library makes of every change, a fraction a
    * reheat to that alpha, which cools to the same stillness sooner, and zero places the new spheres and ticks nothing. The

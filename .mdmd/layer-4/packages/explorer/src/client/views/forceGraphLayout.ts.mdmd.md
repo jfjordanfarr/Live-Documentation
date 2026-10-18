@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-10-18T05:36:02.549Z
+- Generated At: 2026-10-18T20:50:50.638Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,8 @@ Gravity and the repulsion's reach (2026-10-17): four forces made the picture bef
 The update energy (2026-10-18, the plan's ticket C2): what a membership change puts into the simulation. In D3 a reheat is one number, the alpha the simulation starts from, so the lever is that number (`ForceGraphTuning.updateEnergy`, zero to one) and `updateSchedule` turns it into what the library can be told: the library sets alpha to one on every change and exposes no alpha of its own, so the fraction is applied as the share of alpha the spring, the repulsion and the gravity see, read at every tick through `scaledForce` and `pullingLinkForce`, and the stop as the alpha at which that share falls to the stillness the first picture cools to (`SETTLED_ALPHA`, 0.001); the collision ignores alpha and is never scaled. So a change at one is the full reheat the page made of every change before, three hundred ticks at the library's cooling rate (`LIBRARY_ALPHA_DECAY`, which `settleTicksOf` counts as the library counts); a change at a tenth is a reheat to a tenth that cools to the same stillness in two hundred; at or below the stillness nothing is simulated. [The probe of 2026-10-16](../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md) had stopped its gentle update after fifty ticks by doubling the cooling and stopping at a tenth of alpha, and its own table says the spheres were still moving when it froze them; here every energy cools to the same stillness and the ticks follow from the energy, which is the library's own rule for "settled" and leaves one lever meaning one thing. The carry is `placeNewSpheres`: a sphere that was in the picture keeps its place, a hub new to it starts at the centroid of its placed members, and any other new sphere starts beside what it is wired to by a pulling link (its hub in the structure layout, the files it references in the connections layout) at the spring's rest length in a direction `seededDirection` draws from its id, so that nothing erupts from the origin where D3 would seat it; a sphere with nothing placed to start from is left to D3. `settleSpatialUpdate` is the headless twin of the page's feed, for the lab and the tests. The library's centring force is left as it is: a measurement of 2026-10-18 found that on a toy of six spheres it carries most of a gentle update's move, since it recentres the whole picture in full every tick whatever the alpha, but on this repository's bundles its share is within the noise (the lab record of the day), so it was not changed for this ticket.
 
 `symbolCountOf` (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): a sphere's size reads the count a node carries when its symbols' names are not at hand, as at a step of the history, and the names' count otherwise, so that a sphere breathes with its symbols at every step.
+
+The springs' strength (2026-10-18): `springStrength` gives each wire D3's own rule, one over the smaller of its two ends' pulling-link counts, times the tuning's `linkStrength`, counted once per set of links the force holds; `configureSpatialForces` sets it on the pulling spring, so that one is the picture as it was and the owner can raise the pull between connected neighbours against a weaker pull to the centre ([Turn 7 of the October 17 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)). Kept by `forceGraphLayout.test.ts`: a pair pulled half as far at a half and not at all at zero, and the rule inside the lever, a square's wire at half a lone pair's.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -198,9 +200,20 @@ by its id, so that nothing erupts from the origin, where D3 would otherwise seat
 after another. A sphere with nothing placed to start from is left to D3. The nodes are not changed; the result is the
 start of each sphere placed here.
 
+#### `springStrength` {#symbol-springstrength}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L261)
+- Parameters: `edge`: `L`; `links`: `L`[]
+- Constraints: [`SpatialNode`](#symbol-spatialnode), [`SpatialLink`](#symbol-spatiallink)
+
+##### `springStrength` — Summary
+The strength of each spring: D3's own rule, one over the smaller of the two ends' pulling-link counts, so that a file
+with many wires is pulled less by each, times the tuning's lever (`linkStrength`, one for the rule as it is). The
+counts are read from the links the force holds, which are the pulling ones, and counted once per set of links.
+
 #### `SpatialForceAccess` {#symbol-spatialforceaccess}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L257)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L278)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `SpatialForceAccess` — Summary
@@ -208,7 +221,7 @@ The force getter/setter shared by D3's simulation and the browser's public force
 
 #### `configureSpatialForces` {#symbol-configurespatialforces}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L274)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L295)
 - Parameters: `engine`: [`SpatialForceAccess`](#symbol-spatialforceaccess); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -222,11 +235,11 @@ inward, so every reheat pushed the clusters a little further apart. Gravity is t
 sphere toward the origin in proportion to its distance, so that the picture has a compact equilibrium it returns to;
 the repulsion's reach can be bounded beside it. The spring, the repulsion and the gravity see the given share of alpha,
 read at every tick, which is how a membership change is fed less than a full reheat (`updateSchedule`); the collision
-ignores alpha and is never scaled.
+ignores alpha and is never scaled. The springs' strength is D3's rule times the tuning's lever (`springStrength`).
 
 #### `simulateSpatialLayout` {#symbol-simulatespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L285)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L306)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `simulateSpatialLayout` — Summary
@@ -234,7 +247,7 @@ Deterministic cold layout, using the browser's D3 engine and force configuration
 
 #### `settleSpatialUpdate` {#symbol-settlespatialupdate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L306)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L327)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `settleSpatialUpdate` — Summary

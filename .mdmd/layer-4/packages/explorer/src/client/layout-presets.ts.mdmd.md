@@ -19,6 +19,8 @@ Both packing profiles value card-top alignment. Relaxed gives it greater weight 
 
 `LAYOUT_RANGES.forceGraph` gained `gravity` (0 to 0.3 by 0.005) and `chargeRange` (0 to 1,000 by 10) on 2026-10-17, so that the two restoring levers ride in saved and shared settings bounded like the others; neither belongs to a packing profile, as coupling and size do not ([the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)). `updateEnergy` (0 to 1 by 0.01) joined them on 2026-10-18 for ticket C2 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions): the energy a membership change puts into the simulation rides in the saved and the shared settings the same way, and is no part of a packing profile either.
 
+- `linkStrength` (0 to 2 by 0.05) joined the 3D ranges on 2026-10-18, the springs' strength as a multiple of D3's rule, so that it persists and rides share links like gravity ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

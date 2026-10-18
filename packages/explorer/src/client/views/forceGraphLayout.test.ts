@@ -2,7 +2,7 @@ import { forceLink, forceManyBody, forceSimulation } from "d3-force-3d";
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
-import { configureSpatialForces, LIBRARY_ALPHA_DECAY, linkPulls, placeNewSpheres, pullingLinkForce, scaledForce, seededDirection, SETTLED_ALPHA, settleSpatialUpdate, settleTicksOf, simulateSpatialLayout, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, updateSchedule, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
+import { configureSpatialForces, LIBRARY_ALPHA_DECAY, linkPulls, placeNewSpheres, pullingLinkForce, scaledForce, seededDirection, SETTLED_ALPHA, settleSpatialUpdate, settleTicksOf, simulateSpatialLayout, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, updateSchedule, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
 import { getDefaultTuning } from "../persistence/local-storage";
 
 const node = (id: string, symbols: number): SpatialNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, index) => `symbol${index}`) });
@@ -287,3 +287,39 @@ describe("the update energy, the lever of a membership change (ticket C2)", () =
     expect(moved(0.1)).toBeLessThan(moved(1) / 2);
   });
 });
+
+describe("the springs' strength, the lever on the pull between connected neighbours (2026-10-18)", () => {
+  /** How far one tick of the springs alone draws a pair together from 200 units apart, at the given lever. */
+  const pull = (linkStrength: number): number => {
+    const pair: SpatialNode[] = [{ ...node("a", 1), x: -100, y: 0, z: 0 }, { ...node("b", 1), x: 100, y: 0, z: 0 }];
+    const tuning = { ...getDefaultTuning().forceGraph, charge: 0, gravity: 0, linkStrength };
+    const simulation = forceSimulation(pair, 3).stop()
+      .force("link", forceLink<SpatialNode, SpatialLink>([{ source: "a", target: "b", count: 1 }]).id(file => file.id))
+      .force("charge", forceManyBody<SpatialNode>());
+    configureSpatialForces({ get: name => simulation.force(name), set: (name, force) => { simulation.force(name, force); } }, tuning, "connections");
+    simulation.tick(1);
+    return 200 - separation(pair);
+  };
+
+  it("pulls a pair as the library's rule does at one, half as hard at a half, and not at all at zero", () => {
+    expect(pull(1)).toBeGreaterThan(0);
+    expect(pull(0.5)).toBeCloseTo(pull(1) / 2, 6);
+    expect(pull(2)).toBeCloseTo(pull(1) * 2, 6);
+    expect(pull(0)).toBe(0);
+  });
+
+  it("keeps D3's rule inside the lever: a wire between two files of two wires each pulls half as hard as a lone pair's", () => {
+    const strength = springStrength<SpatialNode, SpatialLink>(1);
+    const a = node("a", 1), b = node("b", 1), c = node("c", 1), d = node("d", 1);
+    const square: SpatialLink[] = [{ source: a, target: b, count: 1 }, { source: b, target: c, count: 1 }, { source: c, target: d, count: 1 }, { source: d, target: a, count: 1 }];
+    expect(strength(square[0], 0, square)).toBe(0.5);
+    const pair: SpatialLink[] = [{ source: a, target: b, count: 1 }];
+    expect(strength(pair[0], 0, pair)).toBe(1);
+    // A hub of three leaves: each wire is as strong as a lone pair's, since the leaf's one wire sets the rule.
+    const hub = node("hub", 1);
+    const star: SpatialLink[] = [{ source: hub, target: a, count: 1 }, { source: hub, target: b, count: 1 }, { source: hub, target: c, count: 1 }];
+    expect(strength(star[1], 1, star)).toBe(1);
+    expect(springStrength<SpatialNode, SpatialLink>(0.25)(square[2], 2, square)).toBe(0.125);
+  });
+});
+
