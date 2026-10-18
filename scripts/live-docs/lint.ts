@@ -13,6 +13,8 @@ import { hasMeaningfulAuthoredContent } from "@live-documentation/engine/live-do
 import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from "@live-documentation/engine/live-docs/document";
 import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
+import { packageVersion } from "./cli";
+
 /** Maximum number of islands to display before truncating */
 const MAX_ISLAND_DISPLAY = 30;
 
@@ -125,8 +127,7 @@ async function main(): Promise<void> {
   }
 
   if (args.version) {
-    const version = process.env.LIVE_DOCS_LINT_VERSION ?? "0.1.0";
-    console.log(version);
+    console.log(await packageVersion("engine"));
     return;
   }
 

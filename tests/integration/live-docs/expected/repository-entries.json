@@ -71,6 +71,9 @@
     "scripts/live-docs/generate.ts": [
       "command live-docs:generate of package.json"
     ],
+    "scripts/live-docs/history.ts": [
+      "command live-docs:history of package.json"
+    ],
     "scripts/live-docs/inspect.ts": [
       "command live-docs:inspect of package.json"
     ],

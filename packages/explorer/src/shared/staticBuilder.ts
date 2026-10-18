@@ -6,9 +6,10 @@
  *
  * ```
  * dist/explorer/
- *   index.html           # The viewer
- *   explorer-data.json   # The graph index and the related markdown
- *   static/              # Scripts and styles
+ *   index.html              # The viewer
+ *   explorer-data.json      # The graph index and the related markdown
+ *   explorer-history.json   # The history the export carries, when it carries one
+ *   static/                 # Scripts and styles
  * ```
  */
 import * as fs from "fs/promises";
@@ -22,9 +23,18 @@ import {
 import { parseBoard } from "@live-documentation/engine/live-docs/board";
 import { LiveDocSyntaxError, renderLiveDoc } from "@live-documentation/engine/live-docs/document";
 import { readEstateGraph, readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { HISTORY_DIRECTORY, HISTORY_FILE, HISTORY_FORMAT, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
+import { headOf } from "@live-documentation/engine/live-docs/history/sequence";
+import { windowOf, type HistorySelection } from "@live-documentation/engine/live-docs/history/window";
 
 import { scanAndBundleMarkdown } from "./bundledMarkdownScanner";
 import type { StaticExplorerData } from "./staticExplorerData";
+
+/** The name of the history file the bundle carries beside `explorer-data.json`. */
+const BUNDLED_HISTORY_FILE = "explorer-history.json";
+
+/** How much of the history an export carries: none of it, or the part a selection names. */
+export type ExportedHistory = { rule: "none" } | HistorySelection;
 
 // Lazy import to keep esbuild out of the initial module graph
 const buildExplorerAssetsModule = async () => (await import("./buildAssets")).buildExplorerAssets;
@@ -46,6 +56,13 @@ export interface BuildStaticExplorerOptions {
     /** A board file to carry in the bundle, relative to the workspace root or absolute; the World Map draws it. */
     boardPath?: string;
 
+    /**
+     * How much of `<root>/history/history.json` to carry, by the exporter's
+     * choice: by default all of it when the history command has written one,
+     * and none otherwise.
+     */
+    history?: ExportedHistory;
+
     /** Logger for progress output. */
     logger?: Pick<Console, "log" | "error">;
 }
@@ -64,6 +81,8 @@ export interface BuildStaticExplorerResult {
         edgeCount: number;
         bundledMarkdownCount: number;
         totalSizeBytes: number;
+        /** How many commits the carried history holds; absent when the bundle carries none. */
+        historyCommits?: number;
     };
 }
 
@@ -79,6 +98,7 @@ export async function buildStaticExplorer(
         config = normalizeLiveDocumentationConfig(DEFAULT_LIVE_DOCUMENTATION_CONFIG),
         prettyPrint = false,
         boardPath,
+        history,
         logger = console
     } = options;
 
@@ -129,6 +149,11 @@ export async function buildStaticExplorer(
         staticData.sampleRoots = [...config.sampleRoots];
     }
 
+    const carried = await writeHistory(workspaceRoot, config, outputDir, history, logger);
+    if (carried) {
+        staticData.history = { file: BUNDLED_HISTORY_FILE, head: headOf(carried) };
+    }
+
     const dataFile = path.join(outputDir, "explorer-data.json");
     const jsonContent = prettyPrint
         ? JSON.stringify(staticData, null, 2)
@@ -157,9 +182,51 @@ export async function buildStaticExplorer(
             fileCount: files.length,
             edgeCount,
             bundledMarkdownCount,
-            totalSizeBytes: totalSize
+            totalSizeBytes: totalSize,
+            ...(carried ? { historyCommits: carried.steps.length + 1 } : {})
         }
     };
+}
+
+/**
+ * Writes the part of the history the export carries beside the data, a
+ * window re-based on its first commit, and returns it; removes a history an
+ * earlier build left when this one carries none.
+ */
+async function writeHistory(
+    workspaceRoot: string,
+    config: LiveDocumentationConfig,
+    outputDir: string,
+    asked: ExportedHistory | undefined,
+    logger: Pick<Console, "log" | "error">
+): Promise<HistorySequence | undefined> {
+    const target = path.join(outputDir, BUNDLED_HISTORY_FILE);
+    const source = path.join(workspaceRoot, config.root, HISTORY_DIRECTORY, HISTORY_FILE);
+    const text = await fs.readFile(source, "utf8").catch((error: NodeJS.ErrnoException) => {
+        if (error.code === "ENOENT") {
+            return undefined;
+        }
+        throw error;
+    });
+    const selection: ExportedHistory = asked ?? (text === undefined ? { rule: "none" } : { rule: "all" });
+    if (selection.rule === "none") {
+        await fs.rm(target, { force: true });
+        return undefined;
+    }
+    const where = path.relative(workspaceRoot, source).split(path.sep).join("/");
+    if (text === undefined) {
+        throw new Error(`the export asks for history, and there is none at ${where}; run \`npm run live-docs:history\` first`);
+    }
+    const parsed = JSON.parse(text) as { format?: unknown };
+    if (parsed.format !== HISTORY_FORMAT) {
+        throw new Error(`${where} is written in ${String(parsed.format)}, and this builder reads ${HISTORY_FORMAT}; run \`npm run live-docs:history\` again`);
+    }
+    const sequence = parsed as HistorySequence;
+    const window = windowOf(sequence, selection);
+    const json = JSON.stringify(window);
+    await fs.writeFile(target, json, "utf-8");
+    logger.log(`Wrote ${target} (${window.steps.length + 1} commits, ${formatBytes(json.length)})`);
+    return window;
 }
 
 /** The workspace's graph, or, with a board, the graph of the estate its things name, one scan or several. */

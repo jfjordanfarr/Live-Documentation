@@ -4,8 +4,11 @@
  * 
  * Provides pathfinding capabilities across the Live Doc dependency graph.
  * Supports both file-level and symbol-level searches, and the walk from the
- * entry points that the Knowledge Sources panel shows.
- * 
+ * entry points that the Knowledge Sources panel shows; and, from the history
+ * the history command computed, a file's wires and the walk from the entries
+ * at a past commit (`--at`) and what changed between two commits
+ * (`--between`).
+ *
  * Usage: npm run live-docs:inspect -- [options]
  * 
  * @module inspect
@@ -32,6 +35,7 @@ import {
   type OneWay
 } from "@live-documentation/engine/live-docs/pathfind";
 
+import { endQuietlyWhenThePipeCloses, packageVersion } from "./cli";
 import {
   emitDualDirectionResult,
   emitDualDirectionSymbolResult,
@@ -43,6 +47,7 @@ import {
   emitSymbolPathNotFound,
   emitSymbolPathResult
 } from "./inspect/emit";
+import { emitBetween, emitFileAt, emitReachableAt, HistoryRefusal, readHistory, resolveStep } from "./inspect/history";
 import { hasSymbolReference, resolveArtifactIdentifier, resolveSymbolReference } from "./inspect/resolve";
 
 interface ParsedArgs {
@@ -59,12 +64,17 @@ interface ParsedArgs {
   to?: string;
   reachable: boolean;
   direction: Direction;
+  /** Whether `--direction` was given, which the history's questions do not take. */
+  directionGiven: boolean;
   maxDepth: number;
+  at?: string;
+  between?: [string, string];
 }
 
 const DEFAULT_MAX_DEPTH = 25;
 
 async function main(): Promise<void> {
+  endQuietlyWhenThePipeCloses();
   const args = parseArgs(process.argv.slice(2));
 
   if (args.help) {
@@ -73,13 +83,12 @@ async function main(): Promise<void> {
   }
 
   if (args.version) {
-    const version = process.env.LIVE_DOCS_INSPECT_VERSION ?? "0.1.0";
-    console.log(version);
+    console.log(await packageVersion("engine"));
     return;
   }
 
-  if (!args.from && !args.reachable) {
-    console.error("--from is required, unless --reachable asks what the entry points reach. See --help for usage details.");
+  if (!args.from && !args.reachable && !args.between) {
+    console.error("--from is required, unless --reachable asks what the entry points reach or --between what changed. See --help for usage details.");
     process.exit(1);
     return;
   }
@@ -111,6 +120,19 @@ async function main(): Promise<void> {
     baseLayer: args.baseLayer ?? configFileInput.baseLayer ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer,
     extension: args.extension ?? configFileInput.extension ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.extension
   });
+
+  if (args.at !== undefined || args.between !== undefined) {
+    try {
+      await answerFromHistory(args, workspaceRoot, configInput);
+    } catch (error) {
+      if (!(error instanceof HistoryRefusal)) {
+        throw error;
+      }
+      console.error(error.message);
+      process.exit(1);
+    }
+    return;
+  }
 
   const graph = await readLiveDocGraph({ workspaceRoot, config: configInput });
 
@@ -251,6 +273,48 @@ async function main(): Promise<void> {
   emitFanoutResult(fromId, direction, fanout, graph, args.maxDepth, args.json, args.verbose);
 }
 
+/**
+ * A file's wires and the walk from the entries at a past commit, and what
+ * changed between two, from the history: never from today's docs, which may
+ * not hold the file.
+ */
+async function answerFromHistory(args: ParsedArgs, workspaceRoot: string, config: LiveDocumentationConfig): Promise<void> {
+  if (args.at !== undefined && args.between !== undefined) {
+    throw new HistoryRefusal("--at asks about one commit and --between about two; give one of them.");
+  }
+  if (args.to !== undefined || args.directionGiven) {
+    throw new HistoryRefusal("From the history, --at answers a file's wires and the walk from the entries, and --between what changed; neither takes --to or --direction yet.");
+  }
+  if (args.between !== undefined) {
+    if (args.from !== undefined || args.reachable) {
+      throw new HistoryRefusal("--between lists what changed between two commits; it takes no --from or --reachable.");
+    }
+    const sequence = await readHistory(workspaceRoot, config);
+    emitBetween(sequence, resolveStep(sequence, args.between[0]), resolveStep(sequence, args.between[1]), args.json);
+    return;
+  }
+  if (args.from !== undefined && args.reachable) {
+    throw new HistoryRefusal("At a commit, --from names a file whose wires to list and --reachable walks from the entries; give one of them.");
+  }
+  const sequence = await readHistory(workspaceRoot, config);
+  const step = resolveStep(sequence, args.at!);
+  if (args.from !== undefined) {
+    emitFileAt(sequence, step, codePathOf(args.from, config), args.json);
+    return;
+  }
+  emitReachableAt(sequence, step, config, args.maxDepth, args.json);
+}
+
+/** A file as the history names it: its workspace-relative path, also when given as its doc's path. */
+function codePathOf(given: string, config: LiveDocumentationConfig): string {
+  const normalized = given.replace(/\\/gu, "/").replace(/^(?:\.\/)+/u, "");
+  const docsFolder = `${[config.root, config.baseLayer].map((segment) => segment.replace(/^(?:\.\/)+|\/+$/gu, "")).join("/")}/`;
+  if (normalized.startsWith(docsFolder) && normalized.endsWith(config.extension)) {
+    return normalized.slice(docsFolder.length, -config.extension.length);
+  }
+  return normalized;
+}
+
 function parseArgs(argv: string[]): ParsedArgs {
   const parsed: ParsedArgs = {
     help: false,
@@ -259,6 +323,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     verbose: false,
     reachable: false,
     direction: "outbound",
+    directionGiven: false,
     maxDepth: DEFAULT_MAX_DEPTH
   };
 
@@ -334,6 +399,17 @@ function parseArgs(argv: string[]): ParsedArgs {
           throw new Error("--direction must be 'outbound', 'inbound', or 'both'.");
         }
         parsed.direction = value as Direction;
+        parsed.directionGiven = true;
+        break;
+      }
+
+      case "--at": {
+        parsed.at = expectValue(argv, ++index, current);
+        break;
+      }
+
+      case "--between": {
+        parsed.between = [expectValue(argv, ++index, current), expectValue(argv, ++index, current)];
         break;
       }
 
@@ -384,6 +460,11 @@ function usage(): string {
     `  --config <file>          Load configuration from JSON file.\n` +
     `  --json                   Emit JSON instead of text.\n` +
     `  --verbose                Include full symbol lists in output (default: slim).\n` +
+    `  --at <commit>            From the history, at a commit (a prefix of its id): with --from, whether the\n` +
+    `                           file existed and its wires; with --reachable, the walk from that commit's\n` +
+    `                           entries. From the shape alone; npm run live-docs:history computes the history.\n` +
+    `  --between <a> <b>        From the history, what changed from commit a to the later commit b: files born,\n` +
+    `                           dead, renamed and resized, wires added and removed. From the shape alone.\n` +
     `  --workspace <path>       Workspace root (defaults to current working directory).\n` +
     `  --root <path>            Override liveDocumentation.root.\n` +
     `  --base-layer <name>      Override liveDocumentation.baseLayer.\n` +
@@ -398,7 +479,9 @@ function usage(): string {
     `  npm run live-docs:inspect -- --from packages/generator/src/generator.ts#generateLiveDocs --to packages/engine/src/live-docs/core.ts#analyzeSourceFile --json\n` +
     `  npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound --json\n` +
     `  npm run live-docs:inspect -- --from packages/engine/src/live-docs/graph.ts --reachable --direction both\n` +
-    `  npm run live-docs:inspect -- --reachable --json\n`;
+    `  npm run live-docs:inspect -- --reachable --json\n` +
+    `  npm run live-docs:inspect -- --at 690f5d27 --from packages/engine/src/live-docs/graph.ts\n` +
+    `  npm run live-docs:inspect -- --between cad63bdd d23a6f90 --json\n`;
 }
 
 main().catch((error) => {

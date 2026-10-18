@@ -38,13 +38,25 @@ async function expectNoTextFault(page: Page): Promise<void> {
   expect(overlaps.length + cut.length, describeFaults(overlaps, cut)).toBe(0);
 }
 
+/** "N files, M directories" for a directory, as the Explorer counts it, from the bundle's data by this file's own reading. */
+async function expectedCounts(page: Page, directory: string): Promise<string> {
+  const data = await (await page.request.get("/explorer-data.json")).json() as { graph: { files: Record<string, { codePath: string; archetype?: string }> } };
+  const under = Object.values(data.graph.files)
+    .filter(file => (file.archetype ?? "").toLowerCase() !== "asset" && file.codePath.startsWith(`${directory}/`))
+    .map(file => file.codePath.slice(directory.length + 1));
+  const subdirectories = new Set(under.filter(path => path.includes("/")).map(path => path.slice(0, path.indexOf("/"))));
+  return `${under.length} files, ${subdirectories.size} directories`;
+}
+
 test("a directory entered with nothing pinned is a grid of compact cards and closed boxes, with no wire, and its address round-trips", async ({ page }) => {
   await page.goto(`/?view=local&dir=${ENGINE}`);
   await settled(page);
   // packages/engine/src holds only directories: four closed boxes, each named and counted, inside one membrane that says it is open.
   await expect(page.locator("#map-container .local-directory-closed")).toHaveCount(4);
   await expect(box(page, LIVE_DOCS).locator(".local-directory-closed__name")).toHaveText("live-docs");
-  await expect(box(page, LIVE_DOCS).locator(".local-directory-closed__count")).toHaveText(/^\d+ files, 2 directories$/);
+  // A box counts the files under it at any depth and its immediate subdirectories, over the files the picture shows: tests
+  // in, assets out by default. The expectation is read from the bundle's data, so that the repository may grow a folder.
+  await expect(box(page, LIVE_DOCS).locator(".local-directory-closed__count")).toHaveText(await expectedCounts(page, LIVE_DOCS));
   await expect(cards(page)).toHaveCount(0);
   await expect(wires(page)).toHaveCount(0);
   await expect(label(page, ENGINE).locator(".local-directory-close")).toBeVisible();

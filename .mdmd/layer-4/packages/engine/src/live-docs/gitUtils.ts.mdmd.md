@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/gitUtils.ts
-- Generated At: 2026-10-16T17:10:16.409Z
+- Generated At: 2026-10-18T00:39:18.511Z
 
 ## Authored
 ### Purpose
@@ -14,7 +14,7 @@ Git-related utilities for Live Documentation: the files git marks as changed, fo
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
 - `detectChangedFiles()` runs `git status --porcelain` and parses the output to a Set of paths
 - `parsePorcelainLine()` handles renamed/copied files by extracting the destination path from `R old -> new` format
-- `execFileAsync()` wraps Node.js `execFile` in a Promise for async/await usage
+- `execFileAsync()` wraps Node.js `execFile` in a Promise for async/await usage. Since 2026-10-17 it also runs the history command's git calls ([history/git.ts](./history/git.ts.mdmd.md)) and the generator's identity for the history's lens, and takes variables for the environment the command inherits, so that a scratch checkout can tell Git LFS to leave its pointers rather than fetch from a remote.
 - Returns empty Set on git errors (e.g., not a git repository) rather than throwing
 - `listTrackedFiles()` lived here for one day (2026-10-16): discovery used it to keep a tracked file the root `.gitignore` would have dropped, until the same day's regeneration documented two nested agent worktrees and discovery moved to `git check-ignore` (`tooling/gitIgnored.ts`), which never reports a tracked file and needs no list of them ([Turn 3 of the October 16 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)).
 
@@ -60,7 +60,7 @@ Promise wrapper for Node.js execFile.
 ##### `execFileAsync` — Parameters
 - `args`: Command arguments
 - `command`: The command to execute
-- `options`: Execution options: the working directory, and the largest output accepted (Node's default is 1 MiB, which a listing of a large repository exceeds)
+- `options`: Execution options: the working directory, the largest output accepted (Node's default is 1 MiB, which a listing of a large repository exceeds), and variables to set in the environment the command inherits
 
 ##### `execFileAsync` — Returns
 Promise resolving to stdout/stderr

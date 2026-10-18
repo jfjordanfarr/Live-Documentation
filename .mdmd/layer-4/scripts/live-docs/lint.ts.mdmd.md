@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/lint.ts
 - Entry: command `live-docs:lint` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:42.357Z
+- Generated At: 2026-10-18T01:36:54.317Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ Checks every Live Doc against the grammar, refuses absolute links, warns about a
 ### Notes
 - Introduced alongside the first Live Docs CLI (Aug 2024) and expanded repeatedly through the MDMD migration. In Nov 2025 authored-section warnings were added to surface pending Purpose and Notes placeholders without blocking commits.
 - Since 2026-09-28 the connectivity check derives the graph from the docs the run has just validated, and is skipped when any doc fails the grammar, so the structural failures are reported instead of a crash.
+- Since 2026-10-18 `--version` prints the engine package's version, whose grammar the lint applies, through [cli.ts](cli.ts.mdmd.md); until then a constant, 0.1.0, or an environment variable.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -37,4 +38,5 @@ _No public symbols detected_
 - [`document.parseLiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
 <!-- LIVE-DOC:END Dependencies -->

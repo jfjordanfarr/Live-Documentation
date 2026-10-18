@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/staticBuilder.ts
-- Generated At: 2026-10-15T15:49:41.736Z
+- Generated At: 2026-10-18T00:39:23.586Z
 
 ## Authored
 ### Purpose
@@ -16,27 +16,36 @@ Builds the static Explorer bundle: `explorer-data.json`, holding the graph index
 - `buildAssets` is imported lazily to keep esbuild out of the module graph until it is needed.
 - Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) a bundle built with a board reads the graph through `readEstateGraph`, so the things the board names from folders scanned alone are merged into one graph before the bundle is written, and the viewer draws it as it draws any graph with a board; a board at the root of one scanned workspace reads as before. A fault in the board's text stops the build with its path and line.
 - Since 2026-10-15 the bundle carries the configuration's `sampleRoots` when any are set; the client reads product facts from the bundle, never from a path convention.
+- Since 2026-10-17 (C1 of [the plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md)) the bundle carries the history the exporter asks for as `explorer-history.json` beside the data, a window re-based on its first commit, and says so in the data's `history` field: by default all of it when `<root>/history/history.json` exists and none otherwise, and a build that carries none removes a history an earlier build left. The history is a file apart so that the client fetches it only when the history is opened, and a page without it is no slower.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `ExportedHistory` {#symbol-exportedhistory}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L37)
+- Returns: [`HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
+
+##### `ExportedHistory` — Summary
+How much of the history an export carries: none of it, or the part a selection names.
+
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L33)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L43)
 
 ##### `BuildStaticExplorerOptions` — Summary
 Options controlling a static Explorer build.
 
 #### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L54)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L71)
 
 ##### `BuildStaticExplorerResult` — Summary
 Outcome of {@link buildStaticExplorer}, including file paths and size statistics.
 
 #### `buildStaticExplorer` {#symbol-buildstaticexplorer}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L73)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L92)
 - Parameters: `options`: [`BuildStaticExplorerOptions`](#symbol-buildstaticexploreroptions)
 
 ##### `buildStaticExplorer` — Summary
@@ -54,6 +63,13 @@ Build a complete static Explorer bundle.
 - [`document.renderLiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graphFiles.readEstateGraph`](../../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readestategraph)
 - [`graphFiles.readLiveDocGraph`](../../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
+- [`format.HISTORY_DIRECTORY`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_directory)
+- [`format.HISTORY_FILE`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_file)
+- [`format.HISTORY_FORMAT`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_format)
+- [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
+- [`sequence.headOf`](../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-headof)
+- [`window.HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
+- [`window.windowOf`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-windowof)
 - [`buildAssets`](./buildAssets.ts.mdmd.md)
 - [`bundledMarkdownScanner.scanAndBundleMarkdown`](./bundledMarkdownScanner.ts.mdmd.md#symbol-scanandbundlemarkdown)
 - [`StaticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)

@@ -10,6 +10,7 @@ import {
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 
+import { packageVersion } from "./cli";
 import { generateLiveDocs } from "../../packages/generator/src/generator";
 
 interface ParsedArgs {
@@ -133,7 +134,8 @@ function usage(): string {
     `  --extension <suffix>      Override liveDocumentation.extension (default .md).\n` +
     `  --glob <pattern>          Additional glob pattern (can repeat).\n` +
     `  --include <pattern>       Target a specific file or glob (can repeat).\n` +
-    `  --config <file>           Load configuration from JSON file.\n` +
+    `  --config <file>           Load configuration from JSON file (default: the workspace's\n` +
+    `                            .live-docs.config.json when it has one).\n` +
     `  --dry-run                 Preview changes without writing files.\n` +
     `  --changed                 Limit regeneration to changed files (git status).\n` +
     `  --version                 Print generator version.\n` +
@@ -151,6 +153,15 @@ async function readConfigFile(configPath: string): Promise<LiveDocumentationConf
   return parsed;
 }
 
+async function exists(file: string): Promise<boolean> {
+  try {
+    await fs.access(file);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
@@ -160,16 +171,19 @@ async function main(): Promise<void> {
   }
 
   if (args.version) {
-    const version = process.env.LIVE_DOCS_GENERATOR_VERSION ?? "0.1.0";
-    console.log(version);
+    console.log(await packageVersion("generator"));
     return;
   }
 
   const workspaceRoot = path.resolve(args.workspace ?? process.cwd());
 
+  // The file given, else the workspace's own configuration, as inspect reads it; without either, the defaults.
   let configInput: LiveDocumentationConfigInput = {};
+  const workspaceConfigPath = path.join(workspaceRoot, ".live-docs.config.json");
   if (args.configPath) {
     configInput = await readConfigFile(args.configPath);
+  } else if (await exists(workspaceConfigPath)) {
+    configInput = await readConfigFile(workspaceConfigPath);
   }
 
   if (args.root) {

@@ -16,6 +16,11 @@
  *
  * # Carry a board for the World Map
  * npm run live-docs:visualize -- --board .mdmd/layer-3/board.mdmd.md
+ *
+ * # Carry part of the history, or none (all of it by default when the history command has written one)
+ * npm run live-docs:visualize -- --history last 50
+ * npm run live-docs:visualize -- --history since 2026-09-01
+ * npm run live-docs:visualize -- --history none
  * ```
  */
 
@@ -27,13 +32,14 @@ import {
     normalizeLiveDocumentationConfig,
     type LiveDocumentationConfigInput
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticBuilder";
+import { buildStaticExplorer, type ExportedHistory } from "@live-documentation/explorer/shared/staticBuilder";
 
 interface CliOptions {
     outputDir: string;
     prettyPrint: boolean;
     configPath?: string;
     boardPath?: string;
+    history?: ExportedHistory;
 }
 
 function parseArgs(args: string[]): CliOptions {
@@ -53,6 +59,17 @@ function parseArgs(args: string[]): CliOptions {
             options.configPath = args[++i];
         } else if (arg === "--board") {
             options.boardPath = args[++i];
+        } else if (arg === "--history") {
+            const rule = args[++i];
+            if (rule === "none" || rule === "all") {
+                options.history = { rule };
+            } else if (rule === "since" && args[i + 1] !== undefined && !Number.isNaN(Date.parse(args[i + 1]))) {
+                options.history = { rule, since: args[++i] };
+            } else if (rule === "last" && /^[1-9]\d*$/u.test(args[i + 1] ?? "")) {
+                options.history = { rule, count: Number(args[++i]) };
+            } else {
+                throw new Error("--history takes none, all, since <date> or last <n>.");
+            }
         } else {
             throw new Error(`Unknown argument '${arg}'.`);
         }
@@ -91,13 +108,15 @@ async function main(): Promise<void> {
         outputDir: options.outputDir,
         config,
         prettyPrint: options.prettyPrint,
-        boardPath: options.boardPath
+        boardPath: options.boardPath,
+        history: options.history
     });
 
     console.log("\nStatic explorer build complete!");
     console.log(`  Files: ${result.stats.fileCount}`);
     console.log(`  Edges: ${result.stats.edgeCount}`);
     console.log(`  Related markdown: ${result.stats.bundledMarkdownCount}`);
+    console.log(`  History: ${result.stats.historyCommits === undefined ? "none" : `${result.stats.historyCommits} commits`}`);
     console.log(`  Total Size: ${formatBytes(result.stats.totalSizeBytes)}`);
     console.log(`\nOpen ${path.join(result.outputDir, "index.html")} in a browser to view.`);
 }

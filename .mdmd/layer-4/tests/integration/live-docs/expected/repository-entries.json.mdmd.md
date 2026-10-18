@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-10-16T17:00:51.492Z
+- Generated At: 2026-10-18T00:53:22.656Z
 
 ## Authored
 ### Purpose
@@ -89,6 +89,9 @@ The hand's reading of this repository's own entry points, with the reasons as th
 - Type: key
 
 #### `entries:scripts/live-docs/generate.ts` {#symbol-entriesscriptslive-docsgeneratets}
+- Type: key
+
+#### `entries:scripts/live-docs/history.ts` {#symbol-entriesscriptslive-docshistoryts}
 - Type: key
 
 #### `entries:scripts/live-docs/inspect.ts` {#symbol-entriesscriptslive-docsinspectts}

@@ -226,7 +226,7 @@ export function emitNotFound(
     for (const entry of payload.frontier) {
       const docInfo = entry.node.docPath ? ` [${entry.node.docPath}]` : "";
       const detail = entry.missingDependency ? ` (${entry.missingDependency} is outside the scan)` : "";
-      console.log(`  - ${entry.node.codePath}${docInfo} — ${entry.reason}${detail}`);
+      console.log(`  - ${entry.node.codePath}${docInfo}: ${entry.reason}${detail}`);
     }
   }
 }

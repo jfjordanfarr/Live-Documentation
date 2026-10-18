@@ -150,10 +150,20 @@ export interface Reachability {
  * each depends on: one walk from every start, and, from the entries, a second
  * from the entries that are not tests, so that what only a test reaches is told
  * apart. A file asked for that the graph does not hold is left out.
+ *
+ * @param graph - The graph to walk.
+ * @param asked - The files to walk from; the graph's entry points when absent.
+ * @param maxDepth - The most hops a path takes.
+ * @param entry - Which files are entry points: by default {@link isEntry}; a graph that carries entry marks without their Entry lines, as a past change's shape does, names its own.
  */
-export function reachability(graph: LiveDocGraph, asked?: readonly string[], maxDepth: number = Infinity): Reachability {
+export function reachability(
+  graph: LiveDocGraph,
+  asked?: readonly string[],
+  maxDepth: number = Infinity,
+  entry: (file: GraphFile) => boolean = isEntry
+): Reachability {
   const files = Object.keys(graph.files).sort(compare);
-  const startPaths = asked ? [...new Set(asked)].filter((id) => graph.files[id]).sort(compare) : files.filter((id) => isEntry(graph.files[id]));
+  const startPaths = asked ? [...new Set(asked)].filter((id) => graph.files[id]).sort(compare) : files.filter((id) => entry(graph.files[id]));
   const starts: Start[] = startPaths.map((codePath) => ({ codePath, entries: graph.files[codePath].entries, test: graph.files[codePath].archetype === "test" }));
   const neighbours = (id: string): readonly string[] => getNeighbors(graph, id, "outbound");
   const fromAll = reachFrom(startPaths, neighbours, maxDepth);

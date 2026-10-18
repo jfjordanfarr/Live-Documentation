@@ -16,6 +16,7 @@ What the inspect CLI prints: node descriptors, and the text or JSON of a path, a
 - `emitReachableResult` (2026-10-14, [Turn 7](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7)) prints the files a path reaches, nearest first with their hops, one list per direction, and the JSON kind `reachable`; it is the headless twin of the Explorer's destination field.
 - With `--verbose`, a node descriptor carries one entry per public symbol with the Summary, Remarks and Parameters sections of its doc; the Parameters bullets are read here from the section text, the one place inspect interprets a documentation section.
 - `emitReachableFromEntries` (2026-10-15) prints the entries walk: in text the entry points with `entryWords` of their lines and `test` for a test, then the reached, the unreachable with their archetypes and the tests-only; in JSON the engine's `Reachability` object with the kind and the depth.
+- The frontier's lines separate the file from its reason with a colon since 2026-10-18; they carried the only em dash in the commands' printed text, where every other line uses a colon or two spaces.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

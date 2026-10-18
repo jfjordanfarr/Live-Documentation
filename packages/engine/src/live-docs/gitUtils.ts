@@ -76,16 +76,17 @@ export function parsePorcelainLine(line: string): string | undefined {
  *
  * @param command - The command to execute
  * @param args - Command arguments
- * @param options - Execution options: the working directory, and the largest output accepted (Node's default is 1 MiB, which a listing of a large repository exceeds)
+ * @param options - Execution options: the working directory, the largest output accepted (Node's default is 1 MiB, which a listing of a large repository exceeds), and variables to set in the environment the command inherits
  * @returns Promise resolving to stdout/stderr
  */
 export function execFileAsync(
   command: string,
   args: readonly string[],
-  options: { cwd: string; maxBuffer?: number }
+  options: { cwd: string; maxBuffer?: number; env?: Record<string, string> }
 ): Promise<{ stdout: string; stderr: string }> {
+  const env = options.env ? { ...process.env, ...options.env } : undefined;
   return new Promise((resolve, reject) => {
-    execFile(command, args, { cwd: options.cwd, maxBuffer: options.maxBuffer }, (error, stdout, stderr) => {
+    execFile(command, args, { cwd: options.cwd, maxBuffer: options.maxBuffer, env }, (error, stdout, stderr) => {
       if (error) {
         let message: string;
         if (error instanceof Error) {

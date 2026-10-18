@@ -1,6 +1,6 @@
 # Live Documentation Pipeline
 
-_Current as of 2026-10-16._
+_Current as of 2026-10-17._
 
 ## Purpose
 
@@ -30,7 +30,11 @@ Describe what one run of the generator does, what it reads, what it writes, and 
 
 ## Configuration
 
-Root, base layer, extension, archetype globs, sample roots, declared entry points (`entryPoints`, paths or globs for what no rule infers: a bundler's entry named by a path string in code, a stylesheet a template links), discovery exclusions (`exclude`, paths or globs discovery skips: a folder that documents itself, a vendored tree the `.gitignore` does not cover), and bundle exclusions come from `.live-docs.config.json` through [liveDocumentationConfig.ts](../layer-4/packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md). This workspace uses `.mdmd/layer-4` and the `.mdmd.md` extension; the shipped default is `.live-documentation/source` and `.md`. Product code reads the configuration and never assumes either layout.
+Root, base layer, extension, archetype globs, sample roots, declared entry points (`entryPoints`, paths or globs for what no rule infers: a bundler's entry named by a path string in code, a stylesheet a template links), discovery exclusions (`exclude`, paths or globs discovery skips: a folder that documents itself, a vendored tree the `.gitignore` does not cover), and bundle exclusions come from `.live-docs.config.json` through [liveDocumentationConfig.ts](../layer-4/packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md). This workspace uses `.mdmd/layer-4` and the `.mdmd.md` extension; the shipped default is `.live-documentation/source` and `.md`. Product code reads the configuration and never assumes either layout. The CLI reads the file `--config` names, else the workspace's own `.live-docs.config.json`, else the defaults; until 2026-10-17 `--workspace` without `--config` read neither and wrote the default root, as the history probe of 2026-10-16 found.
+
+## A repository's history
+
+`npm run live-docs:history` ([history.ts](../layer-4/scripts/live-docs/history.ts.mdmd.md), run by [computeHistory.ts](../layer-4/packages/generator/src/history/computeHistory.ts.mdmd.md)) regenerates the repository's past under one lens, this generator and one configuration, the workspace's as it stands or the file `--config` names, so that a change of the tool never looks like a change of the code. The mainline is the head's first parents, sampled every commit by default (`--every`, `--since`, `--step day|week|tag`). Each sampled commit the cache lacks is checked out into a scratch worktree under the system's temporary folder, its committed mirror removed, and generated there by a process of its own, a few at a time (`--jobs`); the shape of the derived graph (each file's archetype, symbol count and entry mark, each file-to-file edge with its count) is kept in `<root>/history/<lens>/<commit>.json`, the full index too with `--keep-index`. The sequence of those shapes, the first in full and then one delta per commit with git's renames, the directories renamed whole and the files whose content alone changed, is written to `<root>/history/history.json`, every step replayed as it is written. Nothing of it is committed: `.mdmd/history/` is gitignored here, and the folder ignores itself in any repository. A second run regenerates only what the cache lacks. `inspect --at` and `--between` answer from the sequence, and the static builder carries it beside the bundle as the exporter asks (`--history none|all|since <date>|last <n>`). The format and the design are in [Change over Time](change-over-time.mdmd.md).
 
 ## History
 

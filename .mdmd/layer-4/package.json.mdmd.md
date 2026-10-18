@@ -13,6 +13,7 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 
 ### Notes
 - Born 2025-10-16 with the repository. Its scripts are the table in AGENTS.md's "Commands that matter"; each is a `tsx` run of a script under `scripts/`, with this repository's own configuration (`.live-docs.config.json`) and board passed explicitly, so that the product reads configuration and never assumes this workspace's conventions.
+- `live-docs:history` (2026-10-17, C1 of [the plan](../../.mdmd/layer-3/change-over-time.mdmd.md)) is the one command that passes no `--config`: it reads the workspace's own configuration, which here is this repository's, so that `--workspace` over another repository reads that repository's or the shipped defaults.
 - On 2026-10-08 the `pretest:e2e` hook was removed: `test:e2e` builds both bundles itself, and the hook had built them a second time before every run since 2026-09-29.
 - `tree-sitter-cli` is pinned exactly (0.27.1, since 2026-10-16) for `packages/engine/grammars/powershell/build.sh`, which builds the engine's own PowerShell grammar; the pin fixes the generator and the wasi-sdk and binaryen the CLI fetches to compile it, so that a rebuild gives the committed wasm byte for byte.
 - This doc is written by the JSON adapter's manifest branch (since 2026-09-28): the package as its one symbol, the workspace packages linked by name, the rest external with their ranges.

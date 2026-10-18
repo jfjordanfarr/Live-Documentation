@@ -4,6 +4,7 @@
  */
 
 import type { LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import type { HistoryHead } from "@live-documentation/engine/live-docs/history/format";
 
 /** The bundle. */
 export interface StaticExplorerData {
@@ -32,6 +33,21 @@ export interface StaticExplorerData {
      * leaves them out when it chooses where to open.
      */
     sampleRoots?: string[];
+
+    /**
+     * The history file that rides beside this one when the export carries
+     * one, for the client to fetch when the history is asked for, so that a
+     * page without it is no slower: the file's name, and what its sequence says
+     * of itself (its lens, its source, its window and where its knowledge
+     * begins and ends).
+     */
+    history?: BundledHistory;
+}
+
+/** The history a bundle carries: the file beside `explorer-data.json` and its sequence's head. */
+export interface BundledHistory {
+    file: string;
+    head: HistoryHead;
 }
 
 /** A board's text, verbatim, and where it sits in the workspace. */
