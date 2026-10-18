@@ -137,10 +137,28 @@ export function commitAt(sequence: HistorySequence, step: number): CommitInfo {
   return step === 0 ? sequence.base.commit : sequence.steps[step - 1].commit;
 }
 
-/** What the step did, by path; step 0, the base, did nothing. */
+// The changes of a sequence decoded once and kept beside it, since every reader (the ticks, the following of a pin,
+// a cursor's move) walks them again and again and a page scrubbing through a history asks many times a second.
+const decodedChanges = new WeakMap<HistorySequence, ShapeChange[]>();
+
+/**
+ * What the step did, by path; step 0, the base, did nothing. The change is
+ * decoded once per sequence and the same object returned after, so a caller
+ * reads it and never changes it.
+ */
 export function changeAt(sequence: HistorySequence, step: number): ShapeChange {
   checkStep(sequence, step);
-  return step === 0 ? decodeChange({}, sequence) : decodeChange(sequence.steps[step - 1].delta, sequence);
+  let changes = decodedChanges.get(sequence);
+  if (!changes) {
+    changes = [];
+    decodedChanges.set(sequence, changes);
+  }
+  let change = changes[step];
+  if (!change) {
+    change = step === 0 ? decodeChange({}, sequence) : decodeChange(sequence.steps[step - 1].delta, sequence);
+    changes[step] = change;
+  }
+  return change;
 }
 
 /** The shape at a step: the nearest keyframe at or before it, or the base, and the deltas after it. */

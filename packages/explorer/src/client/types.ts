@@ -138,6 +138,28 @@ export interface TuningConfig {
   bezier: BezierTuning;
   localMap: LocalMapTuning;
   forceGraph: ForceGraphTuning;
+  history: HistoryTuning;
+}
+
+/**
+ * Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
+ * (UTC), the period's last step; the salient steps alone; or an automatic choice by the number of steps, so that a
+ * five-commit repository shows five ticks and a long history shows months (the view's half of the plan's C14, 2026-10-18).
+ */
+export type HistoryGranularity = "auto" | "step" | "day" | "week" | "month" | "salient";
+
+/** Every granularity, in the order the control offers them. */
+export const HISTORY_GRANULARITIES: readonly HistoryGranularity[] = ["auto", "step", "day", "week", "month", "salient"];
+
+/** How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap (scenario 14). */
+export type HistoryAxis = "steps" | "time";
+
+/** The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18). */
+export interface HistoryTuning {
+  axis: HistoryAxis;
+  granularity: HistoryGranularity;
+  /** How many steps play passes in a second. */
+  playRate: number;
 }
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
@@ -190,6 +212,10 @@ export interface ExplorerState {
   destination?: PathDestination | null;
   /** The file or directory the Knowledge Sources panel walks from in place of the entry points; null or absent for the entry points. */
   reachFrom?: PathDestination | null;
+  /** The commit of the history the 3D Local Map shows, carried by the address; null or absent for today (2026-10-18). */
+  historyCommit?: string | null;
+  /** Whether the history's step panel names each commit's author; a toggle that rides the address (the plan's C8). */
+  showAuthors?: boolean;
   /** The directories opened in the Local Map, retained with the pins (2026-10-08). */
   openDirectories?: ReadonlySet<string>;
   /** Oldest-first identities of retained selections, including directory openings. */

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/sequence.ts
-- Generated At: 2026-10-18T00:39:19.130Z
+- Generated At: 2026-10-18T05:36:00.599Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,8 @@ Writing a sequence step by step with a keyframe every 256 steps, and reading a s
 - Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). The builder derives each change, writes it, reads it back through the tables as a reader would, and stops at the first difference from the shape it came from: [the probe](../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md)'s replay of all 122 of its snapshots against their indexes is a property of every build here, not a script run once.
 - Only the last shape is held while building, so a long history builds in the memory of one snapshot (scenarios 4 and 6).
 - Keyframes answer scenario 4 and C4: "a seek is the nearest keyframe plus its deltas, so a jump across the whole history costs what a step costs".
+
+`changeAt` decodes a step's change once per sequence and hands the same object back after (2026-10-18, for the Explorer's C4), since every reader walks the changes again and again and a page scrubbing through a history asks many times a second; a caller reads a change and never changes it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -58,16 +60,18 @@ The change at a step: the base's at step 0.
 
 #### `changeAt` {#symbol-changeat}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/sequence.ts#L141)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/sequence.ts#L149)
 - Returns: [`ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
 - Parameters: `sequence`: [`HistorySequence`](./format.ts.mdmd.md#symbol-historysequence)
 
 ##### `changeAt` — Summary
-What the step did, by path; step 0, the base, did nothing.
+What the step did, by path; step 0, the base, did nothing. The change is
+decoded once per sequence and the same object returned after, so a caller
+reads it and never changes it.
 
 #### `seek` {#symbol-seek}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/sequence.ts#L147)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/sequence.ts#L165)
 - Returns: [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 - Parameters: `sequence`: [`HistorySequence`](./format.ts.mdmd.md#symbol-historysequence)
 
@@ -76,7 +80,7 @@ The shape at a step: the nearest keyframe at or before it, or the base, and the 
 
 #### `headOf` {#symbol-headof}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/sequence.ts#L165)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/sequence.ts#L183)
 - Returns: [`HistoryHead`](./format.ts.mdmd.md#symbol-historyhead)
 - Parameters: `sequence`: [`HistorySequence`](./format.ts.mdmd.md#symbol-historysequence)
 

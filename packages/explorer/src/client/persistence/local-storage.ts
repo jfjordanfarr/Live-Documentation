@@ -7,7 +7,7 @@
 
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
-import type { LocalMapPerspective, ExplorerFilters, SpatialLayout, SymbolOrder, TuningConfig, ViewName } from "../types";
+import { HISTORY_GRANULARITIES, type HistoryAxis, type HistoryGranularity, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -70,7 +70,9 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.05, chargeRange: 0, updateEnergy: 0.1 }
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.05, chargeRange: 0, updateEnergy: 0.1 },
+  // The history's scrubber: steps laid out evenly, the ticks chosen by the number of steps, two steps a second when played.
+  history: { axis: "steps", granularity: "auto", playRate: 2 }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -102,6 +104,16 @@ const readRankingTie = (value: unknown): "fewest" | "right" | "left" | undefined
 
 const readHoldStill = (value: unknown): "click" | "hover" | undefined =>
   value === "click" || value === "hover" ? value : undefined;
+
+const readHistoryAxis = (value: unknown): HistoryAxis | undefined =>
+  value === "steps" || value === "time" ? value : undefined;
+
+const readHistoryGranularity = (value: unknown): HistoryGranularity | undefined =>
+  HISTORY_GRANULARITIES.find(granularity => granularity === value);
+
+/** A play rate is steps a second: finite and positive. */
+const readPlayRate = (value: unknown): number | undefined =>
+  typeof value === "number" && Number.isFinite(value) && value > 0 ? value : undefined;
 
 /**
  * Reads and validates persisted UI state from localStorage.
@@ -230,6 +242,18 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
         };
       }
 
+      const historyRaw = getRecord(parsedTuning, "history");
+      if (historyRaw) {
+        const axis = readHistoryAxis(historyRaw.axis);
+        const granularity = readHistoryGranularity(historyRaw.granularity);
+        const playRate = readPlayRate(historyRaw.playRate);
+        tuning.history = {
+          ...(axis !== undefined ? { axis } : null),
+          ...(granularity !== undefined ? { granularity } : null),
+          ...(playRate !== undefined ? { playRate } : null)
+        };
+      }
+
       result.tuning = tuning;
     }
      
@@ -279,6 +303,10 @@ export const applyPersistedUi = (
     forceGraph: {
       ...defaults.tuning.forceGraph,
       ...(persisted.tuning?.forceGraph ?? {})
+    },
+    history: {
+      ...defaults.tuning.history,
+      ...(persisted.tuning?.history ?? {})
     }
   };
    

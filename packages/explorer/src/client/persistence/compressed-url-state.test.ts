@@ -157,10 +157,14 @@ describe("compress/decompress round-trip", () => {
       filters: { showTests: false, showAssets: false },
       destination: { kind: "file", nodeId: "b.ts", symbol: "fnB" },
       reachFrom: { kind: "directory", directory: "packages/client" },
+      commit: "d23a6f90817839b94b8d2d3908bfa5afc022ee22",
+      authors: true,
     };
 
     const compressed = compressSnapshot(original);
     const restored = decompressSnapshot(compressed);
+    expect(restored.commit).toBe(original.commit);
+    expect(restored.authors).toBe(true);
 
     expect(restored.view).toBe(original.view);
     expect(restored.perspective).toBe("3d");
@@ -367,5 +371,27 @@ describe("the Knowledge Sources panel's start", () => {
     expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, reachFrom: { kind: "file", nodeId: "src/a.ts" } }, nodes).reachFrom).toEqual({ kind: "file", nodeId: "src/a.ts" });
     expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, reachFrom: { kind: "file", nodeId: "gone.ts" } }, nodes).reachFrom).toBeNull();
     expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, reachFrom: { kind: "directory", directory: "lib" } }, nodes).reachFrom).toBeNull();
+  });
+});
+
+describe("the moment of the history (2026-10-18)", () => {
+  it("rides the payload as the commit `h` and the authors toggle `b`, both left out for today without authors", () => {
+    expect(snapshotToPayload(DEFAULT_SNAPSHOT).h).toBeUndefined();
+    expect(snapshotToPayload(DEFAULT_SNAPSHOT).b).toBeUndefined();
+    const payload = snapshotToPayload({ ...DEFAULT_SNAPSHOT, commit: "abc12345", authors: true });
+    expect(payload.h).toBe("abc12345");
+    expect(payload.b).toBe(true);
+    expect(payloadToSnapshot({ v: 3 })).toMatchObject({ commit: null, authors: false });
+    expect(payloadToSnapshot({ v: 3, h: " abc12345 ", b: true })).toMatchObject({ commit: "abc12345", authors: true });
+    expect(payloadToSnapshot({ v: 3, h: "" }).commit).toBeNull();
+    expect(payloadToSnapshot({ v: 3, h: 7 as unknown as string, b: "yes" as unknown as boolean })).toMatchObject({ commit: null, authors: false });
+    // An older link names no moment.
+    expect(payloadToSnapshot({ v: 1, w: "graph" })).toMatchObject({ commit: null, authors: false });
+  });
+
+  it("survives the scrub against the live nodes, since whether the commit is in the history is the sequence's to say", () => {
+    const scrubbed = scrubSnapshot({ ...DEFAULT_SNAPSHOT, commit: "abc12345", authors: true }, new Map([["a.ts", {}]]));
+    expect(scrubbed.commit).toBe("abc12345");
+    expect(scrubbed.authors).toBe(true);
   });
 });

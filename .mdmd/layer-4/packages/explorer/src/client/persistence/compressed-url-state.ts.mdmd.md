@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.ts
-- Generated At: 2026-10-16T21:14:09.006Z
+- Generated At: 2026-10-18T05:36:01.924Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,8 @@ Optional layout settings carry both representations’ packing and spatial encod
 - Version 3 (2026-10-16): the snapshot's default filters are the cold start's, tests shown and assets hidden, taken from `getDefaultFilters`, which governs a page opened without an address; the default had said assets shown, so every link the page wrote carried `f` to hide them. A version 3 link omits `f` when the filters are the default's; an older link without `f` still reads as both shown, which is what it meant when it was written.
 - `reachFrom` (payload key `a`, 2026-10-15): the file or directory the Knowledge Sources panel walks from in place of the entry points, written and read like the path's destination and scrubbed like it when the bundle no longer holds it.
 
+The moment of the history (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its scenario 9): the commit the 3D Local Map shows rides as `h` and the authors toggle as `b` (the plan's C8, "include that in share links"), both left out for today without authors, so that a link to a moment opens on it; neither is part of the place Back returns to, as pins are not, so scrubbing rewrites the entry rather than walking the history through every step. Whether the commit is in the sequence is the sequence's to say, so the scrub against the live nodes leaves it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -40,7 +42,7 @@ minimize serialized size while remaining readable in code.
 
 #### `UrlStateSnapshot` {#symbol-urlstatesnapshot}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L89)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L93)
 
 ##### `UrlStateSnapshot` — Summary
 Application-level state snapshot that maps 1:1 with the URL.
@@ -49,7 +51,7 @@ This is what the controller produces and consumes; the
 
 #### `DEFAULT_SNAPSHOT` {#symbol-default_snapshot}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L115)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L123)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `DEFAULT_SNAPSHOT` — Summary
@@ -59,7 +61,7 @@ shows (2026-10-16; until then this said assets shown and every written link carr
 
 #### `snapshotToPayload` {#symbol-snapshottopayload}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L133)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L143)
 - Returns: [`CompressedPayload`](#symbol-compressedpayload)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
@@ -69,7 +71,7 @@ Omits fields that match defaults to keep the output small.
 
 #### `payloadToSnapshot` {#symbol-payloadtosnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L185)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L197)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `payload`: [`CompressedPayload`](#symbol-compressedpayload)
 
@@ -79,7 +81,7 @@ Applies version migrations and defaults for missing fields.
 
 #### `compressSnapshot` {#symbol-compresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L229)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L243)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `compressSnapshot` — Summary
@@ -87,7 +89,7 @@ Compress a snapshot into a URL-safe string.
 
 #### `decompressSnapshot` {#symbol-decompresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L238)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L252)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `decompressSnapshot` — Summary
@@ -96,7 +98,7 @@ Returns the default snapshot if decompression or parsing fails.
 
 #### `scrubSnapshot` {#symbol-scrubsnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L258)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L272)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot); `nodesById`: `ReadonlyMap`
 
@@ -109,7 +111,7 @@ Pure function — returns a new snapshot; does not mutate the input.
 
 #### `readUrlState` {#symbol-readurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L314)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L328)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `readUrlState` — Summary
@@ -118,7 +120,7 @@ Falls back to defaults if no `?s=` parameter is present.
 
 #### `writeUrlState` {#symbol-writeurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L325)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L339)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `writeUrlState` — Summary

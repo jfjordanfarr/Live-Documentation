@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-13T19:38:15.771Z
+- Generated At: 2026-10-18T05:36:01.834Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,8 @@ Connects the Local Map’s shared packing presets and advanced geometry controls
 - Update Energy (2026-10-18, ticket C2 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)) is wired like the other 3D sliders and re-renders the view as they do, but it changes no force: the 3D view leaves it out of the settings that reheat the picture, so moving it stirs nothing, and the value takes effect at the next change of what is shown.
 
 The shared Compact/Relaxed selector applies both representations’ packing values. Manual packing changes read as Custom; coupling and size controls survive preset selection. The active perspective’s advanced group opens on a perspective change while either group remains available manually. The returned sync callback keeps controls accurate after navigation. Layout settings can be exported as JSON; the application persists and shares changes and takes over any unfinished camera fit before re-layout. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
+The History group (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its C14): the axis and the ticks as selects and the play rate as a slider, under the 3D controls, since the history is the 3D Local Map's; a change of the axis or the ticks redraws the scrubber through the view's render, and the picture itself does not change.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -69,6 +71,10 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
+- [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)
+- [`template.tuning-history-granularity`](../../shared/template.html.mdmd.md#symbol-tuning-history-granularity)
+- [`template.tuning-history-play-rate`](../../shared/template.html.mdmd.md#symbol-tuning-history-play-rate)
+- [`template.tuning-history-play-rate-value`](../../shared/template.html.mdmd.md#symbol-tuning-history-play-rate-value)
 - [`template.tuning-hold-still`](../../shared/template.html.mdmd.md#symbol-tuning-hold-still)
 - [`template.tuning-hover-dim-connections`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-connections)
 - [`template.tuning-hover-dim-symbols`](../../shared/template.html.mdmd.md#symbol-tuning-hover-dim-symbols)

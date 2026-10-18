@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/history/ticks.test.ts
-- Generated At: 2026-10-18T00:39:19.252Z
+- Generated At: 2026-10-18T05:36:00.674Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,8 @@ _No public symbols detected_
 - [`sequence.SequenceBuilder`](./sequence.ts.mdmd.md#symbol-sequencebuilder)
 - [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
+- [`ticks.followPath`](./ticks.ts.mdmd.md#symbol-followpath)
+- [`ticks.followPins`](./ticks.ts.mdmd.md#symbol-followpins)
 - [`ticks.ticksFor`](./ticks.ts.mdmd.md#symbol-ticksfor)
 - [`versionControl.VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges) (type-only)
 - `vitest` - `describe`, `expect`, `it`

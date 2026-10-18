@@ -1,0 +1,51 @@
+/* The history of the 3D Local Map (the change-over-time plan's C4, 2026-10-18): a scrubber along the bottom of the
+   picture, one tick per step, the pinned-salient steps major and the content-only ones minor, the rest faint, a ruler
+   of dates beneath; and the step panel beside the picture saying what the step changed. Both stand inside the 3D view,
+   so they come and go with it; the controls and the tray stand above the open scrubber by the room it asks for. */
+
+.history-scrubber { position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 105; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); color: var(--text-primary); font-size: 12px; }
+.history-scrubber[hidden] { display: none; }
+.history-scrubber button { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; padding: 6px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; }
+.history-scrubber button:hover { background: var(--accent-subtle); }
+.history-scrubber button:focus-visible { outline: 2px solid var(--accent); }
+.history-scrubber button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.history-scrubber button[hidden] { display: none; }
+.history-slider { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.history-track { position: relative; height: 26px; margin-bottom: 3px; cursor: pointer; touch-action: none; }
+.history-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.history-lane { position: absolute; inset: 0; }
+.history-lane::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: var(--border); }
+.history-ticks { position: absolute; inset: 0; }
+.history-tick { position: absolute; top: 50%; width: 1px; height: 8px; transform: translate(-50%, -50%); background: var(--text-panel-subtle); opacity: .45; }
+.history-tick.is-minor { height: 12px; opacity: .85; background: var(--text-panel-muted); }
+.history-tick.is-major { width: 2px; height: 18px; opacity: 1; background: var(--accent); }
+.history-thumb { position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%; transform: translate(-50%, -50%); background: var(--text-active); box-shadow: 0 0 0 2px var(--bg-deep), 0 0 0 3px var(--accent); pointer-events: none; }
+/* The left edge of a history that begins where the knowledge does, not where the repository did: a hatched band before
+   the first tick, the lane and the ruler starting after it. */
+.history-track.is-truncated .history-lane { left: 22px; }
+.history-ruler.is-truncated { margin-left: 22px; }
+.history-truncated { position: absolute; left: 0; top: 4px; bottom: 4px; width: 16px; border-radius: 2px; background: repeating-linear-gradient(135deg, var(--text-panel-muted) 0 2px, transparent 2px 6px); }
+.history-truncated[hidden] { display: none; }
+.history-ruler { position: relative; height: 14px; font-size: 10px; color: var(--text-panel-subtle); }
+.history-ruler-label { position: absolute; top: 0; white-space: nowrap; }
+.history-ruler-label[hidden] { display: none; }
+.history-readout { display: inline-flex; flex-direction: column; align-items: flex-end; gap: 1px; min-width: 84px; white-space: nowrap; }
+.history-readout code { font-size: 11px; color: var(--text-panel-muted); }
+.history-notice { color: var(--text-panel-muted); white-space: nowrap; }
+.history-notice[hidden] { display: none; }
+
+.history-step-panel { position: absolute; left: 18px; top: 18px; bottom: calc(18px + var(--history-room)); width: min(360px, calc(45% - 18px)); z-index: 104; overflow: auto; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text-primary); font-size: 13px; box-shadow: 0 8px 24px #0006; }
+.history-step-panel[hidden] { display: none; }
+.history-step-panel h2 { margin: 0 0 6px; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; }
+.history-step-meta { margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--text-panel-muted); font-size: 12px; }
+.history-step-meta code { font-size: 12px; user-select: all; }
+.history-step-note { margin: 0 0 10px; color: var(--text-panel-muted); font-size: 12px; line-height: 1.45; }
+.history-step-panel details { border-top: 1px solid var(--border); padding: 6px 0; }
+.history-step-panel summary { cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+.history-step-panel summary .history-count { color: var(--text-panel-subtle); }
+.history-step-panel ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.history-step-panel li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; overflow-wrap: anywhere; }
+.history-file { font: inherit; color: var(--text-active); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
+.history-file:hover, .history-file:focus-visible { color: var(--accent); outline: none; text-decoration: underline; }
+.history-file-name { color: var(--text-active); }
+.history-path, .history-shape, .history-gone, .history-arrow { color: var(--text-panel-subtle); font-size: 12px; }

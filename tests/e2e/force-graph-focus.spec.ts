@@ -185,6 +185,26 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(initialNodes.map(node => node.id).sort());
 });
 
+/**
+ * A point of the canvas with no sphere under it. A middle-button press on a sphere is a node drag to the library's
+ * drag controls, which suspend the navigation controls for the drag, so the zoom this test measures never starts; the
+ * picture changes as the repository grows, so the point is found from the rendered scene rather than fixed. The
+ * library's own hover tooltip is the judge, since its raycast decides what a press lands on.
+ */
+async function emptyPoint(page: Page): Promise<{ x: number; y: number }> {
+  const box = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const nodes = await renderedNodes(page);
+  for (const [fx, fy] of [[.8, .8], [.2, .8], [.8, .2], [.2, .2], [.9, .5], [.5, .9], [.1, .5], [.5, .1], [.7, .9], [.3, .9]]) {
+    const x = box.x + box.width * fx, y = box.y + box.height * fy;
+    const clear = nodes.every(node => node.depth < -1 || node.depth > 1 || Math.hypot(node.x - x, node.y - y) > node.radius + 12);
+    if (!clear) continue;
+    await page.mouse.move(x, y);
+    await page.waitForTimeout(120); // Native picking is throttled at 50 ms.
+    if (!(await page.locator(".float-tooltip-kap").textContent())?.trim()) return { x, y };
+  }
+  throw new Error("no empty point of the canvas was found among the candidates");
+}
+
 test("wheel approaches the inspected sphere and does not jump outward after a closer middle-button zoom", async ({ page }) => {
   test.setTimeout(45_000);
   await page.setViewportSize({ width: 1600, height: 1000 });
@@ -195,8 +215,7 @@ test("wheel approaches the inspected sphere and does not jump outward after a cl
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   const distance = async () => (await renderedNodes(page)).find(node => node.id === subject)!.distance;
   const initial = await distance();
-  const box = (await page.locator("#graph-svg canvas").boundingBox())!;
-  const x = box.x + box.width * .8, y = box.y + box.height * .8;
+  const { x, y } = await emptyPoint(page);
   await page.mouse.move(x, y);
   await page.mouse.wheel(0, -120);
   await expect.poll(distance).toBeLessThan(initial - 5);

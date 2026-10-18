@@ -1,6 +1,6 @@
 # The energy a change puts into the 3D picture, measured as a lever
 
-_A layout-lab measurement of October 18, 2026, by a builder subagent (Claude Fable 5.1) for ticket C2 of [the change-over-time plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), after [the gravity measurement of the day before](../../2026-10-17/layout-lab/README.md). The owner's word that shaped it ([Turn 5 of the October 17 record](../../../ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)): "let the user decide to taste after presenting a few options". The reports beside this file are the lab's; the numbers in them are historical measurements, not a runtime guarantee._
+_A layout-lab measurement of October 18, 2026, by a builder subagent (Claude Fable 5.1) for ticket C2 of [the change-over-time plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), after [the gravity measurement of the day before](../../2026-10-17/layout-lab/README.md). The owner's word that shaped it ([Turn 5 of the October 17 record](../../../ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)): "let the user decide to taste after presenting a few options". The reports beside this file are the lab's; the numbers in them are historical measurements, not a runtime guarantee._
 
 ## Brief
 

@@ -83,6 +83,9 @@
     "scripts/live-docs/run-all.ts": [
       "command livedocs of package.json"
     ],
+    "scripts/live-docs/visualize-history-sample.ts": [
+      "command live-docs:visualize:history-sample of package.json"
+    ],
     "scripts/live-docs/visualize-sample.ts": [
       "command live-docs:visualize:estate of package.json"
     ],

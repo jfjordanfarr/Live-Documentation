@@ -8,19 +8,21 @@ import {
   readPersistedUi
 } from "./local-storage";
 
-const restoreLocalMap = (saved: string) => {
+const restoreTuning = (group: string, saved: string) => {
   vi.stubGlobal("window", {
     localStorage: {
       getItem: (key: string) => key === PERSISTED_UI_KEY
-        ? `{"version":1,"tuning":{"localMap":${saved}}}` : null,
+        ? `{"version":1,"tuning":{"${group}":${saved}}}` : null,
       removeItem: vi.fn()
     }
   });
   return applyPersistedUi(
     { filters: getDefaultFilters(), tuning: getDefaultTuning() },
     readPersistedUi()
-  ).tuning.localMap;
+  ).tuning;
 };
+
+const restoreLocalMap = (saved: string) => restoreTuning("localMap", saved).localMap;
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -42,6 +44,24 @@ describe("persisted membrane tuning", () => {
     value => {
       expect(restoreLocalMap(`{"membraneSimplicity":${value},"membraneEvenness":3,"rowLevelness":0.5}`))
         .toMatchObject({ membraneSimplicity: 200, membraneEvenness: 3, rowLevelness: 0.5 });
+    }
+  );
+});
+
+describe("persisted history tuning (2026-10-18)", () => {
+  it("starts from steps laid out evenly, the ticks chosen automatically and two steps a second", () => {
+    expect(getDefaultTuning().history).toEqual({ axis: "steps", granularity: "auto", playRate: 2 });
+  });
+
+  it("restores a saved axis, granularity and play rate, and keeps the defaults for what is missing", () => {
+    expect(restoreTuning("history", '{"axis":"time","granularity":"month"}').history).toEqual({ axis: "time", granularity: "month", playRate: 2 });
+    expect(restoreTuning("history", '{"playRate":0.5}').history).toEqual({ axis: "steps", granularity: "auto", playRate: 0.5 });
+  });
+
+  it.each(['{"axis":"sideways"}', '{"granularity":"fortnight"}', '{"playRate":0}', '{"playRate":"fast"}', '{"playRate":-2}'])(
+    "falls back from an invalid history setting of %s to the default",
+    saved => {
+      expect(restoreTuning("history", saved).history).toEqual({ axis: "steps", granularity: "auto", playRate: 2 });
     }
   );
 });

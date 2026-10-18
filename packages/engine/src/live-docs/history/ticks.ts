@@ -16,7 +16,10 @@
  * A pin names a path as it stands at one step, today's by default, and is
  * followed through the renames on either side of it, so that a file pinned
  * after its move is still found in the steps before it, under its old name.
- * A directory is followed through the directory renames that carry it.
+ * A directory is followed through the directory renames that carry it. The
+ * following is also offered on its own, for the Explorer's tray and step
+ * panel (the plan's C4, 2026-10-18): where today's pins stand at a step, and
+ * where a file of one step stands at another, or at which step it ceased to.
  *
  * @module
  */
@@ -46,9 +49,7 @@ export interface Ticks {
  */
 export function ticksFor(sequence: HistorySequence, pins: Pins, at: number = sequence.steps.length): Ticks {
   const steps = sequence.steps.length;
-  if (!Number.isInteger(at) || at < 0 || at > steps) {
-    throw new RangeError(`the sequence has steps 0 to ${steps}; pins cannot be read at ${at}`);
-  }
+  checkStep(sequence, at, "pins cannot be read at");
   if (pins.files.length === 0 && pins.directories.length === 0) {
     return { major: Array.from({ length: steps }, (_, index) => index + 1), minor: [] };
   }
@@ -81,6 +82,78 @@ export function ticksFor(sequence: HistorySequence, pins: Pins, at: number = seq
   return ticks;
 }
 
+/**
+ * The pins' paths as they stand at step `to`, read at step `at` and followed
+ * through the renames between, in either direction: a file pinned today found
+ * under its old name at an earlier step, or a path of an earlier step carried
+ * to its name today. Each list answers the one given, path for path, in its
+ * order. A path that no rename touches keeps its name whether or not a file
+ * stands at it; whether one does is the shape's to say, and whether a file
+ * was yet born is {@link followPath}'s.
+ */
+export function followPins(sequence: HistorySequence, pins: Pins, at: number, to: number): Pins {
+  checkStep(sequence, at, "pins cannot be read at");
+  checkStep(sequence, to, "pins cannot be followed to");
+  let files = [...pins.files];
+  let directories = [...pins.directories];
+  for (let step = at; step > to; step -= 1) {
+    const change = changeAt(sequence, step);
+    files = files.map((path) => fileAcross(path, change, "back"));
+    directories = directories.map((path) => directoryAcross(path, change, "back"));
+  }
+  for (let step = at + 1; step <= to; step += 1) {
+    const change = changeAt(sequence, step);
+    files = files.map((path) => fileAcross(path, change, "forward"));
+    directories = directories.map((path) => directoryAcross(path, change, "forward"));
+  }
+  return { files, directories };
+}
+
+/** Where a file of one step stands at another, or the step at which it ceased to on the way. */
+export interface FollowedPath {
+  /** The file's path at the step asked for, followed through the renames between; null when it does not stand there. */
+  path: string | null;
+  /**
+   * The step the answer is read at: the step asked for when the file stands
+   * there; otherwise, going forward, the step at which it died, and, going
+   * back, the step at which it was born, before which it did not exist.
+   */
+  step: number;
+}
+
+/**
+ * Follows one file, standing at `path` at step `from`, to step `to`. A file
+ * below the version control's similarity threshold is a death and a birth,
+ * shown as such, so a later file at the same path is another file.
+ */
+export function followPath(sequence: HistorySequence, path: string, from: number, to: number): FollowedPath {
+  checkStep(sequence, from, "a path cannot be read at");
+  checkStep(sequence, to, "a path cannot be followed to");
+  let current = path;
+  for (let step = from + 1; step <= to; step += 1) {
+    const change = changeAt(sequence, step);
+    current = change.renamed.find(([old]) => old === current)?.[1] ?? current;
+    if (change.dead.includes(current)) {
+      return { path: null, step };
+    }
+  }
+  for (let step = from; step > to; step -= 1) {
+    const change = changeAt(sequence, step);
+    if (change.born.some(([born]) => born === current)) {
+      return { path: null, step };
+    }
+    current = change.renamed.find(([, renamed]) => renamed === current)?.[0] ?? current;
+  }
+  return { path: current, step: to };
+}
+
+function checkStep(sequence: HistorySequence, step: number, what: string): void {
+  const steps = sequence.steps.length;
+  if (!Number.isInteger(step) || step < 0 || step > steps) {
+    throw new RangeError(`the sequence has steps 0 to ${steps}; ${what} ${step}`);
+  }
+}
+
 interface PinnedPaths {
   files: Set<string>;
   directories: Set<string>;
@@ -88,22 +161,32 @@ interface PinnedPaths {
 
 /** The pins across one step: forward from before it to after it, or back from after it to before it. */
 function followed(pins: PinnedPaths, change: ShapeChange, way: "forward" | "back"): PinnedPaths {
-  const fileRenames = new Map(change.renamed.map(([from, to]) => (way === "forward" ? [from, to] : [to, from])));
-  const directoryRenames = change.directoriesRenamed.map(([from, to]) => (way === "forward" ? [from, to] : [to, from]));
-  const directory = (path: string): string => {
-    // The innermost renamed directory that holds the path carries it.
-    let best: [string, string] | undefined;
-    for (const [from, to] of directoryRenames) {
-      if ((path === from || path.startsWith(`${from}/`)) && (!best || from.length > best[0].length)) {
-        best = [from, to];
-      }
-    }
-    return best ? `${best[1]}${path.slice(best[0].length)}` : path;
-  };
   return {
-    files: new Set([...pins.files].map((path) => fileRenames.get(path) ?? path)),
-    directories: new Set([...pins.directories].map(directory))
+    files: new Set([...pins.files].map((path) => fileAcross(path, change, way))),
+    directories: new Set([...pins.directories].map((path) => directoryAcross(path, change, way)))
   };
+}
+
+/** A file's path across one step's renames, forward or back. */
+function fileAcross(path: string, change: ShapeChange, way: "forward" | "back"): string {
+  for (const [from, to] of change.renamed) {
+    if (way === "forward" ? from === path : to === path) {
+      return way === "forward" ? to : from;
+    }
+  }
+  return path;
+}
+
+/** A directory's path across one step's directory renames, forward or back: the innermost renamed directory that holds it carries it. */
+function directoryAcross(path: string, change: ShapeChange, way: "forward" | "back"): string {
+  let best: [string, string] | undefined;
+  for (const [renamedFrom, renamedTo] of change.directoriesRenamed) {
+    const [from, to] = way === "forward" ? [renamedFrom, renamedTo] : [renamedTo, renamedFrom];
+    if ((path === from || path.startsWith(`${from}/`)) && (!best || from.length > best[0].length)) {
+      best = [from, to];
+    }
+  }
+  return best ? `${best[1]}${path.slice(best[0].length)}` : path;
 }
 
 function holdsPath(pins: PinnedPaths, path: string): boolean {

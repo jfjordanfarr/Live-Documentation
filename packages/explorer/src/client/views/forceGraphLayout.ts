@@ -8,9 +8,14 @@ import { under } from "./localView/directory-state";
 export interface SpatialNode extends SimulationNodeDatum {
   id: string;
   publicSymbols: readonly string[];
+  /** The public-symbol count when the names are not at hand, as at a step of the history (2026-10-18); `publicSymbols.length` otherwise. */
+  symbolCount?: number;
   /** A directory hub's members' public-symbol counts, at every depth; its volume is the sum of theirs (2026-10-14). */
   containedSymbolCounts?: readonly number[];
 }
+
+/** How many public symbols a file exposes: the count it carries, or its names counted. */
+export const symbolCountOf = (node: Pick<SpatialNode, "publicSymbols" | "symbolCount">): number => node.symbolCount ?? node.publicSymbols.length;
 
 /** One undirected file pair; count is the number of documented references in either direction. */
 export interface SpatialLink<N extends SpatialNode = SpatialNode> {
@@ -28,7 +33,7 @@ export interface SpatialLink<N extends SpatialNode = SpatialNode> {
  */
 export function spatialNodeValue(node: SpatialNode, tuning: ForceGraphTuning): number {
   const volume = (symbols: number): number => Math.pow(1 + symbols, tuning.symbolScale);
-  if (!node.containedSymbolCounts) return volume(node.publicSymbols.length);
+  if (!node.containedSymbolCounts) return volume(symbolCountOf(node));
   return Math.max(1, node.containedSymbolCounts.reduce((sum, count) => sum + volume(count), 0));
 }
 

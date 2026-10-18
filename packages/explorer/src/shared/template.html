@@ -222,6 +222,31 @@
             <output id="tuning-force-update-energy-value">0.1</output>
           </label>
         </details>
+        <details class="tuning-subsection" data-tuning-perspective="3d">
+          <summary class="subsection-label">History</summary>
+          <label class="tuning-slider" title="How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap">
+            <span>Axis</span>
+            <select id="tuning-history-axis">
+              <option value="steps">By step</option>
+              <option value="time">By date</option>
+            </select>
+          </label>
+          <label class="tuning-slider" title="Which ticks the scrubber draws and the step key moves between: every step, one per day, week or month, or the salient steps alone; automatic chooses by the number of steps">
+            <span>Ticks</span>
+            <select id="tuning-history-granularity">
+              <option value="auto">Automatic</option>
+              <option value="step">Every step</option>
+              <option value="day">Days</option>
+              <option value="week">Weeks</option>
+              <option value="month">Months</option>
+              <option value="salient">Salient only</option>
+            </select>
+          </label>
+          <label class="tuning-slider" title="How many steps play passes in a second">
+            <span>Play Rate</span><input type="range" id="tuning-history-play-rate" min="0.5" max="10" step="0.5" value="2" />
+            <output id="tuning-history-play-rate-value">2</output>
+          </label>
+        </details>
         <button id="export-layout-settings" type="button" class="tuning-export">Export layout settings</button>
       </div>
     </details>

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-10-15T16:17:52.544Z
+- Generated At: 2026-10-18T05:36:01.618Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ Bootstrap entry point for the Explorer client: loads the bundle, projects its gr
 - Since 2026-10-15 ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) the first subject is decided by `landingOf` over the bundle's graph and sample roots, the file-name guess remaining only when the docs declare no entry; and the Knowledge Sources panel's start (`state.reachFrom`, a file or a directory) is exploration state that rides the share link and redraws the panel from `sourcesFacts` walked from the files it names.
 - `renderCurrentView` takes why it is called (2026-10-16, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-the-view-and-the-wires-keep-their-elements-recorded-2026-10-16)): a change of state tells the Local Map to render, which it does at once when it is the view shown and otherwise owes until it is; a view shown (`switchView`, and `changePerspective` with the subject unchanged) calls the map's `show`, so that a return to an unchanged picture draws nothing and resumes the search. `changePerspective` counts a changed subject as a change.
 
+The history control (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): the History button beside Connections and Structure, offered only in 3D and only when the bundle carries a history, "for now, as those went beside 3D", until the consolidation pass the owner expects; `history-control.ts` wired to the 3D view's `setMoment` and `settle`, to the address through `persistExploration` (the commit and the authors toggle), to the tray through `absence`, and to `localView.retainNode` for a file the step panel pins. An address that names a commit fetches the history file before the page starts, so that the first picture is the moment's; leaving 3D for 2D or for another view, and Back or Forward to an address without a commit, return the picture to today and close the control.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -33,6 +35,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`format.HistorySequence`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`index.inferDefaultEntryNodeId`](./bootstrap/index.ts.mdmd.md#symbol-inferdefaultentrynodeid)
 - [`landing.landingOf`](./bootstrap/landing.ts.mdmd.md#symbol-landingof)
 - [`detailPanel.createDetailPanel`](./detailPanel.ts.mdmd.md#symbol-createdetailpanel)
@@ -47,6 +50,8 @@ _No public symbols detected_
 - [`graph-helpers.buildTestCoverageMap`](./graph-helpers.ts.mdmd.md#symbol-buildtestcoveragemap)
 - [`graph-helpers.getInputById`](./graph-helpers.ts.mdmd.md#symbol-getinputbyid)
 - [`graph-helpers.resolveLinkEndpoint`](./graph-helpers.ts.mdmd.md#symbol-resolvelinkendpoint)
+- [`history-control.createHistoryControl`](./history/history-control.ts.mdmd.md#symbol-createhistorycontrol)
+- [`history-control.isHistorySequence`](./history/history-control.ts.mdmd.md#symbol-ishistorysequence)
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`layout-presets.layoutPresetOf`](./layout-presets.ts.mdmd.md#symbol-layoutpresetof)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)

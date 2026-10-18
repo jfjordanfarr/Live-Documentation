@@ -12,9 +12,13 @@ export interface PinTrayOptions {
   onFocus(item: RetainedItem): void;
 }
 
-/** A newest-first working set with stable row elements and a persistent collapse handle. */
+/**
+ * A newest-first working set with stable row elements and a persistent collapse handle. At a moment of the history a
+ * pin whose thing does not stand there is said so on its row, never dropped (the plan's scenario 9, 2026-10-18); `absent`
+ * gives the words, or null when the pin stands.
+ */
 export function createPinTray(options: PinTrayOptions): {
-  sync(state: RetainedState, visible: boolean, busy: boolean): void;
+  sync(state: RetainedState, visible: boolean, busy: boolean, absent?: (item: RetainedItem) => string | null): void;
 } {
   const tray = document.createElement("section");
   tray.className = "pin-tray";
@@ -95,8 +99,11 @@ export function createPinTray(options: PinTrayOptions): {
     const where = document.createElement("span");
     where.className = "pin-tray-context";
     where.textContent = context;
+    const absence = document.createElement("span");
+    absence.className = "pin-tray-absent";
+    absence.hidden = true;
     if (!directory && !symbol) focus.title = `${path} · All symbols`;
-    words.append(title, where);
+    words.append(title, where, absence);
     focus.append(words);
     focus.addEventListener("click", () => options.onFocus(item));
     row.append(focus);
@@ -117,7 +124,7 @@ export function createPinTray(options: PinTrayOptions): {
   }
 
   return {
-    sync(state, visible, busy) {
+    sync(state, visible, busy, absent) {
       tray.hidden = !visible;
       const items = retainedItems(state).reverse();
       const present = new Set(items.map(retainedKey));
@@ -136,6 +143,10 @@ export function createPinTray(options: PinTrayOptions): {
         rows.set(key, row);
         if (list.children[index] !== row) list.insertBefore(row, list.children[index] ?? null);
         row.querySelectorAll<HTMLButtonElement>("button").forEach(button => { button.disabled = busy; });
+        const words = absent?.(item) ?? null;
+        const absence = row.querySelector<HTMLElement>(".pin-tray-absent")!;
+        absence.hidden = words === null;
+        absence.textContent = words ?? "";
       });
 
       if (focusedRow && !focusedRow.isConnected) {

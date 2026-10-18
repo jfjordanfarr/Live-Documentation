@@ -134,6 +134,7 @@ export function emitBetween(sequence: HistorySequence, from: number, to: number,
   list("Born", changes.born, "file");
   list("Dead", changes.dead, "file");
   list("Renamed", changes.renamed.map((rename) => `${rename.from} -> ${rename.to}`), "file");
+  list("Renamed whole", changes.directoriesRenamed.map((rename) => `${rename.from} -> ${rename.to}`), "directory");
   list("Resized", changes.resized.map((file) => `${file.codePath}  ${file.before} -> ${file.after} symbols`), "file");
   list("Wires added", changes.edgesAdded.map((edge) => `${edge.from} -> ${edge.to}`), "wire");
   list("Wires removed", changes.edgesRemoved.map((edge) => `${edge.from} -> ${edge.to}`), "wire");

@@ -18,6 +18,8 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 - `tree-sitter-cli` is pinned exactly (0.27.1, since 2026-10-16) for `packages/engine/grammars/powershell/build.sh`, which builds the engine's own PowerShell grammar; the pin fixes the generator and the wasi-sdk and binaryen the CLI fetches to compile it, so that a rebuild gives the committed wasm byte for byte.
 - This doc is written by the JSON adapter's manifest branch (since 2026-09-28): the package as its one symbol, the workspace packages linked by name, the rest external with their ranges.
 
+`live-docs:visualize:history-sample` (2026-10-18, the plan's C4) builds the scripted repository's two bundles for the history specs, and `test:e2e` runs it before Playwright.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

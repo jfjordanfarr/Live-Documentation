@@ -14,9 +14,10 @@
  */
 
 import type { DocLocation, GraphFile, LiveDocGraph } from "../graph";
+import { directoryRenames } from "./directories";
 import type { CommitInfo, HistorySequence } from "./format";
 import { changeAt, commitAt, seek } from "./sequence";
-import { edgeEnds, edgeKey, type FileShape, type Shape } from "./shape";
+import { edgeEnds, edgeKey, type FileShape, type Shape, type ShapeChange } from "./shape";
 
 /** The steps whose change id begins with `reference`, ignoring case; more than one when the reference is ambiguous. */
 export function stepsMatching(sequence: HistorySequence, reference: string): number[] {
@@ -131,6 +132,8 @@ export interface ChangesBetween {
   dead: string[];
   /** Files that stand at the later change under another path, through every rename between. */
   renamed: Array<{ from: string; to: string }>;
+  /** Directories renamed whole across the span, by the rule each step's renames are read by, over the files' composed renames. */
+  directoriesRenamed: Array<{ from: string; to: string }>;
   /** Files whose symbol count differs, by their later paths. */
   resized: Array<{ codePath: string; before: number; after: number }>;
   /** Edges at the later change that were not at the earlier one, followed through the renames, by their later paths. */
@@ -149,36 +152,11 @@ export function changesBetween(sequence: HistorySequence, from: number, to: numb
     throw new RangeError(`step ${to} comes before step ${from}; give the earlier change first`);
   }
   const before = seek(sequence, from);
-  // The earlier path of every file now standing that stood at `from`; a file born since has none.
-  const origin = new Map<string, string>([...before.files.keys()].map((path) => [path, path]));
-  const dead: string[] = [];
-  const bornSince = new Set<string>();
+  const changes: ShapeChange[] = [];
   for (let step = from + 1; step <= to; step += 1) {
-    const change = changeAt(sequence, step);
-    const renamedOrigins = change.renamed.map(([old, current]): [string, string | undefined] => [current, origin.get(old)]);
-    for (const [old, current] of change.renamed) {
-      origin.delete(old);
-      if (bornSince.delete(old)) {
-        bornSince.add(current);
-      }
-    }
-    for (const [current, earlier] of renamedOrigins) {
-      if (earlier !== undefined) {
-        origin.set(current, earlier);
-      }
-    }
-    for (const path of change.dead) {
-      const earlier = origin.get(path);
-      if (earlier !== undefined) {
-        dead.push(earlier);
-        origin.delete(path);
-      }
-      bornSince.delete(path);
-    }
-    for (const [path] of change.born) {
-      bornSince.add(path);
-    }
+    changes.push(changeAt(sequence, step));
   }
+  const { origins: origin, dead, born: bornSince } = followChanges(changes, before.files.keys());
 
   const after = seek(sequence, to);
   const later = new Map<string, string>([...origin].map(([current, earlier]) => [earlier, current]));
@@ -219,10 +197,60 @@ export function changesBetween(sequence: HistorySequence, from: number, to: numb
     born: [...bornSince].sort(compare),
     dead: dead.sort(compare),
     renamed: renamed.sort(byPair),
+    directoriesRenamed: directoryRenames(before.files.keys(), after.files.keys(), renamed.map((rename) => [rename.from, rename.to])).map(([from, to]) => ({ from, to })),
     resized: resized.sort((a, b) => compare(a.codePath, b.codePath)),
     edgesAdded: edgesAdded.sort(byPair),
     edgesRemoved: edgesRemoved.sort(byPair)
   };
+}
+
+/** What a run of consecutive changes does to the files that stood before the first of them, and the files it bears. */
+export interface FollowedChanges {
+  /** Each file that stood before the first change and stands after the last, by its later path, with its earlier path. */
+  origins: Map<string, string>;
+  /** Files that stood before the first change and not after the last, by their earlier paths, in the order they died. */
+  dead: string[];
+  /** Files born between that stand after the last change, by their later paths. */
+  born: Set<string>;
+}
+
+/**
+ * Follows a run of consecutive changes, oldest first, from the files that
+ * stood before the first of them (`standing`): a file renamed twice is one
+ * move, a file born and dead between is neither, and a file dead on the way
+ * is dead whatever happened to its path after.
+ */
+export function followChanges(changes: Iterable<ShapeChange>, standing: Iterable<string>): FollowedChanges {
+  // The earlier path of every file now standing that stood before; a file born since has none.
+  const origins = new Map<string, string>([...standing].map((path) => [path, path]));
+  const dead: string[] = [];
+  const born = new Set<string>();
+  for (const change of changes) {
+    const renamedOrigins = change.renamed.map(([old, current]): [string, string | undefined] => [current, origins.get(old)]);
+    for (const [old, current] of change.renamed) {
+      origins.delete(old);
+      if (born.delete(old)) {
+        born.add(current);
+      }
+    }
+    for (const [current, earlier] of renamedOrigins) {
+      if (earlier !== undefined) {
+        origins.set(current, earlier);
+      }
+    }
+    for (const path of change.dead) {
+      const earlier = origins.get(path);
+      if (earlier !== undefined) {
+        dead.push(earlier);
+        origins.delete(path);
+      }
+      born.delete(path);
+    }
+    for (const [path] of change.born) {
+      born.add(path);
+    }
+  }
+  return { origins, dead, born };
 }
 
 function compare(a: string, b: string): number {

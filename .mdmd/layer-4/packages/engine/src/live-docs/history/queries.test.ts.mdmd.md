@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/history/queries.test.ts
-- Generated At: 2026-10-18T00:39:18.960Z
+- Generated At: 2026-10-18T05:36:00.490Z
 
 ## Authored
 ### Purpose
@@ -26,11 +26,13 @@ _No public symbols detected_
 - [`queries.changesBetween`](./queries.ts.mdmd.md#symbol-changesbetween-function)
 - [`queries.entryMarked`](./queries.ts.mdmd.md#symbol-entrymarked)
 - [`queries.fileOfShape`](./queries.ts.mdmd.md#symbol-fileofshape)
+- [`queries.followChanges`](./queries.ts.mdmd.md#symbol-followchanges)
 - [`queries.graphOfShape`](./queries.ts.mdmd.md#symbol-graphofshape)
 - [`queries.stepsMatching`](./queries.ts.mdmd.md#symbol-stepsmatching)
 - [`sequence.SequenceBuilder`](./sequence.ts.mdmd.md#symbol-sequencebuilder)
 - [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
+- [`shape.emptyChange`](./shape.ts.mdmd.md#symbol-emptychange)
 - [`versionControl.VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges) (type-only)
 - [`pathfind.reachability`](../pathfind.ts.mdmd.md#symbol-reachability-function)
 - `vitest` - `describe`, `expect`, `it`

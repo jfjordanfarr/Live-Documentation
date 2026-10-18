@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history.test.ts
-- Generated At: 2026-10-18T00:39:29.843Z
+- Generated At: 2026-10-18T05:36:08.589Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ The history command over a repository built from a script of seven commits (file
 - The renamed screen keeps 75% of the view by git's score, found at git's 50% and not at 90%, so that a reading at another threshold would fail; and the seam checks a commit out under a person's `core.autocrlf=true` and must still give the stored bytes.
 - Each test was shown able to fail on 2026-10-17 by a deliberate mutation of the code it holds: the rule's conditions, the touched set, the renamed edges, the replay check, the keyframe's seek, the cache, the committed mirror's removal, the rename threshold, the line endings, and the words inspect says.
 
+The scripted repository moved to `scripted-repository.ts` on 2026-10-18, shared with the Explorer's history sample; the test's oracles are unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -24,12 +26,11 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `node:child_process` - `execFileSync`, `spawnSync`
+- `node:child_process` - `spawnSync`
 - `node:fs`
 - `node:os`
 - `node:path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
-- [`document.renderLiveDoc`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`format.HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence) (type-only)
 - [`git.openGitRepository`](../../../packages/engine/src/live-docs/history/git.ts.mdmd.md#symbol-opengitrepository)
@@ -40,5 +41,10 @@ _No public symbols detected_
 - [`staticBuilder.buildStaticExplorer`](../../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md#symbol-buildstaticexplorer)
 - [`StaticExplorerData`](../../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
+- [`scripted-repository.MODEL`](./scripted-repository.ts.mdmd.md#symbol-model)
+- [`scripted-repository.SCRIPT`](./scripted-repository.ts.mdmd.md#symbol-script)
+- [`scripted-repository.SCRIPTED_CONFIG`](./scripted-repository.ts.mdmd.md#symbol-scripted_config)
+- [`scripted-repository.buildRepository`](./scripted-repository.ts.mdmd.md#symbol-buildrepository)
+- [`scripted-repository.git`](./scripted-repository.ts.mdmd.md#symbol-git)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

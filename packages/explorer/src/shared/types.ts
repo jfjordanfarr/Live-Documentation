@@ -109,6 +109,12 @@ export interface ExplorerNodePayload {
     publicSymbols: string[];
     /** Extended symbol information with type references. */
     publicSymbolsExtended?: ExplorerPublicSymbol[];
+    /**
+     * The public-symbol count alone, when the names are not at hand: a file at
+     * a step of the history, whose docs the bundle does not carry (2026-10-18).
+     * Absent for today's files, whose `publicSymbols` are named.
+     */
+    symbolCount?: number;
 }
 
 /**

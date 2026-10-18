@@ -64,6 +64,9 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const membraneEvennessInput = document.getElementById("tuning-membrane-evenness") as HTMLInputElement | null;
   const membraneSimplicityInput = document.getElementById("tuning-membrane-simplicity") as HTMLInputElement | null;
   const rowLevelnessInput = document.getElementById("tuning-row-levelness") as HTMLInputElement | null;
+  const historyAxisSelect = document.getElementById("tuning-history-axis") as HTMLSelectElement | null;
+  const historyGranularitySelect = document.getElementById("tuning-history-granularity") as HTMLSelectElement | null;
+  const historyPlayRateInput = document.getElementById("tuning-history-play-rate") as HTMLInputElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -158,6 +161,9 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     state.tuning.localMap.membraneEvenness = setSlider(membraneEvennessInput, "tuning-membrane-evenness-value", state.tuning.localMap.membraneEvenness, v => String(v));
     state.tuning.localMap.membraneSimplicity = setSlider(membraneSimplicityInput, "tuning-membrane-simplicity-value", state.tuning.localMap.membraneSimplicity, v => String(v));
     state.tuning.localMap.rowLevelness = setSlider(rowLevelnessInput, "tuning-row-levelness-value", state.tuning.localMap.rowLevelness, v => String(v));
+    if (historyAxisSelect) historyAxisSelect.value = state.tuning.history.axis;
+    if (historyGranularitySelect) historyGranularitySelect.value = state.tuning.history.granularity;
+    state.tuning.history.playRate = setSlider(historyPlayRateInput, "tuning-history-play-rate-value", state.tuning.history.playRate, v => String(v));
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -228,6 +234,31 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   rerenderSlider(membraneEvennessInput, "tuning-membrane-evenness-value", v => { state.tuning.localMap.membraneEvenness = v; });
   rerenderSlider(membraneSimplicityInput, "tuning-membrane-simplicity-value", v => { state.tuning.localMap.membraneSimplicity = v; });
   rerenderSlider(rowLevelnessInput, "tuning-row-levelness-value", v => { state.tuning.localMap.rowLevelness = v; });
+
+  // The history's scrubber redraws its ticks from these; the picture itself does not change.
+  if (historyAxisSelect) {
+    historyAxisSelect.addEventListener("change", () => {
+      state.tuning.history.axis = historyAxisSelect.value === "time" ? "time" : "steps";
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "3d") onRender();
+    });
+  }
+  if (historyGranularitySelect) {
+    historyGranularitySelect.addEventListener("change", () => {
+      const value = historyGranularitySelect.value;
+      state.tuning.history.granularity = value === "step" || value === "day" || value === "week" || value === "month" || value === "salient" ? value : "auto";
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "3d") onRender();
+    });
+  }
+  if (historyPlayRateInput) {
+    const output = document.getElementById("tuning-history-play-rate-value") as HTMLOutputElement | null;
+    historyPlayRateInput.addEventListener("input", () => {
+      state.tuning.history.playRate = parseFloat(historyPlayRateInput.value);
+      if (output) output.textContent = historyPlayRateInput.value;
+      onTuningChange();
+    });
+  }
 
   for (const slider of packingSliders) {
     const input = document.getElementById(slider.id) as HTMLInputElement | null;

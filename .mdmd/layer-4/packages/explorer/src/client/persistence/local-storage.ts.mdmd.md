@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/local-storage.ts
-- Generated At: 2026-10-14T16:02:17.554Z
+- Generated At: 2026-10-18T05:36:02.007Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,8 @@ The force graph's `gravity` defaults to 0.05 and `chargeRange` to 0, unbounded (
 The force graph's `updateEnergy` defaults to 0.1 (2026-10-18, ticket C2 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): a membership change reheats the simulation to a tenth of alpha, which the lab measured at about a quarter of the full reheat's stir of the unchanged spheres on this repository's bundles with the picture's extent held, settling in two hundred ticks instead of three hundred, and which the builder's eye read as the picture staying recognisably itself through a type toggle while the gaps the toggle left close, where the full reheat reshuffles the tree and placement alone never closes them ([the lab record](../../../../../../../AI-Agent-Workspace/Probes/2026-10-18/layout-lab/README.md)); the owner's choice among the pictured settings is open, and an older stored tuning without the value takes the default.
 
 Cold defaults use the shared Relaxed profile. The forceGraph tuning group is merged independently for older stored settings; explicit older numeric preferences remain overrides. Portable packing and spatial values are normalized to the public control ranges and increments before use, so a slider and the layout cannot disagree about the active number. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+
+The history tuning (2026-10-18, the plan's C4 and C14) is read with the rest: an axis of `steps` or `time`, a granularity among the six, a play rate finite and positive, each falling back to its default alone.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -71,7 +73,7 @@ Returns the factory-default tuning configuration for bezier curves and the local
 
 #### `readPersistedUi` {#symbol-readpersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L112)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L124)
 
 ##### `readPersistedUi` — Summary
 Reads and validates persisted UI state from localStorage.
@@ -81,7 +83,7 @@ Returns `null` when no entry exists or the stored version does not match
 
 #### `applyPersistedUi` {#symbol-applypersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L255)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L279)
 
 ##### `applyPersistedUi` — Summary
 Merges persisted UI state onto factory defaults, producing a complete
@@ -92,28 +94,28 @@ persisted bezier config inherits missing keys from the defaults.
 
 #### `PERSISTED_NAV_KEY` {#symbol-persisted_nav_key}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L295)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L323)
 
 ##### `PERSISTED_NAV_KEY` — Summary
 localStorage key for persisted navigation state (active view + focused node).
 
 #### `PERSISTED_NAV_VERSION` {#symbol-persisted_nav_version}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L297)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L325)
 
 ##### `PERSISTED_NAV_VERSION` — Summary
 Schema version tag embedded in persisted navigation payloads.
 
 #### `PersistedNavV1` {#symbol-persistednavv1}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L300)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L328)
 
 ##### `PersistedNavV1` — Summary
 Shape of the versioned navigation state written to localStorage under {@link PERSISTED_NAV_KEY}.
 
 #### `readPersistedNav` {#symbol-readpersistednav}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L317)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L345)
 
 ##### `readPersistedNav` — Summary
 Reads and validates persisted navigation state from localStorage.
@@ -124,21 +126,21 @@ values are silently discarded.
 
 #### `PersistUiScheduler` {#symbol-persistuischeduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L364)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L392)
 
 ##### `PersistUiScheduler` — Summary
 Timer handle for debounced UI persistence
 
 #### `PersistNavScheduler` {#symbol-persistnavscheduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L369)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L397)
 
 ##### `PersistNavScheduler` — Summary
 Timer handle for debounced nav persistence
 
 #### `createPersistUiScheduler` {#symbol-createpersistuischeduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L377)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L405)
 
 ##### `createPersistUiScheduler` — Summary
 Create a debounced UI persistence scheduler.
@@ -146,7 +148,7 @@ Writes filters and tuning to localStorage after a 150ms debounce.
 
 #### `createPersistNavScheduler` {#symbol-createpersistnavscheduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L409)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L437)
 
 ##### `createPersistNavScheduler` — Summary
 Create a debounced navigation persistence scheduler.
@@ -160,10 +162,13 @@ Writes view and focused node to localStorage after a 150ms debounce.
 - [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
 - [`navigation.readSpatialLayout`](./navigation.ts.mdmd.md#symbol-readspatiallayout)
 - [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)
-- [`types.ExplorerFilters`](../types.ts.mdmd.md#symbol-explorerfilters) (type-only)
-- [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective) (type-only)
-- [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
-- [`types.SymbolOrder`](../types.ts.mdmd.md#symbol-symbolorder) (type-only)
-- [`types.TuningConfig`](../types.ts.mdmd.md#symbol-tuningconfig) (type-only)
-- [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
+- [`types.ExplorerFilters`](../types.ts.mdmd.md#symbol-explorerfilters)
+- [`types.HISTORY_GRANULARITIES`](../types.ts.mdmd.md#symbol-history_granularities)
+- [`types.HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis)
+- [`types.HistoryGranularity`](../types.ts.mdmd.md#symbol-historygranularity)
+- [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective)
+- [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
+- [`types.SymbolOrder`](../types.ts.mdmd.md#symbol-symbolorder)
+- [`types.TuningConfig`](../types.ts.mdmd.md#symbol-tuningconfig)
+- [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname)
 <!-- LIVE-DOC:END Dependencies -->

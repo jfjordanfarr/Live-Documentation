@@ -77,6 +77,10 @@ export interface CompressedPayload {
   x?: { n: string; s?: string } | { d: string };
   /** What the Knowledge Sources panel walks from in place of the entry points (2026-10-15): a file `n` or a directory `d`. */
   a?: { n: string; s?: string } | { d: string };
+  /** The commit of the history the 3D Local Map shows (2026-10-18); omitted for today. */
+  h?: string;
+  /** Whether the history's step panel names each commit's author (the plan's C8); omitted when it does not. */
+  b?: boolean;
 }
 
 // ─── Snapshot (typed application-level state) ──────────────────────
@@ -103,6 +107,10 @@ export interface UrlStateSnapshot {
   destination: PathDestination | null;
   /** The file or directory the Knowledge Sources panel walks from in place of the entry points; null for the entry points. */
   reachFrom: PathDestination | null;
+  /** The commit of the history the 3D Local Map shows; null for today (2026-10-18). */
+  commit: string | null;
+  /** Whether the history's step panel names each commit's author. */
+  authors: boolean;
 }
 
 const COLD_FILTERS = getDefaultFilters();
@@ -121,7 +129,9 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   openDirectories: new Set(),
   filters: { showTests: COLD_FILTERS.showTests, showAssets: COLD_FILTERS.showAssets },
   destination: null,
-  reachFrom: null
+  reachFrom: null,
+  commit: null,
+  authors: false
 };
 
 // ─── Pure Functions (testable) ─────────────────────────────────────
@@ -167,6 +177,8 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   if (destination) payload.x = destination;
   const reachFrom = writeDestination(snapshot.reachFrom);
   if (reachFrom) payload.a = reachFrom;
+  if (snapshot.commit) payload.h = snapshot.commit;
+  if (snapshot.authors) payload.b = true;
 
   return payload;
 }
@@ -209,7 +221,9 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     ...(retentionOrder ? { retentionOrder } : {}),
     ...(layout ? { layout } : {}),
     destination: readDestination(payload.x),
-    reachFrom: readDestination(payload.a)
+    reachFrom: readDestination(payload.a),
+    commit: typeof payload.h === "string" && payload.h.trim() ? payload.h.trim() : null,
+    authors: payload.b === true
   };
 }
 

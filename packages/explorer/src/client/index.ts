@@ -1,3 +1,5 @@
+import type { HistorySequence } from "@live-documentation/engine/live-docs/history/format";
+
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
 import { createDetailPanel } from "./detailPanel";
@@ -5,6 +7,7 @@ import { requireElement, setActiveView } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
+import { createHistoryControl, isHistorySequence } from "./history/history-control";
 import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
 import { createPinTray } from "./panels/pin-tray";
@@ -64,31 +67,55 @@ void bootstrapExplorer();
  */
 async function bootstrapExplorer(): Promise<void> {
   try {
-    startExplorer(await loadExplorerData());
+    const bundle = await loadExplorerData();
+    // An address that names a commit of the history opens on it: the sequence is fetched before the first picture is
+    // drawn, so that the page draws that moment once rather than today and then the moment.
+    const named = readUrlState().commit;
+    const history = named && bundle.history ? await loadHistory(bundle.history.file) : undefined;
+    startExplorer(bundle, history);
   } catch (error) {
     reportFatalExplorerError(error);
   }
+}
+
+/** Where the bundle's data is read from: the URL named by `?data=`, or `explorer-data.json` beside the page. */
+function dataUrl(): URL {
+  return new URL(new URLSearchParams(window.location.search).get("data") ?? "./explorer-data.json", window.location.href);
+}
+
+/** Loads the history file the bundle names, which lies beside its data. */
+async function loadHistory(file: string): Promise<HistorySequence> {
+  const url = new URL(file, dataUrl());
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`No history at ${url.pathname} (${response.status}).`);
+  }
+  const sequence: unknown = await response.json();
+  if (!isHistorySequence(sequence)) {
+    throw new Error(`${url.pathname} is not a history this Explorer reads.`);
+  }
+  return sequence;
 }
 
 /**
  * Loads the bundle: from the URL named by `?data=`, or from `explorer-data.json` beside the page.
  */
 async function loadExplorerData(): Promise<StaticExplorerData> {
-  const dataUrl = new URLSearchParams(window.location.search).get("data") ?? "./explorer-data.json";
-  const response = await fetch(dataUrl, { cache: "no-store" });
+  const url = dataUrl();
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(
-      `No explorer data at ${dataUrl} (${response.status}). Build a static bundle first with \`npm run live-docs:visualize\`.`
+      `No explorer data at ${url.pathname} (${response.status}). Build a static bundle first with \`npm run live-docs:visualize\`.`
     );
   }
   const bundle = (await response.json()) as Partial<StaticExplorerData>;
   if (!bundle.graph || typeof bundle.graph.files !== "object") {
-    throw new Error(`${dataUrl} is not an Explorer bundle: it holds no graph.`);
+    throw new Error(`${url.pathname} is not an Explorer bundle: it holds no graph.`);
   }
   return bundle as StaticExplorerData;
 }
 
-function startExplorer(bundle: StaticExplorerData): void {
+function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySequence): void {
   const graphData = explorerGraphOf(bundle.graph);
   const files = bundle.graph.files;
   const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = bundle;
@@ -145,6 +172,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   state.retentionOrder = initialExploration.retentionOrder;
   state.destination = initialExploration.destination;
   state.reachFrom = initialExploration.reachFrom;
+  state.historyCommit = initialExploration.commit;
+  state.showAuthors = initialExploration.authors;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
@@ -220,6 +249,32 @@ function startExplorer(bundle: StaticExplorerData): void {
       localView.openDirectory(directory);
       forceGraphView.focusDirectory(directory);
     }
+  });
+
+  // The history of the 3D Local Map: the scrubber and the step panel over the sequence the bundle carries (ticket C4).
+  const historyControl = createHistoryControl({
+    parent: requireElement("view-graph"),
+    room: requireElement("main"),
+    bundled: bundle.history,
+    preloaded: preloadedHistory,
+    load: () => loadHistory(bundle.history!.file),
+    nodesById,
+    onMoment: (moment, renames, energy) => forceGraphView.setMoment(moment, renames, energy),
+    onSettle: () => forceGraphView.settle(),
+    onCommit: commit => {
+      if ((state.historyCommit ?? null) === commit) { syncPerspectiveControls(); return; }
+      state.historyCommit = commit;
+      persistExploration();
+    },
+    onAuthors: shown => {
+      state.showAuthors = shown;
+      persistExploration();
+    },
+    onPinFile: path => {
+      const node = nodesById.get(path);
+      if (node) localView.retainNode(node.id);
+    },
+    onOpenChange: () => syncPerspectiveControls()
   });
 
   // Opening a thing is a new Local Map scope, rendered in the remembered representation.
@@ -322,9 +377,14 @@ function startExplorer(bundle: StaticExplorerData): void {
   for (const button of [connectionsButton, structureButton]) {
     button.addEventListener("click", () => changeSpatialLayout(button.dataset.spatialLayout === "structure" ? "structure" : "connections"));
   }
+  // The history: beside the 3D layout's buttons for now, as those went beside 3D, until the consolidation pass the
+  // owner expects decides where the control lives (the plan's C4). Offered only when the bundle carries a history.
+  const historyButton = iconButton("History", '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>');
+  historyButton.title = "History: scrub the picture through the commits";
+  historyButton.addEventListener("click", () => historyControl.toggle());
   const perspectivePath = document.createElement("span");
   perspectivePath.className = "perspective-path-status";
-  perspectiveControls.append(perspectivePath, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton);
+  perspectiveControls.append(perspectivePath, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton);
   requireElement("main").append(perspectiveControls);
   const pinTray = createPinTray({
     parent: requireElement("main"),
@@ -524,8 +584,10 @@ function startExplorer(bundle: StaticExplorerData): void {
       ?? ([...(state.openDirectories ?? [])].map(path => path || "Scan root").join(", ") || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
     const preset = layoutPresetOf(state.tuning);
-    for (const button of [compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton]) button.disabled = changingPerspective;
+    for (const button of [compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
+    historyButton.hidden = state.perspective !== "3d" || !historyControl.available;
+    historyButton.setAttribute("aria-pressed", String(historyControl.isOpen()));
     connectionsButton.setAttribute("aria-pressed", String(state.spatialLayout === "connections"));
     structureButton.setAttribute("aria-pressed", String(state.spatialLayout === "structure"));
     compactButton.setAttribute("aria-pressed", String(preset === "compact"));
@@ -539,7 +601,14 @@ function startExplorer(bundle: StaticExplorerData): void {
     perspectivePath.textContent = path ? `Path: ${path.nodeIds.length} files` : "";
     perspectivePath.hidden = !path;
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
-    pinTray.sync(retentionState(), state.view === "map", changingPerspective);
+    historyControl.sync({
+      visible: state.view === "map" && state.perspective === "3d",
+      pins: { files: [...new Set((state.pins ?? EMPTY_PIN_SET).entries.map(pin => pin.nodeId))], directories: [...(state.openDirectories ?? [])] },
+      subject: (state.focusedNode ?? state.selectedNode)?.id ?? null,
+      showAuthors: state.showAuthors ?? false,
+      tuning: state.tuning.history
+    });
+    pinTray.sync(retentionState(), state.view === "map", changingPerspective, item => historyControl.absence(item));
     const newest = newestRetained(retentionState());
     const key = newest ? retainedKey(newest) : null;
     if (key !== reachKey) {
@@ -584,6 +653,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     const source = previous === "2d" ? localView : previous === "3d" ? forceGraphView : null;
     let anchor = target && source ? source.getSubjectAnchor(target.id) : null;
     detailPanel.hide();
+    // The 2D map draws today's docs: leaving 3D returns the picture to today and closes the history.
+    if (perspective === "2d") historyControl.leave();
     state.selectedNode = target;
     state.focusedNode = target;
     state.view = "map";
@@ -627,6 +698,8 @@ function startExplorer(bundle: StaticExplorerData): void {
   globalWindow.switchView = (event: MouseEvent, viewName: ViewName) => {
     event.preventDefault();
     if (viewName === "map") { changePerspective(state.perspective); return; }
+    // The other views draw today's docs: leaving 3D returns the picture to today and closes the history.
+    historyControl.leave();
     setActiveView(viewName, state.perspective);
     state.view = viewName;
     updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null, state.perspective, state.spatialLayout);
@@ -809,6 +882,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     restoringPath = true;
     try { runPath(); } finally { restoringPath = false; }
   }
+  // An address that names a commit opens the 3D picture on that moment, before the first drawing.
+  if (state.historyCommit && state.view === "map" && state.perspective === "3d") void historyControl.showCommit(state.historyCommit);
   renderCurrentView();
 
   if (focusNode) {
@@ -877,12 +952,17 @@ function startExplorer(bundle: StaticExplorerData): void {
       contextName.textContent = node.codeRelativePath;
     }
     state.destination = exploration.destination;
+    state.showAuthors = exploration.authors;
     clearPathResult();
     if (state.destination) {
       restoringPath = true;
       try { runPath(); } finally { restoringPath = false; }
     }
     renderCurrentView();
+    // The moment the address names, or today; the history turns the write this makes into a rewrite of the entry.
+    state.historyCommit = exploration.commit;
+    if (view === "map" && state.perspective === "3d") void historyControl.showCommit(exploration.commit);
+    else historyControl.leave();
     schedulePersistNav();
     highlightSelectedCards();
   }
@@ -960,7 +1040,8 @@ function startExplorer(bundle: StaticExplorerData): void {
     schedulePersistNav();
     writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, spatialLayout: state.spatialLayout, selectedNodeId: state.selectedNode?.id ?? null,
       pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder, filters: state.filters,
-      layout: layoutSettingsOf(state.tuning), destination: state.destination ?? null, reachFrom: state.reachFrom ?? null });
+      layout: layoutSettingsOf(state.tuning), destination: state.destination ?? null, reachFrom: state.reachFrom ?? null,
+      commit: state.historyCommit ?? null, authors: state.showAuthors ?? false });
   }
 
   /**
@@ -1017,6 +1098,7 @@ function startExplorer(bundle: StaticExplorerData): void {
         doRenderSourcesView();
       },
       bundledDocs,
+      history: bundle.history,
       // A file named on the panel goes to the detail panel, where its doc and its doors are; the panel itself stays as it is.
       onFocusNode: (nodeId: string) => {
         const node = nodesById.get(nodeId);

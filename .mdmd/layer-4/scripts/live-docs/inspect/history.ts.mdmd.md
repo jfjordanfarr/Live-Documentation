@@ -15,6 +15,8 @@ What `inspect --at` and `inspect --between` answer from the history, in text and
 - A commit is named by a prefix of its id among the sampled commits; a commit between two samples is not in the sequence, and the refusal says how the history was sampled.
 - The walk's starts carry the entry mark and the test flag, not the Entry lines, which the history does not keep.
 
+`--between` prints the directories renamed whole across the span as "Renamed whole" (2026-10-18, the plan's C4), the same fact the Explorer's step panel shows.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

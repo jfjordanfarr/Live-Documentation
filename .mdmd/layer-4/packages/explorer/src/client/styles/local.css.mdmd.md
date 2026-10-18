@@ -21,6 +21,10 @@ Styles specific to the Local Map view: the placed cards, directory membranes and
 - `.local-file-recentre` (2026-10-15, [Turn 10](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-10)): the card's recentre control in the close button's style, 20 px each, in the close's corner when the card has no close and beside it when it does. The title's right padding is the same on every card, room for both, since the layout lab lays the title out with one padding constant read from the page; a padding that varied by card made a 212 px card's title wrap and the lab's model drift by one line.
 - A membrane's label is one text flow since 2026-10-08: the name (which opens the directory while it is encasing), then the count of what it hides or the X that closes it, inline, so that the label wraps as the one text the layout lab models from its capture; and `.local-directory-closed` is a closed directory's box, in the membrane's style with a second outline behind it saying it holds more (../../../../../../../AI-Agent-Workspace/Screenshots/2026-10-08/README.md).
 
+`--history-room` on `#main` (2026-10-18, the plan's C4) lifts the perspective controls and the pin tray above the open history scrubber by its height; `.pin-tray-absent` is the faint word beneath a pin that does not stand at the moment shown.
+
+Two rules that moved the perspective controls and the pin tray aside when the detail panel was open (`#detail-panel.visible ~ .perspective-controls`, `~ .pin-tray`) were deleted on 2026-10-18: the panel is a child of the views container and the controls and the tray are children of its parent, so the sibling selectors never matched, which the C4 builder noticed while placing the history scrubber.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

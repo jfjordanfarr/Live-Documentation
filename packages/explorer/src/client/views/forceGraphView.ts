@@ -9,6 +9,13 @@
  * hangs from its directory's hub and the references pull nothing, drawn only
  * for the hovered file or hub, the retained files and a path. Retention and
  * hover decide which parts of either picture receive attention.
+ *
+ * Since 2026-10-18 the view can show a moment of the history in place of
+ * today's docs (the change-over-time plan's C4): the moment's snapshot is the
+ * data, its renames re-key the cached spheres and lines so that a renamed file
+ * or hub keeps its object under its new id, today's pins, subject and open
+ * directories are read where they stand at that moment, and the step is fed
+ * through the one update path at the energy asked, zero while a thumb drags.
  */
 
 import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
@@ -21,14 +28,16 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
+import type { HistoryMoment } from "../history/moment";
+import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
 import type { ExplorerState } from "../types";
 import { directoryNodeId, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
-import { configureSpatialForces, placeNewSpheres, SETTLED_ALPHA, spatialNodeRadius, spatialNodeValue, updateSchedule } from "./forceGraphLayout";
+import { configureSpatialForces, placeNewSpheres, SETTLED_ALPHA, spatialNodeRadius, spatialNodeValue, symbolCountOf, updateSchedule } from "./forceGraphLayout";
 import { layoutPresetOf } from "../layout-presets";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
-import { getVisibleConnections, EMPTY_PIN_SET } from "./pin-state";
+import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
 import { wheelPixels } from "./wheel";
 
 const NODE_COLORS: Readonly<Record<string, string>> = {
@@ -97,6 +106,14 @@ export interface ForceGraphViewApi {
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
   focusDirectory(directory: string): void;
+  /**
+   * Show a moment of the history in place of today, or today again (null), re-keying the picture through the renames
+   * from the moment shown before; the change is fed at `energy`, or at the tuning's when none is given. Drawn at once
+   * when the view is shown, else at its next render.
+   */
+  setMoment(moment: HistoryMoment | null, renames: Renames, energy?: number): void;
+  /** Feed the standing picture at the tuning's energy, after a drag placed it without a tick. */
+  settle(): void;
 }
 
 /** Creates the Force Graph (3D) view for the Live Docs Explorer. */
@@ -118,6 +135,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   // The share of alpha the forces see, read at every tick: all of it for the first picture, a change of the forces and a
   // drag; the update energy's share from a membership change until the next of those (ticket C2, 2026-10-18).
   let energyShare = 1;
+  // The moment of the history shown in place of today, the renames to re-key the caches by before the next render,
+  // and the energy that render feeds the change at (ticket C4, 2026-10-18).
+  let moment: HistoryMoment | null = null;
+  let pendingRenames: Renames = NO_RENAMES;
+  let pendingEnergy: number | undefined;
   const raycaster = new Raycaster();
   let membership = "";
   let forceSettings = "";
@@ -141,6 +163,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let framedDirectoryScope = "";
   let frameDirectory = (): void => {};
   const readyWaiters: Array<() => void> = [];
+  const linkKey = (link: { kind: string; source: string | { id: string }; target: string | { id: string } }): string =>
+    `${link.kind}|${resolveLinkEndpoint(link.source)}|${resolveLinkEndpoint(link.target)}`;
+
+  /** Today's file, by its id, as it stands at the moment shown; today's id when today is shown. */
+  const fileAt = (id: string): string | undefined => (moment ? moment.fileAt(id) : id);
+  /** Today's directory as it stands at the moment shown. */
+  const directoryAt = (directory: string): string => (moment ? moment.directoryAt(directory) : directory);
 
   /** Pick the rendered sphere directly, including re-entry before the native hover cache changes. */
   function nodeAt(clientX: number, clientY: number): string | undefined {
@@ -158,7 +187,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   }
 
   function getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
-    const node = nodeCache.get(nodeId);
+    const node = nodeCache.get(fileAt(nodeId) ?? nodeId);
     if (!forceGraphInstance || !node || !Number.isFinite(node.x)) return null;
     const point = forceGraphInstance.graph2ScreenCoords(node.x!, node.y!, node.z!);
     const rect = requireElement("graph-svg").getBoundingClientRect();
@@ -178,8 +207,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     camera.updateMatrixWorld();
   }
 
-  function placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void {
+  function placeSubjectAnchor(todayId: string, anchor: { x: number; y: number }): void {
     if (!forceGraphInstance) return;
+    const nodeId = fileAt(todayId) ?? todayId;
     const node = nodeCache.get(nodeId);
     const rect = requireElement("graph-svg").getBoundingClientRect();
     subjectAnchor = { x: (anchor.x - rect.left) / rect.width, y: (anchor.y - rect.top) / rect.height };
@@ -259,7 +289,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const screen = forceGraphInstance.graph2ScreenCoords(point.x, point.y, point.z);
       const depth = new Vector3(point.x, point.y, point.z).project(forceGraphInstance.camera()).z;
       if (focusLabel) {
-        focusLabel.hidden = depth < -1 || depth > 1 || screen.x < 0 || screen.y < 0 || screen.x > forceGraphInstance.width() || screen.y > forceGraphInstance.height();
+        // A panel or a control standing over the picture (the history's step panel, its scrubber, the tray) covers the
+        // point: the label is put away rather than written on their words.
+        const frame = forceGraphInstance.renderer().domElement.getBoundingClientRect();
+        const over = document.elementFromPoint(frame.left + screen.x, frame.top + screen.y);
+        const covered = !!over && over !== focusLabel && !over.closest("#graph-svg");
+        focusLabel.hidden = covered || depth < -1 || depth > 1 || screen.x < 0 || screen.y < 0 || screen.x > forceGraphInstance.width() || screen.y > forceGraphInstance.height();
         focusLabel.style.left = `${screen.x}px`;
         focusLabel.style.top = `${screen.y}px`;
       }
@@ -273,7 +308,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (!force && (node?.id ?? null) === selectedId) return;
     selectedId = node?.id ?? null;
     focusedDirectory = null;
-    focusedId = node?.id ?? null;
+    focusedId = node ? fileAt(node.id) ?? null : null;
     zoomMotion = null;
 
     subjectAnchor = null;
@@ -289,7 +324,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function focusDirectory(directory: string): void {
     focusedDirectory = directory;
-    focusedId = state.spatialLayout === "structure" ? directoryNodeId(directory) : null;
+    focusedId = state.spatialLayout === "structure" ? directoryNodeId(directoryAt(directory)) : null;
     following = false;
     subjectAnchor = null;
     zoomMotion = null;
@@ -301,7 +336,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       focusLabel.hidden = true;
     }
     const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 500;
-    frameDirectories([directory], duration);
+    frameDirectories([directoryAt(directory)], duration);
     updateAttention();
   }
 
@@ -323,13 +358,41 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function render(): void {
     const container = requireElement<HTMLDivElement>("graph-svg");
-    const path = options.getPath?.();
-    const directories = [...(state.openDirectories ?? [])].sort();
+    // A moment of the history re-keys the caches through its renames before anything is read from them, so that a
+    // renamed file or hub keeps its sphere, its lines and its place under the new id; the hovered and focused ids follow.
+    if (hasRenames(pendingRenames)) {
+      const moved = rekeyedCaches(nodeCache, linkCache, pendingRenames, linkKey);
+      nodeCache.clear();
+      for (const [id, node] of moved.nodes) nodeCache.set(id, node);
+      linkCache.clear();
+      for (const [key, link] of moved.links) linkCache.set(key, link);
+      const objects = [...nodeObjects];
+      nodeObjects.clear();
+      for (const [id, object] of objects) nodeObjects.set(renamedId(id, pendingRenames), object);
+      if (hoveredId) hoveredId = renamedId(hoveredId, pendingRenames);
+      if (focusedId) focusedId = renamedId(focusedId, pendingRenames);
+    }
+    pendingRenames = NO_RENAMES;
+    const energy = pendingEnergy;
+    pendingEnergy = undefined;
+    // The data: the moment's snapshot, or today's docs; today's pins, subject, path and open directories are read where
+    // they stand at the moment, and a pin that does not stand there retains nothing.
+    const source = moment?.graph ?? graphData;
+    const todayPins = state.pins ?? EMPTY_PIN_SET;
+    const pins: PinSet = moment
+      ? { entries: todayPins.entries.flatMap(pin => { const at = fileAt(pin.nodeId); return at ? [{ ...pin, nodeId: at }] : []; }) }
+      : todayPins;
+    const subject = state.focusedNode ?? state.selectedNode;
+    const subjectAt = subject ? fileAt(subject.id) ?? null : null;
+    const selectedAt = state.selectedNode ? fileAt(state.selectedNode.id) ?? null : null;
+    const path = options.getPath?.()?.flatMap(id => { const at = fileAt(id); return at ? [at] : []; });
+    const directories = [...(state.openDirectories ?? [])].map(directoryAt).sort();
     const directoryScope = directories.length && !state.selectedNode && !path?.length ? JSON.stringify(directories) : "";
     container.dataset.directoryScope = directoryScope;
+    container.dataset.historyStep = moment ? String(moment.step) : "";
 
     const includeNode = (node: ExplorerNodePayload): boolean => {
-      if (path?.includes(node.id) || (state.focusedNode ?? state.selectedNode)?.id === node.id || state.pins?.entries.some(pin => pin.nodeId === node.id)) {
+      if (path?.includes(node.id) || subjectAt === node.id || pins.entries.some(pin => pin.nodeId === node.id)) {
         return true;
       }
       const archetype = (node.archetype || "").toLowerCase();
@@ -342,8 +405,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return true;
     };
 
-    const filteredNodes = graphData.nodes.filter(includeNode);
-    const data = spatialGraphOf(graphData, includeNode, state.filters.showRelatedDocs ? relatedDocLinks : [], state.spatialLayout);
+    const filteredNodes = source.nodes.filter(includeNode);
+    // The related documentation is today's; a moment of the history draws none, since the docs of that day are not in the bundle.
+    const data = spatialGraphOf(source, includeNode, moment || !state.filters.showRelatedDocs ? [] : relatedDocLinks, state.spatialLayout);
     // The node and link objects are kept by id and by pair across every membership change: a sphere keeps its place and
     // its render object, and the library's data join, which binds a line's object to its datum, keeps the line. Before
     // 2026-10-18 every render handed the library new link objects and it rebuilt every line, 65 to 88 ms a step with 2,650
@@ -354,8 +418,6 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       nodeCache.set(node.id, node);
       return node;
     });
-    const linkKey = (link: { kind: string; source: string | { id: string }; target: string | { id: string } }): string =>
-      `${link.kind}|${resolveLinkEndpoint(link.source)}|${resolveLinkEndpoint(link.target)}`;
     const graphLinks: ForceGraphLink[] = data.links.map(link => {
       const cached = linkCache.get(linkKey(link));
       if (!cached) { linkCache.set(linkKey(link), link); return link; }
@@ -375,8 +437,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const nextSettings = JSON.stringify([forces, state.spatialLayout]);
       if (forceSettings === nextSettings) return;
       const subjectId = focusedDirectory !== null
-        ? state.spatialLayout === "structure" ? directoryNodeId(focusedDirectory) : null
-        : (state.focusedNode ?? state.selectedNode)?.id;
+        ? state.spatialLayout === "structure" ? directoryNodeId(directoryAt(focusedDirectory)) : null
+        : subjectAt;
       const anchor = subjectId ? getSubjectAnchor(subjectId) : null;
       const tuning = { ...state.tuning.forceGraph };
       const nextSize = JSON.stringify([tuning.nodeSize, tuning.symbolScale]);
@@ -406,7 +468,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
      */
     const feed = (): void => {
       const instance = forceGraphInstance!;
-      const schedule = updateSchedule(state.tuning.forceGraph.updateEnergy);
+      const schedule = updateSchedule(energy ?? state.tuning.forceGraph.updateEnergy);
       energyShare = schedule.share;
       simulationRunning = schedule.ticks;
       container.setAttribute("aria-busy", String(schedule.ticks));
@@ -431,20 +493,26 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (focusLabel) focusLabel.hidden = true;
     }
     if (focusedDirectory !== null) {
-      const id = directoryNodeId(focusedDirectory);
+      const id = directoryNodeId(directoryAt(focusedDirectory));
       focusedId = state.spatialLayout === "structure" && present.has(id) ? id : null;
       if (focusLabel) {
         focusLabel.dataset.nodeId = focusedId ?? "";
         if (!focusedId) focusLabel.hidden = true;
       }
+    } else if (moment) {
+      // At a moment of the history the subject is followed where it stands; absent there, nothing is in focus.
+      focusedId = subjectAt;
+      if (focusLabel) {
+        focusLabel.dataset.nodeId = focusedId ?? "";
+        if (!focusedId) focusLabel.hidden = true;
+      }
     }
-    const pins = state.pins ?? EMPTY_PIN_SET;
     const retained = new Set(pins.entries.map(pin => pin.nodeId));
-    for (const { link } of getVisibleConnections(pins, graphData.links)) {
+    for (const { link } of getVisibleConnections(pins, source.links)) {
       retained.add(resolveLinkEndpoint(link.source)); retained.add(resolveLinkEndpoint(link.target));
     }
     for (const node of filteredNodes) if (directories.some(directory => under(node.id, directory))) retained.add(node.id);
-    if (state.selectedNode) retained.add(state.selectedNode.id);
+    if (selectedAt) retained.add(selectedAt);
     if (path?.length) { retained.clear(); for (const id of path) retained.add(id); }
     const retainedFiles = [...retained];
     for (const node of graphNodes) {
@@ -561,11 +629,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .onNodeHover(node => { hoveredId = node?.id ?? null; container.dataset.hoveredNode = String(!!node); updateAttention(); })
       .nodeLabel(node => {
         const file = node;
+        const symbols = symbolCountOf(file);
         const label = document.createElement("span");
         label.textContent = file.directoryPath !== undefined
           ? `${file.directoryPath || "Scan root"} · ${file.directoryFileCount} visible files`
           : file.archetype === "related-doc" ? file.name
-          : `${file.name} · ${file.publicSymbols.length} public ${file.publicSymbols.length === 1 ? "symbol" : "symbols"}`;
+          : `${file.name} · ${symbols} public ${symbols === 1 ? "symbol" : "symbols"}`;
         return label;
       })
       .linkLabel(link => link.kind === "containment" ? "Directory membership"
@@ -608,10 +677,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (!press || event.button !== 0 || event.target !== forceGraphInstance?.renderer().domElement) return;
       const id = nodeAt(event.clientX, event.clientY);
       const directory = id ? nodeCache.get(id)?.directoryPath : undefined;
-      if (directory !== undefined) options.onOpenDirectory(directory);
-      else if (id?.startsWith("related:")) onShowBundledDoc(id.slice("related:".length));
+      // At a moment of the history a sphere is a thing of that day: a click reaches the file or directory as it stands
+      // today, and a thing gone since does nothing here (the step panel says so).
+      if (directory !== undefined) {
+        const today = moment ? moment.directoryToday(directory) : directory;
+        if (graphData.nodes.some(node => under(node.id, today))) options.onOpenDirectory(today);
+      } else if (id?.startsWith("related:")) onShowBundledDoc(id.slice("related:".length));
       else if (id) {
-        const node = nodesById.get(id);
+        const todayId = moment ? moment.fileToday(id) : id;
+        const node = todayId ? nodesById.get(todayId) : undefined;
         if (node) {
           options.onRetainNode(node);
           onFocusNode(node);
@@ -666,5 +740,23 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     return { files, links: instance.graphData().links.map(link => ({ source: resolveLinkEndpoint(link.source as string | { id: string }), target: resolveLinkEndpoint(link.target as string | { id: string }) })) };
   }
 
-  return { render, setActive, focusDirectory, getSubjectAnchor, placeSubjectAnchor, captureScene, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  function setMoment(next: HistoryMoment | null, renames: Renames, energy?: number): void {
+    moment = next;
+    pendingRenames = composedRenames(pendingRenames, renames);
+    pendingEnergy = energy;
+    if (active && forceGraphInstance) render();
+  }
+
+  function settle(): void {
+    const instance = forceGraphInstance;
+    if (!instance) return;
+    const schedule = updateSchedule(state.tuning.forceGraph.updateEnergy);
+    if (!schedule.ticks) return;
+    energyShare = schedule.share;
+    simulationRunning = true;
+    requireElement("graph-svg").setAttribute("aria-busy", "true");
+    instance.d3AlphaMin(schedule.alphaMin).d3ReheatSimulation();
+  }
+
+  return { render, setActive, focusDirectory, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

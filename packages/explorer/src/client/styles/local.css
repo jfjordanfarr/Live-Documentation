@@ -275,9 +275,9 @@ span.local-disclosure { cursor: default; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
 .symbol-label-wrapper:focus-visible, .local-file-close:focus-visible, .local-file-recentre:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-.perspective-controls { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
-/* Center within the remaining map when Details occupies its right edge. */
-#detail-panel.visible ~ .perspective-controls { left: calc((100% - var(--detail-panel-width)) / 2); bottom: 68px; }
+/* The open history scrubber takes the bottom of the map; the controls and the tray stand above it by the room it asks for. */
+#main { --history-room: 0px; }
+.perspective-controls { position: absolute; bottom: calc(18px + var(--history-room)); left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
 .perspective-controls[hidden], .perspective-controls button[hidden] { display: none; }
 .perspective-controls button { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; padding: 7px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; font-size: 13px; }
 .perspective-controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
@@ -285,9 +285,8 @@ span.local-disclosure { cursor: default; }
 .perspective-controls .custom-layout { border-bottom-color: var(--accent); color: var(--accent); }
 .perspective-controls button:disabled { cursor: default; opacity: .55; }
 
-.pin-tray { position: absolute; right: 18px; bottom: 18px; z-index: 106; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 13px; }
+.pin-tray { position: absolute; right: 18px; bottom: calc(18px + var(--history-room)); z-index: 106; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 13px; }
 .pin-tray[hidden], .pin-tray [hidden] { display: none; }
-#detail-panel.visible ~ .pin-tray { right: calc(var(--detail-panel-width) + 18px); }
 .pin-tray button { color: var(--text-primary); font: inherit; background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
 .pin-tray button:hover { background: var(--accent-subtle); }
 .pin-tray button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -304,6 +303,8 @@ span.local-disclosure { cursor: default; }
 .pin-tray-row .pin-tray-subject { flex: 1; min-width: 0; gap: 8px; justify-content: flex-start; text-align: left; }
 .pin-tray-words { display: flex; flex-direction: column; min-width: 0; gap: 3px; overflow-wrap: anywhere; }
 .pin-tray-context { color: var(--text-panel-subtle); }
+/* At a moment of the history a pin whose file does not stand there says so, faint, where the pin's words are. */
+.pin-tray-absent { color: var(--text-panel-subtle); font-style: italic; }
 .pin-tray-empty { padding: 0 12px 12px; margin: 0; color: var(--text-panel-subtle); }
 
 .local-directory-ancestors { display: inline-flex; flex: 0 0 auto; align-self: flex-start; vertical-align: middle; margin-top: -2px; padding: 1px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; }

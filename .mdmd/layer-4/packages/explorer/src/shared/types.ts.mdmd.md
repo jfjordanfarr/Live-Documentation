@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/types.ts
-- Generated At: 2026-10-14T18:27:59.796Z
+- Generated At: 2026-10-18T05:36:04.155Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,8 @@ The node-and-link payload the Explorer views render, projected from the graph in
 - Created 2025-11-21 when the monolithic `visualize-explorer.ts` was split into client, server and shared modules. The HTTP API these types once described was retired on 2026-03-10; the detail payload it answered with went on 2026-09-28.
 - Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
 - `ExplorerGraphStats.referencesOutsideScan` (2026-10-14) is the count the footer shows, renamed from `missingDependencies`: nothing is missing, the targets are outside the scan.
+
+`symbolCount` on a node (2026-10-18, the plan's C4): the public-symbol count alone, for a file at a step of the history whose docs the bundle does not carry; absent for today's files, whose `publicSymbols` are named.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -96,7 +98,7 @@ for type-reference navigation in the Local Map.
 
 #### `ExplorerLinkPayload` {#symbol-explorerlinkpayload}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L127)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L133)
 
 ##### `ExplorerLinkPayload` — Summary
 A directed edge in the explorer graph, connecting two node IDs.
@@ -113,7 +115,7 @@ in the dependency columns rather than just file-level cards.
 
 #### `ExplorerGraphStats` {#symbol-explorergraphstats}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L141)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L147)
 
 ##### `ExplorerGraphStats` — Summary
 Summary statistics for the explorer graph, rendered in the Explorer
@@ -121,7 +123,7 @@ header and used by the static builder to emit a quick-access overview.
 
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L154)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L160)
 
 ##### `ExplorerGraphPayload` — Summary
 The node-and-link payload the Explorer views render.

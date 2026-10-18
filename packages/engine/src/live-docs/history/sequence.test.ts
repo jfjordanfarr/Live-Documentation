@@ -78,6 +78,14 @@ describe("the sequence", () => {
     expect(changeAt(sequence, 0).born).toEqual([]);
     expect(() => seek(sequence, 5)).toThrow(RangeError);
   });
+
+  it("decodes a step's change once and hands the same object back, one sequence apart from another", () => {
+    const sequence = build(3);
+    const again = build(3);
+    expect(changeAt(sequence, 2)).toBe(changeAt(sequence, 2));
+    expect(changeAt(sequence, 2)).not.toBe(changeAt(again, 2));
+    expect(changeAt(sequence, 2)).toEqual(changeAt(again, 2));
+  });
 });
 
 describe("the codec", () => {

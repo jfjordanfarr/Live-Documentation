@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 import { reachability } from "../pathfind";
 import type { CommitInfo } from "./format";
-import { changesBetween, entryMarked, fileOfShape, graphOfShape, stepsMatching } from "./queries";
+import { changesBetween, entryMarked, fileOfShape, followChanges, graphOfShape, stepsMatching } from "./queries";
 import { SequenceBuilder } from "./sequence";
-import { edgeKey, type Shape } from "./shape";
+import { edgeKey, emptyChange, type Shape } from "./shape";
 import type { VersionChanges } from "./versionControl";
 
 const HEAD = {
@@ -57,6 +57,18 @@ describe("changesBetween", () => {
     expect(changes.resized).toEqual([{ codePath: "b.ts", before: 1, after: 4 }]);
     expect(changes.edgesAdded).toEqual([{ from: "new.ts", to: "d.ts" }]);
     expect(changes.edgesRemoved).toEqual([{ from: "a.ts", to: "old.ts" }]);
+    expect(changes.directoriesRenamed).toEqual([]);
+  });
+
+  it("names a directory renamed whole across the span, by the rule each step is read by, where no one step renamed it whole", () => {
+    // `core` moves to `engine` one file per change; after the span nothing stands under `core`, so the span renames it whole.
+    const builder = new SequenceBuilder(HEAD, commit("c0"), shape({ "core/a.ts": ["implementation", 1], "core/b.ts": ["implementation", 1], "main.ts": ["implementation", 1, true] }));
+    builder.add(commit("c1"), shape({ "engine/a.ts": ["implementation", 1], "core/b.ts": ["implementation", 1], "main.ts": ["implementation", 1, true] }), { renamed: [["core/a.ts", "engine/a.ts"]], modified: [] });
+    builder.add(commit("c2"), shape({ "engine/a.ts": ["implementation", 1], "engine/b.ts": ["implementation", 1], "main.ts": ["implementation", 1, true] }), { renamed: [["core/b.ts", "engine/b.ts"]], modified: [] });
+    const whole = builder.finish();
+    expect(changesBetween(whole, 0, 1).directoriesRenamed).toEqual([]);
+    expect(changesBetween(whole, 0, 2).directoriesRenamed).toEqual([{ from: "core", to: "engine" }]);
+    expect(changesBetween(whole, 0, 2).renamed).toEqual([{ from: "core/a.ts", to: "engine/a.ts" }, { from: "core/b.ts", to: "engine/b.ts" }]);
   });
 
   it("finds nothing between a step and itself, and refuses the later step first", () => {
@@ -95,5 +107,21 @@ describe("a shape for the pathfinder", () => {
       inbound: [{ codePath: "lib.test.ts", count: 1 }, { codePath: "main.ts", count: 3 }]
     });
     expect(fileOfShape(at, "gone.ts")).toEqual({ codePath: "gone.ts", exists: false });
+  });
+});
+
+describe("followChanges", () => {
+  it("composes a run of changes over the files that stood before it: moves chained, deaths kept, births carried through their renames", () => {
+    const file = { archetype: "implementation", symbols: 0, entry: false };
+    const changes = [
+      { ...emptyChange(), renamed: [["a.ts", "b.ts"]] as Array<[string, string]>, born: [["t.ts", file]] as Array<[string, typeof file]> },
+      { ...emptyChange(), renamed: [["b.ts", "c.ts"], ["t.ts", "u.ts"]] as Array<[string, string]>, dead: ["old.ts"] },
+      { ...emptyChange(), dead: ["u.ts"], born: [["old.ts", file]] as Array<[string, typeof file]> }
+    ];
+    const followed = followChanges(changes, ["a.ts", "old.ts", "same.ts"]);
+    expect([...followed.origins]).toEqual([["same.ts", "same.ts"], ["c.ts", "a.ts"]]);
+    expect(followed.dead).toEqual(["old.ts"]);
+    // The file born at the old path after its death is another file, born since.
+    expect([...followed.born]).toEqual(["old.ts"]);
   });
 });

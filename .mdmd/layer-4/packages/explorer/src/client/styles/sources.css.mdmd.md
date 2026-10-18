@@ -16,6 +16,8 @@ Styles for the Knowledge Sources view: the panels, the label-and-value rows, the
 - Created on [2025-12-16](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-16.1.SUMMARIZED.md) (Turns 19–20) as part of the Knowledge Sources view feature (`146d4d62`). The user requested a view that answers "where does this visualization get its information?" and guides visitors toward improving coverage.
 - Rewritten on 2026-10-08 with the panel ([the dead code sweep](../../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md)): the orange "warning" rows and the "all connected" celebration went with the sections they styled; file names are buttons styled as links, directories are links, and native `details` elements carry their own marker.
 
+The History row's command and its copy (2026-10-18, the plan's C4 and C7).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

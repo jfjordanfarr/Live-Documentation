@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/styles.css
 - Entry: declared
-- Generated At: 2026-10-15T15:49:40.547Z
+- Generated At: 2026-10-18T05:36:02.222Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,8 @@ CSS entry point for the Explorer client. Contains only `@import` statements that
 - Created [2025-11-22](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-24.SUMMARIZED.md) as a monolithic stylesheet (`f1e2dec0`).
 - Decomposed into `styles/` on [2025-12-04](../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19–20) after exceeding the 1000-line file-size threshold. The user identified it as "a big big big source of trouble" and the CSS was split into domain-specific files: theme, shell, view-shared, circuit, local, graph (`4504d36a`).
 
+`history.css` joined the sheets on 2026-10-18 (the plan's C4).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -26,6 +28,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`graph`](./styles/graph.css.mdmd.md)
+- [`history`](./styles/history.css.mdmd.md)
 - [`local`](./styles/local.css.mdmd.md)
 - [`search`](./styles/search.css.mdmd.md)
 - [`shell`](./styles/shell.css.mdmd.md)

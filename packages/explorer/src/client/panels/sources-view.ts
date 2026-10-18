@@ -19,7 +19,7 @@
  * one-hop list of what nothing references.
  */
 
-import type { BundledMarkdownTreeNode } from "../../shared/staticExplorerData";
+import type { BundledHistory, BundledMarkdownTreeNode } from "../../shared/staticExplorerData";
 import { requireElement } from "../dom";
 import { escapeHtml } from "../graph-helpers";
 import type { SearchHit, SearchIndex } from "../search/graph-search";
@@ -50,6 +50,8 @@ export interface SourcesViewConfig {
   onDownloadFacts: (facts: SourcesFacts) => void;
   bundledDocs?: { tree: BundledMarkdownTreeNode; count: number };
   onViewBundledDoc?: (docPath: string) => void;
+  /** The history the bundle carries, when it carries one; the panel says so, or names the command that computes it. */
+  history?: BundledHistory;
 }
 
 const dateOf = (iso: string): string => iso.slice(0, 10);
@@ -64,7 +66,24 @@ function fileButton(path: string): string {
     (directory ? `<span class="sources-path">${escapeHtml(directory)}</span>` : "");
 }
 
-function renderShape(facts: SourcesFacts, perspective: LocalMapPerspective): string {
+/** The command a person copies to compute a history the bundle lacks. */
+export const HISTORY_COMMAND = "npm run live-docs:history";
+
+/**
+ * The row that says what the bundle carries of its history: how much and from when to when; or, when none was
+ * computed, the command that computes it beside a copy of it, as the entry points' field offers its declaration.
+ */
+function historyRow(history: BundledHistory | undefined): string {
+  if (!history) {
+    return `<div class="sources-row sources-row--history" data-row="history"><span class="sources-row-label">History</span><span class="sources-row-value">none computed; <code class="sources-command">${HISTORY_COMMAND}</code> computes it, then rebuild the bundle</span><button type="button" class="action-btn sources-copy" data-copy="${escapeHtml(HISTORY_COMMAND)}">Copy</button><span class="sources-copy-status" aria-live="polite"></span></div>`;
+  }
+  const { head } = history;
+  const window = head.window ? (head.window.rule === "last" ? `, the last ${head.window.count}` : `, since ${escapeHtml(head.window.since)}`) : "";
+  const truncated = head.source.shallow ? "; the clone is shallow" : "";
+  return `<div class="sources-row" data-row="history"><span class="sources-row-label">History</span><span class="sources-row-value">${escapeHtml(plural(head.commits, "commit"))}, ${escapeHtml(dateOf(head.first.date))} to ${escapeHtml(dateOf(head.last.date))}${window}${truncated}</span></div>`;
+}
+
+function renderShape(facts: SourcesFacts, perspective: LocalMapPerspective, history: BundledHistory | undefined): string {
   const { shape } = facts;
   const archetypes = shape.byArchetype.map(entry => `${entry.name} ${entry.count.toLocaleString()}`).join(", ");
   const generated = shape.generatedFrom && shape.generatedTo
@@ -81,6 +100,7 @@ function renderShape(facts: SourcesFacts, perspective: LocalMapPerspective): str
       <div class="sources-row" data-row="files"><span class="sources-row-label">Files</span><span class="sources-row-value">${shape.files.toLocaleString()}: ${escapeHtml(archetypes)}</span></div>
       <div class="sources-row" data-row="references"><span class="sources-row-label">References between files</span><span class="sources-row-value">${shape.references.toLocaleString()}</span></div>
       <div class="sources-row" data-row="generated"><span class="sources-row-label">Generated</span><span class="sources-row-value">${escapeHtml(generated)}</span></div>
+      ${historyRow(history)}
       <h3><span class="sources-title">By directory</span></h3>
       <ul class="sources-counts">${directories}</ul>
       <h3><span class="sources-title">By extension</span></h3>
@@ -335,7 +355,7 @@ export function renderSourcesView(config: SourcesViewConfig): void {
 
   container.innerHTML = `
     <div class="sources-header"><h1>Knowledge Sources</h1></div>
-    ${renderShape(facts, config.perspective)}
+    ${renderShape(facts, config.perspective, config.history)}
     ${renderUse(facts)}
     ${renderEntries(config)}
     ${renderUnreachable(config)}
@@ -363,13 +383,17 @@ export function renderSourcesView(config: SourcesViewConfig): void {
   });
   field.show(config.reachFrom ? reachFromWords(config.reachFrom) : "");
   container.querySelector<HTMLButtonElement>("#sources-reach-clear")?.addEventListener("click", () => config.onReachFrom(null));
-  container.querySelector<HTMLButtonElement>("#sources-declare-copy")?.addEventListener("click", () => {
-    const line = container.querySelector<HTMLElement>(".sources-declare-line")?.textContent ?? "";
-    const status = container.querySelector<HTMLElement>(".sources-declare-status");
+  const copyLine = (line: string, status: HTMLElement | null): void => {
     const done = (): void => { if (status) status.textContent = "Copied"; };
     const failed = (): void => { if (status) status.textContent = "Select the line and copy it"; };
     if (navigator.clipboard?.writeText) navigator.clipboard.writeText(line).then(done, failed);
     else failed();
+  };
+  container.querySelector<HTMLButtonElement>("#sources-declare-copy")?.addEventListener("click", () => {
+    copyLine(container.querySelector<HTMLElement>(".sources-declare-line")?.textContent ?? "", container.querySelector<HTMLElement>(".sources-declare-status"));
+  });
+  container.querySelectorAll<HTMLButtonElement>(".sources-copy").forEach(button => {
+    button.addEventListener("click", () => copyLine(button.dataset.copy ?? "", button.nextElementSibling as HTMLElement | null));
   });
 
   container.querySelector<HTMLButtonElement>("#download-btn")?.addEventListener("click", () => {
