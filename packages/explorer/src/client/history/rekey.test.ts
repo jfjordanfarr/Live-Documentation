@@ -44,6 +44,29 @@ describe("rekeyedCaches", () => {
     expect(resolved.target).toBe(core);
   });
 
+  it("gives a contested key to the renamed node and link, dropping a dead file's lingering object whatever the caches' order", () => {
+    // old.ts died and its object lingers; helper.ts is renamed onto its path. The lingering object was cached first.
+    const lingering = { id: "src/old.ts" };
+    const helper = { id: "src/helper.ts" };
+    const hub = { id: "directory:src" };
+    const nodes = new Map([[lingering.id, lingering], [hub.id, hub], [helper.id, helper]]);
+    const staleLink = { kind: "containment", source: hub, target: lingering };
+    const liveLink = { kind: "containment", source: hub, target: helper };
+    type Link = { kind: string; source: string | { id: string }; target: string | { id: string } };
+    const links = new Map<string, Link>([[linkKey(staleLink), staleLink], [linkKey(liveLink), liveLink]]);
+    const onto: Renames = { files: new Map([["src/helper.ts", "src/old.ts"]]), directories: new Map() };
+    const moved = rekeyedCaches(nodes, links, onto, linkKey);
+    expect(moved.nodes.get("src/old.ts")).toBe(helper);
+    expect(helper.id).toBe("src/old.ts");
+    expect([...moved.nodes.values()]).not.toContain(lingering);
+    expect(moved.links.get("containment|directory:src|src/old.ts")).toBe(liveLink);
+    expect(moved.links.size).toBe(1);
+    // The same with the caches in the other order.
+    const helper2 = { id: "src/helper.ts" }, lingering2 = { id: "src/old.ts" };
+    const again = rekeyedCaches(new Map([[helper2.id, helper2], [lingering2.id, lingering2]]), new Map(), onto, linkKey);
+    expect(again.nodes.get("src/old.ts")).toBe(helper2);
+  });
+
   it("copies the caches as they are when nothing is renamed", () => {
     const node = { id: "a.ts" };
     const nodes = new Map([["a.ts", node]]);

@@ -75,7 +75,12 @@ export interface RekeyedLink<N extends { id: string }> {
 
 /**
  * The view's caches with every renamed node and link moved to its new key: the node objects kept and their ids
- * rewritten, a link's string ends rewritten (its object ends follow their node), and every key recomputed.
+ * rewritten, a link's string ends rewritten (its object ends follow their node), and every key recomputed. The caches
+ * keep the objects of files that have left the picture, so that a file which returns keeps its place; when a rename
+ * carries a file onto the path of such a lingering object, the renamed one takes the key and the lingering one is
+ * dropped, since the renamed sphere is the one in the picture (found 2026-10-18, as lines leading nowhere after a
+ * play through this repository's history: the lingering object, dropped by chance of order, was still the end of
+ * every line resolved to it, and never drawn or moved again).
  */
 export function rekeyedCaches<N extends { id: string }, L extends RekeyedLink<N>>(
   nodes: ReadonlyMap<string, N>,
@@ -84,17 +89,25 @@ export function rekeyedCaches<N extends { id: string }, L extends RekeyedLink<N>
   linkKey: (link: L) => string
 ): { nodes: Map<string, N>; links: Map<string, L> } {
   if (!hasRenames(renames)) return { nodes: new Map(nodes), links: new Map(links) };
+  const keysBefore = new Map([...links.values()].map(link => [link, linkKey(link)]));
   const movedNodes = new Map<string, N>();
   for (const [id, node] of nodes) {
+    if (renamedId(id, renames) === id) movedNodes.set(id, node);
+  }
+  for (const [id, node] of nodes) {
     const next = renamedId(id, renames);
+    if (next === id) continue;
     node.id = next;
     movedNodes.set(next, node);
   }
   const movedLinks = new Map<string, L>();
+  const rekeyed: Array<[moved: boolean, link: L]> = [];
   for (const link of links.values()) {
     if (typeof link.source === "string") link.source = renamedId(link.source, renames);
     if (typeof link.target === "string") link.target = renamedId(link.target, renames);
-    movedLinks.set(linkKey(link), link);
+    rekeyed.push([linkKey(link) !== keysBefore.get(link), link]);
   }
+  for (const [moved, link] of rekeyed) if (!moved) movedLinks.set(linkKey(link), link);
+  for (const [moved, link] of rekeyed) if (moved) movedLinks.set(linkKey(link), link);
   return { nodes: movedNodes, links: movedLinks };
 }

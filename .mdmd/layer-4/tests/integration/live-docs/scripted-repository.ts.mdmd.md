@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/scripted-repository.ts
-- Generated At: 2026-10-18T05:36:08.764Z
+- Generated At: 2026-10-18T21:40:29.296Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,7 @@ A small git repository built from a script of seven commits, the subject of the 
 
 ### Notes
 - Extracted 2026-10-18 from `history.test.ts`, where it was written with C1 of [the change-over-time plan](../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), so that `scripts/live-docs/visualize-history-sample.ts` can build the same repository into a bundle for the Playwright specs of C4. The test and the sample share one script, so what the specs scrub is what the oracles hold.
+- `COLLISION_SCRIPT` (2026-10-18) is a second script of four commits, a helper moved onto the path of a file that died the commit before, built as a third sample bundle for the scrubber spec after the owner found lines leading nowhere in the played history ([Turn 8](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -23,30 +24,37 @@ A small git repository built from a script of seven commits, the subject of the 
 ##### `SCRIPTED_CONFIG` — Summary
 The configuration the fixture commits, and the lens its history is read under.
 
-#### `FIXTURE_GIT_ENV` {#symbol-fixture_git_env}
+#### `COLLISION_CONFIG` {#symbol-collision_config}
 - Type: const
 - Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L24)
+
+##### `COLLISION_CONFIG` — Summary
+The lens of the second script, whose user file is its entry.
+
+#### `FIXTURE_GIT_ENV` {#symbol-fixture_git_env}
+- Type: const
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L27)
 
 ##### `FIXTURE_GIT_ENV` — Summary
 The fixture's git is isolated from the person's configuration, and its authors and dates are fixed.
 
 #### `MODEL` {#symbol-model}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L91)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L94)
 
 ##### `MODEL` — Summary
 The model, with the factor its size grows by: the same symbols whatever the factor, so a change of it moves nothing in the shape.
 
 #### `ScriptedCommit` {#symbol-scriptedcommit}
 - Type: interface
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L125)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L128)
 
 ##### `ScriptedCommit` — Summary
 One commit of the script: its message, its date, and what it does to the tree.
 
 #### `SCRIPT` {#symbol-script}
 - Type: const
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L134)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L137)
 - Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
 
 ##### `SCRIPT` — Summary
@@ -54,18 +62,27 @@ The seven commits, oldest first.
 
 #### `git` {#symbol-git}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L252)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L255)
 
 ##### `git` — Summary
 Runs git in the fixture, isolated from the person's configuration.
 
+#### `COLLISION_SCRIPT` {#symbol-collision_script}
+- Type: const
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L267)
+- Returns: [`ScriptedCommit`](#symbol-scriptedcommit)[]
+
+##### `COLLISION_SCRIPT` — Summary
+A second script, of four commits: a helper, its user, a file soon to die and a user of that file; the file dies;
+the helper is moved onto the dead file's path, a rename git sees whole, which the second user's unchanged import
+then finds; and the first user is touched while the second drops its import. Made 2026-10-18 for the Explorer's
+history, whose caches had kept the dead file's object and let the renamed helper collide with it, so that the
+lines resolved to the dropped object led nowhere after a play through this repository's history.
+
 #### `buildRepository` {#symbol-buildrepository}
 - Type: function
-- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L257)
+- Source: [source](../../../../../tests/integration/live-docs/scripted-repository.ts#L298)
 - Parameters: `script`: [`ScriptedCommit`](#symbol-scriptedcommit)[]
-
-##### `buildRepository` — Summary
-Builds the repository commit by commit at `root` and returns the commits' ids, oldest first.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

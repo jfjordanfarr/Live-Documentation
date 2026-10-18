@@ -12,7 +12,7 @@
  *
  * ```bash
  * npm run live-docs:visualize:history-sample
- * npx tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-history-sample.ts --output dist/explorer/samples/history --window-output dist/explorer/samples/history-window --window 4
+ * npx tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-history-sample.ts --output dist/explorer/samples/history --window-output dist/explorer/samples/history-window --window 4 --collision-output dist/explorer/samples/history-collision
  * ```
  */
 
@@ -25,12 +25,14 @@ import { buildStaticExplorer } from "@live-documentation/explorer/shared/staticB
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
 import { computeHistory } from "../../packages/generator/src/history/computeHistory";
-import { buildRepository, SCRIPTED_CONFIG } from "../../tests/integration/live-docs/scripted-repository";
+import { buildRepository, COLLISION_CONFIG, COLLISION_SCRIPT, SCRIPT, SCRIPTED_CONFIG, type ScriptedCommit } from "../../tests/integration/live-docs/scripted-repository";
 
 interface CliOptions {
     outputDir: string;
     windowOutputDir?: string;
     window: number;
+    /** Where the second script's bundle goes, the rename onto a dead file's path (2026-10-18). */
+    collisionOutputDir?: string;
 }
 
 function parseArgs(args: string[]): CliOptions {
@@ -41,6 +43,8 @@ function parseArgs(args: string[]): CliOptions {
             options.outputDir = args[++i] ?? "";
         } else if (arg === "--window-output") {
             options.windowOutputDir = args[++i];
+        } else if (arg === "--collision-output") {
+            options.collisionOutputDir = args[++i];
         } else if (arg === "--window") {
             const count = Number(args[++i]);
             if (!Number.isInteger(count) || count < 1) {
@@ -52,29 +56,37 @@ function parseArgs(args: string[]): CliOptions {
         }
     }
     if (!options.outputDir) {
-        throw new Error("Usage: visualize-history-sample.ts --output <folder> [--window-output <folder> --window <n>]");
+        throw new Error("Usage: visualize-history-sample.ts --output <folder> [--window-output <folder> --window <n>] [--collision-output <folder>]");
     }
     return options;
 }
 
-async function main(): Promise<void> {
-    const options = parseArgs(process.argv.slice(2));
+/** Builds a script's repository in a temporary folder, computes its history and writes the bundles asked for. */
+async function buildSample(script: ScriptedCommit[], configInput: typeof SCRIPTED_CONFIG, outputs: Array<{ dir: string; history: Parameters<typeof buildStaticExplorer>[0]["history"]; label: string }>): Promise<void> {
     const repository = fs.mkdtempSync(path.join(os.tmpdir(), "history-sample-"));
     try {
-        const commits = buildRepository(repository);
+        const commits = buildRepository(repository, script);
         const quiet = { info: () => undefined, warn: () => undefined, error: (message: string) => console.error(message) };
         const run = await computeHistory({ workspace: repository, sampling: { rule: "every-commit" }, jobs: 1, keepIndex: false, authors: true, progress: () => undefined });
-        const config = normalizeLiveDocumentationConfig(SCRIPTED_CONFIG);
+        const config = normalizeLiveDocumentationConfig(configInput);
         await generateLiveDocs({ workspaceRoot: repository, config, logger: quiet });
         const logger = { log: () => undefined, error: (message: string) => console.error(message) };
-        const whole = await buildStaticExplorer({ workspaceRoot: repository, outputDir: path.resolve(options.outputDir), config, history: { rule: "all" }, logger });
-        console.log(`Built the scripted repository: ${commits.length} commits, ${run.sequence.steps.length} steps, ${whole.stats.fileCount} files today, at ${path.resolve(options.outputDir)}`);
-        if (options.windowOutputDir) {
-            const window = await buildStaticExplorer({ workspaceRoot: repository, outputDir: path.resolve(options.windowOutputDir), config, history: { rule: "last", count: options.window }, logger });
-            console.log(`Built its window of the last ${options.window}: ${window.stats.historyCommits} commits, at ${path.resolve(options.windowOutputDir)}`);
+        for (const output of outputs) {
+            const built = await buildStaticExplorer({ workspaceRoot: repository, outputDir: path.resolve(output.dir), config, history: output.history, logger });
+            console.log(`Built ${output.label}: ${commits.length} commits, ${run.sequence.steps.length} steps, ${built.stats.historyCommits ?? 0} carried, ${built.stats.fileCount} files today, at ${path.resolve(output.dir)}`);
         }
     } finally {
         fs.rmSync(repository, { recursive: true, force: true });
+    }
+}
+
+async function main(): Promise<void> {
+    const options = parseArgs(process.argv.slice(2));
+    const outputs = [{ dir: options.outputDir, history: { rule: "all" } as const, label: "the scripted repository" }];
+    if (options.windowOutputDir) outputs.push({ dir: options.windowOutputDir, history: { rule: "last", count: options.window } as const, label: `its window of the last ${options.window}` });
+    await buildSample(SCRIPT, SCRIPTED_CONFIG, outputs);
+    if (options.collisionOutputDir) {
+        await buildSample(COLLISION_SCRIPT, COLLISION_CONFIG, [{ dir: options.collisionOutputDir, history: { rule: "all" } as const, label: "the rename onto a dead file's path" }]);
     }
 }
 

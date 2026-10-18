@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/history-scrubber.spec.ts
-- Generated At: 2026-10-18T05:36:05.740Z
+- Generated At: 2026-10-18T21:08:50.176Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ Holds the history of the 3D Local Map over the scripted sample's two bundles: th
 
 ### Notes
 - Written 2026-10-18 for ticket C4 of [the change-over-time plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), after the looking ([the pictures](../../../../AI-Agent-Workspace/Screenshots/2026-10-18/history/README.md)). The bundles are `samples/history/` and `samples/history-window/`, built by `npm run live-docs:visualize:history-sample` from `tests/integration/live-docs/scripted-repository.ts`; the commits are read from each bundle's own history file, the spheres and lines from the rendered scene through `force-graph-observation.ts`, and the update energy is zero in the address so that a step moves a sphere only by what the step says. Its first run found a pinned file that was also the subject read as absent at its own step, a misalignment in the control's precomputed names, fixed that hour.
+
+The ninth test (2026-10-18) walks the rename-onto-a-dead-path sample from its beginning to today and back, holding that the renamed file's sphere is its own and stands where it stood, and that every rendered line begins and ends on a rendered sphere, by the instrument's line ends against the spheres' world positions; it failed before the view's caches gave a contested key to the renamed object and re-resolved every kept line's ends ([Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -33,5 +35,6 @@ _No public symbols detected_
 - [`force-graph-observation.markRenderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-markrenderedlinks)
 - [`force-graph-observation.markedRenderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-markedrenderedlinks)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
+- [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
 <!-- LIVE-DOC:END Dependencies -->

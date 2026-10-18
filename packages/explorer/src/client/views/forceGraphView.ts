@@ -414,14 +414,21 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // links in the change-over-time probe; the 2D wires keep their elements the same way.
     const graphNodes: ForceGraphNode[] = data.nodes.map(node => {
       const cached = nodeCache.get(node.id);
-      if (cached) return Object.assign(cached, node);
-      nodeCache.set(node.id, node);
-      return node;
+      if (!cached) { nodeCache.set(node.id, node); return node; }
+      Object.assign(cached, node);
+      // A past moment's count would otherwise stay on the object, since today's payload names its symbols instead.
+      if (node.symbolCount === undefined) delete cached.symbolCount;
+      return cached;
     });
+    const liveNodes = new Map(graphNodes.map(node => [node.id, node]));
     const graphLinks: ForceGraphLink[] = data.links.map(link => {
       const cached = linkCache.get(linkKey(link));
       if (!cached) { linkCache.set(linkKey(link), link); return link; }
       cached.count = link.count;
+      // A kept link's ends are the live objects for its ids, never an object a rename or a death left behind in the
+      // cache, which D3 would keep as the end once resolved: a line to it leads nowhere (found 2026-10-18).
+      cached.source = liveNodes.get(resolveLinkEndpoint(link.source)) ?? link.source;
+      cached.target = liveNodes.get(resolveLinkEndpoint(link.target)) ?? link.target;
       return cached;
     });
     const dataForGraph: ForceGraphData = { nodes: graphNodes, links: graphLinks };

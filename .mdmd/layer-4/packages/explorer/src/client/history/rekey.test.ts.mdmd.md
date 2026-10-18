@@ -13,6 +13,8 @@ Tests of the re-keying: a file moved by its path, a hub by the innermost renamed
 ### Notes
 - Written 2026-10-18 with the module, for the plan's C4 and C6; the case is `packages/shared` to `packages/engine` with a fixture folder moved elsewhere, as the September renames were.
 
+The contested-key test (2026-10-18) holds a rename onto a dead file's lingering object: the renamed node takes the key and the lingering object is dropped whichever was cached first, and the live containment link keeps its object under the new key; it failed under the rule as it was, where the last insertion won.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

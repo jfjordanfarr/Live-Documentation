@@ -20,6 +20,9 @@ import { renderLiveDoc } from "../../../packages/engine/src/live-docs/document";
 /** The configuration the fixture commits, and the lens its history is read under. */
 export const SCRIPTED_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["src/app/main.ts"] };
 
+/** The lens of the second script, whose user file is its entry. */
+export const COLLISION_CONFIG = { root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md", entryPoints: ["src/user.ts"] };
+
 /** The fixture's git is isolated from the person's configuration, and its authors and dates are fixed. */
 export const FIXTURE_GIT_ENV = {
   ...process.env,
@@ -254,6 +257,44 @@ export function git(cwd: string, args: string[], extraEnv: Record<string, string
 }
 
 /** Builds the repository commit by commit at `root` and returns the commits' ids, oldest first. */
+/**
+ * A second script, of four commits: a helper, its user, a file soon to die and a user of that file; the file dies;
+ * the helper is moved onto the dead file's path, a rename git sees whole, which the second user's unchanged import
+ * then finds; and the first user is touched while the second drops its import. Made 2026-10-18 for the Explorer's
+ * history, whose caches had kept the dead file's object and let the renamed helper collide with it, so that the
+ * lines resolved to the dropped object led nowhere after a play through this repository's history.
+ */
+export const COLLISION_SCRIPT: ScriptedCommit[] = [
+  {
+    message: "Begin with a helper, its user and a file soon to die",
+    date: "2026-02-02T10:00:00+00:00",
+    write: {
+      ".live-docs.config.json": `${JSON.stringify(COLLISION_CONFIG, null, 2)}\n`,
+      "src/helper.ts": `/** Adds two numbers. */\nexport function add(a: number, b: number): number {\n  return a + b;\n}\n`,
+      "src/user.ts": `import { add } from "./helper";\n\n/** Uses the helper. */\nexport function use(): number {\n  return add(1, 2);\n}\n`,
+      "src/old.ts": `/** Soon gone. */\nexport function old(): string {\n  return "old";\n}\n`,
+      // A user of the old file whose import never changes: unresolved while the file is dead, it finds the helper once the helper stands at that path.
+      "src/x.ts": `import { old } from "./old";\n\n/** Uses whatever stands at the old path. */\nexport function x(): unknown {\n  return old;\n}\n`
+    }
+  },
+  { message: "Retire the old file", date: "2026-02-03T10:00:00+00:00", remove: ["src/old.ts"] },
+  {
+    message: "Move the helper onto the old file's path",
+    date: "2026-02-04T10:00:00+00:00",
+    move: [["src/helper.ts", "src/old.ts"]],
+    write: { "src/user.ts": `import { add } from "./old";\n\n/** Uses the helper. */\nexport function use(): number {\n  return add(1, 2);\n}\n` }
+  },
+  {
+    message: "Touch the user and free the second one of its import",
+    date: "2026-02-05T10:00:00+00:00",
+    write: {
+      "src/user.ts": `import { add } from "./old";\n\n/** Uses the helper, still. */\nexport function use(): number {\n  return add(1, 2);\n}\n`,
+      // Today the second user imports nothing, so a walk back from today makes its link to the old path afresh, and that link alone stands for the path at the rename step.
+      "src/x.ts": `/** Uses nothing now. */\nexport function x(): unknown {\n  return null;\n}\n`
+    }
+  }
+];
+
 export function buildRepository(root: string, script: ScriptedCommit[] = SCRIPT): string[] {
   git(root, ["init", "--quiet", "-b", "main"]);
   const ids: string[] = [];

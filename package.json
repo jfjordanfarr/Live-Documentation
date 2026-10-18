@@ -54,7 +54,7 @@
     "live-docs:board": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/board.ts --config ./.live-docs.config.json",
     "live-docs:visualize": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-static.ts --config ./.live-docs.config.json --board .mdmd/layer-3/board.mdmd.md",
     "live-docs:visualize:estate": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-sample.ts --program tests/integration/programs/csharp/estate --board board.md --output dist/explorer/samples/estate",
-    "live-docs:visualize:history-sample": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-history-sample.ts --output dist/explorer/samples/history --window-output dist/explorer/samples/history-window --window 4",
+    "live-docs:visualize:history-sample": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/visualize-history-sample.ts --output dist/explorer/samples/history --window-output dist/explorer/samples/history-window --window 4 --collision-output dist/explorer/samples/history-collision",
     "oracle:index": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/index-fixture.ts",
     "oracle:compare": "tsx --tsconfig ./tsconfig.base.json scripts/oracle/compare.ts",
     "live-docs:orphans": "tsx --tsconfig ./tsconfig.base.json scripts/live-docs/find-orphans.ts --docs-root .mdmd --base-layer layer-4",

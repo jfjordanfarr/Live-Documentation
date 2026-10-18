@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
-import { engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedNodes } from "./force-graph-observation";
+import { engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
@@ -372,3 +372,59 @@ test("Knowledge Sources says what the bundle carries of its history, or names th
   await expect(page.locator('[data-row="history"] .sources-copy')).toHaveText("Copy");
   await expect(page.getByRole("button", { name: "History", exact: true })).toHaveCount(0);
 });
+
+/** Every rendered line begins and ends on a rendered sphere; a line to an object the caches left behind leads nowhere. */
+async function expectEveryLineOnSpheres(page: Page, what: string): Promise<void> {
+  const spheres = byId(await renderedNodes(page));
+  const lines = await renderedLinks(page);
+  expect(lines.length, `${what}: lines to check`).toBeGreaterThan(0);
+  const stray = lines.filter(line => {
+    const from = spheres.get(line.source), to = spheres.get(line.target);
+    return !from || !to || gap(from, line.start) > 1 || gap(to, line.end) > 1;
+  }).map(line => `${line.source} -> ${line.target}`);
+  expect(stray, `${what}: lines that lead nowhere`).toEqual([]);
+}
+
+const gap = (a: { x: number; y: number; z: number }, b: { x: number; y: number; z: number }): number => Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
+
+test("a file renamed onto a dead file's path keeps its own sphere and lines, and no line leads nowhere after walking there and back", async ({ page }) => {
+  await observeGraph(page);
+  // The connections layout, where the references pull and are drawn: a reference resolved to a left-behind object would be a line to nothing.
+  await page.goto(entry("/samples/history-collision/", { spatialLayout: "connections" }));
+  await settled(page);
+  await openHistory(page);
+  await track(page).focus();
+  await page.keyboard.press("Home");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
+  await settled(page);
+  const beginning = byId(await renderedNodes(page));
+  expect(beginning.has("src/helper.ts")).toBe(true);
+  expect(beginning.has("src/old.ts")).toBe(true);
+  await expectEveryLineOnSpheres(page, "the beginning");
+  // Step 1: old.ts dies; its object lingers in the view's caches.
+  await page.keyboard.press("ArrowRight");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "1");
+  await settled(page);
+  expect(byId(await renderedNodes(page)).has("src/old.ts")).toBe(false);
+  // Step 2: the helper is renamed onto the dead file's path. The sphere at that path is the helper's, where the helper stood, and every line still ends on a sphere.
+  await page.keyboard.press("ArrowRight");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  await settled(page);
+  const renamed = byId(await renderedNodes(page));
+  expect(renamed.has("src/helper.ts")).toBe(false);
+  expect(renamed.get("src/old.ts")).toEqual(beginning.get("src/helper.ts"));
+  await expectEveryLineOnSpheres(page, "the rename onto the dead path");
+  await page.keyboard.press("End");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+  await settled(page);
+  await expectEveryLineOnSpheres(page, "today");
+  // And back to the beginning: the helper under its old name, where it stood, and the old file's sphere its own.
+  await page.keyboard.press("Home");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
+  await settled(page);
+  const again = byId(await renderedNodes(page));
+  expect(again.get("src/helper.ts")).toEqual(beginning.get("src/helper.ts"));
+  expect(again.has("src/old.ts")).toBe(true);
+  await expectEveryLineOnSpheres(page, "the beginning again");
+});
+
