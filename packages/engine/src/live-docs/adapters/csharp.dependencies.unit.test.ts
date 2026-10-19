@@ -281,27 +281,12 @@ describe("csharp.dependencies unit tests", () => {
       });
 
       it("stops at workspace root", async () => {
-        // Create file outside workspace root
-        const parentDir = path.dirname(tempDir);
-        const targetFile = path.join(parentDir, "outside.json");
-        const existed = await fileExists(targetFile);
-        
-        if (!existed) {
-          // Only run test if we can create the file
-          try {
-            await fs.writeFile(targetFile, "{}");
-            
-            const sourcePath = path.join(tempDir, "file.cs");
-            await fs.writeFile(sourcePath, "content");
-            
-            const result = await locateNearestFile(sourcePath, tempDir, ["outside.json"]);
-            expect(result).toBeUndefined();
-            
-            await fs.unlink(targetFile);
-          } catch {
-            // Skip if we can't create file outside temp
-          }
-        }
+        const scanRoot = path.join(tempDir, "workspace");
+        await fs.mkdir(scanRoot);
+        await fs.writeFile(path.join(scanRoot, "file.cs"), "content");
+        await fs.writeFile(path.join(tempDir, "outside.json"), "{}");
+
+        expect(await locateNearestFile(path.join(scanRoot, "file.cs"), scanRoot, ["outside.json"])).toBeUndefined();
       });
     });
 

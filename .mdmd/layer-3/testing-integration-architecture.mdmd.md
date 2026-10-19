@@ -33,5 +33,5 @@ Each suite copies its fixture into a temporary directory before generating, so f
 ## How they run
 
 - `vitest.config.ts` defines two projects: `unit` (package sources, `scripts/`, the SlopCop suites) and `integration` (this directory). Both import TypeScript sources directly; no build step is required.
-- `tests/integration/tsconfig.json` is a `noEmit` project used by the gate to type-check the suites.
+- `tests/tsconfig.json` is a `noEmit` project used by the gate to type-check every executable unit, integration and browser test. Fixture and sample program sources are excluded; their tests are included.
 - The gate (`npm run verify`) runs lint, `tsc` for the packages, the test type-check, both Vitest projects and the documentation link check, in that order.

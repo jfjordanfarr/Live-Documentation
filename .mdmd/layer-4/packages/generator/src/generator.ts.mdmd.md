@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-19T14:55:28.476Z
+- Generated At: 2026-10-19T17:42:51.511Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) a run warns when the folder lies inside a scan, a docs root or a configuration file of this tool above it, and when a scan lies inside the folder, found by one walk for the docs root's and the configuration file's names below it; a scan never lies inside another scan, the owner's rule for the World Map, and the warning says to point at one of them. It warns and does not refuse, since the generator cannot know whether the other scan is current or abandoned.
 - Since 2026-10-15 ([Turn 4](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)) the first pass builds the entry index beside the symbol index, and `composeGenerated` writes each doc's `Entry` lines from the file's own analysis, the index, its symbol kinds, the tooling rule and the configuration's `entryPoints`, before the three sections.
 - Since 2026-10-19, `--changed` and `--include` build file, symbol and entry indexes from the discovered workspace even when they render a subset, so links from a selected doc to an unselected source remain available. Changed-only pruning checks just changed source paths, including rename origins, and preserves authored orphans. It does not invalidate unchanged consumers of a changed provider; full generation refreshes them.
+- The stale-doc pruner owns its two filesystem helpers. `directoryExists` treats a stat failure as absence; `cleanupEmptyParents` removes empty parents after a doc deletion up to, but not including, the base-layer root, and stops on a nonempty folder or filesystem error. They were extracted into an engine `fileUtils.ts` during [the December 6 refactor](../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-06.3.SUMMARIZED.md) and returned to their only caller on 2026-10-19; no analysis or doc-format behavior changed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -73,13 +74,11 @@ behind the `Entry` lines (2026-10-15).
 - [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
 - [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
 - [`core.buildWorkspaceIndexes`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspaceindexes)
-- [`core.cleanupEmptyParents`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-cleanupemptyparents)
 - [`core.composeDependencies`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composedependencies)
 - [`core.composeEntries`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composeentries)
 - [`core.composeReExports`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composereexports)
 - [`core.composeSymbolBlocks`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composesymbolblocks)
 - [`core.computePublicSymbolHeadingInfo`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
-- [`core.directoryExists`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-directoryexists)
 - [`core.discoverTargetFiles`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
 - [`core.hasMeaningfulAuthoredContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
 - [`core.isBinaryContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-isbinarycontent)

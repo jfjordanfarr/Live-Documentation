@@ -14,44 +14,44 @@ const explorerRoot = path.resolve(moduleDirectory, "..", "");
 const clientRoot = path.join(explorerRoot, "client");
 
 /**
- * Bundles the Explorer client TypeScript + CSS into a temporary directory
- * and returns the output paths and HTML template.
+ * Builds the client assets in a temporary directory and keeps them available
+ * only while the consumer writes its output. The directory is removed whether
+ * building or consuming the assets succeeds or fails.
  */
-export async function buildExplorerAssets(): Promise<ExplorerAssets> {
+export async function withExplorerAssets(consume: (assets: ExplorerAssets) => Promise<void>): Promise<void> {
     const outDir = await fs.mkdtemp(path.join(os.tmpdir(), "live-docs-explorer-"));
+    try {
+        const entryPoint = path.join(clientRoot, "index.ts");
+        const outFile = path.join(outDir, "index.js");
 
-    const entryPoint = path.join(clientRoot, "index.ts");
-    const outFile = path.join(outDir, "index.js");
+        await build({
+            entryPoints: [entryPoint],
+            outfile: outFile,
+            bundle: true,
+            format: "esm",
+            sourcemap: true,
+            // The force graph brings three.js, which unminified makes the bundle several times larger.
+            minify: true,
+            target: "es2022",
+            logLevel: "silent",
+            loader: { ".ts": "ts" }
+        });
 
-    await build({
-        entryPoints: [entryPoint],
-        outfile: outFile,
-        bundle: true,
-        format: "esm",
-        sourcemap: true,
-        // The force graph brings three.js, which unminified makes the bundle several times larger.
-        minify: true,
-        target: "es2022",
-        logLevel: "silent",
-        loader: { ".ts": "ts" }
-    });
+        const cssSource = await fs.readFile(path.join(clientRoot, "styles.css"), "utf8");
+        await fs.writeFile(path.join(outDir, "styles.css"), cssSource, "utf8");
 
-    const cssSource = await fs.readFile(path.join(clientRoot, "styles.css"), "utf8");
-    await fs.writeFile(path.join(outDir, "styles.css"), cssSource, "utf8");
+        const stylesDir = path.join(clientRoot, "styles");
+        await fs.mkdir(path.join(outDir, "styles"), { recursive: true });
+        const styleEntries = await fs.readdir(stylesDir);
+        for (const entry of styleEntries) {
+            if (entry.endsWith(".css")) {
+                await fs.copyFile(path.join(stylesDir, entry), path.join(outDir, "styles", entry));
+            }
+        }
 
-    const stylesDir = path.join(clientRoot, "styles");
-    await fs.mkdir(path.join(outDir, "styles"), { recursive: true });
-    const styleEntries = await fs.readdir(stylesDir);
-    await Promise.all(
-        styleEntries
-            .filter(entry => entry.endsWith(".css"))
-            .map(entry => fs.copyFile(path.join(stylesDir, entry), path.join(outDir, "styles", entry)))
-    );
-
-    const template = await fs.readFile(path.join(moduleDirectory, "template.html"), "utf8");
-
-    return {
-        outDir,
-        htmlTemplate: template
-    };
+        const template = await fs.readFile(path.join(moduleDirectory, "template.html"), "utf8");
+        await consume({ outDir, htmlTemplate: template });
+    } finally {
+        await fs.rm(outDir, { recursive: true, force: true });
+    }
 }

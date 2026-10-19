@@ -24,6 +24,7 @@ interface ParsedArgs {
   include: string[];
   configPath?: string;
   dryRun: boolean;
+  check: boolean;
   changedOnly: boolean;
 }
 
@@ -36,6 +37,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     globs: [],
     include: [],
     dryRun: false,
+    check: false,
     changedOnly: false
   };
 
@@ -95,6 +97,11 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
+      case "--check": {
+        parsed.check = true;
+        break;
+      }
+
       case "--changed": {
         parsed.changedOnly = true;
         break;
@@ -137,6 +144,7 @@ function usage(): string {
     `  --config <file>           Load configuration from JSON file (default: the workspace's\n` +
     `                            .live-docs.config.json when it has one).\n` +
     `  --dry-run                 Preview changes without writing files.\n` +
+    `  --check                   Fail if docs would be created, changed or deleted; write nothing.\n` +
     `  --changed                 Limit regeneration to changed files (git status).\n` +
     `  --version                 Print generator version.\n` +
     `  --help                    Display this help text.\n` +
@@ -221,7 +229,7 @@ async function main(): Promise<void> {
   const layer4Result = await generateLiveDocs({
     workspaceRoot,
     config: normalizedConfig,
-    dryRun: args.dryRun,
+    dryRun: args.dryRun || args.check,
     changedOnly: args.changedOnly,
     include: includePatterns
   });
@@ -234,7 +242,7 @@ async function main(): Promise<void> {
     { created: 0, updated: 0, unchanged: 0, skipped: 0 }
   );
 
-  const dryRunSuffix = args.dryRun ? " (dry-run)" : "";
+  const dryRunSuffix = args.check ? " (check)" : args.dryRun ? " (dry-run)" : "";
   console.log(
     `[live-docs] Base layer processed ${layer4Result.processed} file(s)${dryRunSuffix}: ${layer4Counts.created} created, ${layer4Counts.updated} updated, ${layer4Counts.unchanged} unchanged, ${layer4Counts.skipped} skipped, ${layer4Result.deleted} deleted.`
   );
@@ -243,7 +251,7 @@ async function main(): Promise<void> {
   const deletedLayer4Docs = layer4Result.deletedFiles;
 
   const MAX_LISTED = 10;
-  const verb = args.dryRun ? "Would create" : "Created";
+  const verb = args.dryRun || args.check ? "Would create" : "Created";
 
   if (createdLayer4Docs.length > 0) {
     const listed = createdLayer4Docs
@@ -258,8 +266,13 @@ async function main(): Promise<void> {
     const listed = deletedLayer4Docs.slice(0, MAX_LISTED);
     const remainder = deletedLayer4Docs.length - listed.length;
     const suffix = remainder > 0 ? `, +${remainder} more` : "";
-    const deleteVerb = args.dryRun ? "Would delete" : "Deleted";
+    const deleteVerb = args.dryRun || args.check ? "Would delete" : "Deleted";
     console.log(`[live-docs] ${deleteVerb} ${deletedLayer4Docs.length} Live Doc(s): ${listed.join(", ")}${suffix}`);
+  }
+
+  if (args.check && (layer4Result.written > 0 || layer4Result.deleted > 0)) {
+    console.error(`Live Docs differ from source: ${layer4Counts.created} would be created, ${layer4Counts.updated} updated, ${layer4Result.deleted} deleted. Run live-docs:generate and commit the result.`);
+    process.exitCode = 1;
   }
 }
 

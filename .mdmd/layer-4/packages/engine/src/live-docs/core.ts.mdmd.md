@@ -4,11 +4,11 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/core.ts
-- Generated At: 2026-10-16T20:40:17.936Z
+- Generated At: 2026-10-19T17:42:48.143Z
 
 ## Authored
 ### Purpose
-The engine's analysis facade: the names that consumers import through `core` rather than from the module that defines them. The analysis itself lives in the focused modules beside it (`coreTypes.ts`, `archetype.ts`, `discovery.ts`, `symbolExtraction.ts`, `compose.ts`, `document.ts`, `fileUtils.ts`, `sourceAnalysis.ts`), each importable directly; the docs resolve a symbol to its origin, not to this barrel. Its history as the extraction engine itself is below.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160]
+The engine's analysis facade: the names that consumers import through `core` rather than from the module that defines them. The analysis itself lives in the focused modules beside it (`coreTypes.ts`, `archetype.ts`, `discovery.ts`, `symbolExtraction.ts`, `compose.ts`, `document.ts`, `sourceAnalysis.ts`), each importable directly; the docs resolve a symbol to its origin, not to this barrel. Its history as the extraction engine itself is below.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160]
 
 ### Notes
 - Refactored out of the server generator so adapters and CLI tooling could reuse a single discovery pipeline across packages.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-10.SUMMARIZED.md#turn-12-stage-0-complete-with-config--staging-tree-lines-2021-2160]
@@ -16,6 +16,7 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - Enriched with docstring extraction work that guarantees Live Docs capture structured JSDoc output for downstream evidence.
 - Trimmed on 2026-10-08 from 58 re-exported names to the 24 some file imports through it, in [the dead code sweep](../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md): the rest were imported from their origins by every consumer.[AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-14.SUMMARIZED.md#turn-14-instructions-drift--legacy-layer-4-cleanup-lines-1321-1400]
 - On 2026-10-15 `buildWorkspaceSymbolIndex` gave way to `buildWorkspaceIndexes`, which returns the symbol index and the entry index from one pass, and `composeEntries` and `WorkspaceEntryIndex` joined the names offered here, each imported by the generator.
+- On 2026-10-19, the two filesystem helpers that [the December 6 extraction](../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-06.3.SUMMARIZED.md) placed in `fileUtils.ts` moved to their only consumer, the generator's stale-doc pruning. They were not part of source analysis or this facade's lasting contract.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -120,17 +121,9 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L48)
 
-#### `directoryExists` {#symbol-directoryexists}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L52)
-
-#### `cleanupEmptyParents` {#symbol-cleanupemptyparents}
-- Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L53)
-
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L56)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L51)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -159,8 +152,6 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (re-export, type-only)
 - [`discovery.buildWorkspaceIndexes`](./discovery.ts.mdmd.md#symbol-buildworkspaceindexes) (re-export)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles) (re-export)
-- [`fileUtils.cleanupEmptyParents`](./fileUtils.ts.mdmd.md#symbol-cleanupemptyparents) (re-export)
-- [`fileUtils.directoryExists`](./fileUtils.ts.mdmd.md#symbol-directoryexists) (re-export)
 - [`sourceAnalysis.analyzeSourceFile`](./sourceAnalysis.ts.mdmd.md#symbol-analyzesourcefile) (re-export)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols) (re-export)
 <!-- LIVE-DOC:END Dependencies -->

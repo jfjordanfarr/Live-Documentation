@@ -1,20 +1,19 @@
-# tests/integration/tsconfig.json
+# tests/tsconfig.json
 
 ## Metadata
 - Layer: 4
 - Archetype: test
-- Code Path: tests/integration/tsconfig.json
+- Code Path: tests/tsconfig.json
 - Entry: tooling
-- Generated At: 2026-10-16T00:58:52.519Z
+- Generated At: 2026-10-19T16:54:55.745Z
 
 ## Authored
 ### Purpose
-A `noEmit` TypeScript project that type-checks the integration suites under `tests/integration/` without compiling them; the gate runs it as the "Type-check tests" step in `scripts/verify.mjs`.
+Type-check every executable TypeScript test without emitting files, so a transpile-only test run cannot hide type errors in assertions, fixtures, or browser specs.
 
 ### Notes
-- Source file: [`tests/integration/tsconfig.json`](../../../../tests/integration/tsconfig.json)
-- Extends `tsconfig.base.json` and turns off `composite`, declarations and source maps because nothing is emitted. Fixture sources under `fixtures/` and `programs/` are excluded.
-- Vitest itself transpiles without type-checking, which is why this project exists. Until 2026-09-27 the same file compiled the suites for the VS Code Electron harness.
+- Extends the repository's base TypeScript settings and includes package, script, integration, and browser tests. Fixture and sample program sources are inputs to tests and are excluded from this project.
+- The integration-only checker began as the VS Code Electron harness project and became a `noEmit` gate when that harness was retired on 2026-09-27. This file supersedes it with one test-wide gate; `scripts/verify.mjs` runs the checker.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -40,6 +39,12 @@ A `noEmit` TypeScript project that type-checks the integration suites under `tes
 #### `compilerOptions:sourceMap` {#symbol-compileroptionssourcemap}
 - Type: key
 
+#### `compilerOptions:allowJs` {#symbol-compileroptionsallowjs}
+- Type: key
+
+#### `compilerOptions:lib` {#symbol-compileroptionslib}
+- Type: key
+
 #### `compilerOptions:types` {#symbol-compileroptionstypes}
 - Type: key
 
@@ -52,5 +57,5 @@ A `noEmit` TypeScript project that type-checks the integration suites under `tes
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`tsconfig.base`](../../tsconfig.base.json.mdmd.md)
+- [`tsconfig.base`](../tsconfig.base.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

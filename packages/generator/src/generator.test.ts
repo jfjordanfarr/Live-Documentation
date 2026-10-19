@@ -337,6 +337,34 @@ describe("generateLiveDocs changed files", () => {
     }
   });
 
+  it("prunes the last source when a changed workspace has no remaining source files", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-changed-empty-"));
+    const runGit = (...args: string[]) => execFileSync("git", args, { cwd: workspaceRoot });
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    const source = path.join(workspaceRoot, "src", "only.ts");
+    const doc = path.join(workspaceRoot, config.root, config.baseLayer, `src/only.ts${config.extension}`);
+
+    try {
+      await fs.mkdir(path.dirname(source));
+      await fs.writeFile(source, "export const only = 1;\n");
+      runGit("init", "-q");
+      runGit("add", "src");
+      runGit("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-qm", "initial");
+      await generateLiveDocs({ workspaceRoot, config });
+      await expect(fs.stat(doc)).resolves.toBeDefined();
+
+      await fs.rm(source);
+      const changed = await generateLiveDocs({ workspaceRoot, config, changedOnly: true });
+      expect(changed.processed).toBe(0);
+      expect(changed.deletedFiles).toEqual([`${config.root}/${config.baseLayer}/src/only.ts${config.extension}`]);
+      await expect(fs.stat(doc)).rejects.toThrow();
+      const index = JSON.parse(await fs.readFile(path.join(workspaceRoot, config.root, "index.json"), "utf8")) as { files: Record<string, unknown> };
+      expect(index.files).toEqual({});
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
 });
 
 describe("generateLiveDocs included files", () => {
@@ -360,6 +388,29 @@ describe("generateLiveDocs included files", () => {
       expect(includedDoc).toContain("model.ts");
       await generateLiveDocs({ workspaceRoot, config, now });
       expect(await fs.readFile(doc, "utf8")).toBe(includedDoc);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("renders an explicitly included source outside the configured globs with workspace links", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-included-outside-glob-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    const provider = path.join(workspaceRoot, "src", "model.ts");
+    const tool = path.join(workspaceRoot, "tools", "tool.ts");
+    const toolDoc = path.join(workspaceRoot, config.root, config.baseLayer, `tools/tool.ts${config.extension}`);
+    const providerDoc = path.join(workspaceRoot, config.root, config.baseLayer, `src/model.ts${config.extension}`);
+
+    try {
+      await fs.mkdir(path.dirname(provider));
+      await fs.mkdir(path.dirname(tool));
+      await fs.writeFile(provider, "export interface Item { id: string }\n");
+      await fs.writeFile(tool, "import type { Item } from '../src/model';\nexport function use(value: Item): Item { return value; }\n");
+
+      const included = await generateLiveDocs({ workspaceRoot, config, include: ["tools/tool.ts"] });
+      expect(included.files.map((file) => file.sourcePath)).toEqual(["tools/tool.ts"]);
+      expect(await fs.readFile(toolDoc, "utf8")).toContain("Returns: [`Item`](../src/model.ts.md#symbol-item)");
+      await expect(fs.stat(providerDoc)).rejects.toThrow();
     } finally {
       await fs.rm(workspaceRoot, { recursive: true, force: true });
     }

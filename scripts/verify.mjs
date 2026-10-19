@@ -11,7 +11,7 @@ function runVerify() {
   try {
     runNpmScript("Lint", ["run", "lint"]);
     runNpmScript("Build (tsc)", ["run", "build"]);
-    runStep("Type-check tests", process.execPath, [tscBin, "-p", "tests/integration/tsconfig.json"]);
+    runStep("Type-check tests", process.execPath, [tscBin, "-p", "tests/tsconfig.json"]);
     runNpmScript("Unit tests", ["run", "test:unit"]);
     runNpmScript("Integration tests", ["run", "test:integration"]);
     runNpmScript("Documentation link enforcement", ["run", "docs:links:enforce"]);

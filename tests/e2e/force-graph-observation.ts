@@ -37,7 +37,7 @@ export async function observeGraph(page: Page): Promise<void> {
     inspected.__THREE_DEVTOOLS__ = new EventTarget();
     inspected.__THREE_DEVTOOLS__.addEventListener("observe", event => {
       const renderer = (event as CustomEvent<WebGLRenderer>).detail;
-      if (!renderer.isWebGLRenderer) return;
+      if (!("isWebGLRenderer" in renderer) || renderer.isWebGLRenderer !== true) return;
       const render = renderer.render.bind(renderer);
       renderer.render = (scene, camera) => {
         inspected.renderedGraph = { scene: scene as Scene, camera };

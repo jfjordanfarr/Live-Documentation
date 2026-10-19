@@ -1,7 +1,8 @@
 import { EMPTY_PIN_SET, retainFile, removePinsForNode, pressSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import { subjectAfterRelease } from "../retained-state";
-import { dropStage, type BranchStage } from "./branch-renderer";
+import { createStage, dropStage, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
+import type { CardContext } from "./card-factory";
 import { closeDirectory as closeDirectoryIn, NO_OPEN_DIRECTORIES, openDirectory as openDirectoryIn, type OpenDirectories } from "./directory-state";
 import type {
   ExplorerNodePayload
@@ -11,7 +12,7 @@ import {
   buildNormalizedAnchorKey,
   tryBuildNormalizedKeyFromAnchorKey
 } from "../symbolAnchors";
-import { drawConnections } from "./connections";
+import { clearConnections, drawConnections } from "./connections";
 import {
   computeLayoutExtents,
   computeFitTransform,
@@ -31,7 +32,6 @@ import {
   handleWheel as handleWheelFn,
   startDrag
 } from "./pan-zoom";
-import { renderLocalView } from "./render";
 import {
   clearAnchorRegistry,
   createRuntime,
@@ -100,6 +100,29 @@ export class LocalViewController implements LocalViewApi {
   lastInteracted: string | null = null;
   /** Cards whose complete symbol list the person has explicitly opened. */
   readonly expandedCards = new Set<string>();
+  /** The card builder reads only presentation facts and named actions, never this controller's state bag. */
+  readonly cardContext: CardContext = {
+    presentation: node => ({
+      subject: this.options.state.selectedNode?.id === node.id,
+      retained: this.pins.entries.some(pin => pin.nodeId === node.id),
+      expanded: this.expandedCards.has(node.id),
+      showTests: this.options.state.filters.showTests,
+      symbolOrder: this.options.state.tuning.localMap.symbolOrder,
+      testBacking: this.options.testCoverage.get(node.id) ?? [],
+      isPinned: symbol => this.isPinned(node.id, symbol)
+    }),
+    registerAnchor: (nodeId, role, key, element) => this.registerAnchor(nodeId, role, key, element),
+    closeNode: nodeId => this.closeNode(nodeId),
+    openDirectory: directory => this.openDirectory(directory),
+    recenterNode: node => this.recenterNode(node),
+    togglePinnedSymbol: (nodeId, symbol) => this.togglePinnedSymbol(nodeId, symbol),
+    highlightSymbolConnections: (nodeId, symbol) => this.highlightSymbolConnections(nodeId, symbol),
+    clearSymbolHighlight: () => this.clearSymbolHighlight(),
+    focusTypeTarget: targetId => {
+      const target = this.options.nodesById.get(targetId);
+      if (target) void this.focusSidebar(target);
+    }
+  };
   private renderedPath = false;
   private restoreExplorationCamera = false;
   private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
@@ -315,7 +338,7 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /**
-   * Triggers a full re-render of the Local Map view via {@link renderLocalView}, while the map is the view shown;
+   * Triggers a full re-render of the Local Map view, while the map is the view shown;
    * otherwise the render is owed and {@link show} runs it when the map is shown again.
    */
   render(): void {
@@ -331,7 +354,7 @@ export class LocalViewController implements LocalViewApi {
     const id = this.options.state.selectedNode?.id;
     const path = this.localMapState.getState().activePath;
     const anchor = id && !this.renderedPath && !this.runtime.mapAnimationTarget ? this.getSubjectAnchor(id) : null;
-    renderLocalView(this);
+    this.drawScene();
     if (this.restoreExplorationCamera && this.explorationCamera) {
       cancelAnimationFrame(this.runtime.mapAnimationFrame);
       this.runtime.mapAnimationTarget = null;
@@ -350,6 +373,69 @@ export class LocalViewController implements LocalViewApi {
       this.placeSubjectAnchor(id, anchor);
     }
     this.renderedPath = !!path;
+  }
+
+  /** Draw every scope through the same branch stage while owning its camera and render lifecycle. */
+  private drawScene(): void {
+    const { state, graphData } = this.options;
+    const tuning = state.tuning.localMap;
+    this.container.style.setProperty("--local-column-gap", `${tuning.columnGap}px`);
+    this.container.style.setProperty("--hover-dim-symbols", String(tuning.hoverDimSymbols));
+    this.container.style.setProperty("--hover-dim-connections", String(tuning.hoverDimConnections));
+
+    this.currentSubgraph = null;
+    this.branches = null;
+    this.container.classList.remove("symbol-hover-active");
+    this.overlay.classList.remove("symbol-hover-active");
+    this.clearAnchors();
+    const path = this.getActivePath();
+    // A path borrows the view, not the exploration's camera or retained arrangement.
+    const keepStage = this.stage?.root.parentElement === this.container
+      && this.stage.root.classList.contains("path-mode") === !!path;
+    if (!keepStage) {
+      this.dropStage();
+      this.previousTops = null;
+      this.container.innerHTML = "";
+      this.contentRoot = null;
+    }
+
+    if (!graphData.nodes.length) {
+      clearConnections(this.runtime);
+      this.container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">No files in this graph.</div>';
+      this.mapTransform = { x: 0, y: 0, k: 1 };
+      this.mapHasInitialFit = false;
+      this.mapUserAdjusted = false;
+      this.lastCenteredNodeId = null;
+      this.mapInitialTransform = null;
+      this.updateMapTransform();
+      return;
+    }
+
+    if (!this.mapUserAdjusted) {
+      this.mapHasInitialFit = false;
+      this.mapInitialTransform = null;
+    }
+    const centeredId = state.selectedNode?.id ?? null;
+    if (centeredId !== this.lastCenteredNodeId) {
+      this.mapHasInitialFit = false;
+      this.mapUserAdjusted = false;
+      this.lastCenteredNodeId = centeredId;
+      this.mapInitialTransform = null;
+      this.lastInteracted = centeredId;
+    }
+
+    const root = keepStage ? this.stage!.root : document.createElement("div");
+    if (!keepStage) {
+      root.className = "local-layout";
+      this.container.append(root);
+    }
+    this.contentRoot = root;
+    const stage = this.stage ?? (this.stage = createStage(root, this.overlay));
+    renderBranches(this, stage);
+    if (path) this.fitMapToPath();
+    else if (!this.mapHasInitialFit) this.fitMapToContent();
+    else this.updateMapTransform();
+    this.scheduleConnectionRedraw();
   }
 
   /** Redraws all SVG connection lines between symbol anchors in the current subgraph. */
@@ -824,11 +910,6 @@ export class LocalViewController implements LocalViewApi {
       return false;
     }
     return true;
-  }
-
-  /** Returns `true` when the given node has a `"test"` archetype. */
-  isTestNode(node: ExplorerNodePayload | null | undefined): boolean {
-    return !!node && (node.archetype || "").toLowerCase() === "test";
   }
 
   /** Resolves a node by `id` from the full graph data, or returns `undefined` if not found. */

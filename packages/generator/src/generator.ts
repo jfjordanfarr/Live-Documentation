@@ -6,7 +6,7 @@ import {
   type LiveDocumentationConfig,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, cleanupEmptyParents, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, directoryExists, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
+import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
 import {
   LiveDocSyntaxError,
   authoredBlockOf,
@@ -395,6 +395,35 @@ async function pruneStaleLiveDocs(args: {
   }
 
   return removed;
+}
+
+/** Whether the generated-doc directory exists before pruning it. */
+async function directoryExists(candidate: string): Promise<boolean> {
+  try {
+    const stats = await fs.stat(candidate);
+    return stats.isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+/** Removes empty folders left by a deleted doc, stopping before the docs root. */
+async function cleanupEmptyParents(startDir: string, stopDir: string): Promise<void> {
+  const stop = path.resolve(stopDir);
+  let current = path.resolve(startDir);
+
+  while (current.startsWith(stop) && current !== stop) {
+    try {
+      const entries = await fs.readdir(current);
+      if (entries.length > 0) {
+        break;
+      }
+      await fs.rmdir(current);
+      current = path.dirname(current);
+    } catch {
+      break;
+    }
+  }
 }
 
 /** The first `bytes` of a file, for the content's say on what the file is; fewer when the file is shorter. */

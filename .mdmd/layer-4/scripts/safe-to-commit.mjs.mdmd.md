@@ -10,11 +10,12 @@
 
 ## Authored
 ### Purpose
-Acts as the "safe to commit" gate: runs `npm run verify`, the Live Docs pipeline (generate and lint), the three SlopCop audits and, with `--e2e`, the browser tests over the bundles built first, then prints a `git status -sb` verdict. `npm run ci-check` is the same chain with the status summary skipped and without the browser tests.
+Runs the Live Docs pipeline before verification, so tests and audits read the intended mirror, then the three SlopCop audits and optional browser tests. Local runs regenerate docs and print a Git status summary; `ci-check` explicitly checks that the committed mirror is already fresh without writing it.
 
 ### Notes
 - Debuted 2025-10-21 as the runner behind `npm run safe:commit`, pairing the verification pipeline with a human-readable Git status summary.
-- The benchmark flags (`--benchmarks`, `--mode`, `--report`) and their fixture regeneration were removed on 2026-09-27 with the AST accuracy benchmark. The remaining flags are `--e2e`, which appends `npm run test:e2e` (the three bundles built, then the Playwright suite), and `--skip-git-status` (alias `--ci`), which CI sets.
+- The benchmark flags (`--benchmarks`, `--mode`, `--report`) and their fixture regeneration were removed on 2026-09-27 with the AST accuracy benchmark. `--e2e` appends `npm run test:e2e`; `--skip-git-status` (alias `--ci`) omits only the status summary.
+- After the [October 19 audit](../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-16), `--check-live-docs` selects non-writing source-to-doc freshness validation. The `ci-check` npm script passes that flag explicitly alongside `--skip-git-status`; status reporting never determines whether generation writes.
 - Documentation link enforcement runs inside `verify`; it is not repeated here.
 - Since 2026-10-18 the step runners come from `steps.mjs`, shared with `verify.mjs`; this script keeps only the gate's order and the git status verdict.
 

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { Capture } from "./capture";
+import type { CardMetrics } from "./card-model";
 import { baselineConfig, evaluate, evaluateAlignment, includeNode } from "./evaluate";
 import { refine, refinementJson } from "./refine";
 import type { ScopeRun } from "./scopes";
@@ -10,8 +11,8 @@ import { addPin, EMPTY_PIN_SET } from "../../packages/explorer/src/client/views/
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
 // Measurements stand in for a capture's text; ranking, ordering, placement and shape scoring remain the product's.
-vi.mock("./measurer", () => ({ capturedMeasurer: (): SceneMeasurer & { metrics: Map<string, never> } => ({
-  metrics: new Map(),
+vi.mock("./measurer", () => ({ capturedMeasurer: (): SceneMeasurer & { metrics: Map<string, CardMetrics> } => ({
+  metrics: new Map<string, CardMetrics>(),
   widths: () => new Map([["a/x.ts", 200], ["a/y.ts", 200]]),
   measure: () => ({ heights: new Map([["a/x.ts", 100], ["a/y.ts", 100]]), pin: id => id === "a/x.ts" ? 80 : 10, labelHeights: new Map() })
 }) }));
@@ -37,7 +38,7 @@ describe("the lab's alignment evaluation", () => {
 
   it("re-solves the same ordered branches from a fresh scene and prices all three shape signals", () => {
     const nodes = [node("a/x.ts"), node("a/y.ts")];
-    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, missingDependencies: 0 } };
+    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, referencesOutsideScan: 0 } };
     const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "pair", subject: nodes[0].id, scope: nodes.map(file => file.id) };
     const capture = {} as Capture;
     const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0 };
@@ -63,7 +64,7 @@ describe("the lab's alignment evaluation", () => {
 
   it("interleaves seed and alignment trials and exports the final geometry and every decision", () => {
     const nodes = [node("a/x.ts"), node("a/y.ts")];
-    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, missingDependencies: 0 } };
+    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, referencesOutsideScan: 0 } };
     const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "pair", subject: nodes[0].id, scope: nodes.map(file => file.id) };
     const capture = { capturedAt: "2026-10-13" } as Capture;
     const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0 };

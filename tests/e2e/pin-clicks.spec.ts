@@ -15,6 +15,8 @@ const ROSETTA = "tests/integration/programs/typescript/rosetta/src";
 const MAIN = `${ROSETTA}/main.ts`;
 const MODELS = `${ROSETTA}/models.ts`;
 const BRANCHES = "packages/explorer/src/client/views/localView/branches.ts";
+const GATEWAY_CLIENT = "Portal/Services/GatewayClient.cs";
+const PAYMENT_RESULT = "Portal/Models/PaymentResultModel.cs";
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 
@@ -89,6 +91,35 @@ test("the recentre control makes a neighbour the subject without a pin or the pa
   expect(pins(page), "two clicks pin the file whole, once").toEqual([`${MAIN}#*`]);
   expect(await subject(page), "and nothing recentres").toBe(MODELS);
 });
+
+for (const gesture of [
+  { name: "symbol label", selector: ".symbol-label", inspectsType: false },
+  { name: "return type badge", selector: ".type-badge-return", inspectsType: true }
+] as const) {
+  test(`double-clicking an estate ${gesture.name} keeps the source as subject`, async ({ page }) => {
+    await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(GATEWAY_CLIENT)}`);
+    await localMapSettled(page);
+    await expect(page.locator("#map-container .node-card.local-focus")).toHaveAttribute("data-id", GATEWAY_CLIENT);
+
+    const labelWrapper = row(page, GATEWAY_CLIENT, "GetPaymentAsync");
+    await panIntoView(page, labelWrapper);
+    const target = labelWrapper.locator(gesture.selector);
+    if (gesture.inspectsType) await expect(target).toHaveAttribute("data-target-id", PAYMENT_RESULT);
+    await target.dblclick();
+    await localMapSettled(page);
+
+    await expect(page.locator("#map-container .node-card.local-focus"), "a pin or inspection must not move the subject").toHaveAttribute("data-id", GATEWAY_CLIENT);
+    expect(pins(page), "the first click narrows to the symbol and the second falls back to a whole-file pin").toEqual([`${GATEWAY_CLIENT}#*`]);
+    await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
+    if (gesture.inspectsType) {
+      await expect(page.locator("#detail-panel")).toHaveClass(/visible/u);
+      await expect(page.locator("#detail-title")).toHaveText("PaymentResultModel.cs");
+      await expect(page.locator("#context-name"), "context names the inspected file, not the map subject").toHaveText(PAYMENT_RESULT);
+    } else {
+      await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
+    }
+  });
+}
 
 test("from Knowledge Sources, one symbol of a far file is one pin in five clicks", async ({ page }) => {
   await page.goto("/");

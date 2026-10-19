@@ -9,32 +9,6 @@ import { test, expect, type Page } from "@playwright/test";
  * what a person can do, not pixels.
  */
 
-interface WorldMapHandle {
-  ready: boolean;
-  instant: (value: boolean) => void;
-  pieces: () => string[];
-  roads: () => string[];
-  doors: () => string[];
-  hover: (kind: string | null, id?: string) => void;
-  pin: (kind: string, id: string) => void;
-  unpin: () => void;
-  move: (name: string, x: number, y: number) => void;
-  reset: () => void;
-  boardText: () => string;
-  state: () => { theta: number; phi: number; k: number; positions: Record<string, [number, number]>; pinned: { kind: string; id: string } | null };
-  rotate: (quarters?: number) => Promise<void>;
-  tilt: () => Promise<void>;
-  screenPointOf: (name: string) => [number, number];
-  lidCorners: (name: string) => Array<[number, number]>;
-  enter: (name: string) => void;
-}
-
-declare global {
-  interface Window {
-    __worldMap?: WorldMapHandle;
-  }
-}
-
 async function openWorldMap(page: Page): Promise<void> {
   await page.goto("/?view=world");
   await page.waitForFunction(() => window.__worldMap?.ready === true, null, { timeout: 20_000 });

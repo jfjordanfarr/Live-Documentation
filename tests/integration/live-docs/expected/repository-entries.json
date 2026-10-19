@@ -123,7 +123,7 @@
     "tests/e2e/playwright.config.ts": [
       "tooling"
     ],
-    "tests/integration/tsconfig.json": [
+    "tests/tsconfig.json": [
       "tooling"
     ],
     "tsconfig.base.json": [

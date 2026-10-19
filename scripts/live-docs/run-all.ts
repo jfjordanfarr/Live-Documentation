@@ -1,8 +1,8 @@
 #!/usr/bin/env node
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { pathToFileURL } from "node:url";
 
 interface OrchestratorOptions {
   generatorArgs: string[];
@@ -163,44 +163,32 @@ function formatUsage(): string {
     `  --skip-generate   Skip Live Doc regeneration step.\n` +
     `  --skip-lint       Skip lint step.\n` +
     `  -h, --help        Show this help message.\n\n` +
-  `Any additional options are forwarded to live-docs:generate (e.g. --dry-run, --changed).\n` +
+  `Any additional options are forwarded to live-docs:generate (e.g. --dry-run, --check, --changed).\n` +
   `When running via npm, pass two "--" separators to forward generator flags without npm config warnings:\n` +
   `  npm run livedocs -- -- --include path/to/file.ts --dry-run`;
 }
 
-async function runStage(stage: Stage): Promise<void> {
+function runStage(stage: Stage): void {
   if (!stage.enabled) {
     console.log(`[live-docs] Skipping ${stage.label}`);
     return;
   }
 
   const absolutePath = path.resolve(process.cwd(), stage.script);
-  const moduleUrl = pathToFileURL(absolutePath).href;
-
-  const previousArgv = process.argv;
-  const previousExitCode = process.exitCode;
-
+  const tsx = path.resolve(process.cwd(), "node_modules", "tsx", "dist", "cli.mjs");
+  const tsconfig = path.resolve(process.cwd(), "tsconfig.base.json");
   console.log(`[live-docs] Running ${stage.label}...`);
-
-  try {
-    process.argv = [previousArgv[0], absolutePath, ...stage.args];
-    process.exitCode = undefined;
-
-    await import(moduleUrl);
-
-    const exitCode = typeof process.exitCode === "number" ? process.exitCode : 0;
-    if (exitCode !== 0) {
-      throw new StageError(stage.label, exitCode);
-    }
-
-    console.log(`[live-docs] Completed ${stage.label}`);
-  } finally {
-    process.argv = previousArgv;
-    process.exitCode = previousExitCode;
+  const result = spawnSync(process.execPath, [tsx, "--tsconfig", tsconfig, absolutePath, ...stage.args], { stdio: "inherit" });
+  if (result.error) {
+    throw result.error;
   }
+  if (result.status !== 0) {
+    throw new StageError(stage.label, result.status ?? 1);
+  }
+  console.log(`[live-docs] Completed ${stage.label}`);
 }
 
-async function main(): Promise<void> {
+function main(): void {
   const options = parseArgs(process.argv.slice(2));
 
   const workspaceRoot = resolveWorkspaceRoot(options.generatorArgs);
@@ -229,7 +217,7 @@ async function main(): Promise<void> {
 
   for (const stage of stages) {
     try {
-      await runStage(stage);
+      runStage(stage);
     } catch (error) {
       if (error instanceof StageError) {
         process.exitCode = error.exitCode;
@@ -241,15 +229,11 @@ async function main(): Promise<void> {
         process.exitCode = 1;
         console.error(`[live-docs] ${stage.label} failed with unknown error`);
       }
-      throw error;
+      return;
     }
   }
 
   console.log("[live-docs] Pipeline complete");
 }
 
-main().catch(() => {
-  if (typeof process.exitCode !== "number") {
-    process.exitCode = 1;
-  }
-});
+main();

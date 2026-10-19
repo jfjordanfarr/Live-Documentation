@@ -1,29 +1,54 @@
 /**
- * Card factory functions for Local Map node cards and symbol sections.
+ * Build Local Map cards and symbol sections from their presentation values and named actions.
  *
- * Extracted from render.ts to improve maintainability.
- * These functions create the DOM elements for individual node cards
- * and their symbol sections in the Local Map view.
+ * The controller owns navigation and live state; this module owns the card DOM,
+ * accessible controls, and their event wiring. The branch stage keeps wrappers
+ * across renders while replacing each card from current presentation values.
  *
  * @module card-factory
  */
 
 import { compareSymbolNames, type ClosedDirectory } from "./branches";
-import type { LocalViewController } from "./controller";
 import { parentDirectory } from "./directory-bands";
 import type { ColumnRole } from "./types";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
+import type { SymbolOrder } from "../../types";
+
+/** The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt. */
+export interface CardPresentation {
+  subject: boolean;
+  retained: boolean;
+  expanded: boolean;
+  showTests: boolean;
+  symbolOrder: SymbolOrder;
+  testBacking: readonly ExplorerNodePayload[];
+  /** Pressed state is read at construction; a press itself goes through the live action below. */
+  isPinned(symbol: string): boolean;
+}
+
+/** Only the facts and actions a card needs; navigation targets are looked up when their event occurs. */
+export interface CardContext {
+  presentation(node: ExplorerNodePayload): CardPresentation;
+  registerAnchor(nodeId: string, role: ColumnRole, key: string, element: HTMLElement): void;
+  closeNode(nodeId: string): void;
+  openDirectory(directory: string): void;
+  recenterNode(node: ExplorerNodePayload): void | Promise<void>;
+  togglePinnedSymbol(nodeId: string, symbol: string): void;
+  highlightSymbolConnections(nodeId: string, symbol: string): void;
+  clearSymbolHighlight(): void;
+  focusTypeTarget(targetId: string): void | Promise<void>;
+}
 
 /**
  * Creates a node card element for the Local Map view.
  *
- * @param controller - The LocalViewController instance
+ * @param context - The card's presentation inputs and live actions
  * @param node - The node data to render
  * @param columnRole - The role of the column this card belongs to
  * @returns The created card element
  */
 export function createNodeCard(
-  controller: LocalViewController,
+  context: CardContext,
   node: ExplorerNodePayload,
   columnRole: ColumnRole
 ): HTMLElement {
@@ -34,13 +59,13 @@ export function createNodeCard(
   card.title = node.codeRelativePath;
   card.tabIndex = 0;
 
-  const { state, testCoverage } = controller.options;
+  const presentation = context.presentation(node);
 
-  if (state.selectedNode && state.selectedNode.id === node.id) {
+  if (presentation.subject) {
     card.classList.add("selected", "local-focus");
   }
 
-  const registerAnchor = (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
+  const registerAnchor = (key: string, element: HTMLElement) => context.registerAnchor(node.id, columnRole, key, element);
 
   registerAnchor("card", card);
 
@@ -79,9 +104,8 @@ export function createNodeCard(
   close.title = "Close this expansion; keep symbols needed by other pins";
   close.setAttribute("aria-label", `Close ${node.name}`);
   close.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
-  close.addEventListener("click", event => { event.stopPropagation(); controller.closeNode(node.id); });
-  const retained = controller.pins.entries.some(pin => pin.nodeId === node.id);
-  const subject = controller.options.state.selectedNode?.id === node.id;
+  close.addEventListener("click", event => { event.stopPropagation(); context.closeNode(node.id); });
+  const { retained, subject } = presentation;
   // Every card but the subject's can be made the subject: the one visible way to go there, since a double-click
   // reached the card's click twice first (the owner's challenge, 2026-10-14; one grammar for every input, 2026-10-15).
   if (!subject) {
@@ -90,20 +114,20 @@ export function createNodeCard(
     recentre.title = "Make this file the subject: the map draws its neighbourhood around it";
     recentre.setAttribute("aria-label", `Centre on ${node.name}`);
     recentre.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></svg>';
-    recentre.addEventListener("click", event => { event.stopPropagation(); void controller.recenterNode(node); });
+    recentre.addEventListener("click", event => { event.stopPropagation(); void context.recenterNode(node); });
     card.append(recentre);
   }
-  if (retained || subject || controller.expandedCards.has(node.id)) card.append(close);
+  if (retained || subject || presentation.expanded) card.append(close);
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";
   pathElement.textContent = node.codeRelativePath;
   card.appendChild(pathElement);
 
-  card.appendChild(createSymbolSection(controller, node, columnRole));
+  card.appendChild(createSymbolSection(context, presentation, node, columnRole));
 
-  if (!controller.isTestNode(node) && state.filters.showTests) {
-    const backing = testCoverage.get(node.id);
+  if ((node.archetype || "").toLowerCase() !== "test" && presentation.showTests) {
+    const backing = presentation.testBacking;
     if (backing && backing.length > 0) {
       card.classList.add("test-backed");
       card.dataset.testCount = String(backing.length);
@@ -138,7 +162,7 @@ export function createNodeCard(
 
   card.addEventListener("click", event => {
     event.stopPropagation();
-    controller.togglePinnedSymbol(node.id, "*");
+    context.togglePinnedSymbol(node.id, "*");
   });
 
   card.addEventListener("keydown", event => {
@@ -156,7 +180,7 @@ export function createNodeCard(
  * grammar, 2026-10-08). It carries no pin: a directory with a party file
  * under it is at least encasing, so no wire ever reaches a closed box.
  */
-export function createClosedDirectory(controller: LocalViewController, closed: ClosedDirectory): HTMLElement {
+export function createClosedDirectory(context: CardContext, closed: ClosedDirectory): HTMLElement {
   const box = document.createElement("div");
   box.className = "local-directory-closed";
   box.dataset.directory = closed.path;
@@ -171,7 +195,7 @@ export function createClosedDirectory(controller: LocalViewController, closed: C
   count.className = "local-directory-closed__count";
   count.textContent = countsOf(closed.files, closed.directories);
   box.append(name, count);
-  box.addEventListener("click", event => { event.stopPropagation(); controller.openDirectory(closed.path); });
+  box.addEventListener("click", event => { event.stopPropagation(); context.openDirectory(closed.path); });
   box.addEventListener("keydown", event => {
     if (event.target === box && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); box.click(); }
   });
@@ -190,20 +214,22 @@ export function countsOf(files: number, directories: number): string {
  * Creates the symbol section for a node card, including all public symbols
  * and the "Internals" pseudo-symbol.
  *
- * @param controller - The LocalViewController instance
+ * @param context - The card's presentation inputs and live actions
+ * @param presentation - The card's values captured for this render
  * @param node - The node data
  * @param columnRole - The role of the column
  * @returns The symbol section element
  */
-export function createSymbolSection(
-  controller: LocalViewController,
+function createSymbolSection(
+  context: CardContext,
+  presentation: CardPresentation,
   node: ExplorerNodePayload,
   columnRole: ColumnRole
 ): HTMLElement {
   const wrapper = document.createElement("div");
   wrapper.className = "node-symbols";
 
-  const registerAnchor = (key: string, element: HTMLElement) => controller.registerAnchor(node.id, columnRole, key, element);
+  const registerAnchor = (key: string, element: HTMLElement) => context.registerAnchor(node.id, columnRole, key, element);
 
   const hasPublicSymbols = node.publicSymbols && node.publicSymbols.length > 0;
 
@@ -227,7 +253,7 @@ export function createSymbolSection(
   }
 
   // Alphabetical order holds wherever a card is drawn; the layout order is applied by the branch renderer where there is a layout.
-  const symbols = controller.options.state.tuning.localMap.symbolOrder === "alphabetical" ? [...node.publicSymbols].sort(compareSymbolNames) : node.publicSymbols;
+  const symbols = presentation.symbolOrder === "alphabetical" ? [...node.publicSymbols].sort(compareSymbolNames) : node.publicSymbols;
   symbols.forEach(symbol => {
     const extended = extendedByName.get(symbol);
     const typeRefs = extended?.typeReferences;
@@ -239,22 +265,21 @@ export function createSymbolSection(
     symbolRow.className = "symbol-row";
     symbolRow.dataset.nodeId = node.id;
     symbolRow.dataset.symbol = symbol;
-    symbolRow.classList.toggle("symbol-pinned", controller.isPinned(node.id, symbol));
+    symbolRow.classList.toggle("symbol-pinned", presentation.isPinned(symbol));
 
     // Add hover handlers for connection highlighting
     symbolRow.addEventListener("mouseenter", () => {
-      controller.highlightSymbolConnections(node.id, symbol);
+      context.highlightSymbolConnections(node.id, symbol);
     });
     symbolRow.addEventListener("mouseleave", () => {
-      controller.clearSymbolHighlight();
+      context.clearSymbolHighlight();
     });
     // Add click handler for "sticky" pinned highlighting (useful for mobile & exploring large files)
     symbolRow.addEventListener("click", (event) => {
       event.stopPropagation();
       const targetId = (event.target as HTMLElement).closest<HTMLElement>(".type-badge")?.dataset.targetId;
-      controller.togglePinnedSymbol(node.id, symbol);
-      const targetNode = targetId ? controller.options.nodesById.get(targetId) : undefined;
-      if (targetNode) void controller.focusSidebar(targetNode);
+      context.togglePinnedSymbol(node.id, symbol);
+      if (targetId) void context.focusTypeTarget(targetId);
     });
 
     const inboundAnchor = document.createElement("div");
@@ -265,7 +290,7 @@ export function createSymbolSection(
 
     const labelWrapper = document.createElement("div");
     labelWrapper.className = "symbol-label-wrapper";
-    makePinAccessible(labelWrapper, node.name, symbol, controller.isPinned(node.id, symbol));
+    makePinAccessible(labelWrapper, node.name, symbol, presentation.isPinned(symbol));
 
     const label = document.createElement("div");
     label.className = "symbol-label";
@@ -274,7 +299,7 @@ export function createSymbolSection(
 
     // Add type reference indicator if present
     if (hasTypeRefs) {
-      const typeIndicator = createTypeReferenceIndicator(controller, typeRefs);
+      const typeIndicator = createTypeReferenceIndicator(context, typeRefs);
       labelWrapper.appendChild(typeIndicator);
     }
 
@@ -283,19 +308,6 @@ export function createSymbolSection(
     // Symbol row click will just toggle the pin (handled by the row's click handler)
     if (hasResolvedTypeRefs) {
       labelWrapper.classList.add("has-type-link");
-      const firstResolved = typeRefs.find(ref => ref.isResolved);
-      if (firstResolved?.targetId) {
-        labelWrapper.dataset.targetId = firstResolved.targetId;
-        labelWrapper.dataset.targetAnchor = firstResolved.targetAnchor ?? "";
-        // Double-click still recenters on the target node
-        labelWrapper.addEventListener("dblclick", event => {
-          event.stopPropagation();
-          const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
-          if (targetNode) {
-            void controller.recenterNode(targetNode);
-          }
-        });
-      }
     }
 
     symbolRow.appendChild(labelWrapper);
@@ -319,19 +331,19 @@ export function createSymbolSection(
     internalsRow.className = "symbol-row internals-row";
     internalsRow.dataset.nodeId = node.id;
     internalsRow.dataset.symbol = "__internals__";
-    internalsRow.classList.toggle("symbol-pinned", controller.isPinned(node.id, "__internals__"));
+    internalsRow.classList.toggle("symbol-pinned", presentation.isPinned("__internals__"));
 
     // Add hover handlers for connection highlighting
     internalsRow.addEventListener("mouseenter", () => {
-      controller.highlightSymbolConnections(node.id, "__internals__");
+      context.highlightSymbolConnections(node.id, "__internals__");
     });
     internalsRow.addEventListener("mouseleave", () => {
-      controller.clearSymbolHighlight();
+      context.clearSymbolHighlight();
     });
     // Add click handler for "sticky" pinned highlighting
     internalsRow.addEventListener("click", (event) => {
       event.stopPropagation();
-      controller.togglePinnedSymbol(node.id, "__internals__");
+      context.togglePinnedSymbol(node.id, "__internals__");
     });
 
     const internalsInbound = document.createElement("div");
@@ -343,7 +355,7 @@ export function createSymbolSection(
 
     const internalsLabel = document.createElement("div");
     internalsLabel.className = "symbol-label-wrapper internals-label";
-    makePinAccessible(internalsLabel, node.name, "Internals", controller.isPinned(node.id, "__internals__"));
+    makePinAccessible(internalsLabel, node.name, "Internals", presentation.isPinned("__internals__"));
     internalsLabel.innerHTML = `<div class="symbol-label internals-text">Internals</div>`;
     internalsLabel.title = "Internal/private implementation — data flows in but isn't exposed as public symbols";
     internalsRow.appendChild(internalsLabel);
@@ -363,12 +375,12 @@ export function createSymbolSection(
 /**
  * Creates a type reference indicator element showing what types a symbol references.
  *
- * @param controller - The LocalViewController instance
+ * @param context - The card's live actions
  * @param typeRefs - The type references to display
  * @returns The indicator element
  */
-export function createTypeReferenceIndicator(
-  controller: LocalViewController,
+function createTypeReferenceIndicator(
+  context: CardContext,
   typeRefs: ExplorerTypeReference[]
 ): HTMLElement {
   const indicator = document.createElement("div");
@@ -383,22 +395,22 @@ export function createTypeReferenceIndicator(
   const badges: HTMLElement[] = [];
 
   if (returnRefs.length > 0) {
-    const badge = createTypeBadge(controller, returnRefs, "→", "return");
+    const badge = createTypeBadge(context, returnRefs, "→", "return");
     badges.push(badge);
   }
 
   if (paramRefs.length > 0) {
-    const badge = createTypeBadge(controller, paramRefs, "←", "param");
+    const badge = createTypeBadge(context, paramRefs, "←", "param");
     badges.push(badge);
   }
 
   if (extendsRefs.length > 0) {
-    const badge = createTypeBadge(controller, extendsRefs, "⊲", "extends");
+    const badge = createTypeBadge(context, extendsRefs, "⊲", "extends");
     badges.push(badge);
   }
 
   if (implementsRefs.length > 0) {
-    const badge = createTypeBadge(controller, implementsRefs, "◇", "implements");
+    const badge = createTypeBadge(context, implementsRefs, "◇", "implements");
     badges.push(badge);
   }
 
@@ -412,14 +424,14 @@ export function createTypeReferenceIndicator(
 /**
  * Creates a single type badge element for a group of type references.
  *
- * @param controller - The LocalViewController instance
+ * @param context - The card's live actions
  * @param refs - The type references for this badge
  * @param icon - The icon to display
  * @param kind - The kind of reference (return, param, extends, implements)
  * @returns The badge element
  */
-export function createTypeBadge(
-  controller: LocalViewController,
+function createTypeBadge(
+  context: CardContext,
   refs: ExplorerTypeReference[],
   icon: string,
   kind: string
@@ -444,13 +456,6 @@ export function createTypeBadge(
       // The row first retains its symbol, then inspects this referenced type.
       // This ordering keeps the detail target as the most recently inspected file.
       badge.dataset.targetId = firstResolved.targetId;
-      badge.addEventListener("dblclick", event => {
-        event.stopPropagation();
-        const targetNode = controller.options.nodesById.get(firstResolved.targetId!);
-        if (targetNode) {
-          void controller.recenterNode(targetNode);
-        }
-      });
     }
   }
 

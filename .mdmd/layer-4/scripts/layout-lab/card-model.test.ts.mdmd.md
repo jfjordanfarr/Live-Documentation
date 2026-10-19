@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: scripts/layout-lab/card-model.test.ts
-- Generated At: 2026-10-13T16:52:35.663Z
+- Generated At: 2026-10-19T17:05:04.167Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,6 @@ _No public symbols detected_
 - [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`pin-state.EMPTY_PIN_SET`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
-- [`capture.RowCapture`](./capture.ts.mdmd.md#symbol-rowcapture) (type-only)
 - [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface)
 - [`card-model.chipsHeight`](./card-model.ts.mdmd.md#symbol-chipsheight)
 - [`card-model.registerPins`](./card-model.ts.mdmd.md#symbol-registerpins)

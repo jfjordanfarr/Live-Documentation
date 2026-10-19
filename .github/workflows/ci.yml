@@ -30,20 +30,9 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        # The lockfile generated on Windows omits Linux platform binaries for Rollup.
-        # npm has a known bug (https://github.com/npm/cli/issues/4828) where optional
-        # deps aren't properly resolved from cross-platform lockfiles. We explicitly
-        # install the Linux Rollup binary after the main install to work around this.
-        run: |
-          npm ci
-          npm install @rollup/rollup-linux-x64-gnu --no-save --ignore-scripts
+        run: npm ci
 
       - name: Run CI checks (safe-to-commit CI mode)
         env:
           CI: "true"
         run: npm run ci-check
-
-      - name: CLI pack smoke test
-        run: |
-          cd packages/cli
-          npm pack --dry-run

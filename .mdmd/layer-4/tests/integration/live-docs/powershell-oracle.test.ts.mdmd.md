@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/powershell-oracle.test.ts
-- Generated At: 2026-10-16T21:23:46.581Z
+- Generated At: 2026-10-19T16:54:55.357Z
 
 ## Authored
 ### Purpose
@@ -22,7 +22,9 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- `glob` - `globSync`
 - `node:fs`
+- `node:os` - `os`
 - `node:path` - `path`
 - [`powershell.powershellAdapter`](../../../packages/engine/src/live-docs/adapters/powershell.ts.mdmd.md#symbol-powershelladapter)
 - [`core.DependencyEntry`](../../../packages/engine/src/live-docs/core.ts.mdmd.md#symbol-dependencyentry) (type-only)

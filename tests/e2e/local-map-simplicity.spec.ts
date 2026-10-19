@@ -64,8 +64,8 @@ test("the simplicity slider restarts competition and removes unnecessary generat
   expect(before.identity.references.length).toBeGreaterThan(0);
   expect(before.alignmentTried).toBe(0);
   await page.getByText("Tuning", { exact: true }).click();
-  const slider = page.locator<HTMLInputElement>("#tuning-membrane-simplicity");
-  await slider.evaluate(input => { input.value = "50"; input.dispatchEvent(new Event("input", { bubbles: true })); });
+  const slider = page.locator("#tuning-membrane-simplicity");
+  await slider.evaluate(input => { (input as HTMLInputElement).value = "50"; input.dispatchEvent(new Event("input", { bubbles: true })); });
   await expect(page.locator("#tuning-membrane-simplicity-value")).toHaveText("50");
   await localMapSettled(page);
   const after = await picture(page);
@@ -86,7 +86,7 @@ test("the simplicity slider restarts competition and removes unnecessary generat
   // previous picture re-priced is not a bound the competition promises; what
   // it promises is kept here: the facts are the same, the alignment trials
   // still join, and the engine band's top is joined.
-  await slider.evaluate(input => { input.value = "100"; input.dispatchEvent(new Event("input", { bubbles: true })); });
+  await slider.evaluate(input => { (input as HTMLInputElement).value = "100"; input.dispatchEvent(new Event("input", { bubbles: true })); });
   await localMapSettled(page);
   const geometric = await picture(page);
   expect(geometric.identity).toEqual(before.identity);

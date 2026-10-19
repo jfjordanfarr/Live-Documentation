@@ -167,9 +167,9 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
       if (previous) entering.push(wrapper);
     }
     if (isClosedDirectory(node)) {
-      wrapper.replaceChildren(createClosedDirectory(controller, exploration.closed.get(node.id)!));
+      wrapper.replaceChildren(createClosedDirectory(controller.cardContext, exploration.closed.get(node.id)!));
     } else {
-      const card = createNodeCard(controller, node, "center");
+      const card = createNodeCard(controller.cardContext, node, "center");
       card.classList.add("focus-node");
       card.classList.toggle("branch-member", exploration.members.has(node.id));
       wrapper.replaceChildren(card);

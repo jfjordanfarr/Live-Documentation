@@ -118,7 +118,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
 }
 
 /** Registers row endpoints in construction order, retaining exact and normalized names separately as the browser does. */
-export function registerPins(rows: readonly RowCapture[], centres: ReadonlyMap<RowCapture, number>, height: number): CardMetrics {
+export function registerPins<Row extends { symbol: string }>(rows: readonly Row[], centres: ReadonlyMap<Row, number>, height: number): CardMetrics {
   const pins = new Map<string, number>([["inbound:*", height / 2], ["outbound:*", height / 2]]);
   const rowKeys = new Set<string>();
   const hiddenKeys = new Set<string>();

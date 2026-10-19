@@ -181,8 +181,7 @@ These proposals were originally described against the multi-hop rendering archit
 #### Local Map (modularised 2025-12-04)
 
 - [packages/explorer/src/client/views/localView/index.ts](../layer-4/packages/explorer/src/client/views/localView/index.ts.mdmd.md)
-- [packages/explorer/src/client/views/localView/controller.ts](../layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md)
-- [packages/explorer/src/client/views/localView/render.ts](../layer-4/packages/explorer/src/client/views/localView/render.ts.mdmd.md)
+- [packages/explorer/src/client/views/localView/controller.ts](../layer-4/packages/explorer/src/client/views/localView/controller.ts.mdmd.md) — Owns the render lifecycle and camera for the shared branch stage
 - [packages/explorer/src/client/views/localView/connections.ts](../layer-4/packages/explorer/src/client/views/localView/connections.ts.mdmd.md)
 - [packages/explorer/src/client/views/localView/runtime.ts](../layer-4/packages/explorer/src/client/views/localView/runtime.ts.mdmd.md)
 - [packages/explorer/src/client/views/localView/state.ts](../layer-4/packages/explorer/src/client/views/localView/state.ts.mdmd.md)

@@ -17,24 +17,6 @@ const ESTATE = "/samples/estate/index.html?view=world";
 const BOARD_TEXT = ["#view-world svg text"];
 const LOCAL_TEXT = [...LOCAL_MAP.text, "#controls .control-btn"];
 
-interface WorldMapHandle {
-  ready: boolean;
-  instant: (value: boolean) => void;
-  reset: () => void;
-  under: (value: boolean) => void;
-  enter: (name: string) => void;
-  pieces: () => string[];
-  roads: () => string[];
-  doors: () => string[];
-  pin: (kind: string, id: string) => void;
-}
-
-declare global {
-  interface Window {
-    __worldMap?: WorldMapHandle;
-  }
-}
-
 async function openEstate(page: Page): Promise<void> {
   await page.goto(ESTATE);
   await page.waitForFunction(() => window.__worldMap?.ready === true, null, { timeout: 20_000 });

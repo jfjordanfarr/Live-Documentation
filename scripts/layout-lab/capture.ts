@@ -8,6 +8,7 @@
  *
  * @module layout-lab/capture
  */
+import type { PreparedTextWithSegments } from "@chenglou/pretext";
 import { chromium, type Page } from "@playwright/test";
 import * as fs from "node:fs/promises";
 import path from "node:path";
@@ -26,7 +27,7 @@ export interface PreparedText {
   /** The key of the font the text is set in, in `Capture.fonts`. */
   font: string;
   /** Pretext's prepared text, serialized whole; `layoutWithLines` reads it as it is. */
-  prepared: unknown;
+  prepared: PreparedTextWithSegments;
 }
 
 /** A font as the page renders it: the canvas font string, the letter spacing, and the height of one line. */
@@ -168,8 +169,8 @@ type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" |
 function readCapture(page: Page): Promise<PageCapture> {
   return page.evaluate(({ tolerance }) => {
     type Pretext = {
-      prepareWithSegments: (text: string, font: string, options?: { letterSpacing?: number }) => unknown;
-      layout: (prepared: unknown, maxWidth: number, lineHeight: number) => { height: number; lineCount: number };
+      prepareWithSegments: (text: string, font: string, options?: { letterSpacing?: number }) => PreparedTextWithSegments;
+      layout: (prepared: PreparedTextWithSegments, maxWidth: number, lineHeight: number) => { height: number; lineCount: number };
     };
     const pretext = (window as unknown as { __pretext: Pretext }).__pretext;
     const warnings: string[] = [];
@@ -202,7 +203,7 @@ function readCapture(page: Page): Promise<PageCapture> {
       }
       return key;
     };
-    const prepared = (element: Element, text = element.textContent ?? ""): { text: string; font: string; prepared: unknown } => {
+    const prepared = (element: Element, text = element.textContent ?? ""): PreparedText => {
       const font = fontOf(element);
       const value = pretext.prepareWithSegments(text, fonts[font].font, { letterSpacing: fonts[font].letterSpacing });
       // Hold Pretext to the page: its height at the element's width against the element's own, where the element is shown.

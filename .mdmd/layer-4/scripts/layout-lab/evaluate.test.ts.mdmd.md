@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: scripts/layout-lab/evaluate.test.ts
-- Generated At: 2026-10-13T16:52:35.712Z
+- Generated At: 2026-10-19T17:05:04.184Z
 
 ## Authored
 ### Purpose
@@ -32,6 +32,7 @@ _No public symbols detected_
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
+- [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface) (type-only)
 - [`evaluate.baselineConfig`](./evaluate.ts.mdmd.md#symbol-baselineconfig)
 - [`evaluate`](./evaluate.ts.mdmd.md#symbol-evaluate)
 - [`evaluate.evaluateAlignment`](./evaluate.ts.mdmd.md#symbol-evaluatealignment)

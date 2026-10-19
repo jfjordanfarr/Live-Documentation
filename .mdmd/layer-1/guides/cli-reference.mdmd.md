@@ -17,7 +17,7 @@ Complete catalog of Live Documentation CLI commands for external adopters. All c
 
 | Command                      | Purpose                                |
 | ---------------------------- | -------------------------------------- |
-| `npm run live-docs:generate` | Regenerate Live Docs for tracked files |
+| `npm run live-docs:generate` | Regenerate Live Docs for selected source files |
 
 #### `live-docs:generate`
 
@@ -26,6 +26,9 @@ Scans your workspace, materializes the documentation mirror, and writes the grap
 ```bash
 # Preview changes without writing
 npm run live-docs:generate -- --dry-run
+
+# Check whether committed Live Docs match source, without writing
+npm run live-docs:generate -- --check
 
 # Regenerate all Live Docs
 npm run live-docs:generate
@@ -41,12 +44,15 @@ npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 | Flag | Description |
 |------|-------------|
 | `--dry-run` | Preview without writing files |
+| `--check` | Fail when a doc would be created, updated or deleted; leave docs and the derived index untouched |
 | `--changed` | Only process Git-modified source files, using the full workspace for link resolution |
 | `--include <pattern>` | Render an explicit file or glob subset using workspace-wide resolution context; repeat to include several |
 | `--workspace <path>` | Target workspace root |
 | `--config <file>` | Path to config file |
 
 `--changed` requires Git status. If Git cannot report status, the command fails with the Git error; run full generation in a folder without Git. The file and symbol indexes still cover the full workspace, so a changed file can link to an unchanged provider. `--include` also uses full workspace context while rendering only its explicit subset.
+
+`--dry-run` reports differences but succeeds. `--check` uses the same non-writing comparison and exits unsuccessfully when the mirror is stale. `npm run livedocs` regenerates then lints locally; `npm run ci-check` requests `--check` explicitly before verification, so CI checks the committed mirror rather than repairing it.
 
 ---
 

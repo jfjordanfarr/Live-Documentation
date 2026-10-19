@@ -16,7 +16,9 @@
  * test until the register says so. Each entry names the construct that
  * causes it.
  */
+import { globSync } from "glob";
 import * as fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -39,9 +41,11 @@ const MEASURED_MISSES: Record<string, string[]> = {
   "fixtures/powershell-compendium": []
 };
 
-/** The fixtures that carry the parser's record. */
-function measuredFixtures(): string[] {
-  return Object.keys(MEASURED_MISSES).filter((fixture) => fs.existsSync(path.join(INTEGRATION_ROOT, fixture, "expected", "powershell-ast.json")));
+/** Discover parser records independently of the register of measured misses. */
+function measuredFixtures(root = INTEGRATION_ROOT): string[] {
+  return globSync(["programs/**/expected/powershell-ast.json", "fixtures/**/expected/powershell-ast.json"], { cwd: root, dot: true, nodir: true })
+    .map((file) => path.posix.dirname(path.posix.dirname(file.replace(/\\/gu, "/"))))
+    .sort();
 }
 
 /** Every file of a fixture, fixture-relative, as the generator's index holds a workspace's files. */
@@ -174,7 +178,22 @@ function compareDataFile(file: string, facts: PowerShellDataFileFacts, analysis:
 
 describe("the PowerShell adapter against PowerShell's parser", () => {
   it("finds the fixtures that carry the parser's record", () => {
-    expect(measuredFixtures()).toEqual(Object.keys(MEASURED_MISSES));
+    expect(measuredFixtures()).toEqual(Object.keys(MEASURED_MISSES).sort());
+  });
+
+  it("discovers a new parser record without adding it to the miss register", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "powershell-oracle-discovery-"));
+    try {
+      const expected = path.join(root, "fixtures", "new-case", "expected");
+      fs.mkdirSync(expected, { recursive: true });
+      fs.writeFileSync(path.join(expected, "powershell-ast.json"), "{}\n");
+      const hidden = path.join(root, "fixtures", ".hidden-case", "expected");
+      fs.mkdirSync(hidden, { recursive: true });
+      fs.writeFileSync(path.join(hidden, "powershell-ast.json"), "{}\n");
+      expect(measuredFixtures(root)).toEqual(["fixtures/.hidden-case", "fixtures/new-case"]);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
   });
 
   for (const fixture of measuredFixtures()) {

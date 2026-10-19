@@ -9,8 +9,13 @@ function runSafeCommitCheck() {
   const flags = parseFlags(process.argv.slice(2));
 
   try {
+    // Local runs update the mirror before tests read it. A freshness run checks
+    // the committed mirror without changing it, then tests that exact state.
+    runNpmScript(
+      flags.checkLiveDocs ? 'Live Docs freshness (non-mutating)' : 'Live Docs pipeline (generate + lint)',
+      flags.checkLiveDocs ? ['run', 'livedocs', '--', '--check'] : ['run', 'livedocs']
+    );
     runNpmScript('Verify (lint + build + unit + integration)', ['run', 'verify']);
-    runNpmScript('Live Docs pipeline (generate + lint)', ['run', 'livedocs']);
     runNpmScript('SlopCop markdown audit', ['run', 'slopcop:markdown']);
     runNpmScript('SlopCop asset audit', ['run', 'slopcop:assets']);
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);
@@ -59,6 +64,7 @@ runSafeCommitCheck();
 function parseFlags(argv) {
   let skipGitStatus = coerceBoolean(process.env.npm_config_skip_git_status) ?? false;
   let includeE2E = coerceBoolean(process.env.npm_config_e2e) ?? false;
+  let checkLiveDocs = false;
 
   for (const token of argv) {
     if (token === '--skip-git-status' || token === '--ci') {
@@ -68,6 +74,11 @@ function parseFlags(argv) {
 
     if (token === '--no-skip-git-status') {
       skipGitStatus = false;
+      continue;
+    }
+
+    if (token === '--check-live-docs') {
+      checkLiveDocs = true;
       continue;
     }
 
@@ -89,7 +100,7 @@ function parseFlags(argv) {
     skipGitStatus = true;
   }
 
-  return { skipGitStatus, includeE2E };
+  return { skipGitStatus, includeE2E, checkLiveDocs };
 }
 
 function coerceBoolean(value) {

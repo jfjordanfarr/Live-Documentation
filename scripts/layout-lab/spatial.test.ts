@@ -12,7 +12,7 @@ const graph: ExplorerGraphPayload = { nodes: [node("a", "implementation", 7), no
   { source: "a", target: "b", kind: "dependency", referenceCount: 3 },
   { source: "b", target: "a", kind: "type-reference" },
   { source: "test", target: "a", kind: "dependency" }, { source: "a", target: "asset", kind: "dependency" }
-], stats: { nodes: 4, links: 4, missingDependencies: 0 } };
+], stats: { nodes: 4, links: 4, referencesOutsideScan: 0 } };
 const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "example", scope: ["a"], subject: "a" };
 
 it("reports documented multiplicity, actual radius and the same preferred spacing as the page, with its filters", () => {

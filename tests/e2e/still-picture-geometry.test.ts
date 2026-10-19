@@ -25,8 +25,8 @@ describe("crossings", () => {
     expect(crossings([{ id: "a", points: bend }, { id: "b", points: [...bend] }]).points).toBe(0);
     // Members that part from one point do not cross each other either.
     const shared = bend.slice(0, 20);
-    const partUp: Array<[number, number]> = [...shared, ...sampled("x", [shared[19][0], 0], [300, -80]).points];
-    const partDown: Array<[number, number]> = [...shared, ...sampled("y", [shared[19][0], 0], [300, 80]).points];
+    const partUp: Polyline["points"] = [...shared, ...sampled("x", [shared[19][0], 0], [300, -80]).points];
+    const partDown: Polyline["points"] = [...shared, ...sampled("y", [shared[19][0], 0], [300, 80]).points];
     expect(crossings([{ id: "up", points: partUp }, { id: "down", points: partDown }]).points).toBe(0);
     // A third wire across the two coincident members is two points at one spot.
     const across = crossings([{ id: "a", points: bend }, { id: "b", points: [...bend] }, sampled("c", [50, -100], [50, 100])]);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { Capture, RowCapture } from "./capture";
+import type { Capture } from "./capture";
 import { chipsHeight, registerPins, resolvePin, synthesizedHeight, type CardMetrics } from "./card-model";
 import { cardViews } from "./measurer";
 import { insidePolygon } from "./signals";
@@ -39,7 +39,7 @@ describe("the lab's card model, the parts that need no page", () => {
   });
 
   it("keeps original registration identity when rows move, with exact names ahead of normalized collisions", () => {
-    const row = (symbol: string): RowCapture => ({ symbol, label: { text: symbol, font: "row", prepared: null }, badgesWidth: 0 });
+    const row = (symbol: string): { symbol: string } => ({ symbol });
     const lower = row("item"), upper = row("Item"), duplicate = row("Item"), internals = row("__internals__");
     // The last original Item remains the endpoint, although it is now above the first Item in the proposed layout.
     const metrics = registerPins([lower, upper, duplicate, internals], new Map([[lower, 90], [upper, 70], [duplicate, 20], [internals, 130]]), 180);
@@ -59,7 +59,7 @@ describe("the lab's card model, the parts that need no page", () => {
   });
 
   it("reconstructs registration from the graph's original symbols rather than the capture's displayed row order", () => {
-    const row = (symbol: string): RowCapture => ({ symbol, label: { text: symbol, font: "row", prepared: null }, badgesWidth: 0 });
+    const row = (symbol: string) => ({ symbol });
     const lower = row("item"), upper = row("Item"), duplicate = row("Item"), internals = row("__internals__");
     const capture = { cards: { a: { id: "a", rows: [upper, duplicate, lower, internals], notes: [], directory: { font: "row" } } } } as unknown as Capture;
     const branches = { subgraph: { nodes: [{ id: "a", publicSymbols: ["item", "Item", "Item"] }], links: [] }, rows: new Map([["a", ["item", "item", "item", "__internals__"]]]), relevantSymbols: new Map(), back: new Set() } as unknown as BranchGraph;
@@ -69,7 +69,7 @@ describe("the lab's card model, the parts that need no page", () => {
   });
 
   it("constructs both display and endpoint queues in the requested symbol order before the layout reorders names", () => {
-    const row = (symbol: string, badgesWidth = 0): RowCapture => ({ symbol, label: { text: symbol, font: "row", prepared: null }, badgesWidth });
+    const row = (symbol: string, badgesWidth = 0) => ({ symbol, badgesWidth });
     const upper = row("Item"), duplicate = row("Item", 20), lower = row("item"), z = row("z"), internals = row("__internals__");
     const capture = { cards: { a: { id: "a", rows: [upper, duplicate, lower, z, internals], notes: [], directory: { font: "row" } } } } as unknown as Capture;
     const branches = { subgraph: { nodes: [{ id: "a", publicSymbols: ["Item", "Item", "item", "z"] }], links: [] }, rows: new Map([["a", ["item", "item", "item", "z", "__internals__"]]]), relevantSymbols: new Map(), back: new Set() } as unknown as BranchGraph;

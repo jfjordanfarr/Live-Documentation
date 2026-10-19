@@ -1,0 +1,28 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "allowJs": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "vitest/globals"]
+  },
+  "include": [
+    "../packages/engine/src/**/*.test.ts",
+    "../packages/generator/src/**/*.test.ts",
+    "../packages/explorer/src/**/*.test.ts",
+    "../scripts/**/*.test.ts",
+    "e2e/**/*.test.ts",
+    "e2e/**/*.spec.ts",
+    "e2e/**/*.d.ts",
+    "integration/live-docs/**/*.test.ts",
+    "integration/slopcop/**/*.test.ts"
+  ],
+  "exclude": [
+    "integration/fixtures/**/*",
+    "integration/programs/**/*"
+  ]
+}

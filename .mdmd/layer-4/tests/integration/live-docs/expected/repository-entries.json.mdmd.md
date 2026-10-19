@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-10-18T05:55:54.340Z
+- Generated At: 2026-10-19T16:54:55.329Z
 
 ## Authored
 ### Purpose
@@ -142,7 +142,7 @@ The hand's reading of this repository's own entry points, with the reasons as th
 #### `entries:tests/e2e/playwright.config.ts` {#symbol-entriestestse2eplaywrightconfigts}
 - Type: key
 
-#### `entries:tests/integration/tsconfig.json` {#symbol-entriestestsintegrationtsconfigjson}
+#### `entries:tests/tsconfig.json` {#symbol-entriesteststsconfigjson}
 - Type: key
 
 #### `entries:tsconfig.base.json` {#symbol-entriestsconfigbasejson}

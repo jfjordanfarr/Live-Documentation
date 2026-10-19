@@ -31,7 +31,7 @@ export interface Overlap {
 export interface Truncation {
   text: string;
   tag: string;
-  /** How many pixels of text the box cannot show. */
+  /** The greatest horizontal or vertical overrun in pixels. */
   hidden: number;
 }
 
@@ -115,66 +115,129 @@ export function overlapsAmong(boxes: TextBox[], tolerance = 1): Overlap[] {
 }
 
 /**
- * Visible elements the selectors name whose text runs past the box that clips
- * it, or under a sibling's text on the same line. The text itself is measured,
- * through a range over each text node, so a pin or a badge positioned outside
- * the box does not count as text.
+ * Visible elements the selectors name whose text overruns its own content box, a non-scrollable clipping ancestor,
+ * or a sibling's text on the same line. Text is measured in line fragments rather than by its containing element:
+ * a wrapped line is valid, while one hidden below a fixed-height box is not. Scrollports and the view boundary are
+ * navigation frames, so panning or scrolling content out of them does not turn that content into a design fault.
  */
 export async function truncations(page: Page, selectors: string[]): Promise<Truncation[]> {
   return page.evaluate((list) => {
     const result: Truncation[] = [];
+    const seen = new Set<HTMLElement>();
+    type OverflowMode = "cut" | "scroll" | "none";
+    const overflowMode = (value: string): OverflowMode =>
+      value === "hidden" || value === "clip" ? "cut" : value === "auto" || value === "scroll" ? "scroll" : "none";
+    const contentBox = (element: HTMLElement): { left: number; right: number; top: number; bottom: number } => {
+      const rect = element.getBoundingClientRect();
+      const xScale = element.offsetWidth ? rect.width / element.offsetWidth : 1;
+      const yScale = element.offsetHeight ? rect.height / element.offsetHeight : 1;
+      const style = getComputedStyle(element);
+      const left = rect.left + (parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft)) * xScale;
+      const right = rect.right - (parseFloat(style.borderRightWidth) + parseFloat(style.paddingRight)) * xScale;
+      const top = rect.top + (parseFloat(style.borderTopWidth) + parseFloat(style.paddingTop)) * yScale;
+      const bottom = rect.bottom - (parseFloat(style.borderBottomWidth) + parseFloat(style.paddingBottom)) * yScale;
+      return { left, right, top, bottom };
+    };
+    const paddingBox = (element: HTMLElement): { left: number; right: number; top: number; bottom: number } => {
+      const rect = element.getBoundingClientRect();
+      const xScale = element.offsetWidth ? rect.width / element.offsetWidth : 1;
+      const yScale = element.offsetHeight ? rect.height / element.offsetHeight : 1;
+      const left = rect.left + element.clientLeft * xScale;
+      const top = rect.top + element.clientTop * yScale;
+      return { left, right: left + element.clientWidth * xScale, top, bottom: top + element.clientHeight * yScale };
+    };
+    type Clip = ReturnType<typeof paddingBox> & { x: OverflowMode; y: OverflowMode };
     for (const selector of list) {
       for (const node of document.querySelectorAll<HTMLElement>(selector)) {
+        if (seen.has(node)) continue;
+        seen.add(node);
         const text = (node.textContent ?? "").trim();
         if (!text || node.offsetWidth === 0) {
           continue;
         }
-        // Under a closed <details>, and not its summary: laid out but not shown (see textBoxes).
-        let underClosedDetails = false;
-        for (let child: Element = node, element = node.parentElement; element && element !== document.body; child = element, element = element.parentElement) {
-          if (element instanceof HTMLDetailsElement && !element.open && child.tagName !== "SUMMARY") {
-            underClosedDetails = true;
+        const ancestorClips: Clip[] = [];
+        let hidden = false, opacity = 1;
+        let child: Element | null = null;
+        for (let element: Element | null = node; element && element !== document.body; child = element, element = element.parentElement) {
+          // A view is the frame through which one pans a larger picture. Its off-frame content is not truncated text.
+          if (element.classList.contains("view-container")) break;
+          if (element instanceof HTMLDetailsElement && !element.open && child !== null && child.tagName !== "SUMMARY") {
+            hidden = true;
             break;
           }
+          const style = getComputedStyle(element);
+          if (style.display === "none" || style.visibility === "hidden") { hidden = true; break; }
+          opacity *= Number(style.opacity || "1");
+          if (!(element instanceof HTMLElement)) continue;
+          const x = overflowMode(style.overflowX), y = overflowMode(style.overflowY);
+          if (x !== "none" || y !== "none") ancestorClips.push({ ...paddingBox(element), x, y });
         }
-        if (underClosedDetails) {
-          continue;
-        }
-        const style = getComputedStyle(node);
-        const box = node.getBoundingClientRect();
-        // The box is on screen, the padding is in CSS pixels: a view drawn under a transform scales one and not the other.
-        const scale = box.width / node.offsetWidth;
-        const left = box.left + (parseFloat(style.paddingLeft) + parseFloat(style.borderLeftWidth)) * scale;
-        const right = box.right - (parseFloat(style.paddingRight) + parseFloat(style.borderRightWidth)) * scale;
+        if (hidden || opacity < 0.2) continue;
+        const own = contentBox(node);
+        const ownOverflowX = getComputedStyle(node).overflowX;
+        const ownScrollsX = ownOverflowX === "auto" || ownOverflowX === "scroll";
         const rects: DOMRect[] = [];
         const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
         for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) {
-          if (!(textNode.textContent ?? "").trim() || getComputedStyle(textNode.parentElement!).position === "absolute") {
-            continue;
+          if (!(textNode.textContent ?? "").trim()) continue;
+          let textHidden = false, textOpacity = opacity;
+          let child: Element | null = null;
+          for (let parent: Element | null = textNode.parentElement; parent; child = parent, parent = parent.parentElement) {
+            // A selected container can hold a closed details body. Chromium still gives that body's text a range box.
+            if (parent instanceof HTMLDetailsElement && !parent.open && child?.tagName !== "SUMMARY") {
+              textHidden = true;
+              break;
+            }
+            if (parent === node) break;
+            const style = getComputedStyle(parent);
+            if (style.display === "none" || style.visibility === "hidden" || style.position === "absolute") {
+              textHidden = true;
+              break;
+            }
+            textOpacity *= Number(style.opacity || "1");
+            if (textOpacity < 0.2) { textHidden = true; break; }
           }
+          if (textHidden) continue;
           const range = document.createRange();
           range.selectNodeContents(textNode);
-          const rect = range.getBoundingClientRect();
-          if (rect.width > 0) {
-            rects.push(rect);
-          }
+          for (const rect of range.getClientRects()) if (rect.width > 0 && rect.height > 0) rects.push(rect);
         }
-        let hidden = 0;
+        if (!rects.length) continue;
+        // Read ancestors from the text outward. A scrollport exposes only the portion of a fragment inside its
+        // padding box on the scrolling axis: outer fixed clips judge that exposed portion, not off-scroll content.
+        // An inner non-scrollable clip still reports the lost text, including a fragment hidden altogether.
+        let overrun = 0;
         for (const rect of rects) {
-          hidden = Math.max(hidden, rect.right - right, left - rect.left);
+          // Retain the existing own-width check, including text in padding, except where the element itself provides
+          // horizontal scrolling to reach its contents.
+          if (!ownScrollsX) overrun = Math.max(overrun, rect.right - own.right, own.left - rect.left);
+          const visible = { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+          for (const clip of ancestorClips) {
+            if (clip.x === "cut") overrun = Math.max(overrun, visible.right - clip.right, clip.left - visible.left);
+            if (clip.y === "cut") overrun = Math.max(overrun, visible.bottom - clip.bottom, clip.top - visible.top);
+            if (clip.x !== "none") {
+              visible.left = Math.max(visible.left, clip.left);
+              visible.right = Math.min(visible.right, clip.right);
+            }
+            if (clip.y !== "none") {
+              visible.top = Math.max(visible.top, clip.top);
+              visible.bottom = Math.min(visible.bottom, clip.bottom);
+            }
+            if (visible.left >= visible.right || visible.top >= visible.bottom) break;
+          }
         }
         for (let i = 0; i < rects.length; i += 1) {
           for (let j = i + 1; j < rects.length; j += 1) {
             const a = rects[i];
             const b = rects[j];
             if (Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 4) {
-              hidden = Math.max(hidden, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+              overrun = Math.max(overrun, Math.min(a.right, b.right) - Math.max(a.left, b.left));
             }
           }
         }
-        if (hidden > 1) {
+        if (overrun > 1) {
           const className = node.getAttribute("class")?.split(" ")[0];
-          result.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, hidden: Math.round(hidden) });
+          result.push({ text: text.slice(0, 60), tag: `${node.tagName.toLowerCase()}${className ? `.${className}` : ""}`, hidden: Math.round(overrun) });
         }
       }
     }

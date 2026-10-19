@@ -311,9 +311,9 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
       const folderShapes = (view.folderShape ? [...document.querySelectorAll<SVGGeometryElement>(view.folderShape)] : [])
         .flatMap(el => { const inverse = el.getScreenCTM()?.inverse(); return inverse ? [{ directory: el.dataset.directory ?? "", el, inverse }] : []; });
       /** Whether a screen point lies in a directory's drawn region: its box, or its shape's fill. */
-      const inFolder = (folder: { directory: string }, x: number, y: number): boolean =>
-        "rect" in folder ? within((folder as { rect: DOMRect }).rect, x, y) : (folder as { el: SVGGeometryElement; inverse: DOMMatrix }).el.isPointInFill(new DOMPoint(x, y).matrixTransform((folder as { inverse: DOMMatrix }).inverse));
-      const folders: Array<{ directory: string }> = [...folderBoxes, ...folderShapes];
+      const folders = [...folderBoxes, ...folderShapes];
+      const inFolder = (folder: typeof folders[number], x: number, y: number): boolean =>
+        "rect" in folder ? within(folder.rect, x, y) : folder.el.isPointInFill(new DOMPoint(x, y).matrixTransform(folder.inverse));
       const laneBoxes = (view.lane ? [...document.querySelectorAll<HTMLElement>(view.lane)] : []).map(el => el.getBoundingClientRect());
       /** Whether a label's text names the folder: the whole path, its last segment, or a file path inside it. */
       const namesFolder = (text: string, folder: string): boolean => {

@@ -37,7 +37,7 @@ const BUNDLED_HISTORY_FILE = "explorer-history.json";
 export type ExportedHistory = { rule: "none" } | HistorySelection;
 
 // Lazy import to keep esbuild out of the initial module graph
-const buildExplorerAssetsModule = async () => (await import("./buildAssets")).buildExplorerAssets;
+const withExplorerAssetsModule = async () => (await import("./buildAssets")).withExplorerAssets;
 
 /** Options controlling a static Explorer build. */
 export interface BuildStaticExplorerOptions {
@@ -162,16 +162,17 @@ export async function buildStaticExplorer(
     logger.log(`Wrote ${dataFile} (${formatBytes(jsonContent.length)})`);
 
     logger.log("Building HTML viewer...");
-    const buildExplorerAssets = await buildExplorerAssetsModule();
-    const assets = await buildExplorerAssets();
-    const viewerFile = path.join(outputDir, "index.html");
-    await fs.writeFile(viewerFile, assets.htmlTemplate, "utf-8");
-    logger.log(`Wrote ${viewerFile}`);
+    const withExplorerAssets = await withExplorerAssetsModule();
+    await withExplorerAssets(async (assets) => {
+        const viewerFile = path.join(outputDir, "index.html");
+        await fs.writeFile(viewerFile, assets.htmlTemplate, "utf-8");
+        logger.log(`Wrote ${viewerFile}`);
 
-    const assetsDir = path.join(outputDir, "static");
-    await fs.rm(assetsDir, { recursive: true, force: true });
-    await copyDirectory(assets.outDir, assetsDir);
-    logger.log(`Copied static assets to ${assetsDir}`);
+        const assetsDir = path.join(outputDir, "static");
+        await fs.rm(assetsDir, { recursive: true, force: true });
+        await copyDirectory(assets.outDir, assetsDir);
+        logger.log(`Copied static assets to ${assetsDir}`);
+    });
 
     const totalSize = await calculateDirectorySize(outputDir);
 
