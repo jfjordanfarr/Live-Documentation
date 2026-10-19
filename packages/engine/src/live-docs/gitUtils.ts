@@ -13,62 +13,51 @@ import { execFile } from "node:child_process";
 import { normalizeWorkspacePath } from "../tooling/pathUtils";
 
 /**
- * Detects files that have been changed in the git working tree.
+ * Detects files changed in the git working tree, including both paths of a rename.
  *
- * @param workspaceRoot - Absolute path to the repository root
+ * @param workspaceRoot - Absolute path to the scanned workspace, which may lie below Git's repository root
  * @returns Set of workspace-relative paths that have changes
+ * @throws When Git cannot report status; an unknown change set is not a clean tree.
  */
 export async function detectChangedFiles(workspaceRoot: string): Promise<Set<string>> {
+  let stdout: string;
+  let prefix: string;
   try {
-    const { stdout } = await execFileAsync("git", ["status", "--porcelain"], {
-      cwd: workspaceRoot
-    });
-    const changed = new Set<string>();
-    for (const rawLine of stdout.split(/\r?\n/)) {
-      const line = rawLine.trim();
-      if (!line) {
-        continue;
-      }
-      const entry = parsePorcelainLine(line);
-      if (entry) {
-        changed.add(entry);
-      }
+    ({ stdout } = await execFileAsync("git", ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", "."], {
+      cwd: workspaceRoot,
+      maxBuffer: 1 << 28
+    }));
+    const { stdout: rawPrefix } = await execFileAsync("git", ["rev-parse", "--show-prefix"], { cwd: workspaceRoot });
+    prefix = normalizeWorkspacePath(rawPrefix.replace(/\r?\n$/u, ""));
+  } catch (error) {
+    throw new Error(`Cannot use --changed in ${workspaceRoot}: Git status failed: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  const changed = new Set<string>();
+  const withinWorkspace = (repositoryPath: string): string | undefined => {
+    if (prefix && !repositoryPath.startsWith(prefix)) return undefined;
+    return normalizeWorkspacePath(repositoryPath.slice(prefix.length));
+  };
+  const records = stdout.split("\0");
+  for (let index = 0; index < records.length; index += 1) {
+    const record = records[index];
+    if (!record) continue;
+    if (record.length < 4 || record[2] !== " ") {
+      throw new Error(`Cannot use --changed in ${workspaceRoot}: Git returned a malformed status record.`);
     }
-    return changed;
-  } catch {
-    return new Set<string>();
-  }
-}
-
-/**
- * Parses a git status --porcelain line to extract the file path.
- *
- * @remarks
- * Handles renamed/copied files by extracting the destination path.
- *
- * @param line - A line from `git status --porcelain` output
- * @returns The normalized workspace-relative path, or undefined if invalid
- */
-export function parsePorcelainLine(line: string): string | undefined {
-  if (line.length < 4) {
-    return undefined;
-  }
-
-  const status = line.slice(0, 2);
-  const pathPart = line.slice(3).trim();
-  if (!pathPart) {
-    return undefined;
-  }
-
-  if (status.startsWith("R") || status.startsWith("C")) {
-    const arrowIndex = pathPart.indexOf("->");
-    if (arrowIndex >= 0) {
-      const renamed = pathPart.slice(arrowIndex + 2).trim();
-      return renamed ? normalizeWorkspacePath(renamed) : undefined;
+    const destination = withinWorkspace(record.slice(3));
+    if (destination) changed.add(destination);
+    // Porcelain -z lists the destination first, then the origin for a rename/copy.
+    // The origin matters when its old Live Doc must be removed.
+    if (/[RC]/u.test(record.slice(0, 2))) {
+      if (!records[index + 1]) {
+        throw new Error(`Cannot use --changed in ${workspaceRoot}: Git omitted the origin of a rename or copy.`);
+      }
+      const origin = withinWorkspace(records[index + 1]);
+      if (origin) changed.add(origin);
+      index += 1;
     }
   }
-
-  return normalizeWorkspacePath(pathPart);
+  return changed;
 }
 
 /**

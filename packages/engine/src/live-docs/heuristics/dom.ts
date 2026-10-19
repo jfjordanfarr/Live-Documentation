@@ -9,6 +9,8 @@ interface DomDependencyParams {
   absolutePath: string;
   workspaceRoot: string;
   content: string;
+  /** The files selected for this scan; absent for standalone source analysis. */
+  fileIndex?: ReadonlySet<string>;
 }
 
 const DOM_ID_PATTERN = /document\.getElementById\s*\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
@@ -33,7 +35,9 @@ type FileContentCache = Map<string, string | null>;
 /**
  * Scans a code file for `document.getElementById` / `querySelector('#...')`
  * calls and attempts to locate nearby markup files (`.html`, `.cshtml`, etc.)
- * that define those DOM IDs, returning dependency entries.
+ * that define those DOM IDs, returning dependency entries. With a workspace
+ * file index, only selected markup can become a dependency; without one,
+ * standalone analysis keeps the nearby-file search.
  */
 export async function inferDomDependencies(params: DomDependencyParams): Promise<DependencyEntry[]> {
   const ids = collectSelectors(params.content);
@@ -42,7 +46,11 @@ export async function inferDomDependencies(params: DomDependencyParams): Promise
   }
 
   const fileCache: FileContentCache = new Map();
-  const candidateFiles = await gatherNearbyMarkupFiles(params.absolutePath, params.workspaceRoot);
+  const nearbyFiles = await gatherNearbyMarkupFiles(params.absolutePath, params.workspaceRoot);
+  const fileIndex = params.fileIndex;
+  const candidateFiles = fileIndex
+    ? nearbyFiles.filter((absolute) => fileIndex.has(normalizeWorkspacePath(path.relative(params.workspaceRoot, absolute))))
+    : nearbyFiles;
   const discovered = new Map<string, { entry: DependencyEntry; symbols: Set<string> }>();
 
   for (const elementId of ids) {

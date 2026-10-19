@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -8,6 +9,7 @@ import {
   LIVE_DOCUMENTATION_FILE_EXTENSION,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { analyzeSourceFile } from "@live-documentation/engine/live-docs/core";
 
 import { generateLiveDocs } from "./generator";
 
@@ -213,5 +215,225 @@ describe("generateLiveDocs and nested scans", () => {
     const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["packages/foo/src/**/*.ts"] });
     await generateLiveDocs({ workspaceRoot, config, logger });
     expect(warnings).toEqual([]);
+  });
+});
+
+describe("generateLiveDocs changed files", () => {
+  it("uses the whole workspace for links and entries while writing only the changed source", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-changed-"));
+    const runGit = (...args: string[]) => execFileSync("git", args, { cwd: workspaceRoot });
+    const config = normalizeLiveDocumentationConfig({
+      ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+      glob: ["src/**/*.ts", "package.json"]
+    });
+    const app = path.join(workspaceRoot, "src", "app.ts");
+    const model = path.join(workspaceRoot, "src", "model.ts");
+    const other = path.join(workspaceRoot, "src", "other.ts");
+    const doc = path.join(workspaceRoot, config.root, config.baseLayer, `src/app.ts${config.extension}`);
+
+    try {
+      await fs.mkdir(path.dirname(app), { recursive: true });
+      await fs.writeFile(app, "import type { Item } from './model';\nexport function start(value: Item): Item { return value; }\n");
+      await fs.writeFile(model, "export interface Item { id: string }\n");
+      await fs.writeFile(other, "export const unrelated = 1;\n");
+      await fs.writeFile(path.join(workspaceRoot, "package.json"), JSON.stringify({ name: "sample", main: "src/app.ts" }));
+      runGit("init", "-q");
+      runGit("add", "src", "package.json");
+      runGit("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-qm", "initial");
+      await generateLiveDocs({ workspaceRoot, config, now: () => new Date("2026-01-01T00:00:00.000Z") });
+
+      await fs.writeFile(app, "import type { Item } from './model';\nexport function start(value: Item): Item { return value; }\nimport './other';\n");
+      const changed = await generateLiveDocs({ workspaceRoot, config, changedOnly: true, now: () => new Date("2026-01-02T00:00:00.000Z") });
+      const changedDoc = await fs.readFile(doc, "utf8");
+
+      expect(changed.processed).toBe(1);
+      expect(changed.files.map((file) => file.sourcePath)).toEqual(["src/app.ts"]);
+      expect(changedDoc).toContain("model.ts");
+      expect(changedDoc).toContain("Returns: [`Item`](./model.ts.md#symbol-item)");
+      expect(changedDoc).toContain("Entry:");
+
+      await generateLiveDocs({ workspaceRoot, config, now: () => new Date("2026-01-02T00:00:00.000Z") });
+      expect(await fs.readFile(doc, "utf8")).toBe(changedDoc);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("anchors Git status to a workspace nested inside a repository and ignores changes outside it", async () => {
+    const repositoryRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-nested-git-"));
+    const workspaceRoot = path.join(repositoryRoot, "project");
+    const runGit = (...args: string[]) => execFileSync("git", args, { cwd: repositoryRoot });
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    const app = path.join(workspaceRoot, "src", "app.ts");
+    const doc = path.join(workspaceRoot, config.root, config.baseLayer, `src/app.ts${config.extension}`);
+    const now = () => new Date("2026-01-01T00:00:00.000Z");
+
+    try {
+      await fs.mkdir(path.dirname(app), { recursive: true });
+      await fs.writeFile(app, "import type { Item } from './model';\nexport function use(value: Item): Item { return value; }\n");
+      await fs.writeFile(path.join(workspaceRoot, "src", "model.ts"), "export interface Item { id: string }\n");
+      await fs.writeFile(path.join(repositoryRoot, "outside.ts"), "export const outside = 1;\n");
+      runGit("init", "-q");
+      runGit("-c", "core.autocrlf=false", "add", "project/src", "outside.ts");
+      runGit("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-qm", "initial");
+      await generateLiveDocs({ workspaceRoot, config, now });
+
+      await fs.writeFile(path.join(repositoryRoot, "outside.ts"), "export const outside = 2;\n");
+      expect((await generateLiveDocs({ workspaceRoot, config, changedOnly: true, now })).processed).toBe(0);
+
+      await fs.writeFile(app, "import type { Item } from './model';\nexport function use(value: Item): Item { return value; }\nimport './model';\n");
+      const changed = await generateLiveDocs({ workspaceRoot, config, changedOnly: true, now });
+      const changedDoc = await fs.readFile(doc, "utf8");
+      expect(changed.files.map((file) => file.sourcePath)).toEqual(["src/app.ts"]);
+      expect(changedDoc).toContain("Returns: [`Item`](./model.ts.md#symbol-item)");
+      await generateLiveDocs({ workspaceRoot, config, now });
+      expect(await fs.readFile(doc, "utf8")).toBe(changedDoc);
+    } finally {
+      await fs.rm(repositoryRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("prunes changed deletions and rename origins while preserving authored stale docs", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-changed-removal-"));
+    const runGit = (...args: string[]) => execFileSync("git", args, { cwd: workspaceRoot });
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    const docPath = (source: string) => path.join(workspaceRoot, config.root, config.baseLayer, `${source}${config.extension}`);
+    const now = () => new Date("2026-01-01T00:00:00.000Z");
+
+    try {
+      await fs.mkdir(path.join(workspaceRoot, "src"));
+      await fs.writeFile(path.join(workspaceRoot, "src", "old name.ts"), "export const one = 1;\n");
+      await fs.writeFile(path.join(workspaceRoot, "src", "deleted.ts"), "export const two = 2;\n");
+      await fs.writeFile(path.join(workspaceRoot, "src", "authored.ts"), "export const retained = 4;\n");
+      await fs.writeFile(path.join(workspaceRoot, "src", "untouched.ts"), "export const three = 3;\n");
+      runGit("init", "-q");
+      runGit("add", "src");
+      runGit("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-qm", "initial");
+      await generateLiveDocs({ workspaceRoot, config, now });
+
+      const untouchedBefore = await fs.readFile(docPath("src/untouched.ts"), "utf8");
+      await fs.writeFile(docPath("src/authored.ts"), (await fs.readFile(docPath("src/authored.ts"), "utf8")).replace("_Pending authored purpose_", "A manually retained explanation."));
+      expect((await generateLiveDocs({ workspaceRoot, config, changedOnly: true, now })).processed).toBe(0);
+      runGit("mv", "src/old name.ts", "src/new name.ts");
+      await fs.rm(path.join(workspaceRoot, "src", "deleted.ts"));
+      await fs.rm(path.join(workspaceRoot, "src", "authored.ts"));
+      const changed = await generateLiveDocs({ workspaceRoot, config, changedOnly: true, now });
+      const changedIndex = await fs.readFile(path.join(workspaceRoot, config.root, "index.json"), "utf8");
+
+      expect(changed.files.map((file) => file.sourcePath)).toEqual(["src/new name.ts"]);
+      expect(changed.deletedFiles).toContain(`${config.root}/${config.baseLayer}/src/old name.ts${config.extension}`);
+      expect(changed.deletedFiles).toContain(`${config.root}/${config.baseLayer}/src/deleted.ts${config.extension}`);
+      expect(changed.deletedFiles).not.toContain(`${config.root}/${config.baseLayer}/src/authored.ts${config.extension}`);
+      await expect(fs.stat(docPath("src/old name.ts"))).rejects.toThrow();
+      await expect(fs.stat(docPath("src/deleted.ts"))).rejects.toThrow();
+      await expect(fs.stat(docPath("src/authored.ts"))).resolves.toBeDefined();
+      expect(await fs.readFile(docPath("src/untouched.ts"), "utf8")).toBe(untouchedBefore);
+
+      await generateLiveDocs({ workspaceRoot, config, now });
+      expect(await fs.readFile(path.join(workspaceRoot, config.root, "index.json"), "utf8")).toBe(changedIndex);
+
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+});
+
+describe("generateLiveDocs included files", () => {
+  it("resolves an included file against sources outside the explicit subset", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-included-context-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    const app = path.join(workspaceRoot, "src", "app.ts");
+    const doc = path.join(workspaceRoot, config.root, config.baseLayer, `src/app.ts${config.extension}`);
+    const now = () => new Date("2026-01-01T00:00:00.000Z");
+
+    try {
+      await fs.mkdir(path.dirname(app));
+      await fs.writeFile(app, "export function use(value: Item): Item { return value; }\n");
+      await fs.writeFile(path.join(workspaceRoot, "src", "model.ts"), "export interface Item { id: string }\n");
+      await generateLiveDocs({ workspaceRoot, config, now });
+
+      await fs.writeFile(app, "export function use(value: Item): Item { return value; }\nexport const extra = true;\n");
+      const included = await generateLiveDocs({ workspaceRoot, config, include: ["src/app.ts"], now });
+      const includedDoc = await fs.readFile(doc, "utf8");
+      expect(included.processed).toBe(1);
+      expect(includedDoc).toContain("model.ts");
+      await generateLiveDocs({ workspaceRoot, config, now });
+      expect(await fs.readFile(doc, "utf8")).toBe(includedDoc);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("generateLiveDocs DOM targets", () => {
+  it("links only scanned markup and ignores later edits to excluded markup", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-dom-targets-"));
+    const runGit = (...args: string[]) => execFileSync("git", args, { cwd: workspaceRoot, encoding: "utf8" });
+    const config = normalizeLiveDocumentationConfig({
+      ...DEFAULT_LIVE_DOCUMENTATION_CONFIG,
+      glob: ["src/**/*.ts", "*.html"],
+      exclude: ["excluded.html"]
+    });
+    const appDoc = path.join(workspaceRoot, config.root, config.baseLayer, `src/app.ts${config.extension}`);
+    const now = () => new Date("2026-01-01T00:00:00.000Z");
+
+    try {
+      await fs.mkdir(path.join(workspaceRoot, "src"));
+      await fs.writeFile(path.join(workspaceRoot, ".gitignore"), `${config.root}/\nignored.html\n`);
+      await fs.writeFile(path.join(workspaceRoot, "src", "app.ts"), "export const target = document.getElementById('x');\n");
+      await fs.writeFile(path.join(workspaceRoot, "visible.html"), '<main id="x"></main>\n');
+      await fs.writeFile(path.join(workspaceRoot, "excluded.html"), '<main id="x"></main>\n');
+      runGit("init", "-q");
+      runGit("-c", "core.autocrlf=false", "add", ".gitignore", "src", "visible.html", "excluded.html");
+      runGit("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-qm", "initial");
+      await fs.writeFile(path.join(workspaceRoot, "ignored.html"), '<main id="x"></main>\n');
+      expect(runGit("status", "--porcelain")).toBe("");
+      const standalone = await analyzeSourceFile(path.join(workspaceRoot, "src", "app.ts"), workspaceRoot);
+      expect(standalone.dependencies.map((entry) => entry.resolvedPath).sort()).toEqual(["excluded.html", "ignored.html", "visible.html"]);
+
+      await generateLiveDocs({ workspaceRoot, config, now });
+      const before = await fs.readFile(appDoc, "utf8");
+      const graph = JSON.parse(await fs.readFile(path.join(workspaceRoot, config.root, "index.json"), "utf8")) as { files: Record<string, unknown> };
+      expect(Object.keys(graph.files)).toEqual(["src/app.ts", "visible.html"]);
+      expect(before).toContain("visible.html");
+      expect(before).not.toContain("ignored.html");
+      expect(before).not.toContain("excluded.html");
+
+      await fs.writeFile(path.join(workspaceRoot, "ignored.html"), '<main id="different"></main>\n');
+      expect(runGit("status", "--porcelain")).toBe("");
+      await generateLiveDocs({ workspaceRoot, config, now });
+      expect(await fs.readFile(appDoc, "utf8")).toBe(before);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("generateLiveDocs changed-file status errors", () => {
+  it("still permits full generation outside Git but reports that --changed needs Git status", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-no-git-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    try {
+      await fs.mkdir(path.join(workspaceRoot, "src"));
+      await fs.writeFile(path.join(workspaceRoot, "src", "app.ts"), "export const app = 1;\n");
+      expect((await generateLiveDocs({ workspaceRoot, config })).processed).toBe(1);
+      await expect(generateLiveDocs({ workspaceRoot, config, changedOnly: true })).rejects.toThrow(/Cannot use --changed.*Git status failed/u);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("surfaces a broken Git status rather than treating it as an empty change set", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-broken-git-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    try {
+      await fs.mkdir(path.join(workspaceRoot, "src"));
+      await fs.writeFile(path.join(workspaceRoot, "src", "app.ts"), "export const app = 1;\n");
+      await fs.writeFile(path.join(workspaceRoot, ".git"), "gitdir: /missing/live-docs-git-directory\n");
+      await expect(generateLiveDocs({ workspaceRoot, config, changedOnly: true })).rejects.toThrow(/Cannot use --changed.*Git status failed/u);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
   });
 });

@@ -4,28 +4,31 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/heuristics/dom.ts
-- Generated At: 2026-09-27T23:21:31.493Z
+- Generated At: 2026-10-19T15:06:00.002Z
 
 ## Authored
 ### Purpose
-Infers markup dependencies for JavaScript that queries the DOM by element id, allowing Live Docs to connect telemetry scripts back to the Razor/WebForms surfaces that seed hidden configuration values.
+Infers markup dependencies for scripts that query the DOM by element id, connecting those scripts to the nearby pages that declare the ids.
 
 ### Notes
 - Focuses on `.aspx`, `.cshtml`, `.razor`, and related markup since those show up across the WebForms, Razor, and Blazor fixtures; expanding the directory allowlist keeps the search bounded while still catching host pages.
-- The heuristic complements `aspNetMarkupAdapter` by flowing the opposite direction (script → markup), which is why the LD-402 integration tests assert end-to-end paths rather than relying on this module in isolation.
+- The heuristic complements `aspNetMarkupAdapter` by flowing the opposite direction (script → markup); the [inspect integration tests](../../../../../../../tests/integration/live-docs/inspect-cli.test.ts) assert those end-to-end paths.
+- In generator runs, `fileIndex` limits nearby markup candidates to files discovery selected before their content is read. An ignored or configured-excluded page cannot produce a link to a Live Doc that will not exist. Standalone analysis without an index keeps the nearby disk search.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `inferDomDependencies` {#symbol-inferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/dom.ts#L38)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/heuristics/dom.ts#L42)
 - Parameters: `params`: `DomDependencyParams`
 
 ##### `inferDomDependencies` — Summary
 Scans a code file for `document.getElementById` / `querySelector('#...')`
 calls and attempts to locate nearby markup files (`.html`, `.cshtml`, etc.)
-that define those DOM IDs, returning dependency entries.
+that define those DOM IDs, returning dependency entries. With a workspace
+file index, only selected markup can become a dependency; without one,
+standalone analysis keeps the nearby-file search.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

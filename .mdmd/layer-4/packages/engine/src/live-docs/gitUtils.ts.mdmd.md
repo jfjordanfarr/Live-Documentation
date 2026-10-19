@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/gitUtils.ts
-- Generated At: 2026-10-18T00:39:18.511Z
+- Generated At: 2026-10-19T15:05:59.997Z
 
 ## Authored
 ### Purpose
@@ -12,10 +12,11 @@ Git-related utilities for Live Documentation: the files git marks as changed, fo
 
 ### Notes
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
-- `detectChangedFiles()` runs `git status --porcelain` and parses the output to a Set of paths
-- `parsePorcelainLine()` handles renamed/copied files by extracting the destination path from `R old -> new` format
+- `detectChangedFiles()` reads NUL-delimited `git status --porcelain=v1` records, keeping path whitespace intact and both the destination and origin of a rename/copy. A deleted or renamed source's old path lets changed-only generation remove its stale Live Doc.
+- The status call accepts output up to the same 256 MiB limit as discovery's `git check-ignore` call, so a large changed working tree does not silently become an empty change set; status errors still fail `--changed`.
+- Porcelain paths are relative to Git's repository root even when the scanned workspace is a nested folder. The status call limits itself to that folder; `git rev-parse --show-prefix` then removes the repository prefix so discovery receives workspace-relative paths. A dirty sibling outside the scanned folder cannot select a source inside it.
 - `execFileAsync()` wraps Node.js `execFile` in a Promise for async/await usage. Since 2026-10-17 it also runs the history command's git calls ([history/git.ts](./history/git.ts.mdmd.md)) and the generator's identity for the history's lens, and takes variables for the environment the command inherits, so that a scratch checkout can tell Git LFS to leave its pointers rather than fetch from a remote.
-- Returns empty Set on git errors (e.g., not a git repository) rather than throwing
+- `--changed` fails with Git's status error when the folder is not a repository or Git cannot report changes; an unknown change set is never treated as a clean tree. Full generation remains available without Git.
 - `listTrackedFiles()` lived here for one day (2026-10-16): discovery used it to keep a tracked file the root `.gitignore` would have dropped, until the same day's regeneration documented two nested agent worktrees and discovery moved to `git check-ignore` (`tooling/gitIgnored.ts`), which never reports a tracked file and needs no list of them ([Turn 3 of the October 16 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)).
 
 ## Generated
@@ -23,36 +24,23 @@ Git-related utilities for Live Documentation: the files git marks as changed, fo
 ### Public Symbols
 #### `detectChangedFiles` {#symbol-detectchangedfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/gitUtils.ts#L21)
+- Source: [source](../../../../../../packages/engine/src/live-docs/gitUtils.ts#L22)
 
 ##### `detectChangedFiles` — Summary
-Detects files that have been changed in the git working tree.
+Detects files changed in the git working tree, including both paths of a rename.
 
 ##### `detectChangedFiles` — Parameters
-- `workspaceRoot`: Absolute path to the repository root
+- `workspaceRoot`: Absolute path to the scanned workspace, which may lie below Git's repository root
 
 ##### `detectChangedFiles` — Returns
 Set of workspace-relative paths that have changes
 
-#### `parsePorcelainLine` {#symbol-parseporcelainline}
-- Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/gitUtils.ts#L52)
-
-##### `parsePorcelainLine` — Summary
-Parses a git status --porcelain line to extract the file path.
-
-##### `parsePorcelainLine` — Remarks
-Handles renamed/copied files by extracting the destination path.
-
-##### `parsePorcelainLine` — Parameters
-- `line`: A line from `git status --porcelain` output
-
-##### `parsePorcelainLine` — Returns
-The normalized workspace-relative path, or undefined if invalid
+##### `detectChangedFiles` — Exceptions
+- _Unknown_: When Git cannot report status; an unknown change set is not a clean tree.
 
 #### `execFileAsync` {#symbol-execfileasync}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/gitUtils.ts#L82)
+- Source: [source](../../../../../../packages/engine/src/live-docs/gitUtils.ts#L71)
 
 ##### `execFileAsync` — Summary
 Promise wrapper for Node.js execFile.

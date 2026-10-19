@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-16T20:40:21.084Z
+- Generated At: 2026-10-19T14:55:28.476Z
 
 ## Authored
 ### Purpose
@@ -16,13 +16,14 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - A doc is rewritten only when its rendered text differs from what is on disk, and only then does its `Generated At` line move.
 - Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) a run warns when the folder lies inside a scan, a docs root or a configuration file of this tool above it, and when a scan lies inside the folder, found by one walk for the docs root's and the configuration file's names below it; a scan never lies inside another scan, the owner's rule for the World Map, and the warning says to point at one of them. It warns and does not refuse, since the generator cannot know whether the other scan is current or abandoned.
 - Since 2026-10-15 ([Turn 4](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)) the first pass builds the entry index beside the symbol index, and `composeGenerated` writes each doc's `Entry` lines from the file's own analysis, the index, its symbol kinds, the tooling rule and the configuration's `entryPoints`, before the three sections.
+- Since 2026-10-19, `--changed` and `--include` build file, symbol and entry indexes from the discovered workspace even when they render a subset, so links from a selected doc to an unselected source remain available. Changed-only pruning checks just changed source paths, including rename origins, and preserves authored orphans. It does not invalidate unchanged consumers of a changed provider; full generation refreshes them.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L46)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L47)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -32,7 +33,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L91)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L93)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -45,9 +46,10 @@ content changed, and only then does its `Generated At` line move. After a run
 that writes, the graph index is derived from every doc on disk and written to
 `<root>/index.json`.
 
-Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
-and `--include` (explicit file subset) modes. Stale Live Docs whose source
-files no longer exist are pruned automatically (unless `changedOnly` is set).
+Supports `--dry-run` (no writes), `--changed` (process git-dirty sources
+against full workspace context), and `--include` (explicit file subset)
+modes. Stale Live Docs whose sources no longer exist are pruned; a
+changed-only run restricts pruning to changed source paths.
 
 Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
 (2026-01-28), cross-platform hash fix (2026-02-03) and the entry index
@@ -87,6 +89,7 @@ behind the `Entry` lines (2026-10-15).
 - [`document.authoredBlockOf`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-authoredblockof)
 - [`document.parseLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`gitUtils.detectChangedFiles`](../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
 - [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`graphFiles.writeLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)

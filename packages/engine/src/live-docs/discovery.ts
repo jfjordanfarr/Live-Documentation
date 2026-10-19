@@ -205,7 +205,7 @@ export async function discoverTargetFiles(options: DiscoverOptions): Promise<str
     if (options.config.exclude.some((pattern) => matchesPathPattern(relative, pattern))) {
       continue;
     }
-    if (changed.size > 0 && !changed.has(relative)) {
+    if (options.changedOnly && !changed.has(relative)) {
       continue;
     }
     candidates.add(absolute);

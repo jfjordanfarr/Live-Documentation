@@ -12,7 +12,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 
 ### Notes
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
-- `discoverTargetFiles()` supports `--changed` mode via git intersection for fast iterations
+- `discoverTargetFiles()` supports `--changed` mode via git intersection for fast iterations; an empty git change set selects no files. The generator discovers the full source set separately for workspace-wide indexes before selecting changed files for rendering.
 - `buildWorkspaceSymbolIndex()` performs a lightweight pre-scan of all targets to collect exported symbols
 - `resolveTypeToLiveDoc()` in `compose.ts` looks up a type name in the index; each location records whether its file declares the symbol or only re-exports it
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name

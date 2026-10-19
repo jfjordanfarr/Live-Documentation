@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/sourceAnalysis.ts
-- Generated At: 2026-09-28T16:48:39.181Z
+- Generated At: 2026-10-19T15:06:00.007Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,8 @@ Main entry point for analyzing source files to extract symbols and dependencies 
 ### Notes
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
 - `analyzeSourceFile()` is the single public API; delegates to polyglot adapters first, then falls back to TS parser
-- Infers DOM dependencies for `.html`/`.aspx` files via heuristics
+- Infers DOM dependencies for TypeScript and JavaScript sources that query ids in nearby markup.
+- When the generator supplies its file index, the DOM heuristic considers only markup in that selected scan. Calling `analyzeSourceFile()` without an index keeps its standalone nearby-file search.
 - Augments symbol list with re-exported symbols from star exports
 - Returns `EMPTY_ANALYSIS_RESULT` for unsupported file extensions
 
@@ -35,7 +36,7 @@ without requiring the TypeScript compiler to understand those languages.
 
 ##### `analyzeSourceFile` — Parameters
 - `absolutePath`: Absolute filesystem path to the source file under inspection.
-- `fileIndex`: Optional set of workspace file paths for cross-file reference resolution.
+- `fileIndex`: Optional set of workspace file paths for cross-file reference resolution and for bounding DOM markup candidates to the selected scan.
 - `symbolIndex`: The workspace symbol index, when built, so that a call can find the file that serves it.
 - `workspaceRoot`: Workspace root used to normalise relative dependency paths.
 

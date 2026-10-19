@@ -41,9 +41,12 @@ npm run live-docs:generate -- --workspace /path/to/repo --config custom.json
 | Flag | Description |
 |------|-------------|
 | `--dry-run` | Preview without writing files |
-| `--changed` | Only process modified files |
+| `--changed` | Only process Git-modified source files, using the full workspace for link resolution |
+| `--include <pattern>` | Render an explicit file or glob subset using workspace-wide resolution context; repeat to include several |
 | `--workspace <path>` | Target workspace root |
 | `--config <file>` | Path to config file |
+
+`--changed` requires Git status. If Git cannot report status, the command fails with the Git error; run full generation in a folder without Git. The file and symbol indexes still cover the full workspace, so a changed file can link to an unchanged provider. `--include` also uses full workspace context while rendering only its explicit subset.
 
 ---
 

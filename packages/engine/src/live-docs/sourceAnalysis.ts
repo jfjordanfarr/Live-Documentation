@@ -49,7 +49,7 @@ const EMPTY_ANALYSIS_RESULT: SourceAnalysisResult = {
  *
  * @param absolutePath - Absolute filesystem path to the source file under inspection.
  * @param workspaceRoot - Workspace root used to normalise relative dependency paths.
- * @param fileIndex - Optional set of workspace file paths for cross-file reference resolution.
+ * @param fileIndex - Optional set of workspace file paths for cross-file reference resolution and for bounding DOM markup candidates to the selected scan.
  * @param symbolIndex - The workspace symbol index, when built, so that a call can find the file that serves it.
  *
  * @returns Analyzer output describing exported symbols and detected dependencies.
@@ -106,7 +106,8 @@ export async function analyzeSourceFile(
     const domDependencies = await inferDomDependencies({
       absolutePath,
       workspaceRoot,
-      content
+      content,
+      fileIndex
     });
     if (domDependencies.length > 0) {
       dependencies = mergeDependencyEntries(dependencies, domDependencies);

@@ -14,6 +14,7 @@ import {
   renderLiveDoc,
   type LiveDoc
 } from "@live-documentation/engine/live-docs/document";
+import { detectChangedFiles } from "@live-documentation/engine/live-docs/gitUtils";
 import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
   normalizeWorkspacePath,
@@ -78,9 +79,10 @@ const DEFAULT_LOGGER: LiveDocGeneratorLogger = {
  * that writes, the graph index is derived from every doc on disk and written to
  * `<root>/index.json`.
  *
- * Supports `--dry-run` (no writes), `--changed` (process only git-dirty files),
- * and `--include` (explicit file subset) modes. Stale Live Docs whose source
- * files no longer exist are pruned automatically (unless `changedOnly` is set).
+ * Supports `--dry-run` (no writes), `--changed` (process git-dirty sources
+ * against full workspace context), and `--include` (explicit file subset)
+ * modes. Stale Live Docs whose sources no longer exist are pruned; a
+ * changed-only run restricts pruning to changed source paths.
  *
  * Created 2025-11-09; extended with symbol index (2026-01-14), JSON adapter
  * (2026-01-28), cross-platform hash fix (2026-02-03) and the entry index
@@ -106,39 +108,37 @@ export async function generateLiveDocs(
     logger.warn(`A scan lies inside this folder at ${inner}; a scan never lies inside another scan. Point at one of them.`);
   }
 
-  const targetFiles = await discoverTargetFiles({
+  const workspaceFiles = await discoverTargetFiles({
     workspaceRoot,
     config: normalizedConfig,
-    include: includeSet,
-    changedOnly: options.changedOnly ?? false
+    include: new Set(),
+    changedOnly: false
   });
+  const includedFiles = includeSet.size > 0
+    ? await discoverTargetFiles({ workspaceRoot, config: normalizedConfig, include: includeSet, changedOnly: false })
+    : workspaceFiles;
+  // An explicit include may name a source outside the configured globs. It is
+  // still part of the workspace context for this run, but only included files
+  // are rendered.
+  const allTargetFiles = includeSet.size > 0
+    ? [...new Set([...workspaceFiles, ...includedFiles])].sort()
+    : workspaceFiles;
+  const changedPaths = options.changedOnly ? await detectChangedFiles(workspaceRoot) : undefined;
 
-  if (targetFiles.length === 0) {
-    logger.info("No source files matched Live Documentation globs.");
-    return {
-      processed: 0,
-      written: 0,
-      skipped: 0,
-      files: [],
-      deleted: 0,
-      deletedFiles: []
-    };
-  }
-
-  // Build workspace file index for cross-file reference resolution (e.g., JSON adapters)
+  // Resolution requires every discovered file, even when only a few are regenerated.
   const fileIndex: WorkspaceFileIndex = new Set(
-    targetFiles.map((absPath) =>
+    allTargetFiles.map((absPath) =>
       normalizeWorkspacePath(path.relative(workspaceRoot, absPath))
     )
   );
   logger.info(`Built file index with ${fileIndex.size} workspace paths`);
 
-  // Build the workspace-wide indexes: the symbols, for cross-Live-Doc type reference resolution, and the entries manifests declare
+  // Build the workspace-wide indexes: symbols for type links and manifests for entries.
   const liveDocsRoot = normalizeWorkspacePath(
     path.join(normalizedConfig.root, normalizedConfig.baseLayer)
   );
   const { symbols: symbolIndex, entries: entryIndex } = await buildWorkspaceIndexes({
-    targetFiles,
+    targetFiles: allTargetFiles,
     workspaceRoot,
     liveDocsRoot,
     docExtension: normalizedConfig.extension,
@@ -146,10 +146,16 @@ export async function generateLiveDocs(
   });
   logger.info(`Built symbol index with ${symbolIndex.size} unique symbol names and an entry index with ${entryIndex.size} declared files`);
 
+  const targetFiles = changedPaths
+    ? includedFiles.filter((absolute) => changedPaths.has(normalizeWorkspacePath(path.relative(workspaceRoot, absolute))))
+    : includedFiles;
+
   const results: LiveDocWriteRecord[] = [];
   let written = 0;
   let skipped = 0;
-  const generatedDocPaths = new Set<string>();
+  const generatedDocPaths = new Set(allTargetFiles.map((absolute) =>
+    resolveLiveDocPaths(workspaceRoot, normalizedConfig, normalizeWorkspacePath(path.relative(workspaceRoot, absolute)), normalizedConfig.extension).relative
+  ));
 
   const liveDocsRootAbsolute = path.resolve(
     workspaceRoot,
@@ -186,7 +192,6 @@ export async function generateLiveDocs(
       normalizedSourcePath,
       docExtension
     );
-    generatedDocPaths.add(docPaths.relative);
     const existingContent = await readFileIfExists(docPaths.absolute);
     const existing = readExisting(existingContent);
     const timestampNow = now().toISOString();
@@ -246,12 +251,13 @@ export async function generateLiveDocs(
   }
 
   let deletedFiles: string[] = [];
-  const shouldPrune = includeSet.size === 0 && !(options.changedOnly ?? false);
+  const shouldPrune = includeSet.size === 0;
   if (shouldPrune) {
     deletedFiles = await pruneStaleLiveDocs({
       workspaceRoot,
       config: normalizedConfig,
       preservedDocPaths: generatedDocPaths,
+      candidateSourcePaths: changedPaths,
       dryRun: options.dryRun ?? false,
       logger
     });
@@ -337,6 +343,7 @@ async function pruneStaleLiveDocs(args: {
   workspaceRoot: string;
   config: LiveDocumentationConfig;
   preservedDocPaths: Set<string>;
+  candidateSourcePaths?: Set<string>;
   dryRun: boolean;
   logger: LiveDocGeneratorLogger;
 }): Promise<string[]> {
@@ -361,6 +368,10 @@ async function pruneStaleLiveDocs(args: {
 
   for (const absolute of files) {
     const workspaceRelative = normalizeWorkspacePath(path.relative(args.workspaceRoot, absolute));
+    if (args.candidateSourcePaths) {
+      const sourcePath = normalizeWorkspacePath(path.relative(baseLayerRoot, absolute)).slice(0, -args.config.extension.length);
+      if (!args.candidateSourcePaths.has(sourcePath)) continue;
+    }
     if (args.preservedDocPaths.has(workspaceRelative)) {
       continue;
     }
