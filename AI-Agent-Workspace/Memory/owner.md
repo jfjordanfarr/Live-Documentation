@@ -14,6 +14,8 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 
 ## How they work with an agent
 
+- **Audit quality unevenly, including tests** (2026-10-19, [Turn 15](../ChatHistory/2026/10/2026-10-19.1.record.md#turn-15)). The owner expects "jagged quality: incredible in some areas and surprisingly poor in others" and trusts the agent to distinguish them in the software's current state. Preserve demonstrably strong design and tests; examine what tests actually prove, including whether wrong behavior makes them fail. A historical size-driven origin is evidence to investigate, not a verdict that a boundary should be removed.
+
 - **Stewardship after the file-size constraint** (2026-10-19, [Turn 14](../ChatHistory/2026/10/2026-10-19.1.record.md#turn-14)). The former 1,000-line limit addressed real model/edit-tool failures, but that constraint is gone. The owner wants boundaries that permit independent **improvement**, with freedom to write code in its appropriate form: "Not because I love long code files but because I care about the freedom to create the code as it really _should_ be." Assess cohesion, ownership, contracts and readable expression; neither splitting nor merging is justified by line count alone.
 
 - **Public CI before additional credentials** (2026-10-19, [Turn 13](../ChatHistory/2026/10/2026-10-19.1.record.md#turn-13)). On checking this open-source repository's pipelines: "I'd rather not put in a PAT unless I need to." Use public run/job/step results where available and keep returned data compact; do not recommend a token just to read information already public. A specific necessary operation that remains blocked is the point to discuss authenticated access.
