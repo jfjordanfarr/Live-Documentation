@@ -13,9 +13,8 @@ import type { LiveDocumentationConfig } from "../../config/liveDocumentationConf
 
 /**
  * The lens of a generator and a normalized configuration, with its key. The key is made of the generator's version,
- * its code as committed and its uncommitted changes, and the configuration; the commit the generator runs from rides
- * in the lens for the reader but does not key it, so that a commit which touches no generator code keeps the cache
- * (2026-10-18).
+ * its committed code and tool dependency lock, its uncommitted changes to either, and the configuration; the commit
+ * the generator runs from rides in the lens for the reader but does not key it, so unrelated commits keep the cache.
  */
 export function lensOf(generator: GeneratorIdentity, configuration: LiveDocumentationConfig): HistoryLens {
   const keyed = { version: generator.version, code: generator.code, modified: generator.modified };

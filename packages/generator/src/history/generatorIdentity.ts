@@ -21,14 +21,16 @@ const PACKAGE_ROOT = path.resolve(__dirname, "..", "..");
 
 // The folders whose code makes a summary, as they stand in a checkout of this repository.
 const GENERATOR_FOLDERS = ["packages/engine", "packages/generator"];
+// This repository's lock names the installed tool dependencies, including parser versions; a scanned project's lock is not ours.
+const TOOL_DEPENDENCY_LOCK = "package-lock.json";
 
 /**
  * The generator's package version and, when it runs from a checkout of this
- * repository, a hash of its code as committed (the tree ids of the engine and
- * the generator at the commit, so that a commit touching neither keeps the
- * lens; 2026-10-18), the commit it runs from, and a hash of any uncommitted
- * change to the engine or the generator there, so that a generator edited in
- * place is a new lens rather than the commit it started from.
+ * repository, a hash of its code and tool dependency lock as committed (the
+ * engine and generator tree ids and the lock entry at the commit), the commit
+ * it runs from, and a hash of uncommitted changes to those inputs. The lock's
+ * working bytes are compared to its committed blob even when Git ignores it.
+ * An absent lock has its own stable identity; a scanned project's lock is never read.
  */
 export async function generatorIdentity(): Promise<GeneratorIdentity> {
   const manifest = JSON.parse(await fs.readFile(path.join(PACKAGE_ROOT, "package.json"), "utf8")) as { version: string };
@@ -49,15 +51,22 @@ async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: 
     return undefined;
   }
   const commit = (await git(topLevel, ["rev-parse", "HEAD"])).trim();
-  // The code as committed: the tree ids of the two folders, which change only when something under them does.
-  const trees = await git(topLevel, ["rev-parse", ...GENERATOR_FOLDERS.map((folder) => `HEAD:${folder}`)]);
-  const code = createHash("sha256").update(trees).digest("hex").slice(0, 16);
+  // The committed tool inputs: both code trees and this tool's dependency lock. ls-tree returns empty when the lock is absent.
+  const [trees, lockEntry] = await Promise.all([
+    git(topLevel, ["rev-parse", ...GENERATOR_FOLDERS.map((folder) => `HEAD:${folder}`)]),
+    git(topLevel, ["ls-tree", "HEAD", "--", TOOL_DEPENDENCY_LOCK])
+  ]);
+  const code = createHash("sha256").update(trees).update("tool-lock\0").update(lockEntry || "absent\n").digest("hex").slice(0, 16);
+  const committedLock = lockEntry === "" ? null : /^\d+ blob ([0-9a-f]+)\tpackage-lock\.json\r?\n$/u.exec(lockEntry)?.[1];
+  if (committedLock === undefined) throw new Error(`Cannot identify the committed ${TOOL_DEPENDENCY_LOCK} in ${topLevel}`);
+  const workingLock = await workingLockBlob(topLevel);
   const status = await git(topLevel, ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ...GENERATOR_FOLDERS]);
-  if (status === "") {
+  if (status === "" && workingLock === committedLock) {
     return { code, commit, modified: null };
   }
   const hash = createHash("sha256");
   hash.update(await git(topLevel, ["diff", "--binary", "HEAD", "--", ...GENERATOR_FOLDERS]));
+  if (workingLock !== committedLock) hash.update("tool-lock\0").update(workingLock ?? "absent");
   for (const entry of status.split("\0")) {
     if (entry.startsWith("?? ")) {
       const untracked = entry.slice(3);
@@ -66,6 +75,17 @@ async function checkoutOf(packageRoot: string): Promise<{ code: string; commit: 
     }
   }
   return { code, commit, modified: hash.digest("hex").slice(0, 16) };
+}
+
+/** The working lock's Git blob id, regardless of whether Git tracks or ignores the file. */
+async function workingLockBlob(topLevel: string): Promise<string | null> {
+  try {
+    await fs.access(path.join(topLevel, TOOL_DEPENDENCY_LOCK));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
+  }
+  return (await git(topLevel, ["hash-object", "--", TOOL_DEPENDENCY_LOCK])).trim();
 }
 
 async function git(cwd: string, args: readonly string[]): Promise<string> {

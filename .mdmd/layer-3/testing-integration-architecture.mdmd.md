@@ -1,6 +1,6 @@
 # Integration Testing
 
-_Current as of 2026-10-16._
+_Current as of 2026-10-19._
 
 Integration suites run the real generator and the real CLI over fixture workspaces. They live under `tests/integration/live-docs/` and run as the `integration` Vitest project (`npm run test:integration`). Nothing in them touches the VS Code API; the Electron harness that once hosted them was retired on 2026-09-27.
 
@@ -20,6 +20,7 @@ Integration suites run the real generator and the real CLI over fixture workspac
 | `oracle.test.ts`            | `oracle:compare` runs over every sample program that carries expectations and accounts for every expected edge as found or missing                                                  |
 | `include-dirs.test.ts`      | The C and C++ adapter's include rule against the compiler: over the include-directories fixture, every quoted include the docs resolve is the file scip-clang resolved under `-I include -I src -I .`, and no other       |
 | `powershell-oracle.test.ts` | The PowerShell adapter against PowerShell's own parser, without `pwsh`: over every fixture that carries `expected/powershell-ast.json`, the functions each file publishes (name, line, column, help), the classes and enums it defines, its dependencies and its program mark, and a `.psd1`'s manifest reading (its module, what it names, the root module it declares), agree with the parser's record, but for a register of measured misses that must match exactly; the register is empty |
+| `generator-identity.test.ts` | The history lens against real Git in isolated tool and host checkouts: committed, dirty, absent, untracked and ignored tool-lock changes invalidate reuse when appropriate, while unrelated files and an installed generator's host lock do not |
 
 Rosetta parity is a smoke alarm for a regression in one adapter. It is not a measure of correctness; that is the job of the compiler-backed oracle described in [Architectural Decisions](architectural-decisions.mdmd.md) under "Accuracy Measurement".
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/format.ts
-- Generated At: 2026-10-18T22:17:31.775Z
+- Generated At: 2026-10-19T19:08:19.541Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ The format of `history.json`, the sequence a repository's history is read into u
 - The entry mark is one boolean per file, as C1 recommended, so that the walk from a past commit's entries can run; the Entry lines' reasons were in the docs of that day, which the sequence does not keep.
 - `HistoryHead` is what the bundle's data says of the history it carries, so that the client knows the lens, the window and where knowledge begins before it fetches the file.
 - The format's version is `live-docs-history/1`; the CLI and the static builder refuse another and name the command that writes this one.
-- `GeneratorIdentity.code` (the evening of 2026-10-18) is a hash of the generator's code as committed, the tree ids of `packages/engine` and `packages/generator`, and it keys the lens in place of the commit, which still rides in the head for the reader: until then every commit of this repository, even one touching no generator code, was a new lens and a regeneration of the whole cache, which the owner's first day with the history met at once.
+- `GeneratorIdentity.code` (the evening of 2026-10-18) hashes committed tool inputs in place of the commit, which still rides in the head for the reader: until then every commit of this repository, even one touching no generator code, was a new lens and regenerated the whole cache. It includes the engine and generator trees and, since 2026-10-19, this tool checkout's dependency-lock entry; `modified` covers uncommitted changes to the same inputs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -122,7 +122,7 @@ A snapshot repeated whole after a step, so that a seek need not replay from the 
 - Source: [source](../../../../../../../packages/engine/src/live-docs/history/format.ts#L112)
 
 ##### `GeneratorIdentity` — Summary
-Which generator made the summaries: its package version, its code as committed, the commit it runs from and any uncommitted change to it.
+Which generator made the summaries: its package version, committed tool inputs, the commit it runs from and any uncommitted change to those inputs.
 
 #### `HistoryLens` {#symbol-historylens}
 - Type: interface

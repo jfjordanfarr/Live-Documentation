@@ -18,6 +18,14 @@ Describe what one run of the generator does, what it reads, what it writes, and 
 
 `--changed` is a file-subset command over Git's dirty paths; it does not re-render an unchanged consumer when another file's interface changes. After such a change, run full generation to refresh the whole mirror. The current invalidation and per-file cache design remain open.
 
+### Optimization direction under review
+
+The [October 19 tradeoff review](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-18) recommends making ordinary full generation reuse proven unchanged work while keeping its complete-result contract. Output scope and computation scope are different: a cache can save analysis without withholding affected docs from the result. File-local facts and resolution against the current workspace are candidate independent responsibilities; the cache must account for legitimate contextual inputs, configuration and analyzer identity, and fall back to analysis when reuse cannot be established. A clean CI checkout has no dirty paths, so Git status alone cannot identify the work since a previous build.
+
+This is a direction to investigate, not a shipped cache or a changed command contract. Keep the existing literal `--changed` behavior honest until a correct replacement has been tested against full generation and measured. Its earlier timing savings came from a shortcut with incomplete invalidation; they do not predict a correct cache's savings. No additional incremental mode is selected. Producer-side reuse is compatible with a complete standalone HTML export; recipients do not need its cache or earlier exports.
+
+### Verification order
+
 The `livedocs` command runs generation to completion before lint. In the local `safe:commit` chain this comes before the tests, so they read the updated mirror. `ci-check` selects `--check` explicitly: it compares source with the committed docs without writing them or `<root>/index.json`, fails if a doc would change, and then verifies that exact checkout. `--skip-git-status` controls only the final status report; it never selects the check mode. This gate order was repaired after the [October 19 audit](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-16) reproduced lint passing before the first doc had been written.
 
 ## What a run keeps
