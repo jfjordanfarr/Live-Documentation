@@ -13,16 +13,22 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # Keep the active history build so it can save its cache. GitHub retains the
+  # newest pending run when later pushes replace an older pending run.
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # A cold run regenerates the whole mainline; warm runs reuse the lens cache.
+    timeout-minutes: 180
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          # The history command reads the first-parent mainline back to its beginning.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -30,13 +36,39 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Restore history summaries
+        id: history-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .mdmd/history
+          # Each run gets a new immutable cache; the prefix restores the newest
+          # cache made by the same generator, dependencies and configuration.
+          key: history-${{ runner.os }}-${{ hashFiles('packages/engine/**', 'packages/generator/**', 'package.json', 'package-lock.json', '.live-docs.config.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            history-${{ runner.os }}-${{ hashFiles('packages/engine/**', 'packages/generator/**', 'package.json', 'package-lock.json', '.live-docs.config.json') }}-
+
       - name: Install dependencies
         run: npm ci
+
+      - name: Compute complete mainline history
+        id: history
+        env:
+          CI: "true"
+        run: npm run live-docs:history -- --jobs 2
+
+      - name: Save history summaries
+        # A failed generation can still leave valid, atomically written commit
+        # summaries that shorten the next run. The job remains failed.
+        if: ${{ !cancelled() && steps.history.outcome != 'skipped' }}
+        uses: actions/cache/save@v4
+        with:
+          path: .mdmd/history
+          key: ${{ steps.history-cache.outputs.cache-primary-key }}
 
       - name: Build static explorer bundle
         env:
           CI: "true"
-        run: npm run live-docs:visualize
+        run: npm run live-docs:visualize -- --history all
 
       - name: Disable Jekyll
         run: touch dist/explorer/.nojekyll
