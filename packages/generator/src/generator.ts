@@ -498,7 +498,8 @@ function composeGenerated(params: {
     reExports: params.analysis.reExportedSymbols ?? [],
     docDir,
     liveDocsRootAbsolute: params.liveDocsRootAbsolute,
-    docExtension: params.docExtension
+    docExtension: params.docExtension,
+    symbolIndex: params.symbolIndex
   });
 
   return reExports.length > 0 ? { entries, symbols, dependencies, reExports } : { entries, symbols, dependencies };

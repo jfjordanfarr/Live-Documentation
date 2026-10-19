@@ -4,15 +4,16 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/dependencies.test.ts
-- Generated At: 2026-10-15T15:49:39.538Z
+- Generated At: 2026-10-19T21:12:55.075Z
 
 ## Authored
 ### Purpose
-Proves how a relative import specifier is resolved to a workspace file: a dot inside a file name is part of the name, a JavaScript extension names the TypeScript source it compiles from, and an extensionless specifier is tried by extension and then by index file.
+Proves how a relative import specifier resolves to a workspace file and how the collector distinguishes dynamic imports, namespace re-exports and bare star re-exports.
 
 ### Notes
 - Written on 2026-09-27 when five of this repository's own docs listed `./csharp.dependencies` and its siblings as external modules: the resolver had read `.dependencies` as an extension and looked for that exact file.
 - Each test builds its own temporary workspace, so the cases never depend on the repository's layout.
+- The namespace fixture asserts that `export * as Models` publishes `Models` and keeps a file dependency, while only an accompanying bare `export *` republishes the provider's `Item` anchor, even after dependencies are merged.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -25,8 +26,11 @@ _No public symbols detected_
 - `node:fs/promises`
 - `node:os`
 - `node:path` - `path`
+- [`dependencies.augmentWithReExportedSymbols`](./dependencies.ts.mdmd.md#symbol-augmentwithreexportedsymbols)
 - [`dependencies.collectDependencies`](./dependencies.ts.mdmd.md#symbol-collectdependencies)
+- [`dependencies.mergeDependencyEntries`](./dependencies.ts.mdmd.md#symbol-mergedependencyentries)
 - [`dependencies.resolveDependency`](./dependencies.ts.mdmd.md#symbol-resolvedependency)
+- [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols)
 - `typescript` - `ts`
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

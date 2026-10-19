@@ -417,6 +417,110 @@ describe("generateLiveDocs included files", () => {
   });
 });
 
+describe("full generation resolves current provider and manifest facts", () => {
+  it("keeps full docs and graph current when a provider appears and a manifest retargets", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "script-facts-full-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts", "package.json"] });
+    const app = path.join(workspaceRoot, "src", "app.ts");
+    const model = path.join(workspaceRoot, "src", "model.ts");
+    const manifest = path.join(workspaceRoot, "package.json");
+    const doc = (source: string) => path.join(workspaceRoot, config.root, config.baseLayer, `${source}${config.extension}`);
+    const graphPath = path.join(workspaceRoot, config.root, "index.json");
+    const now = () => new Date("2026-01-01T00:00:00.000Z");
+    try {
+      await fs.mkdir(path.dirname(app));
+      await fs.writeFile(app, "import type { Item } from './model';\nexport function start(value: Item): Item { return value; }\n");
+      await fs.writeFile(manifest, JSON.stringify({ name: "sample", main: "src/app.ts" }));
+      await generateLiveDocs({ workspaceRoot, config, now });
+      const before = await fs.readFile(doc("src/app.ts"), "utf8");
+      expect(before).toContain("Entry:");
+      expect(before).not.toContain("./model.ts.md#symbol-item");
+      await fs.writeFile(doc("src/app.ts"), before.replace("_Pending authored purpose_", "The app's authored purpose."));
+
+      await fs.writeFile(model, "export interface Item { id: string }\n");
+      await fs.writeFile(manifest, JSON.stringify({ name: "sample", main: "src/model.ts" }));
+      await generateLiveDocs({ workspaceRoot, config, now });
+      const appWithProvider = await fs.readFile(doc("src/app.ts"), "utf8");
+      const modelWithEntry = await fs.readFile(doc("src/model.ts"), "utf8");
+      expect(appWithProvider).toContain("The app's authored purpose.");
+      expect(appWithProvider).toContain("Returns: [`Item`](./model.ts.md#symbol-item)");
+      expect(appWithProvider).not.toContain("Entry:");
+      expect(modelWithEntry).toContain("Entry:");
+      const graph = JSON.parse(await fs.readFile(graphPath, "utf8")) as { files: Record<string, { outbound: string[] }> };
+      expect(graph.files["src/app.ts"].outbound).toContain("src/model.ts");
+
+      await fs.writeFile(model, "export interface Replacement { id: string }\n");
+      await generateLiveDocs({ workspaceRoot, config, now });
+      const appWithoutType = await fs.readFile(doc("src/app.ts"), "utf8");
+      expect(appWithoutType).not.toContain("./model.ts.md#symbol-item");
+      const stable = [appWithoutType, await fs.readFile(doc("src/model.ts"), "utf8"), await fs.readFile(graphPath, "utf8")];
+      expect((await generateLiveDocs({ workspaceRoot, config, now })).written).toBe(0);
+      expect([await fs.readFile(doc("src/app.ts"), "utf8"), await fs.readFile(doc("src/model.ts"), "utf8"), await fs.readFile(graphPath, "utf8")]).toEqual(stable);
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("keeps real direct, named, default and star-barrel anchors without inventing missing ones", async () => {
+    const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generator-target-anchors-"));
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"] });
+    const source = (name: string) => path.join(workspaceRoot, "src", name);
+    const doc = (name: string) => path.join(workspaceRoot, config.root, config.baseLayer, `src/${name}${config.extension}`);
+    try {
+      await fs.mkdir(path.join(workspaceRoot, "src"));
+      await fs.writeFile(source("model.ts"), "export interface Item { id: string }\nexport interface Widget { id: string }\nexport const Widget = 1;\nexport default class DefaultThing {}\n");
+      await fs.writeFile(source("named.ts"), "export { Item as Alias } from './model';\n");
+      await fs.writeFile(source("star.ts"), "export * from './model';\n");
+      await fs.writeFile(source("namespace.ts"), "export * as Models from './model';\n");
+      await fs.writeFile(source("outer.ts"), "export * from './namespace';\n");
+      await fs.writeFile(source("cycle-a.ts"), "export const A = 1;\nexport * from './cycle-b';\n");
+      await fs.writeFile(source("cycle-b.ts"), "export const B = 1;\nexport * from './cycle-a';\n");
+      await fs.writeFile(source("consumer.ts"), [
+        "import { Item } from './star';",
+        "import { Alias } from './named';",
+        "import DefaultThing, { Missing } from './model';",
+        "import { B } from './cycle-a';",
+        "import { Models } from './namespace';",
+        "import { Models as OuterModels } from './outer';",
+        "import { Widget } from './star';",
+        "export function use(value: Item): DefaultThing { return new DefaultThing(); }",
+        "export { Alias, B, Models, OuterModels, Widget, Missing };",
+        ""
+      ].join("\n"));
+
+      await generateLiveDocs({ workspaceRoot, config });
+      const consumer = await fs.readFile(doc("consumer.ts"), "utf8");
+      const star = await fs.readFile(doc("star.ts"), "utf8");
+      const namespace = await fs.readFile(doc("namespace.ts"), "utf8");
+      const outer = await fs.readFile(doc("outer.ts"), "utf8");
+      const model = await fs.readFile(doc("model.ts"), "utf8");
+      const cycle = await fs.readFile(doc("cycle-a.ts"), "utf8");
+      expect(star).toContain("#### `Item` {#symbol-item}");
+      expect(star).toContain("#### `Widget` {#symbol-widget}");
+      expect(star).toContain("./model.ts.md#symbol-widget-interface");
+      expect(star).not.toContain("./model.ts.md#symbol-widget)");
+      expect(model).toContain("#### `Widget (interface)` {#symbol-widget-interface}");
+      expect(cycle).toContain("#### `B` {#symbol-b}");
+      expect(namespace).toContain("#### `Models` {#symbol-models}");
+      expect(namespace).not.toContain("#### `Item` {#symbol-item}");
+      expect(namespace).toContain("[`model`](./model.ts.md)");
+      expect(outer).toContain("#### `Models` {#symbol-models}");
+      expect(outer).toContain("./namespace.ts.md#symbol-models");
+      expect(consumer).toContain("[`star.Item`](./star.ts.md#symbol-item)");
+      expect(consumer).toContain("[`named.Alias`](./named.ts.md#symbol-alias)");
+      expect(consumer).toContain("[`model.DefaultThing`](./model.ts.md#symbol-defaultthing)");
+      expect(consumer).toContain("[`cycle-a.B`](./cycle-a.ts.md#symbol-b)");
+      expect(consumer).toContain("[`star.Widget`](./star.ts.md#symbol-widget)");
+      expect(consumer).toContain("[`outer.Models`](./outer.ts.md#symbol-models)");
+      expect(consumer).toContain("[`model.Missing`](./model.ts.md)");
+      expect(consumer).not.toContain("./model.ts.md#symbol-missing");
+      expect(consumer).toContain("[`namespace.Models`](./namespace.ts.md#symbol-models)");
+    } finally {
+      await fs.rm(workspaceRoot, { recursive: true, force: true });
+    }
+  });
+});
+
 describe("generateLiveDocs DOM targets", () => {
   it("links only scanned markup and ignores later edits to excluded markup", async () => {
     const workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-dom-targets-"));

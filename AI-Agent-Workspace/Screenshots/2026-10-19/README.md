@@ -1,6 +1,6 @@
 # Explorer pictures — October 19, 2026
 
-Historical visual evidence captured from the local build during the [stewardship work](../../ChatHistory/2026/10/2026-10-19.1.record.md#turn-17). Chromium, 1600 × 1000. These record the code and gestures on this date; the current product contract remains in the Explorer design.
+Historical visual evidence captured from the local build during the [stewardship work](../../ChatHistory/2026/10/2026-10-19.1.record.md#turn-17). The initial stewardship captures use Chromium at 1600 × 1000; later investigations name their viewport sizes below. These record the code and gestures on this date; the current product contract remains in the Explorer design.
 
 ## Card ownership and type-reference gestures
 
@@ -38,3 +38,29 @@ The delegated browser review recorded these existing journeys before the shared-
 - [Opening a directory during that path](shared-actions-path-after-open-directory.png): Contracts opens, the path and destination clear, the directory label stays at its prior position, and Back restores the path and its original pin.
 
 Other observed distinctions to preserve: 2D card-title pinning does not open details or add a Back step; the tray’s Show action pans to a retained card without changing the subject, inspected context, URL or pins; historical search can pin a file while retaining the selected historical step. These are baseline observations, not new interaction choices.
+
+## Evidence-reader investigation — Turns 19–20
+
+The owner subsequently accepted preserving the map subject across 2D/3D, restoring explicitly open evidence in shared links, and Back restoring that evidence. They also reopened the panel's purpose and varied-viewport layout. These pictures are an investigation of the existing build, followed by temporary CSS geometry studies in Chromium; no product code or navigation semantics were changed. The earlier pending-decision descriptions above record their date, not the current decision.
+
+The baseline opens PaymentResultModel.cs from GatewayClient.cs's return-type badge in the estate. Root inspected the pictures and DOM geometry at four viewport sizes, with continuing layout search disabled and reduced motion enabled:
+
+- [1440 × 900 baseline](inspection-baseline-1440x900.png): the 361-pixel reader covers the pin-tray button; the main workspace is 1,179 pixels wide.
+- [900 × 700 baseline](inspection-baseline-900x700.png): the permanent left navigation leaves 639 pixels for the workspace, of which the reader overlays 361.
+- [390 × 844 baseline](inspection-baseline-390x844.png): the permanent left navigation leaves just 129 pixels. The 352-pixel reader extends left of its clipping parent, hiding most of its contents; its close button remains reachable.
+- [844 × 390 baseline](inspection-baseline-844x390.png): the header and two-row footer leave a document scroll area only 144 pixels high. Vertical scrolling itself is expected; the issue is how little useful room the shell allocates.
+
+The following are proposed geometry only, retaining the existing panel actions so the layout variable can be compared separately. They do not implement keyboard/focus behavior, portable state, animated opening/closing or a responsive map/navigation shell:
+
+- [Reserved column at 1440 × 900](inspection-prototype-docked-1440x900.png): constrain the map to the room beside the reader and move the pin handle into that room. The map's subject remains in place in this still picture. General camera/anchor continuity through the resize still needs implementation and motion checks.
+- [Full reading surface at 390 × 844](inspection-prototype-sheet-390x844.png): the reader covers the viewport instead of being clipped by the map's narrow parent; the existing close action returns to the exploration. This makes the document readable but does not repair the underlying narrow-screen map/navigation layout.
+- [Full reading surface at 844 × 390](inspection-prototype-sheet-844x390.png): a smaller header/footer padding and one action row leave 273 pixels for document scrolling, without shrinking the text.
+
+In [Turn 21](../../ChatHistory/2026/10/2026-10-19.1.record.md#turn-21), the owner chose covering part of the unchanged canvas over reserving a column. The reserved-column study remains comparison evidence, not the selected design. A legible overlay at narrow dimensions still needs implementation; these pictures do not establish a responsive product.
+
+The final pair tests the old footer's meaning from a real 3D sphere click:
+
+- [Before “Open in Local Map”](inspection-3d-before-footer.png).
+- [After “Open in Local Map”](inspection-3d-after-footer.png).
+
+The action closes the panel while leaving the same 3D subject, representation and URL. It is redundant with closing in this case, not literally a no-op. Root corrected the initial source-review claim after checking the caller's preceding hide operation. In a path or with a different inspected target, the action also exits the path or changes the subject, so deleting it everywhere would discard distinct behavior.

@@ -97,6 +97,7 @@ export async function collectDependencies(params: {
         symbols,
         kind: "export",
         isTypeOnly: exportIsTypeOnly,
+        reExportAll: !statement.exportClause,
         location: getNodeLocation(statement, params.sourceFile),
         symbolTargets: Object.keys(symbolTargets).length > 0 ? symbolTargets : undefined
       });
@@ -186,7 +187,7 @@ export function mergeDependencyEntries(
 
   const map = new Map<string, DependencyEntry>();
 
-  const keyOf = (entry: DependencyEntry): string => `${displayDependencyKey(entry)}|${entry.basis ?? ""}`;
+  const keyOf = (entry: DependencyEntry): string => `${displayDependencyKey(entry)}|${entry.basis ?? ""}|${entry.reExportAll ? "star" : ""}`;
 
   for (const entry of base) {
     const clone = cloneDependency(entry);
@@ -239,6 +240,7 @@ function cloneDependency(entry: DependencyEntry): DependencyEntry {
     isTypeOnly: entry.isTypeOnly,
     location: entry.location ? { ...entry.location } : undefined,
     symbolTargets: entry.symbolTargets ? { ...entry.symbolTargets } : undefined,
+    reExportAll: entry.reExportAll,
     basis: entry.basis
   };
 }
@@ -439,7 +441,7 @@ export async function augmentWithReExportedSymbols(params: {
   dependencies: DependencyEntry[];
   existingSymbols: PublicSymbolEntry[];
 }): Promise<{ symbols: PublicSymbolEntry[]; reExports: ReExportedSymbolInfo[] }> {
-  if (!params.dependencies.some((entry) => entry.kind === "export")) {
+  if (!params.dependencies.some((entry) => entry.reExportAll)) {
     return { symbols: params.existingSymbols, reExports: [] };
   }
 
@@ -472,18 +474,7 @@ async function collectReExportStarSymbols(params: {
   const cache = new Map<string, PublicSymbolEntry[]>();
 
   for (const dependency of params.dependencies) {
-    if (dependency.kind !== "export") {
-      continue;
-    }
-
-    if (!dependency.resolvedPath) {
-      continue;
-    }
-
-    if (dependency.symbols.length > 0) {
-      // Named re-exports already contribute symbols via collectExportedSymbols.
-      continue;
-    }
+    if (!dependency.reExportAll || !dependency.resolvedPath) continue;
 
     const targetAbsolute = path.resolve(params.workspaceRoot, dependency.resolvedPath);
     const stack = new Set<string>([path.resolve(params.sourceAbsolute)]);
@@ -570,7 +561,7 @@ async function gatherExportedSymbolsFromFile(params: {
   const aggregated: PublicSymbolEntry[] = [...directSymbols];
 
   for (const dependency of dependencies) {
-    if (dependency.kind !== "export" || dependency.symbols.length > 0 || !dependency.resolvedPath) {
+    if (!dependency.reExportAll || !dependency.resolvedPath) {
       continue;
     }
 

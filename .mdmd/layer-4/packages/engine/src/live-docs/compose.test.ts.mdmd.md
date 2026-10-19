@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/compose.test.ts
-- Generated At: 2026-10-15T15:49:39.389Z
+- Generated At: 2026-10-19T21:15:54.037Z
 
 ## Authored
 ### Purpose
 Proves composition: a symbol becomes a heading with its kind, source line and documentation; a type reference links to the doc that declares it, or within the doc when declared there; dependencies link each imported symbol to its anchor; and what is composed is what the grammar writes back.
 
 ### Notes
-- Replaced `renderPublicSymbolLines.test.ts` on 2026-09-27, which asserted on rendered lines; these assertions are on the model.
+- Replaced `renderPublicSymbolLines.test.ts` on 2026-09-27, which asserted on rendered lines; these assertions are on the model. Target-index cases distinguish real direct and re-export anchors from a missing symbol whose known file still receives the link. A barrel keeps its own plain heading while its provider link uses the provider's disambiguated type/value heading; no-index standalone composition retains the earlier best-effort fragment.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -24,6 +24,7 @@ _No public symbols detected_
 - `node:path` - `path`
 - [`compose.composeDependencies`](./compose.ts.mdmd.md#symbol-composedependencies)
 - [`compose.composeEntries`](./compose.ts.mdmd.md#symbol-composeentries)
+- [`compose.composeReExports`](./compose.ts.mdmd.md#symbol-composereexports)
 - [`compose.composeSymbolBlocks`](./compose.ts.mdmd.md#symbol-composesymbolblocks)
 - [`compose.computePublicSymbolHeadingInfo`](./compose.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)

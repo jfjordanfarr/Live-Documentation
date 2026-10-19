@@ -510,8 +510,8 @@ function normalizeDocText(value?: string): string[] | undefined {
  *
  * @remarks
  * A dependency that resolves inside the workspace becomes one line per imported
- * symbol, each linking to the symbol's anchor in the target doc, or one line
- * for the whole module when no symbol is named. An external dependency keeps
+ * symbol, linking to a target anchor when the workspace index knows it and to
+ * the file otherwise, or one line for the whole module when no symbol is named. An external dependency keeps
  * its specifier and the symbols taken from it. A dependency observed from a
  * contract or from configuration carries its basis as a qualifier, on lines of
  * its own even when a source-observed dependency names the same file.
@@ -596,8 +596,11 @@ export function composeDependencies(args: {
       for (const symbolName of symbols) {
         const anchorName = bucket.targets[symbolName] ?? symbolName;
         const workspaceSlug = resolveSymbolSlugFromIndex(anchorName, dependency.resolvedPath, args.symbolIndex);
-        const slug =
-          workspaceSlug ?? resolveSymbolSlug(anchorName, slugIndex) ?? createSymbolSlug(anchorName);
+        // With a workspace index, only an anchor actually published by the target is known.
+        // Standalone composition retains its historical best-effort slug.
+        const slug = args.symbolIndex
+          ? workspaceSlug
+          : resolveSymbolSlug(anchorName, slugIndex) ?? createSymbolSlug(anchorName);
         const fragment = slug ? `#${slug}` : "";
         // Avoid redundancy like "Reader.Reader" when the symbol is named like its module (common in Java)
         const label =
@@ -688,7 +691,8 @@ function resolveSymbolSlug(alias: string | undefined, index: Map<string, string>
 function resolveSymbolSlugFromIndex(
   symbolName: string,
   targetSourcePath: string,
-  index: WorkspaceSymbolIndex | undefined
+  index: WorkspaceSymbolIndex | undefined,
+  kind?: string
 ): string | undefined {
   if (!index || !symbolName || !targetSourcePath) {
     return undefined;
@@ -700,7 +704,8 @@ function resolveSymbolSlugFromIndex(
     return undefined;
   }
 
-  const matchingLocation = locations.find((loc) => loc.sourcePath.replace(/\\/gu, "/") === normalizedTarget);
+  const matching = locations.filter((loc) => loc.sourcePath.replace(/\\/gu, "/") === normalizedTarget);
+  const matchingLocation = (kind ? matching.find((loc) => loc.kind === kind) : undefined) ?? matching[0];
   return matchingLocation?.anchor;
 }
 
@@ -794,13 +799,15 @@ export function composeEntries(args: {
 
 /**
  * Composes the `Re-Exported Symbol Anchors` section: one anchor per symbol a
- * barrel re-exports, linking to the module it comes from.
+ * barrel re-exports. Its own heading uses the exported name; the provider link
+ * uses that provider's actual indexed heading when the workspace index is present.
  */
 export function composeReExports(args: {
   reExports: ReExportedSymbolInfo[];
   docDir: string;
   liveDocsRootAbsolute: string;
   docExtension: string;
+  symbolIndex?: WorkspaceSymbolIndex;
 }): ReExport[] {
   const sorted = [...args.reExports].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -817,7 +824,10 @@ export function composeReExports(args: {
         `${entry.sourceModulePath}${args.docExtension}`
       );
       const relative = formatRelativePathFromDoc(args.docDir, moduleDocAbsolute);
-      const fragment = slugValue ? `#${slugValue}` : "";
+      const providerSlug = args.symbolIndex
+        ? resolveSymbolSlugFromIndex(entry.name, entry.sourceModulePath, args.symbolIndex, entry.kind)
+        : slugValue;
+      const fragment = providerSlug ? `#${providerSlug}` : "";
       reExport.from = { label: inlineLabel(toModuleLabel(entry.sourceModulePath)), link: `${relative}${fragment}` };
     }
     return reExport;

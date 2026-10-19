@@ -1,7 +1,7 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { composeDependencies, composeEntries, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
+import { composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo } from "./compose";
 import type { WorkspaceSymbolIndex } from "./coreTypes";
 import { renderLiveDoc, parseLiveDoc } from "./document";
 
@@ -123,6 +123,27 @@ describe("composeSymbolBlocks", () => {
 });
 
 describe("composeDependencies", () => {
+  it("uses only target anchors present in the workspace index, retaining missing names as file links", () => {
+    const types = "packages/engine/src/types.ts";
+    const barrel = "packages/engine/src/barrel.ts";
+    const index: WorkspaceSymbolIndex = new Map([
+      ["Widget", [{ liveDocPath: `.live-documentation/source/${types}.md`, sourcePath: types, anchor: "symbol-widget-interface", kind: "interface" }]],
+      ["Alias", [{ liveDocPath: `.live-documentation/source/${barrel}.md`, sourcePath: barrel, anchor: "symbol-alias", kind: "type", isReExport: true }]]
+    ]);
+    const dependencies = composeDependencies({
+      analysis: { symbols: [], dependencies: [
+        { specifier: "../types", resolvedPath: types, symbols: ["Widget", "Missing"], kind: "import" },
+        { specifier: "../barrel", resolvedPath: barrel, symbols: ["Alias"], kind: "import" }
+      ] },
+      docDir, liveDocsRootAbsolute, docExtension: ".md", headings: [], symbolIndex: index
+    });
+    expect(dependencies).toEqual([
+      { label: "barrel.Alias", link: "../barrel.ts.md#symbol-alias", qualifiers: [] },
+      { label: "types.Missing", link: "../types.ts.md", qualifiers: [] },
+      { label: "types.Widget", link: "../types.ts.md#symbol-widget-interface", qualifiers: [] }
+    ]);
+  });
+
   it("links each imported symbol to its anchor and keeps external modules as text", () => {
     const headings = computePublicSymbolHeadingInfo([]);
     const dependencies = composeDependencies({
@@ -192,6 +213,21 @@ describe("composeDependencies", () => {
       })
     };
     expect(parseLiveDoc(renderLiveDoc(doc))).toEqual(doc);
+  });
+});
+
+describe("composeReExports", () => {
+  it("keeps the barrel's anchor while linking its origin to the provider's disambiguated heading", () => {
+    const provider = "packages/engine/src/types.ts";
+    const reExports = [{ name: "Widget", kind: "interface", sourceModulePath: provider }];
+    const index: WorkspaceSymbolIndex = new Map([["Widget", [
+      { liveDocPath: `.live-documentation/source/${provider}.md`, sourcePath: provider, anchor: "symbol-widget-interface", kind: "interface" },
+      { liveDocPath: `.live-documentation/source/${provider}.md`, sourcePath: provider, anchor: "symbol-widget-const", kind: "const" }
+    ]]]);
+    const args = { reExports, docDir, liveDocsRootAbsolute, docExtension: ".md" };
+    expect(composeReExports({ ...args, symbolIndex: index })).toEqual([{ name: "Widget", slug: "symbol-widget", flags: [], from: { label: "types", link: "../types.ts.md#symbol-widget-interface" } }]);
+    expect(composeReExports({ ...args, symbolIndex: new Map() })[0].from?.link).toBe("../types.ts.md");
+    expect(composeReExports(args)[0].from?.link).toBe("../types.ts.md#symbol-widget");
   });
 });
 

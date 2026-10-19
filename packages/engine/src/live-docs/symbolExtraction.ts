@@ -94,6 +94,14 @@ export function collectExportedSymbols(sourceFile: ts.SourceFile): PublicSymbolE
             location: getNodeLocation(specifier.name, sourceFile)
           });
         }
+      } else if (exportClause && ts.isNamespaceExport(exportClause)) {
+        record({
+          name: exportClause.name.text,
+          kind: "namespace",
+          isTypeOnly: statement.isTypeOnly,
+          isReExport: true,
+          location: getNodeLocation(exportClause.name, sourceFile)
+        });
       }
       continue;
     }

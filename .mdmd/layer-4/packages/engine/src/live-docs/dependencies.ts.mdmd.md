@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/dependencies.ts
-- Generated At: 2026-10-15T15:49:39.563Z
+- Generated At: 2026-10-19T21:12:55.080Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Dependency collection and resolution for Live Documentation. Extracts import/exp
 - `collectDependencies()` walks AST statements for imports and re-exports, returning sorted `DependencyEntry[]`
 - `resolveDependency()` handles relative specifiers with extension probing (`.ts`, `.tsx`, `.mts`, etc.)
 - `mergeDependencyEntries()` combines symbol lists when multiple imports reference the same module
-- `augmentWithReExportedSymbols()` handles star exports (`export * from`) by parsing target modules
+- `augmentWithReExportedSymbols()` handles bare star exports (`export * from`) by parsing target modules. `collectDependencies()` marks that exact syntax so a namespace export (`export * as Name from`) retains its file dependency without flattening the provider's members; merging dependencies preserves the distinction when both forms name one module.
 - 561 lines — largest extraction from core.ts, reflecting the complexity of module resolution
 - A dynamic `import("literal")`, wherever it stands in the file, is an import of the whole module since 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)), as the compiler oracle records it; one whose argument is computed names nothing the docs can carry. The dead code sweep of 2026-10-08 had found `staticBuilder.ts`'s lazy import of `buildAssets.ts` missing from the docs.
 
@@ -49,7 +49,7 @@ A sorted list of dependency entries describing specifiers and imported symbols.
 
 #### `mergeDependencyEntries` {#symbol-mergedependencyentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L179)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L180)
 - Returns: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 - Parameters: `base`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]; `extras`: [`DependencyEntry`](./coreTypes.ts.mdmd.md#symbol-dependencyentry)[]
 
@@ -65,7 +65,7 @@ A merged, sorted dependency list
 
 #### `resolveDependency` {#symbol-resolvedependency}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L271)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L273)
 
 ##### `resolveDependency` — Summary
 Resolves a relative module specifier to a workspace-relative file path.
@@ -83,14 +83,14 @@ The normalised relative path when resolution succeeds, otherwise `undefined`.
 
 #### `shouldInferDomDependencies` {#symbol-shouldinferdomdependencies}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L412)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L414)
 
 ##### `shouldInferDomDependencies` — Summary
 Checks if DOM dependency inference should run for a file type.
 
 #### `augmentWithReExportedSymbols` {#symbol-augmentwithreexportedsymbols}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L436)
+- Source: [source](../../../../../../packages/engine/src/live-docs/dependencies.ts#L438)
 
 ##### `augmentWithReExportedSymbols` — Summary
 Augments symbol list with re-exported symbols from star exports.

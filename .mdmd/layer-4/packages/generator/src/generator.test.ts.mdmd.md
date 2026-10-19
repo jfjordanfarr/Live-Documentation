@@ -16,6 +16,7 @@ Validates generation and pruning, including the distinction between the full wor
 - The nested-workspace fixture commits source files under a parent Git repository, modifies a sibling outside the scan and then the source inside it; only the latter selects a Live Doc, whose explicit imported type still links to its provider.
 - The DOM fixture gives a script one visible page, one Git-ignored page and one configured-excluded page with the same id. Only the visible page can appear in the generated doc; changing the ignored page leaves Git clean and the doc unchanged. A standalone analysis without an index still finds all three nearby pages.
 - Git failure fixtures distinguish a clean change set from a non-repository or broken status while checking that a normal full run needs no Git repository.
+- Full-generation fixtures add a formerly absent provider, retarget a package's main entry, and change the provider's public surface while preserving authored text; they also check a stable second run's docs and graph. Direct, named, default, namespace, star and cyclic re-export targets keep real anchors, including a barrel's link to a provider whose same-name type and value have different headings; an actually missing named export retains only its known file link.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

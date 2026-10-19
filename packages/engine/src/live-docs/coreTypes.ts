@@ -290,6 +290,8 @@ export interface DependencyEntry {
   isTypeOnly?: boolean;
   location?: LocationInfo;
   symbolTargets?: Record<string, string>;
+  /** A bare `export * from` whose provider's names become this file's re-export anchors. */
+  reExportAll?: boolean;
   /** How the dependency was observed, when not from source. */
   basis?: DependencyBasis;
 }

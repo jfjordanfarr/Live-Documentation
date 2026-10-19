@@ -22,10 +22,13 @@ import { SUPPORTED_SCRIPT_EXTENSIONS } from "./coreConstants";
 import type {
   DeclaredEntry,
   PublicSymbolEntry,
+  ReExportedSymbolInfo,
   ResolvedSymbolLocation,
   WorkspaceEntryIndex,
   WorkspaceSymbolIndex
 } from "./coreTypes";
+import { createSymbolSlug } from "./coreUtils";
+import { collectDependencies, augmentWithReExportedSymbols } from "./dependencies";
 import { detectChangedFiles } from "./gitUtils";
 import { inferScriptKind, collectExportedSymbols } from "./symbolExtraction";
 import type { LiveDocumentationConfig } from "../config/liveDocumentationConfig";
@@ -253,6 +256,12 @@ export async function buildWorkspaceIndexes(options: {
   const index: WorkspaceSymbolIndex = new Map();
   const entries: WorkspaceEntryIndex = new Map();
 
+  const register = (name: string, location: ResolvedSymbolLocation): void => {
+    const existing = index.get(name) ?? [];
+    existing.push(location);
+    index.set(name, existing);
+  };
+
   for (const absolutePath of options.targetFiles) {
     const sourcePath = normalizeWorkspacePath(
       path.relative(options.workspaceRoot, absolutePath)
@@ -266,6 +275,7 @@ export async function buildWorkspaceIndexes(options: {
     // Try to extract symbols from the file
     let symbols: PublicSymbolEntry[] = [];
     let declares: DeclaredEntry[] = [];
+    let reExports: ReExportedSymbolInfo[] = [];
     try {
       const ext = path.extname(absolutePath).toLowerCase();
 
@@ -281,6 +291,17 @@ export async function buildWorkspaceIndexes(options: {
           scriptKind
         );
         symbols = collectExportedSymbols(sourceFile);
+        // The doc's re-export section has anchors for bare star exports.
+        // Index only files with that syntax, using the same resolver that renders those anchors.
+        if (sourceFile.statements.some((statement) => ts.isExportDeclaration(statement) && statement.moduleSpecifier && !statement.exportClause)) {
+          const dependencies = await collectDependencies({ sourceFile, absolutePath, workspaceRoot: options.workspaceRoot });
+          ({ reExports } = await augmentWithReExportedSymbols({
+            sourceAbsolute: absolutePath,
+            workspaceRoot: options.workspaceRoot,
+            dependencies,
+            existingSymbols: symbols
+          }));
+        }
       } else {
         // Try language-specific adapters for other file types (C#, Java, Python, etc.)
         const adapterResult = await analyzeWithLanguageAdapters({
@@ -319,16 +340,16 @@ export async function buildWorkspaceIndexes(options: {
       };
 
       // Register by primary name
-      const existing = index.get(symbol.name) ?? [];
-      existing.push(location);
-      index.set(symbol.name, existing);
+      register(symbol.name, location);
 
       // Also register by qualified name if different
       if (symbol.qualifiedName && symbol.qualifiedName !== symbol.name) {
-        const qualifiedExisting = index.get(symbol.qualifiedName) ?? [];
-        qualifiedExisting.push(location);
-        index.set(symbol.qualifiedName, qualifiedExisting);
+        register(symbol.qualifiedName, location);
       }
+    }
+    for (const entry of reExports) {
+      const anchor = createSymbolSlug(entry.name);
+      if (anchor) register(entry.name, { liveDocPath, sourcePath, anchor, kind: entry.kind, isReExport: true });
     }
   }
 

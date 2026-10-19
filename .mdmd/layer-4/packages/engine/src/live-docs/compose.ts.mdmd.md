@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-10-16T21:49:57.231Z
+- Generated At: 2026-10-19T21:15:54.049Z
 
 ## Authored
 ### Purpose
@@ -14,7 +14,7 @@ Turns a source file's analysis into the document model: headings with unique anc
 - Extracted 2025-12-06 from the monolithic `core.ts` as `rendering.ts`, which produced markdown lines directly; on 2026-09-27 it was recast to produce the model instead, and the line formatting moved into the grammar module.
 - `computePublicSymbolHeadingInfo` disambiguates symbols that share a name (`Widget (interface)`, `draw (function overload 2)`) and keeps every anchor unique within a doc.
 - A type reference resolves through the workspace symbol index. A type the file itself declares links within the doc, whatever other files declare under that name. Otherwise, among files of the same language, a declaration wins over a barrel that only re-exports the name, then the nearest file. A name never resolves into a file of another language (decided 2026-09-28 after the Local Map drew a wire no code justified).
-- Dependencies are grouped by resolved file: an imported symbol links to its anchor, an alias links to the original name, and an external module keeps its specifier and the symbols taken from it.
+- Dependencies are grouped by resolved file: an imported symbol links to an anchor only when the current workspace index records that anchor in its target doc, including a named or star re-export; otherwise the line keeps the known file link and imported name without inventing a fragment. A barrel's own re-export anchor keeps its name, but its link to the provider uses that provider's indexed heading, including a disambiguated same-name type/value heading; an index miss leaves the provider file link. An alias looks up the original name, and an external module keeps its specifier and the symbols taken from it. Standalone composition without an index retains its best-effort slug.
 - `composeEntries` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) writes the `Entry` lines in a fixed order so that a doc is written the same way every run: `program` from the file's analysis, the heading at the declaration's line so that a namesake overload is not linked (found on Java's rosetta `Main.java`); the commands by name and the module from the entry index, each linking the manifest's doc; one `opening` per route, address, procedure, table, view or function served; `tooling` for a file a tool reads, by its name or place (`isToolingFile`), a manifest included by its name since 2026-10-16, when a Cargo workspace's root manifest, which publishes no package, showed the earlier rule by the manifest symbol's kind incomplete; and, from the evening of that day, by what it publishes as well, a package or a project, so that a manifest known only by its content, a PowerShell module's `.psd1`, is one while a data `.psd1` is not ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#powershell-read-by-a-grammar-of-our-own-measured-against-powershells-own-parser-recorded-2026-10-16)); `declared` for a configuration pattern matched by the archetype overrides' rule.
 
 ## Generated
@@ -65,8 +65,8 @@ Composes the `Dependencies` section of a Live Doc.
 
 ##### `composeDependencies` — Remarks
 A dependency that resolves inside the workspace becomes one line per imported
-symbol, each linking to the symbol's anchor in the target doc, or one line
-for the whole module when no symbol is named. An external dependency keeps
+symbol, linking to a target anchor when the workspace index knows it and to
+the file otherwise, or one line for the whole module when no symbol is named. An external dependency keeps
 its specifier and the symbols taken from it. A dependency observed from a
 contract or from configuration carries its basis as a qualifier, on lines of
 its own even when a source-observed dependency names the same file.
@@ -81,7 +81,7 @@ its own even when a source-observed dependency names the same file.
 
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L735)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L740)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -111,12 +111,13 @@ no line here.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L799)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L805)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
 Composes the `Re-Exported Symbol Anchors` section: one anchor per symbol a
-barrel re-exports, linking to the module it comes from.
+barrel re-exports. Its own heading uses the exported name; the provider link
+uses that provider's actual indexed heading when the workspace index is present.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

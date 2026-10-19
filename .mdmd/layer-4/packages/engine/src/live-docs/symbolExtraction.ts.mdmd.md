@@ -18,6 +18,7 @@ TypeScript AST symbol extraction for Live Documentation. Walks the AST of TypeSc
 - Filters out primitive types (string, number, boolean, etc.) from type references
 - Handles edge cases: `export =`, `export default`, namespace re-exports, type-only exports
 - A symbol that an `export { … }` declaration only re-exports is marked `isReExport`, so the workspace symbol index can tell a declaration from a re-export (since 2026-09-28)
+- `export * as Name from` publishes the namespace name as one re-exported public symbol, with its own anchor. It does not publish the provider's members under their unqualified names.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
