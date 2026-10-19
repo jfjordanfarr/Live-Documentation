@@ -1,35 +1,9 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process';
 
-const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+import { runNpmScript } from './steps.mjs';
+
 const gitCommand = 'git';
-
-function runStep(label, command, args, options = {}) {
-  console.log(`\n=== ${label} ===`);
-  const result = spawnSync(command, args, { stdio: 'inherit', ...options });
-  if (result.error) {
-    throw result.error;
-  }
-  if (result.status !== 0) {
-    const exitCode = typeof result.status === 'number' ? result.status : 1;
-    throw new Error(`${label} failed with exit code ${exitCode}`);
-  }
-}
-
-function runNpmScript(label, args) {
-  const npmArgs = Array.isArray(args) ? args : [args];
-  const npmExecPath = process.env.npm_execpath;
-  const useNodeShim = Boolean(npmExecPath && npmExecPath.endsWith('.js'));
-  const options = {
-    shell: useNodeShim ? false : process.platform === 'win32'
-  };
-
-  if (useNodeShim && npmExecPath) {
-    runStep(label, process.execPath, [npmExecPath, ...npmArgs], options);
-  } else {
-    runStep(label, npmCommand, npmArgs, options);
-  }
-}
 
 function runSafeCommitCheck() {
   const flags = parseFlags(process.argv.slice(2));
@@ -42,7 +16,7 @@ function runSafeCommitCheck() {
     runNpmScript('SlopCop symbol audit', ['run', 'slopcop:symbols']);
 
     if (flags.includeE2E) {
-      runNpmScript('Playwright E2E tests, over both bundles built first', ['run', 'test:e2e']);
+      runNpmScript('Playwright E2E tests, over the bundles built first', ['run', 'test:e2e']);
     }
   } catch (error) {
     console.error('\nSafe to commit check failed.');

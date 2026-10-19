@@ -20,6 +20,9 @@ async function facts(page: Page) {
 
 for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts/IPaymentService.cs"]]) {
   test(`packing, advanced edits, export and sharing remain coherent across representations: ${subject}`, async ({ page, browser }) => {
+    // A journey of two pages: the picture settled, a preset, 3D, the tuning, an export, a share opened fresh and back to 2D.
+    // Over this repository it takes 27 seconds on one worker, and took 32 once (2026-10-19); the half minute is not its measure.
+    test.setTimeout(60_000);
     const errors: string[] = [];
     page.on("pageerror", error => errors.push(error.message));
     await page.goto(`${base}?view=local&node=${encodeURIComponent(subject)}`);
@@ -84,14 +87,17 @@ for (const [base, subject] of [["/", generator], ["/samples/estate/", "Contracts
 }
 
 test("preset changes keep the selected file in place through 2D and 3D motion", async ({ page }) => {
-  test.setTimeout(60_000);
+  // Entering 3D settles eleven hundred spheres at full energy, about 20 seconds on this renderer alone, and the preset's
+  // reheat settles them again: the whole test took 48 to 53 seconds in a night's green runs and lost one run at the
+  // settle's 25-second wait with the box in use beside it (2026-10-19). The budgets are twice the measured times.
+  test.setTimeout(120_000);
   await page.goto(`/?view=local&node=${generator}`);
   await page.locator(".local-placed").waitFor();
   await localMapSettled(page);
   for (const [mode, preset] of [["2d", "compact"], ["3d", "relaxed"]] as const) {
     if (mode === "3d") {
       await page.getByRole("button", { name: "3D", exact: true }).click();
-      await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+      await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
     }
     const result = await page.evaluate(async ({ mode, preset, generator }) => {
       const point = (): { x: number; y: number } => {

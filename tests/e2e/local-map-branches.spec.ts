@@ -199,6 +199,9 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
 });
 
 test("a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward", async ({ page }) => {
+  // A retained picture of more than a hundred wires, every wire and lane read whole: 24 to 26 seconds on one worker
+  // (2026-10-19); the half minute is not its measure.
+  test.setTimeout(60_000);
   await page.setViewportSize({ width: 1600, height: 1000 });
   const files = [
     "packages/engine/src/live-docs/graph.ts",

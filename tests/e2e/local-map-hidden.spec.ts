@@ -47,6 +47,9 @@ const mark = (page: Page): Promise<void> => page.evaluate(() => { document.query
 const show = async (page: Page, view: "sources" | "world" | "map"): Promise<void> => { await page.click(`.nav-item[data-view="${view}"]`); };
 
 test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", async ({ page }) => {
+  // The search runs its eighty seeds to the end after the return: 23 to 29 seconds on one worker (2026-10-19); the half
+  // minute is not its measure.
+  test.setTimeout(60_000);
   await open(page);
   const started = await read(page);
   expect(started.status, "the search is still running when the view is switched").toBe("running");
@@ -87,6 +90,8 @@ test("a change made while another view is shown is drawn when the map is shown a
 });
 
 test("the search pauses while the page is hidden and resumes when it is visible again", async ({ page }) => {
+  // The search runs its eighty seeds to the end once the page is visible again: 19 to 25 seconds on one worker (2026-10-19).
+  test.setTimeout(60_000);
   await open(page);
   expect((await read(page)).status).toBe("running");
   const setVisibility = (state: "hidden" | "visible"): Promise<void> => page.evaluate(value => {

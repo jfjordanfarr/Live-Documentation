@@ -17,6 +17,7 @@ Uses the TypeScript Rosetta sample to follow multiple symbols, inspect a neighbo
 - Waits for the picture to rest (`localMapSettled`) after the clicks it measures after, since a change of pins moves the branch picture from one arrangement to the next (2026-10-07).
 - The hover test (2026-10-07): in a retained exploration with bundles, a hovered row leaves its own wires at full opacity and every other wire, the bundles' shared runs among them, at the dim value, and a run returns to its own opacity at rest.
 - On 2026-10-08 the rows-order case stopped expecting that the layout order, chosen again after a reload under the alphabetical one, reproduces the first picture's rows: a re-render's order search starts from the picture on the page under the churn cost and a cold render from the ranking's order, so the two can settle on different orders of the same quality. It asserts now that the rows follow the wires more closely than the file's order when chosen again, and that a cold render under the kept choice reproduces the first picture. The earlier assertion had held by luck of the picture until a neighbouring card changed shape.
+- The lanes test reads a retained picture of more than a hundred wires whole, 24 to 26 seconds on one worker, so since 2026-10-19 it declares a minute rather than the default half ([Turn 12 of the October 17 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-12)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

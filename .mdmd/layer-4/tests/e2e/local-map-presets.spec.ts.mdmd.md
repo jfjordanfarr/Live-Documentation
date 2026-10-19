@@ -17,6 +17,8 @@ The publisher page closes after its export and share URL are captured. The recip
 
 Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
+The journey over this repository takes about 27 seconds on one worker and ran to 32 once, so since 2026-10-19 it declares a minute; the motion test, 48 to 53 seconds of the minute it had declared, with the 3D settle at 20 of its 25-second wait, declares two minutes and a minute's wait. A test at nine tenths of its budget fails whenever the box is used beside it ([Turn 12 of the October 17 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-12)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
