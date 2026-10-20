@@ -1,6 +1,6 @@
 # Ideas and observations without a home yet
 
-_Current as of 2026-10-16. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
+_Current as of 2026-10-20. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
 
 ## Asked for or loved by the owner
 
@@ -70,7 +70,7 @@ Inputs to the consolidation (vision step 3), not a backlog:
 
 ## Engine
 
-- **Ruby, C and PowerShell** still use hand-written scanners. No indexer is installed to measure Ruby (scip-ruby needs a Sorbet project) or C (scip-clang needs a compilation database), so they cannot be measured the way the other languages were. Either an indexer or a different oracle, such as what breaks when a symbol is removed, comes before rewriting them.
+- **Ruby** still uses a hand-written scanner; an independent oracle comes before a replacement. The earlier entry also named C and PowerShell and said no C indexer was installed. Corrected 2026-10-20: [the October 15–16 session](../ChatHistory/2026/10/Summarized/2026-10-15.1.SUMMARIZED.md#turn-10) installed scip-clang and moved C/C++ to tree-sitter; [the October 16 session](../ChatHistory/2026/10/Summarized/2026-10-16.1.SUMMARIZED.md#turn-4) moved PowerShell to its patched grammar with PowerShell’s parser as oracle. Those completed items are removed from this open question.
 
 - **Openings not yet read** (2026-09-28, from [Openings](../../.mdmd/layer-3/openings.mdmd.md)): Web API convention routing (`MapHttpRoute` templates expanded per controller) and minimal APIs; WCF contracts by name when addresses differ; hostnames in configuration to confirm an HTTP match, in place of the home-and-away presumption; contract files (OpenAPI, WSDL, gRPC, GraphQL, AsyncAPI) as a second source of served openings, for which the survey names maintained parsers; lockfiles for resolved versions; SBOM files, the owner's first iteration of the built-on layer; infrastructure files for districts, tunnels and identities. Also the three estate edges no scan gives: a designer's fields to control ids, endpoint names built by concatenation at run time, a row type matched by result columns.
 
