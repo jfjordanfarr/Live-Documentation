@@ -1,0 +1,2623 @@
+
+❯ <ide_selection>The user selected the lines 1 to 1733 from /workspaces/Live-Do
+  cumentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.export.md:
+  User: It is now 10/20/26. Let's start up a new chat record with the standard
+  dev day bootstrap process. Yesterday's work got halted by a bit of technical
+  difficulties on OpenAI's side. Let's see if that's resolved now that we're
+  about 12 hours later. :)
+
+  Codex: I’ll start today’s chat record, read the memory and recent sessions,
+  and check where yesterday’s work stopped. That should also give us a first
+  check that the tools are responding again.
+
+  Ran terminal command: cat AGENTS.md AI-Agent-Workspace/ChatHistory/README.md
+
+  Ran terminal command: cat AI-Agent-Workspace/Memory/owner.md
+  AI-Agent-Workspace/Memory/direction.md AI-Agent-Workspace/Memory/ideas.md
+
+  Ran terminal command: pwd && git status --short && git log -6 --oneline
+
+  Ran terminal command: cat AI-Agent-Workspace/ChatHistory/README.md
+
+  Ran terminal command: wc -l -c AI-Agent-Workspace/Memory/\*.md && ls -la
+  AI-Agent-Workspace/ChatHistory/2026/10 && ls
+  AI-Agent-Workspace/ChatHistory/2026/10/Summarized | sort | tail -7
+
+  Ran terminal command: sed -n '1,65p'
+  AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md && sed -n
+  '1,45p' AI-Agent-Workspace/ChatHistory/2026/10/README.md && cat
+  AI-Agent-Workspace/Memory/owner.md
+
+  add: /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/20
+  26-10-20.1.record.md
+  Completed with input: add: /workspaces/Live-Documentation/AI-Agent-Workspace/
+  ChatHistory/2026/10/2026-10-20.1.record.md
+
+  Ran terminal command: sed -n '1,55p' AI-Agent-Workspace/Memory/owner.md
+
+  Ran terminal command: sed -n '56,135p' AI-Agent-Workspace/Memory/owner.md
+
+  Ran terminal command: sed -n '136,240p' AI-Agent-Workspace/Memory/owner.md
+
+  The basic tools are responding, and yesterday’s unfinished work was kept
+  outside the main checkout. I’m checking that saved work and the expanded
+  transcript so today’s handoff distinguishes what landed, what you approved,
+  and what still needs verification.
+
+  Ran terminal command: sed -n '90,160p' AI-Agent-Workspace/Memory/owner.md
+
+  Ran terminal command: sed -n '161,221p' AI-Agent-Workspace/Memory/owner.md
+
+  Ran terminal command: sed -n '1,38p' AI-Agent-Workspace/Memory/direction.md
+
+  Ran terminal command: sed -n '39,73p' AI-Agent-Workspace/Memory/direction.md
+
+  Ran terminal command: sed -n '74,108p' AI-Agent-Workspace/Memory/direction.md
+
+  Ran terminal command: sed -n '109,145p' AI-Agent-Workspace/Mem
+  ──── (1678 lines hidden) ────────────────────────────────────────────────────
+   picking. Touch end/cancel clears pointer ownership. Mouse-created focus
+  keeps controls reachable without retaining hover; native focus-visible and
+  explicit menu ownership retain deliberate context. Returning from another
+  pointer peek to a named control restores that control'"'s target. On 843
+  rendered nodes, 100 sampled picks including scene matrices, map creation and
+  intersections measured mean 0.554 ms, median 0.5 ms, p95 0.7 ms and max 1.9
+  ms in this environment.
+
+  All six focused lifecycle cases pass on the final code: ordinary mouse Unpin
+  followed by true keyboard Tab (9.8 s), keyboard More/Escape (5.6 s), actual
+  dragging (6.0 s), stationary-pointer camera movement (5.1 s), touch lift (5.0
+  s), and mixed pointer/keyboard hover plus re-entry (21.8 s). The final Unpin
+  failure occurred before the action because the helper aimed at a sphere
+  through another file's HTML focus label. The helper now checks actual DOM
+  canvas hits as well as every sphere's projected radius, without ignoring dim
+  nodes. This strengthens the instrument; no product behavior, opacity
+  threshold or timeout was relaxed. The final-code AFTER capture again shows
+  zero pins, all 35 native meshes, and all 35 normally opaque after pointer
+  exit. Root has reviewed the before/after evidence; the BEFORE capture is
+  unchanged. Source type-check and targeted lint pass.
+
+  The complete retry is running now: "'`npm run safe:commit -- --e2e`, exec
+  session 40228, output in ignored
+  `AI-Agent-Workspace/tmp/inspection-2026-10-20/full-gate-2.log`. It
+  exclusively owns heavy and browser work; delegates have stopped. Final mirror
+  generation, full checks, cleanup and commit are still required. No full-gate
+  pass or product commit is claimed at this checkpoint.
+  EOF'
+
+  update: /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10
+  /2026-10-20.1.record.md
+  Completed with input: update: /workspaces/Live-Documentation/AI-Agent-Workspa
+  ce/ChatHistory/2026/10/2026-10-20.1.record.md
+
+  Ran terminal command: sed -n '1,145p'
+  AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.export.md
+
+  Ran terminal command: sed -n '146,290p'
+  AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.export.md
+
+  Ran terminal command: sed -n '291,450p'
+  AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.export.md
+
+  Error: (CodexError) You’ve hit your usage limit. Visit
+  https://chatgpt.com/codex/settings/usage to purchase more credits or try
+  again at Oct 27th, 2026 1:30 PM.
+
+
+  This may or may not be related to the current task.</ide_selection>
+
+❯ Whoops, it appears that I've hit a usage limit on Codex. I've selected Opus
+  5.5 XHigh on Claude Code to continue the thread. What can I provide for you
+  to succeed on this continuation?
+
+● I'll check where Codex stopped before answering: whether the full gate
+  finished, what the record says, and how this workspace records a harness
+  switch.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The second gate failed due to staticBuilder.test.ts timing out at 5009ms
+  (limit 5000ms), unrelated to Codex's changes. I'll now check the recording
+  convention and today's record.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Generation, lint, and build all passed, but unit tests had one timeout out of
+  1,317. I'll re-run that test in isolation to see if it's a real failure or
+  just machine load.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I'll follow the same approach as before—summarizing and closing out the Codex
+  session before picking up its uncommitted work. Now running the isolated test.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The test passes reliably in isolation (~2.9s) but hits 5,009ms under parallel
+  suite load, confirming it's a real but marginal timeout issue tied to the
+  client bundle build. I'll check whether today's added client code actually
+  slowed the bundle before considering raising the timeout.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The slowdown (1.58s solo vs 5.01s under full suite) is due to resource
+  contention, not a hang. I'll check the session record now and note the Codex
+  export you added before writing up the answer.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The new export matches Codex's earlier copy exactly in its first 56,862 bytes,
+  confirming identical content. I'll log this verification in the session
+  record.
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.2.record.md)
+  ⎿  Wrote 59 lines to
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.2.record.md
+      1 # October 20, 2026 — session 2 (Claude Code)
+      3 ## Coverage
+      4
+        as the owner selected it), begun 2026-10-20. This is not a harnes
+        uthored work notes outside message blocks. No private reasoning,
+        tool transcripts or delegated conversations are included. The fin
+        the next user turn.
+      6
+         session the harness stopped at its usage limit mid-work. It foll
+        chat in another harness i
+     … +111 lines (ctrl+o to expand)
+
+● Nothing is lost, and you don't need to send me anything more. The export you
+  selected, Codex's record and the logs it left on disk cover everything through
+  the usage-limit error. I've opened this session's record
+  (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.2.record.md) as session 2,
+  the way the October 14 handoff from Codex was done.
+
+  Where things stand:
+  - Nothing is committed yet: the click-to-inspect and direct Pin work is all
+    still uncommitted in main (93 changed paths).
+  - The last full check failed at the unit tests: 1,317 of 1,318 passed. The
+    integration tests and the browser suite never ran.
+  - The failure looks like load, not a bug: one test that builds the real
+    Explorer bundle took 5.0 s in the full suite, just over its 5 s limit. Alone
+    it takes 1.6 s and passed all three times. Before touching it I'll check
+    whether today's added code made the bundle slower. I won't just raise the
+    limit.
+
+  What I need from you:
+
+  1. Order of work. AGENTS.md says a new chat first reads the narrative and five
+     summaries, then closes the previous session. I'd rather land the work
+     first, since Codex's record carries enough context for it. That means
+     reviewing the diff myself, fixing the test, running the full check with
+     browser tests and committing. Then I'd do the reading, summarize Codex's
+     session and update the narrative. Is that order OK, or do you want the full
+     startup reading first?
+  2. The "missing galaxy" report. Codex reproduced it only by unpinning one item
+     at a time in the 35-file estate sample: all nodes were still there, but 32
+     stayed dimmed. Clear all was always fine. Codex fixed the dimming but
+     never got your answer. Was that your route, and was it the sample or the
+     full repository? Once it's rebuilt, a quick look from you would confirm the
+     fix covers what you saw.
+  3. Mobile controls. Codex's question is still open. At small sizes, should
+     actions move to a floating screen-sized More control, open through the
+     existing full-screen reader, or wait until later? Codex planned this as a
+     separate pass after this work lands. Say if you'd rather it block the
+     commit.
+
+❯ >Order of work. AGENTS.md says a new chat first reads the narrative and five
+  summaries, then closes the previous session. I'd rather land the work first,
+  since Codex's record carries enough context for it. That means reviewing the
+  diff myself, fixing the test, running the full check with browser tests and
+  committing. Then I'd do the reading, summarize Codex's session and update the
+  narrative. Is that order OK, or do you want the full startup reading first?
+
+  I saw you created at .2 chat. I think that was a really wise default which
+  minimized potential negatives. I appreciate your loss aversion. In this case,
+  I believe it would be acceptable to actually continue the .1.md chat if you
+  don't mind? Can we try that out and see how it goes?
+
+  >The "missing galaxy" report. Codex reproduced it only by unpinning one item
+  at a time in the 35-file estate sample: all nodes were still there, but 32
+  stayed dimmed. Clear all was always fine. Codex fixed the dimming but never
+  got your answer. Was that your route, and was it the sample or the full
+  repository? Once it's rebuilt, a quick look from you would confirm the fix
+  covers what you saw.
+
+  Interesting. Sounds like our repros differ. Let's test again later and see if
+  we can repro again. Don't prioritize just yet.
+
+  >Mobile controls. Codex's question is still open. At small sizes, should
+  actions move to a floating screen-sized More control, open through the
+  existing full-screen reader, or wait until later? Codex planned this as a
+  separate pass after this work lands. Say if you'd rather it block the commit.
+
+  Hmm... separate pass but worth considering. Even on desktops, once a
+  sufficient amount of zoom-out has occurred, certain things will not be
+  distinguishable to the human eye. We will need to, in a future pass, become
+  smarter about how we display a heavily zoomed-out 2D Local Map based on what
+  the human eye can actually perceive in the viewport.
+
+● Understood. Continuing session 1's record means this is a resumption of the
+  same session, not a new chat, so the startup reading doesn't apply and landing
+  the work comes first. I'm folding what I wrote in .2 into .1 now, then I'll
+  start the review.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing's actually missing—the gaps are just tool payloads, option lists, or
+  escaped copies already recorded; only the usage-limit notice needs adding. Now
+  I'll check Codex's changes to Memory and the month inventory to place the
+  merged record and your zoom-out idea correctly.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Codex's October 20 entry in direction.md is the right place for today's
+  answers, and I'll link the zoom-out point to the related October 3 idea about
+  file cards becoming nodes in a galaxy. Writing the merge now.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md)
+  ⎿  Added 3 lines, removed 1 line
+       1 -# October 20, 2026 — session 1 (Codex)                         
+       1 +# October 20, 2026 — session 1 (Codex, then Claude Code)       
+       2  
+       3  ## Coverage
+       4  
+       5  Agent-maintained record by the root Codex agent, begun 2026-10-
+          20. This is not a harness export. It preserves the visible root
+          /user conversation, with authored work notes outside message bl
+          ocks. The opening also supplied repository guidance and the wor
+          kspace context. No private reasoning, tool transcripts or deleg
+          ated conversations are included. The final response will be cap
+          tured after delivery, normally at the next user turn.
+       6  
+       7 +Codex stopped at its usage limit during Turn 5's work; its noti
+         +ce is quoted [below](#harness-switch-to-claude-code). From [Tur
+         +n 6](#turn-6) the root agent is Claude Code (Opus 5.5, as the o
+         +wner selected it), continuing this same record at the owner's r
+         +equest in [Turn 7](#turn-7), as a trial of one record across a 
+         +harness switch. Turns 6 and 7 were first written into a separat
+         +e `2026-10-20.2.record.md`, then folded in here unchanged and t
+         +hat file removed; nothing else cited it.                       
+       8 +                                                               
+       9  ## Resumption
+      10  
+      11  - Current task: finish the approved inspect-first/direct-Pin im
+          plementation in main, including Turns 3–5 feedback. Bootstrap a
+          nd transfer are complete; do not repeat or overwrite main from 
+          the older candidate. All focused cases pass, including the repo
+          rted galaxy defect and its fast-entry cache race: one applicati
+          on-owned coalesced picker now drives hover, alongside precise c
+          licks/holds, with deliberate keyboard/menu context and proper t
+          ouch/camera/hidden-view lifetimes. Final AFTER evidence shows a
+          ll 35 nodes normally opaque with zero pins. First full gate fai
+          led a restored test's import order, now fixed. The complete ret
+          ry `safe:commit -- --e2e` is running (exec 40228), log in ignor
+          ed `AI-Agent-Workspace/tmp/inspection-2026-10-20/full-gate-2.lo
+          g`. It owns all heavy/browser work; delegates are idle. Root mu
+          st finish the gate, final review/records/docs, cleanup and comm
+          it. No product commit or full-gate pass yet.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md)
+  ⎿  Added 4 lines, removed 2 lines
+       8  
+       9  ## Resumption
+      10  
+      11 -- Current task: finish the approved inspect-first/direct-Pin im
+         -plementation in main, including Turns 3–5 feedback. Bootstrap a
+         -nd transfer are complete; do not repeat or overwrite main from 
+         -the older candidate. All focused cases pass, including the repo
+         -rted galaxy defect and its fast-entry cache race: one applicati
+         -on-owned coalesced picker now drives hover, alongside precise c
+         -licks/holds, with deliberate keyboard/menu context and proper t
+         -ouch/camera/hidden-view lifetimes. Final AFTER evidence shows a
+         -ll 35 nodes normally opaque with zero pins. First full gate fai
+         -led a restored test's import order, now fixed. The complete ret
+         -ry `safe:commit -- --e2e` is running (exec 40228), log in ignor
+         -ed `AI-Agent-Workspace/tmp/inspection-2026-10-20/full-gate-2.lo
+         -g`. It owns all heavy/browser work; delegates are idle. Root mu
+         -st finish the gate, final review/records/docs, cleanup and comm
+         -it. No product commit or full-gate pass yet.                   
+      12 -- Pending owner questions: mobile responsive control policy (ke
+         -ep direct Pin while separately tappable, floating More versus e
+         -xisting reader at small scales). The exact galaxy route/scope q
+         -uestion remains unanswered, but an actual individual-Unpin defe
+         -ct is now reproduced and being fixed. No answer or permission i
+         -s inferred from time.                                          
+      11 +- Current task (Claude Code, from Turn 7): land the approved in
+         +spect-first/direct-Pin implementation, which is uncommitted in 
+         +main. Order, agreed in Turn 7: review the whole diff, settle th
+         +e unit timeout at its cause, run `safe:commit -- --e2e`, commit
+         +; then close this record with a summary and the narrative. This
+         + is a resumption of the same session, so no new-chat bootstrap 
+         +reading.                                                       
+      12 +- The second full gate (exec 40228) ended with exit 1: generati
+         +on, lint and build passed; unit 1,317 of 1,318, with `staticBui
+         +lder.test.ts` timing out at its 5,000 ms default (1.6 s alone).
+         + Integration, documentation audits and Playwright did not run. 
+         +Details under [Turn 6](#turn-6).                               
+      13 +- Deferred by the owner in Turn 7: mobile action controls and z
+         +oomed-out legibility are a separate later pass; the galaxy repo
+         +rt is to be re-tested later, not prioritized now. Codex's indiv
+         +idual-Unpin dimming fix stays in this landing.                 
+      14 +- Codex's state notes before the switch, kept for reference: al
+         +l focused cases pass, including the fast-entry cache race; one 
+         +application-owned coalesced picker drives hover alongside preci
+         +se clicks/holds; final AFTER evidence shows all 35 nodes normal
+         +ly opaque with zero pins; the first gate's import-order failure
+         + is fixed. Do not overwrite main from the older candidate workt
+         +ree.                                                           
+      15  - Previous source state: main `535ceefc`; last product commit `
+          431483d0`, whose recorded full gate passed 1,301 unit, 111 inte
+          gration and 158 browser tests. Those results are historical.
+      16  - The original failed type-check has been resolved: isolated en
+          gine declarations were missing, then remembered inspection stat
+          e needed its API repaired. Work continues in main, preserving o
+          verlay, separate evidence state in links/Back and map subject a
+          cross perspectives.
+      17  - Current candidate recovery: ignored `AI-Agent-Workspace/tmp/i
+          nspection-2026-10-20/candidate.patch`, base `535ceefc`, full di
+          ff plus new menu source, reverse-apply check passed. Older stag
+          ed-baseline worktree and recovery patches remain deliberately i
+          ntact.
+
+  Read 1 file (ctrl+o to expand)
+
+● Now Memory: updating Codex's October 20 entry with today's decisions in your
+  words.
+
+● Update(AI-Agent-Workspace/Memory/direction.md)
+  ⎿  Added 2 lines
+       6  
+       7  **October 20, first visual response and mobile constraint** ([T
+          urns 3–5](../ChatHistory/2026/10/2026-10-20.1.record.md#turn-3)
+          ). Looking at the resumed implementation, the owner is “REALLY 
+          enjoying this interaction mode” and specifically appreciates Mo
+          re for additional options. Their remaining concern is mobile ta
+          rget size: collapse actions into More only “when the screen siz
+          e is so small that a tap on two different buttons on the same c
+          ard cannot be distinguished”; zoom-dependent collapse is raised
+           as a question. Preserve direct Pin wherever actions remain sep
+          arately tappable. The measured phone targets are 17 px for symb
+          ol actions and 20 px for header actions at map scale 1. Floatin
+          g screen-sized controls versus the existing reader at small sca
+          les remains a design question, not an implemented policy. The o
+          wner also reports incomplete restoration of the 3D galaxy after
+           unpinning following a 2D transition; the first estate reproduc
+          tion retains all 35 nodes and restores their opacity, so the re
+          ported accumulating subset remains under investigation. The imp
+          lementation is in main and builds; full verification and landin
+          g are still pending.
+       8  
+       9 +**October 20, after the harness switch** ([Turn 7](../ChatHisto
+         +ry/2026/10/2026-10-20.1.record.md#turn-7)). Mobile action contr
+         +ols are a "separate pass but worth considering", not a blocker 
+         +for landing the inspect-first work. The owner widens the concer
+         +n past phones: "Even on desktops, once a sufficient amount of z
+         +oom-out has occurred, certain things will not be distinguishabl
+         +e to the human eye. We will need to, in a future pass, become s
+         +marter about how we display a heavily zoomed-out 2D Local Map b
+         +ased on what the human eye can actually perceive in the viewpor
+         +t." That future pass meets the October 3 hypothesis of cards be
+         +coming galaxy nodes on zoom-out ([ideas](ideas.md#continuous-fi
+         +le-perspectives--october-3-2026)); neither is selected behavior
+         + yet. The galaxy report: Codex reproduced a different route (in
+         +dividual Unpin left 32 of 35 nodes dimmed) and fixed it; the ow
+         +ner's own route is unconfirmed, and they asked to "test again l
+         +ater and see if we can repro again. Don't prioritize just yet."
+      10 +                                                               
+      11  **Bootstrap handoff, October 20** ([October 19–20 summary](../C
+          hatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#outcom
+          es-and-open-work)). The inspect-first choice below is accepted;
+           implementation was interrupted by reported model-capacity erro
+          rs, not held at a remaining primary-click fork. Its latest unve
+          rified draft survives in `/tmp/live-docs-inspection-20261020` a
+          t `535ceefc`, with a complete recovery patch in ignored workspa
+          ce scratch. The final captured type-check exited 2 without diag
+          nostics. Resume review/integration, responsive overlay and real
+           connection-following playtests before regressions, regeneratio
+          n and the full gate. Main’s last product landing is `431483d0`,
+           with its recorded 1,301-unit/111-integration/158-browser pass.
+           Smooth damping and complete generation through reuse remain un
+          finished separate directions.
+      12  
+      13  **October 20, inspect-first accepted with fast direct pinning**
+           ([Turn 24](../ChatHistory/2026/10/2026-10-19.1.record.md#turn-
+          24)). The owner accepts click-to-inspect plus a separate visibl
+          e one-click Pin control: “Yep. I agree with that.” They stress 
+          that they still want to “swing along the monkey bars” of connec
+          tions without losing their bearings. Implement this across 2D/3
+          D, preserving a direct Pin action and recognizable acted-on con
+          text through layout changes. This supersedes the earlier click-
+          to-pin body gesture; the older entries below record the deliber
+          ation. Double-Go remains an optional shortcut conditional on re
+          liable immediate inspection; visible Centre/Open remains availa
+          ble. Hold-More must yield to drag. Implementation is underway, 
+          not yet shipped; shared-state, overlay and perspective decision
+          s from Turns 19–21 stand.
+
+● Records and Memory are done. Now the review: sizing the source diff first.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll review the ~3,700-line production diff across 44 files myself, while
+  running a parallel read-only check for correctness bugs and measuring any
+  bundle size/speed impact.
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● The client entry is found relative to the builder module, so a worktree at
+  HEAD will bundle HEAD's client. I'll time base and current one after the
+  other, in the background, while I start the review.
+
+  Ran 1 shell command (ctrl+o to expand)
+● Agent(Review inspection diff for bugs)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● While those run, I'll start with the parts the reviewer isn't covering: the
+  authored docs and the tests.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I found three stale spots to update at closeout: the vision doc still flags
+  touch sizing as open, the decision doc marks responsive policy as "under
+  review," and the Explorer doc omits that mouse-created focus no longer holds
+  3D hover. I'll defer the first two fixes and move on to the tests now.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The tests assert real behavior: exact geometry, DOM identity, snapshot
+  equality, camera matrices. Nothing is weakened to pass. Now the production
+  diff, starting with the application wiring.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The wiring looks solid—exploration writes now go through one
+  explorationSnapshot() with clearly separated owners for subject, pins, and
+  inspection. Next I'll tackle the URL format change, being careful since
+  existing shared links depend on it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Backward compatibility is preserved: payloads without the new i field open
+  with the reader closed, ambiguous ones get rejected instead of guessed, and
+  the menu no longer lets Escape also close the reader. Now moving on to the 3D
+  view, the largest change.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The 3D design hangs together: one picker drives hover, click and hold, and the
+  drag, multi-touch and blur paths each cancel a pending hold. On to the 2D
+  controller.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Pin policy is now consolidated into one application function, with the view
+  holding only the screen anchor and focus—note that pinning no longer sets the
+  map subject when none exists, matching the decision record. Next, I'll move on
+  to the card controls.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Time the bundle test at HEAD and in the working tree"
+completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Base takes ~1.1s per test versus 1.3-2.0s on the current tree, but the 3x
+  slowdown in the full suite looks mostly like contention rather than a real
+  regression. I'll time esbuild alone on both client trees, interleaved, to
+  isolate any genuine bundle slowdown from noise.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● esbuild now takes ~1.2s vs ~1.0s on base (output size up 2%), adding roughly
+  0.2s to a test already near its limit under suite load. I'll check which new
+  import is responsible for the added time.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The slowdown is just the new markdown slugger and Live Doc renderer adding
+  ~0.2s, but the real issue is the test using a 5s default meant for unit tests
+  against a full production bundle build. I'll bump the timeout to 30s with an
+  explanatory comment, matching what other CLI-spawning tests in the repo
+  already do, since this doesn't weaken the actual assertion.
+
+● Update(packages/explorer/src/shared/staticBuilder.test.ts)
+  ⎿  Added 3 lines
+      13      TEMP: process.env.TEMP
+      14  };
+      15  const quiet = { log: () => undefined, error: () => undefined };
+      16 +// Each test runs the real client bundle through esbuild: about
+         + 1.2 s alone on 2026-10-20, and over the 5 s default           
+      17 +// under the unit suite's parallel load. What these tests check
+         + is the output and its cleanup, not the build's speed.         
+      18 +const BUNDLE_BUDGET_MS = 30_000;                               
+      19  
+      20  afterEach(async () => {
+      21      for (const name of tempVariables) {
+
+● Update(packages/explorer/src/shared/staticBuilder.test.ts)
+  ⎿  Added 1 line, removed 1 line
+      53      const data = JSON.parse(await fs.readFile(path.join(output,
+           "explorer-data.json"), "utf8")) as { graph: { files: Record<st
+          ring, unknown> } };
+      54      expect(data.graph.files).toEqual({});
+      55      expect(result.stats.totalSizeBytes).toBeGreaterThan(0);
+      56 -});                                                            
+      56 +}, BUNDLE_BUDGET_MS);                                          
+      57  
+      58  it("removes temporary assets when the output writer fails", asy
+          nc () => {
+      59      const { root, output, assetsTemp } = await workspace();
+
+● Update(packages/explorer/src/shared/staticBuilder.test.ts)
+  ⎿  Added 1 line, removed 1 line
+      65          code: expect.stringMatching(/^(EISDIR|EPERM|EACCES)$/u)
+      66      });
+      67      expect(await fs.readdir(assetsTemp)).toEqual([]);
+      68 -});                                                            
+      68 +}, BUNDLE_BUDGET_MS);                                          
+
+● Removing the scratch worktree and checkpointing progress in the record before
+  I read further:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the reader, the last large production file.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've updated the reader to use the bundle's actual paths instead of the old
+  heuristic link resolution, and added HTML escaping for raw-interpolated
+  values. While the review finishes up, I'll take a quick look at the edited
+  test.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While the reviewer works, I'll make the three doc corrections. They don't
+  depend on its findings.
+
+● Update(.mdmd/layer-1/vision.mdmd.md)
+  ⎿  Added 1 line, removed 1 line
+      100  
+      101  The [October 17 to 18 session](../../AI-Agent-Workspace/ChatHi
+           story/2026/10/2026-10-17.1.record.md) wrote [the plan for chan
+           ge over time](../../.mdmd/layer-3/change-over-time.mdmd.md) fr
+           om the probe and landed its first two steps. The 3D picture ha
+           s gravity, a restoring force in place of held hubs, measured b
+           y the layout lab and left to the owner's eye ([the decision](.
+           ./../.mdmd/layer-3/architectural-decisions.mdmd.md#the-3d-pict
+           ure-has-gravity-a-restoring-force-in-place-of-held-hubs-record
+           ed-2026-10-17)). A repository's history can be computed under 
+           one lens (`npm run live-docs:history`: the mainline sampled, e
+           ach commit regenerated in a scratch worktree by a process of i
+           ts own, a cache beside the sequence), answered headlessly (`in
+           spect --at` and `--between`) and carried by the bundle by the 
+           exporter's choice ([the decision](../../.mdmd/layer-3/architec
+           tural-decisions.mdmd.md#a-repositorys-history-is-a-sequence-of
+           -shapes-under-one-lens-read-through-a-five-operation-seam-reco
+           rded-2026-10-18)). The same night the update's energy became o
+           ne lever, with every membership change on one path and the lin
+           es' objects kept across it ([the decision](../../.mdmd/layer-3
+           /architectural-decisions.mdmd.md#a-change-to-what-is-shown-fee
+           ds-the-3d-simulation-by-one-lever-the-update-energy-recorded-2
+           026-10-18)), and the Explorer learned to play the history: a H
+           istory control in the 3D Local Map opens a scrubber with major
+            and minor ticks for what is pinned, a step panel saying what 
+           each commit changed, a drag that places every step without a t
+           ick and a rest that settles it, renamed files and hubs keeping
+            their spheres, and the address carrying the commit ([the deci
+           sion](../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-
+           3d-local-map-plays-the-history-a-scrubber-of-major-and-minor-t
+           icks-a-step-panel-and-renames-that-keep-their-objects-recorded
+           -2026-10-18)). What remains of that plan is the owner's eye on
+            the whole, the hosted site's cache of its own history, and th
+           e instrument.
+      102  
+      103 -The [October 20 continuation](../../AI-Agent-Workspace/ChatHis
+          -tory/2026/10/2026-10-20.1.record.md#turn-2) separates the map 
+          -subject, retained pins and inspected evidence. Clicking an ent
+          -ity reads it; adjacent Pin controls retain its connections in 
+          -one action, and Centre deliberately moves the subject. Evidenc
+          -e overlays the unchanged canvas, using a full reader on narrow
+          - or short screens. Links, reload and Back preserve that indepe
+          -ndent evidence target, and changing 2D/3D preserves the map su
+          -bject. The owner positively reviewed the 2D interaction; [touc
+          -h-control sizing at small displayed scales](../../AI-Agent-Wor
+          -kspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-3) rema
+          -ins a design question.                                        
+      103 +The [October 20 continuation](../../AI-Agent-Workspace/ChatHis
+          +tory/2026/10/2026-10-20.1.record.md#turn-2) separates the map 
+          +subject, retained pins and inspected evidence. Clicking an ent
+          +ity reads it; adjacent Pin controls retain its connections in 
+          +one action, and Centre deliberately moves the subject. Evidenc
+          +e overlays the unchanged canvas, using a full reader on narrow
+          + or short screens. Links, reload and Back preserve that indepe
+          +ndent evidence target, and changing 2D/3D preserves the map su
+          +bject. The owner positively reviewed the 2D interaction. [Touc
+          +h-control sizing at small displayed scales](../../AI-Agent-Wor
+          +kspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-3) is d
+          +eferred to a later pass, which the owner widened to what a hea
+          +vily zoomed-out 2D map should show at all, given what the eye 
+          +can distinguish ([Turn 7](../../AI-Agent-Workspace/ChatHistory
+          +/2026/10/2026-10-20.1.record.md#turn-7)).                     
+      104  
+      105  The order of work:
+      106  
+
+● Update(.mdmd/layer-3/architectural-decisions.mdmd.md)
+  ⎿  Added 1 line, removed 1 line
+      210  - **Decision**: clicking a Local Map entity opens evidence. A 
+           separate direct Pin retains its connections, and Centre delibe
+           rately moves the map subject. Directory names inspect, Open di
+           scloses contents, and Centre frames the directory. More, right
+           -click and a stationary hold expose contextual commands. A hol
+           d cancelled by movement, multiple pointers or Escape performs 
+           no action on release. The optional double-click navigation sho
+           rtcut is omitted because immediate inspection and explicit Cen
+           tre/Open are reliable together.
+      211  - **Rationale**: the owner wanted to read one thing without mo
+           ving the place they were exploring, while preserving fast “mon
+           key bars” navigation by one-click pins. The reader overlays th
+           e unchanged canvas; on a narrow or short viewport it fills the
+            screen with its own history and Close controls. Its independe
+           ntly named file, symbol, directory or bundled-document section
+            travels in the share link and remembered place. Back between 
+           evidence targets leaves the map's DOM and camera intact.
+      212  - **Ownership**: application actions own the subject, pins, di
+           rectory openings, inspection and their canonical snapshot. The
+            renderers own presentation, camera and gesture handling; 2D k
+           eeps the acted-on row or directory in place while a retention 
+           change moves the surrounding picture. The reader and contextua
+           l menu invoke those same actions. Older links without evidence
+            open with the reader closed.
+      213 -- **Source**: the owner's [October 19 choice](../../AI-Agent-W
+          -orkspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24), 
+          -[approved continuation](../../AI-Agent-Workspace/ChatHistory/2
+          -026/10/2026-10-20.1.record.md#turn-2) and [visual response](..
+          -/../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record
+          -.md#turn-3). The response also raised mobile target size; its 
+          -exact responsive policy remains under review in that session. 
+      213 +- **Source**: the owner's [October 19 choice](../../AI-Agent-W
+          +orkspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24), 
+          +[approved continuation](../../AI-Agent-Workspace/ChatHistory/2
+          +026/10/2026-10-20.1.record.md#turn-2) and [visual response](..
+          +/../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record
+          +.md#turn-3). The response also raised mobile target size; the 
+          +owner deferred it to a separate pass, widened to what a heavil
+          +y zoomed-out map can show legibly ([Turn 7](../../AI-Agent-Wor
+          +kspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-7)).   
+      214  
+      215  ### The 3D Local Map Plays the History: a Scrubber of Major an
+           d Minor Ticks, a Step Panel, and Renames That Keep Their Objec
+           ts _(Recorded 2026-10-18)_
+      216  
+● Update(.mdmd/layer-3/live-documentation-explorer.mdmd.md)
+  ⎿  Added 1 line, removed 1 line
+      71  
+      72  **Connections or Structure** is the 3D Local Map's layout, a ch
+          oice inside 3D shown beside its button and remembered like the 
+          perspective (2026-10-14). In the connections layout the documen
+          ted references pull and are drawn: the emergent network of what
+           the code does. In the structure layout every file and related 
+          document hangs from its directory's hub and every hub from its 
+          parent's, up to the scan root, by one containment link each: th
+          e emergent tree of what the file system declares; a hub holding
+           nothing but one child collapses into it, as the 2D bands colla
+          pse such chains. Hubs are amber, and a hub's volume is the sum 
+          of its members' volumes, so that size means exposed surface at 
+          every scale. Only the links of the chosen layout are given to t
+          he spring force; the other kind stays in the data, pulls nothin
+          g and counts for nothing. Containment is drawn as the structure
+           it is; a reference is drawn in the structure layout only on de
+          mand, for the hovered file, within and out of the hovered hub's
+           subtree, among the retained files, and along a path. Switching
+           layouts keeps every file where it stands and starts each new h
+          ub at the centroid of its members, so the simulation folds the 
+          network into the tree before the eye, and unfolds it on the way
+           back. Directory hover reveals its members; clicking inspects i
+          t, Open retains its contents, and Centre frames the hub with it
+          s members. The owner chose this separation after seeing hubs in
+          side the connectivity layout ([Turns 3 and 4 of the October 14 
+          record](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14
+          .1.record.md#turn-3)). There are no 3D enclosing volumes.
+      73  
+      74 -Hover in 3D temporarily reveals the inspected file's incident c
+         -onnections, including a file outside the retained scope. Leavin
+         -g restores the current pins, directories or path. Wheel zoom pr
+         -eserves the inspected point's projection and never reverses a g
+         -esture to enforce a distance limit reached through another inpu
+         -t method. In 2D, matching wires retain their SVG elements throu
+         -gh re-layout and through every frame of a move: since 2026-10-1
+         -6 the drawing keeps each wire's, lace's and bundle run's elemen
+         -t by its key and writes its geometry in place from the measured
+         - page, where before it built the SVG anew each frame and reconc
+         -iled it by key, which cost a frame 41 ms at 418 wires against 1
+         -1.5 after ([the probe](../../AI-Agent-Workspace/Probes/2026-10-
+         -16/explorer-performance/README.md)). Entering wires fade with t
+         -heir endpoint cards, and frame redraws do not reset the layer's
+         - opacity. A perspective transition captures that current wire p
+         -resence too.                                                   
+      74 +Hover in 3D temporarily reveals the hovered file's incident con
+         +nections, including a file outside the retained scope. Leaving 
+         +restores the current pins, directories or path. One application
+         + pick of the rendered spheres decides hover, click and hold ali
+         +ke, so a fast entry, a camera move under a still pointer or a l
+         +ifted finger cannot leave a stale preview behind; the graph lib
+         +rary's own hover callback, which reports only changes between o
+         +bjects, no longer decides it. A control the mouse pressed may k
+         +eep keyboard focus without keeping its file's preview, while ke
+         +yboard focus on a sphere's actions, or an open menu, keeps it. 
+         +Wheel zoom preserves the inspected point's projection and never
+         + reverses a gesture to enforce a distance limit reached through
+         + another input method. In 2D, matching wires retain their SVG e
+         +lements through re-layout and through every frame of a move: si
+         +nce 2026-10-16 the drawing keeps each wire's, lace's and bundle
+         + run's element by its key and writes its geometry in place from
+         + the measured page, where before it built the SVG anew each fra
+         +me and reconciled it by key, which cost a frame 41 ms at 418 wi
+         +res against 11.5 after ([the probe](../../AI-Agent-Workspace/Pr
+         +obes/2026-10-16/explorer-performance/README.md)). Entering wire
+         +s fade with their endpoint cards, and frame redraws do not rese
+         +t the layer's opacity. A perspective transition captures that c
+         +urrent wire presence too.                                      
+      75  
+      76  After the initial ordering starts, the continuing search altern
+          ates ordering trials with proposed joins of neighboring flat bo
+          undary runs. Each join re-solves cards, wire slots and containi
+          ng membranes under the same padding, separation and overlap con
+          straints. A proposal wins only if its complete score improves; 
+          the browser measures it again before adoption. Search pauses du
+          ring animated moves, and changing a weight starts a new search 
+          while preserving the displayed subject. Since 2026-10-16 the se
+          arch also runs only while the Local Map is the view shown and t
+          he page visible: leaving the map for another view or another ta
+          b pauses it where it stands, and a return resumes it; a render 
+          asked for while another view is shown is owed until the map is 
+          shown again, so a return to an unchanged picture draws nothing 
+          (before, the search went on behind the other view and the retur
+          n drew the picture again and began the search anew). This is de
+          terministic local search, not a global optimum claim for step c
+          ount. A zero simplicity weight disables alignment proposals; di
+          sabling continuing search or forcing one ordering seed disables
+           all continuing trials.
+      77  
+
+● The bundle test's Live Doc
+  (.mdmd/layer-4/packages/explorer/src/shared/staticBuilder.test.ts.mdmd.md)
+  should carry the budget's reason too. Checking its authored part:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(.mdmd/layer-4/packages/explorer/src/shared/staticBuilder.test.ts.mdmd.m
+        d)
+  ⎿  Added 1 line
+      12  
+      13  ### Notes
+      14  - Uses a test-owned workspace and temporary-asset root. The emp
+          ty graph keeps the test focused on output and resource ownershi
+          p; graph, board, and history content have separate integration 
+          coverage.
+      15 +- Each test runs the real client bundle through esbuild, about 
+         +a second alone, so both carry a 30 s budget rather than the uni
+         +t project's 5 s default; under the full suite's parallel load t
+         +he bundle crossed that default on 2026-10-20 ([the record](../.
+         +./../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.
+         +record.md#landing-checkpoint-claude-code)). The budget is not a
+         + speed check, and none is intended here.                       
+      16  
+      17  ## Generated
+      18  <!-- LIVE-DOC:BEGIN Public Symbols -->
+
+● Update(.mdmd/layer-4/packages/explorer/src/shared/staticBuilder.test.ts.mdmd.m
+        d)
+  ⎿  Added 1 line, removed 1 line
+      12  
+      13  ### Notes
+      14  - Uses a test-owned workspace and temporary-asset root. The emp
+          ty graph keeps the test focused on output and resource ownershi
+          p; graph, board, and history content have separate integration 
+          coverage.
+      15 -- Each test runs the real client bundle through esbuild, about 
+         -a second alone, so both carry a 30 s budget rather than the uni
+         -t project's 5 s default; under the full suite's parallel load t
+         -he bundle crossed that default on 2026-10-20 ([the record](../.
+         -./../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.
+         -record.md#landing-checkpoint-claude-code)). The budget is not a
+         - speed check, and none is intended here.                       
+      15 +- Each test runs the real client bundle through esbuild, about 
+         +a second alone, so both carry a 30 s budget rather than the uni
+         +t project's 5 s default; under the full suite's parallel load t
+         +he bundle crossed that default on 2026-10-20 ([the record](../.
+         +./../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20
+         +.1.record.md#landing-checkpoint-claude-code)). The budget is no
+         +t a speed check, and none is intended here.                    
+      16  
+      17  ## Generated
+      18  <!-- LIVE-DOC:BEGIN Public Symbols -->
+
+● While the reviewer finishes, I'm reading today's screenshot README in full,
+  since it will be committed with the work.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll correct the Unpin section's claim that the report "was reproduced," since
+  Turn 7 showed the routes actually differ, and address the "work-in-progress"
+  line after the gate passes.
+
+● Update(AI-Agent-Workspace/Screenshots/2026-10-20/README.md)
+  ⎿  Added 1 line, removed 1 line
+      43  
+      44  ## Individual Unpin restores the galaxy's normal opacity
+      45  
+      46 -The owner's report was reproduced by a different route from Cle
+         -ar all: retain PaymentResultModel in 2D, switch to 3D, mouse-cl
+         -ick its Unpin control, then move onto empty canvas.            
+      46 +A defect resembling the owner's report was reproduced by a diff
+         +erent route from Clear all: retain PaymentResultModel in 2D, sw
+         +itch to 3D, mouse-click its Unpin control, then move onto empty
+         + canvas. The owner later judged their own route different and a
+         +sked to re-test it later ([Turn 7](../../ChatHistory/2026/10/20
+         +26-10-20.1.record.md#turn-7)); this fix is not a claim to have 
+         +resolved what they saw.                                        
+      47  
+      48  - [Before the fix](inspect-3d-unpin-hover-before.png): zero pin
+          s, all 35 native meshes present, but only three normally opaque
+          . Ordinary mouse-created button focus keeps stale hover dimming
+           alive.
+      49  - [After the fix](inspect-3d-unpin-hover-after.png): zero pins 
+          and all 35 meshes normally opaque after pointer exit; the butto
+          n can retain focus without falsely retaining hover attention.
+
+● While the reviewer finishes, I'll run the build and unit suite on the current
+  tree to catch anything early.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The build passes and all 1,318 unit tests pass, including the bundle test with
+  its new budget. The reviewer is still reading the production diff. Once its
+  findings arrive I'll check each one against the code, fix what's real, then
+  start the full gate with browser tests. That takes about 21 minutes.
+
+› Message from general-purpose
+  I reviewed the uncommitted Explorer client diff without changing anything,
+  running anything or starting a browser. I found no crash or null-dereference
+  bugs on real paths. There are three findings worth acting on and three minor
+  ones; I traced each one through the actual code.
+
+  ## Findings
+
+  **1. Escape closes the reader along with whatever the person meant to
+  dismiss.** Medium confidence; I confirmed the mechanism in the code.
+  - index.ts:1013–1018 adds a document-level Escape handler. It closes the
+  reader unless the event's default was already prevented.
+  - search-field.ts:149 handles Escape on the search input (it settles the field
+  and blurs it) without `preventDefault`. So with the reader open, pressing
+  Escape to dismiss search results also closes the reader. Because
+  `closeInspection()` persists the change, it also pushes a new Back entry.
+  - worldMap/controller.ts:1344–1360 listens for Escape on `window` and ignores
+  `defaultPrevented`. The document listener runs first, so one Escape over the
+  World Map with the reader open closes the reader *and* ends the tour, closes
+  help or unpins the pinned piece.
+  - The ancestry popover (light-dismiss) is in the same situation.
+  - The item menu is handled correctly: it calls `stopPropagation`.
+
+  **2. Closing the reader moves focus into the search box, which opens the
+  on-screen keyboard on phones.** Medium confidence.
+  - index.ts:1146–1150 records an opener only when `activeElement` isn't `body`.
+  A 3D sphere tap leaves focus on `body`, because the canvas isn't focusable.
+  - On narrow or short screens, index.ts:1218 moves focus to `#detail-close`
+  when the reader opens.
+  - On Close, `hideInspection` (index.ts:1232–1244) sees focus inside the panel,
+  finds no visible opener and calls `#search-subject.focus()`. The search
+  field's focus handler then selects its text.
+  - Steps: on a phone, tap a sphere, then tap ×. The keyboard pops up. The same
+  happens on any screen size when the opener has been disconnected, for example
+  after "Pin file" in the reader re-renders every 2D card (cards are rebuilt on
+  each render), or after following reader links. On desktop the effect is focus
+  jumping to the search box with its text selected.
+
+  **3. A whole-file Unpin acts as Close, so Pin followed by Unpin is not
+  reversible.** Medium confidence that it is unintended.
+  - The 2D card Pin (card-factory.ts:132), the 3D strip button
+  (forceGraphView.ts:975) and the reader/menu action (index.ts:1175) all route
+  Unpin to `closePinnedNode`. That calls `changePinned(...,
+  closeExpansion=true)` (index.ts:436–441) and the release policy.
+  - Steps: Centre on X, so X is the subject with no pins. Press Pin on X, then
+  press it again ("Unpin X"). The subject becomes the newest remaining pin, or
+  null, and X's card leaves the map, which can go blank.
+  - This contradicts the rule in the `pressSymbol` doc comment
+  (pin-state.ts:111–116): "a card leaves the picture only by its close or the
+  tray (2026-10-15)". It also makes the pressed Pin toggle do more than undo
+  itself.
+  - It is consistent across 2D, 3D and the reader, so this is a semantics
+  question to settle rather than a renderer mismatch.
+
+  **4. 2D and 3D disagree on the directory primary action.** Low confidence.
+  - The 2D label offers Open or Close depending on state (branch-renderer
+  `fillLabel`).
+  - The 3D strip's primary button always calls `onOpenDirectory`
+  (forceGraphView.ts:973) and is never pressed or closing, even for an
+  already-open directory. Its More menu does toggle.
+
+  **5. A 3D click can be silently dropped while the layout is still settling.**
+  Low confidence.
+  - forceGraphView.ts:1047 (`if (id !== press.id) return;`) ignores the click
+  when the sphere picked at pointerdown differs from the one at pointerup.
+  - While the simulation is still moving spheres, a quick click near a sphere's
+  edge does nothing. Before this change, the click was resolved at pointerup.
+
+  **6. The full-screen reader's "inert background" doesn't block window-level
+  keyboard shortcuts.** Low confidence; this already happened with the old side
+  panel.
+  - The World Map's `window` keydown shortcuts still fire while the full-screen
+  reader is open over it: "r" resets the layout and saves it, "d" toggles the
+  theme.
+  - The `inert` attribute doesn't stop listeners on `window`.
+
+  ## Checked and found sound
+
+  - **URL decoding:** `readInspection` rejects arrays, null, ambiguous `{n,m}`
+  and non-string ids. Old v1–3 links with no `i` open with the reader closed.
+  `scrubSnapshot` checks the target against today's files and bundled docs
+  (symbols against `publicSymbols` or Internals). `placeOf` includes the reader
+  target. localStorage parsing is defensive.
+  - **Back between two evidence panels:** `restoreFromUrl` compares the snapshot
+  with and without the reader. The URL and state stay in sync because every
+  write goes through `persistExploration`, and when they differ it falls back
+  safely to a full restore. The evidence-only path writes nothing to history.
+  - **History:** there is a single write per action, and the initial write
+  happens before history is armed (a replace, not a new entry).
+  - **Item menu:** epoch guards stop a stale 3D `onClose`. Focus returns before
+  a command runs. Clicks outside, resize and popstate close it. Its listeners
+  are created only once (`startExplorer` runs once).
+  - **Hold and right-click in 2D:** the click after a hold or drag is
+  suppressed, keyboard clicks (`detail === 0`) are never suppressed, and
+  contextmenu after a hold isn't doubled. The listeners are disposed in
+  `destroy`.
+  - **3D pointer picker:** a gesture is cancelled when the view goes inactive or
+  the window loses focus. Mouse-created focus doesn't keep hover dimming.
+  Keyboard focus and an open menu do. Ids follow renames and are cleared when
+  their node disappears.
+  - **Inert handling:** `setActiveView` and `syncReaderPresentation` apply the
+  same rule. No other code sets `inert` on view containers. Every hide path
+  removes the background inert before restoring focus. The panel can't be left
+  modal but hidden, because inspection targets are always validated. The tab
+  trap filters out hidden and inert controls.
+  - **2D anchor and focus hold:** the before/after capture around
+  application-owned pin and directory changes is preserved. Cards are rebuilt
+  each render, so their pressed state is never stale.
+  - **Pin labels:** `isSymbolPinned` is an exact match, so the reader/menu
+  labels agree with the 2D "Pin only" wording.
+  - **Reader links:** `fileInspection` recursion is guarded, and HTML is escaped
+  throughout.
+  - **Markdown:** the fence and heading parsing and the per-document slugger are
+  correct, and heading ids are escaped.
+  - **perspectiveTransition:** building `cssText` once is equivalent to the old
+  per-property `setProperty`, since the clone's whole inline style was replaced
+  either way.
+  - **Startup order:** no use-before-declaration problem in index.ts
+  (`bundledMarkdown`, `sidebar`, `pinTray`).
+
+● The reviewer reports six findings. I'll check each against the code myself
+  before acting on any.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Review inspection diff for bugs" finished · 15m 48s
+
+● Confirmed findings 1 (Escape key propagates past the search field to close the
+  reader) and 3 (Unpin unexpectedly relocates the subject, violating the
+  close/tray-only rule) in the code. Now checking the remaining items: the
+  ancestry popover, focus fallback, and the 3D directory button.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● All six findings check out, including a bug where closing the reader wouldn't
+  properly close an open ancestry popover above it. I'll now fix Escape
+  handling, focus-on-close, unpinning, and the 3D directory/click issues,
+  starting by reviewing the pin helper and existing specs before making changes.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I'll extend that existing hub test to assert the Open→Close flip, and add
+  regressions for the rest. First the application wiring:
+
+● Update(packages/explorer/src/client/index.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      433    }
+      434  
+      435    /** Apply a card, search, 3D or history pin with one policy;
+            the 2D view only keeps its visual anchor. */
+      436 -  function changePinned(nodeId: string, symbol: string, nextPi
+          -ns: PinSet, closeExpansion = false): void {                   
+      436 +  function changePinned(nodeId: string, symbol: string, nextPi
+          +ns: PinSet, closeExpansion = false, keepSubject = false): void
+          + {                                                            
+      437      const previousPins = state.pins ?? EMPTY_PIN_SET;
+      438      let previousSelected = state.selectedNode;
+      439      if (closeExpansion && previousSelected?.id === nodeId) {
+     ...
+      441        previousSelected = next ? nodesById.get(next.nodeId) ?? 
+           null : null;
+      442      }
+      443      const selectedId = previousSelected
+      444 -      ? subjectAfterRelease(previousPins, nextPins, previousSe
+          -lected.id)                                                    
+      444 +      ? keepSubject ? previousSelected.id : subjectAfterReleas
+          +e(previousPins, nextPins, previousSelected.id)                
+      445        : null;
+      446      const selected = selectedId ? nodesById.get(selectedId) ??
+            null : null;
+      447      const frame = localView.capturePinChange(nodeId, symbol, s
+           elected?.id ?? null, closeExpansion);
+
+● Update(packages/explorer/src/client/index.ts)
+  ⎿  Added 10 lines
+      480      changePinned(nodeId, "*", removePinsForNode(state.pins ?? 
+           EMPTY_PIN_SET, nodeId), true);
+      481    }
+      482  
+      483 +  /**                                                         
+      484 +   * A pressed Pin pressed again undoes itself: the file's pin
+          +s go, and the subject and the card's expansion stay, so       
+      485 +   * Pin then Unpin leaves the map as it was. Releasing a file
+          + together with the subject is the close's and the tray's.     
+      486 +   */                                                         
+      487 +  function unpinNode(nodeId: string): void {                  
+      488 +    const pins = state.pins ?? EMPTY_PIN_SET;                 
+      489 +    const next = removePinsForNode(pins, nodeId);             
+      490 +    if (next !== pins) changePinned(nodeId, "*", next, false, 
+          +true);                                                        
+      491 +  }                                                           
+      492 +                                                              
+      493    /** An opened directory is shared state; the Local Map owns 
+           only its screen anchor and focus. */
+      494    function changeRetainedDirectory(directory: string, next: Op
+           enDirectories): void {
+      495      const frame = localView.captureDirectoryChange(directory);
+
+● Update(packages/explorer/src/client/index.ts)
+  ⎿  Added 1 line, removed 1 line
+      1182          label: symbol ? (pinned ? `Unpin ${part}` : whole ? `
+            Pin only ${part === "symbol" ? "this symbol" : part}` : `Pin 
+            ${part}`) : whole ? "Unpin file" : "Pin file",
+      1183          pressed: pinned,
+      1184          run: () => {
+      1185 -          if (!symbol && whole) closePinnedNode(node.id);    
+      1185 +          if (!symbol && whole) unpinNode(node.id);          
+      1186            else pressPin(node.id, symbol ?? "*");
+      1187          }
+      1188        },
+
+● Update(packages/explorer/src/client/index.ts)
+  ⎿  Added 1 line, removed 1 line
+      254        focusSidebar(node);
+      255      },
+      256      onPressPin: pressPin,
+      257 -    onReleasePin: closePinnedNode,                            
+      257 +    onReleasePin: unpinNode,                                  
+      258      onRecenterNode: recentreOn,
+      259      onShowNodeActions: showNodeActions,
+      260      onShowDirectoryActions: showDirectoryActions,
+
+● Update(packages/explorer/src/client/index.ts)
+  ⎿  Added 2 lines, removed 1 line
+      263      onOpenDirectory: directory => {
+      264        openRetainedDirectory(directory);
+      265        forceGraphView.focusDirectory(directory);
+      266 -    }                                                         
+      266 +    },                                                        
+      267 +    onCloseDirectory: closeRetainedDirectory                  
+      268    });
+      269  
+      270    // The history of the 3D Local Map: the scrubber and the ste
+           p panel over the sequence the bundle carries (ticket C4).
+
+● Update(packages/explorer/src/client/index.ts)
+  ⎿  Added 1 line
+      225    const localView = createLocalView({
+      226      state,
+      227      onPressPin: pressPin,
+      228 +    onUnpinNode: unpinNode,                                   
+      229      onCloseNode: closePinnedNode,
+      230      onOpenDirectory: openRetainedDirectory,
+      231      onCloseDirectory: closeRetainedDirectory,
+
+● Update(packages/explorer/src/client/index.ts)
+  ⎿  Added 2 lines
+      1025    document.addEventListener("keydown", event => {
+      1026      if (event.defaultPrevented || !state.inspection) return;
+      1027      if (event.key === "Escape") {
+      1028 +      // An open popover, the ancestry chooser, stands above 
+           +the reader; the browser closes it on this same Escape.       
+      1029 +      if (document.querySelector(":popover-open")) return;   
+      1030        event.preventDefault();
+      1031        closeInspection();
+      1032        return;
+
+● Update(packages/explorer/src/client/index.ts)  ⎿  Added 18 lines, removed 6 lines
+      1248      detailPanel.hide();
+      1249      syncReaderPresentation();
+      1250      if (returnFocus) {
+      1251 -      const openerVisible = inspectionOpener?.isConnected && 
+           -inspectionOpener.getClientRects().length > 0                 
+      1252 -        && !inspectionOpener.closest("[hidden], [inert]");   
+      1253 -      const trayToggle = document.querySelector<HTMLButtonEle
+           -ment>(".pin-tray-toggle");                                   
+      1254 -      const fallback = inspectionOpener?.closest(".pin-tray")
+           - && trayToggle?.getClientRects().length                      
+      1255 -        ? trayToggle : requireElement<HTMLInputElement>("sear
+           -ch-subject");                                                
+      1256 -      (openerVisible ? inspectionOpener! : fallback).focus({ 
+           -preventScroll: true });                                      
+      1251 +      const usable = (element: HTMLElement | null | undefined
+           +): element is HTMLElement => !!element?.isConnected          
+      1252 +        && element.getClientRects().length > 0 && !element.cl
+           +osest("[hidden], [inert]");                                  
+      1253 +      // A render rebuilds the cards, so an opener can be gon
+           +e; its successor carries the same accessible name.           
+      1254 +      const label = inspectionOpener?.getAttribute("aria-labe
+           +l");                                                         
+      1255 +      const successor = label ? document.querySelector<HTMLEl
+           +ement>(`[aria-label="${CSS.escape(label)}"]`) : null;        
+      1256 +      const trayToggle = inspectionOpener?.closest(".pin-tray
+           +") ? document.querySelector<HTMLElement>(".pin-tray-toggle") 
+           +: null;                                                      
+      1257 +      // A sphere tap records no opener. The map itself takes
+           + focus then, never a text field that raises a phone's keyboar
+           +d.                                                           
+      1258 +      const target = [inspectionOpener, successor, trayToggle
+           +].find(usable) ?? document.querySelector<HTMLElement>(".view-
+           +container.active");                                          
+      1259 +      if (target) focusWithoutTabStop(target);               
+      1260      }
+      1261      inspectionOpener = null;
+      1262    }
+      1263  
+      1264 +  /** Focus an element; one that is not a control takes focus
+           + without joining the tab order. */                           
+      1265 +  function focusWithoutTabStop(element: HTMLElement): void { 
+      1266 +    if (!element.hasAttribute("tabindex") && element.tabIndex
+           + < 0) {                                                      
+      1267 +      element.tabIndex = -1;                                 
+      1268 +      element.addEventListener("blur", () => element.removeAt
+           +tribute("tabindex"), { once: true });                        
+      1269 +    }                                                        
+      1270 +    element.focus({ preventScroll: true });                  
+      1271 +  }                                                          
+      1272 +                                                             
+      1273    function closeInspection(persist = true): void {
+      1274      const wasOpen = !!state.inspection;
+      1275      state.inspection = null;
+
+● Now the 2D card's Pin toggle, through its context and the view options:
+
+● Update(packages/explorer/src/client/views/localView/card-factory.ts)
+  ⎿  Added 2 lines
+      33    presentation(node: ExplorerNodePayload): CardPresentation;
+      34    registerAnchor(nodeId: string, role: ColumnRole, key: string,
+           element: HTMLElement): void;
+      35    closeNode(nodeId: string): void;
+      36 +  /** The pressed file Pin pressed again: its pins go, the subj
+         +ect and the card stay. */                                      
+      37 +  unpinNode(nodeId: string): void;                             
+      38    openDirectory(directory: string): void;
+      39    inspectDirectory(directory: string): void | Promise<void>;
+      40    recenterNode(node: ExplorerNodePayload): void | Promise<void>
+          ;
+
+● Update(packages/explorer/src/client/views/localView/card-factory.ts)
+  ⎿  Added 1 line, removed 1 line
+      131    filePin.innerHTML = '<svg viewBox="0 0 24 24" width="14" hei
+           ght="14" fill="none" stroke="currentColor" stroke-width="1.5" 
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="tr
+           ue"><path d="M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7"/></svg>'
+           ;
+      132    filePin.addEventListener("click", event => {
+      133      event.stopPropagation();
+      134 -    if (presentation.filePinned) context.closeNode(node.id);  
+      134 +    if (presentation.filePinned) context.unpinNode(node.id);  
+      135      else context.togglePinnedSymbol(node.id, "*");
+      136    });
+      137    actions.append(filePin);
+
+● Update(packages/explorer/src/client/views/localView/controller.ts)
+  ⎿  Added 1 line
+      117      }),
+      118      registerAnchor: (nodeId, role, key, element) => this.regis
+           terAnchor(nodeId, role, key, element),
+      119      closeNode: nodeId => this.options.onCloseNode(nodeId),
+      120 +    unpinNode: nodeId => this.options.onUnpinNode(nodeId),    
+      121      openDirectory: directory => this.options.onOpenDirectory(d
+           irectory),
+      122      inspectDirectory: directory => this.inspectDirectory(direc
+           tory),
+      123      recenterNode: node => this.recenterNode(node),
+
+● Update(packages/explorer/src/client/views/localView/types.ts)
+  ⎿  Added 1 line
+      23    state: ExplorerState;
+      24    /** Shared exploration actions are owned by the application; 
+          this view supplies only their 2D presentation. */
+      25    onPressPin: (nodeId: string, symbol: string) => void;
+      26 +  onUnpinNode: (nodeId: string) => void;                       
+      27    onCloseNode: (nodeId: string) => void;
+      28    onOpenDirectory: (directory: string) => void;
+      29    onCloseDirectory: (directory: string) => void;
+
+● Now the 3D view: the directory toggle, the pressed-sphere click, and the
+  option it needs.
+
+● Update(packages/explorer/src/client/views/forceGraphView.ts)
+  ⎿  Added 1 line
+      102    onCentreDirectory: (directory: string) => void;
+      103    onInspectDirectory: (directory: string) => void;
+      104    onOpenDirectory: (directory: string) => void;
+      105 +  onCloseDirectory: (directory: string) => void;              
+      106    getPath?: () => readonly string[] | undefined;
+      107  }
+      108  
+
+● Update(packages/explorer/src/client/views/forceGraphView.ts)
+  ⎿  Added 5 lines, removed 3 lines
+      565      actionStrip.hidden = false;
+      566      primaryAction.dataset.kind = action.kind;
+      567      if (action.kind === "directory") {
+      568 +      // Open and Close as the 2D label offers them, by the di
+          +rectory's state.                                              
+      569 +      const opened = state.openDirectories?.has(action.directo
+          +ry) ?? false;                                                 
+      570        actionStrip.setAttribute("aria-label", `Actions for ${ac
+           tion.directory || "Scan root"}`);
+      569 -      primaryAction.setAttribute("aria-label", `Open ${action.
+          -directory || "Scan root"}`);                                  
+      570 -      primaryAction.removeAttribute("aria-pressed");          
+      571 -      primaryAction.title = "Open this directory on the map"; 
+      571 +      primaryAction.setAttribute("aria-label", `${opened ? "Cl
+          +ose" : "Open"} ${action.directory || "Scan root"}`);          
+      572 +      primaryAction.setAttribute("aria-pressed", String(opened
+          +));                                                           
+      573 +      primaryAction.title = opened ? "Close this directory; wh
+          +at other pins need stays" : "Open this directory on the map"; 
+      574        centreAction.setAttribute("aria-label", `Centre on ${act
+           ion.directory || "Scan root"}`);
+      575        centreAction.title = "Centre the map on this directory";
+      576        moreAction.setAttribute("aria-label", `More actions for 
+           ${action.directory || "Scan root"}`);
+
+● Update(packages/explorer/src/client/views/forceGraphView.ts)
+  ⎿  Added 4 lines, removed 2 lines
+      973      primaryAction.addEventListener("click", event => {
+      974        event.stopPropagation();
+      975        const action = actionTargetId ? currentAction(actionTarg
+           etId) : null;
+      976 -      if (action?.kind === "directory") options.onOpenDirector
+          -y(action.directory);                                          
+      977 -      else if (action?.kind === "file") {                     
+      976 +      if (action?.kind === "directory") {                     
+      977 +        if (state.openDirectories?.has(action.directory)) opti
+          +ons.onCloseDirectory(action.directory);                       
+      978 +        else options.onOpenDirectory(action.directory);       
+      979 +      } else if (action?.kind === "file") {                   
+      980          if ((state.pins ?? EMPTY_PIN_SET).entries.some(pin => 
+           pin.nodeId === action.node.id && pin.symbol === "*")) options.
+           onReleasePin(action.node.id);
+      981          else options.onPressPin(action.node.id, "*");
+      982        }
+
+● Update(packages/explorer/src/client/views/forceGraphView.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      1048        window.clearTimeout(holdTimer);
+      1049        if (!press || press.held || activePointers.size !== 1 |
+            | event.pointerId !== press.pointerId
+      1050          || event.button !== press.button || event.target !== 
+            forceGraphInstance?.renderer().domElement) return;
+      1051 -      const id = nodeAt(event.clientX, event.clientY);       
+      1052 -      if (id !== press.id) return;                           
+      1051 +      // The sphere pressed is the one acted on: a settling l
+           +ayout can carry it a little way under a still pointer.       
+      1052 +      const id = press.id;                                   
+      1053        if (press.button === 2) {
+      1054          if (id) showActions(id, { x: event.clientX, y: event.
+            clientY });
+      1055          return;
+
+● Now the search field and the World Map's key handler:
+
+● Update(packages/explorer/src/client/search/search-field.ts)
+  ⎿  Added 2 lines
+      147    });
+      148    input.addEventListener("keydown", event => {
+      149      if (event.key === "Escape") {
+      150 +      // The field has used this Escape; the reader or map beh
+          +ind it must not act on it too.                                
+      151 +      event.preventDefault();                                 
+      152        settle();
+      153        input.blur();
+      154      } else if (event.key === "ArrowDown" && rows.length) {
+
+● Update(packages/explorer/src/client/views/worldMap/controller.ts)
+  ⎿  Added 5 lines
+      1348        if (event.target instanceof HTMLInputElement || event.t
+            arget instanceof HTMLTextAreaElement) {
+      1349          return;
+      1350        }
+      1351 +      // A key another surface has used, such as Escape closi
+           +ng the reader, or one typed inside a full-screen reader      
+      1352 +      // over the map, is not the map's.                     
+      1353 +      if (event.defaultPrevented || (event.target instanceof 
+           +Element && event.target.closest('[aria-modal="true"]'))) {   
+      1354 +        return;                                              
+      1355 +      }                                                      
+      1356        const key = event.key.toLowerCase();
+      1357        if (event.key === "Escape") {
+      1358          if (this.tour.on) {
+
+● The reader's handler listens on document while the map's listens on window, so
+  the map only catches the reader's mark during the bubbling phase. I'll check
+  the World Map's on helper to confirm this.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● It listens in the bubbling phase, so the reader's handler runs first.
+  Type-checking:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Type-check and lint pass. Now the regressions. Checking how the World Map
+  specs observe help and theme:
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The World Map exposes window.__worldMap, .world[data-theme] and
+  .world-help.on, enough to assert that one Escape closes only the topmost
+  surface. Writing the regressions:
+
+● Update(tests/e2e/inspection.spec.ts)
+  ⎿  Added 58 lines
+      191    });
+      192  }
+      193  
+      194 +test("a Pin pressed twice leaves the map as it was, and closin
+          +g the reader finds its rebuilt opener", async ({ page }) => { 
+      195 +  await page.goto(`/samples/estate/?view=local&node=${encodeUR
+          +IComponent(A)}`);                                             
+      196 +  await ready(page);                                          
+      197 +  const pin = () => card(page, A).locator(".local-file-pin"); 
+      198 +  await pin().click();                                        
+      199 +  await localMapSettled(page);                                
+      200 +  expect(snapshot(page)).toMatchObject({ selectedNodeId: A, pi
+          +nSet: { entries: [{ nodeId: A, symbol: "*" }] } });           
+      201 +  await expect(pin()).toHaveAttribute("aria-pressed", "true");
+      202 +  await pin().click();                                        
+      203 +  await localMapSettled(page);                                
+      204 +  expect(snapshot(page), "Unpin undoes the Pin; it is not the 
+          +card's close").toMatchObject({ selectedNodeId: A, pinSet: { en
+          +tries: [] } });                                               
+      205 +  await expect(card(page, A)).toBeVisible();                  
+      206 +  await expect(pin()).toHaveAttribute("aria-pressed", "false")
+          +;                                                             
+      207 +                                                              
+      208 +  // The reader's own Pin and Unpin re-render every card, the 
+          +opener among them.                                            
+      209 +  const opener = card(page, A).locator(".local-file-inspect");
+      210 +  await opener.focus();                                       
+      211 +  await page.keyboard.press("Enter");                         
+      212 +  await page.locator("#detail-panel").getByRole("button", { na
+          +me: "Pin file", exact: true }).click();                       
+      213 +  await page.locator("#detail-panel").getByRole("button", { na
+          +me: "Unpin file", exact: true }).click();                     
+      214 +  expect(snapshot(page)).toMatchObject({ selectedNodeId: A, pi
+          +nSet: { entries: [] } });                                     
+      215 +  await page.getByRole("button", { name: "Close details", exac
+          +t: true }).click();                                           
+      216 +  await expect(card(page, A).locator(".local-file-inspect")).t
+          +oBeFocused();                                                 
+      217 +});                                                           
+      218 +                                                              
+      219 +test("one Escape closes only the topmost surface: the search f
+          +ield, then the reader, then the World Map's help", async ({ pa
+          +ge }) => {                                                    
+      220 +  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...
+          +DEFAULT_SNAPSHOT, view: "world", inspection: { kind: "file", n
+          +odeId: A } })}`);                                             
+      221 +  await page.waitForFunction(() => window.__worldMap?.ready ==
+          += true, null, { timeout: 20_000 });                           
+      222 +  const reader = page.locator("#detail-panel");               
+      223 +  await expect(reader).toHaveClass(/visible/u);               
+      224 +  const search = page.locator("#search-subject");             
+      225 +  await search.focus();                                       
+      226 +  await page.keyboard.press("Escape");                        
+      227 +  await expect(search).not.toBeFocused();                     
+      228 +  await expect(reader, "the search field's Escape is the field
+          +'s alone").toHaveClass(/visible/u);                           
+      229 +  const help = page.locator("#view-world .world-help");       
+      230 +  await page.keyboard.press("?");                             
+      231 +  await expect(help).toHaveClass(/\bon\b/u);                  
+      232 +  await page.keyboard.press("Escape");                        
+      233 +  await expect(reader).not.toHaveClass(/visible/u);           
+      234 +  await expect(help, "the reader's Escape is not also the map'
+          +s").toHaveClass(/\bon\b/u);                                   
+      235 +  await page.keyboard.press("Escape");                        
+      236 +  await expect(help).not.toHaveClass(/\bon\b/u);              
+      237 +});                                                           
+      238 +                                                              
+      239 +test("keys typed in the full-screen reader do not reach the Wo
+          +rld Map behind it", async ({ page }) => {                     
+      240 +  await page.setViewportSize({ width: 390, height: 844 });    
+      241 +  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...
+          +DEFAULT_SNAPSHOT, view: "world", inspection: { kind: "file", n
+          +odeId: A } })}`);                                             
+      242 +  await page.waitForFunction(() => window.__worldMap?.ready ==
+          += true, null, { timeout: 20_000 });                           
+      243 +  await expect(page.locator("#detail-panel")).toHaveAttribute(
+          +"aria-modal", "true");                                        
+      244 +  const world = page.locator("#view-world .world");           
+      245 +  const theme = await world.getAttribute("data-theme");       
+      246 +  await page.keyboard.press("d");                             
+      247 +  await page.keyboard.press("?");                             
+      248 +  expect(await world.getAttribute("data-theme")).toBe(theme); 
+      249 +  await expect(page.locator("#view-world .world-help")).not.to
+          +HaveClass(/\bon\b/u);                                         
+      250 +});                                                           
+      251 +                                                              
+      252  test("a direct 3D Pin and sphere inspection preserve subject a
+           nd camera across perspective changes", async ({ page }) => {
+      253    await observeGraph(page);
+      254    await page.goto(`/samples/estate/?view=local&mode=3d&node=${
+           encodeURIComponent(A)}`);
+
+● Update(tests/e2e/inspection.spec.ts)
+  ⎿  Added 2 lines
+      188      await expect(page.locator("#view-map")).not.toHaveAttribut
+           e("inert", "");
+      189      await expect(page.locator("#view-graph")).toHaveAttribute(
+           "inert", "");
+      190      expect(await page.evaluate(() => !!document.activeElement?
+           .getClientRects().length)).toBe(true);
+      191 +    expect(await page.evaluate(() => document.activeElement?.m
+          +atches("input, textarea")),                                   
+      192 +      "with no opener, focus returns to the map, not a field t
+          +hat raises a phone's keyboard").toBe(false);                  
+      193    });
+      194  }
+      195  
+
+● Update(tests/e2e/force-graph-directories.spec.ts)
+  ⎿  Added 2 lines
+      159    await page.getByRole("button", { name: "Close details", exac
+           t: true }).click();
+      160    await page.mouse.move(chosen!.x, chosen!.y);
+      161    await page.locator(".force-graph-actions").getByRole("button
+           ", { name: `Open ${directory}`, exact: true }).click();
+      162 +  await expect(page.locator(".force-graph-actions").getByRole(
+          +"button", { name: `Close ${directory}`, exact: true }),       
+      163 +    "an open directory's primary action closes it, as its 2D l
+          +abel does").toHaveAttribute("aria-pressed", "true");          
+      164    await page.mouse.move(30, 50);
+      165    await page.getByRole("button", { name: "Show pins", exact: t
+           rue }).click();
+      166    await expect(page.locator(".pin-tray-row")).toHaveCount(1);
+
+● Now rebuilding both bundles and running the specs these fixes touch, serially.
+  First, which existing specs exercise Unpin, Escape or World Map keys:
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● While the browser specs run, I'll update the docs that describe these
+  behaviors. Checking which authored Live Docs mention them:
+  Ran 1 shell command (ctrl+o to expand)
+
+● Seven authored docs need updating. Reading the ends of the authored sections
+  I'll append to:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll make the replacements in one script that fails loudly if any expected
+  text is missing:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Now the layer-3 Explorer doc and the decision record:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checkpointing the review outcome in the record while the browser specs run:
+
+  Read 1 file (ctrl+o to expand)
+
+● The browser specs are still running: 14 files covering inspection, pins,
+  search, the World Map, history, paths and both perspectives. When they finish
+  I'll look at any failure, then run the full gate.
+
+● Background command "Rebuild bundles and run the affected browser specs"
+completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● All 100 browser tests pass, including the new regressions, in 9.0 minutes.
+  Before the full gate, I want to visually verify the two UI changes myself—the
+  2D card after Pin/Unpin and the 3D hub strip when a directory is open—so I'm
+  checking how to serve the bundle.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The script lives outside the repository, so it can't resolve playwright.
+  Pointing it at the repository's modules:
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● The 2D before/after views match as expected, and the 3D test shows Portal
+  correctly opened with the strip button now reading "Close Portal"—the camera
+  reframing while the strip stays under the pointer is expected behavior, not a
+  bug. I'll save these screenshots, stop my scratch server, and kick off the
+  full gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The server's down since my pkill also killed its parent shell, though the
+  README append went through fine. Now kicking off the full gate check
+  (safe:commit -- --e2e, ~25 min) in the background.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full gate is running: it regenerates the docs, then runs lint, build,
+  unit, integration, the documentation audits and the serialized browser suite.
+  I'm leaving the tree alone until it finishes, since it reads these files. If
+  it passes I'll make two commits, the work itself and then the records, and
+  clean up the stale candidate worktree and Codex's scratch folder.
+
+● Background command "Run the full pre-commit gate with browser tests" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Everything passed except the browser suite: 170 passed and 6 failed. All six
+  are in two specs I hadn't run in my focused set, the layout lab and the Local
+  Map simplicity contract. Reading the errors:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've found the root cause: the added "Open" and More buttons inflate each
+  label's line height to 18px versus the model's expected 14px, causing a real
+  mismatch between the layout lab's size predictions and the page. Now checking
+  the other spec's failures and the CSS.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I need to check whether the lab reads the label box or the text rectangles
+  before deciding on a fix, since the old label's X button didn't trip the
+  check. Let me look at the capture.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I found the mismatch: the lab measures "Open" at the caption's 12px font while
+  the actual button renders at 11px with extra padding/borders, causing long
+  warehouse labels to wrap to three lines instead of the predicted two. Next
+  I'll check how the lab models the caption's available width, since that
+  determines where new buttons can be placed.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I'll move Open and More out of the caption to be siblings beside it, matching
+  how the ancestry button is handled, which keeps the caption as pure
+  name-and-count text. Next I'm checking how the label's width is set to
+  determine where the relocated buttons will render.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll group the Open/Close and More buttons into a single controls element
+  beside the caption so every directory's actions line up consistently. Now
+  reading the current function in full.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The 18px/-2px sizing rule used for the ancestry button keeps single-line
+  labels unchanged, so I'll apply the same pattern to the new controls column.
+
+● Update(packages/explorer/src/client/views/localView/branch-renderer.ts)
+  ⎿  Added 24 lines, removed 21 lines
+      265  }
+      266  
+      267  /**
+      268 - * A directory label inspects its directory. The separate Open
+          - and Close controls                                           
+      269 - * change its disclosure while the name and count remain one m
+          -easured text flow.                                            
+      268 + * A directory label inspects its directory. Its caption is th
+          +e name and, while the directory is encasing, what it          
+      269 + * hides, "+3 files, 1 directory": one text flow, which the la
+          +yout lab lays out as the page does. Open or Close and         
+      270 + * More stand beside the caption in a column of their own, as 
+          +the ancestry control does, so that no button's box            
+      271 + * enters the text; the lab measures that column like the ance
+          +stry control's (2026-10-20, when the buttons first            
+      272 + * stood in the caption and the lab's text no longer matched t
+          +he page).                                                     
+      273   */
+      274  function fillLabel(controller: LocalViewController, label: HTM
+           LElement, directory: string, disclosure: DirectoryDisclosure |
+            undefined): void {
+      275    const open = disclosure?.state === "open";
+     ...
+      282    const caption = document.createElement("span");
+      283    caption.className = "local-directory-caption";
+      284    caption.append(name);
+      282 -  label.replaceChildren(ancestryButton(controller, directory),
+          - caption);                                                    
+      283 -  // Labels survive renders. Replace their one body action ins
+          -tead of accumulating a listener on every refill.              
+      284 -  label.onclick = event => { event.stopPropagation(); void con
+          -troller.inspectDirectory(directory); };                       
+      285 +  if (!open && disclosure && (disclosure.hiddenFiles || disclo
+          +sure.hiddenDirectories)) {                                    
+      286 +    const hidden = document.createElement("span");            
+      287 +    hidden.className = "local-directory-more";                
+      288 +    hidden.textContent = `+${countsOf(disclosure.hiddenFiles, 
+          +disclosure.hiddenDirectories)}`;                              
+      289 +    hidden.title = "Not drawn; open the directory to see them"
+          +;                                                             
+      290 +    caption.append(" ", hidden);                              
+      291 +  }                                                           
+      292 +  const disclose = document.createElement("button");          
+      293 +  disclose.type = "button";                                   
+      294    if (open) {
+      286 -    const close = document.createElement("button");           
+      287 -    close.type = "button";                                    
+      288 -    close.className = "local-directory-close";                
+      289 -    close.title = "Close this directory; what other pins need 
+          -stays";                                                       
+      290 -    close.setAttribute("aria-label", `Close ${directory}`);   
+      291 -    close.innerHTML = '<svg viewBox="0 0 24 24" width="14" hei
+          -ght="14" fill="none" stroke="currentColor" stroke-width="1.5" 
+          -aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';   
+      292 -    close.addEventListener("click", event => { event.stopPropa
+          -gation(); controller.options.onCloseDirectory(directory); }); 
+      293 -    caption.append(" ", close);                               
+      295 +    disclose.className = "local-directory-close";             
+      296 +    disclose.title = "Close this directory; what other pins ne
+          +ed stays";                                                    
+      297 +    disclose.setAttribute("aria-label", `Close ${directory}`);
+      298 +    disclose.innerHTML = '<svg viewBox="0 0 24 24" width="14" 
+          +height="14" fill="none" stroke="currentColor" stroke-width="1.
+          +5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+      299 +    disclose.addEventListener("click", event => { event.stopPr
+          +opagation(); controller.options.onCloseDirectory(directory); }
+          +);                                                            
+      300    } else {
+      295 -    const openButton = document.createElement("button");      
+      296 -    openButton.type = "button";                               
+      297 -    openButton.className = "local-directory-open";            
+      298 -    openButton.textContent = "Open";                          
+      299 -    openButton.setAttribute("aria-label", `Open ${directory}`)
+          -;                                                             
+      300 -    openButton.title = "Show the files and subdirectories insi
+          -de";                                                          
+      301 -    openButton.addEventListener("click", event => { event.stop
+          -Propagation(); controller.options.onOpenDirectory(directory); 
+          -});                                                           
+      302 -    caption.append(" ", openButton);                          
+      301 +    disclose.className = "local-directory-open";              
+      302 +    disclose.textContent = "Open";                            
+      303 +    disclose.setAttribute("aria-label", `Open ${directory}`); 
+      304 +    disclose.title = "Show the files and subdirectories inside
+          +";                                                            
+      305 +    disclose.addEventListener("click", event => { event.stopPr
+          +opagation(); controller.options.onOpenDirectory(directory); })
+          +;                                                             
+      306    }
+      307    const more = document.createElement("button");
+      308    more.type = "button";
+
+● Update(packages/explorer/src/client/views/localView/branch-renderer.ts)
+  ⎿  Added 6 lines, removed 8 lines
+      316      const rect = more.getBoundingClientRect();
+      317      void controller.showDirectoryActions(directory, { x: rect.
+           left + rect.width / 2, y: rect.bottom });
+      318    });
+      319 -  caption.append(" ", more);                                  
+      320 -  if (!open && disclosure && (disclosure.hiddenFiles || disclo
+          -sure.hiddenDirectories)) {                                    
+      321 -    const more = document.createElement("span");              
+      322 -    more.className = "local-directory-more";                  
+      323 -    more.textContent = `+${countsOf(disclosure.hiddenFiles, di
+          -sclosure.hiddenDirectories)}`;                                
+      324 -    more.title = "Not drawn; open the directory to see them"; 
+      325 -    caption.append(" ", more);                                
+      326 -  }                                                           
+      319 +  const controls = document.createElement("span");            
+      320 +  controls.className = "local-directory-controls";            
+      321 +  controls.append(disclose, more);                            
+      322 +  label.replaceChildren(ancestryButton(controller, directory),
+          + caption, controls);                                          
+      323 +  // Labels survive renders. Replace their one body action ins
+          +tead of accumulating a listener on every refill.              
+      324 +  label.onclick = event => { event.stopPropagation(); void con
+          +troller.inspectDirectory(directory); };                       
+      325  }
+      326  
+      327  /**
+● Update(packages/explorer/src/client/styles/local.css)
+  ⎿  Added 6 lines, removed 1 line
+      339  .local-membrane { position: absolute; left: 0; top: 0; width: 
+           100%; height: 100%; overflow: visible; pointer-events: none; }
+      340  .local-membrane-shape { fill: #ffffff03; stroke: var(--border)
+           ; stroke-width: 1px; stroke-linejoin: round; }
+      341  .local-directory-label { position: absolute; display: flex; ga
+           p: 4px; align-items: flex-start; font-size: 12px; color: var(-
+           -text-panel-subtle); padding-bottom: 14px; overflow-wrap: anyw
+           here; }
+      342 -/* The label inspects; Open and Close change the disclosed con
+          -tents explicitly. */                                          
+      342 +/* The label inspects. Its caption is one text flow, the name 
+          +and what an encasing directory hides; Open or Close and More  
+      343 +   stand beside it in a column of their own, 18 px tall and ra
+          +ised 2 px as the ancestry control is, so a one-line label     
+      344 +   keeps its height and the layout lab lays the caption out as
+          + the page does (2026-10-20). */                               
+      345 +.local-directory-controls { display: flex; flex: none; align-s
+          +elf: flex-start; gap: 2px; margin-top: -2px; }                
+      346 +.local-directory-controls > button { display: inline-flex; ali
+          +gn-items: center; justify-content: center; box-sizing: border-
+          +box; height: 18px; margin: 0; padding: 1px; line-height: 14px;
+          + }                                                            
+      347 +.local-directory-controls > .local-directory-open { padding: 1
+          +px 5px; }                                                     
+      348  .local-directory-name { display: inline; padding: 0; border: 0
+           ; background: transparent; color: inherit; font: inherit; text
+           -align: left; overflow-wrap: anywhere; cursor: pointer; }
+      349  .local-directory-name:hover { color: var(--accent); }
+      350  .local-directory-more { opacity: .85; }
+
+● The directory button selectors still match since they're positioned by label,
+  which is unchanged. I'll rebuild now and run the six failing tests alongside
+  the directory label and design audit specs.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While that runs, I'll check the docs that describe the directory label:
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● That link points at a record section I haven't written yet. Writing it now:
+
+  Read 1 file (ctrl+o to expand)
+
+● The label, layout and directory specs are running on the rebuilt bundles. Once
+  they pass I'll look at the moved controls on the map, then rerun the full
+  gate.
+
+● Background command "Rebuild and run the label, layout and directory specs"
+completed (exit code 0)
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Two issues remain: the directory label now wraps on an extra line because
+  Codex turned it into an atomic <button> that can't break mid-line, and card
+  heights are now 1-3px taller on the page than in the model since the new
+  button-based symbol-row elements changed row heights the lab doesn't account
+  for. I'll dig into characterizing the card height drift next.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The drift is structural: Pin/More buttons made rows taller and caused long
+  names to wrap, so the lab's card model (which still reflects the old row
+  geometry) is out of sync with the approved page—and Codex's test runs missed
+  this since they didn't cover the layout lab specs. I'll read through the lab's
+  card model fully before updating it with measurements from the actual page.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● I'll check what each row actually contains, since the row model now needs to
+  account for Pin and More control widths and heights alongside the label,
+  measured the same way as before.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll generalize the row capture to treat every wrapper child besides the label
+  and badges as a control, summing their widths with gaps and taking the max
+  height—mirroring the lab's existing label-control pattern. First, let me check
+  the lab's tests for row captures.
+
+  Searched for 2 patterns (ctrl+o to expand)
+
+● Adding an optional controls field to each row capture keeps existing tests
+  valid while the measurer still just orders rows. Collapsed rows have zero-size
+  boxes, but since Pin and More appear on every row, a collapsed row can fall
+  back on the measurement from a row the page did show — implementing this now.
+
+● Update(scripts/layout-lab/capture.ts)
+  ⎿  Added 6 lines
+      46    label: PreparedText;
+      47    /** The width of the row's type badges, zero when it has none
+          . */
+      48    badgesWidth: number;
+      49 +  /**                                                          
+      50 +   * The row's controls beside its label and badges, its Pin an
+         +d More since 2026-10-20: their widths, each with the gap       
+      51 +   * before it, and the tallest. A row collapsed at capture tak
+         +es the measure of a row the page showed. Absent in             
+      52 +   * older captures.                                           
+      53 +   */                                                          
+      54 +  controls?: { width: number; height: number };                
+      55  }
+      56  
+      57  /** A test chip's, or the test label's, box as the page drew it
+          . */
+
+● Update(scripts/layout-lab/capture.ts)
+  ⎿  Added 14 lines
+      230      const naturals = wrappers.map(wrapper => wrapper.offsetWid
+           th);
+      231      wrappers.forEach((wrapper, i) => Object.assign(wrapper.sty
+           le, { width: saved[i][0], maxWidth: saved[i][1] }));
+      232      let constants: CardConstants | null = null;
+      233 +    // Every row's label stands in a wrapper with its badges a
+          +nd its controls; the controls are the wrapper's other children
+          +.                                                             
+      234 +    let shownControls: { width: number; height: number } | nul
+          +l = null;                                                     
+      235 +    const unmeasuredControls: Array<{ controls?: { width: numb
+          +er; height: number } }> = [];                                 
+      236 +    const controlsOf = (label: HTMLElement, badges: HTMLElemen
+          +t | null): { width: number; height: number } | null => {      
+      237 +      const wrapper = label.parentElement!;                   
+      238 +      const others = [...wrapper.children].filter(child => chi
+          +ld !== label && child !== badges);                            
+      239 +      const rects = others.map(child => child.getBoundingClien
+          +tRect());                                                     
+      240 +      if (label.getBoundingClientRect().width === 0 || rects.s
+          +ome(rect => rect.width === 0)) return null;                   
+      241 +      const gap = px(getComputedStyle(wrapper).columnGap);    
+      242 +      return {                                                
+      243 +        width: rects.reduce((sum, rect) => sum + rect.width / 
+          +scale + gap, 0),                                              
+      244 +        height: Math.max(0, ...rects.map(rect => rect.height /
+          + scale))                                                      
+      245 +      };                                                      
+      246 +    };                                                        
+      247      wrappers.forEach((wrapper, i) => {
+      248        // A closed directory's box has a wrapper and no card; t
+           he scopes open no directory, and the model does not hold one.
+      249        const card = wrapper.querySelector<HTMLElement>(".node-c
+           ard");
+
+● Update(scripts/layout-lab/capture.ts)
+  ⎿  Added 6 lines, removed 1 line
+      261        const rows = [...grid.querySelectorAll<HTMLElement>(":sc
+           ope > .symbol-row")].map(row => {
+      262          const label = row.querySelector<HTMLElement>(".symbol-
+           label")!;
+      263          const badges = row.querySelector<HTMLElement>(".type-r
+           efs-indicator");
+      264 -        return { symbol: row.dataset.symbol ?? "", label: prep
+          -ared(label), badgesWidth: badges ? badges.getBoundingClientRec
+          -t().width / scale : 0 };                                      
+      264 +        const controls = controlsOf(label, badges);           
+      265 +        if (controls) shownControls ??= controls;             
+      266 +        const captured: RowCapture = { symbol: row.dataset.sym
+          +bol ?? "", label: prepared(label), badgesWidth: badges ? badge
+          +s.getBoundingClientRect().width / scale : 0 };                
+      267 +        if (controls) captured.controls = controls;           
+      268 +        else if (label.parentElement!.children.length > (badge
+          +s ? 2 : 1)) unmeasuredControls.push(captured);                
+      269 +        return captured;                                      
+      270        });
+      271        if (!constants) {
+      272          // A dot of the stylesheet's size, from a probe rather
+            than this card's first dot, which may be collapsed to nothing
+           .
+
+● Update(scripts/layout-lab/capture.ts)
+  ⎿  Added 1 line
+      357          truth: { width: wrapper.offsetWidth, height: wrapper.o
+           ffsetHeight, pins }
+      358        };
+      359      });
+      360 +    for (const row of unmeasuredControls) if (shownControls) r
+          +ow.controls = shownControls;                                  
+      361      const labels: Record<string, PreparedText> = {};
+      362      const labelControls: Record<string, { width: number; heigh
+           t: number }> = {};
+      363      const labelHeights: Record<string, number> = {};
+
+● Update(scripts/layout-lab/card-model.ts)
+  ⎿  Added 3 lines, removed 2 lines
+       95    const cell = content - 2 * c.gridSideColumn - 2 * c.gridColu
+           mnGap;
+       96    const centres = new Map<RowCapture, number>();
+       97    view.rows.forEach((row, i) => {
+       98 -    const labelWidth = cell - (row.badgesWidth > 0 ? row.badge
+          -sWidth + c.badgeGap : 0);                                     
+       98 +    const labelWidth = cell - (row.badgesWidth > 0 ? row.badge
+          +sWidth + c.badgeGap : 0) - (row.controls?.width ?? 0);        
+       99      // The Internals row's dot and placeholder carry a top mar
+           gin, so the row is taller by it and the dot sits below the row
+           's middle.
+      100      const internals = row.symbol === "__internals__";
+      101      const dotMargin = internals ? c.internalsDotMarginTop : 0;
+      102 -    const height = Math.max(c.dotHeight + dotMargin, internals
+          - ? c.placeholderHeight : 0, text(row.label, labelWidth), row.b
+          -adgesWidth > 0 ? c.badgeHeight : 0);                          
+      102 +    const height = Math.max(c.dotHeight + dotMargin, internals
+          + ? c.placeholderHeight : 0, text(row.label, labelWidth),      
+      103 +      row.badgesWidth > 0 ? c.badgeHeight : 0, row.controls?.h
+          +eight ?? 0);                                                  
+      104      if (i > 0) y += c.gridRowGap;
+      105      const centre = y + (height - c.dotHeight - dotMargin) / 2 
+           + dotMargin + c.dotHeight / 2;
+      106      centres.set(row, centre);
+
+● Updating the card model's description, and making the directory name an inline
+  span with the button role again, so it wraps with the text after it as it did
+  before:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Update(packages/explorer/src/client/views/localView/branch-renderer.ts)
+  ⎿  Added 11 lines, removed 2 lines
+      273   */
+      274  function fillLabel(controller: LocalViewController, label: HTM
+           LElement, directory: string, disclosure: DirectoryDisclosure |
+            undefined): void {
+      275    const open = disclosure?.state === "open";
+      276 -  const name = document.createElement("button");              
+      277 -  name.type = "button";                                       
+      276 +  // A span in the button role, not a button: a button is one 
+          +box that cannot break across lines with the count after       
+      277 +  // it, and the caption must wrap as the one text flow it is.
+          + The label's click inspects; the name takes the keyboard.     
+      278 +  const name = document.createElement("span");                
+      279    name.className = "local-directory-name";
+      280    name.textContent = directory;
+      281 +  name.tabIndex = 0;                                          
+      282 +  name.setAttribute("role", "button");                        
+      283    name.title = `Inspect ${directory}`;
+      284    name.setAttribute("aria-label", `Inspect ${directory}`);
+      285 +  name.addEventListener("keydown", event => {                 
+      286 +    if (event.key !== "Enter" && event.key !== " ") return;   
+      287 +    event.preventDefault();                                   
+      288 +    event.stopPropagation();                                  
+      289 +    void controller.inspectDirectory(directory);              
+      290 +  });                                                         
+      291    const caption = document.createElement("span");
+      292    caption.className = "local-directory-caption";
+      293    caption.append(name);
+
+● Update(scripts/layout-lab/card-model.ts)
+  ⎿  Added 2 lines, removed 1 line
+      77  /**
+      78   * The card at a width: border, padding, the title with its rig
+          ht padding and
+      79   * margin, the path, the symbols block (its margin swallowing t
+          he meta line's),
+      80 - * each row as tall as its dot, its label's lines or its badges
+         -, the rows a gap                                               
+      80 + * each row as tall as its dot, its label's lines, its badges o
+         +r its controls                                                 
+      81 + * (the label narrowed by the badges and controls beside it), t
+         +he rows a gap                                                  
+      82   * apart, the test chips wrapped, the directory line, and the n
+          otes. A pin is
+      83   * at the middle of its row, the Internals row's a margin lower
+          ; the hub at
+      84   * the middle of the card.
+
+● A card-model unit test should hold the new rule too. Reading the existing
+  tests:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● These unit tests only cover the page-independent parts; the real validation of
+  the row model happens in the layout-lab spec, which checks it against actual
+  measured page output. I'll lint, rebuild, and rerun now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+● The remaining 1px drift is isolated to the Internals row, likely because its
+  dashed-border label uses a different wrapper box than regular rows. I'll check
+  its CSS to confirm.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Found that the Internals wrapper's border now outweighs the dot's margin at
+  17px, making it decide row height. I'll pull each row wrapper's margins,
+  padding, and border from computed style so the model works for collapsed rows
+  too, while keeping ordinary rows unaffected since their frame is zero.
+
+● Update(scripts/layout-lab/capture.ts)
+  ⎿  Added 5 lines
+      52     * older captures.
+      53     */
+      54    controls?: { width: number; height: number };
+      55 +  /**                                                          
+      56 +   * What the label's wrapper adds around its content, margins,
+         + padding and border on each axis: nothing for a public         
+      57 +   * row, whose padding its negative margin cancels; the Intern
+         +als row's dashed border. Absent in older captures.             
+      58 +   */                                                          
+      59 +  frame?: { width: number; height: number };                   
+      60  }
+      61  
+      62  /** A test chip's, or the test label's, box as the page drew it
+          . */
+
+● Update(scripts/layout-lab/capture.ts)
+  ⎿  Added 8 lines, removed 1 line
+      268          const badges = row.querySelector<HTMLElement>(".type-r
+           efs-indicator");
+      269          const controls = controlsOf(label, badges);
+      270          if (controls) shownControls ??= controls;
+      271 -        const captured: RowCapture = { symbol: row.dataset.sym
+          -bol ?? "", label: prepared(label), badgesWidth: badges ? badge
+          -s.getBoundingClientRect().width / scale : 0 };                
+      271 +        // From the computed style, which a collapsed row has 
+          +as well as a shown one.                                       
+      272 +        const wrapperStyle = getComputedStyle(label.parentElem
+          +ent!);                                                        
+      273 +        const sides = (...keys: Array<keyof CSSStyleDeclaratio
+          +n>): number => keys.reduce((sum, key) => sum + px(wrapperStyle
+          +[key] as string), 0);                                         
+      274 +        const frame = {                                       
+      275 +          width: sides("marginLeft", "marginRight", "paddingLe
+          +ft", "paddingRight", "borderLeftWidth", "borderRightWidth"),  
+      276 +          height: sides("marginTop", "marginBottom", "paddingT
+          +op", "paddingBottom", "borderTopWidth", "borderBottomWidth")  
+      277 +        };                                                    
+      278 +        const captured: RowCapture = { symbol: row.dataset.sym
+          +bol ?? "", label: prepared(label), badgesWidth: badges ? badge
+          +s.getBoundingClientRect().width / scale : 0, frame };         
+      279          if (controls) captured.controls = controls;
+      280          else if (label.parentElement!.children.length > (badge
+           s ? 2 : 1)) unmeasuredControls.push(captured);
+      281          return captured;
+
+● Update(scripts/layout-lab/card-model.ts)
+  ⎿  Added 4 lines, removed 3 lines
+       96    const cell = content - 2 * c.gridSideColumn - 2 * c.gridColu
+           mnGap;
+       97    const centres = new Map<RowCapture, number>();
+       98    view.rows.forEach((row, i) => {
+       99 -    const labelWidth = cell - (row.badgesWidth > 0 ? row.badge
+          -sWidth + c.badgeGap : 0) - (row.controls?.width ?? 0);        
+       99 +    const frame = row.frame ?? { width: 0, height: 0 };       
+      100 +    const labelWidth = cell - frame.width - (row.badgesWidth >
+          + 0 ? row.badgesWidth + c.badgeGap : 0) - (row.controls?.width 
+          +?? 0);                                                        
+      101      // The Internals row's dot and placeholder carry a top mar
+           gin, so the row is taller by it and the dot sits below the row
+           's middle.
+      102      const internals = row.symbol === "__internals__";
+      103      const dotMargin = internals ? c.internalsDotMarginTop : 0;
+      103 -    const height = Math.max(c.dotHeight + dotMargin, internals
+          - ? c.placeholderHeight : 0, text(row.label, labelWidth),      
+      104 -      row.badgesWidth > 0 ? c.badgeHeight : 0, row.controls?.h
+          -eight ?? 0);                                                  
+      104 +    const wrapper = frame.height + Math.max(text(row.label, la
+          +belWidth), row.badgesWidth > 0 ? c.badgeHeight : 0, row.contro
+          +ls?.height ?? 0);                                             
+      105 +    const height = Math.max(c.dotHeight + dotMargin, internals
+          + ? c.placeholderHeight : 0, wrapper);                         
+      106      if (i > 0) y += c.gridRowGap;
+      107      const centre = y + (height - c.dotHeight - dotMargin) / 2 
+           + dotMargin + c.dotHeight / 2;
+      108      centres.set(row, centre);
+
+● The page hasn't changed since the last rebuild, only the lab's node-side code,
+  so I can rerun the two specs directly:
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● All fidelity and drift checks now pass, except for one failing assertion: the
+  warehouse report scope expects the headless layout search to adopt an
+  alignment, but it's trying alignments and adopting none with the new card
+  geometry. I'll check the test to understand what that assertion is meant to
+  protect.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The warehouse scope's taller rows mean no alignment proposal beats the current
+  score, while estate still passes with an adopted alignment. Before drawing
+  conclusions, I need to check why the warehouse scope was chosen.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The warehouse scope was added as a test case tied to a prior alignment
+  improvement (nine adoptions at weight 0, seventeen at 50), and I can't drop
+  the premise without weakening the test. I'll now measure the warehouse's
+  membrane steps and what the search tried, using the same calls the test uses.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Mixing import and require in one file confused the loader. Rewriting it as
+  plain CommonJS, as the earlier picture script was:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The search ran but rejected the one grouping it tried since it cost more than
+  it saved, and the warehouse baseline matches where a prior search left off on
+  Oct 13. Since I can't cleanly build HEAD's bundle without pulling in today's
+  client, I'll simulate the counterfactual by stripping row controls from
+  today's capture and re-running the measurement.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The old premise no longer applies under the new geometry, so I'll find another
+  repository scope that still adopts alignments, preserving the coverage that
+  previously caught a measurement defect instead of losing it.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The repository's deck scopes are much denser, so the comparison is still
+  running in the background. Recording the findings so far:
+
+  Read 1 file (ctrl+o to expand)
+
+● The comparison for the repository's deck scopes is still running. It will show
+  whether one of them still adopts an alignment under the new geometry, and so
+  can carry the adoption check the warehouse scope used to provide.
+
+● Background command "Check whether the repository deck scopes adopt alignments"
+completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Both dense scopes still adopt under the new geometry, but each refine takes
+  over a minute headless—too slow for a browser test. I'll check the spec's
+  first test, which uses the smaller generator scope (improved from 7 to 4 steps
+  on Oct 13), and read how it's defined.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll test the generator using a retained scope, checking whether its search
+  converges and how long the refinement takes.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The generator's search tries 6 alignments and adopts 1, shrinking the picture
+  from 5 steps to 3 across both geometries, so coverage stays intact between the
+  estate, generator, and warehouse cases. I'll now edit the spec to reflect
+  this.
+
+● Update(tests/e2e/local-map-simplicity.spec.ts)
+  ⎿  Added 12 lines, removed 2 lines
+      138  });
+      139  
+      140  const warehouseFile = "tests/integration/programs/java/warehou
+           se/src/main/java/com/acme/warehouse/report/Report.java";
+      141 -const runs: ScopeRun[] = [DECK_SCOPES.find(run => run.bundle =
+          -== "estate" && run.scopeName === "five files")!,              
+      142 -  { bundle: "repository", base: "/", scopeName: "warehouse rep
+          -ort", scope: [warehouseFile], subject: warehouseFile }];      
+      141 +const generatorFile = "packages/generator/src/generator.ts";  
+      142 +/**                                                           
+      143 + * Each run's search must try an alignment, and the runs marke
+          +d `adopts` must adopt one, so that the agreement covers an    
+      144 + * adopted picture on each bundle. The warehouse report adopte
+          +d until 2026-10-20, when the symbol rows' Pin and More        
+      145 + * made its first placement start at the one membrane step its
+          + search used to reach (2 then 1 under the old rows, 1         
+      146 + * from the start under the new, measured by the lab on both);
+          + it stays as the case whose tried alignment is rejected,      
+      147 + * and the generator, which adopts under both, carries the rep
+          +ository bundle's adoption.                                    
+      148 + */                                                           
+      149 +const runs: Array<ScopeRun & { adopts: boolean }> = [         
+      150 +  { ...DECK_SCOPES.find(run => run.bundle === "estate" && run.
+          +scopeName === "five files")!, adopts: true },                 
+      151 +  { bundle: "repository", base: "/", scopeName: "generator", s
+          +cope: [generatorFile], subject: generatorFile, adopts: true },
+      152 +  { bundle: "repository", base: "/", scopeName: "warehouse rep
+          +ort", scope: [warehouseFile], subject: warehouseFile, adopts: 
+          +false }];                                                     
+      153  
+      154  for (const run of runs) {
+      155    test(`continuing geometry competition agrees with the headle
+           ss command: ${run.scopeName}`, async ({ page }) => {
+
+● Update(tests/e2e/local-map-simplicity.spec.ts)
+  ⎿  Added 1 line, removed 1 line
+      166      const settings = { searchStarts: 4, searchPatience: 2, chu
+           rnCost: getDefaultTuning().localMap.churnCost };
+      167      const expected = refine(capture, graph, run, config, setti
+           ngs);
+      168      expect(expected.alignmentTried).toBeGreaterThan(0);
+      169 -    expect(expected.alignmentAdopted).toBeGreaterThan(0);     
+      169 +    if (run.adopts) expect(expected.alignmentAdopted).toBeGrea
+          +terThan(0);                                                   
+      170      await tuning(page, { ...settings, membraneSimplicity: 50, 
+           moveMs: 0 });
+      171      await page.goto(localRetainUrl(run.base, run.scope));
+      172      await page.locator(".local-placed").waitFor();
+
+● Running the two lab specs again, and stopping my scratch server, carefully
+  this time:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 13 pass. Before the full gate I want to see the moved directory controls
+  on the map:
+  Ran 1 shell command (ctrl+o to expand)
+
+● Same trap as before: pgrep -f matched the shell running the command. Checking
+  whether the pictures were written first:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Found that my scratch servers rename themselves to http-server, which is why
+  they didn't show up earlier—the 8767 server has been running since the first
+  picture. I'll confirm their ports before stopping them by PID.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● The estate screenshot confirms the intended layout, and the repository one
+  shows a long label wrapping with controls beside it—its cut-off edge is just a
+  camera framing issue, not a layout bug. Now I'll name these screenshots and
+  update the lab's Live Docs, starting by reading the authored sections.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Naming the two new pictures and recording the outcome, then starting the full
+  gate:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The fourth full gate is running, about 25 minutes. Since the third gate, the
+  layout lab has been taught the new rows, the directory controls moved to their
+  own column, and the simplicity contract now carries adoption on both bundles.
+  If it passes, I'll commit.
+
+● Background command "Record progress and run the fourth full gate" completed
+(exit code 0)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Type-checking failed because my frame helper's reduce over CSS properties
+  caused TypeScript to infer the wrong overload—something ESLint missed since I
+  hadn't run the test type-check myself. I'll fix it by adding an explicit
+  accumulator type and narrowing the keys to string properties.
+
+● Update(scripts/layout-lab/capture.ts)
+  ⎿  Added 2 lines, removed 1 line
+      270          if (controls) shownControls ??= controls;
+      271          // From the computed style, which a collapsed row has 
+           as well as a shown one.
+      272          const wrapperStyle = getComputedStyle(label.parentElem
+           ent!);
+      273 -        const sides = (...keys: Array<keyof CSSStyleDeclaratio
+          -n>): number => keys.reduce((sum, key) => sum + px(wrapperStyle
+          -[key] as string), 0);                                         
+      273 +        const sides = (...keys: Array<"marginLeft" | "marginRi
+          +ght" | "marginTop" | "marginBottom" | "paddingLeft" | "padding
+          +Right" | "paddingTop" | "paddingBottom" | "borderLeftWidth" | 
+          +"borderRightWidth" | "borderTopWidth" | "borderBottomWidth">):
+          + number =>                                                    
+      274 +          keys.reduce<number>((sum, key) => sum + px(wrapperSt
+          +yle[key]), 0);                                                
+      275          const frame = {
+      276            width: sides("marginLeft", "marginRight", "paddingLe
+           ft", "paddingRight", "borderLeftWidth", "borderRightWidth"),
+      277            height: sides("marginTop", "marginBottom", "paddingT
+           op", "paddingBottom", "borderTopWidth", "borderBottomWidth")
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The tests' type-check now passes, and the change is type-only, so the lab
+  specs' earlier pass still holds. Noting it in the record and restarting the
+  full gate:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The fifth full gate is running after a type-only fix: my frame helper's reduce
+  had a typing error that only the tests' own type-check catches. I've now run
+  that check myself and it passes.
+
+● Background command "Record the fix and run the fifth full gate" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Gate five passed clean: generation, lint/build/type-check, 1,318 unit tests,
+  111 integration tests, documentation audits, and 177 browser tests all
+  succeeded. Now I'll review the working tree before committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Only trailing spaces found, kept verbatim inside two messages. I'll check for
+  a commit hook that might reject them, then read the month inventory lines I
+  need to update.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No hooks, and the export is byte-identical to what I received. Updating the
+  screenshot README's opening line and the month inventory:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checking how Codex's earlier commits were attributed, since most of this code
+  is Codex's work:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll match the existing commit style and now commit the product files—source,
+  tests, the lab, docs, and today's images.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Committed as 708f0cfa: 123 files. Now the cleanup. First I'll confirm the old
+  candidate worktree holds nothing the commit lacks, then remove it and Codex's
+  ignored scratch folder:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 29 candidate paths already exist in the commit's later main versions, so
+  the worktree adds nothing new. I'll remove it along with today's 4.4 MB
+  scratch folder, since its findings are already captured in the record and
+  screenshot README.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the records: direction.md and the record's resumption and landing notes.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing was written: the script checks every replacement before writing either
+  file. The direction.md text must differ slightly from what I matched.
+  Checking it:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● It's lowercase "the owner's" mid-sentence. Rerunning with the match starting
+  at "own route":
+  Ran 1 shell command (ctrl+o to expand)
+
+● Before committing the records I'll check their links and anchors, with the
+  repository's own link and anchor checkers run on just these files:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No broken links or anchors. Committing the records:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The click-to-inspect and one-click Pin work is committed, after the full check
+  passed: 1,318 unit, 111 integration and 177 browser tests. The code is
+  708f0cfa and the records are ae5fe859. Nothing is pushed, and the working tree
+  is clean.
+
+  Two changes worth your eyes, since they change what you saw before the
+  handoff:
+  - Directory buttons moved. Each folder's Open (or Close) and "…" now sit at
+    the right end of its label, like the buttons in a card's top-right corner.
+    They had been inside the label's text, which made every label taller and
+    wider than the layout lab's model of it. The estate picture
+    (AI-Agent-Workspace/Screenshots/2026-10-20/directory-controls-column.png)
+    shows the new position.
+  - Unpin now undoes Pin. Pressing a pinned file's Pin again releases only its
+    pins; the file stays the subject and its card stays on the map. Before,
+    Unpin acted like the card's × and could leave the map with no subject. The ×
+    and the pin tray work as they did.
+
+  What else came up before landing:
+  - An independent review of Codex's code found six bugs, all fixed:
+    - One Escape could close several things at once, such as the search results
+      and the reader.
+    - Closing the reader could put focus in the search box, which opens the
+      keyboard on a phone.
+    - Unpin behaved like the card's ×, as above.
+    - The 3D folder button never offered Close.
+    - A 3D click could be dropped while spheres were still settling.
+    - Keys typed in the full-screen reader reached the World Map's shortcuts
+      behind it.
+  - The layout lab caught a mismatch Codex never tested. Besides the folder
+    buttons, the new Pin and "…" on every symbol row made rows taller and names
+    wrap sooner. I taught the lab to measure those rows from the page, so its
+    model matches what you see again.
+  - I changed one test's premise. It required the layout search to find an
+    improvement in the Java warehouse scope. With the taller rows, that layout
+    now starts where the search used to end, with the same final picture. I gave
+    that check to the generator scope, which still improves under both row
+    sizes, and kept the warehouse scope as the case where an improvement is
+    tried and turned down.
+  - I gave one slow test a 30 s time limit. It builds the real Explorer bundle,
+    about a second on its own, and went just past the default 5 s limit when the
+    whole suite ran at once. Two existing tests that run the command line
+    already allow 30 s for the same reason.
+
+  Today's pictures are in the screenshot README
+  (AI-Agent-Workspace/Screenshots/2026-10-20/README.md).
+
+  Still open:
+  - Your deferred items: the zoomed-out legibility pass and the galaxy re-test
+    are written into direction.md (AI-Agent-Workspace/Memory/direction.md).
+  - Session summary and narrative: since this record now continues across the
+    switch, the session is still open. I'll write both when you call the chat
+    done.
+  - Codex's October 19 draft: I removed today's superseded draft copy and
+    scratch files, but left its separate October 19 draft and the older scratch
+    files alone.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -20-202504-whoops-it-appears-that-ive-hit-a-usage-limit-on.txt in the IDE.
+  This may or may not be related to the current task.</ide_opened_file>
+
+❯ Thank you for those efforts. What can we do about ensuring that we get the
+  correct history of linked docs and assets?
+
+● I'll record your message and the new export you opened, then look into how the
+  history handles linked docs and assets today before suggesting anything.
+  First the record and the export's receipt:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The export is this Claude Code chat from your Turn 6 message through my last
+  reply, 134,250 bytes. Recording the receipt, my delivered reply and your new
+  message:
+
+  Read 1 file (ctrl+o to expand)
+
+● Now the question itself. I'll start from the plan for change over time and the
+  history code, looking for what a history step records about linked docs and
+  assets:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The plan barely mentions them. Turning to the code: what a history step's
+  snapshot contains, and where related docs and assets enter or leave.
+
+  Listed 1 directory (ctrl+o to expand)
+
+● History steps capture files, their symbols, entry marks, and inter-file edges,
+  but omit linked docs entirely—no related documentation or markdown links from
+  authored text show up. I'll check earlier session notes, since the October 19
+  summary flagged tracking authored Related Documentation in history as
+  separate future work.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The record from October 18 explains why the purple Related Docs nodes only
+  showed up at the final step and why the grey asset spheres vanished. Let me
+  pull up your full answer from Turn 10 that night.
+
+  Read 1 file (ctrl+o to expand)
+
+● Before proposing anything, I need to confirm two things: how history
+  regenerates a past commit today, and where today's related-doc links come
+  from. Checking both now.
+
+  Searched for 1 pattern, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Confirmed that summarizeChange wipes out the mirror's committed state—every
+  authored Purpose, Notes, and embedded link—before regenerating purely from
+  source. Next I'll trace where today's related docs are sourced from.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The related-doc links never make it into the graph index since
+  bundledMarkdownScanner.ts only scans for them at build time, so the history
+  has no way to record them regardless. For assets, there's an unanswered
+  question from October 18 — I'll check if you responded later.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The asset question remains unresolved since the October 18 reply only
+  addressed related docs. I'll now check the decision record referencing the
+  bundle's assets, which may complete the picture of "linked docs and assets."
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found that assets are now defined as binary files by content (since Oct 16),
+  explaining why this repo has none and why the grey spheres disappeared. Next
+  I'll check which link targets the bundle scanner follows—markdown only, or
+  images too—to determine what "linked" actually covers.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Bundles only follow links to .md files (no images or other assets), and this
+  repo's 73-step history only has "implementation" and "test" entries—no assets
+  under the current rule. Next I'll check how far back the current mirror layout
+  extends to gauge the value of preserving your authored text.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The mirror has sat at today's path since October 20, just four days after the
+  repo started, so nearly every sampled commit has original authored content
+  worth keeping. I'll log these findings before giving my answer.
+
+  Read 1 file (ctrl+o to expand)
+
+● Linked docs need two fixes, and assets depend on which kind you mean.
+
+  Why linked docs disappear at past steps. There are two separate causes:
+  1. The history throws your words away. To rebuild a past commit, it deletes
+     the docs as committed then and regenerates them from source. Every Purpose
+     and Notes section goes, and the doc links live inside them. You called this
+     "needlessly" on October 18 and asked to "just run the latest version of
+     the tool over prior snapshots of the workspace". That hasn't been built
+     yet.
+  2. The links aren't in the graph, even today. The Explorer's bundle builder
+     finds the purple Related Docs by scanning the markdown at build time. The
+     history reads only the graph, so it couldn't record them even if the words
+     were kept.
+
+  What I'd do, in this order:
+  1. Keep the words. Rebuild each past commit over its committed docs, so
+     today's tool keeps that day's authored sections and recomputes the rest.
+     The docs have lived where they are now since 2025-10-20, four days after
+     the repository began, so nearly the whole history has words to keep. I'd
+     first measure how many old commits' docs today's tool reads cleanly, and
+     report any gaps.
+  2. Put doc links in the graph. Each file's links to other docs would be read
+     from its doc into the graph. The bundle then reads them from there instead
+     of scanning separately, and the command line can answer questions about
+     them too.
+  3. Record them per step. Each moment would carry its doc links and whether
+     each linked doc existed then. The 3D history would show related docs
+     appearing and going like files, and the step panel would list links that
+     came and went.
+
+  The reader would still show a linked doc's current text, marked as today's
+  version, or "not yet written" if it didn't exist then. Showing old text is
+  possible later, but it makes the bundle bigger. The change also means the
+  whole history regenerates once, here and on the hosted site.
+
+  Assets. The history already records binary files at every step, under one rule
+  for all commits; this repository simply has none. You might mean one of two
+  things:
+  - The grey JSON and HTML groups you missed on October 18. They stopped
+    counting as assets under your "text against binary" rule. Whether to bring
+    them back as a separate "text that isn't code" group, with its own colour
+    and toggle, is still your open call. If added, the history would carry it
+    automatically.
+  - Images and other files a doc links to. The bundle follows links to .md files
+    only. It could follow any linked file and record those links the same way.
+
+  Which did you mean by assets, and should I go ahead with the linked-docs plan?
+
+❯ >The history throws your words away. To rebuild a past commit, it deletes the
+  docs as committed then and regenerates them from source. Every Purpose and
+  Notes section goes, and the doc links live inside them. You called this
+  "needlessly" on October 18 and asked to "just run the latest version of the
+  tool over prior snapshots of the workspace". That hasn't been built yet.
+
+  AHHHH OF COURSE. The difference between running the tool fresh versus
+  preserving the authored content of the documentation across many iterations!
+  OF COURSE! You are correct.
+
+  Even still, the authored content section could not account for all markdown
+  links to related docs, no? Actually... sh*t... maybe it does... hmmmm. Wow
+  that's actually quite the jiffy isn't it? I see that I've made this out to be
+  simple and soon realized it to be quite complex. What a wonderful question.
+  What might you propose, if your aim was simplicity? (Noting that "don't
+  implement" is a valid answer for simplicity)
+
+  >The links aren't in the graph, even today. The Explorer's bundle builder
+  finds the purple Related Docs by scanning the markdown at build time. The
+  history reads only the graph, so it couldn't record them even if the words
+  were kept.
+  >Keep the words. Rebuild each past commit over its committed docs, so today's
+  tool keeps that day's authored sections and recomputes the rest. The docs
+  have lived where they are now since 2025-10-20, four days after the
+  repository began, so nearly the whole history has words to keep. I'd first
+  measure how many old commits' docs today's tool reads cleanly, and report any
+  gaps.
+  >Put doc links in the graph. Each file's links to other docs would be read
+  from its doc into the graph. The bundle then reads them from there instead of
+  scanning separately, and the command line can answer questions about them
+  too.
+  >Record them per step. Each moment would carry its doc links and whether each
+  linked doc existed then. The 3D history would show related docs appearing
+  and going like files, and the step panel would list links that came and went.
+
+  I'd really sincerely appreciate these enhancements.
+
+  >The grey JSON and HTML groups you missed on October 18. They stopped
+  counting as assets under your "text against binary" rule. Whether to bring
+  them back as a separate "text that isn't code" group, with its own colour and
+  toggle, is still your open call. If added, the history would carry it
+  automatically.
+
+  Fair. If we need better "assets" to test against (i.e. binaries/unity
+  assets/images/whatever) I'm happy for our repo to evolve in that way. I just
+  want to make sure that we're not suddenly missing a whole class of file. I
+  accept that I was mistaken as to the total absence of such files.
