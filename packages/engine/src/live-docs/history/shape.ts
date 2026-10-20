@@ -3,8 +3,9 @@
  *
  * @remarks
  * A shape is what the sequence knows of a change: every file with its
- * archetype, its symbol count and its entry mark, and every directed edge
- * between two files with its count. A change of shape is one step's delta
+ * archetype, its symbol count and its entry mark, every directed edge
+ * between two files with its count, and every link from a file's authored
+ * words to a document that stood at the change (since 2026-10-20). A change of shape is one step's delta
  * named by path rather than by id; the codec turns one into the other. The
  * functions here are pure and never change a shape they are given.
  *
@@ -26,6 +27,11 @@ export interface Shape {
   files: Map<string, FileShape>;
   /** Every directed edge, by {@link edgeKey}, with how many of its source's references land on its target. */
   edges: Map<string, number>;
+  /**
+   * Every link from a file's authored words to a document that stood at the change, by {@link edgeKey} of the file
+   * and the document's path. A document is not a file of the shape: a link names it by path alone.
+   */
+  docLinks: Set<string>;
 }
 
 /** What one step does to a shape, by path; see `StepDelta` for the order it is applied in. */
@@ -39,6 +45,8 @@ export interface ShapeChange {
   edgesAdded: Array<[from: string, to: string, count: number]>;
   edgesRemoved: Array<[from: string, to: string]>;
   edgesChanged: Array<[from: string, to: string, count: number]>;
+  docLinksAdded: Array<[from: string, doc: string]>;
+  docLinksRemoved: Array<[from: string, doc: string]>;
   directoriesRenamed: Array<[from: string, to: string]>;
   touched: string[];
 }
@@ -55,6 +63,8 @@ export function emptyChange(): ShapeChange {
     edgesAdded: [],
     edgesRemoved: [],
     edgesChanged: [],
+    docLinksAdded: [],
+    docLinksRemoved: [],
     directoriesRenamed: [],
     touched: []
   };
@@ -74,10 +84,10 @@ export function edgeEnds(key: string): [from: string, to: string] {
   return [key.slice(0, separator), key.slice(separator + 1)];
 }
 
-/** The shape with each renamed file moved to its new path, its shape and its edges with it. */
+/** The shape with each renamed file moved to its new path, its shape, its edges and its doc links with it. */
 export function renameShape(shape: Shape, renamed: ReadonlyArray<readonly [string, string]>): Shape {
   if (renamed.length === 0) {
-    return { files: new Map(shape.files), edges: new Map(shape.edges) };
+    return { files: new Map(shape.files), edges: new Map(shape.edges), docLinks: new Set(shape.docLinks) };
   }
   const newPath = new Map(renamed.map(([from, to]) => [from, to]));
   const moved = (path: string): string => newPath.get(path) ?? path;
@@ -90,14 +100,22 @@ export function renameShape(shape: Shape, renamed: ReadonlyArray<readonly [strin
     const [from, to] = edgeEnds(key);
     edges.set(edgeKey(moved(from), moved(to)), count);
   }
-  return { files, edges };
+  const docLinks = new Set<string>();
+  for (const key of shape.docLinks) {
+    const [from, doc] = edgeEnds(key);
+    docLinks.add(edgeKey(moved(from), doc));
+  }
+  return { files, edges, docLinks };
 }
 
 /** The shape after a step: the given shape with the change applied in the format's order. */
 export function applyChange(shape: Shape, change: ShapeChange): Shape {
-  const { files, edges } = renameShape(shape, change.renamed);
+  const { files, edges, docLinks } = renameShape(shape, change.renamed);
   for (const [from, to] of change.edgesRemoved) {
     edges.delete(edgeKey(from, to));
+  }
+  for (const [from, doc] of change.docLinksRemoved) {
+    docLinks.delete(edgeKey(from, doc));
   }
   for (const path of change.dead) {
     files.delete(path);
@@ -124,7 +142,10 @@ export function applyChange(shape: Shape, change: ShapeChange): Shape {
   for (const [from, to, count] of [...change.edgesAdded, ...change.edgesChanged]) {
     edges.set(edgeKey(from, to), count);
   }
-  return { files, edges };
+  for (const [from, doc] of change.docLinksAdded) {
+    docLinks.add(edgeKey(from, doc));
+  }
+  return { files, edges, docLinks };
 }
 
 /**
@@ -160,6 +181,16 @@ export function shapeDifferences(expected: Shape, actual: Shape, limit = 5): str
   for (const key of actual.edges.keys()) {
     if (!expected.edges.has(key)) {
       say(`the edge ${edgeEnds(key).join(" -> ")} is present and was not expected`);
+    }
+  }
+  for (const key of expected.docLinks) {
+    if (!actual.docLinks.has(key)) {
+      say(`the doc link ${edgeEnds(key).join(" -> ")} is missing`);
+    }
+  }
+  for (const key of actual.docLinks) {
+    if (!expected.docLinks.has(key)) {
+      say(`the doc link ${edgeEnds(key).join(" -> ")} is present and was not expected`);
     }
   }
   return differences;

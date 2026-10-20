@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/history/queries.test.ts
-- Generated At: 2026-10-18T05:36:00.490Z
+- Generated At: 2026-10-20T21:28:53.323Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,7 @@ _No public symbols detected_
 - [`queries.graphOfShape`](./queries.ts.mdmd.md#symbol-graphofshape)
 - [`queries.stepsMatching`](./queries.ts.mdmd.md#symbol-stepsmatching)
 - [`sequence.SequenceBuilder`](./sequence.ts.mdmd.md#symbol-sequencebuilder)
+- [`sequence.seek`](./sequence.ts.mdmd.md#symbol-seek)
 - [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 - [`shape.emptyChange`](./shape.ts.mdmd.md#symbol-emptychange)

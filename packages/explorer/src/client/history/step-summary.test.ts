@@ -14,9 +14,10 @@ const HEAD = {
 
 const commit = (index: number): CommitInfo => ({ id: `c${index}`.padEnd(8, "0"), parents: [], date: `2026-01-0${index + 1}T10:00:00Z`, author: "Ada", subject: `change ${index}` });
 
-const shape = (files: Record<string, [string, number]>, edges: Array<[string, string, number]> = []): Shape => ({
+const shape = (files: Record<string, [string, number]>, edges: Array<[string, string, number]> = [], docLinks: Array<[string, string]> = []): Shape => ({
   files: new Map(Object.entries(files).map(([path, [archetype, symbols]]) => [path, { archetype, symbols, entry: false }])),
-  edges: new Map(edges.map(([from, to, count]) => [edgeKey(from, to), count]))
+  edges: new Map(edges.map(([from, to, count]) => [edgeKey(from, to), count])),
+  docLinks: new Set(docLinks.map(([from, doc]) => edgeKey(from, doc)))
 });
 
 /**
@@ -30,6 +31,31 @@ function sequence(): HistorySequence {
   builder.add(commit(3), shape({ "engine/a.ts": ["implementation", 1], "engine/b.ts": ["implementation", 2], "main.ts": ["implementation", 3], "lib/new.ts": ["test", 0] }, [["main.ts", "engine/a.ts", 2], ["main.ts", "lib/new.ts", 1]]), { renamed: [], modified: ["main.ts"] });
   return builder.finish();
 }
+
+describe("stepSummary's documents", () => {
+  it("names the documents a step linked and unlinked, a dead file's links with its shape before the step", () => {
+    const builder = new SequenceBuilder(HEAD, commit(0), shape({ "main.ts": ["implementation", 1], "lib/old.ts": ["implementation", 0] }, [], [["lib/old.ts", "docs/old.md"]]));
+    builder.add(commit(1), shape({ "main.ts": ["implementation", 1], "lib/old.ts": ["implementation", 0] }, [], [["main.ts", "docs/plan.md"], ["lib/old.ts", "docs/old.md"]]), { renamed: [], modified: ["main.ts"] });
+    builder.add(commit(2), shape({ "main.ts": ["implementation", 1] }, [], [["main.ts", "docs/notes.md"]]), { renamed: [], modified: [] });
+    const history = builder.finish();
+    const has = (path: string): boolean => path === "main.ts";
+
+    const linked = stepSummary(history, 1, seek(history, 1), has);
+    expect(linked.docLinksAdded).toEqual([{ file: { path: "main.ts", name: "main.ts", archetype: "implementation", symbols: 1, today: { kind: "today", path: "main.ts" } }, doc: "docs/plan.md" }]);
+    expect(linked.docLinksRemoved).toEqual([]);
+    // A file whose links alone changed has changed shape: it is not a content-only touch.
+    expect(linked.touched).toEqual([]);
+    expect(changeCount(linked)).toBe(1);
+
+    const unlinked = stepSummary(history, 2, seek(history, 2), has);
+    expect(unlinked.docLinksAdded.map((link) => [link.file.path, link.doc])).toEqual([["main.ts", "docs/notes.md"]]);
+    expect(unlinked.docLinksRemoved).toEqual([
+      { file: { path: "lib/old.ts", name: "old.ts", archetype: "implementation", symbols: 0, today: { kind: "gone", since: expect.objectContaining({ subject: "change 2" }) } }, doc: "docs/old.md" },
+      { file: expect.objectContaining({ path: "main.ts" }), doc: "docs/plan.md" }
+    ]);
+    expect(changeCount(unlinked)).toBe(4);
+  });
+});
 
 describe("stepSummary", () => {
   const today = new Set(["engine/a.ts", "engine/b.ts", "main.ts", "lib/new.ts"]);

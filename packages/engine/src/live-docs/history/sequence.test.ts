@@ -13,13 +13,18 @@ function commit(index: number): CommitInfo {
   return { id: `c${index}`, parents: index === 0 ? [] : [`c${index - 1}`], date: new Date(Date.UTC(2026, 0, 1 + index)).toISOString(), author: "Ada", subject: `change ${index}` };
 }
 
-/** The shape after change `index` of a history in which file i is born at change i and grows by one symbol each change. */
+/**
+ * The shape after change `index` of a history in which file i is born at change i and grows by one symbol each
+ * change, and every file but the first links to the notes at even changes and to its own document from its birth.
+ */
 function growingShape(index: number): Shape {
-  const shape: Shape = { files: new Map(), edges: new Map() };
+  const shape: Shape = { files: new Map(), edges: new Map(), docLinks: new Set() };
   for (let file = 0; file <= index; file += 1) {
     shape.files.set(`src/f${file}.ts`, { archetype: file % 2 === 0 ? "implementation" : "test", symbols: index - file, entry: file === 0 });
     if (file > 0) {
       shape.edges.set(edgeKey(`src/f${file}.ts`, "src/f0.ts"), 1 + (index % 3));
+      shape.docLinks.add(edgeKey(`src/f${file}.ts`, `docs/f${file}.md`));
+      if (index % 2 === 0) shape.docLinks.add(edgeKey(`src/f${file}.ts`, "docs/notes.md"));
     }
   }
   return shape;
@@ -58,9 +63,11 @@ describe("the sequence", () => {
 
   it("interns every path and archetype once, and leaves empty lists out of a delta", () => {
     const sequence = build(3);
-    expect(sequence.paths).toEqual(["src/f0.ts", "src/f1.ts", "src/f2.ts", "src/f3.ts"]);
+    // A document is a path like any other, interned once where a step first names it.
+    expect(sequence.paths).toEqual(["src/f0.ts", "src/f1.ts", "docs/f1.md", "src/f2.ts", "docs/notes.md", "docs/f2.md", "src/f3.ts", "docs/f3.md"]);
     expect(sequence.archetypes).toEqual(["implementation", "test"]);
-    expect(Object.keys(sequence.steps[0].delta).sort()).toEqual(["born", "edgesAdded", "resized"]);
+    expect(Object.keys(sequence.steps[0].delta).sort()).toEqual(["born", "docLinksAdded", "edgesAdded", "resized"]);
+    expect(Object.keys(sequence.steps[2].delta).sort()).toEqual(["born", "docLinksAdded", "docLinksRemoved", "edgesAdded", "edgesChanged", "resized"]);
   });
 
   it("holds to the shapes where the version control's word contradicts them", () => {
@@ -74,7 +81,7 @@ describe("the sequence", () => {
 
   it("says what it holds in its head", () => {
     const sequence = build(4);
-    expect(headOf(sequence)).toMatchObject({ format: "live-docs-history/1", commits: 5, first: { id: "c0" }, last: { id: "c4" }, lens: LENS, source: SOURCE });
+    expect(headOf(sequence)).toMatchObject({ format: "live-docs-history/2", commits: 5, first: { id: "c0" }, last: { id: "c4" }, lens: LENS, source: SOURCE });
     expect(changeAt(sequence, 0).born).toEqual([]);
     expect(() => seek(sequence, 5)).toThrow(RangeError);
   });
@@ -105,6 +112,8 @@ describe("the codec", () => {
       edgesAdded: [["new/x.ts", "src/f0.ts", 2]] as Array<[string, string, number]>,
       edgesRemoved: [["src/f3.ts", "src/f0.ts"]] as Array<[string, string]>,
       edgesChanged: [["lib/f1.ts", "src/f0.ts", 7]] as Array<[string, string, number]>,
+      docLinksAdded: [["new/x.ts", "docs/x.md"]] as Array<[string, string]>,
+      docLinksRemoved: [["src/f3.ts", "docs/f3.md"]] as Array<[string, string]>,
       directoriesRenamed: [["src/sub", "lib/sub"]] as Array<[string, string]>,
       touched: ["src/f0.ts"]
     };

@@ -15,6 +15,8 @@ Holds the history of the 3D Local Map over the scripted sample's two bundles: th
 
 The ninth test (2026-10-18) walks the rename-onto-a-dead-path sample from its beginning to today and back, holding that the renamed file's sphere is its own and stands where it stood, and that every rendered line begins and ends on a rendered sphere, by the instrument's line ends against the spheres' world positions; it failed before the view's caches gave a contested key to the renamed object and re-resolved every kept line's ends ([Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)).
 
+Since 2026-10-20 ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) a test steps through the sample with Related Docs on: the documents each moment draws, the links the panel names at the plan's birth and the helper's retirement, a document gone today said so and not openable, the reader's note that it reads today's version, and the scrubber clear of the reader.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

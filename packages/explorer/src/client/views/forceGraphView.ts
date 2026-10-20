@@ -91,6 +91,8 @@ export interface ForceGraphViewOptions {
   nodesById: Map<string, ExplorerNodePayload>;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   relatedDocLinks?: RelatedDocLink[];
+  /** Whether today's bundle carries a document, so that a past moment's link to one gone since opens nothing. */
+  hasBundledDoc?: (docPath: string) => boolean;
   onShowBundledDoc: (docPath: string) => void;
   /** Inspect a file without changing the map's subject, pins or camera. */
   onFocusNode: (node: ExplorerNodePayload) => void;
@@ -135,6 +137,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     nodesById,
     resolveLinkEndpoint,
     relatedDocLinks,
+    hasBundledDoc = () => true,
     onShowBundledDoc,
     onFocusNode
   } = options;
@@ -671,8 +674,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     };
 
     const filteredNodes = source.nodes.filter(includeNode);
-    // The related documentation is today's; a moment of the history draws none, since the docs of that day are not in the bundle.
-    const data = spatialGraphOf(source, includeNode, moment || !state.filters.showRelatedDocs ? [] : relatedDocLinks, state.spatialLayout);
+    // A moment's Related Docs are the links its files' authored words made then, which the history carries since
+    // 2026-10-20 (before, a moment drew none); today's are the bundle's.
+    const data = spatialGraphOf(source, includeNode, !state.filters.showRelatedDocs ? [] : moment ? moment.relatedDocLinks : relatedDocLinks, state.spatialLayout);
     // The node and link objects are kept by id and by pair across every membership change: a sphere keeps its place and
     // its render object, and the library's data join, which binds a line's object to its datum, keeps the line. Before
     // 2026-10-18 every render handed the library new link objects and it rebuilt every line, 65 to 88 ms a step with 2,650
@@ -928,7 +932,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         const label = document.createElement("span");
         label.textContent = file.directoryPath !== undefined
           ? `${file.directoryPath || "Scan root"} · ${file.directoryFileCount} visible files`
-          : file.archetype === "related-doc" ? file.name
+          : file.archetype === "related-doc" ? (hasBundledDoc(file.codePath) ? file.name : `${file.name} · not in this bundle`)
           : `${file.name} · ${symbols} public ${symbols === 1 ? "symbol" : "symbols"}`;
         return label;
       })
@@ -1060,7 +1064,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // today, and a thing gone since does nothing here (the step panel says so).
       if (id.startsWith("related:")) {
         inspectedActionId = null;
-        onShowBundledDoc(id.slice("related:".length));
+        if (hasBundledDoc(id.slice("related:".length))) onShowBundledDoc(id.slice("related:".length));
       } else {
         const action = currentAction(id);
         if (action?.kind === "directory") options.onInspectDirectory(action.directory);

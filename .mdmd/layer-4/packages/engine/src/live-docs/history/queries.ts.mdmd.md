@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/queries.ts
-- Generated At: 2026-10-18T05:36:00.520Z
+- Generated At: 2026-10-20T21:28:53.349Z
 
 ## Authored
 ### Purpose
@@ -17,12 +17,14 @@ The questions a sequence answers headlessly: which step a commit is by a prefix 
 
 `followChanges` and the directories renamed whole across a span (2026-10-18, for the Explorer's C4 in [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): the composition of a run of consecutive changes over the files that stood before them, which `changesBetween` was doing inline, is a function of its own so that the Explorer's cursor can compose the renames of a move the same way; and `ChangesBetween` gains `directoriesRenamed`, the directories renamed whole across the span by the rule each step's are read by, over the files' composed renames, which `inspect --between` prints as "Renamed whole".
 
+Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) `fileOfShape` lists a file's linked documents at a change, and `changesBetween` the links that came and went, a file followed through its renames as its edges are.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `stepsMatching` {#symbol-stepsmatching}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L23)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L24)
 - Parameters: `sequence`: [`HistorySequence`](./format.ts.mdmd.md#symbol-historysequence)
 
 ##### `stepsMatching` — Summary
@@ -30,7 +32,7 @@ The steps whose change id begins with `reference`, ignoring case; more than one 
 
 #### `graphOfShape` {#symbol-graphofshape}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L44)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L45)
 - Returns: [`LiveDocGraph`](../graph.ts.mdmd.md#symbol-livedocgraph)
 - Parameters: `shape`: [`Shape`](./shape.ts.mdmd.md#symbol-shape); `location`: [`DocLocation`](../graph.ts.mdmd.md#symbol-doclocation)
 
@@ -43,7 +45,7 @@ and a file's entry mark is read with {@link entryMarked}.
 
 #### `entryMarked` {#symbol-entrymarked}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L79)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L80)
 - Parameters: `shape`: [`Shape`](./shape.ts.mdmd.md#symbol-shape); `file`: [`GraphFile`](../graph.ts.mdmd.md#symbol-graphfile)
 
 ##### `entryMarked` — Summary
@@ -53,21 +55,21 @@ that change, or it is a test, which a runner starts.
 
 #### `Neighbour` {#symbol-neighbour}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L84)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L85)
 
 ##### `Neighbour` — Summary
 A file's neighbour at a change, with the edge's count.
 
 #### `FileAtChange` {#symbol-fileatchange}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L90)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L91)
 
 ##### `FileAtChange` — Summary
 What a file was at a change.
 
 #### `fileOfShape` {#symbol-fileofshape}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L104)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L107)
 - Returns: [`FileAtChange`](#symbol-fileatchange)
 - Parameters: `shape`: [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 
@@ -76,14 +78,14 @@ What a file was in a shape: whether it existed, its shape, and its neighbours ei
 
 #### `ChangesBetween (interface)` {#symbol-changesbetween-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L126)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L130)
 
 ##### `ChangesBetween (interface)` — Summary
 What changed from one change of a sequence to a later one, every list sorted.
 
 #### `changesBetween (function)` {#symbol-changesbetween-function}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L150)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L158)
 - Returns: [`ChangesBetween`](#symbol-changesbetween-interface)
 - Parameters: `sequence`: [`HistorySequence`](./format.ts.mdmd.md#symbol-historysequence)
 
@@ -94,14 +96,14 @@ and a file born and dead between them is neither.
 
 #### `FollowedChanges` {#symbol-followedchanges}
 - Type: interface
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L208)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L235)
 
 ##### `FollowedChanges` — Summary
 What a run of consecutive changes does to the files that stood before the first of them, and the files it bears.
 
 #### `followChanges` {#symbol-followchanges}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L223)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/queries.ts#L250)
 - Returns: [`FollowedChanges`](#symbol-followedchanges)
 - Parameters: `changes`: `Iterable`; `standing`: `Iterable`
 

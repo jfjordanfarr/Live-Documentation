@@ -4,13 +4,16 @@
  *
  * @remarks
  * The sequence is the shape of the graph over time: every file with its
- * archetype, its symbol count and whether it is an entry, and every directed
- * file-to-file edge with its count, at the first sampled change in full and
- * then as one delta per later change. Paths and archetypes are interned once,
- * and every tuple names them by their index. Every 256 steps a keyframe
+ * archetype, its symbol count and whether it is an entry, every directed
+ * file-to-file edge with its count, and every link from a file's authored
+ * words to a document that stood then, at the first sampled change in full
+ * and then as one delta per later change. Paths and archetypes are interned
+ * once, and every tuple names them by their index. Every 256 steps a keyframe
  * repeats the snapshot whole, so that a seek is the nearest keyframe plus at
  * most 255 deltas. The docs of each change remain the truth of everything
- * else; the sequence carries no symbol, no edge kind and no authored word.
+ * else; the sequence carries no symbol, no edge kind and no authored word,
+ * only where the authored words pointed (version 2, 2026-10-20, when the
+ * lens began to keep each change's authored words instead of discarding them).
  *
  * Nothing here is ever committed: two clones' histories differ, so the
  * sequence lives beside the graph index under the docs root and is derived
@@ -22,10 +25,10 @@
 import type { LiveDocumentationConfig } from "../../config/liveDocumentationConfig";
 
 /** The version of the sequence's format, written first in every `history.json`. */
-export const HISTORY_FORMAT = "live-docs-history/1";
+export const HISTORY_FORMAT = "live-docs-history/2";
 
 /** The version of the format of one change's summary in the cache. */
-export const HISTORY_SUMMARY_FORMAT = "live-docs-history-summary/1";
+export const HISTORY_SUMMARY_FORMAT = "live-docs-history-summary/2";
 
 /** The folder under the docs root that holds the cache and the sequence. */
 export const HISTORY_DIRECTORY = "history";
@@ -45,10 +48,12 @@ export type EdgeTuple = [fromId: number, toId: number, count: number];
 /** The two ends of a directed edge, by path id. */
 export type EdgeEnds = [fromId: number, toId: number];
 
-/** A whole snapshot: every file and every edge, sorted by id. */
+/** A whole snapshot: every file, every edge and every doc link, sorted by id. */
 export interface SnapshotTuples {
   files: FileTuple[];
   edges: EdgeTuple[];
+  /** Each link from a file's authored words to a document that stood then: the file's path id and the document's. */
+  docLinks: EdgeEnds[];
 }
 
 /** One change of the version control, as the sequence names it. */
@@ -67,9 +72,10 @@ export interface CommitInfo {
 
 /**
  * What one step changed, by id; an empty list is left out. Applied in this
- * order: the renames first (a renamed file keeps its shape and its edges under
- * the new path), then the edges removed, the files dead and born, the files
- * resized, rekinded and re-marked, and the edges added and changed.
+ * order: the renames first (a renamed file keeps its shape, its edges and its
+ * doc links under the new path), then the edges and doc links removed, the
+ * files dead and born, the files resized, rekinded and re-marked, and the
+ * edges added and changed and the doc links added.
  */
 export interface StepDelta {
   /** Files that appear, with their shape. */
@@ -90,6 +96,10 @@ export interface StepDelta {
   edgesRemoved?: EdgeEnds[];
   /** Edges whose count changed, with the new count. */
   edgesChanged?: EdgeTuple[];
+  /** Links from a file's authored words to a document that appear, the file named after the step's renames. */
+  docLinksAdded?: EdgeEnds[];
+  /** Doc links that disappear, a dead file's included, named after the step's renames. */
+  docLinksRemoved?: EdgeEnds[];
   /** Directories renamed whole, by path, derived from the file renames. */
   directoriesRenamed?: Array<[fromPath: string, toPath: string]>;
   /** Files whose content the version control saw change while their shape did not. */
@@ -213,4 +223,6 @@ export interface CommitSummary {
   files: Array<[path: string, archetype: string, symbols: number, entry: 0 | 1]>;
   /** Every directed edge, sorted: its ends' paths and its count. */
   edges: Array<[from: string, to: string, count: number]>;
+  /** Every link from a file's authored words to a document that stood at the change, sorted: the file's path and the document's. */
+  docLinks: Array<[from: string, doc: string]>;
 }

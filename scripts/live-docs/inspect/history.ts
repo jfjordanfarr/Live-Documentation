@@ -21,7 +21,7 @@ import { changesBetween, entryMarked, fileOfShape, graphOfShape, stepsMatching }
 import { commitAt, seek } from "@live-documentation/engine/live-docs/history/sequence";
 import { reachability } from "@live-documentation/engine/live-docs/pathfind";
 
-const SHAPE_ALONE = "from the shape alone: files, their wires and entry marks; the symbols and the docs of that day are not in the history";
+const SHAPE_ALONE = "from the shape alone: files, their wires, entry marks and linked documents; the symbols and the docs' words of that day are not in the history";
 
 /** A question the history cannot answer as asked, said plainly. */
 export class HistoryRefusal extends Error {}
@@ -81,6 +81,11 @@ export function emitFileAt(sequence: HistorySequence, step: number, codePath: st
       console.log(`  ${neighbour.codePath}  ${count(neighbour.count, "reference")}`);
     }
   }
+  const documents = file.documents ?? [];
+  console.log(`Linked documents: ${count(documents.length, "document")}`);
+  for (const document of documents) {
+    console.log(`  ${document}`);
+  }
 }
 
 /** What the entries of a commit reach, by the pathfinder over the graph the commit's shape makes. */
@@ -138,6 +143,8 @@ export function emitBetween(sequence: HistorySequence, from: number, to: number,
   list("Resized", changes.resized.map((file) => `${file.codePath}  ${file.before} -> ${file.after} symbols`), "file");
   list("Wires added", changes.edgesAdded.map((edge) => `${edge.from} -> ${edge.to}`), "wire");
   list("Wires removed", changes.edgesRemoved.map((edge) => `${edge.from} -> ${edge.to}`), "wire");
+  list("Documents linked", changes.docLinksAdded.map((link) => `${link.from} -> ${link.doc}`), "link");
+  list("Documents unlinked", changes.docLinksRemoved.map((link) => `${link.from} -> ${link.doc}`), "link");
 }
 
 function where(sequence: HistorySequence, step: number, commit: CommitInfo): string {

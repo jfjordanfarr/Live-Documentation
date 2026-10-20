@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-10-20T14:51:17.577Z
+- Generated At: 2026-10-20T21:28:53.853Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ The Explorer's evidence reader: renders a file or symbol from the bundled Live D
 - Authored and generated links resolve through actual document/code paths and the bundled-document inventory, without assuming a documentation root or suffix. Documented re-exports can lead to their origin; a local target absent from the bundle is identified as unavailable. Bundled-document fragments name the section being read.
 - Repeated rendering of the same target preserves reader scroll. Fragment navigation scrolls only the reader body, hidden content is inert, and action updates preserve keyboard focus. Responsive presentation and canvas orientation belong to the application shell.
 - The Internals target describes file-level connections not attributed to a public symbol; it does not assert that private symbols have been documented. Downloading a file uses its actual configured Live Doc filename.
+- `setNote` (2026-10-20, [Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) puts one line above the evidence; the application uses it to say that the reader shows today's version of a document while the 3D picture shows a past commit.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -37,14 +38,14 @@ Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L42)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L44)
 
 ##### `DetailPanelOptions` — Summary
 Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L70)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L72)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 

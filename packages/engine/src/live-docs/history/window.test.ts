@@ -19,7 +19,8 @@ function commit(index: number): CommitInfo {
 function shapeAt(index: number): Shape {
   return {
     files: new Map([index, index + 1].map((file) => [`f${file}.ts`, { archetype: "implementation", symbols: file, entry: false }])),
-    edges: new Map([[edgeKey(`f${index}.ts`, `f${index + 1}.ts`), 1]])
+    edges: new Map([[edgeKey(`f${index}.ts`, `f${index + 1}.ts`), 1]]),
+    docLinks: new Set([edgeKey(`f${index}.ts`, `docs/d${index % 2}.md`)])
   };
 }
 
@@ -42,7 +43,7 @@ describe("windowOf", () => {
     expect(window.window).toEqual({ rule: "last", count: 2 });
     expect(window.base.commit.id).toBe("c4");
     expect(window.steps.map((step) => step.commit.id)).toEqual(["c5"]);
-    expect(window.paths).toEqual(["f4.ts", "f5.ts", "f6.ts"]);
+    expect(window.paths).toEqual(["f4.ts", "f5.ts", "docs/d0.md", "f6.ts", "docs/d1.md"]);
     expect(shapeDifferences(shapeAt(4), seek(window, 0))).toEqual([]);
     expect(shapeDifferences(shapeAt(5), seek(window, 1))).toEqual([]);
     expect(window.source).toEqual(HEAD.source);

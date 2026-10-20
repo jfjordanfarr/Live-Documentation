@@ -35,7 +35,7 @@ describe("summarizeGraph", () => {
       "abc"
     );
     expect(summary).toEqual({
-      format: "live-docs-history-summary/1",
+      format: "live-docs-history-summary/2",
       lens: "lens",
       commit: "abc",
       files: [
@@ -47,11 +47,23 @@ describe("summarizeGraph", () => {
         ["a.ts", "b.ts", 2],
         ["a.ts", "c.ts", 1],
         ["c.ts", "a.ts", 1]
-      ]
+      ],
+      docLinks: []
     });
     const shape = shapeOfSummary(summary);
     expect(shape.files.get("a.ts")).toEqual({ archetype: "implementation", symbols: 2, entry: true });
     expect(shape.edges.size).toBe(3);
+  });
+
+  it("records the documents each file's authored words link to, each once, sorted, and only for files of the graph", () => {
+    const summary = summarizeGraph(
+      graph(file("a.ts", "implementation", 0, false, []), file("b.ts", "implementation", 0, false, [])),
+      "lens",
+      "abc",
+      new Map([["b.ts", ["docs/z.md", "docs/a.md", "docs/z.md"]], ["gone.ts", ["docs/a.md"]]])
+    );
+    expect(summary.docLinks).toEqual([["b.ts", "docs/a.md"], ["b.ts", "docs/z.md"]]);
+    expect([...shapeOfSummary(summary).docLinks].sort()).toEqual(["b.ts\u0000docs/a.md", "b.ts\u0000docs/z.md"]);
   });
 
   it("refuses a doc without an archetype, which only a generator bug writes", () => {

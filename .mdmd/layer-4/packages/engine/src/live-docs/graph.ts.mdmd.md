@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/graph.ts
-- Generated At: 2026-10-15T15:49:39.692Z
+- Generated At: 2026-10-20T21:28:53.086Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ The derived graph index: the model of a graph of Live Docs, `deriveLiveDocGraph`
 - Written 2026-09-28. A file of the graph is its parsed doc, exactly as the grammar returns it, plus what only the corpus can say: one edge per dependency line and per linked type reference, resolved to the file and symbol anchor the link lands on, and the inbound and outbound adjacency, which no doc stores. The decisions log records it under "The Derived Graph Index".
 - The module has no file-system imports, so the Explorer client bundles it and reads a graph the way the CLI does. Reading docs from disk and writing `<root>/index.json` live in `graphFiles.ts`.
 - A type reference to a symbol of the same file resolves to the file itself; `outbound` and `inbound` leave such self edges out. An edge keeps the link as written, so an external module (no link) and a link nothing answers to (link, no target) are told apart.
+- `resolveDocLink` (2026-10-20, [Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) is the doc-relative resolution `linkTarget` always did, given its own name so that `relatedDocs.ts` resolves a link to a document by the same rule as a link to a Live Doc.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -105,6 +106,18 @@ Resolves a doc-relative link to the Live Doc it names.
 
 ##### `linkTarget (function)` — Returns
 The target, or undefined when the link leaves the docs or does not name a Live Doc.
+
+#### `resolveDocLink` {#symbol-resolvedoclink}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L233)
+
+##### `resolveDocLink` — Summary
+Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an
+external URL or a path that leaves the workspace. A bare fragment names the doc itself.
+
+##### `resolveDocLink` — Parameters
+- `docPath`: Workspace-relative path of the doc holding the link, with forward slashes.
+- `link`: The link as written, relative to the doc.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

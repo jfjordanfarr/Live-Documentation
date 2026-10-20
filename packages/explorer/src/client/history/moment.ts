@@ -12,6 +12,7 @@
 
 import type { CommitInfo } from "@live-documentation/engine/live-docs/history/format";
 
+import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../shared/types";
 
 /** One step of the history as the view draws it. */
@@ -19,6 +20,8 @@ export interface HistoryMoment {
   step: number;
   commit: CommitInfo;
   graph: ExplorerGraphPayload;
+  /** The documents the step's files linked to then, by their paths at the step: the moment's Related Docs. */
+  relatedDocLinks: RelatedDocLink[];
   /** A file of today's bundle, by its path, as it stands at the step; undefined when it does not stand there. */
   fileAt(todayPath: string): string | undefined;
   /** A directory of today, by its path, as it stands at the step, whether or not a file stands under it there. */

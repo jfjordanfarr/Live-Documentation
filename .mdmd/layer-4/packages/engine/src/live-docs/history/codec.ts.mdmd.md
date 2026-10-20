@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/codec.ts
-- Generated At: 2026-10-18T00:39:18.685Z
+- Generated At: 2026-10-20T21:28:53.172Z
 
 ## Authored
 ### Purpose
@@ -13,6 +13,7 @@ Between the sequence's file and its meaning: an interner for paths and archetype
 ### Notes
 - Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). Interning is what keeps a sequence small: in [the probe](../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md) the path table was 99.6 KB of 272,627 bytes, where full snapshots as JSON would have been about 250 MB.
 - A shape's new paths are interned in path order, so a base's ids follow its paths; an empty list is left out of a delta, and decoding puts it back.
+- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the codec carries doc links in snapshots and steps; a document's path is interned in the same table as the files', where a step first names it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -49,7 +50,7 @@ A shape as tuples sorted by id; a path new to the tables is added in path order.
 
 #### `decodeShape` {#symbol-decodeshape}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L64)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L69)
 - Returns: [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 - Parameters: `tuples`: [`SnapshotTuples`](./format.ts.mdmd.md#symbol-snapshottuples); `tables`: [`Tables`](#symbol-tables)
 
@@ -58,7 +59,7 @@ The shape a snapshot's tuples describe.
 
 #### `encodeChange` {#symbol-encodechange}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L77)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L86)
 - Returns: [`StepDelta`](./format.ts.mdmd.md#symbol-stepdelta)
 - Parameters: `change`: [`ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange); `interners`: [`Interners`](#symbol-interners)
 
@@ -67,7 +68,7 @@ A change as a step's delta, its empty lists left out.
 
 #### `decodeChange` {#symbol-decodechange}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L95)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/history/codec.ts#L106)
 - Returns: [`ShapeChange`](./shape.ts.mdmd.md#symbol-shapechange)
 - Parameters: `delta`: [`StepDelta`](./format.ts.mdmd.md#symbol-stepdelta); `tables`: [`Tables`](#symbol-tables)
 
@@ -77,6 +78,7 @@ The change a step's delta describes, every list present.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`format.EdgeEnds`](./format.ts.mdmd.md#symbol-edgeends) (type-only)
 - [`format.EdgeTuple`](./format.ts.mdmd.md#symbol-edgetuple) (type-only)
 - [`format.FileTuple`](./format.ts.mdmd.md#symbol-filetuple) (type-only)
 - [`format.SnapshotTuples`](./format.ts.mdmd.md#symbol-snapshottuples) (type-only)

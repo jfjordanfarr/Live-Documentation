@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-10-20T14:51:18.105Z
+- Generated At: 2026-10-20T21:28:54.350Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,8 @@ Bootstrap entry point for the Explorer client: loads the bundle, projects its gr
 - Inspection, retention and Centre are separate application operations, from the owner's [October 19 decision](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and [October 20 continuation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). Entity clicks and reader links inspect without changing the map. The canonical snapshot includes the independently inspected target; evidence-only Back/Forward updates the reader without rebuilding the map or moving its camera. A restored history commit is assigned before any path callback can persist it. Reader closure returns focus to its opener, else to the opener's rebuilt successor by accessible name, else to the map itself, never to the search field, whose focus raises a phone's keyboard. Escape closes the reader unless an open popover stands above it or another control has used the key first. A pressed Pin pressed again (`unpinNode`) releases only that file's pins and keeps the subject, so a Pin undoes itself; the card's X and the tray release under the subject policy. These three corrections followed an independent review on [2026-10-20](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#landing-checkpoint-claude-code); a full-screen reader makes the background inert, while a desktop overlay preserves the canvas size. More and hold menus call these same application operations and notify their opener when closed.
 
 The history control (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): the History button beside Connections and Structure, offered only in 3D and only when the bundle carries a history, "for now, as those went beside 3D", until the consolidation pass the owner expects; `history-control.ts` wired to the 3D view's `setMoment` and `settle`, to the address through `persistExploration` (the commit and the authors toggle), to the tray through `absence`, and to the application's shared retain action for a file the step panel pins. An address that names a commit fetches the history file before the page starts, so that the first picture is the moment's; leaving 3D for 2D or for another view, and Back or Forward to an address without a commit, return the picture to today and close the control.
+
+Since 2026-10-20 ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the application keeps the moment the 3D picture shows, so that the reader can say it reads today's version over a past commit, and wires the bundle's documents to the 3D view and the step panel.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -55,6 +57,7 @@ _No public symbols detected_
 - [`graph-helpers.resolveLinkEndpoint`](./graph-helpers.ts.mdmd.md#symbol-resolvelinkendpoint)
 - [`history-control.createHistoryControl`](./history/history-control.ts.mdmd.md#symbol-createhistorycontrol)
 - [`history-control.isHistorySequence`](./history/history-control.ts.mdmd.md#symbol-ishistorysequence)
+- [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`layout-presets.layoutPresetOf`](./layout-presets.ts.mdmd.md#symbol-layoutpresetof)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)

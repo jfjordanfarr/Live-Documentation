@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/package.json
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:39.932Z
+- Generated At: 2026-10-20T21:28:53.776Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,6 @@ Three.js is a direct runtime dependency for camera projection; its matching type
 - `esbuild@^0.28.2`
 - `jszip@^3.10.1`
 - `lz-string@^1.5.0`
-- `minimatch@^10.2.4`
 - [`package.@live-documentation/engine`](../engine/package.json.mdmd.md#symbol-live-documentationengine)
 - `three@^0.186.1`
 <!-- LIVE-DOC:END Dependencies -->

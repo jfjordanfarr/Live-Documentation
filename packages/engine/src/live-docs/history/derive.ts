@@ -4,7 +4,7 @@
  *
  * @remarks
  * The shapes say what was born, what died and what changed in size, kind,
- * entry mark and wiring; the version control says which files were renamed,
+ * entry mark, wiring and doc links; the version control says which files were renamed,
  * since a rename is invisible in two shapes alone, and whose content changed
  * in place, which the shapes cannot see when nothing of the shape moved
  * (the minor ticks of the plan's C3). A rename is believed only where both of
@@ -67,6 +67,18 @@ export function deriveChange(before: Shape, after: Shape, version: VersionChange
     }
   }
 
+  // A dead file's doc links go with it here, as its edges do above.
+  for (const key of after.docLinks) {
+    if (!moved.docLinks.has(key)) {
+      change.docLinksAdded.push(edgeEnds(key));
+    }
+  }
+  for (const key of moved.docLinks) {
+    if (!after.docLinks.has(key)) {
+      change.docLinksRemoved.push(edgeEnds(key));
+    }
+  }
+
   change.directoriesRenamed = directoryRenames(before.files.keys(), after.files.keys(), change.renamed);
   change.touched = touchedOnly(change, after, version.modified);
   return sorted(change);
@@ -91,7 +103,7 @@ function believedRenames(before: Shape, after: Shape, renamed: ReadonlyArray<rea
   return believed;
 }
 
-/** The files whose content changed while nothing of their shape did: no birth, rename, size, kind, entry mark or edge of theirs. */
+/** The files whose content changed while nothing of their shape did: no birth, rename, size, kind, entry mark, edge or doc link of theirs. */
 function touchedOnly(change: ShapeChange, after: Shape, modified: readonly string[]): string[] {
   const shaped = new Set<string>([
     ...change.born.map(([path]) => path),
@@ -99,7 +111,8 @@ function touchedOnly(change: ShapeChange, after: Shape, modified: readonly strin
     ...change.resized.map(([path]) => path),
     ...change.rekinded.map(([path]) => path),
     ...change.entries.map(([path]) => path),
-    ...[...change.edgesAdded, ...change.edgesRemoved, ...change.edgesChanged].flatMap(([from, to]) => [from, to])
+    ...[...change.edgesAdded, ...change.edgesRemoved, ...change.edgesChanged].flatMap(([from, to]) => [from, to]),
+    ...[...change.docLinksAdded, ...change.docLinksRemoved].map(([from]) => from)
   ]);
   return [...new Set(modified)].filter((path) => after.files.has(path) && !shaped.has(path));
 }
@@ -117,6 +130,8 @@ function sorted(change: ShapeChange): ShapeChange {
   change.edgesAdded.sort(byEnds);
   change.edgesRemoved.sort(byEnds);
   change.edgesChanged.sort(byEnds);
+  change.docLinksAdded.sort(byEnds);
+  change.docLinksRemoved.sort(byEnds);
   change.touched.sort(compare);
   return change;
 }

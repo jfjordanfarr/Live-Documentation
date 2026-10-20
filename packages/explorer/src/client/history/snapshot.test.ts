@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { edgeKey, type Shape } from "@live-documentation/engine/live-docs/history/shape";
 
-import { snapshotGraphOf } from "./snapshot";
+import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 import { getDefaultTuning } from "../persistence/local-storage";
 import { spatialGraphOf } from "../views/forceGraphData";
 import { spatialNodeValue } from "../views/forceGraphLayout";
@@ -17,8 +17,30 @@ const shape: Shape = {
     [edgeKey("src/a.ts", "src/b.ts"), 2],
     [edgeKey("tests/a.test.ts", "src/a.ts"), 1],
     [edgeKey("src/b.ts", "src/a.ts"), 1]
-  ])
+  ]),
+  docLinks: new Set([edgeKey("src/b.ts", "docs/plan.md"), edgeKey("src/a.ts", "README.md"), edgeKey("src/a.ts", "docs/plan.md")])
 };
+
+describe("relatedDocLinksOf", () => {
+  it("names each link from a file's authored words to a document, in path order, as today's bundle names its Related Docs", () => {
+    expect(relatedDocLinksOf(shape)).toEqual([
+      { sourceId: "src/a.ts", targetPath: "README.md" },
+      { sourceId: "src/a.ts", targetPath: "docs/plan.md" },
+      { sourceId: "src/b.ts", targetPath: "docs/plan.md" }
+    ]);
+  });
+
+  it("draws a moment's documents as the 3D picture draws today's: one node each, wired to every file that links to it", () => {
+    const spatial = spatialGraphOf(snapshotGraphOf(shape), () => true, relatedDocLinksOf(shape), "connections");
+    expect(spatial.nodes.filter((node) => node.archetype === "related-doc").map((node) => node.id).sort()).toEqual(["related:README.md", "related:docs/plan.md"]);
+    // The view keeps a wire as an unordered pair of files, as it does today's.
+    expect(spatial.links.filter((link) => link.kind === "related-doc").map((link) => [link.source, link.target].sort()).sort()).toEqual([
+      ["related:README.md", "src/a.ts"],
+      ["related:docs/plan.md", "src/a.ts"],
+      ["related:docs/plan.md", "src/b.ts"]
+    ]);
+  });
+});
 
 describe("snapshotGraphOf", () => {
   it("names a node per file, in path order, with its archetype, its symbol count and no names, and a link per directed edge with its count", () => {

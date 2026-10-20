@@ -21,13 +21,14 @@ import {
     type LiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { parseBoard } from "@live-documentation/engine/live-docs/board";
-import { LiveDocSyntaxError, renderLiveDoc } from "@live-documentation/engine/live-docs/document";
+import { LiveDocSyntaxError } from "@live-documentation/engine/live-docs/document";
 import { readEstateGraph, readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { HISTORY_DIRECTORY, HISTORY_FILE, HISTORY_FORMAT, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
 import { headOf } from "@live-documentation/engine/live-docs/history/sequence";
 import { windowOf, type HistorySelection } from "@live-documentation/engine/live-docs/history/window";
+import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
-import { scanAndBundleMarkdown } from "./bundledMarkdownScanner";
+import { bundleRelatedDocs } from "./bundledMarkdownScanner";
 import type { StaticExplorerData } from "./staticExplorerData";
 
 /** The name of the history file the bundle carries beside `explorer-data.json`. */
@@ -118,21 +119,10 @@ export async function buildStaticExplorer(
     const edgeCount = files.reduce((count, file) => count + file.outbound.length, 0);
     logger.log(`Graph: ${files.length} files, ${edgeCount} edges`);
 
-    // The scanner reads the docs as text; rendering the graph's files gives back the same bytes.
-    logger.log("Scanning for referenced markdown files...");
-    const docs: Record<string, string> = {};
-    const liveDocPaths = new Map<string, string>();
-    for (const file of files) {
-        docs[file.codePath] = renderLiveDoc(file);
-        liveDocPaths.set(file.codePath, file.docPath);
-    }
-    const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = await scanAndBundleMarkdown({
-        docs,
-        workspaceRoot,
-        liveDocPaths,
-        exclude: config.bundleExclude,
-        logger
-    });
+    // The documents the docs' authored words link to, by the one rule the history reads at every past commit.
+    logger.log("Reading the documents the docs link to...");
+    const links = files.flatMap(file => relatedDocsOf(file, graph, config.bundleExclude).map(targetPath => ({ sourceId: file.codePath, targetPath })));
+    const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = await bundleRelatedDocs({ links, workspaceRoot, logger });
 
     const bundledMarkdownCount = Object.keys(bundledMarkdown).length;
     const staticData: StaticExplorerData = {

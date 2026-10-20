@@ -27,7 +27,7 @@ import { HistoryCursor } from "./cursor";
 import type { HistoryMoment } from "./moment";
 import type { Renames } from "./rekey";
 import { createScrubber } from "./scrubber";
-import { snapshotGraphOf } from "./snapshot";
+import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 import { createStepPanel } from "./step-panel";
 import { stepSummary } from "./step-summary";
 import { tickModel } from "./tick-model";
@@ -58,6 +58,10 @@ export interface HistoryControlOptions {
   onAuthors(shown: boolean): void;
   /** Pin a file of today by its path. */
   onPinFile(path: string): void;
+  /** Whether today's bundle carries a document, which the step panel can then open. */
+  hasDocument(path: string): boolean;
+  /** Read a document the bundle carries, by its path. */
+  onReadDocument(path: string): void;
   /** The control opened or closed. */
   onOpenChange(): void;
 }
@@ -129,7 +133,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     onPlay: wanted => { if (wanted) play(); else pause(); },
     onAuthors: shown => options.onAuthors(shown)
   });
-  const panel = createStepPanel({ parent: options.parent, onPinFile: path => options.onPinFile(path) });
+  const panel = createStepPanel({ parent: options.parent, onPinFile: path => options.onPinFile(path), hasDocument: path => options.hasDocument(path), onReadDocument: path => options.onReadDocument(path) });
 
   function ensureLoaded(): Promise<HistorySequence> {
     if (sequence) return Promise.resolve(sequence);
@@ -166,6 +170,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       step,
       commit: commitAt(history, step),
       graph: snapshotGraphOf(shape),
+      relatedDocLinks: relatedDocLinksOf(shape),
       fileAt(todayPath) {
         if (!files.has(todayPath)) {
           const followed = followPath(history, todayPath, last, step);

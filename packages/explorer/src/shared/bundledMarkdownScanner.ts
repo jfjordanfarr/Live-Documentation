@@ -1,14 +1,15 @@
 /**
- * Bundled Markdown Scanner
+ * Bundled Markdown
  *
- * Scans Live Docs for references to other markdown files (READMEs, specs,
- * design notes, etc.) and bundles them for inclusion in the explorer.
- * Files matching an `exclude` pattern are dropped before anything is
- * recorded, so they neither ship in the bundle nor appear as related-doc nodes.
+ * Reads the documents the graph says the Live Docs link to (READMEs, specs,
+ * design notes, chat summaries) and bundles them for the Explorer's reader
+ * and its Related Docs. Which documents a doc links to is the engine's rule,
+ * `relatedDocsOf`, read from the authored words the graph carries; the
+ * history reads the same rule at every past commit. Until 2026-10-20 this
+ * module found the links itself by scanning each doc's rendered text.
  */
 
 import * as fs from "fs/promises";
-import { minimatch } from "minimatch";
 import * as path from "path";
 
 import type { BundledMarkdownTreeNode, RelatedDocLink } from "./staticExplorerData";
@@ -16,64 +17,13 @@ import type { BundledMarkdownTreeNode, RelatedDocLink } from "./staticExplorerDa
 export type { BundledMarkdownTreeNode };
 
 /**
- * Result from scanning and bundling markdown files.
+ * The bundled documents, their tree, and the links to them.
  */
 export interface BundledMarkdownResult {
     bundledMarkdown: Record<string, string>;
     bundledMarkdownTree: BundledMarkdownTreeNode;
     /** Links from source docs to bundled markdown files (for Force Graph Related Docs). */
     relatedDocLinks: RelatedDocLink[];
-}
-
-/**
- * Regex to match markdown links: [text](path)
- * Captures the path portion, filtering for .md files.
- */
-const MARKDOWN_LINK_REGEX = /\[([^\]]*)\]\(([^)]+\.md(?:#[^)]*)?)\)/gi;
-
-/**
- * Scan markdown content for links to other markdown files.
- * Returns workspace-relative paths (without anchors).
- */
-export function extractMarkdownLinks(
-    content: string,
-    docPath: string,
-    workspaceRoot: string
-): string[] {
-    const links: string[] = [];
-    // Reset regex lastIndex for global regex
-    MARKDOWN_LINK_REGEX.lastIndex = 0;
-    let match: RegExpExecArray | null;
-
-    while ((match = MARKDOWN_LINK_REGEX.exec(content)) !== null) {
-        const rawPath = match[2];
-        // Remove anchor fragments
-        const pathWithoutAnchor = rawPath.split("#")[0];
-
-        // Skip external URLs
-        if (pathWithoutAnchor.startsWith("http://") || pathWithoutAnchor.startsWith("https://")) {
-            continue;
-        }
-
-        // Resolve relative path from the doc's location
-        const docDir = path.dirname(path.join(workspaceRoot, docPath));
-        const absolutePath = path.resolve(docDir, pathWithoutAnchor);
-
-        // Convert back to workspace-relative
-        const relativePath = path.relative(workspaceRoot, absolutePath);
-
-        // Normalize to forward slashes
-        const normalizedPath = relativePath.replace(/\\/g, "/");
-
-        // Skip paths that escape the workspace
-        if (normalizedPath.startsWith("..")) {
-            continue;
-        }
-
-        links.push(normalizedPath);
-    }
-
-    return links;
 }
 
 /**
@@ -145,105 +95,33 @@ export function buildMarkdownTree(filePaths: string[]): BundledMarkdownTreeNode 
 }
 
 /**
- * Options for scanning bundled markdown.
+ * Options for bundling the documents the Live Docs link to.
  */
-export interface ScanBundledMarkdownOptions {
-    /** Map of Live Doc content, keyed by nodeId or docPath */
-    docs: Record<string, string>;
+export interface BundleRelatedDocsOptions {
+    /** Each link from a file's doc to a document, as `relatedDocsOf` reads them from the graph. */
+    links: readonly RelatedDocLink[];
     /** Workspace root directory */
     workspaceRoot: string;
-    /** Map from nodeId to docPath for the Live Docs */
-    liveDocPaths: Map<string, string>;
-    /** Workspace-relative glob patterns for linked markdown that must be neither bundled nor linked */
-    exclude?: string[];
     /** Logger for progress messages */
     logger?: Pick<Console, "log" | "error">;
 }
 
 /**
- * Scan Live Docs for markdown links and bundle the referenced files.
- * Single-hop only: bundles files directly linked from Live Docs, no nested traversal.
+ * Bundle every linked document once, single hop: a document's own links are not followed. A link to a document
+ * that cannot be read is dropped with it, so that the Related Docs name only what the bundle carries.
  */
-export async function scanAndBundleMarkdown(
-    options: ScanBundledMarkdownOptions
-): Promise<BundledMarkdownResult> {
-    const {
-        docs,
-        workspaceRoot,
-        liveDocPaths,
-        exclude = [],
-        logger  = console
-    } = options;
-
-    const isExcluded = (link: string): boolean =>
-        exclude.some(pattern => minimatch(link, pattern, { dot: true }));
-
+export async function bundleRelatedDocs(options: BundleRelatedDocsOptions): Promise<BundledMarkdownResult> {
+    const { links, workspaceRoot, logger = console } = options;
     const bundledMarkdown: Record<string, string> = {};
-    const relatedDocLinks: RelatedDocLink[] = [];
-    const visited = new Set<string>();
-    let excludedLinkCount = 0;
-
-    // Collect all links from Live Docs (single hop only)
-    const linksToProcess: Array<{ path: string; sourceId: string }> = [];
-
-    for (const [nodeId, content] of Object.entries(docs)) {
-        const docPath = liveDocPaths.get(nodeId);
-        if (!docPath) continue;
-
-        const links = extractMarkdownLinks(content, docPath, workspaceRoot);
-        for (const link of links) {
-            if (isExcluded(link)) {
-                excludedLinkCount++;
-                continue;
-            }
-
-            // Track the link from this Live Doc to the bundled doc
-            relatedDocLinks.push({ sourceId: nodeId, targetPath: link });
-
-            if (!visited.has(link)) {
-                visited.add(link);
-                linksToProcess.push({ path: link, sourceId: nodeId });
-            }
-        }
-    }
-
-    logger.log(`Found ${linksToProcess.length} unique markdown links in Live Docs`);
-    if (excludedLinkCount > 0) {
-        logger.log(`Skipped ${excludedLinkCount} links matching bundleExclude patterns`);
-    }
-
-    // Process each link - single hop, no nested traversal
-    let processedCount = 0;
-    for (const item of linksToProcess) {
-        // Skip if it's a Live Doc (already in docs)
-        const normalizedItemPath = item.path.replace(/\\/g, "/");
-        let isLiveDoc = false;
-        for (const docPath of liveDocPaths.values()) {
-            if (docPath.replace(/\\/g, "/") === normalizedItemPath) {
-                isLiveDoc = true;
-                break;
-            }
-        }
-        if (isLiveDoc) {
-            continue;
-        }
-
+    const unreadable = new Set<string>();
+    for (const documentPath of [...new Set(links.map(link => link.targetPath))]) {
         try {
-            const absolutePath = path.join(workspaceRoot, item.path);
-            const content = await fs.readFile(absolutePath, "utf-8");
-            bundledMarkdown[item.path] = content;
-            processedCount++;
-            // No nested link scanning - single hop only
+            bundledMarkdown[documentPath] = await fs.readFile(path.join(workspaceRoot, documentPath), "utf-8");
         } catch {
-            // File doesn't exist or can't be read - skip silently
+            unreadable.add(documentPath);
         }
     }
-
-    logger.log(`Bundled ${processedCount} referenced markdown files`);
-
-    // Build the directory tree
-    const allPaths = Object.keys(bundledMarkdown);
-    const bundledMarkdownTree = buildMarkdownTree(allPaths);
-
-    return { bundledMarkdown, bundledMarkdownTree, relatedDocLinks };
+    const relatedDocLinks = links.filter(link => !unreadable.has(link.targetPath));
+    logger.log(`Bundled ${Object.keys(bundledMarkdown).length} linked documents${unreadable.size > 0 ? `; ${unreadable.size} linked documents could not be read` : ""}`);
+    return { bundledMarkdown, bundledMarkdownTree: buildMarkdownTree(Object.keys(bundledMarkdown)), relatedDocLinks };
 }

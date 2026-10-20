@@ -3,7 +3,11 @@
  * of the history command's integration test and of the Explorer's history
  * specs: files added, a directory renamed whole, a file renamed above the
  * similarity threshold and one rewritten below it, a file deleted, a symbol
- * added, a content change that moves no symbol. The repository's git is
+ * added, a content change that moves no symbol. Since 2026-10-20 the mirror
+ * it commits links documents in its authored words: a link to a document
+ * written later, which counts from the commit that writes it; a link dropped
+ * from a doc; a link that leaves with its file; and the orphan's link, which
+ * never counts. The repository's git is
  * isolated from the person's configuration, and its authors and dates are
  * fixed, so that the sequence it yields is the same on every machine.
  *
@@ -90,6 +94,22 @@ export function smoothstep(low: number, high: number, value: number): number {
 }
 ` : ""}`;
 
+/** A committed doc of the mirror, as a person's run of the generator of that day left it, with its authored words. */
+const COMMITTED_DOC = (codePath: string, authored: string): string => renderLiveDoc({
+  codePath,
+  layer: 4,
+  archetype: "implementation",
+  entries: [],
+  generatedAt: "2026-01-05T09:00:00.000Z",
+  authored,
+  symbols: [],
+  dependencies: []
+});
+
+/** The main file's authored words: the design it follows, while it does, and a plan not written until the fourth commit. */
+const MAIN_WORDS = (design: boolean): string =>
+  `### Purpose\nRuns the app${design ? ", as [the design](../../../../docs/design.md) lays out" : ""}.\n\n### Notes\n- Its later form is in [the plan](../../../../docs/later.md).`;
+
 /** The model, with the factor its size grows by: the same symbols whatever the factor, so a change of it moves nothing in the shape. */
 export const MODEL = (factor: number): string => `/** A thing the app keeps. */
 export interface Model {
@@ -156,14 +176,19 @@ export const SCRIPT: ScriptedCommit[] = [
       "lib/legacy.ts": `/** What the app used to say. */\nexport function old(): string {\n  return "legacy";\n}\n`,
       "lib/big.ts": BIG,
       "tests/main.test.ts": `import { main } from "../src/app/main";\n\nmain();\n`,
+      "docs/design.md": "# Design\n\nHow the app is put together.\n",
+      "docs/old-notes.md": "# Old notes\n\nWhat the legacy helper said, and why.\n",
+      ".mdmd/layer-4/src/app/main.ts.mdmd.md": COMMITTED_DOC("src/app/main.ts", MAIN_WORDS(true)),
+      ".mdmd/layer-4/lib/legacy.ts.mdmd.md": COMMITTED_DOC("lib/legacy.ts", "### Purpose\nWhat the app used to say, as [the old notes](../../../docs/old-notes.md) record.\n\n### Notes\n- Retired in the fifth commit."),
       // A committed mirror's orphan: the doc of a file long gone, kept by the generator of its day for its authored words.
+      // Its link to the design must never count: the lens documents no such file.
       ".mdmd/layer-4/lib/ghost.ts.mdmd.md": renderLiveDoc({
         codePath: "lib/ghost.ts",
         layer: 4,
         archetype: "implementation",
         entries: [],
         generatedAt: "2025-12-01T00:00:00.000Z",
-        authored: "### Purpose\nA helper deleted long ago, whose doc was kept for its words.\n\n### Notes\n- Kept by hand.",
+        authored: "### Purpose\nA helper deleted long ago, whose doc was kept for its words; it followed [the design](../../../docs/design.md).\n\n### Notes\n- Kept by hand.",
         symbols: [],
         dependencies: []
       })
@@ -211,6 +236,8 @@ export const SCRIPT: ScriptedCommit[] = [
     move: [["lib/big.ts", "lib/huge.ts"]],
     write: {
       "lib/huge.ts": HUGE,
+      // The plan the main file's words have linked from the first commit is written now, and only now counts.
+      "docs/later.md": "# Later\n\nWhat the app becomes.\n",
       "src/app/main.ts": MAIN(
         [
           `import { makeModel } from "../engine/model";`,
@@ -226,8 +253,10 @@ export const SCRIPT: ScriptedCommit[] = [
   {
     message: "Retire the legacy helper",
     date: "2026-01-09T10:00:00+00:00",
-    remove: ["lib/legacy.ts"],
+    // Retired with its doc and its notes, as a person retires a file whose doc holds words; the main file's doc drops the design.
+    remove: ["lib/legacy.ts", ".mdmd/layer-4/lib/legacy.ts.mdmd.md", "docs/old-notes.md"],
     write: {
+      ".mdmd/layer-4/src/app/main.ts.mdmd.md": COMMITTED_DOC("src/app/main.ts", MAIN_WORDS(false)),
       "src/app/main.ts": MAIN(
         [
           `import { makeModel } from "../engine/model";`,

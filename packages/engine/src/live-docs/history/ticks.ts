@@ -8,8 +8,9 @@
  * In the owner's words of 2026-10-17, "the kind of quantum leap events are
  * major ticks and the update-only changes are minor ticks". A major tick is a
  * step in which a pinned file was born, died, was renamed, resized, rekinded
- * or re-marked as an entry, or an edge from or to it came, went or changed its
- * count; for a pinned directory, any file under it. A minor tick is a step
+ * or re-marked as an entry, an edge from or to it came, went or changed its
+ * count, or a link from its authored words to a document came or went (since
+ * 2026-10-20); for a pinned directory, any file under it. A minor tick is a step
  * that is no major tick and in which a pinned file was touched. With nothing
  * pinned every step is a major tick.
  *
@@ -218,6 +219,8 @@ function shapeTouches(change: ShapeChange, heldBefore: (path: string) => boolean
     change.entries.some(([path]) => heldAfter(path)) ||
     change.edgesAdded.some((edge) => eitherEnd(edge, heldAfter)) ||
     change.edgesChanged.some((edge) => eitherEnd(edge, heldAfter)) ||
-    change.edgesRemoved.some((edge) => eitherEnd(edge, heldAfter) || eitherEnd(edge, heldBefore))
+    change.edgesRemoved.some((edge) => eitherEnd(edge, heldAfter) || eitherEnd(edge, heldBefore)) ||
+    change.docLinksAdded.some(([from]) => heldAfter(from)) ||
+    change.docLinksRemoved.some(([from]) => heldAfter(from) || heldBefore(from))
   );
 }

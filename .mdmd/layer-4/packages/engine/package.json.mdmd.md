@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/engine/package.json
 - Entry: tooling
-- Generated At: 2026-10-16T16:21:39.435Z
+- Generated At: 2026-10-20T21:28:51.588Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ The manifest of the engine package: configuration, language adapters, the analys
 - `@vscode/tree-sitter-wasm@^0.3.0`
 - `glob@^13.0.6`
 - `ignore@^7.0.5`
+- `minimatch@^10.2.4`
 - `smol-toml@^1.9.1`
 - `typescript@^5.4.0`
 - `web-tree-sitter@^0.27.0`

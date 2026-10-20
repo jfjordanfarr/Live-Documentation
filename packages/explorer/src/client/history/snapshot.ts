@@ -4,6 +4,8 @@
  * count, and nothing the sequence does not carry. The docs of that commit are
  * not in the bundle, so a node has no symbol names, no doc path and no
  * dependency lines; the view sizes it by the count and labels it by the count.
+ * Its related documents are the links its authored words made then
+ * ({@link relatedDocLinksOf}), drawn as today's Related Docs are.
  *
  * Pure-function module: no DOM.
  *
@@ -12,6 +14,7 @@
 
 import { edgeEnds, type Shape } from "@live-documentation/engine/live-docs/history/shape";
 
+import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type { ExplorerGraphPayload, ExplorerLinkPayload, ExplorerNodePayload } from "../../shared/types";
 
 const compare = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
@@ -46,4 +49,10 @@ export function snapshotGraphOf(shape: Shape): ExplorerGraphPayload {
     };
   });
   return { nodes, links, stats: { nodes: nodes.length, links: links.length, referencesOutsideScan: 0 } };
+}
+
+/** The links from each file's authored words to a document at the step, as today's bundle names its Related Docs. */
+export function relatedDocLinksOf(shape: Shape): RelatedDocLink[] {
+  return [...shape.docLinks].map(edgeEnds).sort((a, b) => compare(a[0], b[0]) || compare(a[1], b[1]))
+    .map(([sourceId, targetPath]) => ({ sourceId, targetPath }));
 }

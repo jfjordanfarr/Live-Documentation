@@ -2,7 +2,8 @@
  * What one step of the history changed, as the step panel says it (the plan's
  * C4): the commit, then the files born, dead, renamed and resized, the
  * directories renamed whole, the wires that came, went and changed their
- * count, and the files whose content changed while their shape did not. Each
+ * count, the documents their authored words came to link and ceased to, and
+ * the files whose content changed while their shape did not. Each
  * file is read where it stands today, through every rename since, so that the
  * panel can pin it where it still exists and say "gone since" where it does
  * not, with its archetype and its symbol count at the step, since the docs of
@@ -37,6 +38,12 @@ export interface SummaryEdge {
   count: number;
 }
 
+/** A link from a file's authored words to a document, the file as the panel names it. */
+export interface SummaryDocLink {
+  file: SummaryFile;
+  doc: string;
+}
+
 /** The step, in the panel's order. */
 export interface StepSummary {
   step: number;
@@ -54,12 +61,15 @@ export interface StepSummary {
   edgesAdded: SummaryEdge[];
   edgesRemoved: SummaryEdge[];
   edgesChanged: Array<SummaryEdge & { before: number }>;
+  docLinksAdded: SummaryDocLink[];
+  docLinksRemoved: SummaryDocLink[];
   touched: SummaryFile[];
 }
 
 /** How many things the step changed, the wires counted with the files. */
 export const changeCount = (summary: StepSummary): number =>
-  summary.born.length + summary.dead.length + summary.renamed.length + summary.resized.length + summary.edgesAdded.length + summary.edgesRemoved.length + summary.edgesChanged.length + summary.touched.length;
+  summary.born.length + summary.dead.length + summary.renamed.length + summary.resized.length + summary.edgesAdded.length + summary.edgesRemoved.length + summary.edgesChanged.length
+  + summary.docLinksAdded.length + summary.docLinksRemoved.length + summary.touched.length;
 
 /**
  * The summary of a step, given the shape at that step (so that the caller's
@@ -98,6 +108,9 @@ export function stepSummary(sequence: HistorySequence, step: number, shape: Shap
     edgesAdded: change.edgesAdded.map(edge),
     edgesRemoved: change.edgesRemoved.map(([from, to]) => ({ from, to, count: 0 })),
     edgesChanged: change.edgesChanged.map(([from, to, count]) => ({ from, to, count, before: before?.edges.get(edgeKey(renamedBack(change.renamed, from), renamedBack(change.renamed, to))) ?? 0 })),
+    docLinksAdded: change.docLinksAdded.map(([from, doc]) => ({ file: file(from, shape.files.get(from), step), doc })),
+    // A dead file's links went with it, and the file is named as it stood before the step.
+    docLinksRemoved: change.docLinksRemoved.map(([from, doc]) => ({ file: change.dead.includes(from) ? file(from, before?.files.get(from), step - 1) : file(from, shape.files.get(from), step), doc })),
     touched: change.touched.map((path) => file(path, shape.files.get(path), step))
   };
 }

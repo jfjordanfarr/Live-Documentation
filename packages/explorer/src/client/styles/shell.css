@@ -302,6 +302,9 @@
     padding: 16px;
     overflow-wrap: anywhere;
 }
+/* While the 3D picture shows a past commit, the reader says that its evidence is today's version. */
+.detail-note { margin: 0; padding: 8px 16px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-panel-subtle); }
+.detail-note[hidden] { display: none; }
 
 .detail-footer {
     padding: 12px 16px;
@@ -331,6 +334,8 @@
     justify-content: center;
 }
 #main:has(#detail-panel.visible) #controls { bottom: calc(110px + var(--history-room)); }
+/* The history's scrubber ends at the reader's edge, its ticks and readout in the visible room (2026-10-20). */
+#main:has(#detail-panel.visible) .history-scrubber { right: calc(var(--detail-panel-width) + 12px); }
 
 .item-menu {
     position: fixed;

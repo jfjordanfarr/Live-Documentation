@@ -16,7 +16,8 @@ const commit = (index: number): CommitInfo => ({ id: `c${index}`, parents: [], d
 
 const shape = (files: Record<string, number>): Shape => ({
   files: new Map(Object.entries(files).map(([path, symbols]) => [path, { archetype: "implementation", symbols, entry: false }])),
-  edges: new Map()
+  edges: new Map(),
+  docLinks: new Set()
 });
 
 /**

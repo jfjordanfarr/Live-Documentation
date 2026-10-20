@@ -30,6 +30,12 @@ interface GenerateLiveDocsOptions {
   include?: string[];
   logger?: LiveDocGeneratorLogger;
   now?: () => Date;
+  /**
+   * Whether a stale doc, one whose source this run does not document, is kept when it holds authored words. True for
+   * a person's workspace, so that no written words vanish unread; the history's lens passes false, since a past
+   * commit's mirror kept in place must give exactly the files this run documents (2026-10-20).
+   */
+  keepAuthoredStaleDocs?: boolean;
 }
 
 interface LiveDocGeneratorLogger {
@@ -259,6 +265,7 @@ export async function generateLiveDocs(
       preservedDocPaths: generatedDocPaths,
       candidateSourcePaths: changedPaths,
       dryRun: options.dryRun ?? false,
+      keepAuthored: options.keepAuthoredStaleDocs ?? true,
       logger
     });
   }
@@ -345,6 +352,7 @@ async function pruneStaleLiveDocs(args: {
   preservedDocPaths: Set<string>;
   candidateSourcePaths?: Set<string>;
   dryRun: boolean;
+  keepAuthored: boolean;
   logger: LiveDocGeneratorLogger;
 }): Promise<string[]> {
   const baseLayerRoot = path.resolve(args.workspaceRoot, args.config.root, args.config.baseLayer);
@@ -377,7 +385,7 @@ async function pruneStaleLiveDocs(args: {
     }
 
     const content = await fs.readFile(absolute, "utf8");
-    if (hasMeaningfulAuthoredContent(authoredBlockOf(content))) {
+    if (args.keepAuthored && hasMeaningfulAuthoredContent(authoredBlockOf(content))) {
       args.logger.info(`Preserving ${workspaceRelative} (authored content detected)`);
       continue;
     }

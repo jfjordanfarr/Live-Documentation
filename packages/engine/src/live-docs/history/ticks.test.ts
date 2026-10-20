@@ -7,10 +7,11 @@ import { followPath, followPins, ticksFor } from "./ticks";
 import type { VersionChanges } from "./versionControl";
 import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentationConfig";
 
-function shape(files: Record<string, number>, edges: Array<[string, string]> = []): Shape {
+function shape(files: Record<string, number>, edges: Array<[string, string]> = [], docLinks: Array<[string, string]> = []): Shape {
   return {
     files: new Map(Object.entries(files).map(([path, symbols]) => [path, { archetype: "implementation", symbols, entry: false }])),
-    edges: new Map(edges.map(([from, to]) => [edgeKey(from, to), 1]))
+    edges: new Map(edges.map(([from, to]) => [edgeKey(from, to), 1])),
+    docLinks: new Set(docLinks.map(([from, doc]) => edgeKey(from, doc)))
   };
 }
 
@@ -49,6 +50,14 @@ describe("ticksFor", () => {
 
   it("finds the same life from the pin's name before the rename, read at that step", () => {
     expect(ticksFor(history(), { files: ["src/view.ts"], directories: [] }, 1)).toEqual({ major: [2, 3, 5], minor: [1, 4] });
+  });
+
+  it("counts a doc link that comes or goes on a pinned file as a change of its shape, and on another file as nothing of it", () => {
+    const builder = new SequenceBuilder(HEAD, commit(0), shape({ "a.ts": 1, "b.ts": 1 }));
+    builder.add(commit(1), shape({ "a.ts": 1, "b.ts": 1 }, [], [["a.ts", "docs/plan.md"]]), { renamed: [], modified: [] });
+    builder.add(commit(2), shape({ "a.ts": 1, "b.ts": 1 }, [], [["a.ts", "docs/plan.md"], ["b.ts", "docs/plan.md"]]), { renamed: [], modified: [] });
+    builder.add(commit(3), shape({ "a.ts": 1, "b.ts": 1 }, [], [["b.ts", "docs/plan.md"]]), { renamed: [], modified: [] });
+    expect(ticksFor(builder.finish(), { files: ["a.ts"], directories: [] })).toEqual({ major: [1, 3], minor: [] });
   });
 
   it("counts a wire to a pinned file as a change of its shape", () => {

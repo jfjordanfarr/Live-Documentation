@@ -206,14 +206,24 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       const mark = document.createElement("span");
       mark.className = "history-ruler-label";
       mark.dataset.step = String(label.step);
-      mark.style.left = `${label.position * 100}%`;
+      mark.dataset.position = String(label.position);
       mark.textContent = label.text;
       return mark;
     }));
+    placeRuler();
+  }
+
+  /**
+   * Place the ruler's labels at the ruler's width: each at its position, the last drawn ending at the track's right
+   * edge if it would pass it, and any that would land on its neighbour hidden. Run again whenever the width changes,
+   * as when the reader opens beside the scrubber and the scrubber steps aside for it (2026-10-20).
+   */
+  function placeRuler(): void {
     const edge = ruler.getBoundingClientRect();
     let right = -Infinity;
     for (const label of ruler.querySelectorAll<HTMLElement>(".history-ruler-label")) {
       label.hidden = false;
+      label.style.left = `${Number(label.dataset.position) * 100}%`;
       const box = label.getBoundingClientRect();
       // A label past the track's right edge is drawn ending at it.
       if (edge.width > 0 && box.right > edge.right) {
@@ -224,6 +234,13 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       else right = placed.right;
     }
   }
+  let rulerWidth = 0;
+  new ResizeObserver(() => {
+    const width = ruler.getBoundingClientRect().width;
+    if (width === rulerWidth) return;
+    rulerWidth = width;
+    placeRuler();
+  }).observe(ruler);
 
   return {
     element,

@@ -218,6 +218,46 @@ test("a death is shown as a death, the panel says gone since, and a born file th
   await expect(page.locator(".pin-tray-absent")).toBeHidden();
 });
 
+test("a moment draws the documents its files' authored words linked to then, the panel names the links that came and went, and the reader says it reads today's version", async ({ page }) => {
+  const commits = await commitsOf(page, "/samples/history/");
+  await observeGraph(page);
+  await page.goto(entry("/samples/history/", { spatialLayout: "connections", filters: { showTests: true, showAssets: false, showRelatedDocs: true } }));
+  await settled(page);
+  await openHistory(page);
+  const documents = async (): Promise<string[]> => (await renderedNodes(page)).map(node => node.id).filter(id => id.startsWith("related:")).sort();
+
+  // The main file's doc links the design and a plan not yet written; the legacy helper's links its old notes.
+  await stepTo(page, 0);
+  await expect.poll(documents).toEqual(["related:docs/design.md", "related:docs/old-notes.md"]);
+
+  // The plan is written at step 3, and only now counts.
+  await stepTo(page, 3);
+  await expect.poll(documents).toEqual(["related:docs/design.md", "related:docs/later.md", "related:docs/old-notes.md"]);
+  const linked = group(page, "Documents linked").locator("li");
+  await expect(linked).toHaveCount(1);
+  await expect(linked.locator("button[data-pin]")).toHaveText("main.ts");
+  await expect(linked.locator("button[data-read]")).toHaveText("later.md");
+
+  // Step 4: the legacy helper's link leaves with it, its notes deleted; the main file's doc drops the design.
+  await stepTo(page, 4);
+  await expect.poll(documents).toEqual(["related:docs/later.md"]);
+  const unlinked = group(page, "Documents unlinked").locator("li");
+  await expect(unlinked).toHaveCount(2);
+  await expect(unlinked.nth(0)).toContainText("old-notes.md");
+  await expect(unlinked.nth(0).locator(".history-gone").last()).toHaveText("not in this bundle");
+  await expect(unlinked.nth(0).locator("button[data-read]")).toHaveCount(0);
+  await unlinked.nth(1).locator('button[data-read="docs/design.md"]').click();
+  const reader = page.locator("#detail-panel");
+  await expect(reader).toHaveClass(/visible/u);
+  await expect(reader.locator("#detail-title")).toHaveText("design.md");
+  await expect(reader.locator(".detail-note")).toHaveText(`Today's version. The picture shows ${commits[4].date.slice(0, 10)}, commit ${commits[4].id.slice(0, 8)}.`);
+  // The scrubber steps aside for the reader, its readout in the visible room.
+  await expect.poll(async () => (await page.locator(".history-scrubber").boundingBox())!.x + (await page.locator(".history-scrubber").boundingBox())!.width)
+    .toBeLessThanOrEqual((await reader.boundingBox())!.x);
+  await expect(page.locator(".history-readout code")).toBeInViewport({ ratio: 1 });
+  await audit(page, "a moment's documents with the reader open");
+});
+
 test("a pin whose file is not yet born is said so in the tray and never dropped, and its birth is the one major tick the step key moves to", async ({ page }) => {
   await observeGraph(page);
   await page.goto(entry("/samples/history/"));

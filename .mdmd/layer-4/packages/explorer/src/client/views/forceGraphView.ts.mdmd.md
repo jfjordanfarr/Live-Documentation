@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-20T18:05:19.018Z
+- Generated At: 2026-10-20T21:28:55.072Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ The shared spatial projection supplies counted file pairs and optional related d
 
 One update path for every membership change (2026-10-18, ticket C2 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): a pin that brings a filtered file in, a filter toggled, a layout switched, and later a step of history all pass through `render`, which carries the picture and feeds the simulation by the update energy. The node objects are kept by id, as before, and since this day the link objects by pair too, so that the library's data join, which binds a line's object to its datum, keeps the line across a change; before, every render handed it new link objects and it rebuilt every line, 65 to 88 ms a step with 2,650 links in [the probe of 2026-10-16](../../../../../../../AI-Agent-Workspace/Probes/2026-10-16/change-over-time/README.md), its third defect. A sphere that was in the picture keeps its place and a new one starts beside what holds it by `placeNewSpheres`, which generalizes the hub-at-centroid rule of 2026-10-14 to born files. The feed sets the share of alpha the forces see and the alpha the engine stops at from `updateSchedule`, hands the library the data, and says busy only when there will be ticks; at placement alone the engine is stopped before its first tick by an alpha minimum nothing is below. Only the first picture warms up. The lever governs changes to what is shown: a change of the forces (a slider, a preset, which changes the equilibrium itself) reheats fully as before, and a sphere dragged by hand acclimates the picture with all of alpha, the library's own reheat, whatever the last change was fed; the energy slider itself is left out of the settings that reheat, so moving it stirs nothing. Opening a directory in 3D changes attention and the camera and not the membership, so it feeds nothing. Nothing is held or pinned in place: the forces hold the picture (C5).
 
-A moment of the history in place of today (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): `setMoment` hands the view a moment's snapshot as the data, with the renames from the moment shown before and the energy to feed the change at; `render` re-keys the cached nodes, links, objects and the hovered, focused and action-target ids through those renames first (`rekey.ts`), so that a renamed file or hub keeps its sphere, its lines and its place under its new id, then reads today's pins, subject, inspection, path and open directories where they stand at the moment, retaining nothing for a pin that does not stand there, and draws no related documentation, since the docs of that day are not in the bundle. Inspection and explicit actions on a past sphere resolve to the file or directory as it stands today; a file gone since has no current action, and a directory acts only while today's graph contains a file beneath it. This opens today's evidence rather than implying the bundle contains that past day's full docs. `settle` feeds the standing picture at the tuning's energy after a drag placed it at zero. The focus label is put away when a panel or control stands over its point, so the step panel and the scrubber never have its words on theirs. `data-history-step` on the container says which step is shown, empty for today, for the specs.
+A moment of the history in place of today (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): `setMoment` hands the view a moment's snapshot as the data, with the renames from the moment shown before and the energy to feed the change at; `render` re-keys the cached nodes, links, objects and the hovered, focused and action-target ids through those renames first (`rekey.ts`), so that a renamed file or hub keeps its sphere, its lines and its place under its new id, then reads today's pins, subject, inspection, path and open directories where they stand at the moment, retaining nothing for a pin that does not stand there, and draws the related documents the moment's files linked to then, which the history carries since 2026-10-20 (before, a moment drew none); a document today's bundle lacks says so in its label and opens nothing. Inspection and explicit actions on a past sphere resolve to the file or directory as it stands today; a file gone since has no current action, and a directory acts only while today's graph contains a file beneath it. This opens today's evidence rather than implying the bundle contains that past day's full docs. `settle` feeds the standing picture at the tuning's energy after a drag placed it at zero. The focus label is put away when a panel or control stands over its point, so the step panel and the scrubber never have its words on theirs. `data-history-step` on the container says which step is shown, empty for today, for the specs.
 
 A kept link's ends are set to the live node objects for its ids on every render (2026-10-18), since D3 keeps an end once resolved to an object and a rename or a death can leave that object behind in the cache: the lines to such objects led nowhere after a play through this repository's history ([Turn 8](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)); and a past moment's `symbolCount` is cleared from a node when today's payload names its symbols instead. Held, with the re-keying's rule, by the scrubber spec's walk over a rename onto a dead file's path.
 
@@ -72,14 +72,14 @@ Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L110)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L112)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L131)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L133)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 

@@ -14,6 +14,7 @@ A step's change, derived from the shapes of two sampled commits and what the ver
 - Written 2026-10-17 for C1 of [the plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md). Renames are git's word ("Trust what git says", the owner, [Turn 3 of October 16](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-16.1.record.md#turn-3)), believed only where both ends are files of the shapes and each path is in one rename: a file renamed out of the documented set is a death, one renamed into it a birth, and a rename below git's similarity threshold already reaches here as a delete and an add.
 - A renamed file's edges move with it before the edges are compared, so an edge that only followed its file is not reported as removed and added.
 - `touched` is C3's minor tick, the owner's "update-only changes are minor ticks" ([Turn 3 of October 17](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)): a file git saw change in content whose birth, rename, size, kind, entry mark and every wire stayed as they were.
+- Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) a step's doc links are derived as its edges are, after the renames, a dead file's links removed with it; a file whose links alone changed has changed shape and is never a content-only touch.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

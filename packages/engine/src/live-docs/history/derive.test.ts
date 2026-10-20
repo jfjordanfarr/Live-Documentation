@@ -3,14 +3,36 @@ import { describe, expect, it } from "vitest";
 import { deriveChange } from "./derive";
 import { applyChange, edgeKey, shapeDifferences, type Shape } from "./shape";
 
-function shape(files: Record<string, [archetype: string, symbols: number, entry?: boolean]>, edges: Array<[string, string, number]> = []): Shape {
+function shape(files: Record<string, [archetype: string, symbols: number, entry?: boolean]>, edges: Array<[string, string, number]> = [], docLinks: Array<[string, string]> = []): Shape {
   return {
     files: new Map(Object.entries(files).map(([path, [archetype, symbols, entry]]) => [path, { archetype, symbols, entry: entry ?? false }])),
-    edges: new Map(edges.map(([from, to, count]) => [edgeKey(from, to), count]))
+    edges: new Map(edges.map(([from, to, count]) => [edgeKey(from, to), count])),
+    docLinks: new Set(docLinks.map(([from, doc]) => edgeKey(from, doc)))
   };
 }
 
 describe("deriveChange", () => {
+  it("names doc links that come and go, moves a renamed file's with it, drops a dead file's, and replays to the later shape", () => {
+    const before = shape({ "a.ts": ["implementation", 1], "old.ts": ["implementation", 0], "gone.ts": ["implementation", 0] }, [], [
+      ["a.ts", "docs/kept.md"],
+      ["a.ts", "docs/dropped.md"],
+      ["old.ts", "docs/kept.md"],
+      ["gone.ts", "docs/kept.md"]
+    ]);
+    const after = shape({ "a.ts": ["implementation", 1], "new.ts": ["implementation", 0] }, [], [
+      ["a.ts", "docs/added.md"],
+      ["a.ts", "docs/kept.md"],
+      ["new.ts", "docs/kept.md"]
+    ]);
+    const change = deriveChange(before, after, { renamed: [["old.ts", "new.ts"]], modified: ["a.ts"] });
+    expect(change.renamed).toEqual([["old.ts", "new.ts"]]);
+    expect(change.docLinksAdded).toEqual([["a.ts", "docs/added.md"]]);
+    expect(change.docLinksRemoved).toEqual([["a.ts", "docs/dropped.md"], ["gone.ts", "docs/kept.md"]]);
+    // A file whose doc links changed has changed shape; it is not a content-only touch.
+    expect(change.touched).toEqual([]);
+    expect(shapeDifferences(after, applyChange(before, change))).toEqual([]);
+  });
+
   it("names births, deaths, sizes, kinds, entry marks and wires, and replays to the later shape", () => {
     const before = shape({ "a.ts": ["implementation", 1], "b.ts": ["implementation", 2], "old.ts": ["implementation", 0] }, [
       ["a.ts", "b.ts", 1],

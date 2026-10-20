@@ -62,7 +62,7 @@ afterAll(() => {
 
 describe("the history command over a scripted repository", () => {
   it("samples every commit of the mainline, oldest first, under one lens", () => {
-    expect(sequence.format).toBe("live-docs-history/1");
+    expect(sequence.format).toBe("live-docs-history/2");
     expect([sequence.base.commit.id, ...sequence.steps.map((step) => step.commit.id)]).toEqual(commits);
     expect(sequence.source).toMatchObject({ system: "git", branch: "main", head: commits[commits.length - 1], shallow: false, knowledgeBegins: commits[0], authors: true });
     expect(sequence.source.sampling).toEqual({ rule: "every-commit" });
@@ -126,6 +126,24 @@ describe("the history command over a scripted repository", () => {
     expect(seek(sequence, 0).files.get("src/app/main.ts")?.entry).toBe(true);
     // The committed mirror's orphan is the generator of its day's, not this lens's reading of the source.
     expect(sequence.paths).not.toContain("lib/ghost.ts");
+  });
+
+  it("carries the documents each commit's authored words linked to, only those that stood then, and none from a doc the lens prunes", () => {
+    const main = "src/app/main.ts";
+    const links = (step: number): string[] => [...seek(sequence, step).docLinks].map((key) => key.replace("\u0000", " -> ")).sort();
+    const early = [`lib/legacy.ts -> docs/old-notes.md`, `${main} -> docs/design.md`];
+    // The plan is linked from the first commit and written at the fourth: it counts from there.
+    expect(links(0)).toEqual(early);
+    expect(links(1)).toEqual(early);
+    expect(links(2)).toEqual(early);
+    expect(links(3)).toEqual([...early, `${main} -> docs/later.md`].sort());
+    // The legacy helper's link leaves with it, and the main file's doc drops the design.
+    for (const step of [4, 5, 6]) expect(links(step), `step ${step}`).toEqual([`${main} -> docs/later.md`]);
+    expect(changeAt(sequence, 3).docLinksAdded).toEqual([[main, "docs/later.md"]]);
+    expect(changeAt(sequence, 4).docLinksRemoved).toEqual([["lib/legacy.ts", "docs/old-notes.md"], [main, "docs/design.md"]]);
+    // A doc link is a change of its file's shape, never a content-only touch, and the orphan's link never counts.
+    expect(changeAt(sequence, 4).touched).toEqual([]);
+    expect([...seek(sequence, 0).docLinks].some((key) => key.startsWith("lib/ghost.ts"))).toBe(false);
   });
 
   it("names the directory renamed whole, and no other", () => {
@@ -216,6 +234,10 @@ describe("inspect's history questions", () => {
     expect(after.exitCode, after.stderr).toBe(0);
     expect(after.stdout.split("\n")[0]).toContain("from the shape alone");
     expect(after.stdout).toContain("src/app/view.ts does not exist at");
+
+    const main = runInspect(repository, ["--at", commits[0], "--from", "src/app/main.ts"]);
+    expect(main.exitCode, main.stderr).toBe(0);
+    expect(main.stdout).toContain("Linked documents: 1 document\n  docs/design.md");
   });
 
   it("walks from the entries of a commit with the pathfinder", () => {
@@ -248,6 +270,13 @@ describe("inspect's history questions", () => {
       edgesRemoved: [
         { from: "src/app/main.ts", to: "lib/big.ts" },
         { from: "src/app/main.ts", to: "lib/legacy.ts" }
+      ]
+    });
+    expect(between).toMatchObject({
+      docLinksAdded: [{ from: "src/app/main.ts", doc: "docs/later.md" }],
+      docLinksRemoved: [
+        { from: "lib/legacy.ts", doc: "docs/old-notes.md" },
+        { from: "src/app/main.ts", doc: "docs/design.md" }
       ]
     });
     const text = runInspect(repository, ["--between", commits[0].slice(0, 8), commits[1].slice(0, 8)]);
@@ -287,7 +316,8 @@ async function regeneratedShape(root: string, commit: string): Promise<Shape> {
     const config = normalizeLiveDocumentationConfig(CONFIG);
     await generateLiveDocs({ workspaceRoot: tree, config, logger: { info: () => undefined, warn: () => undefined, error: (message) => { throw new Error(message); } } });
     const graph = await readLiveDocGraph({ workspaceRoot: tree, config });
-    const shape: Shape = { files: new Map(), edges: new Map() };
+    // The oracle reads files and wires from a fresh generation; the doc links are held to the script in their own test.
+    const shape: Shape = { files: new Map(), edges: new Map(), docLinks: new Set() };
     for (const file of Object.values(graph.files)) {
       shape.files.set(file.codePath, { archetype: file.archetype ?? "", symbols: file.symbols.length, entry: file.entries.length > 0 });
       for (const edge of file.edges) {

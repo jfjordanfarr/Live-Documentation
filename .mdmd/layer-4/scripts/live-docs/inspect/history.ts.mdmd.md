@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect/history.ts
-- Generated At: 2026-10-18T00:39:24.824Z
+- Generated At: 2026-10-20T21:28:57.054Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ What `inspect --at` and `inspect --between` answer from the history, in text and
 - The walk's starts carry the entry mark and the test flag, not the Entry lines, which the history does not keep.
 
 `--between` prints the directories renamed whole across the span as "Renamed whole" (2026-10-18, the plan's C4), the same fact the Explorer's step panel shows.
+
+Since 2026-10-20 ([Turn 9](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) `--at` lists a file's linked documents and `--between` the documents linked and unlinked, from the shape alone as before.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -53,7 +55,7 @@ What a file was at a commit: whether it existed, its shape, and its wires either
 
 #### `emitReachableAt` {#symbol-emitreachableat}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L87)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L92)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence); `config`: [`LiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
 ##### `emitReachableAt` — Summary
@@ -61,7 +63,7 @@ What the entries of a commit reach, by the pathfinder over the graph the commit'
 
 #### `emitBetween` {#symbol-emitbetween}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L118)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L123)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitBetween` — Summary

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-19T17:42:51.511Z
+- Generated At: 2026-10-20T21:28:56.398Z
 
 ## Authored
 ### Purpose
@@ -18,13 +18,14 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - Since 2026-10-15 ([Turn 4](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)) the first pass builds the entry index beside the symbol index, and `composeGenerated` writes each doc's `Entry` lines from the file's own analysis, the index, its symbol kinds, the tooling rule and the configuration's `entryPoints`, before the three sections.
 - Since 2026-10-19, `--changed` and `--include` build file, symbol and entry indexes from the discovered workspace even when they render a subset, so links from a selected doc to an unselected source remain available. Changed-only pruning checks just changed source paths, including rename origins, and preserves authored orphans. It does not invalidate unchanged consumers of a changed provider; full generation refreshes them.
 - The stale-doc pruner owns its two filesystem helpers. `directoryExists` treats a stat failure as absence; `cleanupEmptyParents` removes empty parents after a doc deletion up to, but not including, the base-layer root, and stops on a nonempty folder or filesystem error. They were extracted into an engine `fileUtils.ts` during [the December 6 refactor](../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-06.3.SUMMARIZED.md) and returned to their only caller on 2026-10-19; no analysis or doc-format behavior changed.
+- `keepAuthoredStaleDocs` (2026-10-20, [Turn 9](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) decides whether a stale doc with authored words is kept: true for a person's workspace, so no written words vanish unread; false for the history's lens, so that a past commit's mirror regenerated in place gives exactly the files this run documents.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L47)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L53)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -34,7 +35,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L93)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L99)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary

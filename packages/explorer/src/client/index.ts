@@ -8,6 +8,7 @@ import { downloadDocs, downloadFactsJson, type DownloadBundleType, type Download
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { createHistoryControl, isHistorySequence } from "./history/history-control";
+import type { HistoryMoment } from "./history/moment";
 import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
 import { createItemMenu } from "./panels/item-menu";
@@ -198,6 +199,9 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     onBundledDocClick: (path, fragment) => openInspection({ kind: "bundled-doc", path, ...(fragment ? { fragment } : {}) })
   });
   const itemMenu = createItemMenu();
+  const hasBundledDoc = (path: string): boolean => !!bundledMarkdown && Object.hasOwn(bundledMarkdown, path);
+  /** The moment of the history the 3D picture shows, or null for today. */
+  let shownMoment: HistoryMoment | null = null;
   let inspectionOpener: HTMLElement | null = null;
   const readerRoom = window.matchMedia("(max-width: 760px), (max-height: 480px)");
   const narrowNavigation = window.matchMedia("(max-width: 760px)");
@@ -248,6 +252,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     nodesById,
     resolveLinkEndpoint,
     relatedDocLinks,
+    hasBundledDoc: hasBundledDoc,
     onShowBundledDoc: (docPath: string) => {
       showBundledDocInDetailPanel(docPath);
     },
@@ -276,7 +281,11 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     preloaded: preloadedHistory,
     load: () => loadHistory(bundle.history!.file),
     nodesById,
-    onMoment: (moment, renames, energy) => forceGraphView.setMoment(moment, renames, energy),
+    onMoment: (moment, renames, energy) => {
+      shownMoment = moment;
+      forceGraphView.setMoment(moment, renames, energy);
+      syncReaderNote();
+    },
     onSettle: () => forceGraphView.settle(),
     onCommit: commit => {
       if ((state.historyCommit ?? null) === commit) { syncPerspectiveControls(); return; }
@@ -291,6 +300,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       const node = nodesById.get(path);
       if (node) retainNode(node.id);
     },
+    hasDocument: hasBundledDoc,
+    onReadDocument: path => openInspection({ kind: "bundled-doc", path }),
     onOpenChange: () => syncPerspectiveControls()
   });
 
@@ -1171,6 +1182,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       detailPanel.showBundledDoc(target.path, bundledMarkdown[target.path], target.fragment);
     }
     syncInspectionActions();
+    syncReaderNote();
     syncReaderPresentation();
     // A followed evidence link can replace the focused anchor on wide screens too.
     if (heldFocus && !panel.contains(document.activeElement)) requireElement("detail-close").focus({ preventScroll: true });
@@ -1210,6 +1222,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
         { label: "Centre on directory", text: "Centre", run: () => centreOnDirectory(target.directory) }
       ]);
     } else detailPanel.setActions([]);
+  }
+
+  /** While the 3D picture shows a past commit, the reader says that its evidence is today's version (2026-10-20). */
+  function syncReaderNote(): void {
+    const past = state.inspection && shownMoment && state.view === "map" && state.perspective === "3d" ? shownMoment.commit : null;
+    detailPanel.setNote(past ? `Today's version. The picture shows ${past.date.slice(0, 10)}, commit ${past.id.slice(0, 8)}.` : null);
   }
 
   /** A full reader covers a small viewport; opening it never resizes the underlying map. */

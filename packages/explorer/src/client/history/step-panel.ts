@@ -3,8 +3,10 @@
  * summary says it (the plan's C4). The commit's subject, hash, date and, when
  * the toggle is on, its author; then the files born, dead, renamed and
  * resized, the directories renamed whole, the wires that came, went and
- * changed their count, and the files whose content changed alone, each group
- * folded with its count and open when it is short. A file is a button that
+ * changed their count, the documents linked and unlinked, and the files whose
+ * content changed alone, each group folded with its count and open when it is
+ * short. A document is a button that reads today's version of it where the
+ * bundle carries it, and says so where it does not. A file is a button that
  * pins it where it still exists today, and says "gone since" where it does
  * not, with its archetype and its symbol count at the step. At the base the
  * panel says the shape is the beginning of what is known, and why, when the
@@ -15,7 +17,7 @@
 
 import type { CommitInfo } from "@live-documentation/engine/live-docs/history/format";
 
-import { changeCount, type StepSummary, type SummaryEdge, type SummaryFile } from "./step-summary";
+import { changeCount, type StepSummary, type SummaryDocLink, type SummaryEdge, type SummaryFile } from "./step-summary";
 import { escapeHtml } from "../graph-helpers";
 
 /** The header, and the whole when the thumb rests. */
@@ -37,6 +39,10 @@ export interface StepPanelOptions {
   parent: HTMLElement;
   /** Pin the file, by its path today. */
   onPinFile(path: string): void;
+  /** Whether today's bundle carries the document. */
+  hasDocument(path: string): boolean;
+  /** Read today's version of a document the bundle carries. */
+  onReadDocument(path: string): void;
 }
 
 /** The panel as the control drives it. */
@@ -71,12 +77,20 @@ function edgeWords(edge: SummaryEdge, after = ""): string {
   return `<span class="history-path">${escapeHtml(edge.from)}</span><span class="history-arrow">to</span><span class="history-path">${escapeHtml(edge.to)}</span>${after}`;
 }
 
+function docLinkWords(link: SummaryDocLink, hasDocument: (path: string) => boolean): string {
+  const name = link.doc.slice(link.doc.lastIndexOf("/") + 1);
+  const doc = hasDocument(link.doc)
+    ? `<button type="button" class="history-file" data-read="${escapeHtml(link.doc)}" title="${escapeHtml(link.doc)}">${escapeHtml(name)}</button>`
+    : `<span class="history-file-name" title="${escapeHtml(link.doc)}">${escapeHtml(name)}</span><span class="history-gone">not in this bundle</span>`;
+  return `${fileWords(link.file)}<span class="history-arrow">to</span>${doc}`;
+}
+
 function group(title: string, rows: string[]): string {
   if (rows.length === 0) return "";
   return `<details${rows.length <= OPEN_UP_TO ? " open" : ""}><summary><span>${escapeHtml(title)}</span><span class="history-count">${rows.length.toLocaleString()}</span></summary><ul>${rows.map(row => `<li>${row}</li>`).join("")}</ul></details>`;
 }
 
-function body(summary: StepSummary): string {
+function body(summary: StepSummary, hasDocument: (path: string) => boolean): string {
   if (summary.base) return "";
   if (changeCount(summary) === 0) return `<p class="history-step-note">This commit changed nothing the docs could see.</p>`;
   return [
@@ -88,6 +102,8 @@ function body(summary: StepSummary): string {
     group("Wires added", summary.edgesAdded.map(edge => edgeWords(edge, `<span class="history-shape">${plural(edge.count, "reference")}</span>`))),
     group("Wires removed", summary.edgesRemoved.map(edge => edgeWords(edge))),
     group("Wires changed", summary.edgesChanged.map(edge => edgeWords(edge, `<span class="history-shape">${edge.before} to ${edge.count}</span>`))),
+    group("Documents linked", summary.docLinksAdded.map(link => docLinkWords(link, hasDocument))),
+    group("Documents unlinked", summary.docLinksRemoved.map(link => docLinkWords(link, hasDocument))),
     group("Content changed, shape kept", summary.touched.map(fileWords))
   ].join("");
 }
@@ -100,8 +116,9 @@ export function createStepPanel(options: StepPanelOptions): StepPanel {
   element.hidden = true;
   options.parent.append(element);
   element.addEventListener("click", event => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("button[data-pin]");
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("button[data-pin], button[data-read]");
     if (button?.dataset.pin) options.onPinFile(button.dataset.pin);
+    else if (button?.dataset.read) options.onReadDocument(button.dataset.read);
   });
   let drawn = "";
   return {
@@ -118,7 +135,7 @@ export function createStepPanel(options: StepPanelOptions): StepPanel {
         <h2>${escapeHtml(view.commit.subject)}</h2>
         <p class="history-step-meta"><code title="${escapeHtml(view.commit.id)}">${escapeHtml(short(view.commit))}</code><span>${escapeHtml(view.commit.date.slice(0, 10))}</span>${author}<span>step ${view.step}</span></p>
         ${beginning}
-        ${view.summary ? body(view.summary) : ""}`;
+        ${view.summary ? body(view.summary, path => options.hasDocument(path)) : ""}`;
     },
     hide(hidden) {
       element.hidden = hidden;

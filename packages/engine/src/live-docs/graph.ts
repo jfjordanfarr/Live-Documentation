@@ -210,13 +210,10 @@ export interface LinkTarget {
  * @returns The target, or undefined when the link leaves the docs or does not name a Live Doc.
  */
 export function linkTarget(docPath: string, link: string, location: DocLocation): LinkTarget | undefined {
-  const [target, fragment] = link.split("#", 2);
-  if (/^[a-z]+:\/\//iu.test(target)) {
-    return undefined;
-  }
-  const resolved = target ? normalizePath(`${dirname(docPath)}/${target}`) : docPath;
+  const fragment = link.split("#", 2)[1];
+  const resolved = resolveDocLink(docPath, link);
   const prefix = `${normalizePath(location.root)}/${normalizePath(location.baseLayer)}/`;
-  if (resolved.startsWith("../") || resolved.startsWith("/") || !resolved.startsWith(prefix)) {
+  if (resolved === undefined || !resolved.startsWith(prefix)) {
     return undefined;
   }
   const rest = resolved.slice(prefix.length);
@@ -224,6 +221,22 @@ export function linkTarget(docPath: string, link: string, location: DocLocation)
     return undefined;
   }
   return { docPath: resolved, codePath: rest.slice(0, -location.extension.length), anchor: fragment || undefined };
+}
+
+/**
+ * Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an
+ * external URL or a path that leaves the workspace. A bare fragment names the doc itself.
+ *
+ * @param docPath - Workspace-relative path of the doc holding the link, with forward slashes.
+ * @param link - The link as written, relative to the doc.
+ */
+export function resolveDocLink(docPath: string, link: string): string | undefined {
+  const target = link.split("#", 2)[0];
+  if (/^[a-z]+:\/\//iu.test(target)) {
+    return undefined;
+  }
+  const resolved = target ? normalizePath(`${dirname(docPath)}/${target}`) : docPath;
+  return resolved.startsWith("../") || resolved.startsWith("/") ? undefined : resolved;
 }
 
 function dirname(path: string): string {

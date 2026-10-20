@@ -7,7 +7,7 @@
  * @module
  */
 
-import type { EdgeTuple, FileTuple, SnapshotTuples, StepDelta } from "./format";
+import type { EdgeEnds, EdgeTuple, FileTuple, SnapshotTuples, StepDelta } from "./format";
 import { edgeEnds, edgeKey, emptyChange, type FileShape, type Shape, type ShapeChange } from "./shape";
 
 /** A table of strings, each written once, each named by its index. */
@@ -55,9 +55,14 @@ export function encodeShape(shape: Shape, interners: Interners): SnapshotTuples 
     const [from, to] = edgeEnds(key);
     return [interners.paths.id(from), interners.paths.id(to), count];
   });
+  const docLinks = [...shape.docLinks].map((key): EdgeEnds => {
+    const [from, doc] = edgeEnds(key);
+    return [interners.paths.id(from), interners.paths.id(doc)];
+  });
   files.sort((a, b) => a[0] - b[0]);
   edges.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-  return { files, edges };
+  docLinks.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  return { files, edges, docLinks };
 }
 
 /** The shape a snapshot's tuples describe. */
@@ -70,7 +75,11 @@ export function decodeShape(tuples: SnapshotTuples, tables: Tables): Shape {
   for (const [from, to, count] of tuples.edges) {
     edges.set(edgeKey(tables.paths[from], tables.paths[to]), count);
   }
-  return { files, edges };
+  const docLinks = new Set<string>();
+  for (const [from, doc] of tuples.docLinks) {
+    docLinks.add(edgeKey(tables.paths[from], tables.paths[doc]));
+  }
+  return { files, edges, docLinks };
 }
 
 /** A change as a step's delta, its empty lists left out. */
@@ -86,6 +95,8 @@ export function encodeChange(change: ShapeChange, interners: Interners): StepDel
   setIfAny(delta, "edgesAdded", change.edgesAdded.map(([from, to, count]): EdgeTuple => [path(from), path(to), count]));
   setIfAny(delta, "edgesRemoved", change.edgesRemoved.map(([from, to]): [number, number] => [path(from), path(to)]));
   setIfAny(delta, "edgesChanged", change.edgesChanged.map(([from, to, count]): EdgeTuple => [path(from), path(to), count]));
+  setIfAny(delta, "docLinksAdded", change.docLinksAdded.map(([from, doc]): EdgeEnds => [path(from), path(doc)]));
+  setIfAny(delta, "docLinksRemoved", change.docLinksRemoved.map(([from, doc]): EdgeEnds => [path(from), path(doc)]));
   setIfAny(delta, "directoriesRenamed", change.directoriesRenamed.map(([from, to]): [string, string] => [from, to]));
   setIfAny(delta, "touched", change.touched.map(path));
   return delta;
@@ -104,6 +115,8 @@ export function decodeChange(delta: StepDelta, tables: Tables): ShapeChange {
   change.edgesAdded = (delta.edgesAdded ?? []).map(([from, to, count]) => [path(from), path(to), count]);
   change.edgesRemoved = (delta.edgesRemoved ?? []).map(([from, to]) => [path(from), path(to)]);
   change.edgesChanged = (delta.edgesChanged ?? []).map(([from, to, count]) => [path(from), path(to), count]);
+  change.docLinksAdded = (delta.docLinksAdded ?? []).map(([from, doc]) => [path(from), path(doc)]);
+  change.docLinksRemoved = (delta.docLinksRemoved ?? []).map(([from, doc]) => [path(from), path(doc)]);
   change.directoriesRenamed = (delta.directoriesRenamed ?? []).map(([from, to]) => [from, to]);
   change.touched = (delta.touched ?? []).map(path);
   return change;

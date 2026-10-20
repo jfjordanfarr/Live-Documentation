@@ -6,9 +6,10 @@
  *
  * @remarks
  * Every answer is from the shape alone: files, their archetypes, symbol
- * counts and entry marks, and the edges between them with their counts. The
- * symbols themselves, the kinds of the edges and every authored word were in
- * the docs of that change, which the sequence does not carry.
+ * counts and entry marks, the edges between them with their counts, and the
+ * documents their authored words linked to. The symbols themselves, the kinds
+ * of the edges and every authored word were in the docs of that change, which
+ * the sequence does not carry.
  *
  * @module
  */
@@ -98,6 +99,8 @@ export interface FileAtChange {
   outbound?: Neighbour[];
   /** The files that had edges to it, with their counts. */
   inbound?: Neighbour[];
+  /** The documents its authored words linked to that stood then, by path. */
+  documents?: string[];
 }
 
 /** What a file was in a shape: whether it existed, its shape, and its neighbours either way. */
@@ -119,7 +122,8 @@ export function fileOfShape(shape: Shape, codePath: string): FileAtChange {
   }
   outbound.sort((a, b) => compare(a.codePath, b.codePath));
   inbound.sort((a, b) => compare(a.codePath, b.codePath));
-  return { codePath, exists: true, archetype: file.archetype, symbols: file.symbols, entry: file.entry, outbound, inbound };
+  const documents = [...shape.docLinks].map(edgeEnds).filter(([from]) => from === codePath).map(([, doc]) => doc).sort(compare);
+  return { codePath, exists: true, archetype: file.archetype, symbols: file.symbols, entry: file.entry, outbound, inbound, documents };
 }
 
 /** What changed from one change of a sequence to a later one, every list sorted. */
@@ -140,6 +144,10 @@ export interface ChangesBetween {
   edgesAdded: Array<{ from: string; to: string }>;
   /** Edges at the earlier change that are not at the later one, by their earlier paths. */
   edgesRemoved: Array<{ from: string; to: string }>;
+  /** Links from a file's authored words to a document at the later change that were not at the earlier one, the file followed through the renames, by its later path. */
+  docLinksAdded: Array<{ from: string; doc: string }>;
+  /** Doc links at the earlier change that are not at the later one, by the file's earlier path. */
+  docLinksRemoved: Array<{ from: string; doc: string }>;
 }
 
 /**
@@ -190,7 +198,24 @@ export function changesBetween(sequence: HistorySequence, from: number, to: numb
     return { from: source, to: target };
   });
 
+  const docLinksRemoved: ChangesBetween["docLinksRemoved"] = [];
+  const followedLinks = new Set<string>();
+  for (const key of before.docLinks) {
+    const [source, doc] = edgeEnds(key);
+    const laterSource = later.get(source);
+    if (laterSource !== undefined && after.docLinks.has(edgeKey(laterSource, doc))) {
+      followedLinks.add(edgeKey(laterSource, doc));
+    } else {
+      docLinksRemoved.push({ from: source, doc });
+    }
+  }
+  const docLinksAdded = [...after.docLinks].filter((key) => !followedLinks.has(key)).map((key) => {
+    const [source, doc] = edgeEnds(key);
+    return { from: source, doc };
+  });
+
   const byPair = (a: { from: string; to: string }, b: { from: string; to: string }): number => compare(a.from, b.from) || compare(a.to, b.to);
+  const byLink = (a: { from: string; doc: string }, b: { from: string; doc: string }): number => compare(a.from, b.from) || compare(a.doc, b.doc);
   return {
     from: commitAt(sequence, from),
     to: commitAt(sequence, to),
@@ -200,7 +225,9 @@ export function changesBetween(sequence: HistorySequence, from: number, to: numb
     directoriesRenamed: directoryRenames(before.files.keys(), after.files.keys(), renamed.map((rename) => [rename.from, rename.to])).map(([from, to]) => ({ from, to })),
     resized: resized.sort((a, b) => compare(a.codePath, b.codePath)),
     edgesAdded: edgesAdded.sort(byPair),
-    edgesRemoved: edgesRemoved.sort(byPair)
+    edgesRemoved: edgesRemoved.sort(byPair),
+    docLinksAdded: docLinksAdded.sort(byLink),
+    docLinksRemoved: docLinksRemoved.sort(byLink)
   };
 }
 

@@ -30,6 +30,8 @@ export interface DetailPanelApi {
   showDirectory(directory: string): void;
   showBundledDoc(docPath: string, content: string, fragment?: string): void;
   setActions(actions: readonly DetailPanelAction[]): void;
+  /** A line above the evidence saying what it is read against, or null for none. */
+  setNote(text: string | null): void;
   setLoading(node: ExplorerNodePayload): void;
   hide(): void;
   /** Download the current node's markdown file */
@@ -82,6 +84,10 @@ export function createDetailPanel(
   const actions = document.createElement("div");
   actions.className = "detail-actions";
   downloadButton.before(actions);
+  const note = document.createElement("p");
+  note.className = "detail-note";
+  note.hidden = true;
+  body.before(note);
   panel.setAttribute("aria-hidden", "true");
   panel.inert = true;
 
@@ -289,7 +295,12 @@ export function createDetailPanel(
     scrollToFragment(fragment);
   }
 
-  return { showNode, showDirectory, showBundledDoc, setActions, setLoading, hide, downloadCurrentDoc, getCurrentNode };
+  function setNote(text: string | null): void {
+    note.textContent = text ?? "";
+    note.hidden = text === null;
+  }
+
+  return { showNode, showDirectory, showBundledDoc, setActions, setNote, setLoading, hide, downloadCurrentDoc, getCurrentNode };
 }
 
 /**

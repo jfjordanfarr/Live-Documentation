@@ -4,7 +4,7 @@ import { DEFAULT_LIVE_DOCUMENTATION_CONFIG } from "../../config/liveDocumentatio
 import { reachability } from "../pathfind";
 import type { CommitInfo } from "./format";
 import { changesBetween, entryMarked, fileOfShape, followChanges, graphOfShape, stepsMatching } from "./queries";
-import { SequenceBuilder } from "./sequence";
+import { seek, SequenceBuilder } from "./sequence";
 import { edgeKey, emptyChange, type Shape } from "./shape";
 import type { VersionChanges } from "./versionControl";
 
@@ -13,10 +13,11 @@ const HEAD = {
   source: { system: "git" as const, root: ".", branch: "main", head: "", shallow: false, knowledgeBegins: "", sampling: { rule: "every-commit" as const }, authors: true }
 };
 
-function shape(files: Record<string, [archetype: string, symbols: number, entry?: boolean]>, edges: Array<[string, string, number]> = []): Shape {
+function shape(files: Record<string, [archetype: string, symbols: number, entry?: boolean]>, edges: Array<[string, string, number]> = [], docLinks: Array<[string, string]> = []): Shape {
   return {
     files: new Map(Object.entries(files).map(([path, [archetype, symbols, entry]]) => [path, { archetype, symbols, entry: entry ?? false }])),
-    edges: new Map(edges.map(([from, to, count]) => [edgeKey(from, to), count]))
+    edges: new Map(edges.map(([from, to, count]) => [edgeKey(from, to), count])),
+    docLinks: new Set(docLinks.map(([from, doc]) => edgeKey(from, doc)))
   };
 }
 
@@ -43,6 +44,22 @@ describe("stepsMatching", () => {
     expect(stepsMatching(sequence(), "bbbb2")).toEqual([2]);
     expect(stepsMatching(sequence(), "bbbb")).toEqual([1, 2]);
     expect(stepsMatching(sequence(), "")).toEqual([]);
+  });
+});
+
+describe("doc links", () => {
+  it("lists a file's documents at a change, and the links between two changes with the file followed through its renames", () => {
+    const builder = new SequenceBuilder(HEAD, commit("c0"), shape({ "a.ts": ["implementation", 1], "b.ts": ["implementation", 1] }, [], [["a.ts", "docs/plan.md"], ["b.ts", "docs/old.md"]]));
+    builder.add(commit("c1"), shape({ "c.ts": ["implementation", 1], "b.ts": ["implementation", 1] }, [], [["c.ts", "docs/plan.md"], ["b.ts", "docs/old.md"]]), { renamed: [["a.ts", "c.ts"]], modified: [] });
+    builder.add(commit("c2"), shape({ "d.ts": ["implementation", 1], "b.ts": ["implementation", 1] }, [], [["d.ts", "docs/plan.md"], ["d.ts", "docs/new.md"]]), { renamed: [["c.ts", "d.ts"]], modified: [] });
+    const history = builder.finish();
+    const between = changesBetween(history, 0, 2);
+    // The plan stayed linked from the file renamed twice: neither added nor removed.
+    expect(between.docLinksAdded).toEqual([{ from: "d.ts", doc: "docs/new.md" }]);
+    expect(between.docLinksRemoved).toEqual([{ from: "b.ts", doc: "docs/old.md" }]);
+    expect(fileOfShape(seek(history, 0), "a.ts").documents).toEqual(["docs/plan.md"]);
+    expect(fileOfShape(seek(history, 2), "d.ts").documents).toEqual(["docs/new.md", "docs/plan.md"]);
+    expect(fileOfShape(seek(history, 2), "b.ts").documents).toEqual([]);
   });
 });
 
@@ -104,7 +121,8 @@ describe("a shape for the pathfinder", () => {
       symbols: 2,
       entry: false,
       outbound: [],
-      inbound: [{ codePath: "lib.test.ts", count: 1 }, { codePath: "main.ts", count: 3 }]
+      inbound: [{ codePath: "lib.test.ts", count: 1 }, { codePath: "main.ts", count: 3 }],
+      documents: []
     });
     expect(fileOfShape(at, "gone.ts")).toEqual({ codePath: "gone.ts", exists: false });
   });
