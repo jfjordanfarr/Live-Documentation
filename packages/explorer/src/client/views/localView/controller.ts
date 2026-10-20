@@ -1,9 +1,8 @@
-import { EMPTY_PIN_SET, retainFile, removePinsForNode, pressSymbol, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
-import { subjectAfterRelease } from "../retained-state";
+import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
 import { createStage, dropStage, renderBranches, type BranchStage } from "./branch-renderer";
 import type { BranchGraph } from "./branches";
 import type { CardContext } from "./card-factory";
-import { closeDirectory as closeDirectoryIn, NO_OPEN_DIRECTORIES, openDirectory as openDirectoryIn, type OpenDirectories } from "./directory-state";
+import { NO_OPEN_DIRECTORIES, type OpenDirectories } from "./directory-state";
 import type {
   ExplorerNodePayload
 } from "../../../shared/types";
@@ -55,6 +54,7 @@ import {
 import type {
   ColumnRole,
   LocalViewApi,
+  LocalExplorationFrame,
   LocalViewOptions,
   LocalSubgraph,
   MapTransform
@@ -98,6 +98,8 @@ export class LocalViewController implements LocalViewApi {
    * it; the card a move of the picture holds still on screen (the owner's choice, 2026-10-07).
    */
   lastInteracted: string | null = null;
+  /** When the action named a symbol, keep that row under the eye as rows reorder within its card. */
+  lastInteractedSymbol: string | null = null;
   /** Cards whose complete symbol list the person has explicitly opened. */
   readonly expandedCards = new Set<string>();
   /** The card builder reads only presentation facts and named actions, never this controller's state bag. */
@@ -105,17 +107,24 @@ export class LocalViewController implements LocalViewApi {
     presentation: node => ({
       subject: this.options.state.selectedNode?.id === node.id,
       retained: this.pins.entries.some(pin => pin.nodeId === node.id),
+      filePinned: this.pins.entries.some(pin => pin.nodeId === node.id && pin.symbol === "*"),
       expanded: this.expandedCards.has(node.id),
       showTests: this.options.state.filters.showTests,
       symbolOrder: this.options.state.tuning.localMap.symbolOrder,
       testBacking: this.options.testCoverage.get(node.id) ?? [],
-      isPinned: symbol => this.isPinned(node.id, symbol)
+      isPinned: symbol => this.isPinned(node.id, symbol),
+      isDirectlyPinned: symbol => this.pins.entries.some(pin => pin.nodeId === node.id && pin.symbol === symbol)
     }),
     registerAnchor: (nodeId, role, key, element) => this.registerAnchor(nodeId, role, key, element),
-    closeNode: nodeId => this.closeNode(nodeId),
-    openDirectory: directory => this.openDirectory(directory),
+    closeNode: nodeId => this.options.onCloseNode(nodeId),
+    unpinNode: nodeId => this.options.onUnpinNode(nodeId),
+    openDirectory: directory => this.options.onOpenDirectory(directory),
+    inspectDirectory: directory => this.inspectDirectory(directory),
     recenterNode: node => this.recenterNode(node),
-    togglePinnedSymbol: (nodeId, symbol) => this.togglePinnedSymbol(nodeId, symbol),
+    togglePinnedSymbol: (nodeId, symbol) => this.options.onPressPin(nodeId, symbol),
+    inspectNode: (node, symbol) => this.focusSidebar(node, symbol),
+    showNodeActions: (node, symbol, anchor) => this.showNodeActions(node, symbol, anchor),
+    showDirectoryActions: (directory, anchor) => this.showDirectoryActions(directory, anchor),
     highlightSymbolConnections: (nodeId, symbol) => this.highlightSymbolConnections(nodeId, symbol),
     clearSymbolHighlight: () => this.clearSymbolHighlight(),
     focusTypeTarget: targetId => {
@@ -176,6 +185,7 @@ export class LocalViewController implements LocalViewApi {
   /** The pointers pressed on the viewport, by id: one drags, two pinch. */
   private readonly pointers = new Map<number, { x: number; y: number }>();
   private pinch: { distance: number; x: number; y: number } | null = null;
+  private disposeItemEvents = (): void => {};
 
   private readonly handleWindowPointerMove = (event: PointerEvent): void => {
     const { state } = this.options;
@@ -233,6 +243,7 @@ export class LocalViewController implements LocalViewApi {
     this.localMapState = createStateStore(createInitialState());
     this.container.classList.add("cluster-host", "local-map-host");
     this.viewport.style.cursor = "grab";
+    this.bindItemEvents();
     this.bindPointerEvents();
     this.bindWheelEvents();
     this.viewport.addEventListener("pointerleave", this.handlePointerLeave);
@@ -327,6 +338,7 @@ export class LocalViewController implements LocalViewApi {
     }
     this.layerObserver?.disconnect();
     this.layerObserver = null;
+    this.disposeItemEvents();
     this.dropStage();
   }
 
@@ -422,6 +434,7 @@ export class LocalViewController implements LocalViewApi {
       this.lastCenteredNodeId = centeredId;
       this.mapInitialTransform = null;
       this.lastInteracted = centeredId;
+      this.lastInteractedSymbol = null;
     }
 
     const root = keepStage ? this.stage!.root : document.createElement("div");
@@ -497,7 +510,10 @@ export class LocalViewController implements LocalViewApi {
     // Update hover state in the state store (for reactive updates)
     if (!fromPin) {
       this.localMapState.update(s => setHoveredSymbol(s, { nodeId, symbol }));
-      if (options.state.tuning.localMap.holdStill === "hover") this.lastInteracted = nodeId;
+      if (options.state.tuning.localMap.holdStill === "hover") {
+        this.lastInteracted = nodeId;
+        this.lastInteractedSymbol = symbol;
+      }
     }
 
     // Compute the highlight using pure function
@@ -537,125 +553,62 @@ export class LocalViewController implements LocalViewApi {
     );
   }
 
-  /** Retain a whole file from either representation. */
-  retainNode(nodeId: string): void {
-    this.togglePinnedSymbol(nodeId, "*");
-  }
-
-  /** Pin one symbol unless it is pinned already, alone or with its whole file: what a search chose, never a toggle. */
-  retainSymbol(nodeId: string, symbol: string): void {
-    if (this.isPinned(nodeId, symbol)) return;
-    this.togglePinnedSymbol(nodeId, symbol);
-  }
-
-  /**
-   * A press on a card or a symbol row: the file pinned whole, or the symbol pressed (`pressSymbol`), nothing pinned
-   * on the person's behalf, the pressed row held in its screen position. Until 2026-10-15 the first pin of an
-   * exploration also pinned the subject whole, silently, so that it would not vanish; the picture keeps the subject
-   * disclosed instead.
-   */
-  togglePinnedSymbol(nodeId: string, symbol: string): void {
-    if (!this.resolveNode(nodeId)) return;
-    const pins = symbol === "*" ? retainFile(this.pins, nodeId) : pressSymbol(this.pins, nodeId, symbol);
-    if (pins === this.pins && !this.getActivePath()) return;
-    this.updateRetainedPins(nodeId, symbol, pins);
-  }
-
-  /** Release this file's expansion; other pins may still need some of its rows. */
-  closeNode(nodeId: string): void {
-    this.expandedCards.delete(nodeId);
-    const pins = removePinsForNode(this.pins, nodeId);
-    if (this.options.state.selectedNode?.id === nodeId) {
-      const next = pins.entries.at(-1);
-      this.options.state.selectedNode = this.options.state.focusedNode = next ? this.resolveNode(next.nodeId) ?? null : null;
-    }
-    this.updateRetainedPins(nodeId, "*", pins, false);
-  }
-
-  /** Open a directory: every file inside drawn compact, every subdirectory as a closed box; what was clicked keeps its place on screen. */
-  openDirectory(directory: string): void {
-    const next = openDirectoryIn(this.openDirectories, directory);
-    if (next !== this.openDirectories) this.updateOpenDirectories(directory, next);
-  }
-
-  /** Close a directory as far as it can go: to encasing when a party file or an opened directory stands under it, else to a closed box. */
-  closeDirectory(directory: string): void {
-    const next = closeDirectoryIn(this.openDirectories, directory);
-    if (next !== this.openDirectories) this.updateOpenDirectories(directory, next);
-  }
-
-  /** Apply the opened set while keeping the directory's label or box in its screen position, as a pin keeps its row. */
-  private updateOpenDirectories(directory: string, next: OpenDirectories): void {
-    const leavingPath = !!this.localMapState.getState().activePath;
-    const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
-    const before = this.isShown() ? this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect() : undefined;
-    const keyboardFocus = this.container.contains(document.activeElement);
-    // The directory is what was acted on: a move of the picture holds its label, or its box, still.
-    this.lastInteracted = directory;
-    this.options.state.openDirectories = next;
-    this.localMapState.update(s => ({ ...s, activePath: null }));
-    this.render();
-    const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
-    if (before && after) {
-      cancelAnimationFrame(this.runtime.mapAnimationFrame);
-      this.runtime.mapAnimationTarget = null;
-      this.mapHasInitialFit = true;
-      this.mapUserAdjusted = true;
-      this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + before.left - after.left, y: this.mapTransform.y + before.top - after.top };
-      this.updateMapTransform();
-      this.drawConnections();
-    }
-    if (keyboardFocus) {
-      const directoryLabel = `.local-directory-label[data-directory="${CSS.escape(directory)}"]`;
-      const element = this.container.querySelector<HTMLElement>(`${directoryLabel} .local-directory-name[role="button"], ${directoryLabel} .local-directory-close, .local-directory-closed[data-directory="${CSS.escape(directory)}"]`)
-        ?? this.container.querySelector<HTMLElement>(".node-card, .local-directory-closed, .empty-hint");
-      element?.focus({ preventScroll: true });
-    }
-    this.options.onExplorationChange?.(leavingPath);
-  }
-
-  /**
-   * Apply retained scope while keeping the acted-on row in its screen position. The subject stays where it is: a
-   * pin never moves it, unless the subject's own pins are released (then the newest pinned file is the subject) or
-   * there was no subject, when the file pinned becomes it.
-   */
-  private updateRetainedPins(nodeId: string, symbol: string, pins: PinSet, focus = true): void {
+  /** Capture a 2D pin action's screen anchor and keyboard focus; shared pin policy belongs to the application. */
+  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false): LocalExplorationFrame {
+    if (closeExpansion) this.expandedCards.delete(nodeId);
     this.lastInteracted = nodeId;
-    const leavingPath = !!this.localMapState.getState().activePath;
+    this.lastInteractedSymbol = symbol === "*" ? null : symbol;
+    // A subject changed by a pin must not be mistaken for a direct choice that re-fits the camera.
+    this.lastCenteredNodeId = nextSubjectId;
     const selector = symbol === "*"
       ? `.node-card[data-id="${CSS.escape(nodeId)}"] .node-title`
       : `.symbol-row[data-node-id="${CSS.escape(nodeId)}"][data-symbol="${CSS.escape(symbol)}"] .symbol-label-wrapper`;
+    const focusSelector = symbol === "*"
+      ? `.node-card[data-id="${CSS.escape(nodeId)}"] .local-file-pin`
+      : `${selector} .local-symbol-pin`;
+    return this.captureExplorationFrame(selector, focusSelector, ".local-file-inspect, .local-directory-closed__name, .empty-hint");
+  }
+
+  /** Capture an opened directory's label or closed box before the application changes the opened set. */
+  captureDirectoryChange(directory: string): LocalExplorationFrame {
+    this.lastInteracted = directory;
+    this.lastInteractedSymbol = null;
+    const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
+    const label = `.local-directory-label[data-directory="${CSS.escape(directory)}"]`;
+    const focusSelector = `${label} .local-directory-open, ${label} .local-directory-close, .local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-open`;
+    return this.captureExplorationFrame(selector, focusSelector, ".local-file-inspect, .local-directory-closed__name, .empty-hint");
+  }
+
+  /** A pin or opening leaves path mode without restoring the former exploration camera. */
+  clearPathForExploration(): void {
+    this.localMapState.update(s => ({ ...s, activePath: null }));
+  }
+
+  /** The view's visual half of an application-owned exploration transaction. */
+  private captureExplorationFrame(selector: string, focusSelector: string, fallbackSelector: string): LocalExplorationFrame {
+    const leavingPath = !!this.localMapState.getState().activePath;
     const before = this.isShown() ? this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect() : undefined;
     const keyboardFocus = this.container.contains(document.activeElement);
-    const state = this.options.state;
-    const pinned = pins.entries.some(pin => pin.nodeId === nodeId);
-    const selectedId = state.selectedNode ? subjectAfterRelease(this.pins, pins, state.selectedNode.id) : focus && pinned ? nodeId : null;
-    const selected = selectedId ? this.resolveNode(selectedId) ?? null : null;
-    if (selected !== state.selectedNode) state.focusedNode = selected;
-    state.selectedNode = selected;
-    // A subject that changes as the consequence of a pin change is not a file chosen: the renderer must not re-fit
-    // the camera to it nor hold it through the move in place of the row acted on (closing the subject's card moved
-    // the held card two pixels, measured 2026-10-15).
-    this.lastCenteredNodeId = selected?.id ?? null;
-    state.pins = pins;
-    this.localMapState.update(s => ({ ...s, activePath: null }));
-    this.render();
-    const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
-    if (before && after) {
-      cancelAnimationFrame(this.runtime.mapAnimationFrame);
-      this.runtime.mapAnimationTarget = null;
-      this.mapHasInitialFit = true;
-      this.mapUserAdjusted = true;
-      this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + before.left - after.left, y: this.mapTransform.y + before.top - after.top };
-      this.updateMapTransform();
-      this.drawConnections();
-    }
-    if (keyboardFocus) {
-      const focusSelector = symbol === "*" ? `.node-card[data-id="${CSS.escape(nodeId)}"]` : selector;
-      const element = this.container.querySelector<HTMLElement>(focusSelector) ?? this.container.querySelector<HTMLElement>(".node-card, .local-directory-closed, .empty-hint");
-      element?.focus({ preventScroll: true });
-    }
-    this.options.onExplorationChange?.(leavingPath);
+    return {
+      leavingPath,
+      afterRender: () => {
+        const after = this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect();
+        if (before && after) {
+          cancelAnimationFrame(this.runtime.mapAnimationFrame);
+          this.runtime.mapAnimationTarget = null;
+          this.mapHasInitialFit = true;
+          this.mapUserAdjusted = true;
+          this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + before.left - after.left, y: this.mapTransform.y + before.top - after.top };
+          this.updateMapTransform();
+          this.drawConnections();
+        }
+        if (keyboardFocus) {
+          const element = this.container.querySelector<HTMLElement>(focusSelector)
+            ?? this.container.querySelector<HTMLElement>(fallbackSelector);
+          element?.focus({ preventScroll: true });
+        }
+      }
+    };
   }
 
   /**
@@ -927,9 +880,32 @@ export class LocalViewController implements LocalViewApi {
     await this.options.onRecenterNode(node);
   }
 
-  /** Opens the sidebar detail panel for the given node. */
-  async focusSidebar(node: ExplorerNodePayload): Promise<void> {
-    await this.options.onFocusSidebar(node);
+  /** Inspect a file or symbol without changing its retained pins or the map subject. */
+  async focusSidebar(node: ExplorerNodePayload, symbol?: string): Promise<void> {
+    this.lastInteracted = node.id;
+    this.lastInteractedSymbol = symbol ?? null;
+    await this.options.onFocusSidebar(node, symbol);
+  }
+
+  /** Inspect a directory without opening it. */
+  async inspectDirectory(directory: string): Promise<void> {
+    this.lastInteracted = directory;
+    this.lastInteractedSymbol = null;
+    await this.options.onInspectDirectory(directory);
+  }
+
+  /** Open the application-owned actions beside the node element that named them. */
+  async showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }): Promise<void> {
+    this.lastInteracted = node.id;
+    this.lastInteractedSymbol = symbol ?? null;
+    await this.options.onShowNodeActions(node, symbol, anchor);
+  }
+
+  /** Open the same directory commands from its visible More control or a context gesture. */
+  async showDirectoryActions(directory: string, anchor: { x: number; y: number }): Promise<void> {
+    this.lastInteracted = directory;
+    this.lastInteractedSymbol = null;
+    await this.options.onShowDirectoryActions(directory, anchor);
   }
 
   /** Measures content and column bounding boxes used for fit-to-content and centering calculations. */
@@ -953,6 +929,125 @@ export class LocalViewController implements LocalViewApi {
 
   protected normalizeAnchorKey(key: string): string | null {
     return tryBuildNormalizedKeyFromAnchorKey(key);
+  }
+
+  /** Entity context gestures share one lifetime; dragging and multi-pointer gestures cancel pending activation. */
+  private bindItemEvents(): void {
+    type Press = { pointerId: number; x: number; y: number; target: HTMLElement; cancelled: boolean; held: boolean };
+    let press: Press | null = null;
+    let timer = 0;
+    let multiPointerGesture = false;
+    const pressed = new Set<number>();
+    const entitySelector = ".node-card, .local-directory-label, .local-directory-closed";
+    const htmlTarget = (target: EventTarget | null): HTMLElement | null => {
+      for (let element = target instanceof Element ? target : null; element; element = element.parentElement) {
+        if (element instanceof HTMLElement) return element;
+      }
+      return null;
+    };
+    const clearTimer = (): void => { window.clearTimeout(timer); timer = 0; };
+    const cancel = (): void => { clearTimer(); if (press) press.cancelled = true; };
+    const context = (target: HTMLElement, anchor: { x: number; y: number }): boolean => {
+      const card = target.closest<HTMLElement>(".node-card");
+      const node = card?.dataset.id ? this.options.nodesById.get(card.dataset.id) : undefined;
+      if (node) {
+        void this.showNodeActions(node, target.closest<HTMLElement>(".symbol-row")?.dataset.symbol, anchor);
+        return true;
+      }
+      const directory = target.closest<HTMLElement>(".local-directory-label, .local-directory-closed")?.dataset.directory;
+      if (directory !== undefined) { void this.showDirectoryActions(directory, anchor); return true; }
+      return false;
+    };
+    const pointerDown = (event: PointerEvent): void => {
+      pressed.add(event.pointerId);
+      clearTimer();
+      if (pressed.size > 1) { multiPointerGesture = true; cancel(); return; }
+      multiPointerGesture = false;
+      press = null;
+      const target = htmlTarget(event.target);
+      if (!this.isShown() || event.button !== 0 || !target) return;
+      if (!target.closest(entitySelector)) return;
+      press = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, target, cancelled: false, held: false };
+      // The primary action of a visible command remains that command; only entity surfaces have a held gesture.
+      if (target.closest("button:not(.local-file-inspect):not(.symbol-label):not(.local-directory-name):not(.local-directory-closed__name), a, input, select")) return;
+      const pending = press;
+      timer = window.setTimeout(() => {
+        timer = 0;
+        if (press !== pending || pending.cancelled || !target.isConnected || !this.isShown()) return;
+        pending.held = true;
+        // A directory's body can begin a pan. A stationary hold ends that press before showing its actions.
+        this.pointers.delete(pending.pointerId);
+        if (this.isDragging) handleDragEnd(this.runtime, this.viewport, () => this.updateMapTransform());
+        context(target, { x: pending.x, y: pending.y });
+      }, 550);
+    };
+    const pointerMove = (event: PointerEvent): void => {
+      if (press?.pointerId === event.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 6) cancel();
+    };
+    const pointerUp = (event: PointerEvent): void => {
+      pressed.delete(event.pointerId);
+      if (press?.pointerId === event.pointerId) {
+        pointerMove(event);
+        clearTimer();
+        if (event.type === "pointercancel") press.cancelled = true;
+      }
+    };
+    const click = (event: MouseEvent): void => {
+      const suppress = event.detail !== 0 && (multiPointerGesture || (press && (press.cancelled || press.held)));
+      clearTimer();
+      press = null;
+      if (suppress) { event.preventDefault(); event.stopImmediatePropagation(); }
+    };
+    const contextMenu = (event: MouseEvent): void => {
+      const target = htmlTarget(event.target);
+      if (!this.isShown() || !target?.closest(entitySelector)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      clearTimer();
+      if (press?.held || press?.cancelled) return;
+      if (press) press.held = true;
+      const rect = target.getBoundingClientRect();
+      context(target, event.clientX || event.clientY
+        ? { x: event.clientX, y: event.clientY } : { x: rect.left + rect.width / 2, y: rect.bottom });
+    };
+    const keyDown = (event: KeyboardEvent): void => {
+      const target = htmlTarget(event.target);
+      if (!target?.closest(entitySelector)) return;
+      if (event.key !== "ContextMenu" && !(event.shiftKey && event.key === "F10")) return;
+      event.preventDefault();
+      event.stopPropagation();
+      cancel();
+      const rect = target.getBoundingClientRect();
+      context(target, { x: rect.left + rect.width / 2, y: rect.bottom });
+    };
+    const escape = (event: KeyboardEvent): void => { if (event.key === "Escape") cancel(); };
+    const blur = (): void => { cancel(); pressed.clear(); };
+    const visibility = (): void => { if (document.visibilityState !== "visible") blur(); };
+    this.viewport.addEventListener("pointerdown", pointerDown, true);
+    this.viewport.addEventListener("click", click, true);
+    this.viewport.addEventListener("contextmenu", contextMenu);
+    this.viewport.addEventListener("keydown", keyDown);
+    this.viewport.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("pointermove", pointerMove, true);
+    window.addEventListener("pointerup", pointerUp, true);
+    window.addEventListener("pointercancel", pointerUp, true);
+    window.addEventListener("keydown", escape);
+    window.addEventListener("blur", blur);
+    document.addEventListener("visibilitychange", visibility);
+    this.disposeItemEvents = () => {
+      clearTimer();
+      this.viewport.removeEventListener("pointerdown", pointerDown, true);
+      this.viewport.removeEventListener("click", click, true);
+      this.viewport.removeEventListener("contextmenu", contextMenu);
+      this.viewport.removeEventListener("keydown", keyDown);
+      this.viewport.removeEventListener("wheel", cancel);
+      window.removeEventListener("pointermove", pointerMove, true);
+      window.removeEventListener("pointerup", pointerUp, true);
+      window.removeEventListener("pointercancel", pointerUp, true);
+      window.removeEventListener("keydown", escape);
+      window.removeEventListener("blur", blur);
+      document.removeEventListener("visibilitychange", visibility);
+    };
   }
 
   /**

@@ -4,7 +4,8 @@ import { displayNames, gesture, loadGraph, LOCAL_MAP, localMapSettled, localReta
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);
-const pin = (page: Page, file: string, symbol: string) => card(page, file).locator(`.symbol-row[data-symbol="${symbol}"] .symbol-label-wrapper`);
+const row = (page: Page, file: string, symbol: string) => card(page, file).locator(`.symbol-row[data-symbol="${symbol}"]`);
+const pin = (page: Page, file: string, symbol: string) => row(page, file, symbol).locator(".local-symbol-pin");
 
 async function start(page: Page): Promise<void> {
   await page.goto(`/?view=local&node=${ROOT}helpers.ts`);
@@ -50,7 +51,7 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(page.locator(`#map-connections .connection-path[data-source-id="${ROOT}models.ts"][data-target-id="${ROOT}types.ts"]`).first()).toBeAttached();
   // Packing may place another retained card beyond the current frame. Reach
   // its pin with the same pan gesture a person uses, preserving the held card.
-  await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}types.ts"] .symbol-row[data-symbol="ProcessorConfig"] .symbol-label-wrapper`);
+  await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}types.ts"] .symbol-row[data-symbol="ProcessorConfig"] .local-symbol-pin`);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
   await page.reload();
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
@@ -58,10 +59,12 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await localMapSettled(page);
   // Releasing the only pinned symbol of processor.ts leaves the file pinned whole (the owner's rule of 2026-10-15)
-  await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}processor.ts"] .symbol-row[data-symbol="run"] .symbol-label-wrapper`);
+  await gesture(page, LOCAL_MAP, `#map-container .node-card[data-id="${ROOT}processor.ts"] .symbol-row[data-symbol="run"] .local-symbol-pin`);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
-  await expect(pin(page, "processor.ts", "run")).toHaveAttribute("aria-pressed", "true");
-  await expect(pin(page, "processor.ts", "summarize")).toHaveAttribute("aria-pressed", "true");
+  await expect(card(page, "processor.ts").locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
+  await expect(row(page, "processor.ts", "run")).toHaveClass(/symbol-pinned/);
+  await expect(row(page, "processor.ts", "summarize")).toHaveClass(/symbol-pinned/);
+  await expect(pin(page, "processor.ts", "run")).toHaveAttribute("aria-pressed", "false");
   await expect(pin(page, "helpers.ts", "format")).toHaveAttribute("aria-pressed", "true");
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
@@ -71,7 +74,7 @@ test("independent symbol branches retain cross-connections, survive reload, and 
   await expect(pin(page, "types.ts", "ProcessorConfig")).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Clear exploration pins" }).click();
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
-  await expect(page.locator("#map-container .symbol-label-wrapper[aria-pressed='true']")).toHaveCount(0);
+  await expect(page.locator("#map-container .local-symbol-pin[aria-pressed='true'], #map-container .local-file-pin[aria-pressed='true']")).toHaveCount(0);
   await expect(page.locator("#map-container .local-placed")).toBeVisible();
   expect(await page.locator("#map-container .local-directory-closed").count()).toBeGreaterThan(0);
   await expect(page.locator("#map-connections .connection-path")).toHaveCount(0);
@@ -128,12 +131,15 @@ test("file retention, individual pruning and close work by keyboard with reduced
   await page.locator("#filter-toggle-tests").uncheck();
   await localMapSettled(page);
   const file = card(page, "helpers.ts");
-  await file.focus();
+  await file.locator(".local-file-pin").focus();
   await page.keyboard.press("Enter");
   const symbol = pin(page, "helpers.ts", "format");
   const other = pin(page, "helpers.ts", "validate");
-  await expect(symbol).toHaveAttribute("aria-pressed", "true");
-  await expect(other).toHaveAttribute("aria-pressed", "true");
+  await expect(file.locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
+  await expect(row(page, "helpers.ts", "format")).toHaveClass(/symbol-pinned/);
+  await expect(row(page, "helpers.ts", "validate")).toHaveClass(/symbol-pinned/);
+  await expect(symbol).toHaveAttribute("aria-pressed", "false");
+  await expect(other).toHaveAttribute("aria-pressed", "false");
   await expect(file.getByText(/connections? hidden by filters/)).toBeVisible();
   // Space on a row of the whole file narrows the pin to it; Space again releases the last symbol, which leaves the file whole
   await symbol.focus();
@@ -142,27 +148,31 @@ test("file retention, individual pruning and close work by keyboard with reduced
   await expect(other).toHaveAttribute("aria-pressed", "false");
   await expect(symbol).toBeFocused();
   await page.keyboard.press("Space");
-  await expect(symbol).toHaveAttribute("aria-pressed", "true");
-  await expect(other).toHaveAttribute("aria-pressed", "true");
+  await expect(file.locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
+  await expect(row(page, "helpers.ts", "format")).toHaveClass(/symbol-pinned/);
+  await expect(row(page, "helpers.ts", "validate")).toHaveClass(/symbol-pinned/);
+  await expect(symbol).toHaveAttribute("aria-pressed", "false");
+  await expect(other).toHaveAttribute("aria-pressed", "false");
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}helpers.ts`);
   await page.getByRole("button", { name: "2D", exact: true }).click();
-  await expect(symbol).toHaveAttribute("aria-pressed", "true");
+  await expect(file.locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
+  await expect(row(page, "helpers.ts", "format")).toHaveClass(/symbol-pinned/);
   await file.getByRole("button", { name: "Close helpers.ts", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(card(page, "helpers.ts")).toHaveCount(0);
   expect(await page.locator("#map-container .local-directory-closed").count()).toBeGreaterThan(0);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   await expect(page.locator("#context-name")).toHaveText("Scan root");
-  await expect(page.locator("#map-container .node-card, #map-container .local-directory-closed").first()).toBeFocused();
+  await expect(page.locator("#map-container .local-file-inspect, #map-container .local-directory-closed__name").first()).toBeFocused();
 });
 
 test("closing a retained file keeps only symbols needed elsewhere and removes its unneeded branch", async ({ page }) => {
   await page.setViewportSize({ width: 1600, height: 1000 });
   const file = (name: string) => page.locator(`#map-container .node-card[data-id="scripts/slopcop/${name}"]`);
   await page.goto("/?view=local&node=scripts/slopcop/symbolReferences.ts");
-  await file("symbolReferences.ts").locator(".node-title").click();
-  await file("check-symbols.ts").locator(".node-title").click();
+  await file("symbolReferences.ts").locator(".local-file-pin").click();
+  await file("check-symbols.ts").locator(".local-file-pin").click();
   await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toBeVisible();
   await localMapSettled(page);
   // The picture outgrew the frame when the SlopCop scripts gained a dependency on the engine's tooling (2026-10-16),
@@ -192,10 +202,12 @@ test("closing a retained file keeps only symbols needed elsewhere and removes it
     "SymbolRuleSetting", "SymbolReferenceIssue", "findSymbolReferenceAnomalies"
   ]);
   await expect(file("markdownShared.ts")).toHaveCount(0);
-  await expect(file("check-symbols.ts").locator('.symbol-row[data-symbol="__internals__"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
-  await file("symbolReferences.ts").locator(".node-title").click();
+  await expect(file("check-symbols.ts").locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
+  await expect(file("check-symbols.ts").locator('.symbol-row[data-symbol="__internals__"]')).toHaveClass(/symbol-pinned/);
+  await file("symbolReferences.ts").locator(".local-file-pin").click();
   await expect(file("markdownShared.ts")).toBeVisible();
-  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
+  await expect(file("symbolReferences.ts").locator(".local-file-pin")).toHaveAttribute("aria-pressed", "true");
+  await expect(file("symbolReferences.ts").locator('.symbol-row[data-symbol="SymbolIssueKind"]')).toHaveClass(/symbol-pinned/);
 });
 
 test("a retained exploration threads skipped references through lanes: nothing over the top, nothing across a card, every wire forward", async ({ page }) => {
@@ -346,16 +358,18 @@ test("directories are membranes: one connected shape per directory, siblings nev
   expect(bands.some(band => band.segments.some(s => s.top !== band.segments[0].top || s.bottom !== band.segments[0].bottom)), "a membrane follows its members from column to column").toBe(true);
 });
 
-test("a type-reference badge retains its source pin and keeps the referenced file as the detail target", async ({ page }) => {
+test("a type-reference badge inspects the referenced file without pinning or changing the subject across perspectives", async ({ page }) => {
   const graph = "packages/engine/src/live-docs/graph.ts";
-  const document = "packages/engine/src/live-docs/document.ts";
   await page.goto(`/?view=local&node=${graph}`);
   await page.locator('.local-focus .symbol-row[data-symbol="GraphFile"] .type-badge-extends').click();
-  await expect(page.locator("#context-name")).toHaveText(document);
-  await expect(page.locator('.symbol-row[data-symbol="GraphFile"] .symbol-label-wrapper')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#context-name")).toHaveText(graph);
+  await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
+  await expect(page.locator("#detail-title")).toHaveText("document.ts");
+  await expect(page.locator('.symbol-row[data-symbol="GraphFile"] .local-symbol-pin')).toHaveAttribute("aria-pressed", "false");
   await page.getByRole("button", { name: "3D", exact: true }).click();
-  await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", document);
-  await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
+  await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", graph);
+  await expect(page.locator("#detail-title")).toHaveText("document.ts");
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
 });
 
 test("a card's rows stand where their wires lead by default, and Tuning offers the alphabetical order and the file's own", async ({ page }) => {

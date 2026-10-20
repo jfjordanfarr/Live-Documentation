@@ -8,10 +8,12 @@
 
 ## Authored
 ### Purpose
-Keeps what `place.ts` counts as a move and what as a change within a place: views and files are different places, a bare node is the Local Map, an opened folder of the Membrane Map is a move, pins, expanded cards, pan and zoom are the same place, a path counts only with both ends, and the data file the page was opened on is ignored.
+Protects the distinction between navigating to another Explorer place and editing the retained exploration within it. View, subject, Local Map representation, directories, path destination and open evidence can change the place; adding a pin does not.
 
 ### Notes
-- Written on 2026-09-30 with Back and Forward ([Turn 16](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-16)). The Membrane Map cases build real compressed `?s=` addresses through `compressSnapshot`, since that one parameter carries both the open folders and the pins, which is the reason `place.ts` decodes it rather than comparing raw addresses.
+- Written on 2026-09-30 with Back and Forward ([Turn 16](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-16)). The original Membrane Map cases established why place identity must decode the shared parameter instead of comparing raw addresses; today's cases exercise the Local Map.
+- Plain and compressed addresses are compared using the production parser and encoder. Cases distinguish path destinations from their retained starting pins, preserve old view-name migration, and ignore the data-file parameter.
+- Reader cases hold the map subject fixed while opening, changing and closing evidence, distinguish file symbols and bundled-document fragments, and verify that pinning the inspected file remains the same place. They protect the [accepted evidence-history behavior](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#turn-19); actual Back/Forward motion and focus belong to browser coverage.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

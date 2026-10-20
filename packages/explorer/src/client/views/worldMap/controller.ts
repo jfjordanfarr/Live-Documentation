@@ -1348,6 +1348,11 @@ export class WorldMapController {
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
         return;
       }
+      // A key another surface has used, such as Escape closing the reader, or one typed inside a full-screen reader
+      // over the map, is not the map's.
+      if (event.defaultPrevented || (event.target instanceof Element && event.target.closest('[aria-modal="true"]'))) {
+        return;
+      }
       const key = event.key.toLowerCase();
       if (event.key === "Escape") {
         if (this.tour.on) {

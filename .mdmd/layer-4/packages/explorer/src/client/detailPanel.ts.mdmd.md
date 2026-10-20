@@ -4,37 +4,47 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-10-12T19:21:19.021Z
+- Generated At: 2026-10-20T14:51:17.577Z
 
 ## Authored
 ### Purpose
-The Explorer's detail panel: renders a selected file's Live Doc from the graph in the bundle, with its metadata, its authored block as markdown and its generated sections as navigable lists, and downloads the doc rendered back to markdown.
+The Explorer's evidence reader: renders a file or symbol from the bundled Live Docs, a directory from the graph's file inventory, or a bundled authored document. It presents navigation and retention controls supplied by the application without owning those state changes, and downloads the displayed document as Markdown.
 
 ### Notes
-- Created 2025-11-21 during the explorer modularisation.
+- Created during the [November 21, 2025 Explorer modularisation](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-21.SUMMARIZED.md), when the client gained separate state, DOM and reader modules.
 - Since 2026-09-28 the panel reads the graph's file for a node instead of splitting the doc's markdown by regex, and `renderLiveDoc` gives back the doc's bytes for the download; the fetches from the retired server went with it.
-- The footer opens graph files in the Local Map using its remembered representation. The historical Membrane/Circuit actions were retired with those views on October 12, 2026; bundled documents have no graph-file action.
+- Inspecting evidence is independent of the map subject and retained pins. The application supplies the current Pin, Centre or Open actions and handles reader-link and Close callbacks; the panel renders native buttons with accessible labels and pressed states. This boundary follows the owner's [accepted inspect-first grammar](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#turn-24), resumed in [October 20 Turn 2](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). The former unconditional view-switching footer is historical.
+- Authored and generated links resolve through actual document/code paths and the bundled-document inventory, without assuming a documentation root or suffix. Documented re-exports can lead to their origin; a local target absent from the bundle is identified as unavailable. Bundled-document fragments name the section being read.
+- Repeated rendering of the same target preserves reader scroll. Fragment navigation scrolls only the reader body, hidden content is inert, and action updates preserve keyboard focus. Responsive presentation and canvas orientation belong to the application shell.
+- The Internals target describes file-level connections not attributed to a public symbol; it does not assert that private symbols have been documented. Downloading a file uses its actual configured Live Doc filename.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `DetailPanelAction` {#symbol-detailpanelaction}
+- Type: interface
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L19)
+
+##### `DetailPanelAction` — Summary
+A reader control whose meaning and state belong to the application.
+
 #### `DetailPanelApi` {#symbol-detailpanelapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L17)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L28)
 
 ##### `DetailPanelApi` — Summary
 Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L29)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L42)
 
 ##### `DetailPanelOptions` — Summary
 Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L51)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L70)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 
@@ -46,9 +56,12 @@ and node metadata.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`document.renderLiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`document.symbolName`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
+- [`types.InspectionTarget`](./types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`pin-state.INTERNAL_SYMBOL`](./views/pin-state.ts.mdmd.md#symbol-internal_symbol)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

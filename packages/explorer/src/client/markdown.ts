@@ -14,6 +14,8 @@
  * It does NOT aim to be a full CommonMark implementation.
  */
 
+import { GitHubSlugger, slugText } from "@live-documentation/engine/tooling/githubSlugger";
+
 import { escapeHtml } from "./graph-helpers";
 
 /**
@@ -33,19 +35,35 @@ export function renderMarkdown(
     } = options;
 
     // Normalize line endings
-    let content = markdown.replace(/\r\n?/g, "\n");
-
-    // Process code blocks first (to prevent other processing inside them)
-    content = processCodeBlocks(content);
+    const content = markdown.replace(/\r\n?/g, "\n");
 
     // Process block elements
     const lines = content.split("\n");
     const outputLines: string[] = [];
+    const headings = new GitHubSlugger();
     let inList = false;
     let listType: "ul" | "ol" | null = null;
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
+
+        // Keep fenced contents opaque: a heading, link or emphasis inside code is literal text,
+        // and cannot reserve an anchor that belongs to a later real heading.
+        const fence = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+        if (fence && !(fence[1][0] === "`" && fence[2].includes("`"))) {
+            if (inList) {
+                outputLines.push(listType === "ul" ? "</ul>" : "</ol>");
+                inList = false;
+                listType = null;
+            }
+            const closing = new RegExp(`^ {0,3}${fence[1][0]}{${fence[1].length},}[ \\t]*$`);
+            const code: string[] = [];
+            for (i += 1; i < lines.length && !closing.test(lines[i]); i += 1) code.push(lines[i]);
+            const language = fence[2].trim().split(/\s+/)[0];
+            const langClass = language ? ` class="language-${escapeHtml(language)}"` : "";
+            outputLines.push(`<pre><code${langClass}>${escapeHtml(code.join("\n"))}</code></pre>`);
+            continue;
+        }
 
         // Horizontal rule
         if (/^---+$/.test(line.trim()) || /^\*\*\*+$/.test(line.trim())) {
@@ -59,7 +77,7 @@ export function renderMarkdown(
         }
 
         // Headings
-        const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+        const headingMatch = line.match(/^ {0,3}(#{1,6})[ \t]+(.*)$/);
         if (headingMatch) {
             if (inList) {
                 outputLines.push(listType === "ul" ? "</ul>" : "</ol>");
@@ -67,9 +85,10 @@ export function renderMarkdown(
                 listType = null;
             }
             const level = Math.min(headingMatch[1].length, maxHeadingLevel);
-            const text = processInline(headingMatch[2], linkHandler);
-            const id = slugify(headingMatch[2]);
-            outputLines.push(`<h${level} id="${id}">${text}</h${level}>`);
+            const heading = headingMatch[2].replace(/[ \t]+#+[ \t]*$/, "").trim();
+            const text = processInline(heading, linkHandler);
+            const id = headings.slug(slugText(heading));
+            outputLines.push(`<h${level} id="${escapeHtml(id)}">${text}</h${level}>`);
             continue;
         }
 
@@ -146,21 +165,6 @@ export interface RenderMarkdownOptions {
 }
 
 /**
- * Process fenced code blocks and replace with HTML.
- */
-function processCodeBlocks(content: string): string {
-    // Fenced code blocks (```language ... ```)
-    content = content.replace(
-        /```(\w*)\n([\s\S]*?)```/g,
-        (_match: string, lang: string, code: string) => {
-            const langClass = lang ? ` class="language-${escapeHtml(lang)}"` : "";
-            return `<pre><code${langClass}>${escapeHtml(code.trim())}</code></pre>`;
-        }
-    );
-    return content;
-}
-
-/**
  * Process inline markdown elements (bold, italic, code, links).
  * 
  * ORDERING IS CRITICAL:
@@ -230,19 +234,3 @@ function processInline(
 
     return text;
 }
-
-/**
- * Generate a URL-safe slug from text.
- */
-function slugify(text: string): string {
-    return text
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
-        .trim();
-}
-
-/**
- * Escape HTML special characters.
- */

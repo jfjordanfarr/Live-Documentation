@@ -7,7 +7,7 @@
 
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
-import { HISTORY_GRANULARITIES, type HistoryAxis, type HistoryGranularity, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { HISTORY_GRANULARITIES, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -319,7 +319,7 @@ export const applyPersistedUi = (
 // Persisted Navigation State (view + node selection)
 // ─────────────────────────────────────────────────────────────────────────
 
-/** localStorage key for persisted navigation state (active view + focused node). */
+/** localStorage key for persisted navigation state (active view + map subject). */
 export const PERSISTED_NAV_KEY = "live-docs-explorer:nav:v1";
 /** Schema version tag embedded in persisted navigation payloads. */
 export const PERSISTED_NAV_VERSION = 1 as const;
@@ -333,7 +333,32 @@ export type PersistedNavV1 = {
   spatialLayout?: SpatialLayout;
   openDirectories?: string[];
   nodeId?: string | null;
+  /** Explicitly open evidence, separate from the remembered map subject. */
+  inspection?: InspectionTarget | null;
 };
+
+/** Validate stored target syntax here; the application checks its membership against the current bundle. */
+function readPersistedInspection(value: unknown): InspectionTarget | null {
+  if (!isRecord(value)) return null;
+  if (value.kind === "file" && typeof value.nodeId === "string" && value.nodeId) {
+    return {
+      kind: "file",
+      nodeId: value.nodeId,
+      ...(typeof value.symbol === "string" && value.symbol ? { symbol: value.symbol } : {})
+    };
+  }
+  if (value.kind === "directory" && typeof value.directory === "string") {
+    return { kind: "directory", directory: value.directory };
+  }
+  if (value.kind === "bundled-doc" && typeof value.path === "string" && value.path) {
+    return {
+      kind: "bundled-doc",
+      path: value.path,
+      ...(typeof value.fragment === "string" && value.fragment ? { fragment: value.fragment } : {})
+    };
+  }
+  return null;
+}
 
 /**
  * Reads and validates persisted navigation state from localStorage.
@@ -376,6 +401,7 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
       perspective,
       spatialLayout,
       openDirectories,
+      inspection: readPersistedInspection(parsed.inspection),
       ...(nodeId !== undefined ? { nodeId } : null)
     };
   } catch {
@@ -432,10 +458,11 @@ export const createPersistUiScheduler = (
 
 /**
  * Create a debounced navigation persistence scheduler.
- * Writes view and focused node to localStorage after a 150ms debounce.
+ * Writes view, map subject and independently open evidence to localStorage after a 150ms debounce.
+ * Inspecting a different file never replaces the remembered subject.
  */
 export const createPersistNavScheduler = (
-  getState: () => { view: ViewName; perspective: LocalMapPerspective; spatialLayout: SpatialLayout; openDirectories: ReadonlySet<string>; focusedNodeId: string | null; selectedNodeId: string | null }
+  getState: () => { view: ViewName; perspective: LocalMapPerspective; spatialLayout: SpatialLayout; openDirectories: ReadonlySet<string>; selectedNodeId: string | null; inspection: InspectionTarget | null }
 ): PersistNavScheduler => {
   let timer: number | null = null;
 
@@ -454,7 +481,8 @@ export const createPersistNavScheduler = (
             perspective: state.perspective,
             spatialLayout: state.spatialLayout,
             openDirectories: [...state.openDirectories],
-            nodeId: state.focusedNodeId ?? state.selectedNodeId ?? null
+            nodeId: state.selectedNodeId,
+            inspection: readPersistedInspection(state.inspection)
           };
           window.localStorage.setItem(PERSISTED_NAV_KEY, JSON.stringify(payload));
         } catch {

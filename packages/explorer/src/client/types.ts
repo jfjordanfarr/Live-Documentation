@@ -208,6 +208,12 @@ export type PathDestination =
   | { kind: "file"; nodeId: string; symbol?: string }
   | { kind: "directory"; directory: string };
 
+/** The evidence explicitly open in the reader, independent of the Local Map subject and its pins. */
+export type InspectionTarget =
+  | { kind: "file"; nodeId: string; symbol?: string }
+  | { kind: "bundled-doc"; path: string; fragment?: string }
+  | { kind: "directory"; directory: string };
+
 /**
  * Root state object for the Explorer client, managed by
  * `persistence/local-storage.ts` and consumed by every view.
@@ -232,7 +238,7 @@ export interface ExplorerState {
   /** The 3D Local Map's layout, remembered like the perspective and carried by shared links. */
   spatialLayout: SpatialLayout;
   selectedNode: ExplorerNodePayload | null;
-  focusedNode: ExplorerNodePayload | null;
+  inspection: InspectionTarget | null;
   filters: ExplorerFilters;
   tuning: TuningConfig;
 }

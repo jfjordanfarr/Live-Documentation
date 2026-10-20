@@ -138,8 +138,18 @@ test("alignment trials animate their outlines while the selected file stays in p
 });
 
 const warehouseFile = "tests/integration/programs/java/warehouse/src/main/java/com/acme/warehouse/report/Report.java";
-const runs: ScopeRun[] = [DECK_SCOPES.find(run => run.bundle === "estate" && run.scopeName === "five files")!,
-  { bundle: "repository", base: "/", scopeName: "warehouse report", scope: [warehouseFile], subject: warehouseFile }];
+const generatorFile = "packages/generator/src/generator.ts";
+/**
+ * Each run's search must try an alignment, and the runs marked `adopts` must adopt one, so that the agreement covers an
+ * adopted picture on each bundle. The warehouse report adopted until 2026-10-20, when the symbol rows' Pin and More
+ * made its first placement start at the one membrane step its search used to reach (2 then 1 under the old rows, 1
+ * from the start under the new, measured by the lab on both); it stays as the case whose tried alignment is rejected,
+ * and the generator, which adopts under both, carries the repository bundle's adoption.
+ */
+const runs: Array<ScopeRun & { adopts: boolean }> = [
+  { ...DECK_SCOPES.find(run => run.bundle === "estate" && run.scopeName === "five files")!, adopts: true },
+  { bundle: "repository", base: "/", scopeName: "generator", scope: [generatorFile], subject: generatorFile, adopts: true },
+  { bundle: "repository", base: "/", scopeName: "warehouse report", scope: [warehouseFile], subject: warehouseFile, adopts: false }];
 
 for (const run of runs) {
   test(`continuing geometry competition agrees with the headless command: ${run.scopeName}`, async ({ page }) => {
@@ -156,7 +166,7 @@ for (const run of runs) {
     const settings = { searchStarts: 4, searchPatience: 2, churnCost: getDefaultTuning().localMap.churnCost };
     const expected = refine(capture, graph, run, config, settings);
     expect(expected.alignmentTried).toBeGreaterThan(0);
-    expect(expected.alignmentAdopted).toBeGreaterThan(0);
+    if (run.adopts) expect(expected.alignmentAdopted).toBeGreaterThan(0);
     await tuning(page, { ...settings, membraneSimplicity: 50, moveMs: 0 });
     await page.goto(localRetainUrl(run.base, run.scope));
     await page.locator(".local-placed").waitFor();

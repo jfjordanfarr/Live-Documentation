@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { compressToEncodedURIComponent } from "lz-string";
 
-import { pathAddress } from "./search-bar";
+import { currentSnapshot, pathAddress } from "./search-bar";
 import { PERSISTED_NAV_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 
 const SUBJECT = "packages/explorer/src/client/index.ts";
@@ -18,7 +18,8 @@ test("three navigable views, with a board as the fresh landing", async ({ page }
   await expect(page.locator("#view-circuit, #view-membrane")).toHaveCount(0);
   await page.getByRole("button", { name: "Local Map", exact: true }).click();
   await ready(page, "2d");
-  expect(new URL(page.url()).searchParams.get("view")).toBe("local");
+  expect(new URL(page.url()).searchParams.get("s"), "the Local Map is an explicit shared place rather than a bare board landing").toBeTruthy();
+  expect(currentSnapshot(page).view).toBe("map");
 });
 
 test("3D survives navigation, reload, a fresh shared-link recipient and a return without a URL", async ({ page, browser }) => {
@@ -29,8 +30,7 @@ test("3D survives navigation, reload, a fresh shared-link recipient and a return
   await expect(page.getByRole("button", { name: "3D", exact: true })).toBeEnabled();
   await expect(page.locator('.nav-item[aria-current="page"]')).toHaveAttribute("data-view", "map");
   const shared = page.url();
-  expect(new URL(shared).searchParams.get("view")).toBe("local");
-  expect(new URL(shared).searchParams.get("mode")).toBe("3d");
+  expect(currentSnapshot(page)).toMatchObject({ view: "map", perspective: "3d", selectedNodeId: SUBJECT });
   await page.reload();
   await ready(page, "3d");
   await expect(page.locator("#pathfind-status")).toContainText("Path found: 2 files");

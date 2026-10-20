@@ -9,8 +9,8 @@ import { LOCAL_MAP, localMapSettled, localRetainUrl } from "./still-picture";
  * without symbols standing in for everything under it; encasing, the
  * membrane around the files party to the wires, the rest counted on its
  * label; open, every file inside as a compact card and every subdirectory as
- * a closed box. The name opens, the X closes as far as the pins allow, a
- * closed box opens in place, and no wire ever reaches a closed box.
+ * a closed box. Names inspect; explicit Open controls disclose contents,
+ * the X closes as far as pins allow, and no wire reaches a closed box.
  */
 
 const ENGINE = "packages/engine/src";
@@ -72,7 +72,7 @@ test("a directory entered with nothing pinned is a grid of compact cards and clo
   }
   await expectNoTextFault(page);
   // Opening a box writes the opened set into the address, and the address reopens the same picture.
-  await box(page, `${ENGINE}/config`).click();
+  await box(page, `${ENGINE}/config`).locator(".local-directory-open").click();
   await settled(page);
   await expect(label(page, `${ENGINE}/config`).locator(".local-directory-close")).toBeVisible();
   await expect(cards(page)).toHaveCount(2);
@@ -89,7 +89,7 @@ test("a closed box opens in place, the membrane growing from the box while the p
   await settled(page);
   const before = (await box(page, LIVE_DOCS).boundingBox())!;
   const moveStarted = page.waitForFunction(() => document.querySelector<HTMLElement>("#map-container .local-placed")?.dataset.moving === "true", undefined, { timeout: 5_000 });
-  await box(page, LIVE_DOCS).click();
+  await box(page, LIVE_DOCS).locator(".local-directory-open").click();
   await moveStarted;
   // Early in the move the new membrane stands where the box stood, no wider than the box was, and grows from there.
   const early = (await page.locator(`#map-container .local-directory-band[data-directory="${LIVE_DOCS}"]`).boundingBox())!;
@@ -128,7 +128,7 @@ test("a closed box opens in place, the membrane growing from the box while the p
   await expect(page.locator("#map-container .local-directory-closed")).toHaveCount(4);
 });
 
-test("an encasing membrane counts what it hides, its name opens it around the pinned files, and no wire reaches a closed box", async ({ page }) => {
+test("an encasing membrane counts what it hides, Open discloses it around pinned files, and no wire reaches a closed box", async ({ page }) => {
   const graph = `${LIVE_DOCS}/graph.ts`;
   const builder = "packages/explorer/src/shared/staticBuilder.ts";
   await page.goto(localRetainUrl("/", [graph, builder]));
@@ -142,8 +142,8 @@ test("an encasing membrane counts what it hides, its name opens it around the pi
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toHaveCount(0);
   const partyCards = await cards(page).count();
   // The map does not scroll and the encased picture may be wider than the frame, with its label under the sidebar, so
-  // the click is dispatched to the name rather than aimed at the frame, as the member's and the X's are below.
-  await label(page, LIVE_DOCS).locator(".local-directory-name").evaluate(name => (name as HTMLElement).click());
+  // the click is dispatched to Open rather than aimed at the frame, as the member's Pin and the X are below.
+  await label(page, LIVE_DOCS).locator(".local-directory-open").evaluate(button => (button as HTMLButtonElement).click());
   await settled(page);
   // Open: every file of live-docs is drawn, the ones not party compact and unwired, and its subdirectories are boxes; the wires are the same.
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toBeVisible();
@@ -168,11 +168,11 @@ test("an encasing membrane counts what it hides, its name opens it around the pi
     expect(end.x >= b.left && end.x <= b.right && end.y >= b.top && end.y <= b.bottom, "a wire ends inside a closed box").toBe(false);
   }
   await expectNoTextFault(page);
-  // A compact member retains on a click, as any card does, and its wires appear; the directory stays open. The map does
-  // not scroll and the opened picture is wide, so the click is dispatched to the title rather than aimed at the frame.
+  // A compact member's Pin retains it and reveals its wires; the directory stays open. The map does
+  // not scroll and the opened picture is wide, so the click is dispatched to Pin rather than aimed at the frame.
   const member = page.locator("#map-container .node-card.branch-member").first();
   const memberId = await member.getAttribute("data-id");
-  await member.locator(".node-title").evaluate(title => (title as HTMLElement).click());
+  await member.locator(".local-file-pin").evaluate(button => (button as HTMLButtonElement).click());
   await settled(page);
   await expect(page.locator(`#map-container .node-card[data-id="${memberId}"]`)).not.toHaveClass(/branch-member/);
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toBeVisible();
@@ -190,11 +190,11 @@ test("keyboard release preserves an independently opened child and the enclosure
   const graph = `${LIVE_DOCS}/graph.ts`;
   await page.goto(localRetainUrl("/", [graph]));
   await settled(page);
-  await label(page, LIVE_DOCS).locator(".local-directory-name").focus();
+  await label(page, LIVE_DOCS).locator(".local-directory-open").focus();
   await page.keyboard.press("Enter");
   await settled(page);
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toBeVisible();
-  await box(page, `${LIVE_DOCS}/adapters`).focus();
+  await box(page, `${LIVE_DOCS}/adapters`).locator(".local-directory-open").focus();
   await page.keyboard.press("Space");
   await settled(page);
   await expect(label(page, `${LIVE_DOCS}/adapters`).locator(".local-directory-close")).toBeVisible();

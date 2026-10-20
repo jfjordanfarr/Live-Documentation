@@ -33,6 +33,18 @@ describe("placeOf", () => {
     expect(placeOf(after)).toBe(placeOf(before));
   });
 
+  it("counts opening, changing and closing evidence as places while the map subject stands", () => {
+    const base = { selectedNodeId: "src/a.ts" };
+    const at = (inspection: UrlStateSnapshot["inspection"]) => placeOf(exploration({ ...base, inspection }));
+    expect(at({ kind: "file", nodeId: "src/b.ts" })).not.toBe(at(null));
+    expect(at({ kind: "file", nodeId: "src/b.ts", symbol: "run" })).not.toBe(at({ kind: "file", nodeId: "src/b.ts" }));
+    expect(at({ kind: "directory", directory: "src" })).not.toBe(at({ kind: "bundled-doc", path: "src/README.md" }));
+    expect(at({ kind: "directory", directory: "" })).not.toBe(at(null));
+    expect(at({ kind: "bundled-doc", path: "src/README.md", fragment: "purpose" }))
+      .not.toBe(at({ kind: "bundled-doc", path: "src/README.md", fragment: "notes" }));
+    expect(at({ kind: "file", nodeId: "src/b.ts" })).toBe(placeOf(exploration({ ...base, inspection: { kind: "file", nodeId: "src/b.ts" }, pinSet: addPin(DEFAULT_SNAPSHOT.pinSet, "src/b.ts", "*") })));
+  });
+
   it("keeps explicit representation changes in history within the Local Map", () => {
     expect(placeOf("?view=local&mode=2d&node=a.ts")).not.toBe(placeOf("?view=local&mode=3d&node=a.ts"));
     expect(placeOf("?view=force&node=a.ts")).toBe(placeOf("?view=local&mode=3d&node=a.ts"));

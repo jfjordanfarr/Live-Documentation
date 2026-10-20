@@ -86,7 +86,7 @@ test("a change of pins starts the search afresh, from the seed after the first p
     return null;
   });
   expect(found).not.toBeNull();
-  await page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .symbol-label-wrapper`).click();
+  await page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .local-symbol-pin`).click();
   const fresh = await readSearch(page);
   expect(fresh.tried, "the new picture's search has only begun").toBeLessThan(4);
   expect(fresh.next).toBeGreaterThanOrEqual(1);

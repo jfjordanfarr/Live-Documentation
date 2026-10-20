@@ -124,7 +124,7 @@ test("closing a neighbor's symbol disclosure preserves the direct-file inspectio
 test("releasing the last pinned symbol on a card leaves the file pinned whole, the subject in place; the tray releases it", async ({ page }) => {
   await page.goto(sharedUrl({ ...state, openDirectories: new Set() }));
   await localMapSettled(page);
-  await page.getByRole("button", { name: "Pin run in processor.ts", exact: true }).click();
+  await page.getByRole("button", { name: "Unpin run in processor.ts", exact: true }).click();
   await localMapSettled(page);
   // The owner's rule of 2026-10-15: a card leaves the picture only by its close or the tray, never by its rows
   expect(current(page).selectedNodeId).toBe(PROCESSOR);

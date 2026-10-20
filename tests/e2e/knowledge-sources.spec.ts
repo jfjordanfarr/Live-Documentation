@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
+import { currentSnapshot } from "./search-bar";
 
 /**
  * The Knowledge Sources panel says what the graph index says, and no more
@@ -145,11 +146,20 @@ for (const [label, base] of [["this repository", "/"], ["the estate sample", "/s
     const testsOnlyListed = await unreachable.locator('[data-list="tests-only"] .sources-file').evaluateAll(buttons => buttons.map(button => (button as HTMLElement).dataset.nodeId));
     expect(testsOnlyListed.sort()).toEqual(expected.testsOnly.map(file => file.codePath).sort());
 
-    // A file's name puts it in the detail panel without leaving the panel.
+    // Reading a named file leaves the source view, map subject and retained exploration in place.
     const first = section.locator("details[data-reason] > ul .sources-file").first();
     const firstPath = await first.getAttribute("data-node-id");
+    const beforeInspection = currentSnapshot(page);
+    expect(beforeInspection.view).toBe("sources");
+    const contextBefore = await page.locator("#context-name").innerText();
     await first.click();
-    await expect(page.locator("#context-name")).toHaveText(firstPath!);
+    await expect(page.locator("#detail-panel")).toHaveAttribute("aria-hidden", "false");
+    await expect(page.locator("#detail-body .path-value")).toHaveText(firstPath!);
+    expect(currentSnapshot(page).inspection).toEqual({ kind: "file", nodeId: firstPath });
+    expect(currentSnapshot(page).view).toBe("sources");
+    expect(currentSnapshot(page).selectedNodeId).toBe(beforeInspection.selectedNodeId);
+    expect(currentSnapshot(page).pinSet).toEqual(beforeInspection.pinSet);
+    await expect(page.locator("#context-name")).toHaveText(contextBefore);
     await expect(page.locator("#sources-container h1")).toBeVisible();
 
     // The words keep apart, with groups open.

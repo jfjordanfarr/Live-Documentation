@@ -8,6 +8,7 @@
 
 .force-graph-focus {
     position: absolute;
+    z-index: 2;
     transform: translate(-50%, 16px);
     max-width: calc(100% - 24px);
     padding: 5px 9px;
@@ -24,6 +25,47 @@
 .force-graph-focus:focus-visible {
     outline: 2px solid #0091ff;
     outline-offset: 3px;
+}
+
+.force-graph-actions {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    gap: 4px;
+    transform: translateX(-50%);
+    padding: 4px;
+    background: var(--bg-surface, #202020);
+    border: 1px solid var(--border-color, #555);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px #0009;
+}
+
+.force-graph-actions[hidden],
+.force-graph-actions button[hidden] { display: none; }
+
+.force-graph-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    color: var(--text-primary, #eee);
+    background: transparent;
+    border: 1px solid var(--border-color, #555);
+    border-radius: 4px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.force-graph-actions button:hover { background: #ffffff1a; }
+.force-graph-actions button[aria-pressed="true"] { color: var(--accent, #0091ff); }
+.force-graph-actions button[data-kind="directory"] .force-graph-file-action,
+.force-graph-actions button[data-kind="file"] .force-graph-directory-action { display: none; }
+
+.force-graph-actions button:focus-visible {
+    outline: 2px solid #0091ff;
+    outline-offset: 2px;
 }
 
 #graph-svg[data-hovered-node="true"] canvas { cursor: pointer; }

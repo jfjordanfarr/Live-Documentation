@@ -4,23 +4,23 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-18T20:50:50.454Z
+- Generated At: 2026-10-20T14:51:18.839Z
 
 ## Authored
 ### Purpose
 
-Client-side type definitions for the Explorer UI. Defines view state, filters, bezier curve tuning parameters, and test coverage map types used across client modules.
+Shared vocabulary for Explorer state and controls: navigation, the Local Map's representation and layout, map subject, independently inspected evidence, retained exploration, filters, tuning and test coverage.
 
 ### Notes
 
-- Navigation has three views; the Local Map representation is a separate 2d/3d value, shared across navigation and persistence.
+- Navigation has three views (`map`, `sources`, `world`); the Local Map representation is a separate 2d/3d value, shared across navigation and persistence.
+- `selectedNode` is the map subject; `inspection` is the explicitly open reader target or null. A target can be a file with an optional symbol, a directory, or a bundled document with an optional fragment. Pins, path destination and history commit remain distinct state. The separation supports the owner's [inspect-first choice](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#turn-24) and its [resumed implementation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2): reading evidence must not silently change retention or the subject used by a perspective switch.
 
 - Created 2025-11-21 during the explorer client/server split.
-- `ViewName` union controls which visualization mode is active (now includes `"membrane"`).
 - `BezierTuning` parameters govern connection line rendering in the 2D Local Map.
 - `SymbolOrder` (2026-10-05) names how a card's symbol rows stand: `layout`, where their wires lead, which only the many-file layout can choose; `alphabetical`; or `appearance`, the Live Doc's order. It lives in `LocalMapTuning.symbolOrder` with `layout` as the default, the owner's choice of navigability of the whole over a fixed order of the few ([Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-05.1.record.md#turn-11)).
 - `LocalMapTuning` gained the layout lab's levers on 2026-10-06, each at the value the picture was designed at: `rankingPull` (0), `rankingTie` ("fewest"), `orderSweeps` (4), `orderSeed` (null, the ranking's order), `itemGap` (24), `bandGap` (28), `membraneNeck` (60), `membranePadding` (12) and `cardMaxWidth` (null, as wide as the content asks). The page reads them so that the lab's finalists can be rendered and measured by the deck with the tuning seeded; the tuning panel does not yet show them. Later the same day the order step's restarts added `orderStarts` (4, the seeded starts tried beside the ranking's order and the previous picture's; `orderSeed` set tries that one start alone), and the prices a start's picture is judged by beyond its vertical wire length, in pixels of wire: `crossingCost` (80, per crossing of the order's own count), `heightCost` (5, per pixel of the picture's height) and `churnCost` (100, per pair of cards swapped against the previous picture); the first two were set where the lab's tabulation found the page's choice agreeing with the full weighted score on every deck scope, the third provisionally, until a tabulation has a previous picture ([Turn 12](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-12)). The laces' shape joined the same night as four dials beside `selfLoopTaper`: `laceReach` (18), `laceCurl` (12), `laceWidth` (2.5) and `laceInset` (0, how far past the card's edge a lace ends), so the owner can tune the self-references' look by eye in the tuning panel ([Turn 13](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)).
-- `ClickBehaviorTuning` and `VisualTuning` interfaces removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md); `TuningConfig` simplified to only `bezier` and `localMap` properties.
+- `ClickBehaviorTuning` and `VisualTuning` interfaces were removed in [Dev Day 83](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-27.1.md). Today's `TuningConfig` groups Bézier, Local Map, force-graph and history controls separately.
 - `moveMs` and `holdStill` (2026-10-07): how long the branch picture takes to move from one arrangement to the next, zero jumping, and which card a move holds still on screen, the last clicked or the last clicked or hovered.
 - `searchStarts` and `searchPatience` (2026-10-07): how many further seeded starts the continuing search may try after the first paint, zero turning it off, and how many in a row may go unadopted before it settles.
 - Later on 2026-10-07 ([Turn 18](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-18)): `orderStarts` fell from 4 to 2, since the search follows the first picture and the four scopes' tables showed seeds 2 to 4 bettering nothing before paint; `searchPatience` counts the starts since the best price found improved, churn aside, not since the last adoption; `churnCost` has a slider.
@@ -144,9 +144,16 @@ The 3D Local Map's packing and stable visual encodings, shared with the headless
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
+#### `InspectionTarget` {#symbol-inspectiontarget}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L212)
+
+##### `InspectionTarget` — Summary
+The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
+
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L215)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L221)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -154,7 +161,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L241)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L247)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

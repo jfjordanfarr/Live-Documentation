@@ -6,8 +6,8 @@ import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence
 /**
  * The animated re-layout: a change of pins moves the branch picture from one
  * arrangement to the next instead of redrawing it. Every card keeps its
- * element, each slides from where it stood to where it now belongs, the card
- * the person last acted on is held still on screen by the camera, and the
+ * element, each slides from where it stood to where it now belongs, the
+ * symbol row the person last acted on is held still on screen by the camera, and the
  * picture comes to rest with nothing of the move left on it. With the move
  * length at zero, or motion reduced, the picture jumps as before (the
  * owner's plan and answers, 2026-10-07, Turns 15 and 16).
@@ -79,7 +79,7 @@ test("wires keep their elements and follow pins through interrupted, zoomed pin 
     };
     requestAnimationFrame(sample);
   }, ROOT);
-  const pin = page.getByRole("button", { name: "Pin run in processor.ts", exact: true });
+  const pin = page.locator(`.node-card[data-id="${ROOT}processor.ts"] .symbol-row[data-symbol="run"] .local-symbol-pin`);
   await pin.click();
   await page.waitForTimeout(200);
   // Keyboard activation is possible while the row is moving; a second
@@ -143,11 +143,11 @@ async function rowToPin(page: Page) {
   return page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .symbol-label-wrapper`);
 }
 
-interface Frame { t: number; moving: boolean; cards: Array<[string, number, number]> }
+interface Frame { t: number; moving: boolean; cards: Array<[string, number, number]>; held: [number, number] | null }
 
-/** Records, from inside the page, where every card stands on each frame for the next four seconds, with whether the picture is moving. */
-async function recordFrames(page: Page): Promise<void> {
-  await page.evaluate(() => {
+/** Records every wrapper and the acted-on row on each frame, with whether the picture is moving. */
+async function recordFrames(page: Page, heldSelector: string): Promise<void> {
+  await page.evaluate(selector => {
     const frames: Frame[] = [];
     (window as unknown as { __frames: Frame[] }).__frames = frames;
     const t0 = performance.now();
@@ -157,23 +157,29 @@ async function recordFrames(page: Page): Promise<void> {
         const r = el.getBoundingClientRect();
         return [el.querySelector<HTMLElement>(".node-card")!.dataset.id!, r.left, r.top] as [string, number, number];
       });
-      frames.push({ t: performance.now() - t0, moving: root?.dataset.moving === "true", cards });
+      const held = document.querySelector(selector)?.getBoundingClientRect();
+      frames.push({ t: performance.now() - t0, moving: root?.dataset.moving === "true", cards, held: held ? [held.left, held.top] : null });
       if (performance.now() - t0 < 4000) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
-  });
+  }, heldSelector);
 }
 
-test("a pin moves the picture: cards keep their elements, the clicked card holds still, and the rest slide to their new places", async ({ page }) => {
+test("a pin moves the picture: cards keep their elements, the acted-on row holds still, and the rest slide to their new places", async ({ page }) => {
   await openPicture(page, LONG_MOVE_MS);
   await stamp(page);
   const before = await cards(page);
   expect(before.length).toBeGreaterThan(2);
   const row = await rowToPin(page);
-  const clicked = await row.evaluate(el => el.closest<HTMLElement>(".node-card")!.dataset.id!);
+  const clicked = await row.evaluate(el => ({
+    id: el.closest<HTMLElement>(".node-card")!.dataset.id!,
+    symbol: el.closest<HTMLElement>(".symbol-row")!.dataset.symbol!
+  }));
+  const heldSelector = `#map-container .node-card[data-id="${clicked.id}"] .symbol-row[data-symbol="${clicked.symbol}"] .symbol-label-wrapper`;
+  const start = (await row.boundingBox())!;
   // The page itself records each frame, since the test runner's own clock says nothing about when the page drew.
-  await recordFrames(page);
-  await row.click();
+  await recordFrames(page, heldSelector);
+  await row.locator(".local-symbol-pin").click();
   await localMapSettled(page);
   await page.waitForTimeout(100);
   const after = await cards(page);
@@ -185,15 +191,14 @@ test("a pin moves the picture: cards keep their elements, the clicked card holds
   const shared = after.filter(card => was.has(card.id));
   expect(shared.length).toBeGreaterThan(1);
   for (const card of shared) expect(card.stamp, `${card.id} keeps its element`).toBe(was.get(card.id)!.stamp);
-  // The clicked card held still on screen through every frame of the move and at rest.
-  const start = was.get(clicked)!;
+  // The direct Pin acts on a symbol. Its label, including its movement inside the card, stays under the eye.
   for (const frame of frames) {
-    const seen = at(frame, clicked)!;
-    expect(Math.abs(seen[0] - start.left), `${clicked} holds its place at ${Math.round(frame.t)} ms`).toBeLessThanOrEqual(1.5);
-    expect(Math.abs(seen[1] - start.top), `${clicked} holds its place at ${Math.round(frame.t)} ms`).toBeLessThanOrEqual(1.5);
+    expect(frame.held, "the acted-on row remains drawn during the move").not.toBeNull();
+    expect(Math.abs(frame.held![0] - start.x), `${clicked.symbol} holds its place at ${Math.round(frame.t)} ms`).toBeLessThanOrEqual(1.5);
+    expect(Math.abs(frame.held![1] - start.y), `${clicked.symbol} holds its place at ${Math.round(frame.t)} ms`).toBeLessThanOrEqual(1.5);
   }
-  const rest = after.find(card => card.id === clicked)!;
-  expect(Math.hypot(rest.left - start.left, rest.top - start.top), `${clicked} is where it was at rest`).toBeLessThanOrEqual(1.5);
+  const rest = (await row.boundingBox())!;
+  expect(Math.hypot(rest.x - start.x, rest.y - start.y), `${clicked.symbol} is where it was at rest`).toBeLessThanOrEqual(1.5);
   // The picture changed, and every card that moved far went monotonically from its old place to its new, part way at the middle frame.
   const movers = shared.filter(card => Math.hypot(card.left - was.get(card.id)!.left, card.top - was.get(card.id)!.top) > 20);
   expect(movers.length, "some card moved with the change of pins").toBeGreaterThan(0);
@@ -225,7 +230,7 @@ for (const way of ["the move length at zero", "motion reduced"] as const) {
     await openPicture(page, way === "motion reduced" ? undefined : 0);
     await stamp(page);
     const before = await cards(page);
-    await (await rowToPin(page)).click();
+    await (await rowToPin(page)).locator(".local-symbol-pin").click();
     expect(await moving(page), "no move runs").toBe(false);
     const after = await cards(page);
     await page.waitForTimeout(300);

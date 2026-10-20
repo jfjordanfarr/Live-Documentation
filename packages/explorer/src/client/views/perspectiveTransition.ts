@@ -243,11 +243,19 @@ function visualCopy(root: HTMLElement, deep = true): HTMLElement {
   const clones = [copy, ...copy.querySelectorAll<HTMLElement>("*")];
   originals.forEach((element, index) => {
     const clone = clones[index];
-    const style = getComputedStyle(element);
-    for (const name of style) clone.style.setProperty(name, style.getPropertyValue(name));
+    // Remove live hooks before writing the large style, avoiding its lazy attribute serialization here.
     for (const name of [...clone.getAttributeNames()]) {
       if (name === "id" || name === "class" || name === "tabindex" || name === "role" || name.startsWith("data-") || name.startsWith("on")) clone.removeAttribute(name);
     }
+    const style = getComputedStyle(element);
+    // Read the native length once and preserve every computed property in one parsed declaration block.
+    const length = style.length;
+    const declarations = new Array<string>(length);
+    for (let property = 0; property < length; property++) {
+      const name = style.item(property);
+      declarations[property] = `${name}: ${style.getPropertyValue(name)};`;
+    }
+    clone.style.cssText = declarations.join("");
     if (element instanceof HTMLCanvasElement && clone instanceof HTMLCanvasElement) clone.getContext("2d")?.drawImage(element, 0, 0);
   });
   return copy;

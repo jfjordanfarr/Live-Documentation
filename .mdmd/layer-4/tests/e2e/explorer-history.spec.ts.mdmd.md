@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/explorer-history.spec.ts
-- Generated At: 2026-10-12T19:21:21.272Z
+- Generated At: 2026-10-20T14:51:21.816Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,7 @@ Keeps Back and Forward in the browser: the views visited walk back and forward b
 
 ### Notes
 - Written on 2026-09-30 with Back and Forward ([Turn 16](../../../../AI-Agent-Workspace/ChatHistory/2026/09/Summarized/2026-09-29.2.SUMMARIZED.md#turn-16)), as the owner asked: "we can split out the pinning history from the navigation history". The unit side is `persistence/history.test.ts` and `persistence/place.test.ts`; this spec is where the browser's own history is driven, which no unit test can.
+- The pin-within-a-folder journey uses the explicit Pin control and requires the reader to remain closed, so retention cannot accidentally add an evidence-history step. The original assertions also retain an open tray across navigation back to the map. This preserves the distinction while applying the [October 20 inspect-first grammar](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -22,5 +23,6 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

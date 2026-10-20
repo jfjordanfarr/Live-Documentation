@@ -4,17 +4,18 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-10-16T04:41:10.810Z
+- Generated At: 2026-10-20T18:05:19.783Z
 
 ## Authored
 ### Purpose
-Type definitions for the Local Map view. Centralises interfaces for view options, subgraph structures, anchor registries, and column roles.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
+Defines the 2D Local Map's application boundary and the subgraph, geometry and column-role values its renderer shares.
 
 ### Notes
-- Created 2025-12-04 when `localView.ts` was split into a modular directory.
+- Created in the [December 4 Local Map modularisation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md#turn-14-local-map-modularization-the-refactor), beside the controller and public factory.
 - `LocalSubgraph` carries the files and annotated references of the current disclosure.
 - `LocalSubgraph.center` may be null since 2026-10-08: a branch picture entered by directory has no file in focus.
-- `LocalViewApi.retainSymbol` (2026-10-14): the search bar's pin of one symbol, which never toggles off.
+- `LocalViewOptions` injects graph and presentation state plus distinct application actions for Inspect, Pin, Close, Centre, directory disclosure and contextual commands. A symbol is carried with its inspection target, and menu callbacks receive a viewport anchor. Separating these actions implements the grammar accepted in [October 19, Turn 24](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and continued in [October 20, Turn 2](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2); the view supplies their 2D presentation while the application owns shared retention, subject and evidence state.
+- `LocalExplorationFrame` captures the view's work around one application action: whether it leaves a path, then an `afterRender` restoration of the acted-on row or directory's screen anchor and native control focus. `LocalViewApi` also exposes direct path clearing without restoring the former camera, explicit path presentation, camera focus and subject anchors for perspective changes. Pin and directory reducers remain outside this API.
 - `LocalViewApi.isShown` and `show` (2026-10-16): whether the map is the view shown, and the map shown again, which runs an owed render or resumes the search.
 
 ## Generated
@@ -36,9 +37,16 @@ Created 2025-12-04 when the monolithic `localView.ts` was extracted into
 the `localView/` module. `nodesById` was added on 2025-12-05 to support
 click-to-navigate type references in the Local Map symbol cards.
 
+#### `LocalExplorationFrame` {#symbol-localexplorationframe}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L44)
+
+##### `LocalExplorationFrame` — Summary
+The view's before/after presentation work around one application-owned exploration action.
+
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L42)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L55)
 
 ##### `LocalViewApi` — Summary
 Public contract the Local Map exposes to the parent Explorer application.
@@ -48,7 +56,7 @@ Independent exploration pins belong to the shared Explorer state.
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L90)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L103)
 
 ##### `LocalEdge` — Summary
 A directed edge in the local subgraph, annotated with direction relative
@@ -64,7 +72,7 @@ Created 2025-12-04 during Local Map modularization.
 
 #### `LocalSubgraphLink` {#symbol-localsubgraphlink}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L104)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L117)
 - Returns: [`LocalEdge`](#symbol-localedge)
 
 ##### `LocalSubgraphLink` — Summary
@@ -72,7 +80,7 @@ Alias for LocalEdge - used in subgraph contexts.
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L111)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L124)
 
 ##### `LocalSubgraph` — Summary
 The graph disclosed by the current Local Map scope: its files and
@@ -81,7 +89,7 @@ by direction; the common scene determines their layout.
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L124)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L137)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -89,7 +97,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L142)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L155)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -102,7 +110,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L155)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L168)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -114,7 +122,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L170)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L183)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.

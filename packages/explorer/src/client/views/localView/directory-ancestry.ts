@@ -61,7 +61,7 @@ export function ancestryButton(controller: LocalViewController, directory: strin
       row.addEventListener("focus", () => showPreview(path));
       row.addEventListener("click", () => {
         panel.hidePopover();
-        controller.openDirectory(path);
+        controller.options.onOpenDirectory(path);
       });
       stack.append(row);
     });

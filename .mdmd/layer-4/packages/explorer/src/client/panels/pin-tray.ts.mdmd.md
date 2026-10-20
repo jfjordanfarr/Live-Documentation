@@ -4,14 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/pin-tray.ts
-- Generated At: 2026-10-18T05:36:01.715Z
+- Generated At: 2026-10-20T14:51:18.239Z
 
 ## Authored
 ### Purpose
-Makes retained directories, files and symbols individually reachable and releasable in either Local Map representation.
+Presents the retained working set in either Local Map representation, with stable rows for showing and releasing files, symbols and directories. Delegates changes to the application and preserves keyboard access as rows or the tray disappear.
 
 ### Notes
-Rows use stable selection identities and appear newest first. Updating the list preserves surviving elements and transfers keyboard focus when the selected row disappears. A whole-file selection is one entry; directory bulk clearing is a separately named action. The tray delegates all selection changes to the application, collapses when Details opens and keeps its handle available. Its order comes from the shared exploration snapshot, rather than from the arrangement of cards on screen. The words of a row come from `describeRetained` (2026-10-14), shared with the search bar.
+Rows use stable selection identities and appear newest first. Updating the list preserves surviving elements and transfers keyboard focus when the selected row disappears. Closing the tray while a row holds focus returns it to the toggle. A whole-file selection is one entry; directory bulk clearing is a separately named action. Its order comes from the shared exploration snapshot, rather than from the arrangement of cards on screen. The words of a row come from `describeRetained` (2026-10-14), shared with the search bar.
+
+Opening calls the application's `onOpen` hook; the application coordinates the reader and tray through that callback and the tray's `close` operation. Neither a synthetic click on the reader's Close button nor a mutation observer decides shared state. This preserves the explicit ownership required by the [inspect-first implementation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). Showing a retained item and changing retention remain separate application operations.
 
 Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
@@ -29,7 +31,7 @@ Actions operate on the shared selection; opening the tray or focusing a row does
 
 #### `createPinTray` {#symbol-createpintray}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L20)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L22)
 - Parameters: `options`: [`PinTrayOptions`](#symbol-pintrayoptions)
 
 ##### `createPinTray` — Summary
@@ -48,7 +50,5 @@ gives the words, or null when the pin stands.
 - [`retained-state.describeRetained`](../views/retained-state.ts.mdmd.md#symbol-describeretained)
 - [`retained-state.retainedItems`](../views/retained-state.ts.mdmd.md#symbol-retaineditems)
 - [`retained-state.retainedKey`](../views/retained-state.ts.mdmd.md#symbol-retainedkey)
-- [`template.detail-close`](../../shared/template.html.mdmd.md#symbol-detail-close)
-- [`template.detail-panel`](../../shared/template.html.mdmd.md#symbol-detail-panel)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

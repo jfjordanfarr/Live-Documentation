@@ -8,12 +8,12 @@
 
 ## Authored
 ### Purpose
-Public entry point for the Local Map view module. Exposes `createLocalView` factory and re-exports `LocalViewApi`/`LocalViewOptions` types.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-04.md]
+Constructs the 2D Local Map controller and exposes its rendering, camera, path and action-framing API to the application.
 
 ### Notes
-- Created 2025-12-04 as the barrel export for the modular localView directory.
-- Delegates to `LocalViewController` for implementation.
-- `retainSymbol` (2026-10-14): a symbol pinned unless it is already, alone or with its whole file; what the search bar chose, never a toggle.
+- Created as the public factory and type-export boundary in the [December 4 Local Map modularisation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md#turn-14-local-map-modularization-the-refactor).
+- Every operation delegates to one `LocalViewController`; the getter exposes that controller's existing hover/path store. Consumers use `LocalViewApi` without depending on the controller's mutable runtime.
+- The application supplies Inspect, Pin, Centre and directory actions through `LocalViewOptions`, following the [accepted interaction grammar](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and [its resumed implementation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). This factory forwards the 2D capture/after-render boundary that keeps an acted-on item in place around those shared state changes; it adds no pin, inspection or directory policy of its own.
 - `isShown` and `show` (2026-10-16): whether the map is the view shown, and the map shown again, the owed render's two doors for the application's view switch.
 
 ## Generated

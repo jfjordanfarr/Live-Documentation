@@ -77,7 +77,8 @@ export function chipsHeight(items: readonly ChipCapture[], width: number, gap: n
 /**
  * The card at a width: border, padding, the title with its right padding and
  * margin, the path, the symbols block (its margin swallowing the meta line's),
- * each row as tall as its dot, its label's lines or its badges, the rows a gap
+ * each row as tall as its dot, its label's lines, its badges or its controls
+ * (the label narrowed by the badges and controls beside it), the rows a gap
  * apart, the test chips wrapped, the directory line, and the notes. A pin is
  * at the middle of its row, the Internals row's a margin lower; the hub at
  * the middle of the card.
@@ -95,11 +96,13 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   const cell = content - 2 * c.gridSideColumn - 2 * c.gridColumnGap;
   const centres = new Map<RowCapture, number>();
   view.rows.forEach((row, i) => {
-    const labelWidth = cell - (row.badgesWidth > 0 ? row.badgesWidth + c.badgeGap : 0);
+    const frame = row.frame ?? { width: 0, height: 0 };
+    const labelWidth = cell - frame.width - (row.badgesWidth > 0 ? row.badgesWidth + c.badgeGap : 0) - (row.controls?.width ?? 0);
     // The Internals row's dot and placeholder carry a top margin, so the row is taller by it and the dot sits below the row's middle.
     const internals = row.symbol === "__internals__";
     const dotMargin = internals ? c.internalsDotMarginTop : 0;
-    const height = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, text(row.label, labelWidth), row.badgesWidth > 0 ? c.badgeHeight : 0);
+    const wrapper = frame.height + Math.max(text(row.label, labelWidth), row.badgesWidth > 0 ? c.badgeHeight : 0, row.controls?.height ?? 0);
+    const height = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, wrapper);
     if (i > 0) y += c.gridRowGap;
     const centre = y + (height - c.dotHeight - dotMargin) / 2 + dotMargin + c.dotHeight / 2;
     centres.set(row, centre);

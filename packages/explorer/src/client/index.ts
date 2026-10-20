@@ -2,7 +2,7 @@ import type { HistorySequence } from "@live-documentation/engine/live-docs/histo
 
 import { inferDefaultEntryNodeId } from "./bootstrap";
 import { landingOf } from "./bootstrap/landing";
-import { createDetailPanel } from "./detailPanel";
+import { createDetailPanel, type DetailPanelAction } from "./detailPanel";
 import { requireElement, setActiveView } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
@@ -10,6 +10,7 @@ import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph
 import { createHistoryControl, isHistorySequence } from "./history/history-control";
 import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
+import { createItemMenu } from "./panels/item-menu";
 import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
@@ -17,7 +18,6 @@ import { initTuningPanel } from "./panels/tuning";
 import { findPath, reachOf, referencesAgainstPath, type PathfindResult, type Reach } from "./pathfind";
 import {
   parseInitialState,
-  updateUrlState,
   getDefaultFilters,
   getDefaultTuning,
   readPersistedUi,
@@ -26,20 +26,20 @@ import {
   createPersistUiScheduler,
   createPersistNavScheduler
 } from "./persistence";
-import { compressSnapshot, readUrlState, scrubSnapshot, writeUrlState } from "./persistence/compressed-url-state";
+import { compressSnapshot, readUrlState, scrubSnapshot, writeUrlState, type UrlStateSnapshot } from "./persistence/compressed-url-state";
 import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
 import { placeOf } from "./persistence/place";
 import { searchIndexOf, type SearchHit } from "./search/graph-search";
 import { createSearchBar, type SearchWords } from "./search/search-bar";
-import type { ExplorerState, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
+import type { ExplorerState, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
-import { under } from "./views/localView/directory-state";
+import { closeDirectory as closeOpenedDirectory, openDirectory as addOpenedDirectory, under, type OpenDirectories } from "./views/localView/directory-state";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
-import { addPin, EMPTY_PIN_SET, retainFile } from "./views/pin-state";
+import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
 import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, type RetainedItem, type RetainedState } from "./views/retained-state";
 import { createWorldMapView } from "./views/worldMap";
 
@@ -47,7 +47,6 @@ declare global {
   interface Window {
     __liveDocsExplorerError?: unknown;
     switchView: (event: MouseEvent, viewName: ViewName) => void;
-    openInLocalView: () => void;
     downloadCurrentDoc: () => void;
     zoomIn: () => void;
     zoomOut: () => void;
@@ -151,7 +150,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     perspective: initialState.perspective ?? savedNav?.perspective ?? "2d",
     spatialLayout: initialState.spatialLayout ?? savedNav?.spatialLayout ?? "connections",
     selectedNode: null,
-    focusedNode: null,
+    inspection: null,
     filters: initialUi.filters,
     tuning: applyLayoutSettings(initialUi.tuning, readUrlState().layout)
   };
@@ -164,8 +163,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
   // The pins and the opened directories ride the address together; `?dir=` names an opened directory on its own.
-  const initialExploration = scrubSnapshot({ ...readUrlState(), openDirectories: initialState.hasUrlState
-    ? initialState.openDirectories : new Set(persistedNav?.openDirectories ?? []) }, nodesById);
+  const initialExploration = scrubSnapshot({
+    ...readUrlState(),
+    inspection: initialState.hasUrlState ? readUrlState().inspection : persistedNav?.inspection,
+    openDirectories: initialState.hasUrlState
+      ? initialState.openDirectories : new Set(persistedNav?.openDirectories ?? [])
+  }, nodesById, bundledMarkdown);
   if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...initialExploration.filters };
   state.pins = initialExploration.pinSet;
   state.openDirectories = initialExploration.openDirectories;
@@ -174,34 +177,37 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   state.reachFrom = initialExploration.reachFrom;
   state.historyCommit = initialExploration.commit;
   state.showAuthors = initialExploration.authors;
+  state.inspection = initialExploration.inspection ?? null;
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
     perspective: state.perspective,
     spatialLayout: state.spatialLayout,
     openDirectories: state.openDirectories ?? new Set(),
-    focusedNodeId: state.focusedNode?.id ?? null,
-    selectedNodeId: state.selectedNode?.id ?? null
+    selectedNodeId: state.selectedNode?.id ?? null,
+    inspection: state.inspection
   }));
   const schedulePersistNav = persistNav.schedule;
 
-  // Helper to handle clicks on node links in documentation
-  const handleDocNodeClick = (nodeId: string): void => {
-    const node = nodesById.get(nodeId);
-    if (node) {
-      state.focusedNode = node;
-      detailPanel.showNode(node);
-    }
-  };
-
   const detailPanel = createDetailPanel(nodesById, {
     files,
-    onNodeClick: handleDocNodeClick,
-    onBundledDocClick: (docPath: string) => {
-      // Show the bundled doc in the detail panel
-      showBundledDocInDetailPanel(docPath);
-    },
+    bundledMarkdown,
+    onClose: () => closeInspection(),
+    onNodeClick: (nodeId, symbol) => openInspection({ kind: "file", nodeId, ...(symbol ? { symbol } : {}) }),
+    onDirectoryClick: directory => openInspection({ kind: "directory", directory }),
+    onBundledDocClick: (path, fragment) => openInspection({ kind: "bundled-doc", path, ...(fragment ? { fragment } : {}) })
   });
+  const itemMenu = createItemMenu();
+  let inspectionOpener: HTMLElement | null = null;
+  const readerRoom = window.matchMedia("(max-width: 760px), (max-height: 480px)");
+  const narrowNavigation = window.matchMedia("(max-width: 760px)");
+  const sidebar = requireElement("sidebar");
+  if (narrowNavigation.matches) sidebar.classList.add("collapsed");
+  narrowNavigation.addEventListener("change", event => {
+    if (event.matches) sidebar.classList.add("collapsed");
+    syncSidebarToggle();
+  });
+  syncSidebarToggle();
 
   // Use imported resolveLinkEndpoint and inferDefaultEntryNodeId from extracted modules
 
@@ -218,15 +224,19 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   const localView = createLocalView({
     state,
-    onExplorationChange: leavingPath => {
-      persistExploration(leavingPath);
-      if (state.perspective === "3d") forceGraphView.render();
-    },
+    onPressPin: pressPin,
+    onUnpinNode: unpinNode,
+    onCloseNode: closePinnedNode,
+    onOpenDirectory: openRetainedDirectory,
+    onCloseDirectory: closeRetainedDirectory,
     graphData,
     resolveLinkEndpoint,
     onSelectNode: node => handleNodeClick(node),
     onRecenterNode: node => recentreOn(node),
-    onFocusSidebar: node => focusSidebar(node),
+    onFocusSidebar: (node, symbol) => focusSidebar(node, symbol),
+    onInspectDirectory: directory => openInspection({ kind: "directory", directory }),
+    onShowNodeActions: showNodeActions,
+    onShowDirectoryActions: showDirectoryActions,
     testCoverage,
     nodesById
   });
@@ -242,13 +252,20 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       showBundledDocInDetailPanel(docPath);
     },
     onFocusNode: (node: ExplorerNodePayload) => {
-      selectNode(node);
+      focusSidebar(node);
     },
-    onRetainNode: node => localView.retainNode(node.id),
+    onPressPin: pressPin,
+    onReleasePin: unpinNode,
+    onRecenterNode: recentreOn,
+    onShowNodeActions: showNodeActions,
+    onShowDirectoryActions: showDirectoryActions,
+    onInspectDirectory: directory => openInspection({ kind: "directory", directory }),
+    onCentreDirectory: centreOnDirectory,
     onOpenDirectory: directory => {
-      localView.openDirectory(directory);
+      openRetainedDirectory(directory);
       forceGraphView.focusDirectory(directory);
-    }
+    },
+    onCloseDirectory: closeRetainedDirectory
   });
 
   // The history of the 3D Local Map: the scrubber and the step panel over the sequence the bundle carries (ticket C4).
@@ -272,7 +289,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     },
     onPinFile: path => {
       const node = nodesById.get(path);
-      if (node) localView.retainNode(node.id);
+      if (node) retainNode(node.id);
     },
     onOpenChange: () => syncPerspectiveControls()
   });
@@ -282,7 +299,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     leavePath();
     state.pins = { entries: [] };
     state.openDirectories = new Set([thing.folder]);
-    state.selectedNode = state.focusedNode = null;
+    state.selectedNode = null;
+    closeInspection(false);
     changePerspective(state.perspective, null);
     persistExploration();
   };
@@ -395,7 +413,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       !!state.selectedNode && under(state.selectedNode.id, directory)
     ),
     onClear: () => applyRetentionChange({ pins: EMPTY_PIN_SET, openDirectories: new Set(), retentionOrder: [] }, true),
-    onFocus: focusRetained
+    onFocus: focusRetained,
+    onOpen: () => closeInspection()
   });
   // One search for the whole Explorer, in place of the Ctrl+P dialog and the FROM/TO toolbar (the owner's ask, 2026-10-14).
   const searchIndex = searchIndexOf(graphData.nodes);
@@ -415,34 +434,113 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     return { pins: state.pins ?? EMPTY_PIN_SET, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder };
   }
 
+  /** Apply a card, search, 3D or history pin with one policy; the 2D view only keeps its visual anchor. */
+  function changePinned(nodeId: string, symbol: string, nextPins: PinSet, closeExpansion = false, keepSubject = false): void {
+    const previousPins = state.pins ?? EMPTY_PIN_SET;
+    let previousSelected = state.selectedNode;
+    if (closeExpansion && previousSelected?.id === nodeId) {
+      const next = nextPins.entries.at(-1);
+      previousSelected = next ? nodesById.get(next.nodeId) ?? null : null;
+    }
+    const selectedId = previousSelected
+      ? keepSubject ? previousSelected.id : subjectAfterRelease(previousPins, nextPins, previousSelected.id)
+      : null;
+    const selected = selectedId ? nodesById.get(selectedId) ?? null : null;
+    const frame = localView.capturePinChange(nodeId, symbol, selected?.id ?? null, closeExpansion);
+    state.selectedNode = selected;
+    state.pins = nextPins;
+    localView.clearPathForExploration();
+    localView.render();
+    frame.afterRender();
+    persistExploration(frame.leavingPath);
+    if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
+  }
+
+  /** Search and history explicitly retain every interface of a file. */
+  function retainNode(nodeId: string): void {
+    pressPin(nodeId, "*");
+  }
+
+  /** Search retains one symbol unless it already stands alone or under a whole-file pin. */
+  function retainSymbol(nodeId: string, symbol: string): void {
+    const pins = state.pins ?? EMPTY_PIN_SET;
+    if (isSymbolPinned(pins, nodeId, symbol) || isSymbolPinned(pins, nodeId, "*")) return;
+    pressPin(nodeId, symbol);
+  }
+
+  /** A card press narrows, adds, releases or falls back by the existing pure pin grammar. */
+  function pressPin(nodeId: string, symbol: string): void {
+    if (!nodesById.has(nodeId)) return;
+    const pins = state.pins ?? EMPTY_PIN_SET;
+    const next = symbol === "*" ? retainFile(pins, nodeId) : pressSymbol(pins, nodeId, symbol);
+    if (next === pins && !localView.getActivePath()) return;
+    changePinned(nodeId, symbol, next);
+  }
+
+  /** The card's X releases all its pins and its 2D expansion, preserving any other retained file. */
+  function closePinnedNode(nodeId: string): void {
+    changePinned(nodeId, "*", removePinsForNode(state.pins ?? EMPTY_PIN_SET, nodeId), true);
+  }
+
+  /**
+   * A pressed Pin pressed again undoes itself: the file's pins go, and the subject and the card's expansion stay, so
+   * Pin then Unpin leaves the map as it was. Releasing a file together with the subject is the close's and the tray's.
+   */
+  function unpinNode(nodeId: string): void {
+    const pins = state.pins ?? EMPTY_PIN_SET;
+    const next = removePinsForNode(pins, nodeId);
+    if (next !== pins) changePinned(nodeId, "*", next, false, true);
+  }
+
+  /** An opened directory is shared state; the Local Map owns only its screen anchor and focus. */
+  function changeRetainedDirectory(directory: string, next: OpenDirectories): void {
+    const frame = localView.captureDirectoryChange(directory);
+    state.openDirectories = next;
+    localView.clearPathForExploration();
+    localView.render();
+    frame.afterRender();
+    persistExploration(frame.leavingPath);
+    if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
+  }
+
+  function openRetainedDirectory(directory: string): void {
+    const current = state.openDirectories ?? new Set<string>();
+    const next = addOpenedDirectory(current, directory);
+    if (next !== current || localView.getActivePath()) changeRetainedDirectory(directory, next);
+  }
+
+  function closeRetainedDirectory(directory: string): void {
+    const current = state.openDirectories ?? new Set<string>();
+    const next = closeOpenedDirectory(current, directory);
+    if (next !== current) changeRetainedDirectory(directory, next);
+  }
+
   function applyRetentionChange(next: RetainedState, releaseSubject = false): void {
     const current = state.selectedNode;
     const selectedId = subjectAfterRelease(state.pins ?? EMPTY_PIN_SET, next.pins, current?.id ?? null, releaseSubject);
     const selected = selectedId ? nodesById.get(selectedId) ?? null : null;
-    const inspected = state.focusedNode;
-    const focused = inspected && (inspected.id === selected?.id
-      || next.pins.entries.some(pin => pin.nodeId === inspected.id)) ? inspected : selected;
+    const focused = selected;
     const view = state.perspective === "2d" ? localView : forceGraphView;
     const anchor = focused ? view.getSubjectAnchor(focused.id) : null;
     Object.assign(state, next);
     state.selectedNode = selected;
-    state.focusedNode = focused;
     persistExploration(!!localView.getActivePath());
     renderCurrentView();
     if (focused && anchor) view.placeSubjectAnchor(focused.id, anchor);
   }
 
   function focusRetained(item: RetainedItem): void {
-    detailPanel.hide();
+    closeInspection(false);
     if (item.kind === "directory") {
       (state.perspective === "2d" ? localView : forceGraphView).focusDirectory(item.directory);
+      persistExploration();
       return;
     }
     const node = nodesById.get(item.pin.nodeId);
     if (!node) return;
-    state.focusedNode = node;
     if (state.perspective === "2d") localView.focusNode(node.id);
-    else forceGraphView.render();
+    else forceGraphView.focusNode(node.id);
+    persistExploration();
   }
 
   /** The words a field shows for a retained thing: its name, and where it stands for the tooltip. */
@@ -486,18 +584,18 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
    */
   function pinHit(hit: SearchHit): void {
     const asked = state.destination ?? null;
-    detailPanel.hide();
+    closeInspection(false);
     if (hit.kind === "directory") {
       if (state.view !== "map") changePerspective(state.perspective);
-      localView.openDirectory(hit.directory);
+      openRetainedDirectory(hit.directory);
       promoteRetained({ kind: "directory", directory: hit.directory });
       (state.perspective === "2d" ? localView : forceGraphView).focusDirectory(hit.directory);
     } else {
       // From another view the Local Map opens on it; inside the map it becomes the subject and the view brings it to the eye.
       if (state.view !== "map") changePerspective(state.perspective, hit.node);
       else if (state.selectedNode?.id !== hit.node.id) markSelected(hit.node);
-      if (hit.kind === "file") localView.retainNode(hit.node.id);
-      else localView.retainSymbol(hit.node.id, hit.symbol);
+      if (hit.kind === "file") retainNode(hit.node.id);
+      else retainSymbol(hit.node.id, hit.symbol);
       const pin = (state.pins ?? EMPTY_PIN_SET).entries.find(entry => entry.nodeId === hit.node.id
         && (hit.kind === "file" ? entry.symbol === "*" : entry.symbol === hit.symbol || entry.symbol === "*"));
       if (pin) promoteRetained({ kind: "pin", pin });
@@ -580,7 +678,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
-    if (contextName) contextName.textContent = (state.focusedNode ?? state.selectedNode)?.codeRelativePath
+    if (contextName) contextName.textContent = state.selectedNode?.codeRelativePath
       ?? ([...(state.openDirectories ?? [])].map(path => path || "Scan root").join(", ") || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
     const preset = layoutPresetOf(state.tuning);
@@ -604,7 +702,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     historyControl.sync({
       visible: state.view === "map" && state.perspective === "3d",
       pins: { files: [...new Set((state.pins ?? EMPTY_PIN_SET).entries.map(pin => pin.nodeId))], directories: [...(state.openDirectories ?? [])] },
-      subject: (state.focusedNode ?? state.selectedNode)?.id ?? null,
+      subject: state.selectedNode?.id ?? null,
       showAuthors: state.showAuthors ?? false,
       tuning: state.tuning.history
     });
@@ -622,9 +720,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   function changeSpatialLayout(layout: SpatialLayout): void {
     if (state.spatialLayout === layout || changingPerspective) return;
     state.spatialLayout = layout;
-    updateUrlState(state.view, (state.focusedNode ?? state.selectedNode)?.id ?? null, state.perspective, layout);
-    schedulePersistNav();
     renderCurrentView();
+    persistExploration();
   }
 
   let changingPerspective = false;
@@ -634,8 +731,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   let releasePerspectiveCover = (): void => {};
   let cancelPerspectiveAnimation = (): void => {};
 
-  /** Change Local Map representation around the identity the person was last inspecting. */
-  function changePerspective(perspective: LocalMapPerspective, target = state.focusedNode ?? state.selectedNode): void {
+  /** Change representation around the map subject; the independently inspected evidence stays open. */
+  function changePerspective(perspective: LocalMapPerspective, target = state.selectedNode): void {
     if (changingPerspective) { pendingPerspective = () => changePerspective(perspective, target); return; }
     const subjectChanged = target?.id !== state.selectedNode?.id;
     if (state.view === "map" && state.perspective === perspective && !subjectChanged) return;
@@ -652,17 +749,14 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     syncPerspectiveControls();
     const source = previous === "2d" ? localView : previous === "3d" ? forceGraphView : null;
     let anchor = target && source ? source.getSubjectAnchor(target.id) : null;
-    detailPanel.hide();
     // The 2D map draws today's docs: leaving 3D returns the picture to today and closes the history.
     if (perspective === "2d") historyControl.leave();
     state.selectedNode = target;
-    state.focusedNode = target;
     state.view = "map";
     state.perspective = perspective;
     setActiveView(state.view, perspective);
-    updateUrlState(state.view, target?.id ?? null, perspective, state.spatialLayout);
-    schedulePersistNav();
     renderCurrentView(subjectChanged ? "change" : "show");
+    persistExploration();
     if (target && anchor) {
       const viewport = requireElement(`view-${destination}`).getBoundingClientRect();
       if (anchor.x >= viewport.left && anchor.x <= viewport.right && anchor.y >= viewport.top && anchor.y <= viewport.bottom) {
@@ -702,22 +796,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     historyControl.leave();
     setActiveView(viewName, state.perspective);
     state.view = viewName;
-    updateUrlState(viewName, state.focusedNode?.id ?? state.selectedNode?.id ?? null, state.perspective, state.spatialLayout);
-    schedulePersistNav();
     renderCurrentView("show");
+    persistExploration();
   };
 
   globalWindow.downloadCurrentDoc = () => {
     detailPanel.downloadCurrentDoc();
-  };
-
-  globalWindow.openInLocalView = () => {
-    // Prefer focusedNode (sidebar) over selectedNode (center) since user is viewing focused node details
-    const target = state.focusedNode ?? state.selectedNode;
-    if (!target) {
-      return;
-    }
-    openLocalViewForNode(target);
   };
 
   globalWindow.zoomIn = () => {
@@ -739,17 +823,21 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     }
   };
   globalWindow.toggleSidebar = () => {
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("sidebar-toggle");
-    if (sidebar) {
-      sidebar.classList.toggle("collapsed");
-      if (toggleBtn) {
-        toggleBtn.textContent = sidebar.classList.contains("collapsed") ? "▶" : "◀";
-      }
-    }
+    sidebar.classList.toggle("collapsed");
+    syncSidebarToggle();
   };
 
+  function syncSidebarToggle(): void {
+    const collapsed = sidebar.classList.contains("collapsed");
+    const button = requireElement<HTMLButtonElement>("sidebar-toggle");
+    button.textContent = collapsed ? "▶" : "◀";
+    button.setAttribute("aria-expanded", String(!collapsed));
+    button.setAttribute("aria-label", collapsed ? "Open navigation" : "Collapse navigation");
+    button.title = collapsed ? "Open navigation" : "Collapse navigation";
+  }
+
   window.addEventListener("resize", () => {
+    syncReaderPresentation();
     if (state.view === "map" && state.perspective === "2d") {
       localView.drawConnections();
     }
@@ -772,8 +860,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     const toName = destination.name;
 
     if (result.path.length > 0) {
-      // Hide detail panel to avoid blocking the visualization
-      detailPanel.hide();
+      // Reading evidence is independent of the path being drawn.
 
       // Path found - switch to Local Map view centered on first node
       if (!restoringPath && state.view !== "map") {
@@ -801,8 +888,6 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       const notDrawn = against === 0
         ? ""
         : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn`;
-      updateUrlState(state.view, state.selectedNode?.id ?? null, state.perspective, state.spatialLayout);
-      schedulePersistNav();
       renderCurrentView();
       searchBar.setStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
       return;
@@ -885,6 +970,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   // An address that names a commit opens the 3D picture on that moment, before the first drawing.
   if (state.historyCommit && state.view === "map" && state.perspective === "3d") void historyControl.showCommit(state.historyCommit);
   renderCurrentView();
+  renderInspection();
 
   if (focusNode) {
     setTimeout(highlightSelectedCards, 100);
@@ -901,7 +987,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       }
       // An explicit tuning action owns the camera from this point, including
       // when the initial automatic framing has not finished yet.
-      const subject = state.focusedNode ?? state.selectedNode;
+      const subject = state.selectedNode;
       const view = localView;
       const anchor = subject ? view.getSubjectAnchor(subject.id) : null;
       if (subject && anchor) view.placeSubjectAnchor(subject.id, anchor);
@@ -911,10 +997,14 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     drawLocalConnections: () => localView.drawConnections(),
   });
 
+  // Record the actual initial subject and reader before arming history, including plain and remembered entry links.
+  persistExploration();
   // Back and Forward: a move to another place is an entry, and landing on one shows the place its address names.
   startHistory({ placeOf, restore: restoreFromUrl });
   const backButton = document.getElementById("history-back");
   const forwardButton = document.getElementById("history-forward");
+  const readerBack = requireElement<HTMLButtonElement>("reader-back");
+  const readerForward = requireElement<HTMLButtonElement>("reader-forward");
   const syncHistoryButtons = (): void => {
     if (backButton instanceof HTMLButtonElement) {
       backButton.disabled = !canGoBack();
@@ -922,23 +1012,72 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     if (forwardButton instanceof HTMLButtonElement) {
       forwardButton.disabled = !canGoForward();
     }
+    readerBack.disabled = !canGoBack();
+    readerForward.disabled = !canGoForward();
   };
   onHistoryChange(syncHistoryButtons);
   syncHistoryButtons();
   backButton?.addEventListener("click", () => window.history.back());
   forwardButton?.addEventListener("click", () => window.history.forward());
+  readerBack.addEventListener("click", () => window.history.back());
+  readerForward.addEventListener("click", () => window.history.forward());
+  readerRoom.addEventListener("change", syncReaderPresentation);
+  document.addEventListener("keydown", event => {
+    if (event.defaultPrevented || !state.inspection) return;
+    if (event.key === "Escape") {
+      // An open popover, the ancestry chooser, stands above the reader; the browser closes it on this same Escape.
+      if (document.querySelector(":popover-open")) return;
+      event.preventDefault();
+      closeInspection();
+      return;
+    }
+    if (event.key !== "Tab" || !readerRoom.matches) return;
+    const controls = [...requireElement("detail-panel").querySelectorAll<HTMLElement>(
+      'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), [tabindex="0"]'
+    )].filter(element => !element.closest("[hidden], [inert]") && element.getClientRects().length > 0);
+    const first = controls[0];
+    const last = controls.at(-1);
+    if (event.shiftKey && (document.activeElement === first || !requireElement("detail-panel").contains(document.activeElement))) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  });
 
   /** Shows the place the address names, after Back or Forward; the history turns any write it makes into a rewrite of that entry. */
   function restoreFromUrl(): void {
     const place = parseInitialState();
     const view: ViewName = place.hasUrlState ? place.view : bundle.board ? "world" : place.view;
-    detailPanel.hide();
+    const exploration = scrubSnapshot({ ...readUrlState(), openDirectories: place.openDirectories }, nodesById, bundledMarkdown);
+    const nextTuning = applyLayoutSettings(state.tuning, exploration.layout);
+    const nextFilters = new URLSearchParams(window.location.search).has("s")
+      ? { ...state.filters, ...exploration.filters } : state.filters;
+    const nextMap = {
+      ...exploration,
+      view,
+      perspective: place.perspective ?? state.perspective,
+      spatialLayout: place.spatialLayout ?? state.spatialLayout,
+      selectedNodeId: place.nodeId ?? null,
+      layout: layoutSettingsOf(nextTuning),
+      filters: nextFilters,
+      inspection: null
+    };
+    itemMenu.close();
+    // Evidence-only Back/Forward leaves camera, DOM identity and the running layout search untouched.
+    if (compressSnapshot(nextMap) === compressSnapshot({ ...explorationSnapshot(), inspection: null })) {
+      state.inspection = exploration.inspection ?? null;
+      renderInspection();
+      schedulePersistNav();
+      return;
+    }
     state.view = view;
     state.perspective = place.perspective ?? state.perspective;
     state.spatialLayout = place.spatialLayout ?? state.spatialLayout;
-    const exploration = scrubSnapshot({ ...readUrlState(), openDirectories: place.openDirectories }, nodesById);
-    state.tuning = applyLayoutSettings(state.tuning, exploration.layout);
-    if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...exploration.filters };
+    state.inspection = exploration.inspection ?? null;
+    state.tuning = nextTuning;
+    state.filters = nextFilters;
     syncFilterControls();
     state.pins = exploration.pinSet;
     state.openDirectories = exploration.openDirectories;
@@ -946,13 +1085,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     setActiveView(view, state.perspective);
     const node = place.nodeId ? nodesById.get(place.nodeId) ?? null : null;
     state.selectedNode = node;
-    state.focusedNode = node;
     const contextName = document.getElementById("context-name");
     if (node && contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
     state.destination = exploration.destination;
+    state.reachFrom = exploration.reachFrom;
     state.showAuthors = exploration.authors;
+    // Path restoration can persist synchronously; it must already see the restored moment.
+    state.historyCommit = exploration.commit;
     clearPathResult();
     if (state.destination) {
       restoringPath = true;
@@ -960,11 +1101,11 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     }
     renderCurrentView();
     // The moment the address names, or today; the history turns the write this makes into a rewrite of the entry.
-    state.historyCommit = exploration.commit;
     if (view === "map" && state.perspective === "3d") void historyControl.showCommit(exploration.commit);
     else historyControl.leave();
     schedulePersistNav();
     highlightSelectedCards();
+    renderInspection();
   }
 
   interface SelectNodeOptions {
@@ -975,13 +1116,10 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   /** The node the person is looking at: the state, the context name, the address and the stored place, without drawing. */
   function markSelected(node: ExplorerNodePayload): void {
     state.selectedNode = node;
-    state.focusedNode = node;
     const contextName = document.getElementById("context-name");
     if (contextName instanceof HTMLElement) {
       contextName.textContent = node.codeRelativePath;
     }
-    updateUrlState(state.view, node.id, state.perspective, state.spatialLayout);
-    schedulePersistNav();
   }
 
   function selectNode(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
@@ -989,32 +1127,186 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     renderCurrentView();
     highlightSelectedCards();
     if (!options?.suppressDetailPanel) {
-      detailPanel.showNode(node);
+      focusSidebar(node);
     }
   }
 
-  function focusSidebar(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
-    state.focusedNode = node;
-    const contextName = document.getElementById("context-name");
-    if (contextName instanceof HTMLElement) {
-      contextName.textContent = node.codeRelativePath;
-    }
-    updateUrlState(state.view, node.id, state.perspective, state.spatialLayout);
-    schedulePersistNav();
-    highlightSelectedCards();
-    if (!options?.suppressDetailPanel) {
-      detailPanel.showNode(node);
-    }
+  function focusSidebar(node: ExplorerNodePayload, symbol?: string): void {
+    openInspection({ kind: "file", nodeId: node.id, ...(symbol ? { symbol } : {}) });
   }
 
-  function handleNodeClick(node: ExplorerNodePayload, options?: SelectNodeOptions): void {
-    focusSidebar(node, options);
+  function handleNodeClick(node: ExplorerNodePayload): void {
+    focusSidebar(node);
   }
 
-  /** The card's recentre control: the file becomes the subject, the pins kept, the detail panel left closed. */
+  /** Centre is deliberate navigation: retain the working set and close the reader. */
   function recentreOn(node: ExplorerNodePayload): void {
+    closeInspection(false);
+    leavePath();
+    if (state.view !== "map") changePerspective(state.perspective, node);
+    else selectNode(node, { suppressDetailPanel: true });
+    if (state.perspective === "3d") forceGraphView.focusNode(node.id);
+    else localView.focusNode(node.id);
+    persistExploration();
+  }
+
+  function renderInspection(): void {
+    const target = state.inspection;
+    if (!target) {
+      hideInspection();
+      return;
+    }
+    const panel = requireElement("detail-panel");
+    const heldFocus = panel.contains(document.activeElement);
+    if (!panel.classList.contains("visible") && document.activeElement instanceof HTMLElement
+      && document.activeElement !== document.body && !panel.contains(document.activeElement)) {
+      inspectionOpener = document.activeElement;
+    }
+    pinTray.close();
+    if (target.kind === "file") {
+      const node = nodesById.get(target.nodeId);
+      if (node) detailPanel.showNode(node, target.symbol);
+    } else if (target.kind === "directory") detailPanel.showDirectory(target.directory);
+    else if (bundledMarkdown && Object.hasOwn(bundledMarkdown, target.path)) {
+      detailPanel.showBundledDoc(target.path, bundledMarkdown[target.path], target.fragment);
+    }
+    syncInspectionActions();
+    syncReaderPresentation();
+    // A followed evidence link can replace the focused anchor on wide screens too.
+    if (heldFocus && !panel.contains(document.activeElement)) requireElement("detail-close").focus({ preventScroll: true });
+  }
+
+  function actionsForFile(node: ExplorerNodePayload, symbol?: string): DetailPanelAction[] {
+    const pins = state.pins ?? EMPTY_PIN_SET;
+    const whole = isSymbolPinned(pins, node.id, "*");
+    const pinned = symbol ? isSymbolPinned(pins, node.id, symbol) : whole;
+    const part = symbol === INTERNAL_SYMBOL ? "Internals" : "symbol";
+    return [
+      {
+        label: symbol ? (pinned ? `Unpin ${part}` : whole ? `Pin only ${part === "symbol" ? "this symbol" : part}` : `Pin ${part}`) : whole ? "Unpin file" : "Pin file",
+        pressed: pinned,
+        run: () => {
+          if (!symbol && whole) unpinNode(node.id);
+          else pressPin(node.id, symbol ?? "*");
+        }
+      },
+      { label: `Centre on ${node.name}`, text: "Centre", run: () => recentreOn(node) }
+    ];
+  }
+
+  function syncInspectionActions(): void {
+    const target = state.inspection;
+    if (target?.kind === "file") {
+      const node = nodesById.get(target.nodeId);
+      detailPanel.setActions(node ? actionsForFile(node, target.symbol) : []);
+    } else if (target?.kind === "directory") {
+      const opened = state.openDirectories?.has(target.directory) ?? false;
+      detailPanel.setActions([
+        {
+          label: opened ? "Close directory" : "Open directory",
+          pressed: opened,
+          run: () => opened ? closeRetainedDirectory(target.directory) : openRetainedDirectory(target.directory)
+        },
+        { label: "Centre on directory", text: "Centre", run: () => centreOnDirectory(target.directory) }
+      ]);
+    } else detailPanel.setActions([]);
+  }
+
+  /** A full reader covers a small viewport; opening it never resizes the underlying map. */
+  function syncReaderPresentation(): void {
+    const panel = requireElement("detail-panel");
+    const modal = !!state.inspection && readerRoom.matches;
+    panel.setAttribute("role", modal ? "dialog" : "complementary");
+    if (modal) panel.setAttribute("aria-modal", "true");
+    else panel.removeAttribute("aria-modal");
+    const background = [
+      sidebar,
+      ...requireElement("main").children,
+      ...requireElement("views").children
+    ];
+    for (const element of background) {
+      if (element instanceof HTMLElement && element.id !== "views" && element !== panel) {
+        element.inert = modal || (element.classList.contains("view-container") && !element.classList.contains("active"));
+      }
+    }
+    if (modal && !panel.contains(document.activeElement)) requireElement("detail-close").focus({ preventScroll: true });
+  }
+
+  /** Reader actions never change the subject, working set, path or camera. */
+  function openInspection(target: InspectionTarget): void {
+    const validated = scrubSnapshot({ ...readUrlState(), inspection: target }, nodesById, bundledMarkdown).inspection;
+    if (!validated) return;
+    state.inspection = validated;
+    itemMenu.close();
+    renderInspection();
+    persistExploration();
+  }
+
+  /** Hiding by Close or by Back gives keyboard focus back to the visible inspection opener. */
+  function hideInspection(): void {
+    const returnFocus = document.activeElement instanceof HTMLElement && requireElement("detail-panel").contains(document.activeElement);
     detailPanel.hide();
-    selectNode(node, { suppressDetailPanel: true });
+    syncReaderPresentation();
+    if (returnFocus) {
+      const usable = (element: HTMLElement | null | undefined): element is HTMLElement => !!element?.isConnected
+        && element.getClientRects().length > 0 && !element.closest("[hidden], [inert]");
+      // A render rebuilds the cards, so an opener can be gone; its successor carries the same accessible name.
+      const label = inspectionOpener?.getAttribute("aria-label");
+      const successor = label ? document.querySelector<HTMLElement>(`[aria-label="${CSS.escape(label)}"]`) : null;
+      const trayToggle = inspectionOpener?.closest(".pin-tray") ? document.querySelector<HTMLElement>(".pin-tray-toggle") : null;
+      // A sphere tap records no opener. The map itself takes focus then, never a text field that raises a phone's keyboard.
+      const target = [inspectionOpener, successor, trayToggle].find(usable) ?? document.querySelector<HTMLElement>(".view-container.active");
+      if (target) focusWithoutTabStop(target);
+    }
+    inspectionOpener = null;
+  }
+
+  /** Focus an element; one that is not a control takes focus without joining the tab order. */
+  function focusWithoutTabStop(element: HTMLElement): void {
+    if (!element.hasAttribute("tabindex") && element.tabIndex < 0) {
+      element.tabIndex = -1;
+      element.addEventListener("blur", () => element.removeAttribute("tabindex"), { once: true });
+    }
+    element.focus({ preventScroll: true });
+  }
+
+  function closeInspection(persist = true): void {
+    const wasOpen = !!state.inspection;
+    state.inspection = null;
+    hideInspection();
+    if (persist && wasOpen) persistExploration();
+  }
+
+  function showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }, onClose?: () => void): void {
+    itemMenu.show(anchor, [
+      { label: symbol ? `Inspect ${symbol === INTERNAL_SYMBOL ? "Internals" : symbol}` : "Inspect " + node.name, run: () => focusSidebar(node, symbol) },
+      ...actionsForFile(node, symbol)
+    ], onClose);
+  }
+
+  function centreOnDirectory(directory: string): void {
+    closeInspection(false);
+    leavePath();
+    const current = state.openDirectories ?? new Set<string>();
+    state.openDirectories = addOpenedDirectory(current, directory);
+    if (state.view !== "map" || state.selectedNode) changePerspective(state.perspective, null);
+    else if (state.openDirectories !== current) renderCurrentView();
+    (state.perspective === "2d" ? localView : forceGraphView).focusDirectory(directory);
+    persistExploration();
+  }
+
+  function showDirectoryActions(directory: string, anchor: { x: number; y: number }, onClose?: () => void): void {
+    const opened = state.openDirectories?.has(directory) ?? false;
+    itemMenu.show(anchor, [
+      { label: "Inspect directory", run: () => openInspection({ kind: "directory", directory }) },
+      { label: opened ? "Close directory" : "Open directory", run: () => opened ? closeRetainedDirectory(directory) : openRetainedDirectory(directory) },
+      { label: "Centre on directory", run: () => centreOnDirectory(directory) },
+      {
+        label: "Clear pins inside this directory",
+        run: () => applyRetentionChange(clearRetainedDirectory(retentionState(), directory),
+          !!state.selectedNode && under(state.selectedNode.id, directory))
+      }
+    ], onClose);
   }
 
   function highlightSelectedCards(): void {
@@ -1026,22 +1318,36 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     if (!node) {
       return;
     }
-    // Exit path mode and return to exploration mode
-    leavePath();
-    // Hide detail panel to avoid blocking the visualization
-    detailPanel.hide();
-    changePerspective(state.perspective, node);
+    recentreOn(node);
   }
 
-  /** Keep independent branches in the same portable snapshot as selection and filters. */
+  /** All portable exploration state is projected from its application owner in one place. */
+  function explorationSnapshot(): UrlStateSnapshot {
+    return {
+      view: state.view,
+      perspective: state.perspective,
+      spatialLayout: state.spatialLayout,
+      selectedNodeId: state.selectedNode?.id ?? null,
+      pinSet: state.pins ?? EMPTY_PIN_SET,
+      openDirectories: state.openDirectories ?? new Set(),
+      retentionOrder: state.retentionOrder,
+      filters: state.filters,
+      layout: layoutSettingsOf(state.tuning),
+      destination: state.destination ?? null,
+      reachFrom: state.reachFrom ?? null,
+      commit: state.historyCommit ?? null,
+      authors: state.showAuthors ?? false,
+      inspection: state.inspection
+    };
+  }
+
+  /** Keep independent branches and explicitly open evidence in the portable snapshot. */
   function persistExploration(leavingPath = false): void {
     if (leavingPath) leavePath();
     syncPerspectiveControls();
+    syncInspectionActions();
     schedulePersistNav();
-    writeUrlState({ ...readUrlState(), view: state.view, perspective: state.perspective, spatialLayout: state.spatialLayout, selectedNodeId: state.selectedNode?.id ?? null,
-      pinSet: state.pins!, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder, filters: state.filters,
-      layout: layoutSettingsOf(state.tuning), destination: state.destination ?? null, reachFrom: state.reachFrom ?? null,
-      commit: state.historyCommit ?? null, authors: state.showAuthors ?? false });
+    writeUrlState(explorationSnapshot());
   }
 
   /**
@@ -1112,13 +1418,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     });
   }
 
-  function showBundledDocInDetailPanel(docPath: string): void {
-    const content = bundledMarkdown?.[docPath];
-    if (content) {
-      detailPanel.showBundledDoc(docPath, content);
-    } else {
-      console.error(`Failed to load bundled doc: ${docPath}`);
-    }
+  function showBundledDocInDetailPanel(path: string): void {
+    openInspection({ kind: "bundled-doc", path });
   }
 
   function syncFilterControls(): void {

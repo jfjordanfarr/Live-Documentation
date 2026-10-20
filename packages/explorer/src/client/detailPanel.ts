@@ -5,18 +5,31 @@
  * Renders a file's Live Doc from the graph in the bundle: its metadata, its
  * authored block as markdown, and its generated sections as navigable lists.
  */
-import { renderLiveDoc } from "@live-documentation/engine/live-docs/document";
+import { renderLiveDoc, symbolName } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 
 import { requireElement } from "./dom";
 import { escapeHtml } from "./graph-helpers";
 import { renderMarkdown } from "./markdown";
+import type { InspectionTarget } from "./types";
+import { INTERNAL_SYMBOL } from "./views/pin-state";
 import type { ExplorerNodePayload } from "../shared/types";
+
+/** A reader control whose meaning and state belong to the application. */
+export interface DetailPanelAction {
+  label: string;
+  /** Optional concise visible wording; the full label remains its accessible name and tooltip. */
+  text?: string;
+  pressed?: boolean;
+  run(): void;
+}
 
 /** Public API surface of the Explorer detail panel component. */
 export interface DetailPanelApi {
-  showNode(node: ExplorerNodePayload): void;
-  showBundledDoc(docPath: string, content: string): void;
+  showNode(node: ExplorerNodePayload, symbol?: string): void;
+  showDirectory(directory: string): void;
+  showBundledDoc(docPath: string, content: string, fragment?: string): void;
+  setActions(actions: readonly DetailPanelAction[]): void;
   setLoading(node: ExplorerNodePayload): void;
   hide(): void;
   /** Download the current node's markdown file */
@@ -29,18 +42,24 @@ export interface DetailPanelApi {
 export interface DetailPanelOptions {
   /** The graph's files, keyed by code path: what the panel renders a node from. */
   files: Record<string, GraphFile>;
+  /** Bundled authored documents, keyed by their actual workspace paths. */
+  bundledMarkdown?: Readonly<Record<string, string>>;
 
   /**
    * Callback when user clicks a node link in the documentation.
    * Used for navigation within the explorer.
    */
-  onNodeClick?: (nodeId: string) => void;
+  onNodeClick?: (nodeId: string, symbol?: string) => void;
+  /** Ask the application to inspect a directory named by the reader. */
+  onDirectoryClick?: (directory: string) => void;
+  /** Ask the application to close evidence, including its address/history state. */
+  onClose?: () => void;
 
   /**
    * Callback when user clicks a bundled doc link (e.g., README, spec).
    * Used to show the bundled doc in the detail panel.
    */
-  onBundledDocClick?: (docPath: string) => void;
+  onBundledDocClick?: (docPath: string, fragment?: string) => void;
 
 }
 
@@ -52,62 +71,140 @@ export function createDetailPanel(
   nodesById: Map<string, ExplorerNodePayload>,
   options: DetailPanelOptions
 ): DetailPanelApi {
-  const { files, onNodeClick, onBundledDocClick } = options;
+  const { files, onNodeClick, onDirectoryClick, onBundledDocClick, onClose } = options;
+  const linkContext: ReaderLinkContext = { nodesById, files, bundledMarkdown: options.bundledMarkdown };
 
   const panel = requireElement<HTMLDivElement>("detail-panel");
   const title = requireElement<HTMLHeadingElement>("detail-title");
   const body = requireElement<HTMLDivElement>("detail-body");
   const closeButton = requireElement<HTMLButtonElement>("detail-close");
+  const downloadButton = requireElement<HTMLButtonElement>("download-doc-btn");
+  const actions = document.createElement("div");
+  actions.className = "detail-actions";
+  downloadButton.before(actions);
+  panel.setAttribute("aria-hidden", "true");
+  panel.inert = true;
 
   // Track current node for action buttons
   let currentNode: ExplorerNodePayload | null = null;
   // Track current bundled doc (for non-graph markdown files)
   let currentBundledDoc: { path: string; content: string } | null = null;
+  let currentTarget: InspectionTarget | null = null;
 
   const hide = (): void => {
     panel.classList.remove("visible");
+    panel.setAttribute("aria-hidden", "true");
+    panel.inert = true;
     currentNode = null;
     currentBundledDoc = null;
+    currentTarget = null;
+    actions.replaceChildren();
   };
 
-  closeButton.addEventListener("click", hide);
-  closeButton.addEventListener("keydown", event => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      hide();
+  closeButton.addEventListener("click", () => { if (onClose) onClose(); else hide(); });
+
+  function setActions(commands: readonly DetailPanelAction[]): void {
+    const focusedIndex = [...actions.children].indexOf(document.activeElement as Element);
+    actions.replaceChildren(...commands.map(command => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "action-btn ghost";
+      button.textContent = command.text ?? command.label;
+      button.setAttribute("aria-label", command.label);
+      button.title = command.label;
+      if (command.pressed !== undefined) button.setAttribute("aria-pressed", String(command.pressed));
+      button.addEventListener("click", () => command.run());
+      return button;
+    }));
+    actions.hidden = commands.length === 0;
+    if (focusedIndex >= 0) {
+      (actions.children[Math.min(focusedIndex, actions.children.length - 1)] as HTMLButtonElement | undefined)
+        ?.focus({ preventScroll: true });
     }
-  });
+  }
+
+  function reveal(): void {
+    panel.inert = false;
+    panel.setAttribute("aria-hidden", "false");
+    panel.classList.add("visible");
+  }
+
+  function attachReaderLinks(): void {
+    attachNodeLinkHandlers(body, onNodeClick);
+    attachBundledDocLinkHandlers(body, onBundledDocClick);
+    body.querySelectorAll<HTMLAnchorElement>("a.directory-link[data-directory]").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        if (link.dataset.directory !== undefined) onDirectoryClick?.(link.dataset.directory);
+      });
+    });
+    body.querySelectorAll<HTMLAnchorElement>("a.reader-anchor[data-fragment]").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        scrollToFragment(link.dataset.fragment);
+      });
+    });
+  }
+
+  /** Scroll only the reader, never the canvas or an ancestor of its overlay. */
+  function scrollToFragment(fragment?: string): void {
+    const target = fragment ? [...body.querySelectorAll<HTMLElement>("[id]")].find(element => element.id === fragment) : undefined;
+    body.scrollTop = target
+      ? body.scrollTop + target.getBoundingClientRect().top - body.getBoundingClientRect().top
+      : 0;
+  }
 
   function setLoading(node: ExplorerNodePayload): void {
-    panel.classList.add("visible");
+    reveal();
     title.textContent = node.name;
     body.innerHTML = '<p class="loading-indicator">Loading documentation...</p>';
     currentNode = node;
     currentBundledDoc = null; // Clear bundled doc state when showing a graph node
+    currentTarget = null;
   }
 
-  function showNode(node: ExplorerNodePayload): void {
+  function showNode(node: ExplorerNodePayload, symbol?: string): void {
+    if (currentTarget?.kind === "file" && currentTarget.nodeId === node.id && currentTarget.symbol === symbol && currentNode === node) return;
     setLoading(node);
-
-    // Show the Local Map action (these are graph nodes)
-    const localViewBtn = document.querySelector<HTMLButtonElement>('[onclick="openInLocalView()"]');
-    if (localViewBtn) {
-      localViewBtn.style.display = "";
-    }
+    currentTarget = { kind: "file", nodeId: node.id, ...(symbol ? { symbol } : {}) };
+    downloadButton.hidden = false;
 
     try {
       const file = files[node.id];
       body.innerHTML = file
-        ? renderDocumentation(file, node, nodesById, onNodeClick)
+        ? renderDocumentation(file, node, linkContext, symbol)
         : renderFallbackDetails(node, nodesById);
-      // Attach delegated click handler for node-link elements
-      attachNodeLinkHandlers(body, onNodeClick);
-      // Attach delegated click handler for bundled doc links
-      attachBundledDocLinkHandlers(body, onBundledDocClick);
+      attachReaderLinks();
+      body.scrollTop = 0;
     } catch (error) {
       console.error(error);
       body.innerHTML = '<p class="error-message">Failed to load documentation for this node.</p>';
     }
+  }
+
+  /** A directory is read from the bundled graph's file inventory, without a separate data channel. */
+  function showDirectory(directory: string): void {
+    if (currentTarget?.kind === "directory" && currentTarget.directory === directory) return;
+    reveal();
+    currentNode = null;
+    currentBundledDoc = null;
+    currentTarget = { kind: "directory", directory };
+    title.textContent = directory || "Scan root";
+    downloadButton.hidden = true;
+    const prefix = directory ? `${directory}/` : "";
+    const filesHere = [...nodesById.values()].filter(node => node.id.startsWith(prefix)).sort((a, b) => a.id.localeCompare(b.id));
+    const directFiles = filesHere.filter(node => !node.id.slice(prefix.length).includes("/"));
+    const subdirectories = [...new Set(filesHere.flatMap(node => {
+      const tail = node.id.slice(prefix.length);
+      const slash = tail.indexOf("/");
+      return slash < 0 ? [] : [`${prefix}${tail.slice(0, slash)}`];
+    }))].sort();
+    body.innerHTML = `<div class="detail-doc-content"><p>${filesHere.length} ${filesHere.length === 1 ? "file" : "files"} in this directory and its subdirectories</p>`
+      + (subdirectories.length ? `<div class="detail-section"><div class="detail-label">Directories</div><div class="detail-content">${subdirectories.map(path => `<div class="dep-item"><a href="#" class="directory-link" data-directory="${escapeHtml(path)}">${escapeHtml(path)}</a></div>`).join("")}</div></div>` : "")
+      + (directFiles.length ? `<div class="detail-section"><div class="detail-label">Files</div><div class="detail-content">${directFiles.map(node => `<div class="dep-item"><a href="#" class="node-link" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</a></div>`).join("")}</div></div>` : "")
+      + `</div>`;
+    attachReaderLinks();
+    body.scrollTop = 0;
   }
 
   function downloadCurrentDoc(): void {
@@ -140,11 +237,8 @@ export function createDetailPanel(
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      // Derive extension from node's actual docPath (supports any configured extension)
-      const docExt = currentNode.docPath.includes(".")
-        ? currentNode.docPath.slice(currentNode.docPath.indexOf(".", currentNode.docPath.lastIndexOf("/") + 1))
-        : ".md";
-      a.download = `${currentNode.name}${docExt}`;
+      // The bundled doc already carries its configured name and suffix.
+      a.download = currentNode.docPath.split("/").pop() || currentNode.name;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -162,23 +256,21 @@ export function createDetailPanel(
    * Show a bundled markdown document in the detail panel.
    * Used for READMEs, chat history, specs, etc. linked from Live Docs.
    */
-  function showBundledDoc(docPath: string, content: string): void {
-    panel.classList.add("visible");
+  function showBundledDoc(docPath: string, content: string, fragment?: string): void {
+    if (currentTarget?.kind === "bundled-doc" && currentTarget.path === docPath
+      && currentTarget.fragment === fragment && currentBundledDoc?.content === content) return;
+    reveal();
+    downloadButton.hidden = false;
     currentNode = null; // Clear current node since this is not a graph node
     currentBundledDoc = { path: docPath, content }; // Track for download button
+    currentTarget = { kind: "bundled-doc", path: docPath, ...(fragment ? { fragment } : {}) };
     
     // Extract filename from path for title
     const fileName = docPath.split("/").pop() ?? docPath;
     title.textContent = fileName;
     
-    // Hide the Local Map action (bundled docs aren't graph nodes)
-    const localViewBtn = document.querySelector<HTMLButtonElement>('[onclick="openInLocalView()"]');
-    if (localViewBtn) {
-      localViewBtn.style.display = "none";
-    }
-    
     // Create link handler for bundled doc content
-    const linkHandler = createBundledDocLinkHandler(docPath);
+    const linkHandler = createReaderLinkHandler(docPath, linkContext);
     
     // Render the markdown content with file path indicator
     const renderedHtml = renderMarkdown(content, { linkHandler });
@@ -193,10 +285,11 @@ export function createDetailPanel(
     `;
     
     // Attach click handlers for bundled doc links within this content
-    attachBundledDocLinkHandlers(body, onBundledDocClick);
+    attachReaderLinks();
+    scrollToFragment(fragment);
   }
 
-  return { showNode, showBundledDoc, setLoading, hide, downloadCurrentDoc, getCurrentNode };
+  return { showNode, showDirectory, showBundledDoc, setActions, setLoading, hide, downloadCurrentDoc, getCurrentNode };
 }
 
 /**
@@ -208,18 +301,28 @@ export function createDetailPanel(
 function renderDocumentation(
   file: GraphFile,
   node: ExplorerNodePayload,
-  nodesById: Map<string, ExplorerNodePayload>,
-  onNodeClick?: (nodeId: string) => void
+  links: ReaderLinkContext,
+  inspectedSymbol?: string
 ): string {
   const parts: string[] = [];
 
   parts.push(renderNodeMetadata(node, file.generatedAt));
 
-  const authoredHtml = renderAuthoredContent(file.authored, node, nodesById, onNodeClick);
+  if (inspectedSymbol === INTERNAL_SYMBOL) {
+    parts.push(sectionHtml("Internal implementation", "File-level connections that are not attributed to a public symbol."));
+  } else if (inspectedSymbol) {
+    const block = file.symbols.find(entry => symbolName(entry) === inspectedSymbol);
+    const summary = block?.sections.find(section => section.title === "Summary")?.body.join(" ");
+    parts.push(sectionHtml("Inspected symbol", `<strong>${escapeHtml(inspectedSymbol)}</strong>`
+      + (block?.kind ? ` · ${escapeHtml(block.kind)}` : "")
+      + (summary ? `<p>${escapeHtml(summary)}</p>` : "")));
+  }
+
+  const authoredHtml = renderMarkdown(file.authored, { linkHandler: createReaderLinkHandler(node.docPath, links) });
   parts.push(`<div class="doc-authored markdown-body">${authoredHtml}</div>`);
 
   if (node.publicSymbols.length > 0 || node.dependencies.length > 0 || node.dependents.length > 0) {
-    const generatedHtml = renderGeneratedContent(node, nodesById, onNodeClick);
+    const generatedHtml = renderGeneratedContent(node, links, inspectedSymbol);
     parts.push(`<div class="doc-generated">${generatedHtml}</div>`);
   }
 
@@ -227,64 +330,19 @@ function renderDocumentation(
 }
 
 /**
- * Render authored content (Purpose, Notes) with full markdown and smart link handling.
- */
-function renderAuthoredContent(
-  content: string,
-  node: ExplorerNodePayload,
-  nodesById: Map<string, ExplorerNodePayload>,
-  onNodeClick?: (nodeId: string) => void
-): string {
-  // Create link handler with smart routing rules:
-  // 1. Links that resolve to a graph node → navigate within explorer
-  // 2. Links to external URLs → open in new tab
-  // 3. Links to other .md files → treat as bundled doc
-  // 4. Other workspace files → external link
-  const linkHandler = (href: string, text: string): string => {
-    // Strip fragment for path resolution (e.g., "file.md#section" → "file.md")
-    const hrefWithoutFragment = href.split("#")[0];
-
-    // First, try to resolve as an in-explorer Live Doc link (extension-agnostic).
-    // Any .md href that matches a known graph node gets in-explorer navigation.
-    if (hrefWithoutFragment.endsWith(".md")) {
-      const resolvedId = resolveRelativePath(hrefWithoutFragment, node.docPath, nodesById);
-      if (resolvedId && onNodeClick) {
-        return `<a href="#" class="node-link" data-node-id="${escapeHtml(resolvedId)}">${text}</a>`;
-      }
-    }
-    
-    // Check if this is an external URL
-    if (href.startsWith("http://") || href.startsWith("https://")) {
-      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${text}</a>`;
-    }
-    
-    // Markdown file that didn't resolve to a node → potential bundled doc
-    if (hrefWithoutFragment.endsWith(".md")) {
-      const resolvedPath = resolveRelativePathToWorkspace(hrefWithoutFragment, node.docPath);
-      return `<a href="#" class="bundled-doc-link" data-doc-path="${escapeHtml(resolvedPath)}">${text}</a>`;
-    }
-    
-    // Workspace file (not markdown) - render as external link
-    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener" class="workspace-link">${text}</a>`;
-  };
-
-  return renderMarkdown(content, { linkHandler });
-}
-
-/**
  * Render generated content (Public Symbols, Dependencies) with structured badge/list style.
  */
 function renderGeneratedContent(
   node: ExplorerNodePayload,
-  nodesById: Map<string, ExplorerNodePayload>,
-  onNodeClick?: (nodeId: string) => void
+  links: ReaderLinkContext,
+  inspectedSymbol?: string
 ): string {
   const parts: string[] = [];
   
   // Public Symbols - render as badge pills
   if (node.publicSymbols.length > 0) {
     const symbolBadges = node.publicSymbols
-      .map(s => `<span class="symbol-badge">${escapeHtml(s)}</span>`)
+      .map(symbol => `<a href="#" class="node-link symbol-badge${symbol === inspectedSymbol ? " inspected-symbol" : ""}" data-node-id="${escapeHtml(node.id)}" data-symbol="${escapeHtml(symbol)}"${symbol === inspectedSymbol ? ' aria-current="true"' : ""}>${escapeHtml(symbol)}</a>`)
       .join("");
     parts.push(sectionHtml("Public Symbols", `<div class="symbol-badges">${symbolBadges}</div>`));
   }
@@ -293,7 +351,7 @@ function renderGeneratedContent(
   const resolvedDeps = node.dependencies.filter(d => d.resolved);
   if (resolvedDeps.length > 0) {
     const depItems = resolvedDeps
-      .map(d => renderDependencyItem(d, nodesById, onNodeClick))
+      .map(d => renderDependencyItem(d, links))
       .sort()
       .join("");
     parts.push(sectionHtml("Dependencies", `<div class="dep-list">${depItems}</div>`));
@@ -302,7 +360,7 @@ function renderGeneratedContent(
   // Dependents - render as clickable list items
   if (node.dependents.length > 0) {
     const depItems = node.dependents
-      .map(depId => renderDependentItem(depId, nodesById, onNodeClick))
+      .map(depId => renderDependentItem(depId, links.nodesById))
       .sort()
       .join("");
     parts.push(sectionHtml("Dependents", `<div class="dep-list">${depItems}</div>`));
@@ -316,17 +374,16 @@ function renderGeneratedContent(
  */
 function renderDependencyItem(
   dep: { targetId?: string; targetSymbol?: string; label?: string; raw?: string },
-  nodesById: Map<string, ExplorerNodePayload>,
-  onNodeClick?: (nodeId: string) => void
+  links: ReaderLinkContext
 ): string {
-  const target = dep.targetId ? nodesById.get(dep.targetId) : undefined;
+  const target = dep.targetId ? links.nodesById.get(dep.targetId) : undefined;
   const displayPath = target?.codeRelativePath ?? dep.targetId ?? dep.label ?? dep.raw ?? "unknown";
   const symbolLine = dep.targetSymbol 
     ? `<div class="dep-symbol">${escapeHtml(dep.targetSymbol)}</div>` 
     : "";
   
-  if (target && onNodeClick) {
-    return `<div class="dep-item"><a href="#" class="node-link dep-path" data-node-id="${escapeHtml(target.id)}">${escapeHtml(displayPath)}</a>${symbolLine}</div>`;
+  if (target) {
+    return `<div class="dep-item">${readerLink(fileInspection(target, dep.targetSymbol, links), escapeHtml(displayPath))}${symbolLine}</div>`;
   }
   return `<div class="dep-item"><span class="dep-path">${escapeHtml(displayPath)}</span>${symbolLine}</div>`;
 }
@@ -336,13 +393,12 @@ function renderDependencyItem(
  */
 function renderDependentItem(
   depId: string,
-  nodesById: Map<string, ExplorerNodePayload>,
-  onNodeClick?: (nodeId: string) => void
+  nodesById: ReadonlyMap<string, ExplorerNodePayload>
 ): string {
   const target = nodesById.get(depId);
   const displayPath = target?.codeRelativePath ?? depId;
   
-  if (target && onNodeClick) {
+  if (target) {
     return `<div class="dep-item"><a href="#" class="node-link" data-node-id="${escapeHtml(target.id)}">${escapeHtml(displayPath)}</a></div>`;
   }
   return `<div class="dep-item">${escapeHtml(displayPath)}</div>`;
@@ -354,7 +410,7 @@ function renderDependentItem(
  */
 function attachNodeLinkHandlers(
   container: HTMLElement,
-  onNodeClick?: (nodeId: string) => void
+  onNodeClick?: (nodeId: string, symbol?: string) => void
 ): void {
   if (!onNodeClick) return;
 
@@ -365,7 +421,7 @@ function attachNodeLinkHandlers(
       event.preventDefault();
       const nodeId = link.dataset.nodeId;
       if (nodeId) {
-        onNodeClick(nodeId);
+        onNodeClick(nodeId, link.dataset.symbol);
       }
     });
   });
@@ -387,21 +443,21 @@ function renderNodeMetadata(node: ExplorerNodePayload, generatedAt?: string): st
     generatedAtHtml = `
       <div class="metadata-row generated-row">
         <span class="metadata-label">Generated:</span>
-        <span class="metadata-value">${formatted}</span>
+        <span class="metadata-value">${escapeHtml(formatted)}</span>
       </div>
     `;
   }
   
   return `
     <div class="metadata-row archetype-row">
-      <span class="archetype-badge ${archetypeClass}">
+      <span class="archetype-badge ${escapeHtml(archetypeClass)}">
         <span class="archetype-icon">${archetypeIcon}</span>
-        <span class="archetype-label">${node.archetype}</span>
+        <span class="archetype-label">${escapeHtml(node.archetype)}</span>
       </span>
     </div>
     <div class="metadata-row path-row">
       <span class="path-label">CODE:</span>
-      <code class="path-value">${node.codeRelativePath}</code>
+      <code class="path-value">${escapeHtml(node.codeRelativePath)}</code>
     </div>
     ${generatedAtHtml}
   `;
@@ -448,7 +504,7 @@ function renderFallbackDetails(
 
   if (node.dependents.length > 0) {
     const dependents = node.dependents
-      .map(d => nodesById.get(d)?.codeRelativePath ?? d)
+      .map(d => escapeHtml(nodesById.get(d)?.codeRelativePath ?? d))
       .sort();
     parts.push(sectionHtml("Dependents", listHtml(dependents)));
   }
@@ -481,74 +537,7 @@ function describeDependency(
   const target = reference.targetId ? nodesById.get(reference.targetId) : undefined;
   const basePath = target?.codeRelativePath ?? reference.targetId ?? reference.label ?? reference.raw ?? "unknown";
   const symbolSuffix = reference.targetSymbol ? ` · ${reference.targetSymbol}` : "";
-  return `${basePath}${symbolSuffix}`;
-}
-
-/**
- * Resolve a relative path from a doc to a node ID.
- */
-function resolveRelativePath(
-  relativePath: string,
-  fromDocPath: string,
-  nodesById: Map<string, ExplorerNodePayload>
-): string | null {
-  // Simple resolution: try to find a node whose docPath or codePath matches
-  // This is a heuristic; proper resolution would need path normalization
-  const normalizedTarget = relativePath.replace(/^\.\.?\/?/, "");
-
-  for (const [id, node] of nodesById) {
-    if (node.docPath.endsWith(normalizedTarget) || node.codePath.endsWith(normalizedTarget)) {
-      return id;
-    }
-    // Also check if the code relative path matches
-    if (node.codeRelativePath === normalizedTarget || id === normalizedTarget) {
-      return id;
-    }
-  }
-  return null;
-}
-
-/**
- * Resolve a relative path from a doc to a workspace-relative path.
- * Used for linking to bundled markdown files.
- */
-function resolveRelativePathToWorkspace(
-  relativePath: string,
-  fromDocPath: string
-): string {
-  // Handle absolute paths (starting with /)
-  if (relativePath.startsWith("/")) {
-    return relativePath.slice(1); // Remove leading slash
-  }
-  
-  // Get the directory of the source doc, stripping the Live Docs root prefix.
-  // e.g., ".live-documentation/source/packages/generator/src/generator.ts.md" → "packages/generator/src"
-  //        ".mdmd/layer-4/packages/generator/src/generator.ts.mdmd.md"       → "packages/generator/src"
-  let sourceDir = fromDocPath;
-  
-  // Remove the Live Doc filename
-  const lastSlash = sourceDir.lastIndexOf("/");
-  if (lastSlash !== -1) {
-    sourceDir = sourceDir.substring(0, lastSlash);
-  }
-  
-  // Remove Live Docs root prefix (supports both default and MDMD-style layouts)
-  sourceDir = sourceDir.replace(/^\.live-documentation\/[^/]+\//, "");
-  sourceDir = sourceDir.replace(/^\.mdmd\/layer-\d+\//, "");
-  
-  // Resolve the relative path
-  const parts = sourceDir.split("/").filter(Boolean);
-  const targetParts = relativePath.split("/");
-  
-  for (const part of targetParts) {
-    if (part === "..") {
-      parts.pop();
-    } else if (part !== ".") {
-      parts.push(part);
-    }
-  }
-  
-  return parts.join("/");
+  return escapeHtml(`${basePath}${symbolSuffix}`);
 }
 
 /**
@@ -556,7 +545,7 @@ function resolveRelativePathToWorkspace(
  */
 function attachBundledDocLinkHandlers(
   container: HTMLElement,
-  onBundledDocClick?: (docPath: string) => void
+  onBundledDocClick?: (docPath: string, fragment?: string) => void
 ): void {
   if (!onBundledDocClick) return;
 
@@ -567,73 +556,114 @@ function attachBundledDocLinkHandlers(
       event.preventDefault();
       const docPath = link.dataset.docPath;
       if (docPath) {
-        onBundledDocClick(docPath);
+        onBundledDocClick(docPath, link.dataset.fragment);
       }
     });
   });
 }
 
-/**
- * Create a link handler for bundled doc content.
- * Used when rendering markdown content from non-Live-Doc files (READMEs, chat history, etc.)
- */
-function createBundledDocLinkHandler(
-  fromDocPath: string
-): (href: string, text: string) => string {
-  return (href: string, text: string): string => {
-    // External URLs - open in new tab
-    if (href.startsWith("http://") || href.startsWith("https://")) {
-      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${text}</a>`;
-    }
-    
-    // Check if this is a markdown file (potential bundled doc)
-    // Strip fragment identifier for the .md check (e.g., "file.md#L100" → "file.md")
-    const hrefWithoutFragment = href.split("#")[0];
-    if (hrefWithoutFragment.endsWith(".md")) {
-      // Resolve the relative path from the bundled doc's location
-      const resolvedPath = resolveRelativePathFromBundledDoc(hrefWithoutFragment, fromDocPath);
-      return `<a href="#" class="bundled-doc-link" data-doc-path="${escapeHtml(resolvedPath)}">${text}</a>`;
-    }
-    
-    // Other workspace files - render as external link (won't work in static mode)
-    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener" class="workspace-link">${text}</a>`;
-  };
+interface ReaderLinkContext {
+  nodesById: ReadonlyMap<string, ExplorerNodePayload>;
+  files: Readonly<Record<string, GraphFile>>;
+  bundledMarkdown?: Readonly<Record<string, string>>;
 }
 
-/**
- * Resolve a relative path from a bundled doc to a workspace-relative path.
- * Similar to resolveRelativePathToWorkspace but doesn't strip the Live Docs root prefix.
- */
-function resolveRelativePathFromBundledDoc(
-  relativePath: string,
-  fromDocPath: string
-): string {
-  // Handle absolute paths (starting with /)
-  if (relativePath.startsWith("/")) {
-    return relativePath.slice(1); // Remove leading slash
-  }
-  
-  // Get the directory of the source doc
-  let sourceDir = fromDocPath;
-  const lastSlash = sourceDir.lastIndexOf("/");
-  if (lastSlash !== -1) {
-    sourceDir = sourceDir.substring(0, lastSlash);
-  } else {
-    sourceDir = "";
-  }
-  
-  // Resolve the relative path
-  const parts = sourceDir.split("/").filter(Boolean);
-  const targetParts = relativePath.split("/");
-  
-  for (const part of targetParts) {
+/** Resolve against the document's real path; neither the docs root nor its extension is special. */
+function resolveDocLink(relativePath: string, fromDocPath: string): string | null {
+  if (!relativePath) return fromDocPath;
+  const parts = relativePath.startsWith("/") ? [] : fromDocPath.split("/").slice(0, -1);
+  for (const part of relativePath.split("/")) {
+    if (!part || part === ".") continue;
     if (part === "..") {
+      if (!parts.length) return null;
       parts.pop();
-    } else if (part !== ".") {
-      parts.push(part);
-    }
+    } else parts.push(part);
   }
-  
   return parts.join("/");
 }
 
+function decodeLinkPart(value: string): string {
+  try { return decodeURIComponent(value); } catch { return value; }
+}
+
+/** Follow a documented re-export to its origin where the bundle carries that evidence. */
+function fileInspection(
+  node: ExplorerNodePayload,
+  fragment: string | undefined,
+  context: ReaderLinkContext,
+  visited = new Set<string>()
+): Extract<InspectionTarget, { kind: "file" }> {
+  const whole: Extract<InspectionTarget, { kind: "file" }> = { kind: "file", nodeId: node.id };
+  if (!fragment) return whole;
+  const key = `${node.id}#${fragment}`;
+  if (visited.has(key)) return whole;
+  visited.add(key);
+  const file = context.files[node.id];
+  const reExport = file?.reExports?.find(entry => entry.slug === fragment || entry.name === fragment);
+  if (reExport?.from) {
+    const origin = resolveReaderTarget(reExport.from.link, node.docPath, context, visited);
+    if (origin?.kind === "file") return origin;
+  }
+  const block = file?.symbols.find(entry => entry.slug === fragment || symbolName(entry) === fragment);
+  const symbol = block ? symbolName(block) : node.publicSymbols.includes(fragment) ? fragment : undefined;
+  return symbol ? { ...whole, symbol } : whole;
+}
+
+function resolveReaderTarget(
+  href: string,
+  fromDocPath: string,
+  context: ReaderLinkContext,
+  visited?: Set<string>
+): InspectionTarget | null {
+  href = href.trim();
+  if (href.startsWith("<") && href.endsWith(">")) href = href.slice(1, -1);
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(href)) return null;
+  const hash = href.indexOf("#");
+  const pathPart = hash < 0 ? href : href.slice(0, hash);
+  const fragment = hash < 0 ? undefined : decodeLinkPart(href.slice(hash + 1)) || undefined;
+  const path = resolveDocLink(decodeLinkPart(pathPart), fromDocPath);
+  if (path === null) return null;
+  for (const node of context.nodesById.values()) {
+    if (node.docPath === path || node.codePath === path || node.id === path) {
+      return fileInspection(node, fragment, context, visited);
+    }
+  }
+  if (context.bundledMarkdown && Object.hasOwn(context.bundledMarkdown, path)) {
+    return { kind: "bundled-doc", path, ...(fragment ? { fragment } : {}) };
+  }
+  const directory = path.replace(/\/+$/u, "");
+  const prefix = directory ? `${directory}/` : "";
+  if ([...context.nodesById.keys()].some(id => id.startsWith(prefix))) return { kind: "directory", directory };
+  return null;
+}
+
+function readerLink(target: InspectionTarget, text: string): string {
+  if (target.kind === "file") {
+    return `<a href="#" class="node-link" data-node-id="${escapeHtml(target.nodeId)}"${target.symbol ? ` data-symbol="${escapeHtml(target.symbol)}"` : ""}>${text}</a>`;
+  }
+  if (target.kind === "directory") {
+    return `<a href="#" class="directory-link" data-directory="${escapeHtml(target.directory)}">${text}</a>`;
+  }
+  return `<a href="#" class="bundled-doc-link" data-doc-path="${escapeHtml(target.path)}"${target.fragment ? ` data-fragment="${escapeHtml(target.fragment)}"` : ""}>${text}</a>`;
+}
+
+/** Authored Live Doc prose and bundled Markdown use exactly the same navigation rules. */
+function createReaderLinkHandler(fromDocPath: string, context: ReaderLinkContext): (href: string, text: string) => string {
+  return (href, text) => {
+    href = href.trim();
+    if (href.startsWith("<") && href.endsWith(">")) href = href.slice(1, -1);
+    const target = resolveReaderTarget(href, fromDocPath, context);
+    if (target) {
+      // A local authored heading does not name another evidence item or a generated symbol.
+      if (href.startsWith("#") && target.kind === "file" && !target.symbol) {
+        return `<a href="#" class="reader-anchor" data-fragment="${escapeHtml(decodeLinkPart(href.slice(1)))}">${text}</a>`;
+      }
+      return readerLink(target, text);
+    }
+    if (/^(?:https?:|mailto:|\/\/)/iu.test(href)) {
+      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+    }
+    // A source-relative path unavailable in this static bundle has no truthful reader destination.
+    return `<span class="unavailable-link" title="Not included in this bundle">${text}</span>`;
+  };
+}

@@ -18,12 +18,14 @@ import type { SymbolOrder } from "../../types";
 export interface CardPresentation {
   subject: boolean;
   retained: boolean;
+  filePinned: boolean;
   expanded: boolean;
   showTests: boolean;
   symbolOrder: SymbolOrder;
   testBacking: readonly ExplorerNodePayload[];
   /** Pressed state is read at construction; a press itself goes through the live action below. */
   isPinned(symbol: string): boolean;
+  isDirectlyPinned(symbol: string): boolean;
 }
 
 /** Only the facts and actions a card needs; navigation targets are looked up when their event occurs. */
@@ -31,13 +33,24 @@ export interface CardContext {
   presentation(node: ExplorerNodePayload): CardPresentation;
   registerAnchor(nodeId: string, role: ColumnRole, key: string, element: HTMLElement): void;
   closeNode(nodeId: string): void;
+  /** The pressed file Pin pressed again: its pins go, the subject and the card stay. */
+  unpinNode(nodeId: string): void;
   openDirectory(directory: string): void;
+  inspectDirectory(directory: string): void | Promise<void>;
   recenterNode(node: ExplorerNodePayload): void | Promise<void>;
   togglePinnedSymbol(nodeId: string, symbol: string): void;
+  inspectNode(node: ExplorerNodePayload, symbol?: string): void | Promise<void>;
+  showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }): void | Promise<void>;
+  showDirectoryActions(directory: string, anchor: { x: number; y: number }): void | Promise<void>;
   highlightSymbolConnections(nodeId: string, symbol: string): void;
   clearSymbolHighlight(): void;
   focusTypeTarget(targetId: string): void | Promise<void>;
 }
+
+const actionAnchor = (element: HTMLElement): { x: number; y: number } => {
+  const rect = element.getBoundingClientRect();
+  return { x: rect.left + rect.width / 2, y: rect.bottom };
+};
 
 /**
  * Creates a node card element for the Local Map view.
@@ -57,7 +70,9 @@ export function createNodeCard(
   card.dataset.id = node.id;
   card.dataset.columnRole = columnRole;
   card.title = node.codeRelativePath;
-  card.tabIndex = 0;
+  card.tabIndex = -1;
+  card.setAttribute("role", "group");
+  card.setAttribute("aria-label", node.codeRelativePath);
 
   const presentation = context.presentation(node);
 
@@ -97,9 +112,42 @@ export function createNodeCard(
 
   const header = document.createElement("div");
   header.className = "node-title";
-  header.textContent = node.name;
+  const inspect = document.createElement("button");
+  inspect.type = "button";
+  inspect.className = "local-file-inspect";
+  inspect.textContent = node.name;
+  inspect.setAttribute("aria-label", `Inspect ${node.codeRelativePath}`);
+  inspect.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node); });
+  header.append(inspect);
   card.appendChild(header);
+  const actions = document.createElement("div");
+  actions.className = "local-card-actions";
+  const filePin = document.createElement("button");
+  filePin.type = "button";
+  filePin.className = "local-file-pin";
+  filePin.setAttribute("aria-label", `${presentation.filePinned ? "Unpin" : "Pin"} ${node.name}`);
+  filePin.setAttribute("aria-pressed", String(presentation.filePinned));
+  filePin.title = presentation.filePinned ? "Unpin this file" : "Pin this file and its connections";
+  filePin.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7"/></svg>';
+  filePin.addEventListener("click", event => {
+    event.stopPropagation();
+    if (presentation.filePinned) context.unpinNode(node.id);
+    else context.togglePinnedSymbol(node.id, "*");
+  });
+  actions.append(filePin);
+
+  const more = document.createElement("button");
+  more.type = "button";
+  more.className = "local-file-more";
+  more.setAttribute("aria-label", `More actions for ${node.name}`);
+  more.setAttribute("aria-haspopup", "menu");
+  more.title = `More actions for ${node.name}`;
+  more.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>';
+  more.addEventListener("click", event => { event.stopPropagation(); void context.showNodeActions(node, undefined, actionAnchor(more)); });
+  actions.append(more);
+
   const close = document.createElement("button");
+  close.type = "button";
   close.className = "local-file-close";
   close.title = "Close this expansion; keep symbols needed by other pins";
   close.setAttribute("aria-label", `Close ${node.name}`);
@@ -115,9 +163,10 @@ export function createNodeCard(
     recentre.setAttribute("aria-label", `Centre on ${node.name}`);
     recentre.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></svg>';
     recentre.addEventListener("click", event => { event.stopPropagation(); void context.recenterNode(node); });
-    card.append(recentre);
+    actions.append(recentre);
   }
-  if (retained || subject || presentation.expanded) card.append(close);
+  if (retained || subject || presentation.expanded) actions.append(close);
+  card.append(actions);
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";
@@ -162,12 +211,12 @@ export function createNodeCard(
 
   card.addEventListener("click", event => {
     event.stopPropagation();
-    context.togglePinnedSymbol(node.id, "*");
+    void context.inspectNode(node);
   });
 
   card.addEventListener("keydown", event => {
     if (event.target === card && (event.key === "Enter" || event.key === " ")) {
-      event.preventDefault(); card.click();
+      event.preventDefault(); void context.inspectNode(node);
     }
   });
 
@@ -176,29 +225,41 @@ export function createNodeCard(
 
 /**
  * A closed directory's box: a pseudo-node with no symbols in the membrane's
- * style, named and counted, that opens in place on a click (the owner's
- * grammar, 2026-10-08). It carries no pin: a directory with a party file
+ * style, named and counted, that can be inspected or explicitly opened.
+ * It carries no pin: a directory with a party file
  * under it is at least encasing, so no wire ever reaches a closed box.
  */
 export function createClosedDirectory(context: CardContext, closed: ClosedDirectory): HTMLElement {
   const box = document.createElement("div");
   box.className = "local-directory-closed";
   box.dataset.directory = closed.path;
-  box.tabIndex = 0;
-  box.setAttribute("role", "button");
-  box.setAttribute("aria-label", `Open ${closed.path}`);
-  box.title = `${closed.path}\nOpen this directory: every file inside as a compact card, every subdirectory as a closed box`;
-  const name = document.createElement("div");
+  box.title = closed.path;
+  const name = document.createElement("button");
+  name.type = "button";
   name.className = "local-directory-closed__name";
   name.textContent = closed.name;
+  name.setAttribute("aria-label", `Inspect ${closed.path}`);
+  name.addEventListener("click", event => { event.stopPropagation(); void context.inspectDirectory(closed.path); });
   const count = document.createElement("div");
   count.className = "local-directory-closed__count";
   count.textContent = countsOf(closed.files, closed.directories);
-  box.append(name, count);
-  box.addEventListener("click", event => { event.stopPropagation(); context.openDirectory(closed.path); });
-  box.addEventListener("keydown", event => {
-    if (event.target === box && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); box.click(); }
-  });
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = "local-directory-open";
+  open.textContent = "Open";
+  open.setAttribute("aria-label", `Open ${closed.path}`);
+  open.title = "Show the files and subdirectories inside";
+  open.addEventListener("click", event => { event.stopPropagation(); context.openDirectory(closed.path); });
+  const more = document.createElement("button");
+  more.type = "button";
+  more.className = "local-directory-actions";
+  more.setAttribute("aria-label", `More actions for ${closed.path}`);
+  more.setAttribute("aria-haspopup", "menu");
+  more.title = `More actions for ${closed.path}`;
+  more.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>';
+  more.addEventListener("click", event => { event.stopPropagation(); void context.showDirectoryActions(closed.path, actionAnchor(more)); });
+  box.append(name, count, open, more);
+  box.addEventListener("click", event => { event.stopPropagation(); void context.inspectDirectory(closed.path); });
   return box;
 }
 
@@ -258,7 +319,6 @@ function createSymbolSection(
     const extended = extendedByName.get(symbol);
     const typeRefs = extended?.typeReferences;
     const hasTypeRefs = typeRefs && typeRefs.length > 0;
-    const hasResolvedTypeRefs = hasTypeRefs && typeRefs.some(ref => ref.isResolved);
 
     // Wrapper element for hover targeting (uses display: contents to preserve grid layout)
     const symbolRow = document.createElement("div");
@@ -274,14 +334,11 @@ function createSymbolSection(
     symbolRow.addEventListener("mouseleave", () => {
       context.clearSymbolHighlight();
     });
-    // Add click handler for "sticky" pinned highlighting (useful for mobile & exploring large files)
+    // A row names its symbol. Pinning is the adjacent explicit action.
     symbolRow.addEventListener("click", (event) => {
       event.stopPropagation();
-      const targetId = (event.target as HTMLElement).closest<HTMLElement>(".type-badge")?.dataset.targetId;
-      context.togglePinnedSymbol(node.id, symbol);
-      if (targetId) void context.focusTypeTarget(targetId);
+      void context.inspectNode(node, symbol);
     });
-
     const inboundAnchor = document.createElement("div");
     inboundAnchor.className = "symbol-anchor dot inbound";
     inboundAnchor.dataset.symbol = symbol;
@@ -290,11 +347,13 @@ function createSymbolSection(
 
     const labelWrapper = document.createElement("div");
     labelWrapper.className = "symbol-label-wrapper";
-    makePinAccessible(labelWrapper, node.name, symbol, presentation.isPinned(symbol));
 
-    const label = document.createElement("div");
+    const label = document.createElement("button");
+    label.type = "button";
     label.className = "symbol-label";
     label.textContent = symbol;
+    label.setAttribute("aria-label", `Inspect ${symbol} in ${node.name}`);
+    label.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node, symbol); });
     labelWrapper.appendChild(label);
 
     // Add type reference indicator if present
@@ -303,12 +362,7 @@ function createSymbolSection(
       labelWrapper.appendChild(typeIndicator);
     }
 
-    // If there are resolved type refs, make the label visually indicate it
-    // But DON'T add a click handler here — badge click will handle navigation
-    // Symbol row click will just toggle the pin (handled by the row's click handler)
-    if (hasResolvedTypeRefs) {
-      labelWrapper.classList.add("has-type-link");
-    }
+    appendSymbolActions(context, presentation, node, symbol, labelWrapper);
 
     symbolRow.appendChild(labelWrapper);
 
@@ -340,12 +394,11 @@ function createSymbolSection(
     internalsRow.addEventListener("mouseleave", () => {
       context.clearSymbolHighlight();
     });
-    // Add click handler for "sticky" pinned highlighting
+    // Internals is inspectable like a public row, with a separate pin action.
     internalsRow.addEventListener("click", (event) => {
       event.stopPropagation();
-      context.togglePinnedSymbol(node.id, "__internals__");
+      void context.inspectNode(node, "__internals__");
     });
-
     const internalsInbound = document.createElement("div");
     internalsInbound.className = "symbol-anchor dot inbound internals-anchor";
     internalsInbound.dataset.symbol = "__internals__";
@@ -355,9 +408,15 @@ function createSymbolSection(
 
     const internalsLabel = document.createElement("div");
     internalsLabel.className = "symbol-label-wrapper internals-label";
-    makePinAccessible(internalsLabel, node.name, "Internals", presentation.isPinned("__internals__"));
-    internalsLabel.innerHTML = `<div class="symbol-label internals-text">Internals</div>`;
+    const internalsName = document.createElement("button");
+    internalsName.type = "button";
+    internalsName.className = "symbol-label internals-text";
+    internalsName.textContent = "Internals";
+    internalsName.setAttribute("aria-label", `Inspect Internals in ${node.name}`);
+    internalsName.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node, "__internals__"); });
+    internalsLabel.append(internalsName);
     internalsLabel.title = "Internal/private implementation — data flows in but isn't exposed as public symbols";
+    appendSymbolActions(context, presentation, node, "__internals__", internalsLabel);
     internalsRow.appendChild(internalsLabel);
 
     // Empty placeholder for the outbound column (internals don't have outbound connections)
@@ -370,6 +429,31 @@ function createSymbolSection(
 
   wrapper.appendChild(grid);
   return wrapper;
+}
+
+/** Visible Pin and More controls beside one symbol, independent of its inspection target. */
+function appendSymbolActions(context: CardContext, presentation: CardPresentation, node: ExplorerNodePayload, symbol: string, wrapper: HTMLElement): void {
+  const pinned = presentation.isDirectlyPinned(symbol);
+  const pin = document.createElement("button");
+  pin.type = "button";
+  pin.className = "local-symbol-pin";
+  pin.setAttribute("aria-pressed", String(pinned));
+  const action = pinned ? "Unpin" : presentation.filePinned ? "Pin only" : "Pin";
+  pin.setAttribute("aria-label", `${action} ${symbol === "__internals__" ? "Internals" : symbol} in ${node.name}`);
+  pin.title = pinned ? "Release this symbol pin" : presentation.filePinned ? "Narrow the whole-file pin to this symbol" : "Pin this symbol's connections";
+  pin.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8l-1 6 3 3v2H6v-2l3-3-1-6ZM12 14v7"/></svg>';
+  pin.addEventListener("click", event => { event.stopPropagation(); context.togglePinnedSymbol(node.id, symbol); });
+  wrapper.append(pin);
+
+  const more = document.createElement("button");
+  more.type = "button";
+  more.className = "local-symbol-more";
+  more.setAttribute("aria-label", `More actions for ${symbol === "__internals__" ? "Internals" : symbol} in ${node.name}`);
+  more.setAttribute("aria-haspopup", "menu");
+  more.title = more.getAttribute("aria-label") ?? "More actions";
+  more.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>';
+  more.addEventListener("click", event => { event.stopPropagation(); void context.showNodeActions(node, symbol, actionAnchor(more)); });
+  wrapper.append(more);
 }
 
 /**
@@ -436,11 +520,10 @@ function createTypeBadge(
   icon: string,
   kind: string
 ): HTMLElement {
-  const badge = document.createElement("span");
+  const firstResolved = refs.find(r => r.isResolved && r.targetId);
+  const badge = document.createElement(firstResolved ? "button" : "span");
   badge.className = `type-badge type-badge-${kind}`;
-
-  const hasResolved = refs.some(r => r.isResolved);
-  if (hasResolved) {
+  if (firstResolved) {
     badge.classList.add("type-badge-resolved");
   }
 
@@ -448,28 +531,15 @@ function createTypeBadge(
   badge.title = `${kind}: ${typeNames}`;
   badge.textContent = icon;
 
-  // Make resolved badges clickable to navigate to the type
-  if (hasResolved) {
-    const firstResolved = refs.find(r => r.isResolved);
-    if (firstResolved?.targetId) {
-      badge.classList.add("clickable");
-      // The row first retains its symbol, then inspects this referenced type.
-      // This ordering keeps the detail target as the most recently inspected file.
-      badge.dataset.targetId = firstResolved.targetId;
-    }
+  // Only the badge inspects the referenced file. It never pins its source row.
+  if (firstResolved?.targetId) {
+    const targetId = firstResolved.targetId;
+    badge.classList.add("clickable");
+    badge.dataset.targetId = targetId;
+    badge.setAttribute("aria-label", `Inspect ${firstResolved.typeName}`);
+    if (badge instanceof HTMLButtonElement) badge.type = "button";
+    badge.addEventListener("click", event => { event.stopPropagation(); void context.focusTypeTarget(targetId); });
   }
 
   return badge;
-}
-
-/** Symbol pinning is available to keyboard users as well as pointer users. */
-function makePinAccessible(element: HTMLElement, file: string, symbol: string, pressed: boolean): void {
-  element.tabIndex = 0;
-  element.setAttribute("role", "button");
-  element.setAttribute("aria-label", `Pin ${symbol} in ${file}`);
-  element.setAttribute("aria-pressed", String(pressed));
-  element.title = pressed ? "Unpin this symbol's connections" : "Pin this symbol's connections";
-  element.addEventListener("keydown", event => {
-    if (event.key === "Enter" || event.key === " ") { event.preventDefault(); element.click(); }
-  });
 }

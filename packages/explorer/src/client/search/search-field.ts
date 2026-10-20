@@ -147,6 +147,8 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   });
   input.addEventListener("keydown", event => {
     if (event.key === "Escape") {
+      // The field has used this Escape; the reader or map behind it must not act on it too.
+      event.preventDefault();
       settle();
       input.blur();
     } else if (event.key === "ArrowDown" && rows.length) {

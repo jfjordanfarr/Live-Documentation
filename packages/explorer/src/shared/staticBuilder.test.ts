@@ -13,6 +13,9 @@ const originalTempVariables = {
     TEMP: process.env.TEMP
 };
 const quiet = { log: () => undefined, error: () => undefined };
+// Each test runs the real client bundle through esbuild: about 1.2 s alone on 2026-10-20, and over the 5 s default
+// under the unit suite's parallel load. What these tests check is the output and its cleanup, not the build's speed.
+const BUNDLE_BUDGET_MS = 30_000;
 
 afterEach(async () => {
     for (const name of tempVariables) {
@@ -50,7 +53,7 @@ it("writes the existing folder bundle and removes its temporary assets", async (
     const data = JSON.parse(await fs.readFile(path.join(output, "explorer-data.json"), "utf8")) as { graph: { files: Record<string, unknown> } };
     expect(data.graph.files).toEqual({});
     expect(result.stats.totalSizeBytes).toBeGreaterThan(0);
-});
+}, BUNDLE_BUDGET_MS);
 
 it("removes temporary assets when the output writer fails", async () => {
     const { root, output, assetsTemp } = await workspace();
@@ -62,4 +65,4 @@ it("removes temporary assets when the output writer fails", async () => {
         code: expect.stringMatching(/^(EISDIR|EPERM|EACCES)$/u)
     });
     expect(await fs.readdir(assetsTemp)).toEqual([]);
-});
+}, BUNDLE_BUDGET_MS);

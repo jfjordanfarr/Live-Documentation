@@ -128,7 +128,7 @@ test("the structure layout hangs every file from its directory from where it sto
   await expect.poll(async () => (await renderedLinks(page)).every(link => link.visible)).toBe(true);
 });
 
-test("a directory hub reveals membership, frames its members, and releases through the shared tray", async ({ page }) => {
+test("a directory hub inspects, its Open action frames its members, and the shared tray releases it", async ({ page }) => {
   test.setTimeout(45_000);
   await observeGraph(page);
   await page.goto(entry("structure"));
@@ -150,11 +150,20 @@ test("a directory hub reveals membership, frames its members, and releases throu
   }
   expect(chosen, "a rendered directory hub is hoverable").toBeDefined();
   expect((await renderedLinks(page)).some(link => link.kind === "containment" && link.visible)).toBe(true);
+  const directory = chosen!.directory!;
   await page.mouse.click(chosen!.x, chosen!.y);
+  await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
+  const inspected = decompressSnapshot(new URL(page.url()).searchParams.get("s")!);
+  expect(inspected.inspection).toEqual({ kind: "directory", directory });
+  expect(inspected.openDirectories.size, "inspecting a hub does not open it").toBe(0);
+  await page.getByRole("button", { name: "Close details", exact: true }).click();
+  await page.mouse.move(chosen!.x, chosen!.y);
+  await page.locator(".force-graph-actions").getByRole("button", { name: `Open ${directory}`, exact: true }).click();
+  await expect(page.locator(".force-graph-actions").getByRole("button", { name: `Close ${directory}`, exact: true }),
+    "an open directory's primary action closes it, as its 2D label does").toHaveAttribute("aria-pressed", "true");
   await page.mouse.move(30, 50);
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
   await expect(page.locator(".pin-tray-row")).toHaveCount(1);
-  const directory = chosen!.directory!;
   const members = async () => (await renderedNodes(page)).filter(node => node.directory === directory
     || node.id.startsWith(`${directory}/`) || node.directory?.startsWith(`${directory}/`));
   await expect.poll(async () => (await members()).every(node => node.x > frame.x && node.x < frame.x + frame.width
@@ -181,7 +190,7 @@ test("a directory hub reveals membership, frames its members, and releases throu
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(nodes.map(node => node.id).sort());
 });
 
-test("changing a preset keeps the directory being inspected in place even when a file remains selected", async ({ page }) => {
+test("changing a preset keeps the framed directory in place even when a file remains selected", async ({ page }) => {
   test.setTimeout(60_000); // Initial layout and a complete reheat after the preset change.
   await observeGraph(page);
   const directory = "Portal/Models";

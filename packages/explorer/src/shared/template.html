@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Live Docs Explorer</title>
   <link rel="stylesheet" href="./static/styles.css" />
 </head>
@@ -343,8 +344,12 @@
     </div>
 
     <!-- Detail panel (right sidebar) -->
-    <div id="detail-panel">
+    <div id="detail-panel" role="complementary" aria-labelledby="detail-title" aria-hidden="true" inert>
       <div class="detail-header">
+        <div class="detail-navigation">
+          <button id="reader-back" class="sidebar-toggle-btn history-btn" title="Back" aria-label="Back" disabled>←</button>
+          <button id="reader-forward" class="sidebar-toggle-btn history-btn" title="Forward" aria-label="Forward" disabled>→</button>
+        </div>
         <h2 id="detail-title">Select a Node</h2>
         <button id="detail-close" class="detail-close" aria-label="Close details">×</button>
       </div>
@@ -352,7 +357,6 @@
         <p class="detail-placeholder">Click on any node to view details.</p>
       </div>
       <div class="detail-footer">
-        <button class="action-btn ghost" onclick="openInLocalView()">Open in Local Map</button>
         <button class="action-btn ghost" id="download-doc-btn" onclick="downloadCurrentDoc()">Download Markdown</button>
       </div>
     </div>

@@ -4,19 +4,25 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-19T17:42:50.608Z
+- Generated At: 2026-10-20T18:05:19.416Z
 
 ## Authored
 ### Purpose
-Creates individual node cards for the Local Map view. Each card displays artifact metadata, public symbols, and provides interaction targets for hover/click/pin behaviors.
+Builds the Local Map's file cards, symbol rows and closed-directory boxes, with connection anchors and separate accessible controls for inspection, retention and navigation.
 
 ### Notes
 
-- Since 2026-10-05 the card draws its symbol rows alphabetically when that symbol order is chosen in Tuning, wherever a card is drawn; the layout order is applied afterwards by the branch renderer, for every scope, and the order of appearance is the Live Doc's.
-Extracted from render.ts during Dev Day 50 (12/19). The `createNodeCard()` function builds the DOM structure for each artifact in the shared scene, including symbol sections and type badges. The factory now receives only card presentation values, anchor registration and named actions from the controller. Cards are rebuilt inside retained wrappers on each render: their initial pressed and selected appearance reflects that render, while events resolve pins and type targets through the live controller at the moment of interaction.
+Extracted from the former `render.ts` in [December 19, Turn 04](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-19.2.SUMMARIZED.md#turn-04), separating card construction from scene layout. The factory receives presentation values, anchor registration and named actions through `CardContext`. Cards are rebuilt inside retained wrappers on each render; their pressed and subject appearance describes that render, while actions reach the application's current state through the controller.
 
-File bodies retain all interfaces; row buttons press individual symbols (narrow, add, release, fall back) and support keyboard use. The X releases the file's expansion while leaving any interfaces required by other pins visible, and stands on the subject's card whether or not it is pinned. The recentre control (2026-10-15, [Turns 8 to 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-8); [the decision](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#clicks-pin-what-they-name-and-the-subject-stays-where-it-is-recorded-2026-10-15)) on every card but the subject's makes the file the subject, the one visible way to go there: the double-click that did it reached the card's click twice first and pinned two files whole, as the night's click-only journey found ([the probe record](../../../../../../../../AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md)); one grammar for every input has no double-click. Type badges retain their source row and expose the referenced artifact's evidence.
-- `createClosedDirectory` (2026-10-08, [the decisions log](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): a closed directory's box, a pseudo-node without symbols in the membrane's style, named and counted by `countsOf` ("81 files, 2 directories"), a button that opens the directory in place; it carries no pin, since a directory with a party file under it is at least encasing and no wire ever reaches a closed box. `countsOf` also words a label's count of what an encasing membrane hides.
+File bodies and native name buttons inspect the file; a symbol's label inspects that symbol, including the Internals endpoint. Adjacent Pin controls change retention in one activation, with `aria-pressed` describing the explicit pin rather than merely its presence under a whole-file pin. A resolved type badge inspects the referenced file without pinning its source row. Nested controls stop the body action. The owner selected this separation in [October 19, Turn 24](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24), preserving fast connection-following as the acceptance journey; [October 20, Turn 2](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2) resumes its implementation.
+
+The direct symbol Pin preserves the [October 15 retention rule](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#clicks-pin-what-they-name-and-the-subject-stays-where-it-is-recorded-2026-10-15): narrow a whole-file pin, add another symbol, release a symbol, and return to a whole-file pin when its last symbol is released. The file's Pin, pressed again, releases only that file's pins and keeps the subject, so a Pin undoes itself; the X is the card's close, which releases the file under the subject policy and also closes a local reveal, with interfaces required by other pins remaining visible. Centre makes a different file the subject while keeping independent pins. Its visible control originated after the [October 14 double-click investigation](../../../../../../../../AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md) showed the first clicks could alter the picture before navigation.
+
+More controls identify file, symbol and directory targets for the shared application menu. The controller supplies right-click, hold and keyboard context gestures and suppresses activation after dragging; the factory owns the native Inspect, Pin and More buttons and their accessible names. A hold is an alternative way to reveal commands, never a prerequisite for pinning.
+
+Symbol order is the Live Doc's appearance order, alphabetical when chosen in Tuning, or the branch renderer's subsequent layout order. Public symbol rows register both interface sides; Internals registers the private-implementation input and file-level fallback, while assets use file hubs instead. These anchors remain available independently of the controls drawn beside their labels.
+
+`createClosedDirectory` represents a closed directory as a named, counted box without symbol pins, following the [directory disclosure design](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08). Its body and name inspect; its separate Open button discloses files and subdirectories. A directory containing a file that participates in a drawn connection is at least encasing, so no wire reaches a closed box. `countsOf` also supplies the count of contents hidden by an encasing membrane.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -30,14 +36,14 @@ The values a fresh card reads while it is built. The wrapper may survive a rende
 
 #### `CardContext` {#symbol-cardcontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L30)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L32)
 
 ##### `CardContext` — Summary
 Only the facts and actions a card needs; navigation targets are looked up when their event occurs.
 
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L50)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L63)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -53,18 +59,18 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L183)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L232)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
 A closed directory's box: a pseudo-node with no symbols in the membrane's
-style, named and counted, that opens in place on a click (the owner's
-grammar, 2026-10-08). It carries no pin: a directory with a party file
+style, named and counted, that can be inspected or explicitly opened.
+It carries no pin: a directory with a party file
 under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L206)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L267)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

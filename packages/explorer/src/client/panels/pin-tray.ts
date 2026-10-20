@@ -10,6 +10,8 @@ export interface PinTrayOptions {
   onClearDirectory(directory: string): void;
   onClear(): void;
   onFocus(item: RetainedItem): void;
+  /** The application closes any open reader before the tray takes the shared edge. */
+  onOpen?: () => void;
 }
 
 /**
@@ -19,6 +21,7 @@ export interface PinTrayOptions {
  */
 export function createPinTray(options: PinTrayOptions): {
   sync(state: RetainedState, visible: boolean, busy: boolean, absent?: (item: RetainedItem) => string | null): void;
+  close(): void;
 } {
   const tray = document.createElement("section");
   tray.className = "pin-tray";
@@ -56,28 +59,22 @@ export function createPinTray(options: PinTrayOptions): {
   count.id = "pin-tray-count";
   toggle.setAttribute("aria-describedby", count.id);
   toggle.append(count);
+  const setOpen = (open: boolean): void => {
+    const heldFocus = !open && panel.contains(document.activeElement);
+    panel.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Hide pins" : "Show pins");
+    toggle.title = open ? "Hide pins" : "Show pins";
+    if (heldFocus) toggle.focus({ preventScroll: true });
+  };
   toggle.addEventListener("click", () => {
-    panel.hidden = !panel.hidden;
-    toggle.setAttribute("aria-expanded", String(!panel.hidden));
-    toggle.setAttribute("aria-label", panel.hidden ? "Show pins" : "Hide pins");
-    toggle.title = panel.hidden ? "Show pins" : "Hide pins";
-    if (!panel.hidden) document.getElementById("detail-close")?.click();
+    if (panel.hidden) {
+      options.onOpen?.();
+      setOpen(true);
+    } else setOpen(false);
   });
   tray.append(panel, toggle);
   options.parent.append(tray);
-
-  // Details and pins use the same edge. Keep the pin handle available beside Details.
-  const details = document.getElementById("detail-panel");
-  if (details) {
-    new MutationObserver(() => {
-      if (details.classList.contains("visible")) {
-        panel.hidden = true;
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.setAttribute("aria-label", "Show pins");
-        toggle.title = "Show pins";
-      }
-    }).observe(details, { attributes: true, attributeFilter: ["class"] });
-  }
 
   const rows = new Map<string, HTMLLIElement>();
 
@@ -124,6 +121,7 @@ export function createPinTray(options: PinTrayOptions): {
   }
 
   return {
+    close: () => setOpen(false),
     sync(state, visible, busy, absent) {
       tray.hidden = !visible;
       const items = retainedItems(state).reverse();

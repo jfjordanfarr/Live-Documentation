@@ -11,7 +11,11 @@
 Provides ancestor navigation attached to a directory membrane without adding a permanent row of breadcrumb labels to the map.
 
 ### Notes
-The disclosure opens in the browser’s top layer at viewport text size, so it stays usable when the diagram is zoomed out. A short stack of ancestor buttons opens the selected directory through the ordinary retention operation. Hover/focus previews an enclosure around currently drawn members only; it makes no claim to show every file in that ancestor. Escape and outside clicks dismiss the disclosure and remove the preview.
+The disclosure opens in the browser’s top layer at viewport text size, so it stays usable when the diagram is zoomed out. A short stack runs from the scan root to the directory's nearest parent. Each native button explicitly opens that ancestor through the application's directory action; independent opened descendants and pins use the same retention policy as other entry points.
+
+Hover or keyboard focus previews an enclosure around currently drawn cards and closed-directory boxes only; it makes no claim to show every file in that ancestor. Escape and outside clicks dismiss the disclosure and remove its preview. The panel positions itself beside its opener within the viewport, with focus on the nearest ancestor when opened.
+
+These ancestor buttons are explicit Open commands. Ordinary directory names and bodies elsewhere inspect evidence under the [October 19 accepted grammar](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24), resumed in [October 20, Turn 2](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). The controller captures an existing label or box for the opened directory when one is visible, so opening it can preserve its screen position without giving this popover its own navigation policy.
 
 Introduced for the owner’s [October 14 pin-management request](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 

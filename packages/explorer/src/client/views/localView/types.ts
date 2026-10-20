@@ -21,16 +21,29 @@ import type { ExplorerState, TestCoverageMap } from "../../types";
  */
 export interface LocalViewOptions {
   state: ExplorerState;
-  /** Persist shared exploration after an independent pin changes. */
-  onExplorationChange?: (leavingPath?: boolean) => void;
+  /** Shared exploration actions are owned by the application; this view supplies only their 2D presentation. */
+  onPressPin: (nodeId: string, symbol: string) => void;
+  onUnpinNode: (nodeId: string) => void;
+  onCloseNode: (nodeId: string) => void;
+  onOpenDirectory: (directory: string) => void;
+  onCloseDirectory: (directory: string) => void;
   graphData: ExplorerGraphPayload;
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   onSelectNode: (node: ExplorerNodePayload) => void | Promise<void>;
   onRecenterNode: (node: ExplorerNodePayload) => void | Promise<void>;
-  onFocusSidebar: (node: ExplorerNodePayload) => void | Promise<void>;
+  onFocusSidebar: (node: ExplorerNodePayload, symbol?: string) => void | Promise<void>;
+  onInspectDirectory: (directory: string) => void | Promise<void>;
+  onShowNodeActions: (node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }) => void | Promise<void>;
+  onShowDirectoryActions: (directory: string, anchor: { x: number; y: number }) => void | Promise<void>;
   testCoverage: TestCoverageMap;
   /** Map of node IDs to node payloads for type reference navigation. */
   nodesById: Map<string, ExplorerNodePayload>;
+}
+
+/** The view's before/after presentation work around one application-owned exploration action. */
+export interface LocalExplorationFrame {
+  leavingPath: boolean;
+  afterRender(): void;
 }
 
 /**
@@ -45,10 +58,10 @@ export interface LocalViewApi {
   isShown(): boolean;
   /** The map shown again: an owed render runs; else the picture stands and its search resumes. */
   show(): void;
-  retainNode(nodeId: string): void;
-  /** Pin one symbol unless it is pinned already, alone or with its whole file; what a search chose, never a toggle. */
-  retainSymbol(nodeId: string, symbol: string): void;
-  openDirectory(directory: string): void;
+  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion?: boolean): LocalExplorationFrame;
+  captureDirectoryChange(directory: string): LocalExplorationFrame;
+  /** Clear a path for a new exploration action without restoring its old camera. */
+  clearPathForExploration(): void;
   focusNode(nodeId: string): void;
   focusDirectory(directory: string): void;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;

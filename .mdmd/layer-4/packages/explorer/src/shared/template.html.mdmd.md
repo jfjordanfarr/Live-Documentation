@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-18T20:50:52.294Z
+- Generated At: 2026-10-20T14:51:20.501Z
 
 ## Authored
 ### Purpose
@@ -98,6 +98,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `pathfind-status` {#symbol-pathfind-status}
+- Type: variable
+
+#### `reader-back` {#symbol-reader-back}
+- Type: variable
+
+#### `reader-forward` {#symbol-reader-forward}
 - Type: variable
 
 #### `search-bar` {#symbol-search-bar}

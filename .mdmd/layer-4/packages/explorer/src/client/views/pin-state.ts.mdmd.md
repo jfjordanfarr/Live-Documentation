@@ -4,20 +4,22 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/pin-state.ts
-- Generated At: 2026-10-15T01:42:23.986Z
+- Generated At: 2026-10-20T14:51:20.088Z
 
 ## Authored
 ### Purpose
 
-Immutable pure-function state machine for the continuous pin model, managing the `PinSet` data structure shared by the Local Map’s 2D and 3D representations.
+Pure transitions and queries for retained file and symbol neighborhoods shared by the Local Map's 2D and 3D representations. Keeps pin identity, selection rules, visible-connection attribution and compact serialization independent of renderers and input gestures.
 
 ### Notes
 
-- Created during [Dev Day 80 Step 6a](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md) after a pivotal design decision: the original plan called for separate Explore/Compare/Path mode renderers, but the continuous pin model collapsed these into a single state machine where pin count determines rendering behavior (0 pins = Browse, 1 = Explore, 2 = Compare, N = multi-focal, path = Path).
-- All mutations (`addPin`, `removePin`, `togglePin`) return a new `PinSet` object — the immutable API enables React-style re-render-on-change in the imperative controller without reference equality bugs.
+- Created during [Dev Day 80 Step 6a](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md). That March design combined separate Explore/Compare/Path renderers through pin-count modes; today pins retain independent neighborhoods and an explicitly requested path has its own scope.
+- Mutations never modify the input `PinSet`. An actual change returns a new set; an idempotent addition or absent removal can return the original object.
 - `getVisibleConnections` is the bridge between pin state and graph data: it filters the full edge list to only those edges touching a pinned (nodeId, symbol) pair, producing the `VisibleConnection[]` used to disclose retained neighborhoods.
 - `serializePins`/`deserializePins` round-trip to a compact JSON array for URL state persistence via `compressed-url-state.ts`.
-- `retainFile` is idempotent and uses a wildcard for complete interface selection. `pressSymbol` (2026-10-15, [Turns 8 to 10](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-8); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#clicks-pin-what-they-name-and-the-subject-stays-where-it-is-recorded-2026-10-15)) is what a click on a symbol row does: a file pinned whole narrows to the symbol pressed, an unpinned symbol is added, a pinned one released, and releasing the file's last symbol leaves the file pinned whole, the owner's "node-level pin fallback rather than instant loss of the node". It replaced `toggleFileSymbol`, which had read a whole pin as every symbol already pinned and so, pressed on one, released that one and materialized the rest; the night's click-only journey ([the probe record](../../../../../../../AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md)) found that pinning every other symbol of a file was the only thing a click on a whole-pinned card could do.
+- `retainFile` is idempotent and uses a wildcard for complete interface selection. `pressSymbol` (2026-10-15, [Turns 8 to 10](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-8); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#clicks-pin-what-they-name-and-the-subject-stays-where-it-is-recorded-2026-10-15)) implements the explicit symbol Pin action: a file pinned whole narrows to the symbol pressed, an unpinned symbol is added, a pinned one released, and releasing the file's last symbol leaves the file pinned whole, the owner's "node-level pin fallback rather than instant loss of the node". It replaced `toggleFileSymbol`, which had read a whole pin as every symbol already pinned and so, pressed on one, released that one and materialized the rest; the night's click-only journey ([the probe record](../../../../../../../AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/README.md)) found that pinning every other symbol of a file was the only thing a click on a whole-pinned card could do.
+- `INTERNAL_SYMBOL` names the existing file-level endpoint for connections not attributed to a public symbol. It is distinct from the whole-file wildcard and does not claim that private symbols were documented. Inspection preserves that identity so its Pin action retains the intended endpoint.
+- The [October 20 inspect-first grammar](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#turn-24) changes which visible control invokes a pin transition; merely reading evidence invokes none. Subject, camera, reader and directory state remain outside this module.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -52,9 +54,16 @@ Carries the original link plus which pin entry caused it to be visible.
 ##### `EMPTY_PIN_SET` — Summary
 The empty pin set.
 
+#### `INTERNAL_SYMBOL` {#symbol-internal_symbol}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L54)
+
+##### `INTERNAL_SYMBOL` — Summary
+The file-level endpoint for connections not attributed to a public symbol.
+
 #### `addPin` {#symbol-addpin}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L64)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L67)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -64,7 +73,7 @@ the same PinSet unchanged.
 
 #### `removePin` {#symbol-removepin}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L75)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L78)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -73,7 +82,7 @@ Remove a pin by (nodeId, symbol). Returns unchanged PinSet if not found.
 
 #### `togglePin` {#symbol-togglepin}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L85)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L88)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -82,7 +91,7 @@ Toggle a pin: add if absent, remove if present.
 
 #### `removePinsForNode` {#symbol-removepinsfornode}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L96)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L99)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -91,7 +100,7 @@ Remove all pins for a specific node.
 
 #### `retainFile` {#symbol-retainfile}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L103)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L106)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -100,7 +109,7 @@ Retain every interface of a file; repeating the action never releases it.
 
 #### `pressSymbol` {#symbol-presssymbol}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L114)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L117)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -112,7 +121,7 @@ tray (the owner's rule of 2026-10-15).
 
 #### `getPinnedNodeIds` {#symbol-getpinnednodeids}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L126)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L129)
 - Returns: `ReadonlySet`
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
@@ -121,7 +130,7 @@ Get the set of distinct node IDs that have at least one pin.
 
 #### `isSymbolPinned` {#symbol-issymbolpinned}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L133)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L136)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `isSymbolPinned` — Summary
@@ -129,7 +138,7 @@ Check whether a specific (nodeId, symbol) is pinned.
 
 #### `getVisibleConnections` {#symbol-getvisibleconnections}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L159)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L162)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `getVisibleConnections` — Summary
@@ -146,7 +155,7 @@ Returns the list of visible connections with causation metadata.
 
 #### `serializePins` {#symbol-serializepins}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L252)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L255)
 - Parameters: `set`: [`PinSet`](#symbol-pinset)
 
 ##### `serializePins` — Summary
@@ -154,7 +163,7 @@ Serialize pin set to a plain JSON-friendly array for lz-string compression.
 
 #### `deserializePins` {#symbol-deserializepins}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L263)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/pin-state.ts#L266)
 - Returns: [`PinSet`](#symbol-pinset)
 - Parameters: `data`: `ReadonlyArray`
 

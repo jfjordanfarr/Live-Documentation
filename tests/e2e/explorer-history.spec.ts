@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 
+import { currentSnapshot } from "./search-bar";
 import { localMapSettled } from "./still-picture";
 
 const FIXTURE_DIR = "packages/engine/src";
@@ -51,8 +52,9 @@ test.describe("Back and Forward", () => {
     await localMapSettled(page);
     const folderUrl = page.url();
 
-    await page.locator(`.node-card[data-id="${FIXTURE_FILE}"] .node-title`).click();
+    await page.locator(`.node-card[data-id="${FIXTURE_FILE}"]`).getByRole("button", { name: "Pin liveDocumentationConfig.ts", exact: true }).click();
     await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
+    expect(currentSnapshot(page).inspection, "an explicit pin does not create an evidence-history step").toBeNull();
     await page.getByRole("button", { name: "Show pins", exact: true }).click();
     await expect(page.getByRole("button", { name: `Release ${FIXTURE_FILE}`, exact: true })).toBeVisible();
     expect(page.url(), "a pin changes the address of the place").not.toBe(folderUrl);

@@ -9,7 +9,7 @@ import {
   DEFAULT_SNAPSHOT,
 } from "./compressed-url-state";
 import type { UrlStateSnapshot, CompressedPayload } from "./compressed-url-state";
-import { EMPTY_PIN_SET } from "../views/pin-state";
+import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
 import type { PinSet } from "../views/pin-state";
 
 // ─── snapshotToPayload ─────────────────────────────────────────────
@@ -393,5 +393,97 @@ describe("the moment of the history (2026-10-18)", () => {
     const scrubbed = scrubSnapshot({ ...DEFAULT_SNAPSHOT, commit: "abc12345", authors: true }, new Map([["a.ts", {}]]));
     expect(scrubbed.commit).toBe("abc12345");
     expect(scrubbed.authors).toBe(true);
+  });
+});
+
+describe("explicitly open reader evidence", () => {
+  it("round-trips a file symbol, a directory and a bundled document without changing the subject", () => {
+    const subject = "src/a.ts";
+    for (const inspection of [
+      { kind: "file", nodeId: "src/b.ts", symbol: "run" } as const,
+      { kind: "directory", directory: "" } as const,
+      { kind: "directory", directory: "src" } as const,
+      { kind: "bundled-doc", path: "docs/guide.md" } as const,
+      { kind: "bundled-doc", path: "docs/guide.md", fragment: "turn-24" } as const
+    ]) {
+      const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: subject, inspection }));
+      expect(restored.selectedNodeId).toBe(subject);
+      expect(restored.inspection).toEqual(inspection);
+    }
+    expect(payloadToSnapshot({ v: 3, n: subject }).inspection).toBeNull();
+    expect(payloadToSnapshot({ v: 3, i: { n: 7 } as unknown as { n: string } }).inspection).toBeNull();
+  });
+
+  it("reads the declared wire targets without promoting evidence to the map subject", () => {
+    expect(payloadToSnapshot({ v: 3, n: "src/a.ts", i: { n: "src/b.ts", s: "run" } })).toMatchObject({
+      selectedNodeId: "src/a.ts", inspection: { kind: "file", nodeId: "src/b.ts", symbol: "run" }
+    });
+    expect(payloadToSnapshot({ v: 3, i: { m: "guide.notes", a: "a-section" } }).inspection).toEqual({
+      kind: "bundled-doc", path: "guide.notes", fragment: "a-section"
+    });
+    expect(snapshotToPayload({ ...DEFAULT_SNAPSHOT, inspection: { kind: "bundled-doc", path: "guide.notes", fragment: "a-section" } }).i)
+      .toEqual({ m: "guide.notes", a: "a-section" });
+    for (const version of [1, 2, 3]) expect(payloadToSnapshot({ v: version, n: "src/a.ts" }).inspection).toBeNull();
+  });
+
+  it("leaves malformed or ambiguous evidence closed without discarding valid navigation", () => {
+    for (const value of [null, [], "src/b.ts", 7, {}, { n: "" }, { m: "" }, { d: false }, { n: "src/b.ts", d: "src" }, { n: 7, m: "guide.md" }]) {
+      const snapshot = payloadToSnapshot({ v: 3, n: "src/a.ts", i: value as CompressedPayload["i"] });
+      expect(snapshot.selectedNodeId).toBe("src/a.ts");
+      expect(snapshot.inspection).toBeNull();
+    }
+  });
+
+  it("closes evidence by omitting only its target from the portable state", () => {
+    const open: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      selectedNodeId: "src/a.ts",
+      pinSet: addPin(EMPTY_PIN_SET, "src/b.ts", "run"),
+      destination: { kind: "file", nodeId: "src/c.ts" },
+      inspection: { kind: "file", nodeId: "src/b.ts", symbol: "run" }
+    };
+    const payload = snapshotToPayload({ ...open, inspection: null });
+    expect(payload.i).toBeUndefined();
+    expect(payload.n).toBe("src/a.ts");
+    expect(payload.p).toEqual([{ n: "src/b.ts", s: "run" }]);
+    expect(payload.x).toEqual({ n: "src/c.ts" });
+    expect(payloadToSnapshot(payload).inspection).toBeNull();
+    expect(open.inspection).toEqual({ kind: "file", nodeId: "src/b.ts", symbol: "run" });
+  });
+
+  it("scrubs deleted targets and stale symbols while preserving the subject and other exploration state", () => {
+    const nodes = new Map<string, unknown>([
+      ["src/a.ts", { publicSymbols: ["start"] }],
+      ["src/b.ts", { publicSymbols: ["run"] }]
+    ]);
+    const base = { ...DEFAULT_SNAPSHOT, selectedNodeId: "src/a.ts", pinSet: addPin(EMPTY_PIN_SET, "src/b.ts", "*") };
+    const scrub = (inspection: UrlStateSnapshot["inspection"]) => scrubSnapshot({ ...base, inspection }, nodes, { "docs/guide.md": "" });
+    expect(scrub({ kind: "file", nodeId: "src/b.ts", symbol: "run" }).inspection).toEqual({ kind: "file", nodeId: "src/b.ts", symbol: "run" });
+    expect(scrub({ kind: "file", nodeId: "src/b.ts", symbol: "gone" }).inspection).toEqual({ kind: "file", nodeId: "src/b.ts" });
+    expect(scrub({ kind: "file", nodeId: "gone.ts" }).inspection).toBeNull();
+    expect(scrub({ kind: "directory", directory: "src" }).inspection).toEqual({ kind: "directory", directory: "src" });
+    expect(scrub({ kind: "directory", directory: "gone" }).inspection).toBeNull();
+    expect(scrub({ kind: "bundled-doc", path: "docs/guide.md" }).inspection).toEqual({ kind: "bundled-doc", path: "docs/guide.md" });
+    expect(scrub({ kind: "bundled-doc", path: "docs/guide.md", fragment: "turn-24" }).inspection)
+      .toEqual({ kind: "bundled-doc", path: "docs/guide.md", fragment: "turn-24" });
+    expect(scrub({ kind: "bundled-doc", path: "docs/missing.md" }).inspection).toBeNull();
+    expect(scrub({ kind: "bundled-doc", path: "toString" }).inspection).toBeNull();
+    expect(scrub({ kind: "file", nodeId: "gone.ts" }).selectedNodeId).toBe("src/a.ts");
+    expect(scrub({ kind: "file", nodeId: "gone.ts" }).pinSet).toEqual(base.pinSet);
+  });
+
+  it("keeps the file's internal endpoint distinct from its public symbols and whole-file retention", () => {
+    const nodes = new Map([["src/a.ts", { publicSymbols: ["start"] }], ["src/b.ts", { publicSymbols: ["run"] }]]);
+    const snapshot: UrlStateSnapshot = {
+      ...DEFAULT_SNAPSHOT,
+      selectedNodeId: "src/a.ts",
+      inspection: { kind: "file", nodeId: "src/b.ts", symbol: INTERNAL_SYMBOL },
+      pinSet: addPin(EMPTY_PIN_SET, "src/b.ts", INTERNAL_SYMBOL)
+    };
+    const restored = scrubSnapshot(decompressSnapshot(compressSnapshot(snapshot)), nodes);
+    expect(restored.inspection).toEqual({ kind: "file", nodeId: "src/b.ts", symbol: INTERNAL_SYMBOL });
+    expect(restored.selectedNodeId).toBe("src/a.ts");
+    expect(restored.pinSet.entries).toEqual([{ nodeId: "src/b.ts", symbol: INTERNAL_SYMBOL }]);
+    expect(nodes.get("src/b.ts")?.publicSymbols).toEqual(["run"]);
   });
 });

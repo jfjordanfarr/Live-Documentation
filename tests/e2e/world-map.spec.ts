@@ -1,5 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 
+import { currentSnapshot } from "./search-bar";
+
 /**
  * The World Map, over this repository's own board.
  *
@@ -126,7 +128,7 @@ test.describe("World Map", () => {
     expect(file).toMatch(/^packages\/engine\//u);
     await link.click();
     await expect(page.locator("#view-map.active")).toHaveCount(1);
-    await expect.poll(() => new URL(page.url()).searchParams.get("node")).toBe(file);
+    await expect.poll(() => currentSnapshot(page).selectedNodeId).toBe(file);
   });
 
   test("a name in the pinned panel pins the thing it names, and a click on the board lets go", async ({ page }) => {

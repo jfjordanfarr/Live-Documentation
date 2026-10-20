@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 
 import { choose, currentSnapshot, newestKey, pathAddress } from "./search-bar";
-import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, readPicture, scoreExpanded, symbolCounts } from "./still-picture";
+import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, localMapSettled, panIntoView, readPicture, scoreExpanded, symbolCounts } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { describeRetained, retainedItems, retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
@@ -75,7 +75,7 @@ for (const [base, file] of [["/", "packages/explorer/src/client/index.ts"], [BAS
     const before = await ids();
     expect(before.length).toBeGreaterThan(2);
     await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
-    await subject.locator(".node-title").click();
+    await subject.locator(".local-file-pin").click();
     expect(await ids(), "retaining the selected file does not switch to a different neighborhood renderer").toEqual(before);
     await expect(page.locator("#map-container .local-placed")).toBeVisible();
   });
@@ -309,7 +309,7 @@ test("pinning a path symbol opens branches, clears the old path status and keeps
   const label = page.locator(".path-origin .symbol-row:not(.internals-row) .symbol-label-wrapper").first();
   const before = (await label.boundingBox())!;
   const symbol = await label.evaluate(element => element.parentElement!.dataset.symbol!);
-  await label.click();
+  await label.locator(".local-symbol-pin").click();
   await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
   await expect(page.locator("#pathfind-status")).toBeHidden();
   await expect(page.locator(".branch-mode")).toBeVisible();
@@ -325,4 +325,34 @@ test("pinning a path symbol opens branches, clears the old path status and keeps
   expect(newest.kind === "pin" && newest.pin.symbol).toBe(symbol);
   expect(snapshot.pinSet.entries.filter(pin => pin.nodeId === DEPENDENCY)).toEqual([{ nodeId: DEPENDENCY, symbol }]);
   await expect(page.locator("#search-subject"), "the field follows the newest pin").toHaveValue(describeRetained(newest, id => id.split("/").pop()).name);
+});
+
+test("Open on an already retained directory leaves the path and discloses its contents without changing pins", async ({ page }) => {
+  await page.goto(pathAddress(BASE, DEPENDENCY, { kind: "file", nodeId: DEPENDENT }, DEPENDENT, {
+    openDirectories: new Set(["Contracts"]),
+    retentionOrder: [
+      retainedKey({ kind: "directory", directory: "Contracts" }),
+      retainedKey({ kind: "pin", pin: { nodeId: DEPENDENCY, symbol: "*" } })
+    ]
+  }));
+  await expect(page.locator("#view-map")).toHaveClass(/has-path/);
+  await localMapSettled(page);
+  const before = currentSnapshot(page);
+  const directory = page.locator('.local-directory-label[data-directory="Contracts"]');
+  const open = directory.locator(".local-directory-open");
+  await expect(open).toBeVisible();
+  await expect(page.locator('.node-card[data-id="Contracts/Contracts.csproj"]')).toHaveCount(0);
+  await panIntoView(page, open);
+  await open.click();
+  await localMapSettled(page);
+  await expect(page.locator("#view-map")).not.toHaveClass(/has-path/);
+  await expect(page.locator("#pathfind-status")).toBeHidden();
+  await expect(directory.locator(".local-directory-close")).toBeVisible();
+  await expect(page.locator('.node-card[data-id="Contracts/Contracts.csproj"]')).toHaveCount(1);
+  expect(currentSnapshot(page)).toMatchObject({
+    selectedNodeId: before.selectedNodeId,
+    pinSet: before.pinSet,
+    openDirectories: before.openDirectories,
+    destination: null
+  });
 });

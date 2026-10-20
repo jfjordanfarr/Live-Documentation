@@ -12,6 +12,7 @@ Holds the static folder export to its existing HTML, data, and asset layout whil
 
 ### Notes
 - Uses a test-owned workspace and temporary-asset root. The empty graph keeps the test focused on output and resource ownership; graph, board, and history content have separate integration coverage.
+- Each test runs the real client bundle through esbuild, about a second alone, so both carry a 30 s budget rather than the unit project's 5 s default; under the full suite's parallel load the bundle crossed that default on 2026-10-20 ([the record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#landing-checkpoint-claude-code)). The budget is not a speed check, and none is intended here.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

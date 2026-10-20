@@ -22,7 +22,10 @@ export function setActiveView(view: ViewName, perspective: LocalMapPerspective):
   });
 
   document.querySelectorAll<HTMLElement>(".view-container").forEach(container => {
-    if (container.id === `view-${view === "map" && perspective === "3d" ? "graph" : view}`) {
+    const active = container.id === `view-${view === "map" && perspective === "3d" ? "graph" : view}`;
+    container.inert = !active;
+    container.setAttribute("aria-hidden", String(!active));
+    if (active) {
       container.classList.add("active");
     } else {
       container.classList.remove("active");

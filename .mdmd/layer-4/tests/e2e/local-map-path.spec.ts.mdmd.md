@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-path.spec.ts
-- Generated At: 2026-10-14T19:09:48.723Z
+- Generated At: 2026-10-20T15:21:33.509Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,10 @@ Playwright over the estate sample's Local Map path mode, asked through the searc
 ### Notes
 
 Also checks direct links over this repository and the estate: directory-aware layout before any pin, and the same neighborhood after retaining the selected file. Paths from the bar and an address use the same placed scene, including their intermediate directories.
+
+Retention gestures use the visible file and symbol Pin controls. In particular, a path row's Pin narrows the origin's whole-file pin, leaves path mode, clears the destination/status and holds that row on screen; inspecting the label is a separate action. This follows the [October 19 grammar](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and [October 20 continuation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2), preserving the existing path and geometry assertions.
+
+The already-open-directory case exercises the same transition with unchanged retention membership: path mode renders Contracts as encasing even when the exploration already retains it, so its visible Open control must leave the path and disclose its contents. The test checks an otherwise absent project file appears, the destination/status clears, and the subject, pins and opened set remain unchanged. This guards the no-op-set optimization from swallowing the visible command.
 
 - Rewritten through the search bar on 2026-10-14 ([Turn 6](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)); the test that Clear returned the selected file to the pixel became a return to the exploration, since the reverse question now pins the destination and the picture after it holds both files.
 - Written on [2026-10-01](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10), after the fix was played by eye on both bundles, as the rule says: the tests keep what the eye accepted. The estate's chain `GatewayClient.cs` to `PaymentsController.cs` to `HubProxy.cs` to `IPaymentHub.cs` runs from the file that depends to the file depended on, so asking it that way round is the case the owner's rule of 2025-12-18 refuses.
@@ -42,6 +46,8 @@ _No public symbols detected_
 - [`still-picture.centerDistance`](./still-picture.ts.mdmd.md#symbol-centerdistance)
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
+- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 - [`still-picture.readPicture`](./still-picture.ts.mdmd.md#symbol-readpicture)
 - [`still-picture.scoreExpanded`](./still-picture.ts.mdmd.md#symbol-scoreexpanded)
 - [`still-picture.symbolCounts`](./still-picture.ts.mdmd.md#symbol-symbolcounts)

@@ -21,6 +21,10 @@
 import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
 import { Box3, PerspectiveCamera, Raycaster, Vector2, Vector3, type Object3D } from "three";
 
+import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
+import { directoryNodeId, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
+import { under } from "./localView/directory-state";
+import type { ForceScene } from "./perspectiveTransition";
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
@@ -28,17 +32,14 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
-import type { HistoryMoment } from "../history/moment";
-import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
-import type { ExplorerState } from "../types";
-import { directoryNodeId, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
 import { configureSpatialForces, placeNewSpheres, SETTLED_ALPHA, spatialNodeRadius, spatialNodeValue, symbolCountOf, updateSchedule } from "./forceGraphLayout";
-import { layoutPresetOf } from "../layout-presets";
-import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
-import { under } from "./localView/directory-state";
-import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
 import { wheelPixels } from "./wheel";
+import type { HistoryMoment } from "../history/moment";
+import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
+import { layoutPresetOf } from "../layout-presets";
+import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "../panels/icon-button";
+import type { ExplorerState } from "../types";
 
 const NODE_COLORS: Readonly<Record<string, string>> = {
   implementation: "#0091ff",
@@ -91,9 +92,17 @@ export interface ForceGraphViewOptions {
   resolveLinkEndpoint: (endpoint: ExplorerLinkPayload["source"]) => string;
   relatedDocLinks?: RelatedDocLink[];
   onShowBundledDoc: (docPath: string) => void;
+  /** Inspect a file without changing the map's subject, pins or camera. */
   onFocusNode: (node: ExplorerNodePayload) => void;
-  onRetainNode: (node: ExplorerNodePayload) => void;
+  onPressPin: (nodeId: string, symbol: string) => void;
+  onReleasePin: (nodeId: string) => void;
+  onRecenterNode: (node: ExplorerNodePayload) => void;
+  onShowNodeActions: (node: ExplorerNodePayload, symbol: string | undefined, point: { x: number; y: number }, onClose?: () => void) => void;
+  onShowDirectoryActions: (directory: string, point: { x: number; y: number }, onClose?: () => void) => void;
+  onCentreDirectory: (directory: string) => void;
+  onInspectDirectory: (directory: string) => void;
   onOpenDirectory: (directory: string) => void;
+  onCloseDirectory: (directory: string) => void;
   getPath?: () => readonly string[] | undefined;
 }
 
@@ -105,6 +114,8 @@ export interface ForceGraphViewApi {
   setActive(active: boolean): void;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
+  /** Frame a file explicitly, for the retained-item tray, without changing the selected subject. */
+  focusNode(nodeId: string): void;
   focusDirectory(directory: string): void;
   /**
    * Show a moment of the history in place of today, or today again (null), re-keying the picture through the renames
@@ -148,6 +159,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let focusedId: string | null = null;
   let selectedId: string | null = null;
   let focusedDirectory: string | null = null;
+  let explicitDirectoryFocus = false;
   let hoveredId: string | null = null;
   let updateAttention = (): void => {};
   let active = false;
@@ -156,6 +168,27 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let following = false;
   let zoomMotion: { started: number; from: CameraPoint; fromTarget: CameraPoint; to: CameraPoint; toTarget: CameraPoint } | null = null;
   let focusLabel: HTMLButtonElement | null = null;
+  let actionStrip: HTMLDivElement | null = null;
+  let actionTargetId: string | null = null;
+  let menuTargetId: string | null = null;
+  let menuEpoch = 0;
+  let inspectedActionId: string | null = null;
+  let seenInspectionKey = "";
+  let pointerHoverId: string | null = null;
+  let pointerPosition: { x: number; y: number } | null = null;
+  let pointerPickNeeded = false;
+  let pickedCamera: number[] = [];
+  let pickedProjection: number[] = [];
+  let pickedFrame: DOMRect | null = null;
+  let pointerOverActions = false;
+  let overFocusLabel = false;
+  let draggingNode = false;
+  let draggingCamera = false;
+  let cancelGesture = (): void => {};
+  let hideActionsTimer = 0;
+  let primaryAction: HTMLButtonElement | null = null;
+  let centreAction: HTMLButtonElement | null = null;
+  let moreAction: HTMLButtonElement | null = null;
   let pausedAt = 0;
   let subjectAnchor: { x: number; y: number } | null = null;
   let simulationRunning = true;
@@ -184,6 +217,55 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     let object: Object3D | null = hit?.object ?? null;
     while (object && !byObject.has(object)) object = object.parent;
     return object ? byObject.get(object) : undefined;
+  }
+
+  /** One application-owned pointer target, coalesced with the existing frame loop as the picture changes. */
+  function updatePointerHover(): void {
+    if (!forceGraphInstance || !pointerPosition || draggingNode || draggingCamera) return;
+    const canvas = forceGraphInstance.renderer().domElement;
+    const frame = canvas.getBoundingClientRect();
+    const camera = forceGraphInstance.camera();
+    camera.updateMatrixWorld();
+    const pointed = document.elementFromPoint(pointerPosition.x, pointerPosition.y);
+    const onCanvas = pointed === canvas;
+    if (onCanvas) {
+      const unchanged = pickedFrame && pickedFrame.left === frame.left && pickedFrame.top === frame.top
+        && pickedFrame.width === frame.width && pickedFrame.height === frame.height
+        && camera.matrixWorld.elements.every((value, index) => value === pickedCamera[index])
+        && camera.projectionMatrix.elements.every((value, index) => value === pickedProjection[index]);
+      if (!pointerPickNeeded && !simulationRunning && unchanged) return;
+    }
+    pointerPickNeeded = false;
+    pickedFrame = onCanvas ? frame : null;
+    pickedCamera = camera.matrixWorld.elements.slice();
+    pickedProjection = camera.projectionMatrix.elements.slice();
+    const id = onCanvas ? nodeAt(pointerPosition.x, pointerPosition.y) ?? null
+      : pointed && actionStrip?.contains(pointed) ? actionTargetId
+      : pointed === focusLabel ? focusedId : null;
+    const container = requireElement("graph-svg");
+    const hovered = String(!!id);
+    if (container.dataset.hoveredNode !== hovered) container.dataset.hoveredNode = hovered;
+    if (pointerHoverId === id) return;
+    pointerHoverId = id;
+    if (id) {
+      window.clearTimeout(hideActionsTimer);
+      hoveredId = id;
+      updateAttention();
+      refreshActionStrip();
+    } else {
+      deferHoverExit();
+    }
+  }
+
+  function releasePointerHover(): void {
+    pointerPosition = null;
+    pointerHoverId = null;
+    pointerPickNeeded = false;
+    pickedFrame = null;
+    hoveredId = menuTargetId ?? keyboardActionTarget();
+    requireElement("graph-svg").dataset.hoveredNode = "false";
+    updateAttention();
+    refreshActionStrip();
   }
 
   function getSubjectAnchor(nodeId: string): { x: number; y: number } | null {
@@ -226,10 +308,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     following = false;
     focusedId = nodeId;
     focusedDirectory = node.directoryPath ?? null;
+    explicitDirectoryFocus = false;
     if (focusLabel) {
       focusLabel.textContent = node.name;
       focusLabel.dataset.nodeId = nodeId;
-      focusLabel.title = focusedDirectory !== null ? `Open ${focusedDirectory || "Scan root"}` : `${node.codeRelativePath} — Show details`;
+      focusLabel.title = focusedDirectory !== null ? `Inspect ${focusedDirectory || "Scan root"}` : `${node.codeRelativePath} — Show details`;
     }
     // Track a still-running simulation without introducing a second camera flight.
     if (focusLabel) { focusLabel.style.left = `${anchor.x - rect.left}px`; focusLabel.style.top = `${anchor.y - rect.top}px`; }
@@ -237,7 +320,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function setActive(value: boolean): void {
     if (value && !active && focusMotion && pausedAt) focusMotion.started += performance.now() - pausedAt;
-    if (!value && active) { pausedAt = performance.now(); zoomMotion = null; }
+    if (!value && active) {
+      pausedAt = performance.now();
+      zoomMotion = null;
+      cancelGesture();
+    }
     active = value;
     if (value) {
       forceGraphInstance?.resumeAnimation();
@@ -253,11 +340,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     animation = 0;
     if (!active) return;
     updateFocus(performance.now(), !simulationRunning);
+    updatePointerHover();
     animation = requestAnimationFrame(animateFocus);
   }
 
   function updateFocus(now: number, advanceCamera = true): void {
     if (!active || !forceGraphInstance) return;
+    if (syncInspectionAction() || (inspectedActionId && !actionTargetId)) refreshActionStrip();
     if (zoomMotion && advanceCamera) {
       const motion = zoomMotion;
       const t = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : Math.min(1, (now - motion.started) / 180);
@@ -301,13 +390,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     } else if (focusLabel) {
       focusLabel.hidden = true;
     }
+    positionActionStrip();
   }
 
   function focusSelection(force = false): void {
-    const node = state.focusedNode ?? state.selectedNode;
+    const node = state.selectedNode;
     if (!force && (node?.id ?? null) === selectedId) return;
     selectedId = node?.id ?? null;
+    inspectedActionId = null;
     focusedDirectory = null;
+    explicitDirectoryFocus = false;
     focusedId = node ? fileAt(node.id) ?? null : null;
     zoomMotion = null;
 
@@ -322,8 +414,21 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }
   }
 
+  /** A restored inspection offers the same actions without steering the selected subject's camera. */
+  function syncInspectionAction(): boolean {
+    const key = JSON.stringify([state.inspection, state.selectedNode?.id ?? null, state.spatialLayout, moment?.step ?? null]);
+    if (key === seenInspectionKey) return false;
+    seenInspectionKey = key;
+    const inspection = state.inspection;
+    inspectedActionId = inspection?.kind === "file" ? fileAt(inspection.nodeId) ?? null
+      : inspection?.kind === "directory" && state.spatialLayout === "structure"
+        ? directoryNodeId(directoryAt(inspection.directory)) : null;
+    return true;
+  }
+
   function focusDirectory(directory: string): void {
     focusedDirectory = directory;
+    explicitDirectoryFocus = true;
     focusedId = state.spatialLayout === "structure" ? directoryNodeId(directoryAt(directory)) : null;
     following = false;
     subjectAnchor = null;
@@ -331,13 +436,168 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     focusMotion = null;
     if (focusLabel) {
       focusLabel.textContent = directory.split("/").pop() || "Scan root";
-      focusLabel.title = `Open ${directory || "Scan root"}`;
+      focusLabel.title = `Inspect ${directory || "Scan root"}`;
       focusLabel.dataset.nodeId = focusedId ?? "";
       focusLabel.hidden = true;
     }
     const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 500;
     frameDirectories([directoryAt(directory)], duration);
     updateAttention();
+  }
+
+  /** A tray request moves the camera by an explicit action, without making its file the map subject. */
+  function focusNode(todayId: string): void {
+    const id = fileAt(todayId);
+    const node = id ? nodeCache.get(id) : undefined;
+    if (!id || !node || node.directoryPath !== undefined) return;
+    focusedDirectory = null;
+    explicitDirectoryFocus = false;
+    focusedId = id;
+    following = true;
+    subjectAnchor = null;
+    zoomMotion = null;
+    focusMotion = null;
+    if (focusLabel) {
+      focusLabel.textContent = node.name;
+      focusLabel.title = `${node.codeRelativePath} — Show details`;
+      focusLabel.dataset.nodeId = id;
+      focusLabel.hidden = true;
+    }
+    if (active && !animation) animation = requestAnimationFrame(animateFocus);
+  }
+
+  /** A historical sphere can act only on the file or directory still present today. */
+  function currentAction(id: string): { kind: "file"; node: ExplorerNodePayload } | { kind: "directory"; directory: string } | null {
+    const rendered = nodeCache.get(id);
+    if (!rendered || !nodeObjects.has(id)) return null;
+    if (rendered.directoryPath !== undefined) {
+      const today = moment ? moment.directoryToday(rendered.directoryPath) : rendered.directoryPath;
+      return graphData.nodes.some(node => under(node.id, today)) ? { kind: "directory", directory: today } : null;
+    }
+    if (id.startsWith("related:")) return null;
+    const todayId = moment ? moment.fileToday(id) : id;
+    const node = todayId ? nodesById.get(todayId) : undefined;
+    return node ? { kind: "file", node } : null;
+  }
+
+  function showActions(id: string, point: { x: number; y: number }): void {
+    const action = currentAction(id);
+    if (!action) return;
+    const epoch = ++menuEpoch;
+    menuTargetId = id;
+    refreshActionStrip();
+    const onClose = (): void => {
+      if (epoch !== menuEpoch) return;
+      menuTargetId = null;
+      refreshActionStrip();
+      deferHoverExit();
+    };
+    if (action.kind === "file") options.onShowNodeActions(action.node, undefined, point, onClose);
+    else options.onShowDirectoryActions(action.directory, point, onClose);
+  }
+
+  /** Keyboard navigation previews its named target; mouse-created focus only keeps the controls reachable. */
+  function keyboardActionTarget(): string | null {
+    const focused = document.activeElement;
+    if (!(focused instanceof HTMLElement) || !focused.matches(":focus-visible")) return null;
+    if (actionStrip?.contains(focused)) return actionTargetId;
+    return focused === focusLabel ? focusedId : null;
+  }
+
+  function focusActions(): void {
+    refreshActionStrip();
+    const target = keyboardActionTarget();
+    if (target) {
+      hoveredId = target;
+      updateAttention();
+    }
+  }
+
+  /** Keep the accessible controls with the sphere while the simulation or camera moves. */
+  function positionActionStrip(): void {
+    if (!actionStrip || !actionTargetId || !forceGraphInstance) return;
+    if (draggingNode || draggingCamera) { actionStrip.hidden = true; return; }
+    // A settling sphere must not pull a control away from a person aiming at it or using the keyboard.
+    if (!actionStrip.hidden && (menuTargetId || pointerOverActions || actionStrip.contains(document.activeElement))) return;
+    const node = nodeCache.get(actionTargetId);
+    if (!node || !Number.isFinite(node.x) || !Number.isFinite(node.y) || !Number.isFinite(node.z)) {
+      actionStrip.hidden = true;
+      return;
+    }
+    const instance = forceGraphInstance;
+    const camera = instance.camera();
+    camera.lookAt((instance.controls() as { target: Vector3 }).target);
+    camera.updateMatrixWorld();
+    const point = new Vector3(node.x, node.y, node.z);
+    const depth = point.clone().project(camera).z;
+    const screen = instance.graph2ScreenCoords(point.x, point.y, point.z);
+    if (depth < -1 || depth > 1 || screen.x < 0 || screen.y < 0 || screen.x > instance.width() || screen.y > instance.height()) {
+      actionStrip.hidden = true;
+      return;
+    }
+    actionStrip.hidden = false;
+    const worldRadius = spatialNodeRadius(node, state.tuning.forceGraph);
+    const edge = point.clone().add(new Vector3(worldRadius, 0, 0).applyQuaternion(camera.quaternion));
+    const rim = instance.graph2ScreenCoords(edge.x, edge.y, edge.z);
+    const radius = Math.abs(rim.x - screen.x);
+    const width = actionStrip.offsetWidth;
+    const height = actionStrip.offsetHeight;
+    const x = Math.max(width / 2 + 8, Math.min(instance.width() - width / 2 - 8, screen.x));
+    const above = screen.y - Math.max(8, radius * 0.7) - height;
+    const below = screen.y + Math.max(8, radius * 0.7);
+    actionStrip.style.left = `${x}px`;
+    actionStrip.style.top = `${Math.max(8, Math.min(instance.height() - height - 8, above >= 8 ? above : below))}px`;
+  }
+
+  /** An inspection persists as a named target; a hover is only a temporary offer of actions. */
+  function refreshActionStrip(): void {
+    if (!actionStrip || !primaryAction || !centreAction || !moreAction) return;
+    if (draggingNode || draggingCamera) { actionStrip.hidden = true; return; }
+    const held = pointerOverActions || actionStrip.contains(document.activeElement);
+    const id = menuTargetId ?? (held ? actionTargetId : keyboardActionTarget() ?? pointerHoverId ?? inspectedActionId ?? (overFocusLabel || document.activeElement === focusLabel ? focusedId : null));
+    const action = id ? currentAction(id) : null;
+    if (!id || !action) {
+      actionStrip.hidden = true;
+      actionTargetId = null;
+      return;
+    }
+    actionTargetId = id;
+    actionStrip.hidden = false;
+    primaryAction.dataset.kind = action.kind;
+    if (action.kind === "directory") {
+      // Open and Close as the 2D label offers them, by the directory's state.
+      const opened = state.openDirectories?.has(action.directory) ?? false;
+      actionStrip.setAttribute("aria-label", `Actions for ${action.directory || "Scan root"}`);
+      primaryAction.setAttribute("aria-label", `${opened ? "Close" : "Open"} ${action.directory || "Scan root"}`);
+      primaryAction.setAttribute("aria-pressed", String(opened));
+      primaryAction.title = opened ? "Close this directory; what other pins need stays" : "Open this directory on the map";
+      centreAction.setAttribute("aria-label", `Centre on ${action.directory || "Scan root"}`);
+      centreAction.title = "Centre the map on this directory";
+      moreAction.setAttribute("aria-label", `More actions for ${action.directory || "Scan root"}`);
+    } else {
+      const pinned = (state.pins ?? EMPTY_PIN_SET).entries.some(pin => pin.nodeId === action.node.id && pin.symbol === "*");
+      actionStrip.setAttribute("aria-label", `Actions for ${action.node.name}`);
+      primaryAction.setAttribute("aria-label", `${pinned ? "Unpin" : "Pin"} ${action.node.name}`);
+      primaryAction.setAttribute("aria-pressed", String(pinned));
+      primaryAction.title = pinned ? "Unpin this file" : "Pin this file and its connections";
+      centreAction.setAttribute("aria-label", `Centre on ${action.node.name}`);
+      centreAction.title = "Make this file the subject";
+      moreAction.setAttribute("aria-label", `More actions for ${action.node.name}`);
+    }
+    moreAction.title = moreAction.getAttribute("aria-label")!;
+    actionStrip.dataset.nodeId = id;
+    positionActionStrip();
+  }
+
+  /** A short exit grace lets a pointer cross from a sphere to its controls without losing them. */
+  function deferHoverExit(): void {
+    window.clearTimeout(hideActionsTimer);
+    hideActionsTimer = window.setTimeout(() => {
+      if (pointerHoverId || pointerOverActions || overFocusLabel) return;
+      hoveredId = menuTargetId ?? keyboardActionTarget();
+      updateAttention();
+      refreshActionStrip();
+    }, 180);
   }
 
   function frameDirectories(directories: readonly string[], duration: number): void {
@@ -358,6 +618,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function render(): void {
     const container = requireElement<HTMLDivElement>("graph-svg");
+    pointerPickNeeded = true;
     // A moment of the history re-keys the caches through its renames before anything is read from them, so that a
     // renamed file or hub keeps its sphere, its lines and its place under the new id; the hovered and focused ids follow.
     if (hasRenames(pendingRenames)) {
@@ -370,6 +631,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       nodeObjects.clear();
       for (const [id, object] of objects) nodeObjects.set(renamedId(id, pendingRenames), object);
       if (hoveredId) hoveredId = renamedId(hoveredId, pendingRenames);
+      if (pointerHoverId) pointerHoverId = renamedId(pointerHoverId, pendingRenames);
+      if (actionTargetId) actionTargetId = renamedId(actionTargetId, pendingRenames);
+      if (menuTargetId) menuTargetId = renamedId(menuTargetId, pendingRenames);
+      if (inspectedActionId) inspectedActionId = renamedId(inspectedActionId, pendingRenames);
       if (focusedId) focusedId = renamedId(focusedId, pendingRenames);
     }
     pendingRenames = NO_RENAMES;
@@ -382,7 +647,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const pins: PinSet = moment
       ? { entries: todayPins.entries.flatMap(pin => { const at = fileAt(pin.nodeId); return at ? [{ ...pin, nodeId: at }] : []; }) }
       : todayPins;
-    const subject = state.focusedNode ?? state.selectedNode;
+    const subject = state.selectedNode;
     const subjectAt = subject ? fileAt(subject.id) ?? null : null;
     const selectedAt = state.selectedNode ? fileAt(state.selectedNode.id) ?? null : null;
     const path = options.getPath?.()?.flatMap(id => { const at = fileAt(id); return at ? [at] : []; });
@@ -493,7 +758,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const present = new Set(graphNodes.map(node => node.id));
     for (const id of nodeObjects.keys()) if (!present.has(id)) nodeObjects.delete(id);
     if (hoveredId && !present.has(hoveredId)) hoveredId = null;
-    if (focusedDirectory !== null && !state.openDirectories?.has(focusedDirectory)) {
+    if (pointerHoverId && !present.has(pointerHoverId)) pointerHoverId = null;
+    if (actionTargetId && !present.has(actionTargetId)) actionTargetId = null;
+    if (menuTargetId && !present.has(menuTargetId)) menuTargetId = null;
+    if (inspectedActionId && !present.has(inspectedActionId)) inspectedActionId = null;
+    if (focusedDirectory !== null && !explicitDirectoryFocus && !state.openDirectories?.has(focusedDirectory)) {
       focusedDirectory = null;
       selectedId = null;
       focusedId = null;
@@ -596,7 +865,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const membershipChanged = nextMembership !== membership;
       membership = nextMembership;
       focusSelection();
+      syncInspectionAction();
       updateAttention();
+      refreshActionStrip();
       updateForces(!membershipChanged);
       if (membershipChanged) feed();
       frameDirectory();
@@ -604,6 +875,18 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return;
     }
 
+    let press: { x: number; y: number; id: string | undefined; pointerId: number; button: number; held: boolean } | null = null;
+    let holdTimer = 0;
+    const activePointers = new Set<number>();
+    const cancelPress = (): void => { window.clearTimeout(holdTimer); press = null; };
+    const interrupt = (): void => { following = false; focusMotion = null; subjectAnchor = null; zoomMotion = null; };
+    cancelGesture = (): void => {
+      cancelPress();
+      activePointers.clear();
+      draggingNode = false;
+      draggingCamera = false;
+      releasePointerHover();
+    };
     container.dataset.hoveredNode = "false";
     // The constructor declaration erases the instance's generic data types;
     // this boundary supplies the exact node/link types passed to graphData.
@@ -620,20 +903,25 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .linkOpacity(1)
       // The simulation moves nodes immediately before painting. Track that
       // position in the same frame so the sphere and its projected label agree.
-      .onEngineTick(() => { simulationRunning = true; ready = true; container.setAttribute("aria-busy", "true"); frameDirectory(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
+      .onEngineTick(() => { pointerPickNeeded = true; simulationRunning = true; ready = true; container.setAttribute("aria-busy", "true"); frameDirectory(); if (inspectedActionId && !actionTargetId) refreshActionStrip(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
       .onEngineStop(() => { simulationRunning = false; container.setAttribute("aria-busy", "false"); })
       // A sphere dragged by hand is the library's own reheat, at its alpha target; the picture acclimates to the hand with
       // all of alpha and cools to the settled alpha, whatever the last membership change was fed.
       .onNodeDrag(() => {
+        cancelPress();
+        interrupt();
+        draggingNode = true;
+        if (actionStrip) actionStrip.hidden = true;
         if (energyShare === 1) return;
         energyShare = 1;
         forceGraphInstance?.d3AlphaMin(SETTLED_ALPHA);
       })
+      .onNodeDragEnd(() => { draggingNode = false; pointerPickNeeded = true; refreshActionStrip(); })
       .nodePositionUpdate((object, _position, node) => {
+        if (nodeObjects.get(node.id) !== object) pointerPickNeeded = true;
         nodeObjects.set((node).id, object);
         return false; // The native renderer still owns object placement.
       })
-      .onNodeHover(node => { hoveredId = node?.id ?? null; container.dataset.hoveredNode = String(!!node); updateAttention(); })
       .nodeLabel(node => {
         const file = node;
         const symbols = symbolCountOf(file);
@@ -651,58 +939,168 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     updateForces(true);
     membership = nextMembership;
     focusLabel = document.createElement("button");
+    focusLabel.type = "button";
     focusLabel.className = "force-graph-focus";
     focusLabel.hidden = true;
     focusLabel.addEventListener("click", () => {
       if (focusedDirectory !== null) {
-        options.onOpenDirectory(focusedDirectory);
+        options.onInspectDirectory(focusedDirectory);
+        inspectedActionId = focusedId;
+        refreshActionStrip();
         return;
       }
-      const node = focusedId ? nodesById.get(focusedId) : undefined;
-      if (node) {
-        onFocusNode(node);
-        focusSelection(true);
+      const action = focusedId ? currentAction(focusedId) : null;
+      if (action?.kind === "file") {
+        onFocusNode(action.node);
+        inspectedActionId = focusedId;
+        refreshActionStrip();
       }
     });
+    focusLabel.addEventListener("pointerenter", () => { overFocusLabel = true; window.clearTimeout(hideActionsTimer); refreshActionStrip(); });
+    focusLabel.addEventListener("pointerleave", () => { overFocusLabel = false; deferHoverExit(); });
+    focusLabel.addEventListener("focus", focusActions);
+    focusLabel.addEventListener("blur", () => { requestAnimationFrame(refreshActionStrip); deferHoverExit(); });
     container.append(focusLabel);
-    container.addEventListener("pointerleave", () => { hoveredId = null; container.dataset.hoveredNode = "false"; updateAttention(); });
-    container.addEventListener("pointerenter", event => {
-      hoveredId = nodeAt(event.clientX, event.clientY) ?? null;
-      container.dataset.hoveredNode = String(!!hoveredId);
-      updateAttention();
+
+    actionStrip = document.createElement("div");
+    actionStrip.className = "force-graph-actions";
+    actionStrip.setAttribute("role", "group");
+    actionStrip.hidden = true;
+    primaryAction = iconButton("Pin", `<g class="force-graph-file-action">${PIN_ICON}</g><g class="force-graph-directory-action">${DIRECTORY_ICON}</g>`);
+    centreAction = iconButton("Centre", CENTRE_ICON);
+    moreAction = iconButton("More actions for this file", MORE_ICON);
+    moreAction.setAttribute("aria-haspopup", "menu");
+    primaryAction.addEventListener("click", event => {
+      event.stopPropagation();
+      const action = actionTargetId ? currentAction(actionTargetId) : null;
+      if (action?.kind === "directory") {
+        if (state.openDirectories?.has(action.directory)) options.onCloseDirectory(action.directory);
+        else options.onOpenDirectory(action.directory);
+      } else if (action?.kind === "file") {
+        if ((state.pins ?? EMPTY_PIN_SET).entries.some(pin => pin.nodeId === action.node.id && pin.symbol === "*")) options.onReleasePin(action.node.id);
+        else options.onPressPin(action.node.id, "*");
+      }
+      refreshActionStrip();
     });
-    const interrupt = (): void => { following = false; focusMotion = null; subjectAnchor = null; zoomMotion = null;  };
-    let press: { x: number; y: number } | null = null;
-    container.addEventListener("pointerdown", event => { press = { x: event.clientX, y: event.clientY }; });
+    centreAction.addEventListener("click", event => {
+      event.stopPropagation();
+      const action = actionTargetId ? currentAction(actionTargetId) : null;
+      if (action?.kind === "directory") options.onCentreDirectory(action.directory);
+      else if (action?.kind === "file") options.onRecenterNode(action.node);
+      refreshActionStrip();
+    });
+    moreAction.addEventListener("click", event => {
+      event.stopPropagation();
+      if (!actionTargetId) return;
+      const rect = moreAction!.getBoundingClientRect();
+      showActions(actionTargetId, { x: rect.left + rect.width / 2, y: rect.bottom });
+    });
+    actionStrip.append(primaryAction, centreAction, moreAction);
+    actionStrip.addEventListener("pointerenter", () => { pointerOverActions = true; window.clearTimeout(hideActionsTimer); refreshActionStrip(); });
+    actionStrip.addEventListener("pointerleave", () => { pointerOverActions = false; deferHoverExit(); });
+    actionStrip.addEventListener("focusin", focusActions);
+    actionStrip.addEventListener("focusout", () => { requestAnimationFrame(refreshActionStrip); deferHoverExit(); });
+    container.append(actionStrip);
+
+    container.addEventListener("pointerleave", releasePointerHover);
+    container.addEventListener("pointerenter", event => {
+      pointerPosition = { x: event.clientX, y: event.clientY };
+      pointerPickNeeded = true;
+    });
+    container.addEventListener("pointerdown", event => {
+      if (event.target !== forceGraphInstance?.renderer().domElement) return;
+      activePointers.add(event.pointerId);
+      cancelPress();
+      if (activePointers.size > 1) {
+        draggingCamera = true;
+        interrupt();
+        refreshActionStrip();
+        return;
+      }
+      press = { x: event.clientX, y: event.clientY, id: nodeAt(event.clientX, event.clientY),
+        pointerId: event.pointerId, button: event.button, held: false };
+      const started = press;
+      if (started.button === 0 && started.id && currentAction(started.id)) {
+        holdTimer = window.setTimeout(() => {
+          if (press !== started || activePointers.size !== 1) return;
+          started.held = true;
+          showActions(started.id!, { x: started.x, y: started.y });
+        }, 550);
+      }
+    }, true);
     container.addEventListener("pointermove", event => {
-      if (press && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 3) { interrupt(); press = null; }
+      pointerPosition = { x: event.clientX, y: event.clientY };
+      pointerPickNeeded = true;
+      if (press && event.pointerId === press.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 6) {
+        interrupt(); cancelPress(); draggingCamera = true; refreshActionStrip();
+      }
+      // Keep the offer while the pointer crosses the small screen-space gap above a sphere, including a slow crossing.
+      if (!pointerHoverId && actionStrip && !actionStrip.hidden) {
+        const box = actionStrip.getBoundingClientRect();
+        if (event.clientX >= box.left - 24 && event.clientX <= box.right + 24
+          && event.clientY >= box.top - 32 && event.clientY <= box.bottom + 32) deferHoverExit();
+      }
     });
     // The library dispatches clicks through its throttled hover cache. Resolve
     // a press against the actual rendered node objects instead, including fast
     // clicks and touch taps that have never produced a hover frame.
     container.addEventListener("pointerup", event => {
-      if (!press || event.button !== 0 || event.target !== forceGraphInstance?.renderer().domElement) return;
-      const id = nodeAt(event.clientX, event.clientY);
-      const directory = id ? nodeCache.get(id)?.directoryPath : undefined;
+      window.clearTimeout(holdTimer);
+      if (!press || press.held || activePointers.size !== 1 || event.pointerId !== press.pointerId
+        || event.button !== press.button || event.target !== forceGraphInstance?.renderer().domElement) return;
+      // The sphere pressed is the one acted on: a settling layout can carry it a little way under a still pointer.
+      const id = press.id;
+      if (press.button === 2) {
+        if (id) showActions(id, { x: event.clientX, y: event.clientY });
+        return;
+      }
+      if (press.button !== 0) return;
+      if (!id) { inspectedActionId = null; refreshActionStrip(); return; }
       // At a moment of the history a sphere is a thing of that day: a click reaches the file or directory as it stands
       // today, and a thing gone since does nothing here (the step panel says so).
-      if (directory !== undefined) {
-        const today = moment ? moment.directoryToday(directory) : directory;
-        if (graphData.nodes.some(node => under(node.id, today))) options.onOpenDirectory(today);
-      } else if (id?.startsWith("related:")) onShowBundledDoc(id.slice("related:".length));
-      else if (id) {
-        const todayId = moment ? moment.fileToday(id) : id;
-        const node = todayId ? nodesById.get(todayId) : undefined;
-        if (node) {
-          options.onRetainNode(node);
-          onFocusNode(node);
-          focusSelection(true);
-        }
+      if (id.startsWith("related:")) {
+        inspectedActionId = null;
+        onShowBundledDoc(id.slice("related:".length));
+      } else {
+        const action = currentAction(id);
+        if (action?.kind === "directory") options.onInspectDirectory(action.directory);
+        else if (action?.kind === "file") onFocusNode(action.node);
+        inspectedActionId = action ? id : null;
+      }
+      refreshActionStrip();
+    });
+    const finishPointer = (event: PointerEvent): void => {
+      if (event.pointerType === "touch" || event.type === "pointercancel") releasePointerHover();
+      if (!activePointers.delete(event.pointerId)) return;
+      cancelPress();
+      if (activePointers.size === 0) { draggingCamera = false; draggingNode = false; }
+      refreshActionStrip();
+    };
+    window.addEventListener("pointerup", finishPointer);
+    window.addEventListener("pointercancel", finishPointer);
+    container.addEventListener("lostpointercapture", finishPointer);
+    window.addEventListener("blur", cancelGesture);
+    window.addEventListener("keydown", event => { if (event.key === "Escape") cancelPress(); });
+    // A right press opens on release so a right drag can orbit without opening a menu first.
+    container.addEventListener("contextmenu", event => {
+      event.preventDefault();
+      if (event.target === focusLabel && focusedId) {
+        const rect = focusLabel!.getBoundingClientRect();
+        showActions(focusedId, { x: rect.left + rect.width / 2, y: rect.bottom });
       }
     });
-    window.addEventListener("pointerup", () => { press = null; });
+    container.addEventListener("keydown", event => {
+      if (event.key !== "ContextMenu" && !(event.shiftKey && event.key === "F10")) return;
+      const id = actionStrip?.contains(event.target as Node) ? actionTargetId : event.target === focusLabel ? focusedId : null;
+      if (!id) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const rect = (event.target as HTMLElement).getBoundingClientRect();
+      showActions(id, { x: rect.left + rect.width / 2, y: rect.bottom });
+    });
     container.addEventListener("wheel", event => {
       if (!forceGraphInstance) return;
+      cancelPress();
       event.preventDefault(); event.stopPropagation();
       const camera = forceGraphInstance.camera();
       const controls = forceGraphInstance.controls() as { target: Vector3 };
@@ -716,9 +1114,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         to: next.camera, toTarget: next.target };
     }, { passive: false, capture: true });
     new ResizeObserver(() => {
+      pointerPickNeeded = true;
       if (container.clientWidth && container.clientHeight) forceGraphInstance?.width(container.clientWidth).height(container.clientHeight);
     }).observe(container);
     focusSelection();
+    syncInspectionAction();
+    refreshActionStrip();
     setActive(true);
   }
 
@@ -765,5 +1166,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     instance.d3AlphaMin(schedule.alphaMin).d3ReheatSimulation();
   }
 
-  return { render, setActive, focusDirectory, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusNode, focusDirectory, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

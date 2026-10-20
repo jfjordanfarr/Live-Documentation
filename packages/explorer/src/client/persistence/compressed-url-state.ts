@@ -2,7 +2,7 @@
  * Portable exploration state for the Local Map.
  *
  * Encodes the full view state (view, node selection, pins, opened
- * directories, the path's destination, perspective, filters) into a single
+ * directories, open evidence, the path's destination, perspective, filters) into a single
  * `?s=` query parameter using lz-string compression.
  *
  * **Forward-compatibility contract:**
@@ -21,10 +21,10 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 import { getDefaultFilters } from "./local-storage";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
-import type { LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
+import type { InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
 import { commitUrl } from "./history";
 import type { PinSet } from "../views/pin-state";
-import { serializePins, deserializePins, EMPTY_PIN_SET } from "../views/pin-state";
+import { serializePins, deserializePins, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
 import { reconcileRetained } from "../views/retained-state";
 
 // ─── Current Payload Version ───────────────────────────────────────
@@ -53,6 +53,8 @@ export interface CompressedPayload {
   q?: LocalMapPerspective;
   /** Selected node ID. */
   n?: string;
+  /** Explicitly open evidence: file `n` (symbol `s`), bundled Markdown `m` (section `a`), or directory `d`. */
+  i?: { n: string; s?: string } | { m: string; a?: string } | { d: string };
   /** Pin entries (compact: `{ n, s, h? }[]`). */
   p?: Array<{ n: string; s: string; h?: number }>;
   /** Version 1 Membrane Map directories; read only for migration. */
@@ -96,6 +98,8 @@ export interface UrlStateSnapshot {
   /** The 3D Local Map's layout, remembered and shared like the perspective. */
   spatialLayout: SpatialLayout;
   selectedNodeId: string | null;
+  /** The reader is closed when absent, including in links written before this field existed. */
+  inspection?: InspectionTarget | null;
   pinSet: PinSet;
   /** The directories opened in the Local Map; folder navigation is a history step, while pin edits remain within it. */
   openDirectories: ReadonlySet<string>;
@@ -125,6 +129,7 @@ export const DEFAULT_SNAPSHOT: UrlStateSnapshot = {
   perspective: "2d",
   spatialLayout: "connections",
   selectedNodeId: null,
+  inspection: null,
   pinSet: EMPTY_PIN_SET,
   openDirectories: new Set(),
   filters: { showTests: COLD_FILTERS.showTests, showAssets: COLD_FILTERS.showAssets },
@@ -161,6 +166,11 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   if (snapshot.selectedNodeId) {
     payload.n = snapshot.selectedNodeId;
   }
+  if (snapshot.inspection?.kind === "file") payload.i = snapshot.inspection.symbol
+    ? { n: snapshot.inspection.nodeId, s: snapshot.inspection.symbol } : { n: snapshot.inspection.nodeId };
+  else if (snapshot.inspection?.kind === "bundled-doc") payload.i = snapshot.inspection.fragment
+    ? { m: snapshot.inspection.path, a: snapshot.inspection.fragment } : { m: snapshot.inspection.path };
+  else if (snapshot.inspection?.kind === "directory") payload.i = { d: snapshot.inspection.directory };
   if (snapshot.pinSet.entries.length > 0) {
     payload.p = serializePins(snapshot.pinSet);
   }
@@ -217,7 +227,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
 
   const layout = readLayoutSettings(payload.l);
   return {
-    view, perspective, spatialLayout, selectedNodeId, pinSet, openDirectories, filters,
+    view, perspective, spatialLayout, selectedNodeId, inspection: readInspection(payload.i), pinSet, openDirectories, filters,
     ...(retentionOrder ? { retentionOrder } : {}),
     ...(layout ? { layout } : {}),
     destination: readDestination(payload.x),
@@ -225,6 +235,24 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     commit: typeof payload.h === "string" && payload.h.trim() ? payload.h.trim() : null,
     authors: payload.b === true
   };
+}
+
+/** Read only a declared reader target; malformed or older payloads leave the reader closed. */
+function readInspection(value: unknown): InspectionTarget | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const target = value as Record<string, unknown>;
+  // A target has one identity. Ambiguous payloads must not silently select a different kind of evidence.
+  if (["n", "m", "d"].filter(key => Object.hasOwn(target, key)).length !== 1) return null;
+  if (Object.hasOwn(target, "n") && typeof target.n === "string" && target.n) return {
+    kind: "file", nodeId: target.n,
+    ...(typeof target.s === "string" && target.s ? { symbol: target.s } : {})
+  };
+  if (Object.hasOwn(target, "m") && typeof target.m === "string" && target.m) return {
+    kind: "bundled-doc", path: target.m,
+    ...(typeof target.a === "string" && target.a ? { fragment: target.a } : {})
+  };
+  if (Object.hasOwn(target, "d") && typeof target.d === "string") return { kind: "directory", directory: target.d };
+  return null;
 }
 
 /** The destination a payload names, or null when it names none or names it badly. */
@@ -272,6 +300,7 @@ export function decompressSnapshot(compressed: string): UrlStateSnapshot {
 export function scrubSnapshot(
   snapshot: UrlStateSnapshot,
   nodesById: ReadonlyMap<string, unknown>,
+  bundledMarkdown?: Readonly<Record<string, string>>,
 ): UrlStateSnapshot {
   const nodeIds = [...nodesById.keys()];
 
@@ -293,6 +322,18 @@ export function scrubSnapshot(
     ? snapshot.selectedNodeId
     : null;
 
+  let inspection: InspectionTarget | null = null;
+  const target = snapshot.inspection;
+  if (target?.kind === "file" && nodesById.has(target.nodeId)) {
+    const symbols = (nodesById.get(target.nodeId) as { publicSymbols?: unknown } | undefined)?.publicSymbols;
+    inspection = target.symbol && (target.symbol === INTERNAL_SYMBOL || Array.isArray(symbols) && symbols.includes(target.symbol))
+      ? target : { kind: "file", nodeId: target.nodeId };
+  } else if (target?.kind === "directory" && destinationLives(target, nodesById, nodeIds)) {
+    inspection = target;
+  } else if (target?.kind === "bundled-doc" && bundledMarkdown && Object.hasOwn(bundledMarkdown, target.path)) {
+    inspection = target;
+  }
+
   // The destination and the panel's start: a file that still exists, or a directory with a live file under it
   const destination = snapshot.destination && destinationLives(snapshot.destination, nodesById, nodeIds) ? snapshot.destination : null;
   const reachFrom = snapshot.reachFrom && destinationLives(snapshot.reachFrom, nodesById, nodeIds) ? snapshot.reachFrom : null;
@@ -302,6 +343,7 @@ export function scrubSnapshot(
     openDirectories,
     pinSet,
     selectedNodeId,
+    inspection,
     destination,
     reachFrom,
     ...(snapshot.retentionOrder ? {

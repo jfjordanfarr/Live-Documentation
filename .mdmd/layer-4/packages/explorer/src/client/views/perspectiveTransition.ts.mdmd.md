@@ -13,6 +13,8 @@ Draws temporary correspondences between native Local Map cards and the Force Gra
 ### Notes
 Keeps the source picture while the destination initializes. Captures measured cards, sampled native SVG symbol curves and directory shells, each shell with the membrane's outline drawn inside it and its label (the outline since 2026-10-06, when the directory's element stopped drawing itself). Curves gather by file pair as cards fold into named points; only then do the points move to the native force projection. Directory shells disappear from the scan root inward, and return from the direct directories outward on the reverse journey. Geometry and phases live in the pure companion module. Copies are inert and carry no live control hooks; reduced-motion preferences bypass the animation. It computes no alternative graph layout and changes no saved pins or canonical relationships.
 
+Frozen appearance includes every computed property, including SVG styles and inherited custom properties. The copy reads the native property count once, obtains each name and value by index, and assigns one declaration block through `cssText`. Live selectors and control hooks are removed before that write, avoiding serialization of the newly expanded style just to enumerate attributes. These choices reduce repeated CSSOM calls without guessing which properties matter or changing the transition's geometry.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

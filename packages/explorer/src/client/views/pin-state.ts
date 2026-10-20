@@ -50,6 +50,9 @@ export interface VisibleConnection {
 /** The empty pin set. */
 export const EMPTY_PIN_SET: PinSet = { entries: [] };
 
+/** The file-level endpoint for connections not attributed to a public symbol. */
+export const INTERNAL_SYMBOL = "__internals__";
+
 // ─── Pin Manipulation ──────────────────────────────────────────────
 
 /** Build a stable key for de-duplication. */

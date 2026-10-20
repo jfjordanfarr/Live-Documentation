@@ -46,6 +46,17 @@ export interface RowCapture {
   label: PreparedText;
   /** The width of the row's type badges, zero when it has none. */
   badgesWidth: number;
+  /**
+   * The row's controls beside its label and badges, its Pin and More since 2026-10-20: their widths, each with the gap
+   * before it, and the tallest. A row collapsed at capture takes the measure of a row the page showed. Absent in
+   * older captures.
+   */
+  controls?: { width: number; height: number };
+  /**
+   * What the label's wrapper adds around its content, margins, padding and border on each axis: nothing for a public
+   * row, whose padding its negative margin cancels; the Internals row's dashed border. Absent in older captures.
+   */
+  frame?: { width: number; height: number };
 }
 
 /** A test chip's, or the test label's, box as the page drew it. */
@@ -224,6 +235,20 @@ function readCapture(page: Page): Promise<PageCapture> {
     const naturals = wrappers.map(wrapper => wrapper.offsetWidth);
     wrappers.forEach((wrapper, i) => Object.assign(wrapper.style, { width: saved[i][0], maxWidth: saved[i][1] }));
     let constants: CardConstants | null = null;
+    // Every row's label stands in a wrapper with its badges and its controls; the controls are the wrapper's other children.
+    let shownControls: { width: number; height: number } | null = null;
+    const unmeasuredControls: Array<{ controls?: { width: number; height: number } }> = [];
+    const controlsOf = (label: HTMLElement, badges: HTMLElement | null): { width: number; height: number } | null => {
+      const wrapper = label.parentElement!;
+      const others = [...wrapper.children].filter(child => child !== label && child !== badges);
+      const rects = others.map(child => child.getBoundingClientRect());
+      if (label.getBoundingClientRect().width === 0 || rects.some(rect => rect.width === 0)) return null;
+      const gap = px(getComputedStyle(wrapper).columnGap);
+      return {
+        width: rects.reduce((sum, rect) => sum + rect.width / scale + gap, 0),
+        height: Math.max(0, ...rects.map(rect => rect.height / scale))
+      };
+    };
     wrappers.forEach((wrapper, i) => {
       // A closed directory's box has a wrapper and no card; the scopes open no directory, and the model does not hold one.
       const card = wrapper.querySelector<HTMLElement>(".node-card");
@@ -241,7 +266,20 @@ function readCapture(page: Page): Promise<PageCapture> {
       const rows = [...grid.querySelectorAll<HTMLElement>(":scope > .symbol-row")].map(row => {
         const label = row.querySelector<HTMLElement>(".symbol-label")!;
         const badges = row.querySelector<HTMLElement>(".type-refs-indicator");
-        return { symbol: row.dataset.symbol ?? "", label: prepared(label), badgesWidth: badges ? badges.getBoundingClientRect().width / scale : 0 };
+        const controls = controlsOf(label, badges);
+        if (controls) shownControls ??= controls;
+        // From the computed style, which a collapsed row has as well as a shown one.
+        const wrapperStyle = getComputedStyle(label.parentElement!);
+        const sides = (...keys: Array<"marginLeft" | "marginRight" | "marginTop" | "marginBottom" | "paddingLeft" | "paddingRight" | "paddingTop" | "paddingBottom" | "borderLeftWidth" | "borderRightWidth" | "borderTopWidth" | "borderBottomWidth">): number =>
+          keys.reduce<number>((sum, key) => sum + px(wrapperStyle[key]), 0);
+        const frame = {
+          width: sides("marginLeft", "marginRight", "paddingLeft", "paddingRight", "borderLeftWidth", "borderRightWidth"),
+          height: sides("marginTop", "marginBottom", "paddingTop", "paddingBottom", "borderTopWidth", "borderBottomWidth")
+        };
+        const captured: RowCapture = { symbol: row.dataset.symbol ?? "", label: prepared(label), badgesWidth: badges ? badges.getBoundingClientRect().width / scale : 0, frame };
+        if (controls) captured.controls = controls;
+        else if (label.parentElement!.children.length > (badges ? 2 : 1)) unmeasuredControls.push(captured);
+        return captured;
       });
       if (!constants) {
         // A dot of the stylesheet's size, from a probe rather than this card's first dot, which may be collapsed to nothing.
@@ -332,6 +370,7 @@ function readCapture(page: Page): Promise<PageCapture> {
         truth: { width: wrapper.offsetWidth, height: wrapper.offsetHeight, pins }
       };
     });
+    for (const row of unmeasuredControls) if (shownControls) row.controls = shownControls;
     const labels: Record<string, PreparedText> = {};
     const labelControls: Record<string, { width: number; height: number }> = {};
     const labelHeights: Record<string, number> = {};

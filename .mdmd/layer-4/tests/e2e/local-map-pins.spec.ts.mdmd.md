@@ -15,6 +15,8 @@ The tests protect newest-first ordering and surviving DOM identities, independen
 
 The last-symbol test changed on 2026-10-15 ([Turn 10](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-10)): releasing the last pinned symbol on a card leaves the file pinned whole and the subject in place, and the tray's release is what drops it; it had asserted that the symbol's release dropped the file and moved the subject.
 
+That test now activates the explicit **Unpin run in processor.ts** control; the name states the action on an already pinned symbol. The label itself inspects under the [October 19 accepted grammar](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24), continued on [October 20](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). The last-symbol fallback, independent tray release and resulting subject assertions are unchanged.
+
 Introduced for the owner’s [October 14 pin-management request](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 ## Generated

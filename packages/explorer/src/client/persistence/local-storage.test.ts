@@ -1,12 +1,17 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { DEFAULT_SNAPSHOT, scrubSnapshot } from "./compressed-url-state";
 import {
   applyPersistedUi,
+  createPersistNavScheduler,
+  PERSISTED_NAV_KEY,
+  readPersistedNav,
   getDefaultFilters,
   getDefaultTuning,
   PERSISTED_UI_KEY,
   readPersistedUi
 } from "./local-storage";
+import type { InspectionTarget } from "../types";
 
 const restoreTuning = (group: string, saved: string) => {
   vi.stubGlobal("window", {
@@ -64,4 +69,77 @@ describe("persisted history tuning (2026-10-18)", () => {
       expect(restoreTuning("history", saved).history).toEqual({ axis: "steps", granularity: "auto", playRate: 2 });
     }
   );
+});
+
+describe("remembered map subject and reader evidence", () => {
+  const saved = new Map<string, string>();
+
+  beforeEach(() => {
+    saved.clear();
+    vi.useFakeTimers();
+    vi.stubGlobal("window", {
+      localStorage: {
+        getItem: (key: string) => saved.get(key) ?? null,
+        setItem: (key: string, value: string) => { saved.set(key, value); },
+        removeItem: (key: string) => { saved.delete(key); }
+      },
+      setTimeout,
+      clearTimeout
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+  });
+
+  it("saves and restores an independently inspected symbol, then remembers closing it", () => {
+    let inspection: InspectionTarget | null = { kind: "file", nodeId: "src/b.ts", symbol: "run" };
+    const scheduler = createPersistNavScheduler(() => ({
+      view: "map",
+      perspective: "3d",
+      spatialLayout: "structure",
+      selectedNodeId: "src/a.ts",
+      openDirectories: new Set(["src"]),
+      inspection
+    }));
+    scheduler.schedule();
+    vi.advanceTimersByTime(150);
+    expect(readPersistedNav()).toMatchObject({
+      nodeId: "src/a.ts",
+      inspection: { kind: "file", nodeId: "src/b.ts", symbol: "run" }
+    });
+    inspection = null;
+    scheduler.schedule();
+    vi.advanceTimersByTime(150);
+    expect(JSON.parse(saved.get(PERSISTED_NAV_KEY)!)).toMatchObject({ nodeId: "src/a.ts", inspection: null });
+    expect(readPersistedNav()?.inspection).toBeNull();
+  });
+
+  it("reads old places with the reader closed and keeps valid navigation when the evidence shape is invalid", () => {
+    for (const inspection of [undefined, null, 7, [], { kind: "file", nodeId: "" }, { kind: "directory", directory: 1 }, { kind: "bundled-doc", path: false }]) {
+      saved.set(PERSISTED_NAV_KEY, JSON.stringify({ version: 1, view: "map", nodeId: "src/a.ts", inspection }));
+      expect(readPersistedNav()).toMatchObject({ nodeId: "src/a.ts", inspection: null });
+    }
+  });
+
+  it("preserves a document section and the scan root while current-bundle validation removes stale targets", () => {
+    const nodes = new Map([["src/a.ts", { publicSymbols: ["start"] }]]);
+    for (const inspection of [
+      { kind: "directory", directory: "" } as const,
+      { kind: "bundled-doc", path: "docs/guide.notes", fragment: "turn-24" } as const
+    ]) {
+      saved.set(PERSISTED_NAV_KEY, JSON.stringify({ version: 1, nodeId: "src/a.ts", inspection }));
+      const remembered = readPersistedNav()!;
+      expect(remembered.inspection).toEqual(inspection);
+      const live = scrubSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: remembered.nodeId ?? null, inspection: remembered.inspection },
+        nodes, { "docs/guide.notes": "" });
+      expect(live.inspection).toEqual(inspection);
+      expect(live.selectedNodeId).toBe("src/a.ts");
+    }
+    saved.set(PERSISTED_NAV_KEY, JSON.stringify({ version: 1, nodeId: "src/a.ts", inspection: { kind: "file", nodeId: "removed.ts" } }));
+    const remembered = readPersistedNav()!;
+    expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, selectedNodeId: remembered.nodeId ?? null, inspection: remembered.inspection }, nodes))
+      .toMatchObject({ selectedNodeId: "src/a.ts", inspection: null });
+  });
 });

@@ -265,51 +265,72 @@ function labelFor(controller: LocalViewController, stage: BranchStage, directory
 }
 
 /**
- * A label's text: the directory's name, which opens the directory while it
- * is encasing; then what it hides, "+3 files, 1 directory", or, once open,
- * the X that closes it, which steps the directory down as far as it can go
- * (the owner's grammar, 2026-10-08). The name and the count are one text
- * flow, so the label wraps as the one text the layout lab models from its
- * capture; the X stands in that flow, in the room the placement already
- * reserves above the leftmost segment, so an open membrane grows no gap for
- * it.
+ * A directory label inspects its directory. Its caption is the name and, while the directory is encasing, what it
+ * hides, "+3 files, 1 directory": one text flow, which the layout lab lays out as the page does. Open or Close and
+ * More stand beside the caption in a column of their own, as the ancestry control does, so that no button's box
+ * enters the text; the lab measures that column like the ancestry control's (2026-10-20, when the buttons first
+ * stood in the caption and the lab's text no longer matched the page).
  */
 function fillLabel(controller: LocalViewController, label: HTMLElement, directory: string, disclosure: DirectoryDisclosure | undefined): void {
   const open = disclosure?.state === "open";
+  // A span in the button role, not a button: a button is one box that cannot break across lines with the count after
+  // it, and the caption must wrap as the one text flow it is. The label's click inspects; the name takes the keyboard.
   const name = document.createElement("span");
   name.className = "local-directory-name";
   name.textContent = directory;
-  if (!open) {
-    name.classList.add("local-directory-opens");
-    name.tabIndex = 0;
-    name.setAttribute("role", "button");
-    name.title = "Open this directory: every file inside as a compact card, every subdirectory as a closed box";
-    name.setAttribute("aria-label", `Open ${directory}`);
-    name.addEventListener("click", event => { event.stopPropagation(); controller.openDirectory(directory); });
-    name.addEventListener("keydown", event => {
-      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); name.click(); }
-    });
-  }
+  name.tabIndex = 0;
+  name.setAttribute("role", "button");
+  name.title = `Inspect ${directory}`;
+  name.setAttribute("aria-label", `Inspect ${directory}`);
+  name.addEventListener("keydown", event => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    void controller.inspectDirectory(directory);
+  });
   const caption = document.createElement("span");
   caption.className = "local-directory-caption";
   caption.append(name);
-  label.replaceChildren(ancestryButton(controller, directory), caption);
-  if (open) {
-    const close = document.createElement("button");
-    close.type = "button";
-    close.className = "local-directory-close";
-    close.title = "Close this directory; what other pins need stays";
-    close.setAttribute("aria-label", `Close ${directory}`);
-    close.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
-    close.addEventListener("click", event => { event.stopPropagation(); controller.closeDirectory(directory); });
-    caption.append(" ", close);
-  } else if (disclosure && (disclosure.hiddenFiles || disclosure.hiddenDirectories)) {
-    const more = document.createElement("span");
-    more.className = "local-directory-more";
-    more.textContent = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
-    more.title = "Not drawn; open the directory to see them";
-    caption.append(" ", more);
+  if (!open && disclosure && (disclosure.hiddenFiles || disclosure.hiddenDirectories)) {
+    const hidden = document.createElement("span");
+    hidden.className = "local-directory-more";
+    hidden.textContent = `+${countsOf(disclosure.hiddenFiles, disclosure.hiddenDirectories)}`;
+    hidden.title = "Not drawn; open the directory to see them";
+    caption.append(" ", hidden);
   }
+  const disclose = document.createElement("button");
+  disclose.type = "button";
+  if (open) {
+    disclose.className = "local-directory-close";
+    disclose.title = "Close this directory; what other pins need stays";
+    disclose.setAttribute("aria-label", `Close ${directory}`);
+    disclose.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+    disclose.addEventListener("click", event => { event.stopPropagation(); controller.options.onCloseDirectory(directory); });
+  } else {
+    disclose.className = "local-directory-open";
+    disclose.textContent = "Open";
+    disclose.setAttribute("aria-label", `Open ${directory}`);
+    disclose.title = "Show the files and subdirectories inside";
+    disclose.addEventListener("click", event => { event.stopPropagation(); controller.options.onOpenDirectory(directory); });
+  }
+  const more = document.createElement("button");
+  more.type = "button";
+  more.className = "local-directory-actions";
+  more.title = `More actions for ${directory}`;
+  more.setAttribute("aria-label", more.title);
+  more.setAttribute("aria-haspopup", "menu");
+  more.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>';
+  more.addEventListener("click", event => {
+    event.stopPropagation();
+    const rect = more.getBoundingClientRect();
+    void controller.showDirectoryActions(directory, { x: rect.left + rect.width / 2, y: rect.bottom });
+  });
+  const controls = document.createElement("span");
+  controls.className = "local-directory-controls";
+  controls.append(disclose, more);
+  label.replaceChildren(ancestryButton(controller, directory), caption, controls);
+  // Labels survive renders. Replace their one body action instead of accumulating a listener on every refill.
+  label.onclick = event => { event.stopPropagation(); void controller.inspectDirectory(directory); };
 }
 
 /**
@@ -520,8 +541,10 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   applyPose(stage, tweenPose(from, to, 0), move.bandPadding);
   for (const element of move.entering) element.style.opacity = "0";
   for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta}px)`;
-  const heldElement = elementHeld(controller, stage, from, to);
-  const heldRect = heldElement?.getBoundingClientRect() ?? null;
+  let heldId = controller.lastInteracted;
+  let heldSymbol = controller.lastInteractedSymbol;
+  let heldElement = elementHeld(controller, stage, from, to);
+  let heldRect = heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
   /** Put the held card back where the eye left it, moved by whatever the camera itself has moved since (a drag, say). */
   const hold = (): void => {
@@ -539,6 +562,14 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   };
   const start = performance.now();
   const step = (now: number): void => {
+    // A person can inspect another item during a move. Hold that new context from its current visible place.
+    if (heldId !== controller.lastInteracted || heldSymbol !== controller.lastInteractedSymbol) {
+      heldId = controller.lastInteracted;
+      heldSymbol = controller.lastInteractedSymbol;
+      heldElement = elementHeld(controller, stage, from, to);
+      heldRect = heldElement?.getBoundingClientRect() ?? null;
+      Object.assign(cameraAtStart, controller.mapTransform);
+    }
     const t = Math.min(1, (now - start) / duration);
     const eased = easeInOutCubic(t);
     const frame = tweenPose(from, to, eased);
@@ -599,6 +630,12 @@ function elementHeld(controller: LocalViewController, stage: BranchStage, from: 
     if (!id) continue;
     const membrane = `directory\0${id}`;
     if (!(from.items.has(id) || from.boxes.has(membrane)) || !(to.items.has(id) || to.boxes.has(membrane))) continue;
+    if (id === controller.lastInteracted && controller.lastInteractedSymbol && to.items.has(id)) {
+      const row = stage.wrappers.get(id)?.querySelector<HTMLElement>(
+        `.symbol-row[data-symbol="${CSS.escape(controller.lastInteractedSymbol)}"] .symbol-label-wrapper`
+      );
+      if (row?.getClientRects().length) return row;
+    }
     return (to.items.has(id) ? stage.wrappers.get(id) : stage.labels.get(id)) ?? null;
   }
   return null;
@@ -906,7 +943,7 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       reveal.textContent = `+${hidden} symbols`;
       reveal.title = "Show the other symbols in this file";
       reveal.addEventListener("click", event => {
-        event.stopPropagation(); controller.expandedCards.add(id); controller.render();
+        event.stopPropagation(); controller.lastInteracted = id; controller.lastInteractedSymbol = null; controller.expandedCards.add(id); controller.render();
       });
       card.append(reveal);
     }
@@ -926,7 +963,7 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       reveal.textContent = `${outside} ${outside === 1 ? "connection" : "connections"} ${filePinned ? "hidden by filters" : "outside this view"}`;
       if (!filePinned) {
         reveal.title = "Pin this file to reveal its connections; display filters still apply";
-        reveal.addEventListener("click", event => { event.stopPropagation(); controller.togglePinnedSymbol(id, "*"); });
+        reveal.addEventListener("click", event => { event.stopPropagation(); controller.options.onPressPin(id, "*"); });
       }
       card.append(reveal);
     }

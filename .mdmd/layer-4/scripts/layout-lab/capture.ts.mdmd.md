@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-10-19T16:54:54.746Z
+- Generated At: 2026-10-20T19:19:43.614Z
 
 ## Authored
 ### Purpose
@@ -15,11 +15,13 @@ The layout lab's capture of a Local Map scope: everything the card model needs t
 
 Opens the scope with every file retained whole (its own browser over the built bundle through `scopes.ts`, or a page the Playwright runner already shows) and reads it in one evaluation: every card's natural width, border and padding; every text block prepared by Pretext inside the page, where the canvas knows the fonts, and serialized whole so Pretext can lay it out again in node; every row's badge width; every test chip; each pin's horizontal place from a dot the page shows (a card whose rows are all collapsed has none, and then the grid's geometry says where one would be); the stylesheet's constants from computed styles and from probe elements, since a card's first dot may be collapsed to nothing; the height of one line of each font from a probe that stays until the membrane labels are read too; and the truth: each card's height and each pin's offset as the renderer rounds them, each label's height, the placement measure and the picture's size. Pretext's layout of each shown text at its element's width is checked against the element's own height as the capture runs, with the browser's one layout unit of tolerance, and disagreements are reported. The page runs code compiled by tsx, whose esbuild keeps function names by wrapping them in `__name(...)`, a helper the page lacks; `admitCompiledFunctions` defines it there first. A capture weighs hundreds of kilobytes and is rebuilt in seconds, so captures are not committed. Built 2026-10-06 for the lab the owner asked for ([Turn 7](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-7)), after the owner connected Pretext to the problem ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-9)).
 - A capture is of the first paint: the page is seeded with the continuing search off (`searchStarts: 0`) before it loads (2026-10-07).
-- A wrapper without a card is passed by (2026-10-08): a closed directory's box takes a wrapper of the cards' kind; the scopes open no directory and the card model does not hold one. A label is keyed by the directory it says it is for (`data-directory`), since its text now carries the count of what an encasing membrane hides; the text, name and count in one flow, is what the model lays out, and an open membrane's X is not modelled.
+- A wrapper without a card is passed by (2026-10-08): a closed directory's box takes a wrapper of the cards' kind; the scopes open no directory and the card model does not hold one. A label is keyed by the directory it says it is for (`data-directory`), since its text now carries the count of what an encasing membrane hides; the text, name and count in one flow, is what the model lays out. Since 2026-10-20 a label's Open or Close and its More stand beside that text in a controls column, measured as the ancestry control is; before, an open membrane's X stood in the text and was not modelled.
 
 The capture also records the actual test and asset filter controls. The retained URL defaults to showing assets; assuming the storage defaults instead would remove files from the lab's exploration. Older retained-scope captures without this field use the compressed URL defaults. This distinction was established while checking the warehouse scene for the [weighted competition work of October 13](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
 The membrane ancestry control occupies a separate flex column beside the text caption. Captures therefore retain its actual reserved width and effective height, and prepare the caption itself as text. The headless label model composes the two instead of pretending an SVG button is a text glyph. Older captures without control measurements retain their original text-only geometry. This extension accompanies [the October 14 ancestor disclosure](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
+
+Each row also records its controls, every child of the label's wrapper but the label and its badges (the Pin and More of [October 20](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#the-layout-lab-caught-the-label-buttons)), as their widths with the gap before each and the tallest of them, and the wrapper's frame from its computed style: margins, padding and border on each axis, nothing for a public row and the Internals row's dashed border. A row collapsed at capture has no boxes, so it takes the controls of a row the page showed; its frame needs no box. Both are optional, so older captures read as before. Without them the model ran 1 to 22 px short of every card on the day the controls arrived.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -47,35 +49,35 @@ One symbol row of a card: its name, its label's prepared text and the width of i
 
 #### `ChipCapture` {#symbol-chipcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L52)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L63)
 
 ##### `ChipCapture` — Summary
 A test chip's, or the test label's, box as the page drew it.
 
 #### `CardCapture` {#symbol-cardcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L58)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L69)
 
 ##### `CardCapture` — Summary
 One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L84)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L95)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L106)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L117)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L132)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L143)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -83,7 +85,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L151)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L162)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -93,7 +95,7 @@ node_modules and loaded as a module, then the page is read in one go.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L374)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L413)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -101,7 +103,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L380)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L419)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

@@ -228,7 +228,7 @@
    Pinned Symbol Indicator
    ========================================== */
 
-/* Make symbol rows look clickable - target the label wrapper since .symbol-row has display:contents */
+/* A symbol's name inspects; the adjacent pin and menu are independent actions. */
 .symbol-row .symbol-label-wrapper {
     cursor: pointer;
     border-radius: 4px;
@@ -240,6 +240,12 @@
 .symbol-row .symbol-label-wrapper:hover {
     background: var(--accent-muted);
 }
+.local-column .symbol-label { display: block; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent; font: inherit; font-size: 11px; color: var(--text-secondary); text-align: left; cursor: pointer; }
+.local-column .symbol-label:hover { color: var(--accent); }
+.local-column .type-badge:is(button) { border: 0; cursor: pointer; }
+.local-symbol-pin, .local-symbol-more { display: inline-flex; flex: 0 0 17px; align-items: center; justify-content: center; width: 17px; height: 17px; padding: 1px; line-height: 0; color: var(--text-panel-subtle); border: 1px solid transparent; border-radius: 3px; background: transparent; cursor: pointer; }
+.local-symbol-pin:hover, .local-symbol-more:hover { color: var(--accent); border-color: var(--accent); }
+.local-symbol-pin[aria-pressed="true"], .local-file-pin[aria-pressed="true"] { color: var(--accent); }
 
 /* Visual indicator that a symbol is "pinned" (sticky highlight) */
 /* Target the label wrapper since .symbol-row has display:contents and can't be styled directly */
@@ -248,14 +254,14 @@
     box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
 }
 
-/* The card's two controls, the close and the recentre, 20 px each in the title's corner; the title keeps the same
-   right padding on every card, room for both, since the layout lab lays the title out with one constant read from
-   the page and a padding that varied by card could never match it (2026-10-15) */
-.local-file-close,
-.local-file-recentre {
-    position: absolute;
-    right: 5px;
-    top: 5px;
+/* Four explicit card actions can occupy the title's corner; constant padding keeps title measurement stable. */
+.local-card-actions { position: absolute; right: 5px; top: 5px; display: flex; gap: 2px; }
+.local-card-actions button {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 2px;
     line-height: 0;
     color: var(--text-panel-subtle);
@@ -264,16 +270,16 @@
     border-radius: 4px;
     cursor: pointer;
 }
-.local-file-close:hover, .local-file-recentre:hover { color: var(--accent); border-color: var(--accent); }
-/* The recentre control stands beside the close when both are shown, in its place when the card has no close */
-.node-card:has(.local-file-close) .local-file-recentre { right: 27px; }
-.local-column .node-title { padding-right: 44px; }
+.local-card-actions button:hover { color: var(--accent); border-color: var(--accent); }
+.local-column .node-title { padding-right: 88px; }
+.local-file-inspect { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; overflow-wrap: inherit; cursor: pointer; }
+.local-file-inspect:hover { color: var(--accent); }
 .local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
 button.local-disclosure:hover { color: var(--accent); }
 span.local-disclosure { cursor: default; }
 .branch-symbol-hidden > * { display: none; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
-.symbol-label-wrapper:focus-visible, .local-file-close:focus-visible, .local-file-recentre:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-file-inspect:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 /* The open history scrubber takes the bottom of the map; the controls and the tray stand above it by the room it asks for. */
 #main { --history-room: 0px; }
@@ -333,22 +339,29 @@ span.local-disclosure { cursor: default; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-membrane-shape { fill: #ffffff03; stroke: var(--border); stroke-width: 1px; stroke-linejoin: round; }
 .local-directory-label { position: absolute; display: flex; gap: 4px; align-items: flex-start; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
-/* The label is one text flow: the name, which opens the directory while it is encasing; then what it hides, or the X that
-   closes it once open (the owner's grammar, 2026-10-08). One flow, so the label wraps as the one text the layout lab models
-   from its capture; the X stands in it, in the room the placement already reserves above the leftmost segment, so an open
-   membrane grows no gap for it. */
-.local-directory-opens { cursor: pointer; }
-.local-directory-opens:hover { color: var(--accent); }
+/* The label inspects. Its caption is one text flow, the name and what an encasing directory hides; Open or Close and More
+   stand beside it in a column of their own, 18 px tall and raised 2 px as the ancestry control is, so a one-line label
+   keeps its height and the layout lab lays the caption out as the page does (2026-10-20). */
+.local-directory-controls { display: flex; flex: none; align-self: flex-start; gap: 2px; margin-top: -2px; }
+.local-directory-controls > button { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; height: 18px; margin: 0; padding: 1px; line-height: 14px; }
+.local-directory-controls > .local-directory-open { padding: 1px 5px; }
+.local-directory-name { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; overflow-wrap: anywhere; cursor: pointer; }
+.local-directory-name:hover { color: var(--accent); }
 .local-directory-more { opacity: .85; }
+.local-directory-open { display: inline-block; vertical-align: middle; margin-top: -2px; padding: 2px 5px; color: var(--text-panel-subtle); background: none; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font: inherit; font-size: 11px; }
+.local-directory-open:hover { color: var(--accent); border-color: var(--accent); }
 .local-directory-close { display: inline-block; vertical-align: middle; margin-top: -2px; padding: 2px; line-height: 0; color: var(--text-panel-subtle); background: none; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
 .local-directory-close:hover { color: var(--accent); border-color: var(--accent); }
-.local-directory-name:focus-visible, .local-directory-close:focus-visible, .local-directory-closed:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-/* A closed directory: a pseudo-node without symbols in the membrane's style, named and counted, with a second outline
-   behind it saying it holds more; a click opens it in place, the membrane growing from the box (2026-10-08). */
+.local-directory-actions { display: inline-flex; vertical-align: middle; align-items: center; justify-content: center; margin-top: -2px; padding: 2px; color: var(--text-panel-subtle); background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
+.local-directory-actions:hover { color: var(--accent); border-color: var(--accent); }
+.local-directory-name:focus-visible, .local-directory-close:focus-visible, .local-directory-open:focus-visible, .local-directory-actions:focus-visible, .local-directory-closed__name:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* A closed directory keeps its box and count while the separate Open control expands it. */
 .local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: #ffffff05; color: var(--text-panel-subtle); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--bg-deep, #15191f), 4px 4px 0 0 var(--border); }
 .local-directory-closed:hover { border-color: var(--accent); color: var(--text-primary); }
-.local-directory-closed__name { font-size: 13px; font-weight: 600; color: var(--text-primary); overflow-wrap: anywhere; }
+.local-directory-closed__name { display: block; padding: 0; border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; text-align: left; color: var(--text-primary); overflow-wrap: anywhere; cursor: pointer; }
 .local-directory-closed__count { margin-top: 4px; font-size: 11px; }
+.local-directory-closed .local-directory-open { margin-top: 8px; }
+.local-directory-closed .local-directory-actions { margin-left: 4px; margin-top: 8px; }
 /* The placed layout: every membrane, card and lane stands where the placement put it, inside the element it belongs to. */
 .local-layout.local-placed { display: block; position: relative; }
 .local-placed .local-directory-band .local-column, .local-placed .local-directory-band .local-pass-through { position: absolute; display: block; margin: 0; }
