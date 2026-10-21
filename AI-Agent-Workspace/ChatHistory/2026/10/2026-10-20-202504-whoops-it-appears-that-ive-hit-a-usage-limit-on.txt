@@ -2621,3 +2621,1168 @@ completed (exit code 0)
   assets/images/whatever) I'm happy for our repo to evolve in that way. I just
   want to make sure that we're not suddenly missing a whole class of file. I
   accept that I was mistaken as to the total absence of such files.
+
+● I'll record your message, then answer your question with measurements rather
+  than a guess: where today's related-doc links actually come from, authored or
+  generated sections, and whether any whole class of file is going undocumented.
+
+  Read 1 file (ctrl+o to expand)
+
+● Now the measurements. First, the graph's file record and how the 3D view
+  filters related docs:
+
+  Ran 1 shell command (ctrl+o to expand)
+● Now I'll measure every link to a non-Live-Doc markdown file across today's 843
+  Live Docs, breaking it down by whether the link appears in the authored or
+  generated section.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 876 links to other markdown files sit in authored sections, and since the
+  graph already stores each file's authored block verbatim, no new field is
+  needed—simplifying the plan. Next I'll check whether an entire class of file
+  is missing Live Docs by comparing all git-tracked files against documented
+  ones, grouped by kind.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The 736 binary files are in the excluded agent workspace, but several other
+  file types—top-level markdown, GitHub workflows, shell scripts, the .wasm/.sln
+  files, and dotfiles—lack any Live Doc. I'll now check whether these ever had
+  documentation before and locate the .wasm file.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● These classes were never documented, so nothing's missing there. To
+  double-check, I'll scan the commit history for points where the count of
+  documented files decreased.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Since any disappearance of a Live Doc class would have to come from an actual
+  deletion or a tool change, not inconsistent tooling, I'll check for files that
+  once had a Live Doc committed, still exist today, but now have none.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● No docs have gone missing—every source file that still exists still has its
+  doc, and the undocumented classes simply never had one. Next I'll check how
+  the generator currently handles an existing doc it can't read, since that
+  determines what happens to the oldest committed docs.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Authored content is already preserved by default since the generator keeps the
+  block between ## Authored and ## Generated, but orphaned docs (whose source
+  file is missing) risk entering the graph incorrectly at past commits. I'll now
+  check whether the graph index allows a doc to exist without its source file.
+
+  Searched for 1 pattern, listed 1 directory (ctrl+o to expand)
+
+● I've worked out the rule for which committed docs to keep: only those whose
+  source is still documented by today's tool at that commit, preserving authored
+  content. Before writing this up, I'll measure the actual value of keeping
+  authored sections by checking, across the 74 sampled commits, how many
+  committed docs have an authored section and how many related-doc links they
+  contain, reading directly from git without regeneration.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I confirmed the linked-doc history is substantial: 63 of 74 steps have
+  authored related-doc links (peaking at 396 links to 67 docs in November 2025),
+  while the other 11 have nothing to preserve since they either predate the
+  docs or lack an authored section. I'll record this finding and move on to
+  answering.
+
+  Read 1 file (ctrl+o to expand)
+
+● Your second thought was right: authored sections hold every related-doc link.
+  All 876 such links in today's Live Docs are in authored sections. Generated
+  sections link only to other Live Docs, and the graph already carries each
+  authored section word for word. That makes the simplest version smaller than
+  what I described.
+
+  The simplest form of the three enhancements:
+  1. Keep the words. The history stops deleting each past commit's docs and lets
+     today's tool regenerate over them, as it does daily. One rule keeps it
+     exact: at a past commit, a doc stays only if today's tool documents its
+     source there. Every step's files and wires come out exactly as they do now,
+     and only your words come along.
+  2. No new graph field. One small function reads a file's related docs from the
+     authored text the graph already holds. The bundle and the history both use
+     it, so the bundle's separate scan goes away, and the command line can
+     print them.
+  3. Each step records its doc links, counting only docs that existed at that
+     commit. The 3D history then shows related docs appearing and going, and the
+     step panel lists the changes.
+
+  I'd leave out the old text of linked docs, which would grow the bundle. The
+  reader shows today's version, marked as today's, or says the doc didn't exist
+  yet. The cost is one full rebuild of the history cache, here and on the hosted
+  site. "Don't implement" would have been the simple choice if there were
+  little to show, but 63 of the 74 steps have links in their words.
+
+  On files: nothing has gone missing. Every one of the 1,899 Live Docs ever
+  committed still exists if its source does. Your 736 binary files (pictures and
+  recordings) are all in the agent workspace, which the configuration excludes.
+  Some classes were never documented:
+  - Markdown outside the docs root: the README, AGENTS.md, the skills and 15
+    test READMEs.
+  - Configuration and scripts: the 5 GitHub workflow files and the shell
+    scripts.
+  - Two estate and grammar files: the PowerShell grammar's .wasm binary, and the
+    estate sample's Estate.sln solution file.
+  - Dotfiles such as .gitignore and .nvmrc.
+
+  Two questions, neither blocking:
+  1. Should any of those classes get Live Docs? If so, which?
+  2. A real binary asset for the tests? Neither test bundle contains one, so the
+     asset kind and its Show Assets toggle are never exercised in the browser.
+     I'd add one small real image to the estate sample.
+
+  I'm starting on the linked-docs work now.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● To build it I need to know the history format end to end: the shape, how a
+  graph becomes one, the codec, the derived steps and the readers. Reading the
+  engine side first:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've settled on the design: shapes carry doc links pairing files with doc
+  paths, steps track added/removed links, and links follow files through renames
+  and removals just like edges do. Now I'll look at the format, codec, and
+  derivation code.
+
+  Read 2 files (ctrl+o to expand)
+
+● I'll update the format comment to reflect that doc links belong alongside
+  edges, not symbols or authored words. Next, I'm checking the readers—CLI
+  queries, tick model, step panel, bundle builder, and the scripted sample used
+  in history tests.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The engine side is clear. Now the Explorer's side of the history: how a moment
+  is materialized for the 3D view, and what the step panel lists.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now I'll check the bundle builder to see how related-doc links are currently
+  constructed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The builder renders each graph file into Live Doc text and scans all of it,
+  including links to other Live Docs that the 3D view later discards. I'll check
+  the engine's dependencies next, since the shared function needs glob matching
+  for the configured exclusions.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll add minimatch as a dependency for the engine so the shared function can
+  honor bundleExclude patterns consistently. Next I'll review how the Explorer
+  builds moments and checks formats, how the step panel renders, and the
+  scripted repository behind the history tests before writing code.
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● The existing test script already covers the orphan file case correctly, so
+  I'll extend it with scenarios for added/removed docs, links, and
+  forward-referenced targets. Next I'm reading the sequence writer and window
+  code to reuse the engine rather than building snapshots manually.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Every snapshot and step goes through the codec, so the shape and codec carry
+  the change everywhere: the writer, keyframes and windows. Starting with the
+  engine's shape:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Next the format: version 2 of both the sequence and the summary, doc links in
+  snapshots and steps, and the module comment updated to say what the sequence
+  now carries.
+
+  Ran 1 shell command (ctrl+o to expand)
+● Now the codec and the derivation:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the summary: a commit's doc links come in from its caller, which can see
+  that commit's working tree and so knows which documents stood there.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The cache properly rejects mismatched summary formats, preventing misreads of
+  old summaries. Now I'll turn to the shared rule for finding a file's related
+  documents, implementing it as a pure engine function, and I'm checking the
+  location type it expects.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll add the new function for related documents next to linkTarget in
+  graph.ts, reusing its path resolution logic, and start by adding the minimatch
+  dependency to the engine at the currently installed version.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● npm also bumped the shared minimatch dependency to 10.2.6, which wasn't part
+  of this change, so I'm pinning it back to the version already installed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll revert the lockfile to its committed state, declare the dependency at
+  ^10.2.4, and let npm add just the engine's entry for the version it already
+  resolves.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the lockfile gains only the engine's one entry, and minimatch is back at
+  10.2.4 with a single copy. Checking that rewriting the engine's package.json
+  didn't reformat anything else:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● One line in each file. Now the function itself, beside linkTarget:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Since graph.ts gets bundled into the browser client, it can't rely on a glob
+  library, so I'll extract the doc-relative link resolution logic shared with
+  linkTarget into a separate engine module for the related-docs rule. First, let
+  me check who else uses the scanner's link extractor.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Only the builder and its test use the scanner. Writing the shared resolution
+  in graph.ts and the new module:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The production code compiles. Only tests that build shapes by hand fail, since
+  a shape now needs its doc links. Patching those helpers, then adding tests
+  for the new behavior:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll update the command-line query tests—inspect --at for listing documents at
+  a change and inspect --between for added/removed links—then fix the tick rule
+  so a pinned file's doc link changes count as a shape change.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(packages/engine/src/live-docs/history/ticks.ts)
+  ⎿  Added 3 lines, removed 2 lines
+       8   * In the owner's words of 2026-10-17, "the kind of quantum lea
+          p events are
+       9   * major ticks and the update-only changes are minor ticks". A 
+          major tick is a
+      10   * step in which a pinned file was born, died, was renamed, res
+          ized, rekinded
+      11 - * or re-marked as an entry, or an edge from or to it came, wen
+         -t or changed its                                               
+      12 - * count; for a pinned directory, any file under it. A minor ti
+         -ck is a step                                                   
+      11 + * or re-marked as an entry, an edge from or to it came, went o
+         +r changed its                                                  
+      12 + * count, or a link from its authored words to a document came 
+         +or went (since                                                 
+      13 + * 2026-10-20); for a pinned directory, any file under it. A mi
+         +nor tick is a step                                             
+      14   * that is no major tick and in which a pinned file was touched
+          . With nothing
+      15   * pinned every step is a major tick.
+      16   *
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Update(scripts/live-docs/inspect/history.ts)
+  ⎿  Added 1 line, removed 1 line
+      21  import { commitAt, seek } from "@live-documentation/engine/live
+          -docs/history/sequence";
+      22  import { reachability } from "@live-documentation/engine/live-d
+          ocs/pathfind";
+      23  
+      24 -const SHAPE_ALONE = "from the shape alone: files, their wires a
+         -nd entry marks; the symbols and the docs of that day are not in
+         - the history";                                                 
+      24 +const SHAPE_ALONE = "from the shape alone: files, their wires, 
+         +entry marks and linked documents; the symbols and the docs' wor
+         +ds of that day are not in the history";                        
+      25  
+      26  /** A question the history cannot answer as asked, said plainly
+          . */
+      27  export class HistoryRefusal extends Error {}
+
+● Now the generator. A lens run must prune every doc it didn't write, authored
+  words or not. Reading how the prune is called and what the options hold:
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Now the history's per-commit worker: it stops deleting the committed docs,
+  prunes like a lens, and records each file's related documents that stood at
+  that commit:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The generator type-checks against the engine's built declarations, so the
+  engine needs building first:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The engine's build compiles its tests too, so the test helpers come first.
+  Reading their exact shape builders:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've switched to absolute paths after that cd. Now patching the five helpers
+  to add doc links to shapes, covering links that appear and disappear across
+  the sequence test's history, so round-trip and keyframe tests exercise them
+  too.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now new tests for the behavior itself. The derivation test is self-contained.
+  For the queries and ticks tests I need their existing sequence-building
+  helpers:
+  Ran 2 shell commands (ctrl+o to expand)
+
+● That step helper I wrote is nonsense; it calls a function that doesn't exist.
+  Replacing it with the sequence's own seek:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The build succeeds and the new derivation, query, and tick tests pass, but
+  five existing tests fail due to the expected structural changes from the
+  format update. I'll review each failure individually before making any
+  updates.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● These five test failures all stem from the format change and don't require
+  weakening any assertions—I'll update fileOfShape to include documents, add
+  interned doc paths to the interning/window test tables, and adjust the
+  head/summary tests for format 2, plus add a new summary test covering files
+  with doc links.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Updating the five assertions to account for docLinksAdded appearing in the
+  first step's delta keys, then adding a summary test with real links.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 65 history tests pass. Now a unit test for the related-docs rule itself,
+  covering Live Docs, exclusions, external and escaping links, fragments, a doc
+  linking to itself, and duplicates:
+
+● Write(packages/engine/src/live-docs/relatedDocs.test.ts)
+  ⎿  Wrote 38 lines to packages/engine/src/live-docs/relatedDocs.test.ts
+       1 import { describe, expect, it } from "vitest";
+       2
+       3 import { relatedDocsOf } from "./relatedDocs";
+       5 const LOCATION = { root: ".mdmd", baseLayer: "layer-4", extensio
+         n: ".mdmd.md" };
+       6
+       7 describe("relatedDocsOf", () => {
+         ed from the doc's place, each once, sorted", () => {
+       9     const authored = [
+      10       "### Purpose",
+     … +46 lines (ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both failures are my test's arithmetic, not the function's. That doc sits four
+  folders deep, so reaching the workspace root takes four ../ and leaving it
+  takes five. Correcting the fixture:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The engine part is complete and tested. Checkpointing in the record, then the
+  bundle builder:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Rewriting the scanner module. It no longer scans, it bundles the documents the
+  graph names, so I'll read the part I'm keeping, the tree builder:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Nothing was written; my anchor text didn't match the file. Finding the exact
+  lines:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The file has Windows line endings. Before rewriting I'll check how git stores
+  it, so I don't change every line's ending by accident:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The repo stores and expects LF endings — the CRLF is just from the
+  Windows-backed working copy, so writing LF is correct. I'll rerun after
+  normalizing the text first.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Explorer used minimatch only for the scanner's exclusions, which now live
+  in the engine. Checking whether anything else in the Explorer still needs it:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Nothing else in the Explorer uses it, so the dependency moves with the rule:
+  removing it from the Explorer and checking the lockfile stays minimal.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The dependency shift worked—engine gained the line, Explorer lost it, with a
+  single copy now at 10.2.4. npm left two seemingly empty node_modules folders
+  in the packages, so I'll verify they're actually empty before removing them.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both were empty and untracked, now removed. Rewriting the module's test for
+  what it does now:
+
+● Write(packages/explorer/src/shared/bundledMarkdownScanner.test.ts)
+  ⎿  Added 19 lines, removed 32 lines
+       3  import * as path from "path";
+       4  import { afterEach, beforeEach, describe, expect, it } from "vi
+          test";
+       5  
+       6 -import { scanAndBundleMarkdown } from "./bundledMarkdownScanner
+         -";                                                             
+       6 +import { bundleRelatedDocs } from "./bundledMarkdownScanner";  
+       7  
+       8 -/**                                                            
+       9 - * A throwaway workspace with one Live Doc that links to a READ
+         -ME and to a file                                               
+      10 - * inside a chat archive, using the same relative-path shape as
+         - a real workspace                                              
+      11 - * so the scanner's path resolution is exercised for real.     
+      12 - */                                                            
+       8 +/** A throwaway workspace with a README and a file inside a cha
+         +t archive, as two docs' links name them. */                    
+       9  async function createWorkspace(): Promise<string> {
+      10      const root = await fs.mkdtemp(path.join(os.tmpdir(), "bundl
+          ed-markdown-"));
+      15 -                                                               
+      16 -    await fs.mkdir(path.join(root, "docs"),       { recursive: 
+         -true });                                                       
+      11      await fs.mkdir(path.join(root, "notes/chat"), { recursive: 
+          true });
+      18 -                                                               
+      19 -    await fs.writeFile(path.join(root, "README.md"),           
+         -     "# Readme\n");                                            
+      12 +    await fs.writeFile(path.join(root, "README.md"), "# Readme\
+         +n");                                                           
+      13      await fs.writeFile(path.join(root, "notes/chat/2025-11-01.m
+          d"), "# Chat\n");
+      21 -    await fs.writeFile(                                        
+      22 -        path.join(root, "docs/a.ts.md"),                       
+      23 -        "See [the readme](../README.md) and [a chat](../notes/c
+         -hat/2025-11-01.md#turn-1).\n"                                  
+      24 -    );                                                         
+      25 -                                                               
+      14      return root;
+      15  }
+      16  
+      29 -describe("scanAndBundleMarkdown", () => {                      
+      17 +describe("bundleRelatedDocs", () => {                          
+      18      let root: string;
+      19 +    const logger = { log: () => {}, error: () => {} };         
+      20  
+      32 -    const docs: Record<string, string> = { "src/a.ts": "" };   
+      33 -    const liveDocPaths = new Map([["src/a.ts", "docs/a.ts.md"]]
+         -);                                                             
+      34 -    const logger       = { log: () => {}, error: () => {} };   
+      35 -                                                               
+      21      beforeEach(async () => {
+      22          root = await createWorkspace();
+      38 -        docs["src/a.ts"] = await fs.readFile(path.join(root, "d
+         -ocs/a.ts.md"), "utf-8");                                       
+      23      });
+      24  
+      25      afterEach(async () => {
+      26          await fs.rm(root, { recursive: true, force: true });
+      27      });
+      28  
+      45 -    it("bundles every linked markdown file by default", async (
+         -) => {                                                         
+      46 -        const result = await scanAndBundleMarkdown({ docs, work
+         -spaceRoot: root, liveDocPaths, logger });                      
+      29 +    it("bundles each linked document once, keeps every link to 
+         +it, and files it in the tree", async () => {                   
+      30 +        const links = [                                        
+      31 +            { sourceId: "src/a.ts", targetPath: "README.md" }, 
+      32 +            { sourceId: "src/b.ts", targetPath: "README.md" }, 
+      33 +            { sourceId: "src/a.ts", targetPath: "notes/chat/202
+         +5-11-01.md" }                                                  
+      34 +        ];                                                     
+      35 +        const result = await bundleRelatedDocs({ links, workspa
+         +ceRoot: root, logger });                                       
+      36  
+      48 -        expect(Object.keys(result.bundledMarkdown).sort()).toEq
+         -ual(["README.md", "notes/chat/2025-11-01.md"]);                
+      49 -        expect(result.relatedDocLinks).toHaveLength(2);        
+      37 +        expect(result.bundledMarkdown).toEqual({ "README.md": "
+         +# Readme\n", "notes/chat/2025-11-01.md": "# Chat\n" });        
+      38 +        expect(result.relatedDocLinks).toEqual(links);         
+      39 +        expect(result.bundledMarkdownTree.children?.map(child =
+         +> child.name)).toEqual(["notes", "README.md"]);                
+      40      });
+      41  
+      52 -    it("keeps excluded files out of both the bundle and the rel
+         -ated-doc links", async () => {                                 
+      53 -        const result = await scanAndBundleMarkdown({           
+      54 -            docs,                                              
+      42 +    it("drops a link to a document that cannot be read, so the 
+         +Related Docs name only what the bundle carries", async () => { 
+      43 +        const result = await bundleRelatedDocs({               
+      44 +            links: [{ sourceId: "src/a.ts", targetPath: "README
+         +.md" }, { sourceId: "src/a.ts", targetPath: "docs/not-yet-writt
+         +en.md" }],                                                     
+      45              workspaceRoot: root,
+      56 -            liveDocPaths,                                      
+      57 -            logger,                                            
+      58 -            exclude: ["notes/chat/**"]                         
+      46 +            logger                                             
+      47          });
+      48  
+      49          expect(Object.keys(result.bundledMarkdown)).toEqual(["R
+          EADME.md"]);
+      50          expect(result.relatedDocLinks).toEqual([{ sourceId: "sr
+          c/a.ts", targetPath: "README.md" }]);
+      63 -        expect(result.bundledMarkdownTree.children?.map(child =
+         -> child.name)).toEqual(["README.md"]);                         
+      51      });
+      52  });
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The Explorer passes its type checks and tests. Now I'll compare the old
+  scanner's output against the new rule on today's graph to confirm they produce
+  identical related-docs pairs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 328 file-to-document pairs match between the two versions, confirming
+  Related Docs are unaffected and the probe copy has been removed. Next, I'll
+  look at the Explorer client to see how the history control builds a moment and
+  how the app wires it so the moment carries its links and signals when it
+  reflects a past commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll now look at how the 3D view labels a related doc and handles its click.
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've outlined how related-doc links will flow through the moment, 3D view,
+  step panel, and reader. Now I'll check the step panel's code to match its
+  existing style.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● I'll follow the existing pattern of making files buttons that open in the
+  reader when bundled (showing a missing message otherwise), and start
+  implementing the client changes to the snapshot, moment, step summary, and
+  panel.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Now the 3D view: a moment's related docs drawn, and a document missing from
+  today's bundle labelled as such and not opened.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Update(packages/explorer/src/client/views/forceGraphView.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      674      };
+      675  
+      676      const filteredNodes = source.nodes.filter(includeNode);
+      677 -    // The related documentation is today's; a moment of the h
+          -istory draws none, since the docs of that day are not in the b
+          -undle.                                                        
+      678 -    // A moment's Related Docs are the links its files' author
+          -ed words made then (2026-10-20), today's are today's.         
+      677 +    // A moment's Related Docs are the links its files' author
+          +ed words made then, which the history carries since           
+      678 +    // 2026-10-20 (before, a moment drew none); today's are th
+          +e bundle's.                                                   
+      679      const data = spatialGraphOf(source, includeNode, !state.fi
+           lters.showRelatedDocs ? [] : moment ? moment.relatedDocLinks :
+            relatedDocLinks, state.spatialLayout);
+      680      // The node and link objects are kept by id and by pair ac
+           ross every membership change: a sphere keeps its place and
+      681      // its render object, and the library's data join, which b
+           inds a line's object to its datum, keeps the line. Before
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Adding the reader's note: one line above the body, shown only while the 3D
+  view shows a past commit. Checking the reader's spacing so the note matches
+  it:
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Update(packages/explorer/src/client/styles/shell.css)
+  ⎿  Added 3 lines
+      302      padding: 16px;
+      303      overflow-wrap: anywhere;
+      304  }
+      305 +/* While the 3D picture shows a past commit, the reader says t
+          +hat its evidence is today's version. */                       
+      306 +.detail-note { margin: 0; padding: 8px 16px; border-bottom: 1p
+          +x solid var(--border); font-size: 12px; color: var(--text-pane
+          +l-subtle); }                                                  
+      307 +.detail-note[hidden] { display: none; }                       
+      308  
+      309  .detail-footer {
+      310      padding: 12px 16px;
+
+● I'm wiring up the application: adding the bundle check to the 3D view and step
+  panel, enabling document opening in the step panel, and tracking the
+  displayed timestamp so the reader can confirm it's showing the current
+  version.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Only client tests that build shapes by hand remain. Reading them so I can
+  patch them and add tests for the moment's links and the step summary's doc
+  links:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll use absolute paths going forward since the cd changed context. Now
+  patching the three client test shapes and adding tests for the related doc
+  links, the step summary's doc links, and a link pointing to a now-removed
+  file.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The pairs are right; the view stores each wire as an unordered pair with its
+  ends in path order, as it does today. My test assumed a direction. Comparing
+  the pairs as unordered:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 29 client history tests pass. Next, I'll review the scripted repository
+  used by the integration test and browser specs to see what they assert, so I
+  can extend them with the new docs and links without breaking existing checks.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The existing integration test already verifies that keeping committed docs
+  doesn't leak into the regenerated history, since it diffs replayed output
+  against a fresh regeneration and commits an orphan doc that must never
+  surface. I'll extend the test script to add the specific documents and links
+  (from the first commit, from writing later.md, and from retiring the legacy
+  helper), then check the browser history specs to make sure these additions
+  don't conflict with existing assertions.
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● The 8 files/8 wires spec holds up, with doc links grouped separately from
+  Dead/Wires removed groups and the ghost remaining the sole orphan. I'll now
+  review the spec's helpers to add a browser test that walks through these
+  links.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Writing the script changes:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the integration test: format 2, the doc links each step must carry by the
+  script, and the command line's answers. Reading its inspect tests:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All 15 history integration tests pass, confirming replay consistency at every
+  commit. I noticed the test oracle builds a shape without doc links that will
+  fail type-checking, so I'll fix that and then type-check the tests project.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The build and the tests' type-check pass. Before writing the browser test I'll
+  look at it first, as the workspace asks: build the history sample, then step
+  through it with Related Docs on. Building:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Everything matches expectations across the steps, with step 4 correctly
+  unlinking old notes and linking the design reader without errors; the design
+  doc's reappearance at today's step is expected since today's generator
+  includes the sample's deliberate orphan doc that links to it. Now I'll check
+  the screenshots.
+
+  Read 2 files (ctrl+o to expand)
+
+● Step 4 checks out—the panel shows both unlinked documents and the archived
+  notes, with the 3D view reflecting the one remaining document. The reader
+  screenshot caught the panel mid-transition, so I'll retake it once the
+  animation settles.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+● The note placement looks right, but I noticed the open reader overlaps the
+  history scrubber's right end, hiding its last ticks and date/commit
+  readout—unlike the 2D/3D controls and pin tray, which already adjust for the
+  reader. Let me check the rule those elements use so I can apply the same fix
+  to the scrubber.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The scrubber needs the same rule. First I'll check how it places its ticks: if
+  they're in pixels measured once, narrowing it with CSS alone would misplace
+  them.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Found that the ruler's date labels are only measured once and won't adjust if
+  the scrubber narrows the width or the window resizes, risking overlap. I'll
+  extract the label placement logic so it re-runs whenever the ruler's width
+  changes, then let the scrubber make room accordingly.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Update(packages/explorer/src/client/styles/shell.css)
+  ⎿  Added 2 lines
+      334      justify-content: center;
+      335  }
+      336  #main:has(#detail-panel.visible) #controls { bottom: calc(110p
+           x + var(--history-room)); }
+      337 +/* The history's scrubber ends at the reader's edge, its ticks
+          + and readout in the visible room (2026-10-20). */             
+      338 +#main:has(#detail-panel.visible) .history-scrubber { right: ca
+          +lc(var(--detail-panel-width) + 12px); }                       
+      339  
+      340  .item-menu {
+      341      position: fixed;
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The scrubber now ends at the reader's edge, showing all ticks, date labels,
+  and the readout. I'll write a browser test that steps through the sample with
+  Related Docs enabled, verifying documents and panel links at steps 0, 3, and
+  4, opening a document from the panel, checking the reader's note, and
+  confirming the scrubber never overlaps the reader text.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All 10 history specs pass, including the new one, which would have failed
+  under the old implementation. Next, I'll scan the docs for outdated statements
+  this change invalidates.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I need to update several authored sections across the docs and add Purpose
+  statements for the two new files, so I'll regenerate first to ensure the
+  generated sections and new docs are in place.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll verify the orphan guard still catches failures by testing with
+  summarizeChange set to keep stale authored docs, since it now relies on the
+  new pruning rule instead of mirror deletion.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● With the mutation applied, three tests fail as expected—the regeneration
+  replay, the scripted steps, and the doc-link test. I'll restore the file, then
+  verify the opposite mutation (removing the mirror again) still leaves the
+  doc-link test failing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both mutations were caught by the tests, and the file is restored. Next, I'll
+  review the authored sections of the remaining changed Live Docs to decide
+  which need corrections versus a short note.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed both directions fail and will note this in the test's
+  documentation alongside the earlier mutation record. Next I'll update the
+  layer-3 statements: the pipeline's history paragraph, the plan's C4 line, and
+  the history decision.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'm writing one script to apply all corrections, with each link computed
+  relative to its own doc—covering the replaced statements in layer-3 and
+  layer-4, a new decision entry, an updated vision status, and a dated note on
+  each changed file's Live Doc.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the layer-3 docs and the vision:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The docs are written. Regenerating so the generated sections match, then
+  running the four documentation audits before the full gate:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All four audits and the Live Doc lint pass. Checkpointing in the record, then
+  starting the full gate:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full gate is running, about 25 minutes. While it runs I'm leaving the tree
+  alone. Afterwards I'll name the three new pictures in the screenshot README,
+  which only needs a re-run of the documentation audits, then commit.
+
+● Background command "Checkpoint and run the full gate" completed (exit code 0)
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● I found one lint error of my own: I passed options.hasDocument as an unbound
+  method reference, which the pre-existing Live Doc warnings are unrelated to.
+  I'll fix that, then re-lint all changed files before restarting the gate.
+
+● Update(packages/explorer/src/client/history/step-panel.ts)
+  ⎿  Added 1 line, removed 1 line
+      135          <h2>${escapeHtml(view.commit.subject)}</h2>
+      136          <p class="history-step-meta"><code title="${escapeHtml
+           (view.commit.id)}">${escapeHtml(short(view.commit))}</code><sp
+           an>${escapeHtml(view.commit.date.slice(0, 10))}</span>${author
+           }<span>step ${view.step}</span></p>
+      137          ${beginning}
+      138 -        ${view.summary ? body(view.summary, options.hasDocumen
+          -t) : ""}`;                                                    
+      138 +        ${view.summary ? body(view.summary, path => options.ha
+          +sDocument(path)) : ""}`;                                      
+      139      },
+      140      hide(hidden) {
+      141        element.hidden = hidden;
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 37 changed files now lint clean. Before restarting the gate, I'll name the
+  three new history pictures in the screenshot README, so the gate's audits
+  cover that too:
+
+  Ran 1 shell command (ctrl+o to expand)
+● The gate is running again after the one-line lint fix. Every changed file now
+  lints clean, and the new pictures are named in the README.
+
+● Background command "Name the pictures and run the full gate again" completed
+(exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● All checks passed except the browser bundle build, which rejected the local
+  gitignored history file since it's still in the old format and the builder now
+  expects the new one—this is expected, not a bug. I'll recompute the history,
+  which also serves as the first real test of the change against this repo's 74
+  sampled commits.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll check that the CI workflow recomputes history before building, since the
+  hosted site caches its history and a stale format-1 cache file could cause the
+  same Pages build failure.
+
+  Listed 1 directory (ctrl+o to expand)
+
+● CI is safe: the Pages cache key hashes the engine and generator code, so this
+  change misses the cache. The next Pages run regenerates the whole mainline
+  once, cold, before it builds. A fresh CI checkout has no history file, so the
+  builder simply carries none. Waiting for the local history run to finish.
+
+● Background command "Recompute this repository's history in format 2" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● History recomputation finished: all 616 commits processed in 22 minutes, with
+  534 steps carrying doc links and the final step's 328 links matching today's
+  bundle, confirming the rule independently. The folder-scan warnings trace to
+  older commits' fixture layouts and are expected, so I'm now restarting the
+  full gate.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full gate is running again, now with the format-2 history in place.
+
+● Background command "Run the full gate with the new history" completed (exit
+code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● All checks passed—generation, lint, build, type-check, 1,328/1,328 unit tests,
+  112/112 integration tests, documentation audits, and 178/178 browser tests in
+  22.5 minutes. Now reviewing the working tree before committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The tree holds only this work, plus the new capture and the record, which go
+  in their own commit. Committing the work first:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Committed as a3ee07e5, 82 files. Now the records: the landing in the record,
+  the receipt for your Claude Code capture in the month inventory, and the
+  outcome and open questions in direction.md.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Checking the records' links and anchors, confirming the capture's bytes are
+  untouched, and committing:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The records commit didn't happen: the chain stopped at the capture check, so
+  the capture's hash no longer matches what I recorded at receipt. Checking what
+  changed:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The re-exported capture (143,860 bytes, from 20:37) confirms an append-only
+  extension of the Turn 8 copy, ending with your Turn 9 message. I'll update the
+  inventory receipt and record to this current copy, then commit.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The linked-docs work is committed as a3ee07e5, with its records in bcab35b7.
+  Nothing is pushed, and the working tree is clean. The full check passed: 1,328
+  unit, 112 integration and 178 browser tests.
+
+  What changed:
+  - The history keeps your words. Each past commit is regenerated over the docs
+    it committed, so that day's Purpose and Notes survive, while everything
+    generated is rebuilt by today's tool. Any doc whose source wasn't there is
+    dropped, so the files and wires of each moment stay exactly as before.
+  - One rule finds related docs. A small engine function reads them from the
+    authored text the graph already holds. The bundle uses it now, with the same
+    328 links as the old scan, and so does the history at every commit.
+  - The 3D history shows them. Each moment draws the docs its files linked to
+    then. The step panel lists "Documents linked" and "Documents unlinked"; a
+    doc you can open is a button, and one that's gone today says "not in this
+    bundle". While you're looking at a past moment, the reader says it's showing
+    today's version of a doc.
+  - The command line can answer too. inspect --at lists a file's linked
+    documents, and --between lists the links that came and went.
+
+  Real use on this repository: I recomputed its history, all 616 commits, and
+  534 of them carry doc links. The newest has the same 328 links today's bundle
+  has. Pictures from the test repository (AI-Agent-Workspace/Screenshots/2026-10
+  -20/README.md#linked-documents-through-the-history-claude-code) show the links
+  appearing and going.
+
+  Things to know:
+  - After pulling, run npm run live-docs:history once. Old history files can't
+    be read any more, and the build says so. It took 22 minutes here.
+  - The next Pages build will be slow once. Its cache won't match, so it
+    regenerates the whole history.
+  - Two checks were shown able to fail. Deliberately breaking each side of the
+    change made the history tests fail.
+  - I fixed one problem I found while looking. The reader was covering the end
+    of the history timeline, so the timeline now stops at the reader's edge.
+
+  Two questions from before are still open:
+  1. Should any of the never-documented file types get Live Docs? These are
+     markdown outside the docs folder, the CI workflow files, shell scripts, the
+     grammar's .wasm file, the sample's .sln file, and dotfiles. Nothing has
+     gone missing: every file that ever had a Live Doc still has one if it still
+     exists.
+  2. Should I add one real image to the estate sample? Then the asset type and
+     its Show Assets toggle would be tested in the browser.
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/10/2026-10-20.1.export.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+❯ >Should I add one real image to the estate sample? Then the asset type and
+  its Show Assets toggle would be tested in the browser.
+
+  Do any linked documentation pieces attempt to preview an image? Perhaps we
+  can do so there? If none do, perhaps there might be a reasonable small
+  selection of docs which warrant images (screenshots from the application)?
+
+  I have an interest in killing two birds with one stone via requesting that a
+  markdown doc carry an image. In doing so, we must solve image rendering in
+  the Detail Panel and resolve having actual "Asset"-typed files.
+
+  Does that seem like a maybe foolhardy goal or does it seem like a reasonable
+  way to approach question 2 you posed?
+
+  >Should any of the never-documented file types get Live Docs? These are
+  markdown outside the docs folder, the CI workflow files, shell scripts, the
+  grammar's .wasm file, the sample's .sln file, and dotfiles. Nothing has gone
+  missing: every file that ever had a Live Doc still has one if it still
+  exists.
+
+  Do these files inform us with respect to either of the following?
+  - Connectivity of a directory
+  - Authorial intent
+
+  If so, and so long as they are not gitignored, perhaps it's wise to make Live
+  Documentation files for these? Put another way: in which situations would a
+  Live Documentation file be a poor idea? (High-churn temporary files would be
+  a good example, but if they're not gitignored maybe they're pertinent? Who
+  knows!)
+
+● These are design questions, so I'll answer them with measurements and leave
+  the decisions to you. First I'll record your message and my last reply, then
+  check the facts: whether any doc already embeds an image, what the reader does
+  with one, and what the never-documented files point at.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I'll check which of the 17 markdown files with embedded images are actually
+  included in the bundle, what the single Live Doc match involves, and how the
+  bundle handles binary files.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Neither bird exists yet—no bundled document embeds an image, and the reader
+  has no image rendering at all. Next I'll check which readers already treat
+  image references as dependency edges, since the HTML adapter does this via
+  <img src>, and look at the estate's pages too.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The facts are in, recorded next, then my answer:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Oops, I left a stray cat command hanging which blocked everything after it
+  from running. I'm stopping it, deleting the empty file it created, and
+  appending the findings correctly now.
+
+  Ran 1 shell command (ctrl+o to expand)
+● Background command "Record the Turn 10 findings" failed with exit code 144
+
+● Same pattern-matching trap as before: pkill -f matched its own shell. The
+  stray command is stopped, though. Checking the state with a plain command:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The stray file was empty and is gone. Appending the findings, correctly this
+  time:
+
+  Read 1 file (ctrl+o to expand)
+
+● Your idea is a reasonable way to approach question 2, but the two birds land
+  in different places. For the never-documented files, almost all of them carry
+  authorial intent, and several carry connectivity. That supports your rule,
+  with two exceptions I'd name.
+
+  Images
+
+  Current state: none of the 54 documents the bundle carries embeds an image.
+  The 17 markdown files that do are probe and screenshot READMEs in the agent
+  workspace, which the configuration excludes. The reader can't render an image
+  yet, and the bundle carries no image files.
+
+  Bird 1, the reader shows images: worth doing on its own merits. It needs:
+  - the renderer to understand ![alt](path)
+  - the bundle to carry each image that a bundled doc or a Live Doc's authored
+    text embeds, as it already does for linked markdown
+  - a size limit, and a visible placeholder when an image isn't carried
+
+  Bird 2, real asset files: an image becomes an asset node only where discovery
+  finds it. That means outside the agent workspace and outside the docs folder.
+  The catch is that a markdown link isn't a graph edge, so an image that only a
+  doc embeds becomes a grey island. Two ways to connect it:
+  - Count the embed as a link. An image embedded in a Live Doc's authored text
+    could count as a link, the way related docs do today.
+  - Have code use it. The HTML reader already wires <img src>, and the CSS
+    reader wires url(). The estate's only page is .aspx, though, and the ASP.NET
+    reader doesn't read images yet.
+
+  My suggestion: take a few Explorer screenshots and embed each in the Live Doc
+  of the module it shows: the 3D view, the 2D map, the history step panel, the
+  reader. Keep them in a documented folder, and treat an embed as a link. That
+  gives both birds, plus pictures in the docs for this repository.
+
+  Files that never had Live Docs
+
+  Files: 24 markdown files outside the docs folder (README, AGENTS, skills, 15
+  test READMEs)
+  Authorial intent: Strong: they are the stated intent
+  Connectivity: Their links point at code and docs
+  ────────────────────────────────────────
+  Files: 5 GitHub workflow files (YAML)
+  Authorial intent: How CI and Pages run
+  Connectivity: They run npm scripts
+  ────────────────────────────────────────
+  Files: .devcontainer/post-create.sh
+  Authorial intent: What the dev environment installs
+  Connectivity: devcontainer.json names it
+  ────────────────────────────────────────
+  Files: PowerShell grammar: build.sh, grammar.patch, upstream.env, test .txt,
+  the built .wasm
+  Authorial intent: How the vendored grammar is built and patched
+  Connectivity: The PowerShell reader loads the .wasm
+  ────────────────────────────────────────
+  Files: Estate.sln
+  Authorial intent: The estate's solution
+  Connectivity: Lists its projects (Contracts, Portal, Gateway, Hub…), the root
+  of a .NET estate's wiring
+  ────────────────────────────────────────
+  Files: Dotfiles (.gitignore, .gitattributes, .nvmrc, .prettierrc) and LICENSE
+  Authorial intent: Small but real
+  Connectivity: Little, though .gitignore shapes discovery itself
+
+  When a Live Doc is a poor idea:
+  1. Derived files. These are produced from other tracked files by a tool: lock
+     files (already excluded), build outputs, generated code. Their intent lives
+     with their inputs, so a doc would only say "generated". The .wasm is
+     borderline: document its recipe files fully, and the .wasm only as an asset
+     that names its source.
+  2. Secrets. A committed file whose values must never reach a bundle, such as
+     credentials in a .env. (upstream.env here just pins an upstream commit.)
+  3. Bulk files with no meaning one by one. Hundreds of similar fixtures or
+     pictures, where the folder is what has a meaning. Live Docs are per file,
+     and there's no folder-level doc yet. That's why the agent workspace's 736
+     pictures are excluded.
+
+  High-churn temporary files that are tracked are, to my mind, a finding in
+  themselves: either they matter, or they should be ignored. Documenting them
+  forces the question, which I'd count as a benefit.
+
+  Proposed rule: every tracked, non-excluded file gets a Live Doc, except
+  derived files and secrets, each excluded by a named rule. The simplest first
+  step is to document these about 43 files as plain docs: Purpose and Notes,
+  with no symbols or wires yet. Then add readers where connectivity matters
+  most: the .sln's project list, markdown links, workflow run steps.
+
+  One interaction to settle along the way: once README.md is a documented file,
+  a link to it should point at that file, not at a separate "related doc" node.
+
+  Decisions for you:
+  1. Images: go ahead with screenshots embedded in their modules' Live Docs,
+     with embeds counting as links? And where should the pictures live? A new
+     top-level docs/images/ is my suggestion.
+  2. Files: adopt the rule with the derived and secret exceptions, plain docs
+     first? And which reader should come first? I'd start with the .sln, since
+     it wires the estate sample you treat as the target shape.
+
+❯ >the renderer to understand ![alt](path)
+
+  "No-networking" rule? Refuse image links that are external? How do we
+  guarantee that our software never makes network calls if opening a markdown
+  file can potentially open a hyperlink?
+
+  >My suggestion: take a few Explorer screenshots and embed each in the Live
+  Doc of the module it shows: the 3D view, the 2D map, the history step panel,
+  the reader. Keep them in a documented folder, and treat an embed as a link.
+  That gives both birds, plus pictures in the docs for this repository.
+
+  I'm fine if we want to use a fitting image or two to indicate the state of a
+  particular visual-centric _thing_, but recognize that screenshots stale
+  quickly in a UI that is evolving.
+
+  >Count the embed as a link. An image embedded in a Live Doc's authored text
+  could count as a link, the way related docs do today.
+
+  True... hmmm, but maybe what I want instead is a different type of asset
+  file? For instance, Unity projects have a bunch of interesting files --
+  metadata sidecars, sprite _atlases_, things of that nature. I've certainly
+  aspired to have our software capable of mapping out a directory which is a
+  Unity project. Maybe that's an alternate direction to answer the "asset" type
+  node question in, and safer than trying to determine when to resolve
+  hyperlinks to render images in markdown?
