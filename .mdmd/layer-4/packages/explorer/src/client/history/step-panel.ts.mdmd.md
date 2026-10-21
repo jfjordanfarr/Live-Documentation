@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/step-panel.ts
-- Generated At: 2026-10-20T21:28:54.136Z
+- Generated At: 2026-10-21T01:56:03.160Z
 
 ## Authored
 ### Purpose
@@ -40,7 +40,7 @@ The panel as the control drives it.
 
 #### `createStepPanel` {#symbol-createsteppanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L112)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L113)
 - Returns: [`StepPanel`](#symbol-steppanel)
 - Parameters: `options`: [`StepPanelOptions`](#symbol-steppaneloptions)
 

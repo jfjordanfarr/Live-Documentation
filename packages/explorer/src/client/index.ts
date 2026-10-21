@@ -44,20 +44,6 @@ import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, re
 import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, type RetainedItem, type RetainedState } from "./views/retained-state";
 import { createWorldMapView } from "./views/worldMap";
 
-declare global {
-  interface Window {
-    __liveDocsExplorerError?: unknown;
-    switchView: (event: MouseEvent, viewName: ViewName) => void;
-    downloadCurrentDoc: () => void;
-    zoomIn: () => void;
-    zoomOut: () => void;
-    resetZoom: () => void;
-    toggleSidebar: () => void;
-  }
-}
-
-const globalWindow = window as Window;
-
 attachGlobalErrorHandler();
 
 void bootstrapExplorer();
@@ -78,14 +64,26 @@ async function bootstrapExplorer(): Promise<void> {
   }
 }
 
-/** Where the bundle's data is read from: the URL named by `?data=`, or `explorer-data.json` beside the page. */
+/** Where the bundle's data is read from: the path named by `?data=`, or `explorer-data.json` beside the page. */
 function dataUrl(): URL {
-  return new URL(new URLSearchParams(window.location.search).get("data") ?? "./explorer-data.json", window.location.href);
+  return onOwnSite(new URLSearchParams(window.location.search).get("data") ?? "./explorer-data.json", window.location.href);
+}
+
+/**
+ * A path resolved against a base, refused unless it lies on the page's own site: no address and no bundle can make the
+ * page read from anywhere else. The page's Content-Security-Policy refuses the same, and this says why in words.
+ */
+function onOwnSite(path: string, base: string | URL): URL {
+  const url = new URL(path, base);
+  if (url.origin !== window.location.origin) {
+    throw new Error(`The Explorer reads only from its own site, and ${url.origin} is not it.`);
+  }
+  return url;
 }
 
 /** Loads the history file the bundle names, which lies beside its data. */
 async function loadHistory(file: string): Promise<HistorySequence> {
-  const url = new URL(file, dataUrl());
+  const url = onOwnSite(file, dataUrl());
   const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`No history at ${url.pathname} (${response.status}).`);
@@ -98,7 +96,7 @@ async function loadHistory(file: string): Promise<HistorySequence> {
 }
 
 /**
- * Loads the bundle: from the URL named by `?data=`, or from `explorer-data.json` beside the page.
+ * Loads the bundle: from the path named by `?data=` on the page's own site, or from `explorer-data.json` beside the page.
  */
 async function loadExplorerData(): Promise<StaticExplorerData> {
   const url = dataUrl();
@@ -800,43 +798,41 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     highlightSelectedCards();
   }
 
-  globalWindow.switchView = (event: MouseEvent, viewName: ViewName) => {
-    event.preventDefault();
-    if (viewName === "map") { changePerspective(state.perspective); return; }
-    // The other views draw today's docs: leaving 3D returns the picture to today and closes the history.
-    historyControl.leave();
-    setActiveView(viewName, state.perspective);
-    state.view = viewName;
-    renderCurrentView("show");
-    persistExploration();
-  };
+  // The page's controls are wired here, never by attributes in its HTML, which its Content-Security-Policy refuses to run.
+  for (const button of document.querySelectorAll<HTMLButtonElement>("#sidebar .nav-item[data-view]")) {
+    const viewName = button.dataset.view as ViewName;
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      if (viewName === "map") { changePerspective(state.perspective); return; }
+      // The other views draw today's docs: leaving 3D returns the picture to today and closes the history.
+      historyControl.leave();
+      setActiveView(viewName, state.perspective);
+      state.view = viewName;
+      renderCurrentView("show");
+      persistExploration();
+    });
+  }
 
-  globalWindow.downloadCurrentDoc = () => {
-    detailPanel.downloadCurrentDoc();
-  };
+  requireElement("download-doc-btn").addEventListener("click", () => detailPanel.downloadCurrentDoc());
 
-  globalWindow.zoomIn = () => {
-    if (state.view === "map" && state.perspective === "2d") {
-      localView.zoomIn();
-      localView.drawConnections();
-    }
+  const zooms: Record<string, () => void> = {
+    in: () => localView.zoomIn(),
+    out: () => localView.zoomOut(),
+    reset: () => localView.resetZoom()
   };
-  globalWindow.zoomOut = () => {
-    if (state.view === "map" && state.perspective === "2d") {
-      localView.zoomOut();
+  for (const button of document.querySelectorAll<HTMLButtonElement>("#controls [data-zoom]")) {
+    const zoom = zooms[button.dataset.zoom ?? ""];
+    button.addEventListener("click", () => {
+      if (state.view !== "map" || state.perspective !== "2d") return;
+      zoom();
       localView.drawConnections();
-    }
-  };
-  globalWindow.resetZoom = () => {
-    if (state.view === "map" && state.perspective === "2d") {
-      localView.resetZoom();
-      localView.drawConnections();
-    }
-  };
-  globalWindow.toggleSidebar = () => {
+    });
+  }
+
+  requireElement("sidebar-toggle").addEventListener("click", () => {
     sidebar.classList.toggle("collapsed");
     syncSidebarToggle();
-  };
+  });
 
   function syncSidebarToggle(): void {
     const collapsed = sidebar.classList.contains("collapsed");

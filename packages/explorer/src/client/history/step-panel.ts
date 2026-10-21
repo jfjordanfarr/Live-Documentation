@@ -55,7 +55,8 @@ export interface StepPanel {
 /** Groups this long or shorter open; longer ones fold behind their count. */
 const OPEN_UP_TO = 8;
 
-const plural = (count: number, noun: string): string => `${count.toLocaleString()} ${noun}${count === 1 ? "" : "s"}`;
+// A count is read from the history file and written into HTML, so it is made a number first.
+const plural = (count: number, noun: string): string => `${Number(count).toLocaleString()} ${noun}${count === 1 ? "" : "s"}`;
 const short = (commit: CommitInfo): string => commit.id.slice(0, 8);
 const directoryOf = (path: string): string => (path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : "");
 
@@ -98,10 +99,10 @@ function body(summary: StepSummary, hasDocument: (path: string) => boolean): str
     group("Dead", summary.dead.map(fileWords)),
     group("Renamed", summary.renamed.map(rename => `<span class="history-path">${escapeHtml(rename.from)}</span><span class="history-arrow">to</span>${fileWords(rename.file)}`)),
     group("Renamed whole", summary.directoriesRenamed.map(rename => `<span class="history-path">${escapeHtml(rename.from)}</span><span class="history-arrow">to</span><span class="history-path">${escapeHtml(rename.to)}</span>`)),
-    group("Resized", summary.resized.map(resized => `${fileWords({ ...resized.file, symbols: resized.after })}<span class="history-shape">${resized.before} to ${resized.after}</span>`)),
+    group("Resized", summary.resized.map(resized => `${fileWords({ ...resized.file, symbols: resized.after })}<span class="history-shape">${Number(resized.before)} to ${Number(resized.after)}</span>`)),
     group("Wires added", summary.edgesAdded.map(edge => edgeWords(edge, `<span class="history-shape">${plural(edge.count, "reference")}</span>`))),
     group("Wires removed", summary.edgesRemoved.map(edge => edgeWords(edge))),
-    group("Wires changed", summary.edgesChanged.map(edge => edgeWords(edge, `<span class="history-shape">${edge.before} to ${edge.count}</span>`))),
+    group("Wires changed", summary.edgesChanged.map(edge => edgeWords(edge, `<span class="history-shape">${Number(edge.before)} to ${Number(edge.count)}</span>`))),
     group("Documents linked", summary.docLinksAdded.map(link => docLinkWords(link, hasDocument))),
     group("Documents unlinked", summary.docLinksRemoved.map(link => docLinkWords(link, hasDocument))),
     group("Content changed, shape kept", summary.touched.map(fileWords))

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-10-20T19:19:43.614Z
+- Generated At: 2026-10-21T01:48:37.672Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,7 @@ The layout lab's capture of a Local Map scope: everything the card model needs t
 ### Notes
 
 Opens the scope with every file retained whole (its own browser over the built bundle through `scopes.ts`, or a page the Playwright runner already shows) and reads it in one evaluation: every card's natural width, border and padding; every text block prepared by Pretext inside the page, where the canvas knows the fonts, and serialized whole so Pretext can lay it out again in node; every row's badge width; every test chip; each pin's horizontal place from a dot the page shows (a card whose rows are all collapsed has none, and then the grid's geometry says where one would be); the stylesheet's constants from computed styles and from probe elements, since a card's first dot may be collapsed to nothing; the height of one line of each font from a probe that stays until the membrane labels are read too; and the truth: each card's height and each pin's offset as the renderer rounds them, each label's height, the placement measure and the picture's size. Pretext's layout of each shown text at its element's width is checked against the element's own height as the capture runs, with the browser's one layout unit of tolerance, and disagreements are reported. The page runs code compiled by tsx, whose esbuild keeps function names by wrapping them in `__name(...)`, a helper the page lacks; `admitCompiledFunctions` defines it there first. A capture weighs hundreds of kilobytes and is rebuilt in seconds, so captures are not committed. Built 2026-10-06 for the lab the owner asked for ([Turn 7](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-7)), after the owner connected Pretext to the problem ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-9)).
+- Pretext enters the page as a module the lab serves from the page's own site, `/__pretext/lab-entry.js` beside Pretext's own files, since the page's Content-Security-Policy of 2026-10-21 runs no script written into it; until then the lab wrote that module inline.
 - A capture is of the first paint: the page is seeded with the continuing search off (`searchStarts: 0`) before it loads (2026-10-07).
 - A wrapper without a card is passed by (2026-10-08): a closed directory's box takes a wrapper of the cards' kind; the scopes open no directory and the card model does not hold one. A label is keyed by the directory it says it is for (`data-directory`), since its text now carries the count of what an encasing membrane hides; the text, name and count in one flow, is what the model lays out. Since 2026-10-20 a label's Open or Close and its More stand beside that text in a controls column, measured as the ancestry control is; before, an open membrane's X stood in the text and was not modelled.
 
@@ -77,7 +78,7 @@ A scope's capture: the fonts, the constants, every card, every label, the page's
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L143)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L145)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -85,17 +86,19 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L162)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L166)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
 Reads the capture from a page already showing the scope's retained Local
 Map, under any origin: Pretext is served to the page from the lab's own
-node_modules and loaded as a module, then the page is read in one go.
+node_modules and loaded as a module, then the page is read in one go. The
+module that loads it is served too, from the page's own site, because the
+page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L413)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L418)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -103,7 +106,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L419)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L424)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

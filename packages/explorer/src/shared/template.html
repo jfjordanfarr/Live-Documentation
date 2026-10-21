@@ -3,6 +3,11 @@
 
 <head>
   <meta charset="UTF-8" />
+  <!-- The page loads only its own files: no script but its own, no request to any other site. A stylesheet may be
+       inline because three of the 3D view's libraries inject theirs; a style can neither run script nor, under the
+       rest of this policy, fetch from anywhere. -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Live Docs Explorer</title>
   <link rel="stylesheet" href="./static/styles.css" />
@@ -14,19 +19,18 @@
       <span class="sidebar-title">Live Docs Explorer</span>
       <button id="history-back" class="sidebar-toggle-btn history-btn" title="Back to the last place" aria-label="Back" disabled>←</button>
       <button id="history-forward" class="sidebar-toggle-btn history-btn" title="Forward to the next place" aria-label="Forward" disabled>→</button>
-      <button id="sidebar-toggle" class="sidebar-toggle-btn" onclick="toggleSidebar()"
-        title="Collapse sidebar">◀</button>
+      <button id="sidebar-toggle" class="sidebar-toggle-btn" title="Collapse sidebar">◀</button>
     </div>
 
     <!-- View Navigation -->
     <div class="sidebar-section">
-      <button class="nav-item" data-view="sources" onclick="switchView(event, 'sources')">
+      <button class="nav-item" data-view="sources">
         <span class="nav-icon"></span><span>Knowledge Sources</span>
       </button>
-      <button class="nav-item" data-view="world" onclick="switchView(event, 'world')">
+      <button class="nav-item" data-view="world">
         <span class="nav-icon nav-icon--world"></span><span>World Map</span>
       </button>
-      <button class="nav-item" data-view="map" onclick="switchView(event, 'map')">
+      <button class="nav-item" data-view="map">
         <span class="nav-icon"></span><span>Local Map</span>
       </button>
     </div>
@@ -338,9 +342,9 @@
 
     <!-- Floating zoom controls -->
     <div id="controls">
-      <button class="control-btn" onclick="zoomIn()" aria-label="Zoom In">+</button>
-      <button class="control-btn" onclick="zoomOut()" aria-label="Zoom Out">-</button>
-      <button class="control-btn" onclick="resetZoom()" aria-label="Reset Zoom">⟲</button>
+      <button class="control-btn" data-zoom="in" aria-label="Zoom In">+</button>
+      <button class="control-btn" data-zoom="out" aria-label="Zoom Out">-</button>
+      <button class="control-btn" data-zoom="reset" aria-label="Reset Zoom">⟲</button>
     </div>
 
     <!-- Detail panel (right sidebar) -->
@@ -357,7 +361,7 @@
         <p class="detail-placeholder">Click on any node to view details.</p>
       </div>
       <div class="detail-footer">
-        <button class="action-btn ghost" id="download-doc-btn" onclick="downloadCurrentDoc()">Download Markdown</button>
+        <button class="action-btn ghost" id="download-doc-btn">Download Markdown</button>
       </div>
     </div>
     </div>

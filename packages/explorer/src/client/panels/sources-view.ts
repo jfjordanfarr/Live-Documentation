@@ -78,7 +78,7 @@ function historyRow(history: BundledHistory | undefined): string {
     return `<div class="sources-row sources-row--history" data-row="history"><span class="sources-row-label">History</span><span class="sources-row-value">none computed; <code class="sources-command">${HISTORY_COMMAND}</code> computes it, then rebuild the bundle</span><button type="button" class="action-btn sources-copy" data-copy="${escapeHtml(HISTORY_COMMAND)}">Copy</button><span class="sources-copy-status" aria-live="polite"></span></div>`;
   }
   const { head } = history;
-  const window = head.window ? (head.window.rule === "last" ? `, the last ${head.window.count}` : `, since ${escapeHtml(head.window.since)}`) : "";
+  const window = head.window ? (head.window.rule === "last" ? `, the last ${Number(head.window.count)}` : `, since ${escapeHtml(head.window.since)}`) : "";
   const truncated = head.source.shallow ? "; the clone is shallow" : "";
   return `<div class="sources-row" data-row="history"><span class="sources-row-label">History</span><span class="sources-row-value">${escapeHtml(plural(head.commits, "commit"))}, ${escapeHtml(dateOf(head.first.date))} to ${escapeHtml(dateOf(head.last.date))}${window}${truncated}</span></div>`;
 }

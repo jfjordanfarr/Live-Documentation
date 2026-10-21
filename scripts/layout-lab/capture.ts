@@ -138,6 +138,8 @@ export interface Capture {
 }
 
 const PRETEXT_DIST = path.resolve(__dirname, "../../node_modules/@chenglou/pretext/dist");
+/** The lab's own module that loads Pretext into the page; no file of Pretext's has the name. */
+const PRETEXT_ENTRY = "lab-entry.js";
 
 /** Opens the scope in a browser of the lab's own over the built bundle and reads the capture. */
 export async function captureScope(run: ScopeRun, preset: LayoutPreset = "relaxed"): Promise<Capture> {
@@ -157,17 +159,20 @@ export async function captureScope(run: ScopeRun, preset: LayoutPreset = "relaxe
 /**
  * Reads the capture from a page already showing the scope's retained Local
  * Map, under any origin: Pretext is served to the page from the lab's own
- * node_modules and loaded as a module, then the page is read in one go.
+ * node_modules and loaded as a module, then the page is read in one go. The
+ * module that loads it is served too, from the page's own site, because the
+ * page's Content-Security-Policy runs no script written into it.
  */
 export async function captureFromPage(page: Page, run: ScopeRun): Promise<Capture> {
   await page.waitForSelector("#map-container .branch-mode", { timeout: 30_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });
   await page.waitForTimeout(500);
   await page.route("**/__pretext/**", async route => {
-    const file = path.join(PRETEXT_DIST, new URL(route.request().url()).pathname.replace(/^.*\/__pretext\//u, ""));
-    await route.fulfill({ body: await fs.readFile(file), contentType: "application/javascript" });
+    const name = new URL(route.request().url()).pathname.replace(/^.*\/__pretext\//u, "");
+    const body = name === PRETEXT_ENTRY ? `import * as pretext from "./layout.js"; window.__pretext = pretext;` : await fs.readFile(path.join(PRETEXT_DIST, name));
+    await route.fulfill({ body, contentType: "application/javascript" });
   });
-  await page.addScriptTag({ type: "module", content: `import * as pretext from "/__pretext/layout.js"; window.__pretext = pretext;` });
+  await page.addScriptTag({ type: "module", url: `/__pretext/${PRETEXT_ENTRY}` });
   await page.waitForFunction("Boolean(window.__pretext)");
   await admitCompiledFunctions(page);
   const read = await readCapture(page);

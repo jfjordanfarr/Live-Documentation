@@ -443,7 +443,8 @@ function attachNodeLinkHandlers(
  */
 function renderNodeMetadata(node: ExplorerNodePayload, generatedAt?: string): string {
   const archetypeIcon = getArchetypeIcon(node.archetype);
-  const archetypeClass = `archetype-${node.archetype.toLowerCase()}`;
+  // The archetype is a doc's free text: one class name, so that a space in it cannot add the page's own classes.
+  const archetypeClass = `archetype-${node.archetype.toLowerCase().replace(/[^a-z0-9-]/gu, "-")}`;
   
   let generatedAtHtml = "";
   if (generatedAt) {

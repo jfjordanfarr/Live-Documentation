@@ -173,7 +173,7 @@ For contributors to this repository:
 
 - **Offline-first**: No telemetry. No external HTTP calls required for core functionality.
 - **No lifecycle scripts**: `postinstall`/`preinstall` hooks are explicitly avoided.
-- **No network access**: the tool makes no network requests at all, not even to localhost. See [SECURITY.md](SECURITY.md) for how to verify that.
+- **No network access**: the generator, the CLI and the bundle builder make no network requests at all, not even to localhost. The Explorer page reads only the site that serves it, and its Content-Security-Policy refuses anything else. See [SECURITY.md](SECURITY.md) for how to verify that.
 
 ---
 
