@@ -18,6 +18,7 @@ The Explorer's evidence reader: renders a file or symbol from the bundled Live D
 - Repeated rendering of the same target preserves reader scroll. Fragment navigation scrolls only the reader body, hidden content is inert, and action updates preserve keyboard focus. Responsive presentation and canvas orientation belong to the application shell.
 - The Internals target describes file-level connections not attributed to a public symbol; it does not assert that private symbols have been documented. Downloading a file uses its actual configured Live Doc filename.
 - `setNote` (2026-10-20, [Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) puts one line above the evidence; the application uses it to say that the reader shows today's version of a document while the 3D picture shows a past commit.
+- A Live Doc's authored block, a bundled document and a directory's one-line summary are all marked `reader-prose`, the one set of prose rules in `shell.css` (2026-10-21, [Turn 2](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-2)). Until then a bundled document's container carried `detail-doc-content` and `bundled-doc-content`, which no stylesheet defined after the January 2026 bundling, so it read at the browser's 16 px with the browser's dark-blue links.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

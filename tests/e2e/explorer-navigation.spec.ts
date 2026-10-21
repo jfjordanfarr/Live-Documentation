@@ -2,6 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { compressToEncodedURIComponent } from "lz-string";
 
 import { currentSnapshot, pathAddress } from "./search-bar";
+import { localMapSettled } from "./still-picture";
 import { PERSISTED_NAV_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 
 const SUBJECT = "packages/explorer/src/client/index.ts";
@@ -139,4 +140,36 @@ test("a bundle without a board lands on the Local Map", async ({ page }) => {
   });
   await page.goto("/");
   await ready(page, "2d");
+});
+
+test("a reveal by the browser scrolls nothing that clips a view, so no picture slides out from under its camera", async ({ page }) => {
+  // A focus by the keyboard, a find in the page or a test runner's click scrolls every scrollable ancestor to show its
+  // element, and an `overflow: hidden` box is scrollable from code: a Tab onto a band at the view's edge, or a retried
+  // click, once moved the Local Map and its controls under the sidebar with no way back (2026-10-21).
+  const revealEverything = (page: Page, view: string): Promise<string[]> => page.evaluate(selector => {
+    for (const element of document.querySelectorAll(`${selector} *, #detail-panel *`)) {
+      element.scrollIntoView({ block: "start", inline: "start" });
+      element.scrollIntoView({ block: "end", inline: "end" });
+    }
+    const scrollsItself = (element: Element): boolean => /auto|scroll/u.test(`${getComputedStyle(element).overflowX} ${getComputedStyle(element).overflowY}`);
+    return [document.documentElement, ...document.querySelectorAll("body *")]
+      .filter(element => (element.scrollLeft || element.scrollTop) && !scrollsItself(element))
+      .map(element => `${element.id || element.className} at ${element.scrollLeft},${element.scrollTop}`);
+  }, view);
+  await page.goto("/");
+  await expect(page.locator("#view-world.active")).toBeVisible();
+  expect(await revealEverything(page, "#view-world")).toEqual([]);
+  await page.goto("/?view=local&node=tests/integration/programs/typescript/rosetta/src/helpers.ts");
+  await ready(page, "2d");
+  const card = page.locator('#map-container .node-card[data-id="tests/integration/programs/typescript/rosetta/src/helpers.ts"]');
+  await expect(card).toBeVisible();
+  await localMapSettled(page);
+  const before = (await card.boundingBox())!;
+  expect(await revealEverything(page, "#view-map")).toEqual([]);
+  // The camera's last easing can still move the card by a fraction of a pixel; a scroll moves it by whole pixels.
+  const after = (await card.boundingBox())!;
+  for (const key of ["x", "y", "width", "height"] as const) expect(after[key]).toBeCloseTo(before[key], 0);
+  await page.getByRole("button", { name: "3D", exact: true }).click();
+  await ready(page, "3d");
+  expect(await revealEverything(page, "#view-graph")).toEqual([]);
 });

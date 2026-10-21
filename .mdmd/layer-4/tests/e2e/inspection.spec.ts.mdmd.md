@@ -18,6 +18,7 @@ Inspection and evidence-only Back must preserve exact card rectangles and the ma
 Wide and full-screen readers retain usable keyboard focus, including Back–Forward reopening, and full readers keep their own history controls with an inert background. A real punctuation-heavy provenance link into the bundled November 8 summary checks canonical section targeting and scroll position through reload; simple heading names alone would miss the renderer defect found during review.
 
 Three later checks hold the independent review's findings of 2026-10-20: a file's Pin pressed twice leaves the subject and pins as they were, and closing the reader then finds the opener its own Pin and Unpin rebuilt; one Escape closes only the topmost of the search field, the reader and the World Map's help; and keys typed in the full-screen reader never reach the World Map's shortcuts. With no opener, focus returns to the map, not to a text field.
+A bundled document must read as a Live Doc's authored words do: its paragraphs at their size, colour and leading, and none of the decisions log's links in the browser's own colour (2026-10-21, [Turn 2](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-2)). With the class taken off the bundled document's container the check fails at 16 px against 13.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

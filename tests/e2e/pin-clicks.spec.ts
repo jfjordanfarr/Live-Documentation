@@ -87,6 +87,8 @@ test("Centre makes a neighbour the subject without a pin; double-clicking anothe
   await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/);
   await expect(card(page, MODELS).getByRole("button", { name: "Centre on models.ts", exact: true })).toHaveCount(0);
   await expect(card(page, MAIN).getByRole("button", { name: "Centre on main.ts", exact: true })).toHaveCount(1);
+  // Centred on models.ts, the picture has carried main.ts past the frame's edge; a person pans to it.
+  await panIntoView(page, card(page, MAIN));
   await card(page, MAIN).locator(".node-title").dblclick();
   await localMapSettled(page);
   expect(pins(page), "inspection never adds a pin").toEqual([]);

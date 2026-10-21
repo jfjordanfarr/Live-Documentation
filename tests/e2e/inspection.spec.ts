@@ -161,6 +161,35 @@ test("a real bundled section link uses its canonical punctuation-bearing anchor 
   expect(snapshot(page).selectedNodeId).toBe(source);
 });
 
+test("a bundled document reads like a Live Doc's authored words: their text size and colour, and no link in the browser's own colour", async ({ page }) => {
+  const source = "packages/engine/src/config/liveDocumentationConfig.ts";
+  const path = "AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md";
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "sources", inspection: { kind: "file", nodeId: source } })}`);
+  const prose = (selector: string) => page.locator(selector).first().evaluate(element => {
+    const style = getComputedStyle(element);
+    return { fontSize: style.fontSize, color: style.color, lineHeight: style.lineHeight };
+  });
+  const authored = await prose("#detail-body .doc-authored p");
+  await page.locator(`#detail-body a.bundled-doc-link[data-doc-path="${path}"]`).first().click();
+  await expect(page.locator("#detail-title")).toHaveText("2025-11-08.SUMMARIZED.md");
+  expect(await prose("#detail-body p"), "a bundled document's paragraphs are the authored sections'").toEqual(authored);
+  // Before 2026-10-21 a bundled document matched no rule: 16 px text and links in the browser's rgb(0, 0, 238) on the dark panel.
+  // The decisions log, which many Live Docs link, carries links of every kind the reader draws.
+  const decisions = ".mdmd/layer-3/architectural-decisions.mdmd.md";
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "sources", inspection: { kind: "bundled-doc", path: decisions } })}`);
+  await expect(page.locator("#detail-title")).toHaveText("architectural-decisions.mdmd.md");
+  const links = await page.locator("#detail-body a").evaluateAll(anchors => {
+    const bare = document.createElement("a");
+    bare.href = "#";
+    document.body.append(bare);
+    const browserColour = getComputedStyle(bare).color;
+    bare.remove();
+    return { browserColour, colours: anchors.map(anchor => getComputedStyle(anchor).color) };
+  });
+  expect(links.colours.length).toBeGreaterThan(10);
+  expect(links.colours.filter(colour => colour === links.browserColour)).toEqual([]);
+});
+
 for (const viewport of [{ width: 390, height: 844 }, { width: 844, height: 390 }]) {
   test(`full reader at ${viewport.width}×${viewport.height} keeps keyboard focus and its own history controls`, async ({ page }) => {
     await page.setViewportSize(viewport);

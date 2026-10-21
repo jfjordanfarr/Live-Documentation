@@ -205,7 +205,7 @@ export function createDetailPanel(
       const slash = tail.indexOf("/");
       return slash < 0 ? [] : [`${prefix}${tail.slice(0, slash)}`];
     }))].sort();
-    body.innerHTML = `<div class="detail-doc-content"><p>${filesHere.length} ${filesHere.length === 1 ? "file" : "files"} in this directory and its subdirectories</p>`
+    body.innerHTML = `<div><p class="reader-prose">${filesHere.length} ${filesHere.length === 1 ? "file" : "files"} in this directory and its subdirectories</p>`
       + (subdirectories.length ? `<div class="detail-section"><div class="detail-label">Directories</div><div class="detail-content">${subdirectories.map(path => `<div class="dep-item"><a href="#" class="directory-link" data-directory="${escapeHtml(path)}">${escapeHtml(path)}</a></div>`).join("")}</div></div>` : "")
       + (directFiles.length ? `<div class="detail-section"><div class="detail-label">Files</div><div class="detail-content">${directFiles.map(node => `<div class="dep-item"><a href="#" class="node-link" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</a></div>`).join("")}</div></div>` : "")
       + `</div>`;
@@ -285,7 +285,7 @@ export function createDetailPanel(
       <div class="bundled-doc-path-indicator">
         <span class="bundled-doc-path">${escapeHtml(docPath)}</span>
       </div>
-      <div class="detail-doc-content bundled-doc-content">
+      <div class="reader-prose">
         ${renderedHtml}
       </div>
     `;
@@ -330,7 +330,7 @@ function renderDocumentation(
   }
 
   const authoredHtml = renderMarkdown(file.authored, { linkHandler: createReaderLinkHandler(node.docPath, links) });
-  parts.push(`<div class="doc-authored markdown-body">${authoredHtml}</div>`);
+  parts.push(`<div class="doc-authored reader-prose">${authoredHtml}</div>`);
 
   if (node.publicSymbols.length > 0 || node.dependencies.length > 0 || node.dependents.length > 0) {
     const generatedHtml = renderGeneratedContent(node, links, inspectedSymbol);

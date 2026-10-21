@@ -1,9 +1,10 @@
+/* Clipped, never scrolled: see #main in shell.css. */
 #graph-svg {
     position: relative;
     width: 100%;
     flex: 1;
     min-height: 0;
-    overflow: hidden;
+    overflow: clip;
 }
 
 .force-graph-focus {

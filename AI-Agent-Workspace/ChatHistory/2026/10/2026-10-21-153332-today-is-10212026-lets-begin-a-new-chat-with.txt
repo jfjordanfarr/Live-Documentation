@@ -1,0 +1,2988 @@
+
+❯ Today is 10/21/2026. Let's begin a new chat with the standard chat bootstrap
+  process. Welcome to a new dev day! What's next that we might tackle?
+
+● I'll start the bootstrap: Memory files first, then the narrative and the
+  recent session summaries.
+
+  Read 4 files, listed 1 directory (ctrl+o to expand)
+
+● Continuing with the rest of owner.md and direction.md.
+
+  Read 2 files (ctrl+o to expand)
+
+● Now the narrative in full.
+
+  Read 1 file (ctrl+o to expand)
+
+● Narrative read. Now the session summaries: let me find the five most recent
+  and check whether the October 20 session has one.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The immediately preceding session (October 20, 2026-10-20.1) has no summary
+  yet. First I'll read the five most recent summaries in full, oldest to newest:
+  October 14, 15, 16, 17 and 19.
+
+  Read 5 files (ctrl+o to expand)
+
+● The five summaries are read. Now I'll open this session's record and look at
+  the October 20 captures. First, the shape of the last record and the
+  inventory's entries for October 20.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● I'll start by opening today's record at Turn 1, before diving into the three
+  October 20 captures (Codex, the Codex export, and the Claude Code capture).
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md)
+  ⎿  Wrote 22 lines to
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md
+      1 # October 21, 2026 — session 1 (Claude Code)
+      3 ## Coverage
+      5 Agent-maintained record by the root Claude Code agent (Opus 5.5),
+         begun 2026-10-21. This is not a harness export. It preserves the
+         message blocks. No private reasoning, tool transcripts or delega
+        fter delivery, normally at the next user turn.
+      7 ## Resumption
+      8
+        e most recent summaries (October 14 through October 19) read in f
+        ts record, the Codex export and the Claude Code
+     … +30 lines (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● I've read the full record (1,003 lines, Turns 1–13), recovering the last
+  reply. Next I'll check the session's git commits and draft a summary skeleton
+  before reading the two exports, so progress isn't lost to compaction.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nine commits; the last one, 996b5785, landed at 12:58 today before this chat
+  began. Let me check what it was, then write the summary skeleton.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I found the commit adds the delivered reply to Turns 12–13 with a closing
+  note, but there's no capture showing the exchange behind it—I'll note that
+  limitation. Now I'll draft the summary skeleton from the record with an
+  explicit coverage endpoint before reading the exports.
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZE
+       D.md)
+  ⎿  Wrote 13 lines to AI-Agent-Workspace/ChatHistory/2026/10/Summarized/20
+     26-10-20.1.SUMMARIZED.md
+      1 # Session summary: October 20–21, 2026, session 1 — inspect-first
+        ugh the history, and the page held to its own site
+      2
+        6-10-21, of a session that began in Codex and continued in Claude
+        ogress:** the maintained record has been read in full (1,003 line
+        s, Turns 1–13); the Codex export and the Claude Code capture are
+        rns below rest on the record alone._
+      4
+      6
+        3 l
+     … +19 lines (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● Export lines 1–420 read: the bootstrap and the start of Turn 2, agreeing with
+  the record; the rest is tool activity. Checkpoint, then the next chunk.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       5  ## Sources
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8 -- [The Codex visible-session export](../2026-10-20.1.export.md)
+         -: to be read.                                                  
+       8 +- [The Codex visible-session export](../2026-10-20.1.export.md)
+         +: reading in progress, through line 420 (Turn 1 whole and the o
+         +pening of Turn 2); every owner and root message so far agrees w
+         +ith the record, the rest being tool activity.                  
+       9  - [The Claude Code terminal export](../2026-10-20-202504-whoops
+          -it-appears-that-ive-hit-a-usage-limit-on.txt): to be read.
+      10  
+      11  ## Turns, from the record
+
+  Read 1 file (ctrl+o to expand)
+
+● Through line 869: Turn 2's integration, transfer and first visual checks, one
+  compaction marker, all agreeing with the record. Checkpoint and continue.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       5  ## Sources
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8 -- [The Codex visible-session export](../2026-10-20.1.export.md)
+         -: reading in progress, through line 420 (Turn 1 whole and the o
+         -pening of Turn 2); every owner and root message so far agrees w
+         -ith the record, the rest being tool activity.                  
+       8 +- [The Codex visible-session export](../2026-10-20.1.export.md)
+         +: reading in progress, through line 869 (Turn 1 whole; Turn 2's
+         + integration, transfer and first visual checks; one "Compacted 
+         +conversation" marker at line 833); every owner and root message
+         + so far agrees with the record, the rest being tool activity.  
+       9  - [The Claude Code terminal export](../2026-10-20-202504-whoops
+          -it-appears-that-ive-hit-a-usage-limit-on.txt): to be read.
+      10  
+      11  ## Turns, from the record
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       5  ## Sources
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8 -- [The Codex visible-session export](../2026-10-20.1.export.md)
+         -: reading in progress, through line 869 (Turn 1 whole; Turn 2's
+         - integration, transfer and first visual checks; one "Compacted 
+         -conversation" marker at line 833); every owner and root message
+         - so far agrees with the record, the rest being tool activity.  
+       8 +- [The Codex visible-session export](../2026-10-20.1.export.md)
+         +: reading in progress, through line 1,319 (Turn 1 whole; Turn 2
+         +'s integration, transfer and first visual checks; one "Compacte
+         +d conversation" marker at line 833; Turns 3, 4 and 5 with the m
+         +easured mobile targets and the first galaxy reproduction); ever
+         +y owner and root message so far agrees with the record, the res
+         +t being tool activity.                                         
+       9  - [The Claude Code terminal export](../2026-10-20-202504-whoops
+          -it-appears-that-ive-hit-a-usage-limit-on.txt): to be read.
+      10  
+      11  ## Turns, from the record
+
+  Read 1 file (ctrl+o to expand)
+
+● The Codex export is read whole (1,732 lines, ending at the usage-limit
+  notice); it agrees with the record. Checkpoint, then the Claude Code capture.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)  ⎿  Added 2 lines, removed 2 lines
+       5  ## Sources
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8 -- [The Codex visible-session export](../2026-10-20.1.export.md)
+         -: reading in progress, through line 1,319 (Turn 1 whole; Turn 2
+         -'s integration, transfer and first visual checks; one "Compacte
+         -d conversation" marker at line 833; Turns 3, 4 and 5 with the m
+         -easured mobile targets and the first galaxy reproduction); ever
+         -y owner and root message so far agrees with the record, the res
+         -t being tool activity.                                         
+       9 -- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         --it-appears-that-ive-hit-a-usage-limit-on.txt): to be read.    
+       8 +- [The Codex visible-session export](../2026-10-20.1.export.md)
+         +: read in full, all 1,732 lines, through its usage-limit notice
+         +; every owner and root message agrees with the record, the rest
+         + being tool activity.                                          
+       9 +- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         +-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         +ress from line 1.                                              
+      10  
+      11  ## Turns, from the record
+      12  
+
+  Read 1 file (ctrl+o to expand)
+
+● Lines 1-500 check out: the owner messages and Turn 6 reply match the record,
+  with the progress lines just being shorter versions of the quoted commentary.
+  I'll checkpoint this and keep going.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8  - [The Codex visible-session export](../2026-10-20.1.export.md)
+          : read in full, all 1,732 lines, through its usage-limit notice
+          ; every owner and root message agrees with the record, the rest
+           being tool activity.
+       9 -- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         --it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         -ress from line 1.                                              
+       9 +- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         +-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         +ress, through line 500 (Turn 6 with the owner's editor selectio
+         +n of the Codex export collapsed by the harness as "1678 lines h
+         +idden"; Turn 7 and the start of the review). Owner messages and
+         + the delivered Turn 6 reply agree with the record; the capture'
+         +s intermediate progress lines are shorter renderings of the com
+         +mentary the record quotes.                                     
+      10  
+      11  ## Turns, from the record
+      12  
+
+  Read 1 file (ctrl+o to expand)
+
+● I've reviewed through line 1,049, covering the timeout's cause, doc
+  corrections, and the reviewer's hand-back (noting the subagent message as a
+  capture artifact rather than a true source). I'll checkpoint here and continue
+  reading.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8  - [The Codex visible-session export](../2026-10-20.1.export.md)
+          : read in full, all 1,732 lines, through its usage-limit notice
+          ; every owner and root message agrees with the record, the rest
+           being tool activity.
+       9 -- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         --it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         -ress, through line 500 (Turn 6 with the owner's editor selectio
+         -n of the Codex export collapsed by the harness as "1678 lines h
+         -idden"; Turn 7 and the start of the review). Owner messages and
+         - the delivered Turn 6 reply agree with the record; the capture'
+         -s intermediate progress lines are shorter renderings of the com
+         -mentary the record quotes.                                     
+       9 +- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         +-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         +ress, through line 1,049 (the reviewer's hand-back printed at l
+         +ine 881 as a `›` notice, not used as a source; Turn 6 with the 
+         +owner's editor selection of the Codex export collapsed by the h
+         +arness as "1678 lines hidden"; Turn 7 and the start of the revi
+         +ew). Owner messages and the delivered Turn 6 reply agree with t
+         +he record; the capture's intermediate progress lines are shorte
+         +r renderings of the commentary the record quotes.              
+      10  
+      11  ## Turns, from the record
+      12  
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8  - [The Codex visible-session export](../2026-10-20.1.export.md)
+          : read in full, all 1,732 lines, through its usage-limit notice
+          ; every owner and root message agrees with the record, the rest
+           being tool activity.
+       9 -- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         --it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         -ress, through line 1,049 (the reviewer's hand-back printed at l
+         -ine 881 as a `›` notice, not used as a source; Turn 6 with the 
+         -owner's editor selection of the Codex export collapsed by the h
+         -arness as "1678 lines hidden"; Turn 7 and the start of the revi
+         -ew). Owner messages and the delivered Turn 6 reply agree with t
+         -he record; the capture's intermediate progress lines are shorte
+         -r renderings of the commentary the record quotes.              
+       9 +- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         +-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         +ress, through line 1,649 (the review's six fixes, 100 affected 
+         +browser tests passing, the third gate's six layout-lab failures
+         + and the start of the label fix; the reviewer's hand-back print
+         +ed at line 881 as a `›` notice, not used as a source; Turn 6 wi
+         +th the owner's editor selection of the Codex export collapsed b
+         +y the harness as "1678 lines hidden"; Turn 7 and the start of t
+         +he review). Owner messages and the delivered Turn 6 reply agree
+         + with the record; the capture's intermediate progress lines are
+         + shorter renderings of the commentary the record quotes.       
+      10  
+      11  ## Turns, from the record
+      12  
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8  - [The Codex visible-session export](../2026-10-20.1.export.md)
+          : read in full, all 1,732 lines, through its usage-limit notice
+          ; every owner and root message agrees with the record, the rest
+           being tool activity.
+       9 -- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         --it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         -ress, through line 1,649 (the review's six fixes, 100 affected 
+         -browser tests passing, the third gate's six layout-lab failures
+         - and the start of the label fix; the reviewer's hand-back print
+         -ed at line 881 as a `›` notice, not used as a source; Turn 6 wi
+         -th the owner's editor selection of the Codex export collapsed b
+         -y the harness as "1678 lines hidden"; Turn 7 and the start of t
+         -he review). Owner messages and the delivered Turn 6 reply agree
+         - with the record; the capture's intermediate progress lines are
+         - shorter renderings of the commentary the record quotes.       
+       9 +- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         +-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         +ress, through line 2,249 (the review's six fixes, 100 affected 
+         +browser tests passing, the third gate's six layout-lab failures
+         +, the label and row-model fixes and the simplicity contract's n
+         +ew scopes; the reviewer's hand-back printed at line 881 as a `›
+         +` notice, not used as a source; Turn 6 with the owner's editor 
+         +selection of the Codex export collapsed by the harness as "1678
+         + lines hidden"; Turn 7 and the start of the review). Owner mess
+         +ages and the delivered Turn 6 reply agree with the record; the 
+         +capture's intermediate progress lines are shorter renderings of
+         + the commentary the record quotes.                             
+      10  
+      11  ## Turns, from the record
+      12  
+
+  Read 1 file (ctrl+o to expand)
+
+● The capture holds a substantive mid-turn message in Turn 9 ("Your second
+  thought was right…", lines 2,699–2,743). Let me check whether the record
+  preserved it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Not in the record: a delivered mid-turn message the record lacks. I'll recover
+  it into the record under a dated heading once the reading is done.
+  Continuing.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8  - [The Codex visible-session export](../2026-10-20.1.export.md)
+          : read in full, all 1,732 lines, through its usage-limit notice
+          ; every owner and root message agrees with the record, the rest
+           being tool activity.
+       9 -- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         --it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         -ress, through line 2,249 (the review's six fixes, 100 affected 
+         -browser tests passing, the third gate's six layout-lab failures
+         -, the label and row-model fixes and the simplicity contract's n
+         -ew scopes; the reviewer's hand-back printed at line 881 as a `›
+         -` notice, not used as a source; Turn 6 with the owner's editor 
+         -selection of the Codex export collapsed by the harness as "1678
+         - lines hidden"; Turn 7 and the start of the review). Owner mess
+         -ages and the delivered Turn 6 reply agree with the record; the 
+         -capture's intermediate progress lines are shorter renderings of
+         - the commentary the record quotes.                             
+       9 +- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         +-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         +ress, through line 2,809 (the review's six fixes, 100 affected 
+         +browser tests passing, the third gate's six layout-lab failures
+         +, the label and row-model fixes and the simplicity contract's n
+         +ew scopes; the fifth gate and the landing; the delivered Turn 7
+         + reply; Turns 8 and 9. **Found:** a delivered mid-turn message 
+         +in Turn 9, lines 2,699–2,743, "Your second thought was right…",
+         + is absent from the record; to be recovered there under a dated
+         + heading; the reviewer's hand-back printed at line 881 as a `›`
+         + notice, not used as a source; Turn 6 with the owner's editor s
+         +election of the Codex export collapsed by the harness as "1678 
+         +lines hidden"; Turn 7 and the start of the review). Owner messa
+         +ges and the delivered Turn 6 reply agree with the record; the c
+         +apture's intermediate progress lines are shorter renderings of 
+         +the commentary the record quotes.                              
+      10  
+      11  ## Turns, from the record
+      12  
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+       6  
+       7  - [Agent-maintained root record](../2026-10-20.1.record.md): 1,
+          003 lines at this bootstrap. Kept by the root Codex agent throu
+          gh Turn 5 and by the root Claude Code agent from Turn 6, at the
+           owner's request in Turn 7, as the first record kept across a h
+          arness switch. Turns 6 and 7 were first written into a separate
+           `.2` record, folded in unchanged and that file removed. Verbat
+          im owner and root messages in fenced blocks, separate from work
+           notes.
+       8  - [The Codex visible-session export](../2026-10-20.1.export.md)
+          : read in full, all 1,732 lines, through its usage-limit notice
+          ; every owner and root message agrees with the record, the rest
+           being tool activity.
+       9 -- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         --it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         -ress, through line 2,809 (the review's six fixes, 100 affected 
+         -browser tests passing, the third gate's six layout-lab failures
+         -, the label and row-model fixes and the simplicity contract's n
+         -ew scopes; the fifth gate and the landing; the delivered Turn 7
+         - reply; Turns 8 and 9. **Found:** a delivered mid-turn message 
+         -in Turn 9, lines 2,699–2,743, "Your second thought was right…",
+         - is absent from the record; to be recovered there under a dated
+         - heading; the reviewer's hand-back printed at line 881 as a `›`
+         - notice, not used as a source; Turn 6 with the owner's editor s
+         -election of the Codex export collapsed by the harness as "1678 
+         -lines hidden"; Turn 7 and the start of the review). Owner messa
+         -ges and the delivered Turn 6 reply agree with the record; the c
+         -apture's intermediate progress lines are shorter renderings of 
+         -the commentary the record quotes.                              
+       9 +- [The Claude Code terminal export](../2026-10-20-202504-whoops
+         +-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in prog
+         +ress, through line 3,309 (the linked-docs build through the cli
+         +ent and integration tests; the review's six fixes, 100 affected
+         + browser tests passing, the third gate's six layout-lab failure
+         +s, the label and row-model fixes and the simplicity contract's 
+         +new scopes; the fifth gate and the landing; the delivered Turn 
+         +7 reply; Turns 8 and 9. **Found:** a delivered mid-turn message
+         + in Turn 9, lines 2,699–2,743, "Your second thought was right…"
+         +, is absent from the record; to be recovered there under a date
+         +d heading; the reviewer's hand-back printed at line 881 as a `›
+         +` notice, not used as a source; Turn 6 with the owner's editor 
+         +selection of the Codex export collapsed by the harness as "1678
+         + lines hidden"; Turn 7 and the start of the review). Owner mess
+         +ages and the delivered Turn 6 reply agree with the record; the 
+         +capture's intermediate progress lines are shorter renderings of
+         + the commentary the record quotes.                             
+      10  
+      11  ## Turns, from the record
+      12  
+
+  Read 1 file (ctrl+o to expand)
+
+● I've finished reading the full Claude Code capture and found a missing
+  mid-turn Turn 9 message plus an inaccuracy in the Turn 12 note—it attributes
+  only the second quoted passage to progress text, when the first one is also
+  absent from the delivered Turn 11 reply. Now I'll verify the evidence links
+  before writing this up.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now I'll recover the Turn 9 message into the October 20 record, in place under
+  Turn 9, as the terminal printed it (indentation removed, wrapping kept), and
+  add the dated note at Turn 12.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md)
+  ⎿  Added 52 lines
+      717  - **How the generator already behaves.** It keeps an existing 
+           doc's authored block even when the grammar refuses the doc (`r
+           eadExisting` falls back to the text between `## Authored` and 
+           `## Generated`), and it prunes a doc whose source is gone unle
+           ss that doc has authored words, which it then keeps; the graph
+            index is derived from every doc on disk. So a past commit's c
+           ommitted mirror kept in place would let such orphans, and docs
+            for files today's lens does not document, into the shape. The
+            exact rule for a lens run: a doc stays only if this run docum
+           ents its source.
+      718  - **No class of file has gone missing.** Of the 1,899 Live Doc
+           s ever committed, every one whose source is still tracked stil
+           l has its doc. The 736 binary files (720 PNG, 16 WebM) are all
+            under `AI-Agent-Workspace/`, which the configuration excludes
+           . Never documented, outside that: markdown outside the docs ro
+           ot (README, AGENTS.md, CLAUDE.md, SECURITY.md, the skills, 15 
+           test READMEs), the 5 GitHub workflows (YAML), shell scripts, t
+           he PowerShell grammar's `.wasm` and `grammar.patch` and `upstr
+           eam.env` and corpus `.txt`, the estate sample's `Estate.sln`, 
+           and dotfiles (`.gitignore`, `.gitattributes`, `.nvmrc`, `.pret
+           tierrc`), with `LICENSE` and `package-lock.json` (lock files a
+           re excluded by rule). Under one lens a step's drop in file cou
+           nt is a deletion in the source, never a forgotten class: the l
+           argest are the September 27 retirement (163) and the October 1
+           2 cleanup (45).
+      719  
+      720 +### Assistant — mid-turn reply, recovered 2026-10-21          
+      721 +                                                              
+      722 +Delivered after the findings above and before the build began,
+          + and not appended to this record at the time. Recovered by the
+          + following session from the [Claude Code capture](2026-10-20-2
+          +02504-whoops-it-appears-that-ive-hit-a-usage-limit-on.txt), li
+          +nes 2,699–2,743, as the terminal printed it: no bold markers o
+          +r link syntax, the terminal's indentation removed and its line
+          + wrapping kept.                                               
+      723 +                                                              
+      724 +```text                                                       
+      725 +Your second thought was right: authored sections hold every re
+          +lated-doc link.                                               
+      726 +All 876 such links in today's Live Docs are in authored sectio
+          +ns. Generated                                                 
+      727 +sections link only to other Live Docs, and the graph already c
+          +arries each                                                   
+      728 +authored section word for word. That makes the simplest versio
+          +n smaller than                                                
+      729 +what I described.                                             
+      730 +                                                              
+      731 +The simplest form of the three enhancements:                  
+      732 +1. Keep the words. The history stops deleting each past commit
+          +'s docs and lets                                              
+      733 +   today's tool regenerate over them, as it does daily. One ru
+          +le keeps it                                                   
+      734 +   exact: at a past commit, a doc stays only if today's tool d
+          +ocuments its                                                  
+      735 +   source there. Every step's files and wires come out exactly
+          + as they do now,                                              
+      736 +   and only your words come along.                            
+      737 +2. No new graph field. One small function reads a file's relat
+          +ed docs from the                                              
+      738 +   authored text the graph already holds. The bundle and the h
+          +istory both use                                               
+      739 +   it, so the bundle's separate scan goes away, and the comman
+          +d line can                                                    
+      740 +   print them.                                                
+      741 +3. Each step records its doc links, counting only docs that ex
+          +isted at that                                                 
+      742 +   commit. The 3D history then shows related docs appearing an
+          +d going, and the                                              
+      743 +   step panel lists the changes.                              
+      744 +                                                              
+      745 +I'd leave out the old text of linked docs, which would grow th
+          +e bundle. The                                                 
+      746 +reader shows today's version, marked as today's, or says the d
+          +oc didn't exist                                               
+      747 +yet. The cost is one full rebuild of the history cache, here a
+          +nd on the hosted                                              
+      748 +site. "Don't implement" would have been the simple choice if t
+          +here were                                                     
+      749 +little to show, but 63 of the 74 steps have links in their wor
+          +ds.                                                           
+      750 +                                                              
+      751 +On files: nothing has gone missing. Every one of the 1,899 Liv
+          +e Docs ever                                                   
+      752 +committed still exists if its source does. Your 736 binary fil
+          +es (pictures and                                              
+      753 +recordings) are all in the agent workspace, which the configur
+          +ation excludes.                                               
+      754 +Some classes were never documented:                           
+      755 +- Markdown outside the docs root: the README, AGENTS.md, the s
+          +kills and 15                                                  
+      756 +  test READMEs.                                               
+      757 +- Configuration and scripts: the 5 GitHub workflow files and t
+          +he shell                                                      
+      758 +  scripts.                                                    
+      759 +- Two estate and grammar files: the PowerShell grammar's .wasm
+          + binary, and the                                              
+      760 +  estate sample's Estate.sln solution file.                   
+      761 +- Dotfiles such as .gitignore and .nvmrc.                     
+      762 +                                                              
+      763 +Two questions, neither blocking:                              
+      764 +1. Should any of those classes get Live Docs? If so, which?   
+      765 +2. A real binary asset for the tests? Neither test bundle cont
+          +ains one, so the                                              
+      766 +   asset kind and its Show Assets toggle are never exercised i
+          +n the browser.                                                
+      767 +   I'd add one small real image to the estate sample.         
+      768 +                                                              
+      769 +I'm starting on the linked-docs work now.                     
+      770 +```                                                           
+      771 +                                                              
+      772  ### Work checkpoint: linked docs through the history (Claude C
+           ode)
+      773  
+      774  The owner's approval of the three enhancements, in their simpl
+           est form as answered in Turn 9, is being built. Done so far, e
+           ngine and generator:
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md)
+  ⎿  Added 2 lines
+      987  
+      988  The second quoted passage is not from a delivered reply; the o
+           wner quoted it from what their harness showed while the work r
+           an. It is kept as part of their message.
+      989  
+      990 +Correction, 2026-10-21, by the following session: the first qu
+          +oted passage is not from the delivered Turn 11 reply either. T
+          +hat reply says "It isn't in the vision's order of work yet; it
+          + would be a new reader like the language readers"; the words t
+          +he owner quoted ("The order of work has no ecosystem step beyo
+          +nd the language readers of step 2, so Unity would be a new rea
+          +der of that kind") are progress text shown during the Turn 11 
+          +work. No capture holds that text: the [Claude Code capture](20
+          +26-10-20-202504-whoops-it-appears-that-ive-hit-a-usage-limit-o
+          +n.txt) ends at the owner's Turn 11 message.                   
+      991 +                                                              
+      992  ### Interpretation and the history search
+      993  
+      994  - **Approval:** harden the Explorer's security, its Content-Se
+           curity-Policy included, "without losing functionality": the fi
+           ve layers of the Turn 11 reply.
+
+● Now a closure note on the October 20 record, with its Resumption marked
+  superseded, as earlier closures did.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md)
+  ⎿  Added 2 lines
+       8  
+       9  ## Resumption
+      10  
+      11 +*Superseded by the [closure by the following session](#closure-
+         +by-the-following-session-2026-10-21) and the [session summary](
+         +Summarized/2026-10-20.1.SUMMARIZED.md). The bullets below are t
+         +his session's last checkpoint before the no-network work of Tur
+         +ns 12 and 13, not its final state.*                            
+      12 +                                                               
+      13  - State: two landings this session under Claude Code, nothing p
+          ushed. `708f0cfa` and its record `ae5fe859`: the inspect-first/
+          direct-Pin navigation (Turns 2–7). `a3ee07e5`: linked documents
+           through the history (Turns 8–9), after the eighth full gate pa
+          ssed (1,328 unit, 112 integration, 178 browser; audits clean). 
+          The session continues in this record across the harness switch;
+           it has not ended.
+      14  - Pending owner questions (Turn 9 reply): which never-documente
+          d classes of file, if any, should get Live Docs; whether to add
+           one real image to the estate sample so the asset kind and its 
+          Show Assets toggle are exercised in the browser.
+      15  - Deferred by the owner: the zoomed-out legibility and touch-co
+          ntrol pass, and the galaxy re-test (Turn 7). A linked document'
+          s text of the day stays out of the bundle, a later choice.
+
+  Read 1 file (ctrl+o to expand)
+
+● The October 20 record is closed. Now the summary itself, written in full from
+  the three sources.
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-20.1.SUMMARIZE
+       D.md)
+  ⎿  Added 199 lines, removed 6 lines
+        1  # Session summary: October 20–21, 2026, session 1 — inspect-fi
+           rst navigation landed across a harness switch, linked document
+           s through the history, and the page held to its own site
+        2  
+        3 -_Historical account by the root Claude Code agent (Opus 5.5), 
+          -2026-10-21, of a session that began in Codex and continued in 
+          -Claude Code (Opus 5.5) in the same record. **Coverage checkpoi
+          -nt, in progress:** the maintained record has been read in full
+          - (1,003 lines, Turns 1–13); the Codex export and the Claude Co
+          -de capture are being read in bounded chunks. Until this line i
+          -s replaced, the turns below rest on the record alone._        
+        3 +_Historical account by the root Claude Code agent (Opus 5.5), 
+          +2026-10-21, of a session that began in Codex and continued in 
+          +Claude Code (Opus 5.5, which the owner selected at extra-high 
+          +effort) in the same record, opened on 2026-10-20 and ended aft
+          +er its last commit at 12:58 UTC on 2026-10-21. Complete for th
+          +e available captures: the maintained record (1,003 lines as re
+          +ceived), the Codex export (1,732 lines) and the Claude Code ca
+          +pture (3,787 lines) were read in full in bounded chunks. Thirt
+          +een owner turns are represented. The Claude Code capture ends 
+          +at the owner's Turn 11 message, so Turns 12 and 13 and the las
+          +t reply rest on the record alone. The five most recent summari
+          +es, October 14–15 through October 19–20, were read in full fir
+          +st, oldest to newest, after Memory and the full narrative._   
+        4  
+        5  ## Sources
+        6  
+        7 -- [Agent-maintained root record](../2026-10-20.1.record.md): 1
+          -,003 lines at this bootstrap. Kept by the root Codex agent thr
+          -ough Turn 5 and by the root Claude Code agent from Turn 6, at 
+          -the owner's request in Turn 7, as the first record kept across
+          - a harness switch. Turns 6 and 7 were first written into a sep
+          -arate `.2` record, folded in unchanged and that file removed. 
+          -Verbatim owner and root messages in fenced blocks, separate fr
+          -om work notes.                                                
+        8 -- [The Codex visible-session export](../2026-10-20.1.export.md
+          -): read in full, all 1,732 lines, through its usage-limit noti
+          -ce; every owner and root message agrees with the record, the r
+          -est being tool activity.                                      
+        9 -- [The Claude Code terminal export](../2026-10-20-202504-whoop
+          -s-it-appears-that-ive-hit-a-usage-limit-on.txt): reading in pr
+          -ogress, through line 3,309 (the linked-docs build through the 
+          -client and integration tests; the review's six fixes, 100 affe
+          -cted browser tests passing, the third gate's six layout-lab fa
+          -ilures, the label and row-model fixes and the simplicity contr
+          -act's new scopes; the fifth gate and the landing; the delivere
+          -d Turn 7 reply; Turns 8 and 9. **Found:** a delivered mid-turn
+          - message in Turn 9, lines 2,699–2,743, "Your second thought wa
+          -s right…", is absent from the record; to be recovered there un
+          -der a dated heading; the reviewer's hand-back printed at line 
+          -881 as a `›` notice, not used as a source; Turn 6 with the own
+          -er's editor selection of the Codex export collapsed by the har
+          -ness as "1678 lines hidden"; Turn 7 and the start of the revie
+          -w). Owner messages and the delivered Turn 6 reply agree with t
+          -he record; the capture's intermediate progress lines are short
+          -er renderings of the commentary the record quotes.            
+        7 +- [Agent-maintained root record](../2026-10-20.1.record.md): k
+          +ept by the root Codex agent through Turn 5 and by the root Cla
+          +ude Code agent from Turn 6, at the owner's request in Turn 7, 
+          +the first record kept across a harness switch. Turns 6 and 7 w
+          +ere first written into a separate `.2` record, folded in uncha
+          +nged and that file removed. Verbatim owner and root messages i
+          +n fenced blocks, separate from work notes. Two mendings by the
+          + following session, each under a dated heading or note: a mid-
+          +turn reply of Turn 9 that only the Claude Code capture held, r
+          +ecovered [in place](../2026-10-20.1.record.md#assistant--mid-t
+          +urn-reply-recovered-2026-10-21); and the Turn 12 note, which h
+          +ad said only the owner's second quoted passage came from progr
+          +ess text, when the first did too. A [closure note](../2026-10-
+          +20.1.record.md#closure-by-the-following-session-2026-10-21) en
+          +ds it.                                                        
+        8 +- [The Codex visible-session export](../2026-10-20.1.export.md
+          +): 184,044 bytes, 1,732 newline characters, SHA-256 `364a2c296
+          +cd7ab7e499ba60fae01692ab577c17641c6bdc1c34d9e6eb952070e`, as [
+          +the inventory](../README.md#owner-captures) records it. It run
+          +s from the first prompt through the usage-limit notice; five o
+          +wner turns. Most of it is tool activity: shell commands, scrip
+          +ts written through heredocs, and Playwright calls. One "Compac
+          +ted conversation" marker stands at line 833. Every owner and r
+          +oot message in it agrees with the record. The optional visual 
+          +review of Turn 2 and the responsive question of Turn 5 print t
+          +heir offered choices as bullet lists, which the record notes a
+          +s offered choices. These are capture characteristics, not extr
+          +a turns.                                                      
+        9 +- [The Claude Code terminal export](../2026-10-20-202504-whoop
+          +s-it-appears-that-ive-hit-a-usage-limit-on.txt): 198,767 bytes
+          +, 3,787 lines, SHA-256 `b0ed07ee465ebd596491398fc7f831b5798297
+          +e558cecd0a5bbfb514c412f555`, the third of the owner's three co
+          +pies, each an append-only extension of the one before ([the in
+          +ventory](../README.md#owner-captures)). It runs from the owner
+          +'s Turn 6 message, whose editor selection of the Codex export 
+          +the harness collapsed as "1678 lines hidden", to their Turn 11
+          + message. Prompts are marked `❯` and responses `●`. Collapsed 
+          +tool counts, terminal wrapping, the harness's diff views of ed
+          +ited files, two `ide_opened_file` notices, background-command 
+          +notices, and the code reviewer's hand-back printed as a `›` no
+          +tice at line 881 are capture characteristics. The reviewer's t
+          +hread is not a source; its findings enter this account as the 
+          +record's verified list. The capture's progress lines are short
+          +er renderings of the commentary the record quotes. Its deliver
+          +ed replies to Turns 6 to 10 agree with the record, and its one
+          + substantive message the record lacked, the Turn 9 mid-turn re
+          +ply at lines 2,699–2,743, is now in the record.               
+       10 +- What the session left as evidence: [Screenshots/2026-10-20](
+          +../../../../Screenshots/2026-10-20/README.md), seven sections 
+          +(inspection, direct pins and the reader's layout; 3D actions a
+          +nd perspective continuity; the Clear-all investigation; the fr
+          +ozen perspective appearance; individual Unpin restoring the ga
+          +laxy's opacity; the fixes after the independent review; linked
+          + documents through the history), and [Screenshots/2026-10-21](
+          +../../../../Screenshots/2026-10-21/README.md), the no-network 
+          +hardening; three entries in [the decisions log](../../../../..
+          +/.mdmd/layer-3/architectural-decisions.mdmd.md) ([inspection, 
+          +pins and the subject](../../../../../.mdmd/layer-3/architectur
+          +al-decisions.mdmd.md#inspection-pins-and-the-map-subject-are-s
+          +eparate-recorded-2026-10-20), [the history's authored words](.
+          +./../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#th
+          +e-history-keeps-each-commits-authored-words-and-records-where-
+          +they-link-recorded-2026-10-20), [the page's own site](../../..
+          +/../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-explo
+          +rer-reads-only-its-own-site-held-by-its-policy-and-a-browser-t
+          +est-recorded-2026-10-21)); the Explorer contract, the vision's
+          + status, `SECURITY.md`, AGENTS.md's Explorer rules and the aut
+          +hored sections of every changed module; and the owner's words 
+          +carried into [direction.md](../../../../Memory/direction.md) a
+          +nd [ideas.md](../../../../Memory/ideas.md).                   
+       11 +- Git: the nine commits below were checked on 2026-10-21 for h
+          +ash, date, subject and changed-file count. The test counts in 
+          +this summary are the gates the session reported, not reruns.  
+       12  
+       11 -## Turns, from the record                                     
+       13 +## Context                                                    
+       14  
+       13 -(Turn entries to be written after the captures are read.)     
+       15 +The owner opened the session on October 20 to bootstrap the da
+          +y and see whether the provider troubles that halted the previo
+          +us night's work had cleared. Codex summarized the interrupted 
+          +October 19 session and, at the owner's go, resumed the accepte
+          +d inspect-first navigation from its surviving draft (Turns 1 a
+          +nd 2). The owner's first look was the strongest of the week ("
+          +it's just a BLAST to play around in"), with one worry, touch t
+          +argets on a phone, and one defect report, the 3D galaxy not re
+          +turning after unpinning (Turns 3 to 5). Codex measured the tar
+          +gets, found and fixed a related dimming defect, unified the 3D
+          + view's hover into one picker, cut the perspective switch's st
+          +yle copying by a third, and started its second full gate, then
+          + stopped at its usage limit. The owner switched to Claude Code
+          + (Turn 6) and asked that the same record continue (Turn 7). Cl
+          +aude Code found the gate had failed on one bundle test's time 
+          +budget, settled it at its cause, put Codex's diff through an i
+          +ndependent review that found six defects, let the layout lab c
+          +atch two geometry mismatches nobody had run, and landed the wo
+          +rk after five full gates. The owner then asked how the history
+          + could carry linked documents and assets (Turns 8 and 9); meas
+          +ured, every related-doc link lives in authored words, so the h
+          +istory now keeps each commit's authored words and records wher
+          +e they link. Their next questions, about images in docs and fi
+          +les never documented (Turn 10), turned into a question about t
+          +he no-network guarantee (Turn 11), which found that a doc's ra
+          +w HTML reached the page. The page now refuses any other site b
+          +y its own policy and a browser test (Turns 12 and 13). The own
+          +er's Unity aim was gathered from a year of the record. The ses
+          +sion ended on an open question about the reader's styles for b
+          +undled docs.                                                  
+       16 +                                                              
+       17 +## Turn 1                                                     
+       18 +                                                              
+       19 +**Owner, October 20 (Codex):** "It is now 10/20/26. Let's star
+          +t up a new chat record with the standard dev day bootstrap pro
+          +cess. Yesterday's work got halted by a bit of technical diffic
+          +ulties on OpenAI's side. Let's see if that's resolved now that
+          + we're about 12 hours later. :)"                              
+       20 +                                                              
+       21 +**Agent/work:** Read AGENTS.md, Memory, the narrative, the vis
+          +ion and the five most recent summaries, then both October 19 c
+          +aptures in full: 2,361 record lines and 5,618 export lines. Wr
+          +ote [the October 19–20 summary](2026-10-19.1.SUMMARIZED.md) (2
+          +6 turns, 17 commits). Recovered into that record the final own
+          +er turn (another capacity error), a later progress message and
+          + a truncated first draft of the Turn 22 reply. Saved the survi
+          +ving draft's full diff as an ignored recovery patch (177,007 b
+          +ytes). Corrected two stale claims in Memory that still listed 
+          +C, C++ and PowerShell as hand-written scanners. A read-only re
+          +viewer checked the summary, and two of its findings were adopt
+          +ed. The four documentation audits passed. Committed as `3f498b
+          +eb` and `4e6774aa`. The reply: "No capacity errors occurred th
+          +is run"; the next work was already approved, finishing click-t
+          +o-inspect with direct one-click Pin controls.                 
+       22 +                                                              
+       23 +**Source:** [Record, Turn 1](../2026-10-20.1.record.md#turn-1)
+          +; the Codex export, lines 1–409.                              
+       24 +                                                              
+       25 +## Turn 2                                                     
+       26 +                                                              
+       27 +**Owner:** Quoting the reply's last paragraph: "Please continu
+          +e forward on that work. Let me know when you need my eyes and 
+          +opinions and decisions." With the first copy of the Codex expo
+          +rt attached read-only (56,862 bytes), byte-identical to the re
+          +pository's copy.                                              
+       28 +                                                              
+       29 +**Agent/work:** Resumed in the draft's worktree. The failed ty
+          +pe-check was missing engine declarations (TS6305); after the e
+          +ngine was built, one real mismatch remained, remembered naviga
+          +tion without inspection. Codex integrated inspection as state 
+          +of its own, retention as application actions, a Back between t
+          +wo pieces of evidence that leaves the map untouched, and a rea
+          +der that overlays the unchanged canvas and fills the screen on
+          + narrow or short viewports, with the background inert and focu
+          +s kept inside. Delegates reviewed persistence, 2D and 3D in di
+          +sjoint files. Moving the draft into main, a guard caught a tra
+          +cked test file treated as new: the reader tests had replaced i
+          +ts tuning tests. Both suites were restored, 68 tests passed, a
+          +nd the earlier 49-test pass was called insufficient. The 29 pa
+          +ths were then moved and verified byte for byte. Looked at in C
+          +hromium: inspection and Back kept every card's rectangle and t
+          +he map's DOM; reload kept the subject, the pin and the inspect
+          +ed symbol; a direct symbol pin held its row within 0.0017 px t
+          +hrough 45 moving frames; the phone reader kept 690 px of body.
+          + The reader had covered the 2D/3D buttons at some widths, so t
+          +hose controls now move into the uncovered area. In 3D, Pin ret
+          +ained a file without opening the reader, and inspection left t
+          +he camera's matrix exactly as it was. An optional review was o
+          +ffered ("Feels right; continue", "Pin controls need adjustment
+          +", "Reader interrupts my bearings"). A keyboard check then fou
+          +nd More hiding its own opener, and Back closing the pin tray; 
+          +both were fixed.                                              
+       30 +                                                              
+       31 +**Source:** [Record, Turn 2](../2026-10-20.1.record.md#turn-2)
+          +; [the pictures](../../../../Screenshots/2026-10-20/README.md#
+          +inspection-direct-pins-and-reader-layout); the Codex export, l
+          +ines 411–988.                                                 
+       32 +                                                              
+       33 +## Turn 3                                                     
+       34 +                                                              
+       35 +**Owner:** "WOW! I am REALLY enjoying this interaction mode. T
+          +he only worry I have is that the pins will be too small to eng
+          +age on mobile. I sincerely appreciate your choice to use a `".
+          +.."` element to allow expansion of other options. I suspect wh
+          +en the screen size is sufficiently constrained, we'll have to 
+          +push all the options into that `...` element. I'm blown away b
+          +y this naviagation though. Holy crap, it's just a BLAST to pla
+          +y around in within the 2D local map. My LORD it's fun!"       
+       36 +                                                              
+       37 +**Agent/work:** Promised to measure the targets before changin
+          +g anything, since moving every action into More "would cost th
+          +e one-tap Pin that makes this flow quick". Wrote the first ins
+          +pection browser spec after the look, not run yet.             
+       38 +                                                              
+       39 +**Source:** [Record, Turn 3](../2026-10-20.1.record.md#turn-3)
+          +.                                                             
+       40 +                                                              
+       41 +## Turn 4                                                     
+       42 +                                                              
+       43 +**Owner:** "Hmmm I'm seeing that if I come from a pinned state
+          + on the 2D local map over to 3D, and then unpin all, I don't g
+          +et to see the full galaxy of the project. It seems like the re
+          +ndered nodes are constrained to the set of what was selected a
+          +t time of transition (and anything subsequently pinned in 3D, 
+          +even if later unpinned)."                                     
+       44 +                                                              
+       45 +**Agent/work:** Set out to reproduce it before naming a cause.
+       46 +                                                              
+       47 +**Source:** [Record, Turn 4](../2026-10-20.1.record.md#turn-4)
+          +.                                                             
+       48 +                                                              
+       49 +## Turn 5                                                     
+       50 +                                                              
+       51 +**Owner:** On collapsing into More: "Obviously true. Would onl
+          +y collapse down to that when the screen size is so small that 
+          +a tap on two different buttons on the same card cannot be dist
+          +inguished. (Automatically happens on zoom-out? Hmmm...)"      
+       52 +                                                              
+       53 +**Agent/work:** Agreed that the cutoff is whether the controls
+          + can still be told apart by a tap. Measured on a phone viewpor
+          +t: symbol actions 17 × 17 px, header actions 20 × 20, and enla
+          +rging invisible hit areas would make neighbours overlap. Asked
+          + whether, in a separate pass, small scales should get a floati
+          +ng screen-sized More or use the existing full-screen reader, o
+          +r wait; not answered in this form. The first galaxy reproducti
+          +on, by the tray's Clear all, kept all 35 estate spheres and re
+          +stored every one's opacity, so it did not reproduce the report
+          +; asked which route and which bundle. Then:                   
+       54 +- **The reader:** section links now land on GitHub's canonical
+          + heading slugs, and focus stays inside the reader when followi
+          +ng a link.                                                    
+       55 +- **The first inspection run:** 3 of 7 tests passed. The four 
+          +failures were the tests' own: a box-less row handed to a pan h
+          +elper, and the reader sampled while still sliding in. They wer
+          +e corrected without loosening an assertion.                   
+       56 +- **A wider run of 29 tests** passed 27. One new assertion wro
+          +ngly expected a type badge to open a symbol and was corrected.
+          + The other was the existing 3D focus journey over its 30 s bud
+          +get. Profiling found the perspective switch copying every comp
+          +uted style property of 3,405 elements one by one. Reading each
+          + style's length once, enumerating by index and writing each el
+          +ement's frozen style in one operation took the journey from 9.
+          +42 to 6.17 s into 2D and from 17.77 to 11.06 s into 3D. All 47
+          +0 declarations of a sample card still matched, and the test pa
+          +ssed in 24.2 s under its unchanged budget.                    
+       57 +- **Two integration repairs:** hidden WebGL stays paused when 
+          +the reader pins with 3D remembered, and Open on an already-ret
+          +ained directory still leaves a path.                          
+       58 +- **The first full gate** stopped at an import order in the re
+          +stored test file, fixed.                                      
+       59 +- **The galaxy by another route:** pinning a file in 2D, switc
+          +hing to 3D and unpinning it by mouse left 32 of 35 spheres dim
+          +med after the pointer left. The clicked button kept focus, and
+          + focus kept the hover preview alive. Mouse-made focus no longe
+          +r holds the preview; keyboard focus still does.               
+       60 +- **A faster entry exposed a race:** the application announced
+          + a hover before the graph library's throttled cache saw it, an
+          +d the library, which has no pointer-leave handler and reports 
+          +only changes between objects, never sent the exit. A reconcili
+          +ation flag was declined. One application picker, the rendered-
+          +sphere raycast already used for clicks and holds, now decides 
+          +hover too, at about half a millisecond a pick on 843 spheres. 
+          +Six lifecycle tests passed, one after a test helper stopped ai
+          +ming through another file's HTML label.                       
+       61 +                                                              
+       62 +The second full gate started. Codex then stopped at its usage 
+          +limit while reading this session's export: "You've hit your us
+          +age limit ... try again at Oct 27th, 2026 1:30 PM."           
+       63 +                                                              
+       64 +**Source:** [Record, Turn 5](../2026-10-20.1.record.md#turn-5)
+          + and [the harness switch](../2026-10-20.1.record.md#harness-sw
+          +itch-to-claude-code); [the pictures](../../../../Screenshots/2
+          +026-10-20/README.md#individual-unpin-restores-the-galaxys-norm
+          +al-opacity); the Codex export, lines 1,075–1,732.             
+       65 +                                                              
+       66 +## Turn 6                                                     
+       67 +                                                              
+       68 +**Owner (Claude Code):** "Whoops, it appears that I've hit a u
+          +sage limit on Codex. I've selected Opus 5.5 XHigh on Claude Co
+          +de to continue the thread. What can I provide for you to succe
+          +ed on this continuation?" With the whole Codex export selected
+          + in the editor.                                               
+       69 +                                                              
+       70 +**Agent/work:** Found that the second gate had ended in failur
+          +e: generation, lint and build passed, unit tests 1,317 of 1,31
+          +8, with `staticBuilder.test.ts` over its 5,000 ms default at 5
+          +,009 ms; alone it passed three times in about 1.6 s. Checked t
+          +he Codex export against the record (an exact extension of the 
+          +Turn 2 copy, nothing missing but the usage-limit notice). Open
+          +ed a `.2` record, following the October 13–14 handoff from Cod
+          +ex. The reply: "Nothing is lost, and you don't need to send me
+          + anything more"; nothing committed yet (93 changed paths); thr
+          +ee questions: land first and summarize after, which route the 
+          +galaxy report took, and the mobile controls.                  
+       71 +                                                              
+       72 +**Source:** [Record, Turn 6](../2026-10-20.1.record.md#turn-6)
+          +; the Claude Code capture, lines 1–204.                       
+       73 +                                                              
+       74 +## Turn 7                                                     
+       75 +                                                              
+       76 +**Owner:** On the record: "I saw you created at `.2` chat. I t
+          +hink that was a really wise default which minimized potential 
+          +negatives. I appreciate your loss aversion. In this case, I be
+          +lieve it would be acceptable to actually continue the `.1.md` 
+          +chat if you don't mind? Can we try that out and see how it goe
+          +s?" On the galaxy: "Interesting. Sounds like our repros differ
+          +. Let's test again later and see if we can repro again. Don't 
+          +prioritize just yet." On mobile: "Hmm... separate pass but wor
+          +th considering. Even on desktops, once a sufficient amount of 
+          +zoom-out has occurred, certain things will not be distinguisha
+          +ble to the human eye. We will need to, in a future pass, becom
+          +e smarter about how we display a heavily zoomed-out 2D Local M
+          +ap based on what the human eye can actually perceive in the vi
+          +ewport."                                                      
+       77 +                                                              
+       78 +**Agent/work:** Folded `.2` into `.1` and wrote the owner's an
+          +swers into direction.md beside the October 3 idea of cards bec
+          +oming galaxy nodes on zoom-out. Read as a resumption of the sa
+          +me session, so landing came first and the bootstrap reading di
+          +d not apply.                                                  
+       79 +- **The timeout, at its cause.** Interleaved esbuild runs of t
+          +he client measured 1,006 ms at the base and 1,223 ms on the wo
+          +rking tree, the difference being the client's new engine impor
+          +ts (the heading slugger, the Live Doc renderer). The test runs
+          + a real production bundle under a 5 s default meant for millis
+          +econd tests, so both bundle tests declare a 30 s budget with t
+          +he reason beside it.                                          
+       80 +- **Review.** The agent read Codex's tests and production diff
+          +, and a read-only reviewer read the production diff again. Six
+          + findings were checked in the code and all fixed:             
+       81 +  - One Escape could close several surfaces at once.          
+       82 +  - Closing the reader could focus the search field and raise 
+          +a phone's keyboard.                                           
+       83 +  - Unpin acted as the card's close, leaving no subject, again
+          +st the October 15 rule that a card leaves only by its close or
+          + the tray.                                                    
+       84 +  - The 3D directory action was always Open.                  
+       85 +  - A 3D click was dropped when its sphere drifted under a sti
+          +ll pointer.                                                   
+       86 +  - Keys typed in the full-screen reader reached the World Map
+          +'s shortcuts.                                                 
+       87 +                                                              
+       88 +  Regressions were added for all but the drift. The 100 affect
+          +ed browser tests passed in 9.0 minutes.                       
+       89 +- **The layout lab caught what no one had run.** The third ful
+          +l gate failed 6 of 176 browser tests, all in the layout lab an
+          +d simplicity specs, at "Pretext lays out every text as the pag
+          +e does":                                                      
+       90 +  - Codex had put Open and More inside the directory label's c
+          +aption, the one text flow the lab lays out. They now stand in 
+          +a column beside it, as the ancestry control does, and the dire
+          +ctory name is a span in the button role again, so it wraps wit
+          +h its count.                                                  
+       91 +  - The symbol rows' new Pin and More made every card taller t
+          +han the lab's model. The capture now records each row's contro
+          +ls and its wrapper's frame, and the card model uses them. "The
+          + page is the truth here, approved by the owner's eye; the mode
+          +l was what had to learn."                                     
+       92 +  - With the taller rows, the warehouse scope's first placemen
+          +t started where its search used to end, so it adopted no align
+          +ment. The generator scope, which adopts under both geometries,
+          + now carries the repository bundle's adoption check, and the w
+          +arehouse stays as the case whose tried alignment is rejected. 
+          +No agreement assertion was relaxed.                           
+       93 +- **The last two gates.** The fourth stopped at the tests' typ
+          +e-check, a `reduce` typing in the capture; it was fixed. The f
+          +ifth passed: 1,318 unit, 111 integration and 177 browser tests
+          + in 22.6 minutes.                                             
+       94 +                                                              
+       95 +Committed as `708f0cfa` (123 files) and `ae5fe859`. The stale 
+          +candidate worktree (all 29 paths in the commit) and 4.4 MB of 
+          +scratch were removed. The reply named two changes for the owne
+          +r's eyes: directory buttons moved to the label's right end, an
+          +d "Unpin now undoes Pin".                                     
+       96 +                                                              
+       97 +**Source:** [Record, Turn 7](../2026-10-20.1.record.md#turn-7)
+          +, with [the review](../2026-10-20.1.record.md#independent-revi
+          +ew-and-its-fixes) and [the lab's catch](../2026-10-20.1.record
+          +.md#the-layout-lab-caught-the-label-buttons); [the pictures](.
+          +./../../../Screenshots/2026-10-20/README.md#after-the-independ
+          +ent-review-claude-code); [the decision](../../../../../.mdmd/l
+          +ayer-3/architectural-decisions.mdmd.md#inspection-pins-and-the
+          +-map-subject-are-separate-recorded-2026-10-20); the Claude Cod
+          +e capture, lines 206–2,437.                                   
+       98 +                                                              
+       99 +## Turn 8                                                     
+      100 +                                                              
+      101 +**Owner:** "Thank you for those efforts. What can we do about 
+          +ensuring that we get the correct history of linked docs and as
+          +sets?" With the first copy of the Claude Code capture opened i
+          +n the editor.                                                 
+      102 +                                                              
+      103 +**Agent/work:** Found two causes for related docs missing from
+          + every past step: the history deleted each commit's committed 
+          +mirror before regenerating it, so that day's authored words, w
+          +here every doc link lives, never entered the shape; and the li
+          +nks were not in the graph even today, since the bundle builder
+          + scanned rendered markdown at build time. On assets: the histo
+          +ry already records binary files by one rule; this repository h
+          +as none; the October 18 question of a grey "text that isn't co
+          +de" group was unanswered; the bundle follows `.md` links only.
+          + The reply proposed keeping the words, putting doc links in th
+          +e graph, and recording them per step, and asked which kind of 
+          +asset was meant.                                              
+      104 +                                                              
+      105 +**Source:** [Record, Turn 8](../2026-10-20.1.record.md#turn-8)
+          +; the Claude Code capture, lines 2,444–2,575.                 
+      106 +                                                              
+      107 +## Turn 9                                                     
+      108 +                                                              
+      109 +**Owner:** "AHHHH OF COURSE. The difference between running th
+          +e tool fresh versus preserving the authored content of the doc
+          +umentation across many iterations! OF COURSE! You are correct.
+          + Even still, the authored content section could not account fo
+          +r all markdown links to related docs, no? Actually... sh*t... 
+          +maybe it does... hmmmm. ... What might you propose, if your ai
+          +m was simplicity? (Noting that "don't implement" is a valid an
+          +swer for simplicity)". On the three steps: "I'd really sincere
+          +ly appreciate these enhancements." On assets: "If we need bett
+          +er "assets" to test against (i.e. binaries/unity assets/images
+          +/whatever) I'm happy for our repo to evolve in that way. I jus
+          +t want to make sure that we're not suddenly missing a whole cl
+          +ass of file. I accept that I was mistaken as to the total abse
+          +nce of such files."                                           
+      110 +                                                              
+      111 +**Agent/work:** Measured before building. All 876 links to non
+          +-Live-Doc markdown in today's 843 Live Docs are in authored bl
+          +ocks, and the graph already carries each authored block, so no
+          + new field was needed. Read from git, 63 of the 74 sampled com
+          +mits have such links in their committed words. Nothing has gon
+          +e missing: of the 1,899 Live Docs ever committed, every one wh
+          +ose source still exists still has its doc; the 736 binaries ar
+          +e pictures and recordings in the excluded agent workspace; som
+          +e classes were simply never documented. A mid-turn reply said 
+          +so, with the simplest form of the three steps, and began the b
+          +uild ([recovered](../2026-10-20.1.record.md#assistant--mid-tur
+          +n-reply-recovered-2026-10-21)). Built:                        
+      112 +- **Engine:** `relatedDocsOf`, one rule reading a file's relat
+          +ed documents from its authored words, kept out of `graph.ts` s
+          +ince that module goes to the browser; `minimatch` moved from t
+          +he Explorer to the engine.                                    
+      113 +- **The history:** shapes and steps carry doc links in format 
+          +2. A generator option prunes every doc a lens run did not writ
+          +e, so a past commit keeps its authored words and nothing else.
+          + `inspect --at` lists a file's linked documents, and `--betwee
+          +n` the links that came and went.                              
+      114 +- **The bundle** reads related docs through the same rule, wit
+          +h the same 328 file-to-document pairs as the old scan.        
+      115 +- **The Explorer:** the 3D history draws a moment's related do
+          +cs, the step panel lists "Documents linked" and "Documents unl
+          +inked", and the reader says "Today's version" while a past mom
+          +ent shows. Looking found the reader covering the scrubber's en
+          +d; the scrubber now stops at the reader's edge, and its labels
+          + are placed again when its width changes.                     
+      116 +- **Tests:** the scripted repository gained a committed mirror
+          + with links. Mutations in both directions made three integrati
+          +on tests fail each.                                           
+      117 +                                                              
+      118 +The sixth gate stopped at the agent's own lint error. The seve
+          +nth stopped when the bundle builder refused this repository's 
+          +format-1 history file, its designed behaviour. Recomputing the
+          + history took 1,317 s for 616 commits: 534 steps carry doc lin
+          +ks, and the newest carries the same 328 pairs as the bundle. T
+          +he eighth gate passed 1,328 unit, 112 integration and 178 brow
+          +ser tests in 22.5 minutes. Committed as `a3ee07e5` (82 files) 
+          +and `bcab35b7`. The reply: what changed, the 22-minute recompu
+          +tation needed after pulling, the next Pages build regenerating
+          + once cold, and two open questions: which never-documented cla
+          +sses should get Live Docs, and whether to add one real image t
+          +o the estate sample.                                          
+      119 +                                                              
+      120 +**Source:** [Record, Turn 9](../2026-10-20.1.record.md#turn-9)
+          +; [the pictures](../../../../Screenshots/2026-10-20/README.md#
+          +linked-documents-through-the-history-claude-code); [the decisi
+          +on](../../../../../.mdmd/layer-3/architectural-decisions.mdmd.
+          +md#the-history-keeps-each-commits-authored-words-and-records-w
+          +here-they-link-recorded-2026-10-20); the Claude Code capture, 
+          +lines 2,577–3,592.                                            
+      121 +                                                              
+      122 +## Turn 10                                                    
+      123 +                                                              
+      124 +**Owner, October 21 UTC:** "Do any linked documentation pieces
+          + attempt to preview an image? ... I have an interest in killin
+          +g two birds with one stone via requesting that a markdown doc 
+          +carry an image. In doing so, we must solve image rendering in 
+          +the Detail Panel **and** resolve having actual "Asset"-typed f
+          +iles." On the never-documented files: "Do these files inform u
+          +s with respect to either of the following? - Connectivity of a
+          + directory - Authorial intent ... in which situations would a 
+          +Live Documentation file be a poor idea? (High-churn temporary 
+          +files would be a good example, but if they're not gitignored m
+          +aybe they're pertinent? Who knows!)"                          
+      125 +                                                              
+      126 +**Agent/work:** Measured: none of the 54 bundled documents emb
+          +eds an image; the reader has no image syntax; an image only a 
+          +doc embeds would be an island, since markdown links are not ed
+          +ges. About 43 tracked files outside the excluded workspace nev
+          +er had Live Docs, most carrying intent and several carrying wi
+          +res. A stray `cat` in a recording command created an empty pla
+          +ceholder file, which was removed. The reply: the reader showin
+          +g images is worth doing on its own; real asset nodes need edge
+          +s, by counting an embed as a link or by code that uses the ima
+          +ge; screenshots embedded in their modules' docs were suggested
+          +. A table of the never-documented files by intent and connecti
+          +vity, and three cases where a Live Doc is a poor idea: derived
+          + files, secrets, and bulk files with no meaning one by one. A 
+          +proposed rule, every tracked, non-excluded file documented exc
+          +ept derived files and secrets. Two decisions put.             
+      127 +                                                              
+      128 +**Source:** [Record, Turn 10](../2026-10-20.1.record.md#turn-1
+          +0); the Claude Code capture, lines 3,597–3,762.               
+      129 +                                                              
+      130 +## Turn 11                                                    
+      131 +                                                              
+      132 +**Owner:** "'No-networking' rule? Refuse image links that are 
+          +external? How do we guarantee that our software never makes ne
+          +twork calls if opening a markdown file can potentially open a 
+          +hyperlink?" On screenshots: "I'm fine if we want to use a fitt
+          +ing image or two to indicate the state of a particular visual-
+          +centric _thing_, but recognize that screenshots stale quickly 
+          +in a UI that is evolving." On assets: "maybe what I want inste
+          +ad is a different type of asset file? For instance, Unity proj
+          +ects have a bunch of interesting files -- metadata sidecars, s
+          +prite _atlases_, things of that nature. ... Maybe that's an al
+          +ternate direction to answer the "asset" type node question in,
+          + and safer than trying to determine when to resolve hyperlinks
+          + to render images in markdown?"                               
+      133 +                                                              
+      134 +**Agent/work:** Found three holes in the owner's ask of 2025-1
+          +2-14: the reader passed a doc's raw HTML to `innerHTML`, so an
+          + `<img>` would fetch from the internet and an `onerror` would 
+          +run script; `?data=` accepted any address; and no test watched
+          + for outside requests. The reply: "Your no-network question al
+          +so turned up a real defect, which I'd fix before anything else
+          +"; five layers to guarantee it (escape raw HTML, local images 
+          +only if any, a Content-Security-Policy, `?data=` on the page's
+          + own site, a browser test); no screenshots for now; Unity as t
+          +he better route to assets, its `.meta` GUIDs giving assets rea
+          +l incoming wires; two decisions.                              
+      135 +                                                              
+      136 +**Source:** [Record, Turn 11](../2026-10-20.1.record.md#turn-1
+          +1); the Claude Code capture, lines 3,764–3,787, where it ends.
+      137 +                                                              
+      138 +## Turn 12                                                    
+      139 +                                                              
+      140 +**Owner:** Quoting two passages of progress text their harness
+          + had shown: "I've definitely talked about mapping Unity projec
+          +ts many times throughout the chat history of this project." An
+          +d: "Wow! Thank you for finding! Yeah if we have a chance to ha
+          +rden our security (i.e. our CSP) without losing functionality,
+          + that would be phenomenal! The browser does indeed have a lot 
+          +to try and better protect us these days!"                     
+      141 +                                                              
+      142 +**Agent/work:** Took the hardening as approved. The owner was 
+          +right about Unity: the agent's search had covered Memory, the 
+          +vision, layer 3 and Research, but not the chat history, which 
+          +has it on 2025-11-08, 2026-02-24, 2026-03-17, 2026-09-27, 2026
+          +-10-15 and 2026-10-20. Gathered with dates into ideas.md.     
+      143 +                                                              
+      144 +**Source:** [Record, Turn 12](../2026-10-20.1.record.md#turn-1
+          +2).                                                           
+      145 +                                                              
+      146 +## Turn 13                                                    
+      147 +                                                              
+      148 +**Owner, mid-turn:** "All closed-source on my end, sorry. We'l
+          +l have to look for Unity templates. Unreal templates too maybe
+          +? The idea is that Live Documentation is a capable tool which 
+          +can map out the contents of a directory recursively and pull o
+          +ut for you, the user, its actual structure, in an explorable m
+          +anner." On the five layers: "Solid. Agreed."                  
+      149 +                                                              
+      150 +**Agent/work:** Built:                                        
+      151 +- **The reader** holds each link, autolink and code span aside
+          + behind a private-use marker and escapes the rest whole. That 
+          +also fixed three display faults of the old order: a path in ba
+          +ckticks shown as raw link markup, underscores inside code turn
+          +ed into italics, and italics written into link attributes.    
+      152 +- **The page's policy** allows only the page's own files. Inli
+          +ne styles are allowed because three of the 3D view's libraries
+          + inject their own stylesheets. The six `onclick` attributes be
+          +came listeners.                                               
+      153 +- **Own site only:** `?data=` and the history file are refused
+          + elsewhere, in words.                                         
+      154 +- **The layout lab's** loader is served as a file instead of a
+          +n inline module.                                              
+      155 +- **`tests/e2e/no-network.spec.ts`**, eight tests, counts what
+          + the page asked for and what reached the network separately. E
+          +ach defence was removed in turn and its test failed.          
+      156 +- **A subagent's audit** of every HTML sink found nothing unes
+          +caped and two small weaknesses, both fixed.                   
+      157 +- **`SECURITY.md`'s** claim that the page "contacts no other h
+          +ost" had been untrue while raw HTML passed; rewritten, its dep
+          +endency table corrected.                                      
+      158 +                                                              
+      159 +The first gate stopped at lint, which refused a NUL character 
+          +in a pattern; the marker became U+E000 rather than a disabled 
+          +rule. The second passed 1,337 unit and 112 integration tests a
+          +nd 185 of 186 browser tests. The failure, a hover test waiting
+          + 5 s, passed alone four times in four. Rerunning its file then
+          + failed two other tests, which also failed at `bcab35b7` with 
+          +no policy. The machine had slowed: the bundle tests took 2.1–2
+          +.4 s against 1.0–1.5 earlier. Committed on that evidence as `c
+          +ea67fc5` (24 files) and `59fed0eb`. The closing reply said all
+          + of it plainly, suggested rerunning the full gate on a quiet b
+          +ox, and asked one question: should bundled docs in the reader 
+          +be styled like the authored sections, since their links are th
+          +e browser's default dark blue on the dark panel? Unanswered at
+          + the chat's end.                                              
+      160 +                                                              
+      161 +**Source:** [Record, Turn 13](../2026-10-20.1.record.md#turn-1
+          +3), with [the hardening as built](../2026-10-20.1.record.md#th
+          +e-hardening-of-turns-12-and-13-as-built) and [the delivered re
+          +ply](../2026-10-20.1.record.md#assistant--delivered-reply-to-t
+          +urns-12-and-13); [the pictures](../../../../Screenshots/2026-1
+          +0-21/README.md); [the decision](../../../../../.mdmd/layer-3/a
+          +rchitectural-decisions.mdmd.md#the-explorer-reads-only-its-own
+          +-site-held-by-its-policy-and-a-browser-test-recorded-2026-10-2
+          +1).                                                           
+      162 +                                                              
+      163 +## Commits and outcomes                                       
+      164 +                                                              
+      165 +The nine commits were checked against git on 2026-10-21; attri
+          +bution follows the recorded exchanges.                        
+      166 +                                                              
+      167 +| Commit | Turn | Files | Verified subject |                  
+      168 +| --- | --- | ---: | --- |                                    
+      169 +| [3f498beb](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/3f498beb) | 1 | 8 | Recover the interrupted October 1
+          +9 session and bootstrap October 20 |                          
+      170 +| [4e6774aa](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/4e6774aa) | 1 | 1 | Record the completed October 20 b
+          +ootstrap |                                                    
+      171 +| [708f0cfa](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/708f0cfa) | 2–7 | 123 | Separate reading from pinning
+          + in the Local Map, in 2D and 3D |                             
+      172 +| [ae5fe859](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/ae5fe859) | 7 | 4 | Record the October 20 landing and
+          + the continuation across harnesses |                          
+      173 +| [a3ee07e5](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/a3ee07e5) | 9 | 82 | Keep each commit's authored word
+          +s in the history, and carry where they link |                 
+      174 +| [bcab35b7](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/bcab35b7) | 9 | 4 | Record linked documents through t
+          +he history, and the Claude Code capture |                     
+      175 +| [cea67fc5](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/cea67fc5) | 12–13 | 24 | Hold the Explorer page to it
+          +s own site |                                                  
+      176 +| [59fed0eb](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/59fed0eb) | 12–13 | 5 | Record the no-network hardeni
+          +ng, the owner's Unity aim, and the Claude Code capture |      
+      177 +| [996b5785](https://github.com/jfjordanfarr/Live-Documentatio
+          +n/commit/996b5785) | 13 | 1 | Record the last reply of the Oct
+          +ober 20 session |                                             
+      178 +                                                              
+      179 +The three product commits each followed a full `npm run safe:c
+          +ommit -- --e2e`: lint, build, the tests' type-check, 1,318 uni
+          +t, 111 integration, the documentation audits and 177 browser t
+          +ests at `708f0cfa`, after four earlier gates stopped at an imp
+          +ort order, a bundle test's budget, six layout-lab geometry che
+          +cks and a type error; 1,328 unit, 112 integration and 178 brow
+          +ser tests at `a3ee07e5`, after a lint error and the history fi
+          +le's designed refusal; and 1,337 unit, 112 integration and 185
+          + of 186 browser tests at `cea67fc5`, committed with one browse
+          +r failure on the evidence above. That last is the session's on
+          +e product commit without a whole green gate, and the reply sai
+          +d so. `996b5785`, committed at 12:58 UTC on October 21 with th
+          +e Claude co-author line, adds the delivered reply to Turns 12 
+          +and 13 and the closing sentence to the record; no capture show
+          +s the exchange that prompted it. Nothing was pushed by the age
+          +nt.                                                           
+      180 +                                                              
+      181 +What shipped: click-to-inspect with a direct one-click Pin, Ce
+          +ntre and More in 2D and 3D, the reader over an unchanged canva
+          +s or the whole screen on small viewports, links and Back carry
+          +ing the inspected item apart from the subject, Unpin undoing P
+          +in, one picker for 3D hover, a perspective switch a third fast
+          +er; the layout lab measuring the rows' controls; the history k
+          +eeping each commit's authored words and carrying where they li
+          +nk, through the CLI, the 3D history, the step panel and the bu
+          +ndle; the page refusing any other site by escaping, by its pol
+          +icy, by refusing outside data addresses and by a browser test.
+          + The owner's verdicts along the way: "WOW! I am REALLY enjoyin
+          +g this interaction mode"; "AHHHH OF COURSE"; "I'd really since
+          +rely appreciate these enhancements"; "Wow! Thank you for findi
+          +ng!"; "Solid. Agreed."                                        
+      182 +                                                              
+      183 +## Open ends                                                  
+      184 +                                                              
+      185 +**Owner decisions, in effect:**                               
+      186 +                                                              
+      187 +- Inspect-first with a direct Pin, as built (October 19, Turn 
+          +24; landed here). Actions collapse into More only when a tap c
+          +annot tell two of them apart (Turn 5). Mobile controls and wha
+          +t a heavily zoomed-out 2D map can show the eye are a separate 
+          +later pass (Turn 7; in direction.md).                         
+      188 +- One record across a harness switch, as a trial (Turn 7).    
+      189 +- The galaxy report: re-test later, not prioritized. The indiv
+          +idual-Unpin dimming fixed here is a defect of its own, not a c
+          +laim to have fixed what the owner saw (Turn 7).               
+      190 +- The history keeps each commit's authored words and records i
+          +ts doc links, in the simplest form (Turn 9).                  
+      191 +- No whole class of file may silently go missing; real binary 
+          +assets in the repository are welcome if tests need them (Turn 
+          +9).                                                           
+      192 +- A fitting image or two in docs is fine, but screenshots stal
+          +e quickly; none added (Turn 11).                              
+      193 +- Unity is the direction for asset nodes with real connections
+          +; the sample comes from published Unity templates, perhaps Unr
+          +eal's, since the owner's Unity work is closed source (Turns 11
+          + and 13; in ideas.md). Not yet placed in the vision's order of
+          + work.                                                        
+      194 +- Harden the page's security without losing functionality; the
+          + five layers agreed and built (Turns 12 and 13).              
+      195 +                                                              
+      196 +**Open questions and what waits on the owner:**               
+      197 +                                                              
+      198 +- The reader's styles for bundled docs: style them like the au
+          +thored sections (13 px, accent links)? Asked in the closing re
+          +ply.                                                          
+      199 +- Which never-documented classes of file get Live Docs, and th
+          +e proposed rule with its exceptions for derived files and secr
+          +ets (Turn 10); the owner's Turn 11 answered the images half an
+          +d left this one.                                              
+      200 +- Floating More against the reader at small scales, inside the
+          + deferred mobile and zoom-out pass (Turn 5).                  
+      201 +- The galaxy re-test (Turn 7).                                
+      202 +- A full gate on a quiet machine to confirm `cea67fc5`'s brows
+          +er results (Turn 13).                                         
+      203 +                                                              
+      204 +**Open work, as the session left it:** Unity's YAML and GUID e
+          +dges, each `.meta` folded into its asset's doc, an independent
+          + check and a template sample; the zoomed-out legibility and to
+          +uch pass; a linked document's text of the day stays out of the
+          + bundle, a later choice; the October 19 ownership worktree and
+          + older scratch under `AI-Agent-Workspace/tmp/` were left alone
+          + deliberately; smooth damping, complete generation through reu
+          +se and the performance instrument stand from earlier sessions.
+      205 +                                                              
+      206 +**Process:** the record was kept across the harness switch, Co
+          +dex's commentary and checkpoints through Turn 5 and Claude Cod
+          +e's from Turn 6, with one capture-only reply recovered by the 
+          +following session. Codex ran delegates in disjoint files; Clau
+          +de Code ran a read-only code reviewer in Turn 7 and an HTML-si
+          +nk auditor in Turn 13, their findings verified before adoption
+          + and their threads not kept. Browser work stayed serialized. T
+          +he agents' slips are in the record: a test file overwritten du
+          +ring the transfer and caught by its guard, an import order, a 
+          +type error a lint pass did not see, an unbound method, a stray
+          + `cat` that wrote an empty file, scratch servers left running 
+          +under another process name.                                   
+● Summary written. Now the month inventory: the October 20 entry, the capture's
+  coverage, the summary, and today's record.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/README.md)
+  ⎿  Added 2 lines, removed 1 line
+      21  - [October 16, session 1: Claude Code](2026-10-16.1.record.md):
+           closed on 2026-10-17 by the following session, through Turn 4,
+           with its closing reply recovered verbatim from the owner's fou
+          rth re-export under a dated heading; no closing exchange exists
+          , since the owner opened the October 17 chat instead. Opened wi
+          th the standard bootstrap to summarize the October 15–16 sessio
+          n ([the summary](Summarized/2026-10-15.1.SUMMARIZED.md) written
+          , that record's closing reply recovered and the record closed);
+           then the owner's answers at that summary's open ends and their
+           pick of change over time as the next big thing, with the works
+          pace's own words mined back to 2025-12-19 and the field's prior
+           art surveyed ([the survey](../../../Research/2026-10-16-change
+          -over-time.md)), and the two `reachable` leftovers and five doc
+           comments landed (`f77b58a9`, `2fa8544a`); their answers to ten
+           questions by exception and their two gos, the manifests of Rus
+          t, Python, Go and Maven as Live Docs (`29c83910`) with a hygien
+          e pass found on the way (`cf82b2c3`, `45cceb5e`, `1f100905`), a
+          nd [a probe](../../../Probes/2026-10-16/change-over-time/README
+          .md) over 122 of this repository's commits played in the struct
+          ure layout; then their standard of the durable final shape and 
+          their asset line, and the asset rule (`22a899a6`), the 3D Local
+           Map's revealed wires drawn (`73503843`) and PowerShell read by
+           a grammar of this project's own (`dc60acba`), each after a ful
+          l gate. Eight owner messages under four turn anchors, the mid-t
+          urn messages under their turns, beside one status prompt of the
+           harness's own. Root conversation and authored work notes are s
+          eparate, following the [recording convention](../../README.md#r
+          ecording-as-work-proceeds). Summarized on October 17 by the fol
+          lowing session.
+      22  - [October 17–19, session 1: Claude Code](2026-10-17.1.record.m
+          d): closed by the owner at Turn 13 on October 19 and [summarize
+          d](Summarized/2026-10-17.1.SUMMARIZED.md) by the following sess
+          ion. The record covers the complete available root/user exchang
+          e: narrative maintenance, the history plan and four landings, o
+          wner tuning and rename-cache fixes, the lens correction, and th
+          e investigation that kept browser tests serial. Its final deliv
+          ered report is preserved; no distinct reply to the closing Turn
+           13 is available. The early terminal export covers only through
+           Turn 4.
+      23  - [October 19–20, session 1: Codex](2026-10-19.1.record.md): in
+          terrupted during the approved inspect-first implementation, clo
+          sed by the following session on October 20 and [summarized](Sum
+          marized/2026-10-19.1.SUMMARIZED.md) through 26 owner turns and 
+          17 verified commits. The expanded export supplies the final una
+          nswered owner turn, later implementation progress and a partial
+           Turn 22 reply. Hosted history, generation corrections and the 
+          stewardship batch landed; the navigation candidate remains unco
+          mmitted in its temporary worktree, with its last captured type-
+          check failing. The old active-through-Turn-17 description was a
+          n outdated checkpoint, superseded by this October 20 source rev
+          iew.
+      24 -- [October 20, session 1: Codex, then Claude Code](2026-10-20.1
+         -.record.md): opened for the standard new-day bootstrap and the 
+         -recovery of the interrupted October 19 session, then the approv
+         -ed inspect-first navigation finished, playtested and owner-revi
+         -ewed (Turns 2–5). Codex stopped at its usage limit before landi
+         -ng it; from Turn 6 a Claude Code root continued the same record
+         - at the owner's request (Turn 7), the first record kept across 
+         -a harness switch, as a trial. The landing followed an independe
+         -nt review, the layout lab's catch of the label and row geometry
+         -, and five full gates. Root conversation and authored work note
+         -s remain separate.                                             
+      24 +- [October 20–21, session 1: Codex, then Claude Code](2026-10-2
+         +0.1.record.md): closed through Turn 13 and [summarized](Summari
+         +zed/2026-10-20.1.SUMMARIZED.md) on 2026-10-21 by the following 
+         +session. Opened for the standard new-day bootstrap and the reco
+         +very of the interrupted October 19 session, then the approved i
+         +nspect-first navigation finished, playtested and owner-reviewed
+         + (Turns 2–5). Codex stopped at its usage limit before landing i
+         +t; from Turn 6 a Claude Code root continued the same record at 
+         +the owner's request (Turn 7), the first record kept across a ha
+         +rness switch, as a trial. The landing (`708f0cfa`) followed an 
+         +independent review, the layout lab's catch of the label and row
+         + geometry, and five full gates; then linked documents through t
+         +he history (`a3ee07e5`) and the page held to its own site (`cea
+         +67fc5`), running past midnight into October 21. Thirteen owner 
+         +messages under thirteen turn anchors. A mid-turn Turn 9 reply t
+         +hat only the Claude Code capture held was recovered under a dat
+         +ed heading, and the Turn 12 note on the owner's quoted passages
+         + was corrected with a dated note. Root conversation and authore
+         +d work notes remain separate.                                  
+      25 +- [October 21, session 1: Claude Code](2026-10-21.1.record.md):
+         + opened with the standard bootstrap; it summarized the October 
+         +20–21 session. Root conversation and authored work notes are se
+         +parate, following the [recording convention](../../README.md#re
+         +cording-as-work-proceeds).                                     
+      26  
+      27  ## Owner captures
+      28  
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/README.md)
+  ⎿  Added 1 line, removed 1 line
+      26  
+      27  ## Owner captures
+      28  
+      29 -- [October 20 Claude Code capture](2026-10-20-202504-whoops-it-
+         -appears-that-ive-hit-a-usage-limit-on.txt): the harness's expor
+         -t of the Claude Code side of session 1, first received with Tur
+         -n 8 (134,250 bytes, 2,436 lines, SHA-256 `03155e0dc1a18bb3beb57
+         -29ea7ce94d1901eee2080176d43a8c900efbc29487e`, ending at the del
+         -ivered Turn 7 reply), then re-exported by the owner at 20:37 UT
+         -C: 143,860 bytes, 2,622 lines, SHA-256 `9095fafd555edb7dbe42c80
+         -cd13fde0079d9120218d7e72a30c9cb9bc17c7cdc`, whose first 134,250
+         - bytes are the first copy byte for byte, running to the owner's
+         - Turn 9 message; and again, found in the working tree with Turn
+         - 12 (file time 2026-10-21 01:17 UTC): 198,767 bytes, 3,787 line
+         -s, SHA-256 `b0ed07ee465ebd596491398fc7f831b5798297e558cecd0a5bb
+         -fb514c412f555`, whose first 143,860 bytes are the second copy b
+         -yte for byte. It runs from the owner's Turn 6 message to their 
+         -Turn 11 message; only size, hashes and endpoints were checked. 
+         -Kept under the harness's own name, as the October 16 and 17 cap
+         -tures are. Source bytes are preserved.                         
+      29 +- [October 20 Claude Code capture](2026-10-20-202504-whoops-it-
+         +appears-that-ive-hit-a-usage-limit-on.txt): the harness's expor
+         +t of the Claude Code side of session 1, first received with Tur
+         +n 8 (134,250 bytes, 2,436 lines, SHA-256 `03155e0dc1a18bb3beb57
+         +29ea7ce94d1901eee2080176d43a8c900efbc29487e`, ending at the del
+         +ivered Turn 7 reply), then re-exported by the owner at 20:37 UT
+         +C: 143,860 bytes, 2,622 lines, SHA-256 `9095fafd555edb7dbe42c80
+         +cd13fde0079d9120218d7e72a30c9cb9bc17c7cdc`, whose first 134,250
+         + bytes are the first copy byte for byte, running to the owner's
+         + Turn 9 message; and again, found in the working tree with Turn
+         + 12 (file time 2026-10-21 01:17 UTC): 198,767 bytes, 3,787 line
+         +s, SHA-256 `b0ed07ee465ebd596491398fc7f831b5798297e558cecd0a5bb
+         +fb514c412f555`, whose first 143,860 bytes are the second copy b
+         +yte for byte. It runs from the owner's Turn 6 message to their 
+         +Turn 11 message; only size, hashes and endpoints were checked a
+         +t receipt. Read in full on 2026-10-21 for [the summary](Summari
+         +zed/2026-10-20.1.SUMMARIZED.md): its owner messages and deliver
+         +ed replies agree with the record, its progress lines are shorte
+         +r renderings of the commentary the record quotes, and its one s
+         +ubstantive message the record lacked, a mid-turn Turn 9 reply a
+         +t lines 2,699–2,743, was recovered into the record. The code re
+         +viewer's hand-back printed at line 881 is a `›` notice, not a s
+         +ource. Kept under the harness's own name, as the October 16 and
+         + 17 captures are. Source bytes are preserved.                  
+      30  - [October 20 visible-session export](2026-10-20.1.export.md): 
+          received again with Turn 6, the Codex side whole through its us
+          age-limit notice: 184,044 bytes / 1,732 newline characters, SHA
+          -256 `364a2c296cd7ab7e499ba60fae01692ab577c17641c6bdc1c34d9e6eb
+          952070e`, five owner turns. Its first 56,862 bytes are the Turn
+           2 copy below, byte for byte, so it is an exact extension; ever
+          y root and owner message in it is in the record (Turn 7's compa
+          rison). It has no Claude Code turns. Source bytes are preserved
+          .
+      31  - Earlier receipt, with Turn 2, 56,862 bytes / 409 newline char
+          acters, SHA-256 `fd92a9b1df0175e4ef82c0c56d15844b3146d585276a9f
+          afa0e47fc786ffe8de`. Identical to the read-only attachment name
+          d file_2026-10-20.1.export.md. The inspected endpoint is the de
+          livered bootstrap reply; only integrity and endpoint were check
+          ed at receipt, not the complete conversation. Source bytes are 
+          preserved.
+      32  
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/README.md)
+  ⎿  Added 2 lines
+      75  
+      76  ## Summaries
+      77  
+      78 +- [October 20–21, session 1](Summarized/2026-10-20.1.SUMMARIZED
+         +.md): completed October 21 from the full maintained record, the
+         + Codex export and the Claude Code capture, with thirteen owner 
+         +turns and nine verified commits. Covers the inspect-first navig
+         +ation landed across the harness switch with the independent rev
+         +iew's six fixes and the layout lab's catch, the history keeping
+         + each commit's authored words and carrying where they link, and
+         + the page held to its own site by escaping, a Content-Security-
+         +Policy and a browser test; the owner's Unity aim gathered; the 
+         +reader's bundled-doc styles left as an open question.          
+      79 +                                                               
+      80  - [October 19–20, session 1](Summarized/2026-10-19.1.SUMMARIZED
+          .md): completed October 20 from the full maintained record and 
+          expanded owner export, with 26 turns and 17 verified commits. C
+          overs force experiments, generation correctness and measured re
+          use, public hosted-history verification, test/architecture stew
+          ardship, and the accepted inspect-first grammar whose implement
+          ation was interrupted. Names the surviving draft and distinguis
+          hes its failed type-check from the last landed full gate.
+      81  
+      82  - [October 17–19, session 1](Summarized/2026-10-17.1.SUMMARIZED
+          .md): completed October 19 from the entire maintained record an
+          d early export, with thirteen owner turns and 29 verified commi
+          ts. Covers the history pipeline and 3D viewer, the owner's forc
+          e settings and continuous-easing direction, rename-cache and le
+          ns fixes, and the measured rejection of test parallelism. Prese
+          rves incomplete full runs followed by focused reruns, the slide
+          r's pre-gate commit and the final budget increases.
+
+● Now the narrative's last chapter. First a quick check of a word I'd like to
+  quote from October 18.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/Memory/narrative.md)
+  ⎿  Added 8 lines
+      268  
+      269  The implementation began after midnight and stopped amid repea
+           ted model-capacity reports. Its reader state, map controls and
+            partly integrated application survived in an isolated worktre
+           e; the last captured type-check failed, and no finished gestur
+           e change landed. The next morning's bootstrap recovered the fi
+           nal owner message from the expanded export and saved the curre
+           nt draft for continuation. The [session summary](../ChatHistor
+           y/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md) keeps the sev
+           enteen commits, the accepted interaction decisions and the dis
+           tinction between the last fully verified product and that unfi
+           nished work.
+      270  
+      271 +### Reading apart from keeping, and the page held to its own s
+          +ite (October 20 to 21)                                        
+      272 +                                                              
+      273 +The next morning Codex recovered the interrupted night and, at
+          + the owner's word, finished it. Inspection became state of its
+          + own beside the subject and the pins. The reader covered an un
+          +changed canvas, or filled a small screen, and Back between two
+          + pieces of evidence left the map where it was. The owner's fir
+          +st look: "WOW! I am REALLY enjoying this interaction mode ... 
+          +Holy crap, it's just a BLAST to play around in within the 2D l
+          +ocal map. My LORD it's fun!" ([2026-10-20.1.record](../ChatHis
+          +tory/2026/10/2026-10-20.1.record.md#turn-3)). Their one worry 
+          +was the size of the controls on a phone: collapse them into Mo
+          +re, they said, only "when the screen size is so small that a t
+          +ap on two different buttons on the same card cannot be disting
+          +uished" ([Turn 5](../ChatHistory/2026/10/2026-10-20.1.record.m
+          +d#turn-5)). They also reported a 3D galaxy that did not come b
+          +ack after unpinning. Their route did not reproduce it, but ano
+          +ther did: a mouse-focused button kept 32 of 35 spheres dimmed.
+          + A faster pointer then exposed a race between the application'
+          +s hover and the graph library's cache, and one picker now deci
+          +des hover, click and hold. Codex hit its usage limit in the mi
+          +ddle of its second full gate.                                 
+      274 +                                                              
+      275 +The owner switched to Claude Code and asked it to keep the sam
+          +e record rather than open a second: "I saw you created at `.2`
+          + chat. I think that was a really wise default ... Can we try t
+          +hat out and see how it goes?" ([Turn 7](../ChatHistory/2026/10
+          +/2026-10-20.1.record.md#turn-7)). The gate had failed on one b
+          +undle test's time budget. An independent review of Codex's dif
+          +f found six defects, among them an Unpin that acted as the car
+          +d's close, against the owner's rule of October 15. The next ga
+          +te failed six layout-lab tests that nobody had run. Codex's ne
+          +w buttons stood inside the directory label's text and made eve
+          +ry card taller than the lab's model of it, and the agent wrote
+          +: "The page is the truth here, approved by the owner's eye; th
+          +e model was what had to learn." The fifth gate passed and the 
+          +work landed. The owner made the phone worry a later pass of it
+          +s own, and widened it: "Even on desktops, once a sufficient am
+          +ount of zoom-out has occurred, certain things will not be dist
+          +inguishable to the human eye."                                
+      276 +                                                              
+      277 +Asked how the history could carry linked documents, the agent 
+          +found that it deleted each commit's authored words before rege
+          +nerating it, what the owner had called "one man's "deliberatel
+          +y" is another man's "needlessly"" on October 18 ([2026-10-17.1
+          +.record](../ChatHistory/2026/10/2026-10-17.1.record.md#turn-10
+          +)). They caught their own doubt halfway through a sentence: "E
+          +ven still, the authored content section could not account for 
+          +all markdown links to related docs, no? Actually... sh*t... ma
+          +ybe it does" ([Turn 9](../ChatHistory/2026/10/2026-10-20.1.rec
+          +ord.md#turn-9)). It does: all 876 such links are authored. The
+          + history now keeps each commit's words and records where they 
+          +link. A question about images in docs then turned into one abo
+          +ut the product's oldest promise: "How do we guarantee that our
+          + software never makes network calls if opening a markdown file
+          + can potentially open a hyperlink?" ([Turn 11](../ChatHistory/
+          +2026/10/2026-10-20.1.record.md#turn-11)). The reader had been 
+          +passing a doc's raw HTML into the page, so an image tag would 
+          +fetch from the internet and an error handler would run script,
+          + and nothing had ever tested the owner's ask of 2025-12-14. "W
+          +ow! Thank you for finding!" ([Turn 12](../ChatHistory/2026/10/
+          +2026-10-20.1.record.md#turn-12)). The page now escapes a doc's
+          + HTML and refuses any other site by its own Content-Security-P
+          +olicy and in its data parameter, and a browser test fails on a
+          +ny outside request. `SECURITY.md` had said the page contacted 
+          +no other host, which was untrue while the HTML passed; it was 
+          +rewritten. The owner turned the asset question toward a projec
+          +t they had named many times over the year, Unity, whose `.meta
+          +` sidecars would give assets real connections. Their own Unity
+          + work is closed source, so a sample would come from published 
+          +templates. The [session summary](../ChatHistory/2026/10/Summar
+          +ized/2026-10-20.1.SUMMARIZED.md) keeps the nine commits, the o
+          +ne capture-only reply recovered into the record, and the last 
+          +landing, committ … [+64 chars]                                
+      278 +                                                              
+      279  ## Harnesses and models
+      280  
+      281  Most transcripts name no model; this table gives only what the
+           y say. A model's name in a transcript records what the owner e
+           nabled or said, not proof of which model wrote every reply.
+
+● Update(AI-Agent-Workspace/Memory/narrative.md)
+  ⎿  Added 1 line, removed 1 line
+      1  # The narrative of this workspace
+      2  
+      3 -_Current as of 2026-10-20. The story of Live Documentation from 
+        -its first prompt on 2025-10-16 to today, told from the transcrip
+        -ts and git. Every new chat reads it in full, before the five mos
+        -t recent session summaries. It is history: where it and a newer 
+        -decision of the owner's disagree, the decision holds, and what i
+        -s decided now lives in [direction.md](direction.md), [owner.md](
+        -owner.md) and [the vision](../../.mdmd/layer-1/vision.mdmd.md). 
+        -How it was made, and what it corrects in earlier accounts, is at
+        - the end. Links to transcripts give the line where the quoted wo
+        -rds are._                                                       
+      3 +_Current as of 2026-10-21. The story of Live Documentation from 
+        +its first prompt on 2025-10-16 to today, told from the transcrip
+        +ts and git. Every new chat reads it in full, before the five mos
+        +t recent session summaries. It is history: where it and a newer 
+        +decision of the owner's disagree, the decision holds, and what i
+        +s decided now lives in [direction.md](direction.md), [owner.md](
+        +owner.md) and [the vision](../../.mdmd/layer-1/vision.mdmd.md). 
+        +How it was made, and what it corrects in earlier accounts, is at
+        + the end. Links to transcripts give the line where the quoted wo
+        +rds are._                                                       
+      4  
+      5  ## The arc
+      6  
+
+● Update(AI-Agent-Workspace/Memory/narrative.md)
+  ⎿  Added 2 lines, removed 2 lines
+      285  | 2025-10-16 to 2026-04-01 | GitHub Copilot Chat in VS Code, a
+           gent mode; on Windows until 2026-02-03, then in a Linux devcon
+           tainer | Claude Haiku 4.5 (Preview), enabled 2025-10-17; GPT-5
+            Codex (Preview), 10-24; GPT-5-Codex, 11-04 and 12-02; GPT-5.1
+           -Codex, then back to GPT-5-Codex, 11-15; Claude Opus 4.5 (Prev
+           iew) and GPT-5.1-Codex-Max (Preview) enabled 12-04, Claude Opu
+           s 4.5 active 12-05 and 12-19; GPT-5.2 (Preview), 12-11; Gemini
+            3 Flash (Preview) for one turn, 12-18; GPT 5.3-Codex, then Cl
+           aude Opus 4.6, 2026-02-15; none named in January or March |
+      286  | 2025-11-19 to 11-20 | Google's Antigravity, beside Copilot o
+           n the same working tree; the captures hold the owner's message
+           s and the agent's action stubs, no agent prose | Gemini 3 ("Ge
+           mini 3 Pro") |
+      287  | Outside the workspace, December 2025 to March 2026 | A brows
+           er; NotebookLM | Gemini 3 rewrote the summaries of 2025-10-16 
+           to 12-01 on 12-02 and kept the Project Development Journey; No
+           tebookLM (Gemini 2.5 Flash) read the exported commits as an ou
+           tside critic |
+      288 -| From 2026-09-26 | Claude Code in VS Code, in the devcontaine
+          -r | Opus 5.5 and Fable 5.1 by turns in September; Fable 5.1 fo
+          -r the October sessions, with Opus 5.5 subagents; Opus 5.5 for 
+          -the session that wrote this account |                         
+      289 -| 2026-09-30 to 10-01, 10-02 to 10-05, 10-12 to 10-14 | Codex 
+          -in VS Code | GPT-6 Astra, by the owner's name for it; some rec
+          -ords say the model label is not exposed |                     
+      288 +| From 2026-09-26 | Claude Code in VS Code, in the devcontaine
+          +r | Opus 5.5 and Fable 5.1 by turns in September; Fable 5.1 fo
+          +r the October sessions, with Opus 5.5 subagents; Opus 5.5 for 
+          +the session that wrote this account, and from Turn 6 of the Oc
+          +tober 20 session, which the owner selected at extra-high effor
+          +t when Codex reached its usage limit |                        
+      289 +| 2026-09-30 to 10-01, 10-02 to 10-05, 10-12 to 10-14, 10-19 t
+          +o 10-20 | Codex in VS Code | GPT-6 Astra, by the owner's name 
+          +for it; some records say the model label is not exposed. On Oc
+          +tober 19 delegates ran under the exposed `gpt-6-sol` identifie
+          +r, which the owner had asked for by the name GPT 6.1 Sol. (Add
+          +ed 2026-10-21: the table had omitted the October 19 and 20 Cod
+          +ex sessions.) |                                               
+      290  
+      291  ## Where the rules came from
+      292  
+
+● Narrative updated, including a dated addition to its harness table, which had
+  left out the October 19 and 20 Codex sessions. Now the four documentation
+  audits and a check of the October 17 anchor.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All four audits pass. The anchor check the previous bootstrap used is more
+  specific, so I'll run it on the files I touched.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Links and anchors check out fine—the 20 warnings are just repeated headings
+  like ### User. Next, I'll pull up the vision's order of work from AGENTS.md to
+  rank priorities against, rather than relying on the last session's open ends.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The vision's status still stops before the no-network work, so I'll add one
+  sentence there. To rank the World Map's remaining tickets accurately, let me
+  also read their names from its plan.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● I have what I need to rank. One sentence for the vision's status, then this
+  session's record, then the bootstrap commit.
+
+● Update(.mdmd/layer-1/vision.mdmd.md)
+  ⎿  Added 1 line, removed 1 line
+      100  
+      101  The [October 17 to 18 session](../../AI-Agent-Workspace/ChatHi
+           story/2026/10/2026-10-17.1.record.md) wrote [the plan for chan
+           ge over time](../../.mdmd/layer-3/change-over-time.mdmd.md) fr
+           om the probe and landed its first two steps. The 3D picture ha
+           s gravity, a restoring force in place of held hubs, measured b
+           y the layout lab and left to the owner's eye ([the decision](.
+           ./../.mdmd/layer-3/architectural-decisions.mdmd.md#the-3d-pict
+           ure-has-gravity-a-restoring-force-in-place-of-held-hubs-record
+           ed-2026-10-17)). A repository's history can be computed under 
+           one lens (`npm run live-docs:history`: the mainline sampled, e
+           ach commit regenerated in a scratch worktree by a process of i
+           ts own, a cache beside the sequence), answered headlessly (`in
+           spect --at` and `--between`) and carried by the bundle by the 
+           exporter's choice ([the decision](../../.mdmd/layer-3/architec
+           tural-decisions.mdmd.md#a-repositorys-history-is-a-sequence-of
+           -shapes-under-one-lens-read-through-a-five-operation-seam-reco
+           rded-2026-10-18)). The same night the update's energy became o
+           ne lever, with every membership change on one path and the lin
+           es' objects kept across it ([the decision](../../.mdmd/layer-3
+           /architectural-decisions.mdmd.md#a-change-to-what-is-shown-fee
+           ds-the-3d-simulation-by-one-lever-the-update-energy-recorded-2
+           026-10-18)), and the Explorer learned to play the history: a H
+           istory control in the 3D Local Map opens a scrubber with major
+            and minor ticks for what is pinned, a step panel saying what 
+           each commit changed, a drag that places every step without a t
+           ick and a rest that settles it, renamed files and hubs keeping
+            their spheres, and the address carrying the commit ([the deci
+           sion](../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-
+           3d-local-map-plays-the-history-a-scrubber-of-major-and-minor-t
+           icks-a-step-panel-and-renames-that-keep-their-objects-recorded
+           -2026-10-18)). What remains of that plan is the owner's eye on
+            the whole, the hosted site's cache of its own history, and th
+           e instrument.
+      102  
+      103 -The [October 20 continuation](../../AI-Agent-Workspace/ChatHis
+          -tory/2026/10/2026-10-20.1.record.md#turn-2) separates the map 
+          -subject, retained pins and inspected evidence. Clicking an ent
+          -ity reads it; adjacent Pin controls retain its connections in 
+          -one action, and Centre deliberately moves the subject. Evidenc
+          -e overlays the unchanged canvas, using a full reader on narrow
+          - or short screens. Links, reload and Back preserve that indepe
+          -ndent evidence target, and changing 2D/3D preserves the map su
+          -bject. The owner positively reviewed the 2D interaction. [Touc
+          -h-control sizing at small displayed scales](../../AI-Agent-Wor
+          -kspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-3) is d
+          -eferred to a later pass, which the owner widened to what a hea
+          -vily zoomed-out 2D map should show at all, given what the eye 
+          -can distinguish ([Turn 7](../../AI-Agent-Workspace/ChatHistory
+          -/2026/10/2026-10-20.1.record.md#turn-7)). The same day the his
+          -tory began to keep each commit's authored words, as the owner 
+          -had asked on October 18, and to carry where they linked: the 3
+          -D history draws each moment's related documents and the step p
+          -anel names the links that came and went ([the decision](../../
+          -.mdmd/layer-3/architectural-decisions.mdmd.md#the-history-keep
+          -s-each-commits-authored-words-and-records-where-they-link-reco
+          -rded-2026-10-20)).                                            
+      103 +The [October 20 continuation](../../AI-Agent-Workspace/ChatHis
+          +tory/2026/10/2026-10-20.1.record.md#turn-2) separates the map 
+          +subject, retained pins and inspected evidence. Clicking an ent
+          +ity reads it; adjacent Pin controls retain its connections in 
+          +one action, and Centre deliberately moves the subject. Evidenc
+          +e overlays the unchanged canvas, using a full reader on narrow
+          + or short screens. Links, reload and Back preserve that indepe
+          +ndent evidence target, and changing 2D/3D preserves the map su
+          +bject. The owner positively reviewed the 2D interaction. [Touc
+          +h-control sizing at small displayed scales](../../AI-Agent-Wor
+          +kspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-3) is d
+          +eferred to a later pass, which the owner widened to what a hea
+          +vily zoomed-out 2D map should show at all, given what the eye 
+          +can distinguish ([Turn 7](../../AI-Agent-Workspace/ChatHistory
+          +/2026/10/2026-10-20.1.record.md#turn-7)). The same day the his
+          +tory began to keep each commit's authored words, as the owner 
+          +had asked on October 18, and to carry where they linked: the 3
+          +D history draws each moment's related documents and the step p
+          +anel names the links that came and went ([the decision](../../
+          +.mdmd/layer-3/architectural-decisions.mdmd.md#the-history-keep
+          +s-each-commits-authored-words-and-records-where-they-link-reco
+          +rded-2026-10-20)). Overnight into October 21 the page was held
+          + to its own site, as the owner had asked on 2025-12-14: a doc'
+          +s raw HTML is shown as text, the page's Content-Security-Polic
+          +y refuses every other site, the data and history addresses mus
+          +t be its own, and a browser test fails on any outside request 
+          +([the decision](../../.mdmd/layer-3/architectural-decisions.md
+          +md.md#the-explorer-reads-only-its-own-site-held-by-its-policy-
+          +and-a-browser-test-recorded-2026-10-21)).                     
+      104  
+      105  The order of work:
+      106  
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now this session's record: work notes and resumption.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md)
+  ⎿  Added 3 lines, removed 1 line
+       6  
+       7  ## Resumption
+       8  
+       9 -- State: bootstrap in progress. Memory, the narrative and the f
+         -ive most recent summaries (October 14 through October 19) read 
+         -in full. The October 20 session has no summary yet; writing it 
+         -from its record, the Codex export and the Claude Code capture i
+         -s the next step.                                               
+       9 +- State: bootstrap complete and committed with this record; the
+         + Turn 1 reply, ranking what comes next, is to be captured at th
+         +e next turn. No product work has begun.                        
+      10 +- The October 20–21 session is summarized ([summary](Summarized
+         +/2026-10-20.1.SUMMARIZED.md)), its record closed, the inventory
+         +, the narrative and the vision's status brought to the day.    
+      11 +- Open from that session, for the owner: the reader's styles fo
+         +r bundled docs; which never-documented classes of file get Live
+         + Docs; where Unity goes in the order of work; a full gate on a 
+         +quiet machine to confirm `cea67fc5`.                           
+      12  
+      13  ## Turn 1
+      14  
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Re-running the link audits after the vision and record edits, then committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Audits clean; both capture hashes match their inventory entries. Committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Committed as 7b0ce904. Let me confirm the files I'll link in the reply exist.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The bootstrap is done. I wrote up yesterday's session and committed it as
+  7b0ce904. Nothing is pushed and the working tree is clean.
+
+  Bootstrap
+
+  - Yesterday's summary (AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-
+    10-20.1.SUMMARIZED.md) covers 13 turns and 9 commits across the
+    Codex-to-Claude switch. I read the session's record, the Codex export and
+    the Claude Code capture in full to write it.
+  - Two fixes to yesterday's record:
+    - The capture held a reply from Turn 9 that the record had missed: the one
+      saying all 876 related-doc links live in authored sections. It's now in
+      the record (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#
+      assistant--mid-turn-reply-recovered-2026-10-21) with a dated heading.
+    - The record's note on your Turn 12 said only your second quoted passage
+      came from progress text. Your first quote wasn't in the delivered reply
+      either; I corrected the note.
+  - Also updated: a new section in the narrative
+    (AI-Agent-Workspace/Memory/narrative.md), and its table of harnesses, which
+    had left out the October 19–20 Codex sessions. The vision's status
+    (.mdmd/layer-1/vision.mdmd.md#where-this-stands) now mentions the no-network
+    work.
+  - The four documentation audits pass.
+
+  What's next, ranked against the vision and direction.md
+
+  The vision's steps 1, 2 and 4 are done. Change over time, your last "next big
+  thing", is mostly built: history, scrubber, hosted history and linked docs. So
+  the arc returns to your standing order.
+
+  1. The World Map plan is your first item, untouched since October 10. Two
+     talks are ready; they unlock different things:
+     - T8, moving between the Local Map and the World Map. This is the one you
+       named as unsettled, and every scenario depends on it. Yesterday's
+       Inspect/Pin/Centre grammar gives it new vocabulary. The Local Map can
+       already reach another thing's file along a wire; what's missing is
+       knowing which thing you're in and how you got there.
+     - T3, where declared facts live and who writes positions. This blocks the
+       traded file (T6), which is your work use case: handing colleagues a wired
+       estate they can change and send back.
+
+     I'd start with T8, since T12 (paths across systems) also waits on it. If
+     the work use case matters more right now, T3 is the better pick. The plan's
+     open tickets (.mdmd/layer-3/world-map.mdmd.md#open-questions) have the
+     details.
+  2. Easing until the 3D picture is still. You said "Bingo" to this on
+     October 18. Smooth damping felt "quite natural" to you, but it's still a
+     probe (AI-Agent-Workspace/Probes/2026-10-19/easing/README.md). It hasn't
+     been shown to settle on large graphs or through history steps, filtering
+     and drags.
+  3. The 2D↔3D switch cost, your second standing item. Yesterday's fix cut the
+     style copying by about a third. The 3D view's synchronous warm-up freeze,
+     measured on October 14
+     (AI-Agent-Workspace/Probes/2026-10-14/perspective-pause/README.md), is
+     still there.
+
+  Accepted but not built: full generation with validated internal reuse (October
+  19), and the project-archetypes design step. Unity would sit naturally in the
+  archetypes step, but you haven't placed it in the order of work yet. You
+  asked to hold the zoomed-out legibility and touch pass and the galaxy re-test
+  for later.
+
+  Quick answers that would unblock small things
+
+  - Reader styles for bundled docs: as this picture
+    (AI-Agent-Workspace/Screenshots/2026-10-21/reader-raw-html-as-text.png)
+    shows, they render at the browser's default 16 px with dark-blue links on
+    the dark panel. I'd style them like the authored sections (13 px,
+    accent-coloured links). It's small, and I'd call it a readability defect.
+  - Never-documented files: the October 20 Turn 10 rule (document every tracked
+    file except derived files and secrets) is still unanswered.
+  - A full gate when the machine is idle: the no-network commit (cea67fc5)
+    landed with one browser test failing while the machine was slow. That test
+    passed when run alone. A full run when you're not using the machine would
+    confirm it, in about 25 minutes. Tell me and I'll start it.
+
+  Which would you like to take up?
+
+❯ >I'd style them like the authored sections (13 px, accent-coloured links).
+  It's small, and I'd call it a readability defect.
+
+  Definitely a readability defect. Let's resolve that.
+
+  >Never-documented files: the October 20 Turn 10 rule (document every tracked
+  file except derived files and secrets) is still unanswered.
+
+  Hmmm, I know. This is hard. "Within reason", y'know? The hope is to have Live
+  Documentation files for every tracked file which carries authorial intent or
+  important file-to-file connectivity information with respect to the
+  directory being scanned.
+
+  >A full gate when the machine is idle: the no-network commit (cea67fc5)
+  landed with one browser test failing while the machine was slow. That test
+  passed when run alone. A full run when you're not using the machine would
+  confirm it, in about 25 minutes. Tell me and I'll start it.
+
+  We'll run it when we hit the next dev items.
+
+  >Easing until the 3D picture is still. You said "Bingo" to this on October
+  18. Smooth damping felt "quite natural" to you, but it's still a probe. It
+  hasn't been shown to settle on large graphs or through history steps,
+  filtering and drags.
+
+  Let's keep working on this until it's stable enough to integrate.
+● I'll record this turn first, then start with the reader styles (small, clear)
+  and read up on the easing probe.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I confirmed the probe uses damped velocity-Verlet over a conservative field,
+  which felt smooth but never settled within 1,000 ticks. Now I'll locate its
+  sources and the shipped force code, while also checking the reader's styles.
+
+  Read 6 files, ran 2 shell commands (ctrl+o to expand)
+
+● I've confirmed the smooth candidate is damped velocity-Verlet with a
+  conservative field, and its tail is slow. Next, I'll check the reader styles
+  to compare how it renders authored sections versus bundled docs.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Found the issue: shell.css styles .doc-content, which no longer exists in the
+  markup, while docs now render under the unstyled .detail-doc-content class.
+  I'll dig into when these diverged.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I found that the bundled-doc container's classes from January were never
+  actually styled, while a full set of unused .doc-content rules sits alongside
+  the authored-section rules. Now I'll check what the renderer can emit so a
+  single rule set can cover both.
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● I'll consolidate prose styling into one rule set covering the reader, authored
+  blocks, bundled docs, and the directory summary, removing the orphaned
+  .doc-content rules. First, I'll check tests and docs for references to these
+  class names.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Nothing outside the client names those classes. Let me see the directory
+  summary's markup before writing the rules.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll apply prose rules only to the directory summary's sentence, since its
+  wrapper also contains separately styled link lists. For the stylesheet, I'll
+  consolidate the orphaned .doc-content rules and authored-only element rules
+  into a single .reader-prose set, preserving the original authored look.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Authored sections retain their computed sizes and colors under the new class,
+  now extended to bundled docs and the directory summary, while the now-unused
+  bundled-doc-content rule gets removed. Next I'll build and check the result.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Built. Now to look: the October 21 screenshot README records how the "before"
+  picture was taken, so I'll match it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll start a server on a scratch port to serve the built bundle, then capture
+  1400×900 screenshots of a bundled doc, an authored section, and a directory
+  summary—first checking which bundled docs include headings, lists, and links.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll use the October 19 summary for headings, links, and code, and compare
+  coreConstants.ts against yesterday's version. Now checking the inspection
+  target's shape for the share link.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Computed styles are as intended: 13 px text, accent links (rgb(0, 145, 255)
+  instead of the browser's rgb(0, 0, 238)), and the authored section's h3
+  unchanged at 14 px white. Now to look at them.
+
+  Read 2 files (ctrl+o to expand)
+
+● The bundled doc now reads like the rest of the reader. Let me compare the
+  authored section with yesterday's picture of the same file to confirm nothing
+  shifted.
+
+  Read 1 file (ctrl+o to expand)
+
+● I noticed the list items in the authored Notes are now inheriting the 1.6
+  paragraph leading instead of the browser's tighter default. I'll fix this by
+  keeping 1.6 leading applied only to paragraphs, leaving the authored sections
+  exactly as they were.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The authored section now matches yesterday's picture of the same file. A last
+  look at the bundled doc with that leading:
+
+  Read 1 file (ctrl+o to expand)
+
+● List items still read too densely compared to the 1.6-leaded paragraphs, so
+  I'll match their leading to the paragraphs in both places, noting this tweaks
+  the authored Notes and comparing it against yesterday's screenshot as the
+  before.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● That reads well. Now a regression test after the look, as the workspace asks.
+  Let me see how the inspection spec already opens a bundled document.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I'll add a test that opens a Live Doc, follows its link into a bundled
+  document, and checks the bundled doc's paragraphs match the authored section's
+  size and colour, with no link left at the browser default.
+
+● Update(tests/e2e/inspection.spec.ts)
+  ⎿  Added 25 lines
+      161    expect(snapshot(page).selectedNodeId).toBe(source);
+      162  });
+      163  
+      164 +test("a bundled document reads like a Live Doc's authored word
+          +s: their text size and colour, and no link in the browser's ow
+          +n colour", async ({ page }) => {                              
+      165 +  const source = "packages/engine/src/config/liveDocumentation
+          +Config.ts";                                                   
+      166 +  const path = "AI-Agent-Workspace/ChatHistory/2025/11/Summari
+          +zed/2025-11-08.SUMMARIZED.md";                                
+      167 +  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHO
+          +T, view: "sources", inspection: { kind: "file", nodeId: source
+          + } })}`);                                                     
+      168 +  const prose = (selector: string) => page.locator(selector).f
+          +irst().evaluate(element => {                                  
+      169 +    const style = getComputedStyle(element);                  
+      170 +    return { fontSize: style.fontSize, color: style.color, lin
+          +eHeight: style.lineHeight };                                  
+      171 +  });                                                         
+      172 +  const authored = await prose("#detail-body .doc-authored p")
+          +;                                                             
+      173 +  await page.locator(`#detail-body a.bundled-doc-link[data-doc
+          +-path="${path}"]`).first().click();                           
+      174 +  await expect(page.locator("#detail-title")).toHaveText("2025
+          +-11-08.SUMMARIZED.md");                                       
+      175 +  expect(await prose("#detail-body p"), "a bundled document's 
+          +paragraphs are the authored sections'").toEqual(authored);    
+      176 +  // Before 2026-10-21 a bundled document matched no rule: 16 
+          +px text and links in the browser's rgb(0, 0, 238) on the dark 
+          +panel.                                                        
+      177 +  const links = await page.locator("#detail-body a").evaluateA
+          +ll(anchors => {                                               
+      178 +    const bare = document.createElement("a");                 
+      179 +    bare.href = "#";                                          
+      180 +    document.body.append(bare);                               
+      181 +    const browserColour = getComputedStyle(bare).color;       
+      182 +    bare.remove();                                            
+      183 +    return { browserColour, colours: anchors.map(anchor => get
+          +ComputedStyle(anchor).color) };                               
+      184 +  });                                                         
+      185 +  expect(links.colours.length).toBeGreaterThan(0);            
+      186 +  expect(links.colours.filter(colour => colour === links.brows
+          +erColour)).toEqual([]);                                       
+      187 +});                                                           
+      188 +                                                              
+      189  for (const viewport of [{ width: 390, height: 844 }, { width: 
+           844, height: 390 }]) {
+      190    test(`full reader at ${viewport.width}×${viewport.height} ke
+           eps keyboard focus and its own history controls`, async ({ pag
+           e }) => {
+      191      await page.setViewportSize(viewport);
+
+  Searched for 1 pattern (ctrl+o to expand)
+● No global link rule, so the bare anchor shows the browser's own colour.
+  Running the new test, then the same test with the fix removed to prove it can
+  fail.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The 2025-11-08 summary's links couldn't be verified since their targets aren't
+  in the bundle. I'll switch to checking links from the decisions log instead,
+  since it's widely referenced and contains hundreds of links.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Passes. Now the mutation check: drop reader-prose from the bundled-doc
+  container, rebuild, and the test must fail.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed the test fails without the fix (16px vs 13px) and passes with it, so
+  I've restored the fix and rebuilt. Next I'll update the docs: the authored
+  sections of the three changed files plus today's screenshot record.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The spec doc's existing links climb four levels and I wrote three. Fixing that
+  link:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Generation confirms all docs are unchanged as expected. I'll now capture the
+  screenshot record and kick off the full gate run to confirm cea67fc5, doing
+  some light reading on the easing work in the meantime to avoid overloading the
+  machine during the browser suite.
+
+  Read 1 file (ctrl+o to expand)
+
+● Stopping my scratch server (by its port, not by a pattern match), then
+  starting the gate in the background.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the gate runs, I'll read how the 3D view drives its simulation:
+  construction, membership updates, drags, history steps and the busy flag.
+
+  Searched for 3 patterns, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The reader fix is built, reviewed, and tested, and the full gate is now
+  running (also validating cea67fc5). While that runs, I'm reviewing how the 3D
+  view drives its simulation to plan the easing work before implementing it.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● I've confirmed the lever's meaning is settled per the plan—now I just need to
+  make the probe's physics converge in reasonable time. I'll write this plan
+  down now so it survives any compaction.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the measuring harness, written while the gate runs and run after it.
+  First, the signatures it needs.
+
+  Searched for 3 patterns, ran 1 shell command (ctrl+o to expand)
+
+● I'll write the harness now and run it after the gate: it starts each scene
+  from today's cold layout and runs the probe's conservative field under damped
+  Verlet across several timestep/drag settings, recording ticks to stillness at
+  three diagonal-relative thresholds along with residual force, overlaps, and
+  cost per tick.
+
+  Made 1 scratchpad edit +44 (ctrl+o to expand)
+
+● While the gate runs, the existing physics tests are worth knowing, since an
+  integrated change must keep or deliberately replace them.
+
+  Read 1 file (ctrl+o to expand)
+
+● The gate is still running. To avoid loading the machine under its browser
+  suite, I'll hold the measurements until it reports.
+
+  Read 1 file (ctrl+o to expand)
+
+● Unit tests have passed; the gate is in its later phases. I'll wait for it to
+  finish before measuring.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The engine already stops on tick/time budgets or alpha dropping below a floor,
+  so I can implement a stillness rule simply by raising that floor—mirroring
+  how the view handles placement-only updates—without touching the library
+  itself. I'll hold off on the heavy runs until the gate clears.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll wait for the gate's completion notice rather than poll. Meanwhile, light
+  reading: how the library handles a node drag, since the new motion must hold a
+  dragged sphere where the hand puts it.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● While waiting on the gate, I'll draft the production physics as a standalone
+  module, keeping it separate from forceGraphLayout.ts so physics changes don't
+  affect geometry rules or the D3 bridge.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Write(packages/explorer/src/client/views/forceGraphPhysics.ts)
+  ⎿  Wrote 221 lines to
+     packages/explorer/src/client/views/forceGraphPhysics.ts
+      1 /**
+        adlessly: one conservative field of forces and a damped
+      3  * motion through it, which eases at a constant strength and stop
+        s when the spheres are still, judged by their motion.
+      5  * The field is the picture's four forces written as one energy:
+        a spring on each pulling link toward its rest length,
+         the origin, and an overlap penalty for spheres closer
+      7  * than their clearance. Its forces are the energy's slope, so ev
+        ery spring's pull is equal and opposite at its two ends
+        wn spring, which t
+     … +280 lines (ctrl+o to expand)
+
+● I've drafted the unit tests for the field and motion code, covering
+  force-energy consistency via finite differences, zero net force/torque,
+  monotonic energy decay, static-sphere behavior, and strength-independence of
+  the rest point, while the gate finishes running.
+
+● Write(packages/explorer/src/client/views/forceGraphPhysics.test.ts)  ⎿  Wrote 120 lines to
+     packages/explorer/src/client/views/forceGraphPhysics.test.ts
+       1 import { describe, expect, it } from "vitest";
+       3 import { diagonalOf, SpatialField, SpatialMotion, type FieldSett
+         ings, type FieldSpring } from "./forceGraphPhysics";
+       5 const SETTINGS: FieldSettings = { charge: 60, chargeRange: 0, gr
+         avity: 0.01, collisionGap: 5, collisionStiffness: 3 };
+         : 0, z: 1 });
+       7
+         rlapping pair, at fixed irregular places. */
+       9 function scene(settings: FieldSettings = SETTINGS): { field: Spa
+      10   const radii = Float64Array.from([4, 6, 5, 4, 8]);
+     … +147 lines (ctrl+o to expand)
+
+● Running just this test file (one core, a few seconds), which won't disturb the
+  gate's browser phase.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both failures are mine: the coincidence test had the signs wrong (sphere 0
+  consistently moves up), and the other test wrongly assumed lower strength
+  yields the same rest position, which isn't guaranteed for a nonlinear field.
+  I'll fix both tests and the docstring to reflect that the real invariant is
+  that forces balance at rest, not identical positions.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All 8 tests pass. I'll now point the harness at the new module (rather than
+  the probe code) so measurements reflect what ships, and add scenarios for cold
+  start, filter toggle, and drag-and-release.
+
+  Made 1 scratchpad edit +101 (ctrl+o to expand)
+
+● The harness needs the library by absolute path from the scratchpad. The estate
+  runs are tiny (53 spheres, well under a second of one core), so I can check
+  the harness now without disturbing the gate.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The 53-sphere estate confirms the issue: motion drops below 3×10⁻⁴ of the
+  diagonal by tick 168, then crawls near 10⁻⁴ for ~1,200 more ticks—a slow mode
+  drifting ~5 px/sec for about 20 seconds. I'll pull up the trace and check the
+  other scenarios on this estate.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Good news — after a drag, motion settles to 3×10⁻⁴ within about 150 ticks,
+  with the long tail just being the initial layout cold-start. I'll add a
+  "re-wakes" metric to catch the waking-and-sleeping behavior, then run quick
+  comparisons across several drags and steps on the estate.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lower drag speeds up the tail but causes oscillation (10-22 re-wakes), while
+  the probe's drag of 0.2 limits it to one or two; 0.75 steps shorten the tail
+  slightly without new wakes. Before finalizing, I need the repository's scale,
+  so I'll check the gate's current status.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● The browser suite is about 20% through, and I'm noticing the specs waiting on
+  3D view settling add to suite time. I'll check which specs depend on that
+  settling and which bundles they belong to.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● While the settle gate runs, I'll check the overlap penalty's stiffness, since
+  it limits the stable time step size and thus how many ticks the motion needs.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Larger step sizes stay stable but just halve settling time while speeding up
+  early motion—the slow tail comes from the field's soft modes, not the
+  integrator. I'll wait for the gate's notice before deciding, since I need this
+  repository's numbers first.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● About 45 browser tests have run with roughly 15 minutes left. In the meantime,
+  I'll do a cheap sanity check by breaking the field and motion logic three
+  different ways to confirm the new unit tests catch each failure.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Each break is caught, and the module is restored byte for byte. I'll
+  checkpoint the measurements so far in the record.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While the gate finishes, I'll use a monitor that waits for its exit line,
+  rather than polling.
+
+● While the gate finishes, I'll draft the bridge into the 3D view since it's
+  needed regardless of the measurement choice—a single D3 force that owns all
+  movement, ignores alpha, respects carried or dragged positions, preserves
+  velocities by id across membership changes, and signals when spheres settle.
+
+  Read 1 file (ctrl+o to expand)
+
+● The bridge needs one more capability from the motion: when a hand or the carry
+  moves spheres between ticks, it must read the forces again before stepping.
+  I'll check the gate before writing it.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● About 80 of 187. I'll write the bridge now, starting with a method on the
+  motion to re-read forces after an outside move.
+
+● Update(packages/explorer/src/client/views/forceGraphPhysics.ts)
+  ⎿  Added 5 lines
+      175      return this.reading;
+      176    }
+      177  
+      178 +  /** Read the forces again after the positions were changed f
+          +rom outside, by a hand or by the carry of a change. */        
+      179 +  refresh(): void {                                           
+      180 +    this.reading = this.field.forces(this.positions, this.forc
+          +e);                                                           
+      181 +  }                                                           
+      182 +                                                              
+      183    /**
+      184     * One tick at this strength. `fixed` names the spheres a ha
+           nd holds, at the positions already written for them; the
+      185     * forces are read again where they now stand, since a held 
+           sphere may have moved since the last tick.
+
+● Update(packages/explorer/src/client/views/forceGraphPhysics.ts)
+  ⎿  Removed 1 line
+      188      if (!(strength >= 0 && Number.isFinite(strength))) throw n
+           ew Error("The strength must be finite and nonnegative.");
+      189      const x = this.positions, v = this.velocity, h = this.sett
+           ings.step;
+      190      const decay = Math.exp(-this.settings.drag * h / 2);
+      191 -    if (fixed.size) this.reading = this.field.forces(x, this.f
+          -orce);                                                        
+      191      let moveMax = 0;
+      192      for (let i = 0; i < this.field.count; i++) {
+      193        const a = 3 * i;
+
+● Update(packages/explorer/src/client/views/forceGraphPhysics.ts)
+  ⎿  Added 2 lines, removed 2 lines
+      181    }
+      182  
+      183    /**
+      184 -   * One tick at this strength. `fixed` names the spheres a ha
+          -nd holds, at the positions already written for them; the      
+      185 -   * forces are read again where they now stand, since a held 
+          -sphere may have moved since the last tick.                    
+      184 +   * One tick at this strength. `fixed` names the spheres a ha
+          +nd holds, at the positions already written for them; a        
+      185 +   * caller that moved any sphere since the last tick calls `r
+          +efresh` first.                                                
+      186     */
+      187    tick(strength: number, fixed: ReadonlySet<number> = NO_FIXED
+           ): MotionTick {
+      188      if (!(strength >= 0 && Number.isFinite(strength))) throw n
+           ew Error("The strength must be finite and nonnegative.");
+
+● The held-sphere test moves the sphere between ticks, so it now calls refresh
+  first:
+
+  Ran 1 shell command (ctrl+o to expand)
+● The motion re-reads forces on request now, and its tests pass. Before writing
+  the bridge in full I want this repository's numbers, since they may change it.
+  Checking the gate:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● I still have about 100 browser tests remaining. I'll add the bridge code into
+  forceGraphLayout.ts next to the existing forces, but keep it unwired from the
+  view for now until measurements confirm the numbers.
+
+● Update(packages/explorer/src/client/views/forceGraphLayout.ts)
+  ⎿  Added 122 lines
+      302    engine.set("gravity", tuning.gravity > 0 ? scaledForce(force
+           Radial<N>(0, 0, 0, 0), share).strength(tuning.gravity) : null)
+           ;
+      303  }
+      304  
+      305 +/** The motion's step and drag: the probe's smooth control, wh
+          +ich the owner found "quite natural" (2026-10-19). */          
+      306 +export const MOTION: MotionSettings = { step: 0.5, drag: 0.2 }
+          +;                                                             
+      307 +                                                              
+      308 +/** How hard two spheres closer than their clearance push apar
+          +t, per unit of overlap. */                                    
+      309 +export const COLLISION_STIFFNESS = 3;                         
+      310 +                                                              
+      311 +/** The largest move of a tick, as a share of the picture's di
+          +agonal, below which the spheres count as still. */            
+      312 +export const STILL_FRACTION = 3e-5;                           
+      313 +                                                              
+      314 +/** How many still ticks in a row end the easing. */          
+      315 +export const QUIET_TICKS = 10;                                
+      316 +                                                              
+      317 +/**                                                           
+      318 + * The field of a picture: its spheres' radii, a spring on eac
+          +h link that pulls in the layout with the rest length and      
+      319 + * strength ruled above, and the tuning's repulsion, gravity a
+          +nd collision gap. Links whose ends are not among the nodes    
+      320 + * are left out, as D3 would refuse them.                     
+      321 + */                                                           
+      322 +export function spatialFieldOf<N extends SpatialNode>(nodes: r
+          +eadonly N[], links: readonly SpatialLink<N>[], tuning: ForceGr
+          +aphTuning, layout: SpatialLayout): SpatialField {             
+      323 +  const index = new Map(nodes.map((node, i) => [node.id, i]));
+      324 +  const endpoint = (end: string | N): N | undefined => {      
+      325 +    const at = index.get(typeof end === "string" ? end : end.i
+          +d);                                                           
+      326 +    return at === undefined ? undefined : nodes[at];          
+      327 +  };                                                          
+      328 +  const pulling: SpatialLink<N>[] = [];                       
+      329 +  for (const link of links) {                                 
+      330 +    if (!linkPulls(link, layout)) continue;                   
+      331 +    const source = endpoint(link.source), target = endpoint(li
+          +nk.target);                                                   
+      332 +    if (source && target && source !== target) pulling.push({ 
+          +...link, source, target });                                   
+      333 +  }                                                           
+      334 +  const strengthOf = springStrength<N, SpatialLink<N>>(tuning.
+          +linkStrength);                                                
+      335 +  const springs = pulling.map((link, i) => ({                 
+      336 +    a: index.get((link.source as N).id)!, b: index.get((link.t
+          +arget as N).id)!,                                             
+      337 +    rest: spatialLinkDistance(link, tuning), strength: strengt
+          +hOf(link, i, pulling)                                         
+      338 +  }));                                                        
+      339 +  return new SpatialField(Float64Array.from(nodes.map(node => 
+          +spatialNodeRadius(node, tuning))), springs,                   
+      340 +    { charge: tuning.charge, chargeRange: tuning.chargeRange, 
+          +gravity: tuning.gravity, collisionGap: tuning.collisionGap, co
+          +llisionStiffness: COLLISION_STIFFNESS },                      
+      341 +    (low, high) => seededDirection(`${nodes[low].id}\0${nodes[
+          +high].id}`));                                                 
+      342 +}                                                             
+      343 +                                                              
+      344 +/** The one force that moves the 3D picture, with what the pag
+          +e asks of it. */                                              
+      345 +export interface MotionForce<N extends SpatialNode> extends Fo
+          +rce<N> {                                                      
+      346 +  /** Ease again from where the spheres stand: a change, a han
+          +d, new forces. */                                             
+      347 +  wake(): void;                                               
+      348 +  /** Build the field again before the next tick, since the sp
+          +heres' sizes, the links or the tuning changed. */             
+      349 +  invalidate(): void;                                         
+      350 +  /** Whether the spheres have been still for `QUIET_TICKS` ti
+          +cks since the last `wake`. */                                 
+      351 +  readonly still: boolean;                                    
+      352 +}                                                             
+      353 +                                                              
+      354 +/** What the motion force reads at every tick. */             
+      355 +export interface MotionSource<N extends SpatialNode> {        
+      356 +  tuning(): ForceGraphTuning;                                 
+      357 +  layout(): SpatialLayout;                                    
+      358 +  /** Every link the page holds; the field takes the pulling o
+          +nes. */                                                       
+      359 +  links(): readonly SpatialLink<N>[];                         
+      360 +  /** The constant strength of the easing now: one for the fir
+          +st picture, a hand or new forces, the update energy for a chan
+          +ge. */                                                        
+      361 +  strength(): number;                                         
+      362 +  /** Called once when the spheres fall still. */             
+      363 +  onStill?(): void;                                           
+      364 +}                                                             
+      365 +                                                              
+      366 +/**                                                           
+      367 + * D3's simulation drives the ticks, this force does all the m
+          +oving (2026-10-21). Each tick it reads the spheres where they 
+      368 + * stand, since the carry of a change and a hand move them bet
+          +ween ticks, holds every sphere D3 has fixed (`fx`, a hand's   
+      369 + * drag), steps the damped motion through the field at the sou
+          +rce's strength, writes the positions back and zeroes D3's     
+      370 + * velocities, so that D3's own integration adds nothing. A sp
+          +here keeps its velocity by id when the field is built again.  
+      371 + * Alpha is ignored: the easing has no schedule, and ends when
+          + the largest move of a tick has stayed under                  
+      372 + * `STILL_FRACTION` of the picture's diagonal for `QUIET_TICKS
+          +` ticks with no sphere held.                                  
+      373 + */                                                           
+      374 +export function motionForce<N extends SpatialNode>(source: Mot
+          +ionSource<N>): MotionForce<N> {                               
+      375 +  let nodes: N[] = [];                                        
+      376 +  let motion: SpatialMotion | null = null;                    
+      377 +  let builtFor: readonly string[] = [];                       
+      378 +  let quiet = 0, still = false;                               
+      379 +  const velocities = new Map<string, readonly [number, number,
+          + number]>();                                                  
+      380 +  const keepVelocities = (): void => {                        
+      381 +    if (!motion) return;                                      
+      382 +    builtFor.forEach((id, i) => velocities.set(id, [motion!.ve
+          +locity[3 * i], motion!.velocity[3 * i + 1], motion!.velocity[3
+          + * i + 2]]));                                                 
+      383 +  };                                                          
+      384 +  const build = (): SpatialMotion => {                        
+      385 +    keepVelocities();                                         
+      386 +    const field = spatialFieldOf(nodes, source.links(), source
+          +.tuning(), source.layout());                                  
+      387 +    const positions = Float64Array.from(nodes.flatMap(node => 
+          +[node.x ?? 0, node.y ?? 0, node.z ?? 0]));                    
+      388 +    const velocity = Float64Array.from(nodes.flatMap(node => v
+          +elocities.get(node.id) ?? [0, 0, 0]));                        
+      389 +    velocities.clear();                                       
+      390 +    builtFor = nodes.map(node => node.id);                    
+      391 +    return new SpatialMotion(field, positions, MOTION, velocit
+          +y);                                                           
+      392 +  };                                                          
+      393 +  const force = ((): void => {                                
+      394 +    if (!nodes.length) return;                                
+      395 +    motion ??= build();                                       
+      396 +    const x = motion.positions;                               
+      397 +    const fixed = new Set<number>();                          
+      398 +    let moved = false;                                        
+      399 +    nodes.forEach((node, i) => {                              
+      400 +      const a = 3 * i;                                        
+      401 +      const at = [node.fx ?? node.x ?? 0, node.fy ?? node.y ??
+          + 0, node.fz ?? node.z ?? 0];                                  
+      402 +      if (node.fx != null || node.fy != null || node.fz != nul
+          +l) fixed.add(i);                                              
+      403 +      for (let k = 0; k < 3; k++) if (x[a + k] !== at[k]) { x[
+          +a + k] = at[k]; moved = true; }                               
+      404 +    });                                                       
+      405 +    if (moved) motion.refresh();                              
+      406 +    const tick = motion.tick(source.strength(), fixed);       
+      407 +    nodes.forEach((node, i) => {                              
+      408 +      node.x = x[3 * i]; node.y = x[3 * i + 1]; node.z = x[3 *
+          + i + 2];                                                      
+      409 +      node.vx = 0; node.vy = 0; node.vz = 0;                  
+      410 +    });                                                       
+      411 +    if (still) return;                                        
+      412 +    quiet = !fixed.size && tick.moveMax <= STILL_FRACTION * di
+          +agonalOf(x) ? quiet + 1 : 0;                                  
+      413 +    if (quiet >= QUIET_TICKS) {                               
+      414 +      still = true;                                           
+      415 +      source.onStill?.();                                     
+      416 +    }                                                         
+      417 +  }) as MotionForce<N>;                                       
+      418 +  Object.assign(force, {                                      
+      419 +    initialize: (next: N[]): void => { keepVelocities(); motio
+          +n = null; nodes = next; },                                    
+      420 +    wake: (): void => { still = false; quiet = 0; },          
+      421 +    invalidate: (): void => { keepVelocities(); motion = null;
+          + }                                                            
+      422 +  });                                                         
+      423 +  Object.defineProperty(force, "still", { get: () => still });
+      424 +  return force;                                               
+      425 +}                                                             
+      426 +                                                              
+      427  /** Deterministic cold layout, using the browser's D3 engine a
+           nd force configuration; inputs are not mutated. */
+      428  export function simulateSpatialLayout(nodes: readonly SpatialN
+           ode[], links: readonly SpatialLink[], tuning: ForceGraphTuning
+           , ticks = 300,
+      429    layout: SpatialLayout = "connections"): { nodes: SpatialNode
+           []; links: SpatialLink[] } {
+
+● Update(packages/explorer/src/client/views/forceGraphLayout.ts)
+  ⎿  Added 1 line
+      2  import { forceCenter, forceCollide, forceLink, forceManyBody, fo
+         rceRadial, forceSimulation, type Force, type ForceLink, type For
+         ceManyBody, type SimulationNodeDatum } from "d3-force-3d";
+      3  
+      4  import type { ForceGraphTuning, SpatialLayout } from "../types";
+      5 +import { diagonalOf, SpatialField, SpatialMotion, type MotionSet
+        +tings } from "./forceGraphPhysics";                             
+      6  import { under } from "./localView/directory-state";
+      7  
+      8  /** The documented interface and mutable position of a file, or 
+         of a directory hub, in the spatial layout. */
+
+● Running the headless version of the same simulation now—seeding unplaced
+  spheres, resolving links, and stepping ticks until the motion force settles,
+  just like in the page.
+
+● Update(packages/explorer/src/client/views/forceGraphLayout.ts)
+  ⎿  Added 19 lines
+      425    return force;
+      426  }
+      427  
+      428 +/**                                                           
+      429 + * Ease a picture headlessly as the page does: D3's simulation
+          + seats the spheres without a position, as the library does,   
+      430 + * resolves the links and drives the ticks, and the motion for
+          +ce moves the spheres at this strength until they are still or 
+      431 + * `maxTicks` have passed. Inputs are not mutated; the result 
+          +says whether the picture came to rest.                        
+      432 + */                                                           
+      433 +export function easeSpatialLayout(nodes: readonly SpatialNode[
+          +], links: readonly SpatialLink[], tuning: ForceGraphTuning, la
+          +yout: SpatialLayout,                                          
+      434 +  strength = 1, maxTicks = 20_000): { nodes: SpatialNode[]; li
+          +nks: SpatialLink[]; ticks: number; still: boolean } {         
+      435 +  if (!Number.isInteger(maxTicks) || maxTicks < 0) throw new E
+          +rror("Spatial easing's tick bound must be a nonnegative intege
+          +r.");                                                         
+      436 +  const placed = nodes.map(node => ({ ...node }));            
+      437 +  const edges = links.map(link => ({ ...link, source: typeof l
+          +ink.source === "string" ? link.source : link.source.id,       
+      438 +    target: typeof link.target === "string" ? link.target : li
+          +nk.target.id } as SpatialLink));                              
+      439 +  const simulation = forceSimulation(placed, 3).stop().force("
+          +link", forceLink<SpatialNode, SpatialLink>(edges).id(node => n
+          +ode.id).strength(0));                                         
+      440 +  const motion = motionForce<SpatialNode>({ tuning: () => tuni
+          +ng, layout: () => layout, links: () => edges, strength: () => 
+          +strength });                                                  
+      441 +  simulation.force("motion", motion);                         
+      442 +  let ticks = 0;                                              
+      443 +  if (strength > 0) while (!motion.still && ticks < maxTicks) 
+          +{ simulation.tick(); ticks++; }                               
+      444 +  return { nodes: placed, links: edges, ticks, still: motion.s
+          +till };                                                       
+      445 +}                                                             
+      446 +                                                              
+      447  /** Deterministic cold layout, using the browser's D3 engine a
+           nd force configuration; inputs are not mutated. */
+      448  export function simulateSpatialLayout(nodes: readonly SpatialN
+           ode[], links: readonly SpatialLink[], tuning: ForceGraphTuning
+           , ticks = 300,
+      449    layout: SpatialLayout = "connections"): { nodes: SpatialNode
+           []; links: SpatialLink[] } {
+
+● Type-checking the client (one core, at low priority):
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Type-checks clean. Checking the gate:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● About 80 tests remain, including the long still-picture deck; I'll spend the
+  time on bridge tests that hold regardless of measurement choices—deterministic
+  easing rest, held-sphere positioning, velocity surviving a field rebuild, and
+  zero strength producing no ticks.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll loosen that assertion—the partner won't sit exactly at the spring's rest
+  length since other spheres also repel it. Instead, I'll test that it followed
+  the hand's drag by measuring its movement along that direction.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The bridge's three tests pass. Checking the gate:
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● About 70 tests remain. I'll keep to light work: reading the rest of the view's
+  construction to plan its wiring.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The gate still has its long tail of browser tests to run. Rather than poll,
+  I'll stop here and pick up when it reports.
+
+  Where things stand
+
+  - The bundled-doc reader is fixed, but not yet committed. The cause: since
+    January, a bundled document's container carried two CSS classes that no
+    stylesheet defined. Meanwhile a complete set of reader rules sat unused
+    under a class nothing carried. Now one set of prose rules covers a Live
+    Doc's authored section, bundled documents, and a directory's summary line:
+    13 px text, accent-coloured links.
+    - The bundled doc after the fix
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reader-bundled-doc-styled.png).
+    - An authored section
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reader-authored-unchanged.png)
+      looks as before, with one change by eye: list items now use the same line
+      spacing as paragraphs. A wrapped list item in a long document read too
+      densely beside the paragraphs.
+    - A new browser test fails if a bundled document's text stops matching the
+      authored sections, or if any link shows in the browser's default dark
+      blue. I confirmed it fails with the fix removed (16 px against 13).
+  - The full gate is running for the reader fix. As you asked, it also confirms
+    the no-network commit (cea67fc5) on a quiet machine. I'll commit the reader
+    fix when it passes.
+  - Easing until still: drafted, not yet wired into the 3D view.
+    - A new module, forceGraphPhysics.ts
+      (packages/explorer/src/client/views/forceGraphPhysics.ts), holds the
+      probe's balanced forces and its smooth damped motion: one fixed step and
+      one fixed drag, no cooling schedule, and spheres held by a hand stay put.
+      The browser and the headless tools would both use it.
+    - An adapter lets the 3D library's existing loop drive it, ending when the
+      spheres are still by their motion.
+    - 11 unit tests pass. I deliberately broke the code three ways, and each
+      break made the tests fail.
+  - The open problem, from the first measurements on the 35- and 53-sphere
+    estate sample:
+    - After a drag of a fifth of the picture, the picture stops visibly moving
+      about 350–500 ticks after release.
+    - From a cold start it takes 1,000–1,800 ticks. Whole branches keep turning
+      slowly into place: about 5 px a second, for roughly 20 seconds.
+    - Lower drag shortens that tail but brings back the wobble you disliked. A
+      larger step only halves it.
+    - This matters for your eye and for the test suite, since several 3D tests
+      open this repository's bundle and wait at most 25 s for the picture to
+      settle.
+
+  Next: when the gate reports, I commit the reader fix, then measure this
+  repository's bundle (about 850–1,100 spheres). Those numbers decide whether
+  the slow cold start needs its own remedy before I wire the motion into the 3D
+  view and make pictures and a recording for your eye.
+
+● The gate still has its long tail of browser tests to run. Rather than poll,
+  I'll stop here and pick up when it reports.
+
+  Where things stand
+
+  - The bundled-doc reader is fixed, but not yet committed. The cause: since
+    January, a bundled document's container carried two CSS classes that no
+    stylesheet defined. Meanwhile a complete set of reader rules sat unused
+    under a class nothing carried. Now one set of prose rules covers a Live
+    Doc's authored section, bundled documents, and a directory's summary line:
+    13 px text, accent-coloured links.
+    - The bundled doc after the fix
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reader-bundled-doc-styled.png).
+    - An authored section
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reader-authored-unchanged.png)
+      looks as before, with one change by eye: list items now use the same line
+      spacing as paragraphs. A wrapped list item in a long document read too
+      densely beside the paragraphs.
+    - A new browser test fails if a bundled document's text stops matching the
+      authored sections, or if any link shows in the browser's default dark
+      blue. I confirmed it fails with the fix removed (16 px against 13).
+  - The full gate is running for the reader fix. As you asked, it also confirms
+    the no-network commit (cea67fc5) on a quiet machine. I'll commit the reader
+    fix when it passes.
+  - Easing until still: drafted, not yet wired into the 3D view.
+    - A new module, forceGraphPhysics.ts
+      (packages/explorer/src/client/views/forceGraphPhysics.ts), holds the
+      probe's balanced forces and its smooth damped motion: one fixed step and
+      one fixed drag, no cooling schedule, and spheres held by a hand stay put.
+      The browser and the headless tools would both use it.
+    - An adapter lets the 3D library's existing loop drive it, ending when the
+      spheres are still by their motion.
+    - 11 unit tests pass. I deliberately broke the code three ways, and each
+      break made the tests fail.
+  - The open problem, from the first measurements on the 35- and 53-sphere
+    estate sample:
+    - After a drag of a fifth of the picture, the picture stops visibly moving
+      about 350–500 ticks after release.
+    - From a cold start it takes 1,000–1,800 ticks. Whole branches keep turning
+      slowly into place: about 5 px a second, for roughly 20 seconds.
+    - Lower drag shortens that tail but brings back the wobble you disliked. A
+      larger step only halves it.
+    - This matters for your eye and for the test suite, since several 3D tests
+      open this repository's bundle and wait at most 25 s for the picture to
+      settle.
+
+  Next: when the gate reports, I commit the reader fix, then measure this
+  repository's bundle (about 850–1,100 spheres). Those numbers decide whether
+  the slow cold start needs its own remedy before I wire the motion into the 3D
+  view and make pictures and a recording for your eye.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file packages/explorer/src/client/views/forceGraphLayout.ts
+  ⎿  Read packages/explorer/src/client/views/forceGraphPhysics.ts (227 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-441
+     4-bf81-ddf12ed08c18/scratchpad/easing/settle.ts (103 lines)
+  ⎿  Read packages/explorer/src/client/views/forceGraphPhysics.test.ts (122
+     lines)
+  ⎿  Referenced file tests/e2e/inspection.spec.ts
+
+● Task "Run the full gate with browser tests" still running in background

@@ -1,9 +1,10 @@
 /* The World Map: a board seen at an angle, pieces floating above it, wires door to door. */
 
+/* Clipped, never scrolled: see #main in shell.css. */
 .world-root {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .world {
