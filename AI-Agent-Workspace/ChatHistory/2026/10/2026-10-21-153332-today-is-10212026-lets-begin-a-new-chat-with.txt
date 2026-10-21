@@ -3261,3 +3261,1124 @@
   - Several ticks per frame within a time budget: the same path, played faster.
   - A cheaper repulsion at scale: exact pairs cost about 21 ms a tick at 1,120
     spheres.
+
+❯ What's the status? It's been about 2.5 hours-ish?
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The runs actually finished ~2.5 hours ago—my wait loop had a bug where its
+  search pattern matched its own command line, so it kept thinking the process
+  was still running. I'm stopping it now and will record your message, then
+  share the numbers.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Wait for the repository measurements to finish" failed
+with exit code 144
+
+  Read 1 file (ctrl+o to expand)
+
+● I owe you an apology: about two of those hours were idle time, and that's on
+  me. The repository measurements finished at 16:51 UTC. My background wait was
+  supposed to notify me, but it looked for the running jobs by a phrase its own
+  command line also contained, so it kept finding itself and never ended.
+  Nothing was running between 16:51 and your message.
+
+  Done since your last message
+
+  - Committed e1fb9745 (not pushed):
+    - Bundled documents in the reader now look like the authored sections: 13 px
+      text and accent-coloured links.
+    - The full gate's hover failure is fixed. The main column and the views were
+      clipped with overflow: hidden, which the browser can still scroll from
+      code. A retried click, or a person pressing Tab onto a button at a view's
+      edge, slid the whole map under the sidebar with no way back. They now use
+      overflow: clip, which can't be scrolled.
+    - A new test checks that nothing clipped moves; it failed before the fix and
+      passes after. Before
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reveal-scrolled-before-fix.png)
+      and after
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reveal-in-place-after-fix.png).
+    - A second test had only ever passed through that scroll. It now pans to the
+      card first, as a person would.
+  - The second full gate: everything passed except that second test. After the
+    fix it passed 3 of 3 runs on its own, and the docs, lint and documentation
+    audits passed again. I committed on that evidence rather than run a third
+    25-minute gate.
+  - Your rule for which files get a Live Doc is in direction.md
+    (AI-Agent-Workspace/Memory/direction.md) in your words. The proposal for
+    applying it is still to come.
+
+  The easing at this repository's scale doesn't settle yet
+
+  On the 53-sphere estate sample the new motion settles. On this repository,
+  starting from today's layout:
+
+  ┌─────────────┬─────────┬───────────┬─────────────────────────────────────┐
+  │   Layout    │ Spheres │ Cost per  │  Ticks until still (3×10⁻⁵ of the   │
+  │             │         │   tick    │      picture's size per tick)       │
+  ├─────────────┼─────────┼───────────┼─────────────────────────────────────┤
+  │ Connections │ 846     │ 13.5 ms   │ 4,644, after 7 restarts of motion   │
+  ├─────────────┼─────────┼───────────┼─────────────────────────────────────┤
+  │ Structure   │ 1,130   │ 22.7 ms   │ still moving after 6,000, after 10  │
+  │             │         │           │ restarts                            │
+  └─────────────┴─────────┴───────────┴─────────────────────────────────────┘
+
+  At one tick per frame, 4,644 ticks is more than a minute of visible drift.
+  Nothing ever overlaps, so the picture is clean, but it isn't still.
+
+  None of the remedies I listed fixes this on its own:
+  - A looser stillness test would stop the picture while it's still visibly
+    moving.
+  - Computing a warm-up before showing the picture would take 15–30 s of compute
+    at this cost.
+
+  So I won't wire this into the 3D view yet. Next I'll find what is still moving
+  in that tail: whole branches swinging slowly, or a few spheres swapping
+  places, which is what the restarts suggest. That decides the remedy, and I'll
+  bring you the finding and a recommendation before building one.
+
+❯ >Next I'll find what is still moving in that tail: whole branches swinging
+  slowly, or a few spheres swapping places, which is what the restarts suggest.
+  That decides the remedy, and I'll bring you the finding and a recommendation
+  before building one.
+
+  Sincerely appreciated. You are clear to proceed with that.
+● First I'll record your message, then build the diagnosis: watch the tail on
+  this repository's bundle and measure where its motion is.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I've identified why soft modes emerge—1/r repulsion plus spring strength
+  scaled by link count lets heavily-connected directories hang loosely from
+  their parents. Now I'm building a diagnostic harness that splits motion by
+  top-level branch and tracks rigid vs. shape-changing movement, logging each
+  restart's driving spheres and neighbor proximity.
+
+  Made 1 scratchpad edit +127, ran 1 shell command (ctrl+o to expand)
+
+● The harness runs as expected on the estate, with no overall drift or rotation.
+  I'm now launching both repository layouts as tracked background jobs so I'll
+  be notified when they finish.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● My rough estimate suggests the 1/r repulsion between far-apart branches
+  creates a very soft mode with a multi-thousand-tick relaxation time, while the
+  springs are already slightly underdamped—meaning a single uniform drag value
+  can't satisfy both, consistent with the wobble/drag-out tradeoff we observed.
+  I'll let the data confirm whether this is actually the mechanism at play.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While that finishes, I'm building the next harness to test remedies on the
+  same scenes, adjusting drag, repulsion range, and spring dashpots—the latter
+  should damp spring wobble without slowing the broader branch motions.
+
+  Made 1 scratchpad edit +86 (ctrl+o to expand)
+
+● Background command "Diagnose the connections layout's tail on this repository"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found it: the lingering drift comes from spring-less files and small islands
+  settling into slow, unstable positions on a repulsion shell around the main
+  mass, with restarts caused by these loose pieces or single-spring leaves
+  swinging around their hub. I'm now testing two fixes—bounded repulsion reach
+  and low drag with spring dashpots—on the same scene.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Diagnose the structure layout's tail on this repository"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I notice the motion's energy plateaus after tick 3,000 even though drag should
+  keep draining it—this suggests the integration may be injecting energy
+  somewhere. I'll check whether the stored energy is falling to compensate,
+  which would confirm or rule out that bug.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Energy balance checks out—drag is dissipating motion at the same rate stored
+  energy drops, so the slow descent is overdamping in the soft directions, not
+  an integration artifact. I'll wait for the connections fixes, then apply the
+  same remedies to the structure layout.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While both batches run, I'm checkpointing the findings in the session record.
+
+  Read 1 file (ctrl+o to expand)
+
+● Background command "Try four remedies on the connections layout in parallel"
+completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Bounded reach and low-drag dashpots both made things worse, so the real fix is
+  static friction with a threshold: it would halt the slow creep (forces ~0.1
+  vs springs' 0.5–1.5) without affecting large motions, making "still" exact and
+  physically grounded. I'll add this to the remedy harness.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Waiting on two batches: the four remedies on the structure layout, and sliding
+  friction at three thresholds on the connections layout. Results so far:
+
+  - The cause, in both layouts: slow creep in directions where almost nothing
+    pushes, and one drag can't serve both those and the springs. Connections:
+    loose files and islands wandering on an outer shell. Structure: leaves
+    rearranging round their hubs while the tree slowly folds.
+  - Bounded reach and dashpots made connections worse.
+  - Sliding friction is the most promising so far, because it stops creep in
+    finite time.
+
+  I'll pick up as soon as both batches report.
+
+● Background command "Try the same four remedies on the structure layout in
+parallel" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● The structure layout shows the same pattern—no settling within 6,000 ticks, a
+  chattering bounded reach (83-162 restarts), and drag 0.05 with dashpots
+  blowing up again. I'll now test sliding friction on this layout as well.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both friction batches are running. I'll read them together when they report.
+
+● Background command "Try sliding friction at three thresholds on the
+connections layout" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Friction isn't stabilizing the connections layout either—forces stay well
+  above threshold, and a few spheres keep drifting steadily for thousands of
+  ticks, likely because outer-shell spheres are caught between near-equal
+  outward push and inward gravity, with lumpiness adding a sideways nudge. I'll
+  confirm this by checking each sphere's travel distance and connectivity once
+  the structure results come in.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The travel tracker is running on the connections layout beside the structure
+  friction runs. I'll read both when they report.
+
+● Background command "Track who travels in the connections tail" completed (exit
+code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Confirmed for the connections layout. The springs form 78 separate pieces: a
+  main piece of 416 spheres, 41 small islands and 36 lone files, so half the
+  spheres (430) belong to no main piece. After tick 1,000 those outside it make
+  64% of all the motion.
+
+  The biggest travellers are one lone file (sample-tool.ts) and one 14-sphere
+  island, the asset fixture's page with its images and fonts. Each crosses about
+  1,800 units net, nearly a third of the picture, at about half a unit per
+  tick. That's not creep. They are slow journeys around the main mass, in a
+  direction where nothing holds them.
+
+  The structure layout's friction runs are still going.
+● Background command "Try sliding friction at three thresholds on the structure
+layout" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Friction didn't settle the structure layout either—the residual force holds at
+  0.3, pointing to leaves sliding sideways around their hubs since nothing
+  constrains that motion. I'll track their path length versus net displacement
+  to confirm if they're circling.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll add another candidate: a weak positional tether for each sphere to its
+  starting point, adding stiffness only in unconstrained directions so nothing
+  drifts far while real forces still act. I'm adding this to the harness to test
+  after the travel run finishes.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both runs are going: the structure travel tracker, and tethers at three
+  strengths on both layouts. I'll read them as they report.
+
+● Background command "Track who travels in the structure tail" completed (exit
+code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● The structure layout's travellers are whole branches. The PowerShell sample's
+  scripts, scripts/modules and scripts/common directories with their files, the
+  C++ sample's core and the Java sample's data each moved about 2,000 units net
+  in 3,000 ticks, their path barely longer than the net move. So they aren't
+  circling: entire small branches are swinging round their parents across a
+  third of the picture. A spring holds a branch's distance from its parent,
+  never its angle, and the far field pushes on that angle only weakly. So that's
+  the first hypothesis, at the tree's own scale.
+
+  In both layouts, then, the tail is long journeys in directions nothing holds:
+  loose pieces round the main mass in connections, branches round their joints
+  in structure. Waiting on the tethers now.
+
+● Background command "Try tethers of three strengths on both layouts in
+parallel" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● Tethers clearly help on cold starts (fewer ticks and restarts at both
+  strengths tested) without freezing the layout. Since the setting will mostly
+  be used for incremental changes rather than cold starts, I'm now measuring
+  tether performance on toggling and dragging scenarios before making a
+  recommendation.
+
+  Made 1 scratchpad edit +85, ran 1 shell command (ctrl+o to expand)
+
+● The estate test confirms the harness works but reveals a real cost: with no
+  tests toggled off, the image still drifted ~35 units (3% of size) since the
+  tethered rest isn't the field's true rest, converging gradually across runs;
+  meanwhile the dragged hub settled 142 units back as expected from its springs.
+  Now I'll run the same comparison on this repository across both layouts with
+  tether values 0, 0.003, and 0.01.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● While those run, I'm checkpointing the remedy results in the record.
+
+  Read 1 file (ctrl+o to expand)
+
+● The change measurements on this repository are running (six runs). I'll write
+  up the finding and recommendation once they report.
+
+● Background command "Measure toggle and drag changes on this repository under
+three tethers" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● The change measurements are in, and they settle the recommendation. Here is
+  the record entry, then my write-up.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The tail has one cause in both layouts. Spheres make long, slow journeys in
+  directions that nothing in the forces holds them. The motion integrates
+  correctly: the energy accounts balance tick by tick. So the forces are what's
+  wrong, not the motion through them.
+
+  What moves:
+  - Connections layout: half the spheres (430 of 846) aren't connected to the
+    main graph. There are 36 lone files, such as vitest.config.ts and
+    eslint.config.js, and 41 small islands, such as each sample program and the
+    tsconfig family.
+    - They sit on a shell around the main mass, where gravity and the main
+      mass's push balance, at about 22 each.
+    - Nothing holds them along that shell. The main mass's lumpiness pushes them
+      sideways, and some travel a third of the picture's width.
+    - Late in the run, 64% of all motion is these pieces.
+  - Structure layout: whole small branches swing around their parent directory.
+    A spring holds a branch's distance from its parent but never its angle. The
+    PowerShell, C++ and Java samples' branches each moved about 2,000 units.
+
+  What didn't help:
+  - Friction (motion only above a threshold): the remaining sideways pushes are
+    0.1–0.35, not tiny, so nothing stopped.
+  - Limiting how far repulsion reaches: spheres crossing the cut-off got jolted,
+    and motion restarted up to 217 times.
+  - Lower drag with spring dampers: it either blew up or ran no faster.
+
+  What works: a tether. Each sphere is pulled weakly back toward where it stood
+  when the current motion began. Real forces still move things as far as they
+  need to, up to about 900 units. Ticks until still, with today's settings and
+  then with a tether of 0.01:
+
+  First picture
+  Connections, today: 4,644
+  Connections, tether 0.01: 370
+  Structure, today: not still after 6,000
+  Structure, tether 0.01: 700
+  ────────────────────────────────────────
+  Tests hidden, then shown
+  Connections, today: 3,585, then 4,000
+  Connections, tether 0.01: 454, then 396
+  Structure, today: not still
+  Structure, tether 0.01: 171, then 198
+  ────────────────────────────────────────
+  A hub dragged and let go
+  Connections, today: 3,225
+  Connections, tether 0.01: 558
+  Structure, today: not still
+  Structure, tether 0.01: 327
+  ────────────────────────────────────────
+  Others moved by hiding and showing tests (mean)
+  Connections, today: 222
+  Connections, tether 0.01: 219
+  Structure, today: 619
+  Structure, tether 0.01: 294
+
+  The tether also serves keeping your bearings: in the structure layout, hiding
+  and showing tests moves the rest of the picture half as much. Pulling things
+  toward their previous positions is a standard way of keeping a person's mental
+  map in layouts that change over time.
+
+  Its costs:
+  - The resting picture isn't the forces' own optimum. A change that changes
+    nothing still nudges the picture a little: 3% of its size on the estate
+    sample. Repeated changes converge.
+  - The picture depends on its history. Today's picture already does, since it
+    stops wherever D3's cooling leaves it.
+  - It's still a few hundred ticks at this repository's size, and a tick costs
+    13–25 ms here. That's comparable to today's settle, but it may strain the 3D
+    tests' 25-second budget.
+
+  Decision for you: I recommend adding the tether at 0.01, as a tuning value.
+  Then I'd wire the motion into the 3D view and record your look at two or three
+  update energies, as planned. I'd deal with the per-tick cost after you've
+  seen it.
+
+  Two alternatives would remove the causes instead, but each changes what the
+  picture looks like, so they're for your eye later:
+  - Placing the separate islands in fixed spots around the main graph.
+  - Adding joint stiffness so that trees spread out radially.
+
+  Shall I go ahead with the tether?
+
+❯ Go ahead with the tether. I agree that out of the options presented, it is
+  the most likely, so far, to be successful. But I'll definitely have to tune
+  that force as you noted. Thank you for planning to add it to the tuning
+  panel.
+
+● The tether goes in, with its own control in the tuning panel. First I'm
+  recording your message, then reading the layout module and the tuning panel to
+  wire it in.
+
+  Read 1 file (ctrl+o to expand)
+
+● I've reviewed the layout module and mapped out the tether's design across the
+  physics module and bridge, including how anchors are set and maintained. Next,
+  I'll look at the tuning type and the panel.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● I'll add the tether slider alongside Gravity and Repulsion Reach, but first
+  need to solve the anchoring problem for the initial picture—since the
+  library's default compact layout (~100 units) is far smaller than the picture
+  at rest (~6,000 units). I'm now measuring the cost of running 300 ticks of
+  D3's cold layout to generate a proper anchor, and checking how the 3D library
+  controls its simulation loop.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've confirmed D3's cold layout is too slow for a 300-tick warm-up (6–8s
+  freeze) and that d3AlphaMin must be 0 to keep its loop running for the bridge.
+  So I'll test anchoring the first picture once motion settles below 0.1% of
+  picture size per tick, letting it unfold freely first—if that works, D3 can be
+  dropped from the 3D view entirely.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The simulation stabilizes by tick 143 without the tether and stays stable
+  through tick 236 with it, with no restarts in either case. I'll now run both
+  layouts in this repository, applying the tether at 10⁻³ and 3×10⁻⁴.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll add the tether to the physics module now, since it's needed regardless of
+  which first-picture rule is chosen—the field treats it as a constant with an
+  optional anchor, while motion controls and can re-anchor it based on sphere
+  positions.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Measure the unfold-then-hold first picture on this
+repository" completed (exit code 0)
+
+  Read 1 file (ctrl+o to expand)
+
+● The first-picture tether rule outperforms D3's warm-up, settling much faster
+  across both layouts, so D3 is being dropped from the 3D view in favor of this
+  rule: unfold freely on initial loads/layout/force changes, but hold position
+  for pins, filters, history, and drags. I'm adding a flag to track tether state
+  and moving on to the physics tests.
+  Ran 1 shell command (ctrl+o to expand)
+
+● The tether's tests pass, 10 of 10. I'm checking that they can fail: two
+  deliberate breaks, each applied, run and reverted.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both regressions are confirmed—reversed tether broke 2 tests, dropped anchor
+  broke 1. Now I'll look at the layout module's bridge logic and tuning value,
+  starting with how the 3D view distinguishes a forces change from a membership
+  change.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● I've mapped out the view's update logic for reconfigures, membership changes,
+  layout switches, and scrubber interactions. Before rewiring, I'll check which
+  headless consumers rely on the D3 schedule functions.
+
+  Searched for 2 patterns (ctrl+o to expand)
+
+● I found that drift.ts, spatial.ts, and a browser spec depend on D3's settle
+  ticks—now reading the layout module's test file in full to separate tests tied
+  to the D3 schedule from those that carry over.
+
+  Read 1 file (ctrl+o to expand)
+
+● Found that pullingLinkForce becomes redundant once D3's link force handles
+  non-pulling links at strength 0, while the core layout behavior tests
+  (coupling attraction, compaction, sphere separation, gravity bounds, energy
+  easing) carry over unchanged. Starting now with defining the tuning value's
+  type, default, and range.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I've set Update Energy's tuning value (default 0.01, 0–0.1 range) with its
+  default at 1 under the new constant-strength meaning—testing a couple of
+  strengths will dial it in. Next I'll rewrite the layout module around the
+  motion.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The module compiles, but its test file still references removed functions, so
+  I'll rewrite the tests to match the new motion logic and add coverage for the
+  tether rules—first-image unfolding and anchor/velocity persistence through a
+  field rebuild.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Three of the new tests compare quantities I haven't measured on this toy
+  picture yet. I left named placeholders for those bounds and am measuring the
+  values before writing them in.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All five measurements pass their test bounds with margin, including the
+  tightest one (first picture size at 0.75 vs. the 0.85 threshold), and since
+  the motion is deterministic the test won't flake.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● One test fails: when a hand carries a sphere 80 units, its spring partner only
+  follows 14 units instead of the expected 40+ (I'd estimated ~60). I'll
+  measure how the follow distance varies with different tether strengths.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The data confirms the tether constrains distance, not direction: without it
+  the whole cluster drifts toward the hand, while with it the partner swings to
+  maintain spring length and the rest stays put. I'll update the test to verify
+  this actual behavior—that the partner maintains its distance to the hand and
+  moves only as much as needed for that.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 28 pass. Before the view, two deliberate breaks of the bridge: dropping
+  the anchors when the field is rebuilt, and never letting the tether take hold
+  after unfolding.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both edge cases are now covered by tests, so I'll move on to the 3D view with
+  a similar plan: centralize force construction and a single move/stop helper,
+  then wire up the various callers (membership, forces, drag, settle)
+  accordingly. Checking the view's container and engine-state helpers next.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Now the edits to the view.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The view type-checks with nothing of the D3 schedule left in it. Next, the two
+  layout-lab consumers; reading them in full.
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● I've migrated spatial.ts to ease toward stability with tick/stillness
+  reporting, and updated drift.ts so the first frame unfolds with held-energy
+  easing, added a Tether column plus a --tether sweep to the lab's drift
+  command, and repurposed --ticks as the max easing duration in both commands.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The root type-check is also picking up gitignored scratch files under
+  AI-Agent-Workspace/tmp/ that still import the removed functions—I'll check
+  whether the gate's type-check actually scans that folder.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● That folder is already excluded from ESLint and gated type-checks, and it's
+  just the October 19 probe's gitignored scratch space, so I'll leave it alone
+  and filter the root type-check to exclude it.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The root tsconfig isn't part of the gate checks since it lacks a DOM library;
+  the real gate (client config, package builds, test type-check) only fails on
+  force-graph-update.spec.ts's settleTicksOf import, which I'll rewrite after
+  examining the motion. Next, I'll run the lab's unit tests.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Only the update-energy test fails, as expected, since its exact 300 and 200
+  ticks were D3's schedule. I'm measuring what the motion does on that toy
+  before rewriting it.
+  Ran 1 shell command (ctrl+o to expand)
+
+● Vitest kept the measurement's output quiet, so I'm running it as a plain
+  script instead.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The toy's measurements show settle times ranging 137–474 ticks depending on
+  update energy, with two prior assertions now invalidated—one tenth energy
+  producing a gentler path to the same rest point rather than less movement, and
+  the settle column needing a range format instead of joined values. The
+  gravity test results remain unchanged (1.43× without gravity, 0.985× with it),
+  so I'll update the two outdated assertions while leaving that one intact.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 418 lab and view tests pass. Next I build the Explorer and look at the
+  motion in the browser. First, a check of how earlier sessions kept recordings,
+  so this one goes in the usual place.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Both bundles are built. Now I'll check force-graph-update.spec.ts and any
+  existing sphere-drag helpers to see how to open the 3D view, toggle tests, and
+  drag a sphere at a given update energy.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The observation tool already exposes sphere positions, screen coordinates, and
+  frame counts tied to aria-busy state changes, so I'll build a test script on
+  top of it that loads the 3D connections view at three different update
+  energies, captures a screenshot once each run settles, then toggles tests and
+  drags a large sphere to measure frames-to-still at each step.
+
+  Made 1 scratchpad edit +82, ran 2 shell commands (ctrl+o to expand)
+
+● The script ran as CommonJS, which has no top-level await. I'm renaming it to
+  .mts so it runs as a module.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I measured the force simulation's settling time across four scenarios on the
+  software renderer—ranging from 184 to 255 frames (7.3–13.9s), consistent with
+  D3's typical ~300-tick settle. Now I'll generate the corresponding
+  visualizations.
+
+  Read 4 files (ctrl+o to expand)
+
+● The layout now matches the connections view, but the picture extends beyond
+  the canvas edges—possibly a framing issue with the new motion or just how the
+  camera initially frames the whole repository. I'll compare this against a
+  recent snapshot of today's 3D view to figure out which it is.
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● The October 18 image is tightly framed, while the new one has elements running
+  off-canvas with long lines—suggesting either a larger scene or an unset
+  camera frame. I'll check how the view sets up its camera to confirm.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The default camera distance (~1,600 units, based on 846 spheres) is far too
+  close for the new 6,500-unit-wide rest configuration. I'll measure D3's cooled
+  300-tick picture size to check whether the new motion increases the frame
+  size.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Found it: D3's cooling froze the layout at roughly half its true equilibrium
+  size, so the gravity value picked by eye on Oct 18 now produces a picture
+  1.8–1.9x larger than intended, overflowing the camera view. I'll test gravity
+  values of 0.02, 0.03, and 0.04 so you can compare results and pick the right
+  size directly.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll keep your chosen default gravity, but add a gravity argument to the look
+  script so I can record comparisons: the three update energies at gravity 0.03
+  (your preferred size), full energy at 0.01 to show the size difference, and
+  the structure layout at 0.03. Running these now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the recordings run, I'll start updating the documentation, beginning
+  with the authored sections of the layout module's Live Doc that describe the
+  D3 schedule being removed.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'm updating the layout module's docs: carrying over the geometry, spring
+  rules, gravity, sphere placement, and D3's link force, while adding the new
+  motion and tether logic and marking the old D3 schedule as outdated.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Next, the 3D view's Live Doc, which mentions the schedule in four places.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● The view's doc is current. Next, the decisions log: I'm reading its newest
+  entries for their form.
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● I'll hold off on the decisions log entry until the browser spec is rewritten
+  so the "kept by" reference holds true—starting with the recordings first.
+
+  Read 4 files, ran 1 shell command (ctrl+o to expand)
+
+● Even at gravity 0.03 the picture still overflows the canvas, so size isn't the
+  only issue—camera position may differ from the assumed default too. I'll
+  check the live page for the camera's actual distance and the picture's extent.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The default camera doesn't frame D3 at this resolution either—October 18's
+  pictures used a larger 1600×1000 canvas, so I'll note the framing issue
+  separately from the motion work. Next, I'll write the browser spec's two tests
+  (zero energy vs. full-against-gentle) and pull the gentle energy's tick
+  counts from the recordings.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Tick counts alone can't verify "gentler" motion since lower energy doesn't
+  reliably mean more frames—the unit tests already cover proportional strength
+  exactly, so I'll focus the browser spec on page-only behaviors: slider
+  syncing, settling to rest, preserved line objects, slider being inert, and
+  settings persisting in the address.
+  Ran 1 shell command (ctrl+o to expand)
+
+● The tests' type-check passes. ESLint warns about one missing doc comment, on
+  the field's count getter, which I'm adding.
+
+● Update(packages/explorer/src/client/views/forceGraphPhysics.ts)
+  ⎿  Added 1 line
+      74      }
+      75    }
+      76  
+      77 +  /** How many spheres the field holds. */                     
+      78    get count(): number {
+      79      return this.radii.length;
+      80    }
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● At energy 0.25 the tests-hidden change took 380 frames and showing them 1,016,
+  82 seconds on this machine's software renderer. The hand's release stays at
+  full strength, as designed (438 frames). The structure recording is running.
+
+  ┌───────────────────┬─────────────┬────────────┬───────────┬─────────────┐
+  │ Energy (gravity   │   First     │   Tests    │  Tests    │    Drag     │
+  │       0.03)       │   picture   │   hidden   │   shown   │  released   │
+  ├───────────────────┼─────────────┼────────────┼───────────┼─────────────┤
+  │ 1                 │ 462         │ 272        │ 296       │ 478         │
+  ├───────────────────┼─────────────┼────────────┼───────────┼─────────────┤
+  │ 0.5               │ 462         │ 251        │ 562       │ 432         │
+  ├───────────────────┼─────────────┼────────────┼───────────┼─────────────┤
+  │ 0.25              │ 462         │ 380        │ 1,016     │ 438         │
+  └───────────────────┴─────────────┴────────────┴───────────┴─────────────┘
+
+● Background command "Record the three energies at gravity 0.03, then the
+structure layout" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The layout findings confirm that energy controls transition speed, not final
+  displacement—which is governed by the tether. The five recordings total ~58MB;
+  I'll check the size of previously committed recordings before deciding which
+  to keep.
+
+  Listed 1 directory (ctrl+o to expand)
+
+● I'll link all five full recordings in the scratchpad, but commit a lighter set
+  to the repo: six stills plus one short recording, starting with the structure
+  picture.
+
+  Read 2 files (ctrl+o to expand)
+
+● I'll use the estate sample for the committed recording since its 53 spheres
+  animate well even on this machine's software renderer, capturing the initial
+  layout, a hub drag, and a layout switch. Now I'm locating the layout buttons'
+  names to script this.
+
+  Searched for 3 patterns (ctrl+o to expand)
+
+● The layout buttons carry data-spatial-layout. Now the estate recording script.
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● The motion settles as expected at the recorded frame counts, and the recording
+  size matches prior runs; the camera framing issue (first picture overflowing
+  the canvas due to the library's default sizing) persists even at 53 spheres,
+  which is a design decision left open for review. Now I'll regenerate the Live
+  Docs, write the authored notes and documents, run the 3D browser specs, and
+  then the full gate—starting with regeneration to create the new physics
+  module's doc.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The new module's docs have placeholders to write, and the layout tests' notes
+  describe the removed schedule. I'm checking the other affected docs for the
+  same stale wording before writing them all.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I found ten docs still reflecting the old schedule, so I'm adding dated notes
+  marking October 18's facts as historical while stating current facts as
+  present-day. The physics module and its tests will get their own newly
+  authored sections.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Next the authored documents: the plan's tickets C2 and C5, the Explorer
+  contract, and the October 19 probe's record. I'm finding their passages about
+  the easing.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Next the decisions log: a new entry for the motion, and a dated note on
+  October 18's entry that its schedule is superseded.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Next the pictures. I'm checking the chosen stills' sizes before copying them
+  into today's folder.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Now the session record's work notes for Turn 5, before the specs run.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The integration is documented. I'm running the full gate now rather than a
+  subset first: it runs every browser spec, and whatever fails I'll fix and
+  rerun.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate is running, about 25 minutes. Waiting for it to report.
+
+● Background command "Run the full gate with browser tests" completed (exit code
+0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Tests, lint, build, and type-checks all passed, but the markdown audit caught
+  a bug—I left a literal {R} instead of the formatted relative path in the Live
+  Doc view. I'm fixing that now, then rerunning the audits and the browser
+  suite.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Markdown and asset audits passed, but the symbol audit found that retitling
+  the October 18 decision entry broke its anchor, which the vision document
+  links to. I'll restore the original title to preserve the anchor and move the
+  superseded note into the entry's body instead, starting by checking every link
+  to that anchor.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The symbol audit passes now. The vision's status section narrates each
+  session's landing, so the motion belongs there in one sentence, beside this
+  morning's no-network sentence.
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● The documentation checks all pass and the Live Docs regenerate unchanged. Now
+  the browser suite, the part of the chain that hasn't run yet.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The browser suite is running, about 25 minutes. I'll read it when it reports.
+
+● Background command "Run the browser suite over freshly built bundles"
+completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Found a real failing browser test: no-network.spec.ts never settles because
+  aria-busy stays true past 30 seconds. My guess is that at this commit the
+  picture is a single sphere, so its diagonal is zero and the stillness check
+  can never pass—checking how many spheres that step actually shows to confirm.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Found the bug: a hostile history file produces a NaN symbol count, which
+  propagates to a sphere's radius and causes the new field to throw on every
+  tick—unlike D3, which silently ignored it. This refusal is correct behavior,
+  so I'm now locating where the history's counts are parsed to fix it at the
+  source.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The hostile value flows through unvalidated into symbolCount, causing the
+  sizing math to produce NaN. I'll check whether the client's history loader
+  validates anything on file read, since that's the natural place to catch this.
+
+  Searched for 3 patterns, ran 1 shell command (ctrl+o to expand)
+
+● Found that malformed counts bypass validation and flow through symbolCountOf
+  into sphere sizing. I'll fix it there to treat invalid counts as zero symbols,
+  keep the step panel displaying the raw NaN value (per yesterday's no-network
+  decision), and add a unit test.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The new test passes. I'm checking it fails with the old rule, then rebuilding
+  the bundles to rerun the failed spec and the history scrubber's.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All 18 tests pass, and the fix doesn't affect the other 187 browser results
+  since it only touches non-numeric counts. Next I'll run regeneration, the full
+  unit suite, lint on the changed code, and the documentation audits.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 1,350 unit tests pass with clean lint and type-check results. Next I'll
+  update the layout module's count rule documentation, log the gate outcome and
+  audits, then commit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The harness capture shows as modified, likely because the owner re-exported
+  it—I'll preserve it as-is and record its size, hash, and endpoints for the
+  inventory.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Committing the motion with its tests, docs, pictures and the record.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The motion is integrated and committed as 9516968d (not pushed). The 3D
+  picture now eases until it is truly still, with each sphere tethered to where
+  it stood when the motion began. A pin, a filter, a history step or a drag
+  moves it at a constant strength and then stops, with no cooling. The tether's
+  strength (0.01 to start) is a new slider under Tuning, beside Update Energy.
+
+  Measured in the browser, on this repository (846 files): steps to still, with
+  gravity at 0.03 (see below). One step happens per frame; the seconds depend on
+  this machine's slow software renderer.
+
+  ┌─────────────────────────────┬─────────────┬───────────┐
+  │                             │ Connections │ Structure │
+  ├─────────────────────────────┼─────────────┼───────────┤
+  │ First picture               │ 462         │ 494       │
+  ├─────────────────────────────┼─────────────┼───────────┤
+  │ Tests hidden / shown again  │ 272 / 296   │ 245 / 233 │
+  ├─────────────────────────────┼─────────────┼───────────┤
+  │ A sphere dragged and let go │ 478         │ 219       │
+  └─────────────────────────────┴─────────────┴───────────┘
+
+  That's in the range of the old settle of about 300 steps, and every run came
+  to rest.
+
+  What to look at
+
+  - This repository at update energy 1 (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+    12ed08c18/scratchpad/easing/look/connections-g0.03-e1.webm)), 0.5 (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-dd
+    f12ed08c18/scratchpad/easing/look/connections-g0.03-e0.5.webm)) and 0.25
+    (recording (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-44
+    14-bf81-ddf12ed08c18/scratchpad/easing/look/connections-g0.03-e0.25.webm)).
+  - At your gravity of 0.01 (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+    12ed08c18/scratchpad/easing/look/connections-g0.01-e1.webm)), and the
+    structure layout (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+    12ed08c18/scratchpad/easing/look/structure-g0.03-e1.webm)).
+  - Each recording opens the picture, hides the tests, shows them again, then
+    drags a sphere and lets go.
+  - These five are too big to commit and won't outlive this session. The
+    repository keeps ten pictures and a short recording of the estate sample
+    (AI-Agent-Workspace/Screenshots/2026-10-21/README.md#the-3d-picture-eased-un
+    til-still-october-21-session).
+
+  Decisions for you
+
+  1. Gravity, which sets the picture's size.
+     - D3's cooling used to freeze the picture at a little over half the size
+       its forces settle at, and you chose 0.01 by eye on those frozen pictures.
+     - Now the picture reaches its balance, so at 0.01 it's 1.8–1.9 times wider
+       (picture (AI-Agent-Workspace/Screenshots/2026-10-21/motion-first-gravity-
+       0.01.png)). At 0.03 it's back to the size you knew (picture (AI-Agent-Wor
+       kspace/Screenshots/2026-10-21/motion-first-gravity-0.03.png)).
+     - I left the default at 0.01 for you to choose.
+  2. The camera. The 3D library places its first camera for a picture about the
+     size of D3's frozen one. Now the camera stands nearly inside the picture:
+     even at gravity 0.03, only about 600 of 846 spheres are on screen at 1100
+     × 700. I'd recommend framing the first picture once, as it unfolds. Do you
+     want that?
+  3. What Update Energy means now.
+     - Every energy reaches much the same resting picture, so the energy only
+       sets how fast a change moves. A tenth just takes longer.
+     - How far the rest of the picture moves is now the tether's job: after
+       hiding and showing tests, unchanged spheres moved a mean of 66–73 units
+       at every energy.
+     - So I set the default energy to 1. The recordings at 1, 0.5 and 0.25 are
+       there for you to pick.
+  4. The tether's strength: yours to tune with the new slider.
+
+  One thing that behaves differently: when you drag a sphere, its neighbours
+  swing round to keep their springs' length to it and go no further. Before, the
+  whole cluster slid after your hand for some 2,000 steps.
+
+  Fixed along the way: the no-network test feeds the page a history file with
+  markup where a symbol count belongs. Under D3 the resulting NaN size passed
+  silently; the new motion rejects it, so the picture never came to rest. A
+  count that isn't a number now sizes the sphere as having none.
+
+  Verification:
+  - The full chain ran on this code except one browser test: unit and
+    integration tests, lint, build, the documentation audits, and 187 of 188
+    browser tests.
+  - That test was the one that found the hostile-count problem above. After the
+    fix it passes, along with the history-scrubber tests (18 of 18), all 1,350
+    unit tests and the documentation audits. I committed on that evidence rather
+    than rerun the whole 25-minute suite a fourth time.
+
+  Still owed: which files get a Live Doc. Under your rule, nearly all of the ~43
+  undocumented files qualify:
+  - The markdown outside the docs folder, the CI workflows, the setup script and
+    the grammar's build recipe carry intent.
+  - Estate.sln, the workflows, the grammar's .wasm and .gitignore carry
+    connections: .gitignore even decides what gets scanned.
+  - Only the grammar's test-corpus .txt and the one-line CLAUDE.md look outside
+    "within reason".
+
+  The real decision is the rule for any repository:
+  - (a) Add classes one by one: markdown with its links as wires, YAML, shell
+    scripts, solution files, the dotfiles that shape discovery.
+  - (b) Document every tracked file, with named exclusions for generated files,
+    secrets and bulk data.
+
+  I'd recommend (a), since "within reason" is easier to hold class by class.
+  Which would you like?
+
+● The motion is integrated and committed as 9516968d (not pushed). The 3D
+  picture now eases until it is truly still, with each sphere tethered to where
+  it stood when the motion began. A pin, a filter, a history step or a drag
+  moves it at a constant strength and then stops, with no cooling. The tether's
+  strength (0.01 to start) is a new slider under Tuning, beside Update Energy.
+
+  Measured in the browser, on this repository (846 files): steps to still, with
+  gravity at 0.03 (see below). One step happens per frame; the seconds depend on
+  this machine's slow software renderer.
+
+  ┌─────────────────────────────┬─────────────┬───────────┐
+  │                             │ Connections │ Structure │
+  ├─────────────────────────────┼─────────────┼───────────┤
+  │ First picture               │ 462         │ 494       │
+  ├─────────────────────────────┼─────────────┼───────────┤
+  │ Tests hidden / shown again  │ 272 / 296   │ 245 / 233 │
+  ├─────────────────────────────┼─────────────┼───────────┤
+  │ A sphere dragged and let go │ 478         │ 219       │
+  └─────────────────────────────┴─────────────┴───────────┘
+
+  That's in the range of the old settle of about 300 steps, and every run came
+  to rest.
+
+  What to look at
+
+  - This repository at update energy 1 (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+    12ed08c18/scratchpad/easing/look/connections-g0.03-e1.webm)), 0.5 (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-dd
+    f12ed08c18/scratchpad/easing/look/connections-g0.03-e0.5.webm)) and 0.25
+    (recording (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-44
+    14-bf81-ddf12ed08c18/scratchpad/easing/look/connections-g0.03-e0.25.webm)).
+  - At your gravity of 0.01 (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+    12ed08c18/scratchpad/easing/look/connections-g0.01-e1.webm)), and the
+    structure layout (recording
+    (/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+    12ed08c18/scratchpad/easing/look/structure-g0.03-e1.webm)).
+  - Each recording opens the picture, hides the tests, shows them again, then
+    drags a sphere and lets go.
+  - These five are too big to commit and won't outlive this session. The
+    repository keeps ten pictures and a short recording of the estate sample
+    (AI-Agent-Workspace/Screenshots/2026-10-21/README.md#the-3d-picture-eased-un
+    til-still-october-21-session).
+
+  Decisions for you
+
+  1. Gravity, which sets the picture's size.
+     - D3's cooling used to freeze the picture at a little over half the size
+       its forces settle at, and you chose 0.01 by eye on those frozen pictures.
+     - Now the picture reaches its balance, so at 0.01 it's 1.8–1.9 times wider
+       (picture (AI-Agent-Workspace/Screenshots/2026-10-21/motion-first-gravity-
+       0.01.png)). At 0.03 it's back to the size you knew (picture (AI-Agent-Wor
+       kspace/Screenshots/2026-10-21/motion-first-gravity-0.03.png)).
+     - I left the default at 0.01 for you to choose.
+  2. The camera. The 3D library places its first camera for a picture about the
+     size of D3's frozen one. Now the camera stands nearly inside the picture:
+     even at gravity 0.03, only about 600 of 846 spheres are on screen at 1100
+     × 700. I'd recommend framing the first picture once, as it unfolds. Do you
+     want that?
+  3. What Update Energy means now.
+     - Every energy reaches much the same resting picture, so the energy only
+       sets how fast a change moves. A tenth just takes longer.
+     - How far the rest of the picture moves is now the tether's job: after
+       hiding and showing tests, unchanged spheres moved a mean of 66–73 units
+       at every energy.
+     - So I set the default energy to 1. The recordings at 1, 0.5 and 0.25 are
+       there for you to pick.
+  4. The tether's strength: yours to tune with the new slider.
+
+  One thing that behaves differently: when you drag a sphere, its neighbours
+  swing round to keep their springs' length to it and go no further. Before, the
+  whole cluster slid after your hand for some 2,000 steps.
+
+  Fixed along the way: the no-network test feeds the page a history file with
+  markup where a symbol count belongs. Under D3 the resulting NaN size passed
+  silently; the new motion rejects it, so the picture never came to rest. A
+  count that isn't a number now sizes the sphere as having none.
+
+  Verification:
+  - The full chain ran on this code except one browser test: unit and
+    integration tests, lint, build, the documentation audits, and 187 of 188
+    browser tests.
+  - That test was the one that found the hostile-count problem above. After the
+    fix it passes, along with the history-scrubber tests (18 of 18), all 1,350
+    unit tests and the documentation audits. I committed on that evidence rather
+    than rerun the whole 25-minute suite a fourth time.
+
+  Still owed: which files get a Live Doc. Under your rule, nearly all of the ~43
+  undocumented files qualify:
+  - The markdown outside the docs folder, the CI workflows, the setup script and
+    the grammar's build recipe carry intent.
+  - Estate.sln, the workflows, the grammar's .wasm and .gitignore carry
+    connections: .gitignore even decides what gets scanned.
+  - Only the grammar's test-corpus .txt and the one-line CLAUDE.md look outside
+    "within reason".
+
+  The real decision is the rule for any repository:
+  - (a) Add classes one by one: markdown with its links as wires, YAML, shell
+    scripts, solution files, the dotfiles that shape discovery.
+  - (b) Document every tracked file, with named exclusions for generated files,
+    secrets and bulk data.
+
+  I'd recommend (a), since "within reason" is easier to hold class by class.
+  Which would you like?
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-441
+     4-bf81-ddf12ed08c18/scratchpad/gates/gate-3.log (187 lines)
+  ⎿  Referenced file packages/explorer/src/client/views/forceGraphPhysics.ts
+  ⎿  Read scripts/layout-lab/spatial.ts (66 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-441
+     4-bf81-ddf12ed08c18/tasks/b59gpat0w.output (7 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-441
+     4-bf81-ddf12ed08c18/tasks/b0hqfmd4g.output (9 lines)
