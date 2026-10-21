@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { carryPositions, diagonalOf, extentOf, measureDrift, renderDriftReports, toggledArchetype } from "./drift";
+import { carryPositions, diagonalOf, extentOf, measureDrift, rangeOf, renderDriftReports, toggledArchetype } from "./drift";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
@@ -41,21 +41,26 @@ describe("the drift measure", () => {
     expect(carryPositions([hub], [], new Map(), tuning, "structure")[0].x).toBeUndefined();
   });
 
-  it("feeds each change by the update energy: placement alone takes no tick and moves no unchanged sphere, a tenth takes fewer ticks and moves them less than the full reheat", () => {
+  it("eases each change at the update energy: placement alone takes no tick and moves no unchanged sphere, a tenth eases more gently and so for longer, to much the same rest", () => {
     const tuning = { ...getDefaultTuning().forceGraph, gravity: 0.05, chargeRange: 0 };
-    const full = measureDrift(graph, everything, tests, { ...tuning, updateEnergy: 1 }, "connections", 2, 300);
-    const tenth = measureDrift(graph, everything, tests, { ...tuning, updateEnergy: 0.1 }, "connections", 2, 300);
-    const placement = measureDrift(graph, everything, tests, { ...tuning, updateEnergy: 0 }, "connections", 2, 300);
-    expect(full.cycles.map(cycle => cycle.settleTicks)).toEqual([{ removed: 300, restored: 300 }, { removed: 300, restored: 300 }]);
-    expect(tenth.cycles.map(cycle => cycle.settleTicks)).toEqual([{ removed: 200, restored: 200 }, { removed: 200, restored: 200 }]);
-    expect(placement.cycles.map(cycle => cycle.settleTicks)).toEqual([{ removed: 0, restored: 0 }, { removed: 0, restored: 0 }]);
+    const full = measureDrift(graph, everything, tests, { ...tuning, updateEnergy: 1 }, "connections", 2, 20_000);
+    const tenth = measureDrift(graph, everything, tests, { ...tuning, updateEnergy: 0.1 }, "connections", 2, 20_000);
+    const placement = measureDrift(graph, everything, tests, { ...tuning, updateEnergy: 0 }, "connections", 2, 20_000);
+    const settles = (report: typeof full): number[] => report.cycles.flatMap(cycle => [cycle.settleTicks.removed, cycle.settleTicks.restored]);
+    // Measured 2026-10-21: every change still in 137 to 142 ticks at full strength and 371 to 474 at a tenth.
+    expect(settles(full).every(ticks => ticks > 0 && ticks < 20_000)).toBe(true);
+    expect(Math.min(...settles(tenth))).toBeGreaterThan(Math.max(...settles(full)));
+    expect(settles(placement)).toEqual([0, 0, 0, 0]);
     expect(placement.cycles.every(cycle => cycle.meanMoveOfUnchanged === 0 && cycle.extent === placement.start.extent)).toBe(true);
+    // The same forces eased more gently come to much the same rest: the unchanged spheres moved a mean of 4.5 and 5.0.
     expect(tenth.cycles[0].meanMoveOfUnchanged).toBeGreaterThan(0);
-    expect(tenth.cycles[0].meanMoveOfUnchanged).toBeLessThan(full.cycles[0].meanMoveOfUnchanged / 2);
+    expect(Math.abs(tenth.cycles[0].meanMoveOfUnchanged / full.cycles[0].meanMoveOfUnchanged - 1)).toBeLessThan(0.25);
     const table = renderDriftReports([full, tenth, placement], "toy");
-    expect(table).toContain(`| connections | 1 | ${tuning.linkStrength} | 0.05 | unbounded | 6 (2) |`);
-    expect(table).toContain("| 300 |");
+    expect(table).toContain(`| connections | 1 | ${tuning.tether} | ${tuning.linkStrength} | 0.05 | unbounded | 6 (2) |`);
+    expect(table).toContain(`| ${rangeOf(settles(full))} |`);
     expect(table).toContain("| 0 |\n");
+    expect(rangeOf([3, 1, 2])).toBe("1 to 3");
+    expect(rangeOf([4, 4])).toBe("4");
   });
 
   it("maps the toggle option to the doc's archetype and refuses a word that would measure the control unawares", () => {
@@ -65,7 +70,7 @@ describe("the drift measure", () => {
     expect(() => toggledArchetype("test")).toThrow("--toggle must be");
   });
 
-  it("measures the control, a reheat with nothing toggled, as a cycle of zero toggled spheres", () => {
+  it("measures the control, an easing with nothing toggled, as a cycle of zero toggled spheres", () => {
     const control = measureDrift(graph, everything, () => false, getDefaultTuning().forceGraph, "connections", 1, 50);
     expect(control.toggled).toBe(0);
     expect(control.cycles[0].meanMoveOfUnchanged).toBeGreaterThan(0);
@@ -74,12 +79,13 @@ describe("the drift measure", () => {
   it("finds the clusters drifting apart under the forces as they were, and held by gravity", () => {
     // The drift of 2026-10-17 was measured under the full reheat the page made of every change; the energy stays at one here.
     const tuning = { ...getDefaultTuning().forceGraph, updateEnergy: 1 };
-    const lax = measureDrift(graph, everything, tests, { ...tuning, gravity: 0, chargeRange: 0 }, "connections", 5, 300);
-    const held = measureDrift(graph, everything, tests, { ...tuning, gravity: 0.05, chargeRange: 0 }, "connections", 5, 300);
+    const lax = measureDrift(graph, everything, tests, { ...tuning, gravity: 0, chargeRange: 0 }, "connections", 5, 20_000);
+    const held = measureDrift(graph, everything, tests, { ...tuning, gravity: 0.05, chargeRange: 0 }, "connections", 5, 20_000);
     expect(lax.toggled).toBe(2);
     expect(lax.total).toBe(6);
     const growth = (report: typeof lax): number => report.cycles[report.cycles.length - 1].extent / report.start.extent;
-    // Without a restoring force every reheat pushes the two clusters further apart; with one the picture returns.
+    // Without a restoring force every change lets the two clusters drift further apart (1.43 times over five cycles,
+    // measured 2026-10-21); with one the picture returns (0.99).
     expect(growth(lax)).toBeGreaterThan(1.2);
     expect(growth(held)).toBeLessThan(1.1);
     expect(held.cycles.every(cycle => Number.isFinite(cycle.meanMoveOfUnchanged))).toBe(true);

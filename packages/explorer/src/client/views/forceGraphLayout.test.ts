@@ -1,14 +1,26 @@
-import { forceLink, forceManyBody, forceSimulation } from "d3-force-3d";
+import { forceLink, forceSimulation } from "d3-force-3d";
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
-import { configureSpatialForces, LIBRARY_ALPHA_DECAY, linkPulls, placeNewSpheres, pullingLinkForce, scaledForce, seededDirection, SETTLED_ALPHA, settleSpatialUpdate, settleTicksOf, simulateSpatialLayout, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, updateSchedule, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
+import { easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
+import { diagonalOf } from "./forceGraphPhysics";
 import { getDefaultTuning } from "../persistence/local-storage";
 import type { ForceGraphTuning } from "../types";
 
 const node = (id: string, symbols: number): SpatialNode => ({ id, publicSymbols: Array.from({ length: symbols }, (_, index) => `symbol${index}`) });
 const separation = (nodes: SpatialNode[]): number => Math.hypot(nodes[0].x! - nodes[1].x!, nodes[0].y! - nodes[1].y!, nodes[0].z! - nodes[1].z!);
 const distance = (a: { x?: number; y?: number; z?: number }, b: { x?: number; y?: number; z?: number }): number => Math.hypot(a.x! - b.x!, a.y! - b.y!, a.z! - b.z!);
+const placesOf = (nodes: readonly SpatialNode[]): number[][] => nodes.map(file => [file.x!, file.y!, file.z!]);
+const sizeOf = (nodes: readonly SpatialNode[]): number => diagonalOf(Float64Array.from(placesOf(nodes).flat()));
+
+/** Two clusters that never reference each other, a test file in each. */
+const files = ["a/one", "a/two", "a/one.test", "b/three", "b/four", "b/three.test"].map(id => node(id, 1));
+const links: SpatialLink[] = [
+  { source: "a/one", target: "a/two", count: 1 }, { source: "a/one.test", target: "a/one", count: 1 },
+  { source: "b/three", target: "b/four", count: 1 }, { source: "b/three.test", target: "b/three", count: 1 }
+];
+const isTest = (file: SpatialNode): boolean => file.id.endsWith(".test");
+const untested = links.filter(link => !String(link.source).endsWith(".test"));
 
 describe("spatial layout grammar", () => {
   it("maps exposed symbols to volume, with visible zero-symbol files and stable sizes between packing presets", () => {
@@ -30,6 +42,17 @@ describe("spatial layout grammar", () => {
     expect(spatialNodeValue({ ...hub, containedSymbolCounts: [] }, tuning)).toBe(1);
   });
 
+  it("sizes a sphere whose count cannot be read as one with no symbols, so that a bad history file cannot stop the motion", () => {
+    // The no-network spec feeds the page a history whose count is markup; the field refuses a radius that is not a number.
+    const tuning = getDefaultTuning().forceGraph;
+    for (const bad of [Number.NaN, -3, Number.POSITIVE_INFINITY, "<b>3</b>" as unknown as number]) {
+      expect(symbolCountOf({ publicSymbols: ["a"], symbolCount: bad })).toBe(0);
+      expect(spatialNodeRadius({ id: "x", publicSymbols: [], symbolCount: bad }, tuning)).toBe(tuning.nodeSize);
+    }
+    expect(symbolCountOf({ publicSymbols: ["a", "b"] })).toBe(2);
+    expect(symbolCountOf({ publicSymbols: [], symbolCount: 5 })).toBe(5);
+  });
+
   it("uses a diminishing surface gap and incorporates both endpoint radii", () => {
     const tuning = getDefaultTuning().forceGraph;
     const source = node("a", 0), target = node("b", 7);
@@ -42,99 +65,56 @@ describe("spatial layout grammar", () => {
     expect(spatialLinkDistance({ source, target, count: 500 }, { ...tuning, linkGap: 8, coupling: 3, collisionGap: 20 })).toBe(32);
   });
 
-  it("gives the link force only the links that pull in a layout, so that the others neither pull nor count", () => {
+  it("pulls by the links that pull in a layout alone, and still ends every link on its two spheres", () => {
     const containment: SpatialLink[] = [
       { source: "directory:", target: "a", count: 1, kind: "containment" },
       { source: "directory:", target: "b", count: 1, kind: "containment" }
     ];
     const reference: SpatialLink = { source: "a", target: "b", count: 50, kind: "dependency" };
-    const links = [...containment, reference];
-    expect(links.map(link => linkPulls(link, "structure"))).toEqual([true, true, false]);
-    expect(links.map(link => linkPulls(link, "connections"))).toEqual([false, false, true]);
-    const inner = forceLink<SpatialNode, SpatialLink>();
-    const tree = pullingLinkForce(inner, "structure");
-    tree.links(links);
-    expect(inner.links()).toEqual(containment);
-    expect(tree.links()).toEqual(links);
-    const network = pullingLinkForce(tree, "connections");
-    expect(inner.links()).toEqual([reference]);
-    expect(network.links()).toEqual(links);
+    const all = [...containment, reference];
+    expect(all.map(link => linkPulls(link, "structure"))).toEqual([true, true, false]);
+    expect(all.map(link => linkPulls(link, "connections"))).toEqual([false, false, true]);
     const tuning = getDefaultTuning().forceGraph;
     const nodes: SpatialNode[] = [{ id: "directory:", publicSymbols: [], containedSymbolCounts: [3, 7] }, node("a", 3), node("b", 7)];
-    const declared = simulateSpatialLayout(nodes, links, tuning, 300, "structure");
-    expect(declared.nodes).toEqual(simulateSpatialLayout(nodes, containment, tuning, 300, "structure").nodes);
+    const declared = easeSpatialLayout(nodes, all, tuning, "structure");
+    // A reference drawn on demand in the structure layout moves nothing...
+    expect(declared.nodes).toEqual(easeSpatialLayout(nodes, containment, tuning, "structure").nodes);
+    // ...and runs between its two spheres, since three-forcegraph draws no line whose ends are still ids (2026-10-16).
     expect(declared.links.every(link => typeof link.source !== "string" && typeof link.target !== "string")).toBe(true);
-    const analyzed = simulateSpatialLayout(nodes, links, tuning, 300, "connections");
+    const analyzed = easeSpatialLayout(nodes, all, tuning, "connections");
     expect(separation(analyzed.nodes.slice(1))).toBeLessThan(separation(declared.nodes.slice(1)));
     expect(nodes.every(file => file.x === undefined)).toBe(true);
   });
 
-  it("resolves the endpoints of the links that do not pull, in the order the browser's engine sets nodes and links", () => {
-    // three-forcegraph sets the simulation's nodes and then the link force's links, and draws no line whose endpoints
-    // are still ids; a reference drawn on demand in the structure layout must end on its two spheres (2026-10-16).
-    const nodes: SpatialNode[] = [{ id: "directory:", publicSymbols: [], containedSymbolCounts: [3, 7] }, node("a", 3), node("b", 7)];
-    const links: SpatialLink[] = [
-      { source: "directory:", target: "a", count: 1, kind: "containment" },
-      { source: "directory:", target: "b", count: 1, kind: "containment" },
-      { source: "a", target: "b", count: 2, kind: "dependency" }
-    ];
-    const tree = pullingLinkForce(forceLink<SpatialNode, SpatialLink>(), "structure");
-    const simulation = forceSimulation<SpatialNode>([], 3).stop().force("link", tree);
-    simulation.nodes(nodes);
-    tree.id(file => file.id).links(links);
-    const [, a, b] = nodes;
-    expect(links[2].source).toBe(a);
-    expect(links[2].target).toBe(b);
-    expect(links.every(link => typeof link.source === "object" && typeof link.target === "object")).toBe(true);
-    simulation.tick(10);
-    expect([a, b].every(file => [file.x, file.y, file.z].every(Number.isFinite))).toBe(true);
-    // A layout change wraps the wrapper and sets it again; every link stays resolved.
-    const network = pullingLinkForce(tree, "connections");
-    simulation.force("link", network);
-    expect(network.links().every(link => typeof link.source === "object" && typeof link.target === "object")).toBe(true);
-    // An id the nodes do not hold fails as D3 fails for the links it holds.
-    expect(() => tree.links([{ source: "a", target: "gone", count: 1, kind: "dependency" }])).toThrow("node not found: gone");
-  });
-
-  it("has a compact equilibrium under the shipped tuning: a cluster toggled out and back in settles the picture's extent, where the forces as they were let it grow without end", () => {
-    // Two clusters that never reference each other, a test file in each, toggled out and back in twenty times, as a type
-    // toggle does. Under the forces as they were (no gravity) the extent grows with every cycle and never settles; with
-    // gravity it settles at an equilibrium a little wider than the cold start's and stays there. The shipped tuning is
-    // the owner's by eye since 2026-10-18 (gravity 0.01, springs at a quarter), chosen for room to breathe over the
-    // tighter 0.05 the lab first shipped; this toy is harsher than the real bundles, whose extent grew 4 to 6 percent
-    // over five cycles at these settings in the lab. So the test asks whether the extent settles, not whether it stays
-    // at the cold start's: bounded well under the twofold mark, and moving less than a twentieth between the tenth and
-    // the twentieth cycle, where without gravity it is past sixfold by the twentieth and still growing.
-    const tuning = getDefaultTuning().forceGraph;
-    const files = ["a/one", "a/two", "a/one.test", "b/three", "b/four", "b/three.test"].map(id => node(id, 1));
-    const links: SpatialLink[] = [
-      { source: "a/one", target: "a/two", count: 1 }, { source: "a/one.test", target: "a/one", count: 1 },
-      { source: "b/three", target: "b/four", count: 1 }, { source: "b/three.test", target: "b/three", count: 1 }
-    ];
+  it("has a compact equilibrium under the shipped tuning: a cluster toggled out and back in settles the picture's extent, where without gravity it keeps growing", () => {
+    // A type toggle twenty times over. Without gravity nothing draws the two clusters together, and every change lets the
+    // repulsion push them a little further apart; with the shipped gravity (the owner's 0.01 of 2026-10-18) the extent
+    // settles near the first picture's and stays there.
     const extent = (nodes: readonly SpatialNode[]): number => {
       const centroid = { x: 0, y: 0, z: 0 };
       for (const point of nodes) { centroid.x += point.x! / nodes.length; centroid.y += point.y! / nodes.length; centroid.z += point.z! / nodes.length; }
       return Math.sqrt(nodes.reduce((sum, point) => sum + (point.x! - centroid.x) ** 2 + (point.y! - centroid.y) ** 2 + (point.z! - centroid.z) ** 2, 0) / nodes.length);
     };
-    const isTest = (file: SpatialNode): boolean => file.id.endsWith(".test");
-    /** The extent after each of twenty toggle cycles, over the cold start's. */
+    /** The extent after each of twenty toggle cycles, over the first picture's. */
     const growth = (forces: ForceGraphTuning): number[] => {
-      let placed = simulateSpatialLayout(files, links, forces, 300).nodes;
+      let placed = easeSpatialLayout(files, links, forces, "connections").nodes;
       const start = extent(placed);
       const series: number[] = [];
       for (let cycle = 1; cycle <= 20; cycle++) {
-        const reduced = simulateSpatialLayout(placed.filter(file => !isTest(file)), links.filter(link => !String(link.source).endsWith(".test")), forces, 300).nodes;
-        placed = simulateSpatialLayout([...reduced, ...placed.filter(isTest)], links, forces, 300).nodes;
+        const reduced = easeSpatialLayout(placed.filter(file => !isTest(file)), untested, forces, "connections", { start: "hold" }).nodes;
+        placed = easeSpatialLayout([...reduced, ...placed.filter(isTest)], links, forces, "connections", { start: "hold" }).nodes;
         series.push(extent(placed) / start);
       }
       return series;
     };
+    const tuning = getDefaultTuning().forceGraph;
+    // Measured 2026-10-21: the shipped extent stays at 0.97 of the first picture's from the first cycle to the twentieth;
+    // without gravity it is 1.75 at the tenth and 2.26 at the twentieth, still growing.
     const shipped = growth(tuning);
-    expect(shipped[19]).toBeLessThan(1.5);
-    expect(shipped[19] / shipped[9]).toBeLessThan(1.05);
-    expect(shipped[19] / shipped[9]).toBeGreaterThan(0.95);
-    const lax = growth({ ...tuning, gravity: 0, chargeRange: 0 });
-    expect(lax[19]).toBeGreaterThan(3);
+    expect(shipped[19]).toBeLessThan(1.1);
+    expect(Math.abs(shipped[19] / shipped[9] - 1)).toBeLessThan(0.05);
+    const lax = growth({ ...tuning, gravity: 0 });
+    expect(lax[19]).toBeGreaterThan(2);
     expect(lax[19] / lax[9]).toBeGreaterThan(1.2);
   });
 
@@ -142,7 +122,7 @@ describe("spatial layout grammar", () => {
     const relaxed = getDefaultTuning().forceGraph;
     const compact = applyLayoutPreset(getDefaultTuning(), "compact").forceGraph;
     const nodes = [node("a", 3), node("b", 7)];
-    const run = (count: number, tuning = relaxed) => simulateSpatialLayout(nodes, [{ source: "a", target: "b", count }], tuning, 400);
+    const run = (count: number, tuning = relaxed) => easeSpatialLayout(nodes, [{ source: "a", target: "b", count }], tuning, "connections");
     expect(separation(run(8).nodes)).toBeLessThan(separation(run(1).nodes));
     expect(separation(run(8, compact).nodes)).toBeLessThan(separation(run(8).nodes));
     expect(run(8)).toEqual(run(8));
@@ -152,61 +132,16 @@ describe("spatial layout grammar", () => {
   it("keeps unequal-size spheres apart even from coincident positions and high coupling", () => {
     const tuning = { ...getDefaultTuning().forceGraph, linkGap: 8, coupling: 3 };
     const nodes = [node("a", 0), node("b", 63)].map(file => ({ ...file, x: 0, y: 0, z: 0 }));
-    const result = simulateSpatialLayout(nodes, [{ source: "a", target: "b", count: 500 }], tuning, 400);
+    const result = easeSpatialLayout(nodes, [{ source: "a", target: "b", count: 500 }], tuning, "connections");
     const clearance = spatialNodeRadius(nodes[0], tuning) + spatialNodeRadius(nodes[1], tuning) + tuning.collisionGap;
+    expect(result.still).toBe(true);
     expect(separation(result.nodes)).toBeGreaterThanOrEqual(clearance - 0.01);
     expect(result.nodes.every(file => [file.x, file.y, file.z].every(Number.isFinite))).toBe(true);
-    expect(() => simulateSpatialLayout(nodes, [], tuning, -1)).toThrow("nonnegative integer");
+    expect(() => easeSpatialLayout(nodes, [], tuning, "connections", { maxTicks: -1 })).toThrow("nonnegative integer");
   });
 });
 
-describe("the update energy, the lever of a membership change (ticket C2)", () => {
-  it("schedules a change as D3 schedules a reheat: all of alpha at one, a reheat to the fraction that stops at the same stillness, nothing at or below it", () => {
-    expect(updateSchedule(1)).toEqual({ share: 1, alphaMin: SETTLED_ALPHA, ticks: true });
-    expect(updateSchedule(0.1)).toEqual({ share: 0.1, alphaMin: 0.01, ticks: true });
-    expect(updateSchedule(0.001)).toEqual({ share: 0, alphaMin: SETTLED_ALPHA, ticks: false });
-    expect(updateSchedule(0)).toEqual({ share: 0, alphaMin: SETTLED_ALPHA, ticks: false });
-    for (const bad of [1.5, -0.1, Number.NaN]) expect(() => updateSchedule(bad)).toThrow("between 0 and 1");
-  });
-
-  it("counts the ticks to settle as the library counts them: three hundred for the full reheat, fewer for a fraction, none for placement", () => {
-    expect(settleTicksOf(1)).toBe(300);
-    expect(settleTicksOf(0.1)).toBe(200);
-    expect(settleTicksOf(0.01)).toBe(100);
-    expect(settleTicksOf(0.3)).toBeLessThan(settleTicksOf(1));
-    expect(settleTicksOf(0.3)).toBeGreaterThan(settleTicksOf(0.1));
-    expect(settleTicksOf(0)).toBe(0);
-    // A faster cooling settles sooner: at the probe's doubled decay of 2026-10-16, 0.9544 to the 149th is the first power below the stillness.
-    expect(settleTicksOf(1, 0.0456)).toBe(149);
-  });
-
-  it("gives a force a share of alpha and forwards its accessors, never scaling twice", () => {
-    const run = (share: number): number => {
-      const nodes = [{ ...node("a", 1), x: -10, y: 0, z: 0 }, { ...node("b", 1), x: 10, y: 0, z: 0 }];
-      let seen = share;
-      const force = scaledForce(forceManyBody<SpatialNode>(), () => seen);
-      expect(force.strength(-30)).toBe(force);
-      expect(force.strength()(nodes[0], 0, nodes)).toBe(-30);
-      // Wrapping the wrapper wraps the force beneath: the share read is the outer one alone.
-      const again = scaledForce(force, () => share);
-      seen = 1_000;
-      forceSimulation(nodes, 3).stop().force("charge", again).tick(1);
-      return separation(nodes) - 20;
-    };
-    const full = run(1), half = run(0.5), none = run(0);
-    expect(full).toBeGreaterThan(0);
-    expect(half).toBeCloseTo(full / 2, 6);
-    expect(none).toBe(0);
-    const pull = (share?: number): number => {
-      const pair = [{ ...node("a", 1), x: -100, y: 0, z: 0 }, { ...node("b", 1), x: 100, y: 0, z: 0 }];
-      const spring = pullingLinkForce(forceLink<SpatialNode, SpatialLink>().id(file => file.id), "connections", share === undefined ? undefined : () => share);
-      forceSimulation(pair, 3).stop().force("link", spring.links([{ source: "a", target: "b", count: 1 }])).tick(1);
-      return 200 - separation(pair);
-    };
-    expect(pull()).toBeGreaterThan(0);
-    expect(pull(0.5)).toBeCloseTo(pull() / 2, 6);
-  });
-
+describe("the update energy, the constant strength of a change's motion (ticket C2)", () => {
   it("seeds a born sphere's direction by its id, the same everywhere and of unit length", () => {
     const direction = seededDirection("packages/engine/src/live-docs/graph.ts");
     expect(Math.hypot(direction.x, direction.y, direction.z)).toBeCloseTo(1, 12);
@@ -258,65 +193,53 @@ describe("the update energy, the lever of a membership change (ticket C2)", () =
     expect([...placeNewSpheres(nodes, links, tuning, "connections").keys()]).toEqual(["directory:a"]);
   });
 
-  it("feeds a change headlessly as the page does: full energy ticks three hundred, a tenth two hundred and stirs the unchanged spheres less, placement ticks nothing and moves nothing", () => {
-    const tuning = { ...getDefaultTuning().forceGraph, updateEnergy: 1 };
-    const files = ["a/one", "a/two", "a/one.test", "b/three", "b/four", "b/three.test"].map(id => node(id, 1));
-    const links: SpatialLink[] = [
-      { source: "a/one", target: "a/two", count: 1 }, { source: "a/one.test", target: "a/one", count: 1 },
-      { source: "b/three", target: "b/four", count: 1 }, { source: "b/three.test", target: "b/three", count: 1 }
-    ];
-    const settled = simulateSpatialLayout(files, links, tuning, 300).nodes;
-    const isTest = (file: SpatialNode): boolean => file.id.endsWith(".test");
-    const reduced = simulateSpatialLayout(settled.filter(file => !isTest(file)), links.filter(link => !String(link.source).endsWith(".test")), tuning, 300).nodes;
+  it("eases a change headlessly as the page does: held where it stands, more gently and for longer at a lower strength, and not at all at zero", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    const settled = easeSpatialLayout(files, links, tuning, "connections").nodes;
+    const reduced = easeSpatialLayout(settled.filter(file => !isTest(file)), untested, tuning, "connections", { start: "hold" }).nodes;
     // The test files come back where they stood; the others carry their reduced places.
     const restored = [...reduced, ...settled.filter(isTest)];
-    const moveOfUnchanged = (after: SpatialNode[]): number => after.filter(file => !isTest(file)).reduce((sum, file) => sum + distance(file, reduced.find(other => other.id === file.id)!), 0) / reduced.length;
-    const given = JSON.stringify(restored.map(file => [file.x, file.y, file.z]));
-    const full = settleSpatialUpdate(restored, links, tuning, "connections", 1);
-    const tenth = settleSpatialUpdate(restored, links, tuning, "connections", 0.1);
-    const none = settleSpatialUpdate(restored, links, tuning, "connections", 0);
-    expect(full.ticks).toBe(300);
-    expect(tenth.ticks).toBe(200);
-    expect(none.ticks).toBe(0);
-    expect(moveOfUnchanged(full.nodes)).toBeGreaterThan(0);
-    // On this toy two of six spheres return, so the library's centring and the collision, which ignore alpha, carry much
-    // of the move; the share's own effect is measured below with those forces out of the way, and in the lab's reports.
-    expect(moveOfUnchanged(tenth.nodes)).toBeLessThan(moveOfUnchanged(full.nodes));
-    expect(none.nodes.map(file => [file.x, file.y, file.z])).toEqual(restored.map(file => [file.x, file.y, file.z]));
-    expect(JSON.stringify(restored.map(file => [file.x, file.y, file.z]))).toBe(given);
-    // The default energy is what the page feeds when none is named.
-    expect(settleSpatialUpdate(restored, links, { ...tuning, updateEnergy: 0.1 }, "connections").ticks).toBe(200);
-    // The same share through the browser's force access: a simulation at a tenth moves less in the same ticks.
-    const moved = (share: number): number => {
-      const nodes = restored.map(file => ({ ...file }));
-      const edges = links.map(link => ({ ...link }));
-      const simulation = forceSimulation(nodes, 3).stop().alphaDecay(LIBRARY_ALPHA_DECAY)
-        .force("link", forceLink<SpatialNode, SpatialLink>(edges).id(file => file.id)).force("charge", forceManyBody<SpatialNode>());
-      configureSpatialForces({ get: name => simulation.force(name), set: (name, force) => { simulation.force(name, force); } }, tuning, "connections", () => share);
-      simulation.tick(20);
-      return moveOfUnchanged(nodes);
+    const given = JSON.stringify(placesOf(restored));
+    const ease = (strength: number, maxTicks?: number) => easeSpatialLayout(restored, links, tuning, "connections", { start: "hold", strength, maxTicks });
+    const full = ease(1), tenth = ease(0.1), none = ease(0);
+    expect(full.still).toBe(true);
+    expect(tenth.still).toBe(true);
+    expect(tenth.ticks).toBeGreaterThan(full.ticks);
+    expect(none).toMatchObject({ ticks: 0, still: false });
+    expect(placesOf(none.nodes)).toEqual(placesOf(restored));
+    // The first tick of a motion from rest moves in proportion to the strength.
+    const firstMove = (strength: number): number => Math.max(...ease(strength, 1).nodes.map((file, i) => distance(file, restored[i])));
+    expect(firstMove(1)).toBeGreaterThan(0);
+    expect(firstMove(0.1)).toBeCloseTo(firstMove(1) / 10, 9);
+    expect(JSON.stringify(placesOf(restored))).toBe(given);
+  });
+
+  it("keeps the spheres a change leaves alone nearer where they stood with the tether than without it", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    const moveOfUnchanged = (forces: ForceGraphTuning): number => {
+      const settled = easeSpatialLayout(files, links, forces, "connections").nodes;
+      const reduced = easeSpatialLayout(settled.filter(file => !isTest(file)), untested, forces, "connections", { start: "hold" }).nodes;
+      return reduced.reduce((sum, file) => sum + distance(file, settled.find(other => other.id === file.id)!), 0) / reduced.length;
     };
-    expect(moved(0.1)).toBeLessThan(moved(1) / 2);
+    // Measured 2026-10-21: a mean of 17.8 units held by the shipped tether, 32.1 without it.
+    expect(moveOfUnchanged(tuning)).toBeLessThan(0.75 * moveOfUnchanged({ ...tuning, tether: 0 }));
   });
 });
 
 describe("the springs' strength, the lever on the pull between connected neighbours (2026-10-18)", () => {
-  /** How far one tick of the springs alone draws a pair together from 200 units apart, at the given lever. */
+  /** The spring's pull on one of a pair 200 units apart, at the given lever, with every other force away. */
   const pull = (linkStrength: number): number => {
-    const pair: SpatialNode[] = [{ ...node("a", 1), x: -100, y: 0, z: 0 }, { ...node("b", 1), x: 100, y: 0, z: 0 }];
-    const tuning = { ...getDefaultTuning().forceGraph, charge: 0, gravity: 0, linkStrength };
-    const simulation = forceSimulation(pair, 3).stop()
-      .force("link", forceLink<SpatialNode, SpatialLink>([{ source: "a", target: "b", count: 1 }]).id(file => file.id))
-      .force("charge", forceManyBody<SpatialNode>());
-    configureSpatialForces({ get: name => simulation.force(name), set: (name, force) => { simulation.force(name, force); } }, tuning, "connections");
-    simulation.tick(1);
-    return 200 - separation(pair);
+    const pair: SpatialNode[] = [node("a", 1), node("b", 1)];
+    const tuning = { ...getDefaultTuning().forceGraph, charge: 0, gravity: 0, tether: 0, linkStrength };
+    const force = new Float64Array(6);
+    spatialFieldOf(pair, [{ source: "a", target: "b", count: 1 }], tuning, "connections").forces(Float64Array.from([-100, 0, 0, 100, 0, 0]), force);
+    return force[0];
   };
 
   it("pulls a pair as the library's rule does at one, half as hard at a half, and not at all at zero", () => {
     expect(pull(1)).toBeGreaterThan(0);
-    expect(pull(0.5)).toBeCloseTo(pull(1) / 2, 6);
-    expect(pull(2)).toBeCloseTo(pull(1) * 2, 6);
+    expect(pull(0.5)).toBeCloseTo(pull(1) / 2, 9);
+    expect(pull(2)).toBeCloseTo(pull(1) * 2, 9);
     expect(pull(0)).toBe(0);
   });
 
@@ -335,3 +258,83 @@ describe("the springs' strength, the lever on the pull between connected neighbo
   });
 });
 
+describe("the easing: one motion through a conservative field, until the spheres are still (2026-10-21)", () => {
+  const tuning = getDefaultTuning().forceGraph;
+
+  it("comes to rest headlessly, the same way every time, and stays put when eased again from there", () => {
+    const first = easeSpatialLayout(files, links, tuning, "connections");
+    expect(first.still).toBe(true);
+    expect(first.ticks).toBeGreaterThan(QUIET_TICKS);
+    expect(easeSpatialLayout(files, links, tuning, "connections")).toEqual(first);
+    // Held where it stands, a still picture is let only a little further toward the field's own rest.
+    const again = easeSpatialLayout(first.nodes, links, tuning, "connections", { start: "hold" });
+    expect(again.still).toBe(true);
+    expect(Math.max(...again.nodes.map((file, i) => distance(file, first.nodes[i])))).toBeLessThan(0.01 * sizeOf(first.nodes));
+    expect(files.every(file => file.x === undefined)).toBe(true);
+  });
+
+  it("unfolds a first picture from the library's seed and holds it once it calms, where held from the seed it would stay a fraction of its size", () => {
+    const unfolded = easeSpatialLayout(files, links, tuning, "connections");
+    const held = easeSpatialLayout(files, links, tuning, "connections", { start: "hold" });
+    expect(unfolded.still && held.still).toBe(true);
+    // Measured 2026-10-21 on this toy: held from the seed, 0.75 of the unfolded size and 981 ticks against 155. On this
+    // repository the seed is a ball a hundredth of the picture's size, and a picture held there stays far too small.
+    expect(sizeOf(held.nodes)).toBeLessThan(0.85 * sizeOf(unfolded.nodes));
+    expect(held.ticks).toBeGreaterThan(unfolded.ticks);
+    // Without the tether the forces alone shape it, and the unfolded picture is their own size within a percent.
+    const free = easeSpatialLayout(files, links, { ...tuning, tether: 0 }, "connections");
+    expect(Math.abs(sizeOf(unfolded.nodes) / sizeOf(free.nodes) - 1)).toBeLessThan(0.05);
+  });
+
+  it("ticks nothing at zero strength, and stops at the bound it is given", () => {
+    const placed = easeSpatialLayout(files, links, tuning, "connections").nodes;
+    const none = easeSpatialLayout(placed, links, tuning, "connections", { strength: 0 });
+    expect(none.ticks).toBe(0);
+    expect(placesOf(none.nodes)).toEqual(placesOf(placed));
+    const bounded = easeSpatialLayout(files, links, tuning, "connections", { maxTicks: 5 });
+    expect(bounded).toMatchObject({ ticks: 5, still: false });
+  });
+
+  it("carries each sphere's velocity and anchor through a rebuilt field, so that the motion goes on as if nothing were rebuilt", () => {
+    const settled = easeSpatialLayout(files, links, tuning, "connections").nodes;
+    const run = (rebuildAt: number | null): number[][] => {
+      const nodes = settled.map(file => ({ ...file }));
+      nodes[0].x! += 60;
+      const simulation = forceSimulation(nodes, 3).stop().force("link", forceLink<SpatialNode, SpatialLink>(links.map(link => ({ ...link }))).id(file => file.id).strength(0));
+      const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => links, strength: () => 1 });
+      motion.wake("hold");
+      simulation.force("motion", motion);
+      for (let tick = 0; tick < 200; tick++) { if (tick === rebuildAt) motion.invalidate(); simulation.tick(); }
+      return placesOf(nodes);
+    };
+    expect(run(40)).toEqual(run(null));
+  });
+
+  it("holds a sphere a hand has fixed, falls still once and wakes again", () => {
+    const nodes = easeSpatialLayout(files, links, tuning, "connections").nodes.map(file => ({ ...file }));
+    const held = nodes[0], partner = nodes[1];
+    const partnerFrom = { ...partner }, apart = distance(held, partner);
+    held.fx = held.x! + 80; held.fy = held.y; held.fz = held.z;
+    const simulation = forceSimulation(nodes, 3).stop().force("link", forceLink<SpatialNode, SpatialLink>(links.map(link => ({ ...link }))).id(file => file.id).strength(0));
+    let stillCalls = 0;
+    const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => links, strength: () => 1, onStill: () => { stillCalls++; } });
+    motion.wake("hold");
+    simulation.force("motion", motion);
+    for (let tick = 0; tick < 400; tick++) simulation.tick();
+    expect([held.x, held.y, held.z]).toEqual([held.fx, held.fy, held.fz]);
+    // A held sphere is a hand at work: the picture never counts as still while it holds one.
+    expect(motion.still).toBe(false);
+    expect(stillCalls).toBe(0);
+    // Its spring partner keeps the spring's length to the hand, swinging after it as far as that asks and no further, since
+    // the tether holds it to where it stood; without the tether its whole cluster slides after the hand over two thousand
+    // ticks (measured 2026-10-21: the partner moved 18 units with the tether, by the fiftieth tick, and 77 without).
+    expect(Math.abs(distance(held, partner) - apart)).toBeLessThan(0.1 * apart);
+    expect(distance(partner, partnerFrom)).toBeGreaterThan(10);
+    delete held.fx; delete held.fy; delete held.fz;
+    motion.wake("hold");
+    while (!motion.still) simulation.tick();
+    expect(stillCalls).toBe(1);
+    motion.wake();
+    expect(motion.still).toBe(false);
+  });
+});

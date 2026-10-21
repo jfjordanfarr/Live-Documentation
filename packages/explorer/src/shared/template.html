@@ -226,9 +226,13 @@
             <span>Spring Strength</span><input type="range" id="tuning-force-link-strength" min="0" max="2" step="0.05" value="0.25" />
             <output id="tuning-force-link-strength-value">0.25</output>
           </label>
-          <label class="tuning-slider" title="How much a change to what is shown stirs the picture: at 1 the simulation reheats fully, at a fraction it reheats that far and comes to rest sooner, at 0 the new spheres are placed and nothing moves">
-            <span>Update Energy</span><input type="range" id="tuning-force-update-energy" min="0" max="1" step="0.01" value="0.1" />
-            <output id="tuning-force-update-energy-value">0.1</output>
+          <label class="tuning-slider" title="How hard a change to what is shown moves the picture: at 1 with the full forces, at a fraction more gently and for longer, at 0 the new spheres are placed and nothing moves">
+            <span>Update Energy</span><input type="range" id="tuning-force-update-energy" min="0" max="1" step="0.01" value="1" />
+            <output id="tuning-force-update-energy-value">1</output>
+          </label>
+          <label class="tuning-slider" title="How strongly each sphere is held to where it stood when the picture last began to move: more keeps your bearings and comes to rest sooner; 0 leaves the forces alone to decide">
+            <span>Tether</span><input type="range" id="tuning-force-tether" min="0" max="0.1" step="0.001" value="0.01" />
+            <output id="tuning-force-tether-value">0.01</output>
           </label>
         </details>
         <details class="tuning-subsection" data-tuning-perspective="3d">

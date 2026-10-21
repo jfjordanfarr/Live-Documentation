@@ -19,6 +19,7 @@
  */
 
 import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
+import type { ForceLink } from "d3-force-3d";
 import { Box3, PerspectiveCamera, Raycaster, Vector2, Vector3, type Object3D } from "three";
 
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
@@ -32,7 +33,7 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
-import { configureSpatialForces, placeNewSpheres, SETTLED_ALPHA, spatialNodeRadius, spatialNodeValue, symbolCountOf, updateSchedule } from "./forceGraphLayout";
+import { motionForce, placeNewSpheres, spatialNodeRadius, spatialNodeValue, symbolCountOf, type MotionForce, type MotionStart } from "./forceGraphLayout";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
 import { wheelPixels } from "./wheel";
 import type { HistoryMoment } from "../history/moment";
@@ -146,9 +147,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   const nodeCache = new Map<string, ForceGraphNode>();
   const linkCache = new Map<string, ForceGraphLink>();
   const nodeObjects = new Map<string, Object3D>();
-  // The share of alpha the forces see, read at every tick: all of it for the first picture, a change of the forces and a
-  // drag; the update energy's share from a membership change until the next of those (ticket C2, 2026-10-18).
-  let energyShare = 1;
+  // The one force that moves the spheres, the links it builds its springs from, the constant strength it eases at (one for
+  // the first picture, a change of the forces and a hand; the update energy from a membership change until the next of
+  // those, ticket C2), and the layout last fed, since a new layout unfolds the picture afresh (2026-10-21).
+  let motion: MotionForce<ForceGraphNode> | null = null;
+  let heldLinks: readonly ForceGraphLink[] = [];
+  let strength = 1;
+  let shownLayout: string | null = null;
   // The moment of the history shown in place of today, the renames to re-key the caches by before the next render,
   // and the energy that render feeds the change at (ticket C4, 2026-10-18).
   let moment: HistoryMoment | null = null;
@@ -704,7 +709,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const nextMembership = JSON.stringify([graphNodes.map(node => node.id), data.links.map(link => [linkKey(link), link.count])]);
     container.dataset.layoutPreset = layoutPresetOf(state.tuning);
 
-    /** Configure the forces when their settings changed; reheat fully for a change of the forces alone, since a membership change is fed by the update energy instead. */
+    /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
       const instance = forceGraphInstance!;
       const { updateEnergy, ...forces } = state.tuning.forceGraph;
@@ -722,35 +727,39 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         instance.nodeVal(node => spatialNodeValue(node, tuning)).nodeRelSize(tuning.nodeSize);
         sizeSettings = nextSize;
       }
-      configureSpatialForces<ForceGraphNode>({
-        get: name => instance.d3Force(name),
-        set: (name, force) => { instance.d3Force(name, force); }
-      }, tuning, state.spatialLayout, () => energyShare);
+      if (!motion) {
+        // The library's own forces give way to the motion, once: its link force stays, pulling nothing, so that every
+        // link's ends resolve to their spheres and its line is drawn; the charge and the centring go.
+        motion = motionForce<ForceGraphNode>({
+          tuning: () => state.tuning.forceGraph,
+          layout: () => state.spatialLayout,
+          links: () => heldLinks,
+          strength: () => strength,
+          onStill: () => { forceGraphInstance?.d3AlphaMin(Infinity); }
+        });
+        instance.d3Force("charge", null);
+        instance.d3Force("center", null);
+        (instance.d3Force("link") as ForceLink<ForceGraphNode, ForceGraphLink>).strength(0);
+        instance.d3Force("motion", motion);
+      } else motion.invalidate();
       forceSettings = nextSettings;
       container.dataset.spatialLayout = state.spatialLayout;
-      if (reheat) {
-        energyShare = 1;
-        container.setAttribute("aria-busy", "true");
-        instance.d3AlphaMin(SETTLED_ALPHA).d3ReheatSimulation();
-        simulationRunning = true;
-      }
+      if (reheat) move(1, "unfold");
       if (subjectId && anchor) placeSubjectAnchor(subjectId, anchor);
     };
 
     /**
-     * The one update path for a membership change (a pin, a filter, a directory, a layout, later a step of history): the
-     * spheres carried, the new ones placed beside what holds them, and the simulation fed by the update energy's schedule.
-     * Only the first picture warms up. The forces hold the picture; nothing is held or pinned in place.
+     * The one update path for a membership change (a pin, a filter, a directory, a layout, a step of history): the spheres
+     * carried, the new ones placed beside what holds them, and the motion eased at the update energy, held from where the
+     * spheres stand, or unfolding afresh for a new layout. Only the first picture warms up.
      */
     const feed = (): void => {
       const instance = forceGraphInstance!;
-      const schedule = updateSchedule(energy ?? state.tuning.forceGraph.updateEnergy);
-      energyShare = schedule.share;
-      simulationRunning = schedule.ticks;
-      container.setAttribute("aria-busy", String(schedule.ticks));
-      // Placement alone stops the engine before its first tick: the library stops when alpha is below its minimum, and
-      // nothing is below infinity.
-      instance.d3AlphaMin(schedule.ticks ? schedule.alphaMin : Infinity).warmupTicks(0).graphData(dataForGraph);
+      const start: MotionStart = shownLayout !== null && shownLayout !== state.spatialLayout ? "unfold" : "hold";
+      shownLayout = state.spatialLayout;
+      heldLinks = graphLinks;
+      instance.warmupTicks(0).graphData(dataForGraph);
+      move(energy ?? state.tuning.forceGraph.updateEnergy, start);
     };
 
     // A sphere that was in the picture keeps its place; a new one starts beside what holds it, so that the structure
@@ -899,9 +908,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .height(container.clientHeight)
       .graphData(dataForGraph)
       .warmupTicks(100)
-      // The engine stops when the layout has settled, at D3's own minimum alpha, and not before: the library's fifteen
-      // seconds would cut a slow renderer's settle short and show an unsettled picture as the result.
-      .d3AlphaMin(SETTLED_ALPHA)
+      // The engine runs until the motion finds the spheres still and raises the minimum alpha past any alpha, and not
+      // before: the library's fifteen seconds would cut a slow renderer's easing short.
+      .d3AlphaMin(0)
       .cooldownTime(Infinity)
       // The alphas the link colours carry are the real ones; the library's default opacity of 0.2 multiplied them.
       .linkOpacity(1)
@@ -909,18 +918,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // position in the same frame so the sphere and its projected label agree.
       .onEngineTick(() => { pointerPickNeeded = true; simulationRunning = true; ready = true; container.setAttribute("aria-busy", "true"); frameDirectory(); if (inspectedActionId && !actionTargetId) refreshActionStrip(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
       .onEngineStop(() => { simulationRunning = false; container.setAttribute("aria-busy", "false"); })
-      // A sphere dragged by hand is the library's own reheat, at its alpha target; the picture acclimates to the hand with
-      // all of alpha and cools to the settled alpha, whatever the last membership change was fed.
+      // A hand moves the picture at full strength, whatever the last membership change was fed: held where the spheres
+      // stood when it took hold, and again where they stand when it lets go.
       .onNodeDrag(() => {
         cancelPress();
         interrupt();
+        if (!draggingNode) move(1, "hold");
         draggingNode = true;
         if (actionStrip) actionStrip.hidden = true;
-        if (energyShare === 1) return;
-        energyShare = 1;
-        forceGraphInstance?.d3AlphaMin(SETTLED_ALPHA);
       })
-      .onNodeDragEnd(() => { draggingNode = false; pointerPickNeeded = true; refreshActionStrip(); })
+      .onNodeDragEnd(() => { draggingNode = false; pointerPickNeeded = true; refreshActionStrip(); move(1, "hold"); })
       .nodePositionUpdate((object, _position, node) => {
         if (nodeObjects.get(node.id) !== object) pointerPickNeeded = true;
         nodeObjects.set((node).id, object);
@@ -940,6 +947,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         : `${link.count} ${link.kind === "related-doc" ? "documentation" : "documented"} ${link.count === 1 ? "reference" : "references"}`)
       .linkWidth(link => link.kind === "related-doc" ? 0.5 : 1);
     updateAttention();
+    heldLinks = graphLinks;
+    shownLayout = state.spatialLayout;
     updateForces(true);
     membership = nextMembership;
     focusLabel = document.createElement("button");
@@ -1160,14 +1169,29 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   }
 
   function settle(): void {
+    if (forceGraphInstance) move(state.tuning.forceGraph.updateEnergy, "hold");
+  }
+
+  /**
+   * Begin a motion at this strength, held where the spheres stand or unfolding first, and run the engine until the motion
+   * finds them still; at zero nothing moves and the engine stops before its next tick, since the library stops when alpha
+   * is below its minimum and nothing is below infinity.
+   */
+  function move(at: number, start: MotionStart): void {
     const instance = forceGraphInstance;
-    if (!instance) return;
-    const schedule = updateSchedule(state.tuning.forceGraph.updateEnergy);
-    if (!schedule.ticks) return;
-    energyShare = schedule.share;
+    if (!instance || !motion) return;
+    const container = requireElement("graph-svg");
+    strength = at;
+    if (!(at > 0)) {
+      simulationRunning = false;
+      container.setAttribute("aria-busy", "false");
+      instance.d3AlphaMin(Infinity);
+      return;
+    }
+    motion.wake(start);
     simulationRunning = true;
-    requireElement("graph-svg").setAttribute("aria-busy", "true");
-    instance.d3AlphaMin(schedule.alphaMin).d3ReheatSimulation();
+    container.setAttribute("aria-busy", "true");
+    instance.d3AlphaMin(0).d3ReheatSimulation();
   }
 
   return { render, setActive, focusNode, focusDirectory, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };

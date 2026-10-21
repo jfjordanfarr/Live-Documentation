@@ -1,15 +1,15 @@
-/** The 3D Local Map's documented file pairs, its declared structure and the shared force simulation, available as a headless report. */
+/** The 3D Local Map's documented file pairs, its declared structure and the shared motion, available as a headless report. */
 import { includeNode, scopePins } from "./evaluate";
 import { retainedSubject, type ScopeRun } from "./scopes";
 import type { ExplorerFilters, ForceGraphTuning, SpatialLayout } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
-import { linkPulls, simulateSpatialLayout, spatialLinkDistance, spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
+import { easeSpatialLayout, linkPulls, spatialLinkDistance, spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { getVisibleConnections } from "../../packages/explorer/src/client/views/pin-state";
 import type { RelatedDocLink } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 
-/** Run the same full filtered graph the 3D view simulates, in either layout; the retained neighborhood is attention, not hidden physics. */
-export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning: ForceGraphTuning, ticks = 300,
+/** Ease the same full filtered graph the 3D view shows, in either layout, until still or `maxTicks`; the retained neighborhood is attention, not hidden physics. */
+export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning: ForceGraphTuning, maxTicks = 20_000,
   filters: Pick<ExplorerFilters, "showTests" | "showAssets"> & Partial<Pick<ExplorerFilters, "showRelatedDocs">> = { showTests: true, showAssets: true },
   relatedDocLinks: readonly RelatedDocLink[] = [], layout: SpatialLayout = "connections") {
   if (!run.scope.length) throw new Error("A spatial scope must name a retained file.");
@@ -21,7 +21,7 @@ export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning
   const metadata = new Map(data.nodes.map(node => [node.id, node]));
   const retained = new Set(run.scope);
   for (const { link } of getVisibleConnections(pins, graph.links)) { retained.add(id(link.source)); retained.add(id(link.target)); }
-  const result = simulateSpatialLayout(data.nodes, data.links, tuning, ticks, layout);
+  const result = easeSpatialLayout(data.nodes, data.links, tuning, layout, { maxTicks });
   const nodes = result.nodes.map(node => ({
     id: node.id,
     kind: metadata.get(node.id)?.directoryPath !== undefined ? "directory"
@@ -46,7 +46,7 @@ export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning
     const overlap = a.radius + b.radius - Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
     if (overlap > 0.01) { overlaps++; worstOverlap = Math.max(worstOverlap, overlap); }
   }
-  return { bundle: run.bundle, scope: run.scopeName, subject: retainedSubject(run), tuning, ticks, filters, layout,
+  return { bundle: run.bundle, scope: run.scopeName, subject: retainedSubject(run), tuning, ticks: result.ticks, still: result.still, filters, layout,
     bounds: { width: bounds("x"), height: bounds("y"), depth: bounds("z") }, overlaps, worstOverlap, nodes, links: edges };
 }
 
@@ -56,7 +56,7 @@ export function renderSpatialReport(report: ReturnType<typeof spatialReport>): s
   const hubs = report.nodes.filter(node => node.kind === "directory").length;
   const memberships = report.links.filter(link => link.kind === "containment").length;
   return `# 3D Local Map: ${report.bundle}/${report.scope}, the ${report.layout} layout\n\nHistorical layout-lab measurement, ${new Date().toISOString()}.\n\n`
-    + `The full filtered graph supplies the forces; the retained neighborhood supplies attention. ${report.nodes.filter(node => node.kind === "file").length} files, ${hubs} directory hubs, ${report.links.length - memberships} reference pairs, ${memberships} containment links, ${report.ticks} deterministic ticks.\n\n`
+    + `The full filtered graph supplies the forces; the retained neighborhood supplies attention. ${report.nodes.filter(node => node.kind === "file").length} files, ${hubs} directory hubs, ${report.links.length - memberships} reference pairs, ${memberships} containment links, ${report.still ? `eased until still in ${report.ticks}` : `not yet still after ${report.ticks}`} deterministic ticks.\n\n`
     + `Bounds: ${fixed(report.bounds.width)} × ${fixed(report.bounds.height)} × ${fixed(report.bounds.depth)} layout units. Sphere overlaps: ${report.overlaps}; largest penetration ${fixed(report.worstOverlap)}.\n\n`
     + `Settings: \`${JSON.stringify(report.tuning)}\`. Filters: \`${JSON.stringify(report.filters)}\`.\n\n`
     + (report.layout === "structure"

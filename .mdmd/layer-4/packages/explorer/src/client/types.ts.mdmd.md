@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-20T14:51:18.839Z
+- Generated At: 2026-10-21T20:42:24.439Z
 
 ## Authored
 ### Purpose
@@ -34,6 +34,8 @@ Shared vocabulary for Explorer state and controls: navigation, the Local Map's r
 
 The history's levers (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and the view's half of its C14): `HistoryTuning` with the scrubber's axis (by step or by date), its granularity (automatic, every step, days, weeks, months, salient only) and the play rate in steps a second, under `TuningConfig.history`; and in the state the commit the 3D Local Map shows (`historyCommit`, null for today) and whether the step panel names authors (`showAuthors`), both carried by the address.
 - `linkStrength` (2026-10-18) is the springs' strength as a multiple of D3's own rule, one over the smaller of a wire's two ends' link counts, so that one is the picture as it was and zero lets the wires go slack: the owner's ask after their first look at the gravity, "Can you just give me those sliders in the tuning panel and I can just tweak it until it's good to my eye?" ([Turn 7 of the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
+
+- Since 2026-10-21 `updateEnergy` is the constant strength a change's motion eases at, a share of the forces, until the spheres are still: a lower one moves the picture more gently and for longer to much the same rest, and zero still places alone. `tether` joined it that day: how strongly each sphere is held to where it stood when the picture last began to move, the force that brings a large picture to rest and keeps a person's bearings through a change, the owner's to tune by eye ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -139,21 +141,21 @@ The 3D Local Map's packing and stable visual encodings, shared with the headless
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L207)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L215)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L212)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L220)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L221)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L229)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -161,7 +163,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L247)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L255)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-20T14:51:20.501Z
+- Generated At: 2026-10-21T20:42:25.884Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,8 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis, its ticks and the play rate, shown with the 3D groups.
 - The 3D group gained Spring Strength (`tuning-force-link-strength`, 0 to 2 by 0.05, 1 by default) on 2026-10-18, with a title that says what one and zero mean, so that the owner can tune the pull between connected neighbours by eye beside Gravity and Repulsion Reach ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
 - The Gravity and Spring Strength sliders start at 0.01 and 0.25 since the evening of 2026-10-18, the owner's settings by eye ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-9)).
+
+- Since 2026-10-21 Update Energy defaults to 1, a constant strength rather than a reheat's alpha, and its title says a fraction moves the picture more gently and for longer; Tether (`tuning-force-tether`, 0 to 0.1 by 0.001, 0.01 by default) stands beside it, titled for what it holds ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -213,6 +215,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-force-symbol-scale-value` {#symbol-tuning-force-symbol-scale-value}
+- Type: variable
+
+#### `tuning-force-tether` {#symbol-tuning-force-tether}
+- Type: variable
+
+#### `tuning-force-tether-value` {#symbol-tuning-force-tether-value}
 - Type: variable
 
 #### `tuning-force-update-energy` {#symbol-tuning-force-update-energy}

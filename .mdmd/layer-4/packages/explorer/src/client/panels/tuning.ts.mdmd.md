@@ -30,6 +30,8 @@ The shared Compact/Relaxed selector applies both representations’ packing valu
 The History group (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its C14): the axis and the ticks as selects and the play rate as a slider, under the 3D controls, since the history is the 3D Local Map's; a change of the axis or the ticks redraws the scrubber through the view's render, and the picture itself does not change.
 - Spring Strength (`tuning-force-link-strength`, 2026-10-18) is wired like the other 3D sliders and reheats the picture as a change of the forces, since it is one: the owner's ask to tune the pull between connected neighbours by eye ([Turn 7](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
 
+- Tether (`tuning-force-tether`, 2026-10-21) is wired like the other 3D sliders and, being a force, builds the field again and unfolds the picture; the owner asked to tune it by eye ([Turn 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)). Since that day a change of the forces unfolds the picture at full strength where it reheated it, and Update Energy is a constant strength.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

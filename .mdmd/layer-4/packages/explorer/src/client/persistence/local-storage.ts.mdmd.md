@@ -39,6 +39,8 @@ The force graph's `linkStrength` initially defaulted to 1 on 2026-10-18, keeping
 
 Gravity 0.01 and the springs' strength 0.25 are the defaults since the evening of 2026-10-18, the owner's own settings by eye after a day with the levers ("a bit of room to breathe so users can better explore it", [Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-9)), measured by the lab at a 4 to 6 percent growth of the extent over five toggle cycles on this repository's bundles with the reach unbounded ([the lab record](../../../../../../../AI-Agent-Workspace/Probes/2026-10-18/layout-lab/README.md)).
 
+Since 2026-10-21 `updateEnergy` defaults to 1 and `tether` to 0.01. Under the motion the energy is a constant strength, and every strength reaches much the same rest, so a tenth would only ease each change for longer; what keeps the picture recognisably itself through a change is now the tether. Both defaults wait on the owner's eye, with the recordings at three strengths ([Turn 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

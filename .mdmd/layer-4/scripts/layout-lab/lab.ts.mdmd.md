@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/layout-lab/lab.ts
 - Entry: command `layout:lab` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-18T00:31:16.371Z
+- Generated At: 2026-10-21T20:42:26.286Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,8 @@ The layout lab's command line: capture a retained scope, sweep and compare layou
 
 Every command accepts --preset compact|relaxed. The spatial command runs the shared D3 forces and graph projection, including optional --tests, --assets and --related-docs filters and `--layout connections|structure` (2026-10-14), then writes Markdown and complete JSON with coordinates, counts and diagnostics. The named scope identifies attention; all filtered files participate in the forces. Refinement, verification and spatial layout accept the page’s exported settings as --config @file. This supports [the shared-preset design](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 - `drift` gained `--spring a,b,c` on 2026-10-18, the springs' strength as a multiple of D3's rule, so that the owner's settings by eye could be measured for drift ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-9)); the page's default alone when none is named.
+
+Since 2026-10-21 `--ticks` is the most ticks any one easing may take, in `spatial` and `drift` alike, twenty thousand by default, since both run the page's motion until still; `drift` sweeps `--tether` beside the energy ([Turn 5](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -46,6 +48,7 @@ _No public symbols detected_
 - [`capture.writeCapture`](./capture.ts.mdmd.md#symbol-writecapture)
 - [`drift.DriftReport`](./drift.ts.mdmd.md#symbol-driftreport)
 - [`drift.measureDrift`](./drift.ts.mdmd.md#symbol-measuredrift)
+- [`drift.rangeOf`](./drift.ts.mdmd.md#symbol-rangeof)
 - [`drift.renderDriftReports`](./drift.ts.mdmd.md#symbol-renderdriftreports)
 - [`drift.toggledArchetype`](./drift.ts.mdmd.md#symbol-toggledarchetype)
 - [`evaluate.LabConfig`](./evaluate.ts.mdmd.md#symbol-labconfig)

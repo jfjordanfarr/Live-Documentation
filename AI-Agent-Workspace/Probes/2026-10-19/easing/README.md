@@ -95,3 +95,8 @@ With zero gravity, unbounded positive repulsion and disconnected components, thi
 - Scrubs, large jumps, births/deaths and direct node drags in the actual Explorer, after a candidate is selected; these four stills do not prove those journeys.
 
 The current force module and its mirror remain unchanged. The experimental code is isolated under the session's ignored scratch folder, and useful findings are preserved here rather than as a subagent transcript.
+
+## Outcome (2026-10-21)
+
+The conservative field and damped velocity Verlet of this probe became the 3D picture's motion, in `packages/explorer/src/client/views/forceGraphPhysics.ts`, with the step 0.5 and drag 0.2 the owner found natural. Measured on this repository's bundle before integrating, they did not come to rest: the tail was long journeys in directions nothing holds, loose files and islands round the main mass in the connections layout and branches swinging about their joints in the structure layout, for more than 6,000 ticks; sliding friction, a bounded reach and dashpots on the springs did not end them. A tether to where each sphere stood when the motion began did, and the owner chose it ([the October 21 record](../../../ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)). The bullets under "Still unresolved" above are answered there: the stopping criterion is the largest move of a tick under 3×10⁻⁵ of the picture's diagonal for ten ticks with the tether holding; the cost of exact repulsion is 13 to 23 ms a tick at 846 to 1,130 spheres, what D3's approximation costs there; drags, toggles and layout switches were looked at in the Explorer ([the pictures and recordings](../../../Screenshots/2026-10-21/README.md#the-3d-picture-eased-until-still-october-21-session)).
+

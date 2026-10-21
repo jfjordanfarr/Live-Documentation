@@ -2986,3 +2986,278 @@
   ⎿  Referenced file tests/e2e/inspection.spec.ts
 
 ● Task "Run the full gate with browser tests" still running in background
+
+● Background command "Run the full gate with browser tests" completed (exit code
+0)
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● 186 of 187 browser tests passed; the one failure is the same hover test that
+  failed in yesterday's gate, confirming it's a recurring issue. I'll check its
+  trace to find the cause before committing the reader fix.
+
+  Read 7 files, listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Found it: the main column briefly scrolled sideways about 190px right when the
+  pin was clicked, sliding the card out from under the pointer. Now checking
+  which clipped container is getting scrolled and what's triggering it.
+  Searched for 1 pattern, listed 2 directories, ran 3 shell commands (ctrl+o to expand)
+
+● Reproduced it on a deliberately slowed CPU: when the machine is slow, the
+  pinned card ends up under the sidebar. Next I'm working out what moves it
+  there.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I found that #main and #view-map are scrolling when they should be clipped,
+  dragging the whole view (including the card) under the sidebar. Next I'll
+  check whether this scroll is caused by the app or the test runner's "scroll
+  into view" behavior.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Found the cause: Playwright's retry-scroll moves clipped-but-scrollable
+  containers like #main and #view-map, shoving the map under the sidebar — the
+  same thing can happen to real users via tabbing or find-in-page, with no way
+  back. I'm now confirming that keyboard-triggered scenario.
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Confirmed the bug in the real app: tabbing to an edge-of-view "Open" button
+  scrolls #view-map by 106px, pushing cards under the clip edge with no way to
+  scroll back, and zooming shifts the column even before tabbing. I'm now
+  listing every element that gets scrolled so I know exactly which containers
+  need fixing.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The four containers holding images shouldn't scroll programmatically, so
+  overflow: clip is the correct fix rather than altering the test. Now I'll find
+  where to add a regression test.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● I'll write the regression test before the fix and confirm it fails. It states
+  the invariant directly: after the browser reveals every element in a view, no
+  clipped container has a scroll offset.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The test fails before the fix, at the first view it checks: on the World Map,
+  #main ends up scrolled 345 px. Now the fix.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The scroll invariant now holds across all three views; the only remaining
+  failure is a tiny 0.008px position difference caused by taking the "before"
+  measurement while the picture was still easing in. I'll update the test to
+  wait for the Local Map to settle first.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The card still shifts by fractional pixels post-settle, while scrolling moves
+  it by tens of whole pixels—so I'll keep comparing whole pixels for the card
+  check and rely on scroll offsets as the precise check.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● It passes about half the time, so something else is unsettled. I'm capturing a
+  failing run's details.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The rounding sat on a half-pixel boundary: the card's y crept from 285.497 to
+  285.5. A tolerance of half a pixel states the intent better.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Five of five pass. Now the original failure: I'm rerunning the slowed-CPU
+  probe that reproduced it.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Fixed: at 8× and 12× CPU slowdown nothing scrolls, the card stays put, and the
+  hover takes. Now I'm taking the "look at it" pictures: the same Tab journey
+  on the fixed page.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● The fix confirms the toolbar, search bar, and picture stay in place with no
+  scrolling across 120 tabs. Before re-gating, I'll check what the gate reads
+  since uncommitted easing work is still in the tree and needs to match what I'm
+  about to commit.
+
+  Searched for 2 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● I'll temporarily move the uncommitted easing files to the scratchpad so the
+  gate only runs against my committed clip fix, restoring the four files from
+  the last commit one at a time—starting with the comments and docs.
+
+  Searched for 1 pattern, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● I'll write up the fix in the session record and capture my last delivered
+  reply. There's also an untracked Claude Code capture from today in the
+  archive, which I'll check and inventory.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● The capture runs from the owner's first message to the /compact, and holds my
+  last reply twice. I'll inventory it and record that reply once. Now the
+  pictures, the notes and the record.
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Now the session record: the delivered reply, the work note on the gate and the
+  fix, and a fresh Resumption.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Next, the inventory entry for the capture, then I park the easing files and
+  start the gate.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The tree now holds exactly what I'll commit. I'm stopping my scratch server on
+  port 8766 so the gate starts its own, then starting the gate.
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The gate is running (about 25 minutes). Meanwhile I'm doing light reading for
+  the owner's never-documented-files criterion: finding the ~43 files measured
+  on October 20.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Found the October 20 analysis. To ground a proposal in what the generator does
+  today, I'm looking at how discovery decides which files get a Live Doc.
+
+  Searched for 2 patterns, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The gate is at lint. While it runs I'm reading the 3D view's
+  simulation-driving code, to plan where the new motion plugs in.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I've confirmed one force drives all movement, with alpha controlled via
+  d3AlphaMin for waking/stopping and drag triggering full strength. I'm now
+  recording the owner's criterion for which files get a Live Doc in
+  direction.md, in their own words.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate is still running, and everything else waits on it: the commit,
+  putting the easing work back, then measuring this repository's bundle on an
+  idle machine.
+
+  So far this turn:
+
+  - The reader fix's gate failed one browser test. It was the same hover test
+    that failed in yesterday's gate, so I traced it rather than call it bad
+    luck.
+    - Cause: when a click had to be retried, the test runner scrolled the button
+      to the edge of every scrollable box above it. The column holding the
+      Local Map is clipped (overflow: hidden), but code could still scroll it.
+      It moved about 190 px and slid the map and its controls under the sidebar.
+    - A person can hit it too: pressing Tab onto a button at the edge of the
+      view moves the picture the same way, and nothing on the page scrolls it
+      back. Before
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reveal-scrolled-before-fix.png)
+      and after
+      (AI-Agent-Workspace/Screenshots/2026-10-21/reveal-in-place-after-fix.png).
+  - The fix: the main column, the views, the World Map and the 3D view now use
+    overflow: clip, which crops the same way but can't be scrolled.
+    - A new test in explorer-navigation.spec.ts
+      (tests/e2e/explorer-navigation.spec.ts) asks the browser to bring every
+      element of each view into sight, then checks that nothing clipped has
+      moved. It failed before the fix and passed 5 of 5 after.
+    - The failure no longer happens with the CPU slowed 8× or 12×.
+    - One thing this doesn't do: Tab onto something outside the view leaves it
+      out of sight. Moving the camera to whatever has keyboard focus would be a
+      separate feature.
+  - Your criterion for which files get a Live Doc is recorded in direction.md
+    (AI-Agent-Workspace/Memory/direction.md), in your words. I'll bring a
+    proposal for applying it.
+  - The easing work is set aside in my scratchpad while the gate runs, so the
+    gate checks exactly what I'll commit. I'll put it back right after the
+    commit.
+
+  When the gate reports, I'll commit both fixes together, then go back to the
+  easing.
+
+● Background command "Run the full gate with browser tests" completed (exit code
+0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate finished with 187 passed and 1 failed, and the hover test now passes.
+  The new failure is in pin-clicks.spec.ts, which might be a consequence of the
+  clip change, so I'm checking.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed: the test double-clicks main.ts, whose card sits outside the
+  camera's view, and it only passed before because the runner scrolled the
+  clipped map container — the bug I just fixed. I'll review the test and its
+  screenshot now.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Since main.ts is positioned off-screen past Centre, I'll use the existing
+  panIntoView helper (already used for models.ts) to bring it into view—let me
+  first check how that helper works.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Update(tests/e2e/pin-clicks.spec.ts)
+  ⎿  Added 2 lines
+      87    await expect(page.locator("#detail-panel")).not.toHaveClass(/
+          visible/);
+      88    await expect(card(page, MODELS).getByRole("button", { name: "
+          Centre on models.ts", exact: true })).toHaveCount(0);
+      89    await expect(card(page, MAIN).getByRole("button", { name: "Ce
+          ntre on main.ts", exact: true })).toHaveCount(1);
+      90 +  // Centred on models.ts, the picture has carried main.ts past
+         + the frame's edge; a person pans to it.                        
+      91 +  await panIntoView(page, card(page, MAIN));                   
+      92    await card(page, MAIN).locator(".node-title").dblclick();
+      93    await localMapSettled(page);
+      94    expect(pins(page), "inspection never adds a pin").toEqual([])
+          ;
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 3 runs pass with just a test fix, no product code changes needed. I'll
+  skip the full 25-minute gate and only re-run the affected checks: docs, lint
+  on edited specs, and documentation audits.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The audits pass. The 36 disconnected-file warnings come from the Live Doc lint
+  and were there before this change. I'm reviewing the diff before committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The diff is right. I'm adding the second gate's outcome to the record, then
+  committing.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Committed as e1fb9745. Now I'm putting the easing work back and checking that
+  it still builds and its tests pass.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Restored exactly as it was: the type-check is clean and its 27 tests pass.
+  With the machine idle, I'm now measuring this repository's own bundle (846
+  files) in both layouts, from a cold start.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the measurements run, here are the options I'm weighing for the slow
+  cold start; the numbers will decide between them:
+
+  - Warm-up for the first picture only: compute the cold start before showing
+    it, since the motion carries no meaning there. Changes would still animate,
+    because their motion is the information.
+  - Several ticks per frame within a time budget: the same path, played faster.
+  - A cheaper repulsion at scale: exact pairs cost about 21 ms a tick at 1,120
+    spheres.

@@ -12,8 +12,8 @@
  *   npm run layout:lab -- widen <bundle/scope> [--capture <file>] [--grid <spec>] [--starts <n>] [--churn <n>] [--first <n>] [--patience <n>] [--weights k=v,...] [--config <json>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- refine <bundle/scope> [--capture <file>] [--starts <n>] [--churn <n>] [--patience <n>] [--config <json or @file>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
- *   npm run layout:lab -- spatial <bundle/scope> [--preset compact|relaxed] [--config @export.json] [--ticks <n>] [--tests true|false] [--assets true|false] [--related-docs true|false] [--layout connections|structure] [--out <dir>]
- *   npm run layout:lab -- drift <bundle/scope> [--preset compact|relaxed] [--layout connections|structure|both] [--gravity a,b,c] [--range a,b,c] [--spring a,b,c] [--energy a,b,c] [--cycles <n>] [--ticks <n>] [--toggle tests|assets|none] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- spatial <bundle/scope> [--preset compact|relaxed] [--config @export.json] [--ticks <most>] [--tests true|false] [--assets true|false] [--related-docs true|false] [--layout connections|structure] [--out <dir>]
+ *   npm run layout:lab -- drift <bundle/scope> [--preset compact|relaxed] [--layout connections|structure|both] [--gravity a,b,c] [--range a,b,c] [--spring a,b,c] [--energy a,b,c] [--tether a,b,c] [--cycles <n>] [--ticks <most>] [--toggle tests|assets|none] [--label <name>] [--out <dir>]
  *
  * Every command accepts --preset compact|relaxed; refinement, verification and
  * spatial layout also accept the settings JSON exported by the page.
@@ -25,19 +25,20 @@
  * pull and tie rule and the order's sweeps (its default grid, or `--grid`)
  * and reports which start each judge would keep at each. `drift` toggles one
  * file type out of the full 3D picture and back in for a number of cycles,
- * each change fed as the page feeds it at every setting of the update energy
- * named (`--energy`, the page's default alone by default; 1 is the full
- * reheat the page made of every change before 2026-10-18), of gravity and of
- * the repulsion's reach, and tabulates the picture's extent after each cycle
- * beside how far the unchanged spheres moved and how many ticks each change
- * took to settle (2026-10-17, the energy 2026-10-18).
+ * each change eased as the page eases it at every setting of the update
+ * energy named (`--energy`, the page's default alone by default), of the
+ * tether, of gravity and of the repulsion's reach, and tabulates the
+ * picture's extent after each cycle beside how far the unchanged spheres
+ * moved and how many ticks each change took to be still (2026-10-17, the
+ * energy 2026-10-18, the motion and its tether 2026-10-21). `--ticks` is the
+ * most ticks any one easing may take, in `spatial` and `drift` alike.
  */
 import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
-import { measureDrift, renderDriftReports, toggledArchetype, type DriftReport } from "./drift";
+import { measureDrift, rangeOf, renderDriftReports, toggledArchetype, type DriftReport } from "./drift";
 import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
 import { refine, refinementJson, renderRefinement } from "./refine";
 import { differences, renderMarkdown, toJson, type ReportRow, type RunReport } from "./report";
@@ -108,7 +109,7 @@ async function main(): Promise<void> {
     const layout = options.layout ?? "connections";
     if (layout !== "connections" && layout !== "structure") throw new Error("--layout must be connections or structure.");
     const related = options["related-docs"] === "true" ? (await loadBundleData(run)).relatedDocLinks ?? [] : [];
-    const report = spatialReport(graph, run, tuning, Number(options.ticks ?? 300), {
+    const report = spatialReport(graph, run, tuning, Number(options.ticks ?? 20_000), {
       showTests: options.tests !== "false", showAssets: options.assets !== "false", showRelatedDocs: options["related-docs"] === "true"
     }, related, layout);
     const label = options.label ?? `spatial-${layout}-${preset}`;
@@ -131,9 +132,10 @@ async function main(): Promise<void> {
     const gravities = numbers(options.gravity, [0, 0.02, 0.05, 0.1]);
     const ranges = numbers(options.range, [0]);
     const energies = numbers(options.energy, [base.updateEnergy]);
+    const tethers = numbers(options.tether, [base.tether]);
     const springs = numbers(options.spring, [base.linkStrength]);
     const cycles = Number(options.cycles ?? 5);
-    const ticks = Number(options.ticks ?? 300);
+    const ticks = Number(options.ticks ?? 20_000);
     const toggle = options.toggle ?? "tests";
     const toggledKind = toggledArchetype(toggle);
     // The full picture is the cold start's (tests shown, assets hidden) with the toggled type shown, so that the toggle
@@ -147,13 +149,13 @@ async function main(): Promise<void> {
     };
     const toggled = (node: { archetype: string }): boolean => toggledKind !== null && node.archetype.toLowerCase() === toggledKind;
     const reports: DriftReport[] = [];
-    for (const layout of layouts) for (const updateEnergy of energies) for (const linkStrength of springs) for (const gravity of gravities) for (const chargeRange of ranges) {
+    for (const layout of layouts) for (const updateEnergy of energies) for (const tether of tethers) for (const linkStrength of springs) for (const gravity of gravities) for (const chargeRange of ranges) {
       const started = Date.now();
-      const report = measureDrift(graph, include, toggled, { ...base, gravity, chargeRange, updateEnergy, linkStrength }, layout, cycles, ticks);
+      const report = measureDrift(graph, include, toggled, { ...base, gravity, chargeRange, updateEnergy, tether, linkStrength }, layout, cycles, ticks);
       reports.push(report);
       const last = report.cycles[report.cycles.length - 1];
-      const settles = [...new Set(report.cycles.flatMap(cycle => [cycle.settleTicks.removed, cycle.settleTicks.restored]))].sort((a, b) => a - b);
-      console.log(`${layout}, energy ${updateEnergy}, spring ${linkStrength}, gravity ${gravity}, reach ${chargeRange || "unbounded"}: extent ${report.start.extent.toFixed(1)} to ${last.extent.toFixed(1)} (${(last.extent / report.start.extent).toFixed(2)}x) over ${cycles} cycles; unchanged spheres moved a mean of ${(report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / cycles).toFixed(1)} per restore; a change settled in ${settles.join(" to ")} ticks; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
+      const settles = rangeOf(report.cycles.flatMap(cycle => [cycle.settleTicks.removed, cycle.settleTicks.restored]));
+      console.log(`${layout}, energy ${updateEnergy}, tether ${tether}, spring ${linkStrength}, gravity ${gravity}, reach ${chargeRange || "unbounded"}: extent ${report.start.extent.toFixed(1)} to ${last.extent.toFixed(1)} (${(last.extent / report.start.extent).toFixed(2)}x) over ${cycles} cycles; unchanged spheres moved a mean of ${(report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / cycles).toFixed(1)} per restore; a change was still in ${settles} ticks; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
     }
     const label = options.label ?? `drift-${toggle}-${preset}`;
     const title = toggledKind === null ? `3D Local Map drift: ${run.bundle}, a reheat with nothing toggled, the ${preset} preset` : `3D Local Map drift: ${run.bundle}, toggling ${toggle}, the ${preset} preset`;

@@ -195,12 +195,20 @@ export interface ForceGraphTuning {
    */
   linkStrength: number;
   /**
-   * How much a change to what is shown (a filter, a pin, a layout, a step of history) stirs the picture: the alpha the
-   * simulation is reheated to, in D3's own terms. One is the full reheat the library makes of every change, a fraction a
-   * reheat to that alpha, which cools to the same stillness sooner, and zero places the new spheres and ticks nothing. The
-   * lever of ticket C2 of the change-over-time plan (2026-10-18); the first picture always warms up in full.
+   * How hard a change to what is shown (a filter, a pin, a layout, a step of history) moves the picture: the constant
+   * strength its motion eases at, as a share of the forces, until the spheres are still. One is the forces as they are,
+   * a fraction the same pull more gently and so for longer, and zero places the new spheres and moves nothing. The lever
+   * of ticket C2 of the change-over-time plan (2026-10-18), a strength with no cooling since 2026-10-21, when it was a
+   * reheat's alpha; the first picture, a hand and a change of the forces always move at full strength.
    */
   updateEnergy: number;
+  /**
+   * How strongly each sphere is held to where it stood when the picture last began to move, per unit of distance: the
+   * tether that brings a large picture to rest, since without it a file attached to nothing or a branch turning about its
+   * joint drifts on for thousands of ticks, and that keeps a person's bearings through a change. Zero leaves the forces
+   * alone to decide. The owner's choice of 2026-10-21, to tune by eye.
+   */
+  tether: number;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

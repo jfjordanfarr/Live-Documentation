@@ -22,3 +22,16 @@ Taken by the same root in installed Chromium at 1600 × 1000, over this reposito
 
 - [Before the fix](reveal-scrolled-before-fix.png): the Tab has reached a directory's Open button at the right edge, and the browser has scrolled `#view-map` 106 px to show it. The rosetta `src` band and `helpers.ts` are cut at the column's left edge, and nothing on the page scrolls them back.
 - [After the fix](reveal-in-place-after-fix.png): the same walk with `overflow: clip`. At the same Tab the picture, the search bar and the controls stand where the camera put them; the focus is on a row of `compiler-edges.json`, whose card runs past the right edge, and nothing moves.
+
+## The 3D picture eased until still (October 21 session)
+
+Taken by the same root in installed Chromium with its software renderer, over this repository's bundle (846 files) at 1100 × 700 and the estate sample at 1000 × 640, after the 3D view's motion became the page's own: one force through a conservative field, eased at the update energy until the spheres are still by their motion, each sphere tethered to where it stood when the motion began, at 0.01 ([Turn 5](../../ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)). Frame counts are ticks, one a frame; the seconds are this machine's renderer, not a person's.
+
+- [First picture, gravity 0.01](motion-first-gravity-0.01.png): the shipped gravity. Eased to its balance, the picture is 1.8 times as wide as the frozen one the owner chose that gravity on (6,551 units across against 3,769), and the library's camera, which stands 1,608 units out, is nearly inside it.
+- [First picture, gravity 0.03](motion-first-gravity-0.03.png): the picture at the frozen one's size (3,655 across); still at 462 frames after the hundred unseen. The camera still does not take it all in on this canvas, about 600 of 846 spheres on screen.
+- [Tests shown again](motion-tests-shown-again.png): gravity 0.03, energy 1, after the tests were hidden (still at 272 frames) and shown again (296). The spheres that never left moved a mean of 66 units, at most 272. At energy 0.5 and 0.25 the same cycle took 251 and 562, 380 and 1,016 frames, to the same rest within a few units.
+- [A hand holding a sphere](motion-hand-held.png) and [let go](motion-hand-released.png): `template.html` carried a sixth of the canvas to the right, its wires lit while it is held; still 478 frames after the release.
+- [The structure layout](motion-structure-first.png): gravity 0.03, the hubs amber; still at 494 frames, a toggle at 245 and 233, the root hub's drag at 219.
+- [The estate, structure](motion-estate-structure.png), [a hand on Portal](motion-estate-hand-held.png) and [switched to connections](motion-estate-connections.png), with [the recording](motion-estate.webm) of all three at the renderer's cadence: the first picture unfolds and is still at 138 frames, the hub let go is still at 189, and the switch unfolds afresh and is still at 318. Even at 53 spheres the first picture runs past the canvas's edges.
+
+The longer recordings of this repository under three energies, 6 to 18 MB each at this renderer's cadence, were made for the owner's look in the session's scratchpad and are not committed.

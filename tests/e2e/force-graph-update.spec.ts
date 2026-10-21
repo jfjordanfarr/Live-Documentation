@@ -3,14 +3,16 @@ import { expect, test, type Page } from "@playwright/test";
 import { engineActivity, markedRenderedLinks, markRenderedLinks, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
-import { settleTicksOf } from "../../packages/explorer/src/client/views/forceGraphLayout";
+import { QUIET_TICKS } from "../../packages/explorer/src/client/views/forceGraphLayout";
 
 /**
- * The one update path of a membership change in the 3D Local Map, fed by the update energy (ticket C2 of the
- * change-over-time plan, 2026-10-18), held on this repository's bundle in the connections layout, where Show Tests
- * brings two hundred-odd spheres in and out: a picture opened with the tests hidden has never placed them, so showing
- * them is a change with births. Everything is read from the rendered scene through the observation instrument, never
- * from the Explorer's state. The viewport is modest because the software renderer's frame is the cost of every tick.
+ * The one update path of a membership change in the 3D Local Map, eased at the update energy (ticket C2 of the
+ * change-over-time plan, 2026-10-18; a constant strength until still since 2026-10-21), held on this repository's bundle
+ * in the connections layout, where Show Tests brings two hundred-odd spheres in and out: a picture opened with the tests
+ * hidden has never placed them, so showing them is a change with births. Everything is read from the rendered scene
+ * through the observation instrument, never from the Explorer's state. The viewport is modest because the software
+ * renderer's frame is the cost of every tick. That a lower energy moves more gently is the unit tests' to show, exactly:
+ * a motion's first move is in proportion to its strength.
  */
 
 test.use({ viewport: { width: 1100, height: 700 } });
@@ -38,11 +40,11 @@ async function settled(page: Page): Promise<void> {
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
 }
 
-/** The ticks the engine took for the last change, read as the frames between the container's last busy and its settle. */
+/** The ticks the engine took for the last change, read as the frames between the container's last busy and its stillness. */
 async function ticksOfLastChange(page: Page): Promise<number> {
   const { changes } = await engineActivity(page);
   const stop = changes[changes.length - 1], start = changes[changes.length - 2];
-  expect(stop?.busy, "the last change of aria-busy is the settle").toBe(false);
+  expect(stop?.busy, "the last change of aria-busy is the stillness").toBe(false);
   expect(start?.busy, "the change before it is the engine starting").toBe(true);
   return stop.frame - start.frame;
 }
@@ -91,69 +93,72 @@ test("placement alone seats each born sphere beside what it is wired to, keeps e
   for (const node of await renderedNodes(page)) expect(node.world, node.id).toEqual(before.get(node.id));
 });
 
-test("the full reheat and the gentle update settle in their own ticks, the gentle one stirring the unchanged spheres less, and both keep the lines' objects", async ({ page }) => {
+/** Still means still: once the container says so, two readings of the scene a moment apart find every sphere where it was. */
+async function stillPicture(page: Page): Promise<Map<string, Point>> {
+  const first = positions(await renderedNodes(page));
+  await page.waitForTimeout(500);
+  const second = positions(await renderedNodes(page));
+  for (const [id, place] of second) expect(place, `${id} stands still after the motion ended`).toEqual(first.get(id));
+  return second;
+}
+
+test("a change at full energy and a gentler one each come to rest and stay still, both keep the lines' objects, and the levers ride the address", async ({ page }) => {
   test.setTimeout(240_000);
   await observeGraph(page);
   await page.goto(entry(1, true));
   await settled(page);
-  const start = await renderedNodes(page);
-  const tests = new Set<string>();
+  const start = await stillPicture(page);
   const kept = await markRenderedLinks(page, "before the first toggle");
   expect(kept).toBeGreaterThan(0);
 
-  // The full reheat, today's update path at energy one: three hundred ticks to the settled alpha.
+  // Full energy: the motion eases the change until the spheres are still, and the engine stops then and not before.
   await page.locator("#filter-toggle-tests").uncheck();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "true");
   await settled(page);
-  const fullTicks = await ticksOfLastChange(page);
-  expect(fullTicks).toBeGreaterThanOrEqual(settleTicksOf(1));
-  expect(fullTicks).toBeLessThanOrEqual(settleTicksOf(1) + 3);
-  const reduced = await renderedNodes(page);
-  const stayed = new Set(reduced.map(node => node.id));
-  for (const node of start) if (!stayed.has(node.id)) tests.add(node.id);
+  expect(await ticksOfLastChange(page)).toBeGreaterThan(QUIET_TICKS);
+  const reduced = await stillPicture(page);
+  const tests = new Set([...start.keys()].filter(id => !reduced.has(id)));
   expect(tests.size).toBeGreaterThan(100);
-  const fullMove = meanMove(positions(start), positions(reduced));
-  expect(fullMove).toBeGreaterThan(0);
+  expect(meanMove(start, reduced)).toBeGreaterThan(0);
   // Every line between two spheres that stayed kept its object; the lines that left were the tests'.
   const among = (await renderedLinks(page)).filter(link => link.kind !== "containment");
-  expect(among.every(link => stayed.has(link.source) && stayed.has(link.target))).toBe(true);
+  expect(among.every(link => reduced.has(link.source) && reduced.has(link.target))).toBe(true);
   const marks = await markedRenderedLinks(page, "before the first toggle");
   expect(marks.total).toBe(among.length);
   expect(marks.marked).toBe(marks.total);
   expect(marks.marked).toBeLessThan(kept);
 
-  // In again at full energy, so that the gentle update below leaves a settled picture of the same membership.
+  // In again, so that the gentler change below starts from a still picture of the same membership.
   await page.locator("#filter-toggle-tests").check();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "true");
   await settled(page);
-  const beforeGentle = positions(await renderedNodes(page));
-  expect(beforeGentle.size).toBe(start.length);
+  expect((await stillPicture(page)).size).toBe(start.size);
 
-  // A tenth of the energy, set by the slider as a person would: fewer ticks, to the same stillness, and a smaller stir.
+  // Half the energy, set by the slider as a person would; moving it changes no force, so the still picture does not stir.
   await page.getByText("Tuning", { exact: true }).click();
   const energy = page.locator("#tuning-force-update-energy");
   await expect(energy).toHaveValue("1");
   await energy.focus();
-  await page.keyboard.press("Home");
-  for (let step = 0; step < 10; step++) await page.keyboard.press("ArrowRight");
-  await expect(energy).toHaveValue("0.1");
-  await expect(page.locator("#tuning-force-update-energy-value")).toHaveText("0.1");
-  // Moving the energy changes no force, so the settled picture does not stir.
+  for (let step = 0; step < 50; step++) await page.keyboard.press("ArrowLeft");
+  await expect(energy).toHaveValue("0.5");
+  await expect(page.locator("#tuning-force-update-energy-value")).toHaveText("0.5");
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false");
   await page.locator("#filter-toggle-tests").uncheck();
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "true");
   await settled(page);
-  const gentleTicks = await ticksOfLastChange(page);
-  expect(gentleTicks).toBeGreaterThanOrEqual(settleTicksOf(0.1));
-  expect(gentleTicks).toBeLessThanOrEqual(settleTicksOf(0.1) + 3);
-  expect(settleTicksOf(0.1)).toBeLessThan(settleTicksOf(1));
-  const gentleMove = meanMove(beforeGentle, positions(await renderedNodes(page)));
-  expect(gentleMove).toBeGreaterThan(0);
-  // The forces see a tenth of alpha, the collision and the library's centring all of it, so the stir is not a tenth: the
-  // page measured 0.42 of the full reheat's on this toggle (2026-10-18), and a share not applied would give about 0.9,
-  // since a full-alpha run cut at a hundredth of alpha has done nearly all its moving. The bound sits between.
-  expect(gentleMove, `a tenth of the energy (${gentleMove.toFixed(1)}) against the full reheat (${fullMove.toFixed(1)})`).toBeLessThan(fullMove * 0.6);
-  // The setting rides the address and the container's layout settings, as every layout setting does.
+  expect(await ticksOfLastChange(page)).toBeGreaterThan(QUIET_TICKS);
+  await stillPicture(page);
+  // The settings ride the address and the container's layout settings, as every layout setting does; the tether is
+  // the owner's to tune by eye beside the energy (2026-10-21).
   expect(new URL(page.url()).searchParams.get("s")).toBeTruthy();
-  await expect.poll(() => page.evaluate(() => JSON.parse(document.querySelector("#graph-svg")!.getAttribute("data-layout-settings")!).updateEnergy)).toBe(0.1);
+  const settings = (): Promise<{ updateEnergy: number; tether: number }> => page.evaluate(() => JSON.parse(document.querySelector("#graph-svg")!.getAttribute("data-layout-settings")!));
+  await expect.poll(async () => (await settings()).updateEnergy).toBe(0.5);
+  const tether = page.locator("#tuning-force-tether");
+  await expect(tether).toHaveValue(String(getDefaultTuning().forceGraph.tether));
+  await tether.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect.poll(async () => (await settings()).tether).toBe(0.011);
+  // A new tether is a change of the forces: the picture unfolds again at full strength and comes to rest.
+  await settled(page);
+  await stillPicture(page);
 });

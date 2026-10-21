@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/spatial.ts
-- Generated At: 2026-10-14T16:02:19.165Z
+- Generated At: 2026-10-21T20:42:26.491Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,8 @@ A named scope defines retained attention while the full filtered graph supplies 
 
 Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
+Since 2026-10-21 the report eases the picture with the page's motion until still, or the most ticks it is given, and says which: `ticks` is the count it took and `still` whether it came to rest ([Turn 5](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -24,7 +26,7 @@ Created for [the October 13 shared-preset implementation](../../../../AI-Agent-W
 - Parameters: `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `tuning`: [`ForceGraphTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `spatialReport` — Summary
-Run the same full filtered graph the 3D view simulates, in either layout; the retained neighborhood is attention, not hidden physics.
+Ease the same full filtered graph the 3D view shows, in either layout, until still or `maxTicks`; the retained neighborhood is attention, not hidden physics.
 
 #### `renderSpatialReport` {#symbol-renderspatialreport}
 - Type: function
@@ -40,8 +42,8 @@ Human-readable companion to the complete node, reference-count and coordinate JS
 - [`types.ForceGraphTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.SpatialLayout`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
+- [`forceGraphLayout.easeSpatialLayout`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-easespatiallayout)
 - [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
-- [`forceGraphLayout.simulateSpatialLayout`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-simulatespatiallayout)
 - [`forceGraphLayout.spatialLinkDistance`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatiallinkdistance)
 - [`forceGraphLayout.spatialNodeRadius`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
 - [`pin-state.getVisibleConnections`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-getvisibleconnections)

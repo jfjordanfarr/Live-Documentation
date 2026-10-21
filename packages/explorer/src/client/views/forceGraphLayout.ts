@@ -1,7 +1,8 @@
 import "../../shared/d3-force-3d";
-import { forceCenter, forceCollide, forceLink, forceManyBody, forceRadial, forceSimulation, type Force, type ForceLink, type ForceManyBody, type SimulationNodeDatum } from "d3-force-3d";
+import { forceLink, forceSimulation, type Force, type SimulationNodeDatum } from "d3-force-3d";
 
 import type { ForceGraphTuning, SpatialLayout } from "../types";
+import { diagonalOf, SpatialField, SpatialMotion, type MotionSettings } from "./forceGraphPhysics";
 import { under } from "./localView/directory-state";
 
 /** The documented interface and mutable position of a file, or of a directory hub, in the spatial layout. */
@@ -14,8 +15,15 @@ export interface SpatialNode extends SimulationNodeDatum {
   containedSymbolCounts?: readonly number[];
 }
 
-/** How many public symbols a file exposes: the count it carries, or its names counted. */
-export const symbolCountOf = (node: Pick<SpatialNode, "publicSymbols" | "symbolCount">): number => node.symbolCount ?? node.publicSymbols.length;
+/**
+ * How many public symbols a file exposes: the count it carries, or its names counted. A count that is not a number of
+ * symbols, as a broken or hostile history file can carry, is none, so that one bad value cannot give a sphere a size the
+ * motion refuses and stop the picture (2026-10-21).
+ */
+export const symbolCountOf = (node: Pick<SpatialNode, "publicSymbols" | "symbolCount">): number => {
+  const count: unknown = node.symbolCount ?? node.publicSymbols.length;
+  return typeof count === "number" && Number.isFinite(count) && count >= 0 ? count : 0;
+};
 
 /** One undirected file pair; count is the number of documented references in either direction. */
 export interface SpatialLink<N extends SpatialNode = SpatialNode> {
@@ -55,130 +63,6 @@ export function spatialLinkDistance(link: SpatialLink, tuning: ForceGraphTuning)
  */
 export function linkPulls(link: Pick<SpatialLink, "kind">, layout: SpatialLayout): boolean {
   return layout === "structure" ? link.kind === "containment" : link.kind !== "containment";
-}
-
-type PullingLinkForce<N extends SpatialNode, L extends SpatialLink<N>> = ForceLink<N, L> & { readonly inner: ForceLink<N, L>; all: L[]; nodes?: N[] };
-
-/**
- * D3's link force over the links that pull in a layout. It accepts every link like the force it wraps and hands the
- * inner force only the pulling ones, so that a documented reference drawn on demand in the structure layout neither
- * pulls nor counts in a spring's degree, and containment never does in the connections layout. Wrapping a wrapper for
- * another layout starts again from the complete list it was given.
- *
- * D3 resolves the endpoints of only the links it holds, and three-forcegraph draws no line whose endpoints have no
- * coordinates, so the wrapper resolves the others against the same nodes, as D3 would and with D3's error for an id
- * it cannot find: a reference revealed in the structure layout runs between its two spheres (2026-10-16).
- */
-export function pullingLinkForce<N extends SpatialNode, L extends SpatialLink<N>>(link: ForceLink<N, L>, layout: SpatialLayout, share: () => number = FULL_SHARE): ForceLink<N, L> {
-  const wrapped = link as unknown as Partial<PullingLinkForce<N, L>>;
-  const inner = wrapped.inner ?? link;
-  const all = wrapped.all ?? link.links();
-  const force = ((alpha: number): void => { inner(alpha * share()); }) as PullingLinkForce<N, L>;
-  type Setter = number | ((edge: L, index: number, links: L[]) => number);
-  const resolveHeldBack = (): void => {
-    const nodes = force.nodes;
-    if (!nodes) return;
-    const id = inner.id();
-    const byId = new Map(nodes.map((node, index) => [id(node, index, nodes), node]));
-    const find = (endpoint: string | N): N => {
-      if (typeof endpoint === "object") return endpoint;
-      const node = byId.get(endpoint);
-      if (!node) throw new Error(`node not found: ${endpoint}`);
-      return node;
-    };
-    for (const edge of force.all) {
-      if (linkPulls(edge, layout)) continue;
-      edge.source = find(edge.source);
-      edge.target = find(edge.target);
-    }
-  };
-  Object.assign(force, {
-    inner,
-    all,
-    nodes: wrapped.nodes,
-    initialize: (nodes: N[], ...rest: unknown[]): void => {
-      (inner.initialize as ((nodes: N[], ...rest: unknown[]) => void) | undefined)?.(nodes, ...rest);
-      force.nodes = nodes;
-      resolveHeldBack();
-    },
-    links: (...args: [L[]?]): L[] | typeof force => {
-      if (!args.length) return force.all;
-      force.all = args[0]!;
-      inner.links(force.all.filter(edge => linkPulls(edge, layout)));
-      resolveHeldBack();
-      return force;
-    },
-    id: (by: (node: N, index: number, nodes: N[]) => string | number): typeof force => { inner.id(by); return force; },
-    distance: (...args: [Setter?]): Setter | typeof force => args.length ? (inner.distance(args[0]!), force) : inner.distance(),
-    strength: (...args: [Setter?]): Setter | typeof force => args.length ? (inner.strength(args[0]!), force) : inner.strength()
-  });
-  force.links(all);
-  return force;
-}
-
-/** The alpha below which the engine stops: the stillness the first picture cools to, and every later update with it. */
-export const SETTLED_ALPHA = 0.001;
-
-/** The library's cooling rate, three-forcegraph's default applied to its simulation at construction, which the page never changes. */
-export const LIBRARY_ALPHA_DECAY = 0.0228;
-
-/** The forces see all of alpha: the first picture and a change of the forces. */
-export const FULL_SHARE = (): number => 1;
-
-/**
- * What a membership change does to the simulation under the update energy, the lever of ticket C2 of the change-over-time
- * plan: the share of alpha the forces see, the alpha the engine stops at, and whether it ticks at all. In D3 a reheat is one
- * number, the alpha the simulation starts from, so the lever is that number: at one the full reheat the library makes of
- * every change; at a fraction a reheat to that alpha, which cools at the library's rate and stops at the same stillness as
- * the first picture, so sooner; at or below the stillness itself nothing is simulated, and the spheres stand where the carry
- * put them. The library sets alpha to one on every change and exposes no alpha of its own, so the fraction is applied as
- * the share of alpha the forces see, and the stop as the alpha at which that share falls to the stillness.
- */
-export interface UpdateSchedule {
-  /** The share of alpha the forces see, zero when nothing is simulated. */
-  share: number;
-  /** The library's alpha below which the engine stops, so that the forces' alpha stops at the settled one. */
-  alphaMin: number;
-  /** Whether the engine ticks at all. */
-  ticks: boolean;
-}
-
-/** The schedule of a membership change at this energy; see `UpdateSchedule`. Refuses an energy outside zero to one. */
-export function updateSchedule(energy: number): UpdateSchedule {
-  if (!(energy >= 0 && energy <= 1)) throw new Error(`Update energy must be between 0 and 1, not ${String(energy)}.`);
-  if (energy <= SETTLED_ALPHA) return { share: 0, alphaMin: SETTLED_ALPHA, ticks: false };
-  return { share: energy, alphaMin: SETTLED_ALPHA / energy, ticks: true };
-}
-
-/** How many ticks the engine takes to settle after a change at this energy, counted as the library counts them: alpha is checked before each tick and decays in it. */
-export function settleTicksOf(energy: number, alphaDecay = LIBRARY_ALPHA_DECAY): number {
-  const schedule = updateSchedule(energy);
-  if (!schedule.ticks) return 0;
-  let alpha = 1, ticks = 0;
-  while (!(alpha < schedule.alphaMin)) { alpha += (0 - alpha) * alphaDecay; ticks++; }
-  return ticks;
-}
-
-type ScaledForce<N extends SpatialNode> = Force<N> & { readonly unscaled: Force<N> };
-
-/**
- * A force that sees a share of alpha, read at every tick. D3's accessors are forwarded to the force beneath, so that
- * configuration still reaches it and a chained setter returns the wrapper; wrapping a wrapper wraps the force beneath it,
- * so the share is never applied twice. The collision force is never wrapped: D3's collision ignores alpha.
- */
-export function scaledForce<N extends SpatialNode, F extends Force<N>>(force: F, share: () => number): F {
-  const inner = ((force as Partial<ScaledForce<N>>).unscaled ?? force) as F;
-  const scaled = ((alpha: number): void => { inner(alpha * share()); }) as F;
-  for (const key of Object.keys(inner)) {
-    const member = (inner as unknown as Record<string, unknown>)[key];
-    if (typeof member !== "function") continue;
-    (scaled as unknown as Record<string, unknown>)[key] = (...args: unknown[]): unknown => {
-      const result = (member as (...rest: unknown[]) => unknown).apply(inner, args);
-      return result === inner ? scaled : result;
-    };
-  }
-  Object.defineProperty(scaled, "unscaled", { value: inner });
-  return scaled;
 }
 
 /** A point the simulation placed, or the carry did. */
@@ -274,71 +158,189 @@ export function springStrength<N extends SpatialNode, L extends SpatialLink<N>>(
   };
 }
 
-/** The force getter/setter shared by D3's simulation and the browser's public force API; setting null removes a force. */
-export interface SpatialForceAccess<N extends SpatialNode> {
-  get(name: string): Force<N> | undefined;
-  set(name: string, force: Force<N> | null): void;
-}
+/** The motion's step and drag: the probe's smooth control, which the owner found "quite natural" (2026-10-19). */
+export const MOTION: MotionSettings = { step: 0.5, drag: 0.2 };
+
+/** How hard two spheres closer than their clearance push apart, per unit of overlap. */
+export const COLLISION_STIFFNESS = 3;
+
+/** The largest move of a tick, as a share of the picture's diagonal, below which the spheres count as still. */
+export const STILL_FRACTION = 3e-5;
+
+/** How many still ticks in a row end the easing. */
+export const QUIET_TICKS = 10;
 
 /**
- * Apply the same forces in the browser and headlessly; the layout says which links pull.
- *
- * Four forces made the picture before 2026-10-17: the spring on each pulling link, the repulsion of every sphere on
- * every other with unbounded reach, the collision that keeps spheres apart, and the library's centring, which only
- * translates the whole so that its mean sits at the origin. Nothing drew two unconnected clusters together or the whole
- * inward, so every reheat pushed the clusters a little further apart. Gravity is the restoring force: a pull on every
- * sphere toward the origin in proportion to its distance, so that the picture has a compact equilibrium it returns to;
- * the repulsion's reach can be bounded beside it. The spring, the repulsion and the gravity see the given share of alpha,
- * read at every tick, which is how a membership change is fed less than a full reheat (`updateSchedule`); the collision
- * ignores alpha and is never scaled. The springs' strength is D3's rule times the tuning's lever (`springStrength`).
+ * The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
+ * calmed and the tether takes hold where it stands. A tenth of a percent: this repository's pictures pass it after about
+ * 210 to 250 ticks from the library's seed and are still some 140 ticks later; held from the seed, which is a ball a
+ * hundredth of the picture's size, they would stay far too small (measured 2026-10-21).
  */
-export function configureSpatialForces<N extends SpatialNode>(engine: SpatialForceAccess<N>, tuning: ForceGraphTuning, layout: SpatialLayout = "connections", share: () => number = FULL_SHARE): void {
-  const link = engine.get("link") as ForceLink<N, SpatialLink<N>> | undefined;
-  const charge = engine.get("charge") as ForceManyBody<N> | undefined;
-  if (!link || !charge) throw new Error("The spatial layout requires its link and charge forces.");
-  engine.set("link", pullingLinkForce(link, layout, share).distance(edge => spatialLinkDistance(edge, tuning)).strength(springStrength(tuning.linkStrength)));
-  engine.set("charge", scaledForce(charge, share).strength(-tuning.charge).distanceMax(tuning.chargeRange > 0 ? tuning.chargeRange : Infinity));
-  engine.set("collide", forceCollide<N>(node => spatialNodeRadius(node, tuning) + tuning.collisionGap / 2).iterations(3));
-  engine.set("gravity", tuning.gravity > 0 ? scaledForce(forceRadial<N>(0, 0, 0, 0), share).strength(tuning.gravity) : null);
-}
-
-/** Deterministic cold layout, using the browser's D3 engine and force configuration; inputs are not mutated. */
-export function simulateSpatialLayout(nodes: readonly SpatialNode[], links: readonly SpatialLink[], tuning: ForceGraphTuning, ticks = 300,
-  layout: SpatialLayout = "connections"): { nodes: SpatialNode[]; links: SpatialLink[] } {
-  if (!Number.isInteger(ticks) || ticks < 0) throw new Error("Spatial simulation ticks must be a nonnegative integer.");
-  const placed = nodes.map(node => ({ ...node }));
-  const edges = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
-    target: typeof link.target === "string" ? link.target : link.target.id } as SpatialLink));
-  const simulation = forceSimulation(placed, 3).stop()
-    .force("link", forceLink<SpatialNode, SpatialLink>(edges).id(node => node.id))
-    .force("charge", forceManyBody<SpatialNode>())
-    .force("center", forceCenter<SpatialNode>());
-  configureSpatialForces({ get: name => simulation.force(name), set: (name, force) => { simulation.force(name, force); } }, tuning, layout);
-  simulation.tick(ticks);
-  return { nodes: placed, links: edges };
-}
+export const UNFOLDED_FRACTION = 1e-3;
 
 /**
- * Feed a membership change to a simulation headlessly as the page does: the spheres stand where the carry put them (the
- * ones without a position seated by D3), the forces see the energy's share of alpha, and the engine ticks until it would
- * stop, at the library's cooling rate. Returns the placed nodes, the resolved links and the ticks it took; at an energy at or
- * below the settled alpha nothing is simulated. Inputs are not mutated.
+ * The field of a picture: its spheres' radii, a spring on each link that pulls in the layout with the rest length and
+ * strength ruled above, and the tuning's repulsion, gravity, collision gap and tether. Links whose ends are not among the
+ * nodes are left out, as D3 would refuse them.
  */
-export function settleSpatialUpdate(nodes: readonly SpatialNode[], links: readonly SpatialLink[], tuning: ForceGraphTuning, layout: SpatialLayout,
-  energy = tuning.updateEnergy): { nodes: SpatialNode[]; links: SpatialLink[]; ticks: number } {
-  const schedule = updateSchedule(energy);
-  const placed = nodes.map(node => ({ ...node }));
-  const edges = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
-    target: typeof link.target === "string" ? link.target : link.target.id } as SpatialLink));
-  const simulation = forceSimulation(placed, 3).stop().alphaDecay(LIBRARY_ALPHA_DECAY)
-    .force("link", forceLink<SpatialNode, SpatialLink>(edges).id(node => node.id))
-    .force("charge", forceManyBody<SpatialNode>())
-    .force("center", forceCenter<SpatialNode>());
-  configureSpatialForces({ get: name => simulation.force(name), set: (name, force) => { simulation.force(name, force); } }, tuning, layout, () => schedule.share);
-  let ticks = 0;
-  while (schedule.ticks && !(simulation.alpha() < schedule.alphaMin)) {
-    simulation.tick();
-    if (++ticks > 10_000) throw new Error("The simulation did not settle in ten thousand ticks.");
+export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout): SpatialField {
+  const index = new Map(nodes.map((node, i) => [node.id, i]));
+  const endpoint = (end: string | N): N | undefined => {
+    const at = index.get(typeof end === "string" ? end : end.id);
+    return at === undefined ? undefined : nodes[at];
+  };
+  const pulling: SpatialLink<N>[] = [];
+  for (const link of links) {
+    if (!linkPulls(link, layout)) continue;
+    const source = endpoint(link.source), target = endpoint(link.target);
+    if (source && target && source !== target) pulling.push({ ...link, source, target });
   }
-  return { nodes: placed, links: edges, ticks };
+  const strengthOf = springStrength<N, SpatialLink<N>>(tuning.linkStrength);
+  const springs = pulling.map((link, i) => ({
+    a: index.get((link.source as N).id)!, b: index.get((link.target as N).id)!,
+    rest: spatialLinkDistance(link, tuning), strength: strengthOf(link, i, pulling)
+  }));
+  return new SpatialField(Float64Array.from(nodes.map(node => spatialNodeRadius(node, tuning))), springs,
+    { charge: tuning.charge, chargeRange: tuning.chargeRange, gravity: tuning.gravity, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
+    (low, high) => seededDirection(`${nodes[low].id}\0${nodes[high].id}`));
+}
+
+/**
+ * How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
+ * keeps a person's bearings; or unfolding freely until it calms and held there, for a first picture, a layout or new
+ * forces, which rearrange the whole and leave the old places no reference.
+ */
+export type MotionStart = "hold" | "unfold";
+
+/** The one force that moves the 3D picture, with what the page asks of it. */
+export interface MotionForce<N extends SpatialNode> extends Force<N> {
+  /** Ease again from where the spheres stand, held there or unfolding first; held unless said. */
+  wake(start?: MotionStart): void;
+  /** Build the field again before the next tick, since the spheres' sizes, the links or the tuning changed. */
+  invalidate(): void;
+  /** Whether the spheres have been still for `QUIET_TICKS` ticks since the last `wake`. */
+  readonly still: boolean;
+}
+
+/** What the motion force reads at every tick. */
+export interface MotionSource<N extends SpatialNode> {
+  tuning(): ForceGraphTuning;
+  layout(): SpatialLayout;
+  /** Every link the page holds; the field takes the pulling ones. */
+  links(): readonly SpatialLink<N>[];
+  /** The constant strength of the easing now: one for the first picture, a hand or new forces, the update energy for a change. */
+  strength(): number;
+  /** Called once when the spheres fall still. */
+  onStill?(): void;
+}
+
+/**
+ * D3's simulation drives the ticks, this force does all the moving (2026-10-21). Each tick it reads the spheres where they
+ * stand, since the carry of a change and a hand move them between ticks, holds every sphere D3 has fixed (`fx`, a hand's
+ * drag), steps the damped motion through the field at the source's strength, writes the positions back and zeroes D3's
+ * velocities, so that D3's own integration adds nothing. A sphere keeps its velocity and its anchor by id when the field is
+ * built again. A picture that has never moved unfolds first. Alpha is ignored: the easing has no schedule, and ends when
+ * the tether holds and the largest move of a tick has stayed under `STILL_FRACTION` of the picture's diagonal for
+ * `QUIET_TICKS` ticks with no sphere held by a hand.
+ */
+export function motionForce<N extends SpatialNode>(source: MotionSource<N>): MotionForce<N> {
+  let nodes: N[] = [];
+  let motion: SpatialMotion | null = null;
+  let builtFor: readonly string[] = [];
+  let quiet = 0, still = false, holding = false;
+  let begin: MotionStart | null = "unfold";
+  const kept = new Map<string, { velocity: number[]; anchor: number[] }>();
+  const keep = (): void => {
+    const last = motion;
+    if (!last) return;
+    builtFor.forEach((id, i) => kept.set(id, {
+      velocity: Array.from(last.velocity.subarray(3 * i, 3 * i + 3)),
+      anchor: Array.from(last.anchor.subarray(3 * i, 3 * i + 3))
+    }));
+  };
+  const build = (): SpatialMotion => {
+    keep();
+    const field = spatialFieldOf(nodes, source.links(), source.tuning(), source.layout());
+    const places = nodes.map(node => [node.x ?? 0, node.y ?? 0, node.z ?? 0]);
+    const positions = Float64Array.from(places.flat());
+    const velocity = Float64Array.from(nodes.flatMap(node => kept.get(node.id)?.velocity ?? [0, 0, 0]));
+    // A sphere new to the picture is held where it was placed.
+    const anchor = Float64Array.from(nodes.flatMap((node, i) => kept.get(node.id)?.anchor ?? places[i]));
+    kept.clear();
+    builtFor = nodes.map(node => node.id);
+    const next = new SpatialMotion(field, positions, MOTION, velocity, anchor);
+    if (!holding) next.release();
+    return next;
+  };
+  const force = ((): void => {
+    if (!nodes.length) return;
+    motion ??= build();
+    const x = motion.positions;
+    const fixed = new Set<number>();
+    let moved = false;
+    nodes.forEach((node, i) => {
+      const a = 3 * i;
+      const at = [node.fx ?? node.x ?? 0, node.fy ?? node.y ?? 0, node.fz ?? node.z ?? 0];
+      if (node.fx != null || node.fy != null || node.fz != null) fixed.add(i);
+      for (let k = 0; k < 3; k++) if (x[a + k] !== at[k]) { x[a + k] = at[k]; moved = true; }
+    });
+    if (moved) motion.refresh();
+    if (begin) {
+      holding = begin === "hold";
+      if (holding) motion.anchorHere(); else motion.release();
+      begin = null;
+    }
+    const tick = motion.tick(source.strength(), fixed);
+    nodes.forEach((node, i) => {
+      node.x = x[3 * i]; node.y = x[3 * i + 1]; node.z = x[3 * i + 2];
+      node.vx = 0; node.vy = 0; node.vz = 0;
+    });
+    const diagonal = diagonalOf(x);
+    if (!holding && tick.moveMax <= UNFOLDED_FRACTION * diagonal) {
+      motion.anchorHere();
+      holding = true;
+    }
+    if (still) return;
+    quiet = holding && !fixed.size && tick.moveMax <= STILL_FRACTION * diagonal ? quiet + 1 : 0;
+    if (quiet >= QUIET_TICKS) {
+      still = true;
+      source.onStill?.();
+    }
+  }) as unknown as MotionForce<N>;
+  Object.assign(force, {
+    initialize: (next: N[]): void => { keep(); motion = null; nodes = next; },
+    wake: (start: MotionStart = "hold"): void => { still = false; quiet = 0; begin = start; },
+    invalidate: (): void => { keep(); motion = null; }
+  });
+  Object.defineProperty(force, "still", { get: () => still });
+  return force;
+}
+
+/** How a headless easing runs: its constant strength, how it begins, and the most ticks it may take. */
+export interface EaseOptions {
+  strength?: number;
+  start?: MotionStart;
+  maxTicks?: number;
+}
+
+/**
+ * Ease a picture headlessly as the page does: D3's simulation seats the spheres without a position, as the library does,
+ * resolves the links and drives the ticks, and the motion force moves the spheres at the strength given until they are
+ * still or `maxTicks` have passed. A first picture unfolds (the default); a change carried from a still picture is held
+ * from where its spheres stand. Inputs are not mutated; the result says whether the picture came to rest.
+ */
+export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly SpatialLink[], tuning: ForceGraphTuning, layout: SpatialLayout,
+  { strength = 1, start = "unfold", maxTicks = 20_000 }: EaseOptions = {}): { nodes: SpatialNode[]; links: SpatialLink[]; ticks: number; still: boolean } {
+  if (!Number.isInteger(maxTicks) || maxTicks < 0) throw new Error("Spatial easing's tick bound must be a nonnegative integer.");
+  const placed = nodes.map(node => ({ ...node }));
+  const edges = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
+    target: typeof link.target === "string" ? link.target : link.target.id } as SpatialLink));
+  // The link force pulls nothing; it holds every link, pulling or not, so that each one's ends resolve to their spheres.
+  const simulation = forceSimulation(placed, 3).stop().force("link", forceLink<SpatialNode, SpatialLink>(edges).id(node => node.id).strength(0));
+  const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => layout, links: () => edges, strength: () => strength });
+  motion.wake(start);
+  simulation.force("motion", motion);
+  let ticks = 0;
+  if (strength > 0) while (!motion.still && ticks < maxTicks) { simulation.tick(); ticks++; }
+  return { nodes: placed, links: edges, ticks, still: motion.still };
 }
