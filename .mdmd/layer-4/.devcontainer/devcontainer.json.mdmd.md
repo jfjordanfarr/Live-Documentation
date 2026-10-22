@@ -13,6 +13,7 @@ The development container this repository is worked on in: the Node 22 image, th
 
 ### Notes
 - Each toolchain feature names the indexer it serves: .NET for scip-dotnet, Java with Maven and Gradle for scip-java, Go for scip-go, Python for scip-python, Rust for rust-analyzer, PowerShell for the oracle's PowerShell parser (since 2026-10-16; the PowerShell adapter itself needs none); scip-clang and the rest are installed by `post-create.sh`. The host requirements are sized for SCIP indexing, which is CPU-bound. JSON with comments, which the JSON adapter reads since 2026-10-16.
+- Since 2026-10-22 the container formats nothing on save and installs no Prettier extension: nothing formats TypeScript here, so that hand-aligned whitespace stays as written, and lint enforces correctness alone ([the decision](../../../.mdmd/layer-3/architectural-decisions.mdmd.md#no-formatter-for-typescript-lint-for-correctness-on-eslint-10-and-the-tsconfig-off-baseurl-and-node10-recorded-2026-10-22)); until then `editor.formatOnSave` was on and the Prettier extension listed, and whichever formatter an editor chose would have collapsed the alignment.
 - Began on 2026-02-03 as a Codespaces-compatible container; gained a Live Doc on 2026-10-16 ([Turn 9 of the October 15 session](../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-9)).
 
 ## Generated

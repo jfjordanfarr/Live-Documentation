@@ -129,7 +129,7 @@ function resolveTargetCandidates(
     return undefined;
   }
 
-  let normalized = sanitized;
+  let normalized: string;
   try {
     normalized = decodeURI(sanitized);
   } catch {

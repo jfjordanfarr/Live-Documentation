@@ -38,8 +38,8 @@ const BUNDLED_HISTORY_FILE = "explorer-history.json";
 /** How much of the history an export carries: none of it, or the part a selection names. */
 export type ExportedHistory = { rule: "none" } | HistorySelection;
 
-// Lazy import to keep esbuild out of the initial module graph
-const withExplorerAssetsModule = async () => (await import("./buildAssets")).withExplorerAssets;
+// Lazy import to keep esbuild out of the initial module graph; a dynamic import names its file as Node resolves it.
+const withExplorerAssetsModule = async () => (await import("./buildAssets.js")).withExplorerAssets;
 
 /** Options controlling a static Explorer build. */
 export interface BuildStaticExplorerOptions {

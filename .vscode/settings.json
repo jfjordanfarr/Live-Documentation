@@ -10,5 +10,6 @@
     "problems.exclude": {
         "**/tests/integration/programs/**": true
     },
-    "markdown.validate.enabled": true
+    "markdown.validate.enabled": true,
+    "editor.formatOnSave": false
 }

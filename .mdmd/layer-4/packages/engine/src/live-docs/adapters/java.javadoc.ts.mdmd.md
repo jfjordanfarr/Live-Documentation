@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/java.javadoc.ts
-- Generated At: 2026-09-28T02:39:05.537Z
+- Generated At: 2026-10-22T18:45:22.087Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ Parses one Javadoc block comment into structured documentation: summary and rema
 ### Public Symbols
 #### `parseJavaDoc` {#symbol-parsejavadoc}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.javadoc.ts#L17)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/java.javadoc.ts#L13)
 - Returns: [`SymbolDocumentation`](../coreTypes.ts.mdmd.md#symbol-symboldocumentation)
 
 ##### `parseJavaDoc` — Summary
@@ -28,9 +28,5 @@ Parses one Javadoc block comment, `/** ... *\/`, into structured documentation; 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`core.SymbolDocumentation`](../core.ts.mdmd.md#symbol-symboldocumentation) (type-only)
-- [`core.SymbolDocumentationExample`](../core.ts.mdmd.md#symbol-symboldocumentationexample) (type-only)
-- [`core.SymbolDocumentationException`](../core.ts.mdmd.md#symbol-symboldocumentationexception) (type-only)
-- [`core.SymbolDocumentationLink`](../core.ts.mdmd.md#symbol-symboldocumentationlink) (type-only)
 - [`core.SymbolDocumentationLinkKind`](../core.ts.mdmd.md#symbol-symboldocumentationlinkkind) (type-only)
-- [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

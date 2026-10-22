@@ -30,7 +30,7 @@ export async function detectChangedFiles(workspaceRoot: string): Promise<Set<str
     const { stdout: rawPrefix } = await execFileAsync("git", ["rev-parse", "--show-prefix"], { cwd: workspaceRoot });
     prefix = normalizeWorkspacePath(rawPrefix.replace(/\r?\n$/u, ""));
   } catch (error) {
-    throw new Error(`Cannot use --changed in ${workspaceRoot}: Git status failed: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`Cannot use --changed in ${workspaceRoot}: Git status failed: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
   }
   const changed = new Set<string>();
   const withinWorkspace = (repositoryPath: string): string | undefined => {

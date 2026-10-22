@@ -7,9 +7,11 @@
     "declarationMap": false,
     "noEmit": true,
     "incremental": false,
-    "module": "ESNext"
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
   "include": [
-    "./**/*.ts"
+    "./**/*.ts",
+    "../shared/d3-force-3d.d.ts"
   ]
 }

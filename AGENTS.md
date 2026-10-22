@@ -49,7 +49,7 @@ The owner's standing preferences, their answers at every fork so far, and ideas 
 | Command                                                                                         | What it does                                                                                       |
 | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `npm run build`                                                                                 | Type-check/build the engine, Explorer and generator; the CLI package is not included               |
-| `npm run lint`                                                                                  | ESLint, type-aware (about 2 min)                                                                   |
+| `npm run lint`                                                                                  | ESLint, type-aware (about 1 min)                                                                   |
 | `npm run test:unit`                                                                             | Vitest unit project (about 30 s)                                                                   |
 | `npm run test:e2e`                                                                              | Playwright over the Explorer, the estate sample and the history sample, all built first (about 21 min, measured 2026-10-18) |
 | `npm run test:integration`                                                                      | Vitest over `tests/integration/live-docs`: generator, CLI, Rosetta parity (~20 s)                  |

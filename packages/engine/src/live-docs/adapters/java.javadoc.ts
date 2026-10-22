@@ -6,11 +6,7 @@
  */
 import type {
   SymbolDocumentation,
-  SymbolDocumentationException,
-  SymbolDocumentationExample,
-  SymbolDocumentationLink,
-  SymbolDocumentationLinkKind,
-  SymbolDocumentationParameter
+  SymbolDocumentationLinkKind
 } from "../core";
 
 /** Parses one Javadoc block comment, `/** ... *\/`, into structured documentation; anything else yields nothing. */
@@ -168,7 +164,7 @@ function applyJavaDocTag(
       parameters.push({
         name: normalizedTarget,
         description: text || undefined
-      } as SymbolDocumentationParameter);
+      });
       documentation.parameters = parameters;
       return;
     }
@@ -186,7 +182,7 @@ function applyJavaDocTag(
       exceptions.push({
         type: target,
         description: text || undefined
-      } as SymbolDocumentationException);
+      });
       documentation.exceptions = exceptions;
       return;
     }
@@ -201,7 +197,7 @@ function applyJavaDocTag(
       const examples = documentation.examples ?? [];
       examples.push({
         description: text || undefined
-      } as SymbolDocumentationExample);
+      });
       documentation.examples = examples;
       return;
     }
@@ -248,7 +244,7 @@ function registerJavaDocLink(
     kind,
     target: normalizedTarget,
     text: label
-  } as SymbolDocumentationLink);
+  });
   documentation.links = entries;
 }
 

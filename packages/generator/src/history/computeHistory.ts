@@ -156,7 +156,7 @@ async function lensConfiguration(workspaceRoot: string, configPath: string | und
     input = JSON.parse(await fs.readFile(file, "utf8")) as LiveDocumentationConfigInput;
   } catch (error) {
     if (configPath || (error as NodeJS.ErrnoException).code !== "ENOENT") {
-      throw new Error(`cannot read the configuration at ${file}: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(`cannot read the configuration at ${file}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
     }
   }
   const configuration = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, ...input });

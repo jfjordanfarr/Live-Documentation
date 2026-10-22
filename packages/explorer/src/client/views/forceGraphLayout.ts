@@ -1,4 +1,3 @@
-import "../../shared/d3-force-3d";
 import { forceLink, forceSimulation, type Force, type SimulationNodeDatum } from "d3-force-3d";
 
 import type { ForceGraphTuning, SpatialLayout } from "../types";
@@ -342,8 +341,8 @@ export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly
   { strength = 1, start = "unfold", maxTicks = 20_000 }: EaseOptions = {}): { nodes: SpatialNode[]; links: SpatialLink[]; ticks: number; still: boolean } {
   if (!Number.isInteger(maxTicks) || maxTicks < 0) throw new Error("Spatial easing's tick bound must be a nonnegative integer.");
   const placed = nodes.map(node => ({ ...node }));
-  const edges = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
-    target: typeof link.target === "string" ? link.target : link.target.id } as SpatialLink));
+  const edges: SpatialLink[] = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
+    target: typeof link.target === "string" ? link.target : link.target.id }));
   // The link force pulls nothing; it holds every link, pulling or not, so that each one's ends resolve to their spheres.
   const simulation = forceSimulation(placed, 3).stop().force("link", forceLink<SpatialNode, SpatialLink>(edges).id(node => node.id).strength(0));
   const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => layout, links: () => edges, strength: () => strength });

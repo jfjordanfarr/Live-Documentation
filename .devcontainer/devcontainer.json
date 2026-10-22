@@ -71,7 +71,6 @@
       "extensions": [
         // Core development
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
         "ms-vscode.vscode-typescript-next",
 
         // GitHub Copilot
@@ -87,7 +86,9 @@
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
-        "editor.formatOnSave": true,
+        // Nothing formats TypeScript here: hand-aligned whitespace stays as written, and lint enforces correctness
+        // alone (the owner, 2026-09-27 and 2026-10-22; the decision of 2026-10-22 in the decisions log).
+        "editor.formatOnSave": false,
         "typescript.tsdk": "node_modules/typescript/lib"
       }
     },

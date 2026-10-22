@@ -5,14 +5,14 @@
 - Archetype: test
 - Code Path: tests/tsconfig.json
 - Entry: tooling
-- Generated At: 2026-10-19T16:54:55.745Z
+- Generated At: 2026-10-22T18:45:34.150Z
 
 ## Authored
 ### Purpose
 Type-check every executable TypeScript test without emitting files, so a transpile-only test run cannot hide type errors in assertions, fixtures, or browser specs.
 
 ### Notes
-- Extends the repository's base TypeScript settings and includes package, script, integration, and browser tests. Fixture and sample program sources are inputs to tests and are excluded from this project.
+- Extends the repository's base TypeScript settings and includes package, script, integration, and browser tests, and, since 2026-10-22, the ambient contract for `d3-force-3d`, which the 3D layout's tests need and no longer receive through an import. Fixture and sample program sources are inputs to tests and are excluded from this project.
 - The integration-only checker began as the VS Code Electron harness project and became a `noEmit` gate when that harness was retired on 2026-09-27. This file supersedes it with one test-wide gate; `scripts/verify.mjs` runs the checker.
 
 ## Generated
@@ -57,5 +57,6 @@ Type-check every executable TypeScript test without emitting files, so a transpi
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`d3-force-3d.d`](../packages/explorer/src/shared/d3-force-3d.d.ts.mdmd.md)
 - [`tsconfig.base`](../tsconfig.base.json.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->

@@ -669,7 +669,6 @@ class FileExtractor {
       const verb = HTTP_VERB_ATTRIBUTES[attribute.name];
       if (verb) {
         verbs.push(verb);
-        routed = true;
       } else if (attribute.name === "AcceptVerbs") {
         first ??= attribute.node;
         for (const argument of attribute.positional) {

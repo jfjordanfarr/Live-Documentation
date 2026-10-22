@@ -47,7 +47,7 @@ export async function openGitRepository(workspaceRoot: string): Promise<VersionC
   try {
     topLevel = (await execFileAsync("git", ["-C", root, "rev-parse", "--show-toplevel"], { cwd: root })).stdout.trim();
   } catch (error) {
-    throw new Error(`${root} is not in a git repository: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(`${root} is not in a git repository: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
   }
   const [realRoot, realTop] = await Promise.all([fs.realpath(root), fs.realpath(topLevel)]);
   if (realRoot !== realTop) {

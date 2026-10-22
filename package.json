@@ -36,7 +36,6 @@
   "scripts": {
     "build": "npm run build -w packages/engine && npm run build -w packages/explorer && npm run build -w packages/generator",
     "lint": "eslint .",
-    "format": "prettier --check .",
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
     "test:e2e": "npm run live-docs:visualize && npm run live-docs:visualize:estate && npm run live-docs:visualize:history-sample && npx playwright test --config tests/e2e/playwright.config.ts",
@@ -63,23 +62,21 @@
   },
   "devDependencies": {
     "@chenglou/pretext": "^0.0.9",
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
     "@sourcegraph/scip-typescript": "^0.4.0",
     "@types/node": "^25.3.2",
     "@vitest/coverage-v8": "^4.1.11",
-    "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsdoc": "^62.7.1",
+    "eslint": "^10.13.0",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-jsdoc": "^63.3.3",
     "glob": "^13.0.6",
     "lz-string": "^1.5.0",
-    "prettier": "^3.8.1",
     "tree-sitter-cli": "0.27.1",
     "tsx": "^4.23.15",
     "typescript": "^5.4.0",
-    "typescript-eslint": "^8.57.0",
+    "typescript-eslint": "^8.72.0",
     "vitest": "^4.1.11"
   }
 }

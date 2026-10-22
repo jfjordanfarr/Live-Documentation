@@ -21,7 +21,7 @@ function expectRoundTrip(docPath: string): void {
   try {
     rendered = renderLiveDoc(parseLiveDoc(text));
   } catch (error) {
-    throw new Error(`${path.relative(REPO_ROOT, docPath)}: ${(error as Error).message}`);
+    throw new Error(`${path.relative(REPO_ROOT, docPath)}: ${(error as Error).message}`, { cause: error });
   }
   expect(rendered, path.relative(REPO_ROOT, docPath)).toBe(text);
 }

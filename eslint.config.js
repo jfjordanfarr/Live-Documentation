@@ -1,9 +1,12 @@
 const js = require("@eslint/js");
 const tseslint = require("typescript-eslint");
-const eslintPluginImport = require("eslint-plugin-import");
-const eslintPluginJsdoc = require("eslint-plugin-jsdoc");
-const eslintConfigPrettier = require("eslint-config-prettier");
+const importX = require("eslint-plugin-import-x");
+const { createTypeScriptImportResolver } = require("eslint-import-resolver-typescript");
+const jsdoc = require("eslint-plugin-jsdoc");
 
+// Lint enforces correctness, never formatting: no stylistic rule is enabled, and no formatter runs over TypeScript,
+// so that hand-aligned whitespace stays as written (the owner, 2026-09-27 and 2026-10-22; the survey of 2026-10-22 in
+// AI-Agent-Workspace/Research/2026-10-22-typescript-formatting-and-linting.md).
 module.exports = tseslint.config(
   {
     ignores: [
@@ -28,8 +31,7 @@ module.exports = tseslint.config(
     files: ["**/*.{js,cjs,mjs,ts,tsx}"],
     extends: [
       js.configs.recommended,
-      ...tseslint.configs.recommended,
-      eslintConfigPrettier
+      ...tseslint.configs.recommended
     ],
     languageOptions: {
       parserOptions: {
@@ -37,11 +39,11 @@ module.exports = tseslint.config(
       }
     },
     plugins: {
-      import: eslintPluginImport
+      "import-x": importX
     },
     settings: {
-      "import/resolver": {
-        typescript: {
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
           project: [
             "./packages/engine/tsconfig.json",
             "./packages/generator/tsconfig.json",
@@ -49,12 +51,12 @@ module.exports = tseslint.config(
             "./packages/explorer/src/client/tsconfig.json"
           ],
           alwaysTryTypes: true
-        }
-      },
-      "import/internal-regex": "^@live-documentation/"
+        })
+      ],
+      "import-x/internal-regex": "^@live-documentation/"
     },
     rules: {
-      "import/order": [
+      "import-x/order": [
         "error",
         {
           alphabetize: { order: "asc", caseInsensitive: true },
@@ -63,7 +65,7 @@ module.exports = tseslint.config(
         }
       ],
       "@typescript-eslint/no-unused-vars": [
-        "warn",
+        "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }
       ]
     }
@@ -80,14 +82,12 @@ module.exports = tseslint.config(
       }
     },
     rules: {
-      "@typescript-eslint/no-floating-promises": "error",
-      // Workaround: rule is unstable with TS 5.x + projectService in some environments
-      "@typescript-eslint/await-thenable": "off"
+      "@typescript-eslint/no-floating-promises": "error"
     }
   },
-  // Require JSDoc on exported symbols in package source and scripts.
-  // This exercises our JSDoc extraction pipeline and forces justification
-  // of every public API surface — "Can I justify this code?"
+  // Every public symbol in package source and scripts carries a docstring: "linting that works like the C# linting
+  // which mandates docstrings over every public symbol" (the owner, 2026-02-15), an error since 2026-10-22, when a
+  // warning that failed nothing was found to be met everywhere.
   {
     files: [
       "packages/**/src/**/*.ts",
@@ -98,11 +98,11 @@ module.exports = tseslint.config(
       "**/*.spec.ts"
     ],
     plugins: {
-      jsdoc: eslintPluginJsdoc
+      jsdoc
     },
     rules: {
       "jsdoc/require-jsdoc": [
-        "warn",
+        "error",
         {
           publicOnly: true,
           require: {

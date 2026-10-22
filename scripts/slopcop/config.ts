@@ -97,7 +97,7 @@ export function loadSlopcopConfig(workspaceRoot: string, overridePath?: string):
     return normalizeConfig(parsed as Record<string, unknown>);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to read ${CONFIG_FILE_NAME}: ${message}`);
+    throw new Error(`Failed to read ${CONFIG_FILE_NAME}: ${message}`, { cause: error });
   }
 }
 
@@ -169,7 +169,7 @@ export function compileIgnorePatterns(
       compiled.push(new RegExp(pattern));
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new Error(`Invalid ignore pattern "${pattern}": ${message}`);
+      throw new Error(`Invalid ignore pattern "${pattern}": ${message}`, { cause: error });
     }
   }
   return compiled;

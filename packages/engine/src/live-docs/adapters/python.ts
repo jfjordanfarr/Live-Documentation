@@ -110,7 +110,7 @@ function readImport(node: SyntaxNode): ModuleImport[] {
 
   const moduleNode = node.childForFieldName("module_name");
   let level  = 0;
-  let module: string[] = [];
+  let module: string[];
   if (moduleNode?.type === "relative_import") {
     level  = moduleNode.namedChildren.find((child) => child.type === "import_prefix")?.text.length ?? 0;
     module = dottedParts(moduleNode.namedChildren.find((child) => child.type === "dotted_name") ?? null);
