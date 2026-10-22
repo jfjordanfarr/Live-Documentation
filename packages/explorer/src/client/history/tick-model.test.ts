@@ -32,6 +32,18 @@ describe("positions on the track", () => {
     expect(stepAtPosition(gapped, "time", 0)).toBe(0);
   });
 
+  it("by date takes a step within reach of the pointer when it is the nearer, and otherwise still the step before a gap", () => {
+    const fourth = positionOfStep(gapped, "time", 3);
+    // A hair before step 3's instant reads step 2, the shape as of that date, unless step 3 stands within reach.
+    expect(stepAtPosition(gapped, "time", fourth - 0.001)).toBe(2);
+    expect(stepAtPosition(gapped, "time", fourth - 0.001, 0.003)).toBe(3);
+    // In the middle of the quiet half-year nothing is within reach: the step before the gap.
+    expect(stepAtPosition(gapped, "time", 0.5, 0.003)).toBe(2);
+    // Past the midpoint between two steps within reach, the nearer one, never one further.
+    expect(stepAtPosition(gapped, "time", positionOfStep(gapped, "time", 4) - 0.0001, 0.003)).toBe(4);
+    expect(stepAtPosition(gapped, "steps", 0.49, 0.003)).toBe(3);
+  });
+
   it("does not fold the track when a commit's date runs before its predecessor's", () => {
     const dates = ["2026-01-02T00:00:00Z", "2026-01-01T00:00:00Z", "2026-01-03T00:00:00Z"];
     expect(positionOfStep(dates, "time", 1)).toBe(0);
@@ -83,6 +95,17 @@ describe("tickModel", () => {
     const months = tickModel({ dates: gapped, ticks: EVERY(6), pinned: false, granularity: "month", axis: "time" });
     expect(months.ticks.map((tick) => [tick.step, tick.steps])).toEqual([[0, 1], [2, 2], [6, 4]]);
     expect(months.ticks[1].position).toBeLessThan(0.02);
+  });
+
+  it("places every step where it stands on the axis, a step inside a grouped period too, which has no tick of its own for the thumb to borrow", () => {
+    const months = tickModel({ dates: gapped, ticks: EVERY(6), pinned: false, granularity: "month", axis: "time" });
+    expect(months.ticks.some((tick) => tick.step === 3)).toBe(false);
+    // Step 3 opens April 2026, after the quiet half-year: by date it stands at the end, not halfway along as its index would put it.
+    expect(months.positions[3]).toBeGreaterThan(0.98);
+    expect(months.positions).toEqual(gapped.map((_date, step) => positionOfStep(gapped, "time", step)));
+    expect(months.ticks.map((tick) => tick.position)).toEqual(months.ticks.map((tick) => months.positions[tick.step]));
+    expect(tickModel({ dates: gapped, ticks: EVERY(6), pinned: false, granularity: "month", axis: "steps" }).positions).toEqual([0, 1 / 6, 2 / 6, 0.5, 4 / 6, 5 / 6, 1]);
+    expect(tickModel({ dates: [], ticks: EVERY(0), pinned: false, granularity: "auto", axis: "time" }).positions).toEqual([]);
   });
 
   it("chooses the finest granularity whose ticks fit the budget: every step for a few, months for a long history", () => {

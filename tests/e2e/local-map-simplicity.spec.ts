@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { DECK_SCOPES } from "./scopes";
 import { localMapSettled, localRetainUrl } from "./still-picture";
-import { getDefaultTuning, PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { captureFromPage } from "../../scripts/layout-lab/capture";
 import { baselineConfig, driftOf, evaluate } from "../../scripts/layout-lab/evaluate";
 import { refine } from "../../scripts/layout-lab/refine";
@@ -13,7 +13,7 @@ test.use({ viewport: { width: 1600, height: 1000 } });
 
 async function tuning(page: Page, localMap: Record<string, number>): Promise<void> {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap } })
   });
 }
 

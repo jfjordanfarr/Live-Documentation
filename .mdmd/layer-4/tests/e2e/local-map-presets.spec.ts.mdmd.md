@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-presets.spec.ts
-- Generated At: 2026-10-13T19:53:56.043Z
+- Generated At: 2026-10-22T02:20:05.290Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,8 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - `node:fs/promises`
 - [`layout-presets.LAYOUT_PRESETS`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layout_presets)
+- [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
+- [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`design-audit.describeFaults`](./design-audit.ts.mdmd.md#symbol-describefaults)
 - [`design-audit.overlapsAmong`](./design-audit.ts.mdmd.md#symbol-overlapsamong)
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)

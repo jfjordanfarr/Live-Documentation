@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/playwright.config.ts
 - Entry: tooling
-- Generated At: 2026-10-15T15:49:43.091Z
+- Generated At: 2026-10-22T02:20:05.469Z
 
 ## Authored
 ### Purpose
@@ -32,4 +32,5 @@ Playwright test configuration for the Membrane Map E2E suite, defining browser s
 ### Dependencies
 - `@playwright/test` - `defineConfig`, `devices`
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
+- [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 <!-- LIVE-DOC:END Dependencies -->

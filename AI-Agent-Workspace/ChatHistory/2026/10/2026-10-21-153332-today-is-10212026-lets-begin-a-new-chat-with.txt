@@ -4481,3 +4481,1820 @@ completed (exit code 0)
 
   Your message and this inventory are in the session record, committed as
   0fee3fad.
+
+❯ >Files that aren't the project's. Git's own store and installed packages
+  (node_modules) are already out. I'd add one more: a committed copy of someone
+  else's source, such as a Go vendor/ tree. That needs the project-archetypes
+  work to recognise one.
+
+  Oh that would be cool! That's a neat ignore. Let's try to remember that idea.
+
+
+  >Restatements: files a tool writes from other files that already have docs,
+  so their doc would only repeat its source.
+
+  Solid.
+
+  >One product rule needs narrowing. Today nothing inside the docs folder is
+  ever documented. T
+
+  Nothing inside the docs folder is ever documented...
+
+  Like docs should get docs? That's probably crazy. I don't think we want to
+  make a doc for a doc. I think we should aim for the "Linked Documentation"
+  bundle to handle that.
+
+  >The workspace folder is a separate question. AI-Agent-Workspace/ holds 1,326
+  tracked files: 740 screenshots, 524 markdown files and 17 raw captures. It's
+  out because of this repository's own exclude setting (since October 16), not
+  a product rule. The same test would let most of it in. Until a markdown
+  reader exists, though, those 1,326 would be bare stubs that more than double
+  the map.
+
+  Exclude the AI-agent workspace.
+
+● Recording your answers first: the vendored-copy idea goes in ideas.md, the
+  decisions in direction.md, and the record gets this turn.
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Your answers are now in direction.md and ideas.md. Next I'm checking the links
+  and committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I saved your answers and committed them as 41eb6f8e:
+  - Vendored copies: the idea is in ideas.md
+    (AI-Agent-Workspace/Memory/ideas.md), under the ideas you asked for or
+    loved. Spotting a vendored folder belongs to the project-archetypes work,
+    and that survey
+    (AI-Agent-Workspace/Research/2026-10-15-project-archetypes.md) already names
+    each ecosystem's vendor folder.
+  - The settled list is in direction.md
+    (AI-Agent-Workspace/Memory/direction.md): files that aren't the project's,
+    files git ignores, restatements, and documents. Documents reach the map
+    through Linked Documentation, never through a Live Doc of their own.
+  - The workspace folder stays excluded. Nothing changes there, because it
+    already is.
+
+  How I read "a doc for a doc": every markdown file is a document, wherever it
+  sits, not just the ones in the docs folder. So none of the 45 gets a Live Doc,
+  and markdown behaves exactly as it does today. That also drops the markdown
+  reader from the plan. Tell me if you meant only the docs folder.
+
+  The build that's left: document every other file by default, with a stub where
+  no reader exists yet. Here that comes to 20 files:
+  - the four CI workflows and the Dependabot settings;
+  - post-create.sh and the grammar's build.sh;
+  - .gitattributes, .gitignore, .nvmrc and .prettierrc;
+  - the two LICENSE files (if you count licences as documents, it's 18);
+  - the grammar's grammar.patch, .wasm, upstream.env and its three test-corpus
+    files;
+  - Estate.sln.
+
+  What that involves:
+  - Every repository is affected. Discovery's default for any repository changes
+    from "the file types a reader knows" to "every file except the list".
+  - Purposes to write. Each of the 20 needs an authored Purpose, written from
+    where the file came from.
+  - Test counts. The estate sample gains Estate.sln, so file counts in some
+    tests will change.
+  - Honest stub wording. A stub for a workflow would say "No public symbols
+    detected". That would be false, since nothing read it. I'd change the stub
+    to say no reader exists yet for that kind of file.
+
+  Shall I go ahead? Separately, last turn's 3D questions are still waiting on
+  your eye: gravity at 0.01 or 0.03, whether the first picture should frame
+  itself, the Update Energy default, and the tether's strength.
+
+❯ >How I read "a doc for a doc": every markdown file is a document, wherever it
+  sits, not just the ones in the docs folder. So none of the 45 gets a Live
+  Doc, and markdown behaves exactly as it does today. That also drops the
+  markdown reader from the plan. Tell me if you meant only the docs folder.
+
+  No, I agree with the idea of dropping .md from the suffixes we create a live
+  doc for at all.... ughhhh god we might have to make an exception here and
+  there, though. Markdown (i.e. "SKILLS.md") _is_ becoming de-facto a
+  programmatic artifact in some contexts. It's going to be a heck of a lot
+  harder to figure out which is which as we move forward, but for now let's
+  ignore .md files as things which need a Live Documentation file generated for
+  them, noting that this absolute rule is expected to change in the future to
+  accommodate "prompts as programs" and other modern AI-facilitated artifacts
+  as they appear. With that said, so long as the artifacts like a "SKILLS.md"
+  actually reference anything else nearby which we do have a Live Documentation
+  file generated for, then hopefully that will get picked up as part of the
+  Related Docs bundle (I admit I sometimes forget the cumulative ruleset on
+  what counts and what doesn't there and expect there'll be a bit of gotchas
+  that I oversimplified with my statement).
+
+  >the two LICENSE files (if you count licences as documents, it's 18);
+
+  Those are already documents. Let's not generate a live doc for them. They are
+  not part of the wiring of the directory being scanned. (But might be
+  interesting or useful in some other ways later; nevertheless, they are docs
+  and should be treated as such)
+
+  >Honest stub wording. A stub for a workflow would say "No public symbols
+  detected". That would be false, since nothing read it. I'd change the stub to
+  say no reader exists yet for that kind of file.
+
+  Okay, so long as it doesn't write into the region of the docs which are
+  automatically regenerated. That seems like a reasonable caveat to throw in
+  the Authored section and worthy of remembering when we visit such a file
+  again.
+
+● I'll take that as the go. First I'm recording this turn, then checking two
+  things before building: how Related Docs picks up a markdown file, and what
+  the generator writes into a new doc's Authored section.
+
+  Searched for 2 patterns, ran 4 shell commands (ctrl+o to expand)
+
+● Related Docs only tracks links from a Live Doc to a markdown file, so
+  SKILL.md's own links don't count—I'll report this rather than change it. Next,
+  I'm checking how the generator seeds a new doc's Authored section so I can
+  add the "no reader yet" note there.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Walking every file takes under half a second once I exclude node_modules and
+  .git, so performance isn't an issue. Now implementing the engine changes:
+  defaulting to every file, handling undocumented files, and adding the Authored
+  note for files no reader covers.
+
+  Searched for 2 patterns, ran 4 shell commands (ctrl+o to expand)
+
+● The history cache is keyed by the generator's code, so the change invalidates
+  it on its own. Writing the engine change now.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Now the discovery rule for documents, and pruning the walk:
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Now removing fixtureGlobs, which only ever rebuilt the default globs, and
+  updating its five callers:
+
+  Listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● The generator now makes exactly the 18 new docs (licences and markdown stay
+  out). I'm checking why one existing doc, the estate's compiler-edges.json,
+  changed too.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● New stubs are noted and Estate.sln now has a real inbound compiler link. Next,
+  I'll write Purposes for the 18 new docs, delegating workflows, repo setup
+  files, and the PowerShell grammar folder to helpers while I handle the tests
+  myself.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● 3 background agents launched (↓ to manage)
+   ├ Author CI workflow Live Docs
+   ├ Author repo setup files Live Docs
+   └ Author PowerShell grammar Live Docs
+
+● While the helpers write, I'm updating the tests. First, finding the existing
+  discovery and generator tests:
+
+  Listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● Writing the discovery tests:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Deliberately breaking the rule to confirm the tests can fail:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both breaks were caught. Now the config test and the generator tests for the
+  note:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Checking that these tests can fail too:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Both breaks were caught and restored. Running the whole unit and integration
+  suites now:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● A failing integration test reveals that inspect --reachable would wrongly flag
+  CI workflows, .gitignore, post-create.sh, and grammar build files as
+  "unreachable" since no reader connects them. I'll update the reachability
+  reporting to say "not read" instead in these cases.
+  Searched for 2 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● Both inspect --reachable and the Explorer's Sources panel rely on reachability
+  logic, so I'll fix both by moving files with no matching reader into a
+  separate "not read" list instead of "unreachable." I'm now reviewing how the
+  Sources panel structures its lists.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Adding the "not read" list to reachability, the CLI and the Sources panel:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  I wrote the Purpose and Notes for all five docs. In each one I changed only
+  the text between `## Authored` and `## Generated`. The italic caveat is still
+  the first line of Notes, word for word. The `## Generated` region is the same
+  in all five (identical checksum). I did not run the generator, commit or touch
+  any other file.
+
+  **Files changed** (all untracked, under `.mdmd/layer-4/.github/`):
+  -
+  /workspaces/Live-Documentation/.mdmd/layer-4/.github/workflows/ci.yml.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.github/workflows/codeql.yml.md
+  md.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.github/workflows/npm-audit.yml
+  .mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.github/workflows/pages.yml.mdm
+  d.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.github/dependabot.yml.mdmd.md
+
+  **What the Notes cover**
+  - **What each file actually runs**, since no reader draws it yet:
+    - `ci.yml`: `ci-check`, which is `safe-to-commit.mjs --skip-git-status
+  --check-live-docs`. That is the docs freshness check and lint, then `verify`,
+  then the SlopCop audits.
+    - `pages.yml`: `live-docs:history -- --jobs 2`, then `live-docs:visualize --
+  --history all`.
+    - `codeql.yml`: `npm run build` before the analysis.
+    - `npm-audit.yml`: two `npm audit` passes.
+  - **Non-obvious choices:**
+    - **Pages:** the history cache key and why it uses 180 minutes and
+  `cancel-in-progress: false`. Its bundle is built from the committed docs, and
+  it does not wait for CI, so a push deploys even when CI fails.
+    - **CI:** why it has no Playwright, why it checks out the whole history
+  (`fetch-depth: 0`), and why the pull request trigger exists.
+    - **npm audit:** it reads only npm's exit code, so an audit that fails for
+  another reason (such as an unreachable registry) reports as findings.
+  - **The board:** `ci.yml` and `pages.yml` point to
+  `.mdmd/layer-3/board.mdmd.md`, which declares their wires by hand
+  (`ci-workflow` and `pages-workflow`) as imagined things.
+  - **Origins:** each origin bullet links the chat turn that explains it:
+    - December 13, 2025 summary, Turns 06, 09, 10, 11 and 26: the first CI and
+  the owner's requests.
+    - September 30 record, Turn 8: the owner's reason for keeping Playwright out
+  of CI.
+    - October 17 record, Turn 5: the owner's provisional yes to computing the
+  hosted history in the Pages workflow with a cache.
+    - October 19 summary, Turns 16, 17 and 17: the removal of the Rollup install
+  and the CLI pack check, and the first hosted history run, for `82fee09d`.
+    - October 21 record, Turn 8: when the files gained Live Docs.
+  - **Links:** every link is relative. I checked each target file and each
+  `#turn-n` anchor with a script, and all resolve. The Pages URL is in backticks
+  rather than linked, as `board.mdmd.md` does, because no layer-4 doc carries
+  an external link.
+
+  **What I could not establish**
+  - **CodeQL's build step:** when the workflow was created, the agent said the
+  build lets CodeQL analyse compiled output. I did not check whether CodeQL
+  needs a build for JavaScript and TypeScript, and the doc says that reason was
+  not checked.
+  - **Cache versions:** `pages.yml` uses `actions/cache/restore@v4` and
+  `save@v4`, while Dependabot moved `actions/cache` to v5 elsewhere on
+  2025-12-13. I left this out of the docs because it is neither an origin fact
+  nor something a maintainer must know.
+  - **"Gained a Live Doc on 2026-10-22":** the dependabot and workflow docs say
+  this, which assumes the root's uncommitted discovery change and these docs are
+  committed. If they land on a later date, those sentences need the new date.
+  - **Lint:** I did not run `live-docs:lint` or the SlopCop link audit; the
+  root's gate will do that.
+
+● Agent "Author CI workflow Live Docs" finished · 9m 42s
+
+● The workflows helper is done; I'll review its five docs once the code is in.
+  Continuing with the CLI output:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● I'll update the test graphs to use realistic file names with extensions
+  instead of bare names like cli/orphan, and add an unread file to each.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  I wrote the authored sections of all seven grammar docs. Only the text between
+  `## Authored` and `## Generated` changed. Nothing from `## Generated` down
+  changed (all seven generated tails are still byte-identical), and the Metadata
+  is untouched. I did not run the generator, did not commit, and edited no
+  other repository file.
+
+  **Files changed** (all are untracked new stubs, so git shows no diff):
+  - /workspaces/Live-Documentation/.mdmd/layer-4/packages/engine/grammars/powers
+  hell/build.sh.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/packages/engine/grammars/powers
+  hell/grammar.patch.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/packages/engine/grammars/powers
+  hell/upstream.env.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/packages/engine/grammars/powers
+  hell/tree-sitter-powershell.wasm.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/packages/engine/grammars/powers
+  hell/test/corpus/command_arguments.txt.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/packages/engine/grammars/powers
+  hell/test/corpus/scripts.txt.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/packages/engine/grammars/powers
+  hell/test/corpus/using_statements.txt.mdmd.md
+
+  **What each doc has:**
+  - A Purpose of one or two sentences.
+  - Notes whose first line is the reader caveat, verbatim (the same text as
+  `UNREAD_NOTE` in `packages/engine/src/live-docs/document.ts`). A small script
+  checked this before writing.
+  - Bullets on the real wiring in words: `build.sh` sources `upstream.env`,
+  fetches the pinned commit with autocrlf off, applies the patch, copies in the
+  corpus files and refuses one that would replace upstream's, then runs
+  upstream's 147 trees plus our 17. It writes the wasm and copies upstream's
+  LICENSE. `treeSitter.ts` loads the wasm and falls back silently to the copy in
+  `@vscode/tree-sitter-wasm` if the file is missing. `package.json`'s `files`
+  ships `grammars`.
+  - What proves what: `treeSitter.test.ts`, the oracle test, and the corpus
+  tests, which only `build.sh` runs.
+  - An origin bullet. Every doc links Turn 4 of the 2026-10-16 record and Turn 8
+  of the 2026-10-21 record; all but `upstream.env` also link the PowerShell
+  decision entry. Some also link:
+    - Turn 6 of the 2026-10-21 record: the `upstream.env` doc (the
+  "secret-looking name" example), the wasm doc and the three corpus docs.
+    - Turn 5 of the same record: the three corpus docs (that turn first judged
+  them outside "within reason").
+    - The October 16 summary's open ends: the patch doc.
+    - The devcontainer README's grammar section: the `build.sh` doc.
+
+  **Checks run:**
+  - A link check of my own covered every authored link: the target exists with
+  an exact-case name, and the anchor exists, with emphasis markers stripped as
+  GitHub does. 0 broken. As a control it also passes the existing
+  `powershell.ts` doc.
+  - `npm run slopcop:markdown` and `npm run slopcop:symbols` both found 0
+  issues.
+  - `npm run live-docs:lint` exits 0. The seven docs no longer appear under
+  "Purpose content pending". They still appear among the 53 disconnected nodes,
+  which is expected: no reader draws their wires yet.
+  - My temporary scratchpad files are removed.
+
+  **Facts I verified rather than took from the records:**
+  - The committed wasm's SHA-256 is still `9626b334…`, the hash the 2026-10-16
+  record gives for two byte-identical builds (checked today, 2026-10-22).
+  - No npm script, CI workflow or test config runs `build.sh` or the corpus.
+  - Only `build.sh` reads `upstream.env`.
+  - The engine never loads `highlights.scm`.
+  - The adapter reads `using_statement` and `command_argument_list` by name.
+
+  **What I could not establish:**
+  - Whether the patch has been offered upstream. No record or Memory file after
+  2026-10-16 mentions it. The patch doc says only that it "was left open at the
+  end of that session", linking the October 16 summary's open ends.
+  - That the oracle test and `treeSitter.test.ts` would fail on the bundled
+  grammar. The wasm doc says they "would notice", based on the decision entry
+  and the `powershell.ts` doc (five misses on the rollout program and two on the
+  compendium with the bundled grammar). I did not run them that way.
+  - The docs say each Live Doc "gained a Live Doc on 2026-10-22, when
+  discovery's default became every file outside the owner's list". That default
+  change is uncommitted work in the tree right now. If it lands differently,
+  those clauses need revisiting.
+
+● Agent "Author PowerShell grammar Live Docs" finished · 11m 28s
+
+● The grammar helper is done too. Fixing the one remaining sources test, which
+  counts file extensions:
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Breaking the split fails 4 tests, as it should. Regenerating docs, then
+  rerunning integration:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Integration passes. Checking what inspect --reachable now says about this
+  repository:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Fifteen files are now listed as "not read" rather than unreachable. While the
+  last helper finishes, I'm writing the Estate.sln doc myself:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Now reviewing what the helpers wrote. The workflow docs first:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The workflow docs are accurate and carry their origins. Now the grammar docs:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The grammar docs are thorough and accurate. While the last helper finishes,
+  I'm finding existing docs whose wording the change makes stale:
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● A dozen docs describe the old default or the removed fixtureGlobs. Reading the
+  authored sections of every doc whose source I changed, so each update matches
+  what it says now:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Writing the doc updates for every changed file:
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Updating the skill reference, the Explorer contract, the guides, the pipeline
+  doc and the vision status:
+
+  Searched for 2 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● Now direction.md and ideas.md for your Turn 8 answers:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Type-checking the build while the last helper finishes:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  I wrote the authored sections of all five docs. In each one I changed only the
+  text between `## Authored` and `## Generated`. The italic caveat is kept word
+  for word as the first line of Notes, with the bullets below it. I didn't run
+  the generator, didn't commit and didn't edit any other file. The one scratch
+  script I used for checking links is deleted.
+
+  **The five files changed:**
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.devcontainer/post-create.sh.md
+  md.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.gitattributes.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.gitignore.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.nvmrc.mdmd.md
+  - /workspaces/Live-Documentation/.mdmd/layer-4/.prettierrc.mdmd.md
+
+  **What the Notes cover:** who reads each file and how it is actually wired,
+  the non-obvious choices, and its origin with links to the chat record. Each
+  doc also ends with "Gained a Live Doc on 2026-10-22", linking Turn 8 of the
+  October 21 record.
+  - **`.gitignore`:** discovery and the three SlopCop audits go through `git
+  check-ignore`; without git, discovery reads the root file alone. A tracked
+  file is never ignored, which is why `.vscode/settings.json` and a probe's
+  `journey.log` survive. Prettier honours the file but ESLint does not. Its
+  history runs from 2025-12-13 (the owner's call) through 2026-10-16 (the agent
+  worktrees).
+  - **`.gitattributes`:** it exists because the dev container sets
+  `core.autocrlf=true`. The owner chose it on 2026-09-27 (Turn 7 of the
+  September 26 summary).
+  - **`.nvmrc`:** Node 20 at first so `better-sqlite3` used prebuilt binaries,
+  then 22 to match VS Code. Both reasons are gone now. The same version is
+  hand-copied in `package.json` engines, the container image, four workflows and
+  AGENTS.md.
+  - **`.prettierrc`:** read by `npm run format` and the editor extension. It
+  came from the first scaffolding.
+  - **`post-create.sh`:** the indexers are for the oracle only, under the
+  owner's rule of 2026-10-15. Which indexers are pinned and which are not. Where
+  the `safe.directory '*'` choice came from. Origin is the dev container of
+  2026-02-03.
+
+  **Checks run:**
+  - Every link target and anchor resolves, checked with the repository's own
+  slugger.
+  - `npm run slopcop:markdown` passed with 0 broken links.
+  - `npm run live-docs:lint` passed, 866 files. Its only mention of these five
+  is the expected "disconnected node" warning.
+
+  **What I could not establish:**
+  - There is no recorded reason for `.prettierrc`'s four settings, or for
+  `.gitignore`'s original entries. Both were created by the agent during the
+  2025-10-16 scaffolding without explanation, and the docs say only that.
+
+  **Things found along the way that the docs don't fix:**
+  1. **Prettier is not enforced, and the code doesn't follow it.** On
+  2026-10-22, `prettier --check` flagged 345 of the 355 tracked TypeScript files
+  under `packages/*/src` and `scripts`. The whole-repo `npm run format` reports
+  1,818 files. Whether to enforce it, delete it or keep it for the editor only
+  is a decision for the owner; it touches their preference for hand-aligned
+  code.
+  2. **Possible leftovers in `.gitignore`:**
+     - An empty heading, "# Live Documentation staging outputs".
+     - Entries for retired tools:
+  `AI-Agent-Workspace/ChatHistory/MDMD-Signals/`,
+  `AI-Agent-Workspace/ollama-traces/`, and the SQLite patterns (`*.sqlite`,
+  `*.sqlite-journal`, `*.db-shm`, `*.db-wal`, `*.db`).
+     - `scripts/**/lib/**` compiled outputs; no such folders exist.
+     - `eslint-report.json` and `lint-output.txt`; nothing writes them.
+     - `AI-Agent-Workspace/Probes/**/layout-lab/capture-*.json`, which the line
+  under it, `.../layout-lab/*.json`, already covers.
+  3. **The original reason for `safe.directory '*'` is gone.** It was the nested
+  vendor clones, retired on 2026-09-27. Whether agent worktrees inside the bind
+  mount still need the wildcard is untested.
+  4. **The Node 26 plan is close.** On 2026-09-27 the owner agreed to stay on 22
+  and make one jump to 26 after it becomes LTS on 2026-10-28, which is six days
+  away. The `.nvmrc` doc records this as dated history.
+  5. **This checkout has 420 tracked files with CRLF in the working copy.** They
+  predate `.gitattributes`. Git reports them unchanged and fixes them on
+  commit, but they still trip edits that match on line ends.
+
+● Agent "Author repo setup files Live Docs" finished · 19m 59s
+
+● All three helpers are done. Reviewing the last five docs:
+  Ran 1 shell command (ctrl+o to expand)
+
+● All five are accurate and well-sourced. Running the documentation checks over
+  everything now:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Docs are clean. Now building the Explorer to look at the change:
+
+  Searched for 2 patterns, ran 1 shell command (ctrl+o to expand)
+
+● The Knowledge Sources browser spec computes the expected lists itself, so it
+  needs the "not read" split too. Reading it:
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Both bundles are built. Serving them and taking pictures of the Sources panel
+  and a new doc in the reader:
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The Not read list sits cleanly between the unreachable list and the tests-only
+  list. Now the reader:
+
+  Read 1 file (ctrl+o to expand)
+
+● The note renders in the reader as italic text above the written notes, as
+  intended. Checking the estate picture:
+
+  Read 1 file (ctrl+o to expand)
+
+● All three pictures look right. Saving them to the day's Screenshots folder,
+  then running the full gate:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Checkpointing the work notes in the record before the long gate:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The full gate is running in the background (about 25 minutes). I'll commit
+  once it passes.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The 18 new docs are written and the code change is done. It isn't committed
+  yet: the full gate (including the 25-minute browser suite) is still running,
+  and I'll commit once it passes. Unit (1,356) and integration (112) tests, the
+  build, the tests' type-check, Live Doc lint and all documentation audits
+  already pass on this code. I'll send the full report after the gate. In short:
+
+  - Every file now gets a Live Doc except:
+    - git's store, node_modules and the docs folder;
+    - lock files;
+    - files git ignores, plus the workspace folder, which this repository's
+      settings exclude;
+    - documents.
+  - Documents means markdown, reStructuredText and AsciiDoc, plus plain-text
+    README, LICENSE (and COPYING, NOTICE), CHANGELOG, AUTHORS and CONTRIBUTING
+    files. That's wider than the markdown and licences you named, so trim it if
+    you like.
+  - The "no reader yet" note goes only in a new doc's Authored notes. It's
+    written once, and is yours to edit when a reader for that kind of file
+    arrives.
+  - One problem I hit: with the new docs in place, inspect --reachable and the
+    Knowledge Sources panel would have called the CI workflows unreachable, the
+    tool's answer for dead code, when really nothing reads them yet. They now
+    get their own "Not read" list instead. Picture
+    (AI-Agent-Workspace/Screenshots/2026-10-22/repo-sources-not-read.png).
+  - Related Docs doesn't do what you hoped for SKILL.md. It only follows links
+    from a Live Doc's written sections to a document. A document's own links
+    aren't read, so our SKILL.md is related to nothing today. I've noted it in
+    ideas.md as the next step.
+
+● Background command "Run the full pre-commit gate with browser tests" completed
+(exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate stopped at ESLint, before the browser tests. Reading the errors:
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Lint is clean on the changed files. The spec's Live Doc picked up its new
+  import; adding the matching note to its authored section:
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Rerunning the full gate:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Still not committed. The first gate run stopped at ESLint, before any browser
+  tests ran: one import in archetype.ts was in the wrong order. I've fixed it,
+  and lint is clean on every changed file. The gate regenerated the Knowledge
+  Sources spec's Live Doc for its new import, so I added a matching note to that
+  doc's authored section. The full gate, including the browser suite, is
+  running again now. I'll commit and send the report when it passes.
+
+● Background command "Rerun the full pre-commit gate with browser tests"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Everything passed: Live Docs, lint, build, 1,357 unit and 112 integration
+  tests, the audits, and all 188 browser tests (23.3 minutes). Recording the
+  gate and committing:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Every file now gets a Live Doc except the kinds you named, and that's
+  committed as 6543bf3d (not pushed). The full gate passed, including all 188
+  browser tests.
+
+  What changed
+  - Every file by default. Discovery's default now covers every file, minus
+    git's store, node_modules, the docs folder, lock files and documents. What
+    git ignores is still left out, and so is the agent workspace, which this
+    repository's settings exclude.
+  - Documents never get a doc. Here I went a little wider than the markdown and
+    licences you named. Besides .md, it also leaves out reStructuredText (.rst)
+    and AsciiDoc files, and plain-text README, CHANGELOG, AUTHORS and
+    CONTRIBUTING files. Licences include COPYING and NOTICE. A code file with a
+    similar name, like license.ts, still gets a doc. Tell me if you want any of
+    these trimmed.
+  - 18 new docs here, each with its Purpose and Notes written from where the
+    file came from:
+    - the CI workflows and Dependabot settings (for example ci.yml's doc
+      (.mdmd/layer-4/.github/workflows/ci.yml.mdmd.md));
+    - the dev container's setup script and four dotfiles;
+    - the PowerShell grammar's build files;
+    - Estate.sln.
+  - The "no reader yet" note goes only in the Authored notes. It's written once,
+    when the doc is created, and the generated sections are never touched. If a
+    doc holds nothing but that note, it's deleted along with its file.
+  - A correction: I said last time that "No public symbols detected" would be
+    false for these files. It isn't: it's literally true, since nothing was
+    detected. The note explains why.
+
+  A problem I found along the way: with the new docs, inspect --reachable and
+  the Knowledge Sources panel would have listed the CI workflows as unreachable.
+  That's the tool's answer for dead code, but really nothing reads them yet.
+  Files no reader handles that nothing reaches now get their own "Not read"
+  list, in the CLI, its JSON output and the panel (this repository
+  (AI-Agent-Workspace/Screenshots/2026-10-22/repo-sources-not-read.png), the
+  estate
+  (AI-Agent-Workspace/Screenshots/2026-10-22/estate-sources-not-read.png), the
+  note in the reader
+  (AI-Agent-Workspace/Screenshots/2026-10-22/repo-reader-ci-workflow.png)).
+
+  The Related Docs gotcha you expected: it only follows links from a Live Doc's
+  written sections to a document. A document's own links aren't read, so our
+  SKILL.md, which links two guides, is related to nothing. Reading those links
+  the other way would fix it. I've noted that in ideas.md, along with your
+  "prompts as programs" words, and haven't built it.
+
+  Things the doc-writing helpers noticed (no action taken):
+  - Prettier is configured, but nothing enforces it, and 345 of the 355
+    TypeScript files they checked don't match it. Whether to enforce it, drop it
+    or keep it just for the editor is your call.
+  - .gitignore still has entries for retired tools.
+  - Node 26 becomes LTS on October 28. You agreed in September to jump straight
+    to it from 22.
+
+  The 3D questions from earlier are still waiting on your eye: gravity at 0.01
+  or 0.03, whether the first picture should frame itself, the Update Energy
+  default, and the tether's strength.
+
+❯ <ide_opened_file>The user opened the file
+  /workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/2026/10/2026-10
+  -21-153332-today-is-10212026-lets-begin-a-new-chat-with.txt in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+  ⎿  [Image #1]
+
+❯ >The 3D questions from earlier are still waiting on your eye: gravity at 0.01
+  or 0.03, whether the first picture should frame itself, the Update Energy
+  default, and the tether's strength.
+
+  The 3D defaults you've introduced are solid, and it will take me a bit of
+  time to tune with the tuning panel. In the meantime, I've noticed that the
+  History/Timeline portion of the 3D force graph has had its axis changed in a
+  way which appears to have scrunched commits. I do expect a lull of period in
+  time and have no qualms against linear time whatsoever, but I'm also not
+  fully confident that it's 100% accurate, as there should be a rather
+  tremendous burst of commits beginning at the end of September 2026 and moving
+  into October of 2026. There was a lull of around 3 months since the last
+  period of major activity in the repo (all me, and that period of major
+  activity was the groundwork for what the Sept/Oct 2026 next-level-frontier
+  passes have been honing and refining; the groundwork was surprisingly good!
+  Way to go last-gen frontier!).
+
+  >The Related Docs gotcha you expected: it only follows links from a Live
+  Doc's written sections to a document. A document's own links aren't read, so
+  our SKILL.md, which links two guides, is related to nothing. Reading those
+  links the other way would fix it. I've noted that in ideas.md, along with
+  your "prompts as programs" words, and haven't built it.
+
+  How  bad of an idea might it be -- what might the blast radius be -- if we
+  decided to link documentation which talks _about_ an artifact tracked by Live
+  Documentation (as in, bring along any MarkDown file whose links connect to a
+  file for which there is a Live Documentation file generated, within the
+  "Related Docs" bundle). I believe we actually tried this at one point or
+  talked about it some months ago? I don't recall the outcomes. I suspect there
+  is some reason why we don't have it that way now, but am entirely open to
+  the possibility of the functionality simply regressing unbeknownst to me.
+
+  >Prettier is configured, but nothing enforces it, and 345 of the 355
+  TypeScript files they checked don't match it. Whether to enforce it, drop it
+  or keep it just for the editor is your call.
+
+  We should research whether prettier is the answer we truly want relative to
+  our styling/linting needs. I've spoken a fair bit in the past about the
+  styles I use, and the preferences I have for linting. But I know that the TS
+  ecosystem is evolving everyday.
+
+  ---
+
+  Overall, it occurs to me that I've given a lot of directives. I strongly
+  suggest spinning up some subagents to try and tackle/research the bespoke
+  pieces which can reasonably be accomplished with slightly less introductory
+  context/background knowledge. Indeed, it occurs to me that one or two
+  subagents' explorations might hinge on the results of prior subagents. I
+  suspect, I guess I'd say, that working through what I'm asking in this prompt
+  will require a bit of delegation and integration. You okay to handle that?
+
+● I'm okay to handle it. I'll split it into investigations that run in parallel,
+  with the one that depends on another running second. First I'm recording your
+  message, then gathering a few facts so the helpers start from solid ground.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The history data itself is complete (615 commits, 109 in September and 239 in
+  October through the 20th), confirming the squeezed burst is a rendering issue
+  in the scrubber, not missing data. Next, I'll pull your existing formatting
+  and lint preferences to inform the style research.
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Noted your preference for aligned whitespace and that lint rules can flex on
+  style but not substance—since Prettier strips alignment by default, that's the
+  key question to research. Saving this turn along with your screenshot now.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Launching three helpers now. The fourth, the survey of today's formatter and
+  linter tools, starts once the preferences are gathered, since it depends on
+  them.
+
+● 3 background agents launched (↓ to manage)
+   ├ Diagnose History scrubber axis
+   ├ Related Docs reverse links study
+   └ Gather owner's code style preferences
+
+● While the three run, I'm recording in direction.md that you're keeping the 3D
+  defaults for now:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All three are running:
+
+  - The timeline: reproducing where the scrubber puts each tick, using the real
+    history file under its default settings, then checking the code and recent
+    commits for what changed.
+  - Related Docs in reverse: first digging through git and the chat record for
+    whether this was tried before and what happened, then measuring how many
+    documents and file–document pairs it would add, folder by folder, and what
+    it would mean for the "everything comes from the Live Docs" rule.
+  - Your style preferences: collecting everything you've said about formatting
+    and linting, with citations, and measuring how the code is actually written
+    today.
+
+  When the preferences come back, I'll start the fourth helper on a dated survey
+  of today's TypeScript formatters and linters, judged against them. Then I'll
+  bring all four results back to you together.
+
+› Message from general-purpose
+  ## Root cause
+
+  The owner's screenshot is the shipped default, drawn correctly by its own
+  rules: the axis is **by step**, not by date, and the ticks are **one per
+  day**. That pairing turns the burst inside out. The busiest stretch is drawn
+  with the fewest ticks, and the ruler hides the "Sep 2026" label that would
+  show where the burst starts. My headless run puts every visible label and
+  every tick of the burst within a pixel of the screenshot (for example, ticks
+  at 47.5, 52.7, 57.4 and 61.1% of the lane, where the screenshot has x≈697,
+  738, 772, 800).
+
+  **1. The defaults never changed. The data did.**
+  - `packages/explorer/src/client/persistence/local-storage.ts:74-75` sets
+  `history: { axis: "steps", granularity: "auto", playRate: 2 }`. It has been
+  the same since the scrubber landed in `7d7a39e6` (2026-10-18), and `git log
+  -S` / `-G` show no later change to the axis, the granularity or `TICK_BUDGET`.
+  - On 2026-10-18 the bundle carried a history sampled at every eighth commit:
+  74 steps (`AI-Agent-Workspace/Screenshots/2026-10-18/history/01-control-open-t
+  oday.png`). Since 74 is within the budget of 120 (`tick-model.ts:29`), the
+  automatic choice was one evenly spaced tick per step, and "Sep 2026" was
+  visible.
+  - `a3ee07e5` (2026-10-20) moved the history to format 2. The root then
+  recomputed it with the default sampling, every commit: 616 dates (2026-10-20
+  record, line 794).
+  - The automatic choice (`tick-model.ts:164-169`) now rejects every step (616
+  ticks) and picks **days**, because there are 115 distinct days and 115 ≤ 120.
+  - So the owner felt a change of axis, but what changed was the tick
+  granularity.
+
+  **2. Day ticks on a step axis draw activity backwards.**
+  - `ticksAt` (`tick-model.ts:144-160`) draws one tick per day, at the day's
+  last step (line 152). `positionOfStep` (`tick-model.ts:90`) places it at
+  step/last.
+  - The space between ticks is therefore that day's commit count. A busy day
+  becomes a wide empty gap; a quiet day becomes a tight cluster.
+  - Before Sep 2026: 268 commits shown as 93 ticks (2.9 commits a tick).
+  - From 27 Sep 2026: 348 commits shown as 22 ticks (15.8 a tick; 25, 32, 29 and
+  23 on 27–30 Sep).
+  - The burst actually takes the widest stretch, 43.6% to 100% of the width, yet
+  it reads as the sparsest.
+  - The blank between 43.4% and 47.5% looks like the lull, but it is 25 commits
+  of 27 Sep waiting for their day's tick.
+  - The real lull, 2 Apr to 27 Sep, is one step on this axis: 0.16% of the
+  width.
+
+  **3. The ruler hides the label that marks the jump.**
+  - `rulerOf` (`tick-model.ts:176-192`) puts Feb 2026 at 37.7%, Mar at 40.5%,
+  Apr at 43.4%, Sep at 43.6% and Oct at 61.3%. Those positions are correct.
+  - `placeRuler` (`scrubber.ts:221-236`, line 233) hides any label that would
+  overlap the one before it, so the earliest label of a cluster always wins.
+  - At the screenshot's width that hides Mar, Apr and **Sep 2026**. Wider
+  (1100–1500 px) it still hides Mar and Sep 2026.
+  - So 27–30 Sep's 109 commits sit unlabelled between "Feb 2026" and "Oct 2026",
+  and the eye reads that stretch as Feb to Oct. On a step axis a quiet stretch
+  always squeezes its labels together, so the label after a gap will always be
+  the one lost.
+  - The plan (C4 in `change-over-time.mdmd.md:106`) says the ruler runs beneath
+  the ticks "so that a quiet half-year reads as a gap whatever the granularity".
+  On the default axis that is not met. The Explorer contract
+  (`live-documentation-explorer.mdmd.md:72`) gives that job to the by-date axis
+  instead, so the two documents disagree.
+
+  ## Is the drawing accurate?
+
+  - **The data are accurate.** 616 dates, by month: Oct 2025 50, Nov 52, Dec 77,
+  Jan 2026 53, Feb 17, Mar 18, Apr 1, Sep 109 (all on 27–30 Sep), Oct 239
+  through Oct 20. Every position, label and tick follows the module's stated
+  rules.
+  - **"Scrunched" is an artifact, not a true reading of time.** On this axis the
+  burst is not compressed at all; day ticks plus the hidden Sep label make it
+  look thin.
+  - **By date, the burst really is squeezed.** It takes the last 6.4% of the
+  width (93.6% to 100%) and the lull shows as a gap. That matches what the owner
+  expected: a lull, then a burst.
+
+  ## A real defect I found (under the by-date axis)
+
+  **The thumb.** `scrubber.ts:253` places it at its tick's position, and when
+  the step has no tick it falls back to `step / steps`, which is the by-step
+  position. Under By date with a grouped granularity (automatic → days, weeks,
+  months, or Salient with pins), the thumb is drawn at the wrong place:
+  - 492 of 616 steps land more than 0.5% from their date. The worst is step 268
+  (2026-09-27): drawn at 43.6%, though its date is at 93.6%.
+  - I confirmed it in Chromium against the built `dist/explorer`. A click at
+  93.85% of the lane rested on step 301 (2026-09-28), as it should, but the
+  thumb was drawn at 48.9%, in the middle of the empty half-year.
+  - With Every step it sits at 93.8%. Under the default by-step axis the
+  fallback happens to be right.
+  - No test catches it: the scripted sample is too small to ever group, and the
+  2026-10-18 by-date picture had 74 steps, so every step had a tick.
+
+  **A cost issue on the same path (secondary).** `positionOfStep` re-parses
+  every date on each call (`tick-model.ts:91`), and `refresh()` rebuilds the
+  model on every frame a drag shows (`history-control.ts:204-208`, `267-268`).
+  Per call in Node:
+  - By date: 17 ms on automatic, 79 ms on Every step.
+  - By step: 0.8–1.9 ms.
+
+  ## Recommended remedies
+
+  1. **Bug fix, no design choice.** Place the thumb by `positionOfStep(dates,
+  axis, step)`, ideally through the model so Vitest can test it. Compute the
+  dates' instants once per model rather than once per call. Add a tick-model
+  test of a grouped granularity under the date axis. A Playwright check needs a
+  bundle with more than 120 steps; the scripted sample has fewer, so none
+  exercises this.
+
+  2. **Making the default readable: a design choice for the owner.** Two
+  options, which can be combined:
+     - **(a) Make By date the default axis.** The owner said they have "no
+  qualms against linear time". The lull then shows as a gap and the burst as a
+  dense block at the right end. The cost: on a 761 px lane the burst's 348 steps
+  share about 49 px (about 7 steps per pixel), so dragging through it is
+  coarse. The arrow keys still move one step at a time. Remedy 1 must land
+  first, or the thumb jumps away.
+     - **(b) Keep By step and fix the ruler.** When labels collide, keep the one
+  that begins after the larger gap in time (Sep 2026 over Mar or Apr), and draw
+  a break mark where consecutive steps are far apart in time. Also decide how a
+  grouped period is drawn on this axis: one tick at the period's end reads
+  backwards, as above. A span covering the period's steps, or a mark at its
+  start, avoids that. The cost is that a by-step track can never show how much
+  time passed, only where it jumps.
+
+  ## Files and limits
+
+  **Files created** (scratch only, nothing in the repository changed):
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/ticks.ts` — every axis and granularity, per
+  month
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/detail.ts` — the default's ticks after Feb 2026,
+  the hidden labels, the thumb's error by date
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/cost.ts` — cost per call
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/look.cjs` — the Chromium run
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/scrubber-steps-auto.png`
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/scrubber-time-auto.png`
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/scrubber-time-auto-thumb.png` — shows the
+  misplaced thumb
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/scrubber-time-step.png`
+  - `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf81-ddf
+  12ed08c18/scratchpad/timeline/scrubber-steps-step.png`
+
+  I served the existing `dist/explorer` (built 2026-10-22 01:14, history file
+  byte-identical to `.mdmd/history/history.json`) without rebuilding it, and
+  stopped the server by its PID.
+
+  **What I could not establish:**
+  - Which Tuning settings the owner's browser holds. The screenshot's tick and
+  label positions match the defaults exactly, so they were almost certainly on
+  the defaults.
+  - Whether the owner looked at the 74-step bundle between 2026-10-18 and
+  2026-10-20. Their sense that "the axis changed" fits the switch from every
+  step to days.
+  - The tick and label positions in browsers other than Chromium.
+
+● The timeline helper is back with a precise diagnosis. Checking its two key
+  claims in the code before I act on them:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Diagnose History scrubber axis" finished · 6m 37s
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Confirmed both issues: the thumb defaults to the step index when there's no
+  tick, and the date position re-parses every date on each call. I'll fix the
+  thumb bug now and flag the default readability issue for your decision,
+  starting by reading the tick model.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● I'll fix this at the model level—computing each step's position once from
+  parsed dates, so the thumb, ticks, and ruler all share the same values instead
+  of the thumb using its own logic.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Adding the test that pins the thumb's position for a step inside a grouped
+  period:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The test fails against index-based positions, as it should. Rebuilding the
+  bundle with its history to see the thumb in the browser:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Fixed: under By date, the thumb for September 28 now stands at 93.8% of the
+  track, where its date is, instead of 48.9%. Looking at the picture:
+
+  Read 1 file (ctrl+o to expand)
+
+● The By date view now matches expectations, showing the dense 2025–26 stretch,
+  the lull, and the right-aligned burst with the thumb inside it. Saving the
+  images now and updating the docs for the three files I edited.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The timeline answer is in hand, and the thumb bug is fixed and tested (not yet
+  committed). Two helpers are still working: the Related Docs study and the
+  style preferences. The tools survey starts when the preferences arrive. In
+  short, the timeline:
+
+  - Your data are complete. All 616 mainline commits are there, including the
+    burst (109 commits on September 27–30, 239 in October through the 20th).
+  - Nothing in the axis code changed. The amount of history did. On October 18
+    the bundle carried every eighth commit (74 steps), so each step got its own
+    tick. Since October 20 it carries every commit, and 616 is over the 120-tick
+    budget. So the automatic setting switched to one tick per day on the
+    by-step axis.
+  - One tick per day on a step axis draws activity backwards. Each day's ticks
+    are spaced by its commit count, so a busy day becomes a wide empty gap. The
+    burst actually fills the right 56% of the track, but with only 22 ticks it
+    looks sparse.
+  - The ruler hides the label that matters. "Sep 2026" is hidden because it
+    would overlap the labels before it, so the burst reads as running from Feb
+    to Oct.
+  - A real bug, now fixed: under By date, the thumb fell back to the step's
+    index inside a grouped day. A click on September 28 left it in the empty
+    half-year (48.9% along) instead of at 93.8%. I've fixed it, a test covers
+    it, and here are the before (AI-Agent-Workspace/Screenshots/2026-10-22/scrub
+    ber-by-date-thumb-before-fix.png) and after
+    (AI-Agent-Workspace/Screenshots/2026-10-22/scrubber-by-date-thumb-fixed.png)
+    pictures.
+  - The default axis is your call, and I'll bring it with the rest. By date
+    shows exactly what you described: the lull as a gap, then the burst packed
+    at the right end. The cost is that dragging through the burst moves about 7
+    commits per pixel; the arrow keys still step one commit at a time.
+
+❯ >The default axis is your call, and I'll bring it with the rest. By date
+  shows exactly what you described: the lull as a gap, then the burst packed at
+  the right end. The cost is that dragging through the burst moves about 7
+  commits per pixel; the arrow keys still step one commit at a time.
+
+  I see, okay it looks like that axis is just not linear. It must have a
+  preference to breathe in the more recent past. That's the impression I get
+  visually. I would personally prefer to see it back in linear time, where one
+  month is no more prescient than any other. It's fine if you want to make a
+  toggle to prioritize the recent past. I'm sure for super-super active repos,
+  that would be a very valuable way of viewing the data (albeit, for them, it
+  might be even more useful to simply be allowed to scope the data such that
+  they don't have to look into the deep past as an option at all, setting the
+  min and max date to their own preference for history range, and letting the
+  linear time between work itself out?)
+
+● Linear time as the default it is. The by-step axis stays in Tuning as the
+  option that gives busy stretches more room. Recording your message, then
+  checking how saved tuning settings are kept, so the new default actually
+  reaches your browser:
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● Found that the whole tuning state, including the history axis, gets saved to
+  the browser on any change, so new defaults never reach returning users—same
+  issue affected yesterday's 3D defaults. I'll update the default and change the
+  save logic to only persist actual user changes, then check the persistence
+  tests.
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Short answer
+
+  The reverse direction was never built, so nothing regressed in the code. What
+  got lost was the intent. The owner proposed it on 2026-01-06 and asked for it
+  again on 2026-01-08. Copilot built only the forward half. The spec then marked
+  the task complete, and the 2026-09-27 docs rewrite recorded the forward-only
+  behaviour as the decision.
+
+  How big the change would be depends almost entirely on which documents are
+  read:
+  - **Current authored documents outside `AI-Agent-Workspace/`:** small. +242
+  pairs, +15 documents, +0.13 MB.
+  - **Everything `bundleExclude` lets in:** +575 pairs, +68 documents, +2.4 MB.
+  - **Every link form, no exclusion:** explorer-data.json grows from 5.9 MB to
+  about 28 MB, which is the January bloat again.
+
+  It would also not fix the case that prompted the question: `SKILL.md` has no
+  markdown links to documented files.
+
+  ## Part 1: archaeology
+
+  1. **2026-01-06, the owner's own idea.** In
+  `AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md`:
+     - Line 4727: "you plausibly _could_ pull in all documentation in the Force
+  Graph view which _links to_ any given implementation/test/asset file or _links
+  from_ the Live Documentation 'Authored' section".
+     - Line 4833: one checkbox "covers any arbitrary documentation which meets
+  those to/from criteria".
+     - Copilot restated the rule as "It links TO… OR It is linked FROM" (lines
+  4750–4751).
+     - It was written into the specs in commit `185977a2`. Layer-1 CAP-010 said
+  "Brownfield docs that link to Live Documentation (or are linked from it)
+  become read-only graph citizens", and US-11 scenario 2 said "Given a
+  brownfield doc linking to a Live Doc… the brownfield doc appears".
+     - The summary's 2026-10-16 correction (`2026-01-06.1.SUMMARIZED.md`, Turn
+  10) credits the to/from rule to the owner.
+  2. **2026-01-07, `4d7ae687`.** The first scanner was forward only: it followed
+  links out of the Live Docs, two hops deep (BFS, `maxDepth=2`). It bundled 457
+  files, 14.5 MB of static data (`2026-01-07.1.SUMMARIZED.md`, Turn 13).
+  3. **2026-01-08, `3a67f34e`.**
+     - The owner cut it to one hop because of duplicate nodes and a crash: "do
+  away with… traversing more than a single hop" (`2026-01-08.1.md`, line 1764).
+  That brought it to 60 files.
+     - The owner then pushed back: "Whoa whoa check that assumption… we still
+  want to integrate documentation into the bundle which has a MarkDown link _to_
+  a Live Documentation file or the source code file that it is based on" (line
+  1790).
+     - Copilot agreed only to keep the defensive `related:` handling (lines
+  1792–1798) and built nothing more. The 2026-10-16 correction in
+  `2026-01-08.1.SUMMARIZED.md` says "That half of the 2026-01-06 inclusion rule
+  stayed unbuilt."
+  4. **2026-01-09, `de600615`.** LD-1101 ("discover link-connected brownfield
+  docs") was ticked complete. The correction in `2026-01-09.1.SUMMARIZED.md`,
+  line 303, flags that.
+  5. **2026-02-23, `36051446`.** CAP-010 and US-11 scenario 2 moved into layer-2
+  `feature-specification.mdmd.md` ("Partially Complete"), still bidirectional.
+  6. **2026-09-27, `53ffb839`.** The rewrite "to match the tool as it is"
+  deleted CAP-010, US-11 and REQ-B1. The decisions log entry "Related
+  Documentation Bridge _(Recorded 2026-09-27; in effect since 2026-01-06)_" says
+  "A document joins the graph only because a Live Doc links to it". I found no
+  discussion of this narrowing in the 2026-09-27 record. The "in effect since
+  2026-01-06" wording is wrong: the rule of that date was bidirectional.
+  7. **2026-09-27, `219391c0`.** `bundleExclude` was added because the chat
+  archive was 11.4 MB of a 16.6 MB explorer-data.json. `fb648601` (2026-09-30)
+  let the summaries back in.
+  8. **Until 2026-10-20 (`a3ee07e5^`).** `scanAndBundleMarkdown` scanned each
+  Live Doc's rendered text: still forward only, never the documents. `a3ee07e5`
+  replaced it with `relatedDocsOf` over the authored blocks; the decisions log
+  reports the same 328 pairs before and after.
+  9. **2026-10-21/22.** The decision "Every File Gets a Live Doc but the Kinds
+  Never Documented…" lists under Alternatives "markdown with its links as
+  wires", and under Open "a document's own links". `ideas.md` (Prompts as
+  programs) and record 2026-10-21.1, Turns 8–9, hold the `SKILL.md` gotcha and
+  today's question.
+
+  ## Part 2: measured
+
+  Snapshot: HEAD `6543bf3d`, index of 866 files, every authored block matching
+  the docs on disk. Another agent rewrote the index during my run, so I reran
+  everything on one state. Scope: 570 tracked `.md` files, `.mdmd/layer-4`
+  excluded. A link counts if it resolves, the way `resolveDocLink` does, to a
+  documented source file or to its Live Doc.
+
+  **Today:** 355 pairs, 63 documents, 269 files with at least one related doc,
+  1,698,053 bytes bundled. This matches `dist/explorer/explorer-data.json`
+  exactly. Without `bundleExclude` it would be 892 pairs and 101 documents.
+
+  **Reverse direction alone:**
+
+  | Scenario | Docs related | Files gaining | Pairs | New vs today | Docs not
+  bundled today | Added bytes | Median per file (files with any) / p90 / max |
+  |---|---|---|---|---|---|---|---|
+  | A: relative md links | 80 | 271 | 681 | 598 | 74 | 3.92 MB | 2 / 5 / 20 |
+  | B: A + `file://` and root-absolute | 146 | 319 | 1016 | 933 | 140 | 16.4 MB
+  | 2 / 8 / 37 |
+  | C: B + backticked paths | 299 | 425 | 1669 | 1566 | 263 | 22.5 MB | 2 / 9 /
+  84 |
+  | A after `bundleExclude` (B is the same) | 74 | 266 | 658 | 575 | 68 | 2.43
+  MB | 2 / 5 / 20 |
+  | C after `bundleExclude` | 206 | 377 | 1202 | 1099 | 170 | 5.07 MB | 2 / 7 /
+  44 |
+  | A outside `AI-Agent-Workspace` | 19 | 207 | 323 | 242 | 15 | 0.13 MB | 1 / 3
+  / 4 |
+  | C outside `AI-Agent-Workspace` | 36 | 278 | 426 | 343 | 29 | 0.28 MB | 1 / 3
+  / 7 |
+  | A from layer-1..3 only | 10 | 196 | 303 | 222 | 6 | 0.12 MB | 1 / 3 / 4 |
+
+  Over all 866 files, zeros included, the median stays 0.
+
+  **By folder (scenario A):**
+  - Research: 46 docs, 308 pairs, 2.19 MB. All from one dated survey,
+  `Research/2026-09-29-bearings/`.
+  - Layer-3: 10 docs, 303 pairs.
+  - Tests: 7 docs, 18 pairs (fixture docs).
+  - Probes: 5 docs, 16 pairs.
+  - Chat records: 2 docs, 10 pairs. Raw transcripts: 3 docs, 6 pairs. Summaries:
+  1 doc, 2 pairs.
+  - Layer-1, layer-2 and the root `*.md` files: 0.
+
+  Raw transcripts link with Copilot's `file:///d%3A/...` URLs, so they appear
+  only under B. Summaries and records mostly name files in backticks, so they
+  appear under C: 58 summaries (105 pairs), 73 raw transcripts (360 pairs, 14.2
+  MB), 17 records (92 pairs).
+
+  **What `bundleExclude` does:** it removes every raw transcript, record and
+  export, which covers all of B's `file://` reach. It does not filter summaries,
+  Research, Probes, Screenshots, Notes or Memory, because the pattern is
+  `ChatHistory/**/!(*.SUMMARIZED).md`.
+
+  **Top files (scenario A):** none gains hundreds of chat records. The biggest
+  gains are template.html 20 (18 of them from the September Research folder),
+  client/index.ts 17 and client/pathfind.ts 12. Under C with backticks, chat
+  docs dominate: package.json 84 (60 chat), .gitignore 39 (28),
+  `.live-docs.config.json` 31, slopcop.config.json 31, safe-to-commit.mjs 30,
+  inspect.ts and generate.ts 24 each (17 chat each). generator.ts is not in the
+  top 20.
+
+  **Anchors:**
+  - No link points at a symbol.
+  - 8 use `#L..` line anchors: 2 in a raw transcript, 6 in C# fixture docs.
+  - 287 use Copilot `#a-b` line ranges, all inside `file://` links in raw
+  transcripts.
+  - The rest have no fragment.
+  - In scenario A, 335 pairs name the source file, 331 its Live Doc, 15 both.
+
+  **Total a person would see (today plus reverse):**
+
+  | Option | Pairs | Docs | Files with any | Bundled docs | explorer-data.json |
+  |---|---|---|---|---|---|
+  | Today | 355 | 63 | 269 | 1.70 MB | 5.9 MB |
+  | 1: outside `AI-Agent-Workspace` | 597 | 78 | 343 | 1.83 MB | 6.0 MB |
+  | 1b: same, no test fixtures | 578 | 70 | 333 | 1.83 MB | 6.0 MB |
+  | 2: everything `bundleExclude` admits | 930 | 131 | 381 | 4.13 MB | 8.3 MB |
+  | 3: 2 + backticks | 1454 | 233 | 454 | 6.77 MB | 10.9 MB |
+  | 4: all forms, no exclusion | 1921 | 326 | 498 | 24.2 MB | 28.3 MB |
+
+  **Hub documents:** under option 1 the decisions log ties 97 files (51 today),
+  the Explorer system doc 95, and change-over-time 63 (57 today).
+
+  **Churn, if it were a generated "linked from" section in each Live Doc:** over
+  the last 200 mainline commits (2026-10-05 to 2026-10-22):
+  - Reading all documents: 38 commits would change at least one Live Doc, 167
+  section changes in total, at most 22 in one commit.
+  - Reading outside `AI-Agent-Workspace` only: 28 commits, 132 changes, at most
+  22.
+
+  ## Part 3: consequences
+
+  - **"Derivable from the Live Docs" rule.** Today `relatedDocsOf` reads only
+  the graph, which carries each authored block verbatim. A document's own links
+  are in no Live Doc. That leaves two ways to do it:
+    - **(a) The graph, bundler or history reads documents directly.** That is a
+  side channel. `inspect` would not know these links unless it read the
+  documents too, which breaks the rule that the CLI and the Explorer know the
+  same things.
+    - **(b) A generated "linked from" section in each Live Doc.** This keeps the
+  rule but needs:
+      - grammar, parser and lint changes;
+      - a generator that scans markdown across the workspace, including folders
+  `exclude` keeps out of documentation, so a new setting for which documents
+  count;
+      - an end to the invariant written in `relatedDocs.ts` that generated
+  sections link only to Live Docs (`relatedDocsOf` would have to read the new
+  section);
+      - `--changed` (which follows git-dirty sources) and `--check` in
+  safe:commit/CI to treat a markdown edit as dirtying other Live Docs (the churn
+  above).
+  - **History.** Under (b) it comes almost free: the history regenerates every
+  commit with today's generator from that commit's tree, so a document would
+  become related at the commit it was written. The lens key changes, so the
+  cache is recomputed in full. Under (a), `summarizeChange` has the whole tree
+  and could read documents directly, but that is the same side channel.
+  - **3D view.** In the connections layout, related-doc links pull (`linkPulls`:
+  everything but containment), with spring strength 1/min(degree). Hub
+  documents (the decisions log at 97 files) would pull files from different
+  subsystems toward one sphere, so position would partly mean "named in the same
+  design doc". Option 2 means 131 spheres and 930 purple links, against 63 and
+  355 today.
+  - **Reader and Knowledge Sources.** The tree grows to 78, 131 or 233 documents
+  depending on the option.
+  - **Direction is lost.** `RelatedDocLink {sourceId, targetPath}` and the
+  history's `docLinks` store pairs without a direction. "Cites" and "cited by"
+  would look the same unless a field is added.
+  - **CLI.** `inspect --at` filters `docLinks` by `from === codePath`, so pairs
+  stored the same way list unchanged, but without direction.
+  - **Size, CSP and no-network.** Only size changes. Documents ride inside
+  explorer-data.json; the reader escapes raw HTML and shows image syntax as a
+  link it never fetches. Option 4 repeats the January bloat (14.5 MB) and the
+  2026-09-27 one (16.6 MB).
+  - **Staleness.**
+    - `AI-Agent-Workspace` is historical and no audit checks its links. 11,966
+  link occurrences (1,995 targets, in 118 documents, 11,870 of them in raw
+  transcripts) point at source files or Live Docs that no longer exist. They
+  resolve to nothing today, so they drop silently, but in the history they would
+  light up at the commits where they were written.
+    - The current docs outside it have no dangling links (one placeholder,
+  `.agents/path/to/file.ts`, in an `.agents/` doc).
+    - Research documents are dated surveys that "decide nothing" (AGENTS.md),
+  yet they are the largest single source in option 2.
+  - **Noise and signal.** Today's rule is curated: a maintainer cites a document
+  in Purpose or Notes, under "A doc is not a bibliography; cite where the
+  origin explains". Reverse links are uncurated. The signal is concentrated in
+  the layer-3 system docs ("the design doc this file belongs to") and the sample
+  and fixture READMEs. Only 83 of option A's 681 pairs already exist in the
+  forward direction.
+  - **`SKILL.md`.** No option helps it. It has no markdown links to documented
+  files; its backticks name `npm run live-docs:inspect …` and
+  `.live-docs.config.json`. Its sibling `reference.md` links `document.ts`.
+  Catching it needs a reader that maps commands to package.json scripts to
+  files, which is the "prompts as programs" step.
+
+  ## Options
+
+  1. **Leave as is.** Nothing changes, and `SKILL.md` stays unrelated. The
+  decisions log's "in effect since 2026-01-06" should still be corrected with a
+  dated note: the root agent's job, since I may not edit those docs.
+  2. **Reverse links from current authored documents outside
+  `AI-Agent-Workspace`, carried as a generated Live Doc section.** 597 total
+  pairs, 78 docs, +0.13 MB. 1b, which drops test fixtures: 578 pairs, 70 docs.
+  Cost: churn in 28 of 200 commits, plus the grammar change.
+  3. **Reverse links from everything `bundleExclude` admits.** 930 pairs, 131
+  docs, 8.3 MB data, with the September Research survey dominating.
+  4. **Every link form, no exclusion.** 1,921 pairs, 326 docs, about 28 MB. Not
+  viable.
+
+  **My recommendation:** option 2 if the owner wants the original intent back,
+  built as (b) so the Explorer, the CLI and the history all derive it from the
+  Live Docs. Never read `AI-Agent-Workspace`. Otherwise, option 1 with the
+  record corrected.
+
+  **Forks for the owner:**
+  - Generated section (keeps the rule, costs churn and a grammar change) versus
+  reading documents directly (a side channel).
+  - Which documents count: a new setting, `bundleExclude`, or `exclude`.
+  - Which link forms: markdown links only, backticked paths too (double the
+  reach, heuristic), or `npm run` commands (the only form that catches
+  `SKILL.md`).
+  - Whether "cites" versus "cited by" stays visible.
+  - Whether reverse links pull in the 3D connections layout or are only drawn.
+
+  ## Files created (scratch only)
+
+  All in `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf8
+  1-ddf12ed08c18/scratchpad/related/`:
+  - Scripts: `measure.ts`, `churn.ts`, `anchors.js`, `today.ts`, `recount.ts`,
+  `union.ts`, `degree.ts`
+  - Outputs: `report.md`, `churn.md`, `hits.json`
+
+  No repository files were touched.
+
+  ## Not established
+
+  - The churn figures use today's documented set for every past commit.
+  - Backtick matching is heuristic: only spans with a `/` or `.`, bare file
+  names not counted.
+  - The link regex is not full CommonMark (HTML anchors are not read).
+  - `file://` paths were mapped by cutting everything up to
+  `Live-Documentation/`.
+  - I did not measure how much history.json would grow.
+  - I did not build or look at the 3D picture with reverse links.
+  - I found no chat discussion of the 2026-09-27 narrowing; I could not
+  establish whether the session that made it knew about the 2026-01-08 ask.
+
+
+● Agent "Related Docs reverse links study" finished · 16m 7s
+
+● The Related Docs study is back too; I'll take it after the axis change.
+  Writing the change now: By date as the default, and the page saving only the
+  settings that differ from the defaults.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'll retire the old saved settings under a new version and key, saving only
+  differences from defaults going forward. Now checking which browser specs seed
+  saved settings and what still assumes the old axis.
+
+  Searched for 2 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● Now the unit tests for the new saving rule, and the browser specs that seed
+  saved settings under the old version:
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  ## Brief: what the owner has said about formatting and linting, and how the
+  repository is set up and written today
+
+  I changed no repository files. Other agents' edits appeared in `git status`
+  while I worked (explorer history files, direction.md, the Oct 21 record); none
+  of them are mine. Paths below are relative to
+  `/workspaces/Live-Documentation/AI-Agent-Workspace/ChatHistory/` unless they
+  start with `/`.
+
+  ### 1. The owner's requirements and preferences (verbatim)
+
+  **Linting: correctness yes, formatting and pedantry no**
+  - **2025-10-16**, `2025/10/2025-10-16.md` line 2964. Copilot had asked whether
+  to keep type-aware linting or fall back to untyped linting. The owner: "What
+  is the more durable option? I like linting that enforces programmatic
+  correctness, but dislike linting which forces formatting conventions or is
+  otherwise pedantic. If the lint is going to flood your context window, let's
+  clean it. ... If there is a more "durable" "correct" way to wire it up, do it
+  that way." Outcome: the flat config with type-aware rules was kept. This is
+  the owner's only direct statement about formatting enforcement.
+
+  **Aligned whitespace (the central statement)**
+  - **2026-09-27 01:31 UTC**, `2026/09/2026-09-26.1.md` lines 491–493; summary
+  Turn 6. It replies to the agent's "Prettier only re-aligned the tables."
+    - "Let me know if the linters get in your way. Feel free to adjust so long
+  as it isn't a matter of substantive code quality."
+    - "I personally have a _major_ preference to utilize languages which allow
+  me to use an arbitrary number of spaces/tabs so that I can visually align
+  things which are semantically aligned. The kind of style you'd see from an
+  old-school SQL coder..."
+    - "I optimize for readability to the human eye. I can reason over the code
+  way faster this way, and I suspect that these nicely-formatted codebases are
+  more semantically aligned with quality (sort of an opposite to the
+  beaurocratic inhuman style being potentially semantically-associated with
+  mediocre quality things)."
+  - The agent's replies, not the owner's words (lines 517 and 594): "Prettier
+  isn't gated by CI or `safe:commit`, so hand-aligned TypeScript won't be fought
+  by the pipeline; only an editor's format-on-save would." and "eslint accepted
+  the aligned columns in the new test."
+
+  **How the owner's own code looks**
+  - **2026-10-08**, `2026/10/2026-10-08.1.record.md` line 304, Turn 5: "What
+  code I write is formatted to be maximally easy to scan by the human eye, where
+  I make Powershell and C# look almost like the crazy-well-aligned SQL
+  scripts/queries of DBA masters who have let some logic become totally
+  perfectly crystalline. Do we need that level of readability/quality? No, not
+  necessarily."
+  - **2026-10-14**, `2026/10/2026-10-13.1.record.md` about line 1290, Turn 11.
+  This was about the force-graph renderer:
+    - "The absolute vertical smashing, and the lack of any choice to align
+  things semantically, horizontally and vertically... oh man this is just such
+  ugly code hahaha!"
+    - "I wish I had a good open-source example of the way I write my code, but
+  it's made to be read by the human eye and wonderfully expressive."
+    - "We should probably strike that "1000 line refactor" heuristic dead if it
+  causes this implicit need to condense everything to the point of
+  unreadability. Still, just a nit."
+    - The owner deferred broad style cleanup to a later session.
+  - **2026-10-19**, `2026/10/2026-10-19.1.record.md` Turn 14: "...the damage
+  that _I_ did by asking Github Copilot to keep files under 1000 lines... Not
+  because I love long code files but because I care about the freedom to create
+  the code as it really _should_ be."
+
+  **Where the dense style came from (history, now retired)**
+  - The owner-authored Copilot instructions said "Refactor files which exceed
+  ~500 lines of code". That line arrived in commit `97a48693` (2025-10-20) and
+  became "~1000" in `53952919` (2026-02-18). The owner's reason, 2025-11-11 line
+  553: "Above 1,000 lines, code edits become seriously unreliable".
+  - The same file said "Optimize for readability and maintainability over
+  brevity; prefer clear code over clever code." It arrived in `47225682`
+  (2025-10-19); the last copy is `ae216cb5:.github/copilot-instructions.md`.
+  - Those instructions were removed on 2026-09-27 (`29d58b50`). The owner has
+  not re-affirmed them since.
+
+  **Rules the owner asked to add or restore**
+  - **JSDoc on public symbols.**
+    - 2026-02-15, `2026/02/2026-02-15.1.md` line 691: "How much of our codebase
+  contains workarounds, deliberate lint suppression, that kind of thing? And can
+  we create and enforce linting that works like the C# linting which mandates
+  docstrings over every public symbol?"
+    - Line 751: "the exercise of requiring documentation on public members is
+  used in my professional life as a tool to locate and remove unnecessary
+  complexity, dead code, and other cruft... "Can I justify this code?""
+    - Result: `jsdoc/require-jsdoc` (warn), commit `1c3ea73c`, 2026-02-16.
+    - Earlier, 2025-11-14 line 1422: docstrings "only on public symbols which
+  would benefit from said docstrings ... (absolutely no fluff/filler/technical
+  debt nonsense)".
+  - **Test files linted again.** 2026-09-27, `2026/09/2026-09-27.1.md` line 143:
+  "Agreed on all fronts" to the agent's note that "ESLint ignores every test
+  file "temporarily," which is a lowered gate worth restoring." Result:
+  `94a661d8`.
+  - **The owner suspects suppression syntax.** 2026-02-15 line 626, on a `_`
+  prefix: "Did you introduce a syntax just then (`_` prefix...) which existed
+  solely to suppress the lint without resolving the underlying ... issue?" And
+  2026-02-16 line 335: find "unused members of a file (perhaps ones whose disuse
+  is hidden with discard-like syntax)".
+  - **Rejected:** no lint or format rule proposal from an agent has been
+  rejected in the record.
+
+  **Stance on lint debt**
+  - "Don't commit until it's safe to (all tests passing, no lints)" (2025-10-22
+  line 2247).
+  - "Fix lint, check lint, fix lint, check lint, repeat." (2025-10-30 line 4342)
+  - "Literally all changes are your changes." (2025-12-18.5 line 574)
+  - "(facepalm) dude all changes are your changes" (2026-10-09, Turn 11, in
+  owner.md).
+  - The gate exists "to fixate that "I must fix lints" instinct of LLM agents
+  onto actual interesting development and design challenges" (2026-01-27.1 line
+  1979).
+
+  **Related stances**
+  - 2025-10-27 line 6063 likes "squiggle-driven development" and "a noisy
+  intelligent linter whining at copilot".
+  - 2025-10-25 line 568 named SlopCop after StyleCop.
+  - 2026-01-16.1 line 662: "I am generally not in favor of magic strings that
+  allow the rules to be bypassed". That was said about the islands lint, not
+  about formatting.
+  - AGENTS.md: "Fix causes, not gates" and no workarounds.
+  - 2026-09-26: lint treadmills were not why the owner stopped in April: "Nah,
+  that wasn't causative."
+
+  **The current ask**
+  - 2026-10-22, `2026/10/2026-10-21.1.record.md` line 641, Turn 9: "We should
+  research whether prettier is the answer we truly want relative to our
+  styling/linting needs. I've spoken a fair bit in the past about the styles I
+  use, and the preferences I have for linting. But I know that the TS ecosystem
+  is evolving everyday."
+
+  **No owner statement found** on tabs vs spaces, indent width, line length,
+  quote style, semicolons, trailing commas, or naming conventions for code. The
+  only naming note is 2025-11-07 line 770: "lean in on FP where possible...
+  common naming conventions" across adapters.
+
+  ### 2. How the repository is configured
+
+  **`/workspaces/Live-Documentation/eslint.config.js`** (flat config)
+  - Everywhere: `js.configs.recommended`, `tseslint.configs.recommended` and
+  `eslint-config-prettier`.
+  - `import/order` is an **error**: alphabetized, groups `[builtin, external]`,
+  then internal `^@live-documentation/`, then relative, with a blank line
+  between groups.
+  - `no-unused-vars` warns, with `argsIgnorePattern` and `varsIgnorePattern` set
+  to `^_`.
+  - Type-aware rules (`recommendedTypeChecked`, `projectService`) cover **only
+  `packages/**/src`**, not tests and not `scripts/`.
+    - `no-floating-promises` is an error.
+    - `await-thenable` is **off**, with the comment "Workaround: rule is
+  unstable with TS 5.x + projectService", in place since 2025-10-17.
+  - `jsdoc/require-jsdoc` **warns**, `publicOnly`, on `packages/**/src` and
+  `scripts`, excluding tests. It also covers exported interfaces, types, enums
+  and consts.
+  - No stylistic plugin is installed.
+
+  **`/workspaces/Live-Documentation/.prettierrc`**
+  - `{"singleQuote": false, "semi": true, "trailingComma": "es5", "printWidth":
+  100}`.
+  - Unchanged since an agent scaffolded it on 2025-10-16 (`6bccf94b`). The chat
+  gives no reason for these settings.
+  - There is no `.prettierignore` and no `.editorconfig`.
+
+  **`/workspaces/Live-Documentation/package.json`**
+  - Scripts: `"lint": "eslint ."` and `"format": "prettier --check ."`.
+  - Installed versions: eslint 9.39.4, @eslint/js 9.39.4, typescript-eslint
+  8.57.0, eslint-config-prettier 10.1.8, eslint-plugin-import 2.32.0,
+  eslint-import-resolver-typescript 4.4.4, eslint-plugin-jsdoc 62.7.1, prettier
+  3.8.1, TypeScript 5.9.3 (declared `^5.4.0`). Node 22.22.0.
+
+  **`tsconfig.base.json`**
+  - `strict: true`. None of `noUnusedLocals`, `noUnusedParameters`,
+  `noUncheckedIndexedAccess` or `exactOptionalPropertyTypes` is set.
+
+  **The gate** (`scripts/safe-to-commit.mjs`, `scripts/verify.mjs`)
+  - Order: live-docs, then lint, build, type-check of tests, unit, integration
+  and doc-link enforcement, then the three SlopCop audits, then Playwright if
+  `--e2e`.
+  - CI's `ci-check` runs the same chain.
+  - **`format` runs nowhere.** ESLint warnings do not fail the gate (there is no
+  `--max-warnings`).
+
+  **Editor**
+  - `/workspaces/Live-Documentation/.vscode/settings.json` has no formatter
+  settings.
+  - `/workspaces/Live-Documentation/.devcontainer/devcontainer.json` installs
+  `esbenp.prettier-vscode`, `dbaeumer.vscode-eslint` and the TypeScript nightly,
+  and sets `"editor.formatOnSave": true`. It sets no `editor.defaultFormatter`.
+
+  **Custom checks:** SlopCop (markdown links, asset paths, symbol references),
+  `docs:links:enforce` and `live-docs:lint`. None of them concern code style.
+
+  ### 3. How the code is actually written
+
+  Scope: 425 tracked `.ts` files under `packages/*/src`, `scripts` and `tests`,
+  excluding `tests/integration/programs` and `.d.ts`. That is 92,140 lines; I
+  normalized CRLF to LF before measuring.
+
+  | Measure | Result |
+  |---|---|
+  | Indentation | Spaces only, no tabs. 406 files indent by 2. 15 files indent
+  by 4 (`packages/explorer/src/shared/*`, `client/markdown.ts`,
+  `symbolAnchors*`, `scripts/live-docs/visualize-*.ts`). |
+  | Quotes | Double: 16,750 string literals. Single: 243, of which 230 contain a
+  `"`, so single quotes appear only to avoid escaping. 344 files use double
+  only, 71 mix. (The `.mjs` gate scripts disagree: `safe-to-commit.mjs` uses
+  single quotes, `verify.mjs` double.) |
+  | Semicolons | Always: 36,385 statements end with one, 0 without. |
+  | Trailing commas in multiline lists | Mostly left out. Objects 59 with /
+  1,098 without; arrays 36 / 671; call arguments 1 / 356; parameters 2 / 438;
+  imports and exports 3 / 81. Prettier's `es5` setting would add them to
+  objects, arrays and imports. |
+  | Line length (non-blank lines) | Median 40, p90 99, p95 119, p99 164. |
+  | Lines over 100 / 120 / 150 / 200 | 8,010 (8.7%) in 380 files / 3,878 in 321
+  / 1,276 in 253 / 287 in 94. |
+  | Longest line | 8,212 characters, a generated regex in
+  `githubSluggerRegex.ts`. |
+  | Share of lines over 100, by place | `scripts/layout-lab` 21%, `tests/e2e`
+  17%, explorer 11%, engine 6.6%. |
+  | Hand alignment, single lines | 846 runs of two or more spaces between tokens
+  in 51 files: 477 after `:`, 207 before `=`, 125 after `,` (table-like rows),
+  28 before trailing comments. |
+  | Hand alignment, blocks | 110 blocks (334 lines in 25 files) of two or more
+  consecutive lines sharing a column. They sit mostly in the engine's language
+  adapters and `scripts/oracle`, written on or after 2026-09-27 (`605ff092`,
+  `e89365d5`, `dc60acba`). The Explorer client has one block. |
+  | Density ("vertical smashing") | 274 lines hold two or more statements, in 72
+  files. 251 blocks hold statements on one line. The densest file is
+  `forceGraphView.ts` (27 and 24). |
+  | Prettier with the repo's settings | 402 of 425 files would change. 12,646
+  source lines would be rewritten, and the total would grow from 92,553 to
+  115,999 lines (+25%). |
+  | `npm run format` across the whole repository | Fails on 1,818 files,
+  including 877 generated Live Docs under `.mdmd`. |
+  | ESLint, run 2026-10-22 | 0 errors, 0 warnings across 432 files. |
+  | Suppressions | 3 `eslint-disable-next-line`, 0 `prettier-ignore`, 2 `@ts-`
+  comments, 3 explicit `any`. 60 parameters start with `_`, mostly positional
+  callback parameters such as `_match`. |
+
+  **Both formatters remove the alignment.** I fed aligned blocks to Prettier and
+  to VS Code's built-in TypeScript formatter (the language service). Both
+  collapse aligned columns; the built-in one keeps trailing-comment alignment.
+
+  **Line endings.** 420 tracked files are CRLF in the working tree, against LF
+  in the index and `.gitattributes` `eol=lf`; git's global `core.autocrlf` is
+  `true`. That includes 41 of the TypeScript files, and it inflates any
+  formatter check run on the working tree.
+
+  Five excerpts of hand-aligned code:
+  - `packages/engine/src/live-docs/adapters/csharp.ts:88-90`
+    ```
+    name:            string;
+    qualifiedName:   string;
+    ```
+  - `packages/engine/src/live-docs/board.ts:98-99`
+    ```
+    { kind: "web",      as: "cube"   },
+    { kind: "service",  as: "cube"   },
+    ```
+  - `packages/engine/src/live-docs/adapters/csharp.dependencies.ts:17-19`
+    ```
+    const APP_SETTINGS_PATTERN                  = /ConfigurationManager.../g;
+    const TYPE_GET_TYPE_PATTERN                 = /Type\.GetType.../g;
+    ```
+  - `packages/engine/src/live-docs/archetype.ts:98-100`
+    ```
+    /_test\.[^.]+$/.test(basename) ||            // foo_test.go, foo_test.rs
+    /Tests?\.[^.]+$/.test(basename) ||           // FooTest.java, FooTests.cs
+    ```
+  - `scripts/oracle/powershell-edges.ts:40-42`
+    ```
+    synopsis:              string | null;
+    parameters:            PowerShellParameterHelp[];
+    ```
+
+  ### 4. Questions the owner has not answered
+  1. Should formatting be enforced in the gate or in CI at all, or stay in the
+  editor only, or be dropped?
+  2. Is a formatter acceptable if it cannot keep the alignment? If not, are
+  per-block ignore comments acceptable? His "magic strings" objection was about
+  a lint rule, not formatting.
+  3. Should format-on-save stay in the dev container? It is the only formatter
+  that actually runs, and it destroys alignment.
+  4. Is there a line-length limit? What about trailing commas? The code's own
+  habit is double quotes, semicolons, no trailing commas, 2-space indent.
+  5. Should multi-statement lines and one-line blocks be linted, or left to the
+  stewardship pass proposed on 2026-10-19?
+  6. Which file types are in scope? Generated `.mdmd` docs, JSON, YAML, markdown
+  tables?
+  7. Would he accept a different linter (for example Biome or Oxlint) if it
+  loses type-aware rules or the JSDoc rule? He explicitly chose both.
+  `import/order` was the agent's choice, not his.
+  8. Should type-aware rules extend to `scripts/` and tests?
+  9. The `await-thenable` "Workaround" and the `^_` ignore pattern have not been
+  put to him, though both sit uneasily with his stated rules.
+  10. Should `require-jsdoc` become an error, or should lint use `--max-warnings
+  0`? Warnings pass the gate today.
+  11. The CRLF working copies.
+
+  ### 5. What I could not establish
+  - Which formatter runs on save in the owner's own VS Code. The repo sets no
+  `defaultFormatter`, and his user settings are outside the repo.
+  - Whether agents' edits ever go through format-on-save. Agents write files
+  directly, so probably not.
+  - A sample of his aligned code. He says none is public; his references are
+  SQL, PowerShell and C# at work.
+  - In the Copilot-era transcripts I found owner turns by speaker prefix and
+  filtered out pasted terminal output heuristically, so a remark buried inside a
+  long paste could be missed.
+
+  ### Files I created (all scratch)
+  All in `/tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-4414-bf8
+  1-ddf12ed08c18/scratchpad/style/`:
+  - Owner-turn extraction and search scripts: owner_turns.py, search.py,
+  filt.py, prose.py, psearch.py
+  - Their outputs: owner.json, prose.json, hitsA.txt, hitsA_f.txt, p1.txt,
+  p1f.txt, p2.txt
+  - File list: tsfiles.txt
+  - Prettier checks and measurement: prettier_delta.mjs, prettier-diff.txt,
+  prettier-err.txt, prettier-all.txt, prettier-all-err.txt
+  - Style measurement scripts: measure.cjs, measure2.cjs, density.cjs,
+  underscore.cjs, tsfmt.cjs
+  - Their outputs: perfile.json, excerpts.json, aligned_files.txt, eslint.json
+
+  None of these is needed once the brief is read.
+● Agent "Gather owner's code style preferences" finished · 19m 36s
+
+● The preferences are gathered. Starting the fourth helper now, the survey of
+  today's formatter and linter tools, with the preferences as its yardstick.
+  First saving the brief where it can read it:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent(Survey TS formatters and linters)
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● While the survey runs, I'm checking the Related Docs study's key archaeology
+  claim myself, since it means correcting the decisions log:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Confirmed that only one of the two directions you requested in January was
+  actually built, though the decisions log presents it as the full rule. I'm
+  adding a dated correction to that log entry now.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+❯ >7. No stated preference on tabs/spaces, indent width, line length, quotes,
+  semicolons, trailing commas.
+
+  ??????????????
+
+  WHAT?
+
+● I overstated that finding in my own wording—the helper only found no mention
+  in what it searched, not proof nothing was ever said, and its filter may have
+  missed something in a long paste. I'm correcting that line, telling the helper
+  not to treat absence as indifference, and searching myself.
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  Message queued for delivery to a3819113f39c4fd43 at its next tool
+     round. If it finishes first, it is resumed with the message and
+     notifies again, so wait for that notification before resending.
+
+❯ OHHHH okay okay no I see it still has a hand-aligned whitespace point
+
+● Good, that's the key axis and the survey helper is weighting tools by it,
+  while finer details like indent, line length, and quote style remain unknown
+  rather than "no preference" for now. I'll ask about those alongside the survey
+  results, and continue by updating the docs and browser specs next.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+❯ Oh my gosh I think I just got totally carried away by that point 6, which
+  gives the appearance of totally undermining point 2. Okay so sorry. Please
+  continue
+
+❯ Er uh, point 7 gives that appearance.
+
+● No worries about the confusion—point 7's wording has been reworded to fix the
+  apparent conflict with point 2. Now building the history sample to run the
+  scrubber's browser spec under the new default.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Five history-scrubber tests fail under the by-date default. Reading why:
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Confirmed this is a real bug, not a test artifact: clicking a tick can land a
+  fraction of a pixel before its exact instant, causing the scrubber to resolve
+  to the previous step. Now I'll examine how the scrubber converts pointer
+  position into a step.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● I'll adjust the model so a click near a step (within a few pixels) snaps to
+  that step, choosing the nearer of the one before or after; otherwise clicks in
+  empty gaps keep selecting the latest step before the pointer.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● All 10 history-scrubber tests pass with the by-date default and the pointer
+  fix. Adding the pointer rule to the two docs, and checking whether the History
+  decision entry names the old default:
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Docs are clean. Recording your mid-turn messages and this work in the session
+  record, then starting the full gate while the survey finishes:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Nothing is committed yet: the full gate is running, and the formatter survey
+  is still being written. Done since your last message:
+
+  - Linear time is the default for the history scrubber. By step stays in Tuning
+    for anyone who wants the busy past to have more room. Your history-range
+    idea (pick a minimum and maximum date) is in ideas.md.
+  - Saved settings no longer freeze old defaults. The page used to save every
+    setting whenever anything changed, even a filter toggle, so new defaults
+    never reached a browser that had used the page before. That includes
+    yesterday's 3D energy. It now saves only what you've changed, and the old
+    saved settings are cleared once, so your browser will start from today's
+    defaults.
+  - A click on a tick now lands on that tick. With linear time as the default, a
+    click on a tick's centre was choosing the step before it. A step within 3
+    pixels of the pointer now counts as the one meant. All 10 history-scrubber
+    browser tests pass.
+  - The Related Docs record is corrected. In January you asked twice for
+    documents that link to a file to count as related to it. Only the other
+    direction was built, and the decisions log later recorded the half that was
+    built as if it were the decision. That entry now carries a dated correction.
+
+  Once the gate passes I'll commit, then bring you the Related Docs options with
+  their measured costs and the formatter survey together.
+
+● Background command "Record the mid-turn messages and run the full gate"
+completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● My constant landed between two imports. Moving it below them and linting every
+  file changed this turn:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lint is clean on every changed file. Rerunning the full gate:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Still not committed. The gate stopped at ESLint, before the browser suite ran:
+  I'd put the new pointer constant between two imports in scrubber.ts. It's
+  moved below them, lint is clean on every file changed this turn, and the full
+  gate is running again. The formatter survey is still being written. I'll
+  commit once the gate passes, then bring you the Related Docs options and the
+  survey together.

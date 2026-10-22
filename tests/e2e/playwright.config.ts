@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
  * Playwright E2E configuration for the Live Docs Explorer.
@@ -31,7 +31,7 @@ export default defineConfig({
     // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07).
     storageState: {
       cookies: [],
-      origins: [{ origin: "http://localhost:8766", localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { searchStarts: 0 } } }) }] }]
+      origins: [{ origin: "http://localhost:8766", localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) }] }]
     },
   },
 

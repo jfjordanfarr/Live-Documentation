@@ -64,6 +64,11 @@ export interface RulerLabel {
 export interface TickModel {
   /** The granularity in force, the automatic choice resolved. */
   granularity: Exclude<HistoryGranularity, "auto">;
+  /**
+   * Where every step stands on the track, step 0 first, read once on the model's axis: the thumb stands at its
+   * step's position whether or not the step has a tick of its own, as it has none inside a grouped period.
+   */
+  positions: number[];
   ticks: Tick[];
   /** The steps the step key moves between, ascending: the major ticks', with the beginning and the end. */
   stops: number[];
@@ -85,19 +90,26 @@ function instants(dates: readonly string[]): number[] {
 
 /** Where a step stands on the track: by its index, or by its date between the first and the last. */
 export function positionOfStep(dates: readonly string[], axis: HistoryAxis, step: number): number {
+  return positionsOf(dates, axis)[step] ?? 0;
+}
+
+/** Where every step stands on the track, the dates read once: by index, or by date between the first and the last. */
+export function positionsOf(dates: readonly string[], axis: HistoryAxis): number[] {
   const last = dates.length - 1;
-  if (last <= 0) return 0;
-  if (axis === "steps") return step / last;
+  if (last <= 0) return dates.map(() => 0);
+  if (axis === "steps") return dates.map((_date, step) => step / last);
   const when = instants(dates);
   const span = when[last] - when[0];
-  return span > 0 ? (when[step] - when[0]) / span : step / last;
+  return when.map((instant, step) => (span > 0 ? (instant - when[0]) / span : step / last));
 }
 
 /**
  * The step a position on the track names: by index the nearest step; by date the latest step at or before the instant
  * the position names, which is the shape as of that date, so that a drag through a quiet stretch holds the step before it.
+ * By date a step within `reach` of the position (a fraction of the track, the pointer's few pixels) is the one meant
+ * when it is the nearer: a click on a tick lands on it although the pixel under the pointer reads a hair before its instant.
  */
-export function stepAtPosition(dates: readonly string[], axis: HistoryAxis, position: number): number {
+export function stepAtPosition(dates: readonly string[], axis: HistoryAxis, position: number, reach = 0): number {
   const last = dates.length - 1;
   if (last <= 0) return 0;
   const clamped = Math.min(1, Math.max(0, position));
@@ -105,10 +117,12 @@ export function stepAtPosition(dates: readonly string[], axis: HistoryAxis, posi
   const when = instants(dates);
   const span = when[last] - when[0];
   if (span <= 0) return Math.round(clamped * last);
+  if (clamped >= 1) return last;
   const instant = when[0] + clamped * span;
   let step = 0;
   while (step < last && when[step + 1] <= instant) step += 1;
-  return clamped >= 1 ? last : step;
+  const away = (index: number): number => Math.abs((when[index] - when[0]) / span - clamped);
+  return step < last && away(step + 1) <= reach && away(step + 1) < away(step) ? step + 1 : step;
 }
 
 /** The calendar period a date falls in, in UTC: the day, the week (from its Monday) or the month. */
@@ -173,7 +187,7 @@ export function automaticGranularity(input: Omit<TickModelInput, "granularity">)
  * spans more than two, else of every day; each read where its step stands. The scrubber hides the labels that would
  * land on their neighbours.
  */
-export function rulerOf(dates: readonly string[], axis: HistoryAxis): RulerLabel[] {
+export function rulerOf(dates: readonly string[], axis: HistoryAxis, positions: readonly number[] = positionsOf(dates, axis)): RulerLabel[] {
   const last = dates.length - 1;
   if (last < 0) return [];
   const when = instants(dates);
@@ -186,7 +200,7 @@ export function rulerOf(dates: readonly string[], axis: HistoryAxis): RulerLabel
     const key = unit === "year" ? String(date.getUTCFullYear()) : unit === "month" ? periodOf(date.toISOString(), "month") : periodOf(date.toISOString(), "day");
     if (key === period) continue;
     period = key;
-    labels.push({ step, position: positionOfStep(dates, axis, step), text: labelText(date, unit, labels.length === 0) });
+    labels.push({ step, position: positions[step], text: labelText(date, unit, labels.length === 0) });
   }
   return labels;
 }
@@ -204,10 +218,11 @@ function labelText(date: Date, unit: "year" | "month" | "day", first: boolean): 
 /** The model the scrubber draws from. */
 export function tickModel(input: TickModelInput): TickModel {
   const granularity = input.granularity === "auto" ? automaticGranularity(input) : input.granularity;
-  const ticks: Tick[] = ticksAt(input, granularity).map((tick) => ({ ...tick, position: positionOfStep(input.dates, input.axis, tick.step) }));
+  const positions = positionsOf(input.dates, input.axis);
+  const ticks: Tick[] = ticksAt(input, granularity).map((tick) => ({ ...tick, position: positions[tick.step] }));
   const last = input.dates.length - 1;
   const stops = [...new Set([0, ...ticks.filter((tick) => tick.weight === "major").map((tick) => tick.step), Math.max(0, last)])].sort((a, b) => a - b);
-  return { granularity, ticks, stops, ruler: rulerOf(input.dates, input.axis) };
+  return { granularity, positions, ticks, stops, ruler: rulerOf(input.dates, input.axis, positions) };
 }
 
 /** The stop the step key reaches from a step: the next major tick forward, the previous one back, the ends at the ends. */

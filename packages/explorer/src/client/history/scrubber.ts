@@ -22,6 +22,9 @@ import { nextStop, stepAtPosition, type TickModel } from "./tick-model";
 import { iconButton } from "../panels/icon-button";
 import type { HistoryAxis } from "../types";
 
+/** How near the pointer, in pixels, a step must stand on the date axis to be the one a click or a drag means. */
+const POINTER_REACH_PX = 3;
+
 /** What the scrubber draws. */
 export interface ScrubberState {
   /** The last step. */
@@ -152,7 +155,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   let frame = 0;
   const stepUnder = (clientX: number): number => {
     const rect = lane.getBoundingClientRect();
-    return stepAtPosition(current!.dates, current!.axis, rect.width > 0 ? (clientX - rect.left) / rect.width : 0);
+    // A step within three pixels of the pointer is the one meant: a tick is one or two pixels wide.
+    return rect.width > 0 ? stepAtPosition(current!.dates, current!.axis, (clientX - rect.left) / rect.width, POINTER_REACH_PX / rect.width) : 0;
   };
   const flush = (): void => {
     frame = 0;
@@ -250,7 +254,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       track.setAttribute("aria-valuemax", String(state.steps));
       track.setAttribute("aria-valuenow", String(state.step));
       track.setAttribute("aria-valuetext", state.valueText);
-      thumb.style.left = `${(state.model.ticks.find(tick => tick.step === state.step)?.position ?? (state.steps > 0 ? state.step / state.steps : 0)) * 100}%`;
+      thumb.style.left = `${(state.model.positions[state.step] ?? 0) * 100}%`;
       truncated.hidden = state.truncated === null;
       truncated.title = state.truncated ?? "";
       track.classList.toggle("is-truncated", state.truncated !== null);

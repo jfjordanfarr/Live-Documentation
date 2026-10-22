@@ -497,6 +497,7 @@ Settled in September 2026: derived views (the graph index, the Explorer bundle) 
 
 - **Decision**: Existing markdown (READMEs, ADRs, design notes) is never rewritten or moved. A document joins the graph only because a Live Doc links to it, renders as a related-document node, and can be kept out of the bundle by pattern (`bundleExclude`).
 - **Rationale**: "Do we throw out all their work?" For brownfield adoption the answer is no: bridge, don't replace.
+- **Corrected 2026-10-22**: the rule of 2026-01-06 ran both ways. The owner then: documentation "_links to_ any given implementation/test/asset file or _links from_ the Live Documentation 'Authored' section" ([the January 6 transcript](../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-06.1.md), line 4727), and again on 2026-01-08: "we still want to integrate documentation into the bundle which has a MarkDown link _to_ a Live Documentation file or the source code file that it is based on" ([the January 8 transcript](../../AI-Agent-Workspace/ChatHistory/2026/01/2026-01-08.1.md), line 1790). Only the forward half was built (`4d7ae687`, `3a67f34e`), the specification marked the task done, and this entry, written on 2026-09-27 to match the tool as it was, recorded the built half as the decision. What reading a document's own links would cost was measured on 2026-10-22 ([Turn 9 of the October 21 session](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-9)); the choice is the owner's.
 
 ### Explorer Panel in the Editor _(Recorded 2026-09-27)_
 

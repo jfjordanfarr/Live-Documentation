@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import { DECK_SCOPES } from "./scopes";
 import { localRetainUrl } from "./still-picture";
-import { getDefaultTuning, PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { captureFromPage } from "../../scripts/layout-lab/capture";
 import { baselineConfig, driftOf, evaluate } from "../../scripts/layout-lab/evaluate";
 import { loadBundleGraph } from "../../scripts/layout-lab/scopes";
@@ -41,7 +41,7 @@ for (const run of DECK_SCOPES) {
     expect(chosen.starts, "the ranking's order and every seeded start were tried").toBeGreaterThanOrEqual(1 + seeds);
     expect(["ranked", "previous", ...Array.from({ length: seeds }, (_, i) => `seed ${i + 1}`)]).toContain(chosen.start);
     // The ranking's order alone, with no restarts, for comparison.
-    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { orderStarts: 0, searchStarts: 0 } } }) });
+    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { orderStarts: 0, searchStarts: 0 } } }) });
     await page.goto(localRetainUrl(run.base, run.scope));
     await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });
     const ranked = await readRoot();

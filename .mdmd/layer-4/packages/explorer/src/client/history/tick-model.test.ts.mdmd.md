@@ -12,6 +12,8 @@ Tests of the tick model: the positions by step and by date, the reading of a pos
 
 ### Notes
 - Written 2026-10-18 with the module, for the plan's C4 and C14. The cases are a five-day history, a history with a quiet half-year between October 2025 and April 2026, three years of ten commits a day for the automatic rule, and years for the ruler's unit; a commit date earlier than its predecessor's is among them.
+- Since 2026-10-22 ([Turn 9 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-9)) a case holds every step's position on the model, a step inside a grouped month by date among them: April 2026's first step stands at the end of the quiet half-year's track, not halfway along as its index would put it. Reading the positions by index on the date axis fails it and the tick case beside it.
+- A case holds the pointer's reach by date (2026-10-22, [Turn 10 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-10)): a hair before a step's instant reads the step before without reach and the step with it, the middle of the quiet half-year still reads the step before the gap, and within reach of two steps the nearer wins.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

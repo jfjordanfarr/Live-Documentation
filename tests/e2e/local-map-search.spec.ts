@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { localMapSettled, localRetainUrl } from "./still-picture";
-import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
  * The continuing search: after the first picture is painted, the order step
@@ -26,7 +26,7 @@ test.use({ viewport: { width: 1600, height: 1000 } });
 interface SearchReading { status: string; tried: number; next: number; adopted: number; shown: number; score: number; start: string; starts: number; priced: number | null }
 
 async function open(page: Page, localMap: Record<string, number>): Promise<void> {
-  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap } }) });
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap } }) });
   await page.goto(localRetainUrl("/", FILES));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });

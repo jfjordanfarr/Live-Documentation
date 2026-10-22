@@ -16,13 +16,20 @@ import { HISTORY_GRANULARITIES, type HistoryAxis, type HistoryGranularity, type 
 /** Tuning as saved: only the values that were read back, each merged over the defaults when the Explorer starts. */
 type SavedTuning = { [K in keyof TuningConfig]?: Partial<TuningConfig[K]> };
 
-/** localStorage key for persisted UI state (filters + tuning). Version-suffixed to allow future migration. */
-export const PERSISTED_UI_KEY = "live-docs-explorer:ui:v1";
+/**
+ * localStorage key for persisted UI state (filters + tuning). Version-suffixed to allow future migration. Version 2
+ * (2026-10-22) holds only what differs from the defaults; version 1 held every setting as it stood, so that a changed
+ * default never reached a returning viewer, and a version 1 entry cannot tell a choice from an old default. It is
+ * removed unread ({@link RETIRED_UI_KEYS}).
+ */
+export const PERSISTED_UI_KEY = "live-docs-explorer:ui:v2";
 /** Schema version tag embedded in persisted UI payloads for forward-compatible deserialisation. */
-export const PERSISTED_UI_VERSION = 1 as const;
+export const PERSISTED_UI_VERSION = 2 as const;
+/** The keys of UI state that earlier versions wrote, removed when the state is read. */
+const RETIRED_UI_KEYS: readonly string[] = ["live-docs-explorer:ui:v1"];
 
 /** Shape of the versioned UI state written to localStorage under {@link PERSISTED_UI_KEY}. */
-export type PersistedUiV1 = {
+export type PersistedUi = {
   version: typeof PERSISTED_UI_VERSION;
   filters?: Partial<ExplorerFilters>;
   tuning?: SavedTuning;
@@ -71,8 +78,9 @@ export const getDefaultTuning = (): TuningConfig => ({
     ...LAYOUT_PRESETS.relaxed.localMap
   },
   forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.01, chargeRange: 0, linkStrength: 0.25, updateEnergy: 1, tether: 0.01 },
-  // The history's scrubber: steps laid out evenly, the ticks chosen by the number of steps, two steps a second when played.
-  history: { axis: "steps", granularity: "auto", playRate: 2 }
+  // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
+  // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played.
+  history: { axis: "time", granularity: "auto", playRate: 2 }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -119,10 +127,12 @@ const readPlayRate = (value: unknown): number | undefined =>
  * Reads and validates persisted UI state from localStorage.
  *
  * Returns `null` when no entry exists or the stored version does not match
- * {@link PERSISTED_UI_VERSION}. Stale/corrupt entries are removed.
+ * {@link PERSISTED_UI_VERSION}. Stale/corrupt entries are removed, and so are
+ * the entries of earlier versions.
  */
-export const readPersistedUi = (): PersistedUiV1 | null => {
+export const readPersistedUi = (): PersistedUi | null => {
   try {
+    for (const retired of RETIRED_UI_KEYS) window.localStorage.removeItem(retired);
     const raw = window.localStorage.getItem(PERSISTED_UI_KEY);
     if (!raw) {
       return null;
@@ -137,7 +147,7 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
       return null;
     }
 
-    const result: PersistedUiV1 = { version: PERSISTED_UI_VERSION };
+    const result: PersistedUi = { version: PERSISTED_UI_VERSION };
 
     const parsedFilters = getRecord(parsed, "filters");
     if (parsedFilters) {
@@ -278,7 +288,7 @@ export const readPersistedUi = (): PersistedUiV1 | null => {
  */
 export const applyPersistedUi = (
   defaults: { filters: ExplorerFilters; tuning: TuningConfig },
-  persisted: PersistedUiV1 | null
+  persisted: PersistedUi | null
 ): { filters: ExplorerFilters; tuning: TuningConfig } => {
   if (!persisted) {
     return defaults;
@@ -424,9 +434,41 @@ export type PersistNavScheduler = {
   schedule: () => void;
 };
 
+/** True when two settings hold the same value: numbers, strings, booleans, null, or a plain object or list of them. */
+const sameSetting = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b);
+
+/** The settings of one group that differ from its defaults, or `undefined` when none does. */
+const changedIn = <T extends object>(values: T, defaults: T): Partial<T> | undefined => {
+  const changed: Partial<T> = {};
+  let any = false;
+  for (const key of Object.keys(values) as Array<keyof T>) {
+    if (sameSetting(values[key], defaults[key])) continue;
+    changed[key] = values[key];
+    any = true;
+  }
+  return any ? changed : undefined;
+};
+
+/**
+ * What of the filters and the tuning a person has changed: every setting that differs from the defaults, and nothing
+ * else, so that a default changed later reaches every setting they never touched.
+ */
+export const changedFromDefaults = (
+  state: { filters: ExplorerFilters; tuning: TuningConfig },
+  defaults: { filters: ExplorerFilters; tuning: TuningConfig }
+): Pick<PersistedUi, "filters" | "tuning"> => {
+  const filters = changedIn(state.filters, defaults.filters);
+  const tuning: SavedTuning = {};
+  for (const group of Object.keys(state.tuning) as Array<keyof TuningConfig>) {
+    const changed = changedIn<object>(state.tuning[group], defaults.tuning[group]);
+    if (changed) (tuning as Record<string, object>)[group] = changed;
+  }
+  return { ...(filters ? { filters } : null), ...(Object.keys(tuning).length > 0 ? { tuning } : null) };
+};
+
 /**
  * Create a debounced UI persistence scheduler.
- * Writes filters and tuning to localStorage after a 150ms debounce.
+ * Writes what of the filters and tuning differs from the defaults to localStorage after a 150ms debounce.
  */
 export const createPersistUiScheduler = (
   getState: () => { filters: ExplorerFilters; tuning: TuningConfig }
@@ -441,11 +483,9 @@ export const createPersistUiScheduler = (
       timer = window.setTimeout(() => {
         timer = null;
         try {
-          const state = getState();
-          const payload: PersistedUiV1 = {
+          const payload: PersistedUi = {
             version: PERSISTED_UI_VERSION,
-            filters: state.filters,
-            tuning: state.tuning
+            ...changedFromDefaults(getState(), { filters: getDefaultFilters(), tuning: getDefaultTuning() })
           };
           window.localStorage.setItem(PERSISTED_UI_KEY, JSON.stringify(payload));
         } catch {

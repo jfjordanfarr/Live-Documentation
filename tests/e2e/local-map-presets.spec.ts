@@ -5,6 +5,7 @@ import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-
 import { DECK_SCOPES } from "./scopes";
 import { localMapSettled, localRetainUrl } from "./still-picture";
 import { LAYOUT_PRESETS } from "../../packages/explorer/src/client/layout-presets";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 const generator = "packages/generator/src/generator.ts";
 test.use({ viewport: { width: 1600, height: 1000 } });
@@ -129,8 +130,8 @@ test("preset changes keep the selected file in place through 2D and 3D motion", 
 });
 
 test("instant continuing layouts redraw the actual wires onto their pins", async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("live-docs-explorer:ui:v1", JSON.stringify({ version: 1,
-    tuning: { localMap: { moveMs: 0, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0 } } })));
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); },
+    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 0, membraneEvenness: 1, membraneSimplicity: 100, rowLevelness: 0 } } }) });
   const scope = DECK_SCOPES.find(run => run.bundle === "estate" && run.scopeName === "five files")!;
   await page.goto(localRetainUrl(scope.base, scope.scope));
   await page.locator(".local-placed").waitFor();

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { localMapSettled, localRetainUrl } from "./still-picture";
-import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
  * The animated re-layout: a change of pins moves the branch picture from one
@@ -46,8 +46,8 @@ const moving = (page: Page): Promise<boolean> => page.evaluate(() => document.qu
 const LONG_MOVE_MS = 1500;
 
 test("wires keep their elements and follow pins through interrupted, zoomed pin transitions", async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("live-docs-explorer:ui:v1", JSON.stringify({ version: 1,
-    tuning: { localMap: { moveMs: 1200, searchStarts: 0 } } })));
+  await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); },
+    { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 1200, searchStarts: 0 } } }) });
   await page.goto(`/?view=local&node=${ROOT}main.ts`);
   await localMapSettled(page);
   await page.waitForTimeout(700);
@@ -100,7 +100,7 @@ test("wires keep their elements and follow pins through interrupted, zoomed pin 
 });
 
 async function openPicture(page: Page, moveMs?: number): Promise<void> {
-  if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { moveMs, searchStarts: 0 } } }) });
+  if (moveMs !== undefined) await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs, searchStarts: 0 } } }) });
   await page.goto(localRetainUrl("/", FILES));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });

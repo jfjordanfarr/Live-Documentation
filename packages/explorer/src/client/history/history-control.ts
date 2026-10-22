@@ -250,7 +250,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     if (!visible) return;
     if (!sequence || !cursor) {
       scrubber.sync({
-        steps: 0, step: 0, model: { granularity: "step", ticks: [], stops: [0], ruler: [] }, axis: context.tuning.axis, dates: [],
+        steps: 0, step: 0, model: { granularity: "step", positions: [], ticks: [], stops: [0], ruler: [] }, axis: context.tuning.axis, dates: [],
         valueText: "", date: "", hash: "", truncated: null, playing: false, authors: { carried: false, shown: false },
         notice: notice ?? "Loading the history"
       });
