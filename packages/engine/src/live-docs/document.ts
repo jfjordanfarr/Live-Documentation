@@ -148,6 +148,20 @@ const EXTERNAL_RE_EXPORT = "- Re-exported from external module";
 export const DEFAULT_AUTHORED_BLOCK = ["### Purpose", "_Pending authored purpose_", "", "### Notes", "_Pending notes_"].join("\n");
 
 /**
+ * The note a new doc of a file no reader handles starts with, in place of
+ * `_Pending notes_`. Its generated sections say only what was detected, and
+ * nothing was looked for; the note says so where a person reads it, in the
+ * authored block, since the generated regions say only what a reader found
+ * (the owner, 2026-10-22: "a reasonable caveat to throw in the Authored
+ * section and worthy of remembering when we visit such a file again"). Like
+ * the pending placeholders it is not authored content of its own.
+ */
+export const UNREAD_NOTE = "_No reader handles this kind of file yet, so the generated sections are empty for that reason, not because the file exposes or uses nothing. Revisit this note when a reader arrives._";
+
+/** The authored block a new doc of a file no reader handles starts with: {@link DEFAULT_AUTHORED_BLOCK} with {@link UNREAD_NOTE}. */
+export const UNREAD_AUTHORED_BLOCK = ["### Purpose", "_Pending authored purpose_", "", "### Notes", UNREAD_NOTE].join("\n");
+
+/**
  * An entry's reason and evidence in words, as the CLI prints them and the
  * Explorer shows them: "program main", "command build of package.json",
  * "module of packages/cli/package.json", "opening GET api/payments",

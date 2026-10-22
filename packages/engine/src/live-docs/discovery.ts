@@ -99,6 +99,27 @@ const LOCK_FILE_NAMES: ReadonlySet<string> = new Set([
   "go.sum"
 ]);
 
+/** The suffixes of documents, prose written for people to read: markdown, reStructuredText and AsciiDoc. */
+const DOCUMENT_SUFFIXES: ReadonlySet<string> = new Set([".md", ".markdown", ".rst", ".adoc", ".asciidoc"]);
+
+/**
+ * The plain-text documents a repository conventionally holds, by name, with
+ * no extension or `.txt`: a readme, a licence and its kin (`LICENSE-MIT`,
+ * `COPYING`, `NOTICE`), a changelog, the authors, how to contribute. Anything
+ * with another extension (`license.ts`, `readme-generator.ts`) is not one of them.
+ */
+const DOCUMENT_NAME = /^(?:readme|licen[cs]e|unlicense|copying|notice|changelog|authors|contributing)(?:[-_][a-z0-9-]+(?:\.[0-9]+)*)?(?:\.txt)?$/iu;
+
+/**
+ * True for a document: a file whose suffix says it is prose for people
+ * ({@link DOCUMENT_SUFFIXES}), or a plain-text document by its conventional
+ * name ({@link DOCUMENT_NAME}).
+ */
+function isDocument(name: string): boolean {
+  const dot = name.lastIndexOf(".");
+  return (dot > 0 && DOCUMENT_SUFFIXES.has(name.slice(dot).toLowerCase())) || DOCUMENT_NAME.test(name);
+}
+
 /**
  * True for a file no configuration can have documented. These are product
  * rules, applied to every match whether a configured glob or an include named
@@ -110,6 +131,13 @@ const LOCK_FILE_NAMES: ReadonlySet<string> = new Set([
  *   are written (`.live-documentation` by default): the generator never
  *   documents its own output.
  * - Lock files, by name: {@link LOCK_FILE_NAMES}.
+ * - Documents ({@link isDocument}): a doc for a doc would only restate it.
+ *   A document reaches the map as linked documentation instead, when a doc's
+ *   authored words link to it. The owner: "I don't think we want to make a
+ *   doc for a doc", and of licences, "they are docs and should be treated as
+ *   such" (2026-10-22). Absolute for now, and expected to change as markdown
+ *   becomes a program in its own right, an agent's `SKILL.md` or a prompt
+ *   ("prompts as programs", the owner's words).
  *
  * @param relativePath - Workspace-relative path with forward slashes.
  * @param docsRoot - The configured docs root as a workspace-relative path, or `undefined` when it is not a folder within the workspace.
@@ -119,7 +147,8 @@ function isNeverDocumented(relativePath: string, docsRoot: string | undefined): 
   if (segments.includes(".git") || segments.includes("node_modules")) {
     return true;
   }
-  if (LOCK_FILE_NAMES.has(segments[segments.length - 1])) {
+  const name = segments[segments.length - 1];
+  if (LOCK_FILE_NAMES.has(name) || isDocument(name)) {
     return true;
   }
   return docsRoot !== undefined && (relativePath === docsRoot || relativePath.startsWith(`${docsRoot}/`));
@@ -146,9 +175,10 @@ function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig):
  * The configured globs, or the include set when one is given, are matched
  * over the whole workspace in one walk, hidden files and folders included, so
  * that `.devcontainer/devcontainer.json` or `.vscode/settings.json` is read
- * like any other file. Then, in this order, the matches are dropped that are
- * never documented ({@link isNeverDocumented}: `.git`, `node_modules`, the
- * docs root, lock files), that git ignores by its own word (a `.gitignore` at
+ * like any other file; the folders that are never documented are not walked.
+ * Then, in this order, the matches are dropped that are never documented
+ * ({@link isNeverDocumented}: `.git`, `node_modules`, the docs root, lock
+ * files, documents), that git ignores by its own word (a `.gitignore` at
  * any level, `.git/info/exclude` and the global excludes file, with a tracked
  * file never ignored: a file committed under an ignored folder is part of the
  * repository, as git itself holds; without git, the workspace's `.gitignore`
@@ -177,15 +207,17 @@ function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig):
  */
 export async function discoverTargetFiles(options: DiscoverOptions): Promise<string[]> {
   const patterns = options.include.size > 0 ? Array.from(options.include) : options.config.glob;
+  const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
   const matches = await glob(patterns, {
     cwd: options.workspaceRoot,
     absolute: true,
     nodir: true,
     dot: true,
-    windowsPathsNoEscape: true
+    windowsPathsNoEscape: true,
+    // Not walked at all: what isNeverDocumented would drop file by file, `node_modules` above all.
+    ignore: ["**/.git/**", "**/node_modules/**", ...(docsRoot !== undefined ? [`${docsRoot}/**`] : [])]
   });
 
-  const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
   const changed = options.changedOnly ? await detectChangedFiles(options.workspaceRoot) : new Set<string>();
 
   const considered: Array<{ absolute: string; relative: string }> = [];

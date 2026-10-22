@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/generator/src/generator.test.ts
-- Generated At: 2026-10-19T15:06:00.015Z
+- Generated At: 2026-10-22T00:54:19.992Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Validates generation and pruning, including the distinction between the full wor
 - The DOM fixture gives a script one visible page, one Git-ignored page and one configured-excluded page with the same id. Only the visible page can appear in the generated doc; changing the ignored page leaves Git clean and the doc unchanged. A standalone analysis without an index still finds all three nearby pages.
 - Git failure fixtures distinguish a clean change set from a non-repository or broken status while checking that a normal full run needs no Git repository.
 - Full-generation fixtures add a formerly absent provider, retarget a package's main entry, and change the provider's public surface while preserving authored text; they also check a stable second run's docs and graph. Direct, named, default, namespace, star and cyclic re-export targets keep real anchors, including a barrel's link to a provider whose same-name type and value have different headings; an actually missing named export retains only its known file link.
+- The unread fixture (2026-10-22, [Turn 8 of the October 21 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) holds a workflow, a `Makefile`, a TypeScript file, an image and a readme under the default configuration: the first two docs start with the note that no reader handles their kind and keep their generated regions to what was detected, the source file and the image start with the pending placeholders, and the readme gets no doc. An author's rewrite of the note survives the next run, and a doc holding only the note is pruned once its file goes. Seeding the default block for every file fails the first case, and counting the note as authored content the last.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -34,6 +35,7 @@ _No public symbols detected_
 - [`liveDocumentationConfig.LIVE_DOCUMENTATION_FILE_EXTENSION`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_file_extension)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
+- [`document.UNREAD_NOTE`](../../engine/src/live-docs/document.ts.mdmd.md#symbol-unread_note)
 - [`generator.generateLiveDocs`](./generator.ts.mdmd.md#symbol-generatelivedocs)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

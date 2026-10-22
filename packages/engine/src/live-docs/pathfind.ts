@@ -14,6 +14,7 @@
 
 import type { Entry } from "./document";
 import type { GraphFile, LiveDocGraph } from "./graph";
+import { noReaderHandles } from "../config/liveDocumentationConfig";
 
 /** Traversal direction for graph searches. */
 export type Direction = "outbound" | "inbound" | "both";
@@ -139,8 +140,14 @@ export interface Reachability {
   starts: Start[];
   /** Every file a path reaches from a start, nearest first and then by path; the starts themselves are not listed. */
   reached: { codePath: string; hops: number }[];
-  /** The files of the graph that no path from a start reaches, in path order. */
+  /** The files of the graph that no path from a start reaches, in path order, but for those no reader handles. */
   unreachable: string[];
+  /**
+   * The files no path from a start reaches whose kind no reader handles
+   * ({@link noReaderHandles}), in path order: whatever wires them is unknown,
+   * so they are neither reached nor unreachable but not read.
+   */
+  unread: string[];
   /** The files that only a path from a test reaches, in path order; empty when the starts were given. */
   testsOnly: string[];
 }
@@ -149,7 +156,10 @@ export interface Reachability {
  * Walks from the graph's entry points, or from the files asked for, along what
  * each depends on: one walk from every start, and, from the entries, a second
  * from the entries that are not tests, so that what only a test reaches is told
- * apart. A file asked for that the graph does not hold is left out.
+ * apart. A file asked for that the graph does not hold is left out. A file no
+ * path reaches whose kind no reader handles is listed as not read, apart from
+ * the unreachable: a workflow or a shell script is not dead code because
+ * nothing yet reads its wires.
  *
  * @param graph - The graph to walk.
  * @param asked - The files to walk from; the graph's entry points when absent.
@@ -169,13 +179,15 @@ export function reachability(
   const fromAll = reachFrom(startPaths, neighbours, maxDepth);
   const reached = [...fromAll].map(([codePath, hops]) => ({ codePath, hops })).sort((a, b) => a.hops - b.hops || compare(a.codePath, b.codePath));
   const startSet = new Set(startPaths);
-  const unreachable = files.filter((id) => !startSet.has(id) && !fromAll.has(id));
+  const unreached = files.filter((id) => !startSet.has(id) && !fromAll.has(id));
+  const unread = unreached.filter((id) => noReaderHandles(id));
+  const unreachable = unreached.filter((id) => !noReaderHandles(id));
   let testsOnly: string[] = [];
   if (!asked) {
     const fromCode = reachFrom(starts.filter((start) => !start.test).map((start) => start.codePath), neighbours, maxDepth);
     testsOnly = files.filter((id) => fromAll.has(id) && !fromCode.has(id));
   }
-  return { from: asked ? "asked" : "entries", starts, reached, unreachable, testsOnly };
+  return { from: asked ? "asked" : "entries", starts, reached, unreachable, unread, testsOnly };
 }
 
 function compare(a: string, b: string): number {

@@ -15,11 +15,7 @@ import * as fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-import {
-  DEFAULT_LIVE_DOCUMENTATION_CONFIG,
-  LIVE_DOCUMENTATION_DEFAULT_GLOBS,
-  normalizeLiveDocumentationConfig
-} from "@live-documentation/engine/config/liveDocumentationConfig";
+import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
@@ -54,16 +50,10 @@ export interface Report {
   unresolved:     Array<{ from: string; raw: string }>;
 }
 
-/** The default globs already read every suffix and every manifest name anywhere; a fixture is its own workspace, so the same patterns serve it. */
-export function fixtureGlobs(): string[] {
-  const extensions = new Set(LIVE_DOCUMENTATION_DEFAULT_GLOBS.map((pattern) => pattern.slice(pattern.lastIndexOf("/") + 1)));
-  return Array.from(extensions).map((suffix) => `**/${suffix}`);
-}
-
 async function adapterEdges(fixtureDir: string): Promise<{ edges: AdapterEdge[]; unresolved: Report["unresolved"] }> {
   const workDir = copyFixture(fixtureDir, "oracle-compare-");
   try {
-    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
+    const config = normalizeLiveDocumentationConfig();
     await generateLiveDocs({
       workspaceRoot: workDir,
       config,

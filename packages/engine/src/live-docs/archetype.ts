@@ -12,6 +12,7 @@
 
 import path from "node:path";
 
+import { UNREAD_NOTE } from "./document";
 import type {
   LiveDocumentationConfig,
   LiveDocumentationArchetype
@@ -135,7 +136,7 @@ export function resolveArchetype(
 }
 
 /**
- * Checks whether an authored markdown block carries information beyond the default placeholders.
+ * Checks whether an authored markdown block carries information beyond the default placeholders and the note a doc of a file no reader handles starts with.
  *
  * @param authoredBlock - Raw markdown captured between the `## Authored` markers.
  *
@@ -152,6 +153,7 @@ export function hasMeaningfulAuthoredContent(authoredBlock?: string): boolean {
   }
 
   const sanitized = normalized
+    .replace(UNREAD_NOTE, "")
     .replace(/###\s+Purpose/gi, "")
     .replace(/###\s+Notes/gi, "")
     .replace(/_Pending authored purpose_/gi, "")

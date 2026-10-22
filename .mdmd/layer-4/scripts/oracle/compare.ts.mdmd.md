@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-16T16:40:52.397Z
+- Generated At: 2026-10-22T00:39:42.685Z
 
 ## Authored
 ### Purpose
@@ -15,28 +15,21 @@ The `oracle:compare` command: runs the shipped generator over a copy of a sample
 - Prints a list, never a score, and exits 0 either way; the integration suite `oracle.test.ts` asserts only that every expected edge is accounted for.
 - Reads the adapter's edges from the graph derived from the generated docs (since 2026-09-28). Only dependency-line edges count, not type references, so the measurement is the one recorded in the decisions log.
 - Edges the adapter finds between files the compiler never indexed (markup, configuration, scripts) are reported separately as beyond the compiler's view, not as errors.
-- `fixtureGlobs()` keeps only the suffix of each default glob; since 2026-10-16 the defaults already read every suffix anywhere, so the fixture's globs equal the product's.
+- A fixture is generated under the product's default configuration as it stands. `fixtureGlobs()`, which rebuilt the default globs from their suffixes and so always equalled them, went on 2026-10-22 with the every-file default ([Turn 8 of the October 21 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Report` {#symbol-report}
 - Type: interface
-- Source: [source](../../../../scripts/oracle/compare.ts#L36)
+- Source: [source](../../../../scripts/oracle/compare.ts#L32)
 
 ##### `Report` — Summary
 What the comparison found, bucket by bucket.
 
-#### `fixtureGlobs` {#symbol-fixtureglobs}
-- Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L58)
-
-##### `fixtureGlobs` — Summary
-The default globs already read every suffix and every manifest name anywhere; a fixture is its own workspace, so the same patterns serve it.
-
 #### `compareFixture` {#symbol-comparefixture}
 - Type: function
-- Source: [source](../../../../scripts/oracle/compare.ts#L191)
+- Source: [source](../../../../scripts/oracle/compare.ts#L181)
 
 ##### `compareFixture` — Summary
 Runs the generator over a copy of the fixture and reports its disagreements with the oracle files.
@@ -47,8 +40,6 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - `node:fs`
 - `node:path` - `path`
 - `node:process` - `process`
-- [`liveDocumentationConfig.DEFAULT_LIVE_DOCUMENTATION_CONFIG`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-default_live_documentation_config)
-- [`liveDocumentationConfig.LIVE_DOCUMENTATION_DEFAULT_GLOBS`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-live_documentation_default_globs)
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`graphFiles.readLiveDocGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)

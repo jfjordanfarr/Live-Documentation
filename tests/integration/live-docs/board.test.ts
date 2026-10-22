@@ -6,13 +6,12 @@ import * as fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_LIVE_DOCUMENTATION_CONFIG, normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { lintBoard, parseBoard } from "@live-documentation/engine/live-docs/board";
 import { deriveBoardGraph } from "@live-documentation/engine/live-docs/boardGraph";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
-import { fixtureGlobs } from "../../../scripts/oracle/compare";
 import { readHandVerifiedEdges } from "../../../scripts/oracle/files";
 import { copyFixture } from "../../../scripts/oracle/fixture";
 
@@ -23,7 +22,7 @@ describe("the estate's board", () => {
   it("draws every remote hand-verified edge as a wire between two things, and the declared tunnel", async () => {
     const workDir = copyFixture(ESTATE, "board-");
     try {
-      const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
+      const config = normalizeLiveDocumentationConfig();
       await generateLiveDocs({ workspaceRoot: workDir, config, logger: { info: () => undefined, warn: () => undefined, error: (message) => console.error(message) } });
       const graph = await readLiveDocGraph({ workspaceRoot: workDir, config });
 

@@ -4382,3 +4382,102 @@ completed (exit code 0)
      4-bf81-ddf12ed08c18/tasks/b59gpat0w.output (7 lines)
   ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/adc0d5c9-8ad2-441
      4-bf81-ddf12ed08c18/tasks/b0hqfmd4g.output (9 lines)
+
+❯ The real decision is the rule for any repository:
+
+  (a) Add classes one by one: markdown with its links as wires, YAML, shell
+  scripts, solution files, the dotfiles that shape discovery.
+  (b) Document every tracked file, with named exclusions for generated files,
+  secrets and bulk data.
+
+  Work backwards. What do you not want a Live Documentation file for? I think
+  that list might be smaller.
+
+  Searched for 3 patterns, ran 3 shell commands (ctrl+o to expand)
+
+● I'm recording your message, then listing every tracked file that has no Live
+  Doc so the exclusion list comes from the real repository.
+
+  Searched for 2 patterns, ran 7 shell commands (ctrl+o to expand)
+● The inventory is done: 66 tracked files outside the workspace folder have no
+  Live Doc. I'm writing your message into the record now, then I'll answer.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● You're right, it's smaller. Working backwards, I'd keep three kinds of file
+  out, and the product already keeps out most of them.
+
+  What I wouldn't want a Live Doc for, in any repository
+
+  1. Files that aren't the project's. Git's own store and installed packages
+     (node_modules) are already out. I'd add one more: a committed copy of
+     someone else's source, such as a Go vendor/ tree. That needs the
+     project-archetypes work to recognise one.
+  2. Files that aren't in the repository: whatever git ignores. Already out.
+  3. Restatements: files a tool writes from other files that already have docs,
+     so their doc would only repeat its source.
+     - Lock files (from the manifests) and the Live Docs themselves (from the
+       code) are already out.
+     - I'd add compiled output that a project commits.
+
+  Off the list after all. I named some of these last time, wrongly:
+  - Secrets. A Live Doc carries names and wires, never values. A rule by file
+    name would also misfire: here it would catch upstream.env, which only pins
+    the grammar's upstream commit for build.sh.
+  - Generated files that something reads. The grammar's .wasm is built from
+    source that isn't in this repository, and the engine loads it. Its doc can
+    say what builds it.
+  - Bulk data. build.sh copies in the grammar's corpus files and runs them, and
+    each proves a change the patch makes. So they carry intent and a wire, and I
+    was wrong to put them outside "within reason". The same goes for CLAUDE.md:
+    its one line, @AGENTS.md, is a wire.
+  - Volume. A repository with 10,000 CSVs is that project's call, and the
+    exclude setting already handles it. The product's list is about kinds of
+    file, not counts.
+
+  Applied here. 66 tracked files outside the workspace folder have no Live Doc.
+  My earlier count of about 43 missed the design docs. Under the list above,
+  only package-lock.json stays out. The other 65:
+  - 45 markdown files;
+  - 5 YAML files (the four workflows and Dependabot);
+  - 2 shell scripts;
+  - 4 dotfiles (.gitattributes, .gitignore, .nvmrc, .prettierrc);
+  - 2 LICENSE files;
+  - the grammar's patch, .wasm, upstream.env and 3 corpus files;
+  - Estate.sln.
+
+  One product rule needs narrowing. Today nothing inside the docs folder is ever
+  documented. That hides 20 of those markdown files: the design docs in
+  .mdmd/layer-1 to layer-3, including the vision, the decisions log and the
+  Explorer contract. The rule should cover only what the generator writes: the
+  mirror folder, index.json and history/.
+
+  This settles (a) versus (b). A file with no reader yet can get a stub doc, as
+  images already do: its path, an authored Purpose, and the wires into it. So
+  the rule becomes "every file git doesn't ignore, minus the list", and that can
+  ship first. Readers then add each kind of file's outgoing wires, in an order
+  you choose. I'd start with markdown (45 files, most of the links), then
+  workflows, shell scripts and .sln.
+
+  Costs:
+  - Each of the 65 needs an authored Purpose, under our documentation rules.
+  - In the 3D view, documents currently appear as "related document" spheres,
+    taken from the links in each doc's written sections. Once a markdown file
+    has its own Live Doc, it becomes an ordinary file node, so those spheres
+    would have to merge into it.
+
+  The workspace folder is a separate question. AI-Agent-Workspace/ holds 1,326
+  tracked files: 740 screenshots, 524 markdown files and 17 raw captures. It's
+  out because of this repository's own exclude setting (since October 16), not a
+  product rule. The same test would let most of it in. Until a markdown reader
+  exists, though, those 1,326 would be bare stubs that more than double the map.
+  I'd keep it out until then.
+
+  Does that list match what you'd keep out? If it does, I'd build in this order:
+  1. Narrow the docs-folder rule.
+  2. Make the default every file, with stubs for files no reader handles.
+  3. Write the 65 Purposes.
+  4. Write the markdown reader.
+
+  Your message and this inventory are in the session record, committed as
+  0fee3fad.

@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { currentSnapshot } from "./search-bar";
+import { noReaderHandles } from "../../packages/engine/src/config/liveDocumentationConfig";
 
 /**
  * The Knowledge Sources panel says what the graph index says, and no more
@@ -12,6 +13,9 @@ import { currentSnapshot } from "./search-bar";
  * documentation and the export. Each expectation here is computed again from
  * `explorer-data.json` by this file's own walk, independently of the panel's
  * module and of the engine's, so that a panel that counted wrong would fail.
+ * Which kinds of file a reader handles is the engine's registry by definition
+ * (`noReaderHandles`), so the files nothing reaches are split by it: not read
+ * apart from unreachable (2026-10-22).
  */
 
 test.use({ viewport: { width: 1400, height: 1000 } });
@@ -75,14 +79,16 @@ async function expectations(page: Page, base: string) {
   const reached = reachedFrom(byPath, entries.map(file => file.codePath));
   const fromCode = reachedFrom(byPath, entries.filter(file => !isTest(file)).map(file => file.codePath));
   const startSet = new Set(entries.map(file => file.codePath));
-  const unreachable = files.filter(file => !startSet.has(file.codePath) && !reached.has(file.codePath));
+  const unreached = files.filter(file => !startSet.has(file.codePath) && !reached.has(file.codePath));
+  const unreachable = unreached.filter(file => !noReaderHandles(file.codePath));
+  const unread = unreached.filter(file => noReaderHandles(file.codePath));
   const testsOnly = files.filter(file => reached.has(file.codePath) && !fromCode.has(file.codePath));
   const mostUsed = [...files].sort((a, b) => b.inbound.length - a.inbound.length || a.codePath.localeCompare(b.codePath))[0];
   const named = new Set<string>();
   for (const file of files) for (const edge of file.edges) if (edge.to === mostUsed.codePath && edge.toSymbol && edge.to !== file.codePath) named.add(edge.toSymbol);
   const sampleRoots = data.sampleRoots ?? [];
   const underSample = (path: string): boolean => sampleRoots.some(root => path === root || path.startsWith(`${root}/`));
-  return { files, byPath, entries, reached, unreachable, testsOnly, mostUsed, mostUsedSymbolsNamed: named.size, sampleRoots, underSample };
+  return { files, byPath, entries, reached, unreachable, unread, testsOnly, mostUsed, mostUsedSymbolsNamed: named.size, sampleRoots, underSample };
 }
 
 async function open(page: Page, base: string): Promise<void> {
@@ -135,14 +141,18 @@ for (const [label, base] of [["this repository", "/"], ["the estate sample", "/s
     const tests = expected.entries.filter(file => file.archetype === "test");
     if (tests.length > 0) await expect(section.locator('details[data-reason="test"] > summary .sources-count')).toHaveText(tests.length.toLocaleString());
 
-    // What nothing reaches, by archetype, every one a button; and what only a test reaches.
+    // What nothing reaches, by archetype, every one a button; what no reader handles, apart; and what only a test reaches.
     const unreachable = page.locator('[data-section="unreachable"]');
     await expect(unreachable.locator("h2 .sources-count")).toHaveText(expected.unreachable.length.toLocaleString());
     const groups = unreachable.locator('[data-list="unreachable"] details.sources-group[data-archetype]');
     let listed = 0;
     for (const group of await groups.all()) listed += await group.locator(".sources-file").count();
     expect(listed).toBe(expected.unreachable.length);
-    await expect(unreachable.locator("h3 .sources-count")).toHaveText(expected.testsOnly.length.toLocaleString());
+    const unread = unreachable.locator("h3", { hasText: "Not read" });
+    await expect(unread.locator(".sources-count")).toHaveText(expected.unread.length.toLocaleString());
+    const unreadListed = await unreachable.locator('[data-list="unread"] .sources-file').evaluateAll(buttons => buttons.map(button => (button as HTMLElement).dataset.nodeId));
+    expect(unreadListed.sort()).toEqual(expected.unread.map(file => file.codePath).sort());
+    await expect(unreachable.locator("h3", { hasText: "Reached only from tests" }).locator(".sources-count")).toHaveText(expected.testsOnly.length.toLocaleString());
     const testsOnlyListed = await unreachable.locator('[data-list="tests-only"] .sources-file').evaluateAll(buttons => buttons.map(button => (button as HTMLElement).dataset.nodeId));
     expect(testsOnlyListed.sort()).toEqual(expected.testsOnly.map(file => file.codePath).sort());
 
@@ -175,6 +185,7 @@ for (const [label, base] of [["this repository", "/"], ["the estate sample", "/s
     // A file with something beyond it that is not itself an entry.
     const chosen = expected.files.find(file => file.outbound.length > 0 && file.entries.length === 0 && file.archetype !== "test" && !expected.underSample(file.codePath))!;
     const reached = reachedFrom(expected.byPath, [chosen.codePath]);
+    const unreadFromChosen = expected.files.filter(file => file.codePath !== chosen.codePath && !reached.has(file.codePath) && noReaderHandles(file.codePath)).length;
     await open(page, base);
 
     const field = page.locator("#sources-reach-from");
@@ -188,8 +199,9 @@ for (const [label, base] of [["this repository", "/"], ["the estate sample", "/s
     await expect(section.locator("details[data-reason]")).toHaveCount(0);
     const unreachable = page.locator('[data-section="unreachable"]');
     await expect(unreachable.locator("h2 .sources-title")).toHaveText(`Unreachable from ${chosen.codePath}`);
-    await expect(unreachable.locator("h2 .sources-count")).toHaveText((expected.files.length - 1 - reached.size).toLocaleString());
-    await expect(unreachable.locator("h3")).toHaveCount(0);
+    await expect(unreachable.locator("h2 .sources-count")).toHaveText((expected.files.length - 1 - reached.size - unreadFromChosen).toLocaleString());
+    await expect(unreachable.locator("h3 .sources-title")).toHaveText(["Not read"]);
+    await expect(unreachable.locator("h3 .sources-count")).toHaveText(unreadFromChosen.toLocaleString());
 
     // The choice rides the address: a reload shows the same walk.
     await page.reload();
@@ -222,11 +234,12 @@ for (const [label, base] of [["this repository", "/"], ["the estate sample", "/s
     const stream = await download.createReadStream();
     const chunks: Buffer[] = [];
     for await (const chunk of stream) chunks.push(Buffer.from(chunk));
-    const facts = JSON.parse(Buffer.concat(chunks).toString("utf8")) as { shape: { files: number }; reach: { from: string; starts: { path: string; reasons: string[] }[]; unreachable: { path: string }[]; testsOnly: { path: string }[] }; mostUsed: { path: string }[] };
+    const facts = JSON.parse(Buffer.concat(chunks).toString("utf8")) as { shape: { files: number }; reach: { from: string; starts: { path: string; reasons: string[] }[]; unreachable: { path: string }[]; unread: { path: string }[]; testsOnly: { path: string }[] }; mostUsed: { path: string }[] };
     expect(facts.shape.files).toBe(expected.files.length);
     expect(facts.reach.from).toBe("entries");
     expect(facts.reach.starts.map(start => start.path)).toEqual(expected.entries.map(file => file.codePath));
     expect(facts.reach.unreachable.map(entry => entry.path)).toEqual(expected.unreachable.map(file => file.codePath));
+    expect(facts.reach.unread.map(entry => entry.path)).toEqual(expected.unread.map(file => file.codePath));
     expect(facts.reach.testsOnly.map(entry => entry.path)).toEqual(expected.testsOnly.map(file => file.codePath));
     expect(facts.mostUsed[0].path).toBe(expected.mostUsed.codePath);
   });

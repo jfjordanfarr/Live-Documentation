@@ -5,23 +5,43 @@ import {
   LIVE_DOCUMENTATION_ASSET_EXTENSIONS,
   LIVE_DOCUMENTATION_DEFAULT_GLOBS,
   LIVE_DOCUMENTATION_SOURCE_EXTENSIONS,
-  LIVE_DOCUMENTATION_SOURCE_FILE_NAMES,
+  hasReader,
+  isMediaAsset,
   normalizeLiveDocumentationConfig
 } from "./liveDocumentationConfig";
 import { SUPPORTED_SCRIPT_EXTENSIONS } from "../live-docs/coreConstants";
 
 describe("the default globs", () => {
-  it("reach every file the TypeScript parser or an adapter can read, by extension or by name, and every asset, anywhere in the workspace", () => {
+  it("are every file, anywhere in the workspace, so that discovery's own rules alone say what is never documented", () => {
+    expect(LIVE_DOCUMENTATION_DEFAULT_GLOBS).toEqual(["**/*"]);
+  });
+});
+
+describe("what a reader reads", () => {
+  it("lists every extension once, the TypeScript parser's among them", () => {
     const extensions = [...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS, ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS];
-    expect(LIVE_DOCUMENTATION_DEFAULT_GLOBS).toEqual([
-      ...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS.map((extension) => `**/*${extension}`),
-      ...LIVE_DOCUMENTATION_SOURCE_FILE_NAMES.map((name) => `**/${name}`),
-      ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS.map((extension) => `**/*${extension}`)
-    ]);
     expect(new Set(extensions).size).toBe(extensions.length);
     expect(extensions.every((extension) => /^\.[a-z0-9]+$/u.test(extension))).toBe(true);
     for (const extension of SUPPORTED_SCRIPT_EXTENSIONS) {
       expect(LIVE_DOCUMENTATION_SOURCE_EXTENSIONS, `${extension} is read by the TypeScript parser`).toContain(extension);
+    }
+  });
+
+  it("knows a file a reader handles by its extension, whatever its case, or a manifest by its exact name", () => {
+    for (const read of ["src/index.ts", "src/App.TSX", "a/b/Program.cs", "Cargo.toml", "crates/x/Cargo.toml", "go.mod", "pom.xml", "app/pyproject.toml"]) {
+      expect(hasReader(read), read).toBe(true);
+    }
+    for (const unread of [".github/workflows/ci.yml", ".gitignore", ".nvmrc", "Makefile", "Estate.sln", "grammar.patch", "data/rows.toml", "cargo.toml", "pom.xml.bak", "tree-sitter-powershell.wasm", "logo.png"]) {
+      expect(hasReader(unread), unread).toBe(false);
+    }
+  });
+
+  it("knows an image, a font or a recording by its extension, and nothing else as one", () => {
+    for (const media of ["logo.png", "img/Photo.JPG", "fonts/x.woff2", "clip.webm"]) {
+      expect(isMediaAsset(media), media).toBe(true);
+    }
+    for (const other of ["grammar.wasm", ".png", "ci.yml", "src/index.ts"]) {
+      expect(isMediaAsset(other), other).toBe(false);
     }
   });
 });

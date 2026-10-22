@@ -9,14 +9,13 @@ import * as fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_LIVE_DOCUMENTATION_CONFIG, normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { normalizeLiveDocumentationConfig } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { parseBoard } from "@live-documentation/engine/live-docs/board";
 import { deriveBoardGraph, type Wire } from "@live-documentation/engine/live-docs/boardGraph";
 import { entryWords } from "@live-documentation/engine/live-docs/document";
 import { readEstateGraph, readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { generateLiveDocs } from "@live-documentation/generator/generator";
 
-import { fixtureGlobs } from "../../../scripts/oracle/compare";
 import { readHandVerifiedEdges } from "../../../scripts/oracle/files";
 import { copyFixture } from "../../../scripts/oracle/fixture";
 
@@ -31,7 +30,7 @@ function wireKey(wire: Wire): string {
 
 describe("the estate scanned as seven things", () => {
   it("draws the one-scan build's wires, every hand-verified remote edge among them, with the wires to the shared library carried by project references alone", async () => {
-    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
+    const config = normalizeLiveDocumentationConfig();
     const board = parseBoard(fs.readFileSync(path.join(ESTATE, "board.md"), "utf8"));
     const folders = board.things.flatMap((thing) => (thing.from ? [thing.from] : []));
     expect(folders).toHaveLength(7);
@@ -94,7 +93,7 @@ describe("the estate scanned as seven things", () => {
   });
 
   it("reads the root scan alone when the root has docs, reporting a thing's own docs inside it as a scan not read", async () => {
-    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
+    const config = normalizeLiveDocumentationConfig();
     const board = parseBoard(fs.readFileSync(path.join(ESTATE, "board.md"), "utf8"));
     const workDir = copyFixture(ESTATE, "estate-nested-");
     try {
@@ -110,7 +109,7 @@ describe("the estate scanned as seven things", () => {
   });
 
   it("marks as entries the files that serve an opening, read from the sources: the routes, the listening addresses, the procedure and the tables, with the manifests and configurations as tooling", async () => {
-    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: fixtureGlobs() });
+    const config = normalizeLiveDocumentationConfig();
     const workDir = copyFixture(ESTATE, "estate-entries-");
     try {
       await generateLiveDocs({ workspaceRoot: workDir, config, logger: quiet });

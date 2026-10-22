@@ -107,6 +107,9 @@ Reached: 455 files
 Unreachable from any entry: 27 files
   tests/integration/programs/csharp/estate/Portal/App_Code/Site.master […]  implementation
   ...
+Not read, so neither reached nor unreachable (no reader handles their kind yet): 15 files
+  .github/workflows/ci.yml […]
+  ...
 Reached only from tests: 0 files
 ```
 

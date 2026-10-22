@@ -10,6 +10,7 @@ import {
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { analyzeSourceFile } from "@live-documentation/engine/live-docs/core";
+import { UNREAD_NOTE } from "@live-documentation/engine/live-docs/document";
 
 import { generateLiveDocs } from "./generator";
 
@@ -169,6 +170,77 @@ describe("generateLiveDocs pruning", () => {
 
     expect(infoMessages.some((message) => message.includes("authored content detected"))).toBe(true);
     expect(infoMessages.some((message) => message.includes("Deleted stale Live Doc"))).toBe(true);
+  });
+});
+
+describe("generateLiveDocs and files no reader handles", () => {
+  let workspaceRoot: string;
+  const silent = { info: () => undefined, warn: () => undefined, error: (message: string) => { throw new Error(message); } };
+  const docOf = (source: string): string =>
+    path.join(workspaceRoot, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer, `${source}${LIVE_DOCUMENTATION_FILE_EXTENSION}`);
+  const notesOf = async (source: string): Promise<string> => {
+    const text = await fs.readFile(docOf(source), "utf8");
+    return text.slice(text.indexOf("### Notes"), text.indexOf("## Generated"));
+  };
+
+  beforeEach(async () => {
+    workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-unread-"));
+    const files: Record<string, string> = {
+      ".github/workflows/ci.yml": "on: push\njobs:\n  check:\n    runs-on: ubuntu-latest\n",
+      "Makefile": "all:\n\tnpm test\n",
+      "src/index.ts": "export const one = 1;\n",
+      "logo.png": "\u0089PNG\r\n\u001a\n\u0000\u0000",
+      "README.md": "# The project\n"
+    };
+    for (const [file, content] of Object.entries(files)) {
+      await fs.mkdir(path.dirname(path.join(workspaceRoot, file)), { recursive: true });
+      await fs.writeFile(path.join(workspaceRoot, file), content, "utf8");
+    }
+  });
+
+  afterEach(async () => {
+    await fs.rm(workspaceRoot, { recursive: true, force: true });
+  });
+
+  it("starts the doc of a file no reader handles with a note in its authored block, and leaves the generated regions to what was found", async () => {
+    await generateLiveDocs({ workspaceRoot, config: normalizeLiveDocumentationConfig(), logger: silent });
+
+    for (const unread of [".github/workflows/ci.yml", "Makefile"]) {
+      expect(await notesOf(unread), unread).toContain(UNREAD_NOTE);
+      const generated = (await fs.readFile(docOf(unread), "utf8")).split("## Generated")[1];
+      expect(generated, unread).not.toContain("reader");
+      expect(generated, unread).toContain("_No public symbols detected_");
+    }
+    for (const read of ["src/index.ts", "logo.png"]) {
+      expect(await notesOf(read), read).toContain("_Pending notes_");
+      expect(await notesOf(read), read).not.toContain(UNREAD_NOTE);
+    }
+    await expect(fs.stat(docOf("README.md"))).rejects.toThrowError();
+  });
+
+  it("writes the note once, so that what an author makes of it stays", async () => {
+    const config = normalizeLiveDocumentationConfig();
+    await generateLiveDocs({ workspaceRoot, config, logger: silent });
+    const doc = docOf("Makefile");
+    const authored = (await fs.readFile(doc, "utf8")).replace(UNREAD_NOTE, "- Builds and tests the project; a reader for make would draw its wires.");
+    await fs.writeFile(doc, authored, "utf8");
+
+    await generateLiveDocs({ workspaceRoot, config, logger: silent });
+
+    const notes = await notesOf("Makefile");
+    expect(notes).toContain("a reader for make would draw its wires");
+    expect(notes).not.toContain(UNREAD_NOTE);
+  });
+
+  it("prunes a doc that holds nothing but the note once its file is gone, as it prunes the pending placeholders", async () => {
+    const config = normalizeLiveDocumentationConfig();
+    await generateLiveDocs({ workspaceRoot, config, logger: silent });
+    await fs.rm(path.join(workspaceRoot, "Makefile"));
+
+    const result = await generateLiveDocs({ workspaceRoot, config, logger: silent });
+
+    expect(result.deletedFiles).toEqual([`${DEFAULT_LIVE_DOCUMENTATION_CONFIG.root}/${DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer}/Makefile${LIVE_DOCUMENTATION_FILE_EXTENSION}`]);
+    await expect(fs.stat(docOf("Makefile"))).rejects.toThrowError();
   });
 });
 

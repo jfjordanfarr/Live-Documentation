@@ -83,8 +83,10 @@ export interface Reach {
   starts: StartFile[];
   /** Every file a path from a start reaches, nearest first; the starts are not among them. */
   reached: { path: string; hops: number }[];
-  /** The files no path from a start reaches, in path order. */
+  /** The files no path from a start reaches, in path order, but for those no reader handles. */
   unreachable: FileByArchetype[];
+  /** The files no path from a start reaches whose kind no reader handles yet, in path order: not read, so neither reached nor unreachable. */
+  unread: FileByArchetype[];
   /** The files only a path from a test reaches, in path order; empty when the starts were asked for. */
   testsOnly: FileByArchetype[];
 }
@@ -234,6 +236,7 @@ function reachOf(graph: LiveDocGraph, from: readonly string[] | undefined, sampl
     }),
     reached: result.reached.map(file => ({ path: file.codePath, hops: file.hops })),
     unreachable: result.unreachable.map(classed),
+    unread: result.unread.map(classed),
     testsOnly: result.testsOnly.map(classed)
   };
 }

@@ -102,8 +102,9 @@ export const LIVE_DOCUMENTATION_FILE_EXTENSION = ".md";
 /**
  * The extensions of every file the generator can read: the scripts the
  * built-in TypeScript parser reads, then each language adapter's files. Every
- * adapter's extensions are here, a test holds the registry to it, and each has
- * a default glob.
+ * adapter's extensions are here, and a test holds the registry to it. Any
+ * other file is documented too, but by a doc whose generated sections are
+ * empty because nothing reads it ({@link hasReader}).
  */
 export const LIVE_DOCUMENTATION_SOURCE_EXTENSIONS: readonly string[] = [
   // The built-in TypeScript parser
@@ -129,9 +130,8 @@ export const LIVE_DOCUMENTATION_SOURCE_EXTENSIONS: readonly string[] = [
 /**
  * The names of the files an adapter reads by name rather than by extension:
  * the package manifests whose extension (`.toml`, `.xml`, `.mod`) is shared by
- * files that are not manifests. Each has a default glob for that name alone,
- * so that no other TOML or XML file of a workspace is discovered by default.
- * A test holds the registry's file names to this list.
+ * files that are not manifests, which no reader reads. A test holds the
+ * registry's file names to this list.
  */
 export const LIVE_DOCUMENTATION_SOURCE_FILE_NAMES: readonly string[] = [
   "Cargo.toml",
@@ -140,7 +140,11 @@ export const LIVE_DOCUMENTATION_SOURCE_FILE_NAMES: readonly string[] = [
   "pyproject.toml"
 ];
 
-/** The extensions of the static assets, images, fonts and media, that receive stub Live Docs so that the graph reaches them. */
+/**
+ * The extensions of the static assets, images, fonts and media: files with
+ * nothing in them for a reader to find, so that the empty generated sections
+ * of their docs are the whole truth and need no note saying otherwise.
+ */
 export const LIVE_DOCUMENTATION_ASSET_EXTENSIONS: readonly string[] = [
   ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp",
   ".woff", ".woff2", ".ttf", ".eot",
@@ -148,22 +152,54 @@ export const LIVE_DOCUMENTATION_ASSET_EXTENSIONS: readonly string[] = [
 ];
 
 /**
- * Default glob patterns selecting the workspace files that receive Live Docs:
- * every file an adapter or the TypeScript parser can read, by its extension
- * or, for a manifest, by its name, and every static asset, anywhere in the
- * workspace, so that a cold run over any repository is
- * honest about what it holds. Assets are a project's content and are
- * documented wherever they are found (the owner's decision, 2026-10-15).
- * Discovery removes what no project wants documented, `.git`, `node_modules`,
- * the docs root, lock files and what `.gitignore` ignores, and what the
- * configuration's `exclude` names. A repository that wants a narrower set
- * names its own globs.
+ * True when the TypeScript parser or a language adapter reads the file, by
+ * its name or its extension. A file no reader handles still gets a doc, and
+ * that doc starts with a note in its authored block saying why its generated
+ * sections are empty, unless it is an image, a font or a recording
+ * ({@link LIVE_DOCUMENTATION_ASSET_EXTENSIONS}), which has nothing to read.
+ *
+ * @param relativePath - Workspace-relative path with forward slashes.
  */
-export const LIVE_DOCUMENTATION_DEFAULT_GLOBS: readonly string[] = [
-  ...LIVE_DOCUMENTATION_SOURCE_EXTENSIONS.map((extension) => `**/*${extension}`),
-  ...LIVE_DOCUMENTATION_SOURCE_FILE_NAMES.map((name) => `**/${name}`),
-  ...LIVE_DOCUMENTATION_ASSET_EXTENSIONS.map((extension) => `**/*${extension}`)
-];
+export function hasReader(relativePath: string): boolean {
+  const name = relativePath.slice(relativePath.lastIndexOf("/") + 1);
+  const dot = name.lastIndexOf(".");
+  return LIVE_DOCUMENTATION_SOURCE_FILE_NAMES.includes(name)
+    || (dot > 0 && LIVE_DOCUMENTATION_SOURCE_EXTENSIONS.includes(name.slice(dot).toLowerCase()));
+}
+
+/** True for an image, a font or a recording, by its extension: a file with nothing for a reader to find. */
+export function isMediaAsset(relativePath: string): boolean {
+  const name = relativePath.slice(relativePath.lastIndexOf("/") + 1);
+  const dot = name.lastIndexOf(".");
+  return dot > 0 && LIVE_DOCUMENTATION_ASSET_EXTENSIONS.includes(name.slice(dot).toLowerCase());
+}
+
+/**
+ * True for a file no reader handles that could hold what a reader finds: not
+ * read by its name or its extension ({@link hasReader}), and not an image, a
+ * font or a recording ({@link isMediaAsset}). Its doc starts with a note
+ * saying so, and a walk along dependencies lists it as not read rather than
+ * unreachable, since the wires out of it and into it are unknown.
+ *
+ * @param relativePath - Workspace-relative path with forward slashes.
+ */
+export function noReaderHandles(relativePath: string): boolean {
+  return !hasReader(relativePath) && !isMediaAsset(relativePath);
+}
+
+/**
+ * The default glob: every file, anywhere in the workspace, hidden ones
+ * included, so that a cold run over any repository is honest about what it
+ * holds. A file carries authorial intent or wiring whether or not a reader
+ * understands it yet: "Is there authorial decisionmaking to convey here? If
+ * so, there should be a live documentation file for it." (the owner,
+ * 2026-10-15). Discovery then removes the kinds of file that never get a doc
+ * (`.git`, `node_modules`, the docs root, lock files and documents, which the
+ * Explorer shows as linked documentation; the owner's list, 2026-10-22), what
+ * git ignores, and what the configuration's `exclude` names. A repository
+ * that wants a narrower set names its own globs.
+ */
+export const LIVE_DOCUMENTATION_DEFAULT_GLOBS: readonly string[] = ["**/*"];
 
 /**
  * Fully-resolved default configuration used when no `.live-docs.config.json`

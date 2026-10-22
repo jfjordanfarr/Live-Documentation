@@ -236,6 +236,9 @@ function renderUnreachable(config: SourcesViewConfig): string {
       <h2><span class="sources-title">${title}</span><span class="sources-count">${reach.unreachable.length.toLocaleString()}</span></h2>
       <div class="sources-files" data-list="unreachable">${reach.unreachable.length ? renderFileGroup(reach.unreachable, false) : '<p class="sources-empty">Every file is reached.</p>'}</div>
       <p class="sources-note">No path along the references the docs record leads here from a start. A file reached by a path string the docs cannot read, a template's link or a tool's own rule looks the same until the configuration declares it.</p>
+      <h3><span class="sources-title">Not read</span><span class="sources-count">${reach.unread.length.toLocaleString()}</span></h3>
+      <div class="sources-files" data-list="unread">${reach.unread.length ? renderFileGroup(reach.unread, false) : '<p class="sources-empty">None.</p>'}</div>
+      <p class="sources-note">No reader handles these kinds of file yet, so what reaches them, and what they reach, is unknown.</p>
       ${testsOnly}
     </section>`;
 }

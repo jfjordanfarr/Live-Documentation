@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect/history.ts
-- Generated At: 2026-10-20T21:28:57.054Z
+- Generated At: 2026-10-22T00:54:20.668Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,7 @@ What `inspect --at` and `inspect --between` answer from the history, in text and
 `--between` prints the directories renamed whole across the span as "Renamed whole" (2026-10-18, the plan's C4), the same fact the Explorer's step panel shows.
 
 Since 2026-10-20 ([Turn 9](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) `--at` lists a file's linked documents and `--between` the documents linked and unlinked, from the shape alone as before.
+Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) the walk from a commit's entries lists the files not read apart from the unreachable, in text and as `unread` in its JSON, as the present's walk does.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -63,7 +64,7 @@ What the entries of a commit reach, by the pathfinder over the graph the commit'
 
 #### `emitBetween` {#symbol-emitbetween}
 - Type: function
-- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L123)
+- Source: [source](../../../../../scripts/live-docs/inspect/history.ts#L127)
 - Parameters: `sequence`: [`HistorySequence`](../../../packages/engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `emitBetween` — Summary

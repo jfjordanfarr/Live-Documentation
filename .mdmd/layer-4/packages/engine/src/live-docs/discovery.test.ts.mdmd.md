@@ -8,10 +8,11 @@
 
 ## Authored
 ### Purpose
-Discovery's product rules over a temporary workspace: hidden files read, `.git`, `node_modules`, the docs root and lock files never, `.gitignore` honoured except for a file git tracks, the docs root derived from the configuration in any spelling, and `exclude` by path or glob.
+Discovery's product rules over a temporary workspace: every file read by default, hidden ones and ones no reader handles among them; `.git`, `node_modules`, the docs root, lock files and documents never, whatever a configured glob or an include names, a source file whose name only looks like a document's (`license.ts`, `readme-generator.ts`) being read; `.gitignore` honoured except for a file git tracks, the docs root derived from the configuration in any spelling, and `exclude` by path or glob.
 
 ### Notes
 - Written 2026-10-16 with the suffix-anywhere defaults ([Turn 9 of the October 15 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-9)); the tracked-file case initialises a git repository in the temporary workspace.
+- The every-file default and the documents rule came on 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)); breaking either the rule or the document-name pattern fails both of the first two cases.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

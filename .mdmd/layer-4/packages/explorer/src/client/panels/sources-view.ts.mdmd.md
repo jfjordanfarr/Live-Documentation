@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-10-18T05:36:01.790Z
+- Generated At: 2026-10-22T00:54:18.160Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ Renders the Knowledge Sources panel from `sources-facts.ts`: the bundle's shape,
 - Rewritten on 2026-10-15 ([Turn 4](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)): "Nothing references these" became "Entry points", grouped as programs, commands, modules, openings served, tooling inputs, declared files and tests, a file with several reasons standing in each and a sample program's entries folded under its root, then "Unreachable from any entry" by archetype and "Reached only from tests". The field is the search bar's `createSearchField` over the whole bundle; a choice calls `onReachFrom`, the clear goes back to the entries, and beside a chosen start the line that would declare it in `.live-docs.config.json` is shown and copied, since a static page cannot write the file (the owner's thought: "the system inferred one sits in an omnisearch textinput ready for the user to adjust").
 
 The History row (2026-10-18, ticket C4 and C7 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): what the bundle carries of its history, how many commits from when to when, the window when it carries one and whether the clone is shallow; or, when none was computed, one line naming `npm run live-docs:history` to copy, then a rebuild of the bundle, with the copy beside the value rather than inside it so that the design audit reads two boxes, not one on another. Nothing else appears for a bundle without history, as the plan's C7 says.
+- Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) the unreachable section closes with "Not read": the files no start reaches whose kind no reader handles yet, by archetype, with one sentence saying that what reaches them, and what they reach, is unknown. They had been counted as unreachable once every file got a doc.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -50,7 +51,7 @@ The command a person copies to compute a history the bundle lacks.
 
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L352)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L355)
 - Parameters: `config`: [`SourcesViewConfig`](#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary

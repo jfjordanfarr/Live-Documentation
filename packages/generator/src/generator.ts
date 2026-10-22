@@ -4,11 +4,14 @@ import path from "node:path";
 
 import {
   type LiveDocumentationConfig,
+  noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
 import {
+  DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
+  UNREAD_AUTHORED_BLOCK,
   authoredBlockOf,
   parseLiveDoc,
   renderLiveDoc,
@@ -199,7 +202,7 @@ export async function generateLiveDocs(
       docExtension
     );
     const existingContent = await readFileIfExists(docPaths.absolute);
-    const existing = readExisting(existingContent);
+    const existing = readExisting(existingContent, noReaderHandles(normalizedSourcePath) ? UNREAD_AUTHORED_BLOCK : DEFAULT_AUTHORED_BLOCK);
     const timestampNow = now().toISOString();
     const initialGeneratedAt = existing.generatedAt ?? timestampNow;
 
@@ -517,11 +520,14 @@ function composeGenerated(params: {
  * What a run keeps of the doc already on disk: its authored block and its timestamp.
  *
  * A doc the grammar refuses, written before the grammar or by hand, still keeps
- * both; everything generated is replaced on this run anyway.
+ * both; everything generated is replaced on this run anyway. A new doc starts
+ * with `fresh`: the pending placeholders, or for a file no reader handles the
+ * note saying so. The note is written once, when the doc is made, and is the
+ * author's to keep or revise from then on.
  */
-function readExisting(text: string | undefined): { authored: string; generatedAt?: string } {
+function readExisting(text: string | undefined, fresh: string): { authored: string; generatedAt?: string } {
   if (!text) {
-    return { authored: authoredBlockOf(undefined) };
+    return { authored: fresh };
   }
   try {
     const doc = parseLiveDoc(text);

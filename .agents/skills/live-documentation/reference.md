@@ -63,7 +63,7 @@ The symbol's docstring, when it has one.
 | `--verbose` | Full symbol lists |
 | `--config <file>`, `--workspace <path>`, `--root`, `--base-layer`, `--extension` | Where the docs are, when not the current workspace's configuration |
 
-The JSON of `--reachable` without `--from`: `{ kind: "reachable", maxDepth, from: "entries", starts: [{ codePath, entries, test }], reached: [{ codePath, hops }], unreachable: [codePath], testsOnly: [codePath] }`. Other commands: run with `--json` once and read the shape.
+The JSON of `--reachable` without `--from`: `{ kind: "reachable", maxDepth, from: "entries", starts: [{ codePath, entries, test }], reached: [{ codePath, hops }], unreachable: [codePath], unread: [codePath], testsOnly: [codePath] }`, where `unread` holds the files nothing reaches whose kind no reader handles yet (a workflow, a shell script), which are not dead code. Other commands: run with `--json` once and read the shape.
 
 Other commands: `npm run live-docs:generate` (regenerate the docs and the graph; `--dry-run` reports drift, `--changed` limits scope), `npm run live-docs:lint` (structural and link checks on the docs), `npm run live-docs:visualize` (build the static Explorer into `dist/explorer/`), `npm run live-docs:board -- <board.md>` (read a board of systems and join it to the docs).
 

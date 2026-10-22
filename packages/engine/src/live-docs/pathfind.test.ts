@@ -72,47 +72,61 @@ describe("reachFrom", () => {
 });
 
 describe("reachability", () => {
-  // cli (a command) depends on core, which depends on util; a test depends on core and on a helper; a manifest
-  // (tooling) stands alone; spare depends on util and nothing names it; orphan depends on nothing.
-  const entries = graphOf({ cli: ["core"], core: ["util"], "core.test": ["core", "helper"], manifest: [], spare: ["util"], orphan: [] });
-  entries.files.cli.entries = [{ reason: "command", command: "run", declarer: { label: "package.json", link: "../package.json.md" } }];
-  entries.files["core.test"].archetype = "test";
-  entries.files.manifest.entries = [{ reason: "tooling" }];
+  // cli.ts (a command) depends on core.ts, which depends on util.ts; a test depends on core.ts and on a helper; a manifest
+  // (tooling) stands alone; spare.ts depends on util.ts and nothing names it; orphan.ts and an unused image depend on
+  // nothing; and nothing names a deploy script, whose kind no reader handles.
+  const entries = graphOf({ "cli.ts": ["core.ts"], "core.ts": ["util.ts"], "core.test.ts": ["core.ts", "helper.ts"], "package.json": [], "spare.ts": ["util.ts"], "orphan.ts": [], "logo.png": [], "deploy.sh": [] });
+  entries.files["cli.ts"].entries = [{ reason: "command", command: "run", declarer: { label: "package.json", link: "../package.json.md" } }];
+  entries.files["core.test.ts"].archetype = "test";
+  entries.files["package.json"].entries = [{ reason: "tooling" }];
 
   it("knows an entry by its lines or by the test archetype", () => {
-    expect(isEntry(entries.files.cli)).toBe(true);
-    expect(isEntry(entries.files["core.test"])).toBe(true);
-    expect(isEntry(entries.files.manifest)).toBe(true);
-    expect(isEntry(entries.files.core)).toBe(false);
+    expect(isEntry(entries.files["cli.ts"])).toBe(true);
+    expect(isEntry(entries.files["core.test.ts"])).toBe(true);
+    expect(isEntry(entries.files["package.json"])).toBe(true);
+    expect(isEntry(entries.files["core.ts"])).toBe(false);
   });
 
-  it("walks from every entry, lists what is reached nearest first, what nothing reaches, and what only a test reaches", () => {
+  it("walks from every entry, lists what is reached nearest first, what nothing reaches, what no reader handles, and what only a test reaches", () => {
     const result = reachability(entries);
     expect(result.from).toBe("entries");
     expect(result.starts).toEqual([
-      { codePath: "cli", entries: entries.files.cli.entries, test: false },
-      { codePath: "core.test", entries: [], test: true },
-      { codePath: "manifest", entries: [{ reason: "tooling" }], test: false }
+      { codePath: "cli.ts", entries: entries.files["cli.ts"].entries, test: false },
+      { codePath: "core.test.ts", entries: [], test: true },
+      { codePath: "package.json", entries: [{ reason: "tooling" }], test: false }
     ]);
-    expect(result.reached).toEqual([{ codePath: "core", hops: 1 }, { codePath: "helper", hops: 1 }, { codePath: "util", hops: 2 }]);
-    expect(result.unreachable).toEqual(["orphan", "spare"]);
-    expect(result.testsOnly).toEqual(["helper"]);
+    expect(result.reached).toEqual([{ codePath: "core.ts", hops: 1 }, { codePath: "helper.ts", hops: 1 }, { codePath: "util.ts", hops: 2 }]);
+    expect(result.unreachable).toEqual(["logo.png", "orphan.ts", "spare.ts"]);
+    expect(result.unread).toEqual(["deploy.sh"]);
+    expect(result.testsOnly).toEqual(["helper.ts"]);
   });
 
   it("walks from the files asked for instead, in path order, with no test reading and no unknown file", () => {
-    const result = reachability(entries, ["spare", "missing", "cli", "spare"]);
+    const result = reachability(entries, ["spare.ts", "missing.ts", "cli.ts", "spare.ts"]);
     expect(result.from).toBe("asked");
-    expect(result.starts.map((start) => start.codePath)).toEqual(["cli", "spare"]);
-    expect(result.reached).toEqual([{ codePath: "core", hops: 1 }, { codePath: "util", hops: 1 }]);
-    expect(result.unreachable).toEqual(["core.test", "helper", "manifest", "orphan"]);
+    expect(result.starts.map((start) => start.codePath)).toEqual(["cli.ts", "spare.ts"]);
+    expect(result.reached).toEqual([{ codePath: "core.ts", hops: 1 }, { codePath: "util.ts", hops: 1 }]);
+    expect(result.unreachable).toEqual(["core.test.ts", "helper.ts", "logo.png", "orphan.ts", "package.json"]);
+    expect(result.unread).toEqual(["deploy.sh"]);
     expect(result.testsOnly).toEqual([]);
   });
 
+  it("counts a file no reader handles as reached when a path leads to it, and as a start when it is an entry", () => {
+    const wired = graphOf({ "main.ts": ["Estate.sln"], "ci.yml": [] });
+    wired.files["main.ts"].entries = [{ reason: "program" }];
+    wired.files["ci.yml"].entries = [{ reason: "declared" }];
+    const result = reachability(wired);
+    expect(result.starts.map((start) => start.codePath)).toEqual(["ci.yml", "main.ts"]);
+    expect(result.reached).toEqual([{ codePath: "Estate.sln", hops: 1 }]);
+    expect([result.unreachable, result.unread]).toEqual([[], []]);
+  });
+
   it("holds the walk at the depth limit", () => {
-    expect(reachability(entries, ["cli"], 1).reached).toEqual([{ codePath: "core", hops: 1 }]);
-    expect(reachability(entries, ["cli"], 1).unreachable).toContain("util");
+    expect(reachability(entries, ["cli.ts"], 1).reached).toEqual([{ codePath: "core.ts", hops: 1 }]);
+    expect(reachability(entries, ["cli.ts"], 1).unreachable).toContain("util.ts");
   });
 });
+
 
 describe("searchGraph", () => {
   it("finds the shortest path and the files it visited", () => {

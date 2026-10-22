@@ -96,7 +96,7 @@ export function emitReachableAt(sequence: HistorySequence, step: number, config:
   // From the shape a start's entry mark is known and its Entry lines are not.
   const starts = result.starts.map((start) => ({ codePath: start.codePath, entry: shape.files.get(start.codePath)?.entry === true, test: start.test }));
   if (json) {
-    console.log(JSON.stringify({ kind: "at-reachable", answeredFrom: "shape", step, commit, maxDepth, from: result.from, starts, reached: result.reached, unreachable: result.unreachable, testsOnly: result.testsOnly }, null, 2));
+    console.log(JSON.stringify({ kind: "at-reachable", answeredFrom: "shape", step, commit, maxDepth, from: result.from, starts, reached: result.reached, unreachable: result.unreachable, unread: result.unread, testsOnly: result.testsOnly }, null, 2));
     return;
   }
   console.log(`At ${where(sequence, step, commit)}, ${SHAPE_ALONE}.`);
@@ -112,6 +112,10 @@ export function emitReachableAt(sequence: HistorySequence, step: number, config:
   console.log(`Unreachable from any entry: ${count(result.unreachable.length, "file")}`);
   for (const codePath of result.unreachable) {
     console.log(`  ${codePath}  ${shape.files.get(codePath)?.archetype ?? ""}`);
+  }
+  console.log(`Not read, so neither reached nor unreachable (no reader handles their kind yet): ${count(result.unread.length, "file")}`);
+  for (const codePath of result.unread) {
+    console.log(`  ${codePath}`);
   }
   console.log(`Reached only from tests: ${count(result.testsOnly.length, "file")}`);
   for (const codePath of result.testsOnly) {

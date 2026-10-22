@@ -43,10 +43,10 @@ const SAMPLE = graph([
   file("src/core.test.ts", "test", [{ to: "src/core.ts", toSymbol: "symbol-gamma" }, { to: "src/helper.ts", toSymbol: "symbol-fixture" }], ["spec"]),
   file("src/helper.ts", "implementation", [], ["fixture"]),
   file("assets/data.json", "asset", [], []),
-  file("README.md", "asset", [], []),
+  file("deploy.sh", "implementation", [], []),
   file("samples/demo/main.py", "implementation", [{ to: "src/core.ts", toSymbol: "symbol-alpha" }], [])
 ]);
-// app is what a script runs; the sample's main is a program; nothing starts README, the data file or util.
+// app is what a script runs; the sample's main is a program; nothing starts the deploy script, the data file or util, and no reader handles the script.
 SAMPLE.files["src/app.ts"].entries = [{ reason: "command", command: "start", declarer: { label: "package.json", link: "../package.json.md" } }];
 SAMPLE.files["samples/demo/main.py"].entries = [{ reason: "program" }];
 
@@ -55,9 +55,9 @@ describe("the bundle's shape", () => {
     const { shape } = sourcesFacts(SAMPLE);
     expect(shape.root).toBe(".docs");
     expect(shape.files).toBe(8);
-    expect(shape.byArchetype).toEqual([{ name: "implementation", count: 5 }, { name: "asset", count: 2 }, { name: "test", count: 1 }]);
+    expect(shape.byArchetype).toEqual([{ name: "implementation", count: 6 }, { name: "asset", count: 1 }, { name: "test", count: 1 }]);
     expect(shape.byDirectory).toEqual([{ name: "src", count: 5 }, { name: "", count: 1 }, { name: "assets", count: 1 }, { name: "samples", count: 1 }]);
-    expect(shape.byExtension).toEqual([{ name: ".ts", count: 5 }, { name: ".json", count: 1 }, { name: ".md", count: 1 }, { name: ".py", count: 1 }]);
+    expect(shape.byExtension).toEqual([{ name: ".ts", count: 5 }, { name: ".json", count: 1 }, { name: ".py", count: 1 }, { name: ".sh", count: 1 }]);
     expect(shape.references).toBe(7);
     expect(shape.generatedFrom).toBe("2026-10-01T00:00:00.000Z");
     expect(shape.generatedTo).toBe("2026-10-03T00:00:00.000Z");
@@ -96,7 +96,8 @@ describe("the entry points and what they reach", () => {
       { path: "src/core.test.ts", archetype: "test", reasons: ["test"], entries: [], test: true }
     ]);
     expect(reach.reached).toEqual([{ path: "src/core.ts", hops: 1 }, { path: "src/helper.ts", hops: 1 }, { path: "src/util.ts", hops: 1 }]);
-    expect(reach.unreachable).toEqual([{ path: "README.md", archetype: "asset" }, { path: "assets/data.json", archetype: "asset" }]);
+    expect(reach.unreachable).toEqual([{ path: "assets/data.json", archetype: "asset" }]);
+    expect(reach.unread).toEqual([{ path: "deploy.sh", archetype: "implementation" }]);
     expect(reach.testsOnly).toEqual([{ path: "src/helper.ts", archetype: "implementation" }]);
   });
 
@@ -105,7 +106,8 @@ describe("the entry points and what they reach", () => {
     expect(reach.from).toBe("asked");
     expect(reach.starts.map(start => [start.path, start.reasons, start.sample])).toEqual([["src/util.ts", [], undefined]]);
     expect(reach.reached).toEqual([{ path: "src/core.ts", hops: 1 }]);
-    expect(reach.unreachable.map(file => file.path)).toEqual(["README.md", "assets/data.json", "samples/demo/main.py", "src/app.ts", "src/core.test.ts", "src/helper.ts"]);
+    expect(reach.unreachable.map(file => file.path)).toEqual(["assets/data.json", "samples/demo/main.py", "src/app.ts", "src/core.test.ts", "src/helper.ts"]);
+    expect(reach.unread.map(file => file.path)).toEqual(["deploy.sh"]);
     expect(reach.testsOnly).toEqual([]);
   });
 });

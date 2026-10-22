@@ -371,6 +371,10 @@ export function emitReachableFromEntries(result: Reachability, graph: LiveDocGra
   for (const codePath of result.unreachable) {
     console.log(`  ${where(codePath)}  ${graph.files[codePath]?.archetype ?? "implementation"}`);
   }
+  console.log(`Not read, so neither reached nor unreachable (no reader handles their kind yet): ${count(result.unread.length, "file")}`);
+  for (const codePath of result.unread) {
+    console.log(`  ${where(codePath)}`);
+  }
   console.log(`Reached only from tests: ${count(result.testsOnly.length, "file")}`);
   for (const codePath of result.testsOnly) {
     console.log(`  ${where(codePath)}`);

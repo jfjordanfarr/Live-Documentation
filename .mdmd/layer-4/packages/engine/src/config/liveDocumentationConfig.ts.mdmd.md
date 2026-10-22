@@ -4,17 +4,15 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/config/liveDocumentationConfig.ts
-- Generated At: 2026-10-16T16:21:39.534Z
+- Generated At: 2026-10-22T00:54:15.384Z
 
 ## Authored
 ### Purpose
 Centralizes Live Documentation defaults—root, base layer, slug dialect—so the generator, lint, and CLI flows share one configuration contract, as hardened during the Live Docs pipeline work in [AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md#turn-19-config--schema-hardening-lines-3561-3760).
 
 ### Notes
-Default globs now cover scripts and cross-language test fixtures so Live Docs remain authoritative for integration workspaces (e.g., the LD-402 queue-worker Hangfire scenario). Keep the follow-up plan in [AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310](../../../../../../AI-Agent-Workspace/ChatHistory/2025/11/2025-11-16.md#L3310) handy—the same switches will power future `.mdmd` mirroring and CLI overrides.
-
 - `entryPoints` (2026-10-15, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)): workspace-relative paths or globs of files declared as entry points, for what no rule infers, such as a bundler's entry named by a path string in code or a stylesheet a template links; each matching file's doc carries `- Entry: declared`. This repository declares the Explorer client's `index.ts` and `styles.css`.
-- The shipped default globs are every file an adapter or the TypeScript parser can read, and every static asset, anywhere in the workspace (`**/*<ext>` from `LIVE_DOCUMENTATION_SOURCE_EXTENSIONS` and `LIVE_DOCUMENTATION_ASSET_EXTENSIONS`, and `**/<name>` from `LIVE_DOCUMENTATION_SOURCE_FILE_NAMES` for the manifests an adapter reads by name, `Cargo.toml`, `go.mod`, `pom.xml` and `pyproject.toml`, so that no other TOML or XML file is discovered by default; since 2026-10-16, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#c-and-c-read-by-the-grammar-the-include-rule-chosen-by-measurement-and-discovery-that-reads-every-suffix-anywhere-recorded-2026-10-16)). The eighty path-shaped patterns they replaced were this repository's own layout, which is why a cold run over another shape matched 49 of 1,842 files; `adapters/index.test.ts` holds every adapter's extensions to the list, so a new adapter without a default glob fails a test. Assets are a project's content, documented wherever they are found (the owner, 2026-10-15).
+- The shipped default glob is every file, `**/*` (since 2026-10-22, [Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)): a file carries authorial intent or wiring whether or not a reader understands it, and discovery's own rules alone say what is never documented. From 2026-10-16 it had been every file an adapter or the TypeScript parser can read and every static asset (`**/*<ext>` from the lists, `**/<name>` for the manifests read by name), which replaced eighty path-shaped patterns that were this repository's own layout, the reason a cold run over another shape had matched 49 of 1,842 files ([the decision](../../../../../layer-3/architectural-decisions.mdmd.md#c-and-c-read-by-the-grammar-the-include-rule-chosen-by-measurement-and-discovery-that-reads-every-suffix-anywhere-recorded-2026-10-16)). The lists now say which files a reader handles: `hasReader` by extension, or by exact name for `Cargo.toml`, `go.mod`, `pom.xml` and `pyproject.toml`, so that no other TOML or XML file counts as read; `isMediaAsset` for images, fonts and recordings, which hold nothing to read; and `noReaderHandles` for the rest, whose new doc starts with a note in its authored block and which a walk along dependencies lists as not read rather than unreachable. `adapters/index.test.ts` holds every adapter's extensions and names to the lists, so a new adapter's files are not taken for unread ones. Assets are a project's content, documented wherever they are found (the owner, 2026-10-15).
 - `exclude` (2026-10-16): workspace-relative paths or globs discovery skips, a folder that documents itself or a vendored tree the `.gitignore` does not cover, normalized as `entryPoints` is; this repository excludes `AI-Agent-Workspace/**`, its development record.
 
 ## Generated
@@ -92,13 +90,14 @@ Default file extension for generated Live Doc files (`".md"`).
 
 #### `LIVE_DOCUMENTATION_SOURCE_EXTENSIONS` {#symbol-live_documentation_source_extensions}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L108)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L109)
 
 ##### `LIVE_DOCUMENTATION_SOURCE_EXTENSIONS` — Summary
 The extensions of every file the generator can read: the scripts the
 built-in TypeScript parser reads, then each language adapter's files. Every
-adapter's extensions are here, a test holds the registry to it, and each has
-a default glob.
+adapter's extensions are here, and a test holds the registry to it. Any
+other file is documented too, but by a doc whose generated sections are
+empty because nothing reads it ({@link hasReader}).
 
 #### `LIVE_DOCUMENTATION_SOURCE_FILE_NAMES` {#symbol-live_documentation_source_file_names}
 - Type: const
@@ -107,36 +106,72 @@ a default glob.
 ##### `LIVE_DOCUMENTATION_SOURCE_FILE_NAMES` — Summary
 The names of the files an adapter reads by name rather than by extension:
 the package manifests whose extension (`.toml`, `.xml`, `.mod`) is shared by
-files that are not manifests. Each has a default glob for that name alone,
-so that no other TOML or XML file of a workspace is discovered by default.
-A test holds the registry's file names to this list.
+files that are not manifests, which no reader reads. A test holds the
+registry's file names to this list.
 
 #### `LIVE_DOCUMENTATION_ASSET_EXTENSIONS` {#symbol-live_documentation_asset_extensions}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L144)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L148)
 
 ##### `LIVE_DOCUMENTATION_ASSET_EXTENSIONS` — Summary
-The extensions of the static assets, images, fonts and media, that receive stub Live Docs so that the graph reaches them.
+The extensions of the static assets, images, fonts and media: files with
+nothing in them for a reader to find, so that the empty generated sections
+of their docs are the whole truth and need no note saying otherwise.
+
+#### `hasReader` {#symbol-hasreader}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L163)
+
+##### `hasReader` — Summary
+True when the TypeScript parser or a language adapter reads the file, by
+its name or its extension. A file no reader handles still gets a doc, and
+that doc starts with a note in its authored block saying why its generated
+sections are empty, unless it is an image, a font or a recording
+({@link LIVE_DOCUMENTATION_ASSET_EXTENSIONS}), which has nothing to read.
+
+##### `hasReader` — Parameters
+- `relativePath`: Workspace-relative path with forward slashes.
+
+#### `isMediaAsset` {#symbol-ismediaasset}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L171)
+
+##### `isMediaAsset` — Summary
+True for an image, a font or a recording, by its extension: a file with nothing for a reader to find.
+
+#### `noReaderHandles` {#symbol-noreaderhandles}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L186)
+
+##### `noReaderHandles` — Summary
+True for a file no reader handles that could hold what a reader finds: not
+read by its name or its extension ({@link hasReader}), and not an image, a
+font or a recording ({@link isMediaAsset}). Its doc starts with a note
+saying so, and a walk along dependencies lists it as not read rather than
+unreachable, since the wires out of it and into it are unknown.
+
+##### `noReaderHandles` — Parameters
+- `relativePath`: Workspace-relative path with forward slashes.
 
 #### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` {#symbol-live_documentation_default_globs}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L162)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L202)
 
 ##### `LIVE_DOCUMENTATION_DEFAULT_GLOBS` — Summary
-Default glob patterns selecting the workspace files that receive Live Docs:
-every file an adapter or the TypeScript parser can read, by its extension
-or, for a manifest, by its name, and every static asset, anywhere in the
-workspace, so that a cold run over any repository is
-honest about what it holds. Assets are a project's content and are
-documented wherever they are found (the owner's decision, 2026-10-15).
-Discovery removes what no project wants documented, `.git`, `node_modules`,
-the docs root, lock files and what `.gitignore` ignores, and what the
-configuration's `exclude` names. A repository that wants a narrower set
-names its own globs.
+The default glob: every file, anywhere in the workspace, hidden ones
+included, so that a cold run over any repository is honest about what it
+holds. A file carries authorial intent or wiring whether or not a reader
+understands it yet: "Is there authorial decisionmaking to convey here? If
+so, there should be a live documentation file for it." (the owner,
+2026-10-15). Discovery then removes the kinds of file that never get a doc
+(`.git`, `node_modules`, the docs root, lock files and documents, which the
+Explorer shows as linked documentation; the owner's list, 2026-10-22), what
+git ignores, and what the configuration's `exclude` names. A repository
+that wants a narrower set names its own globs.
 
 #### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` {#symbol-default_live_documentation_config}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L176)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L212)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 
 ##### `DEFAULT_LIVE_DOCUMENTATION_CONFIG` — Summary
@@ -149,7 +184,7 @@ config file.
 
 #### `normalizeLiveDocumentationConfig` {#symbol-normalizelivedocumentationconfig}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L202)
+- Source: [source](../../../../../../packages/engine/src/config/liveDocumentationConfig.ts#L238)
 - Returns: [`LiveDocumentationConfig`](#symbol-livedocumentationconfig)
 - Parameters: `input`: [`LiveDocumentationConfigInput`](#symbol-livedocumentationconfiginput)
 

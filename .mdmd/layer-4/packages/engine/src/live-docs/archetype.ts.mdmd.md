@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/archetype.ts
-- Generated At: 2026-10-16T20:40:17.783Z
+- Generated At: 2026-10-22T00:39:38.498Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 ### Notes
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
 - Priority order since 2026-10-16: explicit `archetypeOverrides` > a binary file is an `asset` (`isBinaryContent`: a NUL byte in the first 8,000 bytes, as git decides, a UTF-16 or UTF-32 byte order mark being text) > `.test.`/`.spec.` and the other test names > within a sample root, the test folders of the path inside the sample > test directory > default `implementation`. The fixtures-era rule that called every non-code file under a sample root an asset went that day on the owner's line, "The dividing line is plaintext/near-plain-text versus binary" ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#an-asset-is-a-binary-file-by-its-content-recorded-2026-10-16)); the generator reads each file's head once for it.
-- `hasMeaningfulAuthoredContent()` detects whether authored sections contain real content vs placeholder text
+- `hasMeaningfulAuthoredContent()` detects whether authored sections contain real content vs placeholder text; since 2026-10-22 the note a doc of a file no reader handles starts with (`UNREAD_NOTE`) counts as a placeholder, so such a doc with nothing else written is pruned with its file.
 - `globPatternToRegExp()` internal helper converts glob patterns to regex for override matching
 - `matchesPathPattern` (2026-10-15) exports the glob rule the archetype overrides use, so that the configuration's declared entry points are read by the same rule.
 
@@ -22,14 +22,14 @@ Archetype classification for Live Documentation. Determines which archetype (`im
 ### Public Symbols
 #### `BINARY_SNIFF_BYTES` {#symbol-binary_sniff_bytes}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L21)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L22)
 
 ##### `BINARY_SNIFF_BYTES` — Summary
 How much of a file's head {@link isBinaryContent} reads: git's own window for the same question.
 
 #### `isBinaryContent` {#symbol-isbinarycontent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L32)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L33)
 
 ##### `isBinaryContent` — Summary
 True when a file's content is binary: a NUL byte within its first
@@ -42,7 +42,7 @@ is not read today, since discovery admits no archive.
 
 #### `resolveArchetype` {#symbol-resolvearchetype}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L71)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L72)
 - Returns: [`LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype)
 - Parameters: `config`: [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig)
 
@@ -78,10 +78,10 @@ const archetype = resolveArchetype("packages/app/src/main.test.ts", config);
 
 #### `hasMeaningfulAuthoredContent` {#symbol-hasmeaningfulauthoredcontent}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L144)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L145)
 
 ##### `hasMeaningfulAuthoredContent` — Summary
-Checks whether an authored markdown block carries information beyond the default placeholders.
+Checks whether an authored markdown block carries information beyond the default placeholders and the note a doc of a file no reader handles starts with.
 
 ##### `hasMeaningfulAuthoredContent` — Parameters
 - `authoredBlock`: Raw markdown captured between the `## Authored` markers.
@@ -91,7 +91,7 @@ Checks whether an authored markdown block carries information beyond the default
 
 #### `matchesPathPattern` {#symbol-matchespathpattern}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L172)
+- Source: [source](../../../../../../packages/engine/src/live-docs/archetype.ts#L174)
 
 ##### `matchesPathPattern` — Summary
 True when a workspace-relative path matches a configuration pattern: a path
@@ -105,4 +105,5 @@ entry points are read by this rule.
 - `node:path` - `path`
 - [`liveDocumentationConfig.LiveDocumentationArchetype`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationarchetype) (type-only)
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
+- [`document.UNREAD_NOTE`](./document.ts.mdmd.md#symbol-unread_note)
 <!-- LIVE-DOC:END Dependencies -->

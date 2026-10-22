@@ -8,28 +8,61 @@ import { discoverTargetFiles } from "./discovery";
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
 
 /**
- * A workspace with a file for every rule: hidden files and folders, the
- * repository's store, installed packages at two depths, the default docs root
- * and another folder a configuration may name as its docs root, lock files of
- * three kinds, a build the `.gitignore` ignores, and trees a configuration
- * may exclude.
+ * A workspace with a file for every rule: hidden files and folders, files no
+ * reader handles (a workflow, a `Makefile`), the repository's store,
+ * installed packages at two depths, the default docs root and another folder
+ * a configuration may name as its docs root, lock files of three kinds,
+ * documents (markdown anywhere, an agent's skill among them, other prose
+ * formats, licences and their kin by name) beside source files whose names
+ * only look like documents, a build the `.gitignore` ignores, and trees a
+ * configuration may exclude.
  */
 const FILES = [
+  ".agents/skills/map/SKILL.md",
   ".config.json",
   ".devcontainer/devcontainer.json",
   ".git/hooks/pre-commit.js",
+  ".github/workflows/ci.yml",
   ".gitignore",
   ".live-documentation/index.json",
   ".live-documentation/source/helper.ts",
+  "CHANGELOG",
+  "COPYING.txt",
+  "LICENSE",
+  "Makefile",
   "Pipfile.lock",
+  "README.md",
   "dist/bundle.js",
+  "docs/guide.rst",
   "docs/ld/index.json",
   "node_modules/dep/index.js",
   "package-lock.json",
+  "packages/app/LICENSE-APACHE-2.0",
   "packages/app/node_modules/dep/index.js",
   "packages/app/packages.lock.json",
   "src/data.json",
   "src/index.ts",
+  "src/license.ts",
+  "src/notice_test.go",
+  "src/readme-generator.ts",
+  "tools/other.ts",
+  "tools/self/x.ts",
+  "vendor/lib.ts"
+];
+
+/** What the default discovers in that workspace: every file but the ones no configuration can have documented and the build git ignores. */
+const DOCUMENTED = [
+  ".config.json",
+  ".devcontainer/devcontainer.json",
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "Makefile",
+  "docs/ld/index.json",
+  "src/data.json",
+  "src/index.ts",
+  "src/license.ts",
+  "src/notice_test.go",
+  "src/readme-generator.ts",
   "tools/other.ts",
   "tools/self/x.ts",
   "vendor/lib.ts"
@@ -61,31 +94,15 @@ describe("discoverTargetFiles", () => {
     return files.map((file) => path.relative(workspace, file).split(path.sep).join("/"));
   }
 
-  it("reads hidden files and folders like any other, and never .git, node_modules, the docs root, lock files or what .gitignore ignores", async () => {
-    expect(await discover()).toEqual([
-      ".config.json",
-      ".devcontainer/devcontainer.json",
-      "docs/ld/index.json",
-      "src/data.json",
-      "src/index.ts",
-      "tools/other.ts",
-      "tools/self/x.ts",
-      "vendor/lib.ts"
-    ]);
+  it("documents every file by default, hidden ones and ones no reader handles included, and never .git, node_modules, the docs root, lock files, documents or what .gitignore ignores", async () => {
+    expect(await discover()).toEqual(DOCUMENTED);
   });
 
-  it("holds an include set to the same rules, lock files of every kind among them", async () => {
-    expect(await discover({}, ["**/*"])).toEqual([
-      ".config.json",
-      ".devcontainer/devcontainer.json",
-      ".gitignore",
-      "docs/ld/index.json",
-      "src/data.json",
-      "src/index.ts",
-      "tools/other.ts",
-      "tools/self/x.ts",
-      "vendor/lib.ts"
-    ]);
+  it("holds configured globs and an include set to the same rules, whatever they name", async () => {
+    expect(await discover({ glob: ["**/*.md", "**/*.json", "LICENSE", "CHANGELOG"] })).toEqual([".config.json", ".devcontainer/devcontainer.json", "docs/ld/index.json", "src/data.json"]);
+    expect(await discover({}, ["**/*"])).toEqual(DOCUMENTED);
+    expect(await discover({}, ["README.md", ".agents/skills/map/SKILL.md", "LICENSE", "packages/app/LICENSE-APACHE-2.0", "COPYING.txt", "CHANGELOG", "docs/guide.rst", "package-lock.json", "src/index.ts"]))
+      .toEqual(["src/index.ts"]);
   });
 
   it("derives the docs root from the configuration, however it is spelled", async () => {

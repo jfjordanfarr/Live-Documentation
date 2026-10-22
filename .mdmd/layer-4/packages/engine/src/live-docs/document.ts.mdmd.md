@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/document.ts
-- Generated At: 2026-10-15T15:49:39.629Z
+- Generated At: 2026-10-22T00:39:38.785Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ The grammar of a Live Doc: the model of everything a doc says, `renderLiveDoc`, 
 - `authoredBlockOf` is the one lenient reader: the generator uses it to carry an authored block forward from a doc written before the grammar or by hand. `symbolName` strips the parenthesised suffix a heading carries to tell two symbols of one name apart.
 - The module has no imports, so the Explorer client bundles it to render a doc back from the graph. Resolving a link between docs lives in `graph.ts`.
 - The `Entry` lines (2026-10-15, [Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) stand between `Code Path` and `Generated At`: a reason, `program`, `command`, `module`, `opening`, `tooling` or `declared`, and its evidence, a symbol linked or bare, a command's name and its manifest, an opening. `parseEntry` refuses evidence that does not fit the reason; `entryWords` gives the CLI and the panel one wording. A test is an entry by its archetype and carries no line.
+- `UNREAD_NOTE` and `UNREAD_AUTHORED_BLOCK` (2026-10-22): the note a new doc of a file no reader handles starts with, in its authored block in place of `_Pending notes_` and never in a generated region, where the owner asked for it: "a reasonable caveat to throw in the Authored section and worthy of remembering when we visit such a file again" ([Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)). `hasMeaningfulAuthoredContent` reads it as a placeholder, so a doc holding nothing else is pruned with its file; a pass that adds a reader finds the docs to revisit by its exact words.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -106,9 +107,29 @@ One entry of the `Re-Exported Symbol Anchors` section.
 ##### `DEFAULT_AUTHORED_BLOCK` — Summary
 The authored block a new doc starts with.
 
+#### `UNREAD_NOTE` {#symbol-unread_note}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L159)
+
+##### `UNREAD_NOTE` — Summary
+The note a new doc of a file no reader handles starts with, in place of
+`_Pending notes_`. Its generated sections say only what was detected, and
+nothing was looked for; the note says so where a person reads it, in the
+authored block, since the generated regions say only what a reader found
+(the owner, 2026-10-22: "a reasonable caveat to throw in the Authored
+section and worthy of remembering when we visit such a file again"). Like
+the pending placeholders it is not authored content of its own.
+
+#### `UNREAD_AUTHORED_BLOCK` {#symbol-unread_authored_block}
+- Type: const
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L162)
+
+##### `UNREAD_AUTHORED_BLOCK` — Summary
+The authored block a new doc of a file no reader handles starts with: {@link DEFAULT_AUTHORED_BLOCK} with {@link UNREAD_NOTE}.
+
 #### `entryWords` {#symbol-entrywords}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L156)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L170)
 - Parameters: `entry`: [`Entry`](#symbol-entry)
 
 ##### `entryWords` — Summary
@@ -119,7 +140,7 @@ Explorer shows them: "program main", "command build of package.json",
 
 #### `symbolName` {#symbol-symbolname}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L176)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L190)
 
 ##### `symbolName` — Summary
 The name of a symbol without the parenthesised suffix a heading carries to
@@ -128,7 +149,7 @@ tell it from another of the same name, such as `Widget (interface)` or
 
 #### `renderLiveDoc` {#symbol-renderlivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L185)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L199)
 - Parameters: `doc`: [`LiveDoc`](#symbol-livedoc)
 
 ##### `renderLiveDoc` — Summary
@@ -136,7 +157,7 @@ Writes a Live Doc as markdown. The output always ends with one newline.
 
 #### `renderSymbolBlocks` {#symbol-rendersymbolblocks}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L237)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L251)
 - Parameters: `symbols`: [`SymbolBlock`](#symbol-symbolblock)[]
 
 ##### `renderSymbolBlocks` — Summary
@@ -144,14 +165,14 @@ Writes the body of the `Public Symbols` section: the lines between its markers.
 
 #### `LiveDocSyntaxError` {#symbol-livedocsyntaxerror}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L308)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L322)
 
 ##### `LiveDocSyntaxError` — Summary
 Thrown when text is not a Live Doc. `line` is one-based.
 
 #### `parseLiveDoc` {#symbol-parselivedoc}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L316)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L330)
 - Returns: [`LiveDoc`](#symbol-livedoc)
 
 ##### `parseLiveDoc` — Summary
@@ -159,7 +180,7 @@ Reads a Live Doc back from markdown, refusing anything outside the grammar.
 
 #### `authoredBlockOf` {#symbol-authoredblockof}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L606)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L620)
 
 ##### `authoredBlockOf` — Summary
 The authored block of any text that has one, whatever else the text holds.
@@ -171,7 +192,7 @@ is nothing to carry.
 
 #### `Reader` {#symbol-reader}
 - Type: class
-- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L625)
+- Source: [source](../../../../../../packages/engine/src/live-docs/document.ts#L639)
 
 ##### `Reader` — Summary
 Reads a text line by line for the parsers, and fails with the line number when the grammar is not met.

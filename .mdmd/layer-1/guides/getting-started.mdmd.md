@@ -100,7 +100,7 @@ Create `.live-docs.config.json` at the repository root and pass it with `--confi
 | `extension`            | `.md`                 | File extension for Live Docs                                                       |
 | `slugDialect`          | `github`              | Header anchor style (`github`, `azure-devops`, `gitlab`)                           |
 | `requireRelativeLinks` | `true`                | Enforce relative links so the mirror works as a repo-hosted wiki                   |
-| `glob`                 | every readable file   | Which files receive Live Docs; by default every file an adapter can read, anywhere  |
+| `glob`                 | every file            | Which files receive Live Docs; by default every file, anywhere, but documents, lock files and what git ignores |
 | `exclude`              | `[]`                  | Paths or globs discovery skips: a folder that documents itself, a vendored tree     |
 | `bundleExclude`        | `[]`                  | Linked markdown the Explorer bundle must leave out (large archives, private notes) |
 
