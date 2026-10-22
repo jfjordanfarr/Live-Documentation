@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/visualize-history-sample.ts
 - Entry: command `live-docs:visualize:history-sample` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-18T21:08:49.542Z
+- Generated At: 2026-10-22T16:47:57.678Z
 
 ## Authored
 ### Purpose
@@ -37,3 +37,8 @@ _No public symbols detected_
 - [`scripted-repository.ScriptedCommit`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-scriptedcommit)
 - [`scripted-repository.buildRepository`](../../tests/integration/live-docs/scripted-repository.ts.mdmd.md#symbol-buildrepository)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

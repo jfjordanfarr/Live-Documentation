@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-10-17T23:33:28.138Z
+- Generated At: 2026-10-22T17:22:32.590Z
 
 ## Authored
 ### Purpose
@@ -49,14 +49,14 @@ Public control minimum, maximum and step, also used when reading saved or shared
 
 #### `LAYOUT_PRESETS` {#symbol-layout_presets}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L28)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L29)
 
 ##### `LAYOUT_PRESETS` — Summary
 Packing defaults only: selecting a preset preserves coupling, symbol scaling and unrelated controls.
 
 #### `applyLayoutPreset` {#symbol-applylayoutpreset}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L40)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L41)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `preset`: [`LayoutPreset`](#symbol-layoutpreset)
 
@@ -65,7 +65,7 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `layoutPresetOf` {#symbol-layoutpresetof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L46)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L47)
 - Returns: [`LayoutPreset`](#symbol-layoutpreset)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -74,7 +74,7 @@ Derive the label from actual settings, so advanced edits never masquerade as a s
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L56)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L57)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -82,7 +82,7 @@ Read only known, finite settings and bound them to their public control ranges.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L77)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L78)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -91,7 +91,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L82)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L83)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -105,3 +105,9 @@ Merge a validated partial snapshot over the current values, leaving unrelated pr
 - [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning) (type-only)
 - [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

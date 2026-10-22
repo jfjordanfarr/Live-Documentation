@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/search-field.ts
-- Generated At: 2026-10-16T14:48:53.699Z
+- Generated At: 2026-10-22T16:47:54.938Z
 
 ## Authored
 ### Purpose
@@ -55,3 +55,9 @@ Make a search field over an input and a results element: typing searches the sco
 - [`graph-search.searchGraph`](./graph-search.ts.mdmd.md#symbol-searchgraph)
 - [`graph-search.searchRows`](./graph-search.ts.mdmd.md#symbol-searchrows)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

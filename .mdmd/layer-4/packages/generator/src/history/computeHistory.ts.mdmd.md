@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/computeHistory.ts
-- Generated At: 2026-10-18T00:39:23.804Z
+- Generated At: 2026-10-22T16:47:56.943Z
 
 ## Authored
 ### Purpose
@@ -74,3 +74,10 @@ Computes the history and writes the sequence.
 - [`generatorIdentity`](./generatorIdentity.ts.mdmd.md#symbol-generatoridentity)
 - [`summarizeChange.SummaryTask`](./summarizeChange.ts.mdmd.md#symbol-summarytask) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../../../layer-3/live-documentation-pipeline.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

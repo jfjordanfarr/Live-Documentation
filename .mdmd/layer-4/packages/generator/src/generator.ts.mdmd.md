@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/generator/src/generator.ts
 - Entry: module of [`packages/generator/package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-22T00:54:20.016Z
+- Generated At: 2026-10-22T16:47:56.908Z
 
 ## Authored
 ### Purpose
@@ -20,13 +20,14 @@ Coordinates Live Documentation generation: analyzes source files, carries author
 - The stale-doc pruner owns its two filesystem helpers. `directoryExists` treats a stat failure as absence; `cleanupEmptyParents` removes empty parents after a doc deletion up to, but not including, the base-layer root, and stops on a nonempty folder or filesystem error. They were extracted into an engine `fileUtils.ts` during [the December 6 refactor](../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-06.3.SUMMARIZED.md) and returned to their only caller on 2026-10-19; no analysis or doc-format behavior changed.
 - `keepAuthoredStaleDocs` (2026-10-20, [Turn 9](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) decides whether a stale doc with authored words is kept: true for a person's workspace, so no written words vanish unread; false for the history's lens, so that a past commit's mirror regenerated in place gives exactly the files this run documents.
 - Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) a new doc of a file no reader handles (`noReaderHandles`: no reader by name or extension, and not an image, a font or a recording) starts with `UNREAD_AUTHORED_BLOCK`, whose Notes say so in place of `_Pending notes_`. The note is written once, when the doc is made; from then on it is the author's to keep or revise, and a doc holding nothing but it is pruned with its file like one holding the pending placeholders.
+- Since 2026-10-22 ([the decision](../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) a run reads every markdown document discovery finds (`readMarkdownDocuments`), whatever subset it renders, and `citingDocuments` turns their links into the `Cited By` index that `composeGenerated` writes on each cited file's doc, when the configuration's `citedBy` is on; on this repository the reading adds under a second to a run. A document's change therefore moves the docs of the files it cites or stops citing, which a full run or `--check` sees and a `--changed` run, which renders changed sources alone, does not.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LiveDocGeneratorResult` {#symbol-livedocgeneratorresult}
 - Type: interface
-- Source: [source](../../../../../packages/generator/src/generator.ts#L56)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L57)
 
 ##### `LiveDocGeneratorResult` — Summary
 Summary returned by {@link generateLiveDocs} after processing all target files.
@@ -36,7 +37,7 @@ the `files` array gives per-file detail for dry-run previews and CI checks.
 
 #### `generateLiveDocs` {#symbol-generatelivedocs}
 - Type: function
-- Source: [source](../../../../../packages/generator/src/generator.ts#L102)
+- Source: [source](../../../../../packages/generator/src/generator.ts#L103)
 - Parameters: `options`: `GenerateLiveDocsOptions`
 
 ##### `generateLiveDocs` — Summary
@@ -77,11 +78,13 @@ behind the `Entry` lines (2026-10-15).
 - [`core.WorkspaceSymbolIndex`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-workspacesymbolindex)
 - [`core.analyzeSourceFile`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-analyzesourcefile)
 - [`core.buildWorkspaceIndexes`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-buildworkspaceindexes)
+- [`core.composeCitedBy`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composecitedby)
 - [`core.composeDependencies`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composedependencies)
 - [`core.composeEntries`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composeentries)
 - [`core.composeReExports`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composereexports)
 - [`core.composeSymbolBlocks`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-composesymbolblocks)
 - [`core.computePublicSymbolHeadingInfo`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-computepublicsymbolheadinginfo)
+- [`core.discoverDocuments`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discoverdocuments)
 - [`core.discoverTargetFiles`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-discovertargetfiles)
 - [`core.hasMeaningfulAuthoredContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent)
 - [`core.isBinaryContent`](../../engine/src/live-docs/core.ts.mdmd.md#symbol-isbinarycontent)
@@ -96,7 +99,16 @@ behind the `Entry` lines (2026-10-15).
 - [`gitUtils.detectChangedFiles`](../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-detectchangedfiles)
 - [`graphFiles.readLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`graphFiles.writeLiveDocGraph`](../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-writelivedocgraph)
+- [`relatedDocs.DocumentText`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-documenttext)
+- [`relatedDocs.citingDocuments`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-citingdocuments)
+- [`relatedDocs.isMarkdownDocument`](../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-ismarkdowndocument)
 - [`pathUtils.normalizeWorkspacePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - [`pathUtils.toWorkspaceFileUri`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacefileuri)
 - [`pathUtils.toWorkspaceRelativePath`](../../engine/src/tooling/pathUtils.ts.mdmd.md#symbol-toworkspacerelativepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../../layer-3/live-documentation-pipeline.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

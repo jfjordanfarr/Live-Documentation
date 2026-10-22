@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-10-22T00:39:38.756Z
+- Generated At: 2026-10-22T16:47:52.839Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 - Two latent faults found with the change: the first pass had read `.ts .tsx .js .jsx .mjs .cjs` by a hardcoded list, so `.mts` and `.cts` symbols were never indexed although the main pass read them (now `SUPPORTED_SCRIPT_EXTENSIONS`); and `inferScriptKind` was handed the path where it wanted the extension.
 - When TS/JS source has bare star re-export syntax, the first pass uses the same current-workspace re-export resolver that renders its `Re-Exported Symbol Anchors` section. It indexes only anchors that section will publish, marked as re-exports, so imports can link to real barrel anchors and declaration links still prefer origins. Namespace re-exports are ordinary exported symbols under their namespace name and do not trigger peer expansion here.
 - Since 2026-10-22 the shipped glob is every file, and documents are never documented: markdown, reStructuredText and AsciiDoc by suffix, and by name the plain-text readme, licence and its kin (`LICENSE-MIT`, `COPYING`, `NOTICE`), changelog, authors and contributing files with no extension or `.txt`, a name with another extension (`license.ts`) being code. A document reaches the map as linked documentation when a doc's authored words link to it. The owner: "I don't think we want to make a doc for a doc. I think we should aim for the "Linked Documentation" bundle to handle that.", and of licences, "they are docs and should be treated as such"; the markdown rule is absolute for now and expected to change for "prompts as programs", an agent's `SKILL.md` among them ([Turns 7 and 8 of the October 21 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-7)). The walk no longer enters `.git`, `node_modules` or the docs root at all (`glob`'s `ignore`), so every-file discovery walks this repository in under half a second.
+- `discoverDocuments` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): the workspace's documents for the generator's `Cited By` sections, found by the same walk as the files (now shared as `walk` and `keptByGitAndConfiguration`): every document anywhere, whatever the configured globs name, since a document anywhere may link to a file and a doc's words may link to a document anywhere; less what git ignores and what `exclude` names; never `.git`, `node_modules` or the generated docs' base layer, while the authored documents a repository keeps under its docs root beside that layer count. The configured globs still decide which files get docs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -70,16 +71,35 @@ const files = await discoverTargetFiles({
 ##### `discoverTargetFiles` — Links
 - `detectChangedFiles` — *
 
+#### `discoverDocuments` {#symbol-discoverdocuments}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L236)
+
+##### `discoverDocuments` — Summary
+The workspace's documents ({@link isDocument}), which never get a doc of
+their own and reach the map as linked documentation instead: every one in
+the workspace, whatever the configured globs name, since a doc's authored
+words may link to a document anywhere and a document anywhere may link to a
+file; held to the same rules as the files otherwise (what git ignores and
+what the configuration's `exclude` names are left out), everywhere but
+`.git`, `node_modules` and the generated docs themselves. The authored
+documents a repository keeps beside its generated docs, under the docs root
+but outside its base layer, are documents like any other. The generator
+reads their links for the `Cited By` sections.
+
+##### `discoverDocuments` — Returns
+Workspace-relative paths with forward slashes, sorted.
+
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L257)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L298)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L281)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L322)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass
@@ -130,3 +150,9 @@ parser; every other file is read by its language adapter.
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../../../layer-3/live-documentation-pipeline.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

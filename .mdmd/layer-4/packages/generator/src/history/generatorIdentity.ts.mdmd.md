@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/generatorIdentity.ts
-- Generated At: 2026-10-19T19:22:27.355Z
+- Generated At: 2026-10-22T16:47:56.961Z
 
 ## Authored
 ### Purpose
@@ -40,3 +40,8 @@ An absent lock has its own stable identity; a scanned project's lock is never re
 - [`gitUtils.execFileAsync`](../../../engine/src/live-docs/gitUtils.ts.mdmd.md#symbol-execfileasync)
 - [`format.GeneratorIdentity`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-generatoridentity) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

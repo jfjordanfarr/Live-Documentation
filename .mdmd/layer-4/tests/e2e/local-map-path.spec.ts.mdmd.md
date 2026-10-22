@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-path.spec.ts
-- Generated At: 2026-10-20T15:21:33.509Z
+- Generated At: 2026-10-22T16:47:58.567Z
 
 ## Authored
 ### Purpose
@@ -52,3 +52,8 @@ _No public symbols detected_
 - [`still-picture.scoreExpanded`](./still-picture.ts.mdmd.md#symbol-scoreexpanded)
 - [`still-picture.symbolCounts`](./still-picture.ts.mdmd.md#symbol-symbolcounts)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

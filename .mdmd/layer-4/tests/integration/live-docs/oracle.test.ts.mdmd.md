@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/oracle.test.ts
-- Generated At: 2026-09-27T23:21:33.882Z
+- Generated At: 2026-10-22T16:48:00.967Z
 
 ## Authored
 ### Purpose
@@ -26,3 +26,8 @@ _No public symbols detected_
 - [`compare.compareFixture`](../../../scripts/oracle/compare.ts.mdmd.md#symbol-comparefixture)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

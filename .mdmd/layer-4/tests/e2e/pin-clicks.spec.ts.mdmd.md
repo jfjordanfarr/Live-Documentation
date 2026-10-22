@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/pin-clicks.spec.ts
-- Generated At: 2026-10-16T21:50:08.451Z
+- Generated At: 2026-10-22T16:47:58.787Z
 
 ## Authored
 ### Purpose
@@ -29,3 +29,8 @@ _No public symbols detected_
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

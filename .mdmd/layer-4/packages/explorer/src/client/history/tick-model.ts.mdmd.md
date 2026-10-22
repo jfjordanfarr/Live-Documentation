@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/tick-model.ts
-- Generated At: 2026-10-22T02:34:31.587Z
+- Generated At: 2026-10-22T16:47:54.264Z
 
 ## Authored
 ### Purpose
@@ -138,3 +138,10 @@ The stop the step key reaches from a step: the next major tick forward, the prev
 - [`types.HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis) (type-only)
 - [`types.HistoryGranularity`](../types.ts.mdmd.md#symbol-historygranularity) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

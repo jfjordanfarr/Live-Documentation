@@ -75,9 +75,21 @@ export interface LiveDocumentationConfig {
   /**
    * Workspace-relative glob patterns for markdown files that Live Docs may link
    * to but that the Explorer must not bundle or show as related documents
-   * (for example, a large chat archive).
+   * (for example, a large chat archive). A document the patterns name neither
+   * cites a file nor is cited by one.
    */
   bundleExclude: string[];
+  /**
+   * Whether each doc carries a `Cited By` section naming the documents whose
+   * markdown links name its file or its doc, the reverse of the links a doc's
+   * authored words make, so that a README or a design note that points at a
+   * file is related to it as the file's own words would make it. True by
+   * default, the owner's rule of 2026-01-06; false keeps the related documents
+   * to what the docs' authored words name, so that no document comes along
+   * uninvited (the owner, 2026-10-22). What a document links to is read from
+   * the documents discovery finds, held to `exclude` and `bundleExclude`.
+   */
+  citedBy: boolean;
 }
 
 /**
@@ -220,7 +232,8 @@ export const DEFAULT_LIVE_DOCUMENTATION_CONFIG: LiveDocumentationConfig = {
   exclude: [],
   requireRelativeLinks: true,
   slugDialect: "github",
-  bundleExclude: []
+  bundleExclude: [],
+  citedBy: true
 };
 
 /**
@@ -272,7 +285,8 @@ export function normalizeLiveDocumentationConfig(
     requireRelativeLinks:
       input?.requireRelativeLinks ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.requireRelativeLinks,
     slugDialect: input?.slugDialect ?? DEFAULT_LIVE_DOCUMENTATION_CONFIG.slugDialect,
-    bundleExclude
+    bundleExclude,
+    citedBy: typeof input?.citedBy === "boolean" ? input.citedBy : DEFAULT_LIVE_DOCUMENTATION_CONFIG.citedBy
   };
 }
 

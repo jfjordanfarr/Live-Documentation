@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/estateGraph.ts
-- Generated At: 2026-10-09T20:42:16.232Z
+- Generated At: 2026-10-22T16:47:52.913Z
 
 ## Authored
 ### Purpose
@@ -68,3 +68,9 @@ True when `inner` is the same folder as `outer` or lies inside it; the empty fol
 - [`openings.sqlNameMatches`](./openings.ts.mdmd.md#symbol-sqlnamematches)
 - [`openings.sqlObjectName`](./openings.ts.mdmd.md#symbol-sqlobjectname-function)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/boards.mdmd.md`](../../../../../layer-3/boards.mdmd.md)
+- [`.mdmd/layer-3/world-map.mdmd.md`](../../../../../layer-3/world-map.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

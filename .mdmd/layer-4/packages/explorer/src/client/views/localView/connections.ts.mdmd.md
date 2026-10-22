@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-10-16T04:41:10.342Z
+- Generated At: 2026-10-22T16:47:55.848Z
 
 ## Authored
 ### Purpose
@@ -80,3 +80,9 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-alignments.ts
-- Generated At: 2026-10-13T16:52:34.607Z
+- Generated At: 2026-10-22T16:47:55.371Z
 
 ## Authored
 ### Purpose
@@ -38,3 +38,8 @@ of ancestors, and joins both complete runs beside its selected step.
 - [`branch-placement.BoundaryAlignment`](./branch-placement.ts.mdmd.md#symbol-boundaryalignment) (type-only)
 - [`branch-scene.Scene`](./branch-scene.ts.mdmd.md#symbol-scene) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

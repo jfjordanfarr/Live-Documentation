@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetRegistry.cs
-- Generated At: 2026-09-27T23:21:32.657Z
+- Generated At: 2026-10-22T16:47:59.229Z
 
 ## Authored
 ### Purpose
@@ -184,3 +184,9 @@ A UTC timestamp captured at registration time.
 ### Dependencies
 - [`BaseWidget`](./BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/index.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/index.md)
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md)
+<!-- LIVE-DOC:END Cited By -->

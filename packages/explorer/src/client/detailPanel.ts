@@ -337,7 +337,21 @@ function renderDocumentation(
     parts.push(`<div class="doc-generated">${generatedHtml}</div>`);
   }
 
+  if (file.citedBy && file.citedBy.length > 0) {
+    parts.push(`<div class="doc-generated">${sectionHtml("Cited By", `<div class="dep-list">${file.citedBy.map(entry => renderCitedByItem(entry, node.docPath, links)).join("")}</div>`)}</div>`);
+  }
+
   return parts.join("");
+}
+
+/**
+ * One document that cites the file, as its doc's `Cited By` section lists it: a link that opens the document in this
+ * reader when the bundle carries it, else its path alone, since the Related Docs name only what the bundle carries.
+ */
+function renderCitedByItem(entry: { label: string; link: string }, fromDocPath: string, links: ReaderLinkContext): string {
+  const target = resolveReaderTarget(entry.link, fromDocPath, links);
+  const text = `<code>${escapeHtml(entry.label)}</code>`;
+  return `<div class="dep-item">${target?.kind === "bundled-doc" ? readerLink(target, text) : text}</div>`;
 }
 
 /**

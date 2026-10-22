@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/ruby.ts
-- Generated At: 2026-10-15T15:49:39.158Z
+- Generated At: 2026-10-22T16:47:52.333Z
 
 ## Authored
 ### Purpose
@@ -42,3 +42,8 @@ Language adapter for Ruby (`.rb`, `.rake`, `Gemfile`, `Rakefile`). Extracts clas
 - [`core.SymbolDocumentationParameter`](../core.ts.mdmd.md#symbol-symboldocumentationparameter) (type-only)
 - [`core.TypeReference`](../core.ts.mdmd.md#symbol-typereference) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

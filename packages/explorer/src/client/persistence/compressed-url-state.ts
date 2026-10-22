@@ -65,6 +65,8 @@ export interface CompressedPayload {
   f?: [number, number];
   /** Whether related documentation participates in the spatial graph; omitted by older links. */
   r?: boolean;
+  /** Whether the documents citing the files participate in the spatial graph (2026-10-22); omitted by older links. */
+  j?: boolean;
   /** Version 1 expanded cards; no longer written. */
   c?: string[];
   /** The directories opened in the Local Map (2026-10-08). */
@@ -104,7 +106,7 @@ export interface UrlStateSnapshot {
   /** The directories opened in the Local Map; folder navigation is a history step, while pin edits remain within it. */
   openDirectories: ReadonlySet<string>;
   retentionOrder?: readonly string[];
-  filters: { showTests: boolean; showAssets: boolean; showRelatedDocs?: boolean };
+  filters: { showTests: boolean; showAssets: boolean; showRelatedDocs?: boolean; showCitingDocs?: boolean };
   /** Absent on older links; those retain the viewer's existing preferences. */
   layout?: LayoutSettings;
   /** The end of the path asked for, drawn from the newest pin; null when no path is asked. */
@@ -150,6 +152,7 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   const layout = readLayoutSettings(snapshot.layout);
   if (layout) payload.l = layout;
   if (typeof snapshot.filters.showRelatedDocs === "boolean") payload.r = snapshot.filters.showRelatedDocs;
+  if (typeof snapshot.filters.showCitingDocs === "boolean") payload.j = snapshot.filters.showCitingDocs;
   if (snapshot.retentionOrder?.length) {
     payload.o = [...reconcileRetained({
       pins: snapshot.pinSet,
@@ -222,6 +225,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     ? { showTests: payload.f[0] === 1, showAssets: payload.f[1] === 1 }
     : payload.v < 3 ? { showTests: true, showAssets: true } : { ...DEFAULT_SNAPSHOT.filters };
   if (typeof payload.r === "boolean") filters.showRelatedDocs = payload.r;
+  if (typeof payload.j === "boolean") filters.showCitingDocs = payload.j;
   const retentionOrder = Array.isArray(payload.o)
     ? payload.o.filter((key): key is string => typeof key === "string") : undefined;
 

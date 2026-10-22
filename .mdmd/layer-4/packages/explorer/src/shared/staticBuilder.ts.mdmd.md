@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/staticBuilder.ts
-- Generated At: 2026-10-20T21:28:56.298Z
+- Generated At: 2026-10-22T17:22:34.490Z
 
 ## Authored
 ### Purpose
@@ -18,13 +18,14 @@ Builds the static Explorer bundle: `explorer-data.json`, holding the graph index
 - Since 2026-10-09 ([Turn 10 of the October 9 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-09.1.record.md#turn-10)) a bundle built with a board reads the graph through `readEstateGraph`, so the things the board names from folders scanned alone are merged into one graph before the bundle is written, and the viewer draws it as it draws any graph with a board; a board at the root of one scanned workspace reads as before. A fault in the board's text stops the build with its path and line.
 - Since 2026-10-15 the bundle carries the configuration's `sampleRoots` when any are set; the client reads product facts from the bundle, never from a path convention.
 - Since 2026-10-17 (C1 of [the plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md)) the bundle carries the history the exporter asks for as `explorer-history.json` beside the data, a window re-based on its first commit, and says so in the data's `history` field: by default all of it when `<root>/history/history.json` exists and none otherwise, and a build that carries none removes a history an earlier build left. The history is a file apart so that the client fetches it only when the history is opened, and a page without it is no slower.
+- Since 2026-10-22 ([the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) the links carry both directions: `relatedDocsOf` over each doc's authored words for what the file cites, and each doc's `Cited By` section, resolved from the doc's place, for what cites it; the bundle then carries every document either names. On this repository that is 78 documents against 63.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ExportedHistory` {#symbol-exportedhistory}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L38)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L39)
 - Returns: [`HistorySelection`](../../../engine/src/live-docs/history/window.ts.mdmd.md#symbol-historyselection)
 
 ##### `ExportedHistory` — Summary
@@ -32,21 +33,21 @@ How much of the history an export carries: none of it, or the part a selection n
 
 #### `BuildStaticExplorerOptions` {#symbol-buildstaticexploreroptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L44)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L45)
 
 ##### `BuildStaticExplorerOptions` — Summary
 Options controlling a static Explorer build.
 
 #### `BuildStaticExplorerResult` {#symbol-buildstaticexplorerresult}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L72)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L73)
 
 ##### `BuildStaticExplorerResult` — Summary
 Outcome of {@link buildStaticExplorer}, including file paths and size statistics.
 
 #### `buildStaticExplorer` {#symbol-buildstaticexplorer}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L93)
+- Source: [source](../../../../../../packages/explorer/src/shared/staticBuilder.ts#L94)
 - Parameters: `options`: [`BuildStaticExplorerOptions`](#symbol-buildstaticexploreroptions)
 
 ##### `buildStaticExplorer` — Summary
@@ -61,6 +62,7 @@ Build a complete static Explorer bundle.
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
 - [`board.parseBoard`](../../../engine/src/live-docs/board.ts.mdmd.md#symbol-parseboard)
 - [`document.LiveDocSyntaxError`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
+- [`graph.resolveDocLink`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-resolvedoclink)
 - [`graphFiles.readEstateGraph`](../../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readestategraph)
 - [`graphFiles.readLiveDocGraph`](../../../engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`format.HISTORY_DIRECTORY`](../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_directory)
@@ -76,3 +78,10 @@ Build a complete static Explorer bundle.
 - [`StaticExplorerData`](./staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - `path`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

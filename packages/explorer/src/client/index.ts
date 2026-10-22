@@ -218,6 +218,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   const filterToggleTests = getInputById("filter-toggle-tests");
   const filterToggleAssets = getInputById("filter-toggle-assets");
   const filterToggleRelatedDocs = getInputById("filter-toggle-related-docs");
+  const filterToggleCitingDocs = getInputById("filter-toggle-citing-docs");
   const statsLine = document.getElementById("stats-line");
 
   if (statsLine instanceof HTMLElement) {
@@ -362,6 +363,20 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       schedulePersistUi();
       persistExploration();
       // Only re-render Force Graph (Related Docs only affect that view)
+      if (state.view === "map" && state.perspective === "3d") {
+        forceGraphView.render();
+      }
+    });
+  }
+
+  if (filterToggleCitingDocs) {
+    filterToggleCitingDocs.addEventListener("change", event => {
+      if (!(event.target instanceof HTMLInputElement)) {
+        return;
+      }
+      state.filters.showCitingDocs = event.target.checked;
+      schedulePersistUi();
+      persistExploration();
       if (state.view === "map" && state.perspective === "3d") {
         forceGraphView.render();
       }
@@ -1445,6 +1460,9 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     }
     if (filterToggleRelatedDocs) {
       filterToggleRelatedDocs.checked = state.filters.showRelatedDocs;
+    }
+    if (filterToggleCitingDocs) {
+      filterToggleCitingDocs.checked = state.filters.showCitingDocs;
     }
   }
 }

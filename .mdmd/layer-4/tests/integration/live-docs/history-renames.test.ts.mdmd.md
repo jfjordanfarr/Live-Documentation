@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history-renames.test.ts
-- Generated At: 2026-10-18T00:39:29.794Z
+- Generated At: 2026-10-22T16:48:00.876Z
 
 ## Authored
 ### Purpose
@@ -27,3 +27,8 @@ _No public symbols detected_
 - [`directories.directoryRenames`](../../../packages/engine/src/live-docs/history/directories.ts.mdmd.md#symbol-directoryrenames)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

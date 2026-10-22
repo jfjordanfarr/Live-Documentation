@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/generator/src/history/summarizeChange.ts
-- Generated At: 2026-10-20T21:28:56.463Z
+- Generated At: 2026-10-22T16:47:56.984Z
 
 ## Authored
 ### Purpose
@@ -45,3 +45,9 @@ Generates the change's docs in its working tree and writes its summary, and its 
 - [`relatedDocs.relatedDocsOf`](../../../engine/src/live-docs/relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - [`generator.generateLiveDocs`](../generator.ts.mdmd.md#symbol-generatelivedocs)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

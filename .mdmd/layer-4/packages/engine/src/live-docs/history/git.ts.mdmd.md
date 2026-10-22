@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/git.ts
-- Generated At: 2026-10-18T01:16:28.809Z
+- Generated At: 2026-10-22T16:47:53.183Z
 
 ## Authored
 ### Purpose
@@ -68,3 +68,9 @@ The renames and content changes of `git diff --name-status -z`.
 - [`VersionControl`](./versionControl.ts.mdmd.md#symbol-versioncontrol) (type-only)
 - [`versionControl.WorkingTree`](./versionControl.ts.mdmd.md#symbol-workingtree) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

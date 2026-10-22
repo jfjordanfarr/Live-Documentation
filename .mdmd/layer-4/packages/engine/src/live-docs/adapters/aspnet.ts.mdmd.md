@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/aspnet.ts
-- Generated At: 2026-09-27T23:21:30.248Z
+- Generated At: 2026-10-22T16:47:51.352Z
 
 ## Authored
 ### Purpose
@@ -37,3 +37,8 @@ Language adapter for ASP.NET markup files (`.aspx`, `.cshtml`, `.razor`, `.ascx`
 - [`core.SourceAnalysisResult`](../core.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

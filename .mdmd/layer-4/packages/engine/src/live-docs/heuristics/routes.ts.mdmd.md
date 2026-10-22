@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/heuristics/routes.ts
-- Generated At: 2026-10-08T19:04:55.313Z
+- Generated At: 2026-10-22T16:47:53.047Z
 
 ## Authored
 ### Purpose
@@ -56,3 +56,8 @@ Every route call in the script, in source order.
 - [`openings.routeSymbolName`](../openings.ts.mdmd.md#symbol-routesymbolname)
 - `typescript` - `ts`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-10-14T16:02:17.616Z
+- Generated At: 2026-10-22T16:47:54.857Z
 
 ## Authored
 ### Purpose
@@ -63,3 +63,8 @@ Write view, subject, representation and 3D layout together, preserving paths and
 - [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

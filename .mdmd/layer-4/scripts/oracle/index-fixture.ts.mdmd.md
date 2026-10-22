@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/index-fixture.ts
 - Entry: command `oracle:index` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-16T16:49:41.481Z
+- Generated At: 2026-10-22T16:47:57.762Z
 
 ## Authored
 ### Purpose
@@ -41,3 +41,8 @@ _No public symbols detected_
 - [`scip-edges.convertScipIndex`](./scip-edges.ts.mdmd.md#symbol-convertscipindex)
 - [`scip-edges.readProjects`](./scip-edges.ts.mdmd.md#symbol-readprojects)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

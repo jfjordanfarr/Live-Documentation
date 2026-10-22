@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/java.ts
-- Generated At: 2026-10-16T14:20:48.438Z
+- Generated At: 2026-10-22T16:47:51.921Z
 
 ## Authored
 ### Purpose
@@ -47,3 +47,8 @@ Language adapter for Java (`.java`): tree-sitter symbols and javac-style name re
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

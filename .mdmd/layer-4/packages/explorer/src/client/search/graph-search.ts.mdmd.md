@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/graph-search.ts
-- Generated At: 2026-10-16T14:48:53.651Z
+- Generated At: 2026-10-22T16:47:54.890Z
 
 ## Authored
 ### Purpose
@@ -149,3 +149,9 @@ a fold.
 - [`pathfind.Reach`](../pathfind.ts.mdmd.md#symbol-reach) (type-only)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-21T20:42:25.884Z
+- Generated At: 2026-10-22T17:22:34.526Z
 
 ## Authored
 ### Purpose
@@ -65,6 +65,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `filter-toggle-assets` {#symbol-filter-toggle-assets}
+- Type: variable
+
+#### `filter-toggle-citing-docs` {#symbol-filter-toggle-citing-docs}
 - Type: variable
 
 #### `filter-toggle-related-docs` {#symbol-filter-toggle-related-docs}
@@ -173,6 +176,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-force-charge-value` {#symbol-tuning-force-charge-value}
+- Type: variable
+
+#### `tuning-force-cited-by-pull` {#symbol-tuning-force-cited-by-pull}
+- Type: variable
+
+#### `tuning-force-cited-by-pull-value` {#symbol-tuning-force-cited-by-pull-value}
 - Type: variable
 
 #### `tuning-force-collision-gap` {#symbol-tuning-force-collision-gap}
@@ -385,3 +394,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - `./static/index.js`
 - `./static/styles.css`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

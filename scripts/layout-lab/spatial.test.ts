@@ -27,7 +27,7 @@ it("reports documented multiplicity, actual radius and the same preferred spacin
 
 it("keeps explicitly retained tests/assets and can include the same documentation overlay", () => {
   const report = spatialReport(graph, { ...run, scope: ["test", "asset"] }, getDefaultTuning().forceGraph, 50,
-    { showTests: false, showAssets: false, showRelatedDocs: true }, [{ sourceId: "a", targetPath: "README.md" }]);
+    { showTests: false, showAssets: false, showRelatedDocs: true }, [{ sourceId: "a", targetPath: "README.md", direction: "cites" }]);
   expect(report.nodes.map(file => file.id)).toEqual(["a", "b", "test", "asset", "related:README.md"]);
   expect(report.links).toHaveLength(4);
   expect(() => spatialReport(graph, { ...run, scope: ["gone"] }, getDefaultTuning().forceGraph)).toThrow("no retained file");

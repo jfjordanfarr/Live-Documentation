@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/core.ts
-- Generated At: 2026-10-19T17:42:48.143Z
+- Generated At: 2026-10-22T16:47:52.716Z
 
 ## Authored
 ### Purpose
@@ -89,41 +89,49 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L34)
 
-#### `discoverTargetFiles` {#symbol-discovertargetfiles}
+#### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L37)
 
-#### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
+#### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L38)
 
+#### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L39)
+
 #### `collectExportedSymbols` {#symbol-collectexportedsymbols}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L41)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L42)
 
 #### `computePublicSymbolHeadingInfo` {#symbol-computepublicsymbolheadinginfo}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L44)
-
-#### `composeEntries` {#symbol-composeentries}
-- Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L45)
 
-#### `composeSymbolBlocks` {#symbol-composesymbolblocks}
+#### `composeCitedBy` {#symbol-composecitedby}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L46)
 
-#### `composeDependencies` {#symbol-composedependencies}
+#### `composeEntries` {#symbol-composeentries}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L47)
 
-#### `composeReExports` {#symbol-composereexports}
+#### `composeSymbolBlocks` {#symbol-composesymbolblocks}
 - Type: unknown
 - Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L48)
 
+#### `composeDependencies` {#symbol-composedependencies}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L49)
+
+#### `composeReExports` {#symbol-composereexports}
+- Type: unknown
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L50)
+
 #### `analyzeSourceFile` {#symbol-analyzesourcefile}
 - Type: unknown
-- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L51)
+- Source: [source](../../../../../../packages/engine/src/live-docs/core.ts#L53)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -133,6 +141,7 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - [`archetype.hasMeaningfulAuthoredContent`](./archetype.ts.mdmd.md#symbol-hasmeaningfulauthoredcontent) (re-export)
 - [`archetype.isBinaryContent`](./archetype.ts.mdmd.md#symbol-isbinarycontent) (re-export)
 - [`archetype.resolveArchetype`](./archetype.ts.mdmd.md#symbol-resolvearchetype) (re-export)
+- [`compose.composeCitedBy`](./compose.ts.mdmd.md#symbol-composecitedby) (re-export)
 - [`compose.composeDependencies`](./compose.ts.mdmd.md#symbol-composedependencies) (re-export)
 - [`compose.composeEntries`](./compose.ts.mdmd.md#symbol-composeentries) (re-export)
 - [`compose.composeReExports`](./compose.ts.mdmd.md#symbol-composereexports) (re-export)
@@ -151,7 +160,14 @@ The engine's analysis facade: the names that consumers import through `core` rat
 - [`coreTypes.WorkspaceEntryIndex`](./coreTypes.ts.mdmd.md#symbol-workspaceentryindex) (re-export, type-only)
 - [`coreTypes.WorkspaceSymbolIndex`](./coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (re-export, type-only)
 - [`discovery.buildWorkspaceIndexes`](./discovery.ts.mdmd.md#symbol-buildworkspaceindexes) (re-export)
+- [`discovery.discoverDocuments`](./discovery.ts.mdmd.md#symbol-discoverdocuments) (re-export)
 - [`discovery.discoverTargetFiles`](./discovery.ts.mdmd.md#symbol-discovertargetfiles) (re-export)
 - [`sourceAnalysis.analyzeSourceFile`](./sourceAnalysis.ts.mdmd.md#symbol-analyzesourcefile) (re-export)
 - [`symbolExtraction.collectExportedSymbols`](./symbolExtraction.ts.mdmd.md#symbol-collectexportedsymbols) (re-export)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-engine.mdmd.md`](../../../../../layer-3/live-documentation-engine.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../../../layer-3/live-documentation-pipeline.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

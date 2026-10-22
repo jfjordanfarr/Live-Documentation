@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-21T20:42:24.439Z
+- Generated At: 2026-10-22T17:22:33.118Z
 
 ## Authored
 ### Purpose
@@ -36,6 +36,7 @@ The history's levers (2026-10-18, ticket C4 of [the change-over-time plan](../..
 - `linkStrength` (2026-10-18) is the springs' strength as a multiple of D3's own rule, one over the smaller of a wire's two ends' link counts, so that one is the picture as it was and zero lets the wires go slack: the owner's ask after their first look at the gravity, "Can you just give me those sliders in the tuning panel and I can just tweak it until it's good to my eye?" ([Turn 7 of the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
 
 - Since 2026-10-21 `updateEnergy` is the constant strength a change's motion eases at, a share of the forces, until the spheres are still: a lower one moves the picture more gently and for longer to much the same rest, and zero still places alone. `tether` joined it that day: how strongly each sphere is held to where it stood when the picture last began to move, the force that brings a large picture to rest and keeps a person's bearings through a change, the owner's to tune by eye ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
+- `showCitingDocs` and `ForceGraphTuning.citedByPull` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): the filter for the documents that cite a file, apart from the documents it cites, and the share of a reference's spring such a citation pulls with, zero to draw it without pull.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -71,7 +72,7 @@ Toggle flags for the Explorer filter panel.
 
 #### `BezierTuning` {#symbol-beziertuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L27)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L30)
 
 ##### `BezierTuning` — Summary
 Cubic-Bézier connection path tuning parameters.
@@ -79,7 +80,7 @@ Exposed in the Explorer tuning panel (2025-12-05, commit `9047949`).
 
 #### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L39)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L42)
 
 ##### `LocalMapTuning` — Summary
 Tuning knobs specific to the two-dimensional Local Map.
@@ -88,7 +89,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L134)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L137)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -97,14 +98,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L137)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L140)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `HistoryGranularity` {#symbol-historygranularity}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L149)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L152)
 
 ##### `HistoryGranularity` — Summary
 Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
@@ -113,49 +114,49 @@ five-commit repository shows five ticks and a long history shows months (the vie
 
 #### `HISTORY_GRANULARITIES` {#symbol-history_granularities}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L152)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L155)
 
 ##### `HISTORY_GRANULARITIES` — Summary
 Every granularity, in the order the control offers them.
 
 #### `HistoryAxis` {#symbol-historyaxis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L155)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L158)
 
 ##### `HistoryAxis` — Summary
 How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap (scenario 14).
 
 #### `HistoryTuning` {#symbol-historytuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L158)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L161)
 
 ##### `HistoryTuning` — Summary
 The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18).
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L166)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L169)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L215)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L224)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L220)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L229)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L229)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L238)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -163,7 +164,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L255)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L264)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
@@ -174,3 +175,10 @@ Map from implementation file path → covering test node(s).
 - [`pin-state.PinSet`](./views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/project.ts
-- Generated At: 2026-10-09T20:42:15.670Z
+- Generated At: 2026-10-22T16:47:52.138Z
 
 ## Authored
 ### Purpose
@@ -48,3 +48,9 @@ Language adapter for .NET project files: the project as a symbol, and what it re
 - [`openings.PROJECT_KINDS`](../openings.ts.mdmd.md#symbol-project_kinds)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../../layer-3/openings.mdmd.md)
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

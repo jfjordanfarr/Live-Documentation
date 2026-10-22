@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-10-21T20:42:24.635Z
+- Generated At: 2026-10-22T16:47:55.276Z
 
 ## Authored
 ### Purpose
@@ -98,3 +98,9 @@ The diagonal of the box around the spheres, the measure of the picture's size th
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

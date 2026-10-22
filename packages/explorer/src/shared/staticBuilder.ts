@@ -22,6 +22,7 @@ import {
 } from "@live-documentation/engine/config/liveDocumentationConfig";
 import { parseBoard } from "@live-documentation/engine/live-docs/board";
 import { LiveDocSyntaxError } from "@live-documentation/engine/live-docs/document";
+import { resolveDocLink } from "@live-documentation/engine/live-docs/graph";
 import { readEstateGraph, readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import { HISTORY_DIRECTORY, HISTORY_FILE, HISTORY_FORMAT, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
 import { headOf } from "@live-documentation/engine/live-docs/history/sequence";
@@ -119,9 +120,13 @@ export async function buildStaticExplorer(
     const edgeCount = files.reduce((count, file) => count + file.outbound.length, 0);
     logger.log(`Graph: ${files.length} files, ${edgeCount} edges`);
 
-    // The documents the docs' authored words link to, by the one rule the history reads at every past commit.
-    logger.log("Reading the documents the docs link to...");
-    const links = files.flatMap(file => relatedDocsOf(file, graph, config.bundleExclude).map(targetPath => ({ sourceId: file.codePath, targetPath })));
+    // The documents the docs' authored words link to, by the one rule the history reads at every past commit, and the
+    // documents whose own links name each file, as the doc's `Cited By` section records them (2026-10-22).
+    logger.log("Reading the documents the docs link to and the documents that cite them...");
+    const links = files.flatMap(file => [
+        ...relatedDocsOf(file, graph, config.bundleExclude).map(targetPath => ({ sourceId: file.codePath, targetPath, direction: "cites" as const })),
+        ...(file.citedBy ?? []).map(entry => ({ sourceId: file.codePath, targetPath: resolveDocLink(file.docPath, entry.link) ?? entry.label, direction: "cited-by" as const }))
+    ]);
     const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = await bundleRelatedDocs({ links, workspaceRoot, logger });
 
     const bundledMarkdownCount = Object.keys(bundledMarkdown).length;

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/index.ts
-- Generated At: 2026-10-09T20:54:51.894Z
+- Generated At: 2026-10-22T16:47:56.510Z
 
 ## Authored
 ### Purpose
@@ -51,3 +51,8 @@ Creates the World Map over the bundle's board, or a note saying the bundle has n
 - [`controller.WorldMapController`](./controller.ts.mdmd.md#symbol-worldmapcontroller)
 - [`model.buildWorldModel`](./model.ts.mdmd.md#symbol-buildworldmodel)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

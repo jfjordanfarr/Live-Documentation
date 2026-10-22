@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/compose.ts
-- Generated At: 2026-10-19T21:15:54.049Z
+- Generated At: 2026-10-22T16:47:52.666Z
 
 ## Authored
 ### Purpose
@@ -79,9 +79,26 @@ its own even when a source-observed dependency names the same file.
 - `args.liveDocsRootAbsolute`: Absolute path to the Live Docs mirror root.
 - `args.symbolIndex`: The workspace symbol index, for anchors in other files.
 
+#### `composeCitedBy` {#symbol-composecitedby}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L727)
+- Returns: [`CitedBy`](./document.ts.mdmd.md#symbol-citedby)[]
+
+##### `composeCitedBy` — Summary
+Composes the `Cited By` section: one line per document whose markdown links
+name the file or its doc, the document's workspace-relative path as the
+label and a link to it relative to the doc, in path order, so that a doc is
+written the same way every run. Which documents cite the file is the
+engine's rule, `citingDocuments`.
+
+##### `composeCitedBy` — Parameters
+- `args.docDir`: Absolute directory of the Live Doc being written; links are relative to it.
+- `args.documents`: The citing documents' workspace-relative paths.
+- `args.workspaceRoot`: Absolute path of the workspace, where the documents' paths start.
+
 #### `composeEntries` {#symbol-composeentries}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L740)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L762)
 - Returns: [`Entry`](./document.ts.mdmd.md#symbol-entry)[]
 
 ##### `composeEntries` — Summary
@@ -111,7 +128,7 @@ no line here.
 
 #### `composeReExports` {#symbol-composereexports}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L805)
+- Source: [source](../../../../../../packages/engine/src/live-docs/compose.ts#L827)
 - Returns: [`ReExport`](./document.ts.mdmd.md#symbol-reexport)[]
 
 ##### `composeReExports` — Summary
@@ -142,6 +159,7 @@ uses that provider's actual indexed heading when the workspace index is present.
 - [`coreUtils.formatInlineCode`](./coreUtils.ts.mdmd.md#symbol-formatinlinecode)
 - [`coreUtils.formatRelativePathFromDoc`](./coreUtils.ts.mdmd.md#symbol-formatrelativepathfromdoc)
 - [`coreUtils.toModuleLabel`](./coreUtils.ts.mdmd.md#symbol-tomodulelabel)
+- [`document.CitedBy`](./document.ts.mdmd.md#symbol-citedby) (type-only)
 - [`document.Dependency`](./document.ts.mdmd.md#symbol-dependency) (type-only)
 - [`document.DocSection`](./document.ts.mdmd.md#symbol-docsection) (type-only)
 - [`document.Entry`](./document.ts.mdmd.md#symbol-entry) (type-only)
@@ -153,3 +171,11 @@ uses that provider's actual indexed heading when the workspace index is present.
 - [`openings.OPENING_KINDS`](./openings.ts.mdmd.md#symbol-opening_kinds)
 - [`openings.isToolingFile`](./openings.ts.mdmd.md#symbol-istoolingfile)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-engine.mdmd.md`](../../../../../layer-3/live-documentation-engine.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../../../layer-3/live-documentation-pipeline.mdmd.md)
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/expected/repository-entries.json
-- Generated At: 2026-10-19T16:54:55.329Z
+- Generated At: 2026-10-22T16:48:00.817Z
 
 ## Authored
 ### Purpose
@@ -168,3 +168,8 @@ The hand's reading of this repository's own entry points, with the reasons as th
 ### Dependencies
 - [`staticBuilder`](../../../../packages/explorer/src/shared/staticBuilder.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

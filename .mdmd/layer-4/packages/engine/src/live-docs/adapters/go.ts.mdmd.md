@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/go.ts
-- Generated At: 2026-10-15T15:49:38.792Z
+- Generated At: 2026-10-22T16:47:51.720Z
 
 ## Authored
 ### Purpose
@@ -46,3 +46,8 @@ Language adapter for Go (`.go`): tree-sitter symbols and package-aware name reso
 - [`coreTypes.ProgramEntry`](../coreTypes.ts.mdmd.md#symbol-programentry) (type-only)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

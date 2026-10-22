@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-18T02:59:05.952Z
+- Generated At: 2026-10-22T16:47:58.224Z
 
 ## Authored
 ### Purpose
@@ -78,3 +78,8 @@ ends are the tube's two ends in world space, and a line the library never positi
 - `@playwright/test` - `Page` (type-only)
 - `three` - `Camera`, `Mesh`, `Scene`, `WebGLRenderer` (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

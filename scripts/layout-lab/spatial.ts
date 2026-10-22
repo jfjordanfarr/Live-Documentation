@@ -10,14 +10,15 @@ import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/ty
 
 /** Ease the same full filtered graph the 3D view shows, in either layout, until still or `maxTicks`; the retained neighborhood is attention, not hidden physics. */
 export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning: ForceGraphTuning, maxTicks = 20_000,
-  filters: Pick<ExplorerFilters, "showTests" | "showAssets"> & Partial<Pick<ExplorerFilters, "showRelatedDocs">> = { showTests: true, showAssets: true },
+  filters: Pick<ExplorerFilters, "showTests" | "showAssets"> & Partial<Pick<ExplorerFilters, "showRelatedDocs" | "showCitingDocs">> = { showTests: true, showAssets: true },
   relatedDocLinks: readonly RelatedDocLink[] = [], layout: SpatialLayout = "connections") {
   if (!run.scope.length) throw new Error("A spatial scope must name a retained file.");
   for (const file of run.scope) if (!graph.nodes.some(node => node.id === file)) throw new Error(`The bundle has no retained file ${JSON.stringify(file)}.`);
   const pins = scopePins(run);
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
-  const related = "showRelatedDocs" in filters && filters.showRelatedDocs;
-  const data = spatialGraphOf(graph, includeNode(pins, retainedSubject(run), filters), related ? relatedDocLinks : [], layout);
+  // The documents the page would draw: the cited ones under one filter and the citing ones under the other (2026-10-22).
+  const shown = relatedDocLinks.filter(link => link.direction === "cited-by" ? filters.showCitingDocs === true : filters.showRelatedDocs === true);
+  const data = spatialGraphOf(graph, includeNode(pins, retainedSubject(run), filters), shown, layout);
   const metadata = new Map(data.nodes.map(node => [node.id, node]));
   const retained = new Set(run.scope);
   for (const { link } of getVisibleConnections(pins, graph.links)) { retained.add(id(link.source)); retained.add(id(link.target)); }
@@ -36,7 +37,7 @@ export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning
     ? Math.max(...nodes.map(node => node[dimension] + node.radius)) - Math.min(...nodes.map(node => node[dimension] - node.radius)) : 0;
   const edges = result.links.map(link => {
     if (typeof link.source === "string" || typeof link.target === "string") throw new Error("Unresolved spatial report endpoint.");
-    return { source: link.source.id, target: link.target.id, kind: link.kind, pulls: linkPulls(link, layout),
+    return { source: link.source.id, target: link.target.id, kind: link.kind, pulls: linkPulls(link, layout, tuning),
       references: link.kind === "containment" ? null : link.count, preferredDistance: spatialLinkDistance(link, tuning),
       distance: Math.hypot(link.source.x! - link.target.x!, link.source.y! - link.target.y!, link.source.z! - link.target.z!) };
   });

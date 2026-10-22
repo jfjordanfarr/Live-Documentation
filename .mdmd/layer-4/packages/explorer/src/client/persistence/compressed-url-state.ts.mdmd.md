@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.ts
-- Generated At: 2026-10-20T14:51:18.434Z
+- Generated At: 2026-10-22T17:22:32.799Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ Optional layout settings carry both representations’ packing and spatial encod
 - `reachFrom` (payload key `a`, 2026-10-15): the file or directory the Knowledge Sources panel walks from in place of the entry points, written and read like the path's destination and scrubbed like it when the bundle no longer holds it.
 
 The moment of the history (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its scenario 9): the commit the 3D Local Map shows rides as `h` and the authors toggle as `b` (the plan's C8, "include that in share links"), both left out for today without authors, so that a link to a moment opens on it; neither is part of the place Back returns to, as pins are not, so scrubbing rewrites the entry rather than walking the history through every step. Whether the commit is in the sequence is the sequence's to say, so the scrub against the live nodes leaves it.
+- `j` (2026-10-22) carries whether the citing documents are shown, as `r` carries the cited ones; a link that omits it keeps the viewer's own setting.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -44,7 +45,7 @@ minimize serialized size while remaining readable in code.
 
 #### `UrlStateSnapshot` {#symbol-urlstatesnapshot}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L95)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L97)
 
 ##### `UrlStateSnapshot` — Summary
 Application-level state snapshot that maps 1:1 with the URL.
@@ -53,7 +54,7 @@ This is what the controller produces and consumes; the
 
 #### `DEFAULT_SNAPSHOT` {#symbol-default_snapshot}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L127)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L129)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `DEFAULT_SNAPSHOT` — Summary
@@ -63,7 +64,7 @@ shows (2026-10-16; until then this said assets shown and every written link carr
 
 #### `snapshotToPayload` {#symbol-snapshottopayload}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L148)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L150)
 - Returns: [`CompressedPayload`](#symbol-compressedpayload)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
@@ -73,7 +74,7 @@ Omits fields that match defaults to keep the output small.
 
 #### `payloadToSnapshot` {#symbol-payloadtosnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L207)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L210)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `payload`: [`CompressedPayload`](#symbol-compressedpayload)
 
@@ -83,7 +84,7 @@ Applies version migrations and defaults for missing fields.
 
 #### `compressSnapshot` {#symbol-compresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L271)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L275)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `compressSnapshot` — Summary
@@ -91,7 +92,7 @@ Compress a snapshot into a URL-safe string.
 
 #### `decompressSnapshot` {#symbol-decompresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L280)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L284)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `decompressSnapshot` — Summary
@@ -100,7 +101,7 @@ Returns the default snapshot if decompression or parsing fails.
 
 #### `scrubSnapshot` {#symbol-scrubsnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L300)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L304)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot); `nodesById`: `ReadonlyMap`
 
@@ -113,7 +114,7 @@ Pure function — returns a new snapshot; does not mutate the input.
 
 #### `readUrlState` {#symbol-readurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L370)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L374)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `readUrlState` — Summary
@@ -122,7 +123,7 @@ Falls back to defaults if no `?s=` parameter is present.
 
 #### `writeUrlState` {#symbol-writeurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L381)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L385)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `writeUrlState` — Summary
@@ -152,3 +153,9 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 - [`pin-state.serializePins`](../views/pin-state.ts.mdmd.md#symbol-serializepins) (type-only)
 - [`retained-state.reconcileRetained`](../views/retained-state.ts.mdmd.md#symbol-reconcileretained)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-10-12T18:02:21.847Z
+- Generated At: 2026-10-22T16:47:56.034Z
 
 ## Authored
 ### Purpose
@@ -111,3 +111,8 @@ Sets container/overlay dimensions based on content extents.
 ### Dependencies
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

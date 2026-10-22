@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture-geometry.ts
-- Generated At: 2026-10-06T20:39:27.003Z
+- Generated At: 2026-10-22T16:47:58.889Z
 
 ## Authored
 ### Purpose
@@ -180,3 +180,8 @@ and the shortest pan breaks the tie. A pan toward a fact that is still too far t
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

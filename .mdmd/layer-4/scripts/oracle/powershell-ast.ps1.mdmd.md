@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/powershell-ast.ps1
 - Entry: program
-- Generated At: 2026-10-16T21:50:00.379Z
+- Generated At: 2026-10-22T16:47:57.783Z
 
 ## Authored
 ### Purpose
@@ -88,3 +88,8 @@ What a data file says: its table as Import-PowerShellDataFile reads it, and each
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

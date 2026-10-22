@@ -24,9 +24,9 @@ const shape: Shape = {
 describe("relatedDocLinksOf", () => {
   it("names each link from a file's authored words to a document, in path order, as today's bundle names its Related Docs", () => {
     expect(relatedDocLinksOf(shape)).toEqual([
-      { sourceId: "src/a.ts", targetPath: "README.md" },
-      { sourceId: "src/a.ts", targetPath: "docs/plan.md" },
-      { sourceId: "src/b.ts", targetPath: "docs/plan.md" }
+      { sourceId: "src/a.ts", targetPath: "README.md", direction: "cites" },
+      { sourceId: "src/a.ts", targetPath: "docs/plan.md", direction: "cites" },
+      { sourceId: "src/b.ts", targetPath: "docs/plan.md", direction: "cites" }
     ]);
   });
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/estate.test.ts
-- Generated At: 2026-10-22T00:39:45.438Z
+- Generated At: 2026-10-22T16:48:00.803Z
 
 ## Authored
 ### Purpose
@@ -36,3 +36,9 @@ _No public symbols detected_
 - [`fixture.copyFixture`](../../../scripts/oracle/fixture.ts.mdmd.md#symbol-copyfixture)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/boards.mdmd.md`](../../../../layer-3/boards.mdmd.md)
+- [`.mdmd/layer-3/world-map.mdmd.md`](../../../../layer-3/world-map.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

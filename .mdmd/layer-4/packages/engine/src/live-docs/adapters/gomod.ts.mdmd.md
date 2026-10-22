@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/gomod.ts
-- Generated At: 2026-10-16T16:21:40.578Z
+- Generated At: 2026-10-22T16:47:51.754Z
 
 ## Authored
 ### Purpose
@@ -69,3 +69,8 @@ Language adapter for `go.mod`: the module as a symbol and the modules it require
 - [`manifest.publishedName`](./manifest.ts.mdmd.md#symbol-publishedname)
 - [`coreTypes.SourceAnalysisResult`](../coreTypes.ts.mdmd.md#symbol-sourceanalysisresult) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

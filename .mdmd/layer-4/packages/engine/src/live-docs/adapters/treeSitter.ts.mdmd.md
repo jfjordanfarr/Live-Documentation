@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/treeSitter.ts
-- Generated At: 2026-10-16T21:23:38.183Z
+- Generated At: 2026-10-22T16:47:52.498Z
 
 ## Authored
 ### Purpose
@@ -46,3 +46,9 @@ Parses `source` with the named grammar. The caller owns the tree and should `del
 - `node:path` - `path`
 - `web-tree-sitter` - `Language`, `Node`, `Parser`, `Tree`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/connection-geometry.ts
-- Generated At: 2026-10-07T01:30:16.603Z
+- Generated At: 2026-10-22T16:47:55.103Z
 
 ## Authored
 ### Purpose
@@ -281,3 +281,8 @@ GradientDef ready for SVG rendering
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

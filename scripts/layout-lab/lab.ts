@@ -105,12 +105,12 @@ async function main(): Promise<void> {
     const parsed: unknown = JSON.parse(spec.startsWith("@") ? await fs.readFile(spec.slice(1), "utf8") : spec);
     const settings = readLayoutSettings(parsed);
     const tuning = applyLayoutSettings(applyLayoutPreset(getDefaultTuning(), preset), settings).forceGraph;
-    for (const name of ["tests", "assets", "related-docs"] as const) if (options[name] && options[name] !== "true" && options[name] !== "false") throw new Error(`--${name} must be true or false.`);
+    for (const name of ["tests", "assets", "related-docs", "citing-docs"] as const) if (options[name] && options[name] !== "true" && options[name] !== "false") throw new Error(`--${name} must be true or false.`);
     const layout = options.layout ?? "connections";
     if (layout !== "connections" && layout !== "structure") throw new Error("--layout must be connections or structure.");
-    const related = options["related-docs"] === "true" ? (await loadBundleData(run)).relatedDocLinks ?? [] : [];
+    const related = options["related-docs"] === "true" || options["citing-docs"] === "true" ? (await loadBundleData(run)).relatedDocLinks ?? [] : [];
     const report = spatialReport(graph, run, tuning, Number(options.ticks ?? 20_000), {
-      showTests: options.tests !== "false", showAssets: options.assets !== "false", showRelatedDocs: options["related-docs"] === "true"
+      showTests: options.tests !== "false", showAssets: options.assets !== "false", showRelatedDocs: options["related-docs"] === "true", showCitingDocs: options["citing-docs"] === "true"
     }, related, layout);
     const label = options.label ?? `spatial-${layout}-${preset}`;
     await fs.mkdir(out, { recursive: true });

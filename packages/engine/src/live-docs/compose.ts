@@ -36,7 +36,7 @@ import {
   displayDependencyKey,
   createProximityAwareComparator
 } from "./coreUtils";
-import type { Dependency, DocSection, Entry, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
+import type { CitedBy, Dependency, DocSection, Entry, ReExport, ReferenceLine, SymbolBlock, TypeRef } from "./document";
 import { MANIFEST_KINDS, OPENING_KINDS, isToolingFile } from "./openings";
 
 // ============================================================================
@@ -707,6 +707,28 @@ function resolveSymbolSlugFromIndex(
   const matching = locations.filter((loc) => loc.sourcePath.replace(/\\/gu, "/") === normalizedTarget);
   const matchingLocation = (kind ? matching.find((loc) => loc.kind === kind) : undefined) ?? matching[0];
   return matchingLocation?.anchor;
+}
+
+// ============================================================================
+// Cited By
+// ============================================================================
+
+/**
+ * Composes the `Cited By` section: one line per document whose markdown links
+ * name the file or its doc, the document's workspace-relative path as the
+ * label and a link to it relative to the doc, in path order, so that a doc is
+ * written the same way every run. Which documents cite the file is the
+ * engine's rule, `citingDocuments`.
+ *
+ * @param args.documents - The citing documents' workspace-relative paths.
+ * @param args.docDir - Absolute directory of the Live Doc being written; links are relative to it.
+ * @param args.workspaceRoot - Absolute path of the workspace, where the documents' paths start.
+ */
+export function composeCitedBy(args: { documents: readonly string[]; docDir: string; workspaceRoot: string }): CitedBy[] {
+  return [...args.documents].sort().map((document) => ({
+    label: inlineLabel(document),
+    link: formatRelativePathFromDoc(args.docDir, path.resolve(args.workspaceRoot, document))
+  }));
 }
 
 // ============================================================================

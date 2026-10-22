@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-10-20T21:28:53.853Z
+- Generated At: 2026-10-22T16:47:53.855Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,7 @@ The Explorer's evidence reader: renders a file or symbol from the bundled Live D
 - The Internals target describes file-level connections not attributed to a public symbol; it does not assert that private symbols have been documented. Downloading a file uses its actual configured Live Doc filename.
 - `setNote` (2026-10-20, [Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) puts one line above the evidence; the application uses it to say that the reader shows today's version of a document while the 3D picture shows a past commit.
 - A Live Doc's authored block, a bundled document and a directory's one-line summary are all marked `reader-prose`, the one set of prose rules in `shell.css` (2026-10-21, [Turn 2](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-2)). Until then a bundled document's container carried `detail-doc-content` and `bundled-doc-content`, which no stylesheet defined after the January 2026 bundling, so it read at the browser's 16 px with the browser's dark-blue links.
+- `Cited By` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): below the generated sections the reader lists the documents whose links name the file, from the doc's own section, each a link that opens the document here where the bundle carries it, resolved by the same rules as an authored link, and its path alone otherwise.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -67,3 +68,8 @@ and node metadata.
 - [`pin-state.INTERNAL_SYMBOL`](./views/pin-state.ts.mdmd.md#symbol-internal_symbol)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

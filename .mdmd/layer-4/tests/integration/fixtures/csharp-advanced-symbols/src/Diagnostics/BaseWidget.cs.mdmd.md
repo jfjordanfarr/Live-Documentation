@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/BaseWidget.cs
-- Generated At: 2026-09-27T23:21:32.576Z
+- Generated At: 2026-10-22T16:47:59.148Z
 
 ## Authored
 ### Purpose
@@ -64,3 +64,10 @@ Changes to rendering hooks must stay synchronized with the derived widget fixtur
 - [`WidgetMetadata`](./WidgetMetadata.cs.mdmd.md#symbol-widgetmetadata-struct)
 - [`WidgetSnapshot`](./WidgetSnapshot.cs.mdmd.md#symbol-widgetsnapshot)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/csharp-advanced-symbols/README.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/README.md)
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md)
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md)
+<!-- LIVE-DOC:END Cited By -->

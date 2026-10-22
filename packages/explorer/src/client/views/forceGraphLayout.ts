@@ -59,10 +59,19 @@ export function spatialLinkDistance(link: SpatialLink, tuning: ForceGraphTuning)
 
 /**
  * Which links pull in a layout: documented references place files by their analyzed connections, containment places
- * them by their declared directories. The other kind stays in the data to be drawn on demand and moves nothing.
+ * them by their declared directories. The other kind stays in the data to be drawn on demand and moves nothing. A
+ * document's citation of a file pulls by the tuning's lever (`citedByPull`), which at zero leaves it drawn alone, so
+ * that whether such a link should shape the picture can be seen before it is decided (the owner, 2026-10-22).
  */
-export function linkPulls(link: Pick<SpatialLink, "kind">, layout: SpatialLayout): boolean {
-  return layout === "structure" ? link.kind === "containment" : link.kind !== "containment";
+export function linkPulls(link: Pick<SpatialLink, "kind">, layout: SpatialLayout, tuning?: Pick<ForceGraphTuning, "citedByPull">): boolean {
+  if (layout === "structure") return link.kind === "containment";
+  if (link.kind === "cited-by") return tuning === undefined || tuning.citedByPull > 0;
+  return link.kind !== "containment";
+}
+
+/** How hard a pulling link's spring pulls, as a share of a reference's: the tuning's lever for a document's citation, one for the rest. */
+export function springShare(link: Pick<SpatialLink, "kind">, tuning: Pick<ForceGraphTuning, "citedByPull">): number {
+  return link.kind === "cited-by" ? tuning.citedByPull : 1;
 }
 
 /** A point the simulation placed, or the carry did. */
@@ -101,7 +110,7 @@ export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], li
   const neighbours = new Map<string, Array<{ node: N; count: number }>>();
   const besideOf = (id: string): Array<{ node: N; count: number }> => neighbours.get(id) ?? neighbours.set(id, []).get(id)!;
   for (const link of links) {
-    if (!linkPulls(link, layout)) continue;
+    if (!linkPulls(link, layout, tuning)) continue;
     const source = typeof link.source === "string" ? byId.get(link.source) : link.source;
     const target = typeof link.target === "string" ? byId.get(link.target) : link.target;
     if (!source || !target) continue;
@@ -191,14 +200,14 @@ export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links
   };
   const pulling: SpatialLink<N>[] = [];
   for (const link of links) {
-    if (!linkPulls(link, layout)) continue;
+    if (!linkPulls(link, layout, tuning)) continue;
     const source = endpoint(link.source), target = endpoint(link.target);
     if (source && target && source !== target) pulling.push({ ...link, source, target });
   }
   const strengthOf = springStrength<N, SpatialLink<N>>(tuning.linkStrength);
   const springs = pulling.map((link, i) => ({
     a: index.get((link.source as N).id)!, b: index.get((link.target as N).id)!,
-    rest: spatialLinkDistance(link, tuning), strength: strengthOf(link, i, pulling)
+    rest: spatialLinkDistance(link, tuning), strength: strengthOf(link, i, pulling) * springShare(link, tuning)
   }));
   return new SpatialField(Float64Array.from(nodes.map(node => spatialNodeRadius(node, tuning))), springs,
     { charge: tuning.charge, chargeRange: tuning.chargeRange, gravity: tuning.gravity, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },

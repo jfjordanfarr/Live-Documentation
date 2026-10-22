@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/boardGraph.ts
-- Generated At: 2026-10-09T20:42:16.008Z
+- Generated At: 2026-10-22T16:47:52.610Z
 
 ## Authored
 ### Purpose
@@ -130,3 +130,10 @@ The doors a file serves: its public symbols whose kind is an opening kind.
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`openings.MANIFEST_KINDS`](./openings.ts.mdmd.md#symbol-manifest_kinds)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/boards.mdmd.md`](../../../../../layer-3/boards.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-engine.mdmd.md`](../../../../../layer-3/live-documentation-engine.mdmd.md)
+- [`.mdmd/layer-3/world-map.mdmd.md`](../../../../../layer-3/world-map.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/adapters/sql.test.ts
-- Generated At: 2026-09-28T16:48:38.714Z
+- Generated At: 2026-10-22T16:47:52.448Z
 
 ## Authored
 ### Purpose
@@ -28,3 +28,8 @@ _No public symbols detected_
 - [`coreTypes.WorkspaceSymbolIndex`](../coreTypes.ts.mdmd.md#symbol-workspacesymbolindex) (type-only)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

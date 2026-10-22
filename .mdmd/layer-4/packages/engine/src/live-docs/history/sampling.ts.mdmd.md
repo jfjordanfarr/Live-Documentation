@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/sampling.ts
-- Generated At: 2026-10-18T00:39:19.051Z
+- Generated At: 2026-10-22T16:47:53.304Z
 
 ## Authored
 ### Purpose
@@ -37,3 +37,8 @@ The indices of the changes the rule samples, ascending.
 - [`format.Sampling`](./format.ts.mdmd.md#symbol-sampling) (type-only)
 - [`versionControl.MainlineChange`](./versionControl.ts.mdmd.md#symbol-mainlinechange) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

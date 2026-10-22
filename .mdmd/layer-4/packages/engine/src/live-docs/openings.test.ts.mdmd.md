@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/openings.test.ts
-- Generated At: 2026-10-16T01:11:32.664Z
+- Generated At: 2026-10-22T16:47:53.537Z
 
 ## Authored
 ### Purpose
@@ -37,3 +37,8 @@ _No public symbols detected_
 - [`openings.stripSql`](./openings.ts.mdmd.md#symbol-stripsql)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

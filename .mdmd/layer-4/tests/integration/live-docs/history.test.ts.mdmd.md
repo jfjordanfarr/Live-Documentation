@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/history.test.ts
-- Generated At: 2026-10-18T05:36:08.589Z
+- Generated At: 2026-10-22T16:48:00.908Z
 
 ## Authored
 ### Purpose
@@ -50,3 +50,9 @@ _No public symbols detected_
 - [`scripted-repository.git`](./scripted-repository.ts.mdmd.md#symbol-git)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

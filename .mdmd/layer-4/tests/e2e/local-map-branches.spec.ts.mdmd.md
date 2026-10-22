@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-branches.spec.ts
-- Generated At: 2026-10-16T21:50:07.988Z
+- Generated At: 2026-10-22T16:47:58.409Z
 
 ## Authored
 ### Purpose
@@ -43,3 +43,8 @@ _No public symbols detected_
 - [`still-picture.scoreOcclusion`](./still-picture.ts.mdmd.md#symbol-scoreocclusion)
 - [`still-picture.symbolCounts`](./still-picture.ts.mdmd.md#symbol-symbolcounts)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/repository-entries.test.ts
-- Generated At: 2026-10-15T15:49:44.443Z
+- Generated At: 2026-10-22T16:48:01.024Z
 
 ## Authored
 ### Purpose
@@ -29,3 +29,8 @@ _No public symbols detected_
 - [`pathfind.reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-function)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

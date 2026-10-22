@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/manifests.test.ts
-- Generated At: 2026-10-16T16:21:51.614Z
+- Generated At: 2026-10-22T16:48:00.953Z
 
 ## Authored
 ### Purpose
@@ -32,3 +32,8 @@ _No public symbols detected_
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

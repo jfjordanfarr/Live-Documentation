@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/perspectiveTransition.ts
-- Generated At: 2026-10-13T22:20:24.402Z
+- Generated At: 2026-10-22T16:47:56.323Z
 
 ## Authored
 ### Purpose
@@ -72,3 +72,8 @@ Hold the source picture while the destination renderer produces its first frame.
 - [`perspectiveGeometry.gatherWire`](./perspectiveGeometry.ts.mdmd.md#symbol-gatherwire)
 - [`perspectiveGeometry.perspectivePhases`](./perspectiveGeometry.ts.mdmd.md#symbol-perspectivephases)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-symbols.ts
 - Entry: command `slopcop:symbols` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-16T17:10:20.940Z
+- Generated At: 2026-10-22T16:47:57.920Z
 
 ## Authored
 ### Purpose
@@ -38,3 +38,8 @@ _No public symbols detected_
 - [`symbolReferences.SymbolRuleSetting`](./symbolReferences.ts.mdmd.md#symbol-symbolrulesetting)
 - [`symbolReferences.findSymbolReferenceAnomalies`](./symbolReferences.ts.mdmd.md#symbol-findsymbolreferenceanomalies)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/slopcop.mdmd.md`](../../../layer-3/slopcop.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

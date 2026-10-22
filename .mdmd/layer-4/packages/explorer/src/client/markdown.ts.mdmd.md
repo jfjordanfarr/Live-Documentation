@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/markdown.ts
-- Generated At: 2026-10-21T01:48:35.041Z
+- Generated At: 2026-10-22T16:47:54.477Z
 
 ## Authored
 ### Purpose
@@ -50,3 +50,9 @@ Options for the lightweight markdown-to-HTML renderer.
 - [`githubSlugger.slugText`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-slugtext)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

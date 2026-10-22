@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/pathfind.ts
-- Generated At: 2026-10-22T00:54:17.312Z
+- Generated At: 2026-10-22T16:47:53.593Z
 
 ## Authored
 ### Purpose
@@ -278,3 +278,10 @@ once the `symbol-` prefix is removed and case ignored.
 - [`graph.GraphFile`](./graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-engine.mdmd.md`](../../../../../layer-3/live-documentation-engine.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

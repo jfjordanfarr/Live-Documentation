@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/gitUtils.ts
-- Generated At: 2026-10-19T15:05:59.997Z
+- Generated At: 2026-10-22T16:47:52.929Z
 
 ## Authored
 ### Purpose
@@ -59,3 +59,8 @@ Promise resolving to stdout/stderr
 - `node:child_process` - `execFile`
 - [`pathUtils.normalizeWorkspacePath`](../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

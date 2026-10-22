@@ -103,6 +103,7 @@ Create `.live-docs.config.json` at the repository root and pass it with `--confi
 | `glob`                 | every file            | Which files receive Live Docs; by default every file, anywhere, but documents, lock files and what git ignores |
 | `exclude`              | `[]`                  | Paths or globs discovery skips: a folder that documents itself, a vendored tree     |
 | `bundleExclude`        | `[]`                  | Linked markdown the Explorer bundle must leave out (large archives, private notes) |
+| `citedBy`              | `true`                | Whether each doc lists, under `Cited By`, the documents whose links name its file; `false` keeps the related documents to what the docs' own words cite |
 
 ```bash
 npm run live-docs:generate -- --config .live-docs.config.json

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/types.ts
-- Generated At: 2026-10-18T05:36:04.155Z
+- Generated At: 2026-10-22T16:47:56.832Z
 
 ## Authored
 ### Purpose
@@ -136,3 +136,8 @@ The client projects it from the graph index in the bundle.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

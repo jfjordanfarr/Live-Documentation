@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/graphFiles.ts
-- Generated At: 2026-10-16T01:03:40.002Z
+- Generated At: 2026-10-22T16:47:52.981Z
 
 ## Authored
 ### Purpose
@@ -79,3 +79,9 @@ The workspace-relative path written.
 - [`graph.LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](./graph.ts.mdmd.md#symbol-derivelivedocgraph)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/boards.mdmd.md`](../../../../../layer-3/boards.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-engine.mdmd.md`](../../../../../layer-3/live-documentation-engine.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

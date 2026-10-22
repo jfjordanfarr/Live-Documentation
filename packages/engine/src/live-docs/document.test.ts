@@ -70,6 +70,10 @@ const FULL: LiveDoc = {
     { label: "node:fs", symbols: ["Dirent"], qualifiers: ["type-only"] },
     { label: "vitest", symbols: ["describe", "expect", "it"], qualifiers: [] }
   ],
+  citedBy: [
+    { label: "README.md", link: "../../../../README.md" },
+    { label: "docs/widgets.md", link: "../../../../docs/widgets.md" }
+  ],
   reExports: [
     { name: "Circle", slug: "symbol-circle", from: { label: "circle", link: "./circle.ts.md#symbol-circle" }, flags: [] },
     { name: "Square", slug: "symbol-square", from: { label: "square", link: "./square.ts.md#symbol-square" }, flags: ["type-only"] },
@@ -99,7 +103,31 @@ describe("the Live Doc grammar", () => {
     expect(text).toContain("_No public symbols detected_");
     expect(text).toContain("_No dependencies documented yet_");
     expect(text).not.toContain("Re-Exported");
+    expect(text).not.toContain("Cited By");
     expect(parseLiveDoc(text)).toEqual(EMPTY);
+  });
+
+  it("writes the Cited By section after the Dependencies and before the Re-Exported Symbol Anchors, each present on its own", () => {
+    const text = renderLiveDoc(FULL);
+    const order = ["Public Symbols", "Dependencies", "Cited By", "Re-Exported Symbol Anchors"].map((name) => text.indexOf(`<!-- LIVE-DOC:BEGIN ${name} -->`));
+    expect(order.every((at, index) => at > (order[index - 1] ?? -1))).toBe(true);
+    expect(text).toContain([
+      "<!-- LIVE-DOC:BEGIN Cited By -->",
+      "### Cited By",
+      "- [`README.md`](../../../../README.md)",
+      "- [`docs/widgets.md`](../../../../docs/widgets.md)",
+      "<!-- LIVE-DOC:END Cited By -->"
+    ].join("\n"));
+    const cited = { ...EMPTY, citedBy: FULL.citedBy };
+    expect(parseLiveDoc(renderLiveDoc(cited))).toEqual(cited);
+    const { reExports, ...withoutReExports } = FULL;
+    void reExports;
+    expect(parseLiveDoc(renderLiveDoc(withoutReExports))).toEqual(withoutReExports);
+  });
+
+  it("refuses a Cited By line it cannot read", () => {
+    const text = renderLiveDoc({ ...EMPTY, citedBy: [{ label: "README.md", link: "../README.md" }] }).replace("- [`README.md`](../README.md)", "- README.md");
+    expect(() => parseLiveDoc(text)).toThrow(/line 28: unexpected Cited By line/u);
   });
 
   it("writes exactly the shape the generator has always written", () => {

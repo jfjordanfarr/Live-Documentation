@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/oracle/compare.ts
 - Entry: command `oracle:compare` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-22T00:39:42.685Z
+- Generated At: 2026-10-22T16:47:57.721Z
 
 ## Authored
 ### Purpose
@@ -50,3 +50,8 @@ Runs the generator over a copy of the fixture and reports its disagreements with
 - [`fixture.copyFixture`](./fixture.ts.mdmd.md#symbol-copyfixture)
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

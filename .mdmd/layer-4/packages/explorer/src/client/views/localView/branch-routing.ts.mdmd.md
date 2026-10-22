@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-routing.ts
-- Generated At: 2026-10-06T15:18:09.721Z
+- Generated At: 2026-10-22T16:47:55.607Z
 
 ## Authored
 ### Purpose
@@ -86,3 +86,8 @@ never enters a card, given lanes that lie in gaps between cards.
 ### Dependencies
 - [`types.BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

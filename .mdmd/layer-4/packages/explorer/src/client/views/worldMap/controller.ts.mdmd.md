@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/controller.ts
-- Generated At: 2026-10-20T18:05:19.949Z
+- Generated At: 2026-10-22T16:47:56.479Z
 
 ## Authored
 ### Purpose
@@ -105,3 +105,9 @@ The handle a test or a screenshot script drives, at `window.__worldMap`.
 - [`projection.unproject`](./projection.ts.mdmd.md#symbol-unproject)
 - [`projection.zoomAt`](./projection.ts.mdmd.md#symbol-zoomat)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+- [`.mdmd/layer-3/world-map.mdmd.md`](../../../../../../../layer-3/world-map.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

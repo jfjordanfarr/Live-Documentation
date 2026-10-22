@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/format.ts
-- Generated At: 2026-10-20T21:28:53.247Z
+- Generated At: 2026-10-22T16:47:53.152Z
 
 ## Authored
 ### Purpose
@@ -179,3 +179,9 @@ One change's shape as the cache keeps it: `<docsRoot>/history/<lens>/<change>.js
 ### Dependencies
 - [`LiveDocumentationConfig`](../../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect/history.ts
-- Generated At: 2026-10-22T00:54:20.668Z
+- Generated At: 2026-10-22T16:47:57.615Z
 
 ## Authored
 ### Purpose
@@ -90,3 +90,9 @@ What changed from one commit to a later one, each file followed through every re
 - [`sequence.seek`](../../../packages/engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-seek)
 - [`pathfind.reachability`](../../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-function)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

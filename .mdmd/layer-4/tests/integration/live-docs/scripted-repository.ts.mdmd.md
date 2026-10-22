@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/scripted-repository.ts
-- Generated At: 2026-10-20T21:29:00.180Z
+- Generated At: 2026-10-22T16:48:01.073Z
 
 ## Authored
 ### Purpose
@@ -94,3 +94,8 @@ lines resolved to the dropped object led nowhere after a play through this repos
 - `node:path`
 - [`document.renderLiveDoc`](../../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

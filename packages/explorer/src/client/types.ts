@@ -17,7 +17,10 @@ export type SpatialLayout = "connections" | "structure";
 export interface ExplorerFilters {
   showTests: boolean;
   showAssets: boolean;
+  /** Whether the 3D Local Map draws the documents the files' authored words cite. */
   showRelatedDocs: boolean;
+  /** Whether the 3D Local Map draws the documents whose own links cite the files, their `Cited By` sections (2026-10-22). */
+  showCitingDocs: boolean;
 }
 
 /**
@@ -209,6 +212,12 @@ export interface ForceGraphTuning {
    * alone to decide. The owner's choice of 2026-10-21, to tune by eye.
    */
   tether: number;
+  /**
+   * How hard a document's citation of a file pulls the two together in the connections layout, as a share of a
+   * documented reference's spring: one pulls like a reference, zero draws the line and moves nothing. The owner asked
+   * to see such links pull before deciding whether they should (2026-10-22); a lever lets the eye compare.
+   */
+  citedByPull: number;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

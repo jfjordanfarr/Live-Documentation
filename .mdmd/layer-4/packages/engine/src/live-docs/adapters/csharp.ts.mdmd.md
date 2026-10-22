@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/csharp.ts
-- Generated At: 2026-10-15T15:49:38.667Z
+- Generated At: 2026-10-22T16:47:51.555Z
 
 ## Authored
 ### Purpose
@@ -66,3 +66,9 @@ Language adapter for C# (`.cs`): tree-sitter symbols and compiler-style name res
 - [`openings.sqlReferences`](../openings.ts.mdmd.md#symbol-sqlreferences)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../../layer-3/openings.mdmd.md)
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

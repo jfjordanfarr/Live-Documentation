@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/wheel.ts
-- Generated At: 2026-10-12T18:02:22.464Z
+- Generated At: 2026-10-22T16:47:56.433Z
 
 ## Authored
 ### Purpose
@@ -28,3 +28,8 @@ Wheel units normalized to CSS pixels for consistent mouse and trackpad zoom.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

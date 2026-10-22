@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/local-storage.ts
-- Generated At: 2026-10-22T02:20:01.942Z
+- Generated At: 2026-10-22T17:22:32.866Z
 
 ## Authored
 ### Purpose
@@ -75,18 +75,18 @@ Shape of the versioned UI state written to localStorage under {@link PERSISTED_U
 - Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L39)
 
 ##### `getDefaultFilters` — Summary
-Returns the factory-default filter set (tests visible, assets/docs hidden).
+Returns the factory-default filter set (tests visible; assets and documents, cited and citing, hidden).
 
 #### `getDefaultTuning` {#symbol-getdefaulttuning}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L46)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L47)
 
 ##### `getDefaultTuning` — Summary
 Returns the factory-default tuning configuration for bezier curves and the local-map layout.
 
 #### `readPersistedUi` {#symbol-readpersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L133)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L134)
 
 ##### `readPersistedUi` — Summary
 Reads and validates persisted UI state from localStorage.
@@ -97,7 +97,7 @@ the entries of earlier versions.
 
 #### `applyPersistedUi` {#symbol-applypersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L289)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L292)
 
 ##### `applyPersistedUi` — Summary
 Merges persisted UI state onto factory defaults, producing a complete
@@ -108,28 +108,28 @@ persisted bezier config inherits missing keys from the defaults.
 
 #### `PERSISTED_NAV_KEY` {#symbol-persisted_nav_key}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L333)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L336)
 
 ##### `PERSISTED_NAV_KEY` — Summary
 localStorage key for persisted navigation state (active view + map subject).
 
 #### `PERSISTED_NAV_VERSION` {#symbol-persisted_nav_version}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L335)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L338)
 
 ##### `PERSISTED_NAV_VERSION` — Summary
 Schema version tag embedded in persisted navigation payloads.
 
 #### `PersistedNavV1` {#symbol-persistednavv1}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L338)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L341)
 
 ##### `PersistedNavV1` — Summary
 Shape of the versioned navigation state written to localStorage under {@link PERSISTED_NAV_KEY}.
 
 #### `readPersistedNav` {#symbol-readpersistednav}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L380)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L383)
 
 ##### `readPersistedNav` — Summary
 Reads and validates persisted navigation state from localStorage.
@@ -140,21 +140,21 @@ values are silently discarded.
 
 #### `PersistUiScheduler` {#symbol-persistuischeduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L428)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L431)
 
 ##### `PersistUiScheduler` — Summary
 Timer handle for debounced UI persistence
 
 #### `PersistNavScheduler` {#symbol-persistnavscheduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L433)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L436)
 
 ##### `PersistNavScheduler` — Summary
 Timer handle for debounced nav persistence
 
 #### `changedFromDefaults` {#symbol-changedfromdefaults}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L456)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L459)
 
 ##### `changedFromDefaults` — Summary
 What of the filters and the tuning a person has changed: every setting that differs from the defaults, and nothing
@@ -162,7 +162,7 @@ else, so that a default changed later reaches every setting they never touched.
 
 #### `createPersistUiScheduler` {#symbol-createpersistuischeduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L473)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L476)
 
 ##### `createPersistUiScheduler` — Summary
 Create a debounced UI persistence scheduler.
@@ -170,7 +170,7 @@ Writes what of the filters and tuning differs from the defaults to localStorage 
 
 #### `createPersistNavScheduler` {#symbol-createpersistnavscheduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L504)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L507)
 
 ##### `createPersistNavScheduler` — Summary
 Create a debounced navigation persistence scheduler.
@@ -196,3 +196,9 @@ Inspecting a different file never replaces the remembered subject.
 - [`types.TuningConfig`](../types.ts.mdmd.md#symbol-tuningconfig)
 - [`types.ViewName`](../types.ts.mdmd.md#symbol-viewname)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

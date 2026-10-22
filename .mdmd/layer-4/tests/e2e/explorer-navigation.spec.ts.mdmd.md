@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/explorer-navigation.spec.ts
-- Generated At: 2026-10-21T16:09:21.403Z
+- Generated At: 2026-10-22T16:47:58.118Z
 
 ## Authored
 ### Purpose
@@ -32,3 +32,8 @@ _No public symbols detected_
 - [`search-bar.pathAddress`](./search-bar.ts.mdmd.md#symbol-pathaddress)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

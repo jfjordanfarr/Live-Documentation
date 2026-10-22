@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-21T20:42:24.689Z
+- Generated At: 2026-10-22T16:47:55.329Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,7 @@ One update path for every membership change (2026-10-18, ticket C2 of [the chang
 A moment of the history in place of today (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): `setMoment` hands the view a moment's snapshot as the data, with the renames from the moment shown before and the energy to feed the change at; `render` re-keys the cached nodes, links, objects and the hovered, focused and action-target ids through those renames first (`rekey.ts`), so that a renamed file or hub keeps its sphere, its lines and its place under its new id, then reads today's pins, subject, inspection, path and open directories where they stand at the moment, retaining nothing for a pin that does not stand there, and draws the related documents the moment's files linked to then, which the history carries since 2026-10-20 (before, a moment drew none); a document today's bundle lacks says so in its label and opens nothing. Inspection and explicit actions on a past sphere resolve to the file or directory as it stands today; a file gone since has no current action, and a directory acts only while today's graph contains a file beneath it. This opens today's evidence rather than implying the bundle contains that past day's full docs. `settle` eases the standing picture at the tuning's energy after a thumb's drag placed it at zero. The focus label is put away when a panel or control stands over its point, so the step panel and the scrubber never have its words on theirs. `data-history-step` on the container says which step is shown, empty for today, for the specs.
 
 A kept link's ends are set to the live node objects for its ids on every render (2026-10-18), since D3 keeps an end once resolved to an object and a rename or a death can leave that object behind in the cache: the lines to such objects led nowhere after a play through this repository's history ([Turn 8](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)); and a past moment's `symbolCount` is cleared from a node when today's payload names its symbols instead. Held, with the re-keying's rule, by the scrubber spec's walk over a rename onto a dead file's path.
+- The citing documents (2026-10-22, [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) are shown by a filter of their own, Show Citing Docs, as the cited documents are by Show Related Docs, each kind of link passed to the data by its direction; a `cited-by` line is drawn in a lighter violet than a `related-doc` line, both thin, and both carry an arrow at the cited end, four units long, so that the direction of a citation is read off the line.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -134,3 +135,10 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `three` - `Box3`, `Object3D`, `PerspectiveCamera`, `Raycaster`, `Vector2`, `Vector3`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

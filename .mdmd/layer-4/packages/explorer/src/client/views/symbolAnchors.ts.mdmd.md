@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/symbolAnchors.ts
-- Generated At: 2026-10-08T16:03:29.350Z
+- Generated At: 2026-10-22T16:47:56.408Z
 
 ## Authored
 ### Purpose
@@ -63,3 +63,8 @@ keys (`"*"`) or keys with unrecognised direction prefixes.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

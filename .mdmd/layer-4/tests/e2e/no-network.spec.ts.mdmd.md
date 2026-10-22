@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/no-network.spec.ts
-- Generated At: 2026-10-21T01:48:39.204Z
+- Generated At: 2026-10-22T16:47:58.723Z
 
 ## Authored
 ### Purpose
@@ -30,3 +30,9 @@ _No public symbols detected_
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
 - [`types.InspectionTarget`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

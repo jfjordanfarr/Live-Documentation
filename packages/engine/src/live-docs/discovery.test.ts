@@ -4,7 +4,7 @@ import * as os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { discoverTargetFiles } from "./discovery";
+import { discoverDocuments, discoverTargetFiles } from "./discovery";
 import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } from "../config/liveDocumentationConfig";
 
 /**
@@ -13,9 +13,10 @@ import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } f
  * installed packages at two depths, the default docs root and another folder
  * a configuration may name as its docs root, lock files of three kinds,
  * documents (markdown anywhere, an agent's skill among them, other prose
- * formats, licences and their kin by name) beside source files whose names
- * only look like documents, a build the `.gitignore` ignores, and trees a
- * configuration may exclude.
+ * formats, licences and their kin by name, a note beside the docs root's base
+ * layer and a readme inside it, a readme in the ignored build) beside source
+ * files whose names only look like documents, a build the `.gitignore`
+ * ignores, and trees a configuration may exclude.
  */
 const FILES = [
   ".agents/skills/map/SKILL.md",
@@ -25,13 +26,16 @@ const FILES = [
   ".github/workflows/ci.yml",
   ".gitignore",
   ".live-documentation/index.json",
+  ".live-documentation/notes.md",
   ".live-documentation/source/helper.ts",
+  ".live-documentation/source/readme.md",
   "CHANGELOG",
   "COPYING.txt",
   "LICENSE",
   "Makefile",
   "Pipfile.lock",
   "README.md",
+  "dist/README.md",
   "dist/bundle.js",
   "docs/guide.rst",
   "docs/ld/index.json",
@@ -126,6 +130,31 @@ describe("discoverTargetFiles", () => {
     expect(files).toContain("tools/other.ts");
     expect(files).toContain("src/index.ts");
   });
+  /** The documents discovery finds in that workspace, as workspace-relative paths. */
+  async function documents(config: LiveDocumentationConfigInput = {}): Promise<string[]> {
+    return discoverDocuments({ workspaceRoot: workspace, config: normalizeLiveDocumentationConfig(config) });
+  }
+
+  it("finds the documents of the whole workspace, whatever the globs name, but the generated docs' own folder, the ignored build and what the configuration excludes", async () => {
+    const all = [
+      ".agents/skills/map/SKILL.md",
+      ".live-documentation/notes.md",
+      "CHANGELOG",
+      "COPYING.txt",
+      "LICENSE",
+      "README.md",
+      "docs/guide.rst",
+      "packages/app/LICENSE-APACHE-2.0"
+    ];
+    expect(await documents()).toEqual(all);
+    expect(await documents({ glob: ["src/**/*.ts"] })).toEqual(all);
+    expect(await documents({ exclude: ["packages/**", "docs/guide.rst"] })).toEqual(all.filter((file) => !file.startsWith("packages/") && file !== "docs/guide.rst"));
+    // The base layer follows the configuration: with the docs elsewhere, the readme under `.live-documentation/source` is a document like any other.
+    expect(await documents({ root: "docs/ld" })).toContain(".live-documentation/source/readme.md");
+    await fs.rm(path.join(workspace, ".gitignore"));
+    expect(await documents()).toContain("dist/README.md");
+  });
+
   it("keeps a file git tracks although the .gitignore ignores its folder, as git itself does", async () => {
     // `.vscode/` is ignored, and `.vscode/settings.json` is committed on purpose with `git add -f`.
     await fs.appendFile(path.join(workspace, ".gitignore"), ".vscode/\n", "utf8");

@@ -77,12 +77,18 @@ export interface BundledMarkdownTreeNode {
 }
 
 /**
- * A link from a Live Doc to a bundled markdown file.
+ * Which way a file and a document are related: the file's doc cites the
+ * document in its authored words, or the document cites the file in its own
+ * links, which the doc's `Cited By` section records (2026-10-22). The two are
+ * kept apart everywhere a person sees them, since the direction is a fact.
+ */
+export type RelatedDocDirection = "cites" | "cited-by";
+
+/**
+ * A link between a file and a bundled markdown document, one way or the other.
  * Used to render Related Documentation edges in the Force Graph view.
  *
  * @remarks
- * These links are directional: a Live Doc references a bundled document.
- * However, the Force Graph renders them as undirected edges for visual clarity.
  * The `related:` prefix on target IDs distinguishes bundled docs from Live Doc nodes.
  */
 export interface RelatedDocLink {
@@ -91,4 +97,7 @@ export interface RelatedDocLink {
 
     /** Target bundled doc path (becomes node ID with `related:` prefix in Force Graph). */
     targetPath: string;
+
+    /** Whether the file cites the document or the document cites the file. */
+    direction: RelatedDocDirection;
 }

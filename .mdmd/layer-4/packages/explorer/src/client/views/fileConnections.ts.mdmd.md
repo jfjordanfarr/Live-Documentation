@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/fileConnections.ts
-- Generated At: 2026-10-03T02:21:29.014Z
+- Generated At: 2026-10-22T16:47:55.131Z
 
 ## Authored
 ### Purpose
@@ -38,3 +38,8 @@ Collapse parallel and reciprocal references to one undirected file-level relatio
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/design-audit.ts
-- Generated At: 2026-10-19T17:42:52.556Z
+- Generated At: 2026-10-22T16:47:58.049Z
 
 ## Authored
 ### Purpose
@@ -79,3 +79,8 @@ The faults in words, for an assertion's message.
 ### Dependencies
 - `@playwright/test` - `Page` (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/scrubber.ts
-- Generated At: 2026-10-22T02:34:31.449Z
+- Generated At: 2026-10-22T16:47:54.124Z
 
 ## Authored
 ### Purpose
@@ -59,3 +59,10 @@ Make the scrubber under its parent, hidden until synced.
 - [`icon-button.iconButton`](../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`types.HistoryAxis`](../types.ts.mdmd.md#symbol-historyaxis) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

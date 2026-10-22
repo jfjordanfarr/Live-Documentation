@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/powershell-oracle.test.ts
-- Generated At: 2026-10-19T16:54:55.357Z
+- Generated At: 2026-10-22T16:48:01.003Z
 
 ## Authored
 ### Purpose
@@ -38,3 +38,8 @@ _No public symbols detected_
 - [`powershell-edges.isDataFileFacts`](../../../scripts/oracle/powershell-edges.ts.mdmd.md#symbol-isdatafilefacts)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

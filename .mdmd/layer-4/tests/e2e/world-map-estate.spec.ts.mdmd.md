@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/world-map-estate.spec.ts
-- Generated At: 2026-10-12T19:21:21.742Z
+- Generated At: 2026-10-22T16:47:59.029Z
 
 ## Authored
 ### Purpose
@@ -28,3 +28,8 @@ _No public symbols detected_
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/adapters/csharp.test.ts
-- Generated At: 2026-09-27T23:21:30.377Z
+- Generated At: 2026-10-22T16:47:51.517Z
 
 ## Authored
 ### Purpose
@@ -28,3 +28,8 @@ _No public symbols detected_
 - [`csharp.csharpAdapter`](./csharp.ts.mdmd.md#symbol-csharpadapter)
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

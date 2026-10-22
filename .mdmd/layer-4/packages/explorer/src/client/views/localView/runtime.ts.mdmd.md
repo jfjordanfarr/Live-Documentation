@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/runtime.ts
-- Generated At: 2026-10-16T04:41:10.689Z
+- Generated At: 2026-10-22T16:47:56.150Z
 
 ## Authored
 ### Purpose
@@ -120,3 +120,8 @@ Empties every entry in the given anchor registry.
 - [`types.LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

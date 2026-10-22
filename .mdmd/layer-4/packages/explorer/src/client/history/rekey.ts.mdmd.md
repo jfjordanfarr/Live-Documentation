@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/rekey.ts
-- Generated At: 2026-10-18T21:08:45.405Z
+- Generated At: 2026-10-22T16:47:54.100Z
 
 ## Authored
 ### Purpose
@@ -100,3 +100,10 @@ every line resolved to it, and never drawn or moved again).
 ### Dependencies
 - [`forceGraphData.directoryNodeId`](../views/forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

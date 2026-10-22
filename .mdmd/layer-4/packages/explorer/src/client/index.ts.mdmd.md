@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-10-20T21:28:54.350Z
+- Generated At: 2026-10-22T16:47:54.416Z
 
 ## Authored
 ### Purpose
@@ -136,3 +136,9 @@ _No public symbols detected_
 - [`template.stats-line`](../shared/template.html.mdmd.md#symbol-stats-line)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

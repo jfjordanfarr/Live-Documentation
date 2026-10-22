@@ -7,7 +7,7 @@ import {
   noReaderHandles,
   normalizeLiveDocumentationConfig
 } from "@live-documentation/engine/config/liveDocumentationConfig";
-import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
+import { analyzeSourceFile, BINARY_SNIFF_BYTES, buildWorkspaceIndexes, composeCitedBy, composeDependencies, composeEntries, composeReExports, composeSymbolBlocks, computePublicSymbolHeadingInfo, discoverDocuments, discoverTargetFiles, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype, type SourceAnalysisResult, type WorkspaceEntryIndex, type WorkspaceFileIndex, type WorkspaceSymbolIndex } from "@live-documentation/engine/live-docs/core";
 import {
   DEFAULT_AUTHORED_BLOCK,
   LiveDocSyntaxError,
@@ -19,6 +19,7 @@ import {
 } from "@live-documentation/engine/live-docs/document";
 import { detectChangedFiles } from "@live-documentation/engine/live-docs/gitUtils";
 import { readLiveDocGraph, writeLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
+import { citingDocuments, isMarkdownDocument, type DocumentText } from "@live-documentation/engine/live-docs/relatedDocs";
 import {
   normalizeWorkspacePath,
   toWorkspaceFileUri,
@@ -155,6 +156,15 @@ export async function generateLiveDocs(
   });
   logger.info(`Built symbol index with ${symbolIndex.size} unique symbol names and an entry index with ${entryIndex.size} declared files`);
 
+  // The documents that cite each file, for the `Cited By` sections, read from every markdown document discovery finds
+  // whatever subset this run renders, so that a section says the same whichever run wrote it.
+  const citedByIndex = normalizedConfig.citedBy
+    ? citingDocuments(await readMarkdownDocuments(workspaceRoot, normalizedConfig), fileIndex, normalizedConfig, normalizedConfig.bundleExclude)
+    : new Map<string, string[]>();
+  if (normalizedConfig.citedBy) {
+    logger.info(`Read the documents' links: ${[...citedByIndex.values()].reduce((sum, documents) => sum + documents.length, 0)} citations of ${citedByIndex.size} files`);
+  }
+
   const targetFiles = changedPaths
     ? includedFiles.filter((absolute) => changedPaths.has(normalizeWorkspacePath(path.relative(workspaceRoot, absolute))))
     : includedFiles;
@@ -215,6 +225,7 @@ export async function generateLiveDocs(
       docExtension,
       symbolIndex,
       entryIndex,
+      citedBy: citedByIndex.get(normalizedSourcePath) ?? [],
       config: normalizedConfig
     });
 
@@ -288,6 +299,12 @@ export async function generateLiveDocs(
     deletedFiles,
     index
   };
+}
+
+/** The workspace's markdown documents with their text, as discovery finds them; another kind of document has no markdown links. */
+async function readMarkdownDocuments(workspaceRoot: string, config: LiveDocumentationConfig): Promise<DocumentText[]> {
+  const documents = (await discoverDocuments({ workspaceRoot, config })).filter(isMarkdownDocument);
+  return Promise.all(documents.map(async (relative) => ({ path: relative, text: await fs.readFile(path.join(workspaceRoot, relative), "utf8") })));
 }
 
 /** The ancestor folders that are scans of their own: a docs root or a configuration file of this tool above the workspace. */
@@ -460,7 +477,7 @@ async function readFileIfExists(filePath: string): Promise<string | undefined> {
   }
 }
 
-/** Composes the generated parts of a doc from its source analysis: the Entry lines and the three sections. */
+/** Composes the generated parts of a doc from its source analysis and the documents that cite it: the Entry lines and the sections. */
 function composeGenerated(params: {
   analysis: SourceAnalysisResult;
   docAbsolutePath: string;
@@ -470,8 +487,10 @@ function composeGenerated(params: {
   docExtension: string;
   symbolIndex?: WorkspaceSymbolIndex;
   entryIndex: WorkspaceEntryIndex;
+  /** The workspace-relative paths of the documents whose links name the file. */
+  citedBy: readonly string[];
   config: LiveDocumentationConfig;
-}): Pick<LiveDoc, "entries" | "symbols" | "dependencies" | "reExports"> {
+}): Pick<LiveDoc, "entries" | "symbols" | "dependencies" | "citedBy" | "reExports"> {
   const docDir = path.dirname(params.docAbsolutePath);
   const sourceAbsolute = path.resolve(params.workspaceRoot, params.sourceRelativePath);
   const headings = computePublicSymbolHeadingInfo(params.analysis.symbols);
@@ -513,7 +532,15 @@ function composeGenerated(params: {
     symbolIndex: params.symbolIndex
   });
 
-  return reExports.length > 0 ? { entries, symbols, dependencies, reExports } : { entries, symbols, dependencies };
+  const citedBy = composeCitedBy({ documents: params.citedBy, docDir, workspaceRoot: params.workspaceRoot });
+
+  return {
+    entries,
+    symbols,
+    dependencies,
+    ...(citedBy.length > 0 ? { citedBy } : {}),
+    ...(reExports.length > 0 ? { reExports } : {})
+  };
 }
 
 /**

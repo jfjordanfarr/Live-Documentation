@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/LatencyProbeWidget.cs
-- Generated At: 2026-09-27T23:21:32.718Z
+- Generated At: 2026-10-22T16:47:59.292Z
 
 ## Authored
 ### Purpose
@@ -40,3 +40,9 @@ Do not trim the metadata tag or `CollectDependencies` entries; they guarantee th
 - [`BaseWidget`](../BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 - [`RenderContext`](../RenderContext.cs.mdmd.md#symbol-rendercontext-class)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/csharp-advanced-symbols/README.md`](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/README.md)
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md`](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md)
+<!-- LIVE-DOC:END Cited By -->

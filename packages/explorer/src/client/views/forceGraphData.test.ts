@@ -22,17 +22,33 @@ it("shares one counted relationship for parallel and reciprocal facts without mu
 
 it("includes authored documentation links while excluding Live Doc aliases, hidden code sources and dangling sources", () => {
   const data = spatialGraphOf(graph(), file => file.id === "a", [
-    { sourceId: "a", targetPath: "README.md" }, { sourceId: "a", targetPath: "README.md" },
-    { sourceId: "related:README.md", targetPath: "design.md" },
-    { sourceId: "a", targetPath: "docs/a.md" }, { sourceId: "a", targetPath: "docs\\a.md" },
-    { sourceId: "related:docs/a.md", targetPath: "excluded.md" },
-    { sourceId: "b", targetPath: "hidden.md" }, { sourceId: "missing", targetPath: "dangling.md" }
+    { sourceId: "a", targetPath: "README.md", direction: "cites" }, { sourceId: "a", targetPath: "README.md", direction: "cites" },
+    { sourceId: "related:README.md", targetPath: "design.md", direction: "cites" },
+    { sourceId: "a", targetPath: "docs/a.md", direction: "cites" }, { sourceId: "a", targetPath: "docs\\a.md", direction: "cites" },
+    { sourceId: "related:docs/a.md", targetPath: "excluded.md", direction: "cites" },
+    { sourceId: "b", targetPath: "hidden.md", direction: "cites" }, { sourceId: "missing", targetPath: "dangling.md", direction: "cites" }
   ]);
   expect(data.nodes.map(file => file.id)).toEqual(["a", "related:README.md", "related:design.md"]);
   expect(data.nodes[1]).toMatchObject({ archetype: "related-doc", publicSymbols: [], docPath: "README.md" });
   expect(data.links).toEqual([
     { source: "a", target: "related:README.md", kind: "related-doc", count: 2 },
     { source: "related:README.md", target: "related:design.md", kind: "related-doc", count: 1 }
+  ]);
+});
+
+it("draws a document's citation of a file from the document, apart from the file's citation of the document, each counted on its own", () => {
+  const data = spatialGraphOf(graph(), () => true, [
+    { sourceId: "a", targetPath: "docs/design.md", direction: "cites" },
+    { sourceId: "a", targetPath: "docs/design.md", direction: "cited-by" }, { sourceId: "a", targetPath: "docs/design.md", direction: "cited-by" },
+    { sourceId: "b", targetPath: "README.md", direction: "cited-by" },
+    { sourceId: "missing", targetPath: "README.md", direction: "cited-by" }
+  ]);
+  expect(data.nodes.map(file => file.id)).toEqual(["a", "b", "related:docs/design.md", "related:README.md"]);
+  expect(data.links).toEqual([
+    { source: "a", target: "b", kind: "dependency", count: 5 },
+    { source: "a", target: "related:docs/design.md", kind: "related-doc", count: 1 },
+    { source: "related:docs/design.md", target: "a", kind: "cited-by", count: 2 },
+    { source: "related:README.md", target: "b", kind: "cited-by", count: 1 }
   ]);
 });
 
@@ -44,7 +60,7 @@ it("in the structure layout, hangs everything drawn from its directory and every
   };
   const before = JSON.stringify(input);
   const include = (file: ExplorerNodePayload): boolean => !file.id.startsWith("ab/");
-  const docs = [{ sourceId: "a/one.ts", targetPath: "docs/readme.md" }];
+  const docs = [{ sourceId: "a/one.ts", targetPath: "docs/readme.md", direction: "cites" as const }];
   const data = spatialGraphOf(input, include, docs, "structure");
   const hub = (path: string) => data.nodes.find(file => file.id === directoryNodeId(path));
   expect(data.nodes.filter(file => file.directoryPath !== undefined).map(file => file.directoryPath).sort()).toEqual(["", "a", "a/nested", "deep/chain", "docs"]);

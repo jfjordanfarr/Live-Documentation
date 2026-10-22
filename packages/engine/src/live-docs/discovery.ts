@@ -208,45 +208,86 @@ function docsRootWithin(workspaceRoot: string, config: LiveDocumentationConfig):
 export async function discoverTargetFiles(options: DiscoverOptions): Promise<string[]> {
   const patterns = options.include.size > 0 ? Array.from(options.include) : options.config.glob;
   const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
-  const matches = await glob(patterns, {
-    cwd: options.workspaceRoot,
+  // Not walked at all: what isNeverDocumented would drop file by file, `node_modules` above all.
+  const walked = await walk(options.workspaceRoot, patterns, docsRoot !== undefined ? [`${docsRoot}/**`] : []);
+  const considered = walked.filter((entry) => !isNeverDocumented(entry.relative, docsRoot));
+  const kept = await keptByGitAndConfiguration(considered, options.workspaceRoot, options.config);
+  if (!options.changedOnly) {
+    return kept.map((entry) => entry.absolute);
+  }
+  const changed = await detectChangedFiles(options.workspaceRoot);
+  return kept.filter((entry) => changed.has(entry.relative)).map((entry) => entry.absolute);
+}
+
+/**
+ * The workspace's documents ({@link isDocument}), which never get a doc of
+ * their own and reach the map as linked documentation instead: every one in
+ * the workspace, whatever the configured globs name, since a doc's authored
+ * words may link to a document anywhere and a document anywhere may link to a
+ * file; held to the same rules as the files otherwise (what git ignores and
+ * what the configuration's `exclude` names are left out), everywhere but
+ * `.git`, `node_modules` and the generated docs themselves. The authored
+ * documents a repository keeps beside its generated docs, under the docs root
+ * but outside its base layer, are documents like any other. The generator
+ * reads their links for the `Cited By` sections.
+ *
+ * @returns Workspace-relative paths with forward slashes, sorted.
+ */
+export async function discoverDocuments(options: Pick<DiscoverOptions, "workspaceRoot" | "config">): Promise<string[]> {
+  const docsRoot = docsRootWithin(options.workspaceRoot, options.config);
+  const baseLayer = docsRoot === undefined ? undefined : normalizeWorkspacePath(path.join(docsRoot, options.config.baseLayer));
+  const walked = await walk(options.workspaceRoot, ["**/*"], baseLayer !== undefined ? [`${baseLayer}/**`] : []);
+  const considered = walked.filter((entry) => {
+    const segments = entry.relative.split("/");
+    return !segments.includes(".git") && !segments.includes("node_modules") && isDocument(segments[segments.length - 1]);
+  });
+  return (await keptByGitAndConfiguration(considered, options.workspaceRoot, options.config)).map((entry) => entry.relative);
+}
+
+/** A file the walk found: its absolute path and its workspace-relative path with forward slashes. */
+interface WalkedFile {
+  absolute: string;
+  relative: string;
+}
+
+/**
+ * One walk of the workspace: the patterns matched over the whole of it, hidden
+ * files and folders included, so that `.devcontainer/devcontainer.json` or
+ * `.vscode/settings.json` is read like any other file; `.git`, `node_modules`
+ * and the folders named are not walked at all.
+ */
+async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[]): Promise<WalkedFile[]> {
+  const matches = await glob([...patterns], {
+    cwd: workspaceRoot,
     absolute: true,
     nodir: true,
     dot: true,
     windowsPathsNoEscape: true,
-    // Not walked at all: what isNeverDocumented would drop file by file, `node_modules` above all.
-    ignore: ["**/.git/**", "**/node_modules/**", ...(docsRoot !== undefined ? [`${docsRoot}/**`] : [])]
+    ignore: ["**/.git/**", "**/node_modules/**", ...neverWalked]
   });
+  return matches.sort().map((match) => {
+    const absolute = path.resolve(workspaceRoot, match);
+    return { absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) };
+  });
+}
 
-  const changed = options.changedOnly ? await detectChangedFiles(options.workspaceRoot) : new Set<string>();
-
-  const considered: Array<{ absolute: string; relative: string }> = [];
-  for (const match of matches) {
-    const absolute = path.resolve(options.workspaceRoot, match);
-    const relative = normalizeWorkspacePath(path.relative(options.workspaceRoot, absolute));
-    if (!isNeverDocumented(relative, docsRoot)) considered.push({ absolute, relative });
-  }
-  // What git ignores, by git's own word when the workspace is a repository: a nested `.gitignore`, `.git/info/exclude` and
-  // the global excludes file count, and a tracked file is never ignored, as git itself has it (committing a file under an
-  // ignored folder is a decision). Without git, the workspace's `.gitignore` alone.
-  const ignoredByGit = gitIgnored(options.workspaceRoot, considered.map((entry) => entry.relative));
-  const gitignoreFilter = ignoredByGit ? null : await createGitignoreFilter(options.workspaceRoot);
-
-  const candidates = new Set<string>();
-  for (const { absolute, relative } of considered) {
+/**
+ * The files git does not ignore and the configuration does not exclude, in
+ * the order given. What git ignores is read by git's own word when the
+ * workspace is a repository: a nested `.gitignore`, `.git/info/exclude` and
+ * the global excludes file count, and a tracked file is never ignored, as git
+ * itself has it (committing a file under an ignored folder is a decision).
+ * Without git, the workspace's `.gitignore` alone.
+ */
+async function keptByGitAndConfiguration(considered: readonly WalkedFile[], workspaceRoot: string, config: LiveDocumentationConfig): Promise<WalkedFile[]> {
+  const ignoredByGit = gitIgnored(workspaceRoot, considered.map((entry) => entry.relative));
+  const gitignoreFilter = ignoredByGit ? null : await createGitignoreFilter(workspaceRoot);
+  return considered.filter(({ relative }) => {
     if (ignoredByGit ? ignoredByGit.has(relative) : gitignoreFilter?.ignores(relative)) {
-      continue;
+      return false;
     }
-    if (options.config.exclude.some((pattern) => matchesPathPattern(relative, pattern))) {
-      continue;
-    }
-    if (options.changedOnly && !changed.has(relative)) {
-      continue;
-    }
-    candidates.add(absolute);
-  }
-
-  return Array.from(candidates).sort();
+    return !config.exclude.some((pattern) => matchesPathPattern(relative, pattern));
+  });
 }
 
 // ============================================================================

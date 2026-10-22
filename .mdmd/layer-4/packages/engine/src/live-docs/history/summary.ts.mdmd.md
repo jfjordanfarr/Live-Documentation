@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/summary.ts
-- Generated At: 2026-10-20T21:28:53.463Z
+- Generated At: 2026-10-22T16:47:53.404Z
 
 ## Authored
 ### Purpose
@@ -56,3 +56,8 @@ The shape a summary records.
 - [`Shape`](./shape.ts.mdmd.md#symbol-shape)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

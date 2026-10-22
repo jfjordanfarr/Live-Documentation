@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/derive.ts
-- Generated At: 2026-10-18T00:39:18.743Z
+- Generated At: 2026-10-22T16:47:53.106Z
 
 ## Authored
 ### Purpose
@@ -45,3 +45,8 @@ The change from one shape to the next, every list sorted. Applying it to
 - [`shape.renameShape`](./shape.ts.mdmd.md#symbol-renameshape)
 - [`versionControl.VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

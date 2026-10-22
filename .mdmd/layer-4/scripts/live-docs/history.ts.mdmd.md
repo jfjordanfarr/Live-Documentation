@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/history.ts
 - Entry: command `live-docs:history` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-18T01:36:54.224Z
+- Generated At: 2026-10-22T16:47:57.550Z
 
 ## Authored
 ### Purpose
@@ -34,3 +34,10 @@ _No public symbols detected_
 - [`computeHistory`](../../packages/generator/src/history/computeHistory.ts.mdmd.md#symbol-computehistory)
 - [`cli.endQuietlyWhenThePipeCloses`](./cli.ts.mdmd.md#symbol-endquietlywhenthepipecloses)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../layer-3/live-documentation-pipeline.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

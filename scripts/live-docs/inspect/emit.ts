@@ -249,12 +249,14 @@ export function emitFanoutResult(
   graph: LiveDocGraph,
   maxDepth: number,
   json: boolean,
-  verbose: boolean
+  verbose: boolean,
+  documents?: FileDocuments
 ): void {
   const payload = {
     kind: "fanout" as const,
     direction,
     from: describeNode(graph, from, verbose),
+    ...(documents ? { documents } : {}),
     maxDepth,
     terminalPaths: fanout.map((entry) => ({
       length: entry.nodes.length - 1,
@@ -270,6 +272,12 @@ export function emitFanoutResult(
   console.log(
     `Terminal ${direction} paths from ${from} (max depth ${maxDepth}, ${fanout.length} path(s) listed, limit ${MAX_ENUMERATED_PATHS}).`
   );
+  if (documents?.cites.length) {
+    console.log(`Cites: ${documents.cites.join(", ")}`);
+  }
+  if (documents?.citedBy.length) {
+    console.log(`Cited by: ${documents.citedBy.join(", ")}`);
+  }
   fanout.forEach((entry, index) => {
     const descriptors = entry.nodes
       .map((node) => {
@@ -279,6 +287,15 @@ export function emitFanoutResult(
       .join(" -> ");
     console.log(`  ${index + 1}. ${descriptors}`);
   });
+}
+
+/**
+ * A file's related documents, both ways, by their workspace-relative paths: the documents its authored words cite, and
+ * the documents whose links cite it, as its doc's `Cited By` section lists them (2026-10-22).
+ */
+export interface FileDocuments {
+  cites: string[];
+  citedBy: string[];
 }
 
 /** The files a path reaches one way from a file, nearest first, each with the hops to it. */

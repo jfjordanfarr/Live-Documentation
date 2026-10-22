@@ -23,6 +23,7 @@ import {
   type LiveDocumentationConfig,
   type LiveDocumentationConfigInput
 } from "@live-documentation/engine/config/liveDocumentationConfig";
+import { resolveDocLink, type GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
   enumerateTerminalPaths,
@@ -34,6 +35,7 @@ import {
   type Direction,
   type OneWay
 } from "@live-documentation/engine/live-docs/pathfind";
+import { relatedDocsOf } from "@live-documentation/engine/live-docs/relatedDocs";
 
 import { endQuietlyWhenThePipeCloses, packageVersion } from "./cli";
 import {
@@ -270,7 +272,15 @@ async function main(): Promise<void> {
   }
 
   const fanout = enumerateTerminalPaths(graph, fromId, direction, args.maxDepth);
-  emitFanoutResult(fromId, direction, fanout, graph, args.maxDepth, args.json, args.verbose);
+  emitFanoutResult(fromId, direction, fanout, graph, args.maxDepth, args.json, args.verbose, documentsOf(graph.files[fromId], configInput));
+}
+
+/** A file's related documents, both ways: what its authored words cite, and what cites it by its doc's `Cited By` section. */
+function documentsOf(file: GraphFile, config: LiveDocumentationConfig): { cites: string[]; citedBy: string[] } {
+  return {
+    cites: relatedDocsOf(file, config, config.bundleExclude),
+    citedBy: (file.citedBy ?? []).map((entry) => resolveDocLink(file.docPath, entry.link) ?? entry.label)
+  };
 }
 
 /**

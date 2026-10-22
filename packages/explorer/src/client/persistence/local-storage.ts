@@ -35,11 +35,12 @@ export type PersistedUi = {
   tuning?: SavedTuning;
 };
 
-/** Returns the factory-default filter set (tests visible, assets/docs hidden). */
+/** Returns the factory-default filter set (tests visible; assets and documents, cited and citing, hidden). */
 export const getDefaultFilters = (): ExplorerFilters => ({
   showTests: true,
   showAssets: false,
-  showRelatedDocs: false
+  showRelatedDocs: false,
+  showCitingDocs: false
 });
 
 /** Returns the factory-default tuning configuration for bezier curves and the local-map layout. */
@@ -77,7 +78,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.01, chargeRange: 0, linkStrength: 0.25, updateEnergy: 1, tether: 0.01 },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.01, chargeRange: 0, linkStrength: 0.25, updateEnergy: 1, tether: 0.01, citedByPull: 1 },
   // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
   // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played.
   history: { axis: "time", granularity: "auto", playRate: 2 }
@@ -154,10 +155,12 @@ export const readPersistedUi = (): PersistedUi | null => {
       const showTests = readBoolean(parsedFilters.showTests);
       const showAssets = readBoolean(parsedFilters.showAssets);
       const showRelatedDocs = readBoolean(parsedFilters.showRelatedDocs);
+      const showCitingDocs = readBoolean(parsedFilters.showCitingDocs);
       result.filters = {
         ...(showTests !== undefined ? { showTests } : null),
         ...(showAssets !== undefined ? { showAssets } : null),
-        ...(showRelatedDocs !== undefined ? { showRelatedDocs } : null)
+        ...(showRelatedDocs !== undefined ? { showRelatedDocs } : null),
+        ...(showCitingDocs !== undefined ? { showCitingDocs } : null)
       };
     }
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/board.ts
-- Generated At: 2026-09-28T21:15:51.097Z
+- Generated At: 2026-10-22T16:47:52.566Z
 
 ## Authored
 ### Purpose
@@ -147,3 +147,10 @@ The legend entry for a kind: the board's own, or the tool's default, or nothing.
 - [`openings.ROUTE_KIND`](./openings.ts.mdmd.md#symbol-route_kind)
 - [`openings.SQL_OBJECT_KINDS`](./openings.ts.mdmd.md#symbol-sql_object_kinds)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/boards.mdmd.md`](../../../../../layer-3/boards.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-engine.mdmd.md`](../../../../../layer-3/live-documentation-engine.mdmd.md)
+- [`.mdmd/layer-3/world-map.mdmd.md`](../../../../../layer-3/world-map.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

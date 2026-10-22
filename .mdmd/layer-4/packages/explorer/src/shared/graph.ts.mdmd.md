@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/graph.ts
-- Generated At: 2026-09-28T01:11:44.541Z
+- Generated At: 2026-10-22T16:47:56.739Z
 
 ## Authored
 ### Purpose
@@ -43,3 +43,8 @@ Projects the graph into the Explorer's node-and-link payload.
 - [`types.ExplorerPublicSymbol`](./types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 - [`types.ExplorerTypeReference`](./types.ts.mdmd.md#symbol-explorertypereference) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

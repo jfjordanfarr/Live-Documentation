@@ -103,12 +103,15 @@ test("alignment trials animate their outlines while the selected file stays in p
   await page.locator(".local-placed").waitFor();
   await localMapSettled(page);
   await page.waitForTimeout(700);
-  const frames = await page.evaluate(async () => {
+  const { before, frames } = await page.evaluate(async () => {
     const root = document.querySelector<HTMLElement>(".local-placed")!;
     const selected = root.querySelector<HTMLElement>('.node-card[data-id="packages/generator/src/generator.ts"]')!;
-    const outline = root.querySelector<SVGPathElement>('.local-membrane-shape[data-directory="packages/engine/src"]')!;
+    /** Every membrane's outline, by its directory. */
+    const outlines = (): Record<string, string> => Object.fromEntries([...root.querySelectorAll<SVGPathElement>(".local-membrane-shape")]
+      .map(shape => [shape.dataset.directory ?? "", shape.getAttribute("d") ?? ""]));
     const first = selected.getBoundingClientRect();
-    const samples: Array<{ moving: boolean; x: number; y: number; same: boolean; outline: string }> = [];
+    const before = outlines();
+    const samples: Array<{ moving: boolean; x: number; y: number; same: boolean; outlines: Record<string, string> }> = [];
     const input = document.querySelector<HTMLInputElement>("#tuning-membrane-simplicity")!;
     input.value = "100";
     input.dispatchEvent(new Event("input", { bubbles: true }));
@@ -120,17 +123,25 @@ test("alignment trials animate their outlines while the selected file stays in p
         const current = root.querySelector<HTMLElement>('.node-card[data-id="packages/generator/src/generator.ts"]')!;
         const rect = current.getBoundingClientRect();
         samples.push({ moving: root.hasAttribute("data-moving"), x: rect.left - first.left, y: rect.top - first.top,
-          same: current.parentElement === wrapper, outline: outline.getAttribute("d") ?? "" });
+          same: current.parentElement === wrapper, outlines: outlines() });
         if (root.dataset.searchStatus === "running" || root.hasAttribute("data-moving")) requestAnimationFrame(sample);
         else resolve();
       };
       requestAnimationFrame(sample);
     });
-    return samples;
+    return { before, frames: samples };
   });
   const moving = frames.filter(frame => frame.moving);
   expect(moving.length).toBeGreaterThanOrEqual(3);
-  expect(new Set(moving.map(frame => frame.outline)).size, "the boundary has intermediate poses").toBeGreaterThan(2);
+  // Which membranes the new weight reshapes depends on the graph of the day: until 2026-10-22 the reading watched the
+  // engine's band, and a dependency added that day left it a rectangle under both weights. The reading takes whichever
+  // membranes stand differently at the end than at the start, and each must have passed through intermediate poses.
+  const settled = frames[frames.length - 1].outlines;
+  const reshaped = Object.keys(before).filter(directory => before[directory] !== settled[directory]);
+  expect(reshaped, "the new weight reshapes at least one membrane").not.toEqual([]);
+  for (const directory of reshaped) {
+    expect(new Set(moving.map(frame => frame.outlines[directory])).size, `the boundary of ${directory} has intermediate poses`).toBeGreaterThan(2);
+  }
   for (const frame of frames) {
     expect(frame.same, "the selected file keeps its wrapper").toBe(true);
     expect(Math.hypot(frame.x, frame.y), "the selected identity holds its screen position").toBeLessThanOrEqual(1.5);

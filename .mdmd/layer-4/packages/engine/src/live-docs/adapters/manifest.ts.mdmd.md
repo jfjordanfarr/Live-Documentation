@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/manifest.ts
-- Generated At: 2026-10-16T16:32:45.314Z
+- Generated At: 2026-10-22T16:47:51.999Z
 
 ## Authored
 ### Purpose
@@ -130,3 +130,8 @@ Declared entries without repeats, in path order, then by reason and name.
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 - `smol-toml` - `parse`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

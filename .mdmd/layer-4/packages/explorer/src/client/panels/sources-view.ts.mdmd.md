@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-10-22T00:54:18.160Z
+- Generated At: 2026-10-22T16:47:54.572Z
 
 ## Authored
 ### Purpose
@@ -75,3 +75,9 @@ Render the panel into its container and wire its buttons and its field.
 - [`staticExplorerData.BundledHistory`](../../shared/staticExplorerData.ts.mdmd.md#symbol-bundledhistory) (type-only)
 - [`staticExplorerData.BundledMarkdownTreeNode`](../../shared/staticExplorerData.ts.mdmd.md#symbol-bundledmarkdowntreenode) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

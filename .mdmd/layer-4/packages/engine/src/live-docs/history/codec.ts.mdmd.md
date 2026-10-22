@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/codec.ts
-- Generated At: 2026-10-20T21:28:53.172Z
+- Generated At: 2026-10-22T16:47:53.070Z
 
 ## Authored
 ### Purpose
@@ -90,3 +90,8 @@ The change a step's delta describes, every list present.
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 - [`shape.emptyChange`](./shape.ts.mdmd.md#symbol-emptychange)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

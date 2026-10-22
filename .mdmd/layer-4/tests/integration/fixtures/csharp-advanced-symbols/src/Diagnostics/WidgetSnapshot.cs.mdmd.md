@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetSnapshot.cs
-- Generated At: 2026-09-27T23:21:32.676Z
+- Generated At: 2026-10-22T16:47:59.250Z
 
 ## Authored
 ### Purpose
@@ -26,3 +26,8 @@ Treat this fixture as read-only test data; adjust alongside the other advanced s
 ### Dependencies
 - [`WidgetMetadata`](./WidgetMetadata.cs.mdmd.md#symbol-widgetmetadata-struct)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md)
+<!-- LIVE-DOC:END Cited By -->

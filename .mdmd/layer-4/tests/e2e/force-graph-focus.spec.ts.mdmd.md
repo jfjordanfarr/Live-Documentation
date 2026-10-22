@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-focus.spec.ts
-- Generated At: 2026-10-20T16:20:30.338Z
+- Generated At: 2026-10-22T16:47:58.192Z
 
 ## Authored
 ### Purpose
@@ -36,3 +36,8 @@ _No public symbols detected_
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

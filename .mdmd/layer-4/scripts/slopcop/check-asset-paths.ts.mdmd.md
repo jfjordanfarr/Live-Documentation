@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-asset-paths.ts
 - Entry: command `slopcop:assets` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-16T17:10:20.891Z
+- Generated At: 2026-10-22T16:47:57.882Z
 
 ## Authored
 ### Purpose
@@ -37,3 +37,8 @@ _No public symbols detected_
 - [`config.resolveIncludeGlobs`](./config.ts.mdmd.md#symbol-resolveincludeglobs)
 - [`config.resolveRootDirectories`](./config.ts.mdmd.md#symbol-resolverootdirectories)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/slopcop.mdmd.md`](../../../layer-3/slopcop.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

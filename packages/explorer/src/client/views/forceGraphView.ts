@@ -680,8 +680,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
     const filteredNodes = source.nodes.filter(includeNode);
     // A moment's Related Docs are the links its files' authored words made then, which the history carries since
-    // 2026-10-20 (before, a moment drew none); today's are the bundle's.
-    const data = spatialGraphOf(source, includeNode, !state.filters.showRelatedDocs ? [] : moment ? moment.relatedDocLinks : relatedDocLinks, state.spatialLayout);
+    // 2026-10-20 (before, a moment drew none); today's are the bundle's, the documents the files cite and the documents
+    // that cite them, each kind shown by its own filter (2026-10-22).
+    const shownDocLinks = (moment ? moment.relatedDocLinks : relatedDocLinks ?? [])
+      .filter(link => link.direction === "cited-by" ? state.filters.showCitingDocs : state.filters.showRelatedDocs);
+    const data = spatialGraphOf(source, includeNode, shownDocLinks, state.spatialLayout);
     // The node and link objects are kept by id and by pair across every membership change: a sphere keeps its place and
     // its render object, and the library's data join, which binds a line's object to its datum, keeps the line. Before
     // 2026-10-18 every render handed the library new link objects and it rebuilt every line, 65 to 88 ms a step with 2,650
@@ -860,6 +863,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         // against the tree rather than as the faint web of the connections layout.
         if (link.kind === "containment") return `rgba(233, 152, 77, ${visible ? 0.35 : 0.08})`;
         if (link.kind === "related-doc") return `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`;
+        // A document's citation of a file, in the documents' violet lightened toward white, drawn from the document.
+        if (link.kind === "cited-by") return `rgba(214, 178, 240, ${visible ? 0.55 : 0.06})`;
         return state.spatialLayout === "structure" ? `rgba(255, 255, 255, ${visible ? 0.5 : 0})` : `rgba(255, 255, 255, ${visible ? 0.2 : 0.025})`;
       });
       forceGraphInstance?.linkVisibility(link => {
@@ -944,8 +949,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         return label;
       })
       .linkLabel(link => link.kind === "containment" ? "Directory membership"
-        : `${link.count} ${link.kind === "related-doc" ? "documentation" : "documented"} ${link.count === 1 ? "reference" : "references"}`)
-      .linkWidth(link => link.kind === "related-doc" ? 0.5 : 1);
+        : link.kind === "related-doc" ? `Cites the document: ${link.count} ${link.count === 1 ? "link" : "links"} in the file's words`
+        : link.kind === "cited-by" ? `Cited by the document: ${link.count} ${link.count === 1 ? "link" : "links"} to the file`
+        : `${link.count} documented ${link.count === 1 ? "reference" : "references"}`)
+      .linkWidth(link => link.kind === "related-doc" || link.kind === "cited-by" ? 0.5 : 1)
+      // A citation is drawn from the one who cites to the one cited, so that its direction is read off the line.
+      .linkDirectionalArrowLength(link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0)
+      .linkDirectionalArrowRelPos(1);
     updateAttention();
     heldLinks = graphLinks;
     shownLayout = state.spatialLayout;

@@ -664,3 +664,58 @@ describe("generateLiveDocs changed-file status errors", () => {
     }
   });
 });
+
+describe("generateLiveDocs and the documents that cite a file", () => {
+  let workspaceRoot: string;
+  const docsRoot = (): string => path.join(workspaceRoot, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, DEFAULT_LIVE_DOCUMENTATION_CONFIG.baseLayer);
+  const readDoc = (source: string): Promise<string> => fs.readFile(path.join(docsRoot(), `${source}${LIVE_DOCUMENTATION_FILE_EXTENSION}`), "utf8");
+  const CITED_BY = /<!-- LIVE-DOC:BEGIN Cited By -->\n### Cited By\n([\s\S]*?)<!-- LIVE-DOC:END Cited By -->/u;
+
+  beforeEach(async () => {
+    workspaceRoot = await fs.mkdtemp(path.join(os.tmpdir(), "generate-live-docs-cited-by-"));
+    await fs.mkdir(path.join(workspaceRoot, "src"), { recursive: true });
+    await fs.mkdir(path.join(workspaceRoot, "docs", "archive"), { recursive: true });
+    await fs.writeFile(path.join(workspaceRoot, "src", "model.ts"), "export interface Item { id: string }\n");
+    await fs.writeFile(path.join(workspaceRoot, "src", "app.ts"), "import type { Item } from './model';\nexport function start(value: Item): Item { return value; }\n");
+    await fs.writeFile(path.join(workspaceRoot, "README.md"), [
+      "# The app",
+      "The model is [here](src/model.ts) and the app starts in [start](.live-documentation/source/src/app.ts.md#symbol-start).",
+      "```md",
+      "[a fenced link counts for nothing](src/model.ts)",
+      "```"
+    ].join("\n"));
+    await fs.writeFile(path.join(workspaceRoot, "docs", "notes.md"), "See [the app](../src/app.ts#L2), [the readme](../README.md) and [a file that is not there](../src/missing.ts).");
+    await fs.writeFile(path.join(workspaceRoot, "docs", "archive", "old.md"), "Once the model was [here](../../src/model.ts).");
+  });
+
+  afterEach(async () => {
+    await fs.rm(workspaceRoot, { recursive: true, force: true });
+  });
+
+  it("writes a Cited By section on each file a document links to, by its path or its doc's, outside fenced code and the bundle exclusions, and on no other", async () => {
+    const config = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"], bundleExclude: ["docs/archive/**"] });
+    await generateLiveDocs({ workspaceRoot, config, dryRun: false });
+
+    expect(CITED_BY.exec(await readDoc("src/model.ts"))?.[1]).toBe("- [`README.md`](../../../README.md)\n");
+    expect(CITED_BY.exec(await readDoc("src/app.ts"))?.[1]).toBe("- [`README.md`](../../../README.md)\n- [`docs/notes.md`](../../../docs/notes.md)\n");
+    const index = JSON.parse(await fs.readFile(path.join(workspaceRoot, DEFAULT_LIVE_DOCUMENTATION_CONFIG.root, "index.json"), "utf8")) as { files: Record<string, { citedBy?: unknown }> };
+    expect(index.files["src/app.ts"].citedBy).toEqual([{ label: "README.md", link: "../../../README.md" }, { label: "docs/notes.md", link: "../../../docs/notes.md" }]);
+  });
+
+  it("writes no Cited By section when the configuration turns it off, and drops the section once the document's link goes", async () => {
+    const off = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"], bundleExclude: ["docs/archive/**"], citedBy: false });
+    await generateLiveDocs({ workspaceRoot, config: off, dryRun: false });
+    expect(await readDoc("src/model.ts")).not.toContain("Cited By");
+
+    const on = normalizeLiveDocumentationConfig({ ...DEFAULT_LIVE_DOCUMENTATION_CONFIG, glob: ["src/**/*.ts"], bundleExclude: ["docs/archive/**"] });
+    await generateLiveDocs({ workspaceRoot, config: on, dryRun: false });
+    expect(await readDoc("src/model.ts")).toContain("<!-- LIVE-DOC:BEGIN Cited By -->");
+
+    await fs.writeFile(path.join(workspaceRoot, "README.md"), "# The app\nNothing linked any more.\n");
+    const result = await generateLiveDocs({ workspaceRoot, config: on, dryRun: false });
+    expect(result.files.find((record) => record.sourcePath === "src/model.ts")?.change).toBe("updated");
+    expect(await readDoc("src/model.ts")).not.toContain("Cited By");
+    // The notes still cite the app, and the readme no longer does.
+    expect(CITED_BY.exec(await readDoc("src/app.ts"))?.[1]).toBe("- [`docs/notes.md`](../../../docs/notes.md)\n");
+  });
+});

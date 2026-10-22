@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/graph.ts
-- Generated At: 2026-10-20T21:28:53.086Z
+- Generated At: 2026-10-22T16:47:52.958Z
 
 ## Authored
 ### Purpose
@@ -85,14 +85,14 @@ Derives the graph from parsed docs.
 
 #### `LinkTarget (interface)` {#symbol-linktarget-interface}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L195)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L196)
 
 ##### `LinkTarget (interface)` — Summary
 The Live Doc a link in a doc points at, and the source file that doc mirrors.
 
 #### `linkTarget (function)` {#symbol-linktarget-function}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L212)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L213)
 - Returns: [`LinkTarget`](#symbol-linktarget-interface)
 - Parameters: `location`: [`DocLocation`](#symbol-doclocation)
 
@@ -109,7 +109,7 @@ The target, or undefined when the link leaves the docs or does not name a Live D
 
 #### `resolveDocLink` {#symbol-resolvedoclink}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L233)
+- Source: [source](../../../../../../packages/engine/src/live-docs/graph.ts#L234)
 
 ##### `resolveDocLink` — Summary
 Resolves a doc-relative link to the workspace-relative path it names, without its fragment: undefined for an
@@ -126,3 +126,11 @@ external URL or a path that leaves the workspace. A bare fragment names the doc 
 - [`document.SymbolBlock`](./document.ts.mdmd.md#symbol-symbolblock) (type-only)
 - [`document.TypeRef`](./document.ts.mdmd.md#symbol-typeref) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-engine.mdmd.md`](../../../../../layer-3/live-documentation-engine.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-pipeline.mdmd.md`](../../../../../layer-3/live-documentation-pipeline.mdmd.md)
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../layer-3/openings.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

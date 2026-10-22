@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/Widgets/CompositeWidget.cs
-- Generated At: 2026-09-27T23:21:32.697Z
+- Generated At: 2026-10-22T16:47:59.271Z
 
 ## Authored
 ### Purpose
@@ -45,3 +45,8 @@ Keep the child traversal logic straightforward; the fixture asserts that inherit
 - [`BaseWidget`](../BaseWidget.cs.mdmd.md#symbol-basewidget-class)
 - [`RenderContext`](../RenderContext.cs.mdmd.md#symbol-rendercontext-class)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md`](../../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md)
+<!-- LIVE-DOC:END Cited By -->

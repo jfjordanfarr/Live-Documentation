@@ -33,6 +33,8 @@ export interface LiveDoc {
   symbols: SymbolBlock[];
   /** The `Dependencies` section; empty when the file depends on nothing. */
   dependencies: Dependency[];
+  /** The `Cited By` section, present only when a document links to the file. */
+  citedBy?: CitedBy[];
   /** The `Re-Exported Symbol Anchors` section, present only when the file re-exports. */
   reExports?: ReExport[];
 }
@@ -118,6 +120,20 @@ export interface Entry {
   declarer?: { label: string; link: string };
 }
 
+/**
+ * One line of the `Cited By` section: a document, outside the Live Docs, whose
+ * markdown links name this file or its doc. The reverse of the links a doc's
+ * authored words make, which the generator writes so that every reader of the
+ * docs, the Explorer and the CLI alike, derives the same related documents
+ * (the owner's rule of 2026-01-06, built in this direction on 2026-10-22).
+ */
+export interface CitedBy {
+  /** The document's workspace-relative path, as the line's inline-code label. */
+  label: string;
+  /** The link to the document, relative to the doc. */
+  link: string;
+}
+
 /** One entry of the `Re-Exported Symbol Anchors` section. */
 export interface ReExport {
   name: string;
@@ -138,6 +154,7 @@ const CLOSE = " -->";
 
 const PUBLIC_SYMBOLS = "Public Symbols";
 const DEPENDENCIES = "Dependencies";
+const CITED_BY = "Cited By";
 const RE_EXPORTS = "Re-Exported Symbol Anchors";
 
 const NO_SYMBOLS = "_No public symbols detected_";
@@ -215,6 +232,10 @@ export function renderLiveDoc(doc: LiveDoc): string {
   pushSection(lines, PUBLIC_SYMBOLS, doc.symbols.length ? renderSymbolBlocks(doc.symbols) : [NO_SYMBOLS]);
   lines.push("");
   pushSection(lines, DEPENDENCIES, doc.dependencies.length ? doc.dependencies.map(renderDependency) : [NO_DEPENDENCIES]);
+  if (doc.citedBy) {
+    lines.push("");
+    pushSection(lines, CITED_BY, doc.citedBy.map(renderCitedBy));
+  }
   if (doc.reExports) {
     lines.push("");
     pushSection(lines, RE_EXPORTS, renderReExports(doc.reExports));
@@ -301,6 +322,10 @@ function renderDependency(dependency: Dependency): string {
   return `- \`${dependency.label}\`${symbols}${qualifier}`;
 }
 
+function renderCitedBy(entry: CitedBy): string {
+  return `- [\`${entry.label}\`](${entry.link})`;
+}
+
 function renderReExports(entries: ReExport[]): string[] {
   const lines: string[] = [];
   entries.forEach((entry, index) => {
@@ -360,18 +385,26 @@ export function parseLiveDoc(text: string): LiveDoc {
   const symbols = parseSection(reader, PUBLIC_SYMBOLS, (body) => body.lines.length === 1 && body.lines[0] === NO_SYMBOLS ? [] : parseSymbols(body));
   reader.expectBlank();
   const dependencies = parseSection(reader, DEPENDENCIES, (body) => body.lines.length === 1 && body.lines[0] === NO_DEPENDENCIES ? [] : body.lines.map((line, index) => parseDependency(line, body.start + index)));
+  // The optional sections, each present or not, in this order.
+  let citedBy: CitedBy[] | undefined;
+  if (nextSectionIs(reader, CITED_BY)) {
+    reader.expectBlank();
+    citedBy = parseSection(reader, CITED_BY, (body) => body.lines.map((line, index) => parseCitedBy(line, body.start + index)));
+  }
   let reExports: ReExport[] | undefined;
-  if (!reader.atEnd()) {
-    if (reader.peek(0) !== "" || reader.peek(1) !== `${BEGIN}${RE_EXPORTS}${CLOSE}`) {
-      reader.fail("text after the last generated section");
-    }
+  if (nextSectionIs(reader, RE_EXPORTS)) {
     reader.expectBlank();
     reExports = parseSection(reader, RE_EXPORTS, (body) => parseReExports(body));
   }
   if (!reader.atEnd()) {
     reader.fail("text after the last generated section");
   }
-  return { codePath, layer, archetype, entries, generatedAt, authored: authored.join("\n"), symbols, dependencies, reExports };
+  return { codePath, layer, archetype, entries, generatedAt, authored: authored.join("\n"), symbols, dependencies, citedBy, reExports };
+}
+
+/** True when a blank line and the named section's opening marker come next; the end of the text is not a section. */
+function nextSectionIs(reader: Reader, name: string): boolean {
+  return !reader.atEnd() && reader.peek(0) === "" && reader.peek(1) === `${BEGIN}${name}${CLOSE}`;
 }
 
 const ENTRY_LINE = /^- Entry: (program|command|module|opening|tooling|declared)(?: (.+))?$/u;
@@ -576,6 +609,16 @@ function parseDependency(line: string, lineNumber: number): Dependency {
     return dependency;
   }
   throw new LiveDocSyntaxError(lineNumber, `unexpected dependency line ${JSON.stringify(line)}`);
+}
+
+const CITED_BY_LINE = /^- \[`([^`]+)`\]\(([^)]+)\)$/u;
+
+function parseCitedBy(line: string, lineNumber: number): CitedBy {
+  const match = CITED_BY_LINE.exec(line);
+  if (!match) {
+    throw new LiveDocSyntaxError(lineNumber, `unexpected Cited By line ${JSON.stringify(line)}`);
+  }
+  return { label: match[1], link: match[2] };
 }
 
 const RE_EXPORT_FROM = /^- Re-exported from \[`([^`]+)`\]\(([^)]+)\)(?: \(([^)]+)\))?$/u;

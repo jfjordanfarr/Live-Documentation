@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/archetype.ts
-- Generated At: 2026-10-22T00:39:38.498Z
+- Generated At: 2026-10-22T16:47:52.529Z
 
 ## Authored
 ### Purpose
@@ -107,3 +107,8 @@ entry points are read by this rule.
 - [`LiveDocumentationConfig`](../config/liveDocumentationConfig.ts.mdmd.md#symbol-livedocumentationconfig) (type-only)
 - [`document.UNREAD_NOTE`](./document.ts.mdmd.md#symbol-unread_note)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

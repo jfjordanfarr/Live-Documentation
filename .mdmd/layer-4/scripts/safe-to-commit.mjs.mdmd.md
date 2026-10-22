@@ -6,7 +6,7 @@
 - Code Path: scripts/safe-to-commit.mjs
 - Entry: command `ci-check` of [`package.json`](../package.json.mdmd.md)
 - Entry: command `safe:commit` of [`package.json`](../package.json.mdmd.md)
-- Generated At: 2026-10-18T23:23:06.678Z
+- Generated At: 2026-10-22T16:47:57.841Z
 
 ## Authored
 ### Purpose
@@ -30,3 +30,8 @@ _No public symbols detected_
 - `node:child_process` - `spawnSync`
 - [`steps.runNpmScript`](./steps.mjs.mdmd.md#symbol-runnpmscript)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/slopcop.mdmd.md`](../../layer-3/slopcop.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

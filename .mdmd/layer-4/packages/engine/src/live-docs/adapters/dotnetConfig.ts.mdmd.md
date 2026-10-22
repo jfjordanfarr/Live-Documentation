@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/dotnetConfig.ts
-- Generated At: 2026-09-28T17:02:47.875Z
+- Generated At: 2026-10-22T16:47:51.666Z
 
 ## Authored
 ### Purpose
@@ -41,3 +41,9 @@ Language adapter for `.config` files: configuration names and service addresses 
 - [`openings.ADDRESS_KIND`](../openings.ts.mdmd.md#symbol-address_kind)
 - [`pathUtils.normalizeWorkspacePath`](../../tooling/pathUtils.ts.mdmd.md#symbol-normalizeworkspacepath)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/openings.mdmd.md`](../../../../../../layer-3/openings.mdmd.md)
+- [`.mdmd/layer-3/polyglot-adapters.mdmd.md`](../../../../../../layer-3/polyglot-adapters.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

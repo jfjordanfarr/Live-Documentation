@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/board.ts
 - Entry: command `live-docs:board` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-15T15:49:42.259Z
+- Generated At: 2026-10-22T16:47:57.502Z
 
 ## Authored
 ### Purpose
@@ -36,3 +36,9 @@ _No public symbols detected_
 - [`document.LiveDocSyntaxError`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-livedocsyntaxerror)
 - [`graphFiles.readEstateGraph`](../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readestategraph)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/boards.mdmd.md`](../../../layer-3/boards.mdmd.md)
+- [`.mdmd/layer-3/world-map.mdmd.md`](../../../layer-3/world-map.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

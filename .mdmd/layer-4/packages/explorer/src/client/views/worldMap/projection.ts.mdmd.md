@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/worldMap/projection.ts
-- Generated At: 2026-10-09T20:54:52.022Z
+- Generated At: 2026-10-22T16:47:56.648Z
 
 ## Authored
 ### Purpose
@@ -242,3 +242,8 @@ A smooth step from 0 to 1.
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

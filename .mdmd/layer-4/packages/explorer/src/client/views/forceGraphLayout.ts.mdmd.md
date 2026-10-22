@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-10-21T21:29:28.069Z
+- Generated At: 2026-10-22T17:22:33.267Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ Gravity and the repulsion's reach (2026-10-17): nothing drew two unconnected clu
 The carry is `placeNewSpheres`: a sphere that was in the picture keeps its place, a hub new to it starts at the centroid of its placed members, and any other new sphere starts beside what it is wired to by a pulling link at the spring's rest length, in a direction `seededDirection` draws from its id, so that nothing erupts from the origin; a sphere with nothing placed to start from is left to D3's seat.
 
 Created for [the October 13 shared-preset implementation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
+A document's citation of a file (2026-10-22, [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) pulls by `ForceGraphTuning.citedByPull`, a share of a documented reference's spring (`springShare`), one by default so that it pulls as a reference does and zero to draw the line and move nothing: `linkPulls` takes the tuning and leaves such a link out of the springs, the degrees and the carry at zero. The owner asked to see the pull before deciding on it: "I want to see it before I assert it should have no pull" ([Turn 2](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-22.1.record.md#turn-2)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -81,23 +82,32 @@ More coupling reduces the desired surface gap with diminishing returns, without 
 
 #### `linkPulls` {#symbol-linkpulls}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L64)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L66)
 - Parameters: `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `linkPulls` — Summary
 Which links pull in a layout: documented references place files by their analyzed connections, containment places
-them by their declared directories. The other kind stays in the data to be drawn on demand and moves nothing.
+them by their declared directories. The other kind stays in the data to be drawn on demand and moves nothing. A
+document's citation of a file pulls by the tuning's lever (`citedByPull`), which at zero leaves it drawn alone, so
+that whether such a link should shape the picture can be seen before it is decided (the owner, 2026-10-22).
+
+#### `springShare` {#symbol-springshare}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L73)
+
+##### `springShare` — Summary
+How hard a pulling link's spring pulls, as a share of a reference's: the tuning's lever for a document's citation, one for the rest.
 
 #### `Placed` {#symbol-placed}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L69)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L78)
 
 ##### `Placed` — Summary
 A point the simulation placed, or the carry did.
 
 #### `PlaceableNode` {#symbol-placeablenode}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L72)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L81)
 - Extends: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `PlaceableNode` — Summary
@@ -105,7 +115,7 @@ What the placement of a new sphere reads of a node beside its position: for a hu
 
 #### `seededDirection` {#symbol-seededdirection}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L80)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L89)
 - Returns: [`Placed`](#symbol-placed)
 
 ##### `seededDirection` — Summary
@@ -113,7 +123,7 @@ A unit vector seeded by the id, the same on every machine, so that a born sphere
 
 #### `placeNewSpheres` {#symbol-placenewspheres}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L106)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`PlaceableNode`](#symbol-placeablenode)
 
@@ -128,7 +138,7 @@ start of each sphere placed here.
 
 #### `springStrength` {#symbol-springstrength}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L145)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L154)
 - Parameters: `edge`: `L`; `links`: `L`[]
 - Constraints: [`SpatialNode`](#symbol-spatialnode), [`SpatialLink`](#symbol-spatiallink)
 
@@ -139,7 +149,7 @@ counts are read from the links the force holds, which are the pulling ones, and 
 
 #### `MOTION` {#symbol-motion}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L162)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L171)
 - Returns: [`MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings)
 
 ##### `MOTION` — Summary
@@ -147,28 +157,28 @@ The motion's step and drag: the probe's smooth control, which the owner found "q
 
 #### `COLLISION_STIFFNESS` {#symbol-collision_stiffness}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L165)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L174)
 
 ##### `COLLISION_STIFFNESS` — Summary
 How hard two spheres closer than their clearance push apart, per unit of overlap.
 
 #### `STILL_FRACTION` {#symbol-still_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L168)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L177)
 
 ##### `STILL_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, below which the spheres count as still.
 
 #### `QUIET_TICKS` {#symbol-quiet_ticks}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L171)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L180)
 
 ##### `QUIET_TICKS` — Summary
 How many still ticks in a row end the easing.
 
 #### `UNFOLDED_FRACTION` {#symbol-unfolded_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L179)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L188)
 
 ##### `UNFOLDED_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
@@ -178,7 +188,7 @@ hundredth of the picture's size, they would stay far too small (measured 2026-10
 
 #### `spatialFieldOf` {#symbol-spatialfieldof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L186)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L195)
 - Returns: [`SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -190,7 +200,7 @@ nodes are left out, as D3 would refuse them.
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L213)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L222)
 
 ##### `MotionStart` — Summary
 How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
@@ -199,7 +209,7 @@ forces, which rearrange the whole and leave the old places no reference.
 
 #### `MotionForce (interface)` {#symbol-motionforce-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L216)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L225)
 - Extends: `Force`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -208,7 +218,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L226)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L235)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -216,7 +226,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L246)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L255)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -232,14 +242,14 @@ the tether holds and the largest move of a tick has stayed under `STILL_FRACTION
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L320)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L329)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L332)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L341)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary
@@ -261,3 +271,10 @@ from where its spheres stand. Inputs are not mutated; the result says whether th
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 - [`d3-force-3d`](../../shared/d3-force-3d.ts.mdmd.md)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

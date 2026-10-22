@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/bundledMarkdownScanner.ts
-- Generated At: 2026-10-20T21:28:56.217Z
+- Generated At: 2026-10-22T16:47:56.700Z
 
 ## Authored
 ### Purpose
@@ -72,3 +72,8 @@ that cannot be read is dropped with it, so that the Related Docs name only what 
 - [`staticExplorerData.RelatedDocLink`](./staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - `path`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

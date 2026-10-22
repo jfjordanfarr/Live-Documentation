@@ -51,8 +51,11 @@ export function snapshotGraphOf(shape: Shape): ExplorerGraphPayload {
   return { nodes, links, stats: { nodes: nodes.length, links: links.length, referencesOutsideScan: 0 } };
 }
 
-/** The links from each file's authored words to a document at the step, as today's bundle names its Related Docs. */
+/**
+ * The links from each file's authored words to a document at the step, as today's bundle names its Related Docs: what
+ * the files cited then. The documents that cited a file at the step are not in the sequence yet (2026-10-22).
+ */
 export function relatedDocLinksOf(shape: Shape): RelatedDocLink[] {
   return [...shape.docLinks].map(edgeEnds).sort((a, b) => compare(a[0], b[0]) || compare(a[1], b[1]))
-    .map(([sourceId, targetPath]) => ({ sourceId, targetPath }));
+    .map(([sourceId, targetPath]) => ({ sourceId, targetPath, direction: "cites" }));
 }

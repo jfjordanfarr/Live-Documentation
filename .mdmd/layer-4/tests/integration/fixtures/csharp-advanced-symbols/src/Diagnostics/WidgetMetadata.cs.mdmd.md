@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/WidgetMetadata.cs
-- Generated At: 2026-09-27T23:21:32.637Z
+- Generated At: 2026-10-22T16:47:59.209Z
 
 ## Authored
 ### Purpose
@@ -50,3 +50,8 @@ Retain the constructor guardrails and `WithTag` helper so dependency analysis ke
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md)
+<!-- LIVE-DOC:END Cited By -->

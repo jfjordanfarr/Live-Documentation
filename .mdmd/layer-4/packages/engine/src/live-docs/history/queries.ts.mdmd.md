@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/queries.ts
-- Generated At: 2026-10-20T21:28:53.349Z
+- Generated At: 2026-10-22T16:47:53.263Z
 
 ## Authored
 ### Purpose
@@ -131,3 +131,9 @@ is dead whatever happened to its path after.
 - [`shape.edgeEnds`](./shape.ts.mdmd.md#symbol-edgeends)
 - [`shape.edgeKey`](./shape.ts.mdmd.md#symbol-edgekey)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../../../../layer-3/architectural-decisions.mdmd.md)
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

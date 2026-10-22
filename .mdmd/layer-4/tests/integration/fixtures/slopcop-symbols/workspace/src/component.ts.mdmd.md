@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts
-- Generated At: 2026-09-27T23:21:33.664Z
+- Generated At: 2026-10-22T16:48:00.634Z
 
 ## Authored
 ### Purpose
@@ -25,3 +25,10 @@ Provides the minimal implementation required for the SlopCop symbol-audit fixtur
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/slopcop-symbols/workspace/docs/index.md`](../../../../../../../../tests/integration/fixtures/slopcop-symbols/workspace/docs/index.md)
+- [`tests/integration/fixtures/slopcop-symbols/workspace/docs/overview.md`](../../../../../../../../tests/integration/fixtures/slopcop-symbols/workspace/docs/overview.md)
+- [`tests/integration/fixtures/slopcop-symbols/workspace/docs/symbol-map.md`](../../../../../../../../tests/integration/fixtures/slopcop-symbols/workspace/docs/symbol-map.md)
+<!-- LIVE-DOC:END Cited By -->

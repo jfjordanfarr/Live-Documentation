@@ -34,6 +34,7 @@ export type { WorkspaceFileIndex } from "./adapters";
 export { BINARY_SNIFF_BYTES, hasMeaningfulAuthoredContent, isBinaryContent, resolveArchetype } from "./archetype";
 
 export {
+  discoverDocuments,
   discoverTargetFiles,
   buildWorkspaceIndexes
 } from "./discovery";
@@ -42,6 +43,7 @@ export { collectExportedSymbols } from "./symbolExtraction";
 
 export {
   computePublicSymbolHeadingInfo,
+  composeCitedBy,
   composeEntries,
   composeSymbolBlocks,
   composeDependencies,

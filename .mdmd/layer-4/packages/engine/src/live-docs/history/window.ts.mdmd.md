@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/window.ts
-- Generated At: 2026-10-18T00:39:19.367Z
+- Generated At: 2026-10-22T16:47:53.506Z
 
 ## Authored
 ### Purpose
@@ -45,3 +45,8 @@ The window of the sequence the selection names, re-based on its first change.
 - [`sequence.commitCount`](./sequence.ts.mdmd.md#symbol-commitcount)
 - [`sequence.seek`](./sequence.ts.mdmd.md#symbol-seek)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

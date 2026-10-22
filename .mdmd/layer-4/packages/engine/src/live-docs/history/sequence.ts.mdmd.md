@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/sequence.ts
-- Generated At: 2026-10-18T05:36:00.599Z
+- Generated At: 2026-10-22T16:47:53.349Z
 
 ## Authored
 ### Purpose
@@ -115,3 +115,8 @@ What the sequence says of itself without its body.
 - [`shape.shapeDifferences`](./shape.ts.mdmd.md#symbol-shapedifferences)
 - [`versionControl.VersionChanges`](./versionControl.ts.mdmd.md#symbol-versionchanges) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

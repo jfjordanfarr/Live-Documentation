@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/history/lens.ts
-- Generated At: 2026-10-19T19:08:19.569Z
+- Generated At: 2026-10-22T16:47:53.214Z
 
 ## Authored
 ### Purpose
@@ -44,3 +44,8 @@ JSON with every object's keys in sorted order, so that two equal values always h
 - [`format.GeneratorIdentity`](./format.ts.mdmd.md#symbol-generatoridentity) (type-only)
 - [`format.HistoryLens`](./format.ts.mdmd.md#symbol-historylens) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

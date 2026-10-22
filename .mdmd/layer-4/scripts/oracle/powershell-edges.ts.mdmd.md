@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/oracle/powershell-edges.ts
-- Generated At: 2026-10-16T21:23:42.192Z
+- Generated At: 2026-10-22T16:47:57.809Z
 
 ## Authored
 ### Purpose
@@ -182,3 +182,8 @@ Moves every location of the record, the files' keys and every resolved path, fro
 - [`scip-edges.OracleEdges`](./scip-edges.ts.mdmd.md#symbol-oracleedges) (type-only)
 - [`scip-edges.OracleProject`](./scip-edges.ts.mdmd.md#symbol-oracleproject) (type-only)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/architectural-decisions.mdmd.md`](../../../layer-3/architectural-decisions.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

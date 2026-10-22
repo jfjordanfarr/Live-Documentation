@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/shared/bundledMarkdownScanner.test.ts
-- Generated At: 2026-10-20T21:28:56.197Z
+- Generated At: 2026-10-22T17:22:34.402Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ _No public symbols detected_
 - `fs/promises`
 - `os`
 - [`bundledMarkdownScanner.bundleRelatedDocs`](./bundledMarkdownScanner.ts.mdmd.md#symbol-bundlerelateddocs)
+- [`staticExplorerData.RelatedDocLink`](./staticExplorerData.ts.mdmd.md#symbol-relateddoclink) (type-only)
 - `path`
 - `vitest` - `afterEach`, `beforeEach`, `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

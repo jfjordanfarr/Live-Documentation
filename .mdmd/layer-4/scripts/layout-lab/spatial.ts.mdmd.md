@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/spatial.ts
-- Generated At: 2026-10-21T20:42:26.491Z
+- Generated At: 2026-10-22T17:38:28.648Z
 
 ## Authored
 ### Purpose
@@ -30,7 +30,7 @@ Ease the same full filtered graph the 3D view shows, in either layout, until sti
 
 #### `renderSpatialReport` {#symbol-renderspatialreport}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/spatial.ts#L54)
+- Source: [source](../../../../scripts/layout-lab/spatial.ts#L55)
 
 ##### `renderSpatialReport` — Summary
 Human-readable companion to the complete node, reference-count and coordinate JSON.
@@ -54,3 +54,8 @@ Human-readable companion to the complete node, reference-count and coordinate JS
 - [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 - [`scopes.retainedSubject`](./scopes.ts.mdmd.md#symbol-retainedsubject)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/change-over-time.mdmd.md`](../../../layer-3/change-over-time.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

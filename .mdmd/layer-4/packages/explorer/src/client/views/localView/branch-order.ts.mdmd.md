@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-order.ts
-- Generated At: 2026-10-12T19:21:19.762Z
+- Generated At: 2026-10-22T16:47:55.444Z
 
 ## Authored
 ### Purpose
@@ -112,3 +112,8 @@ The crossings among the wires between adjacent columns of an order, at the given
 - [`directory-bands.FlowNode`](./directory-bands.ts.mdmd.md#symbol-flownode)
 - [`directory-bands.computeDirectoryBands`](./directory-bands.ts.mdmd.md#symbol-computedirectorybands)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

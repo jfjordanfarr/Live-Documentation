@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/RenderContext.cs
-- Generated At: 2026-09-27T23:21:32.618Z
+- Generated At: 2026-10-22T16:47:59.190Z
 
 ## Authored
 ### Purpose
@@ -46,3 +46,9 @@ Preserve the null-checks and event recording semantics—they intentionally surf
 ### Dependencies
 _No dependencies documented yet_
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/registry.md)
+- [`tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md`](../../../../../../../../tests/integration/fixtures/csharp-advanced-symbols/docs/symbol-scenarios.md)
+<!-- LIVE-DOC:END Cited By -->

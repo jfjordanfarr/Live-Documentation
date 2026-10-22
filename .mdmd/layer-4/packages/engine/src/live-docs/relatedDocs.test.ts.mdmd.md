@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/relatedDocs.test.ts
-- Generated At: 2026-10-20T21:28:53.623Z
+- Generated At: 2026-10-22T16:47:53.611Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,8 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`relatedDocs.citingDocuments`](./relatedDocs.ts.mdmd.md#symbol-citingdocuments)
+- [`relatedDocs.markdownLinkTargets`](./relatedDocs.ts.mdmd.md#symbol-markdownlinktargets)
 - [`relatedDocs.relatedDocsOf`](./relatedDocs.ts.mdmd.md#symbol-relateddocsof)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

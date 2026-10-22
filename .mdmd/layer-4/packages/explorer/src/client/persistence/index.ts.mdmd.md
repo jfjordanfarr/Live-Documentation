@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/index.ts
-- Generated At: 2026-10-08T16:03:27.946Z
+- Generated At: 2026-10-22T16:47:54.738Z
 
 ## Authored
 ### Purpose
@@ -65,3 +65,8 @@ Created during Dev Day 50 (12/19) as part of Phase 2 tech-debt reduction. Groups
 - [`url-state.parseInitialState`](./url-state.ts.mdmd.md#symbol-parseinitialstate) (re-export)
 - [`url-state.updateUrlState`](./url-state.ts.mdmd.md#symbol-updateurlstate) (re-export)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

@@ -14,8 +14,11 @@ export interface SpatialGraphNode extends ExplorerNodePayload {
   containedSymbolCounts?: readonly number[];
 }
 
-/** Containment is distinct from a documented reference and never contributes to coupling counts. */
-export type SpatialLinkKind = ExplorerLinkKind | "containment";
+/**
+ * Containment is distinct from a documented reference and never contributes to coupling counts; a document's citation
+ * of a file (`cited-by`) is told from a file's citation of a document (`related-doc`).
+ */
+export type SpatialLinkKind = ExplorerLinkKind | "containment" | "cited-by";
 
 /** Stable directory identity outside the source-file namespace. */
 export const directoryNodeId = (directory: string): string => `directory:${directory}`;
@@ -28,11 +31,13 @@ export interface SpatialGraphData {
 
 /**
  * Build the spatial graph the 3D page and the headless command share: the filtered files with their counted reference
- * pairs and, with the documentation overlay, the related documents. In the structure layout (2026-10-14) every file and
- * document also hangs from its directory's hub and every hub from its parent's, up to the scan root, by one containment
- * link each; the reference pairs stay in the data so that they can be drawn on demand, and which links pull is the
- * layout's to say. A hub that holds nothing but one child hub collapses into it, as the 2D bands collapse such chains;
- * the scan root stands whatever it holds.
+ * pairs and, with the documentation overlay, the related documents. A document a file cites is drawn from the file to
+ * the document (`related-doc`); a document that cites the file is drawn from the document to the file (`cited-by`,
+ * 2026-10-22), so that the line's direction is the citation's, and the two are counted apart even between one pair. In
+ * the structure layout (2026-10-14) every file and document also hangs from its directory's hub and every hub from its
+ * parent's, up to the scan root, by one containment link each; the reference pairs stay in the data so that they can be
+ * drawn on demand, and which links pull is the layout's to say. A hub that holds nothing but one child hub collapses
+ * into it, as the 2D bands collapse such chains; the scan root stands whatever it holds.
  */
 export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: ExplorerNodePayload) => boolean,
   relatedDocLinks: readonly RelatedDocLink[] = [], layout: SpatialLayout = "connections"): SpatialGraphData {
@@ -43,7 +48,7 @@ export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: Expl
     .map(link => ({ ...link, source: id(link.source), target: id(link.target) }));
   const liveDocs = new Set(graph.nodes.map(node => node.docPath.replace(/\\/g, "/")));
   const sources = new Set<string>(), targets = new Set<string>();
-  const related: Array<{ source: string; target: string; kind: ExplorerLinkKind; referenceCount: number }> = [];
+  const related = new Map<string, FileConnection<SpatialLinkKind>>();
   for (const link of relatedDocLinks) {
     if (liveDocs.has(link.targetPath.replace(/\\/g, "/"))) continue;
     if (!link.sourceId.startsWith("related:") && !allowed.has(link.sourceId)) continue;
@@ -53,7 +58,14 @@ export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: Expl
       sources.add(source);
     }
     targets.add(link.targetPath);
-    related.push({ source: link.sourceId, target: `related:${link.targetPath}`, kind: "related-doc", referenceCount: 1 });
+    const document = `related:${link.targetPath}`;
+    const pair = link.direction === "cited-by"
+      ? { source: document, target: link.sourceId, kind: "cited-by" as const }
+      : { source: link.sourceId, target: document, kind: "related-doc" as const };
+    const key = `${pair.kind}|${pair.source}|${pair.target}`;
+    const counted = related.get(key);
+    if (counted) counted.count += 1;
+    else related.set(key, { ...pair, count: 1 });
   }
   for (const docPath of [...sources, ...targets]) {
     const nodeId = `related:${docPath}`;
@@ -62,8 +74,8 @@ export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: Expl
       docPath, docRelativePath: docPath, archetype: "related-doc", publicSymbols: [], dependencies: [], dependents: [], missingDependencies: [] });
     allowed.add(nodeId);
   }
-  links.push(...related.filter(link => allowed.has(link.source) && allowed.has(link.target)));
   const pairs: FileConnection<SpatialLinkKind>[] = fileConnections(links);
+  pairs.push(...[...related.values()].filter(link => allowed.has(link.source) && allowed.has(link.target)));
   if (layout === "structure") {
     const hubs = new Map<string, SpatialGraphNode>();
     const children = new Map<string, Set<string>>();

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/still-picture.spec.ts
-- Generated At: 2026-10-12T19:21:21.627Z
+- Generated At: 2026-10-22T16:47:58.920Z
 
 ## Authored
 ### Purpose
@@ -74,3 +74,8 @@ _No public symbols detected_
 - [`still-picture.scoreboardTable`](./still-picture.ts.mdmd.md#symbol-scoreboardtable)
 - [`still-picture.symbolCounts`](./still-picture.ts.mdmd.md#symbol-symbolcounts)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/live-documentation-explorer.mdmd.md`](../../../layer-3/live-documentation-explorer.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

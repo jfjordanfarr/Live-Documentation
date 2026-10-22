@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/engine/src/live-docs/board.test.ts
-- Generated At: 2026-09-28T21:15:51.080Z
+- Generated At: 2026-10-22T16:47:52.547Z
 
 ## Authored
 ### Purpose
@@ -29,3 +29,8 @@ _No public symbols detected_
 - [`board.renderBoard`](./board.ts.mdmd.md#symbol-renderboard)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/boards.mdmd.md`](../../../../../layer-3/boards.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->

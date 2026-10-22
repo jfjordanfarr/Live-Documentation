@@ -39,7 +39,8 @@ const fixtureFolders = {
   blazor: "blazor-telemetry",
   queueWorker: "queue-worker",
   powershell: "powershell-compendium",
-  entryPoints: "entry-points"
+  entryPoints: "entry-points",
+  cited: "slopcop-symbols"
 } as const;
 
 /**
@@ -187,6 +188,19 @@ describe("Live Docs inspect CLI", () => {
         "Web.config"
       ]
     );
+  });
+
+  it("names, with a file's fan-out, the documents it cites and the documents that cite it, as its doc's Cited By section lists them", () => {
+    const run = runInspectCli(fixtures.cited, ["--from", "src/component.ts", "--json"]);
+    assert.strictEqual(run.exitCode, 0, `inspect exited ${run.exitCode}:\n${run.stderr || run.stdout}`);
+    const payload = JSON.parse(run.stdout) as { kind: string; documents?: { cites: string[]; citedBy: string[] } };
+    assert.strictEqual(payload.kind, "fanout");
+    assert.deepStrictEqual(payload.documents, { cites: [], citedBy: ["docs/index.md", "docs/overview.md", "docs/symbol-map.md"] });
+
+    const text = runInspectCli(fixtures.cited, ["--from", "src/component.ts"]);
+    assert.strictEqual(text.exitCode, 0, `inspect exited ${text.exitCode}:\n${text.stderr || text.stdout}`);
+    assert.match(text.stdout, /^Cited by: docs\/index\.md, docs\/overview\.md, docs\/symbol-map\.md$/mu);
+    assert.doesNotMatch(text.stdout, /^Cites:/mu);
   });
 
   it("lists every file a path reaches, nearest first, one way or both, and refuses a fan-out both ways", () => {

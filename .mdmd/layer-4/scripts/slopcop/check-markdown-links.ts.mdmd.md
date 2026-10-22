@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/slopcop/check-markdown-links.ts
 - Entry: command `slopcop:markdown` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-16T17:10:20.915Z
+- Generated At: 2026-10-22T16:47:57.898Z
 
 ## Authored
 ### Purpose
@@ -36,3 +36,8 @@ _No public symbols detected_
 - [`markdownLinks.MarkdownLinkIssue`](./markdownLinks.ts.mdmd.md#symbol-markdownlinkissue)
 - [`markdownLinks.findBrokenMarkdownLinks`](./markdownLinks.ts.mdmd.md#symbol-findbrokenmarkdownlinks)
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`.mdmd/layer-3/slopcop.mdmd.md`](../../../layer-3/slopcop.mdmd.md)
+<!-- LIVE-DOC:END Cited By -->
