@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-10-22T16:47:55.276Z
+- Generated At: 2026-10-23T22:19:50.161Z
 
 ## Authored
 ### Purpose
 The motion of the 3D Local Map, the same in the browser and headlessly: the picture's forces written as one energy, a field whose forces are that energy's slope, and a damped motion through it that eases at a constant strength and comes to rest.
 
 ### Notes
-`SpatialField` holds a spring on each pulling link toward its rest length, the repulsion of every sphere on every other (charge over distance, linear inside one unit, offset to meet zero at a bounded reach), a gravity toward the origin, an overlap penalty for spheres closer than their clearance, and a tether pulling each sphere toward an anchor. Every spring pulls its two ends equally and oppositely along the line between them as they stand. D3's spring, which this replaced, shares a pull unequally by its ends' link counts and aims it at where the spheres are about to be, and a picture under it at a constant strength never stopped moving ([the easing probe of 2026-10-19](../../../../../../../AI-Agent-Workspace/Probes/2026-10-19/easing/README.md)). The repulsion is summed over every pair exactly, the square of the spheres, about 13 to 23 ms a tick on this repository's 846 to 1,130 spheres on the dev box, which is what D3's approximation costs there too.
+`SpatialField` holds a spring on each pulling link toward its rest length, the repulsion of every sphere on every other (charge over distance, linear inside one unit, offset to meet zero at a bounded reach), a gravity toward the origin, an overlap penalty for spheres closer than their clearance, and a tether pulling each sphere toward an anchor. Every spring pulls its two ends equally and oppositely along the line between them as they stand. D3's spring, which this replaced, shares a pull unequally by its ends' link counts and aims it at where the spheres are about to be, and a picture under it at a constant strength never stopped moving ([the easing probe of 2026-10-19](../../../../../../../AI-Agent-Workspace/Probes/2026-10-19/easing/README.md)). The repulsion is summed over every pair exactly, in a stable order. Each first end’s running force stays local until its row is complete, avoiding repeated array writes without changing arithmetic order. Potential energy is evaluated and cached when read, against a snapshot of that reading’s positions and anchor. The browser uses motion and overlap readings without paying for a logarithm on every pair; the diagnostic energy remains available from the same field calculation. The earlier 13–23 ms measurements at 846–1,130 spheres predate this October 23 optimization.
 
 `SpatialMotion` is damped velocity Verlet with a fixed step and a fixed drag (the layout module's 0.5 and 0.2, the probe's smooth control, which the owner found "quite natural"): no cooling schedule, so the drag alone brings a picture that is not pushed again to rest. The strength scales the forces, so that a lower strength eases the same field more gently to much the same rest; a field with several balanced arrangements may reach another of them by the gentler path. A sphere a hand holds stays where it is put and carries no velocity. The motion keeps the anchor the tether pulls toward, where the spheres stood when it began; `anchorHere` begins it again from where they stand, and `release` lets them unfold by the other forces alone, as a first picture does until it calms.
 
@@ -60,14 +60,14 @@ energy's slope and the picture can come to rest.
 
 #### `MotionSettings` {#symbol-motionsettings}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L156)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L170)
 
 ##### `MotionSettings` — Summary
 The motion's constants: the step of time per tick and the drag per unit of time.
 
 #### `MotionTick` {#symbol-motiontick}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L162)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L176)
 - Extends: [`FieldReading`](#symbol-fieldreading)
 
 ##### `MotionTick` — Summary
@@ -75,7 +75,7 @@ How far one tick moved the spheres, beside the field's reading at the new positi
 
 #### `SpatialMotion` {#symbol-spatialmotion}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L176)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L190)
 
 ##### `SpatialMotion` — Summary
 Damped velocity Verlet through a field at a constant strength: half a kick, a drift, the forces at the new place, half a
@@ -88,7 +88,7 @@ has calmed, since where it was seeded is no place to hold it.
 
 #### `diagonalOf` {#symbol-diagonalof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L256)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L271)
 
 ##### `diagonalOf` — Summary
 The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against.

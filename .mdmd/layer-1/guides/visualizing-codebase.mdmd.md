@@ -40,7 +40,7 @@ In **2D**, files are cards with public symbols as rows and directories as bands 
 
 Click a file, symbol or directory name to **inspect** its evidence. The separate **Pin** action retains its connections; **Centre** deliberately changes the map subject or frames the directory. **More** exposes contextual actions. Inspection, retention and navigation are separate, so reading another file need not move the map. Retaining several files shows their relevant neighbourhoods and references together. Hovering previews connections by fading irrelevant content.
 
-In **3D**, files are spheres and references are aggregated into counted lines between file pairs. Choose **Connections** for the layout shaped by documented references, or **Structure** for directory hubs joined by containment. In Structure, references are revealed for hover, retained files and paths. Drag to orbit and scroll to zoom. Search or Centre brings attention to a subject while preserving the viewing direction. The reader and pin tray provide ways to inspect and return.
+In **3D**, files are spheres and references are aggregated into counted lines between file pairs. Choose **Connections** for the layout shaped by documented references, or **Structure** for directory hubs joined by containment. In Structure, references are revealed for hover, retained files and paths. Drag to orbit and scroll to zoom. Search or Centre frames the subject with its immediate connections while preserving the viewing direction. **Fit current scope** recovers the current path, retained scope or subject neighbourhood after orbiting or zooming away, without changing pins or the question. File and directory names stay at reading size: the subject, pins and path endpoints have priority, with further names revealed where they fit. A name opens evidence; its tooltip gives the full path. The reader and pin tray provide ways to inspect and return.
 
 The filters distinguish tests, binary assets and related markdown. Text manifests such as `package.json` are documented files, not binary assets. Related documents can enter through a Live Doc's authored links or the generated **Cited By** section; the controls distinguish these directions. Tuning holds layout settings and an export of their values.
 
@@ -58,9 +58,9 @@ The reader shows authored Purpose and Notes, public symbols, dependencies and re
 
 ### Known gaps and intended behavior
 
-The [accepted remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) records unfinished work found on October 23. The shared path report and reverse recovery are repaired in both representations. In 3D, names, direction and directory context are still difficult to recover; arrivals can be too close; and the legend does not adequately explain the active picture. Panels, labels, search ordering, counts and tuning also need correction.
+The [accepted remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) records unfinished work found on October 23. The shared path report and reverse recovery are repaired in both representations. The current 3D identity/framing pass adds prioritized names, neighbourhood arrivals and explicit Fit recovery. Direction, wire depth and the legend still need correction, as do initial 2D clipping, panels, remaining label/control details, search ordering, counts and tuning.
 
-The remaining intended behavior is that relevant spatial identities survive navigation, framing is useful and recoverable, and visible encodings and counts explain what they mean. Those outcomes remain acceptance criteria. Use 2D for the path's detailed symbol connections; its result and recovery controls are available in either representation.
+The checklist distinguishes the current identity/framing pass from the remaining outcomes, including truthful visible encodings and counts. Use 2D for the path's detailed symbol connections; its result and recovery controls are available in either representation.
 
 ---
 
@@ -115,7 +115,7 @@ Check discovery configuration and regenerate. In the page, check filters, direct
 
 ### The 3D picture is difficult to read
 
-Use the explicit 2D control for file and symbol detail, and the reader for evidence. The [remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) tracks the missing 3D legibility and recovery behavior. Performance depends on the graph and renderer; there is no fixed file-count threshold that establishes usability.
+Use **Fit current scope** to recover the relevant scene, move closer to reveal more names, or use the explicit 2D control for file and symbol detail. The reader supplies evidence. The [remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) tracks the remaining 3D legibility work. Performance depends on the graph and renderer; there is no fixed file-count threshold that establishes usability.
 
 ---
 

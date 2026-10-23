@@ -81,6 +81,10 @@ export class SpatialField {
 
   /** Write the forces at these positions into `out` and return the energy, with the overlaps found; the tether pulls toward `anchor`. */
   forces(x: Float64Array, out: Float64Array, anchor?: Float64Array): FieldReading {
+    return this.evaluate(x, out, anchor, false);
+  }
+
+  private evaluate(x: Float64Array, out: Float64Array, anchor: Float64Array | undefined, measureEnergy: boolean): FieldReading {
     const n = this.count;
     if (x.length !== 3 * n || out.length !== 3 * n || (anchor && anchor.length !== 3 * n)) throw new Error("Positions, forces and anchors must hold three numbers per sphere.");
     out.fill(0);
@@ -89,7 +93,7 @@ export class SpatialField {
       const a = 3 * spring.a, b = 3 * spring.b;
       let dx = x[b] - x[a], dy = x[b + 1] - x[a + 1], dz = x[b + 2] - x[a + 2];
       const r = Math.hypot(dx, dy, dz), stretch = r - spring.rest;
-      energy += spring.strength * stretch * stretch / 4;
+      if (measureEnergy) energy += spring.strength * stretch * stretch / 4;
       if (r === 0) {
         const low = Math.min(spring.a, spring.b), unit = this.direction(low, Math.max(spring.a, spring.b));
         const sign = spring.a === low ? -1 : 1;
@@ -107,9 +111,12 @@ export class SpatialField {
     // with a bounded reach it is offset to meet zero at the bound.
     const offset = Number.isFinite(range) && range > 1 ? charge * Math.log(range) : 0;
     for (let i = 0; i < n; i++) {
+      const a = 3 * i, ax = x[a], ay = x[a + 1], az = x[a + 2], radius = this.radii[i];
+      // Each pair visits this end in the same order; keep its sum in registers instead of writing the array each time.
+      let fx = out[a], fy = out[a + 1], fz = out[a + 2];
       for (let j = i + 1; j < n; j++) {
-        const a = 3 * i, b = 3 * j;
-        let dx = x[a] - x[b], dy = x[a + 1] - x[b + 1], dz = x[a + 2] - x[b + 2];
+        const b = 3 * j;
+        let dx = ax - x[b], dy = ay - x[b + 1], dz = az - x[b + 2];
         let r2 = dx * dx + dy * dy + dz * dz;
         if (r2 === 0) {
           const unit = this.direction(i, j);
@@ -117,26 +124,27 @@ export class SpatialField {
         }
         const r = Math.sqrt(r2);
         if (r2 < range2 && charge > 0) {
-          energy += range <= 1 ? charge * (range - r) : r >= 1 ? offset - charge * Math.log(r) : charge * (1 - r) + offset;
+          if (measureEnergy) energy += range <= 1 ? charge * (range - r) : r >= 1 ? offset - charge * Math.log(r) : charge * (1 - r) + offset;
           const k = charge / (r < 1 ? r : r2);
-          out[a] += k * dx; out[a + 1] += k * dy; out[a + 2] += k * dz;
+          fx += k * dx; fy += k * dy; fz += k * dz;
           out[b] -= k * dx; out[b + 1] -= k * dy; out[b + 2] -= k * dz;
         }
-        const clearance = this.radii[i] + this.radii[j] + collisionGap;
+        const clearance = radius + this.radii[j] + collisionGap;
         if (r < clearance && collisionStiffness > 0) {
           const shortfall = clearance - r;
           overlaps++;
           if (shortfall > worstOverlap) worstOverlap = shortfall;
-          energy += collisionStiffness * shortfall * shortfall / 2;
+          if (measureEnergy) energy += collisionStiffness * shortfall * shortfall / 2;
           const k = collisionStiffness * shortfall / r;
-          out[a] += k * dx; out[a + 1] += k * dy; out[a + 2] += k * dz;
+          fx += k * dx; fy += k * dy; fz += k * dz;
           out[b] -= k * dx; out[b + 1] -= k * dy; out[b + 2] -= k * dz;
         }
       }
+      out[a] = fx; out[a + 1] = fy; out[a + 2] = fz;
     }
     if (gravity > 0) {
       for (let k = 0; k < x.length; k++) {
-        energy += gravity * x[k] * x[k] / 2;
+        if (measureEnergy) energy += gravity * x[k] * x[k] / 2;
         out[k] -= gravity * x[k];
       }
     }
@@ -144,11 +152,17 @@ export class SpatialField {
     if (tether > 0 && anchor) {
       for (let k = 0; k < x.length; k++) {
         const pull = anchor[k] - x[k];
-        energy += tether * pull * pull / 2;
+        if (measureEnergy) energy += tether * pull * pull / 2;
         out[k] += tether * pull;
       }
     }
-    return { energy, overlaps, worstOverlap };
+    if (measureEnergy) return { energy, overlaps, worstOverlap };
+    // The browser asks how far the picture moved, not for its potential energy. Retain the sampled positions so a
+    // later energy read is still this reading, computed by the very same field evaluation and cached once.
+    const positions = x.slice(), anchors = anchor?.slice();
+    let measured: number | undefined;
+    const readEnergy = (): number => measured ??= this.evaluate(positions, new Float64Array(out.length), anchors, true).energy;
+    return { get energy() { return readEnergy(); }, overlaps, worstOverlap };
   }
 }
 
@@ -246,7 +260,8 @@ export class SpatialMotion {
       for (let k = a; k < a + 3; k++) v[k] = decay * (v[k] + h * strength * this.next[k] / 2);
     }
     this.force.set(this.next);
-    return { ...this.reading, moveMax };
+    const reading = this.reading;
+    return { get energy() { return reading.energy; }, overlaps: reading.overlaps, worstOverlap: reading.worstOverlap, moveMax };
   }
 }
 

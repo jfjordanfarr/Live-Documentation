@@ -7,11 +7,13 @@
     overflow: clip;
 }
 
-.force-graph-focus {
+.force-graph-focus,
+.force-graph-label {
     position: absolute;
     z-index: 2;
     transform: translate(-50%, 16px);
-    max-width: calc(100% - 24px);
+    width: max-content;
+    max-width: min(280px, calc(100% - 24px));
     padding: 5px 9px;
     color: var(--text-primary, #eee);
     background: var(--bg-surface, #202020);
@@ -23,7 +25,8 @@
     cursor: pointer;
 }
 
-.force-graph-focus:focus-visible {
+.force-graph-focus:focus-visible,
+.force-graph-label:focus-visible {
     outline: 2px solid #0091ff;
     outline-offset: 3px;
 }
@@ -70,3 +73,8 @@
 }
 
 #graph-svg[data-hovered-node="true"] canvas { cursor: pointer; }
+
+.force-graph-label { left: 0; top: 0; font-size: 13px; padding: 3px 6px; background: #080c16e8; border-color: #485164; }
+.force-graph-label[data-kind="directory"] { color: #f4c18d; border-color: #6f5237; }
+.force-graph-label[data-context="true"] { opacity: .45; }
+.force-graph-focus[hidden], .force-graph-label[hidden] { display: none; }

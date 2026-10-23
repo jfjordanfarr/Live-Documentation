@@ -14,8 +14,6 @@ import type { InspectionTarget } from "../../packages/explorer/src/client/types"
 
 test.use({ viewport: { width: 1400, height: 900 } });
 
-const SITE = "http://localhost:8766";
-
 /** What a page asked of other sites, what of it reached the network, and what its policy refused. */
 interface Watch {
   /** Every request to another site the page made, including one its policy stopped in the browser. */
@@ -27,9 +25,12 @@ interface Watch {
 
 /** Watches the page from before its first script: requests to other sites, and the policy's refusals. */
 async function watch(page: Page): Promise<Watch> {
+  const baseURL = test.info().project.use.baseURL;
+  if (!baseURL) throw new Error("The network audit requires a configured baseURL.");
+  const site = new URL(baseURL).origin;
   const asked: string[] = [];
   const reached: string[] = [];
-  const elsewhere = (url: URL): boolean => url.protocol !== "data:" && url.protocol !== "blob:" && url.origin !== SITE;
+  const elsewhere = (url: URL): boolean => url.protocol !== "data:" && url.protocol !== "blob:" && url.origin !== site;
   page.on("request", request => {
     if (elsewhere(new URL(request.url()))) asked.push(request.url());
   });

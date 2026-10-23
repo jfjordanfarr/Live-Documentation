@@ -9,12 +9,12 @@
 ## Authored
 ### Purpose
 
-Sizes and bounds the Force Graph canvas container and styles the HTML label that follows the selected file. The simulation and projected label position are controlled by the view.
+Sizes and bounds the Force Graph canvas container and styles the projected file/directory names and their action strip. The simulation and projected label position are controlled by the view.
 
 ### Notes
 
 - Extracted from monolithic `styles.css` on [2025-12-04](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md) (Turn 19) as part of the CSS decomposition (`4504d36a`).
-- The historical `#graph-svg` ID hosts a WebGL canvas. Its positioned container provides the coordinate origin for the focus label; keyboard focus has a visible outline.
+- The historical `#graph-svg` ID hosts a WebGL canvas. Its positioned container provides the coordinate origin for projected names; keyboard focus has a visible outline. Intrinsic name widths are bounded independently of their screen position, avoiding narrow vertical wrapping near an edge. Context names fade while retained names keep reading size.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

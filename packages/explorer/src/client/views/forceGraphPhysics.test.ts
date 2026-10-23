@@ -87,6 +87,18 @@ describe("the damped motion through it", () => {
     expect(Math.max(...force.map(Math.abs))).toBeLessThan(1e-5);
   });
 
+  it("keeps a tick's energy tied to its sampled positions and anchor when read after later motion", () => {
+    const { field, x } = scene({ ...SETTINGS, tether: .05 });
+    const motion = new SpatialMotion(field, x, { step: .5, drag: .2 });
+    const first = motion.tick(1);
+    const expected = energyAt(field, x.slice(), motion.anchor.slice());
+    for (let i = 0; i < 30; i++) motion.tick(1);
+    motion.anchorHere();
+    expect(first.energy).toBe(expected);
+    expect(first.energy).not.toBe(motion.current.energy);
+    expect(first.energy).toBe(expected);
+  });
+
   it("comes to rest at a lower strength too, where the forces balance, moving less at first", () => {
     // A lower strength takes a gentler path; a field with several balanced arrangements may settle into another of them.
     const { field, x } = scene();

@@ -1,5 +1,7 @@
 import type { Page } from "@playwright/test";
-import type { Camera, Mesh, Scene, WebGLRenderer } from "three";
+import type { Camera, Mesh, Scene, Vector3, WebGLRenderer } from "three";
+
+import type { SpatialBatchInstance } from "../../packages/explorer/src/client/views/forceGraphBatches";
 
 type ObservedWindow = Window & {
   __THREE_DEVTOOLS__: EventTarget;
@@ -8,6 +10,7 @@ type ObservedWindow = Window & {
   renderedFrames?: number;
   /** Every change of the graph container's aria-busy, with the frame it happened on. */
   busyChanges?: Array<{ busy: boolean; frame: number }>;
+  drawnMesh?: (mesh: GraphMesh) => { center: Vector3; radius: number; opacity: number; visible: boolean; point: (z: number) => Vector3 };
 };
 
 type GraphMesh = Mesh & {
@@ -34,6 +37,24 @@ export async function observeGraph(page: Page): Promise<void> {
     const inspected = window as unknown as ObservedWindow;
     inspected.renderedFrames = 0;
     inspected.busyChanges = [];
+    inspected.drawnMesh = mesh => {
+      const batch = mesh.userData.spatialBatch as SpatialBatchInstance | undefined;
+      const nativePoint = (z: number): Vector3 => mesh.position.clone().set(0, 0, z).applyMatrix4(mesh.matrixWorld);
+      if (!batch) {
+        if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
+        const sphere = mesh.geometry.boundingSphere!.clone().applyMatrix4(mesh.matrixWorld);
+        return { center: sphere.center, radius: sphere.radius,
+          opacity: Array.isArray(mesh.material) ? 1 : mesh.material.opacity, visible: mesh.visible, point: nativePoint };
+      }
+      const matrix = mesh.matrixWorld.clone();
+      batch.mesh.getMatrixAt(batch.instance, matrix);
+      matrix.premultiply(batch.mesh.matrixWorld);
+      if (!batch.mesh.geometry.boundingSphere) batch.mesh.geometry.computeBoundingSphere();
+      const sphere = batch.mesh.geometry.boundingSphere!.clone().applyMatrix4(matrix);
+      return { center: sphere.center, radius: sphere.radius,
+        opacity: batch.mesh.geometry.getAttribute("spatialOpacity").getX(batch.instance), visible: batch.enabled,
+        point: z => mesh.position.clone().set(0, 0, z).applyMatrix4(matrix) };
+    };
     inspected.__THREE_DEVTOOLS__ = new EventTarget();
     inspected.__THREE_DEVTOOLS__.addEventListener("observe", event => {
       const renderer = (event as CustomEvent<WebGLRenderer>).detail;
@@ -74,6 +95,8 @@ export async function markRenderedLinks(page: Page, token: string): Promise<numb
       const mesh = object as GraphMesh;
       if (mesh.__graphObjType !== "link" || !mesh.__data?.source) return;
       mesh.userData.observationMark = mark;
+      const batch = mesh.userData.spatialBatch as SpatialBatchInstance | undefined;
+      mesh.userData.observationBatch = batch ?? null;
       marked++;
     });
     return marked;
@@ -89,7 +112,8 @@ export async function markedRenderedLinks(page: Page, token: string): Promise<{ 
       const mesh = object as GraphMesh;
       if (mesh.__graphObjType !== "link" || !mesh.__data?.source) return;
       total++;
-      if (mesh.userData.observationMark === mark) marked++;
+      const batch = mesh.userData.spatialBatch as SpatialBatchInstance | undefined;
+      if (mesh.userData.observationMark === mark && mesh.userData.observationBatch === (batch ?? null)) marked++;
     });
     return { marked, total };
   }, token);
@@ -110,10 +134,10 @@ export async function renderedNodes(page: Page) {
     observed.scene.traverse(object => {
       const mesh = object as GraphMesh;
       if (mesh.__graphObjType !== "node" || !mesh.__data?.id || Array.isArray(mesh.material)) return;
-      const position = mesh.getWorldPosition(mesh.position.clone());
+      const drawn = (window as unknown as ObservedWindow).drawnMesh!(mesh);
+      const position = drawn.center;
       const projected = position.clone().project(observed.camera);
-      if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
-      const radius = (mesh.geometry.boundingSphere?.radius ?? 0) * mesh.scale.x;
+      const radius = drawn.radius;
       const right = observed.camera.matrixWorld.elements;
       const rim = position.clone().add(position.clone().set(right[0], right[1], right[2]).multiplyScalar(radius)).project(observed.camera);
       const screenRadius = Math.abs(rim.x - projected.x) * rect.width / 2;
@@ -126,7 +150,7 @@ export async function renderedNodes(page: Page) {
         y: rect.top + (1 - projected.y) * rect.height / 2,
         depth: projected.z,
         distance: position.distanceTo(observed.camera.position),
-        opacity: mesh.material.opacity,
+        opacity: drawn.opacity,
         radius,
         screenRadius,
         world: { x: position.x, y: position.y, z: position.z }
@@ -151,8 +175,9 @@ export async function renderedLinks(page: Page) {
       const data = mesh.__data;
       if (mesh.__graphObjType !== "link" || !data?.source || !data.target) return;
       mesh.updateWorldMatrix(true, false);
+      const drawn = (window as unknown as ObservedWindow).drawnMesh!(mesh);
       const point = (z: number): Point => {
-        const world = mesh.localToWorld(mesh.position.clone().set(0, 0, z));
+        const world = drawn.point(z);
         return { x: world.x, y: world.y, z: world.z };
       };
       links.push({
@@ -160,10 +185,10 @@ export async function renderedLinks(page: Page) {
         target: typeof data.target === "string" ? data.target : data.target.id,
         kind: data.kind ?? "",
         count: data.count ?? 0,
-        visible: mesh.visible,
+        visible: drawn.visible,
         start: point(0),
         end: point(1),
-        length: mesh.scale.z
+        length: drawn.point(0).distanceTo(drawn.point(1))
       });
     });
     return links;

@@ -424,7 +424,10 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   const historyButton = iconButton("History", '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>');
   historyButton.title = "History: scrub the picture through the commits";
   historyButton.addEventListener("click", () => historyControl.toggle());
-  perspectiveControls.append(compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton);
+  const fitButton = iconButton("Fit current scope", '<path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/>');
+  fitButton.title = "Fit the current path or retained scope";
+  fitButton.addEventListener("click", () => forceGraphView.fit());
+  perspectiveControls.append(fitButton, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton);
   requireElement("main").append(perspectiveControls);
   const pinTray = createPinTray({
     parent: requireElement("main"),
@@ -704,8 +707,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       ?? ([...(state.openDirectories ?? [])].map(path => path || "Scan root").join(", ") || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
     const preset = layoutPresetOf(state.tuning);
-    for (const button of [compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
-    connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
+    for (const button of [fitButton, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
+    fitButton.hidden = connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
     historyButton.hidden = state.perspective !== "3d" || !historyControl.available;
     historyButton.setAttribute("aria-pressed", String(historyControl.isOpen()));
     connectionsButton.setAttribute("aria-pressed", String(state.spatialLayout === "connections"));

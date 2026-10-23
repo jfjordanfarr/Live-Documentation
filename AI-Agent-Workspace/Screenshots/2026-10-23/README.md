@@ -76,3 +76,7 @@ My first priorities would be visible path feedback in both representations, read
 ## Subsequent repair evidence
 
 The [shared path-feedback playtest](path-feedback/README.md) records the first approved repair, with twelve new captures, after this baseline review. The numbered findings above retain what the original page showed; completion belongs to the [current remediation checklist](../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work).
+
+## Identity and framing follow-up
+
+The [3D identity/framing comparison](3d-identity-framing/README.md) records like-for-like generator and Portal arrivals, then orbit/Fit recovery and a named four-file path. It keeps the remaining wire, legend and control defects explicit.

@@ -3,18 +3,19 @@ import { Box3, Vector3, type Camera, type PerspectiveCamera } from "three";
 /** A position in the Force Graph's world coordinate system. */
 export interface CameraPoint { x: number; y: number; z: number }
 
-/** A visible body whose full extent must fit when a directory receives focus. */
+/** A visible body whose full extent must fit when a file or scope receives focus. */
 export interface CameraSphere {
   center: CameraPoint;
   radius: number;
 }
 
-/** Frame a group about its own center, preserving the camera bearing and allowing for sphere radii and viewport padding. */
+/** Frame a group about its own center or an explicit subject, preserving the camera bearing and allowing for sphere radii and viewport padding. */
 export function frameCameraSpheres(
   camera: PerspectiveCamera,
   spheres: readonly CameraSphere[],
   viewport: { width: number; height: number },
-  padding = 70
+  padding = 70,
+  subject?: CameraPoint
 ): { camera: CameraPoint; target: CameraPoint } | null {
   if (!spheres.length) return null;
   const bounds = new Box3();
@@ -23,7 +24,7 @@ export function frameCameraSpheres(
     bounds.expandByPoint(point.clone().addScalar(radius));
     bounds.expandByPoint(point.clone().addScalar(-radius));
   }
-  const target = bounds.getCenter(new Vector3());
+  const target = subject ? new Vector3(subject.x, subject.y, subject.z) : bounds.getCenter(new Vector3());
   const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
   const up = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
   const back = new Vector3(0, 0, 1).applyQuaternion(camera.quaternion);

@@ -32,6 +32,8 @@ The history control (2026-10-18, ticket C4 of [the change-over-time plan](../../
 
 Since 2026-10-20 ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the application keeps the moment the 3D picture shows, so that the reader can say it reads today's version over a past commit, and wires the bundle's documents to the 3D view and the step panel.
 
+The October 23 identity/framing pass adds **Fit current scope** to the shared bottom controls, visible only in 3D and disabled during a perspective transition. It invokes the spatial view’s explicit camera recovery without changing selection, pins or the path question; ordinary inspection still leaves the camera alone.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -4,6 +4,29 @@ import { describe, expect, it } from "vitest";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera } from "./forceGraphCamera";
 
 describe("Force Graph focus camera", () => {
+  it("keeps the requested subject centered while fitting asymmetric neighbours and a large sphere", () => {
+    const camera = new PerspectiveCamera(60, 1.6, .1, 100000);
+    camera.position.set(30, 80, 300);
+    camera.lookAt(0, 0, 0);
+    camera.updateMatrixWorld();
+    const subject = { x: 400, y: -100, z: 200 };
+    const spheres = [{ center: subject, radius: 400 }, { center: { x: 1900, y: 200, z: -800 }, radius: 20 }];
+    const framing = frameCameraSpheres(camera, spheres, { width: 1280, height: 800 }, 100, subject)!;
+    expect(framing.target).toMatchObject(subject);
+    camera.position.copy(framing.camera);
+    camera.lookAt(subject.x, subject.y, subject.z);
+    camera.updateMatrixWorld();
+    const point = new Vector3(subject.x, subject.y, subject.z).project(camera);
+    expect(point.x).toBeCloseTo(0, 10);
+    expect(point.y).toBeCloseTo(0, 10);
+    for (const sphere of spheres) {
+      const center = new Vector3(sphere.center.x, sphere.center.y, sphere.center.z).project(camera);
+      expect(Math.abs(center.x)).toBeLessThan(1 - 200 / 1280);
+      expect(Math.abs(center.y)).toBeLessThan(1 - 200 / 800);
+      expect(center.z).toBeGreaterThan(-1);
+      expect(center.z).toBeLessThan(1);
+    }
+  });
   it("frames members far from the origin, with a tilted camera and clearance for their complete bodies", () => {
     const camera = new PerspectiveCamera(60, 1.6, .1, 100000);
     camera.position.set(70, 90, 200);

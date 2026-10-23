@@ -22,10 +22,13 @@ import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
 import type { ForceLink } from "d3-force-3d";
 import { Box3, PerspectiveCamera, Raycaster, Vector2, Vector3, type Object3D } from "three";
 
+import { batchSpatialGraph, drawSpatialGraphOnChange } from "./forceGraphBatches";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { directoryNodeId, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
+import { placeSpatialLabels, type SpatialLabel, type LabelBox } from "./forceGraphLabels";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
+import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type {
   ExplorerGraphPayload,
@@ -34,7 +37,6 @@ import type {
 } from "../../shared/types";
 import { requireElement } from "../dom";
 import { motionForce, placeNewSpheres, spatialNodeRadius, spatialNodeValue, symbolCountOf, type MotionForce, type MotionStart } from "./forceGraphLayout";
-import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
 import { wheelPixels } from "./wheel";
 import type { HistoryMoment } from "../history/moment";
 import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
@@ -120,6 +122,8 @@ export interface ForceGraphViewApi {
   /** Frame a file explicitly, for the retained-item tray, without changing the selected subject. */
   focusNode(nodeId: string): void;
   focusDirectory(directory: string): void;
+  /** Fit the current path or retained scope without changing the exploration. */
+  fit(): void;
   /**
    * Show a moment of the history in place of today, or today again (null), re-keying the picture through the renames
    * from the moment shown before; the change is fed at `energy`, or at the tuning's when none is given. Drawn at once
@@ -172,10 +176,19 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let updateAttention = (): void => {};
   let active = false;
   let animation = 0;
-  let focusMotion: { started: number; camera: CameraPoint; target: CameraPoint; offset: CameraPoint } | null = null;
+  let focusMotion: { started: number; camera: CameraPoint; target: CameraPoint } | null = null;
   let following = false;
+  let fittingScope = false;
+  let retainedScope = new Set<string>();
+  let pathScope: readonly string[] = [];
   let zoomMotion: { started: number; from: CameraPoint; fromTarget: CameraPoint; to: CameraPoint; toTarget: CameraPoint } | null = null;
   let focusLabel: HTMLButtonElement | null = null;
+  const nameLabels = new Map<string, HTMLButtonElement>();
+  let labelSides = new Map<string, number>();
+  let labelSizes = new WeakMap<HTMLButtonElement, { width: number; height: number; text: string }>();
+  let labelPriorities = new Map<string, number>();
+  let labelNames = new Map<string, string>();
+  let scopedNames = false;
   let actionStrip: HTMLDivElement | null = null;
   let actionTargetId: string | null = null;
   let menuTargetId: string | null = null;
@@ -249,7 +262,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     pickedProjection = camera.projectionMatrix.elements.slice();
     const id = onCanvas ? nodeAt(pointerPosition.x, pointerPosition.y) ?? null
       : pointed && actionStrip?.contains(pointed) ? actionTargetId
-      : pointed === focusLabel ? focusedId : null;
+      : pointed instanceof HTMLElement && pointed.matches(".force-graph-focus, .force-graph-label") ? pointed.dataset.nodeId ?? null : null;
     const container = requireElement("graph-svg");
     const hovered = String(!!id);
     if (container.dataset.hoveredNode !== hovered) container.dataset.hoveredNode = hovered;
@@ -347,7 +360,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   function animateFocus(): void {
     animation = 0;
     if (!active) return;
-    updateFocus(performance.now(), !simulationRunning);
+    if (!simulationRunning) updateFocus(performance.now());
     updatePointerHover();
     animation = requestAnimationFrame(animateFocus);
   }
@@ -363,42 +376,137 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       forceGraphInstance.cameraPosition(mix(motion.from, motion.to), mix(motion.fromTarget, motion.toTarget));
       if (t === 1) zoomMotion = null;
     }
-    const node = focusedId ? nodeCache.get(focusedId) : undefined;
-    if (node && Number.isFinite(node.x) && Number.isFinite(node.y) && Number.isFinite(node.z)) {
-      const point = node as ForceGraphNode & CameraPoint;
-      if (following && advanceCamera) {
-        const controls = forceGraphInstance.controls() as { target: CameraPoint };
-        if (!focusMotion) {
-          const camera = { ...forceGraphInstance.cameraPosition() };
-          const target = { x: controls.target.x, y: controls.target.y, z: controls.target.z };
-          focusMotion = { started: now, camera, target, offset: focusedCameraPosition(camera, target, { x: 0, y: 0, z: 0 }) };
-        }
+    if (following && advanceCamera) {
+      const instance = forceGraphInstance;
+      const camera = instance.camera();
+      const controls = instance.controls() as { target: Vector3 };
+      camera.lookAt(controls.target);
+      camera.updateMatrixWorld();
+      const subject = focusedId ? nodeCache.get(focusedId) : undefined;
+      const ids = framingIds();
+      const spheres = instance.graphData().nodes.filter(node => ids.has(node.id) && Number.isFinite(node.x))
+        .map(node => ({ center: { x: node.x!, y: node.y!, z: node.z! }, radius: spatialNodeRadius(node, state.tuning.forceGraph) }));
+      const centered = !fittingScope && focusedDirectory === null && subject && Number.isFinite(subject.x)
+        ? { x: subject.x!, y: subject.y!, z: subject.z! } : undefined;
+      const framing = camera instanceof PerspectiveCamera
+        ? frameCameraSpheres(camera, spheres, { width: instance.width(), height: instance.height() }, 100, centered) : null;
+      if (framing) {
+        if (!focusMotion) focusMotion = { started: now, camera: { ...instance.cameraPosition() },
+          target: { x: controls.target.x, y: controls.target.y, z: controls.target.z } };
         const motion = focusMotion;
         const t = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : Math.min(1, (now - motion.started) / 650);
         const k = 1 - Math.pow(1 - t, 3);
-        const mix = (from: CameraPoint, to: CameraPoint): CameraPoint => ({ x: from.x + (to.x - from.x) * k, y: from.y + (to.y - from.y) * k, z: from.z + (to.z - from.z) * k });
-        forceGraphInstance.cameraPosition(mix(motion.camera, { x: point.x + motion.offset.x, y: point.y + motion.offset.y, z: point.z + motion.offset.z }), mix(motion.target, point));
+        const mix = (a: CameraPoint, b: CameraPoint): CameraPoint => ({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, z: a.z + (b.z - a.z) * k });
+        instance.cameraPosition(mix(motion.camera, framing.camera), mix(motion.target, framing.target));
+        if (t === 1 && !simulationRunning) following = false;
       }
+    }
+    const node = focusedId ? nodeCache.get(focusedId) : undefined;
+    if (node && Number.isFinite(node.x) && Number.isFinite(node.y) && Number.isFinite(node.z)) {
+      const point = node as ForceGraphNode & CameraPoint;
       const camera = forceGraphInstance.camera();
       camera.lookAt((forceGraphInstance.controls() as { target: Vector3 }).target);
       camera.updateMatrixWorld();
       if (subjectAnchor && advanceCamera) alignSubject(point);
-      const screen = forceGraphInstance.graph2ScreenCoords(point.x, point.y, point.z);
-      const depth = new Vector3(point.x, point.y, point.z).project(forceGraphInstance.camera()).z;
-      if (focusLabel) {
-        // A panel or a control standing over the picture (the history's step panel, its scrubber, the tray) covers the
-        // point: the label is put away rather than written on their words.
-        const frame = forceGraphInstance.renderer().domElement.getBoundingClientRect();
-        const over = document.elementFromPoint(frame.left + screen.x, frame.top + screen.y);
-        const covered = !!over && over !== focusLabel && !over.closest("#graph-svg");
-        focusLabel.hidden = covered || depth < -1 || depth > 1 || screen.x < 0 || screen.y < 0 || screen.x > forceGraphInstance.width() || screen.y > forceGraphInstance.height();
-        focusLabel.style.left = `${screen.x}px`;
-        focusLabel.style.top = `${screen.y}px`;
-      }
-    } else if (focusLabel) {
-      focusLabel.hidden = true;
     }
     positionActionStrip();
+    positionNames();
+  }
+
+  /** Project the names at reading size, placing the important identities before contextual names. */
+  function positionNames(): void {
+    const instance = forceGraphInstance;
+    if (!instance || !focusLabel) return;
+    const container = requireElement("graph-svg");
+    const frame = container.getBoundingClientRect();
+    const camera = instance.camera();
+    camera.lookAt((instance.controls() as { target: Vector3 }).target);
+    camera.updateMatrixWorld();
+    const obstacles: LabelBox[] = [];
+    for (const element of document.querySelectorAll<HTMLElement>(".perspective-controls, .pin-tray, .pin-tray-toggle, #detail-panel.visible, .history-scrubber, .history-step-panel, .force-graph-actions")) {
+      const box = element.getBoundingClientRect();
+      if (box.width && box.height && getComputedStyle(element).visibility !== "hidden") obstacles.push({ x: box.left - frame.left, y: box.top - frame.top, width: box.width, height: box.height });
+    }
+    const candidates: SpatialLabel[] = [];
+    const buttons = new Map<string, HTMLButtonElement>();
+    const neighbours = framingIds();
+    for (const node of instance.graphData().nodes) {
+      if (!Number.isFinite(node.x)) continue;
+      const point = new Vector3(node.x, node.y, node.z);
+      const projected = point.clone().project(camera);
+      const x = (projected.x + 1) * frame.width / 2, y = (1 - projected.y) * frame.height / 2;
+      if (projected.z < -1 || projected.z > 1 || x < 0 || y < 0 || x > frame.width || y > frame.height) continue;
+      const edge = point.clone().add(new Vector3(spatialNodeRadius(node, state.tuning.forceGraph), 0, 0).applyQuaternion(camera.quaternion)).project(camera);
+      const radius = Math.abs(edge.x - projected.x) * frame.width / 2;
+      const basePriority = labelPriorities.get(node.id) ?? 5;
+      const priority = node.id === focusedId ? 0 : node.id === hoveredId || node.id === inspectedActionId ? 1
+        : focusedId && neighbours.has(node.id) ? Math.min(3, basePriority) : basePriority;
+      if (priority >= 5 && radius < (scopedNames ? 12 : 5)) continue;
+      if (scopedNames && priority === 4 && radius < 9) continue;
+      let label = node.id === focusedId ? focusLabel : nameLabels.get(node.id);
+      if (!label) {
+        label = document.createElement("button");
+        label.type = "button";
+        label.className = "force-graph-label";
+        label.dataset.nodeId = node.id;
+        label.addEventListener("click", () => {
+          const id = label!.dataset.nodeId!;
+          if (id.startsWith("related:")) {
+            if (hasBundledDoc(id.slice(8))) onShowBundledDoc(id.slice(8));
+          } else {
+            const action = currentAction(id);
+            if (action?.kind === "directory") options.onInspectDirectory(action.directory);
+            else if (action?.kind === "file") onFocusNode(action.node);
+            inspectedActionId = action ? id : null;
+          }
+          refreshActionStrip();
+        });
+        label.addEventListener("pointerenter", () => { overFocusLabel = true; window.clearTimeout(hideActionsTimer); });
+        label.addEventListener("pointerleave", () => { overFocusLabel = false; deferHoverExit(); });
+        label.addEventListener("focus", focusActions);
+        label.addEventListener("blur", () => { requestAnimationFrame(refreshActionStrip); deferHoverExit(); });
+        container.append(label);
+        nameLabels.set(node.id, label);
+      }
+      const name = labelNames.get(node.id) ?? node.name;
+      if (label.textContent !== name) { label.textContent = name; labelSizes.delete(label); }
+      const count = symbolCountOf(node);
+      const title = node.directoryPath !== undefined ? `${node.directoryPath || "Scan root"} · ${node.directoryFileCount} visible files`
+        : node.id.startsWith("related:") ? `${node.codeRelativePath}${hasBundledDoc(node.id.slice(8)) ? "" : " · not in this bundle"}`
+        : `${node.codeRelativePath} · ${count} public ${count === 1 ? "symbol" : "symbols"}`;
+      if (label.title !== title) label.title = title;
+      label.dataset.nodeId = node.id;
+      label.dataset.kind = node.directoryPath !== undefined ? "directory" : "file";
+      label.dataset.priority = String(priority);
+      label.dataset.context = String(scopedNames && priority >= 4);
+      let size = labelSizes.get(label);
+      if (!size || size.text !== name) {
+        label.hidden = false;
+        size = { width: label.offsetWidth, height: label.offsetHeight, text: name };
+        labelSizes.set(label, size);
+      }
+      candidates.push({ id: node.id, x, y, radius, priority, ...size });
+      buttons.set(node.id, label);
+    }
+    const placements = placeSpatialLabels(candidates, { width: frame.width, height: frame.height }, obstacles, labelSides);
+    labelSides = new Map([...placements].map(([id, box]) => [id, box.side]));
+    for (const label of [focusLabel, ...nameLabels.values()]) {
+      const id = label.dataset.nodeId ?? "";
+      label.hidden = buttons.get(id) !== label || !placements.has(id);
+    }
+    for (const item of candidates) {
+      const box = placements.get(item.id);
+      if (!box) continue;
+      const label = buttons.get(item.id)!;
+      label.hidden = false;
+      if (label === focusLabel) {
+        label.style.left = `${item.x}px`;
+        label.style.top = `${item.y}px`;
+        label.style.transform = `translate(${box.x - item.x}px, ${box.y - item.y}px)`;
+      } else {
+        label.style.transform = `translate(${box.x}px, ${box.y}px)`;
+      }
+    }
   }
 
   function focusSelection(force = false): void {
@@ -412,6 +520,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     zoomMotion = null;
 
     subjectAnchor = null;
+    fittingScope = false;
     following = !!node;
     focusMotion = null;
     if (focusLabel) {
@@ -448,8 +557,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       focusLabel.dataset.nodeId = focusedId ?? "";
       focusLabel.hidden = true;
     }
-    const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 500;
-    frameDirectories([directoryAt(directory)], duration);
+    fittingScope = false;
+    following = true;
     updateAttention();
   }
 
@@ -461,6 +570,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     focusedDirectory = null;
     explicitDirectoryFocus = false;
     focusedId = id;
+    fittingScope = false;
     following = true;
     subjectAnchor = null;
     zoomMotion = null;
@@ -509,7 +619,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const focused = document.activeElement;
     if (!(focused instanceof HTMLElement) || !focused.matches(":focus-visible")) return null;
     if (actionStrip?.contains(focused)) return actionTargetId;
-    return focused === focusLabel ? focusedId : null;
+    return focused.matches(".force-graph-focus, .force-graph-label") ? focused.dataset.nodeId ?? null : null;
   }
 
   function focusActions(): void {
@@ -608,20 +718,31 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }, 180);
   }
 
-  function frameDirectories(directories: readonly string[], duration: number): void {
-    if (!forceGraphInstance) return;
-    const instance = forceGraphInstance;
-    const spheres = instance.graphData().nodes
-      .filter(node => Number.isFinite(node.x) && Number.isFinite(node.y) && Number.isFinite(node.z)
-        && directories.some(directory => under(node.directoryPath ?? node.codeRelativePath, directory)))
-      .map(node => ({
-        center: { x: node.x!, y: node.y!, z: node.z! },
-        radius: spatialNodeRadius(node, state.tuning.forceGraph)
-      }));
-    const camera = instance.camera();
-    if (!(camera instanceof PerspectiveCamera)) throw new Error("Directory framing requires a perspective camera.");
-    const framing = frameCameraSpheres(camera, spheres, { width: instance.width(), height: instance.height() });
-    if (framing) instance.cameraPosition(framing.camera, framing.target, duration);
+  /** The requested file's immediate neighbourhood, or the explicit recovery scope. */
+  function framingIds(): Set<string> {
+    const data = forceGraphInstance?.graphData();
+    if (!data) return new Set();
+    if (pathScope.length) return new Set(pathScope);
+    if (fittingScope && retainedScope.size) return retainedScope;
+    if (focusedDirectory !== null) return new Set(data.nodes.filter(node =>
+      under(node.directoryPath ?? node.codeRelativePath, directoryAt(focusedDirectory!))).map(node => node.id));
+    if (focusedId) {
+      const ids = new Set([focusedId]);
+      for (const link of data.links) {
+        const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
+        if (a === focusedId || b === focusedId) { ids.add(a); ids.add(b); }
+      }
+      return ids;
+    }
+    return new Set(data.nodes.map(node => node.id));
+  }
+
+  function fit(): void {
+    fittingScope = true;
+    following = true;
+    focusMotion = null;
+    subjectAnchor = null;
+    zoomMotion = null;
   }
 
   function render(): void {
@@ -807,13 +928,33 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (selectedAt) retained.add(selectedAt);
     if (path?.length) { retained.clear(); for (const id of path) retained.add(id); }
     const retainedFiles = [...retained];
+    retainedScope = pins.entries.length || directories.length || path?.length ? retained : new Set();
+    pathScope = path ?? [];
     for (const node of graphNodes) {
       if (node.directoryPath !== undefined && retainedFiles.some(id => under(id, node.directoryPath!))) retained.add(node.id);
     }
+    scopedNames = !!subjectAt || retained.size > 0;
+    labelNames = new Map(graphNodes.map(node => {
+      let name = node.directoryPath !== undefined ? node.directoryPath || "Scan root" : node.name;
+      if (node.directoryPath === undefined && graphNodes.some(other => other.id !== node.id && other.name === name)) {
+        const parts = node.codeRelativePath.split("/");
+        for (let count = 2; count <= parts.length; count++) {
+          name = parts.slice(-count).join("/");
+          if (!graphNodes.some(other => other.id !== node.id && (other.codeRelativePath === name || other.codeRelativePath.endsWith("/" + name)))) break;
+        }
+      }
+      return [node.id, name];
+    }));
+    labelPriorities = new Map(graphNodes.map(node => [node.id,
+      pins.entries.some(pin => pin.nodeId === node.id) || node.id === path?.[0] || node.id === path?.[path.length - 1] ? 1
+      : node.directoryPath !== undefined && retained.has(node.id) ? 2
+      : retained.has(node.id) ? 3 : node.directoryPath !== undefined ? 4 : 5]));
+    for (const [id, label] of nameLabels) if (!present.has(id)) { label.remove(); nameLabels.delete(id); labelSizes.delete(label); }
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {
-        frameDirectories(directories, 0);
+        focusedDirectory = directories[0] ?? null;
+        fit();
       }
       framedDirectoryScope = directoryScope;
     };
@@ -938,16 +1079,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         nodeObjects.set((node).id, object);
         return false; // The native renderer still owns object placement.
       })
-      .nodeLabel(node => {
-        const file = node;
-        const symbols = symbolCountOf(file);
-        const label = document.createElement("span");
-        label.textContent = file.directoryPath !== undefined
-          ? `${file.directoryPath || "Scan root"} · ${file.directoryFileCount} visible files`
-          : file.archetype === "related-doc" ? (hasBundledDoc(file.codePath) ? file.name : `${file.name} · not in this bundle`)
-          : `${file.name} · ${symbols} public ${symbols === 1 ? "symbol" : "symbols"}`;
-        return label;
-      })
+      .nodeLabel(() => "")
       .linkLabel(link => link.kind === "containment" ? "Directory membership"
         : link.kind === "related-doc" ? `Cites the document: ${link.count} ${link.count === 1 ? "link" : "links"} in the file's words`
         : link.kind === "cited-by" ? `Cited by the document: ${link.count} ${link.count === 1 ? "link" : "links"} to the file`
@@ -956,6 +1088,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // A citation is drawn from the one who cites to the one cited, so that its direction is read off the line.
       .linkDirectionalArrowLength(link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0)
       .linkDirectionalArrowRelPos(1);
+    batchSpatialGraph(forceGraphInstance.scene());
+    drawSpatialGraphOnChange(forceGraphInstance.scene(), forceGraphInstance.camera(), forceGraphInstance.renderer(), forceGraphInstance.postProcessingComposer());
     updateAttention();
     heldLinks = graphLinks;
     shownLayout = state.spatialLayout;
@@ -1107,14 +1241,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // A right press opens on release so a right drag can orbit without opening a menu first.
     container.addEventListener("contextmenu", event => {
       event.preventDefault();
-      if (event.target === focusLabel && focusedId) {
-        const rect = focusLabel!.getBoundingClientRect();
-        showActions(focusedId, { x: rect.left + rect.width / 2, y: rect.bottom });
+      const label = event.target instanceof HTMLElement && event.target.matches(".force-graph-focus, .force-graph-label") ? event.target : null;
+      if (label?.dataset.nodeId) {
+        const rect = label.getBoundingClientRect();
+        showActions(label.dataset.nodeId, { x: rect.left + rect.width / 2, y: rect.bottom });
       }
     });
     container.addEventListener("keydown", event => {
       if (event.key !== "ContextMenu" && !(event.shiftKey && event.key === "F10")) return;
-      const id = actionStrip?.contains(event.target as Node) ? actionTargetId : event.target === focusLabel ? focusedId : null;
+      const id = actionStrip?.contains(event.target as Node) ? actionTargetId : event.target instanceof HTMLElement && event.target.matches(".force-graph-focus, .force-graph-label") ? event.target.dataset.nodeId : null;
       if (!id) return;
       event.preventDefault();
       event.stopPropagation();
@@ -1138,9 +1273,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }, { passive: false, capture: true });
     new ResizeObserver(() => {
       pointerPickNeeded = true;
+      labelSizes = new WeakMap();
       if (container.clientWidth && container.clientHeight) forceGraphInstance?.width(container.clientWidth).height(container.clientHeight);
     }).observe(container);
     focusSelection();
+    if (!state.selectedNode) fit();
     syncInspectionAction();
     refreshActionStrip();
     setActive(true);
@@ -1204,5 +1341,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     instance.d3AlphaMin(0).d3ReheatSimulation();
   }
 
-  return { render, setActive, focusNode, focusDirectory, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusNode, focusDirectory, fit, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

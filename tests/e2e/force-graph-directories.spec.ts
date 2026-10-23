@@ -108,7 +108,7 @@ test("the structure layout hangs every file from its directory from where it sto
   for (const node of candidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120); // Native hover picking is throttled.
-    if ((await page.locator(".float-tooltip-kap").textContent())?.startsWith(`${node.name} ·`)) { hovered = node; break; }
+    if (await page.locator(".force-graph-actions").getAttribute("data-node-id") === node.id) { hovered = node; break; }
   }
   expect(hovered, "a connected file is hoverable").toBeDefined();
   const incident = (await renderedLinks(page)).filter(link => link.kind !== "containment" && (link.source === hovered!.id || link.target === hovered!.id));
@@ -143,7 +143,7 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   for (const node of candidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120); // Native hover picking is throttled.
-    if ((await page.locator(".float-tooltip-kap").textContent())?.startsWith(`${node.directory} ·`)) {
+    if (await page.locator(".force-graph-actions").getAttribute("data-node-id") === node.id) {
       chosen = node;
       break;
     }

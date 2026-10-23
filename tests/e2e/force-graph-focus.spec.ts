@@ -223,6 +223,8 @@ test("mouse Unpin releases hover attention; real keyboard focus previews without
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
   expect(await strip.evaluate(element => element.contains(document.activeElement))).toBe(false);
+  // The new spatial names are also keyboard preview targets. Leave the map's names and controls deliberately.
+  await page.getByRole("button", { name: "Fit current scope", exact: true }).focus();
   await expect.poll(leastOpacity).toBeGreaterThan(.7);
   expect(currentSnapshot(page)).toEqual(afterUnpin);
 });
@@ -317,7 +319,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   for (const node of candidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120); // Native picking is throttled at 50 ms.
-    if ((await page.locator(".float-tooltip-kap").textContent())?.startsWith(`${node.name} ·`)) { found = node; break; }
+    if (await page.locator(".force-graph-actions").getAttribute("data-node-id") === node.id) { found = node; break; }
   }
   expect(found, "a visible distant sphere is hoverable").toBeDefined();
   const opacity = async () => (await renderedNodes(page)).find(node => node.id === found!.id)!.opacity;
@@ -349,7 +351,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   for (const node of otherCandidates.slice(0, 20)) {
     await page.mouse.move(node.x, node.y);
     await page.waitForTimeout(120);
-    if ((await page.locator(".float-tooltip-kap").textContent())?.startsWith(`${node.name} ·`)) { peeked = true; break; }
+    if ((await renderedNodes(page)).find(candidate => candidate.id === node.id)!.opacity > .7) { peeked = true; break; }
   }
   expect(peeked, "another unrelated sphere can be temporarily peeked").toBe(true);
   await expect.poll(opacity).toBeLessThan(.3);
@@ -361,6 +363,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await expect.poll(opacity, { message: "leaving the viewport preserves the deliberate keyboard target too" }).toBeGreaterThan(.7);
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
+  await page.getByRole("button", { name: "Fit current scope", exact: true }).focus();
   await expect.poll(opacity).toBeLessThan(.3);
   await page.mouse.move(30, 50);
   await expect.poll(opacity).toBeLessThan(.3);
@@ -374,7 +377,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
  * A point of the canvas with no sphere under it. A middle-button press on a sphere is a node drag to the library's
  * drag controls, which suspend the navigation controls for the drag, so the zoom this test measures never starts; the
  * picture changes as the repository grows, so the point is found from the rendered scene rather than fixed. The
- * Both the application-owned sphere pick and the library's tooltip must report no target, and the DOM hit must be
+ * The application-owned sphere pick must report no target, and the DOM hit must be
  * the canvas rather than a control standing over it. Distances and sphere radii are both in screen pixels.
  */
 async function emptyPoint(page: Page): Promise<{ x: number; y: number }> {
@@ -389,8 +392,7 @@ async function emptyPoint(page: Page): Promise<{ x: number; y: number }> {
     if (!onCanvas) continue;
     await page.mouse.move(x, y);
     await page.waitForTimeout(120); // Native picking is throttled at 50 ms.
-    if (await page.locator("#graph-svg").getAttribute("data-hovered-node") === "false"
-      && !(await page.locator(".float-tooltip-kap").textContent())?.trim()) return { x, y };
+    if (await page.locator("#graph-svg").getAttribute("data-hovered-node") === "false") return { x, y };
   }
   throw new Error("no empty point of the canvas was found among the candidates");
 }

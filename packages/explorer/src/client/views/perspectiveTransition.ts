@@ -238,25 +238,26 @@ export function holdPerspective(root: HTMLElement): () => void {
 
 /** Freeze computed appearance without duplicating live selectors, IDs or controls. */
 function visualCopy(root: HTMLElement, deep = true): HTMLElement {
-  const copy = root.cloneNode(deep) as HTMLElement;
-  const originals = deep ? [root, ...root.querySelectorAll<HTMLElement>("*")] : [root];
-  const clones = [copy, ...copy.querySelectorAll<HTMLElement>("*")];
-  originals.forEach((element, index) => {
-    const clone = clones[index];
-    // Remove live hooks before writing the large style, avoiding its lazy attribute serialization here.
-    for (const name of [...clone.getAttributeNames()]) {
-      if (name === "id" || name === "class" || name === "tabindex" || name === "role" || name.startsWith("data-") || name.startsWith("on")) clone.removeAttribute(name);
-    }
-    const style = getComputedStyle(element);
-    // Read the native length once and preserve every computed property in one parsed declaration block.
-    const length = style.length;
-    const declarations = new Array<string>(length);
-    for (let property = 0; property < length; property++) {
-      const name = style.item(property);
-      declarations[property] = `${name}: ${style.getPropertyValue(name)};`;
-    }
-    clone.style.cssText = declarations.join("");
-    if (element instanceof HTMLCanvasElement && clone instanceof HTMLCanvasElement) clone.getContext("2d")?.drawImage(element, 0, 0);
-  });
+  const copy = root.cloneNode(false) as HTMLElement;
+  const style = getComputedStyle(root);
+  // Remove live hooks before writing the large style, avoiding its lazy attribute serialization here.
+  for (const name of [...copy.getAttributeNames()]) {
+    if (name === "id" || name === "class" || name === "tabindex" || name === "role" || name.startsWith("data-") || name.startsWith("on")) copy.removeAttribute(name);
+  }
+  // display:none contributes neither layout nor pixels to this frozen picture. Do not expand an invisible subtree.
+  // visibility:hidden and opacity:0 still occupy layout, so they retain the full copy below.
+  if (style.display === "none") { copy.style.cssText = "display:none"; return copy; }
+  // Read the native length once and preserve every computed property in one parsed declaration block.
+  const length = style.length;
+  const declarations = new Array<string>(length);
+  for (let property = 0; property < length; property++) {
+    const name = style.item(property);
+    declarations[property] = `${name}: ${style.getPropertyValue(name)};`;
+  }
+  copy.style.cssText = declarations.join("");
+  if (root instanceof HTMLCanvasElement && copy instanceof HTMLCanvasElement) copy.getContext("2d")?.drawImage(root, 0, 0);
+  if (deep) for (const child of root.childNodes) {
+    copy.append(child instanceof Element ? visualCopy(child as HTMLElement) : child.cloneNode(true));
+  }
   return copy;
 }

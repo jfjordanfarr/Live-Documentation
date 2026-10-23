@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Checks the Force Graph camera geometry for panned viewpoints, opposite-side targets and degenerate camera positions.
+Checks the Force Graph camera geometry for panned viewpoints, opposite-side targets, degenerate camera positions and a subject-centered neighbourhood containing asymmetric neighbours and large sphere bodies.
 
 ### Notes
 The examples verify direction and distance independently of browser animation. The actual rendered-node selection and return journey are covered by the Force Graph Playwright suite.
