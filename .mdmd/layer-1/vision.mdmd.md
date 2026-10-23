@@ -8,6 +8,8 @@ _Design clarification, 2026-10-02 and 03: the inside of a system at file scale i
 
 _View consolidation, 2026-10-12: the owner [retired the Circuit Board and Membrane Map](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4). Navigation is Knowledge Sources, World Map and Local Map. Local Map owns directory browsing and a remembered 2D/3D representation, including in shared links. Earlier descriptions of separate views below are dated design history._
 
+_Naming clarification, 2026-10-23: the owner describes the former Membrane Map and Local Map as merged into the **2D Local Map** ([Turn 3](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-23.1.record.md#turn-3)). Membrane Map is a legacy name; its earlier design is historical provenance, not a separate future view._
+
 **Live Documentation turns a folder of source files into a map you can look at.**
 
 It writes one markdown file per source file, describing what that file exposes and what it is wired to. Everything else the tool shows, whether the Explorer picture or the CLI answers, is a rendering of those files and nothing more, and so would any later host be.
