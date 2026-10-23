@@ -46,7 +46,7 @@ beforeAll(() => {
   repository = fs.mkdtempSync(path.join(os.tmpdir(), "history-fixture-"));
   temporary.push(repository);
   commits = buildRepository(repository, SCRIPT);
-  firstRun = runCli(historyScript, ["--workspace", repository, "--jobs", "1", "--keep-index"]);
+  firstRun = runCli(historyScript, ["--workspace", repository, "--jobs", "3", "--keep-index"]);
   if (firstRun.exitCode !== 0) {
     throw new Error(`the history command failed: ${firstRun.stderr}`);
   }

@@ -58,6 +58,7 @@ export async function openGitRepository(workspaceRoot: string): Promise<VersionC
 
 class GitRepository implements VersionControl {
   readonly system = "git";
+  private worktreeChanges: Promise<void> = Promise.resolve();
 
   constructor(private readonly root: string) {}
 
@@ -82,19 +83,24 @@ class GitRepository implements VersionControl {
     // Git names a worktree's record after the folder's name, so trees made at once need folders of different names.
     // The tree as the repository stores it and its own attributes declare it, whatever the person's git converts on
     // checkout; no hook of the repository runs, and Git LFS writes its pointers rather than fetching a file.
-    await this.git(["-c", `core.hooksPath=${os.devNull}`, "-c", "core.autocrlf=false", "worktree", "add", "--detach", "--quiet", directory, change], {
+    await this.changeWorktrees(() => this.git(["-c", `core.hooksPath=${os.devNull}`, "-c", "core.autocrlf=false", "worktree", "add", "--detach", "--quiet", directory, change], {
       GIT_LFS_SKIP_SMUDGE: "1"
-    });
+    }));
+    let removal: Promise<void> | undefined;
     return {
       root: directory,
-      remove: async () => {
-        try {
-          await this.git(["worktree", "remove", "--force", directory]);
-        } finally {
-          await fs.rm(directory, { recursive: true, force: true });
-        }
-      }
+      // A signal and the worker's finally may both release the same tree. They share one operation and its result.
+      remove: () => removal ??= this.changeWorktrees(async () => {
+        await this.git(["worktree", "remove", "--force", directory]);
+      })
     };
+  }
+
+  /** Git enumerates sibling worktree records while changing its registry; only source analysis may overlap. */
+  private changeWorktrees<T>(operation: () => Promise<T>): Promise<T> {
+    const result = this.worktreeChanges.then(operation);
+    this.worktreeChanges = result.then(() => undefined, () => undefined);
+    return result;
   }
 
   async changesBetween(from: string, to: string): Promise<VersionChanges> {

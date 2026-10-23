@@ -261,7 +261,12 @@ async function regenerate(changes: readonly MainlineChange[], context: Regenerat
           await tree.remove();
         }
       } finally {
-        await fs.rm(scratch, { recursive: true, force: true });
+        // Git owns removal of a registered tree. If it fails, retain the tree and its metadata for diagnosis instead
+        // of deleting the working directory behind Git's back and leaving a dangling registration.
+        await fs.rmdir(scratch).catch((error: NodeJS.ErrnoException) => {
+          if (error.code !== "ENOTEMPTY") throw error;
+          context.progress(`kept scratch directory after incomplete Git cleanup: ${scratch}`);
+        });
       }
       timings.push(Date.now() - began);
       const mean = timings.reduce((sum, time) => sum + time, 0) / timings.length;

@@ -31,6 +31,8 @@ The sequence and command, shared update path, scrubber, panel, URL and hosted bu
 
 The public CI and Pages run for `82fee09d` was observed successful on October 19, including history generation and deployment; cache-hit rate was not measured ([session summary, Turn 17](../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#turn-17)). That is dated verification, not a claim about every later hosted run.
 
+The October 23 local rebuild exposed a worktree-cleanup race in the history command: one worker's Git process read a sibling's administrative record during its removal. Registry creation/removal now run sequentially within a history run, while the summary workers stay parallel; failed removal preserves its scratch tree for diagnosis. The lifecycle regression and the three-worker scripted history cover this contract. The [failure investigation](../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-23.1.record.md#history-failure-investigation) records the reproduction and verification. This repair does not settle the visual acceptance work above.
+
 ### How this document works
 
 - **The standard.** Every idea is walked, on paper, through the scenarios below before any code, and at each scenario through the seven places it can touch: the sequence's format, the history command, the cache, the bundle, the Explorer, the CLI, and the tests with their oracles. An idea survives only if some adjustment of those seven holds every scenario without breaking a standing rule. An idea that cannot is written under Failed ideas, with why.
