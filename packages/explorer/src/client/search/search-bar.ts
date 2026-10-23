@@ -45,7 +45,7 @@ export interface SearchBar {
    * The first field shows the newest pin; the second appears once there is one, shows the destination asked, and
    * offers what the reach from the newest pin holds.
    */
-  sync(subject: SearchWords | null, destination: SearchWords | null, reach: Reach | null): void;
+  sync(subject: SearchWords | null, destination: SearchWords | null, reach: Reach | null, localMapShown: boolean): void;
   /** Draw the strip of a path's hops; an empty path hides it. */
   showPath(hops: readonly PathHop[]): void;
   /** Write the status line; `tone` colours it. Returns the element so that a link can be appended. */
@@ -63,6 +63,7 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   const destinationGroup = requireElement("search-destination-field");
   const destinationInput = requireElement<HTMLInputElement>("search-destination");
   const destinationClear = requireElement<HTMLButtonElement>("search-destination-clear");
+  const report = requireElement("path-report");
   const status = requireElement("pathfind-status");
   const strip = requireElement("pathfind-path");
   const localMap = requireElement("view-map");
@@ -78,7 +79,11 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   const destination = createSearchField({
     input: destinationInput, results: requireElement("search-destination-results"), scope: () => destinationScopeShown, onChoose: options.onChooseDestination
   });
-  destinationClear.addEventListener("click", () => options.onClearDestination());
+  destinationClear.addEventListener("click", event => {
+    options.onClearDestination();
+    // Clear removes its own button; keyboard use continues in the destination field.
+    if (event.detail === 0) destination.focus();
+  });
 
   // Ctrl+P, the Explorer's search shortcut since the dialog it replaced, goes to the first field.
   document.addEventListener("keydown", event => {
@@ -89,7 +94,8 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   });
 
   return {
-    sync(newest, asked, reach): void {
+    sync(newest, asked, reach, localMapShown): void {
+      report.hidden = !localMapShown || !asked;
       subject.show(newest?.name ?? "");
       subjectInput.title = newest ? `${newest.context}: the newest pin, where a path starts` : "";
       subjectInput.classList.toggle("has-selection", !!newest);
@@ -114,28 +120,37 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
         return;
       }
       hops.forEach((hop, index) => {
+        const item = document.createElement("li");
+        item.className = "pathfind-path-item";
         if (index > 0) {
           const arrow = document.createElement("span");
           arrow.className = "pathfind-path-arrow";
           arrow.textContent = "→";
-          strip.append(arrow);
+          arrow.setAttribute("aria-hidden", "true");
+          item.append(arrow);
         }
-        const element = document.createElement("div");
+        const element = document.createElement("button");
+        element.type = "button";
         element.className = "pathfind-path-hop";
+        element.setAttribute("aria-label", `Inspect path file ${index + 1} of ${hops.length}: ${hop.node.id}`);
+        element.title = hop.node.id;
         if (index === 0 || index === hops.length - 1) element.classList.add("endpoint");
-        const name = document.createElement("div");
+        const name = document.createElement("span");
         name.className = "pathfind-path-hop-name";
         name.textContent = hop.node.id.split("/").pop() || hop.node.id;
         name.title = hop.node.id;
         element.append(name);
         if (hop.symbol) {
-          const symbol = document.createElement("div");
+          const symbol = document.createElement("span");
           symbol.className = "pathfind-path-hop-symbol";
           symbol.textContent = `→ ${hop.symbol}`;
           element.append(symbol);
         }
+        // Native Tab may leave a partly visible button clipped. Reveal the complete hop without moving the map.
+        element.addEventListener("focus", () => element.scrollIntoView({ block: "nearest", inline: "nearest" }));
         element.addEventListener("click", () => options.onHopClick(hop.node));
-        strip.append(element);
+        item.append(element);
+        strip.append(item);
       });
       strip.hidden = false;
       localMap.classList.add("has-path");

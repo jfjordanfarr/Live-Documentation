@@ -424,9 +424,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   const historyButton = iconButton("History", '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>');
   historyButton.title = "History: scrub the picture through the commits";
   historyButton.addEventListener("click", () => historyControl.toggle());
-  const perspectivePath = document.createElement("span");
-  perspectivePath.className = "perspective-path-status";
-  perspectiveControls.append(perspectivePath, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton);
+  perspectiveControls.append(compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton);
   requireElement("main").append(perspectiveControls);
   const pinTray = createPinTray({
     parent: requireElement("main"),
@@ -719,9 +717,6 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     tuningButton.setAttribute("aria-label", preset === "custom" ? "Layout tuning: Custom" : "Layout tuning");
     mapButton.setAttribute("aria-pressed", String(state.perspective === "2d"));
     graphButton.setAttribute("aria-pressed", String(state.perspective === "3d"));
-    const path = localView.getActivePath();
-    perspectivePath.textContent = path ? `Path: ${path.nodeIds.length} files` : "";
-    perspectivePath.hidden = !path;
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     historyControl.sync({
       visible: state.view === "map" && state.perspective === "3d",
@@ -737,7 +732,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       reachKey = key;
       reach = newest ? reachOf(filesOf(newest), nodesById, graphData.links) : null;
     }
-    searchBar.sync(newest ? wordsOf(newest) : null, state.destination ? wordsOf(itemOf(state.destination)) : null, reach);
+    searchBar.sync(newest ? wordsOf(newest) : null, state.destination ? wordsOf(itemOf(state.destination)) : null, reach, state.view === "map");
   }
 
   /** Change how the 3D Local Map places its files; the picture re-settles from where it stands, a step in the history. */
@@ -881,14 +876,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     const fromName = origin.name;
     const toName = destination.name;
 
+    // A question asked through the global bar opens the Local Map for every outcome. Restoring a saved place keeps
+    // its chosen view, where the question is retained and the report stays hidden until the person returns to the map.
+    if (!restoringPath && state.view !== "map") {
+      state.view = "map";
+      setActiveView("map", state.perspective);
+    }
+
     if (result.path.length > 0) {
       // Reading evidence is independent of the path being drawn.
-
-      // Path found - switch to Local Map view centered on first node
-      if (!restoringPath && state.view !== "map") {
-        state.view = "map";
-        setActiveView("map", state.perspective);
-      }
 
       // Path mode draws over a selected file; when none is selected yet, the
       // path's first file becomes it. An existing selection is kept, so Clear
@@ -909,7 +905,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       const against = referencesAgainstPath(nodeIds, graphData.links);
       const notDrawn = against === 0
         ? ""
-        : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn`;
+        : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn in 2D`;
       renderCurrentView();
       searchBar.setStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
       return;
@@ -931,6 +927,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
         swapPath();
       });
       statusEl.appendChild(reverse);
+      renderCurrentView("show");
       return;
     }
 
@@ -940,6 +937,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
         : `No path either way (searched ${result.searchedNodes} files)`,
       "error"
     );
+    renderCurrentView("show");
   };
 
   /** Take the path's report off the page and the path out of the Local Map; the destination asked is kept by the caller. */

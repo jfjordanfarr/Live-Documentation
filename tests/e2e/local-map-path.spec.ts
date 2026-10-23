@@ -22,6 +22,7 @@ const BASE = "/samples/estate/";
 const DEPENDENT = "Portal/Services/GatewayClient.cs";
 const DEPENDENCY = "Contracts/IPaymentHub.cs";
 const FRAME = { width: 1600, height: 1000 };
+const ROUTE = ["IPaymentHub.cs", "HubProxy.cs", "PaymentsController.cs", "GatewayClient.cs"];
 
 test.use({ viewport: FRAME });
 
@@ -63,6 +64,145 @@ const pathFiles = (page: Page): Promise<string[]> =>
   page.locator("#map-container .path-node").evaluateAll(columns => columns
     .sort((a, b) => Number((a as HTMLElement).dataset.column) - Number((b as HTMLElement).dataset.column))
     .map(column => column.querySelector<HTMLElement>(".node-card")!.dataset.id!));
+
+/** The answer must be visible and readable, including when it has no success strip beneath it. */
+async function readablePathStatus(page: Page): Promise<void> {
+  const status = page.locator("#pathfind-status");
+  await expect(status).toBeVisible();
+  await expect(status).toBeInViewport({ ratio: 1 });
+  const text = await status.evaluate(element => [element, ...element.querySelectorAll("a")].map(part => {
+    const rgba = (colour: string): number[] => colour.match(/[\d.]+/gu)!.map(Number);
+    let background = [0, 0, 0];
+    const layers: Element[] = [];
+    for (let layer: Element | null = part; layer; layer = layer.parentElement) layers.unshift(layer);
+    for (const layer of layers) {
+      const colour = rgba(getComputedStyle(layer).backgroundColor);
+      const alpha = colour[3] ?? 1;
+      background = background.map((channel, i) => colour[i] * alpha + channel * (1 - alpha));
+    }
+    const style = getComputedStyle(part);
+    const luminance = (colour: number[]): number => colour.slice(0, 3).reduce((sum, channel, i) => {
+      const srgb = channel / 255;
+      return sum + (srgb <= .04045 ? srgb / 12.92 : ((srgb + .055) / 1.055) ** 2.4) * [.2126, .7152, .0722][i];
+    }, 0);
+    const foreground = luminance(rgba(style.color)), behind = luminance(background);
+    return { fontSize: parseFloat(style.fontSize), contrast: (Math.max(foreground, behind) + .05) / (Math.min(foreground, behind) + .05) };
+  }));
+  for (const part of text) {
+    expect(part.fontSize, "path answers use the readable body/control scale").toBeGreaterThanOrEqual(13);
+    expect(part.contrast, "the answer and reverse link have readable contrast against their actual backgrounds").toBeGreaterThanOrEqual(4.5);
+  }
+}
+
+for (const perspective of ["2d", "3d"] as const) {
+  test(`path answers and recovery work by keyboard in ${perspective}, survive inspection, representation changes and reload`, async ({ page }) => {
+    await page.goto(pathAddress(BASE, DEPENDENT, { kind: "file", nodeId: DEPENDENCY }, DEPENDENT, { perspective }));
+    const surface = perspective === "2d" ? "#view-map" : "#view-graph";
+    await expect(page.locator(surface)).toHaveClass(/active/u);
+    await expect(page.locator("#pathfind-status")).toContainText("IPaymentHub.cs reaches GatewayClient.cs through 4 files");
+    await readablePathStatus(page);
+    await expect(page.locator("#pathfind-path")).toBeHidden();
+
+    // These are actual Tab stops in the visible report, outside either inactive surface.
+    await page.locator("#search-destination").focus();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Clear the path", exact: true })).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "show IPaymentHub.cs to GatewayClient.cs", exact: true })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
+    await readablePathStatus(page);
+    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(ROUTE);
+    const question = currentSnapshot(page);
+    expect(question.pinSet.entries).toEqual([
+      { nodeId: DEPENDENT, symbol: "*" }, { nodeId: DEPENDENCY, symbol: "*" }
+    ]);
+    expect(question.destination).toEqual({ kind: "file", nodeId: DEPENDENT });
+
+    await page.locator("#search-destination").focus();
+    for (let step = 0; step < 3; step++) await page.keyboard.press("Tab");
+    const hop = page.getByRole("button", { name: "Inspect path file 2 of 4: Gateway/Wcf/HubProxy.cs", exact: true });
+    await expect(hop).toBeFocused();
+    await expect(hop).toBeInViewport({ ratio: 1 });
+    await page.keyboard.press("Enter");
+    await expect(page.locator("#detail-panel.visible")).toContainText("Gateway/Wcf/HubProxy.cs");
+    expect(currentSnapshot(page)).toMatchObject({
+      selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: question.destination,
+      inspection: { kind: "file", nodeId: "Gateway/Wcf/HubProxy.cs" }
+    });
+
+    const other = perspective === "2d" ? "3D" : "2D";
+    await page.getByRole("button", { name: other, exact: true }).click();
+    await expect(page.getByRole("button", { name: other, exact: true })).toBeEnabled();
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
+    await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(ROUTE);
+    expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: question.destination });
+    await page.reload();
+    await expect(page.locator(other === "3D" ? "#view-graph" : "#view-map")).toHaveClass(/active/u);
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
+    await expect(page.locator("#detail-panel.visible")).toContainText("Gateway/Wcf/HubProxy.cs");
+    expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: question.destination });
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
+
+    await page.locator("#search-destination").focus();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Clear the path", exact: true })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.locator("#path-report")).toBeHidden();
+    await expect(page.locator("#search-destination")).toBeFocused();
+    expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: null });
+
+    // A disconnected query still has a visible answer, with no reverse link or old success strip.
+    await choose(page, "destination", "Portal.csproj", { file: "Portal/Portal.csproj" });
+    await expect(page.locator("#pathfind-status")).toContainText("No path either way");
+    await readablePathStatus(page);
+    await expect(page.locator("#pathfind-status a")).toHaveCount(0);
+    await expect(page.locator("#pathfind-path")).toBeHidden();
+    await page.locator("#search-destination").focus();
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Space");
+    await expect(page.locator("#path-report")).toBeHidden();
+    await expect(page.locator("#search-destination")).toBeFocused();
+    expect(currentSnapshot(page).pinSet).toEqual(question.pinSet);
+  });
+}
+
+test("a shared 3D question survives other views and their reloads, and global destination queries arrive in Local Map", async ({ page }) => {
+  await page.goto(pathAddress(BASE, DEPENDENCY, { kind: "file", nodeId: DEPENDENT }, DEPENDENCY, { perspective: "3d" }));
+  await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
+  const question = currentSnapshot(page);
+  for (const [name, surface] of [["World Map", "#view-world"], ["Knowledge Sources", "#view-sources"]]) {
+    await page.getByRole("button", { name, exact: true }).click();
+    await expect(page.locator(surface)).toHaveClass(/active/u);
+    await expect(page.locator("#path-report")).toBeHidden();
+    const shared = page.url();
+    await page.goto(shared);
+    await expect(page.locator(surface)).toHaveClass(/active/u);
+    await expect(page.locator("#path-report")).toBeHidden();
+    expect(currentSnapshot(page)).toMatchObject({ pinSet: question.pinSet, destination: question.destination, selectedNodeId: question.selectedNodeId });
+    await page.getByRole("button", { name: "Local Map", exact: true }).click();
+    await expect(page.locator("#view-graph")).toHaveClass(/active/u);
+    await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
+    await readablePathStatus(page);
+  }
+
+  await page.getByRole("button", { name: "World Map", exact: true }).click();
+  await choose(page, "destination", "Portal.csproj", { file: "Portal/Portal.csproj" });
+  await expect(page.locator("#view-graph")).toHaveClass(/active/u);
+  await expect(page.locator("#pathfind-status")).toContainText("No path either way");
+  await readablePathStatus(page);
+  await page.reload();
+  await expect(page.locator("#pathfind-status")).toContainText("No path either way");
+  await readablePathStatus(page);
+  expect(currentSnapshot(page).destination).toEqual({ kind: "file", nodeId: "Portal/Portal.csproj" });
+
+  await page.getByRole("button", { name: "Knowledge Sources", exact: true }).click();
+  await choose(page, "destination", "GatewayClient", { file: DEPENDENT });
+  await expect(page.locator("#view-graph")).toHaveClass(/active/u);
+  await expect(page.locator("#pathfind-status")).toHaveText("Path found: 4 files");
+  await readablePathStatus(page);
+});
 
 for (const [base, file] of [["/", "packages/explorer/src/client/index.ts"], [BASE, DEPENDENT]]) {
   test(`a direct file link starts in the directory-aware layout: ${base}`, async ({ page }) => {

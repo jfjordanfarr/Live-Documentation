@@ -327,7 +327,13 @@
       </div>
     </div>
 
-    <!-- The views, under the bar; the detail panel and the zoom controls stand over them -->
+    <!-- One path report for both Local Map representations; other views keep the question without showing its report -->
+    <section id="path-report" class="path-report" aria-label="Path result" hidden>
+      <p id="pathfind-status" class="pathfind-status" role="status" aria-atomic="true" hidden></p>
+      <ol id="pathfind-path" class="pathfind-path" aria-label="Path files, from provider to consumer" hidden></ol>
+    </section>
+
+    <!-- The views, under the bar and report; the detail panel and the zoom controls stand over them -->
     <div id="views">
     <div id="view-world" class="view-container">
       <div id="world-root" class="world-root"></div>
@@ -338,11 +344,6 @@
     </div>
 
     <div id="view-map" class="view-container">
-      <!-- What a path search found: a count, or no path with the reverse question offered as a link; then the drawn path's hops -->
-      <div id="path-report" class="path-report">
-        <p id="pathfind-status" class="pathfind-status" hidden></p>
-        <div id="pathfind-path" class="pathfind-path" hidden></div>
-      </div>
       <div id="map-viewport" class="viewport-layer">
         <div id="map-container" class="dom-layer"></div>
         <div id="map-connections" class="connections-layer"></div>

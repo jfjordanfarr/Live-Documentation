@@ -115,18 +115,57 @@ test("scroll zooms within each perspective; only the 2D and 3D buttons change it
 });
 
 test("a thirteen-file path keeps its ordered steps and constrained symbols through the overview", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
   const root = "tests/integration/programs/csharp/estate/";
   const from = `${root}Database/Oracle/CENTRAL.ACCOUNT.sql`, to = `${root}Portal/Pages/Default.aspx`;
   await page.goto(pathAddress("/", from, { kind: "file", nodeId: to }));
   await expect(page.locator("#pathfind-status")).toContainText("Path found: 13 files");
-  await expect(page.locator("#pathfind-status")).toContainText("3 references between these files run the other way and are not drawn");
-  const ids = () => page.locator("#map-container .path-node .node-card").evaluateAll(cards => cards.sort((a, b) => Number((a.closest(".local-column") as HTMLElement).dataset.column) - Number((b.closest(".local-column") as HTMLElement).dataset.column)).map(card => (card as HTMLElement).dataset.id));
+  await expect(page.locator("#pathfind-status")).toContainText("3 references between these files run the other way and are not drawn in 2D");
+  const ids = () => page.locator("#map-container .path-node .node-card").evaluateAll(cards => cards
+    .sort((a, b) => Number((a.closest(".local-column") as HTMLElement).dataset.column) - Number((b.closest(".local-column") as HTMLElement).dataset.column))
+    .map(card => {
+      const id = (card as HTMLElement).dataset.id;
+      if (!id) throw new Error("Path card is missing its file identity");
+      return id;
+    }));
   const before = await ids();
   expect(before).toHaveLength(13);
   expect(before[0]).toBe(from); expect(before[12]).toBe(to);
   expect(await page.locator("#map-container .branch-symbol-hidden").count()).toBeGreaterThan(0);
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.locator("#view-graph")).toHaveClass(/active/);
+  await expect(page.getByRole("button", { name: "3D", exact: true })).toBeEnabled();
+  await expect(page.locator("#pathfind-status")).toBeInViewport({ ratio: 1 });
+  await expect(page.locator("#pathfind-status")).toContainText("not drawn in 2D");
+  await expect(page.locator("#pathfind-path .pathfind-path-hop-name")).toHaveText(before.map(id => id.split("/").at(-1)!));
+  const question = currentSnapshot(page);
+  const list = page.locator("#pathfind-path");
+  expect(await list.evaluate(element => element.scrollWidth > element.clientWidth), "the long route needs horizontal navigation").toBe(true);
+  await page.locator("#search-destination").focus();
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("button", { name: "Clear the path", exact: true })).toBeFocused();
+  for (let index = 0; index < before.length; index++) {
+    await page.keyboard.press("Tab");
+    const hop = page.getByRole("button", { name: `Inspect path file ${index + 1} of 13: ${before[index]}`, exact: true });
+    await expect(hop).toBeFocused();
+    await expect(hop).toBeInViewport({ ratio: 1 });
+    const room = await hop.evaluate(element => {
+      const button = element.getBoundingClientRect();
+      const strip = element.closest(".pathfind-path")!.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      const outline = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+      return { left: button.left - strip.left - outline, right: strip.right - button.right - outline };
+    });
+    expect(room.left, "the focused hop's outline clears the left clipping edge").toBeGreaterThanOrEqual(0);
+    expect(room.right, "the focused hop's outline clears the right clipping edge").toBeGreaterThanOrEqual(0);
+  }
+  expect(await list.evaluate(element => element.scrollLeft), "Tab reveals the far endpoint through native scrolling").toBeGreaterThan(0);
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#detail-panel.visible")).toContainText(to);
+  expect(currentSnapshot(page)).toMatchObject({
+    selectedNodeId: question.selectedNodeId, pinSet: question.pinSet, destination: question.destination,
+    inspection: { kind: "file", nodeId: to }
+  });
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(page.locator("#view-map")).toHaveClass(/active/);
   expect(await ids()).toEqual(before);

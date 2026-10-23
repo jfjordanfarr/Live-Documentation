@@ -72,3 +72,7 @@ My first priorities would be visible path feedback in both representations, read
 | [24](24-estate-portal-3d.png) | Switch Portal to 3D Connections. |
 | [25](25-estate-structure.png) | Switch the estate to Structure. |
 | [26](26-tuning-1280.png) | Resize to 1280×800 and open Layout tuning. |
+
+## Subsequent repair evidence
+
+The [shared path-feedback playtest](path-feedback/README.md) records the first approved repair, with twelve new captures, after this baseline review. The numbered findings above retain what the original page showed; completion belongs to the [current remediation checklist](../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work).

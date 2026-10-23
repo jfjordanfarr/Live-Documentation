@@ -20,6 +20,7 @@
     flex: none;
     z-index: 300;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 12px;
     padding: 8px 16px;
@@ -32,7 +33,7 @@
     display: flex;
     align-items: center;
     flex: 0 1 360px;
-    min-width: 200px;
+    min-width: min(200px, 100%);
 }
 
 .search-field[hidden] {
@@ -271,8 +272,7 @@
    THE PATH'S REPORT IN THE LOCAL MAP
    ============================================ */
 
-/* The Local Map is a column: the report takes the height it needs (the status line when there is one, the strip
-   when a path is drawn) and the map layer fills whatever is left, so nothing overlaps the map. */
+/* Both Local Map surfaces fill the shared column below the report. */
 #view-map, #view-graph {
     display: flex;
     flex-direction: column;
@@ -282,7 +282,11 @@
     position: relative;
     flex: none;
     z-index: 100;
+    max-height: min(260px, 35dvh);
+    overflow-y: auto;
 }
+
+.path-report[hidden] { display: none; }
 
 /* The map layer fills the column under the report; its transform pans and zooms the map inside it */
 #view-map .viewport-layer {
@@ -297,12 +301,13 @@
     display: block;
     width: fit-content;
     margin: 8px 20px;
-    font-size: 11px;
+    font-size: 13px;
     line-height: 1.4;
-    color: var(--text-panel-subtle);
+    color: var(--text);
     padding: 4px 8px;
     background: var(--bg-surface);
     border-radius: 4px;
+    overflow-wrap: anywhere;
 }
 
 .pathfind-status[hidden] {
@@ -310,18 +315,18 @@
 }
 
 .pathfind-status.success {
-    color: var(--text-success, #4caf50);
+    color: var(--text-success, #8bd49a);
     background: rgba(76, 175, 80, 0.1);
 }
 
 .pathfind-status.error {
-    color: var(--text-error, #f44336);
+    color: var(--color-error);
     background: rgba(244, 67, 54, 0.1);
 }
 
 /* The reverse question, offered when the files connect only the other way */
 .pathfind-status a {
-    color: var(--accent);
+    color: var(--color-path);
     text-decoration: underline;
     cursor: pointer;
 }
@@ -331,7 +336,9 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    margin: 0;
     padding: 12px 20px;
+    list-style: none;
     background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-surface) 100%);
     border-bottom: 1px solid var(--border);
     overflow-x: auto;
@@ -342,6 +349,13 @@
     display: none;
 }
 
+.pathfind-path-item {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+}
+
 .pathfind-path-hop {
     display: flex;
     flex-direction: column;
@@ -350,16 +364,26 @@
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: 6px;
+    font-family: inherit;
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s, transform 0.1s;
     flex-shrink: 0;
-    max-width: 180px;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: min(240px, 65vw);
+    scroll-margin-inline: 8px;
 }
 
-.pathfind-path-hop:hover {
+.pathfind-path-hop:hover,
+.pathfind-path-hop:focus-visible {
     border-color: var(--accent);
     background: var(--accent-subtle);
     transform: translateY(-1px);
+}
+
+.pathfind-path-hop:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 .pathfind-path-hop.endpoint {
@@ -371,20 +395,14 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--text-active);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 160px;
+    overflow-wrap: anywhere;
 }
 
 .pathfind-path-hop-symbol {
     font-size: 10px;
     color: var(--accent);
     margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 160px;
+    overflow-wrap: anywhere;
 }
 
 .pathfind-path-arrow {

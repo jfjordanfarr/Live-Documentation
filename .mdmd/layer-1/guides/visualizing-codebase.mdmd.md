@@ -52,15 +52,15 @@ The bundle's inventory, entry points, reachability, related documentation and ex
 
 ## Search, paths and evidence
 
-The search bar finds files, symbols and directories. Choosing a subject brings it into the Local Map and makes it the newest pin. With a pin present, **Path to** asks for a destination from the newest pin; it lists connected matches and discloses matches for which no path exists. The 2D result orders providers before consumers and offers the reverse question when the requested direction has no path. See [Tracing Impact](tracing-impact.mdmd.md#paths-in-the-explorer).
+The search bar finds files, symbols and directories. Choosing a subject brings it into the Local Map and makes it the newest pin. With a pin present, **Path to** asks for a destination from the newest pin; it lists connected matches and discloses matches for which no path exists. Both Local Map representations show the answer and an ordered row of named hops, from provider to consumer. A reverse-only result offers the reverse question; a disconnected result says no path either way. Tab reaches recovery, Clear and the hop inspection buttons; long routes scroll to keep the focused hop visible. The 2D drawing also shows relevant symbol connections. See [Tracing Impact](tracing-impact.mdmd.md#paths-in-the-explorer).
 
 The reader shows authored Purpose and Notes, public symbols, dependencies and related documents. Its own navigation lets you read linked evidence while keeping the map's place. On narrow or short viewports it fills the screen and provides Close to return to the map.
 
 ### Known gaps and intended behavior
 
-The [accepted remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) records unfinished work found on October 23. In particular, 3D can hide path results and reverse recovery that 2D exposes; names, direction and directory context are difficult to recover; arrivals can be too close; and the legend does not adequately explain the active picture. Panels, labels, search ordering, counts and tuning also need correction.
+The [accepted remediation checklist](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work) records unfinished work found on October 23. The shared path report and reverse recovery are repaired in both representations. In 3D, names, direction and directory context are still difficult to recover; arrivals can be too close; and the legend does not adequately explain the active picture. Panels, labels, search ordering, counts and tuning also need correction.
 
-The intended behavior is that the question and its result stay readable in either representation, relevant identities survive navigation, framing is useful and recoverable, and visible encodings and counts explain what they mean. Those outcomes are acceptance criteria, not a claim that the current page already provides them. Use 2D to read the detailed path in the meantime.
+The remaining intended behavior is that relevant spatial identities survive navigation, framing is useful and recoverable, and visible encodings and counts explain what they mean. Those outcomes remain acceptance criteria. Use 2D for the path's detailed symbol connections; its result and recovery controls are available in either representation.
 
 ---
 

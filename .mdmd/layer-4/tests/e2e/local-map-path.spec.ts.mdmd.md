@@ -9,9 +9,11 @@
 ## Authored
 ### Purpose
 
-Playwright over the estate sample's Local Map path mode, asked through the search bar: choosing the subject pins it and the destination field appears; asked with the dependent first, the map draws nothing and offers the reverse question as a link whose address pins the destination and asks the way back; taking it pins the destination, newest, and draws with every wire leaving a blue pin and entering a green one, left to right, which the still-picture instrument reads the same; clearing the destination returns to the exploration with both pins; a path asked in the map's direction, or given in the address, draws at once; a direct dependency asked the wrong way round is offered, two unconnected files get no path either way, and a directory is an end of a path; the destination field offers only what a path from the newest pin reaches, says how far and which way, and folds the rest; the subject field follows the newest pin and a new subject chosen in the bar asks again from it; and pinning a hop's symbol leaves the path and forgets the destination.
+Exercises path questions through search and shared addresses in both Local Map representations. The estate's known dependency chain supplies independent expected order and direction: reverse queries offer real links, forward routes name ordered files, and Clear returns to retained exploration. Checks rendered feedback, keyboard recovery, hop inspection, representation changes, reload and navigation beside the 2D wire, camera and retention assertions.
 
 ### Notes
+
+The [October 23 review](../../../../AI-Agent-Workspace/Screenshots/2026-10-23/README.md) found that the original checks passed while 3D hid the report inside the inactive 2D surface. The shared-feedback journeys check viewport visibility, readable text size and contrast, actual Tab/Enter/Space operation, inspection independent of the subject and pins, and a question restored from another view's address. Newly asked disconnected and successful destinations must arrive in Local Map from the global search bar. These assertions keep the picture and interactions accepted after that review, rather than treating retained status DOM as visible feedback.
 
 Also checks direct links over this repository and the estate: directory-aware layout before any pin, and the same neighborhood after retaining the selected file. Paths from the bar and an address use the same placed scene, including their intermediate directories.
 
