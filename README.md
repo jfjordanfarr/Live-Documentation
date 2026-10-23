@@ -83,7 +83,7 @@ Live Documentation includes a visual Explorer with three navigable views over on
 
 ### Path Mode: The "Oracle of Bacon" for Code
 
-Select a **FROM** artifact and a **TO** artifact, and the Explorer shows you the shortest path between them—hop by hop, symbol by symbol. This is impact analysis made visual: before you change a core utility, see exactly which files depend on it and how.
+Choose a subject through search, which makes it the newest pin, then choose **Path to**. The 2D Local Map shows a shortest route from provider to consumer, with the relevant symbol connections, and offers the reverse question when appropriate. Making that result and recovery equally readable in 3D is part of the [accepted remediation work](.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work).
 
 The same pathfinding is available via CLI:
 
@@ -93,7 +93,7 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api/endpoints.ts
 
 ### Shareable Links
 
-Every view generates stable URLs. When you need to explain a complex dependency chain, share the link. Your colleagues see exactly what you see—no screenshots, no "scroll down to line 247."
+Every view generates stable URLs. When you need to explain a complex dependency chain, share the link. With the same bundle, your colleagues reopen the shared exploration; viewport and physics arrangement can differ.
 
 ---
 

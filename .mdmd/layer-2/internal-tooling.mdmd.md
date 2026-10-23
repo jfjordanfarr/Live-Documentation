@@ -1,5 +1,7 @@
 # Internal Tooling Reference
 
+_Current as of 2026-10-23._
+
 ## Metadata
 
 - Layer: 2
@@ -34,9 +36,12 @@ Lint, build, type-check, both Vitest projects, and link enforcement, without the
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `npm run test:unit`        | The Vitest `unit` project: `packages/*/src`, `scripts/` and the SlopCop suites                                                                                                             |
 | `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, polyglot fixtures, CLI pathfinding, Rosetta parity, the oracle (~20 s)                           |
-| `npm run test:e2e`         | Playwright against the built Explorer and the estate sample (`tests/e2e/`): every view, the zoom between perspectives, Back and Forward, the design audit and the still-picture instrument |
+| `npm run test:e2e`         | Playwright against the built Explorer, estate and history samples (`tests/e2e/`): every view, explicit changes between 2D and 3D, Back and Forward, the design audit and the still-picture instrument |
 
-Both Vitest projects import TypeScript sources directly, so neither needs a build first. The Playwright specs check each view's plumbing (state in the URL, containment, stable layout, the zoom between perspectives), not whether the picture is right; the owner said as much on 2026-09-28. Two instruments say a little more: `tests/e2e/design-audit.ts` (2026-09-29) fails a spec when words collide or are cut off, and `tests/e2e/still-picture.ts` (2026-10-01) measures what one picture shows legibly against predictions written in `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md`. Taste is still judged by eye. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.
+Both Vitest projects import TypeScript sources directly, so neither needs a build first. The Playwright specs check each view's plumbing (state in the URL, containment, stable layout, explicit changes between 2D and 3D), not whether the picture is right; the owner said as much on 2026-09-28. Two instruments say a little more: `tests/e2e/design-audit.ts` (2026-09-29) fails a spec when words collide or are cut off, and `tests/e2e/still-picture.ts` (2026-10-01) measures what one picture shows legibly against predictions written in `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md`. Taste is still judged by eye. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.
+
+
+The [October 23 remediation checklist](../layer-3/live-documentation-explorer.mdmd.md#remediation-work) supplies unfinished visual acceptance work. Try its journeys in the built page on both the main repository and estate before writing their browser checks. Assert that path results and reverse recovery are rendered and usable in both representations, labels and controls remain readable, and identity survives orbit, zoom, filtering, history and representation changes. Element existence and persisted state alone did not catch the review's failures; DOM collision checks also cannot establish that projected 3D wires look attached to the right spheres. Keep the existing audits and thresholds. The separate numerical finding from the October 22 tuning probe requires non-finite positions to fail measurement, never to be reported as settled.
 
 ---
 

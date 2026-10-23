@@ -1,5 +1,7 @@
 # Multi-Hop Local Map Architecture Analysis
 
+_Historical plan, status clarified 2026-10-23. Its implementation instructions, checkboxes, estimates and descriptions of “current” behavior refer to the dates below. The Membrane Map and Circuit Board were retired on October 12; the Local Map owns directory browsing and explicit 2D/3D representations. This is not an active work queue. Current behavior and accepted unfinished visual work live in the [Explorer design](../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work), following the [owner’s documentation request](../ChatHistory/2026/10/2026-10-23.1.record.md#turn-2). Preserve the proposals as provenance; adopting multi-path rendering, namespace grouping or a different layout requires a current decision._
+
 > **Note (2026-03-22):** The Local Map is the planned predecessor of the **Membrane Map** Explore mode. The architectural lessons captured here (hop-chain data model, anchor registry, dynamic column count, multi-pinning) directly inform Membrane Map design. See [membrane-map.mdmd.md](../../.mdmd/layer-3/membrane-map.mdmd.md).
 
 **Date:** 2025-12-18  

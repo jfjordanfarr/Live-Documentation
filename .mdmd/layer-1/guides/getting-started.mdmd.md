@@ -1,5 +1,7 @@
 # Getting Started with Live Documentation
 
+_Current as of 2026-10-23._
+
 ## Metadata
 
 - Layer: 1
@@ -57,7 +59,7 @@ npm run live-docs:visualize
 npx serve dist/explorer
 ```
 
-It opens on the **Membrane Map**: your directories as nested membranes, files as cards. Click a card to see its symbols; pin a symbol to trace what flows in and out of it. The **Local Map** shows one file with the files it uses and the files that use it, keeps as many files pinned as you like, and zooms out into the **Force Graph**, the whole workspace as a physics layout; **Knowledge Sources** says what the bundle is, which files are most used, and what nothing references. Pass `--board <board.md>` to the build to open on a **World Map** of systems instead. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+A fresh bundle opens on the **World Map** when it carries a board (`--board <board.md>`), otherwise on the **Local Map** at its entry point or workspace root. A shared or remembered place takes precedence. The Local Map shows files, symbols and directories in 2D, or file connectivity and directory structure in 3D; switch explicitly with the **2D** and **3D** controls. Click an entity to inspect its evidence, use **Pin** to retain its connections, and **Centre** to navigate deliberately. **Knowledge Sources** reports the inventory, entry points and what they reach. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md), including its current 3D usability gaps and accepted remediation target.
 
 ### Step 3: Trace a dependency path
 
@@ -65,7 +67,7 @@ It opens on the **Membrane Map**: your directories as nested membranes, files as
 npm run live-docs:inspect -- --from src/core/auth.ts --to src/api/endpoints.ts
 ```
 
-The same question can be asked in the Explorer: the Local Map takes From and To artifacts, and pinning symbols in the Local Map or the Membrane Map follows their connections hop by hop. See [Tracing Impact](tracing-impact.mdmd.md).
+In the Explorer, choose a subject through search, which makes it the newest pin, then use **Path to** to choose a destination from the newest pin. The 2D Local Map shows the detailed route and its direction; making the result equally discoverable in 3D is open remediation work. See [Tracing Impact](tracing-impact.mdmd.md).
 
 ### Step 4: Validate the mirror
 
@@ -115,9 +117,9 @@ npm run live-docs:generate -- --config .live-docs.config.json
 
 | Task                         | How                                                                                          |
 | ---------------------------- | -------------------------------------------------------------------------------------------- |
-| See the shape of a codebase  | Build the Explorer: browse the Membrane Map, pin files in the Local Map, fly the Force Graph |
+| See the shape of a codebase  | Build the Explorer: open systems in the World Map and explore files and directories in the Local Map |
 | Trace impact before a change | `live-docs:inspect -- --from A --to B`, or pin the symbol in the Explorer                    |
-| Understand why a file exists | Read its `Purpose`; design notes linked from Live Docs appear in the Force Graph             |
+| Understand why a file exists | Inspect its `Purpose`; follow related documents in the reader             |
 | Validate before merge        | `live-docs:lint` in CI or a pre-commit hook                                                  |
 | Consume as data              | The graph index at `<root>/index.json`, `live-docs:inspect -- --json`, or the raw markdown   |
 

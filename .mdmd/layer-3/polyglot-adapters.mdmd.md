@@ -1,5 +1,7 @@
 # Polyglot Language Adapters
 
+_Current documentation; the retired view proposal in Strategy is marked historical (2026-10-23)._
+
 ## Metadata
 
 - Layer: 3
@@ -65,7 +67,7 @@ Every language adapter also reports the program's entry point on the analysis re
 - Every adapter is measured against a compiler-backed oracle that shares no mechanism with it; the earlier benchmark was retired on 2026-09-27 because it did not. See "Accuracy Measurement" in [Architectural Decisions](architectural-decisions.mdmd.md). Every sample program with an indexer carries expectations; the C# and TypeScript adapters match every compiler edge, and the baseline of the remaining scanners is recorded there.
 - Replace the remaining scanner (Ruby) with tree-sitter, measured the same way; C and C++ went on 2026-10-16, with scip-clang as the measure, and PowerShell the same day, with PowerShell's own parser as the measure.
 - Extend docstring extraction to Java (Javadoc) and Rust (`///` comments).
-- The C# adapter records each type's namespace-qualified name (`Outer.Inner` for nested types), which is what the [Membrane Map](membrane-map.mdmd.md)'s namespace-based hierarchy needs; no view reads it yet.
+- The C# adapter records each type's namespace-qualified name (`Outer.Inner` for nested types). A namespace-based hierarchy was proposed for the [retired Membrane Map](membrane-map.mdmd.md); it is historical, not a current prerequisite for making Structure readable. No view reads it yet. The current [Explorer work](live-documentation-explorer.mdmd.md#remediation-work) first makes the existing directory identities legible; a different grouping would need its own decision.
 
 ## System References
 

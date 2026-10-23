@@ -1,5 +1,7 @@
 # Tracing Impact with Live Documentation
 
+_Current as of 2026-10-23; example outputs are dated snapshots, not current totals._
+
 ## Metadata
 
 - Layer: 1
@@ -11,7 +13,7 @@ When you change a file, what else moves? Live Documentation answers with depende
 
 ## The Inspect CLI
 
-`live-docs:inspect` traces chains through the Live Doc graph. Think of it as the "Oracle of Bacon" for code. Every example below is real output from this repository as of 2026-09-28; the bracketed Live Doc path after each file is shortened to `[…]`.
+`live-docs:inspect` traces chains through the Live Doc graph. Think of it as the "Oracle of Bacon" for code. The original examples are output from this repository on 2026-09-28; reachability examples were added with the October work. Counts and paths can change; the bracketed Live Doc path after each file is shortened to `[…]`.
 
 ### Find the path between two files
 
@@ -138,6 +140,16 @@ Tests import the code they exercise, so trace inbound from the source file:
 ```bash
 npm run live-docs:inspect -- --from packages/generator/src/generator.ts --to packages/generator/src/generator.test.ts --direction inbound
 ```
+
+---
+
+## Paths in the Explorer
+
+Choose a file, symbol or directory in the search bar; it becomes the newest pin. **Path to** chooses the destination from that pin. Connected matches say how far they are and whether the connection runs the other way; a fold discloses matches with no path. In 2D a successful path names its files, orders providers before consumers and draws the relevant symbol connections. A reverse-only result explains that the requested direction has no path and offers the reverse question. Inspecting a hop keeps the path; clearing the destination returns to exploration with the pins kept.
+
+The Explorer's provider-to-consumer direction corresponds to the CLI's **inbound** walk. The CLI's default **outbound** direction follows a consumer to what it depends on. Both use the engine's walk; their default questions differ.
+
+The intended contract is visible results, named endpoints and ordered hops, and operable recovery in **both** 2D and 3D. The October 23 review found that 3D hides feedback available in 2D; this remains [open remediation work](../../layer-3/live-documentation-explorer.mdmd.md#remediation-work). Switching to 2D currently reveals that feedback. Showing every alternative shortest route or every symbol chain is a separate historical proposal, not a prerequisite for making the existing route usable.
 
 ---
 

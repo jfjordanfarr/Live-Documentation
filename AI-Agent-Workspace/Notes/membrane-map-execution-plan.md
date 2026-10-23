@@ -1,5 +1,7 @@
 # Membrane Map — Execution Plan
 
+_Historical plan, status clarified 2026-10-23. Its implementation instructions, checkboxes, estimates and descriptions of “current” behavior refer to the dates below. The Membrane Map and Circuit Board were retired on October 12; the Local Map owns directory browsing and explicit 2D/3D representations. This is not an active work queue. Current behavior and accepted unfinished visual work live in the [Explorer design](../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work), following the [owner’s documentation request](../ChatHistory/2026/10/2026-10-23.1.record.md#turn-2). Preserve the proposals as provenance; adopting multi-path rendering, namespace grouping or a different layout requires a current decision._
+
 > Status: Promoted from `AI-Agent-Workspace/tmp/membrane-map-execution-plan.md` on 2026-03-31 so the in-flight Membrane convergence work is committed with the repository.
 > Remove this note once the remaining plan items are implemented and the durable outcomes are fully absorbed into [the Layer 3 Membrane architecture doc](../../.mdmd/layer-3/membrane-map.mdmd.md).
 

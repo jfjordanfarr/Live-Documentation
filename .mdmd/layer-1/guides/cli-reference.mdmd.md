@@ -1,5 +1,7 @@
 # CLI Reference
 
+_Current as of 2026-10-23._
+
 ## Metadata
 
 - Layer: 1
@@ -143,7 +145,7 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 
 #### `live-docs:visualize`
 
-Builds a self-contained static Explorer bundle: the Local Map, Force Graph, Membrane Map and Knowledge Sources views, the Circuit Board, and the World Map when a board is given. Deployable to GitHub Pages or any static host. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
+Builds a self-contained static Explorer bundle: the Local Map with explicit 2D and 3D representations, Knowledge Sources, and the World Map when a board is given. Deployable to GitHub Pages or any static host. See [Visualizing Your Codebase](visualizing-codebase.mdmd.md).
 
 ```bash
 npm run live-docs:visualize -- --output ./public --pretty
