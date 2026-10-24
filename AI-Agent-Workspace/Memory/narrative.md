@@ -1,6 +1,6 @@
 # The narrative of this workspace
 
-_Current as of 2026-10-23. The story of Live Documentation from its first prompt on 2025-10-16 to today, told from the transcripts and git. Every new chat reads it in full, before the five most recent session summaries. It is history: where it and a newer decision of the owner's disagree, the decision holds, and what is decided now lives in [direction.md](direction.md), [owner.md](owner.md) and [the vision](../../.mdmd/layer-1/vision.mdmd.md). How it was made, and what it corrects in earlier accounts, is at the end. Links to transcripts give the line where the quoted words are._
+_Current as of 2026-10-24. The story of Live Documentation from its first prompt on 2025-10-16 to today, told from the transcripts and git. Every new chat reads it in full, before the five most recent session summaries. It is history: where it and a newer decision of the owner's disagree, the decision holds, and what is decided now lives in [direction.md](direction.md), [owner.md](owner.md) and [the vision](../../.mdmd/layer-1/vision.mdmd.md). How it was made, and what it corrects in earlier accounts, is at the end. Links to transcripts give the line where the quoted words are._
 
 ## The arc
 
@@ -320,6 +320,8 @@ Most transcripts name no model; this table gives only what they say. A model's n
 | Outside the workspace, December 2025 to March 2026 | A browser; NotebookLM | Gemini 3 rewrote the summaries of 2025-10-16 to 12-01 on 12-02 and kept the Project Development Journey; NotebookLM (Gemini 2.5 Flash) read the exported commits as an outside critic |
 | From 2026-09-26 | Claude Code in VS Code, in the devcontainer | Opus 5.5 and Fable 5.1 by turns in September; Fable 5.1 for the October sessions, with Opus 5.5 subagents; Opus 5.5 for the session that wrote this account, and from Turn 6 of the October 20 session, which the owner selected at extra-high effort when Codex reached its usage limit |
 | 2026-09-30 to 10-01, 10-02 to 10-05, 10-12 to 10-14, 10-19 to 10-20 | Codex in VS Code | GPT-6 Astra, by the owner's name for it; some records say the model label is not exposed. On October 19 delegates ran under the exposed `gpt-6-sol` identifier, which the owner had asked for by the name GPT 6.1 Sol. (Added 2026-10-21: the table had omitted the October 19 and 20 Codex sessions.) |
+
+The [October 23–24 summary](../ChatHistory/2026/10/Summarized/2026-10-23.1.SUMMARIZED.md), completed at the session's close, joins the five turns to seven verified commits and preserves the failures as well as the final gate. Its handoff keeps the remaining visual work, the numerical finding and the separate devcontainer audit distinct from what this pass completed.
 
 ## Where the rules came from
 
