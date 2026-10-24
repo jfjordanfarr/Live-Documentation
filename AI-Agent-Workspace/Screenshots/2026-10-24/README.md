@@ -65,3 +65,37 @@ The selected twelve-segment build, with its public defaults and repaired integra
 Root's judgment: the overview's groups remain distinct, middle-distance names are useful without shrinking their text, and the selected neighbourhood remains recognizable through approach, orbit and inspection. The graph still has projected crossings and crowded hubs; this pass does not claim to solve direction or occlusion. The [probe verification](../../Probes/2026-10-24/connections-tuning/README.md#verification-status) records the full gate separately from this visual evidence.
 
 Final verification passed the complete `safe:commit -- --e2e` chain, including all 206 browser tests, 1,405 unit tests and 113 integration tests. The isolated tree's 58 changed product/source documentation files matched the main workspace exactly; the separate devcontainer changes were preserved outside that verification.
+
+## Structure sizing reopened
+
+The [Structure probe](../../Probes/2026-10-24/structure-sizing/README.md) follows the owner's [Turns 13–14](../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-13). The [current committed overview](structure-current-overview.png) was captured after switching from Connections to Structure and waiting until still, with fresh settings at 1600×1000, DPR 1. It shows the orange Directory key already present in the sidebar and the large recursive ancestor spheres. This is baseline evidence, not a candidate adopted by the owner. The first probe's subsequent numerical observation failed in its transpiled Playwright helper; the screenshot itself completed before that failure.
+
+All comparisons use fresh settings at 1600×1000 CSS pixels, DPR 1, with the same existing bundle data. “Display only” retains the recursive physics, framing and label placement. “Quieter names” gives deep directory names the file proximity gate while retaining root/top-level landmarks. The two flat sizes have physical radii 4 and 6.35, with the same zoom resistance as files. The [probe findings](../../Probes/2026-10-24/structure-sizing/README.md#findings-and-status) distinguish measured controls from root judgment. These are disposable candidates, not a shipped change.
+
+### Repository comparisons
+
+| Treatment | Overview | Closer | Orbit in progress | After orbit |
+| --- | --- | --- | --- | --- |
+| Recursive | [Overview](structure-repo-recursive.png) | [Closer](structure-repo-recursive-closer.png) | [In motion](structure-repo-recursive-orbit-frame.png) | [After orbit](structure-repo-recursive-orbited.png) |
+| Immediate entries, display only | [Overview](structure-repo-immediate-display.png) | — | — | — |
+| Immediate entries, settled | [Overview](structure-repo-immediate.png) | [Closer](structure-repo-immediate-closer.png) | [In motion](structure-repo-immediate-orbit-frame.png) | [After orbit](structure-repo-immediate-orbited.png) |
+| Immediate entries, quieter names | [Overview](structure-repo-immediate-quiet.png) | [Closer](structure-repo-immediate-quiet-closer.png) | [In motion](structure-repo-immediate-quiet-orbit-frame.png) | [After orbit](structure-repo-immediate-quiet-orbited.png) |
+| Flat baseline, quieter names | [Overview](structure-repo-flat-base-quiet.png) | [Closer](structure-repo-flat-base-quiet-closer.png) | [In motion](structure-repo-flat-base-quiet-orbit-frame.png) | [After orbit](structure-repo-flat-base-quiet-orbited.png) |
+| Flat larger, quieter names | [Overview](structure-repo-flat-quiet.png) | [Closer](structure-repo-flat-quiet-closer.png) | [In motion](structure-repo-flat-quiet-orbit-frame.png) | [After orbit](structure-repo-flat-quiet-orbited.png) |
+
+### Estate comparisons
+
+| Treatment | Overview | Closer | Orbit in progress | After orbit |
+| --- | --- | --- | --- | --- |
+| Recursive | [Overview](structure-estate-recursive.png) | [Closer](structure-estate-recursive-closer.png) | [In motion](structure-estate-recursive-orbit-frame.png) | [After orbit](structure-estate-recursive-orbited.png) |
+| Immediate entries, display only | [Overview](structure-estate-immediate-display.png) | — | — | — |
+| Immediate entries, settled | [Overview](structure-estate-immediate.png) | [Closer](structure-estate-immediate-closer.png) | [In motion](structure-estate-immediate-orbit-frame.png) | [After orbit](structure-estate-immediate-orbited.png) |
+| Immediate entries, quieter names | [Overview](structure-estate-immediate-quiet.png) | [Closer](structure-estate-immediate-quiet-closer.png) | [In motion](structure-estate-immediate-quiet-orbit-frame.png) | [After orbit](structure-estate-immediate-quiet-orbited.png) |
+| Flat baseline, quieter names | [Overview](structure-estate-flat-base-quiet.png) | [Closer](structure-estate-flat-base-quiet-closer.png) | [In motion](structure-estate-flat-base-quiet-orbit-frame.png) | [After orbit](structure-estate-flat-base-quiet-orbited.png) |
+| Flat larger, quieter names | [Overview](structure-estate-flat-quiet.png) | [Closer](structure-estate-flat-quiet-closer.png) | [In motion](structure-estate-flat-quiet-orbit-frame.png) | [After orbit](structure-estate-flat-quiet-orbited.png) |
+
+Root personally viewed all sizing overviews and the principal close comparisons. The sampled orbit captures document the journey; they do not constitute a continuous video or a complete regression suite. The repository flat-baseline captures predate the flat legend-marker correction: their two differently sized dots should be read as a prototype error, not a second size encoding. The current disposable flat bundles use a single uniform marker; the estate flat captures were refreshed with it.
+
+### Names available through attention
+
+In the larger flat candidate, `tests/integration/programs/csharp` has no resting overview label. [Hover](structure-flat-hover.png) reveals its full path and relevant subtree; clicking that name opens the [directory reader](structure-flat-inspection.png), which reports 68 descendant files and lists its four child directories. The final reader capture waits for the opening transition to finish. No page errors were reported in this journey.
