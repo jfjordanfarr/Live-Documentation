@@ -4,6 +4,8 @@ _Source inventory for October 2026, maintained by the root agent of each session
 
 ## Agent-maintained records
 
+- [October 24, session 1: Codex](2026-10-24.1.record.md): open. Bootstrapped from the full narrative and five latest summaries; verified the already completed October 23–24 handoff and corrected its omission from the narrative's harness table. Discusses the owner's running full-history rebuild and a further by-eye 3D connector-legibility pass. Root conversation and authored work notes are separate; no native export accompanies this record.
+
 - [October 1, session 1: Claude Code](2026-10-01.1.record.md): closed through Turn 11, with its missing final reply recovered verbatim from the native export on October 2. Eleven stable turn anchors include thirteen owner messages: the additional steers remain under Turns 7 and 8. Root conversation and authored work notes are separate, following the [recording convention](../../README.md#recording-as-work-proceeds).
 - [October 2–3, session 1: Codex](2026-10-02.1.record.md): closed through Turn 14. Includes the native-view implementation, the owner's positive node-reorientation review and the deferred wire transformation. The closing acknowledgment is deliberately excluded at the owner's request.
 - [October 3–5, session 1: Codex](2026-10-03.1.record.md): closed through Turn 5. Preserves the implementation response and the owner's October 5 positive review after repeated viewing; the filename keeps the start date. Summarized on October 5 by the following session.
