@@ -1,0 +1,42 @@
+# Connections tuning — October 24, 2026
+
+Historical record of the owner's [visual tuning request](../../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-12). The root agent judged the built page personally; supporting measurements located problems and compared candidates without claiming to measure aesthetic quality. Structure's appearance is deferred. Final verification is recorded below.
+
+## Comparisons and judgment
+
+The first browser pass used 872 visible files and 2,037 file pairs from the 873-file bundle. At 1600×1000, root compared four force settings with node resistance .25, wire resistance .9 and thickness .9. Each arrangement fitted itself; the camera's fit means tighter physical spacing also enlarges apparent nodes.
+
+| Gravity / spring / tether | Root's observation |
+| --- | --- |
+| .01 / .25 / .01 | Familiar open field; many overview nodes remain very small. |
+| .01 / .75 / .02 | Distinct compact groups, but the central cluster becomes thin and crowded in projection. |
+| .025 / .5 / .02 | Preferred balance: readable groups with room to approach and orbit. |
+| .05 / 1 / .03 | Too many large spheres and names already compete at overview. |
+
+The [layout findings](layout-findings.md) report headless contacts, distances and filter drift. Those counts cannot select a picture: shrinking every node would improve a contact score while making the graph unreadable. The [label/navigation findings](labels-findings.md) distinguish proximity labels from direct-neighbour priority and point out the existing pin/fade journey.
+
+A second browser pass rebuilt the graph with the new source files (877 files, 876 visible), so its layout is not a pixel-matched comparison with the first. Root compared node resistance .3/.45 and wire resistance .85/.9/1. The selected candidate is **node .45, wire .9, thickness .9**, with gravity .025, spring .5 and tether .02. Relaxed's gap 60, repulsion 60 and clearance 5 remain; symbol scaling remains 1 and base radius 4. Names reserve 10px between rectangles and ordinary context waits for perspective radius 6px, or 14px inside a scoped view. Important neighbours retain their existing priority. Ordinary Connections wire alpha falls from .2 to .16, faded alpha remains .025.
+
+Root preferred the partial treatment's mild depth response to completely invariant spheres. Reference-weighted strokes remain visible at overview and less intrusive nearby. Existing pin/hover fading makes a selected neighbourhood legible without changing the meaning of Centre. A truthful conditional legend now names the drawn file kinds, symbol-based size and reference-count width. Spheres use **12 segments**, selected after comparing 8/12/16 close silhouettes and completed GPU costs. The initial 16-segment candidate was needlessly expensive for its small visual advantage. Adaptive detail was considered but not implemented: separate detail batches would lose the existing global transparent-sphere depth order.
+
+Root also inspected the 36-file estate at 1280×800 through search, zoom, orbit, Fit, hover actions and evidence inspection. Intermediate zoom/orbit frames were viewed as well as the final positions. The subject remains recognizable and Fit recovers the neighbourhood. These captures reported no browser errors. Final captures and validation belong in the [screenshot record](../../../Screenshots/2026-10-24/README.md).
+
+## Correctness and performance findings
+
+The renderer's pure review added clipping, end-on cap, projected-depth picking, scale-restoration and idle checks. Nineteen geometric tests passed. Browser raster checks passed for invariant/partial widths, near-plane crossings and end-on edge reversal at DPR 1 and 2; independent node/wire controls preserved camera and physical placement, and persistence passed. Both legend journeys passed, including a filtered-but-retained test and real citation data.
+
+The main repository wire case initially failed before its assertions: `Expected: "false"; Received: "true"; Timeout: 25000ms` for `#graph-svg`'s `aria-busy`. A root CPU profile measured 35.1s to settle, 402 drawn frames, 1.88s inside the renderer wrapper and 1.81s self time in field evaluation; most profile time was unattributed `(program)` time. Direct draws with `gl.finish` misleadingly measured only about 5ms. A synchronous pixel read exposed deferred GPU completion: 78.14ms per draw, dominated by sphere detail, versus 38.61ms with the original renderer at its original detail. Holding the current scene fixed, detail 8/12/16 measured 45.00/65.89/84.94ms. Wire-only costs were similar, but the old/new scenes differed, so this does not establish a precise renderer speedup. Browser compositor flags moved the wait without fixing the cost. The [performance findings](performance-findings.md) preserve conditions and limitations.
+
+The 25-second allowance belonged to today's new test draft, not a previously passing performance contract; the original renderer also took 36.95s to settle under the selected forces. The functional wire journey now allows a minute to settle and two minutes overall, matching the existing preset motion journey. Its pixel and interaction assertions are unchanged. This corrects the root's initial description of the failure as an existing check. Rendering costs remain separate measured findings.
+
+The later full run also reached existing 25-second waits in four main-repository navigation/identity cases. An exact isolated-bundle comparison at 12/8/12 segments took 31.538/25.650/33.270 seconds, always 451 draws and identical final positions/camera. Those functional journeys now allow one minute for actual stillness and ninety seconds overall; estate budgets and all geometry/interaction assertions remain unchanged. The directory-volume journey explicitly selects perspective nodes before comparing world-space volume sums. Three's globally sorted BatchedMesh was also prototyped, but its modest measured gain and fallback limitations did not justify adoption. The performance record distinguishes this later failure from the new wire test's initial draft allowance.
+
+The stronger-spring comparison also reproduced the October 22 numerical defect: large Structure hubs could become non-finite and then falsely qualify as still. The [integration repair](layout-findings.md#integration-review-and-repair) preserves the force field, outer elapsed time, drag and fixed-node semantics, accounts for active pair curvature, and fails explicitly on non-finite data. Its local bound does not promise unconditional stability across the hard cutoff of bounded repulsion. Forty-seven focused tests passed. Root re-viewed the final main and estate arrangements and motion after this repair; the selected picture remains readable. Structure's additional integration cost is documented separately from its deferred aesthetic tuning.
+
+## Verification status
+
+The complete `npm run safe:commit -- --e2e` chain passed: lint, compilation, test type-check, **1,405 unit tests, 113 integration tests and all 206 browser tests**, with documentation/link/asset/symbol audits. The final browser run took 28.9 minutes. It ran in an isolated worktree preserving the independent devcontainer changes present at session start outside the verified change set; all 58 changed product source/test/layer-3/layer-4 files matched main byte for byte.
+
+Earlier failures exposed assumptions in browser fixtures: physical volume and spring-length checks now explicitly select perspective nodes; tether increments follow the control's starting value and step; full-graph navigation and the thirteen-stop path journey have measured software-renderer allowances. Every geometry, position, identity, focus and interaction assertion remains. The [session record](../../../ChatHistory/2026/10/2026-10-24.1.record.md#turn-12) preserves failures, corrections and interrupted runs separately from the final pass.
+
+Root personally reviewed the production twelve-segment main/estate captures after the integration repair, including zoom/orbit frames and inspection. The [screenshot record](../../../Screenshots/2026-10-24/README.md#final-production-captures) preserves those views and the earlier force/detail comparisons. The main preview retains all 640 existing history commits. No generator, engine, dependency lock or documentation-lens input changed. Uncached history profiling, Structure's aesthetic pass and the existing direction/occlusion questions remain open.

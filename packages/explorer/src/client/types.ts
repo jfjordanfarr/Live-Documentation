@@ -179,6 +179,12 @@ export interface ForceGraphTuning {
   nodeSize: number;
   /** Exponent of symbol count in sphere volume; one gives cube-root radius growth. */
   symbolScale: number;
+  /** Baseline 3D wire diameter: world units at zero resistance, CSS pixels at full resistance. */
+  linkWidth: number;
+  /** Compensation for perspective sizing: zero preserves it, one holds node screen radii constant. */
+  nodeZoomResistance: number;
+  /** Compensation for perspective sizing: zero preserves it, one holds wire screen widths constant. */
+  wireZoomResistance: number;
   /**
    * How strongly every sphere is drawn toward the picture's centre, in proportion to its distance from it: the restoring
    * force the simulation lacked, so that a picture pushed apart by a reheat returns and two unconnected clusters are not

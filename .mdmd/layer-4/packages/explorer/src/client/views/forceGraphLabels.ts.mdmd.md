@@ -11,7 +11,7 @@
 Places readable identity labels beside projected 3D spheres, giving the subject and retained exploration priority while keeping labels apart and inside the usable viewport.
 
 ### Notes
-Created for the owner’s [October 23 choice](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-23.1.record.md#turn-5) to prioritize names and reveal more as space permits. Placement is pure screen geometry; the renderer supplies measured text, projected spheres, priorities and interface obstacles. A previously usable side stays preferred so camera motion does not needlessly flip a name around its sphere. Crowded names wait for space rather than shrinking their type. A name also avoids the projected discs of equal or higher-priority spheres, so contextual text cannot masquerade as the identity of a more important body.
+Created for the owner’s [October 23 choice](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-23.1.record.md#turn-5) to prioritize names and reveal more as space permits. Placement is pure screen geometry; the renderer supplies measured text, projected spheres, priorities and interface obstacles. A previously usable side stays preferred so camera motion does not needlessly flip a name around its sphere. Crowded names wait for space rather than shrinking their type. A name also avoids the projected discs of equal or higher-priority spheres, so contextual text cannot masquerade as the identity of a more important body. Ten CSS pixels between name rectangles give the dense neighbourhood room to read, selected during the [October 24 visual pass](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-12).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

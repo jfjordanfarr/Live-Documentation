@@ -100,11 +100,12 @@ test("search moves focus smoothly, survives filtering, and resizes with its cont
 });
 
 test("manual pan survives a 2D and 3D round trip without restarting the settled layout", async ({ page }) => {
-  test.setTimeout(45_000);
+  test.setTimeout(90_000);
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
-  // Compare a settled graph: the container is busy until the simulation's alpha falls below its minimum.
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  // Compare a settled graph. The full repository took 31–33s in software-rendered
+  // Chromium; this is setup for navigation assertions, not a frame-time benchmark.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
   const canvas = (await page.locator("#graph-svg canvas").boundingBox())!;
   // File-pair aggregation changes placement. Pan the background: a press on
   // a sphere invokes the library's node drag and reheats the simulation.
@@ -297,7 +298,7 @@ test.describe("touch pointer lifetime", () => {
 });
 
 test("hover peeks outside the retained scope, leaving restores it, and clearing pins releases dimming", async ({ page }) => {
-  test.setTimeout(45_000);
+  test.setTimeout(90_000);
   await page.setViewportSize({ width: 1600, height: 1000 });
   await observeGraph(page);
   const subject = "tests/integration/programs/typescript/rosetta/src/helpers.ts";
@@ -307,7 +308,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
     await page.getByRole("button", { name: "3D", exact: true }).click();
   }
   await expect(page.locator(".perspective-transition")).toHaveCount(0);
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
   await page.mouse.move(30, 50);
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
   const initialNodes = await renderedNodes(page);
@@ -398,13 +399,13 @@ async function emptyPoint(page: Page): Promise<{ x: number; y: number }> {
 }
 
 test("wheel approaches the focused sphere and does not jump outward after a closer middle-button zoom", async ({ page }) => {
-  test.setTimeout(45_000);
+  test.setTimeout(90_000);
   await page.setViewportSize({ width: 1600, height: 1000 });
   await observeGraph(page);
   const subject = "tests/integration/programs/typescript/rosetta/src/helpers.ts";
   await page.goto(`/?view=local&mode=3d&node=${subject}`);
   await expectFocused(page, subject);
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
   const distance = async () => (await renderedNodes(page)).find(node => node.id === subject)!.distance;
   const initial = await distance();
   const { x, y } = await emptyPoint(page);

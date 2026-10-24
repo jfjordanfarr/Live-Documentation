@@ -21,8 +21,8 @@ export function placeSpatialLabels(
 ): Map<string, LabelBox & { side: number }> {
   const placed = new Map<string, LabelBox & { side: number }>();
   const occupied = [...obstacles];
-  const overlaps = (a: LabelBox, b: LabelBox): boolean => a.x < b.x + b.width + 5 && a.x + a.width + 5 > b.x
-    && a.y < b.y + b.height + 5 && a.y + a.height + 5 > b.y;
+  const overlaps = (a: LabelBox, b: LabelBox): boolean => a.x < b.x + b.width + 10 && a.x + a.width + 10 > b.x
+    && a.y < b.y + b.height + 10 && a.y + a.height + 10 > b.y;
   for (const label of [...labels].sort((a, b) => a.priority - b.priority || a.id.localeCompare(b.id))) {
     const { x, y, width, height } = label;
     const gap = label.radius + 7;

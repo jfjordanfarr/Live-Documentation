@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-23T21:48:48.228Z
+- Generated At: 2026-10-24T19:41:35.067Z
 
 ## Authored
 ### Purpose
@@ -40,21 +40,25 @@ A moment of the history in place of today (2026-10-18, ticket C4 of [the change-
 A kept link's ends are set to the live node objects for its ids on every render (2026-10-18), since D3 keeps an end once resolved to an object and a rename or a death can leave that object behind in the cache: the lines to such objects led nowhere after a play through this repository's history ([Turn 8](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)); and a past moment's `symbolCount` is cleared from a node when today's payload names its symbols instead. Held, with the re-keying's rule, by the scrubber spec's walk over a rename onto a dead file's path.
 - The citing documents (2026-10-22, [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) are shown by a filter of their own, Show Citing Docs, as the cited documents are by Show Related Docs, each kind of link passed to the data by its direction; a `cited-by` line is drawn in a lighter violet than a `related-doc` line, both thin, and both carry an arrow at the cited end, four units long, so that the direction of a citation is read off the line.
 
-The October 23 rendering pass batches the native spheres, tubes and arrows through `forceGraphBatches.ts`. The library still owns their geometry, placement and interaction objects; the batches draw exact copies with per-instance RGBA and unchanged depth rules. This addresses the cost exposed by useful neighbourhood framing without changing forces or dropping graph relationships.
+The October 23 rendering pass introduced instanced drawing through `forceGraphBatches.ts`, preserving the library's placement and interaction objects. Since the October 24 sizing pass, spheres follow the node resistance, straight wires use projected round-capped strokes, and arrows retain their native geometry. Per-instance RGBA and depth rules remain shared with the native objects. This addresses the cost exposed by useful neighbourhood framing without dropping graph relationships.
+
+Wire thickness gives a counted file pair a visible weight: a baseline diameter times `min(3, 1 + 0.375 × log2(count))`. The public Wire Thickness control scales all wires, with containment at the baseline and citations at half of it; these distinct relationships never contribute to a code pair's reference count. Width depends on documented multiplicity, not the spring's current length. Changing the scale updates geometry without waking the motion or changing the camera, and historical steps use their own counts. This follows the owner's [count-driven choice](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-5) and [request for a global dial after judging the first candidate too heavy](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-7).
+
+Independent node and wire resistance interpolate between perspective at zero and constant CSS-pixel size at one, following the owner's [request for partial resistance](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11). Drawing, picking, label offsets and captured scene radii agree on the apparent spheres; physical forces retain native radii and name disclosure retains perspective proximity. The [Connections tuning pass](../../../../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/README.md) selected node resistance .45, wire resistance .9 and baseline width .9, with lower ordinary wire alpha and wider label spacing. Appearance controls leave the camera and physical positions in place. The spatial legend derives its key from the graph actually drawn, including filtered files retained by a pin.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L63)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L55)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L71)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L63)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -62,28 +66,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L80)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L72)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L91)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L83)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L115)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L107)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L138)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L130)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -109,7 +113,9 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`icon-button.MORE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-more_icon)
 - [`icon-button.PIN_ICON`](../panels/icon-button.ts.mdmd.md#symbol-pin_icon)
 - [`icon-button.iconButton`](../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
+- [`spatial-legend.renderSpatialLegend`](../panels/spatial-legend.ts.mdmd.md#symbol-renderspatiallegend)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`forceGraphAppearance.spatialNodeStyle`](./forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
 - [`forceGraphBatches.batchSpatialGraph`](./forceGraphBatches.ts.mdmd.md#symbol-batchspatialgraph)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint)
@@ -131,6 +137,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphLayout.spatialNodeRadius`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
 - [`forceGraphLayout.spatialNodeValue`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnodevalue)
 - [`forceGraphLayout.symbolCountOf`](./forceGraphLayout.ts.mdmd.md#symbol-symbolcountof)
+- [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 - [`perspectiveTransition.ForceScene`](./perspectiveTransition.ts.mdmd.md#symbol-forcescene) (type-only)
 - [`pin-state.EMPTY_PIN_SET`](./pin-state.ts.mdmd.md#symbol-empty_pin_set)

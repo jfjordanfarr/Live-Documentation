@@ -219,25 +219,37 @@
             <span>Symbol Scaling</span><input type="range" id="tuning-force-symbol-scale" min="0" max="2" step="0.1" value="1" />
             <output id="tuning-force-symbol-scale-value">1</output>
           </label>
+          <label class="tuning-slider" title="How much node sizes resist zoom: 0 keeps perspective, 1 keeps screen size constant, and values between soften the change. Node positions stay fixed.">
+            <span>Node Zoom Resistance</span><input type="range" id="tuning-force-node-zoom-resistance" min="0" max="1" step="0.05" value="0.45" />
+            <output id="tuning-force-node-zoom-resistance-value">0.45</output>
+          </label>
+          <label class="tuning-slider" title="Baseline wire diameter, weighted by documented reference count. With full zoom resistance this is in screen pixels; with none it is in layout units.">
+            <span>Wire Thickness</span><input type="range" id="tuning-force-link-width" min="0.1" max="4" step="0.1" value="0.9" />
+            <output id="tuning-force-link-width-value">0.9</output>
+          </label>
+          <label class="tuning-slider" title="How much wire widths resist zoom: 0 keeps perspective, 1 keeps screen width constant, and values between soften the change. Node positions stay fixed.">
+            <span>Wire Zoom Resistance</span><input type="range" id="tuning-force-wire-zoom-resistance" min="0" max="1" step="0.05" value="0.9" />
+            <output id="tuning-force-wire-zoom-resistance-value">0.9</output>
+          </label>
           <label class="tuning-slider" title="How strongly every sphere is drawn toward the picture's centre, so that clusters pushed apart by a change come back; zero is no pull">
-            <span>Gravity</span><input type="range" id="tuning-force-gravity" min="0" max="0.3" step="0.005" value="0.01" />
-            <output id="tuning-force-gravity-value">0.01</output>
+            <span>Gravity</span><input type="range" id="tuning-force-gravity" min="0" max="0.3" step="0.005" value="0.025" />
+            <output id="tuning-force-gravity-value">0.025</output>
           </label>
           <label class="tuning-slider" title="How far a sphere's repulsion reaches, in layout units; zero is unbounded">
             <span>Repulsion Reach</span><input type="range" id="tuning-force-charge-range" min="0" max="1000" step="10" value="0" />
             <output id="tuning-force-charge-range-value">0</output>
           </label>
-          <label class="tuning-slider" title="How hard a wire's spring pulls its two files together: 1 is the library's own rule, where a file with many wires is pulled less by each; 0 lets the wires go slack">
-            <span>Spring Strength</span><input type="range" id="tuning-force-link-strength" min="0" max="2" step="0.05" value="0.25" />
-            <output id="tuning-force-link-strength-value">0.25</output>
+          <label class="tuning-slider" title="Scales the spring pull between connected spheres; larger values pull more strongly toward their preferred gap, and zero disables that pull">
+            <span>Spring Strength</span><input type="range" id="tuning-force-link-strength" min="0" max="2" step="0.05" value="0.5" />
+            <output id="tuning-force-link-strength-value">0.5</output>
           </label>
           <label class="tuning-slider" title="How hard a change to what is shown moves the picture: at 1 with the full forces, at a fraction more gently and for longer, at 0 the new spheres are placed and nothing moves">
             <span>Update Energy</span><input type="range" id="tuning-force-update-energy" min="0" max="1" step="0.01" value="1" />
             <output id="tuning-force-update-energy-value">1</output>
           </label>
           <label class="tuning-slider" title="How strongly each sphere is held to where it stood when the picture last began to move: more keeps your bearings and comes to rest sooner; 0 leaves the forces alone to decide">
-            <span>Tether</span><input type="range" id="tuning-force-tether" min="0" max="0.1" step="0.001" value="0.01" />
-            <output id="tuning-force-tether-value">0.01</output>
+            <span>Tether</span><input type="range" id="tuning-force-tether" min="0" max="0.1" step="0.001" value="0.02" />
+            <output id="tuning-force-tether-value">0.02</output>
           </label>
           <label class="tuning-slider" title="How hard a document's citation of a file pulls the two together, as a share of a documented reference's spring; zero draws the line and moves nothing">
             <span>Citing Pull</span><input type="range" id="tuning-force-cited-by-pull" min="0" max="1" step="0.05" value="1" />
@@ -274,29 +286,32 @@
     </details>
 
     <!-- Legend -->
-    <div class="sidebar-section">
-      <div class="section-label">Legend</div>
-      <div class="legend-row">
-        <span class="legend-swatch legend-swatch--outbound"></span>
-        <span>Wire from what offers</span>
+    <section id="map-legend" class="sidebar-section" aria-labelledby="map-legend-title">
+      <div id="map-legend-title" class="section-label">Legend</div>
+      <div id="local-legend">
+        <div class="legend-row">
+          <span class="legend-swatch legend-swatch--outbound"></span>
+          <span>Wire from what offers</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-swatch legend-swatch--inbound"></span>
+          <span>Wire to what uses</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-symbol legend-symbol--outbound"></span>
+          <span>Offers</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-symbol legend-symbol--inbound"></span>
+          <span>Uses</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-shadow"></span>
+          <span>Test-backed</span>
+        </div>
       </div>
-      <div class="legend-row">
-        <span class="legend-swatch legend-swatch--inbound"></span>
-        <span>Wire to what uses</span>
-      </div>
-      <div class="legend-row">
-        <span class="legend-symbol legend-symbol--outbound"></span>
-        <span>Offers</span>
-      </div>
-      <div class="legend-row">
-        <span class="legend-symbol legend-symbol--inbound"></span>
-        <span>Uses</span>
-      </div>
-      <div class="legend-row">
-        <span class="legend-shadow"></span>
-        <span>Test-backed</span>
-      </div>
-    </div>
+      <div id="spatial-legend" role="list" aria-label="3D map encodings"></div>
+    </section>
 
     <!-- Stats (at bottom) -->
     <div id="context-bar" class="sidebar-section sidebar-footer">

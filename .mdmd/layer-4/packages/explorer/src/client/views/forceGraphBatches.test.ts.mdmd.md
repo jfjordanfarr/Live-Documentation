@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.test.ts
-- Generated At: 2026-10-23T21:48:47.994Z
+- Generated At: 2026-10-24T19:41:34.744Z
 
 ## Authored
 ### Purpose
@@ -23,7 +23,9 @@ _No public symbols detected_
 ### Dependencies
 - [`forceGraphBatches.SpatialBatchInstance`](./forceGraphBatches.ts.mdmd.md#symbol-spatialbatchinstance)
 - [`forceGraphBatches.batchSpatialGraph`](./forceGraphBatches.ts.mdmd.md#symbol-batchspatialgraph)
-- [`forceGraphBatches.tubeIntersectsFrustum`](./forceGraphBatches.ts.mdmd.md#symbol-tubeintersectsfrustum)
-- `three` - `Frustum`, `Group`, `Matrix3`, `Matrix4`, `Mesh`, `MeshLambertMaterial`, `PerspectiveCamera`, `Plane`, `Scene`, `SphereGeometry`, `Vector3`, `WebGLRenderer`
+- [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
+- [`forceGraphBatches.screenWireIntersectsFrustum`](./forceGraphBatches.ts.mdmd.md#symbol-screenwireintersectsfrustum)
+- `three` - `Color`, `CylinderGeometry`, `Group`, `Matrix3`, `Matrix4`, `Mesh`, `MeshLambertMaterial`, `PerspectiveCamera`, `Raycaster`, `Scene`, `SphereGeometry`, `Vector2`, `Vector3`, `WebGLRenderer`
+- `three/addons/lines/LineMaterial.js` - `LineMaterial`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

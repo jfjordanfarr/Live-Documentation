@@ -81,11 +81,12 @@ describe("saving only what a person changed (2026-10-22)", () => {
     expect(changedFromDefaults(defaults(), defaults())).toEqual({});
     const state = defaults();
     state.filters.showAssets = true;
-    state.tuning.forceGraph.tether = 0.02;
+    const chosenTether = state.tuning.forceGraph.tether + 0.01;
+    state.tuning.forceGraph.tether = chosenTether;
     state.tuning.history.axis = "steps";
     expect(changedFromDefaults(state, defaults())).toEqual({
       filters: { showAssets: true },
-      tuning: { forceGraph: { tether: 0.02 }, history: { axis: "steps" } }
+      tuning: { forceGraph: { tether: chosenTether }, history: { axis: "steps" } }
     });
   });
 

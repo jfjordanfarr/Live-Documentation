@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-22T17:22:33.118Z
+- Generated At: 2026-10-24T19:41:34.645Z
 
 ## Authored
 ### Purpose
@@ -142,21 +142,21 @@ The 3D Local Map's packing and stable visual encodings, shared with the headless
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L224)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L230)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L229)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L235)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L238)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L244)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -164,7 +164,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L264)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L270)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

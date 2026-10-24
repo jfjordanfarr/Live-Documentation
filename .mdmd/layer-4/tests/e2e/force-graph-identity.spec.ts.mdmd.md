@@ -13,6 +13,8 @@ Keep the 3D Local Map’s readable file and directory identities, neighbourhood 
 ### Notes
 Created after the October 23 root playtest. Main-repository and estate arrivals are checked against actual rendered sphere bounds; Portal is followed between layouts and through inspection. Text audits check collisions, clipping, reading size and direct viewport bounds, avoiding IntersectionObserver’s fractional rounding of a fully visible rectangle. Fit must recover the visible neighbourhood without changing the exploration. An unselected root must frame the estate without inventing pins. A compositor-pixel check catches an idle canvas cleared despite correct scene geometry; the draw count also confirms that an unchanged picture releases WebGL work.
 
+The full repository gets one minute to reach stillness before identity and frame checks. [Measured software-rendered settling](../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/performance-findings.md) exceeded the original 25-second setup allowance on October 24, including at the old sphere detail. The small estate retains its existing allowance; visibility, geometry and idle checks are unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

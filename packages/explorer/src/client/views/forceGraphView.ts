@@ -22,10 +22,12 @@ import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
 import type { ForceLink } from "d3-force-3d";
 import { Box3, PerspectiveCamera, Raycaster, Vector2, Vector3, type Object3D } from "three";
 
+import { spatialNodeStyle } from "./forceGraphAppearance";
 import { batchSpatialGraph, drawSpatialGraphOnChange } from "./forceGraphBatches";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
 import { directoryNodeId, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
 import { placeSpatialLabels, type SpatialLabel, type LabelBox } from "./forceGraphLabels";
+import { spatialSizeScale } from "./forceGraphSizing";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
@@ -42,18 +44,8 @@ import type { HistoryMoment } from "../history/moment";
 import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
 import { layoutPresetOf } from "../layout-presets";
 import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "../panels/icon-button";
+import { renderSpatialLegend } from "../panels/spatial-legend";
 import type { ExplorerState } from "../types";
-
-const NODE_COLORS: Readonly<Record<string, string>> = {
-  implementation: "#0091ff",
-  test: "#28a745",
-  asset: "#e83e8c",
-  interface: "#ffc107",
-  config: "#6c757d",
-  script: "#17a2b8",
-  "related-doc": "#9966cc",
-  directory: "#e9984d"
-};
 
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
@@ -167,6 +159,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let membership = "";
   let forceSettings = "";
   let sizeSettings = "";
+  let wireWidth: number | undefined;
+  let batches: ReturnType<typeof batchSpatialGraph> | undefined;
   let attentionSettings = "";
   let focusedId: string | null = null;
   let selectedId: string | null = null;
@@ -232,6 +226,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const pointer = new Vector2((clientX - rect.left) / rect.width * 2 - 1, 1 - (clientY - rect.top) / rect.height * 2);
     forceGraphInstance.scene().updateMatrixWorld(true);
     forceGraphInstance.camera().updateMatrixWorld();
+    batches?.updateSizes(forceGraphInstance.camera(), rect.height);
     raycaster.setFromCamera(pointer, forceGraphInstance.camera());
     const byObject = new Map([...nodeObjects].map(([id, object]) => [object, id]));
     const hit = raycaster.intersectObjects([...nodeObjects.values()], true)[0];
@@ -385,7 +380,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const subject = focusedId ? nodeCache.get(focusedId) : undefined;
       const ids = framingIds();
       const spheres = instance.graphData().nodes.filter(node => ids.has(node.id) && Number.isFinite(node.x))
-        .map(node => ({ center: { x: node.x!, y: node.y!, z: node.z! }, radius: spatialNodeRadius(node, state.tuning.forceGraph) }));
+        .map(node => ({ center: { x: node.x!, y: node.y!, z: node.z! }, radius: spatialNodeRadius(node, state.tuning.forceGraph)
+          * spatialSizeScale(new Vector3(node.x, node.y, node.z), camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance) }));
       const centered = !fittingScope && focusedDirectory === null && subject && Number.isFinite(subject.x)
         ? { x: subject.x!, y: subject.y!, z: subject.z! } : undefined;
       const framing = camera instanceof PerspectiveCamera
@@ -437,12 +433,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const x = (projected.x + 1) * frame.width / 2, y = (1 - projected.y) * frame.height / 2;
       if (projected.z < -1 || projected.z > 1 || x < 0 || y < 0 || x > frame.width || y > frame.height) continue;
       const edge = point.clone().add(new Vector3(spatialNodeRadius(node, state.tuning.forceGraph), 0, 0).applyQuaternion(camera.quaternion)).project(camera);
-      const radius = Math.abs(edge.x - projected.x) * frame.width / 2;
+      const perspectiveRadius = Math.abs(edge.x - projected.x) * frame.width / 2;
+      const radius = perspectiveRadius * spatialSizeScale(point, camera, frame.height, state.tuning.forceGraph.nodeZoomResistance);
       const basePriority = labelPriorities.get(node.id) ?? 5;
       const priority = node.id === focusedId ? 0 : node.id === hoveredId || node.id === inspectedActionId ? 1
         : focusedId && neighbours.has(node.id) ? Math.min(3, basePriority) : basePriority;
-      if (priority >= 5 && radius < (scopedNames ? 12 : 5)) continue;
-      if (scopedNames && priority === 4 && radius < 9) continue;
+      // Disclosure still follows proximity; resistance changes the sphere's outline, not when names become useful.
+      if (priority >= 5 && perspectiveRadius < (scopedNames ? 14 : 6)) continue;
+      if (scopedNames && priority === 4 && perspectiveRadius < 9) continue;
       let label = node.id === focusedId ? focusLabel : nameLabels.get(node.id);
       if (!label) {
         label = document.createElement("button");
@@ -654,7 +652,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return;
     }
     actionStrip.hidden = false;
-    const worldRadius = spatialNodeRadius(node, state.tuning.forceGraph);
+    const worldRadius = spatialNodeRadius(node, state.tuning.forceGraph) * spatialSizeScale(point, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance);
     const edge = point.clone().add(new Vector3(worldRadius, 0, 0).applyQuaternion(camera.quaternion));
     const rim = instance.graph2ScreenCoords(edge.x, edge.y, edge.z);
     const radius = Math.abs(rim.x - screen.x);
@@ -806,6 +804,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const shownDocLinks = (moment ? moment.relatedDocLinks : relatedDocLinks ?? [])
       .filter(link => link.direction === "cited-by" ? state.filters.showCitingDocs : state.filters.showRelatedDocs);
     const data = spatialGraphOf(source, includeNode, shownDocLinks, state.spatialLayout);
+    renderSpatialLegend(data, state.tuning.forceGraph.symbolScale);
     // The node and link objects are kept by id and by pair across every membership change: a sphere keeps its place and
     // its render object, and the library's data join, which binds a line's object to its datum, keeps the line. Before
     // 2026-10-18 every render handed the library new link objects and it rebuilt every line, 65 to 88 ms a step with 2,650
@@ -836,9 +835,18 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
       const instance = forceGraphInstance!;
-      const { updateEnergy, ...forces } = state.tuning.forceGraph;
+      const { updateEnergy, linkWidth, nodeZoomResistance, wireZoomResistance, ...forces } = state.tuning.forceGraph;
       void updateEnergy; // The energy feeds the next membership change and changes no force.
+      void nodeZoomResistance; void wireZoomResistance; // Appearance does not change the layout's physical sizes.
+      pointerPickNeeded = true;
       container.dataset.layoutSettings = JSON.stringify(state.tuning.forceGraph);
+      if (wireWidth !== linkWidth) {
+        // A common scale for every wire; reference counts retain their relative weight while camera motion and
+        // spring stretch change no base width. Zoom resistance controls its projection separately.
+        instance.linkWidth(link => linkWidth * (link.kind === "related-doc" || link.kind === "cited-by" ? 0.5
+          : link.kind === "containment" ? 1 : Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, link.count)))));
+        wireWidth = linkWidth;
+      }
       const nextSettings = JSON.stringify([forces, state.spatialLayout]);
       if (forceSettings === nextSettings) return;
       const subjectId = focusedDirectory !== null
@@ -993,7 +1001,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
       forceGraphInstance?.nodeColor(node => {
-        const color = NODE_COLORS[(node.archetype ?? "").toLowerCase()] ?? "#888888";
+        const color = spatialNodeStyle(node.archetype).color;
         return attention && !attention.has(node.id) ? `${color}33` : color;
       });
       forceGraphInstance?.linkColor(link => {
@@ -1006,7 +1014,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (link.kind === "related-doc") return `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`;
         // A document's citation of a file, in the documents' violet lightened toward white, drawn from the document.
         if (link.kind === "cited-by") return `rgba(214, 178, 240, ${visible ? 0.55 : 0.06})`;
-        return state.spatialLayout === "structure" ? `rgba(255, 255, 255, ${visible ? 0.5 : 0})` : `rgba(255, 255, 255, ${visible ? 0.2 : 0.025})`;
+        return state.spatialLayout === "structure" ? `rgba(255, 255, 255, ${visible ? 0.5 : 0})` : `rgba(255, 255, 255, ${visible ? 0.16 : 0.025})`;
       });
       forceGraphInstance?.linkVisibility(link => {
         if (state.spatialLayout !== "structure" || link.kind === "containment") return true;
@@ -1052,6 +1060,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     forceGraphInstance = (new ForceGraph3D(container) as unknown as ForceGraph3DInstance<ForceGraphNode, ForceGraphLink>)
       .width(container.clientWidth)
       .height(container.clientHeight)
+      .nodeResolution(12)
       .graphData(dataForGraph)
       .warmupTicks(100)
       // The engine runs until the motion finds the spheres still and raises the minimum alpha past any alpha, and not
@@ -1084,12 +1093,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         : link.kind === "related-doc" ? `Cites the document: ${link.count} ${link.count === 1 ? "link" : "links"} in the file's words`
         : link.kind === "cited-by" ? `Cited by the document: ${link.count} ${link.count === 1 ? "link" : "links"} to the file`
         : `${link.count} documented ${link.count === 1 ? "reference" : "references"}`)
-      .linkWidth(link => link.kind === "related-doc" || link.kind === "cited-by" ? 0.5 : 1)
       // A citation is drawn from the one who cites to the one cited, so that its direction is read off the line.
       .linkDirectionalArrowLength(link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0)
       .linkDirectionalArrowRelPos(1);
-    batchSpatialGraph(forceGraphInstance.scene());
-    drawSpatialGraphOnChange(forceGraphInstance.scene(), forceGraphInstance.camera(), forceGraphInstance.renderer(), forceGraphInstance.postProcessingComposer());
+    batches = batchSpatialGraph(forceGraphInstance.scene(), () => ({ nodes: state.tuning.forceGraph.nodeZoomResistance, wires: state.tuning.forceGraph.wireZoomResistance }));
+    const instance = forceGraphInstance;
+    drawSpatialGraphOnChange(instance.scene(), instance.camera(), instance.renderer(), instance.postProcessingComposer(), () => {
+      batches!.updateSizes(instance.camera(), instance.height());
+      return [state.tuning.forceGraph.nodeZoomResistance, state.tuning.forceGraph.wireZoomResistance];
+    });
     updateAttention();
     heldLinks = graphLinks;
     shownLayout = state.spatialLayout;
@@ -1290,6 +1302,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     camera.lookAt((instance.controls() as { target: Vector3 }).target);
     camera.updateMatrixWorld();
     const rect = requireElement("graph-svg").getBoundingClientRect();
+    batches?.updateSizes(camera, rect.height);
     const colorForNode = instance.nodeColor();
     const files = (instance.graphData().nodes).flatMap(node => {
       if (!Number.isFinite(node.x)) return [];

@@ -23,6 +23,8 @@ Both packing profiles value card-top alignment. Relaxed gives it greater weight 
 
 `tether` (0 to 0.1 by 0.001) joined the force graph's ranges on 2026-10-21, riding in the saved and the shared settings like the other levers and no part of a packing profile ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
+Wire Thickness (`linkWidth`, 0.1 to 4 by 0.1) and Node/Wire Zoom Resistance (`nodeZoomResistance` and `wireZoomResistance`, 0 to 1 by 0.05) are appearance settings independent of the packing profiles. They are carried and validated by the same saved/shared settings as the other 3D controls, with omitted values retaining the default or current preference. The owner asked for thickness in the [October 24 visual pass](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-7), then [separate resistance controls](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

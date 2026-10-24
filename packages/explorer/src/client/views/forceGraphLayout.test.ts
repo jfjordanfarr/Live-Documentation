@@ -86,10 +86,9 @@ describe("spatial layout grammar", () => {
     expect(nodes.every(file => file.x === undefined)).toBe(true);
   });
 
-  it("has a compact equilibrium under the shipped tuning: a cluster toggled out and back in settles the picture's extent, where without gravity it keeps growing", () => {
-    // A type toggle twenty times over. Without gravity nothing draws the two clusters together, and every change lets the
-    // repulsion push them a little further apart; with the shipped gravity (the owner's 0.01 of 2026-10-18) the extent
-    // settles near the first picture's and stays there.
+  it("keeps today's defaults compact and preserves the October 21 gravity-off counterexample", () => {
+    // A type toggle twenty times over. Test today's defaults independently from the dated counterexample: the October
+    // 24 spring and tether changes alter how far an unconfined picture grows in twenty cycles, not gravity's role.
     const extent = (nodes: readonly SpatialNode[]): number => {
       const centroid = { x: 0, y: 0, z: 0 };
       for (const point of nodes) { centroid.x += point.x! / nodes.length; centroid.y += point.y! / nodes.length; centroid.z += point.z! / nodes.length; }
@@ -108,12 +107,17 @@ describe("spatial layout grammar", () => {
       return series;
     };
     const tuning = getDefaultTuning().forceGraph;
-    // Measured 2026-10-21: the shipped extent stays at 0.97 of the first picture's from the first cycle to the twentieth;
-    // without gravity it is 1.75 at the tenth and 2.26 at the twentieth, still growing.
     const shipped = growth(tuning);
     expect(shipped[19]).toBeLessThan(1.1);
     expect(Math.abs(shipped[19] / shipped[9] - 1)).toBeLessThan(0.05);
-    const lax = growth({ ...tuning, gravity: 0 });
+    // The original paired control, measured October 21: with gravity the extent remains about .97 of its start;
+    // without it the tenth/twentieth cycles are 1.75/2.26, still growing. Keep its forces and thresholds together.
+    const historical = { ...tuning, linkGap: 60, charge: 60, collisionGap: 5, coupling: 1, nodeSize: 4, symbolScale: 1,
+      gravity: .01, chargeRange: 0, linkStrength: .25, updateEnergy: 1, tether: .01, citedByPull: 1 };
+    const held = growth(historical);
+    expect(held[19]).toBeLessThan(1.1);
+    expect(Math.abs(held[19] / held[9] - 1)).toBeLessThan(0.05);
+    const lax = growth({ ...historical, gravity: 0 });
     expect(lax[19]).toBeGreaterThan(2);
     expect(lax[19] / lax[9]).toBeGreaterThan(1.2);
   });
@@ -138,6 +142,13 @@ describe("spatial layout grammar", () => {
     expect(separation(result.nodes)).toBeGreaterThanOrEqual(clearance - 0.01);
     expect(result.nodes.every(file => [file.x, file.y, file.z].every(Number.isFinite))).toBe(true);
     expect(() => easeSpatialLayout(nodes, [], tuning, "connections", { maxTicks: -1 })).toThrow("nonnegative integer");
+  });
+
+  it("rejects non-finite supplied positions and velocities instead of reseeding them or reporting stillness", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    for (const invalid of [{ x: NaN }, { z: Infinity }, { vx: NaN }, { fx: Infinity }]) {
+      expect(() => easeSpatialLayout([{ ...node("broken", 1), ...invalid }], [], tuning, "connections")).toThrow("finite coordinates and velocities");
+    }
   });
 });
 

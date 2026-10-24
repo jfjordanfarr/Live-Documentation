@@ -146,9 +146,9 @@ export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], li
 }
 
 /**
- * The strength of each spring: D3's own rule, one over the smaller of the two ends' pulling-link counts, so that a file
- * with many wires is pulled less by each, times the tuning's lever (`linkStrength`, one for the rule as it is). The
- * counts are read from the links the force holds, which are the pulling ones, and counted once per set of links.
+ * The strength of each spring: one over the smaller of the two ends' pulling-link counts, times `linkStrength`.
+ * This retains D3's spring normalization, not its unequal division of motion between endpoints. A hub-to-leaf
+ * spring keeps full strength because the leaf has degree one. Counts come from pulling links, once per set.
  */
 export function springStrength<N extends SpatialNode, L extends SpatialLink<N>>(multiplier: number): (edge: L, index: number, links: L[]) => number {
   let counted: readonly L[] | null = null;
@@ -340,6 +340,13 @@ export interface EaseOptions {
 export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly SpatialLink[], tuning: ForceGraphTuning, layout: SpatialLayout,
   { strength = 1, start = "unfold", maxTicks = 20_000 }: EaseOptions = {}): { nodes: SpatialNode[]; links: SpatialLink[]; ticks: number; still: boolean } {
   if (!Number.isInteger(maxTicks) || maxTicks < 0) throw new Error("Spatial easing's tick bound must be a nonnegative integer.");
+  // D3 treats NaN positions/velocities as a request for its seed. Missing coordinates are a new sphere; corrupted
+  // coordinates are a failure, never a replacement picture that the caller could mistake for a successful easing.
+  for (const node of nodes) {
+    if ([node.x, node.y, node.z, node.vx, node.vy, node.vz, node.fx, node.fy, node.fz].some(value => value != null && !Number.isFinite(value))) {
+      throw new Error(`Spatial node ${JSON.stringify(node.id)} needs finite coordinates and velocities when provided.`);
+    }
+  }
   const placed = nodes.map(node => ({ ...node }));
   const edges: SpatialLink[] = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
     target: typeof link.target === "string" ? link.target : link.target.id }));

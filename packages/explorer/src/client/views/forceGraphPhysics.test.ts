@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { diagonalOf, SpatialField, SpatialMotion, type FieldSettings, type FieldSpring } from "./forceGraphPhysics";
 
@@ -66,9 +66,119 @@ describe("the 3D picture's field", () => {
     expect(() => new SpatialField(Float64Array.from([1]), [], { ...SETTINGS, tether: -0.01 }, UP)).toThrow("nonnegative");
     expect(() => new SpatialField(Float64Array.from([1, 1]), [{ a: 0, b: 1, rest: 0, strength: 1 }], SETTINGS, UP)).toThrow("rest length");
   });
+
+  it("bounds local spring, repulsion, collision and held-tether stiffness in the force reading", () => {
+    const field = new SpatialField(Float64Array.from([4, 4]), [{ a: 0, b: 1, rest: 20, strength: .5 }],
+      { ...SETTINGS, gravity: .025, tether: .02, chargeRange: 30 }, UP);
+    const reading = (distance: number, held = false): number => {
+      const x = Float64Array.from([0, 0, 0, distance, 0, 0]);
+      return field.forces(x, new Float64Array(6), held ? x : undefined).stiffness;
+    };
+    expect(reading(20)).toBeCloseTo(.5 + 2 * 60 / 400 + .025, 12);
+    expect(reading(20, true)).toBeCloseTo(reading(20) + .02, 12);
+    expect(reading(10)).toBeCloseTo(.5 + 2 * (60 / 100 + 3) + .025, 12);
+    expect(reading(.5)).toBeCloseTo(.5 + 2 * 3 + .025, 12); // Capped repulsion has no positive radial curvature.
+    expect(reading(40)).toBeCloseTo(.5 + .025, 12); // Beyond the repulsion's reach and the collision clearance.
+  });
+
+  it("refuses non-finite coordinates, anchors and force arithmetic", () => {
+    const { field, x } = scene();
+    const invalid = x.slice(); invalid[2] = NaN;
+    expect(() => field.forces(invalid, new Float64Array(x.length))).toThrow("finite positions");
+    expect(() => field.forces(x, new Float64Array(x.length), invalid)).toThrow("finite positions and anchors");
+    const overflowing = new SpatialField(Float64Array.from([1, 1]), [{ a: 0, b: 1, rest: 20, strength: 1e308 }], SETTINGS, UP);
+    expect(() => overflowing.forces(Float64Array.from([0, 0, 0, 1e100, 0, 0]), new Float64Array(6))).toThrow("non-finite forces");
+  });
 });
 
 describe("the damped motion through it", () => {
+  it("preserves one full Verlet step exactly when no subdivision is needed", () => {
+    const { field, x } = scene({ ...SETTINGS, charge: 0, collisionStiffness: 0 });
+    const h = .5, strength = .75, decay = Math.exp(-.2 * h / 2);
+    const expected = x.slice(), velocity = Float64Array.from(x.map((_value, i) => Math.sin(i)));
+    const force = new Float64Array(x.length);
+    const motion = new SpatialMotion(field, x, { step: h, drag: .2 }, velocity.slice());
+    field.forces(expected, force);
+    let moveMax = 0;
+    for (let i = 0; i < expected.length; i += 3) {
+      for (let k = i; k < i + 3; k++) {
+        velocity[k] = decay * velocity[k] + h * strength * force[k] / 2;
+        expected[k] += h * velocity[k];
+      }
+      moveMax = Math.max(moveMax, h * Math.hypot(velocity[i], velocity[i + 1], velocity[i + 2]));
+    }
+    field.forces(expected, force);
+    for (let k = 0; k < velocity.length; k++) velocity[k] = decay * (velocity[k] + h * strength * force[k] / 2);
+    const calls = vi.spyOn(field, "forces");
+    expect(motion.tick(strength).moveMax).toBe(moveMax);
+    expect(calls).toHaveBeenCalledTimes(1);
+    expect(x).toEqual(expected);
+    expect(motion.velocity).toEqual(velocity);
+  });
+
+  it("resolves a large Structure star at ordinary spring strength without changing its forces or drag", () => {
+    // Each leaf has one containment edge, so degree normalization gives the hub all 192 springs at strength .25.
+    // Its radial mode is too stiff for the old .5 step: h²·(.25/2)·193 = 6.03125, beyond Verlet's limit of four.
+    const leaves = 192;
+    const springs = Array.from({ length: leaves }, (_, i) => ({ a: 0, b: i + 1, rest: 80, strength: .25 }));
+    const field = new SpatialField(new Float64Array(leaves + 1).fill(1), springs,
+      { ...SETTINGS, charge: 0, gravity: 0, collisionStiffness: 0 }, UP);
+    const x = Float64Array.from([1, 0, 0, ...Array.from({ length: leaves }, () => [80, 0, 0]).flat()]);
+    const velocity = new Float64Array(x.length);
+    for (let i = 0; i < x.length; i += 3) velocity[i + 1] = 10; // Shared translation has no spring force.
+    const motion = new SpatialMotion(field, x, { step: .5, drag: .2 }, velocity);
+    const calls = vi.spyOn(field, "forces");
+    motion.tick(1);
+    expect(calls.mock.calls.length).toBeGreaterThan(1);
+    for (let i = 0; i < x.length; i += 3) expect(velocity[i + 1]).toBeCloseTo(10 * Math.exp(-.2 * .5), 12);
+    calls.mockRestore();
+    let last = motion.tick(1);
+    for (let tick = 0; tick < 1200 && last.moveMax > 1e-6; tick++) last = motion.tick(1);
+    expect(x.every(Number.isFinite)).toBe(true);
+    expect(last.moveMax).toBeLessThan(1e-6);
+    const force = new Float64Array(x.length);
+    field.forces(x, force);
+    expect(Math.max(...force.map(Math.abs))).toBeLessThan(1e-5);
+    expect(x[3] - x[0]).toBeCloseTo(80, 6);
+  });
+
+  it("retries a step that enters a stiff collision and keeps fixed spheres fixed through every substep", () => {
+    const field = new SpatialField(Float64Array.from([4, 4]), [],
+      { ...SETTINGS, charge: 0, gravity: 0, collisionGap: 0, collisionStiffness: 30 }, UP);
+    const x = Float64Array.from([-5, 0, 0, 5, 0, 0]);
+    const motion = new SpatialMotion(field, x, { step: .5, drag: .2 }, Float64Array.from([0, 0, 0, -10, 0, 0]));
+    expect(motion.current.stiffness).toBe(0);
+    const calls = vi.spyOn(field, "forces");
+    const reading = motion.tick(1, new Set([0]));
+    expect(calls.mock.calls.length).toBeGreaterThan(2);
+    expect([...x.slice(0, 3)]).toEqual([-5, 0, 0]);
+    expect([...motion.velocity.slice(0, 3)]).toEqual([0, 0, 0]);
+    expect(x[3]).toBeGreaterThan(x[0]);
+    expect(Number.isFinite(reading.moveMax)).toBe(true);
+    expect(reading.moveMax).toBeCloseTo(Math.abs(x[3] - 5), 12);
+  });
+
+  it("counts travel through stiff oscillations, not just an endpoint or the last short substep", () => {
+    const field = new SpatialField(Float64Array.from([1]), [], { ...SETTINGS, gravity: 400, charge: 0 }, UP);
+    const x = Float64Array.from([1, 0, 0]);
+    const motion = new SpatialMotion(field, x, { step: .5, drag: .2 });
+    const reading = motion.tick(1);
+    expect(reading.moveMax).toBeGreaterThan(3);
+    expect(reading.moveMax).toBeGreaterThan(Math.abs(x[0] - 1));
+  });
+
+  it("fails explicitly when initial or later motion is non-finite, before it can appear still", () => {
+    const { field, x } = scene();
+    const velocity = new Float64Array(x.length); velocity[0] = NaN;
+    expect(() => new SpatialMotion(field, x, { step: .5, drag: .2 }, velocity)).toThrow("finite velocities");
+    const motion = new SpatialMotion(field, x, { step: .5, drag: .2 });
+    motion.velocity[0] = Infinity;
+    expect(() => motion.tick(1)).toThrow("finite positions and velocities");
+    motion.velocity[0] = 0; x[0] = NaN;
+    expect(() => motion.tick(1)).toThrow("finite positions and velocities");
+    expect(() => diagonalOf(x)).toThrow("finite positions");
+  });
+
   it("loses energy every tick and comes to rest where the forces balance", () => {
     const { field, x } = scene();
     const motion = new SpatialMotion(field, x, { step: 0.5, drag: 0.2 });

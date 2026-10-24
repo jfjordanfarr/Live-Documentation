@@ -49,10 +49,13 @@ async function readableNames(page: Page): Promise<void> {
 
 for (const [base, subject] of [["/", "packages/generator/src/generator.ts"], ["/samples/estate/", "Portal/Services/GatewayClient.cs"]]) {
   test(`a 3D arrival names and frames the file's neighbourhood, with deliberate fit recovery: ${base}`, async ({ page }) => {
+    if (base === "/") test.setTimeout(90_000);
     await page.setViewportSize({ width: 1280, height: 800 });
     await observeGraph(page);
     await page.goto(`${base}?view=local&mode=3d&node=${subject}`);
-    await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
+    // The growing repository needs a longer settle allowance than the estate;
+    // frame/identity assertions below still inspect the actual finished scene.
+    await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: base === "/" ? 60_000 : 25_000 });
     const label = page.locator(`.force-graph-focus[data-node-id="${subject}"]`);
     await expect(label).toBeVisible();
     const links = await renderedLinks(page);

@@ -59,6 +59,12 @@ test("placement alone seats each born sphere beside what it is wired to, keeps e
   test.setTimeout(150_000);
   await observeGraph(page);
   await page.goto(entry(0, false));
+  // Rest lengths use physical radii; select perspective sizing so rendered radii expose that contract directly.
+  await page.getByText("Tuning", { exact: true }).click();
+  const resistance = page.getByRole("slider", { name: /Node Zoom Resistance/ });
+  await resistance.press("Home");
+  await expect(resistance).toHaveValue("0");
+  await page.getByText("Tuning", { exact: true }).click();
   await settled(page);
   const before = positions(await renderedNodes(page));
   expect(before.size).toBeGreaterThan(500);
@@ -155,9 +161,10 @@ test("a change at full energy and a gentler one each come to rest and stay still
   await expect.poll(async () => (await settings()).updateEnergy).toBe(0.5);
   const tether = page.locator("#tuning-force-tether");
   await expect(tether).toHaveValue(String(getDefaultTuning().forceGraph.tether));
+  const nextTether = Number(await tether.inputValue()) + Number(await tether.getAttribute("step"));
   await tether.focus();
   await page.keyboard.press("ArrowRight");
-  await expect.poll(async () => (await settings()).tether).toBe(0.011);
+  await expect.poll(async () => (await settings()).tether).toBe(nextTether);
   // A new tether is a change of the forces: the picture unfolds again at full strength and comes to rest.
   await settled(page);
   await stillPicture(page);

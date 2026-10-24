@@ -45,6 +45,13 @@ test("the structure layout hangs every file from its directory from where it sto
   test.setTimeout(90_000); // Two complete settlings of the native simulation and a hover search.
   await observeGraph(page);
   await page.goto(entry("connections"));
+  // Volume is a world-space contract. Zoom resistance compensates each node's depth independently, so compare
+  // the actual rendered volumes under explicit perspective sizing, rather than assuming a visual default.
+  await page.getByText("Tuning", { exact: true }).click();
+  const resistance = page.getByRole("slider", { name: /Node Zoom Resistance/ });
+  await resistance.press("Home");
+  await expect(resistance).toHaveValue("0");
+  await page.getByText("Tuning", { exact: true }).click();
   const graph = page.locator("#graph-svg");
   await expect(graph).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   const network = await renderedNodes(page);

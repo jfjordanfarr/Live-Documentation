@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-23T21:48:50.794Z
+- Generated At: 2026-10-24T20:00:15.999Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Introduced for the owner’s [October 14 pin-management request](../../../../AI-
 Since 2026-10-18, for ticket C2 of [the change-over-time plan](../../../layer-3/change-over-time.mdmd.md#open-questions), the instrument also counts the frames drawn and notes on which frame the graph container said it was busy or settled (`engineActivity`), so that a spec can count the engine's ticks for a change from the outside, since the library ticks at most once per frame; and it can mark every line's object with a token and count the marks later (`markRenderedLinks`, `markedRenderedLinks`), which is how a spec shows that a membership change kept the lines' objects rather than rebuilding them. All of it reads the scene and the DOM; none of it reaches the Explorer's state.
 
 Since the October 23 rendering pass, a native mesh can be a placement and picking proxy for an InstancedMesh slot. The instrument reads the actual instance matrix, shared geometry bounds and uploaded opacity attribute; reading only the proxy would no longer establish what was drawn. Tube ends are the unit geometry’s ends transformed by that instance matrix. The retention mark records the instance record’s identity through sorting and repacking. Browser checks therefore continue to observe rendering rather than trusting an application diagnostic; the identity spec separately samples compositor pixels to prove that an idle canvas stays painted.
+
+For the [October 24 projected wires](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11), link width reads the uploaded base-width attribute and CSS viewport scale; endpoints come from the actual instance transform. This establishes count weighting and control updates, but does not alone establish the shader's apparent width at partial resistance. The wire regressions therefore also measure actual WebGL pixels at controlled depths and pixel densities. Sphere radii continue to come from uploaded geometry and transforms, so resistance checks observe the size drawn rather than a parallel application estimate.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -70,9 +72,9 @@ Read native node identity, world/screen coordinates, actual material opacity and
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
-Read relationship kinds, visibility and where each line is drawn, without reaching into the Explorer's own state. A
-link is a unit tube the library stands at its source, turns toward its target and stretches by `scale.z`; its drawn
-ends are the tube's two ends in world space, and a line the library never positioned stays at the origin with length 1.
+Read relationship kinds, visibility and where each line is drawn, without reaching into the Explorer's own state.
+The library stands a unit-axis proxy at its source, turns it toward its target and stretches it by `scale.z`.
+Width is the uploaded baseline; only full resistance makes it the apparent CSS-pixel diameter at every depth.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

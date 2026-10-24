@@ -115,6 +115,9 @@ test("scroll zooms within each perspective; only the 2D and 3D buttons change it
 });
 
 test("a thirteen-file path keeps its ordered steps and constrained symbols through the overview", async ({ page }) => {
+  // Thirteen keyboard stops and a perspective round trip run while the full graph unfolds. With software rendering
+  // and trace snapshots this reached the last stop at 30s; keep the complete journey, including every outline check.
+  test.setTimeout(60_000);
   await page.setViewportSize({ width: 1280, height: 800 });
   const root = "tests/integration/programs/csharp/estate/";
   const from = `${root}Database/Oracle/CENTRAL.ACCOUNT.sql`, to = `${root}Portal/Pages/Default.aspx`;

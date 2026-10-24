@@ -14,7 +14,7 @@ Provides required element lookups and coordinates the Explorer's active view, na
 - Created 2025-11-21 during the explorer modularisation.
 - `requireElement` throws if the element is missing, failing fast on template mismatches. Its generic return type records the caller's expected element type; it does not validate that subtype at runtime.
 - `setActiveView` marks the active navigation item with `aria-current`, maps the Local Map's chosen perspective to its 2D or 3D container, and updates the view classes, `inert` and `aria-hidden` together. Hidden cards and projected 3D action buttons must not remain in the Tab sequence merely because their DOM is retained.
-- The one pathfinding toolbar moves into the chosen Local Map surface. Body classes expose the active World Map, 3D controls and 2D zoom controls to the styles; this function changes presentation rather than inspection, pins, subject or camera.
+- The one pathfinding toolbar moves into the chosen Local Map surface. Body classes expose the active World Map, Local Map legend, 3D controls and 2D zoom controls to the styles; this function changes presentation rather than inspection, pins, subject or camera.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

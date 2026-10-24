@@ -32,6 +32,8 @@ The History group (2026-10-18, ticket C4 of [the change-over-time plan](../../..
 
 - Tether (`tuning-force-tether`, 2026-10-21) is wired like the other 3D sliders and, being a force, builds the field again and unfolds the picture; the owner asked to tune it by eye ([Turn 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)). Since that day a change of the forces unfolds the picture at full strength where it reheated it, and Update Energy is a constant strength.
 
+Wire Thickness and the independent Node/Wire Zoom Resistance sliders are persisted and shared 3D appearance controls. Width scales every connector while keeping reference-count weighting and the citation/containment distinctions. Resistance spans perspective at zero, constant screen size at one and softened perspective between. The renderer excludes these controls from force settings, so adjustment redraws without disturbing the standing picture. The owner requested the thickness dial after the [October 24 visual comparison](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-7), then [continuous resistance](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) after judging the invariant endpoints.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -78,7 +78,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, gravity: 0.01, chargeRange: 0, linkStrength: 0.25, updateEnergy: 1, tether: 0.01, citedByPull: 1 },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 0.9, nodeZoomResistance: 0.45, wireZoomResistance: 0.9, gravity: 0.025, chargeRange: 0, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1 },
   // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
   // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played.
   history: { axis: "time", granularity: "auto", playRate: 2 }

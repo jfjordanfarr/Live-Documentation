@@ -5,7 +5,7 @@ import type { SpatialBatchInstance } from "../../packages/explorer/src/client/vi
 
 type ObservedWindow = Window & {
   __THREE_DEVTOOLS__: EventTarget;
-  renderedGraph?: { scene: Scene; camera: Camera };
+  renderedGraph?: { scene: Scene; camera: Camera; renderer: WebGLRenderer };
   /** Frames drawn since the page opened; the library ticks its engine at most once per frame. */
   renderedFrames?: number;
   /** Every change of the graph container's aria-busy, with the frame it happened on. */
@@ -61,7 +61,7 @@ export async function observeGraph(page: Page): Promise<void> {
       if (!("isWebGLRenderer" in renderer) || renderer.isWebGLRenderer !== true) return;
       const render = renderer.render.bind(renderer);
       renderer.render = (scene, camera) => {
-        inspected.renderedGraph = { scene: scene as Scene, camera };
+        inspected.renderedGraph = { scene: scene as Scene, camera, renderer };
         inspected.renderedFrames = (inspected.renderedFrames ?? 0) + 1;
         render(scene, camera);
       };
@@ -161,21 +161,28 @@ export async function renderedNodes(page: Page) {
 }
 
 /**
- * Read relationship kinds, visibility and where each line is drawn, without reaching into the Explorer's own state. A
- * link is a unit tube the library stands at its source, turns toward its target and stretches by `scale.z`; its drawn
- * ends are the tube's two ends in world space, and a line the library never positioned stays at the origin with length 1.
+ * Read relationship kinds, visibility and where each line is drawn, without reaching into the Explorer's own state.
+ * The library stands a unit-axis proxy at its source, turns it toward its target and stretches it by `scale.z`.
+ * Width is the uploaded baseline; only full resistance makes it the apparent CSS-pixel diameter at every depth.
  */
 export async function renderedLinks(page: Page) {
   return page.evaluate(() => {
     const observed = (window as unknown as ObservedWindow).renderedGraph!;
     type Point = { x: number; y: number; z: number };
-    const links: Array<{ source: string; target: string; kind: string; count: number; visible: boolean; start: Point; end: Point; length: number }> = [];
+    const links: Array<{ source: string; target: string; kind: string; count: number; visible: boolean; start: Point; end: Point; length: number; width: number }> = [];
+    const rect = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
     observed.scene.traverse(object => {
       const mesh = object as GraphMesh;
       const data = mesh.__data;
       if (mesh.__graphObjType !== "link" || !data?.source || !data.target) return;
       mesh.updateWorldMatrix(true, false);
       const drawn = (window as unknown as ObservedWindow).drawnMesh!(mesh);
+      // Read the uploaded width and viewport, independently of the product's accessor/count formula. The wire spec
+      // separately measures rendered pixels, so this observation cannot hide a broken projection shader.
+      const batch = mesh.userData.spatialBatch as SpatialBatchInstance | undefined;
+      const material = batch?.mesh.material;
+      const width = batch && material && "resolution" in material
+        ? batch.mesh.geometry.getAttribute("spatialWidth").getX(batch.instance) * rect.height / material.resolution.y : NaN;
       const point = (z: number): Point => {
         const world = drawn.point(z);
         return { x: world.x, y: world.y, z: world.z };
@@ -188,7 +195,8 @@ export async function renderedLinks(page: Page) {
         visible: drawn.visible,
         start: point(0),
         end: point(1),
-        length: drawn.point(0).distanceTo(drawn.point(1))
+        length: drawn.point(0).distanceTo(drawn.point(1)),
+        width
       });
     });
     return links;

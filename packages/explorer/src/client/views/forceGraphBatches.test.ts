@@ -1,19 +1,20 @@
-import { Frustum, Group, Matrix3, Matrix4, Mesh, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3, type WebGLRenderer } from "three";
+import { Color, CylinderGeometry, Group, Matrix3, Matrix4, Mesh, MeshLambertMaterial, PerspectiveCamera, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
+import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { describe, expect, it } from "vitest";
 
-import { batchSpatialGraph, tubeIntersectsFrustum, type SpatialBatchInstance } from "./forceGraphBatches";
+import { batchSpatialGraph, drawSpatialGraphOnChange, screenWireIntersectsFrustum, type SpatialBatchInstance } from "./forceGraphBatches";
 
 const sphere = (radius: number, color: string, opacity: number): Mesh<SphereGeometry, MeshLambertMaterial> => {
   const mesh = new Mesh(new SphereGeometry(radius, 8, 8), new MeshLambertMaterial({ color, opacity, transparent: true }));
   Object.assign(mesh, { __graphObjType: "node" });
   return mesh;
 };
-const draw = (scene: Scene): void => {
+const draw = (scene: Scene, camera = new PerspectiveCamera(60, 1, .1, 2000)): void => {
   scene.updateMatrixWorld(true);
-  const camera = new PerspectiveCamera(60, 1, .1, 2000);
   camera.position.z = 1000; camera.updateMatrixWorld();
-  // The scene hooks copy geometry without using the renderer. No DOM or WebGL substitute is involved.
-  const args = [undefined as unknown as WebGLRenderer, scene, camera, new SphereGeometry(), new MeshLambertMaterial(), new Group()] as const;
+  // Only the CSS viewport measurement is needed to assemble batches; this test does not simulate DOM or WebGL drawing.
+  const renderer = { getSize: (size: Vector2) => size.set(1000, 1000) } as WebGLRenderer;
+  const args = [renderer, scene, camera, new SphereGeometry(), new MeshLambertMaterial(), new Group()] as const;
   scene.onBeforeRender(...args); scene.onAfterRender(...args);
 };
 const instanceOf = (mesh: Mesh): SpatialBatchInstance => mesh.userData.spatialBatch as SpatialBatchInstance;
@@ -111,26 +112,104 @@ describe("spatial draw batches", () => {
     scene.remove(nodes[169]); draw(scene); expect(scene.children).toEqual([]);
     expect(disposals).toBe(2);
   });
+
+  it("keeps the wire's count-weighted width and interaction proxy across resistance changes", () => {
+    const scene = new Scene();
+    const cylinder = new CylinderGeometry(2, 2, 1, 8).rotateX(Math.PI / 2).translate(0, 0, .5);
+    const wire = new Mesh(cylinder, new MeshLambertMaterial({ color: "#0091ff", transparent: true, opacity: .2, depthWrite: false }));
+    wire.position.x = -100; wire.rotation.y = Math.PI / 2; wire.scale.z = 200;
+    Object.assign(wire, { __graphObjType: "link" }); scene.add(wire);
+    let resistance = 1;
+    const batching = batchSpatialGraph(scene, () => ({ nodes: 0, wires: resistance }));
+    const camera = new PerspectiveCamera(90, 1, 1, 10000);
+    draw(scene, camera);
+    const batch = instanceOf(wire);
+    const projectedRaycast = wire.raycast;
+    expect(batch.mesh.material).toBeInstanceOf(LineMaterial);
+    expect(batch.mesh.geometry.getAttribute("spatialWidth").getX(batch.instance)).toBe(4);
+    expect(batch.mesh.geometry.getAttribute("spatialOpacity").getX(batch.instance)).toBeCloseTo(.2, 6);
+    expect(batch.mesh.material.depthWrite).toBe(false);
+    const raycaster = new Raycaster(); raycaster.setFromCamera(new Vector2(0, 1.5 / 500), camera);
+    expect(raycaster.intersectObject(wire)).toHaveLength(1); // Four CSS pixels wide.
+    resistance = 0; draw(scene, camera);
+    expect(instanceOf(wire)).toBe(batch);
+    expect((batch.mesh.material as LineMaterial).uniforms.spatialResistance.value).toBe(0);
+    expect(raycaster.intersectObject(wire)).toHaveLength(0); // Two CSS pixels wide at this depth.
+    batching.dispose();
+    resistance = 1;
+    expect(wire.raycast).not.toBe(projectedRaycast);
+    expect(raycaster.intersectObject(wire)).toHaveLength(0); // Restored native geometry ignores the former control.
+  });
+
+  it("restores node scales on removal and disposal and does not accumulate zoom compensation", () => {
+    const scene = new Scene(), a = sphere(4, "#0091ff", .75), b = sphere(8, "#28a745", .75);
+    a.scale.set(1, 2, .5); b.scale.setScalar(2); scene.add(a, b);
+    let resistance = 1;
+    const batching = batchSpatialGraph(scene, () => ({ nodes: resistance, wires: 1 }));
+    const camera = new PerspectiveCamera(90, 1, 1, 10000);
+    camera.position.z = 1000; camera.updateMatrixWorld();
+    for (let i = 0; i < 5; i++) batching.updateSizes(camera, 1000);
+    expect(a.scale.distanceTo(new Vector3(2, 4, 1))).toBeLessThan(1e-12);
+    camera.position.z = 2000; batching.updateSizes(camera, 1000);
+    expect(a.scale.distanceTo(new Vector3(4, 8, 2))).toBeLessThan(1e-12);
+    resistance = .5; batching.updateSizes(camera, 1000);
+    expect(a.scale.distanceTo(new Vector3(2, 4, 1))).toBeLessThan(1e-12);
+    scene.remove(b); batching.updateSizes(camera, 1000);
+    expect(b.scale.distanceTo(new Vector3(2, 2, 2))).toBeLessThan(1e-12);
+    batching.dispose(); expect(a.scale.distanceTo(new Vector3(1, 2, .5))).toBeLessThan(1e-12);
+  });
+
+  it("culls with the node's compensated radius, retaining a visible rim beyond the viewport", () => {
+    const scene = new Scene(), node = sphere(4, "#0091ff", .75); node.position.x = 1008; scene.add(node);
+    let resistance = 0;
+    const batching = batchSpatialGraph(scene, () => ({ nodes: resistance, wires: 1 }));
+    const camera = new PerspectiveCamera(90, 1, 1, 10000);
+    draw(scene, camera); expect(instanceOf(node).mesh.count).toBe(0);
+    resistance = 1; draw(scene, camera); expect(instanceOf(node).mesh.count).toBe(1);
+    node.position.x = 1020; draw(scene, camera); expect(instanceOf(node).mesh.count).toBe(0);
+    batching.dispose();
+  });
 });
 
-describe("tube frustum culling", () => {
-  const box = new Frustum(new Plane(new Vector3(1, 0, 0), 1), new Plane(new Vector3(-1, 0, 0), 1),
-    new Plane(new Vector3(0, 1, 0), 1), new Plane(new Vector3(0, -1, 0), 1),
-    new Plane(new Vector3(0, 0, 1), 1), new Plane(new Vector3(0, 0, -1), 1));
+describe("spatial redraw guard", () => {
+  it("redraws a resistance change but ignores subpixel damping once uploaded transforms stop changing", () => {
+    const scene = new Scene(), node = sphere(4, "#0091ff", .75); scene.add(node);
+    const camera = new PerspectiveCamera(90, 1, 1, 10000); camera.position.z = 1000;
+    let resistance = .5, frames = 0;
+    const batching = batchSpatialGraph(scene, () => ({ nodes: resistance, wires: resistance }));
+    const renderer = {
+      domElement: { width: 1000, height: 1000, addEventListener: () => {} },
+      getClearColor: (color: Color) => color.set(0), getClearAlpha: () => 1, setSize: () => {}
+    } as unknown as WebGLRenderer;
+    const composer = { render: () => { frames++; } };
+    drawSpatialGraphOnChange(scene, camera, renderer, composer, () => {
+      batching.updateSizes(camera, 1000); return [resistance];
+    });
+    composer.render(); expect(frames).toBe(1);
+    camera.position.z += 1e-7; composer.render(); expect(frames).toBe(1);
+    camera.position.z += 1; composer.render(); expect(frames).toBe(2);
+    resistance = 1; composer.render(); expect(frames).toBe(3);
+    composer.render(); expect(frames).toBe(3);
+    batching.dispose();
+  });
+});
+
+describe("screen-space wire culling", () => {
+  const viewport = new Vector2(100, 100);
   const tube = (start: Vector3, end: Vector3): Matrix4 => {
     const matrix = new Matrix4().lookAt(start, end, new Vector3(0, 1, 0));
     matrix.scale(new Vector3(1, 1, -start.distanceTo(end))); matrix.setPosition(start); return matrix;
   };
-  it("keeps crossing and tangential tube surfaces and rejects a long tube whose bounding sphere overlaps", () => {
-    expect(tubeIntersectsFrustum(tube(new Vector3(0, 0, -100), new Vector3(0, 0, 100)), .1, box)).toBe(true);
+  it("keeps crossing and tangential wires and rejects a long wire whose bounding sphere overlaps", () => {
+    expect(screenWireIntersectsFrustum(tube(new Vector3(0, 0, -100), new Vector3(0, 0, 100)), 10, viewport)).toBe(true);
     const outside = tube(new Vector3(1.5, 0, -100), new Vector3(1.5, 0, 100));
-    expect(tubeIntersectsFrustum(outside, .1, box)).toBe(false);
-    expect(tubeIntersectsFrustum(outside, .5, box)).toBe(true);
-    expect(tubeIntersectsFrustum(outside.clone().scale(new Vector3(6, 1, 1)), .1, box)).toBe(true);
+    expect(screenWireIntersectsFrustum(outside, 10, viewport)).toBe(false);
+    expect(screenWireIntersectsFrustum(outside, 50, viewport)).toBe(true);
+    expect(screenWireIntersectsFrustum(outside.clone().scale(new Vector3(6, 1, 1)), 10, viewport)).toBe(false);
   });
   it("rejects a diagonal beyond a corner even though each individual plane is crossed", () => {
     const diagonal = tube(new Vector3(0, 3, 0), new Vector3(3, 0, 0));
-    expect(tubeIntersectsFrustum(diagonal, .1, box)).toBe(false);
-    expect(tubeIntersectsFrustum(diagonal, 1, box)).toBe(true);
+    expect(screenWireIntersectsFrustum(diagonal, 10, viewport)).toBe(false);
+    expect(screenWireIntersectsFrustum(diagonal, 100, viewport)).toBe(true);
   });
 });

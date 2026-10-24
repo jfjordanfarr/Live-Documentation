@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-22T17:22:34.526Z
+- Generated At: 2026-10-24T19:41:36.613Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - Relocated from `server/template.html` to `shared/template.html` on [2026-03-09](../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-09.1.md) during the server retirement that consolidated all Explorer build-time utilities into the `shared/` module.
 - Its first element after the charset is the page's Content-Security-Policy (2026-10-21, [Turn 12 of the October 20 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-12)): the page loads only its own script, styles, images and fonts and asks only its own site for data, so no doc, address or later code can make it reach another. Styles may also be inline, because three of the 3D view's libraries inject their own stylesheets; a style can neither run script nor, under the rest of the policy, fetch. The policy is a `<meta>` because a static bundle has no server to send it as a header, and so it cannot carry `frame-ancestors`. The controls carry no `onclick`: `index.ts` wires them with listeners. [The no-network spec](../../../../tests/e2e/no-network.spec.ts.mdmd.md) holds it.
 - Its `id` attributes are extracted as public symbols by the HTML adapter ([html.ts](../../../engine/src/live-docs/adapters/html.ts.mdmd.md)), enabling Live Documentation to track which client modules depend on which DOM elements.
+- The Local Map legend has separate 2D and spatial keys. The first retains offer/use meanings; the spatial key is populated from the filtered graph's actual file kinds and wire encodings during the [October 24 Connections review](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-12). Neither key is shown in another view.
 - The search bar (2026-10-14, [Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)): `search-subject` with its results, and `search-destination-field` with the map marker, `search-destination`, its clear button and its results, at the top of `main`, which is a column with the views in `views` under the bar; the Ctrl+P dialog (`omnisearch`) and the sidebar's Search button, and the FROM/TO toolbar (`pathfind-toolbar` and its fields, dropdowns and buttons), are gone. The path's report (`path-report`) sits between the search bar and `views`, shared by the two Local Map surfaces under the [October 23 remediation](../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work). It contains the live status `pathfind-status` and the ordered file list `pathfind-path`; the application hides the report outside Local Map while retaining the question.
 - The pathfinder's status (`pathfind-status`) is a line of its own under the input row since [Turn 10 of 2026-10-01](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10), because it can hold a sentence and a link (the reverse question offered when a path runs against the map's direction).
 - The Tuning section's Local Map subsection gained the laces' sliders on 2026-10-06 (`tuning-lace-reach`, `tuning-lace-curl`, `tuning-lace-width`), beside the taper now labelled Lace Taper, each with a title saying what it moves ([Turn 13](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-13)); a `tuning-lace-inset` slider of the same day was removed on 2026-10-07, when the laces became cut by the card's edge, and the reach's title now says it is measured from that edge.
@@ -85,6 +86,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 #### `history-forward` {#symbol-history-forward}
 - Type: variable
 
+#### `local-legend` {#symbol-local-legend}
+- Type: variable
+
 #### `main` {#symbol-main}
 - Type: variable
 
@@ -92,6 +96,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `map-container` {#symbol-map-container}
+- Type: variable
+
+#### `map-legend` {#symbol-map-legend}
+- Type: variable
+
+#### `map-legend-title` {#symbol-map-legend-title}
 - Type: variable
 
 #### `map-viewport` {#symbol-map-viewport}
@@ -143,6 +153,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `sources-container` {#symbol-sources-container}
+- Type: variable
+
+#### `spatial-legend` {#symbol-spatial-legend}
 - Type: variable
 
 #### `stats-line` {#symbol-stats-line}
@@ -214,10 +227,22 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 #### `tuning-force-link-strength-value` {#symbol-tuning-force-link-strength-value}
 - Type: variable
 
+#### `tuning-force-link-width` {#symbol-tuning-force-link-width}
+- Type: variable
+
+#### `tuning-force-link-width-value` {#symbol-tuning-force-link-width-value}
+- Type: variable
+
 #### `tuning-force-node-size` {#symbol-tuning-force-node-size}
 - Type: variable
 
 #### `tuning-force-node-size-value` {#symbol-tuning-force-node-size-value}
+- Type: variable
+
+#### `tuning-force-node-zoom-resistance` {#symbol-tuning-force-node-zoom-resistance}
+- Type: variable
+
+#### `tuning-force-node-zoom-resistance-value` {#symbol-tuning-force-node-zoom-resistance-value}
 - Type: variable
 
 #### `tuning-force-symbol-scale` {#symbol-tuning-force-symbol-scale}
@@ -236,6 +261,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-force-update-energy-value` {#symbol-tuning-force-update-energy-value}
+- Type: variable
+
+#### `tuning-force-wire-zoom-resistance` {#symbol-tuning-force-wire-zoom-resistance}
+- Type: variable
+
+#### `tuning-force-wire-zoom-resistance-value` {#symbol-tuning-force-wire-zoom-resistance-value}
 - Type: variable
 
 #### `tuning-height-cost` {#symbol-tuning-height-cost}

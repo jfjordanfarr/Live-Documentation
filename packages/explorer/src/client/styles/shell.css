@@ -1063,6 +1063,49 @@ details.tuning-subsection > summary { cursor: pointer; }
 }
 
 /* Legend in Sidebar */
+#map-legend, #spatial-legend { display: none; }
+body.local-map-active #map-legend { display: block; }
+body.force-graph-active #local-legend { display: none; }
+body.force-graph-active #spatial-legend { display: block; }
+
+.spatial-legend-sample {
+    position: relative;
+    display: inline-block;
+    flex: 0 0 20px;
+    height: 14px;
+}
+
+.spatial-legend-sample::before,
+.spatial-legend-sample::after {
+    content: "";
+    position: absolute;
+    background: var(--legend-color);
+}
+
+.spatial-legend-sample--node::before {
+    width: 10px;
+    height: 10px;
+    top: 2px;
+    left: 5px;
+    border-radius: 50%;
+}
+
+.spatial-legend-sample--size::before,
+.spatial-legend-sample--size::after { border-radius: 50%; }
+.spatial-legend-sample--size::before { width: 5px; height: 5px; left: 0; top: 7px; }
+.spatial-legend-sample--size::after { width: 11px; height: 11px; right: 0; top: 1px; }
+.spatial-legend-sample--wire::before,
+.spatial-legend-sample--arrow::before { width: 20px; height: 2px; top: 6px; }
+.spatial-legend-sample--width::before { width: 20px; height: 1px; top: 3px; }
+.spatial-legend-sample--width::after { width: 20px; height: 3px; top: 9px; }
+.spatial-legend-sample--arrow::after {
+    width: 6px;
+    height: 8px;
+    right: 0;
+    top: 3px;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
 .sidebar-section .legend-row {
     display: flex;
     align-items: center;

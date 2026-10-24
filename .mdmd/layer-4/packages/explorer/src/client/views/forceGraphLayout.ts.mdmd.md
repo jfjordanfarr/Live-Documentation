@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-10-22T18:45:24.763Z
+- Generated At: 2026-10-24T20:06:54.070Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Sphere volume grows from one baseline unit plus the documented public-symbol cou
 Which links pull: references in the connections layout, containment in the structure layout (`linkPulls`); `spatialFieldOf` makes a spring of the pulling ones alone. The page's link force, and the headless twin's, still holds every link at strength zero, because D3 resolves the endpoints of only the links it holds and three-forcegraph draws no line whose ends are ids: until 2026-10-16 every reference revealed in the structure layout was visible but never drawn, a unit tube at the origin.
 
 The motion (2026-10-21). `motionForce` is the one force that moves the spheres: D3's simulation, the library's and the headless one alike, drives the ticks, and each tick the force reads the spheres where they stand, holds those a hand has fixed, steps the damped motion of [`forceGraphPhysics.ts`](forceGraphPhysics.ts.mdmd.md) through the field at a constant strength, writes the positions back and zeroes D3's own velocities, so that nothing else moves a sphere. It ignores alpha: there is no cooling, and the easing ends when the largest move of a tick has stayed under `STILL_FRACTION` (3×10⁻⁵) of the picture's diagonal for `QUIET_TICKS` (ten) ticks with the tether holding and no sphere in a hand, the owner's "still by its motion and not by a clock" (2026-10-18). A sphere keeps its velocity and its anchor by id when the field is built again. A motion begins held where the spheres stand, for a change of what is shown or a hand, so that the picture keeps a person's bearings, or unfolds freely and is held once it calms below `UNFOLDED_FRACTION` (10⁻³ of the diagonal per tick), for a first picture, a layout or new forces: held from the library's seed, a ball a hundredth of the picture's size, a picture would stay far too small. On this repository a first picture is still some 350 to 390 ticks after the seed, and a change of tests shown or a hand's release some 170 to 560 ([the measurements](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#work-notes-what-moves-in-the-tail-this-repository-headless), and the tether's choice in [Turns 4 and 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)). `easeSpatialLayout` is the headless twin of the page, for the layout lab and the tests.
+
+Since the [October 24 stiffness repair](../../../../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/layout-findings.md#integration-review-and-repair), the physics module may subdivide a tick while preserving its total elapsed time and drag. The stillness threshold applies to total distance travelled during the outer tick, including any reversal between its internal steps. The headless entry refuses supplied non-finite coordinates and velocities before D3 can reinterpret them as a request for a fresh seed; missing coordinates still request placement normally. Invalid motion and size readings throw instead of reporting stillness.
 
 The update energy (`ForceGraphTuning.updateEnergy`, the change-over-time plan's ticket C2) is the constant strength a membership change eases at, a share of the forces; the first picture, a hand and a change of the forces ease at one. From 2026-10-18 to 2026-10-21 it was a reheat's alpha under D3's cooling, applied through wrappers that scaled each force's alpha (`updateSchedule`, `scaledForce`, `pullingLinkForce`, `configureSpatialForces`, `settleSpatialUpdate`), and a picture fed at a constant share never came to rest: D3 splits a spring's pull between its ends unequally and aims it at where the spheres are about to be ([the easing probe of 2026-10-19](../../../../../../../AI-Agent-Workspace/Probes/2026-10-19/easing/README.md)). Those went with the motion.
 
@@ -143,9 +145,9 @@ start of each sphere placed here.
 - Constraints: [`SpatialNode`](#symbol-spatialnode), [`SpatialLink`](#symbol-spatiallink)
 
 ##### `springStrength` — Summary
-The strength of each spring: D3's own rule, one over the smaller of the two ends' pulling-link counts, so that a file
-with many wires is pulled less by each, times the tuning's lever (`linkStrength`, one for the rule as it is). The
-counts are read from the links the force holds, which are the pulling ones, and counted once per set of links.
+The strength of each spring: one over the smaller of the two ends' pulling-link counts, times `linkStrength`.
+This retains D3's spring normalization, not its unequal division of motion between endpoints. A hub-to-leaf
+spring keeps full strength because the leaf has degree one. Counts come from pulling links, once per set.
 
 #### `MOTION` {#symbol-motion}
 - Type: const

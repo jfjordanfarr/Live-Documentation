@@ -44,6 +44,7 @@ export function setActiveView(view: ViewName, perspective: LocalMapPerspective):
   }
 
   document.body.classList.toggle("world-active", view === "world");
+  document.body.classList.toggle("local-map-active", view === "map");
 
   // Toggle zoom-controls-active class for views that support our zoom buttons
   if (view === "map" && perspective === "2d") {
