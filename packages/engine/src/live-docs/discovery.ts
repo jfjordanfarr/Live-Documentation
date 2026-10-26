@@ -74,13 +74,15 @@ async function createGitignoreFilter(workspaceRoot: string): Promise<Ignore | nu
 // ============================================================================
 
 /**
- * The files a package manager writes and no person edits, by name. A lock
- * file carries no authorial decision, so discovery never documents one,
+ * Dependency resolution files written by package and environment managers,
+ * by name. Discovery keeps lock files outside the documented source set,
  * whatever the globs or an include name.
  */
 const LOCK_FILE_NAMES: ReadonlySet<string> = new Set([
   "package-lock.json",
   "npm-shrinkwrap.json",
+  "devcontainer-lock.json",
+  ".devcontainer-lock.json",
   "yarn.lock",
   "pnpm-lock.yaml",
   "bun.lock",

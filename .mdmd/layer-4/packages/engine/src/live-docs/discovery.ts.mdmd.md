@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-10-22T16:47:52.839Z
+- Generated At: 2026-10-26T21:50:56.757Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ File discovery and the workspace-wide indexes for Live Documentation. Locates wo
 ### Public Symbols
 #### `discoverTargetFiles` {#symbol-discovertargetfiles}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L208)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L210)
 - Parameters: `options`: `DiscoverOptions`
 
 ##### `discoverTargetFiles` — Summary
@@ -73,7 +73,7 @@ const files = await discoverTargetFiles({
 
 #### `discoverDocuments` {#symbol-discoverdocuments}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L236)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L238)
 
 ##### `discoverDocuments` — Summary
 The workspace's documents ({@link isDocument}), which never get a doc of
@@ -92,14 +92,14 @@ Workspace-relative paths with forward slashes, sorted.
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L298)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L300)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L322)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L324)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass

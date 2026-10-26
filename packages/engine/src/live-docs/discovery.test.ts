@@ -11,7 +11,7 @@ import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } f
  * A workspace with a file for every rule: hidden files and folders, files no
  * reader handles (a workflow, a `Makefile`), the repository's store,
  * installed packages at two depths, the default docs root and another folder
- * a configuration may name as its docs root, lock files of three kinds,
+ * a configuration may name as its docs root, dependency and container lock files,
  * documents (markdown anywhere, an agent's skill among them, other prose
  * formats, licences and their kin by name, a note beside the docs root's base
  * layer and a readme inside it, a readme in the ignored build) beside source
@@ -21,6 +21,8 @@ import { normalizeLiveDocumentationConfig, type LiveDocumentationConfigInput } f
 const FILES = [
   ".agents/skills/map/SKILL.md",
   ".config.json",
+  ".devcontainer-lock.json",
+  ".devcontainer/devcontainer-lock.json",
   ".devcontainer/devcontainer.json",
   ".git/hooks/pre-commit.js",
   ".github/workflows/ci.yml",
@@ -107,6 +109,16 @@ describe("discoverTargetFiles", () => {
     expect(await discover({}, ["**/*"])).toEqual(DOCUMENTED);
     expect(await discover({}, ["README.md", ".agents/skills/map/SKILL.md", "LICENSE", "packages/app/LICENSE-APACHE-2.0", "COPYING.txt", "CHANGELOG", "docs/guide.rst", "package-lock.json", "src/index.ts"]))
       .toEqual(["src/index.ts"]);
+  });
+
+  it("leaves container feature locks out even when named explicitly, while keeping configuration and similarly named source files", async () => {
+    const configuration = ".devcontainer.json";
+    const source = "src/devcontainer-lock.json.ts";
+    await fs.writeFile(path.join(workspace, configuration), '{"features":{}}', "utf8");
+    await fs.writeFile(path.join(workspace, source), "export const lock = 1;", "utf8");
+    const include = [".devcontainer-lock.json", ".devcontainer/devcontainer-lock.json", ".devcontainer/devcontainer.json", configuration, source];
+
+    expect(await discover({}, include)).toEqual([".devcontainer.json", ".devcontainer/devcontainer.json", source]);
   });
 
   it("derives the docs root from the configuration, however it is spelled", async () => {
