@@ -35,6 +35,10 @@ echo "=== Building project ==="
 npm run build
 
 echo ""
+echo "=== Installing Playwright Chromium and system dependencies ==="
+npx --no-install playwright install --with-deps chromium
+
+echo ""
 echo "=== Installing SCIP indexers ==="
 
 # scip-python: npm global package (uses pyright under the hood)
@@ -43,7 +47,7 @@ npm install -g @sourcegraph/scip-python
 
 # scip-go: Go binary
 echo "→ Installing scip-go..."
-go install github.com/sourcegraph/scip-go/cmd/scip-go@latest
+go install github.com/scip-code/scip-go/cmd/scip-go@latest
 
 # scip-dotnet: .NET global tool
 echo "→ Installing scip-dotnet..."
@@ -95,7 +99,7 @@ echo ""
 echo "=== SCIP Indexer Versions ==="
 echo "scip-typescript: $(npx scip-typescript --version 2>/dev/null || echo 'available via npx')"
 echo "scip-python:     $(scip-python --version 2>/dev/null || echo 'installed')"
-echo "scip-go:         $(scip-go version 2>/dev/null || echo 'installed')"
+echo "scip-go:         $(scip-go --version 2>/dev/null || echo 'installed')"
 echo "scip-dotnet:     $(dotnet tool list -g | grep scip-dotnet | awk '{print $2}' || echo 'installed')"
 echo "scip-java:       $(scip-java version 2>/dev/null || echo 'installed')"
 echo "rust-analyzer:   $(rust-analyzer --version 2>/dev/null || echo 'available')"

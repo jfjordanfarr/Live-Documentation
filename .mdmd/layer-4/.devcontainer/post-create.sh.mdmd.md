@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Sets up the development container once it is created: lets git work on the bind-mounted checkout, installs and builds the workspace, and installs the SCIP indexers the oracle measures the adapters against.
+Sets up the development container once it is created: lets git work on the bind-mounted checkout, installs and builds the workspace, installs Chromium and its Linux dependencies for the Explorer's browser tests, and installs the SCIP indexers the oracle measures the adapters against.
 
 ### Notes
 _No reader handles this kind of file yet, so the generated sections are empty for that reason, not because the file exposes or uses nothing. Revisit this note when a reader arrives._

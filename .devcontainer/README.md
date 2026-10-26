@@ -34,6 +34,7 @@ No special setup is required — the same `.devcontainer/devcontainer.json` work
 - **Node.js 22** (matches `.nvmrc`)
 - **TypeScript** (project dependency)
 - **npm workspaces** pre-configured
+- **Playwright Chromium** and its Linux dependencies, installed for the Explorer's browser tests
 
 ### Language Toolchains
 
