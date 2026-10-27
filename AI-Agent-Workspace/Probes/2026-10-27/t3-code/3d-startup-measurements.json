@@ -1,0 +1,339 @@
+{
+  "date": "2026-10-27",
+  "kind": "diagnosis and isolated prototype; no product source changes",
+  "t3Commit": "d2c440312e5f39d59827ed466838a623516454d6",
+  "liveDocumentationCodeCommit": "cbb17f155fd381b8a910e21b50a5bc531ebcfaa9",
+  "runtime": {
+    "node": "v22.22.0",
+    "chromium": "145.0.7632.6",
+    "3d-force-graph": "1.80.0",
+    "three-forcegraph": "1.43.5",
+    "d3-force-3d": "3.0.6",
+    "three": "0.186.1"
+  },
+  "nodeMeasurements": {
+    "measuredAt": "2026-10-27T20:56:16.064Z",
+    "measurements": [
+      {
+        "phase": "read bundle",
+        "milliseconds": 2026.5805649999998
+      },
+      {
+        "phase": "parse bundle",
+        "milliseconds": 603.6095930000001
+      },
+      {
+        "phase": "project Explorer graph",
+        "milliseconds": 331.8859709999997
+      },
+      {
+        "phase": "build actual filtered spatial graph",
+        "milliseconds": 168.71686000000045
+      },
+      {
+        "phase": "disambiguate all projected names as renderer does",
+        "milliseconds": 17444.517144
+      },
+      {
+        "phase": "one field evaluation at 1000 nodes",
+        "milliseconds": 13.50495199999932,
+        "pairs": 499500,
+        "stiffness": 614.1307467855662,
+        "overlaps": 1715
+      },
+      {
+        "phase": "one field evaluation at 5000 nodes",
+        "milliseconds": 143.1415339999985,
+        "pairs": 12497500,
+        "stiffness": 1051.3471282542664,
+        "overlaps": 11687
+      },
+      {
+        "phase": "one field evaluation at 21720 nodes",
+        "milliseconds": 2229.4472149999965,
+        "pairs": 235868340,
+        "stiffness": 2263.586340543528,
+        "overlaps": 64388
+      },
+      {
+        "phase": "one complete initial simulation tick, full graph",
+        "milliseconds": 33837.873229000004
+      }
+    ],
+    "scope": {
+      "sourceFiles": 28145,
+      "requestedPathFiles": 2,
+      "simulatedNodes": 21720,
+      "simulatedLinks": 72137,
+      "pairsPerField": 235868340,
+      "filters": {
+        "showTests": false,
+        "showAssets": false,
+        "showRelatedDocs": false,
+        "showCitingDocs": false
+      },
+      "tuning": {
+        "linkGap": 32,
+        "charge": 30,
+        "collisionGap": 2,
+        "coupling": 1,
+        "nodeSize": 4,
+        "symbolScale": 1,
+        "linkWidth": 1,
+        "nodeZoomResistance": 0.3,
+        "wireZoomResistance": 0.9,
+        "gravity": 0.025,
+        "chargeRange": 0,
+        "linkStrength": 0.5,
+        "updateEnergy": 1,
+        "tether": 0.02,
+        "citedByPull": 1
+      }
+    },
+    "initialTick": {
+      "nodes": 21720,
+      "ticks": 1,
+      "still": false,
+      "fieldEvaluations": 15,
+      "forceMilliseconds": 33520.85012300001
+    }
+  },
+  "browserFirstWindow": {
+    "sampledMilliseconds": 25431.235,
+    "topSelf": [
+      {
+        "function": "",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphView.ts",
+        "line": 945,
+        "column": 40,
+        "name": "node",
+        "milliseconds": 12655.501,
+        "percent": 49.76361155877802
+      },
+      {
+        "function": "",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphView.ts",
+        "line": 951,
+        "column": 31,
+        "name": "other",
+        "milliseconds": 10872.596,
+        "percent": 42.752921751539006
+      },
+      {
+        "function": "",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphView.ts",
+        "line": 947,
+        "column": 62,
+        "name": "other",
+        "milliseconds": 731.442,
+        "percent": 2.876156034105304
+      },
+      {
+        "function": "(program)",
+        "url": "",
+        "line": 0,
+        "milliseconds": 350.542,
+        "percent": 1.3783915724108562
+      },
+      {
+        "function": "(garbage collector)",
+        "url": "",
+        "line": 0,
+        "milliseconds": 191.912,
+        "percent": 0.7546310668750456
+      },
+      {
+        "function": "GV",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/fileConnections.ts",
+        "line": 10,
+        "column": 16,
+        "name": "fileConnections",
+        "milliseconds": 75.533,
+        "percent": 0.2970087768053734
+      },
+      {
+        "function": "(idle)",
+        "url": "",
+        "line": 0,
+        "milliseconds": 49.996,
+        "percent": 0.19659289059300503
+      },
+      {
+        "function": "Jo",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphView.ts",
+        "line": 746,
+        "column": 11,
+        "name": "render",
+        "milliseconds": 49.917,
+        "percent": 0.19628224897453858
+      },
+      {
+        "function": "",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphView.ts",
+        "line": 821,
+        "column": 56,
+        "name": "link",
+        "milliseconds": 38.818,
+        "percent": 0.15263906766619867
+      },
+      {
+        "function": "",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphView.ts",
+        "line": 951,
+        "column": 31,
+        "name": "other",
+        "milliseconds": 30.946,
+        "percent": 0.12168500664635437
+      },
+      {
+        "function": "Ze",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/index.ts",
+        "line": 704,
+        "column": 11,
+        "name": "syncPerspectiveControls",
+        "milliseconds": 20.702,
+        "percent": 0.08140383272774601
+      },
+      {
+        "function": "eG",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphData.ts",
+        "line": 42,
+        "column": 16,
+        "name": "spatialGraphOf",
+        "milliseconds": 20.444,
+        "percent": 0.08038933225224808
+      },
+      {
+        "function": "KV",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/forceGraphLayout.ts",
+        "line": 105,
+        "column": 16,
+        "name": "placeNewSpheres",
+        "milliseconds": 18.343,
+        "percent": 0.07212783806999543
+      },
+      {
+        "function": "getPropertyValue",
+        "url": "",
+        "line": 0,
+        "milliseconds": 16.339,
+        "percent": 0.06424776460915091
+      },
+      {
+        "function": "getPropertyValue",
+        "url": "",
+        "line": 0,
+        "milliseconds": 13.37,
+        "percent": 0.052573144796153236
+      },
+      {
+        "function": "item",
+        "url": "",
+        "line": 0,
+        "milliseconds": 10.04,
+        "percent": 0.039479010751935564
+      },
+      {
+        "function": "tf",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/perspectiveTransition.ts",
+        "line": 240,
+        "column": 9,
+        "name": "visualCopy",
+        "milliseconds": 10.017,
+        "percent": 0.03938857078706559
+      },
+      {
+        "function": "tf",
+        "source": "../../../workspaces/Live-Documentation/packages/explorer/src/client/views/perspectiveTransition.ts",
+        "line": 240,
+        "column": 9,
+        "name": "visualCopy",
+        "milliseconds": 9.974,
+        "percent": 0.0392194873744826
+      }
+    ]
+  },
+  "nameIndexPrototype": {
+    "scope": "Diagnostic prototype only; product source unchanged",
+    "nodes": 21720,
+    "originalMs": 17217.343593999998,
+    "candidateMs": 111.86398499999996,
+    "differences": 0,
+    "examples": []
+  },
+  "documentedDependencyPath": {
+    "kind": "path",
+    "direction": "inbound",
+    "length": 3,
+    "from": {
+      "codePath": "packages/explorer/src/client/views/forceGraphPhysics.ts",
+      "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphPhysics.ts.mdmd.md"
+    },
+    "to": {
+      "codePath": "packages/explorer/src/client/index.ts",
+      "docPath": ".mdmd/layer-4/packages/explorer/src/client/index.ts.mdmd.md"
+    },
+    "nodes": [
+      {
+        "codePath": "packages/explorer/src/client/views/forceGraphPhysics.ts",
+        "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphPhysics.ts.mdmd.md"
+      },
+      {
+        "codePath": "packages/explorer/src/client/views/forceGraphLayout.ts",
+        "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md"
+      },
+      {
+        "codePath": "packages/explorer/src/client/views/forceGraphView.ts",
+        "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphView.ts.mdmd.md"
+      },
+      {
+        "codePath": "packages/explorer/src/client/index.ts",
+        "docPath": ".mdmd/layer-4/packages/explorer/src/client/index.ts.mdmd.md"
+      }
+    ],
+    "hops": [
+      {
+        "from": {
+          "codePath": "packages/explorer/src/client/views/forceGraphPhysics.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphPhysics.ts.mdmd.md"
+        },
+        "to": {
+          "codePath": "packages/explorer/src/client/views/forceGraphLayout.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md"
+        }
+      },
+      {
+        "from": {
+          "codePath": "packages/explorer/src/client/views/forceGraphLayout.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md"
+        },
+        "to": {
+          "codePath": "packages/explorer/src/client/views/forceGraphView.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphView.ts.mdmd.md"
+        }
+      },
+      {
+        "from": {
+          "codePath": "packages/explorer/src/client/views/forceGraphView.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/views/forceGraphView.ts.mdmd.md"
+        },
+        "to": {
+          "codePath": "packages/explorer/src/client/index.ts",
+          "docPath": ".mdmd/layer-4/packages/explorer/src/client/index.ts.mdmd.md"
+        }
+      }
+    ]
+  },
+  "measurementLimits": [
+    "Node phase measurements and browser samples are separate runs; their durations must not be summed.",
+    "The browser sample was stopped after about 25 seconds, while naming remained active; it is not a profile of completed startup.",
+    "Debugger/profiler instrumentation can affect timing.",
+    "The first simulation tick includes setup and adaptive force evaluations; its cost is not the average cost of all later ticks.",
+    "The name-index prototype matched every label on this input; it is not a shipped fix or a general regression suite."
+  ],
+  "inputHashes": {
+    "explorer-data.json": "6095f16ca601805d33e1301a043faba5af0a8bf5a31b03957b3b1d002ec00f97",
+    "static/index.js": "a560b0b77f9b1e62cb9c3092750f01c5866c6f1ad31bc311b1aa01e939418bf8",
+    "static/index.js.map": "4362b64681c38acc1aeeb57f98d20e8c2c845310962f8e61a8bb85d3284dd811"
+  }
+}

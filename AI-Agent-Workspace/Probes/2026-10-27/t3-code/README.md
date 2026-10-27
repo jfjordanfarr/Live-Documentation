@@ -85,7 +85,7 @@ The corrected generation and baseline build succeeded. The build took 26.539 sec
 
 At 1440×900 in a fresh browser context, the initial Local Map lands on the scan root with much of its contents outside the viewport. The visible left-hand files and large empty centre do not explain where to begin. The exact user-facing tool name `delegate_task` returns “Nothing found.” The implementation appears first when searching `OrchestratorMcpService`, but that name came from source research, not discovery through this map. Selecting it pins and frames the service card; dense wires and off-screen neighbours make its wider context difficult to read.
 
-The first 3D transition did not finish within the automation’s 30-second click window; the attempted error screenshot also failed. A separate existing browser test timed out concurrently. That test passed unchanged in the restarted full suite. The later isolated T3 trials below also failed, so the initial T3 interruption cannot be dismissed as overlap with the suite; its precise cause remains untraced.
+The first 3D transition did not finish within the automation’s 30-second click window; the attempted error screenshot also failed. A separate existing browser test timed out concurrently. That test passed unchanged in the restarted full suite. The later isolated T3 trials below also failed, so the initial T3 interruption cannot be dismissed as overlap with the suite; its startup costs are traced in the Turn 6 follow-up below.
 
 | Picture | State and finding |
 | --- | --- |
@@ -137,7 +137,7 @@ The actual 13.3 MB ZIP was extracted into a separate temporary folder and served
 
 The first recipient pictures were too early for a settled framing assessment. The recheck waited for the layout's idle state and entry motion. With navigation expanded, the reader still obscures the destination; collapsing navigation makes both cards fit. A subsequent unnecessary fixed pan overshot and hid the origin. The ZIP instructions therefore describe an adjustable view, not a guaranteed camera position. The state transfer succeeds; a self-evident visual handoff still needs work.
 
-The separate 3D review used fresh 1440×900 headless Chromium contexts after all generation and the full browser suite had finished. Both the two-file guide path and the broader service neighbourhood timed out after a 120-second 3D transition window; each subsequent screenshot request timed out after five seconds. No successful 3D screenshot is claimed. The precise cause is not established, and the result is specific to this large bundle in the development-container browser. The delivered explanation is verified in 2D.
+The separate 3D review used fresh 1440×900 headless Chromium contexts after all generation and the full browser suite had finished. Both the two-file guide path and the broader service neighbourhood timed out after a 120-second 3D transition window; each subsequent screenshot request timed out after five seconds. No successful 3D screenshot is claimed. At delivery the cause was untraced; the later startup investigation below identifies major CPU costs. This failure measurement remains specific to the large bundle in the development-container browser. The delivered explanation is verified in 2D.
 
 The generic source-discovery repair is committed as `a357604c`; the HTML URL-identity repair as `cbb17f15`. The latter's full `npm run safe:commit -- --e2e` chain passed in 2,287.347 seconds: lint/build, 1,408 unit tests, 113 integration tests, documentation/SlopCop audits and all 206 browser tests. The first interrupted run and its earlier timeout are retained separately. No threshold was weakened, no T3-specific source exclusion was introduced, and no tracked T3 implementation file changed.
 
@@ -152,3 +152,7 @@ python3 -m http.server 8080 --bind 0.0.0.0 --directory /workspaces/Live-Document
 ```
 
 Refresh the existing shared link afterward. If needed, forward port 8080 in VS Code’s Ports panel. This serves the built output without regenerating it.
+
+## Follow-up: the owner also cannot render 3D
+
+After hosting the bundle themselves, the owner confirms 2D works and 3D freezes. The [startup investigation](3d-startup.md) measures the actual 21,720-node workload behind the two-file path, the repeated global name scans, and the exact-pair physics cost before the synchronous warmup can finish. It includes a raw browser CPU profile and an output-identical naming prototype. No product source has changed; the map-scope decision remains open.
