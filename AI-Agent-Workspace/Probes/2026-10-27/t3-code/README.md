@@ -142,3 +142,13 @@ The separate 3D review used fresh 1440×900 headless Chromium contexts after all
 The generic source-discovery repair is committed as `a357604c`; the HTML URL-identity repair as `cbb17f15`. The latter's full `npm run safe:commit -- --e2e` chain passed in 2,287.347 seconds: lint/build, 1,408 unit tests, 113 integration tests, documentation/SlopCop audits and all 206 browser tests. The first interrupted run and its earlier timeout are retained separately. No threshold was weakened, no T3-specific source exclusion was introduced, and no tracked T3 implementation file changed.
 
 This rehearsal produced an explorable source explanation and a verified portable handoff, while exposing clear limits. Package installation still needs the development checkout; first useful generation required two product repairs; exact tool-name search provides no entry; workspace-package and type resolution have correctness gaps; default framing needs intervention; 3D failed this scale trial. A curated guide can connect known pieces effectively. Helping an unfamiliar person find those pieces remains a distinct unfinished part of the product. These are findings for the next design discussion, not approval of a new launcher, resolver or renderer.
+
+## Owner-run hosting
+
+At [Turn 5](../../../ChatHistory/2026/10/2026-10-27.1.record.md#turn-5), the owner’s browser showed [connection refused](28-owner-connection-refused.png). The bundle files remained present, but port 8080 had no listener. The earlier running preview did not persist through the handoff. To serve the existing URLs from the devcontainer, keep this command running in a terminal:
+
+```bash
+python3 -m http.server 8080 --bind 0.0.0.0 --directory /workspaces/Live-Documentation/dist/explorer
+```
+
+Refresh the existing shared link afterward. If needed, forward port 8080 in VS Code’s Ports panel. This serves the built output without regenerating it.
