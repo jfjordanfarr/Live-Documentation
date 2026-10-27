@@ -1,6 +1,6 @@
 # The owner
 
-_Current as of 2026-10-22. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
+_Current as of 2026-10-27. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
 
 The owner of this repository is its only human contributor. They act as product manager and architect and expect the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
 
@@ -13,6 +13,8 @@ Their day job is public-facing, PCI-DSS-secured applications at a mid-sized mult
 What they want from the tool at work (2026-09-26): "I just want to be able to show non-software people what I do and they can _see it_ the way I understand it. I don't want to keep drawing bespoke diagrams for XYZ questions from the business at work."
 
 ## How they work with an agent
+
+- **Human-like evaluation and useful automated checks together** (2026-10-27, [Turn 2](../ChatHistory/2026/10/2026-10-27.1.record.md#turn-2)). The owner chooses a strong visual/reasoning model for judgment beyond programmatic checks and still wants those checks to earn their place: “I'm happy to sweep away cruft if it means we get the same guaranteed functionality.” This supports removing redundant machinery while preserving the behaviour it protects, not discarding checks merely because they are slow. They ask the lead agent to recommend what is wise toward software that is “almost self-evident” and makes good use of LLM strengths, rather than return the sequencing decision without judgment.
 
 - **Mature changes must fit the whole structure** (2026-10-19, [Turn 20](../ChatHistory/2026/10/2026-10-19.1.record.md#turn-20)). The owner welcomes substantial thought and exploration before implementation: “everything must agree with everything in our software”. Early development was “code like clay”; now changes should be “precise, careful, attentive to the overall structure that has emerged”. A simple verbal rule does not justify a narrow patch that leaves related controls, navigation, persistence and layout disagreeing.
 
