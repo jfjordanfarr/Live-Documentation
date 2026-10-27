@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-27",
+  "upstreamCommit": "d2c440312e5f39d59827ed466838a623516454d6",
+  "liveDocumentationSourceCommit": "cbb17f155fd381b8a910e21b50a5bc531ebcfaa9",
+  "repositoryVerification": {
+    "command": "npm run safe:commit -- --e2e",
+    "exitCode": 0,
+    "elapsedSeconds": 2287.346841106,
+    "unitTests": 1408,
+    "integrationTests": 113,
+    "browserTests": 206
+  },
+  "bundleComparison": {
+    "files": 28145,
+    "edges": 81634,
+    "changedDependencyLists": [],
+    "baselineUnchanged": true,
+    "relatedDocumentsBefore": 50,
+    "relatedDocumentsAfter": 51,
+    "guideCitedByFiles": [
+      "apps/server/src/mcp/OrchestratorMcpService.ts",
+      "apps/server/src/mcp/toolkits/orchestrator/handlers.ts",
+      "apps/server/src/mcp/toolkits/orchestrator/tools.ts",
+      "apps/server/src/orchestration-v2/Adapters/ClaudeAdapterV2.ts",
+      "apps/server/src/orchestration-v2/Adapters/CodexAdapterV2.ts",
+      "apps/server/src/orchestration-v2/EffectWorker.ts",
+      "apps/server/src/orchestration-v2/Orchestrator.ts",
+      "apps/server/src/orchestration-v2/ProviderAdapterRegistry.ts",
+      "apps/server/src/orchestration-v2/ProviderSessionManager.ts",
+      "apps/server/src/orchestration-v2/ProviderTurnStartService.ts",
+      "apps/server/src/orchestration-v2/ThreadManagementService.ts",
+      "apps/server/src/provider/Drivers/ClaudeDriver.ts",
+      "apps/server/src/provider/Drivers/CodexDriver.ts"
+    ],
+    "guideBundledVerbatim": true
+  },
+  "portableArchive": {
+    "bytes": 13267724,
+    "sha256": "daac14b63b6b75865d604e8cb3c7652f8d33f4d88c8be3522e9a98049139874c"
+  },
+  "recipient": {
+    "archiveSha256": "daac14b63b6b75865d604e8cb3c7652f8d33f4d88c8be3522e9a98049139874c",
+    "emptyInitialStorage": true,
+    "sourceCheckoutRequired": false,
+    "restored": {
+      "cards": [
+        "apps/server/src/mcp/OrchestratorMcpService.ts",
+        "apps/server/src/orchestration-v2/ThreadManagementService.ts"
+      ],
+      "pins": 2,
+      "pathFiles": 2,
+      "reader": "docs/live-documentation-delegation.md",
+      "testsShown": false,
+      "layout": "Compact"
+    },
+    "manualPanUsed": true,
+    "localGuideLink": true,
+    "browserBack": true,
+    "downloadMatchesBundledGuide": true,
+    "guideSha256": "aee13f6277bc2ef7d1c1b58ad4df326ac1ebf8228a5d00c8251668b76a51e139",
+    "errors": [],
+    "temporaryCopyRemovedAfterCheck": true
+  },
+  "recipientRequestCount": 13,
+  "visualAssessment": {
+    "defaultReaderOccludesDestination": true,
+    "settledViewFitsAfterCollapsingNavigation": true,
+    "sidebarAndCameraNotShared": true,
+    "extraFixedPanOvershot": true,
+    "initialRecipientCaptureIncludedEntryMotion": true
+  },
+  "isolated3D": {
+    "environment": "Headless Chromium in the development container; no concurrent generator or full browser suite",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "trials": [
+      {
+        "name": "two-file-path",
+        "success": false,
+        "elapsedMs": 119998,
+        "failure": "TimeoutError: locator.click: Timeout 120000ms exceeded.",
+        "captureFailure": "TimeoutError: page.screenshot: Timeout 5000ms exceeded."
+      },
+      {
+        "name": "service-neighbourhood",
+        "success": false,
+        "elapsedMs": 119993,
+        "failure": "TimeoutError: locator.click: Timeout 120000ms exceeded.",
+        "captureFailure": "TimeoutError: page.screenshot: Timeout 5000ms exceeded."
+      }
+    ]
+  },
+  "liveT3ProviderTrial": false,
+  "trackedT3ImplementationChanges": false
+}

@@ -1,0 +1,76 @@
+{
+  "upstreamCommit": "d2c440312e5f39d59827ed466838a623516454d6",
+  "serviceToOrchestrator": {
+    "kind": "path",
+    "direction": "outbound",
+    "length": 2,
+    "from": {
+      "codePath": "apps/server/src/mcp/OrchestratorMcpService.ts",
+      "docPath": ".live-documentation/source/apps/server/src/mcp/OrchestratorMcpService.ts.md"
+    },
+    "to": {
+      "codePath": "apps/server/src/orchestration-v2/Orchestrator.ts",
+      "docPath": ".live-documentation/source/apps/server/src/orchestration-v2/Orchestrator.ts.md"
+    },
+    "nodes": [
+      {
+        "codePath": "apps/server/src/mcp/OrchestratorMcpService.ts",
+        "docPath": ".live-documentation/source/apps/server/src/mcp/OrchestratorMcpService.ts.md"
+      },
+      {
+        "codePath": "apps/server/src/orchestration-v2/ThreadLaunchService.ts",
+        "docPath": ".live-documentation/source/apps/server/src/orchestration-v2/ThreadLaunchService.ts.md"
+      },
+      {
+        "codePath": "apps/server/src/orchestration-v2/Orchestrator.ts",
+        "docPath": ".live-documentation/source/apps/server/src/orchestration-v2/Orchestrator.ts.md"
+      }
+    ],
+    "hops": [
+      {
+        "from": {
+          "codePath": "apps/server/src/mcp/OrchestratorMcpService.ts",
+          "docPath": ".live-documentation/source/apps/server/src/mcp/OrchestratorMcpService.ts.md"
+        },
+        "to": {
+          "codePath": "apps/server/src/orchestration-v2/ThreadLaunchService.ts",
+          "docPath": ".live-documentation/source/apps/server/src/orchestration-v2/ThreadLaunchService.ts.md"
+        }
+      },
+      {
+        "from": {
+          "codePath": "apps/server/src/orchestration-v2/ThreadLaunchService.ts",
+          "docPath": ".live-documentation/source/apps/server/src/orchestration-v2/ThreadLaunchService.ts.md"
+        },
+        "to": {
+          "codePath": "apps/server/src/orchestration-v2/Orchestrator.ts",
+          "docPath": ".live-documentation/source/apps/server/src/orchestration-v2/Orchestrator.ts.md"
+        }
+      }
+    ]
+  },
+  "toolsToContractsRoot": {
+    "kind": "not-found",
+    "direction": "outbound",
+    "from": {
+      "codePath": "apps/server/src/mcp/toolkits/orchestrator/tools.ts",
+      "docPath": ".live-documentation/source/apps/server/src/mcp/toolkits/orchestrator/tools.ts.md"
+    },
+    "to": {
+      "codePath": "packages/contracts/src/index.ts",
+      "docPath": ".live-documentation/source/packages/contracts/src/index.ts.md"
+    },
+    "visitedFileCount": 10425,
+    "directMissingPackageEvidence": [
+      {
+        "node": {
+          "codePath": "apps/server/src/mcp/toolkits/orchestrator/tools.ts",
+          "docPath": ".live-documentation/source/apps/server/src/mcp/toolkits/orchestrator/tools.ts.md"
+        },
+        "reason": "missing-doc",
+        "missingDependency": "@t3tools/contracts"
+      }
+    ]
+  },
+  "interpretation": "This is a dependency-path query, not a runtime call trace. The abbreviated no-path result retains its direct missing-package evidence; the full result remains in the operational logs."
+}
