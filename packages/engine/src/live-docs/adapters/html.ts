@@ -181,12 +181,10 @@ function resolveResourcePath(
   const normalised = cleaned.replace(/\\/g, "/");
 
   let candidate: string;
-  let specifier: string;
 
   if (normalised.startsWith("/")) {
     // Server-root-relative path — try workspace root first
     const relativePath = normalised.slice(1);
-    specifier = relativePath;
     candidate = path.join(workspaceRoot, relativePath);
 
     // If not found at workspace root, search for document root
@@ -199,7 +197,6 @@ function resolveResourcePath(
   } else {
     // Relative path from source file
     candidate = path.join(sourceDir, normalised);
-    specifier = normalised;
   }
 
   // Check if file exists
@@ -209,7 +206,10 @@ function resolveResourcePath(
     : undefined;
 
   return {
-    specifier: resolvedPath ?? specifier,
+    // A filesystem lookup removes the leading slash, but an unresolved URL
+    // must retain it: `/` is a valid reference, and `/missing` differs from
+    // `missing`. A query-only reference has no pathname to normalize.
+    specifier: resolvedPath ?? (normalised || rawPath.trim()),
     resolvedPath
   };
 }
@@ -243,11 +243,12 @@ function extractHtmlDependencies(params: {
 
   // Helper to add a dependency if not already seen
   const addDependency = (rawPath: string, _kind: "stylesheet" | "script" | "asset") => {
-    if (shouldSkipUrl(rawPath)) {
+    const url = rawPath.trim();
+    if (shouldSkipUrl(url)) {
       return;
     }
 
-    const { specifier, resolvedPath } = resolveResourcePath(rawPath, sourceDir, workspaceRoot);
+    const { specifier, resolvedPath } = resolveResourcePath(url, sourceDir, workspaceRoot);
 
     // Use resolved path for deduplication if available, otherwise specifier
     const key = resolvedPath ?? specifier;
@@ -334,7 +335,7 @@ export function extractElementIds(content: string): string[] {
 // Adapter Export
 // ============================================================================
 
-/** Language adapter for HTML (`.html`, `.htm`). Extracts `<script src>`, `<link href>`, `<img src>`, and inline `<style>` references as dependencies. Extracts element `id` attributes as public symbols. */
+/** Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols. */
 export const htmlAdapter: LanguageAdapter = {
   id: "html",
   extensions: [".html", ".htm"],

@@ -17,6 +17,28 @@ describe("HTML Adapter", () => {
   });
 
   describe("extractHtmlDependencies", () => {
+    it("preserves unresolved URL identity when a root or query reference has no file path", async () => {
+      const htmlPath = path.join(tempDir, "index.html");
+      fs.writeFileSync(path.join(tempDir, "styles.css"), "body {}");
+      fs.writeFileSync(htmlPath, `
+        <link rel="stylesheet" href="/styles.css?v=1">
+        <a href="/">Home</a>
+        <a href=" /?v=1#top ">Home again</a>
+        <a href="/missing.css">Root-relative</a>
+        <a href="missing.css">Relative</a>
+        <a href="?page=next">Next</a>
+        <a href=" #local ">This page</a>
+        <script src=" https://cdn.example.com/app.js "></script>
+      `);
+
+      const result = await htmlAdapter.analyze({ absolutePath: htmlPath, workspaceRoot: tempDir });
+      expect(result!.dependencies.map(entry => entry.specifier).sort()).toEqual([
+        "/", "/missing.css", "?page=next", "missing.css", "styles.css"
+      ]);
+      expect(result!.dependencies.filter(entry => entry.resolvedPath !== undefined)
+        .map(entry => entry.resolvedPath)).toEqual(["styles.css"]);
+    });
+
     it("extracts stylesheet link dependencies", async () => {
       const htmlPath = path.join(tempDir, "index.html");
       const cssPath = path.join(tempDir, "styles.css");
@@ -350,7 +372,7 @@ describe("HTML Adapter", () => {
 
       expect(result).not.toBeNull();
       expect(result!.dependencies).toHaveLength(1);
-      expect(result!.dependencies[0].specifier).toBe("nonexistent/missing.css");
+      expect(result!.dependencies[0].specifier).toBe("/nonexistent/missing.css");
       expect(result!.dependencies[0].resolvedPath).toBeUndefined();
     });
 

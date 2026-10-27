@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/adapters/html.ts
-- Generated At: 2026-10-22T16:47:51.789Z
+- Generated At: 2026-10-27T17:46:36.867Z
 
 ## Authored
 ### Purpose
@@ -16,14 +16,15 @@ Language adapter that extracts dependency relationships from HTML files by parsi
 - Handles srcset parsing with multiple URL entries for responsive images
 - Skips external URLs (http/https), data URIs, protocol-relative URLs, and anchor-only references
 - Strips query strings and fragments from URLs before resolution
-- Returns empty symbols array since HTML files have no TypeScript-style exports
+- Unresolved URL paths keep their leading slash, so `/` remains a root reference and `/missing` remains distinct from `missing`; query-only references retain their written identity. T3's static-site examples exposed the former empty-specifier failure ([the investigation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-27.1.record.md#turn-3)).
+- Element IDs are public symbols so a consumer's `getElementById` link can land on the declared element.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `extractElementIds` {#symbol-extractelementids}
 - Type: function
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L317)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L318)
 
 ##### `extractElementIds` — Summary
 Every element id in a markup file, sorted and unique. Shared with the ASP.NET
@@ -32,11 +33,11 @@ target doc actually publishes, whatever the markup dialect.
 
 #### `htmlAdapter` {#symbol-htmladapter}
 - Type: const
-- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L338)
+- Source: [source](../../../../../../../packages/engine/src/live-docs/adapters/html.ts#L339)
 - Returns: [`LanguageAdapter`](./index.ts.mdmd.md#symbol-languageadapter)
 
 ##### `htmlAdapter` — Summary
-Language adapter for HTML (`.html`, `.htm`). Extracts `<script src>`, `<link href>`, `<img src>`, and inline `<style>` references as dependencies. Extracts element `id` attributes as public symbols.
+Language adapter for HTML (`.html`, `.htm`). Extracts resource attributes such as `<script src>`, `<link href>` and `<img src>` as dependencies. Extracts element `id` attributes as public symbols.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
