@@ -111,6 +111,22 @@ describe("discoverTargetFiles", () => {
       .toEqual(["src/index.ts"]);
   });
 
+  it("reads file symlinks but never mistakes directory or dangling symlinks for source or documents", async () => {
+    await fs.symlink("src/index.ts", path.join(workspace, "entry.ts"));
+    await fs.symlink("README.md", path.join(workspace, "guide.md"));
+    await fs.symlink(".agents/skills", path.join(workspace, "skills"));
+    await fs.symlink("src", path.join(workspace, "directory.md"));
+    await fs.symlink("missing.ts", path.join(workspace, "dangling.ts"));
+    await fs.symlink("missing.md", path.join(workspace, "dangling.md"));
+
+    expect(await discover()).toEqual([...DOCUMENTED, "entry.ts"].sort());
+    expect(await discover({}, ["skills", "directory.md", "dangling.ts", "entry.ts"]))
+      .toEqual(["entry.ts"]);
+    expect(await documents()).toContain("guide.md");
+    expect(await documents()).not.toContain("directory.md");
+    expect(await documents()).not.toContain("dangling.md");
+  });
+
   it("leaves container feature locks out even when named explicitly, while keeping configuration and similarly named source files", async () => {
     const configuration = ".devcontainer.json";
     const source = "src/devcontainer-lock.json.ts";

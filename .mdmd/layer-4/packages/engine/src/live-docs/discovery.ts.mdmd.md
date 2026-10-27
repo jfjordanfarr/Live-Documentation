@@ -4,16 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/discovery.ts
-- Generated At: 2026-10-26T21:50:56.757Z
+- Generated At: 2026-10-27T16:45:27.905Z
 
 ## Authored
 ### Purpose
 File discovery and the workspace-wide indexes for Live Documentation. Locates workspace files matching configured globs for Live Doc generation and, in one pass over them, builds the symbol index that enables cross-file type reference linking and the entry index of the files manifests declare as entries.
 
 ### Notes
+- The walk classifies symlink targets without recursively following directory links: links to files remain discoverable, while directory links and dangling links have no file content to analyze. T3 Code's `.claude/skills` directory link exposed that `glob`'s `nodir` alone does not make this distinction ([the external-project investigation](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-27.1.record.md#turn-3)).
 - Extracted 2025-12-06 from the monolithic `core.ts` during the "break up core.ts" refactoring
 - `discoverTargetFiles()` supports `--changed` mode via git intersection for fast iterations; an empty git change set selects no files. The generator discovers the full source set separately for workspace-wide indexes before selecting changed files for rendering.
-- `buildWorkspaceSymbolIndex()` performs a lightweight pre-scan of all targets to collect exported symbols
 - `resolveTypeToLiveDoc()` in `compose.ts` looks up a type name in the index; each location records whether its file declares the symbol or only re-exports it
 - The index is keyed by symbol name (case-sensitive) and supports multiple definitions with the same name
 - `buildWorkspaceSymbolIndex()` became `buildWorkspaceIndexes()` on 2026-10-15 ([Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4)): the same pass also collects what each manifest declares (`declares` on the analysis result: the files its scripts run, its binaries, its main module) into the entry index, keyed by the declared file, from which the second pass writes each file's `Entry` lines.
@@ -92,14 +92,14 @@ Workspace-relative paths with forward slashes, sorted.
 
 #### `WorkspaceIndexes` {#symbol-workspaceindexes}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L300)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L315)
 
 ##### `WorkspaceIndexes` — Summary
 The two indexes the first pass builds: the symbols every file publishes, and the files manifests declare as entries.
 
 #### `buildWorkspaceIndexes` {#symbol-buildworkspaceindexes}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L324)
+- Source: [source](../../../../../../packages/engine/src/live-docs/discovery.ts#L339)
 
 ##### `buildWorkspaceIndexes` — Summary
 Builds the workspace-wide indexes for cross-Live-Doc resolution in one pass

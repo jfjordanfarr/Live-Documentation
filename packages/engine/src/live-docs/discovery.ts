@@ -261,16 +261,31 @@ interface WalkedFile {
 async function walk(workspaceRoot: string, patterns: readonly string[], neverWalked: readonly string[]): Promise<WalkedFile[]> {
   const matches = await glob([...patterns], {
     cwd: workspaceRoot,
-    absolute: true,
     nodir: true,
+    withFileTypes: true,
     dot: true,
     windowsPathsNoEscape: true,
     ignore: ["**/.git/**", "**/node_modules/**", ...neverWalked]
   });
-  return matches.sort().map((match) => {
-    const absolute = path.resolve(workspaceRoot, match);
-    return { absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) };
-  });
+  const files: WalkedFile[] = [];
+  for (const match of matches) {
+    const absolute = match.fullpath();
+    // `nodir` excludes directory entries, but a symlink can still name a
+    // directory. Read its target's kind without following directory links
+    // during the walk. A dangling link has no source content to document.
+    if (match.isSymbolicLink()) {
+      try {
+        if (!(await fs.stat(absolute)).isFile()) continue;
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") continue;
+        throw error;
+      }
+    } else if (!match.isFile()) {
+      continue;
+    }
+    files.push({ absolute, relative: normalizeWorkspacePath(path.relative(workspaceRoot, absolute)) });
+  }
+  return files.sort((a, b) => a.absolute < b.absolute ? -1 : a.absolute > b.absolute ? 1 : 0);
 }
 
 /**
