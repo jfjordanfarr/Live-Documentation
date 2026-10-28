@@ -1,0 +1,138 @@
+{
+  "scope": "Historical measurement, 2026-10-28, Node 22 on the dev container (20 cores, 62 GB), the garbage collector run before every reading; heap plus ArrayBuffers. No product source changed for it.",
+  "browser": {
+    "headlessChromium": "145.0.7632.6",
+    "jsHeapSizeLimitMB": 3586,
+    "deviceMemory": null
+  },
+  "bundles": [
+    {
+      "bundle": "estate",
+      "fileBytes": 74189,
+      "bundleNodes": 36,
+      "bundleLinks": 95,
+      "textMB": 0.1,
+      "parsedMB": 0.1,
+      "textFreedMB": 0.1,
+      "explorerGraphMB": 0.1,
+      "spatialMB": 0,
+      "spatialNodes": 36,
+      "spatialLinks": 60,
+      "parsedBytesPerBundleNode": 4115,
+      "parsedBytesPerFileByte": 2
+    },
+    {
+      "bundle": "this repository",
+      "fileBytes": 6343466,
+      "bundleNodes": 877,
+      "bundleLinks": 4519,
+      "textMB": 12.1,
+      "parsedMB": 10.3,
+      "textFreedMB": 12.1,
+      "explorerGraphMB": 2.4,
+      "spatialMB": -0.7,
+      "spatialNodes": 877,
+      "spatialLinks": 2049,
+      "parsedBytesPerBundleNode": 12357,
+      "parsedBytesPerFileByte": 1.71
+    },
+    {
+      "bundle": "t3-code",
+      "fileBytes": 124632408,
+      "bundleNodes": 28145,
+      "bundleLinks": 124093,
+      "textMB": 237.7,
+      "parsedMB": 216.7,
+      "textFreedMB": 237.7,
+      "explorerGraphMB": 50.4,
+      "spatialMB": 7.1,
+      "spatialNodes": 21720,
+      "spatialLinks": 72137,
+      "parsedBytesPerBundleNode": 8073,
+      "parsedBytesPerFileByte": 1.82
+    }
+  ],
+  "points": [
+    {
+      "bundle": "estate",
+      "nodes": 36,
+      "links": 60,
+      "fieldMotionBytes": 84640,
+      "libraryBytes": 573368,
+      "meshes": 96,
+      "fieldMotionMB": 0.1,
+      "libraryMB": 0.5,
+      "motionStiffness": 59.177777786943864
+    },
+    {
+      "bundle": "this repository",
+      "nodes": 877,
+      "links": 2049,
+      "fieldMotionBytes": 648928,
+      "libraryBytes": 6666344,
+      "meshes": 2926,
+      "fieldMotionMB": 0.6,
+      "libraryMB": 6.4,
+      "motionStiffness": 470.9224867904343
+    },
+    {
+      "bundle": "t3-code",
+      "nodes": 1000,
+      "links": 546,
+      "fieldMotionBytes": 465360,
+      "libraryBytes": 3445744,
+      "meshes": 1546,
+      "fieldMotionMB": 0.4,
+      "libraryMB": 3.3,
+      "motionStiffness": 614.1507467855662
+    },
+    {
+      "bundle": "t3-code",
+      "nodes": 5000,
+      "links": 8117,
+      "fieldMotionBytes": 2765808,
+      "libraryBytes": 27459176,
+      "meshes": 13117,
+      "fieldMotionMB": 2.6,
+      "libraryMB": 26.2,
+      "motionStiffness": 1051.3671282542664
+    },
+    {
+      "bundle": "t3-code",
+      "nodes": 10000,
+      "links": 26992,
+      "fieldMotionBytes": 5085072,
+      "libraryBytes": 47494328,
+      "meshes": 36992,
+      "fieldMotionMB": 4.8,
+      "libraryMB": 45.3,
+      "motionStiffness": 1064.1664680817166
+    },
+    {
+      "bundle": "t3-code",
+      "nodes": 21720,
+      "links": 72137,
+      "fieldMotionBytes": 11720376,
+      "libraryBytes": 115555984,
+      "meshes": 93857,
+      "fieldMotionMB": 11.2,
+      "libraryMB": 110.2,
+      "motionStiffness": 2263.606340543528
+    }
+  ],
+  "fit": {
+    "fieldMotion": {
+      "perNode": 506.000105808441,
+      "perLink": 9.271964775301823
+    },
+    "library": {
+      "perNode": 4534.977198184722,
+      "perLink": 221.9082421865799
+    }
+  },
+  "limitations": [
+    "Measured in Node, not in the browser: the page's DOM labels, the instanced batches' buffers, the WebGL renderer's own state and the library's picking are not in these numbers; the browser figure is to be read when T3's 3D view starts.",
+    "The bundle's text is a two-byte string here because the JSON holds characters outside Latin-1; the page reads the bundle with response.json(), which need not hold such a string.",
+    "The fits go through the origin over the five count points (estate, this repository, three T3 prefixes and T3 whole); the parsed bundle is content, not count, so it is reported per bundle."
+  ]
+}
