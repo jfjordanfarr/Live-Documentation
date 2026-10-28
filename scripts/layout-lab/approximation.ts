@@ -22,7 +22,7 @@ import { decompressSnapshot } from "../../packages/explorer/src/client/persisten
 import { getDefaultFilters, getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ForceGraphTuning, SpatialLayout } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf, type SpatialGraphNode } from "../../packages/explorer/src/client/views/forceGraphData";
-import { easeSpatialLayout, spatialFieldOf, type SpatialLink } from "../../packages/explorer/src/client/views/forceGraphLayout";
+import { easeSpatialLayout, spatialFieldOf, type SpatialLink, type SpatialNode } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { diagonalOf, SpatialField } from "../../packages/explorer/src/client/views/forceGraphPhysics";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
@@ -150,7 +150,7 @@ export interface ForceError {
 export function forceErrors(subject: string, nodes: readonly SpatialGraphNode[], links: readonly SpatialLink[], positions: Float64Array, tuning: ForceGraphTuning, layout: SpatialLayout, approximations: readonly number[]): ForceError[] {
   const forcesAt = (settings: ForceGraphTuning): Float64Array => {
     const out = new Float64Array(positions.length);
-    spatialFieldOf(nodes, links, settings, layout).forces(positions, out);
+    spatialFieldOf<SpatialNode>(nodes, links, settings, layout).forces(positions, out);
     return out;
   };
   const exact = forcesAt({ ...tuning, approximation: 0 }), uncharged = forcesAt({ ...tuning, approximation: 0, charge: 0 });

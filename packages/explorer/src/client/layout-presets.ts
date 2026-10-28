@@ -20,7 +20,7 @@ export const LAYOUT_RANGES = {
   },
   forceGraph: {
     linkGap: [8, 200, 2], charge: [0, 300, 5], collisionGap: [0, 20, 0.5], coupling: [0, 3, 0.1], nodeSize: [1, 10, 0.25], symbolScale: [0, 2, 0.1],
-    gravity: [0, 0.3, 0.005], chargeRange: [0, 1000, 10], approximation: [0, 1.5, 0.05], linkStrength: [0, 2, 0.05], updateEnergy: [0, 1, 0.01], tether: [0, 0.1, 0.001],
+    gravity: [0, 0.3, 0.005], chargeRange: [0, 1000, 10], approximation: [0, 0.5, 0.05], linkStrength: [0, 2, 0.05], updateEnergy: [0, 1, 0.01], tether: [0, 0.1, 0.001],
     citedByPull: [0, 1, 0.05], linkWidth: [0.1, 4, 0.1], nodeZoomResistance: [0, 1, 0.05], wireZoomResistance: [0, 1, 0.05]
   }
 } as const;

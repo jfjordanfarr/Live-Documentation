@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/approximation.ts
-- Generated At: 2026-10-28T18:35:58.822Z
+- Generated At: 2026-10-28T20:40:13.019Z
 
 ## Authored
 ### Purpose
@@ -160,6 +160,7 @@ The subject a scope's rows of error are reported under: its bundle's picture in 
 - [`forceGraphData.SpatialGraphNode`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
 - [`forceGraphLayout.SpatialLink`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
+- [`forceGraphLayout.SpatialNode`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
 - [`forceGraphLayout.easeSpatialLayout`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-easespatiallayout)
 - [`forceGraphLayout.spatialFieldOf`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialfieldof)
 - [`forceGraphPhysics.SpatialField`](../../packages/explorer/src/client/views/forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)

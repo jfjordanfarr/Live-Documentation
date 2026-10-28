@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: scripts/layout-lab/approximation.test.ts
-- Generated At: 2026-10-28T18:35:58.779Z
+- Generated At: 2026-10-28T20:40:12.983Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,6 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.LiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
 - [`document.parseLiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`document.renderLiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
 - [`graph.deriveLiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)

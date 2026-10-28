@@ -201,7 +201,9 @@ export interface ForceGraphTuning {
    * sum, zero for the exact sum over every pair, larger for faster and less exact. The exact sum costs the square of the
    * spheres, 2.2 seconds an evaluation at the T3 bundle's 21,720 (2026-10-27); the owner decided on 2026-10-28 that an
    * approximation may be the default with the exact sum kept as the oracle, and named the lever for what it adds, so that
-   * zero means none of it.
+   * zero means none of it. The lever runs to 0.5, the largest setting at which every picture measured came to rest: an
+   * approximated field's forces jump where a cell crosses the opening threshold, and at 0.9 most pictures never fell
+   * still (the lab's measurement of 2026-10-28).
    */
   approximation: number;
   /**

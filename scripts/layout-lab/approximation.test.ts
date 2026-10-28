@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { firstTick, forceErrors, renderApproximationReport, restPictures, restSubject, savedPicture, seatedPrefix, timeEvaluations, type ApproximationReport } from "./approximation";
 import type { ScopeRun } from "./scopes";
-import { parseLiveDoc, renderLiveDoc, type LiveDoc } from "../../packages/engine/src/live-docs/document";
+import { parseLiveDoc, renderLiveDoc } from "../../packages/engine/src/live-docs/document";
 import { deriveLiveDocGraph } from "../../packages/engine/src/live-docs/graph";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
@@ -17,7 +17,7 @@ function bundle(): StaticExplorerData {
   const doc = (codePath: string, archetype: string, uses: string[]) => ({
     docPath: `${location.root}/${location.baseLayer}/${codePath}.md`,
     doc: parseLiveDoc(renderLiveDoc({ codePath, layer: 4, archetype, entries: [], authored: "### Purpose\nTest.\n\n### Notes\nNone.", symbols: [],
-      dependencies: uses.map(target => ({ label: target, link: `${"../".repeat(codePath.split("/").length - 1)}${target}.md`, qualifiers: [] })) }) as LiveDoc)
+      dependencies: uses.map(target => ({ label: target, link: `${"../".repeat(codePath.split("/").length - 1)}${target}.md`, qualifiers: [] })) }))
   });
   const files = ["a/one.ts", "a/two.ts", "a/three.ts", "b/four.ts", "b/five.ts", "b/six.ts"];
   return {

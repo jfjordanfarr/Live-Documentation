@@ -4,7 +4,7 @@ Historical pictures of the reveal built this day for [the October 28 session](..
 
 ## Method and limits
 
-A script opened each state in 3D, counted the spheres drawn every 100 ms through the observation instrument of the end-to-end suite, and took a picture at the first drawn frame, at half the files, at all of them, and when the engine fell still. Times are wall-clock in headless Chromium, where a frame is drawn in software, and say only that the first piece is on screen at once and the rest follows; a real browser draws faster. Pictures 01 to 12 are from the build whose reveal spec passes (each piece applied and drawn before the next). Pictures 13 to 15 were taken earlier, from the T3 state with the exact field and before the fix that waits for a piece to be on screen, so their growth skipped pieces; they are kept as the first look at T3 in 3D and will be retaken once the octree field is merged.
+A script opened each state in 3D, counted the spheres drawn every 100 ms through the observation instrument of the end-to-end suite, and took a picture at the first drawn frame, at half the files, at all of them, and when the engine fell still. Times are wall-clock in headless Chromium, where a frame is drawn in software, and say only that the first piece is on screen at once and the rest follows; a real browser draws faster. Pictures 01 to 12 are from the build whose reveal spec passes (each piece applied and drawn before the next). Pictures 13 to 15 were taken earlier, from the T3 state with the exact field and before the fix that waits for a piece to be on screen, so their growth skipped pieces; they are kept as the first look at T3 in 3D. Pictures 16 to 21 are T3 again with the octree field at its default of 0.3 and the corrected reveal, taken while the full test chain ran on the same machine.
 
 | Picture | What it shows |
 | --- | --- |
@@ -20,10 +20,15 @@ A script opened each state in 3D, counted the spheres drawn every 100 ms through
 | [12](12-structure-still.png) | At rest, 25.6 s later. |
 | [13](13-t3-first.png) | T3, the saved two-file path, in 3D with the exact field: the path's two files and their nearest on screen within a second, where before nothing appeared at all. |
 | [14](14-t3-1000.png), [15](15-t3-5000.png) | T3 at a thousand and at five thousand spheres, the path kept in focus, the context faint. |
+| [16](16-t3-first.png) | T3 with the octree field: the first piece, the path's two files and their neighbourhood labelled, 4.1 s after opening, of which about 3.5 s is the 124.6 MB bundle's load. |
+| [17](17-t3-1000.png), [18](18-t3-5000.png), [19](19-t3-10000.png) | Growing past a thousand, five thousand and ten thousand spheres; 3,978 were in at 10.6 s and 18,293 at 45 s. |
+| [20](20-t3-21720.png) | All 21,720 in, 89 s after opening, the subject held in focus and the rest faint. |
+| [21](21-t3-at-240s.png) | Still settling at 240 s: with every sphere in, one tick of the field takes seconds, and the software renderer drew 95 frames in four minutes. This is the work the pacing is for. |
 
 ## What the pictures say
 
 - The first piece is on screen at once at every size tried: 0.5 s here and on T3, where the diagnosis of 2026-10-27 found the page frozen for the better part of a minute before any picture.
 - The subject's neighbourhood is what a person sees first; the context grows around it rather than the subject appearing somewhere in a crowd.
 - The whole of this repository is in within two seconds and settles over tens of seconds in software, which the exact field's cost sets; the octree field is to shorten it.
+- T3 with the octree: the path is on screen as soon as the bundle has loaded, the whole picture is in within a minute and a half, and the settling after that runs at a frame every few seconds, since one tick at 21,720 spheres is several evaluations of a quarter second each and the frame draws 94,000 objects in software. The pacing that spreads an evaluation across frames is what keeps the page answering through that; the picture itself is already usable as the path's context.
 - Nothing in these pictures judges the rest picture against the former one; the layout lab's comparison of the reveal's rest against the whole-at-once rest is still to be run.
