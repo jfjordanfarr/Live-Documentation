@@ -36,6 +36,19 @@ const meanMove = (before: Map<string, Point>, after: Map<string, Point>): number
   return stayed.reduce((sum, [id, was]) => sum + gap(was, after.get(id)!), 0) / stayed.length;
 };
 
+/** The rendered spheres once the picture holds at least `atLeast` and has stopped growing for a second: the reveal's last piece is in. */
+async function grown(page: Page, atLeast: number): Promise<Rendered> {
+  const started = Date.now();
+  let count = -1, stableSince = Date.now();
+  for (;;) {
+    const nodes = await renderedNodes(page);
+    if (nodes.length !== count) { count = nodes.length; stableSince = Date.now(); }
+    if (count >= atLeast && Date.now() - stableSince >= 1000) return nodes;
+    expect(Date.now() - started, "the picture finishes growing within a minute").toBeLessThan(60_000);
+    await page.waitForTimeout(200);
+  }
+}
+
 async function settled(page: Page): Promise<void> {
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
 }
@@ -70,8 +83,8 @@ test("placement alone seats each born sphere beside what it is wired to, keeps e
   expect(before.size).toBeGreaterThan(500);
   const activity = await engineActivity(page);
   await page.locator("#filter-toggle-tests").check();
-  let after: Rendered = [];
-  await expect.poll(async () => { after = await renderedNodes(page); return after.length; }).toBeGreaterThan(before.size + 100);
+  // The born spheres enter a piece a frame (the reveal, 2026-10-28), placed and never ticked; wait for the last piece.
+  const after = await grown(page, before.size + 100);
   // No sphere that stayed moved, not by a bit: there was no tick to move it.
   for (const node of after) if (before.has(node.id)) expect(node.world, node.id).toEqual(before.get(node.id));
   // The engine never ran: the container was never busy for the change.

@@ -117,15 +117,16 @@ export interface FirstTick {
  * counted by wrapping the field's one entry for the length of the tick, and the wrapper is removed after it.
  */
 export function firstTick(picture: SavedPicture, approximation: number): FirstTick {
-  const original = SpatialField.prototype.forces;
+  // Every evaluation begins once, whole or in parts (the pacing, 2026-10-28), so the beginnings are the count.
+  const original = SpatialField.prototype.begin;
   let evaluations = 0;
-  SpatialField.prototype.forces = function (this: SpatialField, ...args: Parameters<typeof original>) { evaluations++; return original.apply(this, args); };
+  SpatialField.prototype.begin = function (this: SpatialField, ...args: Parameters<typeof original>) { evaluations++; return original.apply(this, args); };
   try {
     const started = performance.now();
     easeSpatialLayout(picture.nodes, picture.links, { ...picture.tuning, approximation }, picture.layout, { maxTicks: 1 });
     return { spheres: picture.nodes.length, approximation, evaluations, ms: performance.now() - started };
   } finally {
-    SpatialField.prototype.forces = original;
+    SpatialField.prototype.begin = original;
   }
 }
 

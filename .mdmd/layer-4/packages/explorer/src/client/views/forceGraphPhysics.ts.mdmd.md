@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-10-28T18:35:56.859Z
+- Generated At: 2026-10-28T21:56:32.493Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,8 @@ Evaluation in steps (2026-10-28). The page must never hold the browser long enou
 The outer tick is subdivided when the field is stiff. A many-leaf Structure hub could exceed fixed-step Verlet's stability limit even at ordinary spring settings, producing NaN coordinates that formerly counted as still ([the October 22 finding](../../../../../../../AI-Agent-Workspace/Probes/2026-10-22/3d-tuning/README.md), repaired during the [October 24 tuning pass](../../../../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/layout-findings.md#integration-review-and-repair)). The field now accumulates a local upper bound on positive curvature during its existing pair pass: incident spring strengths, twice each active pair's positive radial repulsion/collision stiffness, gravity and an active tether. Substeps keep `step² × strength × stiffness` at most two, below the linear Verlet limit of four; an endpoint whose new contacts exceed that bound is retried with a smaller step. Partial steps leave five percent of the permitted time for smoothly increasing curvature, avoiding repeated retries at nearly identical endpoints. Each accepted step uses its own elapsed time for drag, and the tick still advances 0.5 in total. The stillness reading counts total travel through all accepted substeps, so an oscillation cannot look still merely by returning near its start. This is a local stiffness control, not an unconditional global guarantee across the repulsion's hard range cutoff. Coordinates, anchors, velocities, forces, stiffness and measured travel must remain finite; a failure throws before it can count as still.
 
 The tether is what lets a large picture come to rest. Without it, measured on this repository on 2026-10-21, the tail of the motion is long journeys in directions nothing holds: in the connections layout half the spheres belong to no main piece, and lone files and islands travel a third of the picture round the shell where gravity and the main mass's push balance; in the structure layout whole branches swing about their joints, since a spring holds a distance and never an angle. Friction, a bounded reach and dashpots on the springs did not end them; a tether of 0.01 brought both layouts to rest in a few hundred ticks ([the work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#work-notes-what-moves-in-the-tail-this-repository-headless), the owner's choice in [Turn 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
+
+A tick can be taken in parts (`SpatialMotion.advance`, 2026-10-28): each part evaluates the field over at most a budget of spheres, through the field's steps, and the tick completes when its time is spent; forces left stale by `refresh`, by a hand or by the tether taking hold, are read again in parts first, and the motion no longer reads the field in its constructor, so that a picture of 21,720 spheres is not held for an evaluation at every piece of its reveal. A call at another strength or with another sphere held drops the substep being tried and goes on with the time that is left. The numbers are the whole tick's however it is divided, which the tests hold part size by part size. This is the pacing the owner's standard asked for, that the page never reach the browser's offer to kill it ([Turn 4 of the October 28 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4)): at the T3 bundle's full size the page's physics took a median 11.8 ms a frame and never more than 28.5 ms in headless Chromium, where before a tick held the thread for seconds ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -94,7 +96,7 @@ How far one tick moved the spheres, beside the field's reading at the new positi
 
 #### `SpatialMotion` {#symbol-spatialmotion}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L475)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L491)
 
 ##### `SpatialMotion` — Summary
 Damped velocity Verlet through a field at a constant strength: half a kick, a drift, the forces at the new place, half a
@@ -107,9 +109,14 @@ balanced arrangements may reach another of them by the gentler path. The tether 
 stood when the motion began unless one is given, while `holding`; a picture unfolding from nothing is let go until it
 has calmed, since where it was seeded is no place to hold it.
 
+A tick can be taken in parts (`advance`, 2026-10-28): each part evaluates the field over at most a budget of spheres,
+through the field's steps, and the tick completes when its time is spent, so that the page can spread a tick across
+animation frames and never hold the browser long, as the owner asked; `tick` is the parts in one call, and the numbers
+are the same either way.
+
 #### `diagonalOf` {#symbol-diagonalof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L588)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L654)
 
 ##### `diagonalOf` — Summary
 The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against.

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-10-28T18:59:46.795Z
+- Generated At: 2026-10-28T21:56:32.416Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,8 @@ Created for [the October 13 shared-preset implementation](../../../../../../../A
 A document's citation of a file (2026-10-22, [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) pulls by `ForceGraphTuning.citedByPull`, a share of a documented reference's spring (`springShare`), one by default so that it pulls as a reference does and zero to draw the line and move nothing: `linkPulls` takes the tuning and leaves such a link out of the springs, the degrees and the carry at zero. The owner asked to see the pull before deciding on it: "I want to see it before I assert it should have no pull" ([Turn 2](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-22.1.record.md#turn-2)).
 
 The headless easing reveals the picture as the page does (2026-10-28, [the reveal](forceGraphReveal.ts.mdmd.md)): `easeSpatialLayout` takes `reveal`, the attention set and the constants defaulting to `REVEAL`, feeds the first piece in the input order so that a picture no larger than it eases exactly as before, and after the page's hidden ticks adds a share at every tick, placing each newcomer by `placeNewSpheres` as it enters. `MotionForce.stir` counts stillness afresh without changing how the motion holds, for spheres entering mid-motion, and `MotionSource.onNodes` hands the page the array the simulation applied, so that the page knows when a piece is in. The page grows after the engine tick that follows the warm-up and the piece applies before the next tick, so the twin grows after that tick too ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes)).
+
+With a budget from its source (`MotionSource.budget`, milliseconds a frame), the motion force takes a tick in parts (2026-10-28): as many spheres of evaluation as the last part's time suggests the budget allows, never under 256, the spheres written back after every part so that the picture moves as the substeps land, and a tick's bookkeeping, the tether taking hold and the stillness, waiting for its last part. Headlessly, and during the library's hidden warm-up of a first picture, there is no budget and a call is a whole tick, so the twin's numbers are unchanged.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -230,7 +232,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L259)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L270)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -242,18 +244,20 @@ drag), steps the damped motion through the field at the source's strength, write
 velocities, so that D3's own integration adds nothing. A sphere keeps its velocity and its anchor by id when the field is
 built again. A picture that has never moved unfolds first. Alpha is ignored: the easing has no schedule, and ends when
 the tether holds and the largest move of a tick has stayed under `STILL_FRACTION` of the picture's diagonal for
-`QUIET_TICKS` ticks with no sphere held by a hand.
+`QUIET_TICKS` ticks with no sphere held by a hand. With a budget from the source, a call takes a part of a tick, as
+many spheres of evaluation as the last part's time suggests the budget allows, and the bookkeeping of a tick waits for
+its last part (2026-10-28); the spheres are written back after every part, so the picture moves as the substeps land.
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L334)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L358)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L351)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L375)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary
@@ -272,6 +276,7 @@ spheres stand. Inputs are not mutated; the result says whether the picture came 
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`forceGraphPhysics.MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings)
+- [`forceGraphPhysics.MotionTick`](./forceGraphPhysics.ts.mdmd.md#symbol-motiontick)
 - [`forceGraphPhysics.SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - [`forceGraphPhysics.SpatialMotion`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialmotion)
 - [`forceGraphPhysics.diagonalOf`](./forceGraphPhysics.ts.mdmd.md#symbol-diagonalof)

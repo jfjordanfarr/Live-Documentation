@@ -48,6 +48,13 @@ import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "..
 import { renderSpatialLegend } from "../panels/spatial-legend";
 import type { ExplorerState } from "../types";
 
+/**
+ * The most milliseconds a frame spends moving the spheres once the first picture is on screen: the rest of the frame is
+ * the drawing and the pointer. A tick that needs more is taken in parts across frames, so that the page never holds the
+ * browser long enough to be offered its end, whatever the picture's size (the owner's standard, 2026-10-28).
+ */
+const FRAME_BUDGET = 10;
+
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
 // ─────────────────────────────────────────────────────────────────────────
@@ -878,7 +885,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           strength: () => strength,
           // A picture still part way through its reveal is not still: the rest enters first.
           onStill: () => { if (reveal.shown < reveal.order.length) return; forceGraphInstance?.d3AlphaMin(Infinity); },
-          onNodes: nodes => { if (nodes === pendingPiece) piecesApplied = piecesRequested; }
+          onNodes: nodes => { if (nodes === pendingPiece) piecesApplied = piecesRequested; },
+          // A whole tick at a call until the first picture has warmed up hidden; a part within the frame's budget after.
+          budget: () => ready ? FRAME_BUDGET : undefined
         });
         instance.d3Force("charge", null);
         instance.d3Force("center", null);
@@ -1359,7 +1368,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     return { nodes, links };
   }
 
-  /** The next piece enters, once the last is on screen: a share more of the spheres, placed beside what holds them, and the motion counts stillness afresh and runs on. */
+  /**
+   * The next piece enters, once the last is on screen: a share more of the spheres, placed beside what holds them, and the
+   * motion counts stillness afresh and runs on. A piece a frame, whatever the motion's ticks take: headlessly a piece
+   * enters a tick, which is the same while a tick fits a frame, and at sizes where a tick spans frames the page's picture
+   * is in sooner than the twin's while its motion catches up, paced within the frame's budget (2026-10-28).
+   */
   function grow(): void {
     const instance = forceGraphInstance;
     if (!instance || !motion || reveal.shown >= reveal.order.length || piecesApplied !== piecesRequested || spheresOnScreen !== reveal.shown) return;

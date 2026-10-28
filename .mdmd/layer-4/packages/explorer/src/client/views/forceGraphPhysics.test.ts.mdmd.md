@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.test.ts
-- Generated At: 2026-10-28T18:35:56.831Z
+- Generated At: 2026-10-28T21:56:32.468Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,7 @@ _No public symbols detected_
 - [`forceGraphPhysics.FieldReading`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldreading)
 - [`forceGraphPhysics.FieldSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldsettings)
 - [`forceGraphPhysics.FieldSpring`](./forceGraphPhysics.ts.mdmd.md#symbol-fieldspring)
+- [`forceGraphPhysics.MotionTick`](./forceGraphPhysics.ts.mdmd.md#symbol-motiontick)
 - [`forceGraphPhysics.SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - [`forceGraphPhysics.SpatialMotion`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialmotion)
 - [`forceGraphPhysics.diagonalOf`](./forceGraphPhysics.ts.mdmd.md#symbol-diagonalof)

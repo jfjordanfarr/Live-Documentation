@@ -60,11 +60,11 @@ describe("the approximation's measure", () => {
     const rows = timeEvaluations(picture, [4, 100], [0.5], 2);
     expect(rows.map(row => [row.spheres, row.approximation])).toEqual([[4, 0], [4, 0.5], [8, 0], [8, 0.5]]);
     expect(rows.every(row => row.ms >= 0 && row.runs === 2 && Number.isFinite(row.stiffness))).toBe(true);
-    const forces = SpatialField.prototype.forces;
+    const begin = SpatialField.prototype.begin;
     const tick = firstTick(picture, 0.5);
-    // The motion begun on the field, released twice for a first picture's unfolding, then one tick: four at the least.
-    expect(tick.evaluations).toBeGreaterThanOrEqual(4);
-    expect(SpatialField.prototype.forces).toBe(forces);
+    // The forces where the spheres stand, read when the tick begins, then the tick's substeps: two at the least.
+    expect(tick.evaluations).toBeGreaterThanOrEqual(2);
+    expect(SpatialField.prototype.begin).toBe(begin);
   });
 
   it("measures a setting's error against the exact repulsion, nothing when every cell is opened", () => {

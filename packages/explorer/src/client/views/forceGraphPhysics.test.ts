@@ -2,7 +2,7 @@ import { forceSimulation } from "d3-force-3d";
 import { describe, expect, it, vi } from "vitest";
 
 import { MOTION, QUIET_TICKS, STILL_FRACTION, UNFOLDED_FRACTION } from "./forceGraphLayout";
-import { diagonalOf, SpatialField, SpatialMotion, type FieldReading, type FieldSettings, type FieldSpring } from "./forceGraphPhysics";
+import { diagonalOf, SpatialField, SpatialMotion, type FieldReading, type FieldSettings, type FieldSpring, type MotionTick } from "./forceGraphPhysics";
 
 const SETTINGS: FieldSettings = { charge: 60, chargeRange: 0, approximation: 0, gravity: 0.01, collisionGap: 5, collisionStiffness: 3, tether: 0 };
 const UP = (): { x: number; y: number; z: number } => ({ x: 0, y: 0, z: 1 });
@@ -111,7 +111,9 @@ describe("the damped motion through it", () => {
     }
     field.forces(expected, force);
     for (let k = 0; k < velocity.length; k++) velocity[k] = decay * (velocity[k] + h * strength * force[k] / 2);
-    const calls = vi.spyOn(field, "forces");
+    // The forces where the spheres stand are read when first wanted; the tick's own evaluations begin after.
+    void motion.current;
+    const calls = vi.spyOn(field, "begin");
     expect(motion.tick(strength).moveMax).toBe(moveMax);
     expect(calls).toHaveBeenCalledTimes(1);
     expect(x).toEqual(expected);
@@ -129,7 +131,8 @@ describe("the damped motion through it", () => {
     const velocity = new Float64Array(x.length);
     for (let i = 0; i < x.length; i += 3) velocity[i + 1] = 10; // Shared translation has no spring force.
     const motion = new SpatialMotion(field, x, { step: .5, drag: .2 }, velocity);
-    const calls = vi.spyOn(field, "forces");
+    void motion.current;
+    const calls = vi.spyOn(field, "begin");
     motion.tick(1);
     expect(calls.mock.calls.length).toBeGreaterThan(1);
     for (let i = 0; i < x.length; i += 3) expect(velocity[i + 1]).toBeCloseTo(10 * Math.exp(-.2 * .5), 12);
@@ -150,7 +153,7 @@ describe("the damped motion through it", () => {
     const x = Float64Array.from([-5, 0, 0, 5, 0, 0]);
     const motion = new SpatialMotion(field, x, { step: .5, drag: .2 }, Float64Array.from([0, 0, 0, -10, 0, 0]));
     expect(motion.current.stiffness).toBe(0);
-    const calls = vi.spyOn(field, "forces");
+    const calls = vi.spyOn(field, "begin");
     const reading = motion.tick(1, new Set([0]));
     expect(calls.mock.calls.length).toBeGreaterThan(2);
     expect([...x.slice(0, 3)]).toEqual([-5, 0, 0]);
@@ -584,4 +587,73 @@ describe("the motion through an approximated field (2026-10-28)", () => {
       }
     }
   }, 60_000);
+});
+
+describe("a tick taken in parts (2026-10-28)", () => {
+  const crowd = (): { field: SpatialField; start: Float64Array } => {
+    const { x, radii } = cube(240, 21, 300);
+    for (const body of [5, 6]) x.set(x.subarray(0, 3), 3 * body);
+    return { field: new SpatialField(radii, hanging(240, 22), { ...SETTINGS, approximation: 0.5, tether: 0.02 }, PARTING), start: x };
+  };
+  const state = (motion: SpatialMotion): number[] => [...motion.positions, ...motion.velocity];
+
+  it("takes a tick in parts of any size to the whole tick's numbers, however the parts fall", () => {
+    const { field, start } = crowd();
+    const whole = new SpatialMotion(field, Float64Array.from(start), MOTION);
+    whole.release();
+    const ticks = [whole.tick(1), whole.tick(1, new Set([3])), whole.tick(0.5)];
+    for (const spheres of [1, 7, 100, 239, 240, 1000]) {
+      const parted = new SpatialMotion(field, Float64Array.from(start), MOTION);
+      parted.release();
+      const results: MotionTick[] = [];
+      for (const [strength, fixed] of [[1, undefined], [1, new Set([3])], [0.5, undefined]] as const) {
+        let result: MotionTick | null = null, parts = 0;
+        while (!result) { result = parted.advance(strength, fixed, spheres); parts++; }
+        if (spheres < 240) expect(parts).toBeGreaterThan(1);
+        results.push(result);
+      }
+      expect(state(parted)).toEqual(state(whole));
+      results.forEach((result, i) => expect([result.moveMax, result.stiffness, result.overlaps, result.worstOverlap]).toEqual([ticks[i].moveMax, ticks[i].stiffness, ticks[i].overlaps, ticks[i].worstOverlap]));
+    }
+  });
+
+  it("reads stale forces in parts first, drops a substep being tried when refreshed, and still completes with every number finite", () => {
+    const { field, start } = crowd();
+    const motion = new SpatialMotion(field, Float64Array.from(start), MOTION);
+    // The forces where the spheres stand are read in parts before the first substep: three parts of a hundred.
+    expect(motion.advance(1, undefined, 100)).toBeNull();
+    expect(motion.advance(1, undefined, 100)).toBeNull();
+    let result: MotionTick | null = null, parts = 0;
+    while (!result && parts < 1000) { result = motion.advance(1, undefined, 100); parts++; }
+    expect(result).not.toBeNull();
+    // A hand moves a sphere while a substep is being tried: the trial is dropped and the forces read again.
+    expect(motion.advance(1, undefined, 50)).toBeNull();
+    motion.positions[0] += 30;
+    motion.refresh();
+    expect(() => motion.current).not.toThrow();
+    result = null; parts = 0;
+    while (!result && parts < 1000) { result = motion.advance(1, undefined, 50); parts++; }
+    expect(result).not.toBeNull();
+    expect(motion.positions.every(Number.isFinite) && motion.velocity.every(Number.isFinite)).toBe(true);
+  });
+
+  it("goes on at a new strength or with a sphere newly held, keeping that sphere where the hand put it", () => {
+    const { field, start } = crowd();
+    const motion = new SpatialMotion(field, Float64Array.from(start), MOTION);
+    expect(motion.advance(1, undefined, 60)).toBeNull();
+    expect(motion.advance(1, undefined, 60)).toBeNull();
+    const held = Float64Array.from(motion.positions.subarray(9, 12));
+    let result: MotionTick | null = null, parts = 0;
+    while (!result && parts < 1000) { result = motion.advance(0.5, new Set([3]), 60); parts++; }
+    expect(result).not.toBeNull();
+    expect(Array.from(motion.positions.subarray(9, 12))).toEqual(Array.from(held));
+    expect(Array.from(motion.velocity.subarray(9, 12))).toEqual([0, 0, 0]);
+  });
+
+  it("refuses a part without a positive budget", () => {
+    const { field, start } = crowd();
+    const motion = new SpatialMotion(field, Float64Array.from(start), MOTION);
+    expect(() => motion.advance(1, undefined, 0)).toThrow("positive budget");
+    expect(() => motion.advance(1, undefined, NaN)).toThrow("positive budget");
+  });
 });

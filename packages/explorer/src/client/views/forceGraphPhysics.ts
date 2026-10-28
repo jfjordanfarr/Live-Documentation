@@ -461,6 +461,17 @@ export interface MotionTick extends FieldReading {
   moveMax: number;
 }
 
+/** A tick in progress: what it was asked at, how much of its time is left, and the substep being tried, if one is. */
+interface TickInProgress {
+  strength: number;
+  fixed: ReadonlySet<number>;
+  remaining: number;
+  /** The size the next substep must keep to, after an endpoint proved too stiff; none until then. */
+  retry: number | null;
+  moveMax: number;
+  trial: { h: number; decay: number; evaluation: FieldEvaluation; next: number } | null;
+}
+
 /**
  * Damped velocity Verlet through a field at a constant strength: half a kick, a drift, the forces at the new place, half a
  * kick, with the drag applied as an exact decay in two halves around them. Each outer tick advances the same elapsed
@@ -471,6 +482,11 @@ export interface MotionTick extends FieldReading {
  * balanced arrangements may reach another of them by the gentler path. The tether holds each sphere to `anchor`, where it
  * stood when the motion began unless one is given, while `holding`; a picture unfolding from nothing is let go until it
  * has calmed, since where it was seeded is no place to hold it.
+ *
+ * A tick can be taken in parts (`advance`, 2026-10-28): each part evaluates the field over at most a budget of spheres,
+ * through the field's steps, and the tick completes when its time is spent, so that the page can spread a tick across
+ * animation frames and never hold the browser long, as the owner asked; `tick` is the parts in one call, and the numbers
+ * are the same either way.
  */
 export class SpatialMotion {
   readonly velocity: Float64Array;
@@ -482,7 +498,10 @@ export class SpatialMotion {
   private readonly nextVelocity: Float64Array;
   private readonly moves: Float64Array;
   private readonly travelled: Float64Array;
-  private reading: FieldReading;
+  private reading: FieldReading | null = null;
+  /** A reading of the forces where the spheres stand, in progress over parts, when the last one was left stale. */
+  private rereading: { evaluation: FieldEvaluation; next: number } | null = null;
+  private pending: TickInProgress | null = null;
 
   constructor(readonly field: SpatialField, readonly positions: Float64Array, readonly settings: MotionSettings, velocity?: Float64Array, anchor?: Float64Array) {
     if (!(settings.step > 0 && Number.isFinite(settings.step) && settings.drag >= 0 && Number.isFinite(settings.drag))) throw new Error("The motion needs a positive step and a nonnegative drag.");
@@ -497,7 +516,6 @@ export class SpatialMotion {
     this.nextVelocity = new Float64Array(positions.length);
     this.moves = new Float64Array(field.count);
     this.travelled = new Float64Array(field.count);
-    this.reading = field.forces(positions, this.force, this.anchor);
   }
 
   /** Whether the tether holds the spheres to their anchors. */
@@ -505,14 +523,23 @@ export class SpatialMotion {
     return this.held;
   }
 
-  /** The field's reading at the current positions. */
+  /** The field's reading at the current positions, read whole now if it is not at hand. */
   get current(): FieldReading {
+    if (!this.reading) {
+      this.rereading = null;
+      this.reading = this.field.forces(this.positions, this.force, this.held ? this.anchor : undefined);
+    }
     return this.reading;
   }
 
-  /** Read the forces again after the positions were changed from outside, by a hand or by the carry of a change. */
+  /**
+   * The forces must be read again before the next step, since the positions were changed from outside, by a hand or by
+   * the carry of a change, or the tether took hold or let go; a substep being tried is dropped.
+   */
   refresh(): void {
-    this.reading = this.field.forces(this.positions, this.force, this.held ? this.anchor : undefined);
+    this.reading = null;
+    this.rereading = null;
+    if (this.pending) this.pending.trial = null;
   }
 
   /** Begin the motion again from where the spheres stand: the tether holds them here from now on. */
@@ -533,51 +560,90 @@ export class SpatialMotion {
    * caller that moved any sphere since the last tick calls `refresh` first.
    */
   tick(strength: number, fixed: ReadonlySet<number> = NO_FIXED): MotionTick {
+    for (;;) {
+      const result = this.advance(strength, fixed, Infinity);
+      if (result) return result;
+    }
+  }
+
+  /**
+   * Part of a tick at this strength: at most `spheres` spheres of field evaluation, then the tick's result when its time
+   * is spent, or null while it goes on. A tick begun at one strength with one set of held spheres goes on at the next
+   * call with the same; a call with another drops the substep being tried and goes on with the time that is left at the
+   * new ones, since a hand or a change has intervened. Forces left stale by `refresh` are read again first, in parts
+   * too. The numbers are those of the whole tick, however it is divided.
+   */
+  advance(strength: number, fixed: ReadonlySet<number> = NO_FIXED, spheres = Infinity): MotionTick | null {
     if (!(strength >= 0 && Number.isFinite(strength))) throw new Error("The strength must be finite and nonnegative.");
-    const x = this.positions, v = this.velocity;
-    if (!x.every(Number.isFinite) || !v.every(Number.isFinite)) throw new Error("The spatial motion needs finite positions and velocities.");
-    let remaining = this.settings.step;
-    this.travelled.fill(0);
-    let moveMax = 0;
+    if (!(spheres > 0)) throw new Error("A part of a tick needs a positive budget of spheres.");
+    const x = this.positions, v = this.velocity, n = this.field.count, anchor = this.held ? this.anchor : undefined;
+    let left = spheres;
+    if (!this.reading) {
+      if (!x.every(Number.isFinite)) throw new Error("The spatial motion needs finite positions and velocities.");
+      this.rereading ??= { evaluation: this.field.begin(x, this.force, anchor), next: 0 };
+      const read = this.rereading;
+      while (read.next < n && left > 0) { const to = Math.min(n, read.next + left); read.evaluation.step(read.next, to); left -= to - read.next; read.next = to; }
+      if (read.next < n) return null;
+      this.reading = read.evaluation.finish();
+      this.rereading = null;
+    }
+    let reading: FieldReading = this.reading;
+    let pending: TickInProgress | null = this.pending;
+    if (pending && (pending.strength !== strength || pending.fixed.size !== fixed.size || ![...fixed].every(i => pending!.fixed.has(i)))) {
+      pending = this.pending = { ...pending, strength, fixed: new Set(fixed), retry: null, trial: null };
+    }
+    if (!pending) {
+      if (!x.every(Number.isFinite) || !v.every(Number.isFinite)) throw new Error("The spatial motion needs finite positions and velocities.");
+      this.travelled.fill(0);
+      pending = this.pending = { strength, fixed: new Set(fixed), remaining: this.settings.step, retry: null, moveMax: 0, trial: null };
+    }
     // A linear Verlet mode is stable below h²·strength·stiffness = 4. Two leaves margin for the field's changing
     // local curvature. Read again after every accepted substep; a new contact can require an endpoint retry.
     const stepFor = (stiffness: number): number => strength > 0 && stiffness > 0 ? Math.sqrt(2 / (strength * stiffness)) : Infinity;
-    while (remaining > 0) {
-      const maximum = stepFor(this.reading.stiffness);
-      // Leave five percent of a partial step for smoothly increasing curvature, avoiding a retry at every endpoint.
-      // A whole remaining step that fits is unchanged; a new contact still has to pass the endpoint bound below.
-      let h = remaining <= maximum ? remaining : .95 * maximum;
-      for (;;) {
-        if (!(h > 0) || remaining - h === remaining) throw new Error("The spatial motion cannot advance a finite step at this stiffness.");
+    while (pending.remaining > 0) {
+      let trial = pending.trial;
+      if (!trial) {
+        const maximum: number = stepFor(reading.stiffness);
+        // Leave five percent of a partial step for smoothly increasing curvature, avoiding a retry at every endpoint.
+        // A whole remaining step that fits is unchanged; a new contact still has to pass the endpoint bound below.
+        const h: number = pending.retry ?? (pending.remaining <= maximum ? pending.remaining : .95 * maximum);
+        if (!(h > 0) || pending.remaining - h === pending.remaining) throw new Error("The spatial motion cannot advance a finite step at this stiffness.");
         const decay = Math.exp(-this.settings.drag * h / 2);
-        for (let i = 0; i < this.field.count; i++) {
+        for (let i = 0; i < n; i++) {
           const a = 3 * i;
-          const held = fixed.has(i);
+          const held = pending.fixed.has(i);
           for (let k = a; k < a + 3; k++) {
             this.nextVelocity[k] = held ? 0 : decay * v[k] + h * strength * this.force[k] / 2;
             this.nextPositions[k] = held ? x[k] : x[k] + h * this.nextVelocity[k];
           }
           this.moves[i] = held ? 0 : h * Math.hypot(this.nextVelocity[a], this.nextVelocity[a + 1], this.nextVelocity[a + 2]);
         }
-        const reading = this.field.forces(this.nextPositions, this.next, this.held ? this.anchor : undefined);
-        const allowed = stepFor(reading.stiffness);
-        if (h > allowed * (1 + 1e-12)) { h = .95 * allowed; continue; }
-        for (let i = 0; i < this.field.count; i++) {
-          const a = 3 * i;
-          if (!fixed.has(i)) for (let k = a; k < a + 3; k++) this.nextVelocity[k] = decay * (this.nextVelocity[k] + h * strength * this.next[k] / 2);
-          this.travelled[i] += this.moves[i];
-          moveMax = Math.max(moveMax, this.travelled[i]);
-        }
-        if (!this.nextVelocity.every(Number.isFinite) || !Number.isFinite(moveMax)) throw new Error("The spatial motion produced non-finite velocities or travel.");
-        x.set(this.nextPositions);
-        v.set(this.nextVelocity);
-        this.force.set(this.next);
-        this.reading = reading;
-        remaining -= h;
-        break;
+        trial = pending.trial = { h, decay, evaluation: this.field.begin(this.nextPositions, this.next, anchor), next: 0 };
       }
+      while (trial.next < n && left > 0) { const to = Math.min(n, trial.next + left); trial.evaluation.step(trial.next, to); left -= to - trial.next; trial.next = to; }
+      if (trial.next < n) return null;
+      const endpoint: FieldReading = trial.evaluation.finish();
+      const { h, decay } = trial;
+      pending.trial = null;
+      const allowed = stepFor(endpoint.stiffness);
+      if (h > allowed * (1 + 1e-12)) { pending.retry = .95 * allowed; continue; }
+      pending.retry = null;
+      for (let i = 0; i < n; i++) {
+        const a = 3 * i;
+        if (!pending.fixed.has(i)) for (let k = a; k < a + 3; k++) this.nextVelocity[k] = decay * (this.nextVelocity[k] + h * strength * this.next[k] / 2);
+        this.travelled[i] += this.moves[i];
+        pending.moveMax = Math.max(pending.moveMax, this.travelled[i]);
+      }
+      if (!this.nextVelocity.every(Number.isFinite) || !Number.isFinite(pending.moveMax)) throw new Error("The spatial motion produced non-finite velocities or travel.");
+      x.set(this.nextPositions);
+      v.set(this.nextVelocity);
+      this.force.set(this.next);
+      reading = this.reading = endpoint;
+      pending.remaining -= h;
+      if (pending.remaining > 0 && left <= 0) return null;
     }
-    const reading = this.reading;
+    this.pending = null;
+    const moveMax = pending.moveMax;
     return { get energy() { return reading.energy; }, stiffness: reading.stiffness, overlaps: reading.overlaps, worstOverlap: reading.worstOverlap, moveMax };
   }
 }

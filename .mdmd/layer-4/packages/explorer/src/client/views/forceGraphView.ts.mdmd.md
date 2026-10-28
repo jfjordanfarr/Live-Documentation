@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-28T18:59:46.948Z
+- Generated At: 2026-10-28T21:56:32.645Z
 
 ## Authored
 ### Purpose
@@ -48,19 +48,21 @@ Independent node and wire resistance interpolate between perspective at zero and
 
 The picture enters in pieces (2026-10-28, the owner's choice of a gradual reveal for 3D, [Turn 2](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-2); the order and growth are [the reveal module's](forceGraphReveal.ts.mdmd.md)). `reveal` holds the order, computed when the membership changes over the retained files and the subject, the whole's live objects and wires, and how many have entered; a change keeps what is shown and carries on in the new order, the attention set in the piece that enters now. `shownData` is the piece the library holds, each newcomer placed beside what holds it as it enters rather than at render time, so that it starts beside where its neighbours stand then. `grow`, called from the batches' per-frame hook, asks for the next share only once the last piece has been applied, known by the identity of the array the simulation hands back (`onNodes`), and drawn (`spheresOnScreen`): the library applies a request one task later and draws it a frame later, and a second request before then replaces the first and skips a piece, which the reveal spec caught. Stillness part way through a reveal does not stop the engine. The first piece warms hidden by the library's hundred ticks as every first picture did; a feed no longer reheats the engine itself, since the library resumes it when it applies the piece, and reheating first ticked the old picture once more ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes)).
 
+The motion runs within `FRAME_BUDGET`, 10 ms a frame, once the first picture is on screen (2026-10-28, the owner's standard that the page never reach the browser's offer to kill it, [Turn 4](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4)); the library's hidden warm-up of the first piece runs whole ticks as before. The reveal enters a piece a frame once the last is on screen, whatever the motion's ticks take: while a tick fits a frame that is a piece a tick, as the headless twin gives it, and at sizes where a tick spans frames the page's picture is in sooner than the twin's while its motion catches up; growing a piece a tick was tried first and left T3's reveal at half its spheres after four minutes in software ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes)). At T3's size the whole picture was in 30 s after opening in headless Chromium, and the settling after it runs at the budget: a tick of the field there is seconds of physics spread over frames, so the picture settles over minutes while the page answers. The lever for a faster settle is the approximation; the reserve, now that the motion is in parts, is a worker thread, which would give the physics a core of its own.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L56)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L63)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L64)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L71)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -68,28 +70,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L73)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L80)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L84)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L91)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L108)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L115)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L131)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L138)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 

@@ -1,7 +1,7 @@
 import { forceLink, forceSimulation, type Force, type SimulationNodeDatum } from "d3-force-3d";
 
 import type { ForceGraphTuning, SpatialLayout } from "../types";
-import { diagonalOf, SpatialField, SpatialMotion, type MotionSettings } from "./forceGraphPhysics";
+import { diagonalOf, SpatialField, SpatialMotion, type MotionSettings, type MotionTick } from "./forceGraphPhysics";
 import { nextRevealCount, REVEAL, revealOrder, type RevealSettings } from "./forceGraphReveal";
 import { under } from "./localView/directory-state";
 
@@ -245,7 +245,16 @@ export interface MotionSource<N extends SpatialNode> {
   onStill?(): void;
   /** Called with the spheres the simulation hands the force, the array it was given: a piece of the picture has been applied (2026-10-28). */
   onNodes?(nodes: readonly N[]): void;
+  /**
+   * The most milliseconds one call of the force may spend moving the spheres, so that a tick is taken in parts across
+   * animation frames and the page never holds the browser long (the owner's standard, 2026-10-28); none, as headlessly
+   * and during the library's hidden warm-up, takes a whole tick at every call.
+   */
+  budget?(): number | undefined;
 }
+
+/** The fewest spheres one part of a tick evaluates, whatever the budget, so that a tick always goes forward. */
+const PART_FLOOR = 256;
 
 /**
  * D3's simulation drives the ticks, this force does all the moving (2026-10-21). Each tick it reads the spheres where they
@@ -254,13 +263,16 @@ export interface MotionSource<N extends SpatialNode> {
  * velocities, so that D3's own integration adds nothing. A sphere keeps its velocity and its anchor by id when the field is
  * built again. A picture that has never moved unfolds first. Alpha is ignored: the easing has no schedule, and ends when
  * the tether holds and the largest move of a tick has stayed under `STILL_FRACTION` of the picture's diagonal for
- * `QUIET_TICKS` ticks with no sphere held by a hand.
+ * `QUIET_TICKS` ticks with no sphere held by a hand. With a budget from the source, a call takes a part of a tick, as
+ * many spheres of evaluation as the last part's time suggests the budget allows, and the bookkeeping of a tick waits for
+ * its last part (2026-10-28); the spheres are written back after every part, so the picture moves as the substeps land.
  */
 export function motionForce<N extends SpatialNode>(source: MotionSource<N>): MotionForce<N> {
   let nodes: N[] = [];
   let motion: SpatialMotion | null = null;
   let builtFor: readonly string[] = [];
   let quiet = 0, still = false, holding = false;
+  let part = Infinity;
   let begin: MotionStart | null = "unfold";
   const kept = new Map<string, { velocity: number[]; anchor: number[] }>();
   const keep = (): void => {
@@ -303,11 +315,23 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
       if (holding) motion.anchorHere(); else motion.release();
       begin = null;
     }
-    const tick = motion.tick(source.strength(), fixed);
+    const budget = source.budget?.();
+    let tick: MotionTick | null;
+    if (budget === undefined) tick = motion.tick(source.strength(), fixed);
+    else {
+      const count = motion.field.count;
+      if (!(part <= count)) part = count;
+      const started = performance.now();
+      tick = motion.advance(source.strength(), fixed, part);
+      const took = performance.now() - started;
+      // Aim the next part at the budget by this part's time: more spheres when it was quick, fewer when it was slow.
+      part = Math.max(PART_FLOOR, Math.min(count, Math.round(part * budget / Math.max(took, 0.1))));
+    }
     nodes.forEach((node, i) => {
       node.x = x[3 * i]; node.y = x[3 * i + 1]; node.z = x[3 * i + 2];
       node.vx = 0; node.vy = 0; node.vz = 0;
     });
+    if (!tick) return;
     const diagonal = diagonalOf(x);
     if (!holding && tick.moveMax <= UNFOLDED_FRACTION * diagonal) {
       motion.anchorHere();
