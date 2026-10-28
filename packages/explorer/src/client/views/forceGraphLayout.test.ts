@@ -349,3 +349,45 @@ describe("the easing: one motion through a conservative field, until the spheres
     expect(motion.still).toBe(false);
   });
 });
+
+describe("the reveal of a picture", () => {
+  const crowd = Array.from({ length: 24 }, (_, index) => node(`n${index}`, 1));
+  const ring: SpatialLink[] = crowd.map((file, index) => ({ source: file.id, target: crowd[(index + 1) % crowd.length].id, count: 1 }));
+  const tuning = getDefaultTuning().forceGraph;
+
+  it("is the plain easing when the whole picture is the first piece", () => {
+    const whole = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400 });
+    const revealed = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { first: 24 } });
+    expect(placesOf(revealed.nodes)).toEqual(placesOf(whole.nodes));
+    expect(revealed.ticks).toBe(whole.ticks);
+  });
+
+  it("enters the rest a share at a tick after the first piece's hidden ticks, places every sphere and comes to rest", () => {
+    const result = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 4000, reveal: { attention: new Set(["n5"]), first: 4, share: 0.5, least: 1, warmup: 3 } });
+    expect(result.still).toBe(true);
+    expect(result.nodes.every(file => Number.isFinite(file.x) && Number.isFinite(file.y) && Number.isFinite(file.z))).toBe(true);
+    // Pieces of 4, 6, 9, 14, 21 and 24 spheres: five entries after the third tick, then the easing to stillness.
+    expect(result.ticks).toBeGreaterThan(3 + 5 + QUIET_TICKS);
+    expect(result.nodes.map(file => file.id)).toEqual(crowd.map(file => file.id));
+  });
+
+  it("counts stillness afresh when stirred and finds the same rest again", () => {
+    const pair = [node("a", 1), node("b", 1)].map(file => ({ ...file }));
+    const spring: SpatialLink[] = [{ source: "a", target: "b", count: 1 }];
+    const simulation = forceSimulation(pair, 3).stop().force("link", forceLink<SpatialNode, SpatialLink>(spring).id(file => file.id).strength(0));
+    const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => spring, strength: () => 1 });
+    motion.wake("unfold");
+    simulation.force("motion", motion);
+    let ticks = 0;
+    while (!motion.still && ticks < 4000) { simulation.tick(); ticks++; }
+    expect(motion.still).toBe(true);
+    const rest = placesOf(pair);
+    motion.stir();
+    expect(motion.still).toBe(false);
+    for (let i = 0; i < QUIET_TICKS - 1; i++) simulation.tick();
+    expect(motion.still).toBe(false);
+    simulation.tick();
+    expect(motion.still).toBe(true);
+    expect(Math.max(...placesOf(pair).flat().map((value, i) => Math.abs(value - rest.flat()[i])))).toBeLessThan(1e-3 * sizeOf(pair));
+  });
+});

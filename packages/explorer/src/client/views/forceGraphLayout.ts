@@ -2,6 +2,7 @@ import { forceLink, forceSimulation, type Force, type SimulationNodeDatum } from
 
 import type { ForceGraphTuning, SpatialLayout } from "../types";
 import { diagonalOf, SpatialField, SpatialMotion, type MotionSettings } from "./forceGraphPhysics";
+import { nextRevealCount, REVEAL, revealOrder, type RevealSettings } from "./forceGraphReveal";
 import { under } from "./localView/directory-state";
 
 /** The documented interface and mutable position of a file, or of a directory hub, in the spatial layout. */
@@ -226,6 +227,8 @@ export interface MotionForce<N extends SpatialNode> extends Force<N> {
   wake(start?: MotionStart): void;
   /** Build the field again before the next tick, since the spheres' sizes, the links or the tuning changed. */
   invalidate(): void;
+  /** Count stillness afresh without changing how the motion holds: spheres entered the picture while it moved (2026-10-28). */
+  stir(): void;
   /** Whether the spheres have been still for `QUIET_TICKS` ticks since the last `wake`. */
   readonly still: boolean;
 }
@@ -240,6 +243,8 @@ export interface MotionSource<N extends SpatialNode> {
   strength(): number;
   /** Called once when the spheres fall still. */
   onStill?(): void;
+  /** Called with the spheres the simulation hands the force, the array it was given: a piece of the picture has been applied (2026-10-28). */
+  onNodes?(nodes: readonly N[]): void;
 }
 
 /**
@@ -316,9 +321,10 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     }
   }) as unknown as MotionForce<N>;
   Object.assign(force, {
-    initialize: (next: N[]): void => { keep(); motion = null; nodes = next; },
+    initialize: (next: N[]): void => { keep(); motion = null; nodes = next; source.onNodes?.(next); },
     wake: (start: MotionStart = "hold"): void => { still = false; quiet = 0; begin = start; },
-    invalidate: (): void => { keep(); motion = null; }
+    invalidate: (): void => { keep(); motion = null; },
+    stir: (): void => { still = false; quiet = 0; }
   });
   Object.defineProperty(force, "still", { get: () => still });
   return force;
@@ -329,16 +335,21 @@ export interface EaseOptions {
   strength?: number;
   start?: MotionStart;
   maxTicks?: number;
+  /** How the picture is revealed: the attention set enters first, and the constants default to `REVEAL`. */
+  reveal?: Partial<RevealSettings> & { attention?: ReadonlySet<string> };
 }
 
 /**
  * Ease a picture headlessly as the page does: D3's simulation seats the spheres without a position, as the library does,
  * resolves the links and drives the ticks, and the motion force moves the spheres at the strength given until they are
- * still or `maxTicks` have passed. A first picture unfolds (the default); a change carried from a still picture is held
- * from where its spheres stand. Inputs are not mutated; the result says whether the picture came to rest.
+ * still or `maxTicks` have passed. The picture enters in pieces as the page reveals it (2026-10-28): the first piece,
+ * holding the attention set, in the order given, so that a picture no larger than it is eased exactly as before; after
+ * the hidden ticks the page gives its first picture, a share more at every tick, each sphere placed beside what holds it
+ * as it enters. A first picture unfolds (the default); a change carried from a still picture is held from where its
+ * spheres stand. Inputs are not mutated; the result says whether the picture came to rest.
  */
 export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly SpatialLink[], tuning: ForceGraphTuning, layout: SpatialLayout,
-  { strength = 1, start = "unfold", maxTicks = 20_000 }: EaseOptions = {}): { nodes: SpatialNode[]; links: SpatialLink[]; ticks: number; still: boolean } {
+  { strength = 1, start = "unfold", maxTicks = 20_000, reveal = {} }: EaseOptions = {}): { nodes: SpatialNode[]; links: SpatialLink[]; ticks: number; still: boolean } {
   if (!Number.isInteger(maxTicks) || maxTicks < 0) throw new Error("Spatial easing's tick bound must be a nonnegative integer.");
   // D3 treats NaN positions/velocities as a request for its seed. Missing coordinates are a new sphere; corrupted
   // coordinates are a failure, never a replacement picture that the caller could mistake for a successful easing.
@@ -350,12 +361,31 @@ export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly
   const placed = nodes.map(node => ({ ...node }));
   const edges: SpatialLink[] = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
     target: typeof link.target === "string" ? link.target : link.target.id }));
-  // The link force pulls nothing; it holds every link, pulling or not, so that each one's ends resolve to their spheres.
-  const simulation = forceSimulation(placed, 3).stop().force("link", forceLink<SpatialNode, SpatialLink>(edges).id(node => node.id).strength(0));
+  const { attention = new Set<string>(), first = REVEAL.first, share = REVEAL.share, least = REVEAL.least, warmup = REVEAL.warmup } = reveal;
+  const byId = new Map(placed.map(node => [node.id, node]));
+  const idOf = (end: string | SpatialNode): string => typeof end === "string" ? end : end.id;
+  const order = revealOrder(placed, edges, attention, link => linkPulls(link, layout, tuning));
+  let shown = Math.min(order.length, Math.max(first, [...attention].filter(id => byId.has(id)).length));
+  // The link force pulls nothing; it holds every link among the spheres shown, pulling or not, so that each one's ends resolve to their spheres.
+  const linkForce = forceLink<SpatialNode, SpatialLink>().id(node => node.id).strength(0);
+  const simulation = forceSimulation<SpatialNode>([], 3).stop().force("link", linkForce);
   const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => layout, links: () => edges, strength: () => strength });
-  motion.wake(start);
   simulation.force("motion", motion);
+  const feed = (): void => {
+    const ids = new Set(order.slice(0, shown));
+    const shownNodes = placed.filter(node => ids.has(node.id));
+    const shownLinks = edges.filter(link => ids.has(idOf(link.source)) && ids.has(idOf(link.target)));
+    for (const [id, at] of placeNewSpheres(shownNodes, shownLinks, tuning, layout)) { const node = byId.get(id)!; node.x = at.x; node.y = at.y; node.z = at.z; }
+    simulation.nodes(shownNodes);
+    linkForce.links(shownLinks);
+  };
+  feed();
+  motion.wake(start);
   let ticks = 0;
-  if (strength > 0) while (!motion.still && ticks < maxTicks) { simulation.tick(); ticks++; }
+  if (strength > 0) while (!motion.still && ticks < maxTicks) {
+    simulation.tick(); ticks++;
+    // The page grows after each engine tick that follows the hidden warm-up; the piece applies before the next tick.
+    if (ticks > warmup && shown < order.length) { shown = nextRevealCount(shown, order.length, share, least); feed(); motion.stir(); }
+  }
   return { nodes: placed, links: edges, ticks, still: motion.still };
 }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-28T17:02:16.447Z
+- Generated At: 2026-10-28T18:59:46.948Z
 
 ## Authored
 ### Purpose
@@ -46,19 +46,21 @@ Wire thickness gives a counted file pair a visible weight: a baseline diameter t
 
 Independent node and wire resistance interpolate between perspective at zero and constant CSS-pixel size at one, following the owner's [request for partial resistance](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11). Drawing, picking, label offsets and captured scene radii agree on the apparent spheres; physical forces retain native radii and name disclosure retains perspective proximity. The [Connections tuning pass](../../../../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/README.md) selected node resistance .45, wire resistance .9 and baseline width .9, with lower ordinary wire alpha and wider label spacing. Appearance controls leave the camera and physical positions in place. The spatial legend derives its key from the graph actually drawn, including filtered files retained by a pin.
 
+The picture enters in pieces (2026-10-28, the owner's choice of a gradual reveal for 3D, [Turn 2](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-2); the order and growth are [the reveal module's](forceGraphReveal.ts.mdmd.md)). `reveal` holds the order, computed when the membership changes over the retained files and the subject, the whole's live objects and wires, and how many have entered; a change keeps what is shown and carries on in the new order, the attention set in the piece that enters now. `shownData` is the piece the library holds, each newcomer placed beside what holds it as it enters rather than at render time, so that it starts beside where its neighbours stand then. `grow`, called from the batches' per-frame hook, asks for the next share only once the last piece has been applied, known by the identity of the array the simulation hands back (`onNodes`), and drawn (`spheresOnScreen`): the library applies a request one task later and draws it a frame later, and a second request before then replaces the first and skips a piece, which the reveal spec caught. Stillness part way through a reveal does not stop the engine. The first piece warms hidden by the library's hundred ticks as every first picture did; a feed no longer reheats the engine itself, since the library resumes it when it applies the piece, and reheating first ticked the old picture once more ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L55)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L56)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L63)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L64)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -66,28 +68,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L72)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L73)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L83)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L84)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L107)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L108)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L130)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L131)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -133,11 +135,15 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphLabels.placeSpatialLabels`](./forceGraphLabels.ts.mdmd.md#symbol-placespatiallabels)
 - [`forceGraphLayout.MotionForce`](./forceGraphLayout.ts.mdmd.md#symbol-motionforce-interface)
 - [`forceGraphLayout.MotionStart`](./forceGraphLayout.ts.mdmd.md#symbol-motionstart)
+- [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphLayout.motionForce`](./forceGraphLayout.ts.mdmd.md#symbol-motionforce-function)
 - [`forceGraphLayout.placeNewSpheres`](./forceGraphLayout.ts.mdmd.md#symbol-placenewspheres)
 - [`forceGraphLayout.spatialNodeRadius`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
 - [`forceGraphLayout.spatialNodeValue`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnodevalue)
 - [`forceGraphLayout.symbolCountOf`](./forceGraphLayout.ts.mdmd.md#symbol-symbolcountof)
+- [`forceGraphReveal.REVEAL`](./forceGraphReveal.ts.mdmd.md#symbol-reveal)
+- [`forceGraphReveal.nextRevealCount`](./forceGraphReveal.ts.mdmd.md#symbol-nextrevealcount)
+- [`forceGraphReveal.revealOrder`](./forceGraphReveal.ts.mdmd.md#symbol-revealorder)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 - [`perspectiveTransition.ForceScene`](./perspectiveTransition.ts.mdmd.md#symbol-forcescene) (type-only)

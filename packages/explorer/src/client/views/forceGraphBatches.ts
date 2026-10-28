@@ -21,7 +21,8 @@ const attributeVersion = (geometry: BufferGeometry, name: string): number => {
 };
 
 /** Keep the library's interaction/physics loop running, but draw WebGL only when its picture changes. */
-export function drawSpatialGraphOnChange(scene: Scene, camera: Camera, renderer: WebGLRenderer, composer: { render(delta?: number): void }, prepare: () => readonly number[] = () => []): void {
+export function drawSpatialGraphOnChange(scene: Scene, camera: Camera, renderer: WebGLRenderer, composer: { render(delta?: number): void }, prepare: () => readonly number[] = () => [],
+  onFrame: (spheres: number) => void = () => {}): void {
   const render = composer.render.bind(composer);
   const clear = new Color();
   let previousCamera: number[] = [];
@@ -42,10 +43,12 @@ export function drawSpatialGraphOnChange(scene: Scene, camera: Camera, renderer:
       renderer.domElement.width, renderer.domElement.height, clear.r, clear.g, clear.b, renderer.getClearAlpha()].map(Math.fround);
     let changed = view.length !== previousCamera.length || view.some((value, i) => value !== previousCamera[i]);
     const current = new Map<GraphMesh, readonly unknown[]>();
+    let spheres = 0;
     scene.traverse(object => {
       const mesh = object as GraphMesh;
       if (!(mesh instanceof Mesh) || !(mesh.material instanceof MeshLambertMaterial)
         || (!mesh.__graphObjType && mesh.__linkThreeObjType !== "arrow")) return;
+      if (mesh.__graphObjType === "node") spheres++;
       let visible = mesh.material.visible;
       for (let parent = object; parent; parent = parent.parent!) visible &&= parent.visible;
       const material = mesh.material;
@@ -62,6 +65,8 @@ export function drawSpatialGraphOnChange(scene: Scene, camera: Camera, renderer:
       previous = current; previousCamera = view;
       render(delta);
     }
+    // The frame is on screen, drawn now or unchanged since: what the picture holds at this moment (2026-10-28).
+    onFrame(spheres);
   };
 }
 

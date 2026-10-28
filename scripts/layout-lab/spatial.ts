@@ -22,7 +22,11 @@ export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning
   const metadata = new Map(data.nodes.map(node => [node.id, node]));
   const retained = new Set(run.scope);
   for (const { link } of getVisibleConnections(pins, graph.links)) { retained.add(id(link.source)); retained.add(id(link.target)); }
-  const result = easeSpatialLayout(data.nodes, data.links, tuning, layout, { maxTicks });
+  // The attention set enters first, as it does on the page: the retained files and the subject.
+  const attention = new Set(retained);
+  const subject = retainedSubject(run);
+  if (subject) attention.add(subject);
+  const result = easeSpatialLayout(data.nodes, data.links, tuning, layout, { maxTicks, reveal: { attention } });
   const nodes = result.nodes.map(node => ({
     id: node.id,
     kind: metadata.get(node.id)?.directoryPath !== undefined ? "directory"

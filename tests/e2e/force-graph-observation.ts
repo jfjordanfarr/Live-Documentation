@@ -10,6 +10,8 @@ type ObservedWindow = Window & {
   renderedFrames?: number;
   /** Every change of the graph container's aria-busy, with the frame it happened on. */
   busyChanges?: Array<{ busy: boolean; frame: number }>;
+  /** The sizes the picture has had, as spheres drawn, each noted on the frame that first drew it (2026-10-28). */
+  renderedPieces?: number[];
   drawnMesh?: (mesh: GraphMesh) => { center: Vector3; radius: number; opacity: number; visible: boolean; point: (z: number) => Vector3 };
 };
 
@@ -37,6 +39,7 @@ export async function observeGraph(page: Page): Promise<void> {
     const inspected = window as unknown as ObservedWindow;
     inspected.renderedFrames = 0;
     inspected.busyChanges = [];
+    inspected.renderedPieces = [];
     inspected.drawnMesh = mesh => {
       const batch = mesh.userData.spatialBatch as SpatialBatchInstance | undefined;
       const nativePoint = (z: number): Vector3 => mesh.position.clone().set(0, 0, z).applyMatrix4(mesh.matrixWorld);
@@ -63,6 +66,10 @@ export async function observeGraph(page: Page): Promise<void> {
       renderer.render = (scene, camera) => {
         inspected.renderedGraph = { scene: scene as Scene, camera, renderer };
         inspected.renderedFrames = (inspected.renderedFrames ?? 0) + 1;
+        let spheres = 0;
+        scene.traverse(object => { if ((object as GraphMesh).__graphObjType === "node") spheres++; });
+        const pieces = inspected.renderedPieces!;
+        if (spheres !== pieces[pieces.length - 1]) pieces.push(spheres);
         render(scene, camera);
       };
     });
@@ -76,6 +83,11 @@ export async function observeGraph(page: Page): Promise<void> {
       }).observe(container, { attributes: true, attributeFilter: ["aria-busy"] });
     });
   });
+}
+
+/** The sizes the picture has had, as spheres drawn, from the first sphere on: a piece drawn for one frame is still seen. */
+export async function renderedPieces(page: Page): Promise<number[]> {
+  return page.evaluate(() => ((window as unknown as ObservedWindow).renderedPieces ?? []).filter(count => count > 0));
 }
 
 /** The frames drawn so far, and when the graph last became busy and last settled, by frame. */

@@ -38,7 +38,8 @@ import type {
   ExplorerNodePayload
 } from "../../shared/types";
 import { requireElement } from "../dom";
-import { motionForce, placeNewSpheres, spatialNodeRadius, spatialNodeValue, symbolCountOf, type MotionForce, type MotionStart } from "./forceGraphLayout";
+import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, spatialNodeValue, symbolCountOf, type MotionForce, type MotionStart } from "./forceGraphLayout";
+import { nextRevealCount, REVEAL, revealOrder } from "./forceGraphReveal";
 import { wheelPixels } from "./wheel";
 import type { HistoryMoment } from "../history/moment";
 import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
@@ -182,6 +183,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let labelSizes = new WeakMap<HTMLButtonElement, { width: number; height: number; text: string }>();
   let labelPriorities = new Map<string, number>();
   let labelNames = new Map<string, string>();
+  /** The reveal of the picture (2026-10-28): the order its spheres enter in, the live objects and wires of the whole, and how many have entered. */
+  let reveal: { order: string[]; nodes: Map<string, ForceGraphNode>; links: ForceGraphLink[]; shown: number } = { order: [], nodes: new Map(), links: [], shown: 0 };
+  // The library applies a piece on a later frame and draws it on the one after; the next piece waits until the last one
+  // has been applied and drawn, since a second request before then replaces the first and the picture would skip a
+  // piece. Each piece gets one tick and one frame, as it does in the headless twin.
+  let piecesRequested = 0, piecesApplied = 0, spheresOnScreen = 0;
+  /** The spheres of the piece last handed to the library, by identity: the simulation hands the force the same array when it applies it. */
+  let pendingPiece: readonly ForceGraphNode[] | null = null;
   let scopedNames = false;
   let actionStrip: HTMLDivElement | null = null;
   let actionTargetId: string | null = null;
@@ -828,8 +837,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       cached.target = liveNodes.get(resolveLinkEndpoint(link.target)) ?? link.target;
       return cached;
     });
-    const dataForGraph: ForceGraphData = { nodes: graphNodes, links: graphLinks };
     const nextMembership = JSON.stringify([graphNodes.map(node => node.id), data.links.map(link => [linkKey(link), link.count])]);
+    const membershipChanged = nextMembership !== membership;
     container.dataset.layoutPreset = layoutPresetOf(state.tuning);
 
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
@@ -867,7 +876,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           layout: () => state.spatialLayout,
           links: () => heldLinks,
           strength: () => strength,
-          onStill: () => { forceGraphInstance?.d3AlphaMin(Infinity); }
+          // A picture still part way through its reveal is not still: the rest enters first.
+          onStill: () => { if (reveal.shown < reveal.order.length) return; forceGraphInstance?.d3AlphaMin(Infinity); },
+          onNodes: nodes => { if (nodes === pendingPiece) piecesApplied = piecesRequested; }
         });
         instance.d3Force("charge", null);
         instance.d3Force("center", null);
@@ -882,24 +893,22 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
     /**
      * The one update path for a membership change (a pin, a filter, a directory, a layout, a step of history): the spheres
-     * carried, the new ones placed beside what holds them, and the motion eased at the update energy, held from where the
-     * spheres stand, or unfolding afresh for a new layout. Only the first picture warms up.
+     * carried, the piece that enters now placed beside what holds it, and the motion eased at the update energy, held
+     * from where the spheres stand, or unfolding afresh for a new layout; the rest of the picture enters a share at a
+     * tick (`grow`). Only the first picture warms up.
      */
     const feed = (): void => {
       const instance = forceGraphInstance!;
       const start: MotionStart = shownLayout !== null && shownLayout !== state.spatialLayout ? "unfold" : "hold";
       shownLayout = state.spatialLayout;
-      heldLinks = graphLinks;
-      instance.warmupTicks(0).graphData(dataForGraph);
-      move(energy ?? state.tuning.forceGraph.updateEnergy, start);
+      const shown = shownData();
+      heldLinks = shown.links;
+      instance.warmupTicks(0).graphData(shown);
+      pendingPiece = shown.nodes;
+      piecesRequested++;
+      // The library resumes the engine when it applies the piece; resuming it now would tick the old picture first.
+      move(energy ?? state.tuning.forceGraph.updateEnergy, start, false);
     };
-
-    // A sphere that was in the picture keeps its place; a new one starts beside what holds it, so that the structure
-    // layout folds the network into the tree from where the eye left it and a born file does not fly in from the origin.
-    for (const [id, start] of placeNewSpheres(graphNodes, graphLinks, state.tuning.forceGraph, state.spatialLayout)) {
-      const node = nodeCache.get(id)!;
-      node.x = start.x; node.y = start.y; node.z = start.z;
-    }
     const present = new Set(graphNodes.map(node => node.id));
     for (const id of nodeObjects.keys()) if (!present.has(id)) nodeObjects.delete(id);
     if (hoveredId && !present.has(hoveredId)) hoveredId = null;
@@ -942,6 +951,19 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (node.directoryPath !== undefined && retainedFiles.some(id => under(id, node.directoryPath!))) retained.add(node.id);
     }
     scopedNames = !!subjectAt || retained.size > 0;
+    // The picture enters in pieces (2026-10-28): what a person asked about first, then what the pulling links reach, a
+    // share more at every tick, each sphere placed beside what holds it as it enters. A membership change keeps what is
+    // shown and carries on from there in the new order; the attention set is in the piece that enters now.
+    if (membershipChanged) {
+      const attention = new Set(retained);
+      if (subjectAt) attention.add(subjectAt);
+      const kept = reveal.order.slice(0, reveal.shown).filter(id => liveNodes.has(id));
+      const keptIds = new Set(kept);
+      const order = kept.concat(revealOrder(graphNodes, graphLinks, attention, link => linkPulls(link, state.spatialLayout, state.tuning.forceGraph)).filter(id => !keptIds.has(id)));
+      const entering = [...attention].filter(id => liveNodes.has(id) && !keptIds.has(id)).length;
+      const shown = Math.min(order.length, Math.max(kept.length ? nextRevealCount(kept.length, order.length, REVEAL.share, REVEAL.least) : REVEAL.first, kept.length + entering));
+      reveal = { order, nodes: liveNodes, links: graphLinks, shown };
+    }
     labelNames = labelNamesOf(graphNodes);
     labelPriorities = new Map(graphNodes.map(node => [node.id,
       pins.entries.some(pin => pin.nodeId === node.id) || node.id === path?.[0] || node.id === path?.[path.length - 1] ? 1
@@ -974,7 +996,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           if (under(node.directoryPath ?? node.codeRelativePath, hoveredDirectory)) attention!.add(node.id);
         }
       } else if (hovered) {
-        for (const link of dataForGraph.links) {
+        for (const link of graphLinks) {
           const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
           if (a === hovered || b === hovered) { attention!.add(a); attention!.add(b); }
         }
@@ -1019,7 +1041,6 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     };
 
     if (forceGraphInstance) {
-      const membershipChanged = nextMembership !== membership;
       membership = nextMembership;
       focusSelection();
       syncInspectionAction();
@@ -1047,12 +1068,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.dataset.hoveredNode = "false";
     // The constructor declaration erases the instance's generic data types;
     // this boundary supplies the exact node/link types passed to graphData.
+    const firstPiece = shownData();
     forceGraphInstance = (new ForceGraph3D(container) as unknown as ForceGraph3DInstance<ForceGraphNode, ForceGraphLink>)
       .width(container.clientWidth)
       .height(container.clientHeight)
       .nodeResolution(12)
-      .graphData(dataForGraph)
-      .warmupTicks(100)
+      .graphData(firstPiece)
+      .warmupTicks(REVEAL.warmup)
       // The engine runs until the motion finds the spheres still and raises the minimum alpha past any alpha, and not
       // before: the library's fifteen seconds would cut a slow renderer's easing short.
       .d3AlphaMin(0)
@@ -1091,9 +1113,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     drawSpatialGraphOnChange(instance.scene(), instance.camera(), instance.renderer(), instance.postProcessingComposer(), () => {
       batches!.updateSizes(instance.camera(), instance.height());
       return [state.tuning.forceGraph.nodeZoomResistance, state.tuning.forceGraph.wireZoomResistance];
-    });
+    }, spheres => { spheresOnScreen = spheres; grow(); });
     updateAttention();
-    heldLinks = graphLinks;
+    heldLinks = firstPiece.links;
+    pendingPiece = firstPiece.nodes;
+    piecesRequested++;
     shownLayout = state.spatialLayout;
     updateForces(true);
     membership = nextMembership;
@@ -1318,6 +1342,38 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (active && forceGraphInstance) render();
   }
 
+  /**
+   * The piece of the picture the library holds: the spheres that have entered, in the order the picture lists them, and
+   * the wires among them. A sphere that was in the picture keeps its place; a new one starts beside what holds it, so
+   * that the structure layout folds the network into the tree from where the eye left it and a born file does not fly
+   * in from the origin.
+   */
+  function shownData(): ForceGraphData {
+    const shown = new Set(reveal.order.slice(0, reveal.shown));
+    const nodes = [...reveal.nodes.values()].filter(node => shown.has(node.id));
+    const links = reveal.links.filter(link => shown.has(resolveLinkEndpoint(link.source)) && shown.has(resolveLinkEndpoint(link.target)));
+    for (const [id, start] of placeNewSpheres(nodes, links, state.tuning.forceGraph, state.spatialLayout)) {
+      const node = reveal.nodes.get(id)!;
+      node.x = start.x; node.y = start.y; node.z = start.z;
+    }
+    return { nodes, links };
+  }
+
+  /** The next piece enters, once the last is on screen: a share more of the spheres, placed beside what holds them, and the motion counts stillness afresh and runs on. */
+  function grow(): void {
+    const instance = forceGraphInstance;
+    if (!instance || !motion || reveal.shown >= reveal.order.length || piecesApplied !== piecesRequested || spheresOnScreen !== reveal.shown) return;
+    reveal.shown = nextRevealCount(reveal.shown, reveal.order.length, REVEAL.share, REVEAL.least);
+    const shown = shownData();
+    heldLinks = shown.links;
+    instance.warmupTicks(0).graphData(shown);
+    pendingPiece = shown.nodes;
+    piecesRequested++;
+    // Busy follows the engine, which the library resumes as it applies the piece: at zero energy nothing moves and the
+    // engine stops before its next tick, and the pieces still enter, placed, one a frame.
+    motion.stir();
+  }
+
   function settle(): void {
     if (forceGraphInstance) move(state.tuning.forceGraph.updateEnergy, "hold");
   }
@@ -1327,7 +1383,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    * finds them still; at zero nothing moves and the engine stops before its next tick, since the library stops when alpha
    * is below its minimum and nothing is below infinity.
    */
-  function move(at: number, start: MotionStart): void {
+  function move(at: number, start: MotionStart, resume = true): void {
     const instance = forceGraphInstance;
     if (!instance || !motion) return;
     const container = requireElement("graph-svg");
@@ -1341,7 +1397,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     motion.wake(start);
     simulationRunning = true;
     container.setAttribute("aria-busy", "true");
-    instance.d3AlphaMin(0).d3ReheatSimulation();
+    instance.d3AlphaMin(0);
+    if (resume) instance.d3ReheatSimulation();
   }
 
   return { render, setActive, focusNode, focusDirectory, fit, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };

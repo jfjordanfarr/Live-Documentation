@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-10-24T19:41:34.770Z
+- Generated At: 2026-10-28T18:59:46.677Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Created in the [October 23 identity/framing pass](../../../../../../../AI-Agent-
 The owner's [October 24 resistance request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) replaced straight tube drawing with round-capped projected strokes based on Three's wide-line shader. Each endpoint's depth supplies its resistance-adjusted width; near/far clipping, end-on caps and picking agree with `forceGraphSizing.ts`. Homogeneous culling includes the visible stroke's width. Sphere proxies receive the same compensation as their drawn instances, preserving native picking and dragging; removed nodes and disposal restore their original scales. Native physical sizes remain the layout's concern.
 
 The native library still advances interaction and physics each frame. The complete postprocessing pass runs only when the camera or projection, canvas/background, native membership, geometry versions, transforms, visibility or material appearance changed. Camera matrices are compared at their actual Float32 upload precision against the last drawn frame, so sub-precision damping costs no draw and incremental movement still accumulates. The renderer therefore releases its drawing cost while the scene is idle; a restored WebGL context forces another draw. This changes no motion threshold or graph membership.
+
+`drawSpatialGraphOnChange` reports after every frame how many spheres the frame holds, drawn now or unchanged since (`onFrame`, 2026-10-28), so that the view grows a picture entering in pieces only once the last piece is on screen ([the reveal](forceGraphReveal.ts.mdmd.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -37,7 +39,7 @@ Keep the library's interaction/physics loop running, but draw WebGL only when it
 
 #### `batchSpatialGraph` {#symbol-batchspatialgraph}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L73)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L78)
 - Parameters: `scene`: [`Scene`](./localView/branch-scene.ts.mdmd.md#symbol-scene)
 
 ##### `batchSpatialGraph` — Summary
@@ -47,7 +49,7 @@ Proxies are hidden only during WebGL drawing and restored before the next intera
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L253)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L258)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary

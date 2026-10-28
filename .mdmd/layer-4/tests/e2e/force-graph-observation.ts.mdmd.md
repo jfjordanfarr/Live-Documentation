@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-24T20:00:15.999Z
+- Generated At: 2026-10-28T18:59:49.444Z
 
 ## Authored
 ### Purpose
@@ -21,12 +21,14 @@ Since the October 23 rendering pass, a native mesh can be a placement and pickin
 
 For the [October 24 projected wires](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11), link width reads the uploaded base-width attribute and CSS viewport scale; endpoints come from the actual instance transform. This establishes count weighting and control updates, but does not alone establish the shader's apparent width at partial resistance. The wire regressions therefore also measure actual WebGL pixels at controlled depths and pixel densities. Sphere radii continue to come from uploaded geometry and transforms, so resistance checks observe the size drawn rather than a parallel application estimate.
 
+`renderedPieces` (2026-10-28) notes the sizes the picture had as each frame was drawn, for [the reveal spec](force-graph-reveal.spec.ts.mdmd.md), where a poll from outside the page misses a piece that lasts one frame.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `observeGraph` {#symbol-observegraph}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L35)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L37)
 - Parameters: `page`: `Page`
 
 ##### `observeGraph` — Summary
@@ -34,9 +36,17 @@ Observe the meshes and camera actually sent to WebGL through Three's development
 note on which frame the graph container said it was busy or settled, so that a spec can count the engine's ticks between
 a change and its settle without reaching into the Explorer's state (2026-10-18).
 
+#### `renderedPieces` {#symbol-renderedpieces}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L89)
+- Parameters: `page`: `Page`
+
+##### `renderedPieces` — Summary
+The sizes the picture has had, as spheres drawn, from the first sphere on: a piece drawn for one frame is still seen.
+
 #### `engineActivity` {#symbol-engineactivity}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L82)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L94)
 - Parameters: `page`: `Page`
 
 ##### `engineActivity` — Summary
@@ -44,7 +54,7 @@ The frames drawn so far, and when the graph last became busy and last settled, b
 
 #### `markRenderedLinks` {#symbol-markrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L90)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L102)
 - Parameters: `page`: `Page`
 
 ##### `markRenderedLinks` — Summary
@@ -52,7 +62,7 @@ Mark every rendered line's object with a token, so that a later count says how m
 
 #### `markedRenderedLinks` {#symbol-markedrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L107)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L119)
 - Parameters: `page`: `Page`
 
 ##### `markedRenderedLinks` — Summary
@@ -60,7 +70,7 @@ How many rendered lines carry the token, beside how many there are.
 
 #### `renderedNodes` {#symbol-renderednodes}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L123)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L135)
 - Parameters: `page`: `Page`
 
 ##### `renderedNodes` — Summary
@@ -68,7 +78,7 @@ Read native node identity, world/screen coordinates, actual material opacity and
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L168)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L180)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
