@@ -21,7 +21,7 @@ Since the [October 24 stiffness repair](../../../../../../../AI-Agent-Workspace/
 
 The update energy (`ForceGraphTuning.updateEnergy`, the change-over-time plan's ticket C2) is the constant strength a membership change eases at, a share of the forces; the first picture, a hand and a change of the forces ease at one. From 2026-10-18 to 2026-10-21 it was a reheat's alpha under D3's cooling, applied through wrappers that scaled each force's alpha (`updateSchedule`, `scaledForce`, `pullingLinkForce`, `configureSpatialForces`, `settleSpatialUpdate`), and a picture fed at a constant share never came to rest: D3 splits a spring's pull between its ends unequally and aims it at where the spheres are about to be ([the easing probe of 2026-10-19](../../../../../../../AI-Agent-Workspace/Probes/2026-10-19/easing/README.md)). Those went with the motion.
 
-Gravity and the repulsion's reach (2026-10-17): nothing drew two unconnected clusters together before, so every reheat pushed them apart, which the owner saw as "the microgalaxies drift further apart" ([Turn 3 of the October 17 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)). Gravity pulls every sphere toward the origin in proportion to its distance (`tuning.gravity`), and the repulsion's reach can be bounded (`tuning.chargeRange`, unbounded at zero); the owner confirmed the direction, "Boom. Exactly." ([Turn 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)). The shipped 0.01 was chosen by eye on a picture D3's cooling had frozen at a little over half the size its forces balance at; eased to rest, the same tuning gives a picture 1.8 to 1.9 times as wide (measured 2026-10-21).
+Gravity and the repulsion's reach (2026-10-17): nothing drew two unconnected clusters together before, so every reheat pushed them apart, which the owner saw as "the microgalaxies drift further apart" ([Turn 3 of the October 17 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)). Gravity pulls every sphere toward the origin in proportion to its distance (`tuning.gravity`), and the repulsion's reach can be bounded (`tuning.chargeRange`, unbounded at zero); the owner confirmed the direction, "Boom. Exactly." ([Turn 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)). The repulsion's approximation (`tuning.approximation`, 2026-10-28) reaches the field the same way, through `spatialFieldOf`; what it is and what it costs are the physics module's. The shipped 0.01 was chosen by eye on a picture D3's cooling had frozen at a little over half the size its forces balance at; eased to rest, the same tuning gives a picture 1.8 to 1.9 times as wide (measured 2026-10-21).
 
 The carry is `placeNewSpheres`: a sphere that was in the picture keeps its place, a hub new to it starts at the centroid of its placed members, and any other new sphere starts beside what it is wired to by a pulling link at the spring's rest length, in a direction `seededDirection` draws from its id, so that nothing erupts from the origin; a sphere with nothing placed to start from is left to D3's seat.
 
@@ -199,8 +199,8 @@ hundredth of the picture's size, they would stay far too small (measured 2026-10
 
 ##### `spatialFieldOf` — Summary
 The field of a picture: its spheres' radii, a spring on each link that pulls in the layout with the rest length and
-strength ruled above, and the tuning's repulsion, gravity, collision gap and tether. Links whose ends are not among the
-nodes are left out, as D3 would refuse them.
+strength ruled above, and the tuning's repulsion with its reach and approximation, gravity, collision gap and tether.
+Links whose ends are not among the nodes are left out, as D3 would refuse them.
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type

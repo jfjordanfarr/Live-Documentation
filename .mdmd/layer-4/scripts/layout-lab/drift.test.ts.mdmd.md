@@ -17,7 +17,7 @@ The carry test (2026-10-18) reads the page's own rule through the lab's `carryPo
 
 Since 2026-10-18 the rendered table's expected row reads the spring from the tuning it was measured at, not from a constant, so that the shipped default may change without the test saying anything about it.
 
-Since 2026-10-21 the energy test holds the motion's meaning of the lever: every change comes to rest, a tenth of the strength takes longer than the full (137 to 142 ticks against 371 to 474 on the toy) and reaches much the same rest, and placement alone still takes no tick and moves nothing; the gravity test's bounds held unchanged under the motion (1.43 times over five cycles without gravity, 0.99 with). The settle column is a range, `rangeOf`.
+Since 2026-10-21 the energy test holds the motion's meaning of the lever: every change comes to rest, a tenth of the strength takes longer than the full (137 to 142 ticks against 371 to 474 on the toy) and reaches much the same rest, and placement alone still takes no tick and moves nothing; the gravity test's bounds held unchanged under the motion (1.43 times over five cycles without gravity, 0.99 with). The settle column is a range, `rangeOf`. Since 2026-10-28 the rendered row carries the approximation beside the reach.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

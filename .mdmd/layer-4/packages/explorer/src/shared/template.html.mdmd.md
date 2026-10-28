@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-24T19:41:36.613Z
+- Generated At: 2026-10-28T18:35:58.505Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,7 @@ The single-page HTML shell for the Live Docs Explorer static site. Defines the f
 - The Local Map subsection gained the Order Starts slider (`tuning-order-starts`, 0 to 16) and the continuing search's Search Starts (`tuning-search-starts`, 0 to 128, zero off) and Search Patience (`tuning-search-patience`, 1 to 32) on 2026-10-07.
 - The Local Map subsection gained the Churn Cost slider (`tuning-churn-cost`, 0 to 400 by 10) later on 2026-10-07, and the Order Starts slider's default fell to 2.
 - The Membrane Evenness and Row Levelness sliders (2026-10-07) stand after Column Gap in the Local Map group, 0 to 5 by a quarter, evenness at 1 by default.
+- The 3D Layout group gained Approximation (`tuning-force-approximation`, 0 to 1.5 by 0.05, zero the exact sum over every pair) after Repulsion Reach on 2026-10-28, the opening ratio of the octree sum that keeps a large picture quick, with a title saying that larger is faster and less exact.
 - The 3D Layout group gained Gravity (`tuning-force-gravity`, 0 to 0.3 by 0.005) and Repulsion Reach (`tuning-force-charge-range`, 0 to 1,000 by 10, zero unbounded) on 2026-10-17, so that the owner can "toy around with how to keep things from wiggling around too much too quickly" by hand ([the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)).
 - The same group gained Update Energy (`tuning-force-update-energy`, 0 to 1 by 0.01, 0.1 by default) on 2026-10-18 for ticket C2 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions): how much a change to what is shown stirs the picture, the full reheat at 1, placement alone at 0, with a title that says so; the three settings the plan named are three places on one slider, as the owner asked for options to taste rather than a choice made for them.
 
@@ -177,6 +178,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-column-gap-value` {#symbol-tuning-column-gap-value}
+- Type: variable
+
+#### `tuning-force-approximation` {#symbol-tuning-force-approximation}
+- Type: variable
+
+#### `tuning-force-approximation-value` {#symbol-tuning-force-approximation-value}
 - Type: variable
 
 #### `tuning-force-charge` {#symbol-tuning-force-charge}

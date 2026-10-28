@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-24T19:41:34.645Z
+- Generated At: 2026-10-28T18:35:56.500Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,7 @@ Shared vocabulary for Explorer state and controls: navigation, the Local Map's r
 - `PathDestination` and `ExplorerState.destination` (2026-10-14, [Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)): the end of a path asked through the search bar, a file with perhaps one symbol or a directory; the start is the newest pin.
 - `SpatialLayout` and `ExplorerState.spatialLayout` (2026-10-14): how the 3D Local Map places its files, by their analyzed references (`connections`) or by their declared directories (`structure`), remembered like the perspective and carried by the share link; the two directory filters of that morning are gone.
 - `ForceGraphTuning.gravity` and `chargeRange` (2026-10-17): the pull of every sphere toward the picture's centre in proportion to its distance, and how far a sphere's repulsion reaches, zero for unbounded; the restoring force the simulation lacked, the owner's "weak gravity" in place of held hubs ([Turns 3 and 5 of the October 17 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-3)).
+- `ForceGraphTuning.approximation` (2026-10-28): how far the 3D picture's repulsion may be approximated, the opening ratio of Barnes and Hut's octree sum in [`forceGraphPhysics.ts`](views/forceGraphPhysics.ts.mdmd.md), zero for the exact sum over every pair. The exact sum took 2.2 seconds an evaluation at the T3 bundle's 21,720 spheres on 2026-10-27; the owner decided on 2026-10-28 that an approximation may be the default with the exact sum kept as the oracle, and named the lever for what it adds, so that zero means none of it.
 - `ForceGraphTuning.updateEnergy` (2026-10-18): how much a change to what is shown stirs the 3D picture, the lever of ticket C2 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), a number from zero to one because a reheat in D3 is one number, the alpha the simulation starts from: one is the full reheat the library makes of every change, a fraction a reheat to that alpha that cools to the same stillness sooner, zero placement alone with no tick. The owner asked for a few settings to choose among by eye rather than a choice made for them (2026-10-17, "let the user decide to taste after presenting a few options"), so the three the plan named are three values of the one lever and the slider holds everything between.
 
 The history's levers (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and the view's half of its C14): `HistoryTuning` with the scrubber's axis (by step or by date), its granularity (automatic, every step, days, weeks, months, salient only) and the play rate in steps a second, under `TuningConfig.history`; and in the state the commit the 3D Local Map shows (`historyCommit`, null for today) and whether the step panel names authors (`showAuthors`), both carried by the address.
@@ -142,21 +143,21 @@ The 3D Local Map's packing and stable visual encodings, shared with the headless
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L230)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L238)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L235)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L243)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L244)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L252)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -164,7 +165,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L270)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L278)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

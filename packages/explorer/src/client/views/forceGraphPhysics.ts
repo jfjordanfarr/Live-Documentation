@@ -1,6 +1,8 @@
 /**
- * The motion of the 3D Local Map, the same in the browser and headlessly: one conservative field of forces and a damped
- * motion through it, which eases at a constant strength and stops when the spheres are still, judged by their motion.
+ * The motion of the 3D Local Map, the same in the browser and headlessly: one field of forces, conservative when its
+ * repulsion is summed exactly, and a damped motion through it, which eases at a constant strength and stops when the
+ * spheres are still, judged by their motion. An evaluation of the field can be taken in steps, so that the page can
+ * spread one across animation frames and never hold the browser long enough to be offered its end (the owner, 2026-10-28).
  *
  * The field is the picture's forces written as one energy: a spring on each pulling link toward its rest length, the
  * repulsion of every sphere on every other, a gravity toward the origin, an overlap penalty for spheres closer than their
@@ -8,6 +10,15 @@
  * and is aimed along the line between them as they stand. D3's own spring, which this replaces, shares a pull unequally
  * by its ends' link counts and aims at where the spheres are about to be; a picture under it at a constant strength
  * never stops moving (the easing probe of 2026-10-19, `AI-Agent-Workspace/Probes/2026-10-19/easing/README.md`).
+ *
+ * The repulsion is summed over every pair exactly when the field's `approximation` is zero, the oracle every faster sum is
+ * measured against; above zero it is summed through an octree by Barnes and Hut's approximation (`forceGraphOctree.ts`),
+ * which the 3D view of a large repository needs: on the T3 bundle of 2026-10-27, 21,720 spheres, one exact evaluation
+ * took 2.2 seconds and the first tick fifteen of them (`AI-Agent-Workspace/Probes/2026-10-27/t3-code/3d-startup.md`), and
+ * the owner decided on 2026-10-28 that an approximation may be the default with the exact sum kept as the oracle. The
+ * overlaps are found exactly either way. An approximated field is no longer exactly an energy's slope, and its forces
+ * jump where a cell's ratio crosses the opening threshold: at 0.9 and above most pictures measured never came to rest
+ * (`AI-Agent-Workspace/Probes/2026-10-28/approximation/README.md`).
  *
  * The motion is damped velocity Verlet with fixed elapsed time and drag per tick, subdivided when the field is stiff:
  * no cooling schedule or velocity reset. The drag removes energy as time passes. The owner found
@@ -20,6 +31,8 @@
  * owner, 2026-10-21, Turns 4 and 5 of that session). Its rest is not the field's own: a picture that moves again is let a
  * little further toward that, and the motion keeps a person's bearings by the same pull.
  */
+
+import { SphereOctree } from "./forceGraphOctree";
 
 /** One pulling link: the two spheres' indices, the rest length and the strength, as `forceGraphLayout.ts` rules them. */
 export interface FieldSpring {
@@ -35,6 +48,12 @@ export interface FieldSettings {
   charge: number;
   /** How far the repulsion reaches; zero or less is unbounded. */
   chargeRange: number;
+  /**
+   * How far the repulsion may be approximated, Barnes and Hut's opening ratio θ: zero sums every pair exactly; above
+   * zero a cell of spheres whose box's largest side is less than θ times its distance from a sphere pushes that sphere as
+   * all of them would from their mean place. Larger is faster and less exact. The overlaps are exact at every setting.
+   */
+  approximation: number;
   /** The pull toward the origin per unit of distance. */
   gravity: number;
   /** The gap kept between two spheres' surfaces beyond their radii. */
@@ -60,18 +79,74 @@ export interface FieldReading {
 export type PairDirection = (low: number, high: number) => { x: number; y: number; z: number };
 
 /**
- * The conservative field over spheres at fixed indices. Positions and forces are flat arrays, x, y, z per sphere. The
- * repulsion is summed over every pair exactly, which costs the square of the spheres: about 21 ms a tick at 1,120
- * spheres on the dev box in the probe, near what D3's approximation cost there, and exact, so that the forces are an
- * energy's slope and the picture can come to rest.
+ * One evaluation of the field in steps, so that its work can be spread across animation frames and the page never holds
+ * the browser long enough to be offered its end (the owner, 2026-10-28). `forces` is the three in one call.
+ */
+export interface FieldEvaluation {
+  /**
+   * Sum the spheres from `from` up to, not including, `to`: each step begins where the last ended, the first at zero, and
+   * the steps reach the field's count before `finish`. A step's work is about its spheres' share of the whole, and how the
+   * spheres are divided between steps changes no number of the result.
+   */
+  step(from: number, to: number): void;
+  /** Add gravity and the tether, check every number, and read the evaluation; its forces are then in `out`. */
+  finish(): FieldReading;
+}
+
+/** What an evaluation works in: a field keeps one for its own evaluations and makes another for a later read of an energy. */
+interface Scratch {
+  /** Each sphere's stiffness: its springs' and its pairs' at the exact sum, its springs' and its overlaps' through the tree. */
+  stiffness: Float64Array;
+  /** The octree the approximated repulsion and the overlaps are found through; none at approximation zero. */
+  tree: SphereOctree | null;
+  /** The spheres one sphere may touch, found through the tree. */
+  found: Int32Array;
+  /** Each sphere's approximated repulsion, three numbers each, added to the forces when the evaluation finishes. */
+  push: Float64Array;
+  /** Each sphere's stiffness from the approximated repulsion, added to its stiffness when the evaluation finishes. */
+  pushStiffness: Float64Array;
+}
+
+/** An evaluation in progress: what it reads, where it writes, and what its steps have summed so far. */
+interface Progress {
+  readonly x: Float64Array;
+  readonly out: Float64Array;
+  readonly anchor: Float64Array | undefined;
+  readonly measureEnergy: boolean;
+  readonly scratch: Scratch;
+  /** The repulsion's reach, infinite when unbounded, and its energy's offset there. */
+  readonly range: number;
+  readonly offset: number;
+  /** The first sphere no step has summed yet. */
+  next: number;
+  /** The springs' energy, then the pairs' at the exact sum or the overlaps' through the tree, in the order summed. */
+  energy: number;
+  /** The approximated repulsion's energy, each sphere's half summed in the order the spheres were walked. */
+  pushEnergy: number;
+  overlaps: number;
+  worstOverlap: number;
+  /** The greatest sphere's stiffness so far, at the exact sum. */
+  greatest: number;
+}
+
+/**
+ * The field over spheres at fixed indices. Positions and forces are flat arrays, x, y, z per sphere. At `approximation`
+ * zero the repulsion is summed over every pair exactly, which costs the square of the spheres, and the field is
+ * conservative: its forces are an energy's slope. Above zero the repulsion is summed through an octree built afresh at
+ * every evaluation, at a cost nearer n log n, with an error that grows with the approximation; the overlaps are found
+ * through the same tree exactly and summed in the exact loop's order. An evaluation is the springs and the tree, then the
+ * spheres in steps, then gravity and the tether (`begin`); `forces` takes it in one call. A field is made for one set of
+ * spheres.
  */
 export class SpatialField {
   private readonly springStiffness: Float64Array;
-  private readonly pairStiffness: Float64Array;
+  private readonly scratch: Scratch;
+  /** The evaluation begun last: an earlier one shares its scratch, so it may not go on. */
+  private current: Progress | null = null;
 
   constructor(readonly radii: Float64Array, readonly springs: readonly FieldSpring[], readonly settings: FieldSettings, private readonly direction: PairDirection) {
     if (!radii.every(radius => Number.isFinite(radius) && radius > 0)) throw new Error("Every sphere needs a finite positive radius.");
-    for (const value of [settings.charge, settings.gravity, settings.collisionGap, settings.collisionStiffness, settings.tether]) {
+    for (const value of [settings.charge, settings.gravity, settings.collisionGap, settings.collisionStiffness, settings.tether, settings.approximation]) {
       if (!(Number.isFinite(value) && value >= 0)) throw new Error("The field's constants must be finite and nonnegative.");
     }
     for (const spring of springs) {
@@ -84,7 +159,7 @@ export class SpatialField {
       this.springStiffness[spring.a] += spring.strength;
       this.springStiffness[spring.b] += spring.strength;
     }
-    this.pairStiffness = new Float64Array(radii.length);
+    this.scratch = this.scratchFor();
   }
 
   /** How many spheres the field holds. */
@@ -94,16 +169,48 @@ export class SpatialField {
 
   /** Write the forces at these positions into `out` and return the energy, with the overlaps found; the tether pulls toward `anchor`. */
   forces(x: Float64Array, out: Float64Array, anchor?: Float64Array): FieldReading {
-    return this.evaluate(x, out, anchor, false);
+    const evaluation = this.begin(x, out, anchor);
+    evaluation.step(0, this.count);
+    return evaluation.finish();
   }
 
-  private evaluate(x: Float64Array, out: Float64Array, anchor: Float64Array | undefined, measureEnergy: boolean): FieldReading {
+  /**
+   * Begin an evaluation at these positions, to be summed in steps and finished, writing its forces into `out`; the tether
+   * pulls toward `anchor`. The springs are summed and the tree built here. The positions and the anchor must not change
+   * until it finishes. A field holds one evaluation at a time: beginning another, or calling `forces`, ends this one,
+   * whose steps then refuse to go on rather than read scratch the later one has written.
+   */
+  begin(x: Float64Array, out: Float64Array, anchor?: Float64Array): FieldEvaluation {
+    const progress = this.start(x, out, anchor, false, this.scratch);
+    this.current = progress;
+    const own = (): void => {
+      if (this.current !== progress) throw new Error("A later evaluation of this field has begun; this one cannot go on.");
+    };
+    return {
+      step: (from, to) => { own(); this.advance(progress, from, to); },
+      finish: () => { own(); this.current = null; return this.complete(progress); }
+    };
+  }
+
+  private scratchFor(): Scratch {
+    const n = this.count, approximate = this.settings.approximation > 0;
+    return {
+      stiffness: new Float64Array(n),
+      tree: approximate ? new SphereOctree(this.radii) : null,
+      found: new Int32Array(approximate ? n : 0),
+      push: new Float64Array(approximate ? 3 * n : 0),
+      pushStiffness: new Float64Array(approximate ? n : 0)
+    };
+  }
+
+  /** An evaluation's first step: check the arrays, clear the forces, sum the springs and build the tree. */
+  private start(x: Float64Array, out: Float64Array, anchor: Float64Array | undefined, measureEnergy: boolean, scratch: Scratch): Progress {
     const n = this.count;
     if (x.length !== 3 * n || out.length !== 3 * n || (anchor && anchor.length !== 3 * n)) throw new Error("Positions, forces and anchors must hold three numbers per sphere.");
     if (!x.every(Number.isFinite) || (anchor && !anchor.every(Number.isFinite))) throw new Error("The spatial field needs finite positions and anchors.");
     out.fill(0);
-    this.pairStiffness.set(this.springStiffness);
-    let energy = 0, overlaps = 0, worstOverlap = 0;
+    scratch.stiffness.set(this.springStiffness);
+    let energy = 0;
     for (const spring of this.springs) {
       const a = 3 * spring.a, b = 3 * spring.b;
       let dx = x[b] - x[a], dy = x[b + 1] - x[a + 1], dz = x[b + 2] - x[a + 2];
@@ -119,18 +226,36 @@ export class SpatialField {
       out[a] += k * dx; out[a + 1] += k * dy; out[a + 2] += k * dz;
       out[b] -= k * dx; out[b + 1] -= k * dy; out[b + 2] -= k * dz;
     }
-    const { charge, collisionGap, collisionStiffness, gravity } = this.settings;
+    const { charge, collisionStiffness } = this.settings;
     const range = this.settings.chargeRange > 0 ? this.settings.chargeRange : Infinity;
-    const range2 = range * range;
     // The repulsion's energy is -charge·ln r beyond one unit and linear inside it, so its force stays charge at most;
     // with a bounded reach it is offset to meet zero at the bound.
     const offset = Number.isFinite(range) && range > 1 ? charge * Math.log(range) : 0;
-    let greatestStiffness = 0;
-    for (let i = 0; i < n; i++) {
+    if (scratch.tree && (charge > 0 || collisionStiffness > 0)) scratch.tree.build(x);
+    return { x, out, anchor, measureEnergy, scratch, range, offset, next: 0, energy, pushEnergy: 0, overlaps: 0, worstOverlap: 0, greatest: 0 };
+  }
+
+  /** Sum the next run of spheres, from `from` up to `to`. */
+  private advance(progress: Progress, from: number, to: number): void {
+    if (!(Number.isInteger(from) && Number.isInteger(to) && from === progress.next && to >= from && to <= this.count)) {
+      throw new Error(`An evaluation's next step begins at sphere ${progress.next} and ends at ${this.count} at the most.`);
+    }
+    if (progress.scratch.tree) this.stepThroughTree(progress, progress.scratch.tree, from, to);
+    else this.stepExactly(progress, from, to);
+    progress.next = to;
+  }
+
+  /** The exact sum over the pairs whose lower sphere is from `from` up to `to`, each pair once, with every sphere above it. */
+  private stepExactly(progress: Progress, from: number, to: number): void {
+    const n = this.count, { x, out, measureEnergy, range, offset } = progress, pairStiffness = progress.scratch.stiffness;
+    const { charge, collisionGap, collisionStiffness } = this.settings;
+    const range2 = range * range;
+    let { energy, overlaps, worstOverlap, greatest: greatestStiffness } = progress;
+    for (let i = from; i < to; i++) {
       const a = 3 * i, ax = x[a], ay = x[a + 1], az = x[a + 2], radius = this.radii[i];
       // Each pair visits this end in the same order; keep its sum in registers instead of writing the array each time.
       let fx = out[a], fy = out[a + 1], fz = out[a + 2];
-      let stiffness = this.pairStiffness[i];
+      let stiffness = pairStiffness[i];
       for (let j = i + 1; j < n; j++) {
         const b = 3 * j;
         let dx = ax - x[b], dy = ay - x[b + 1], dz = az - x[b + 2];
@@ -162,10 +287,134 @@ export class SpatialField {
           radialStiffness += collisionStiffness;
         }
         stiffness += 2 * radialStiffness;
-        this.pairStiffness[j] += 2 * radialStiffness;
+        pairStiffness[j] += 2 * radialStiffness;
       }
       out[a] = fx; out[a + 1] = fy; out[a + 2] = fz;
       greatestStiffness = Math.max(greatestStiffness, stiffness);
+    }
+    progress.energy = energy; progress.overlaps = overlaps; progress.worstOverlap = worstOverlap; progress.greatest = greatestStiffness;
+  }
+
+  /**
+   * The overlaps of the spheres from `from` up to `to` and the repulsion on them, through the octree.
+   *
+   * Every pair closer than its clearance is found through the tree, each sphere's search reaching as far as its own radius,
+   * a cell's largest radius and the gap, and is summed from its lower sphere in the exact loop's order of pairs, so that
+   * the overlaps and, without repulsion, every force are the exact loop's to the last digit. The repulsion on each sphere
+   * is a walk of the tree: a cell wholly beyond the reach is skipped; a cell that does not hold the sphere, lies wholly
+   * within the reach and whose box's largest side is less than the approximation times its distance pushes as all its
+   * spheres would from their centre of charge; any other cell is opened, a leaf to its spheres one by one, so that a
+   * sphere never pushes itself, two at one point part as the exact loop parts them, and the reach cuts sphere by sphere
+   * wherever a cell straddles it. A sphere's stiffness counts a cell taken whole as its spheres at its centre. The
+   * repulsion is kept apart from the overlaps' forces until the evaluation finishes, and each pair's energy is counted
+   * from both of its ends and halved, so that no number depends on how the spheres were divided between steps.
+   */
+  private stepThroughTree(progress: Progress, tree: SphereOctree, from: number, to: number): void {
+    const { x, out, measureEnergy, range, offset, scratch } = progress, { stiffness: stiffnessOf, found, push, pushStiffness } = scratch;
+    const { charge, collisionGap, collisionStiffness, approximation } = this.settings;
+    if (collisionStiffness > 0) {
+      let { energy, overlaps, worstOverlap } = progress;
+      for (let i = from; i < to; i++) {
+        const a = 3 * i, ax = x[a], ay = x[a + 1], az = x[a + 2], radius = this.radii[i];
+        const near = tree.touching(ax, ay, az, radius, collisionGap, found);
+        let later = 0;
+        for (let k = 0; k < near; k++) if (found[k] > i) found[later++] = found[k];
+        if (!later) continue;
+        found.subarray(0, later).sort();
+        let fx = out[a], fy = out[a + 1], fz = out[a + 2], stiffness = stiffnessOf[i];
+        for (let k = 0; k < later; k++) {
+          const j = found[k], b = 3 * j;
+          let dx = ax - x[b], dy = ay - x[b + 1], dz = az - x[b + 2];
+          let r2 = dx * dx + dy * dy + dz * dz;
+          if (r2 === 0) {
+            const unit = this.direction(i, j);
+            dx = unit.x * 1e-9; dy = unit.y * 1e-9; dz = unit.z * 1e-9; r2 = 1e-18;
+          }
+          const r = Math.sqrt(r2), clearance = radius + this.radii[j] + collisionGap;
+          if (r < clearance) {
+            const shortfall = clearance - r;
+            overlaps++;
+            if (shortfall > worstOverlap) worstOverlap = shortfall;
+            if (measureEnergy) energy += collisionStiffness * shortfall * shortfall / 2;
+            const k2 = collisionStiffness * shortfall / r;
+            fx += k2 * dx; fy += k2 * dy; fz += k2 * dz;
+            out[b] -= k2 * dx; out[b + 1] -= k2 * dy; out[b + 2] -= k2 * dz;
+            stiffness += 2 * collisionStiffness;
+            stiffnessOf[j] += 2 * collisionStiffness;
+          }
+        }
+        out[a] = fx; out[a + 1] = fy; out[a + 2] = fz;
+        stiffnessOf[i] = stiffness;
+      }
+      progress.energy = energy; progress.overlaps = overlaps; progress.worstOverlap = worstOverlap;
+    }
+    if (charge > 0) {
+      const theta2 = approximation * approximation, range2 = range * range, bounded = Number.isFinite(range);
+      const potentialAt = (r: number): number => range <= 1 ? charge * (range - r) : r >= 1 ? offset - charge * Math.log(r) : charge * (1 - r) + offset;
+      const { order, start, end, next, centreX, centreY, centreZ, width } = tree, cells = tree.cellCount;
+      let pushEnergy = progress.pushEnergy;
+      // The spheres in the tree's order, so that one sphere's walk finds the cells the last one read still near at hand.
+      for (let p = from; p < to; p++) {
+        const i = order[p], a = 3 * i, ax = x[a], ay = x[a + 1], az = x[a + 2];
+        let fx = 0, fy = 0, fz = 0, stiffness = 0, potential = 0;
+        for (let c = 0; c < cells;) {
+          const after = next[c], first = start[c], last = end[c];
+          let inReach = true;
+          if (bounded) {
+            if (tree.nearest2(c, ax, ay, az) >= range2) { c = after; continue; }
+            inReach = tree.farthest2(c, ax, ay, az) < range2;
+          }
+          if (inReach && (p < first || p >= last)) {
+            const dx = ax - centreX[c], dy = ay - centreY[c], dz = az - centreZ[c], d2 = dx * dx + dy * dy + dz * dz;
+            if (width[c] * width[c] < theta2 * d2) {
+              if (d2 < range2) {
+                const bodies = last - first, d = Math.sqrt(d2), k = bodies * charge / (d < 1 ? d : d2);
+                fx += k * dx; fy += k * dy; fz += k * dz;
+                if (d >= 1) stiffness += bodies * charge / d2;
+                if (measureEnergy) potential += bodies * potentialAt(d);
+              }
+              c = after;
+              continue;
+            }
+          }
+          if (after === c + 1) {
+            for (let q = first; q < last; q++) {
+              if (q === p) continue;
+              const j = order[q], b = 3 * j;
+              let dx = ax - x[b], dy = ay - x[b + 1], dz = az - x[b + 2];
+              let r2 = dx * dx + dy * dy + dz * dz;
+              if (r2 === 0) {
+                // The exact loop's parting: the lower index goes the given way and the higher the other.
+                const unit = this.direction(Math.min(i, j), Math.max(i, j)), side = i < j ? 1e-9 : -1e-9;
+                dx = unit.x * side; dy = unit.y * side; dz = unit.z * side; r2 = 1e-18;
+              }
+              if (r2 >= range2) continue;
+              const r = Math.sqrt(r2), k = charge / (r < 1 ? r : r2);
+              fx += k * dx; fy += k * dy; fz += k * dz;
+              if (r >= 1) stiffness += charge / r2;
+              if (measureEnergy) potential += potentialAt(r);
+            }
+          }
+          c++;
+        }
+        push[a] = fx; push[a + 1] = fy; push[a + 2] = fz;
+        pushStiffness[i] = 2 * stiffness;
+        if (measureEnergy) pushEnergy += potential / 2;
+      }
+      progress.pushEnergy = pushEnergy;
+    }
+  }
+
+  /** An evaluation's last step: add the approximated repulsion, gravity and the tether, check every number, and read it. */
+  private complete(progress: Progress): FieldReading {
+    if (progress.next !== this.count) throw new Error("An evaluation must sum every sphere before it finishes.");
+    const { x, out, anchor, measureEnergy, scratch } = progress, { charge, gravity, tether } = this.settings;
+    let energy = progress.energy, greatestStiffness = progress.greatest;
+    const overlaps = progress.overlaps, worstOverlap = progress.worstOverlap;
+    if (scratch.tree) {
+      if (charge > 0) for (let k = 0; k < out.length; k++) out[k] += scratch.push[k];
+      energy += progress.pushEnergy;
+      for (let i = 0; i < this.count; i++) greatestStiffness = Math.max(greatestStiffness, scratch.stiffness[i] + (charge > 0 ? scratch.pushStiffness[i] : 0));
     }
     if (gravity > 0) {
       for (let k = 0; k < x.length; k++) {
@@ -173,7 +422,6 @@ export class SpatialField {
         out[k] -= gravity * x[k];
       }
     }
-    const tether = this.settings.tether;
     if (tether > 0 && anchor) {
       for (let k = 0; k < x.length; k++) {
         const pull = anchor[k] - x[k];
@@ -188,8 +436,15 @@ export class SpatialField {
     // later energy read is still this reading, computed by the very same field evaluation and cached once.
     const positions = x.slice(), anchors = anchor?.slice();
     let measured: number | undefined;
-    const readEnergy = (): number => measured ??= this.evaluate(positions, new Float64Array(out.length), anchors, true).energy;
+    const readEnergy = (): number => measured ??= this.measure(positions, anchors);
     return { get energy() { return readEnergy(); }, stiffness, overlaps, worstOverlap };
+  }
+
+  /** A whole evaluation for a later read of an energy, in scratch of its own, so that it never disturbs one in progress. */
+  private measure(x: Float64Array, anchor: Float64Array | undefined): number {
+    const progress = this.start(x, new Float64Array(x.length), anchor, true, this.scratchFor());
+    this.advance(progress, 0, this.count);
+    return this.complete(progress).energy;
   }
 }
 

@@ -13,7 +13,8 @@
  *   npm run layout:lab -- refine <bundle/scope> [--capture <file>] [--starts <n>] [--churn <n>] [--patience <n>] [--config <json or @file>] [--label <name>] [--out <dir>]
  *   npm run layout:lab -- verify <bundle/scope> --config <json or @file> [--capture <file>] [--shot <png>]
  *   npm run layout:lab -- spatial <bundle/scope> [--preset compact|relaxed] [--config @export.json] [--ticks <most>] [--tests true|false] [--assets true|false] [--related-docs true|false] [--layout connections|structure] [--out <dir>]
- *   npm run layout:lab -- drift <bundle/scope> [--preset compact|relaxed] [--layout connections|structure|both] [--gravity a,b,c] [--range a,b,c] [--spring a,b,c] [--energy a,b,c] [--tether a,b,c] [--cycles <n>] [--ticks <most>] [--toggle tests|assets|none] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- drift <bundle/scope> [--preset compact|relaxed] [--layout connections|structure|both] [--gravity a,b,c] [--range a,b,c] [--approximation a,b,c] [--spring a,b,c] [--energy a,b,c] [--tether a,b,c] [--cycles <n>] [--ticks <most>] [--toggle tests|assets|none] [--label <name>] [--out <dir>]
+ *   npm run layout:lab -- approximation <bundle/scope>[,<bundle/scope>...] [--preset compact|relaxed] [--layout connections|structure|both] [--approximations a,b,c] [--ticks <most>] [--large <explorer-data.json> --state <file holding an address>] [--name <name>] [--counts a,b] [--runs <n>] [--tick <approximation>] [--label <name>] [--out <dir>]
  *
  * Every command accepts --preset compact|relaxed; refinement, verification and
  * spatial layout also accept the settings JSON exported by the page.
@@ -27,16 +28,27 @@
  * file type out of the full 3D picture and back in for a number of cycles,
  * each change eased as the page eases it at every setting of the update
  * energy named (`--energy`, the page's default alone by default), of the
- * tether, of gravity and of the repulsion's reach, and tabulates the
- * picture's extent after each cycle beside how far the unchanged spheres
- * moved and how many ticks each change took to be still (2026-10-17, the
- * energy 2026-10-18, the motion and its tether 2026-10-21). `--ticks` is the
- * most ticks any one easing may take, in `spatial` and `drift` alike.
+ * tether, of gravity, of the repulsion's reach and of its approximation, and
+ * tabulates the picture's extent after each cycle beside how far the
+ * unchanged spheres moved and how many ticks each change took to be still
+ * (2026-10-17, the energy 2026-10-18, the motion and its tether 2026-10-21).
+ * `approximation` measures the repulsion's approximation against the exact
+ * sum at each setting named (2026-10-28): with `--large` and `--state`, one
+ * evaluation's time at D3's seed of a large bundle as a saved address shows
+ * it, at its first spheres (`--counts`) and all of them, the forces' error
+ * there and, with `--tick`, the first tick at that setting; for each scope's
+ * bundle, the forces' error at the exact field's rest and the pictures eased
+ * to rest from one seed at every setting, against the exact one's, with the
+ * exact sum taken in another order (every cell opened) as the measure of
+ * noise. Its report goes under the day's probe folder's `approximation`.
+ * `--ticks` is the most ticks any one easing may take, in `spatial`, `drift`
+ * and `approximation` alike.
  */
 import * as fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { firstTick, forceErrors, renderApproximationReport, restPictures, restSubject, savedPicture, seatedPrefix, timeEvaluations, type ApproximationReport } from "./approximation";
 import { captureScope, readCaptureFile, writeCapture, type Capture } from "./capture";
 import { measureDrift, rangeOf, renderDriftReports, toggledArchetype, type DriftReport } from "./drift";
 import { baselineConfig, driftOf, evaluate, type LabConfig } from "./evaluate";
@@ -49,6 +61,7 @@ import { configurations, DEFAULT_GRID, oneAtATime, parseGrid, parseWeights } fro
 import { compareTable, verifyConfig } from "./verify";
 import { applyLayoutPreset, applyLayoutSettings, readLayoutSettings } from "../../packages/explorer/src/client/layout-presets";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
+import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 
 interface Args {
   verb: string;
@@ -72,7 +85,17 @@ function parseArgs(argv: readonly string[]): Args {
 
 const today = (): string => new Date().toISOString().slice(0, 10);
 
-const defaultOut = (): string => path.resolve(__dirname, "../../AI-Agent-Workspace/Probes", today(), "layout-lab");
+const defaultOut = (folder = "layout-lab"): string => path.resolve(__dirname, "../../AI-Agent-Workspace/Probes", today(), folder);
+
+/** A list of numbers from an option, `a,b,c`, or the fallback when the option is absent. */
+const numbers = (spec: string | undefined, fallback: readonly number[]): number[] =>
+  spec ? spec.split(",").map(part => { const n = Number(part); if (!Number.isFinite(n)) throw new Error(`Not a number: ${part}`); return n; }) : [...fallback];
+
+/** The layouts an option names: one of them, or both by default. */
+const layoutsOf = (option: string | undefined): readonly ("connections" | "structure")[] =>
+  option === "both" || !option ? ["connections", "structure"]
+    : option === "connections" || option === "structure" ? [option]
+    : (() => { throw new Error("--layout must be connections, structure or both."); })();
 
 async function loadCapture(run: ScopeRun, options: Record<string, string>): Promise<Capture> {
   const file = options.capture ?? path.join(options.out ?? defaultOut(), `capture-${scopeSlug(run)}.json`);
@@ -86,13 +109,50 @@ async function loadCapture(run: ScopeRun, options: Record<string, string>): Prom
 async function main(): Promise<void> {
   const { verb, scope, options } = parseArgs(process.argv.slice(2));
   if (!verb || !scope) {
-    console.error("Usage: layout-lab <capture|sweep|restarts|widen|refine|verify|spatial> <bundle/scope> [--preset compact|relaxed] [options]");
+    console.error("Usage: layout-lab <capture|sweep|restarts|widen|refine|verify|spatial|drift|approximation> <bundle/scope> [--preset compact|relaxed] [options]");
     process.exit(2);
+  }
+  const preset = options.preset ?? "relaxed";
+  if (preset !== "compact" && preset !== "relaxed") throw new Error("Preset must be compact or relaxed.");
+  if (verb === "approximation") {
+    const runs = scope.split(",").map(findScope);
+    const approximations = numbers(options.approximations, [0.3, 0.5, 0.7, 0.9, 1.2]);
+    if (approximations.some(value => !(value > 0))) throw new Error("--approximations names settings above zero; the exact sum is measured always.");
+    const maxTicks = Number(options.ticks ?? 5_000);
+    const tuning = applyLayoutPreset(getDefaultTuning(), preset).forceGraph;
+    const report: ApproximationReport = { measuredAt: new Date().toISOString(), scopes: runs.map(run => `${run.bundle}/${run.scopeName}`), tuning, maxTicks, errors: [], rests: [], resolutions: [] };
+    if (options.large) {
+      if (!options.state) throw new Error("--large needs --state, a file holding the address the picture is shown at.");
+      const started = Date.now();
+      const picture = savedPicture(JSON.parse(await fs.readFile(options.large, "utf8")) as StaticExplorerData, (await fs.readFile(options.state, "utf8")).trim());
+      const name = options.name ?? path.basename(path.dirname(options.large));
+      const timings = timeEvaluations(picture, [...numbers(options.counts, [1000, 5000]), picture.nodes.length], approximations, Number(options.runs ?? 5));
+      const seat = seatedPrefix(picture, picture.nodes.length);
+      const errors = forceErrors(`${name} at D3's seed`, seat.nodes, seat.links, seat.positions, picture.tuning, picture.layout, approximations);
+      report.large = { label: name, spheres: picture.nodes.length, links: picture.links.length, tuning: picture.tuning, layout: picture.layout, timings, errors,
+        ...(options.tick ? { firstTick: firstTick(picture, Number(options.tick)) } : {}) };
+      console.log(`${name}: ${picture.nodes.length} spheres timed and measured in ${((Date.now() - started) / 1000).toFixed(0)} s.`);
+    }
+    for (const run of runs) {
+      const graph = await loadBundleGraph(run);
+      for (const layout of layoutsOf(options.layout)) {
+        const started = Date.now();
+        const { rows, resolution, rest } = restPictures(graph, run, tuning, layout, [1e-9, ...approximations], maxTicks);
+        report.rests.push(...rows);
+        report.resolutions.push(resolution);
+        report.errors.push(...forceErrors(restSubject(run, layout), rest.nodes, rest.links, rest.positions, tuning, layout, approximations));
+        console.log(`${run.bundle} ${layout}: ${rows.map(row => `${row.approximation} ${row.still ? `still in ${row.ticks}` : `not still in ${row.ticks}`}`).join(", ")}; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
+      }
+    }
+    const out = options.out ?? defaultOut("approximation"), stem = path.join(out, options.label ?? "measurements");
+    await fs.mkdir(out, { recursive: true });
+    await fs.writeFile(`${stem}.json`, JSON.stringify(report, null, 2) + "\n");
+    await fs.writeFile(`${stem}.md`, renderApproximationReport(report));
+    console.log(`Report at ${path.relative(process.cwd(), stem)}.{md,json}.`);
+    return;
   }
   const run = findScope(scope);
   const out = options.out ?? defaultOut();
-  const preset = options.preset ?? "relaxed";
-  if (preset !== "compact" && preset !== "relaxed") throw new Error("Preset must be compact or relaxed.");
   const presetConfig = (): LabConfig => baselineConfig(preset);
   const readConfig = async (): Promise<Partial<LabConfig>> => {
     const spec = options.config ?? "{}";
@@ -124,13 +184,10 @@ async function main(): Promise<void> {
   if (verb === "drift") {
     const graph = await loadBundleGraph(run);
     const base = applyLayoutPreset(getDefaultTuning(), preset).forceGraph;
-    const layouts = options.layout === "both" || !options.layout ? ["connections", "structure"] as const
-      : options.layout === "connections" || options.layout === "structure" ? [options.layout] as const
-      : (() => { throw new Error("--layout must be connections, structure or both."); })();
-    const numbers = (spec: string | undefined, fallback: readonly number[]): number[] =>
-      spec ? spec.split(",").map(part => { const n = Number(part); if (!Number.isFinite(n)) throw new Error(`Not a number: ${part}`); return n; }) : [...fallback];
+    const layouts = layoutsOf(options.layout);
     const gravities = numbers(options.gravity, [0, 0.02, 0.05, 0.1]);
     const ranges = numbers(options.range, [0]);
+    const approximations = numbers(options.approximation, [base.approximation]);
     const energies = numbers(options.energy, [base.updateEnergy]);
     const tethers = numbers(options.tether, [base.tether]);
     const springs = numbers(options.spring, [base.linkStrength]);
@@ -149,13 +206,13 @@ async function main(): Promise<void> {
     };
     const toggled = (node: { archetype: string }): boolean => toggledKind !== null && node.archetype.toLowerCase() === toggledKind;
     const reports: DriftReport[] = [];
-    for (const layout of layouts) for (const updateEnergy of energies) for (const tether of tethers) for (const linkStrength of springs) for (const gravity of gravities) for (const chargeRange of ranges) {
+    for (const layout of layouts) for (const updateEnergy of energies) for (const tether of tethers) for (const linkStrength of springs) for (const gravity of gravities) for (const chargeRange of ranges) for (const approximation of approximations) {
       const started = Date.now();
-      const report = measureDrift(graph, include, toggled, { ...base, gravity, chargeRange, updateEnergy, tether, linkStrength }, layout, cycles, ticks);
+      const report = measureDrift(graph, include, toggled, { ...base, gravity, chargeRange, approximation, updateEnergy, tether, linkStrength }, layout, cycles, ticks);
       reports.push(report);
       const last = report.cycles[report.cycles.length - 1];
       const settles = rangeOf(report.cycles.flatMap(cycle => [cycle.settleTicks.removed, cycle.settleTicks.restored]));
-      console.log(`${layout}, energy ${updateEnergy}, tether ${tether}, spring ${linkStrength}, gravity ${gravity}, reach ${chargeRange || "unbounded"}: extent ${report.start.extent.toFixed(1)} to ${last.extent.toFixed(1)} (${(last.extent / report.start.extent).toFixed(2)}x) over ${cycles} cycles; unchanged spheres moved a mean of ${(report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / cycles).toFixed(1)} per restore; a change was still in ${settles} ticks; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
+      console.log(`${layout}, energy ${updateEnergy}, tether ${tether}, spring ${linkStrength}, gravity ${gravity}, reach ${chargeRange || "unbounded"}, approximation ${approximation}: extent ${report.start.extent.toFixed(1)} to ${last.extent.toFixed(1)} (${(last.extent / report.start.extent).toFixed(2)}x) over ${cycles} cycles; unchanged spheres moved a mean of ${(report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / cycles).toFixed(1)} per restore; a change was still in ${settles} ticks; ${((Date.now() - started) / 1000).toFixed(0)} s.`);
     }
     const label = options.label ?? `drift-${toggle}-${preset}`;
     const title = toggledKind === null ? `3D Local Map drift: ${run.bundle}, a reheat with nothing toggled, the ${preset} preset` : `3D Local Map drift: ${run.bundle}, toggling ${toggle}, the ${preset} preset`;
@@ -304,7 +361,7 @@ async function main(): Promise<void> {
     console.log(compareTable(lab.signals, page));
     return;
   }
-  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts, widen, refine, verify or spatial.`);
+  console.error(`Unknown verb ${JSON.stringify(verb)}; use capture, sweep, restarts, widen, refine, verify, spatial, drift or approximation.`);
   process.exit(2);
 }
 

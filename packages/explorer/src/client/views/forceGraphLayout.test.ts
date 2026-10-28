@@ -111,9 +111,10 @@ describe("spatial layout grammar", () => {
     expect(shipped[19]).toBeLessThan(1.1);
     expect(Math.abs(shipped[19] / shipped[9] - 1)).toBeLessThan(0.05);
     // The original paired control, measured October 21: with gravity the extent remains about .97 of its start;
-    // without it the tenth/twentieth cycles are 1.75/2.26, still growing. Keep its forces and thresholds together.
+    // without it the tenth/twentieth cycles are 1.75/2.26, still growing. Keep its forces and thresholds together, the
+    // exact repulsion it was measured with included.
     const historical = { ...tuning, linkGap: 60, charge: 60, collisionGap: 5, coupling: 1, nodeSize: 4, symbolScale: 1,
-      gravity: .01, chargeRange: 0, linkStrength: .25, updateEnergy: 1, tether: .01, citedByPull: 1 };
+      gravity: .01, chargeRange: 0, approximation: 0, linkStrength: .25, updateEnergy: 1, tether: .01, citedByPull: 1 };
     const held = growth(historical);
     expect(held[19]).toBeLessThan(1.1);
     expect(Math.abs(held[19] / held[9] - 1)).toBeLessThan(0.05);

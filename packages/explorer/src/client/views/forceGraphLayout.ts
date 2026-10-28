@@ -189,8 +189,8 @@ export const UNFOLDED_FRACTION = 1e-3;
 
 /**
  * The field of a picture: its spheres' radii, a spring on each link that pulls in the layout with the rest length and
- * strength ruled above, and the tuning's repulsion, gravity, collision gap and tether. Links whose ends are not among the
- * nodes are left out, as D3 would refuse them.
+ * strength ruled above, and the tuning's repulsion with its reach and approximation, gravity, collision gap and tether.
+ * Links whose ends are not among the nodes are left out, as D3 would refuse them.
  */
 export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout): SpatialField {
   const index = new Map(nodes.map((node, i) => [node.id, i]));
@@ -210,7 +210,7 @@ export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links
     rest: spatialLinkDistance(link, tuning), strength: strengthOf(link, i, pulling) * springShare(link, tuning)
   }));
   return new SpatialField(Float64Array.from(nodes.map(node => spatialNodeRadius(node, tuning))), springs,
-    { charge: tuning.charge, chargeRange: tuning.chargeRange, gravity: tuning.gravity, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
+    { charge: tuning.charge, chargeRange: tuning.chargeRange, approximation: tuning.approximation, gravity: tuning.gravity, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
     (low, high) => seededDirection(`${nodes[low].id}\0${nodes[high].id}`));
 }
 

@@ -1,0 +1,1381 @@
+{
+  "measuredAt": "2026-10-28T18:29:47.047Z",
+  "scopes": [
+    "repository/five files",
+    "estate/five files"
+  ],
+  "tuning": {
+    "linkGap": 60,
+    "charge": 60,
+    "collisionGap": 5,
+    "coupling": 1,
+    "nodeSize": 4,
+    "symbolScale": 1,
+    "linkWidth": 1,
+    "nodeZoomResistance": 0.3,
+    "wireZoomResistance": 0.9,
+    "gravity": 0.025,
+    "chargeRange": 0,
+    "approximation": 0.3,
+    "linkStrength": 0.5,
+    "updateEnergy": 1,
+    "tether": 0.02,
+    "citedByPull": 1
+  },
+  "maxTicks": 5000,
+  "errors": [
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 0.3,
+      "relativeRms": 0.003747164633426357,
+      "maxRelative": 0.03602330692623851,
+      "maxOfScale": 0.005583385096519669
+    },
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 0.35,
+      "relativeRms": 0.00550050129162325,
+      "maxRelative": 0.054047413329029174,
+      "maxOfScale": 0.008672280690196224
+    },
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 0.4,
+      "relativeRms": 0.007342112626420934,
+      "maxRelative": 0.11901609195185518,
+      "maxOfScale": 0.011280956553255514
+    },
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 0.45,
+      "relativeRms": 0.00911389137900165,
+      "maxRelative": 0.1829198809554104,
+      "maxOfScale": 0.01381274189195398
+    },
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 0.5,
+      "relativeRms": 0.011154369435898658,
+      "maxRelative": 0.1776313744423254,
+      "maxOfScale": 0.01722147583619631
+    },
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 0.7,
+      "relativeRms": 0.02718875737865734,
+      "maxRelative": 0.2794773818922506,
+      "maxOfScale": 0.04295135552797996
+    },
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 0.9,
+      "relativeRms": 0.05450670797647731,
+      "maxRelative": 0.5340027111954713,
+      "maxOfScale": 0.08154444071016541
+    },
+    {
+      "subject": "repository connections at rest",
+      "spheres": 876,
+      "approximation": 1.2,
+      "relativeRms": 0.0925673760333409,
+      "maxRelative": 1.5509442368665523,
+      "maxOfScale": 0.16129379539558067
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 0.3,
+      "relativeRms": 0.002957531863133508,
+      "maxRelative": 0.00857940309619499,
+      "maxOfScale": 0.0042704830088792795
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 0.35,
+      "relativeRms": 0.004469187633782095,
+      "maxRelative": 0.013920070038926714,
+      "maxOfScale": 0.007116832508173179
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 0.4,
+      "relativeRms": 0.005998817818570207,
+      "maxRelative": 0.022057985497729176,
+      "maxOfScale": 0.010636087583253179
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 0.45,
+      "relativeRms": 0.00762864047086808,
+      "maxRelative": 0.030085077735252663,
+      "maxOfScale": 0.013662436041013313
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 0.5,
+      "relativeRms": 0.010265021971541236,
+      "maxRelative": 0.03286672344473533,
+      "maxOfScale": 0.022977707401851066
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 0.7,
+      "relativeRms": 0.032142981755167124,
+      "maxRelative": 0.055826195388967575,
+      "maxOfScale": 0.05747301745526333
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 0.9,
+      "relativeRms": 0.061493826589696494,
+      "maxRelative": 0.1736494034637739,
+      "maxOfScale": 0.10655441386612693
+    },
+    {
+      "subject": "repository structure at rest",
+      "spheres": 1164,
+      "approximation": 1.2,
+      "relativeRms": 0.10358271723705574,
+      "maxRelative": 0.3631118194858038,
+      "maxOfScale": 0.1853779281258474
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 0.3,
+      "relativeRms": 0.0016410467626289153,
+      "maxRelative": 0.004203838046242614,
+      "maxOfScale": 0.004242897045317358
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 0.35,
+      "relativeRms": 0.0027977854367923745,
+      "maxRelative": 0.007271623491668851,
+      "maxOfScale": 0.006245998322577853
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 0.4,
+      "relativeRms": 0.004125591908866156,
+      "maxRelative": 0.007271623491668851,
+      "maxOfScale": 0.006752463374641891
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 0.45,
+      "relativeRms": 0.006159594459010729,
+      "maxRelative": 0.015723785520848528,
+      "maxOfScale": 0.014908851242827563
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 0.5,
+      "relativeRms": 0.010864803658930262,
+      "maxRelative": 0.021312992336908747,
+      "maxOfScale": 0.023695126429602597
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 0.7,
+      "relativeRms": 0.038399331276339994,
+      "maxRelative": 0.18173860033162642,
+      "maxOfScale": 0.06387684133483008
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 0.9,
+      "relativeRms": 0.05932305663248279,
+      "maxRelative": 0.29330074630101566,
+      "maxOfScale": 0.10658935958722068
+    },
+    {
+      "subject": "estate connections at rest",
+      "spheres": 36,
+      "approximation": 1.2,
+      "relativeRms": 0.08149821582463569,
+      "maxRelative": 0.5883025647289816,
+      "maxOfScale": 0.19201239893423547
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 0.3,
+      "relativeRms": 2.548347299216179e-16,
+      "maxRelative": 1.0770943809973057e-15,
+      "maxOfScale": 5.308506528196798e-16
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 0.35,
+      "relativeRms": 2.548347299216179e-16,
+      "maxRelative": 1.0770943809973057e-15,
+      "maxOfScale": 5.308506528196798e-16
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 0.4,
+      "relativeRms": 0.0008956294479850967,
+      "maxRelative": 0.003594463707750008,
+      "maxOfScale": 0.003947204889306197
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 0.45,
+      "relativeRms": 0.002101082703560472,
+      "maxRelative": 0.007999599951026885,
+      "maxOfScale": 0.005853990255328022
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 0.5,
+      "relativeRms": 0.005192438777145916,
+      "maxRelative": 0.011999236370110874,
+      "maxOfScale": 0.013568381071333204
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 0.7,
+      "relativeRms": 0.03164432648982781,
+      "maxRelative": 0.11252732227870604,
+      "maxOfScale": 0.04688206917434046
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 0.9,
+      "relativeRms": 0.06578381710390026,
+      "maxRelative": 0.20331578311441156,
+      "maxOfScale": 0.1009909589249859
+    },
+    {
+      "subject": "estate structure at rest",
+      "spheres": 54,
+      "approximation": 1.2,
+      "relativeRms": 0.09961350677404447,
+      "maxRelative": 0.5421537355997148,
+      "maxOfScale": 0.18871821081287055
+    }
+  ],
+  "rests": [
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0,
+      "spheres": 876,
+      "ticks": 548,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2378.921591623416,
+        "height": 2399.256982561573,
+        "depth": 2408.887404764003
+      },
+      "ms": 3517.750039999999,
+      "meanShift": 0,
+      "maxShift": 0
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 1e-9,
+      "spheres": 876,
+      "ticks": 548,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2378.921591623417,
+        "height": 2399.256982561573,
+        "depth": 2408.887404764004
+      },
+      "ms": 5606.707403000008,
+      "meanShift": 1.0921692823210352e-15,
+      "maxShift": 2.23131060487684e-14
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0.3,
+      "spheres": 876,
+      "ticks": 492,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2385.9096119643286,
+        "height": 2404.3335786274374,
+        "depth": 2413.4519238095054
+      },
+      "ms": 3020.114791,
+      "meanShift": 0.0034039116545389408,
+      "maxShift": 0.021520779488192775
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0.35,
+      "spheres": 876,
+      "ticks": 509,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2386.7912047657273,
+        "height": 2405.1608507259234,
+        "depth": 2414.1841892821767
+      },
+      "ms": 2624.5152469999884,
+      "meanShift": 0.006841997628402822,
+      "maxShift": 0.02822874861808684
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0.4,
+      "spheres": 876,
+      "ticks": 511,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2386.3895470153006,
+        "height": 2405.3456040953815,
+        "depth": 2417.2872303978584
+      },
+      "ms": 2522.3988409999874,
+      "meanShift": 0.003955453827318089,
+      "maxShift": 0.02936091445037302
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0.45,
+      "spheres": 876,
+      "ticks": 591,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2390.0398658743943,
+        "height": 2404.8300857233894,
+        "depth": 2415.524361711096
+      },
+      "ms": 2430.6653960000112,
+      "meanShift": 0.005996224331399523,
+      "maxShift": 0.0365223004399657
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0.5,
+      "spheres": 876,
+      "ticks": 469,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2397.597618962456,
+        "height": 2408.8291501832364,
+        "depth": 2414.4425048046824
+      },
+      "ms": 1911.0979269999953,
+      "meanShift": 0.009073462483716047,
+      "maxShift": 0.05447854243188307
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0.7,
+      "spheres": 876,
+      "ticks": 508,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2405.0717593561003,
+        "height": 2445.6306582834923,
+        "depth": 2447.916090106718
+      },
+      "ms": 1530.488823000007,
+      "meanShift": 0.01798349822883591,
+      "maxShift": 0.07548926326206519
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 0.9,
+      "spheres": 876,
+      "ticks": 5000,
+      "still": false,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2369.4820334710776,
+        "height": 2418.286251807565,
+        "depth": 2419.533706485656
+      },
+      "ms": 10351.067972999997,
+      "meanShift": 0.029059999108955636,
+      "maxShift": 0.09387578035230519
+    },
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "approximation": 1.2,
+      "spheres": 876,
+      "ticks": 5000,
+      "still": false,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2356.568236977129,
+        "height": 2473.2958659733486,
+        "depth": 2472.0875258854758
+      },
+      "ms": 9070.319262000005,
+      "meanShift": 0.07836767343020479,
+      "maxShift": 0.30553827229361713
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0,
+      "spheres": 1164,
+      "ticks": 355,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2713.1014337825072,
+        "height": 2626.4574422851883,
+        "depth": 2687.3666065790885
+      },
+      "ms": 9994.623953000002,
+      "meanShift": 0,
+      "maxShift": 0
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 1e-9,
+      "spheres": 1164,
+      "ticks": 355,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2713.1014337825072,
+        "height": 2626.4574422851974,
+        "depth": 2687.3666065790853
+      },
+      "ms": 17147.63846800002,
+      "meanShift": 7.57787455128241e-15,
+      "maxShift": 8.157920945572053e-14
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0.3,
+      "spheres": 1164,
+      "ticks": 355,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2715.678772311244,
+        "height": 2631.5063665855805,
+        "depth": 2690.447778207045
+      },
+      "ms": 9946.641711000004,
+      "meanShift": 0.004260482617581959,
+      "maxShift": 0.03393718935190757
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0.35,
+      "spheres": 1164,
+      "ticks": 357,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2717.6571918484924,
+        "height": 2637.121289081758,
+        "depth": 2687.925311720911
+      },
+      "ms": 9648.258941999986,
+      "meanShift": 0.004880417493796718,
+      "maxShift": 0.0723218217341412
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0.4,
+      "spheres": 1164,
+      "ticks": 358,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2718.734079706239,
+        "height": 2637.5731315267767,
+        "depth": 2693.843748037767
+      },
+      "ms": 8889.030801000015,
+      "meanShift": 0.006146662985735899,
+      "maxShift": 0.07398964232857645
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0.45,
+      "spheres": 1164,
+      "ticks": 358,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2718.665826727674,
+        "height": 2640.3970190723257,
+        "depth": 2695.7154600047197
+      },
+      "ms": 5858.723190999997,
+      "meanShift": 0.007465810577827395,
+      "maxShift": 0.06602566537176499
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0.5,
+      "spheres": 1164,
+      "ticks": 354,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2726.795339360133,
+        "height": 2646.8265795586994,
+        "depth": 2704.5401471786126
+      },
+      "ms": 4689.396924000001,
+      "meanShift": 0.008501404965364192,
+      "maxShift": 0.06304166338827903
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0.7,
+      "spheres": 1164,
+      "ticks": 439,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2745.3752244713924,
+        "height": 2685.5816648302684,
+        "depth": 2730.8098441482857
+      },
+      "ms": 3951.227918999997,
+      "meanShift": 0.015701526818702162,
+      "maxShift": 0.09608675572259584
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 0.9,
+      "spheres": 1164,
+      "ticks": 5000,
+      "still": false,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2718.6935449739294,
+        "height": 2692.3855852220836,
+        "depth": 2682.55713739371
+      },
+      "ms": 53531.375955000025,
+      "meanShift": 0.023849466484787005,
+      "maxShift": 0.07633094909545277
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "approximation": 1.2,
+      "spheres": 1164,
+      "ticks": 5000,
+      "still": false,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 2763.2120284151842,
+        "height": 2758.390054820742,
+        "depth": 2738.179244215921
+      },
+      "ms": 30338.935420999973,
+      "meanShift": 0.07673427742471409,
+      "maxShift": 0.2654667945430389
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0,
+      "spheres": 36,
+      "ticks": 265,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 440.32076804574365,
+        "height": 377.89525950648874,
+        "depth": 398.90459185424254
+      },
+      "ms": 9.510206000006292,
+      "meanShift": 0,
+      "maxShift": 0
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 1e-9,
+      "spheres": 36,
+      "ticks": 265,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 440.32076804574365,
+        "height": 377.8952595064885,
+        "depth": 398.9045918542424
+      },
+      "ms": 13.703085999994073,
+      "meanShift": 2.6623553459858377e-16,
+      "maxShift": 1.3347377506601394e-15
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0.3,
+      "spheres": 36,
+      "ticks": 264,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 440.44767664919726,
+        "height": 378.47931213409265,
+        "depth": 398.9637775911958
+      },
+      "ms": 12.05201499996474,
+      "meanShift": 0.0006148673500678794,
+      "maxShift": 0.001267471970257128
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0.35,
+      "spheres": 36,
+      "ticks": 265,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 440.48328890941366,
+        "height": 379.0473028249694,
+        "depth": 398.97977767557234
+      },
+      "ms": 13.588680000044405,
+      "meanShift": 0.0017061135445842408,
+      "maxShift": 0.0052731192834158305
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0.4,
+      "spheres": 36,
+      "ticks": 267,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 439.9490843410207,
+        "height": 379.01788240743224,
+        "depth": 398.9086820827856
+      },
+      "ms": 12.091416999988724,
+      "meanShift": 0.0032616407023602248,
+      "maxShift": 0.0069070154755458725
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0.45,
+      "spheres": 36,
+      "ticks": 283,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 440.15306456881433,
+        "height": 375.9330196008363,
+        "depth": 397.03274069919854
+      },
+      "ms": 14.390714999986812,
+      "meanShift": 0.005033692920058543,
+      "maxShift": 0.011731862127900632
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0.5,
+      "spheres": 36,
+      "ticks": 258,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 439.72174176638237,
+        "height": 380.33431813621036,
+        "depth": 397.7691597853875
+      },
+      "ms": 13.42047300003469,
+      "meanShift": 0.004732963847020336,
+      "maxShift": 0.01072977301885603
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0.7,
+      "spheres": 36,
+      "ticks": 294,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 443.85462849604266,
+        "height": 384.7070516718616,
+        "depth": 404.05229876371965
+      },
+      "ms": 12.36592800001381,
+      "meanShift": 0.016009382389239685,
+      "maxShift": 0.03585159943011895
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 0.9,
+      "spheres": 36,
+      "ticks": 5000,
+      "still": false,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 456.9685685134432,
+        "height": 389.7068476750179,
+        "depth": 405.6294263257142
+      },
+      "ms": 188.5843590000295,
+      "meanShift": 0.033682629412852896,
+      "maxShift": 0.08723955283647702
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "approximation": 1.2,
+      "spheres": 36,
+      "ticks": 5000,
+      "still": false,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 478.203011307486,
+        "height": 394.1208439597321,
+        "depth": 393.885025283775
+      },
+      "ms": 226.90879800001858,
+      "meanShift": 0.07684743642247567,
+      "maxShift": 0.17464710459533886
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0,
+      "spheres": 54,
+      "ticks": 218,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 495.9647592382671,
+        "height": 471.37178375882786,
+        "depth": 537.7347259583112
+      },
+      "ms": 12.653841000050306,
+      "meanShift": 0,
+      "maxShift": 0
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 1e-9,
+      "spheres": 54,
+      "ticks": 218,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 495.964759238267,
+        "height": 471.371783758828,
+        "depth": 537.7347259583112
+      },
+      "ms": 22.256050999974832,
+      "meanShift": 3.708571284992992e-16,
+      "maxShift": 2.1007072644580406e-15
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0.3,
+      "spheres": 54,
+      "ticks": 218,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 495.97291294682657,
+        "height": 471.3746846665706,
+        "depth": 537.7284265422402
+      },
+      "ms": 20.927894000022206,
+      "meanShift": 0.000018635829802119033,
+      "maxShift": 0.00007617440062559617
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0.35,
+      "spheres": 54,
+      "ticks": 218,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 495.93159382461295,
+        "height": 471.4806977666135,
+        "depth": 537.7141782106083
+      },
+      "ms": 16.709914000006393,
+      "meanShift": 0.00025558928375214604,
+      "maxShift": 0.004067146745252012
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0.4,
+      "spheres": 54,
+      "ticks": 217,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 495.8688758884647,
+        "height": 473.1577839668272,
+        "depth": 538.8401550278128
+      },
+      "ms": 17.461945999995805,
+      "meanShift": 0.001168090275834693,
+      "maxShift": 0.01503437679927412
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0.45,
+      "spheres": 54,
+      "ticks": 219,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 495.4515389624459,
+        "height": 479.30202242583727,
+        "depth": 539.6031218724356
+      },
+      "ms": 17.618353000027128,
+      "meanShift": 0.004137586809895384,
+      "maxShift": 0.04209030877194938
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0.5,
+      "spheres": 54,
+      "ticks": 222,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 497.5023421468882,
+        "height": 479.5127442902443,
+        "depth": 538.7684844174648
+      },
+      "ms": 16.616410000016913,
+      "meanShift": 0.005520488799808001,
+      "maxShift": 0.045606702557400645
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0.7,
+      "spheres": 54,
+      "ticks": 228,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 505.01921525601125,
+        "height": 473.8298054907739,
+        "depth": 554.3467010010842
+      },
+      "ms": 16.028184999944642,
+      "meanShift": 0.012959199007516022,
+      "maxShift": 0.04630593915946417
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 0.9,
+      "spheres": 54,
+      "ticks": 221,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 521.4783312183736,
+        "height": 478.95766649968573,
+        "depth": 573.0894287359945
+      },
+      "ms": 14.407514999969862,
+      "meanShift": 0.033604412148557646,
+      "maxShift": 0.13612142393182927
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "approximation": 1.2,
+      "spheres": 54,
+      "ticks": 265,
+      "still": true,
+      "overlaps": 0,
+      "worstOverlap": 0,
+      "bounds": {
+        "width": 518.0614846120465,
+        "height": 481.92281365821725,
+        "depth": 570.3449491058418
+      },
+      "ms": 14.91703700000653,
+      "meanShift": 0.05510079347541806,
+      "maxShift": 0.20589930944937412
+    }
+  ],
+  "resolutions": [
+    {
+      "bundle": "repository",
+      "layout": "connections",
+      "ticks": 106,
+      "still": true,
+      "meanShift": 0.0037941854487188796,
+      "maxShift": 0.01753723169567725
+    },
+    {
+      "bundle": "repository",
+      "layout": "structure",
+      "ticks": 86,
+      "still": true,
+      "meanShift": 0.004414666324618742,
+      "maxShift": 0.016802859813935492
+    },
+    {
+      "bundle": "estate",
+      "layout": "connections",
+      "ticks": 77,
+      "still": true,
+      "meanShift": 0.005529777836004655,
+      "maxShift": 0.016767303227907496
+    },
+    {
+      "bundle": "estate",
+      "layout": "structure",
+      "ticks": 73,
+      "still": true,
+      "meanShift": 0.00460318371265511,
+      "maxShift": 0.013756745693433938
+    }
+  ],
+  "large": {
+    "label": "t3-code",
+    "spheres": 21720,
+    "links": 72137,
+    "tuning": {
+      "linkGap": 32,
+      "charge": 30,
+      "collisionGap": 2,
+      "coupling": 1,
+      "nodeSize": 4,
+      "symbolScale": 1,
+      "linkWidth": 1,
+      "nodeZoomResistance": 0.3,
+      "wireZoomResistance": 0.9,
+      "gravity": 0.025,
+      "chargeRange": 0,
+      "approximation": 0.3,
+      "linkStrength": 0.5,
+      "updateEnergy": 1,
+      "tether": 0.02,
+      "citedByPull": 1
+    },
+    "layout": "connections",
+    "timings": [
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0,
+        "ms": 6.678606999999829,
+        "runs": 5,
+        "stiffness": 614.1307467855662,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0.3,
+        "ms": 8.178274999998393,
+        "runs": 5,
+        "stiffness": 614.1374056902258,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0.35,
+        "ms": 6.865714999999909,
+        "runs": 5,
+        "stiffness": 614.120733193879,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0.4,
+        "ms": 6.293188999999984,
+        "runs": 5,
+        "stiffness": 614.1189417303127,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0.45,
+        "ms": 5.68746099999953,
+        "runs": 5,
+        "stiffness": 614.1056065269578,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0.5,
+        "ms": 5.042131000000154,
+        "runs": 5,
+        "stiffness": 614.0971772351047,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0.7,
+        "ms": 3.6129650000002584,
+        "runs": 5,
+        "stiffness": 613.8957183415152,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 0.9,
+        "ms": 2.9603360000000976,
+        "runs": 5,
+        "stiffness": 612.1222421292126,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 1000,
+        "links": 546,
+        "approximation": 1.2,
+        "ms": 2.403611000001547,
+        "runs": 5,
+        "stiffness": 611.0320593818715,
+        "overlaps": 1715
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0,
+        "ms": 152.05537600000025,
+        "runs": 5,
+        "stiffness": 1051.3471282542664,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0.3,
+        "ms": 81.9993620000023,
+        "runs": 5,
+        "stiffness": 1051.3135225067435,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0.35,
+        "ms": 69.13397199999963,
+        "runs": 5,
+        "stiffness": 1051.2885560865554,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0.4,
+        "ms": 56.454789999999775,
+        "runs": 5,
+        "stiffness": 1051.2690407635253,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0.45,
+        "ms": 47.40847500000018,
+        "runs": 5,
+        "stiffness": 1051.2152325784432,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0.5,
+        "ms": 41.77971699999762,
+        "runs": 5,
+        "stiffness": 1051.1893994329794,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0.7,
+        "ms": 26.892933999999514,
+        "runs": 5,
+        "stiffness": 1050.2693253202563,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 0.9,
+        "ms": 20.543541999999434,
+        "runs": 5,
+        "stiffness": 1049.5948686244622,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 5000,
+        "links": 8117,
+        "approximation": 1.2,
+        "ms": 16.47575599999982,
+        "runs": 5,
+        "stiffness": 1046.936963000468,
+        "overlaps": 11687
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0,
+        "ms": 2901.7387910000034,
+        "runs": 3,
+        "stiffness": 2263.586340543528,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0.3,
+        "ms": 596.1723779999957,
+        "runs": 5,
+        "stiffness": 2263.3978903878183,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0.35,
+        "ms": 476.89750300000014,
+        "runs": 5,
+        "stiffness": 2263.3623382475726,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0.4,
+        "ms": 379.9314299999969,
+        "runs": 5,
+        "stiffness": 2263.244772930847,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0.45,
+        "ms": 330.69745800000237,
+        "runs": 5,
+        "stiffness": 2263.1171666437754,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0.5,
+        "ms": 247.5733970000001,
+        "runs": 5,
+        "stiffness": 2262.895049187559,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0.7,
+        "ms": 155.5137340000001,
+        "runs": 5,
+        "stiffness": 2261.8140952021913,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 0.9,
+        "ms": 117.75522600000113,
+        "runs": 5,
+        "stiffness": 2258.694044955669,
+        "overlaps": 64388
+      },
+      {
+        "spheres": 21720,
+        "links": 72137,
+        "approximation": 1.2,
+        "ms": 94.70398299999943,
+        "runs": 5,
+        "stiffness": 2258.0683560097923,
+        "overlaps": 64388
+      }
+    ],
+    "errors": [
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 0.3,
+        "relativeRms": 0.004458264863259679,
+        "maxRelative": 0.12002730766507899,
+        "maxOfScale": 0.006144751852490633
+      },
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 0.35,
+        "relativeRms": 0.006365915150839222,
+        "maxRelative": 0.10369969318416941,
+        "maxOfScale": 0.008529511807464132
+      },
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 0.4,
+        "relativeRms": 0.008544872793218094,
+        "maxRelative": 0.13445365937653203,
+        "maxOfScale": 0.011547118939633344
+      },
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 0.45,
+        "relativeRms": 0.010694809770683666,
+        "maxRelative": 0.1304596693062947,
+        "maxOfScale": 0.014024382005419334
+      },
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 0.5,
+        "relativeRms": 0.01274445415263089,
+        "maxRelative": 0.1445223285490684,
+        "maxOfScale": 0.01654949394280262
+      },
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 0.7,
+        "relativeRms": 0.027733822800774986,
+        "maxRelative": 0.5307946585192597,
+        "maxOfScale": 0.04713910184388691
+      },
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 0.9,
+        "relativeRms": 0.050344431441166154,
+        "maxRelative": 0.38437418132825457,
+        "maxOfScale": 0.08058541017510441
+      },
+      {
+        "subject": "t3-code at D3's seed",
+        "spheres": 21720,
+        "approximation": 1.2,
+        "relativeRms": 0.08197768938094306,
+        "maxRelative": 3.0196245190450397,
+        "maxOfScale": 0.13432720147275531
+      }
+    ],
+    "firstTick": {
+      "spheres": 21720,
+      "approximation": 0.3,
+      "evaluations": 15,
+      "ms": 10207.383874999992
+    }
+  }
+}

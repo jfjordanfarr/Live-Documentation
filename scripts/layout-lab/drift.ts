@@ -148,14 +148,14 @@ export function rangeOf(counts: readonly number[]): string {
 export function renderDriftReports(reports: readonly DriftReport[], title: string): string {
   const fixed = (number: number): string => number.toFixed(1);
   const lines = [`# ${title}`, "", `Historical layout-lab measurement, ${new Date().toISOString()}. Each row eases the full picture until still, then toggles the same spheres out and back in for every cycle, each change eased from the carried positions as the page eases it, held where the spheres stand, at the update energy: at 1 the full forces, at a fraction more gently and for longer, at 0 placement alone. Extent is the root-mean-square distance of every sphere from the picture's centroid; growth is the last extent over the start's. The unchanged spheres' mean move is averaged over the cycles; the settle is the ticks a change took to be still, the removal and the restore alike, or the bound of ${reports[0]?.ticks ?? 0} ticks.`, ""];
-  lines.push("| Layout | Energy | Tether | Spring | Gravity | Reach | Spheres (toggled) | Start extent | Extent by cycle | Growth | Unchanged mean move | Greatest move | Settle ticks |");
-  lines.push("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |");
+  lines.push("| Layout | Energy | Tether | Spring | Gravity | Reach | Approximation | Spheres (toggled) | Start extent | Extent by cycle | Growth | Unchanged mean move | Greatest move | Settle ticks |");
+  lines.push("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |");
   for (const report of reports) {
     const last = report.cycles[report.cycles.length - 1];
     const meanMove = report.cycles.reduce((sum, cycle) => sum + cycle.meanMoveOfUnchanged, 0) / report.cycles.length;
     const greatest = Math.max(...report.cycles.map(cycle => cycle.greatestMoveOfUnchanged));
     const settles = report.cycles.flatMap(cycle => [cycle.settleTicks.removed, cycle.settleTicks.restored]);
-    lines.push(`| ${report.layout} | ${report.tuning.updateEnergy} | ${report.tuning.tether} | ${report.tuning.linkStrength} | ${report.tuning.gravity} | ${report.tuning.chargeRange || "unbounded"} | ${report.total} (${report.toggled}) | ${fixed(report.start.extent)} | ${report.cycles.map(cycle => fixed(cycle.extent)).join(", ")} | ${(last.extent / report.start.extent).toFixed(2)}× | ${fixed(meanMove)} | ${fixed(greatest)} | ${rangeOf(settles)} |`);
+    lines.push(`| ${report.layout} | ${report.tuning.updateEnergy} | ${report.tuning.tether} | ${report.tuning.linkStrength} | ${report.tuning.gravity} | ${report.tuning.chargeRange || "unbounded"} | ${report.tuning.approximation} | ${report.total} (${report.toggled}) | ${fixed(report.start.extent)} | ${report.cycles.map(cycle => fixed(cycle.extent)).join(", ")} | ${(last.extent / report.start.extent).toFixed(2)}× | ${fixed(meanMove)} | ${fixed(greatest)} | ${rangeOf(settles)} |`);
   }
   return lines.join("\n") + "\n";
 }

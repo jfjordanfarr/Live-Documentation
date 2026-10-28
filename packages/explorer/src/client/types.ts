@@ -197,6 +197,14 @@ export interface ForceGraphTuning {
    */
   chargeRange: number;
   /**
+   * How far the repulsion may be approximated to keep a large picture quick: the opening ratio of Barnes and Hut's octree
+   * sum, zero for the exact sum over every pair, larger for faster and less exact. The exact sum costs the square of the
+   * spheres, 2.2 seconds an evaluation at the T3 bundle's 21,720 (2026-10-27); the owner decided on 2026-10-28 that an
+   * approximation may be the default with the exact sum kept as the oracle, and named the lever for what it adds, so that
+   * zero means none of it.
+   */
+  approximation: number;
+  /**
    * How hard a wire's spring pulls its two files together, as a multiple of D3's own rule, which gives each link one
    * over the smaller of its two ends' link counts, so that a file with many wires is pulled less by each. One is the
    * picture as it was before this lever existed; zero lets every wire go slack. The owner's ask of 2026-10-18, to tune

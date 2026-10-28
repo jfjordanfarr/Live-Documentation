@@ -21,6 +21,8 @@ Both packing profiles value card-top alignment. Relaxed gives it greater weight 
 
 - `linkStrength` (0 to 2 by 0.05) joined the 3D ranges on 2026-10-18, the springs' strength as a multiple of D3's rule, so that it persists and rides share links like gravity ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)).
 
+`approximation` (0 to 1.5 by 0.05) joined the force graph's ranges on 2026-10-28, the repulsion's approximation riding in saved and shared settings like the other levers and no part of a packing profile; a link written before it keeps the viewer's own setting.
+
 `tether` (0 to 0.1 by 0.001) joined the force graph's ranges on 2026-10-21, riding in the saved and the shared settings like the other levers and no part of a packing profile ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
 Wire Thickness (`linkWidth`, 0.1 to 4 by 0.1) and Node/Wire Zoom Resistance (`nodeZoomResistance` and `wireZoomResistance`, 0 to 1 by 0.05) are appearance settings independent of the packing profiles. They are carried and validated by the same saved/shared settings as the other 3D controls, with omitted values retaining the default or current preference. The owner asked for thickness in the [October 24 visual pass](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-7), then [separate resistance controls](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11).

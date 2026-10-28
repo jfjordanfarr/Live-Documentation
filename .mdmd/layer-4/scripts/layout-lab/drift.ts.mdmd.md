@@ -19,6 +19,8 @@ The table gained a Spring column on 2026-10-18, the springs' strength the report
 
 Since 2026-10-21 the measure runs the page's motion: the first picture unfolds through `easeSpatialLayout` until still, and each change is eased from the carried positions, held where the spheres stand, at the update energy, which is a constant strength now and no longer a reheat; every easing stops when still or at `--ticks`, and the settle column is the range of ticks the changes took. The table gained a Tether column ([Turn 5](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
+The table gained an Approximation column on 2026-10-28, the repulsion's approximation the report was measured at, beside the reach.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

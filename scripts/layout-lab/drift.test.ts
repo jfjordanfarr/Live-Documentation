@@ -56,7 +56,7 @@ describe("the drift measure", () => {
     expect(tenth.cycles[0].meanMoveOfUnchanged).toBeGreaterThan(0);
     expect(Math.abs(tenth.cycles[0].meanMoveOfUnchanged / full.cycles[0].meanMoveOfUnchanged - 1)).toBeLessThan(0.25);
     const table = renderDriftReports([full, tenth, placement], "toy");
-    expect(table).toContain(`| connections | 1 | ${tuning.tether} | ${tuning.linkStrength} | 0.05 | unbounded | 6 (2) |`);
+    expect(table).toContain(`| connections | 1 | ${tuning.tether} | ${tuning.linkStrength} | 0.05 | unbounded | ${tuning.approximation} | 6 (2) |`);
     expect(table).toContain(`| ${rangeOf(settles(full))} |`);
     expect(table).toContain("| 0 |\n");
     expect(rangeOf([3, 1, 2])).toBe("1 to 3");
