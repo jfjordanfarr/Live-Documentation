@@ -275,7 +275,9 @@ async function calculateDirectorySize(dir: string): Promise<number> {
         if (entry.isDirectory()) {
             size += await calculateDirectorySize(fullPath);
         } else {
-            const stat = await fs.stat(fullPath);
+            // What is on disk here, a link counted as the link: a page left in the output by a probe, linking to a
+            // history this build did not write, must not stop the build (found 2026-10-28).
+            const stat = await fs.lstat(fullPath);
             size += stat.size;
         }
     }
