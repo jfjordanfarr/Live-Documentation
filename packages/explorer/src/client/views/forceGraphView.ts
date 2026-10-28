@@ -25,7 +25,7 @@ import { Box3, PerspectiveCamera, Raycaster, Vector2, Vector3, type Object3D } f
 import { spatialNodeStyle } from "./forceGraphAppearance";
 import { batchSpatialGraph, drawSpatialGraphOnChange } from "./forceGraphBatches";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
-import { directoryNodeId, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
+import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
 import { placeSpatialLabels, type SpatialLabel, type LabelBox } from "./forceGraphLabels";
 import { spatialSizeScale } from "./forceGraphSizing";
 import { under } from "./localView/directory-state";
@@ -942,17 +942,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (node.directoryPath !== undefined && retainedFiles.some(id => under(id, node.directoryPath!))) retained.add(node.id);
     }
     scopedNames = !!subjectAt || retained.size > 0;
-    labelNames = new Map(graphNodes.map(node => {
-      let name = node.directoryPath !== undefined ? node.directoryPath || "Scan root" : node.name;
-      if (node.directoryPath === undefined && graphNodes.some(other => other.id !== node.id && other.name === name)) {
-        const parts = node.codeRelativePath.split("/");
-        for (let count = 2; count <= parts.length; count++) {
-          name = parts.slice(-count).join("/");
-          if (!graphNodes.some(other => other.id !== node.id && (other.codeRelativePath === name || other.codeRelativePath.endsWith("/" + name)))) break;
-        }
-      }
-      return [node.id, name];
-    }));
+    labelNames = labelNamesOf(graphNodes);
     labelPriorities = new Map(graphNodes.map(node => [node.id,
       pins.entries.some(pin => pin.nodeId === node.id) || node.id === path?.[0] || node.id === path?.[path.length - 1] ? 1
       : node.directoryPath !== undefined && retained.has(node.id) ? 2

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-24T19:41:35.067Z
+- Generated At: 2026-10-28T17:02:16.447Z
 
 ## Authored
 ### Purpose
@@ -126,6 +126,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphData.SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 - [`forceGraphData.SpatialLinkKind`](./forceGraphData.ts.mdmd.md#symbol-spatiallinkkind)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
+- [`forceGraphData.labelNamesOf`](./forceGraphData.ts.mdmd.md#symbol-labelnamesof)
 - [`forceGraphData.spatialGraphOf`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
 - [`forceGraphLabels.LabelBox`](./forceGraphLabels.ts.mdmd.md#symbol-labelbox)
 - [`forceGraphLabels.SpatialLabel`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabel)

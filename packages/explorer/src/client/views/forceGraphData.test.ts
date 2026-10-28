@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { directoryNodeId, spatialGraphOf } from "./forceGraphData";
+import { directoryNodeId, labelNamesOf, spatialGraphOf, type LabelledNode } from "./forceGraphData";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../shared/types";
 
 const node = (id: string, symbols = 0): ExplorerNodePayload => ({ id, name: id, codePath: id, codeRelativePath: id, docPath: `docs/${id}.md`,
@@ -96,4 +96,43 @@ it("keeps a scan root that holds only one directory, so that the tree always has
     { source: directoryNodeId("src"), target: "src/b.ts", kind: "containment", count: 1 },
     { source: directoryNodeId(""), target: directoryNodeId("src"), kind: "containment", count: 1 }
   ]);
+});
+
+const file = (path: string): LabelledNode => ({ id: path, name: path.slice(path.lastIndexOf("/") + 1), codeRelativePath: path });
+const hub = (directory: string): LabelledNode => ({ id: directoryNodeId(directory), name: directory.slice(directory.lastIndexOf("/") + 1), codeRelativePath: directory, directoryPath: directory });
+const labels = (...nodes: LabelledNode[]): string[] => nodes.map(node => labelNamesOf(nodes).get(node.id)!);
+
+it("names a file by its name alone when no other node shares it", () => {
+  expect(labels(file("src/index.ts"), file("src/views/map.ts"), file("README.md"))).toEqual(["index.ts", "map.ts", "README.md"]);
+});
+
+it("names files that share a name by the shortest ending of their paths that tells them apart, up to the whole path", () => {
+  expect(labels(file("a/x/index.ts"), file("b/x/index.ts"), file("c/index.ts"), file("a/x/other.ts")))
+    .toEqual(["a/x/index.ts", "b/x/index.ts", "c/index.ts", "other.ts"]);
+  expect(labels(file("index.ts"), file("lib/index.ts"), file("lib/deep/index.ts"))).toEqual(["index.ts", "lib/index.ts", "deep/index.ts"]);
+});
+
+it("names a directory hub by its path and the scan root by name, counting hubs among the names a file must differ from", () => {
+  expect(labels(hub(""), hub("src/views"), file("src/views/map.ts"))).toEqual(["Scan root", "src/views", "map.ts"]);
+  expect(labels(hub("docs/notes"), file("docs/notes"), file("other/docs/notes"))).toEqual(["docs/notes", "docs/notes", "other/docs/notes"]);
+});
+
+it("names every node once, the same as asking every node about every other, without touching the nodes", () => {
+  const nodes = Array.from({ length: 300 }, (_, index) => file(`${["app", "lib", "app/lib"][index % 3]}/${index % 7}/${index % 5 ? "mod" : "index"}.ts`));
+  const before = JSON.stringify(nodes);
+  const named = labelNamesOf(nodes);
+  const expected = new Map(nodes.map(node => {
+    let name = node.name;
+    if (nodes.some(other => other.id !== node.id && other.name === name)) {
+      const parts = node.codeRelativePath.split("/");
+      for (let count = 2; count <= parts.length; count++) {
+        name = parts.slice(-count).join("/");
+        if (!nodes.some(other => other.id !== node.id && (other.codeRelativePath === name || other.codeRelativePath.endsWith("/" + name)))) break;
+      }
+    }
+    return [node.id, name];
+  }));
+  expect(named.size).toBe(new Set(nodes.map(node => node.id)).size);
+  expect(named).toEqual(expected);
+  expect(JSON.stringify(nodes)).toBe(before);
 });
