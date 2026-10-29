@@ -19,7 +19,6 @@
  */
 
 import ForceGraph3D, { type ForceGraph3DInstance } from "3d-force-graph";
-import type { ForceLink } from "d3-force-3d";
 import { Box3, PerspectiveCamera, Raycaster, Vector2, Vector3, type Object3D } from "three";
 
 import { spatialNodeStyle } from "./forceGraphAppearance";
@@ -49,9 +48,8 @@ import { renderSpatialLegend } from "../panels/spatial-legend";
 import type { ExplorerState } from "../types";
 
 /**
- * The most milliseconds a frame spends moving the spheres once the first picture is on screen: the rest of the frame is
- * the drawing and the pointer. A tick that needs more is taken in parts across frames, so that the page never holds the
- * browser long enough to be offered its end, whatever the picture's size (the owner's standard, 2026-10-28).
+ * Target milliseconds for the physics part of a frame once the first picture is on screen. A tick that needs more is
+ * taken in parts across frames. Drawing and input have their own costs: this target alone is not a frame-time guarantee.
  */
 const FRAME_BUDGET = 10;
 
@@ -169,6 +167,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let sizeSettings = "";
   let wireWidth: number | undefined;
   let batches: ReturnType<typeof batchSpatialGraph> | undefined;
+  let pictureRevision = 0;
+  let motionRevision = 0;
+  let placedNames = "";
   let attentionSettings = "";
   let focusedId: string | null = null;
   let selectedId: string | null = null;
@@ -235,6 +236,24 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   /** Today's directory as it stands at the moment shown. */
   const directoryAt = (directory: string): string => (moment ? moment.directoryAt(directory) : directory);
 
+  /** Native accessors may run after their setter returns; invalidate when the library actually reads a changed value. */
+  function changedValue<T extends object, V extends string | number | boolean>(read: (item: T) => V): (item: T) => V {
+    const values = new WeakMap<T, V>();
+    return item => {
+      const value = read(item);
+      if (!values.has(item) || values.get(item) !== value) {
+        values.set(item, value);
+        pictureChanged();
+      }
+      return value;
+    };
+  }
+
+  function pictureChanged(): void {
+    pictureRevision++;
+    pointerPickNeeded = true;
+  }
+
   /** Pick the rendered sphere directly, including re-entry before the native hover cache changes. */
   function nodeAt(clientX: number, clientY: number): string | undefined {
     if (!forceGraphInstance) return undefined;
@@ -265,7 +284,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         && pickedFrame.width === frame.width && pickedFrame.height === frame.height
         && camera.matrixWorld.elements.every((value, index) => value === pickedCamera[index])
         && camera.projectionMatrix.elements.every((value, index) => value === pickedProjection[index]);
-      if (!pointerPickNeeded && !simulationRunning && unchanged) return;
+      if (!pointerPickNeeded && unchanged) return;
     }
     pointerPickNeeded = false;
     pickedFrame = onCanvas ? frame : null;
@@ -439,6 +458,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const box = element.getBoundingClientRect();
       if (box.width && box.height && getComputedStyle(element).visibility !== "hidden") obstacles.push({ x: box.left - frame.left, y: box.top - frame.top, width: box.width, height: box.height });
     }
+    const nameState = JSON.stringify([pictureRevision, focusedId, hoveredId, inspectedActionId, scopedNames,
+      state.tuning.forceGraph.nodeZoomResistance, frame.x, frame.y, frame.width, frame.height,
+      camera.matrixWorld.elements.map(Math.fround), camera.projectionMatrix.elements.map(Math.fround), obstacles]);
+    if (nameState === placedNames) return;
+    placedNames = nameState;
     const candidates: SpatialLabel[] = [];
     const buttons = new Map<string, HTMLButtonElement>();
     const neighbours = framingIds();
@@ -761,6 +785,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function render(): void {
     const container = requireElement<HTMLDivElement>("graph-svg");
+    placedNames = "";
     pointerPickNeeded = true;
     // A moment of the history re-keys the caches through its renames before anything is read from them, so that a
     // renamed file or hub keeps its sphere, its lines and its place under the new id; the hovered and focused ids follow.
@@ -859,8 +884,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (wireWidth !== linkWidth) {
         // A common scale for every wire; reference counts retain their relative weight while camera motion and
         // spring stretch change no base width. Zoom resistance controls its projection separately.
-        instance.linkWidth(link => linkWidth * (link.kind === "related-doc" || link.kind === "cited-by" ? 0.5
-          : link.kind === "containment" ? 1 : Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, link.count)))));
+        instance.linkWidth(changedValue((link: ForceGraphLink) => linkWidth * (link.kind === "related-doc" || link.kind === "cited-by" ? 0.5
+          : link.kind === "containment" ? 1 : Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, link.count))))));
         wireWidth = linkWidth;
       }
       const nextSettings = JSON.stringify([forces, state.spatialLayout]);
@@ -872,12 +897,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const tuning = { ...state.tuning.forceGraph };
       const nextSize = JSON.stringify([tuning.nodeSize, tuning.symbolScale]);
       if (sizeSettings !== nextSize) {
-        instance.nodeVal(node => spatialNodeValue(node, tuning)).nodeRelSize(tuning.nodeSize);
+        instance.nodeVal(changedValue((node: ForceGraphNode) => spatialNodeValue(node, tuning))).nodeRelSize(tuning.nodeSize);
         sizeSettings = nextSize;
       }
       if (!motion) {
-        // The library's own forces give way to the motion, once: its link force stays, pulling nothing, so that every
-        // link's ends resolve to their spheres and its line is drawn; the charge and the centring go.
+        // The page resolves endpoints when feeding the graph. A zero-strength link force would still walk every
+        // wire on every partial physics tick, although the motion is the only force allowed to move a sphere.
         motion = motionForce<ForceGraphNode>({
           tuning: () => state.tuning.forceGraph,
           layout: () => state.spatialLayout,
@@ -885,13 +910,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           strength: () => strength,
           // A picture still part way through its reveal is not still: the rest enters first.
           onStill: () => { if (reveal.shown < reveal.order.length) return; forceGraphInstance?.d3AlphaMin(Infinity); },
-          onNodes: nodes => { if (nodes === pendingPiece) piecesApplied = piecesRequested; },
+          onNodes: nodes => { if (nodes === pendingPiece) piecesApplied = piecesRequested; pictureChanged(); },
           // A whole tick at a call until the first picture has warmed up hidden; a part within the frame's budget after.
           budget: () => ready ? FRAME_BUDGET : undefined
         });
         instance.d3Force("charge", null);
         instance.d3Force("center", null);
-        (instance.d3Force("link") as ForceLink<ForceGraphNode, ForceGraphLink>).strength(0);
+        instance.d3Force("link", null);
         instance.d3Force("motion", motion);
       } else motion.invalidate();
       forceSettings = nextSettings;
@@ -1021,11 +1046,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       ]);
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
-      forceGraphInstance?.nodeColor(node => {
+      forceGraphInstance?.nodeColor(changedValue((node: ForceGraphNode) => {
         const color = spatialNodeStyle(node.archetype).color;
         return attention && !attention.has(node.id) ? `${color}33` : color;
-      });
-      forceGraphInstance?.linkColor(link => {
+      }));
+      forceGraphInstance?.linkColor(changedValue((link: ForceGraphLink) => {
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
         const visible = hovered ? a === hovered || b === hovered
           : path?.length ? pathPairs.has(JSON.stringify([a, b].sort())) : !attention || (attention.has(a) && attention.has(b));
@@ -1036,8 +1061,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         // A document's citation of a file, in the documents' violet lightened toward white, drawn from the document.
         if (link.kind === "cited-by") return `rgba(214, 178, 240, ${visible ? 0.55 : 0.06})`;
         return state.spatialLayout === "structure" ? `rgba(255, 255, 255, ${visible ? 0.5 : 0})` : `rgba(255, 255, 255, ${visible ? 0.16 : 0.025})`;
-      });
-      forceGraphInstance?.linkVisibility(link => {
+      }));
+      forceGraphInstance?.linkVisibility(changedValue((link: ForceGraphLink) => {
         if (state.spatialLayout !== "structure" || link.kind === "containment") return true;
         // In the structure layout a reference is drawn on demand: for the hovered file, within and out of the hovered
         // hub's subtree, among the retained files, and along a path.
@@ -1046,7 +1071,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (hovered) return a === hovered || b === hovered;
         if (path?.length) return pathPairs.has(JSON.stringify([a, b].sort()));
         return !!attention && attention.has(a) && attention.has(b);
-      });
+      }));
     };
 
     if (forceGraphInstance) {
@@ -1078,6 +1103,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // The constructor declaration erases the instance's generic data types;
     // this boundary supplies the exact node/link types passed to graphData.
     const firstPiece = shownData();
+    const linkPositions = new WeakMap<Object3D, number[]>();
     forceGraphInstance = (new ForceGraph3D(container) as unknown as ForceGraph3DInstance<ForceGraphNode, ForceGraphLink>)
       .width(container.clientWidth)
       .height(container.clientHeight)
@@ -1092,11 +1118,24 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .linkOpacity(1)
       // The simulation moves nodes immediately before painting. Track that
       // position in the same frame so the sphere and its projected label agree.
-      .onEngineTick(() => { pointerPickNeeded = true; simulationRunning = true; ready = true; container.setAttribute("aria-busy", "true"); frameDirectory(); if (inspectedActionId && !actionTargetId) refreshActionStrip(); updateFocus(performance.now()); for (const resolve of readyWaiters.splice(0)) resolve(); })
+      .onEngineTick(() => {
+        if (motion && motion.revision !== motionRevision) {
+          motionRevision = motion.revision;
+          pictureChanged();
+        }
+        simulationRunning = true;
+        ready = true;
+        container.setAttribute("aria-busy", "true");
+        frameDirectory();
+        if (inspectedActionId && !actionTargetId) refreshActionStrip();
+        updateFocus(performance.now());
+        for (const resolve of readyWaiters.splice(0)) resolve();
+      })
       .onEngineStop(() => { simulationRunning = false; container.setAttribute("aria-busy", "false"); })
       // A hand moves the picture at full strength, whatever the last membership change was fed: held where the spheres
       // stood when it took hold, and again where they stand when it lets go.
       .onNodeDrag(() => {
+        pictureChanged();
         cancelPress();
         interrupt();
         if (!draggingNode) move(1, "hold");
@@ -1105,9 +1144,19 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       })
       .onNodeDragEnd(() => { draggingNode = false; pointerPickNeeded = true; refreshActionStrip(); move(1, "hold"); })
       .nodePositionUpdate((object, _position, node) => {
-        if (nodeObjects.get(node.id) !== object) pointerPickNeeded = true;
+        if (nodeObjects.get(node.id) !== object) pictureChanged();
         nodeObjects.set((node).id, object);
         return false; // The native renderer still owns object placement.
+      })
+      .linkPositionUpdate((object, { start, end }) => {
+        let previous = linkPositions.get(object);
+        if (previous && previous[0] === start.x && previous[1] === start.y && previous[2] === start.z
+          && previous[3] === end.x && previous[4] === end.y && previous[5] === end.z) return true;
+        if (!previous) { previous = []; linkPositions.set(object, previous); }
+        previous[0] = start.x; previous[1] = start.y; previous[2] = start.z;
+        previous[3] = end.x; previous[4] = end.y; previous[5] = end.z;
+        pictureChanged();
+        return false; // Recompute the native transform only when its endpoints actually moved.
       })
       .nodeLabel(() => "")
       .linkLabel(link => link.kind === "containment" ? "Directory membership"
@@ -1119,10 +1168,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       .linkDirectionalArrowRelPos(1);
     batches = batchSpatialGraph(forceGraphInstance.scene(), () => ({ nodes: state.tuning.forceGraph.nodeZoomResistance, wires: state.tuning.forceGraph.wireZoomResistance }));
     const instance = forceGraphInstance;
-    drawSpatialGraphOnChange(instance.scene(), instance.camera(), instance.renderer(), instance.postProcessingComposer(), () => {
-      batches!.updateSizes(instance.camera(), instance.height());
-      return [state.tuning.forceGraph.nodeZoomResistance, state.tuning.forceGraph.wireZoomResistance];
-    }, spheres => { spheresOnScreen = spheres; grow(); });
+    drawSpatialGraphOnChange(instance.camera(), instance.renderer(), instance.postProcessingComposer(),
+      () => [pictureRevision, state.tuning.forceGraph.nodeZoomResistance, state.tuning.forceGraph.wireZoomResistance],
+      () => { spheresOnScreen = batches!.spheres; grow(); });
     updateAttention();
     heldLinks = firstPiece.links;
     pendingPiece = firstPiece.nodes;
@@ -1361,6 +1409,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const shown = new Set(reveal.order.slice(0, reveal.shown));
     const nodes = [...reveal.nodes.values()].filter(node => shown.has(node.id));
     const links = reveal.links.filter(link => shown.has(resolveLinkEndpoint(link.source)) && shown.has(resolveLinkEndpoint(link.target)));
+    for (const link of links) {
+      link.source = reveal.nodes.get(resolveLinkEndpoint(link.source))!;
+      link.target = reveal.nodes.get(resolveLinkEndpoint(link.target))!;
+    }
     for (const [id, start] of placeNewSpheres(nodes, links, state.tuning.forceGraph, state.spatialLayout)) {
       const node = reveal.nodes.get(id)!;
       node.x = start.x; node.y = start.y; node.z = start.z;

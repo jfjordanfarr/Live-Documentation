@@ -1,0 +1,55 @@
+{
+  "basis": "Preservation comparison against HEAD, not an independent accuracy oracle.",
+  "results": [
+    {
+      "name": "pair",
+      "nodes": 2,
+      "links": 1,
+      "largestDifference": 0,
+      "ticksBefore": 175,
+      "ticksAfter": 175,
+      "stillBefore": true,
+      "stillAfter": true
+    },
+    {
+      "name": "ring",
+      "nodes": 24,
+      "links": 24,
+      "largestDifference": 0,
+      "ticksBefore": 250,
+      "ticksAfter": 250,
+      "stillBefore": false,
+      "stillAfter": false
+    },
+    {
+      "name": "star",
+      "nodes": 256,
+      "links": 255,
+      "largestDifference": 0,
+      "ticksBefore": 215,
+      "ticksAfter": 215,
+      "stillBefore": true,
+      "stillAfter": true
+    },
+    {
+      "name": "disconnected",
+      "nodes": 96,
+      "links": 0,
+      "largestDifference": 0,
+      "ticksBefore": 160,
+      "ticksAfter": 160,
+      "stillBefore": true,
+      "stillAfter": true
+    },
+    {
+      "name": "revealed-ring",
+      "nodes": 512,
+      "links": 512,
+      "largestDifference": 0,
+      "ticksBefore": 185,
+      "ticksAfter": 185,
+      "stillBefore": true,
+      "stillAfter": true
+    }
+  ]
+}

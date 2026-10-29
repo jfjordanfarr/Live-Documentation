@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-10-28T18:59:46.677Z
+- Generated At: 2026-10-29T14:53:24.532Z
 
 ## Authored
 ### Purpose
@@ -15,9 +15,9 @@ Created in the [October 23 identity/framing pass](../../../../../../../AI-Agent-
 
 The owner's [October 24 resistance request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) replaced straight tube drawing with round-capped projected strokes based on Three's wide-line shader. Each endpoint's depth supplies its resistance-adjusted width; near/far clipping, end-on caps and picking agree with `forceGraphSizing.ts`. Homogeneous culling includes the visible stroke's width. Sphere proxies receive the same compensation as their drawn instances, preserving native picking and dragging; removed nodes and disposal restore their original scales. Native physical sizes remain the layout's concern.
 
-The native library still advances interaction and physics each frame. The complete postprocessing pass runs only when the camera or projection, canvas/background, native membership, geometry versions, transforms, visibility or material appearance changed. Camera matrices are compared at their actual Float32 upload precision against the last drawn frame, so sub-precision damping costs no draw and incremental movement still accumulates. The renderer therefore releases its drawing cost while the scene is idle; a restored WebGL context forces another draw. This changes no motion threshold or graph membership.
+The view supplies a picture revision for position, membership and appearance changes; the guard compares that revision and the camera, projection, canvas and background before running the complete postprocessing pass. Camera matrices are compared at Float32 upload precision against the last drawn frame, while revision counters retain full precision. The caller records deferred native changes when their accessors are evaluated, not merely when setters are invoked. This avoids traversing and allocating a snapshot of every native mesh on every idle frame, a major cost found in the [T3 responsiveness investigation](../../../../../../../AI-Agent-Workspace/Probes/2026-10-29/t3-freeze/README.md). A same-size canvas assignment or restored WebGL context forces another draw. Batching retains geometry/material/render-order classification through movement and colour changes; surviving instance records remain the same objects. None of these rules changes motion thresholds or graph membership.
 
-`drawSpatialGraphOnChange` reports after every frame how many spheres the frame holds, drawn now or unchanged since (`onFrame`, 2026-10-28), so that the view grows a picture entering in pieces only once the last piece is on screen ([the reveal](forceGraphReveal.ts.mdmd.md)).
+The batching pass counts the spheres it actually draws. The draw guard's callback runs after every frame, drawn now or unchanged since, so the view can use that retained count to grow a picture only after its previous piece reached the screen ([the reveal](forceGraphReveal.ts.mdmd.md)). Counting shares the existing batching traversal; idle frames need no scene walk.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -31,15 +31,15 @@ The instance actually drawn for a native graph object's picking/placement proxy;
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L24)
-- Parameters: `scene`: [`Scene`](./localView/branch-scene.ts.mdmd.md#symbol-scene); `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `renderer`: `WebGLRenderer`
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L30)
+- Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
-Keep the library's interaction/physics loop running, but draw WebGL only when its picture changes.
+Draw when the camera or the caller's picture revision changes, leaving stationary scenes out of the frame loop.
 
 #### `batchSpatialGraph` {#symbol-batchspatialgraph}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L78)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L63)
 - Parameters: `scene`: [`Scene`](./localView/branch-scene.ts.mdmd.md#symbol-scene)
 
 ##### `batchSpatialGraph` — Summary
@@ -49,7 +49,7 @@ Proxies are hidden only during WebGL drawing and restored before the next intera
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L258)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L267)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary
@@ -61,7 +61,7 @@ Clip a unit wire's axis in homogeneous coordinates, allowing its CSS-pixel half 
 - [`forceGraphSizing.clipSpatialWireDepth`](./forceGraphSizing.ts.mdmd.md#symbol-clipspatialwiredepth)
 - [`forceGraphSizing.pickSpatialWire`](./forceGraphSizing.ts.mdmd.md#symbol-pickspatialwire)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
-- `three` - `BufferGeometry`, `Camera`, `Color`, `DynamicDrawUsage`, `Frustum`, `InstancedBufferAttribute`, `InstancedMesh`, `Material`, `Matrix4`, `Mesh`, `MeshLambertMaterial`, `Scene`, `Sphere`, `Vector2`, `Vector3`, `Vector4`, `WebGLRenderer`
+- `three` - `BufferGeometry`, `Camera`, `Color`, `DynamicDrawUsage`, `Frustum`, `InstancedBufferAttribute`, `InstancedMesh`, `Material`, `Matrix4`, `Mesh`, `MeshLambertMaterial`, `Object3D`, `Scene`, `Sphere`, `Vector2`, `Vector3`, `Vector4`, `WebGLRenderer`
 - `three/addons/lines/LineMaterial.js` - `LineMaterial`
 - `three/addons/lines/LineSegmentsGeometry.js` - `LineSegmentsGeometry`
 <!-- LIVE-DOC:END Dependencies -->

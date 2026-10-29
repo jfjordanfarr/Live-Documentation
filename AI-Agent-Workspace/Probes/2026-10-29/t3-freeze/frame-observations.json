@@ -1,0 +1,65 @@
+{
+  "baseline": {
+    "moving": {
+      "frames": 24,
+      "ms": 9467.299999999726,
+      "max": 450
+    },
+    "idle": {
+      "frames": 37,
+      "ms": 9970.399999999907,
+      "max": 400.1000000000058
+    },
+    "busy": "false",
+    "resetCountdown": "function",
+    "reheat": "function"
+  },
+  "firstCandidate": {
+    "moving": {
+      "frames": 84,
+      "ms": 9962.000000000742,
+      "max": 550
+    },
+    "idle": {
+      "frames": 364,
+      "ms": 10006.700000000012,
+      "max": 316.70000000001164
+    },
+    "moved": 100,
+    "busy": "false"
+  },
+  "firstCandidateCosts": {
+    "nativeTick": {
+      "calls": 107,
+      "ms": 5403.799999999814,
+      "max": 194.79999999981374
+    },
+    "batchPreparation": {
+      "calls": 1,
+      "ms": 254.8999999994412,
+      "max": 254.8999999994412
+    },
+    "webglPass": {
+      "calls": 1,
+      "ms": 289.20000000018626,
+      "max": 289.20000000018626
+    }
+  },
+  "latestCandidate": {
+    "duration": 10260.799999999814,
+    "frames": 120,
+    "median": 83.29999999998836,
+    "p95": 100.09999999997672,
+    "max": 383.29999999998836,
+    "nodes": 27823,
+    "links": 80108,
+    "moved": 100,
+    "busy": "true",
+    "camera": [
+      78.00565024246285,
+      -6.733658265432098,
+      3501.1039215278292
+    ],
+    "dummyLinkForce": false
+  }
+}

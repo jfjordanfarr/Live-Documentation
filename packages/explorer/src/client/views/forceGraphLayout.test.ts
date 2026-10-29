@@ -273,6 +273,27 @@ describe("the springs' strength, the lever on the pull between connected neighbo
 describe("the easing: one motion through a conservative field, until the spheres are still (2026-10-21)", () => {
   const tuning = getDefaultTuning().forceGraph;
 
+  it("reports a picture change only when a paced call moves positions", () => {
+    const nodes: SpatialNode[] = Array.from({ length: 512 }, (_, index) => ({
+      ...node(`paced-${index}`, index % 4), x: (index % 16) * 30, y: Math.floor(index / 16) * 30, z: index % 7
+    }));
+    const simulation = forceSimulation(nodes, 3).stop();
+    const motion = motionForce<SpatialNode>({
+      tuning: () => tuning, layout: () => "connections", links: () => [], strength: () => 1, budget: () => .001
+    });
+    simulation.force("motion", motion);
+    let changed = 0, unchanged = 0;
+    for (let call = 0; call < 32; call++) {
+      const before = placesOf(nodes), revision = motion.revision;
+      simulation.tick();
+      const moved = nodes.some((node, i) => node.x !== before[i][0] || node.y !== before[i][1] || node.z !== before[i][2]);
+      expect(motion.revision - revision).toBe(moved ? 1 : 0);
+      if (moved) changed++; else unchanged++;
+    }
+    expect(changed).toBeGreaterThan(0);
+    expect(unchanged).toBeGreaterThan(0); // Force evaluation alone must not cause a redraw of the same positions.
+  });
+
   it("comes to rest headlessly, the same way every time, and stays put when eased again from there", () => {
     const first = easeSpatialLayout(files, links, tuning, "connections");
     expect(first.still).toBe(true);

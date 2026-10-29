@@ -1,4 +1,4 @@
-import { Box3, Vector3, type Camera, type PerspectiveCamera } from "three";
+import { Vector3, type Camera, type PerspectiveCamera } from "three";
 
 /** A position in the Force Graph's world coordinate system. */
 export interface CameraPoint { x: number; y: number; z: number }
@@ -18,13 +18,14 @@ export function frameCameraSpheres(
   subject?: CameraPoint
 ): { camera: CameraPoint; target: CameraPoint } | null {
   if (!spheres.length) return null;
-  const bounds = new Box3();
+  let minX = Infinity, minY = Infinity, minZ = Infinity;
+  let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
   for (const { center, radius } of spheres) {
-    const point = new Vector3(center.x, center.y, center.z);
-    bounds.expandByPoint(point.clone().addScalar(radius));
-    bounds.expandByPoint(point.clone().addScalar(-radius));
+    minX = Math.min(minX, center.x - radius); maxX = Math.max(maxX, center.x + radius);
+    minY = Math.min(minY, center.y - radius); maxY = Math.max(maxY, center.y + radius);
+    minZ = Math.min(minZ, center.z - radius); maxZ = Math.max(maxZ, center.z + radius);
   }
-  const target = subject ? new Vector3(subject.x, subject.y, subject.z) : bounds.getCenter(new Vector3());
+  const target = subject ? new Vector3(subject.x, subject.y, subject.z) : new Vector3((minX + maxX) / 2, (minY + maxY) / 2, (minZ + maxZ) / 2);
   const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
   const up = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
   const back = new Vector3(0, 0, 1).applyQuaternion(camera.quaternion);
@@ -33,12 +34,12 @@ export function frameCameraSpheres(
   const vertical = tangent * Math.max(.1, 1 - 2 * padding / viewport.height);
   let distance = 140;
   for (const { center, radius } of spheres) {
-    const offset = new Vector3(center.x, center.y, center.z).sub(target);
-    const front = offset.dot(back) + radius;
+    const x = center.x - target.x, y = center.y - target.y, z = center.z - target.z;
+    const front = x * back.x + y * back.y + z * back.z + radius;
     distance = Math.max(
       distance,
-      front + (Math.abs(offset.dot(right)) + radius) / horizontal,
-      front + (Math.abs(offset.dot(up)) + radius) / vertical,
+      front + (Math.abs(x * right.x + y * right.y + z * right.z) + radius) / horizontal,
+      front + (Math.abs(x * up.x + y * up.y + z * up.z) + radius) / vertical,
       front + camera.near
     );
   }

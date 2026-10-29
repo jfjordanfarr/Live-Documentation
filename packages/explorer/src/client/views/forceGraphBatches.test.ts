@@ -172,6 +172,35 @@ describe("spatial draw batches", () => {
 });
 
 describe("spatial redraw guard", () => {
+  it("redraws explicit picture changes, accumulated camera movement, resizing and context restoration", () => {
+    const camera = new PerspectiveCamera(90, 1, 1, 10000);
+    camera.position.z = 1000;
+    let revision = 2 ** 24, frames = 0, observed = 0;
+    const listeners = new Map<string, () => void>();
+    const renderer = {
+      domElement: { width: 1000, height: 1000, addEventListener: (name: string, callback: () => void) => listeners.set(name, callback) },
+      getClearColor: (color: Color) => color.set(0), getClearAlpha: () => 1, setSize: () => {}
+    } as unknown as WebGLRenderer;
+    const composer = { render: () => { frames++; } };
+    drawSpatialGraphOnChange(camera, renderer, composer, () => [revision], () => { observed++; });
+    composer.render();
+    for (let i = 0; i < 20; i++) composer.render();
+    expect(frames).toBe(1);
+    expect(observed).toBe(21); // A reveal can proceed even when the previous piece did not need redrawing.
+    revision++;
+    composer.render();
+    expect(frames).toBe(2); // Revisions must not lose increments at Float32's integer limit.
+    for (let i = 0; i < 100; i++) { camera.position.z += 1e-6; composer.render(); }
+    expect(frames).toBeGreaterThan(2); // Individually subpixel moves eventually change the uploaded picture.
+    const beforeResize = frames;
+    renderer.setSize(1000, 1000);
+    composer.render();
+    expect(frames).toBe(beforeResize + 1); // A same-size canvas assignment still clears its drawing buffer.
+    listeners.get("webglcontextrestored")!();
+    composer.render();
+    expect(frames).toBe(beforeResize + 2);
+  });
+
   it("redraws a resistance change but ignores subpixel damping once uploaded transforms stop changing", () => {
     const scene = new Scene(), node = sphere(4, "#0091ff", .75); scene.add(node);
     const camera = new PerspectiveCamera(90, 1, 1, 10000); camera.position.z = 1000;
@@ -182,9 +211,7 @@ describe("spatial redraw guard", () => {
       getClearColor: (color: Color) => color.set(0), getClearAlpha: () => 1, setSize: () => {}
     } as unknown as WebGLRenderer;
     const composer = { render: () => { frames++; } };
-    drawSpatialGraphOnChange(scene, camera, renderer, composer, () => {
-      batching.updateSizes(camera, 1000); return [resistance];
-    });
+    drawSpatialGraphOnChange(camera, renderer, composer, () => [resistance]);
     composer.render(); expect(frames).toBe(1);
     camera.position.z += 1e-7; composer.render(); expect(frames).toBe(1);
     camera.position.z += 1; composer.render(); expect(frames).toBe(2);

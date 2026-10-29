@@ -69,7 +69,18 @@ for (const [base, subject] of [["/", "packages/generator/src/generator.ts"], ["/
     await expect.poll(framed).toBe(true);
     await readableNames(page);
     const idle = await engineActivity(page);
-    await page.waitForTimeout(250);
+    const rewrittenNames = await page.evaluate(async () => {
+      let changes = 0;
+      const observer = new MutationObserver(records => {
+        changes += records.filter(record => record.target instanceof HTMLElement
+          && record.target.matches(".force-graph-focus, .force-graph-label")).length;
+      });
+      observer.observe(document.getElementById("graph-svg")!, { attributes: true, subtree: true });
+      await new Promise(resolve => setTimeout(resolve, 250));
+      observer.disconnect();
+      return changes;
+    });
+    expect(rewrittenNames, "stationary names are not rewritten on every animation frame").toBe(0);
     expect((await engineActivity(page)).frames, "the unchanged scene draws no more WebGL frames").toBe(idle.frames);
     await blueSphereIsPainted(page, subject);
     const snapshot = currentSnapshot(page);

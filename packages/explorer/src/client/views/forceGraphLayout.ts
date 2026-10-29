@@ -1,4 +1,4 @@
-import { forceLink, forceSimulation, type Force, type SimulationNodeDatum } from "d3-force-3d";
+import { forceSimulation, type Force, type SimulationNodeDatum } from "d3-force-3d";
 
 import type { ForceGraphTuning, SpatialLayout } from "../types";
 import { diagonalOf, SpatialField, SpatialMotion, type MotionSettings, type MotionTick } from "./forceGraphPhysics";
@@ -231,6 +231,8 @@ export interface MotionForce<N extends SpatialNode> extends Force<N> {
   stir(): void;
   /** Whether the spheres have been still for `QUIET_TICKS` ticks since the last `wake`. */
   readonly still: boolean;
+  /** Changes only when a force call writes different positions, including an accepted part of a tick. */
+  readonly revision: number;
 }
 
 /** What the motion force reads at every tick. */
@@ -246,8 +248,8 @@ export interface MotionSource<N extends SpatialNode> {
   /** Called with the spheres the simulation hands the force, the array it was given: a piece of the picture has been applied (2026-10-28). */
   onNodes?(nodes: readonly N[]): void;
   /**
-   * The most milliseconds one call of the force may spend moving the spheres, so that a tick is taken in parts across
-   * animation frames and the page never holds the browser long (the owner's standard, 2026-10-28); none, as headlessly
+   * Target milliseconds for one call moving the spheres, used to size the next part from the previous part's cost;
+   * the complete frame also pays for rendering and input. None, as headlessly
    * and during the library's hidden warm-up, takes a whole tick at every call.
    */
   budget?(): number | undefined;
@@ -272,6 +274,7 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
   let motion: SpatialMotion | null = null;
   let builtFor: readonly string[] = [];
   let quiet = 0, still = false, holding = false;
+  let revision = 0;
   let part = Infinity;
   let begin: MotionStart | null = "unfold";
   const kept = new Map<string, { velocity: number[]; anchor: number[] }>();
@@ -327,10 +330,13 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
       // Aim the next part at the budget by this part's time: more spheres when it was quick, fewer when it was slow.
       part = Math.max(PART_FLOOR, Math.min(count, Math.round(part * budget / Math.max(took, 0.1))));
     }
+    let changed = false;
     nodes.forEach((node, i) => {
+      changed ||= node.x !== x[3 * i] || node.y !== x[3 * i + 1] || node.z !== x[3 * i + 2];
       node.x = x[3 * i]; node.y = x[3 * i + 1]; node.z = x[3 * i + 2];
       node.vx = 0; node.vy = 0; node.vz = 0;
     });
+    if (changed) revision++;
     if (!tick) return;
     const diagonal = diagonalOf(x);
     if (!holding && tick.moveMax <= UNFOLDED_FRACTION * diagonal) {
@@ -351,6 +357,7 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     stir: (): void => { still = false; quiet = 0; }
   });
   Object.defineProperty(force, "still", { get: () => still });
+  Object.defineProperty(force, "revision", { get: () => revision });
   return force;
 }
 
@@ -390,18 +397,20 @@ export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly
   const idOf = (end: string | SpatialNode): string => typeof end === "string" ? end : end.id;
   const order = revealOrder(placed, edges, attention, link => linkPulls(link, layout, tuning));
   let shown = Math.min(order.length, Math.max(first, [...attention].filter(id => byId.has(id)).length));
-  // The link force pulls nothing; it holds every link among the spheres shown, pulling or not, so that each one's ends resolve to their spheres.
-  const linkForce = forceLink<SpatialNode, SpatialLink>().id(node => node.id).strength(0);
-  const simulation = forceSimulation<SpatialNode>([], 3).stop().force("link", linkForce);
+  const simulation = forceSimulation<SpatialNode>([], 3).stop();
   const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => layout, links: () => edges, strength: () => strength });
   simulation.force("motion", motion);
   const feed = (): void => {
     const ids = new Set(order.slice(0, shown));
     const shownNodes = placed.filter(node => ids.has(node.id));
     const shownLinks = edges.filter(link => ids.has(idOf(link.source)) && ids.has(idOf(link.target)));
+    // Resolve at the membership change, as the page does, instead of running an inert spring force every tick.
+    for (const link of shownLinks) {
+      link.source = byId.get(idOf(link.source))!;
+      link.target = byId.get(idOf(link.target))!;
+    }
     for (const [id, at] of placeNewSpheres(shownNodes, shownLinks, tuning, layout)) { const node = byId.get(id)!; node.x = at.x; node.y = at.y; node.z = at.z; }
     simulation.nodes(shownNodes);
-    linkForce.links(shownLinks);
   };
   feed();
   motion.wake(start);

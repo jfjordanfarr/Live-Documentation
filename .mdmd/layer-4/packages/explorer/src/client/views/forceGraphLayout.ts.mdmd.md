@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-10-28T21:56:32.416Z
+- Generated At: 2026-10-29T14:53:24.678Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ Implements the 3D Local Map’s shared geometry and motion: symbol-sized spheres
 ### Notes
 Sphere volume grows from one baseline unit plus the documented public-symbol count; a directory hub's volume is the sum of its members' volumes, so that size means exposed surface at every scale (2026-10-14). A logarithmic coupling term shortens surface gaps, bounded below by collision clearance. `springStrength` gives each wire D3's own rule, one over the smaller of its two ends' pulling-link counts, times the tuning's `linkStrength`, so that one is the picture as it was and the owner can raise the pull between connected neighbours against a weaker pull to the centre ([Turn 7 of the October 17 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)). `symbolCountOf` reads the count a node carries when its symbols' names are not at hand, as at a step of the history, so that a sphere breathes with its symbols at every step (2026-10-18). A count that is not a number of symbols, as a broken or hostile history file can carry, is read as none: the no-network spec's history with markup for a count gave a sphere a radius the motion refuses, and its picture never came to rest (2026-10-21). Neither positions nor symbol counts imply runtime call frequency or code complexity.
 
-Which links pull: references in the connections layout, containment in the structure layout (`linkPulls`); `spatialFieldOf` makes a spring of the pulling ones alone. The page's link force, and the headless twin's, still holds every link at strength zero, because D3 resolves the endpoints of only the links it holds and three-forcegraph draws no line whose ends are ids: until 2026-10-16 every reference revealed in the structure layout was visible but never drawn, a unit tube at the origin.
+Which links pull: references in the connections layout, containment in the structure layout (`linkPulls`); `spatialFieldOf` makes a spring of the pulling ones alone. Every shown link is bound to its actual node objects when membership is fed, in the page and headless twin alike; three-forcegraph draws no line whose ends remain ids. Until 2026-10-16 the revealed Structure references were only unit tubes at the origin. A zero-strength D3 link force originally supplied that binding, but still evaluated every spring on every partial physics tick. Explicit binding removes that repeated work without changing the forces ([the T3 responsiveness repair](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-3)). The motion's revision advances only when a call changes positions, so an evaluation-only slice needs no new picture.
 
 The motion (2026-10-21). `motionForce` is the one force that moves the spheres: D3's simulation, the library's and the headless one alike, drives the ticks, and each tick the force reads the spheres where they stand, holds those a hand has fixed, steps the damped motion of [`forceGraphPhysics.ts`](forceGraphPhysics.ts.mdmd.md) through the field at a constant strength, writes the positions back and zeroes D3's own velocities, so that nothing else moves a sphere. It ignores alpha: there is no cooling, and the easing ends when the largest move of a tick has stayed under `STILL_FRACTION` (3×10⁻⁵) of the picture's diagonal for `QUIET_TICKS` (ten) ticks with the tether holding and no sphere in a hand, the owner's "still by its motion and not by a clock" (2026-10-18). A sphere keeps its velocity and its anchor by id when the field is built again. A motion begins held where the spheres stand, for a change of what is shown or a hand, so that the picture keeps a person's bearings, or unfolds freely and is held once it calms below `UNFOLDED_FRACTION` (10⁻³ of the diagonal per tick), for a first picture, a layout or new forces: held from the library's seed, a ball a hundredth of the picture's size, a picture would stay far too small. On this repository a first picture is still some 350 to 390 ticks after the seed, and a change of tests shown or a hand's release some 170 to 560 ([the measurements](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#work-notes-what-moves-in-the-tail-this-repository-headless), and the tether's choice in [Turns 4 and 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)). `easeSpatialLayout` is the headless twin of the page, for the layout lab and the tests.
 
@@ -224,7 +224,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L237)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L239)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -232,7 +232,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L270)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L272)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -250,14 +250,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L358)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L365)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L375)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L382)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary
@@ -272,7 +272,7 @@ spheres stand. Inputs are not mutated; the result says whether the picture came 
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `d3-force-3d` - `Force`, `SimulationNodeDatum`, `forceLink`, `forceSimulation`
+- `d3-force-3d` - `Force`, `SimulationNodeDatum`, `forceSimulation`
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`types.SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout) (type-only)
 - [`forceGraphPhysics.MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings)

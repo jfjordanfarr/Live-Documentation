@@ -1,4 +1,4 @@
-import { BufferGeometry, Color, DynamicDrawUsage, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshLambertMaterial, Sphere, Vector2, Vector3, Vector4, type Camera, type Scene, type WebGLRenderer } from "three";
+import { BufferGeometry, Color, DynamicDrawUsage, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshLambertMaterial, Sphere, Vector2, Vector3, Vector4, type Camera, type Object3D, type Scene, type WebGLRenderer } from "three";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
@@ -13,60 +13,45 @@ export interface SpatialBatchInstance {
   instance: number;
   enabled: boolean;
 }
-interface Entry extends SpatialBatchInstance { object: GraphMesh; scale: Vector3; depth: number; tubeRadius?: number; raycast: GraphMesh["raycast"] }
+interface Entry extends SpatialBatchInstance {
+  object: GraphMesh;
+  source: BufferGeometry;
+  material: MeshLambertMaterial;
+  renderOrder: number;
+  group: Group;
+  scale: Vector3;
+  depth: number;
+  tubeRadius?: number;
+  raycast: GraphMesh["raycast"];
+  visibleBeforeDraw: boolean;
+}
 interface Group { mesh: InstancedMesh<BufferGeometry, BatchMaterial>; entries: Entry[]; capacity: number }
-const attributeVersion = (geometry: BufferGeometry, name: string): number => {
-  const attribute = geometry.getAttribute(name);
-  return !attribute ? 0 : "version" in attribute ? attribute.version : attribute.data.version;
-};
-
-/** Keep the library's interaction/physics loop running, but draw WebGL only when its picture changes. */
-export function drawSpatialGraphOnChange(scene: Scene, camera: Camera, renderer: WebGLRenderer, composer: { render(delta?: number): void }, prepare: () => readonly number[] = () => [],
-  onFrame: (spheres: number) => void = () => {}): void {
+/** Draw when the camera or the caller's picture revision changes, leaving stationary scenes out of the frame loop. */
+export function drawSpatialGraphOnChange(camera: Camera, renderer: WebGLRenderer, composer: { render(delta?: number): void }, picture: () => readonly number[],
+  onFrame: () => void = () => {}): void {
   const render = composer.render.bind(composer);
   const clear = new Color();
   let previousCamera: number[] = [];
-  let previous = new Map<GraphMesh, readonly unknown[]>();
   renderer.domElement.addEventListener("webglcontextrestored", () => { previousCamera = []; });
   // Setting a canvas size clears its drawing buffer even when rounded pixel dimensions stay the same.
   const setSize = renderer.setSize.bind(renderer);
   renderer.setSize = (...args): void => { previousCamera = []; setSize(...args); };
   // Guard the whole pass: RenderPass clears before invoking renderer.render, even if that inner draw is skipped.
   composer.render = (delta): void => {
-    const appearance = prepare();
-    scene.updateMatrixWorld();
     camera.updateMatrixWorld();
     renderer.getClearColor(clear);
     // WebGL uploads these matrices as Float32. Damping continues in doubles long after the uploaded picture is
     // identical; compare at the actual upload precision, against the last drawn frame so small moves accumulate.
-    const view = [...appearance, ...camera.matrixWorld.elements, ...camera.matrixWorldInverse.elements, ...camera.projectionMatrix.elements,
-      renderer.domElement.width, renderer.domElement.height, clear.r, clear.g, clear.b, renderer.getClearAlpha()].map(Math.fround);
-    let changed = view.length !== previousCamera.length || view.some((value, i) => value !== previousCamera[i]);
-    const current = new Map<GraphMesh, readonly unknown[]>();
-    let spheres = 0;
-    scene.traverse(object => {
-      const mesh = object as GraphMesh;
-      if (!(mesh instanceof Mesh) || !(mesh.material instanceof MeshLambertMaterial)
-        || (!mesh.__graphObjType && mesh.__linkThreeObjType !== "arrow")) return;
-      if (mesh.__graphObjType === "node") spheres++;
-      let visible = mesh.material.visible;
-      for (let parent = object; parent; parent = parent.parent!) visible &&= parent.visible;
-      const material = mesh.material;
-      const values = [...mesh.matrixWorld.elements.map(Math.fround), visible, mesh.renderOrder, mesh.geometry.uuid,
-        mesh.geometry.getAttribute("position"), attributeVersion(mesh.geometry, "position"), attributeVersion(mesh.geometry, "normal"),
-        mesh.geometry.index?.version ?? 0, material.uuid, material.version, material.opacity,
-        material.color.r, material.color.g, material.color.b];
-      const was = previous.get(mesh);
-      if (!was || values.some((value, i) => value !== was[i])) changed = true;
-      current.set(mesh, values);
-    });
-    changed ||= current.size !== previous.size;
+    // Keep revision counters at full precision; only uploaded camera values are rounded.
+    const view = [...picture(), ...[...camera.matrixWorld.elements, ...camera.matrixWorldInverse.elements, ...camera.projectionMatrix.elements,
+      renderer.domElement.width, renderer.domElement.height, clear.r, clear.g, clear.b, renderer.getClearAlpha()].map(Math.fround)];
+    const changed = view.length !== previousCamera.length || view.some((value, i) => value !== previousCamera[i]);
     if (changed) {
-      previous = current; previousCamera = view;
+      previousCamera = view;
       render(delta);
     }
     // The frame is on screen, drawn now or unchanged since: what the picture holds at this moment (2026-10-28).
-    onFrame(spheres);
+    onFrame();
   };
 }
 
@@ -76,7 +61,7 @@ export function drawSpatialGraphOnChange(scene: Scene, camera: Camera, renderer:
  * Proxies are hidden only during WebGL drawing and restored before the next interaction pass.
  */
 export function batchSpatialGraph(scene: Scene, resistance: () => { nodes: number; wires: number } = () => ({ nodes: 0, wires: 1 })): {
-  updateSizes(camera: Camera, height: number): void; dispose(): void;
+  readonly spheres: number; updateSizes(camera: Camera, height: number): void; dispose(): void;
 } {
   const groups = new Map<string, Group>();
   const entries = new Map<GraphMesh, Entry>();
@@ -85,11 +70,12 @@ export function batchSpatialGraph(scene: Scene, resistance: () => { nodes: numbe
   const inverse = new Matrix4(), matrix = new Matrix4(), projection = new Matrix4();
   const sphere = new Sphere(), frustum = new Frustum(), point = new Vector3();
   const viewport = new Vector2();
+  let spheres = 0;
   const nodeScales = new Map<GraphMesh, number>();
-  const updateSizes = (camera: Camera, height: number): void => {
+  const updateSizes = (camera: Camera, height: number, matricesReady = false): void => {
     const amount = resistance().nodes;
     if (amount === 0 && nodeScales.size === 0) return;
-    camera.updateMatrixWorld(); scene.updateMatrixWorld();
+    if (!matricesReady) { camera.updateMatrixWorld(); scene.updateMatrixWorld(); }
     const present = new Set<GraphMesh>();
     scene.traverse(object => {
       const mesh = object as GraphMesh;
@@ -105,34 +91,50 @@ export function batchSpatialGraph(scene: Scene, resistance: () => { nodes: numbe
     }
   };
   const release = (entry: Entry): void => { entry.object.raycast = entry.raycast; delete entry.object.userData.spatialBatch; };
-  let hidden: Array<{ object: GraphMesh; visible: boolean }> = [];
+  const hidden: Entry[] = [];
+  const objects: GraphMesh[] = [];
   const before = scene.onBeforeRender.bind(scene), after = scene.onAfterRender.bind(scene);
   const restore = (): void => {
-    for (const { object, visible } of hidden) object.visible = visible;
-    hidden = [];
+    for (const entry of hidden) entry.object.visible = entry.visibleBeforeDraw;
+    hidden.length = 0;
   };
   scene.onBeforeRender = function (...args): void {
     before.apply(this, args);
     const camera = args[2];
     args[0].getSize(viewport);
-    updateSizes(camera, viewport.y);
+    // WebGLRenderer has already updated world matrices before calling this hook.
+    updateSizes(camera, viewport.y, true);
     inverse.copy(scene.matrixWorld).invert();
     projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     frustum.setFromProjectionMatrix(projection, camera.coordinateSystem, camera.reversedDepth);
-    const objects: Array<{ object: GraphMesh; visible: boolean }> = [];
+    objects.length = 0;
+    spheres = 0;
     scene.traverse(object => {
       const mesh = object as GraphMesh;
       if (!(mesh instanceof Mesh) || !(mesh.material instanceof MeshLambertMaterial)
         || (!mesh.__graphObjType && mesh.__linkThreeObjType !== "arrow")) return;
-      let visible = mesh.material.visible;
-      for (let parent = object; parent; parent = parent.parent!) visible &&= parent.visible;
-      objects.push({ object: mesh, visible });
+      if (mesh.__graphObjType === "node") spheres++;
+      objects.push(mesh);
     });
-    const present = new Set(objects.map(({ object }) => object));
+    const present = new Set(objects);
     for (const [object, entry] of entries) if (!present.has(object)) { release(entry); entries.delete(object); }
-    for (const group of groups.values()) group.entries = [];
-    for (const { object, visible } of objects) {
+    for (const group of groups.values()) group.entries.length = 0;
+    for (const object of objects) {
       const source = object.geometry, material = object.material;
+      if (!source.boundingSphere) source.computeBoundingSphere();
+      let visible = material.visible;
+      for (let parent: Object3D | null = object; parent; parent = parent.parent) visible &&= parent.visible;
+      let entry = entries.get(object);
+      // Geometry, material identity and render order determine a batch. Movement and colour do not: keep that
+      // classification across frames instead of allocating and hashing the full material description per object.
+      if (entry && entry.source === source && entry.material === material && entry.renderOrder === object.renderOrder) {
+        entry.enabled = visible;
+        entry.instance = -1;
+        sphere.copy(source.boundingSphere!).applyMatrix4(object.matrixWorld);
+        entry.depth = point.copy(sphere.center).applyMatrix4(projection).z;
+        entry.group.entries.push(entry);
+        continue;
+      }
       let shape = shapes.get(source);
       if (!shape) {
         // Spheres share the native tessellation. Straight unit tubes supply placement proxies for projected wires;
@@ -180,9 +182,9 @@ export function batchSpatialGraph(scene: Scene, resistance: () => { nodes: numbe
         scene.add(mesh);
         group = { mesh, entries: [], capacity: 0 }; groups.set(key, group);
       }
-      let entry = entries.get(object);
       if (!entry) {
-        entry = { mesh: group.mesh, instance: -1, enabled: visible, object, scale: shape.scale, depth: 0, raycast: object.raycast.bind(object) };
+        entry = { mesh: group.mesh, instance: -1, enabled: visible, object, source, material, renderOrder: object.renderOrder,
+          group, scale: shape.scale, depth: 0, raycast: object.raycast.bind(object), visibleBeforeDraw: object.visible };
         entries.set(object, entry); object.userData.spatialBatch = entry;
         const current = entry;
         object.raycast = (raycaster, hits): void => {
@@ -192,6 +194,7 @@ export function batchSpatialGraph(scene: Scene, resistance: () => { nodes: numbe
           if (hit && hit.distance >= raycaster.near && hit.distance <= raycaster.far) hits.push({ ...hit, object });
         };
       }
+      entry.source = source; entry.material = material; entry.renderOrder = object.renderOrder; entry.group = group;
       entry.mesh = group.mesh; entry.scale = shape.scale; entry.enabled = visible; entry.instance = -1;
       entry.tubeRadius = shape.tubeRadius;
       if (!source.boundingSphere) source.computeBoundingSphere();
@@ -228,23 +231,29 @@ export function batchSpatialGraph(scene: Scene, resistance: () => { nodes: numbe
       }
       visible.sort((a, b) => (mesh.material.transparent ? b.depth - a.depth : a.depth - b.depth) || a.object.id - b.object.id);
       const opacity = mesh.geometry.getAttribute("spatialOpacity");
-      [...visible, ...unseen].forEach((entry, slot) => {
+      let slot = 0;
+      for (const list of [visible, unseen]) for (const entry of list) {
         entry.instance = slot;
         matrix.multiplyMatrices(inverse, entry.object.matrixWorld).scale(entry.scale);
         mesh.setMatrixAt(slot, matrix); mesh.setColorAt(slot, entry.object.material.color);
         opacity.setX(slot, entry.object.material.opacity);
         if (entry.tubeRadius !== undefined) mesh.geometry.getAttribute("spatialWidth").setX(slot, 2 * entry.tubeRadius);
-      });
+        slot++;
+      }
       mesh.count = visible.length;
       mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true; opacity.needsUpdate = true;
       if (mesh.material instanceof LineMaterial) mesh.geometry.getAttribute("spatialWidth").needsUpdate = true;
       mesh.updateMatrixWorld(true);
     }
-    hidden = objects.map(({ object }) => ({ object, visible: object.visible }));
-    for (const { object } of hidden) object.visible = false;
+    for (const object of objects) {
+      const entry = entries.get(object)!;
+      entry.visibleBeforeDraw = object.visible;
+      hidden.push(entry);
+      object.visible = false;
+    }
   };
   scene.onAfterRender = function (...args): void { restore(); after.apply(this, args); };
-  return { updateSizes, dispose(): void {
+  return { get spheres(): number { return spheres; }, updateSizes, dispose(): void {
     restore(); scene.onBeforeRender = before; scene.onAfterRender = after;
     for (const entry of entries.values()) release(entry);
     for (const group of groups.values()) { group.mesh.removeFromParent(); group.mesh.dispose(); group.mesh.geometry.dispose(); group.mesh.material.dispose(); }

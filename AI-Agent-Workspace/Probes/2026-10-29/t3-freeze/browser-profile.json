@@ -1,0 +1,459 @@
+{
+  "baseline": {
+    "timing": {
+      "frames": 337,
+      "maxGap": 1683.5,
+      "longTasks": [
+        {
+          "start": 136817,
+          "duration": 1699
+        },
+        {
+          "start": 155696.59999999963,
+          "duration": 770
+        },
+        {
+          "start": 154363.8999999999,
+          "duration": 765
+        },
+        {
+          "start": 157038.8999999999,
+          "duration": 746
+        },
+        {
+          "start": 153076.69999999972,
+          "duration": 728
+        },
+        {
+          "start": 151825.09999999963,
+          "duration": 701
+        },
+        {
+          "start": 233066.5,
+          "duration": 682
+        },
+        {
+          "start": 232389.19999999972,
+          "duration": 677
+        },
+        {
+          "start": 233748.7999999998,
+          "duration": 677
+        },
+        {
+          "start": 150620.5,
+          "duration": 672
+        },
+        {
+          "start": 234426.3999999999,
+          "duration": 663
+        },
+        {
+          "start": 149469.59999999963,
+          "duration": 650
+        }
+      ],
+      "busy": [
+        {
+          "id": "graph-svg",
+          "busy": "true"
+        }
+      ]
+    },
+    "profileSeconds": 30.899211,
+    "top": [
+      {
+        "fn": " @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:5987",
+        "ms": 6654
+      },
+      {
+        "fn": "(garbage collector) @ :-1",
+        "ms": 2002
+      },
+      {
+        "fn": "compose @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 1770
+      },
+      {
+        "fn": " @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:4943",
+        "ms": 1583
+      },
+      {
+        "fn": "traverse @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 1491
+      },
+      {
+        "fn": "setFromRotationMatrix @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 1315
+      },
+      {
+        "fn": "updateWorldMatrix @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 1224
+      },
+      {
+        "fn": "multiplyMatrices @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 1157
+      },
+      {
+        "fn": "updateMatrixWorld @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 1115
+      },
+      {
+        "fn": "updateMatrix @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 1084
+      },
+      {
+        "fn": "(program) @ :-1",
+        "ms": 1011
+      },
+      {
+        "fn": "applyMatrix4 @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 941
+      },
+      {
+        "fn": "t @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:4943",
+        "ms": 810
+      },
+      {
+        "fn": " @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:6026",
+        "ms": 730
+      },
+      {
+        "fn": "stepThroughTree @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:6026",
+        "ms": 684
+      },
+      {
+        "fn": "Ms @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:6026",
+        "ms": 633
+      },
+      {
+        "fn": "test @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 509
+      },
+      {
+        "fn": "f @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:4439",
+        "ms": 480
+      },
+      {
+        "fn": "$a @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:6026",
+        "ms": 459
+      },
+      {
+        "fn": "qV @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:5987",
+        "ms": 430
+      },
+      {
+        "fn": "YV.n.onBeforeRender @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:5987",
+        "ms": 324
+      },
+      {
+        "fn": "XS @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 283
+      },
+      {
+        "fn": "lookAt @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 282
+      },
+      {
+        "fn": "vg @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:6026",
+        "ms": 257
+      },
+      {
+        "fn": "o @ http://127.0.0.1:8900/samples/t3-code-today/static/index.js:220",
+        "ms": 254
+      }
+    ]
+  },
+  "detail": {
+    "seconds": 21.516692,
+    "top": [
+      {
+        "ms": 3728,
+        "columnNumber": 6159,
+        "functionName": "",
+        "lineNumber": 5987,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 1274,
+        "columnNumber": -1,
+        "functionName": "(garbage collector)",
+        "lineNumber": -1,
+        "scriptId": "0",
+        "url": ""
+      },
+      {
+        "ms": 1251,
+        "columnNumber": -1,
+        "functionName": "(program)",
+        "lineNumber": -1,
+        "scriptId": "0",
+        "url": ""
+      },
+      {
+        "ms": 749,
+        "columnNumber": 25041,
+        "functionName": "",
+        "lineNumber": 4943,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 634,
+        "columnNumber": 24391,
+        "functionName": "t",
+        "lineNumber": 4943,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 524,
+        "columnNumber": 95429,
+        "functionName": "traverse",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 436,
+        "columnNumber": 9774,
+        "functionName": "stepThroughTree",
+        "lineNumber": 6026,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 417,
+        "columnNumber": 7611,
+        "functionName": "YV.n.onBeforeRender",
+        "lineNumber": 5987,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 406,
+        "columnNumber": 6666,
+        "functionName": "",
+        "lineNumber": 5987,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 400,
+        "columnNumber": 36893,
+        "functionName": "Ms",
+        "lineNumber": 6026,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 356,
+        "columnNumber": 95429,
+        "functionName": "traverse",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 354,
+        "columnNumber": 85279,
+        "functionName": "compose",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 326,
+        "columnNumber": 69563,
+        "functionName": "f",
+        "lineNumber": 4439,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 322,
+        "columnNumber": 85279,
+        "functionName": "compose",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 320,
+        "columnNumber": 90348,
+        "functionName": "test",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 293,
+        "columnNumber": 4719,
+        "functionName": "qV",
+        "lineNumber": 5987,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 248,
+        "columnNumber": 88250,
+        "functionName": "setFromRotationMatrix",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 237,
+        "columnNumber": 35407,
+        "functionName": "Qo",
+        "lineNumber": 6026,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 231,
+        "columnNumber": 95730,
+        "functionName": "updateMatrix",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 224,
+        "columnNumber": 54084,
+        "functionName": "applyMatrix4",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 223,
+        "columnNumber": 88250,
+        "functionName": "setFromRotationMatrix",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 223,
+        "columnNumber": 96009,
+        "functionName": "updateMatrixWorld",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 188,
+        "columnNumber": 96009,
+        "functionName": "updateMatrixWorld",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 183,
+        "columnNumber": 96009,
+        "functionName": "updateMatrixWorld",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 180,
+        "columnNumber": 44262,
+        "functionName": "$a",
+        "lineNumber": 6026,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 179,
+        "columnNumber": 95730,
+        "functionName": "updateMatrix",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 160,
+        "columnNumber": 88250,
+        "functionName": "setFromRotationMatrix",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 160,
+        "columnNumber": 88250,
+        "functionName": "setFromRotationMatrix",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 150,
+        "columnNumber": 81862,
+        "functionName": "multiplyMatrices",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 150,
+        "columnNumber": 81862,
+        "functionName": "multiplyMatrices",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 147,
+        "columnNumber": 44262,
+        "functionName": "$a",
+        "lineNumber": 6026,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 137,
+        "columnNumber": 54084,
+        "functionName": "applyMatrix4",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 135,
+        "columnNumber": 96009,
+        "functionName": "updateMatrixWorld",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 135,
+        "columnNumber": 81862,
+        "functionName": "multiplyMatrices",
+        "lineNumber": 220,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      },
+      {
+        "ms": 134,
+        "columnNumber": 7037,
+        "functionName": "",
+        "lineNumber": 5987,
+        "scriptId": "9",
+        "url": "http://127.0.0.1:8900/samples/t3-code-today/static/index.js"
+      }
+    ],
+    "state": {
+      "width": 1065,
+      "height": 622,
+      "pixelRatio": 1,
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 (0x00002204) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "labelElements": 322
+    }
+  }
+}
