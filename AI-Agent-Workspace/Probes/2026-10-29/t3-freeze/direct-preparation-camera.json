@@ -1,0 +1,656 @@
+{
+  "duration": 20073.688,
+  "before": {
+    "draws": 166,
+    "camera": [
+      128.0707535264487,
+      -241.19704136207542,
+      8859.524909343889
+    ],
+    "time": 65072.199999999255
+  },
+  "after": {
+    "draws": 267,
+    "camera": [
+      -7495.078574381003,
+      -435.55949165098536,
+      -5105.419482556635
+    ],
+    "time": 84396.5
+  },
+  "functions": [
+    {
+      "columnNumber": 3978,
+      "functionName": "update",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 4378.726,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 179,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 5444,
+      "functionName": "",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 2759.267,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 222,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 3252,
+      "functionName": "",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 1980.905,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 155,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 3417,
+      "functionName": "re",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 1904.51,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 162,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 3233,
+      "functionName": "Y",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 1377.347,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 154,
+      "sourceName": "batch"
+    },
+    {
+      "columnNumber": 7037,
+      "functionName": "mP",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 1335.592,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 299,
+      "sourceName": "screenWireEndpointsInFrustum"
+    },
+    {
+      "columnNumber": 57704,
+      "functionName": "stepThroughTree",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 1131.904,
+      "source": "packages/explorer/src/client/views/forceGraphPhysics.ts",
+      "sourceLine": 312,
+      "sourceName": null
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "(program)",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 1047.818
+    },
+    {
+      "columnNumber": 713,
+      "functionName": "render",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 1040.236,
+      "source": "packages/explorer/src/client/views/forceGraphRenderer.ts",
+      "sourceLine": 48,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 13602,
+      "functionName": "Vn",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 870.015,
+      "source": "packages/explorer/src/client/views/forceGraphView.ts",
+      "sourceLine": 440,
+      "sourceName": "positionNames"
+    },
+    {
+      "columnNumber": 5328,
+      "functionName": "",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 440.276,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 218,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 66367,
+      "functionName": "_i",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 169.465,
+      "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "sourceLine": 49,
+      "sourceName": "spatialNodeRadius"
+    },
+    {
+      "columnNumber": 69681,
+      "functionName": "",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 127.41,
+      "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "sourceLine": 309,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 70749,
+      "functionName": "qs",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 124.531,
+      "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "sourceLine": 23,
+      "sourceName": "node"
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "bufferSubData",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 119.483
+    },
+    {
+      "columnNumber": 70171,
+      "functionName": "",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 98.237,
+      "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "sourceLine": 334,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 49510,
+      "functionName": "Rb",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 91.31,
+      "source": "packages/explorer/src/client/views/fileConnections.ts",
+      "sourceLine": 10,
+      "sourceName": "fileConnections"
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "(garbage collector)",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 89.45
+    },
+    {
+      "columnNumber": 76081,
+      "functionName": "i",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 89.042,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 156,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 6049,
+      "functionName": "pickLink",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 79.335,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 243,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 26938,
+      "functionName": "g",
+      "lineNumber": 220,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 74.822,
+      "source": "node_modules/d3-force-3d/src/simulation.js",
+      "sourceLine": 49,
+      "sourceName": "tick"
+    },
+    {
+      "columnNumber": 21778,
+      "functionName": "Gi",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 67.22,
+      "source": "packages/explorer/src/client/views/forceGraphView.ts",
+      "sourceLine": 781,
+      "sourceName": "render"
+    },
+    {
+      "columnNumber": 66225,
+      "functionName": "t",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 54.872,
+      "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "sourceLine": 43,
+      "sourceName": "symbols"
+    },
+    {
+      "columnNumber": 76051,
+      "functionName": "Wb",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 53.003,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 154,
+      "sourceName": "labelNamesOf"
+    },
+    {
+      "columnNumber": 56039,
+      "functionName": "applyMatrix4",
+      "lineNumber": 220,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 46.598,
+      "source": "node_modules/three/build/three.core.js",
+      "sourceLine": 5244,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 3252,
+      "functionName": "",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 29.739,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 155,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 23169,
+      "functionName": "",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 24.646,
+      "source": "packages/explorer/src/client/views/forceGraphView.ts",
+      "sourceLine": 852,
+      "sourceName": "link"
+    },
+    {
+      "columnNumber": 11866,
+      "functionName": "zi",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 23.798,
+      "source": "packages/explorer/src/client/views/forceGraphView.ts",
+      "sourceLine": 385,
+      "sourceName": "updateFocus"
+    },
+    {
+      "columnNumber": 69605,
+      "functionName": "f",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 22.091,
+      "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "sourceLine": 303,
+      "sourceName": null
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "(idle)",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 21.974
+    },
+    {
+      "columnNumber": 5766,
+      "functionName": "pickNode",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 20.929,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 231,
+      "sourceName": "raycaster"
+    },
+    {
+      "columnNumber": 73610,
+      "functionName": "$b",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 20.502,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 42,
+      "sourceName": "spatialGraphOf"
+    },
+    {
+      "columnNumber": 55233,
+      "functionName": "addScaledVector",
+      "lineNumber": 220,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 17.672,
+      "source": "node_modules/three/build/three.core.js",
+      "sourceLine": 5072,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 76255,
+      "functionName": "",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 17.609,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 162,
+      "sourceName": "node"
+    },
+    {
+      "columnNumber": 12672,
+      "functionName": "",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 15.522,
+      "source": "packages/explorer/src/client/views/forceGraphView.ts",
+      "sourceLine": 410,
+      "sourceName": "node"
+    },
+    {
+      "columnNumber": 66213,
+      "functionName": "VC",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 14.49,
+      "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+      "sourceLine": 42,
+      "sourceName": "spatialNodeValue"
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "bufferSubData",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 13.018
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "querySelectorAll",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 12.576
+    },
+    {
+      "columnNumber": 2366,
+      "functionName": "so",
+      "lineNumber": 8,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 11.245,
+      "source": "packages/explorer/src/client/graph-helpers.ts",
+      "sourceLine": 78,
+      "sourceName": "endpoint"
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "getBoundingClientRect",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 11.094
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "getBoundingClientRect",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 10.617
+    },
+    {
+      "columnNumber": 22987,
+      "functionName": "",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 9.98,
+      "source": "packages/explorer/src/client/views/forceGraphView.ts",
+      "sourceLine": 843,
+      "sourceName": "node"
+    },
+    {
+      "columnNumber": 22543,
+      "functionName": "mt",
+      "lineNumber": 4870,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 7.987,
+      "source": "packages/explorer/src/client/views/forceGraphView.ts",
+      "sourceLine": 819,
+      "sourceName": "node"
+    },
+    {
+      "columnNumber": 73799,
+      "functionName": "",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 7.508,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 48,
+      "sourceName": "link"
+    },
+    {
+      "columnNumber": -1,
+      "functionName": "getComputedStyle",
+      "lineNumber": -1,
+      "scriptId": "0",
+      "url": "",
+      "selfMs": 6.402
+    },
+    {
+      "columnNumber": 2366,
+      "functionName": "so",
+      "lineNumber": 8,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 6.208,
+      "source": "packages/explorer/src/client/graph-helpers.ts",
+      "sourceLine": 78,
+      "sourceName": "endpoint"
+    },
+    {
+      "columnNumber": 89088,
+      "functionName": "fromArray",
+      "lineNumber": 220,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 5.562,
+      "source": "node_modules/three/build/three.core.js",
+      "sourceLine": 11282,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 73706,
+      "functionName": "o",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 5.512,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 46,
+      "sourceName": "endpoint"
+    },
+    {
+      "columnNumber": 73872,
+      "functionName": "",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 5.512,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 49,
+      "sourceName": "node"
+    },
+    {
+      "columnNumber": 55421,
+      "functionName": "start",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 5.501,
+      "source": "packages/explorer/src/client/views/forceGraphPhysics.ts",
+      "sourceLine": 207,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 54986,
+      "functionName": "copy",
+      "lineNumber": 220,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 5.436,
+      "source": "node_modules/three/build/three.core.js",
+      "sourceLine": 5006,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 1869,
+      "functionName": "k",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 5.043,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 111,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 984,
+      "functionName": "I",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 5.023,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 90,
+      "sourceName": "text"
+    },
+    {
+      "columnNumber": 2366,
+      "functionName": "so",
+      "lineNumber": 8,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 4.543,
+      "source": "packages/explorer/src/client/graph-helpers.ts",
+      "sourceLine": 78,
+      "sourceName": "endpoint"
+    },
+    {
+      "columnNumber": 51720,
+      "functionName": "touching",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 4.021,
+      "source": "packages/explorer/src/client/views/forceGraphOctree.ts",
+      "sourceLine": 132,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 73752,
+      "functionName": "",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 4.011,
+      "source": "packages/explorer/src/client/views/forceGraphData.ts",
+      "sourceLine": 47,
+      "sourceName": "link"
+    },
+    {
+      "columnNumber": 22755,
+      "functionName": "render",
+      "lineNumber": 4439,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 4.005,
+      "source": "node_modules/three/build/three.module.js",
+      "sourceLine": 17674,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 112209,
+      "functionName": "copy",
+      "lineNumber": 220,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 4.002,
+      "source": "node_modules/three/build/three.core.js",
+      "sourceLine": 14530,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 22,
+      "functionName": "getCSSContent",
+      "lineNumber": 3247,
+      "scriptId": "10",
+      "url": "",
+      "selfMs": 3.955,
+      "source": "node_modules/three/build/three.module.js",
+      "sourceLine": 509,
+      "sourceName": null
+    },
+    {
+      "columnNumber": 5766,
+      "functionName": "pickNode",
+      "lineNumber": 4836,
+      "scriptId": "9",
+      "url": "http://127.0.0.1:8900/samples/t3-code-direct-next/static/index.js",
+      "selfMs": 3.611,
+      "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+      "sourceLine": 231,
+      "sourceName": "raycaster"
+    }
+  ]
+}

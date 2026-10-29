@@ -17,6 +17,8 @@ The ninth test (2026-10-18) walks the rename-onto-a-dead-path sample from its be
 
 Since 2026-10-20 ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) a test steps through the sample with Related Docs on: the documents each moment draws, the links the panel names at the plan's birth and the helper's retirement, a document gone today said so and not openable, the reader's note that it reads today's version, and the scrubber clear of the reader.
 
+The resize-only step also has a drawing assertion: the util file grows from two to three public symbols in the uploaded sphere geometry, while zero update energy preserves positions and the links retain their bindings. This caught a stale-size cache during [the direct-renderer work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-12); checking the history panel alone had not tested the picture.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -1,177 +1,157 @@
-import { Color, CylinderGeometry, Group, Matrix3, Matrix4, Mesh, MeshLambertMaterial, PerspectiveCamera, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
-import { LineMaterial } from "three/addons/lines/LineMaterial.js";
+import { Color, Matrix4, PerspectiveCamera, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
 import { describe, expect, it } from "vitest";
 
-import { batchSpatialGraph, drawSpatialGraphOnChange, screenWireIntersectsFrustum, type SpatialBatchInstance } from "./forceGraphBatches";
+import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum } from "./forceGraphBatches";
 
-const sphere = (radius: number, color: string, opacity: number): Mesh<SphereGeometry, MeshLambertMaterial> => {
-  const mesh = new Mesh(new SphereGeometry(radius, 8, 8), new MeshLambertMaterial({ color, opacity, transparent: true }));
-  Object.assign(mesh, { __graphObjType: "node" });
-  return mesh;
-};
-const draw = (scene: Scene, camera = new PerspectiveCamera(60, 1, .1, 2000)): void => {
-  scene.updateMatrixWorld(true);
+interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: number; radius: number; color: string }
+interface Link { source: Node; target: Node; width: number; color: string; visible: boolean; arrow: number }
+const node = (id: string, x: number, y: number, z: number, radius = 4): Node => ({ id, x, y, z, radius, color: "#0091ff", publicSymbols: [] });
+const link = (source: Node, target: Node, width = 1): Link => ({ source, target, width, color: "rgba(255, 255, 255, 0.16)", visible: true, arrow: 0 });
+const setup = () => {
+  const scene = new Scene(), camera = new PerspectiveCamera(60, 1, .1, 20000);
   camera.position.z = 1000; camera.updateMatrixWorld();
-  // Only the CSS viewport measurement is needed to assemble batches; this test does not simulate DOM or WebGL drawing.
-  const renderer = { getSize: (size: Vector2) => size.set(1000, 1000) } as WebGLRenderer;
-  const args = [renderer, scene, camera, new SphereGeometry(), new MeshLambertMaterial(), new Group()] as const;
-  scene.onBeforeRender(...args); scene.onAfterRender(...args);
+  const buffers = createSpatialBuffers<Node, Link>(scene, {
+    radius: node => node.radius, nodeColor: node => node.color, linkColor: link => link.color,
+    linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow
+  });
+  return { scene, camera, buffers, draw: (nodes = 0, wires = 1) => buffers.update(camera, 1000, 1000, nodes, wires) };
 };
-const instanceOf = (mesh: Mesh): SpatialBatchInstance => mesh.userData.spatialBatch as SpatialBatchInstance;
 
-describe("spatial draw batches", () => {
-  it("copies actual transformed vertices, triangle order, alpha and visibility, restoring the picking objects", () => {
-    const scene = new Scene(), parent = new Group();
-    parent.position.set(4, 5, 6); scene.add(parent);
-    const a = sphere(7, "#123456", .15), b = sphere(13, "#ff6600", .75);
-    a.position.set(20, -8, 4); a.rotation.set(.2, .5, .1); a.scale.set(1, 2, .5);
-    b.position.set(-30, 17, 90); b.visible = false; parent.add(a, b);
-    const batching = batchSpatialGraph(scene); draw(scene);
-    const first = instanceOf(a), second = instanceOf(b);
-    expect(first.mesh).toBe(second.mesh);
-    expect(a.visible).toBe(true); expect(b.visible).toBe(false);
-    expect(first.enabled).toBe(true); expect(second.enabled).toBe(false); expect(second.instance).toBeGreaterThanOrEqual(second.mesh.count);
-    const copied = first.mesh.geometry.getAttribute("position"), original = a.geometry.getAttribute("position");
-    expect(copied.count).toBe(original.count);
-    const instanceMatrix = new Matrix4(); first.mesh.getMatrixAt(first.instance, instanceMatrix);
-    for (let i = 0; i < original.count; i++) {
-      const expected = new Vector3().fromBufferAttribute(original, i).applyMatrix4(a.matrixWorld);
-      const actual = new Vector3().fromBufferAttribute(copied, i).applyMatrix4(instanceMatrix);
-      expect(actual.distanceTo(expected)).toBeLessThan(4e-6); // Float32 vertices after the affine transform.
+describe("direct spatial buffers", () => {
+  it("uploads real sphere vertices, colors and alpha without constructing a scene object per node", () => {
+    const { buffers, scene, draw } = setup(), a = node("a", 20, -8, 4, 7), b = node("b", -30, 17, 90, 13);
+    a.color = "#12345633"; b.color = "#ff6600";
+    buffers.setData({ nodes: [a, b], links: [] }); draw();
+    expect(scene.children).toHaveLength(3);
+    const { mesh, entries } = buffers.nodes;
+    for (const entry of entries) {
+      const matrix = new Matrix4(); mesh.getMatrixAt(entry.slot, matrix);
+      const actual = mesh.geometry.getAttribute("position"), reference = new SphereGeometry(entry.data.radius, 12, 12);
+      for (let i = 0; i < actual.count; i++) {
+        const expected = new Vector3().fromBufferAttribute(reference.getAttribute("position"), i).add(new Vector3(entry.data.x, entry.data.y, entry.data.z));
+        const drawn = new Vector3().fromBufferAttribute(actual, i).applyMatrix4(matrix);
+        expect(drawn.distanceTo(expected)).toBeLessThan(2e-6);
+      }
+      expect(mesh.geometry.index!.array).toEqual(reference.index!.array);
+      reference.dispose();
     }
-    const otherMatrix = new Matrix4(); second.mesh.getMatrixAt(second.instance, otherMatrix);
-    const otherVertices = b.geometry.getAttribute("position");
-    for (let i = 0; i < otherVertices.count; i++) {
-      const expected = new Vector3().fromBufferAttribute(otherVertices, i).applyMatrix4(b.matrixWorld);
-      const actual = new Vector3().fromBufferAttribute(copied, i).applyMatrix4(otherMatrix);
-      expect(actual.distanceTo(expected)).toBeLessThan(4e-6); // Different radii share the same native shape.
+    const color = new Color(); mesh.getColorAt(entries[0].slot, color);
+    expect(color.r).toBeCloseTo(new Color("#123456").r, 7);
+    expect(mesh.geometry.getAttribute("spatialOpacity").getX(entries[0].slot)).toBeCloseTo(.15, 7);
+    expect(mesh.geometry.getAttribute("spatialOpacity").getX(entries[1].slot)).toBe(.75);
+    buffers.dispose(); expect(scene.children).toHaveLength(0);
+  });
+
+  it("keeps surviving bindings and batches when membership, appearance, identity or coordinates change", () => {
+    const { buffers, draw } = setup(), a = node("a", -20, 0, 0), b = node("b", 20, 0, 0), c = node("c", 100, 0, 0);
+    const ab = link(a, b, 2.05), bc = link(b, c);
+    buffers.setData({ nodes: [a, b, c], links: [ab, bc] }); draw();
+    const binding = buffers.lines.entries[0], mesh = buffers.lines.mesh;
+    expect(mesh.geometry.getAttribute("spatialWidth").getX(binding.slot)).toBeCloseTo(2.1, 6);
+    a.id = "renamed"; a.x = -80; ab.color = "rgba(214, 178, 240, 0.55)"; ab.visible = false;
+    buffers.invalidateAppearance(); buffers.setData({ nodes: [a, b], links: [ab] }); draw();
+    expect(buffers.lines.entries).toEqual([binding]); expect(buffers.lines.mesh).toBe(mesh);
+    expect(binding.enabled).toBe(false); expect(mesh.count).toBe(0);
+    const matrix = new Matrix4(); mesh.getMatrixAt(binding.slot, matrix);
+    expect(new Vector3().applyMatrix4(matrix).x).toBe(-80);
+    expect(new Vector3(0, 0, 1).applyMatrix4(matrix).x).toBe(20);
+    expect(mesh.geometry.getAttribute("spatialOpacity").getX(binding.slot)).toBeCloseTo(.55, 6);
+    ab.visible = true; buffers.invalidateAppearance(); draw(); expect(mesh.count).toBe(1);
+    buffers.dispose();
+  });
+
+  it("orders translucent instances by depth, culls the view and keeps hidden graph members addressable", () => {
+    const { buffers, draw } = setup(), a = node("near", 0, 0, 200), b = node("far", 0, 0, -200);
+    buffers.setData({ nodes: [a, b], links: [] }); draw();
+    const [near, far] = buffers.nodes.entries;
+    expect(far.slot).toBe(0); expect(near.slot).toBe(1);
+    b.z = 400; draw(); expect(near.slot).toBe(0); expect(far.slot).toBe(1);
+    b.x = 10000; draw(); expect(buffers.nodes.mesh.count).toBe(1);
+    expect(far.slot).toBeGreaterThanOrEqual(buffers.nodes.mesh.count);
+    expect(buffers.nodes.entries).toHaveLength(2);
+    buffers.dispose();
+  });
+
+  it("rebinds packed endpoint indices when membership order changes, retaining exact depth and identity ties", () => {
+    const { buffers, draw } = setup(), a = node("near", 0, 0, 0), b = node("far", 20, 0, -1e-6), c = node("third", -20, 0, -100);
+    const ab = link(a, b), bc = link(b, c);
+    buffers.setData({ nodes: [a, b, c], links: [ab, bc] }); draw();
+    const [near, far] = buffers.nodes.entries, bindings = [...buffers.lines.entries];
+    // Their projected Float32 depths coincide; transparent ordering still compares their full depths.
+    expect(far.slot).toBeLessThan(near.slot);
+    b.z = 0; a.x = 70; c.y = 45;
+    buffers.setData({ nodes: [c, b, a], links: [bc, ab] }); draw();
+    expect(buffers.nodes.entries[2]).toBe(near); expect(buffers.nodes.entries[1]).toBe(far);
+    expect(near.slot).toBeLessThan(far.slot); // Exact ties retain creation order, not the new membership order.
+    expect(buffers.lines.entries).toEqual([bindings[1], bindings[0]]);
+    for (const entry of buffers.lines.entries) {
+      const matrix = new Matrix4(); buffers.lines.mesh.getMatrixAt(entry.slot, matrix);
+      const { source, target } = entry.data;
+      expect(new Vector3().applyMatrix4(matrix).toArray()).toEqual([source.x, source.y, source.z]);
+      expect(new Vector3(0, 0, 1).applyMatrix4(matrix).toArray()).toEqual([target.x, target.y, target.z]);
     }
-    const sourceNormals = a.geometry.getAttribute("normal"), copiedNormals = first.mesh.geometry.getAttribute("normal");
-    const normalMatrix = new Matrix3().getNormalMatrix(a.matrixWorld);
-    for (let i = 0; i < sourceNormals.count; i++) {
-      const expected = new Vector3().fromBufferAttribute(sourceNormals, i).applyNormalMatrix(normalMatrix);
-      const actual = new Vector3().fromBufferAttribute(copiedNormals, i).applyNormalMatrix(new Matrix3().getNormalMatrix(instanceMatrix));
-      expect(actual.distanceTo(expected)).toBeLessThan(1e-6);
+    buffers.dispose();
+  });
+
+  it("grows buffers for a large graph without growing its scene-object count or replacing survivors", () => {
+    const { buffers, scene, draw } = setup();
+    const nodes = Array.from({ length: 2000 }, (_, i) => node(String(i), (i % 20) * 10 - 100, (Math.floor(i / 20) % 20) * 10 - 100, -Math.floor(i / 400) * 10));
+    const links = nodes.slice(1).map((n, i) => link(nodes[i], n));
+    buffers.setData({ nodes: nodes.slice(0, 2), links: links.slice(0, 1) }); draw();
+    const first = buffers.nodes.entries[0], batch = buffers.nodes.mesh;
+    buffers.setData({ nodes, links }); draw();
+    expect(scene.children).toHaveLength(3); expect(buffers.nodes.mesh).toBe(batch); expect(buffers.nodes.entries[0]).toBe(first);
+    expect(buffers.nodes.entries).toHaveLength(2000); expect(buffers.lines.entries).toHaveLength(1999);
+    buffers.setData({ nodes: nodes.slice(0, 1), links: [] }); draw();
+    expect(buffers.nodes.entries).toEqual([first]); expect(batch.count).toBe(1); expect(buffers.lines.mesh.count).toBe(0);
+    buffers.dispose();
+  });
+
+  it("picks the actual uploaded sphere and projected wire and rejects points outside their strokes", () => {
+    const { buffers, camera, draw } = setup(), a = node("a", -100, 0, 0, 12), b = node("b", 100, 0, 0, 12), wire = link(a, b, 4);
+    buffers.setData({ nodes: [a, b], links: [wire] }); draw();
+    const ray = new Raycaster(); ray.setFromCamera(new Vector2(0, 0), camera);
+    expect(buffers.pickNode(ray)).toBeUndefined(); expect(buffers.pickLink(ray, camera, 1)).toBe(wire);
+    ray.setFromCamera(new Vector2(0, .02), camera); expect(buffers.pickLink(ray, camera, 1)).toBeUndefined();
+    const projected = new Vector3(a.x, a.y, a.z).project(camera); ray.setFromCamera(new Vector2(projected.x, projected.y), camera);
+    expect(buffers.pickNode(ray)).toBe(a);
+    buffers.dispose();
+  });
+
+  it("keeps a clipped tapered wire pickable in either direction while rejecting a point outside its bounds", () => {
+    const { buffers, camera, draw } = setup(), a = node("behind", -10, 0, 1100), b = node("ahead", 100, 0, -1000);
+    const wire = link(a, b, 4), ray = new Raycaster();
+    for (const reversed of [false, true]) {
+      wire.source = reversed ? b : a; wire.target = reversed ? a : b;
+      buffers.setData({ nodes: [a, b], links: [wire] }); draw(0, .5);
+      ray.setFromCamera(new Vector2(0, 0), camera);
+      expect(buffers.pickLink(ray, camera, .5)).toBe(wire);
+      ray.setFromCamera(new Vector2(0, .1), camera);
+      expect(buffers.pickLink(ray, camera, .5)).toBeUndefined();
     }
-    expect(first.mesh.geometry.index!.array).toEqual(a.geometry.index!.array);
-    expect(first.mesh.instanceColor!.getX(first.instance)).toBeCloseTo(a.material.color.r, 6);
-    expect(first.mesh.geometry.getAttribute("spatialOpacity").getX(first.instance)).toBeCloseTo(.15, 6);
-    batching.dispose(); expect(a.userData.spatialBatch).toBeUndefined();
-    expect(scene.children.some(child => child.name === "Spatial graph batch")).toBe(false);
+    buffers.dispose();
   });
 
-  it("keeps range identity during motion and attention changes, and separates different depth rules", () => {
-    const scene = new Scene(), a = sphere(4, "#0091ff", .75), line = sphere(2, "#ffffff", .2);
-    line.material.depthWrite = false; line.renderOrder = 10; scene.add(a, line);
-    batchSpatialGraph(scene); draw(scene);
-    const first = instanceOf(a), other = instanceOf(line);
-    expect(first.mesh).not.toBe(other.mesh); expect(other.mesh.renderOrder).toBe(10);
-    expect(other.mesh.material.depthWrite).toBe(false);
-    a.material.opacity = .15; a.material.color.set("#28a745"); a.position.x = 80; draw(scene);
-    expect(instanceOf(a)).toBe(first);
-    expect(first.mesh.instanceColor!.getY(first.instance)).toBeCloseTo(a.material.color.g, 6);
-    expect(first.mesh.geometry.getAttribute("spatialOpacity").getX(first.instance)).toBeCloseTo(.15, 6);
-    const moved = new Matrix4(); first.mesh.getMatrixAt(first.instance, moved);
-    expect(moved.elements[12]).toBe(80);
-  });
-
-  it("orders transparent bodies back to front, reculls moved bodies, and honours changed source geometry", () => {
-    const scene = new Scene(), near = sphere(7, "#0091ff", .75), far = sphere(8, "#28a745", .2);
-    near.position.z = 200; far.position.z = -200; scene.add(near, far);
-    batchSpatialGraph(scene); draw(scene);
-    const a = instanceOf(near), b = instanceOf(far);
-    expect(b.instance).toBe(0); expect(a.instance).toBe(1);
-    far.position.z = 400; draw(scene);
-    expect(a.instance).toBe(0); expect(b.instance).toBe(1);
-    far.position.x = 10000; draw(scene);
-    expect(b.instance).toBeGreaterThanOrEqual(b.mesh.count); expect(a.mesh.count).toBe(1);
-    near.geometry = new SphereGeometry(20, 16, 12); draw(scene);
-    expect(instanceOf(near)).toBe(a);
-    expect(a.mesh.geometry.getAttribute("position").count).toBe(near.geometry.getAttribute("position").count);
-    expect(a.mesh.geometry.index!.count).toBe(near.geometry.index!.count);
-    near.material.visible = false; draw(scene); expect(a.mesh.count).toBe(0);
-    near.material.visible = true; draw(scene); expect(a.mesh.count).toBe(1);
-    expect(a.mesh.material.visible).toBe(true);
-  });
-
-  it("grows for a large scene and releases departed ranges without replacing survivors", () => {
-    const scene = new Scene(), nodes = Array.from({ length: 170 }, (_, i) => sphere(i + 1, "#0091ff", .75));
-    scene.add(...nodes.slice(0, 10)); batchSpatialGraph(scene); draw(scene);
-    const first = instanceOf(nodes[0]);
-    let disposals = 0;
-    first.mesh.addEventListener("dispose", () => { disposals++; });
-    scene.add(...nodes.slice(10)); draw(scene);
-    expect(instanceOf(nodes[0])).toBe(first);
-    expect(disposals).toBe(1);
-    const survivor = instanceOf(nodes[169]);
-    expect(survivor.mesh.count).toBe(170);
-    scene.remove(...nodes.slice(0, 169)); draw(scene);
-    expect(instanceOf(nodes[169])).toBe(survivor);
-    expect(survivor.mesh.count).toBe(1);
-    expect(nodes[0].userData.spatialBatch).toBeUndefined();
-    scene.remove(nodes[169]); draw(scene); expect(scene.children).toEqual([]);
-    expect(disposals).toBe(2);
-  });
-
-  it("keeps the wire's count-weighted width and interaction proxy across resistance changes", () => {
-    const scene = new Scene();
-    const cylinder = new CylinderGeometry(2, 2, 1, 8).rotateX(Math.PI / 2).translate(0, 0, .5);
-    const wire = new Mesh(cylinder, new MeshLambertMaterial({ color: "#0091ff", transparent: true, opacity: .2, depthWrite: false }));
-    wire.position.x = -100; wire.rotation.y = Math.PI / 2; wire.scale.z = 200;
-    Object.assign(wire, { __graphObjType: "link" }); scene.add(wire);
-    let resistance = 1;
-    const batching = batchSpatialGraph(scene, () => ({ nodes: 0, wires: resistance }));
-    const camera = new PerspectiveCamera(90, 1, 1, 10000);
-    draw(scene, camera);
-    const batch = instanceOf(wire);
-    const projectedRaycast = wire.raycast;
-    expect(batch.mesh.material).toBeInstanceOf(LineMaterial);
-    expect(batch.mesh.geometry.getAttribute("spatialWidth").getX(batch.instance)).toBe(4);
-    expect(batch.mesh.geometry.getAttribute("spatialOpacity").getX(batch.instance)).toBeCloseTo(.2, 6);
-    expect(batch.mesh.material.depthWrite).toBe(false);
-    const raycaster = new Raycaster(); raycaster.setFromCamera(new Vector2(0, 1.5 / 500), camera);
-    expect(raycaster.intersectObject(wire)).toHaveLength(1); // Four CSS pixels wide.
-    resistance = 0; draw(scene, camera);
-    expect(instanceOf(wire)).toBe(batch);
-    expect((batch.mesh.material as LineMaterial).uniforms.spatialResistance.value).toBe(0);
-    expect(raycaster.intersectObject(wire)).toHaveLength(0); // Two CSS pixels wide at this depth.
-    batching.dispose();
-    resistance = 1;
-    expect(wire.raycast).not.toBe(projectedRaycast);
-    expect(raycaster.intersectObject(wire)).toHaveLength(0); // Restored native geometry ignores the former control.
-  });
-
-  it("restores node scales on removal and disposal and does not accumulate zoom compensation", () => {
-    const scene = new Scene(), a = sphere(4, "#0091ff", .75), b = sphere(8, "#28a745", .75);
-    a.scale.set(1, 2, .5); b.scale.setScalar(2); scene.add(a, b);
-    let resistance = 1;
-    const batching = batchSpatialGraph(scene, () => ({ nodes: resistance, wires: 1 }));
-    const camera = new PerspectiveCamera(90, 1, 1, 10000);
-    camera.position.z = 1000; camera.updateMatrixWorld();
-    for (let i = 0; i < 5; i++) batching.updateSizes(camera, 1000);
-    expect(a.scale.distanceTo(new Vector3(2, 4, 1))).toBeLessThan(1e-12);
-    camera.position.z = 2000; batching.updateSizes(camera, 1000);
-    expect(a.scale.distanceTo(new Vector3(4, 8, 2))).toBeLessThan(1e-12);
-    resistance = .5; batching.updateSizes(camera, 1000);
-    expect(a.scale.distanceTo(new Vector3(2, 4, 1))).toBeLessThan(1e-12);
-    scene.remove(b); batching.updateSizes(camera, 1000);
-    expect(b.scale.distanceTo(new Vector3(2, 2, 2))).toBeLessThan(1e-12);
-    batching.dispose(); expect(a.scale.distanceTo(new Vector3(1, 2, .5))).toBeLessThan(1e-12);
-  });
-
-  it("culls with the node's compensated radius, retaining a visible rim beyond the viewport", () => {
-    const scene = new Scene(), node = sphere(4, "#0091ff", .75); node.position.x = 1008; scene.add(node);
-    let resistance = 0;
-    const batching = batchSpatialGraph(scene, () => ({ nodes: resistance, wires: 1 }));
-    const camera = new PerspectiveCamera(90, 1, 1, 10000);
-    draw(scene, camera); expect(instanceOf(node).mesh.count).toBe(0);
-    resistance = 1; draw(scene, camera); expect(instanceOf(node).mesh.count).toBe(1);
-    node.position.x = 1020; draw(scene, camera); expect(instanceOf(node).mesh.count).toBe(0);
-    batching.dispose();
+  it("keeps citation arrows at physical length and the target's physical surface through display-size changes", () => {
+    const { buffers, draw } = setup(), a = node("source", -100, 10, 20, 7), b = node("target", 60, -35, -80, 13);
+    const wire = link(a, b); wire.arrow = 4; wire.color = "rgba(214, 178, 240, 0.55)";
+    buffers.setData({ nodes: [a, b], links: [wire] });
+    const matrices: number[][] = [];
+    for (const resistance of [0, 1]) {
+      draw(resistance, .5);
+      const entry = buffers.arrows.entries[0], matrix = new Matrix4();
+      buffers.arrows.mesh.getMatrixAt(entry.slot, matrix); matrices.push([...matrix.elements]);
+      const tail = new Vector3().applyMatrix4(matrix), tip = new Vector3(0, 0, 1).applyMatrix4(matrix);
+      expect(tail.distanceTo(tip)).toBeCloseTo(4, 5);
+      expect(tip.distanceTo(new Vector3(b.x, b.y, b.z))).toBeCloseTo(13, 5);
+      expect(buffers.arrows.mesh.geometry.getAttribute("spatialOpacity").getX(entry.slot)).toBeCloseTo(1.65, 6);
+    }
+    expect(matrices[1]).toEqual(matrices[0]);
+    buffers.dispose();
   });
 });
 
-describe("spatial redraw guard", () => {
+describe("spatial redraw", () => {
   it("redraws explicit picture changes, accumulated camera movement, resizing and context restoration", () => {
     const camera = new PerspectiveCamera(90, 1, 1, 10000);
     camera.position.z = 1000;
@@ -202,10 +182,8 @@ describe("spatial redraw guard", () => {
   });
 
   it("redraws a resistance change but ignores subpixel damping once uploaded transforms stop changing", () => {
-    const scene = new Scene(), node = sphere(4, "#0091ff", .75); scene.add(node);
     const camera = new PerspectiveCamera(90, 1, 1, 10000); camera.position.z = 1000;
     let resistance = .5, frames = 0;
-    const batching = batchSpatialGraph(scene, () => ({ nodes: resistance, wires: resistance }));
     const renderer = {
       domElement: { width: 1000, height: 1000, addEventListener: () => {} },
       getClearColor: (color: Color) => color.set(0), getClearAlpha: () => 1, setSize: () => {}
@@ -217,7 +195,6 @@ describe("spatial redraw guard", () => {
     camera.position.z += 1; composer.render(); expect(frames).toBe(2);
     resistance = 1; composer.render(); expect(frames).toBe(3);
     composer.render(); expect(frames).toBe(3);
-    batching.dispose();
   });
 });
 

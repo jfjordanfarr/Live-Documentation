@@ -417,11 +417,18 @@ test("wheel approaches the focused sphere and does not jump outward after a clos
   await page.mouse.wheel(0, 120);
   await expect.poll(distance).toBeGreaterThan(inward + 5);
   await page.waitForTimeout(300);
-  await page.mouse.down({ button: "middle" });
-  for (let i = 1; i <= 12; i++) { await page.mouse.move(x, y - i * 8); await page.waitForTimeout(25); }
-  await page.mouse.up({ button: "middle" });
-  await page.waitForTimeout(1000);
-  const close = await distance();
+  // Reach the wheel's near limit through real middle-button zoom. The retired wrapper left trackball controls at
+  // their initial 300×150 canvas size, so one fixed drag was much stronger than at the actual resized viewport.
+  // Bound the setup: a broken gesture must fail to reach the same limit, not silently skip this regression.
+  let close = await distance();
+  for (let attempt = 0; attempt < 4 && close >= 65; attempt++) {
+    const start = await emptyPoint(page);
+    await page.mouse.down({ button: "middle" });
+    for (let i = 1; i <= 12; i++) { await page.mouse.move(start.x, start.y - i * 8); await page.waitForTimeout(25); }
+    await page.mouse.up({ button: "middle" });
+    await page.waitForTimeout(1000);
+    close = await distance();
+  }
   expect(close).toBeLessThan(65);
   await page.mouse.wheel(0, -100);
   await page.waitForTimeout(500);

@@ -1,0 +1,22 @@
+{
+  "nodes": 27823,
+  "links": 80108,
+  "timings": {
+    "objects": [
+      28.399999998509884,
+      24.700000002980232,
+      16.700000002980232,
+      14.599999997764826,
+      15.300000000745058
+    ],
+    "packed": [
+      7,
+      10.5,
+      1.199999999254942,
+      1.300000000745058,
+      1.199999999254942
+    ]
+  },
+  "equal": true,
+  "note": "Read-only scratch gathering benchmark over one actual graph state; prepacking setup excluded. Not whole-frame or end-to-end renderer performance."
+}

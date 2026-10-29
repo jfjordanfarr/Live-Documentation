@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@live-documentation/engine": "file:../engine",
-    "3d-force-graph": "^1.80.0",
     "d3-force-3d": "^3.0.6",
     "esbuild": "^0.28.2",
     "jszip": "^3.10.1",

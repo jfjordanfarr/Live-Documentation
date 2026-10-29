@@ -1,0 +1,62 @@
+{
+  "description": "Five unpaused baseline draws, timed in the renderer and with EXT_disjoint_timer_query_webgl2 beginning after scene batch preparation and ending after drawing. GPU elapsed time and JavaScript CPU time are distinct measurements.",
+  "sourceCommit": "6c61f5d3",
+  "gpu": {
+    "samples": [
+      {
+        "time": 609853,
+        "preparationMs": 235.09999999776483,
+        "cpuMs": 269.80000000074506,
+        "calls": 2,
+        "triangles": 7821690,
+        "disjoint": false,
+        "gpuMs": 7.795712
+      },
+      {
+        "time": 616411.5,
+        "preparationMs": 216.30000000074506,
+        "cpuMs": 250.89999999850988,
+        "calls": 2,
+        "triangles": 7814550,
+        "disjoint": false,
+        "gpuMs": 7.59296
+      },
+      {
+        "time": 622987.3000000007,
+        "preparationMs": 215.60000000149012,
+        "cpuMs": 251.39999999850988,
+        "calls": 2,
+        "triangles": 7797906,
+        "disjoint": false,
+        "gpuMs": 7.49056
+      },
+      {
+        "time": 629640,
+        "preparationMs": 208.39999999850988,
+        "cpuMs": 242.89999999850988,
+        "calls": 2,
+        "triangles": 7773612,
+        "disjoint": false,
+        "gpuMs": 7.602176
+      },
+      {
+        "time": 636006.1999999993,
+        "preparationMs": 201.09999999776483,
+        "cpuMs": 236,
+        "calls": 2,
+        "triangles": 7751934,
+        "disjoint": false,
+        "gpuMs": 7.432192
+      }
+    ],
+    "gpuSupported": true,
+    "complete": true
+  },
+  "positionUpdates": 177,
+  "gl": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 (0x00002204) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "viewport": {
+    "width": 1065,
+    "height": 622,
+    "dpr": 1
+  }
+}

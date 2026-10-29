@@ -2,7 +2,8 @@ import { Matrix4, Vector3, Vector4, type Camera, type Ray, type Vector2 } from "
 
 /** CSS pixels per world unit at a point's depth; behind-camera points have no visible size. */
 export function pixelsPerWorldUnit(point: Vector3, camera: Camera, height: number): number {
-  const depth = -point.clone().applyMatrix4(camera.matrixWorldInverse).z;
+  const view = camera.matrixWorldInverse.elements;
+  const depth = -(view[2] * point.x + view[6] * point.y + view[10] * point.z + view[14]);
   const perspective = camera.projectionMatrix.elements[11] === -1;
   return perspective && depth <= 0 ? 0 : Math.abs(camera.projectionMatrix.elements[5]) * height / (2 * (perspective ? depth : 1));
 }

@@ -4,94 +4,86 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-28T18:59:49.444Z
+- Generated At: 2026-10-29T18:09:51.143Z
 
 ## Authored
 ### Purpose
-Observes the Three.js geometry, world placement and camera actually drawn by the spatial-view browser regressions.
+Observes the GPU instance geometry, picking identities and camera actually drawn by the spatial-view browser regressions.
 
 ### Notes
-The helper listens to Three’s development-tool event inside the test page, then reads rendered node identity, material opacity, world and screen positions, the rendered sphere's radius, and link kinds, visibility and drawn ends: a link is a unit tube the library stands at its source and stretches toward its target, so its two ends in world space and its length say where it is drawn, and a line never positioned reads as length 1 at the origin (2026-10-16). This lets tests compare what reaches WebGL instead of accepting an application-maintained diagnostic as evidence of its own correctness. It introduces no product endpoint or browser-global application API. The original observation lived in the force-graph focus regression; directory-hub checks need the same measurements.
+Introduced for the owner's [October 14 pin-management request](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs), extracting shared observation from the focus regression. It listens to Three's development-tool event and reads the actual scene and DOM; it adds no product endpoint or browser-global application API.
 
-Introduced for the owner’s [October 14 pin-management request](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
+For the [October 29 direct renderer](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-10), identity comes from the instance picking index, while positions, sphere radii, alpha and wire widths come from uploaded attributes and geometry. Wire ends are the transformed unit-axis endpoints. It therefore observes rendered buffers independently of the application's layout estimates. The prior October 23 implementation read those buffers through native mesh proxies; those per-node/per-wire proxies are now gone.
 
-Since 2026-10-18, for ticket C2 of [the change-over-time plan](../../../layer-3/change-over-time.mdmd.md#open-questions), the instrument also counts the frames drawn and notes on which frame the graph container said it was busy or settled (`engineActivity`), so that a spec can count the engine's ticks for a change from the outside, since the library ticks at most once per frame; and it can mark every line's object with a token and count the marks later (`markRenderedLinks`, `markedRenderedLinks`), which is how a spec shows that a membership change kept the lines' objects rather than rebuilding them. All of it reads the scene and the DOM; none of it reaches the Explorer's state.
+Actual draws and aria-busy transitions are recorded separately. A draw is not assumed to be a complete physics tick: large evaluations span animation frames. Stable wire-to-buffer bindings and their mesh identities can be marked through a WeakMap and checked across membership changes and historical renames. The idle-picture spec separately checks compositor pixels so an unpainted canvas cannot pass as a correctly idle renderer.
 
-Since the October 23 rendering pass, a native mesh can be a placement and picking proxy for an InstancedMesh slot. The instrument reads the actual instance matrix, shared geometry bounds and uploaded opacity attribute; reading only the proxy would no longer establish what was drawn. Tube ends are the unit geometry’s ends transformed by that instance matrix. The retention mark records the instance record’s identity through sorting and repacking. Browser checks therefore continue to observe rendering rather than trusting an application diagnostic; the identity spec separately samples compositor pixels to prove that an idle canvas stays painted.
-
-For the [October 24 projected wires](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11), link width reads the uploaded base-width attribute and CSS viewport scale; endpoints come from the actual instance transform. This establishes count weighting and control updates, but does not alone establish the shader's apparent width at partial resistance. The wire regressions therefore also measure actual WebGL pixels at controlled depths and pixel densities. Sphere radii continue to come from uploaded geometry and transforms, so resistance checks observe the size drawn rather than a parallel application estimate.
-
-`renderedPieces` (2026-10-28) notes the sizes the picture had as each frame was drawn, for [the reveal spec](force-graph-reveal.spec.ts.mdmd.md), where a poll from outside the page misses a piece that lasts one frame.
+The [projected-wire regressions](force-graph-wires.spec.ts.mdmd.md) isolate one actual uploaded wire, preserve its width/colour/alpha, place its endpoints at controlled camera-relative depths and read GPU pixels before restoring every changed buffer value and visibility. This checks resistance, clipping and caps at multiple pixel densities without predicting shader output from application state. Sphere sizing likewise comes from geometry and uploaded matrices. The renderedPieces observation records each membership as it is submitted, including a piece visible for only one frame, for [the reveal spec](force-graph-reveal.spec.ts.mdmd.md).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `observeGraph` {#symbol-observegraph}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L37)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L25)
 - Parameters: `page`: `Page`
 
 ##### `observeGraph` — Summary
-Observe the meshes and camera actually sent to WebGL through Three's development-tool event, count the frames drawn, and
-note on which frame the graph container said it was busy or settled, so that a spec can count the engine's ticks between
-a change and its settle without reaching into the Explorer's state (2026-10-18).
+Observe the actual buffers submitted to Three; no predicted layout or shader formula is read.
 
 #### `renderedPieces` {#symbol-renderedpieces}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L89)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L95)
 - Parameters: `page`: `Page`
 
 ##### `renderedPieces` — Summary
-The sizes the picture has had, as spheres drawn, from the first sphere on: a piece drawn for one frame is still seen.
+Memberships actually submitted, including pieces painted for a single frame.
 
 #### `engineActivity` {#symbol-engineactivity}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L94)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L100)
 - Parameters: `page`: `Page`
 
 ##### `engineActivity` — Summary
-The frames drawn so far, and when the graph last became busy and last settled, by frame.
+Actual draws and the container's busy/settled transitions, not animation-callback counts.
 
 #### `markRenderedLinks` {#symbol-markrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L102)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L108)
 - Parameters: `page`: `Page`
 
 ##### `markRenderedLinks` — Summary
-Mark every rendered line's object with a token, so that a later count says how many objects a change kept; returns how many were marked.
+Mark stable wire-to-buffer bindings so updates can prove they retained surviving identities.
 
 #### `markedRenderedLinks` {#symbol-markedrenderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L119)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L121)
 - Parameters: `page`: `Page`
 
 ##### `markedRenderedLinks` — Summary
-How many rendered lines carry the token, beside how many there are.
+Surviving wires retain both their binding and GPU batch, including across historical renames.
 
 #### `renderedNodes` {#symbol-renderednodes}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L135)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L138)
 - Parameters: `page`: `Page`
 
 ##### `renderedNodes` — Summary
-Read native node identity, world/screen coordinates, actual material opacity and the rendered sphere's radius.
+Read identity from the picking index and geometry/alpha/positions from the actual uploaded instances.
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L180)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L162)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
-Read relationship kinds, visibility and where each line is drawn, without reaching into the Explorer's own state.
-The library stands a unit-axis proxy at its source, turns it toward its target and stretches it by `scale.z`.
-Width is the uploaded baseline; only full resistance makes it the apparent CSS-pixel diameter at every depth.
+Read each wire's uploaded axis, base width and visibility beside its documented relationship identity.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page` (type-only)
-- [`forceGraphBatches.SpatialBatchInstance`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialbatchinstance) (type-only)
-- `three` - `Camera`, `Mesh`, `Scene`, `Vector3`, `WebGLRenderer` (type-only)
+- [`forceGraphBatches.SpatialDrawEntry`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialdrawentry) (type-only)
+- `three` - `Camera`, `InstancedMesh`, `Scene`, `Vector3`, `WebGLRenderer` (type-only)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

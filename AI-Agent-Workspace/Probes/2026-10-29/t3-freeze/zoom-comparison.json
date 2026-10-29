@@ -1,0 +1,13 @@
+{
+  "description": "Matched 885-node input data, default tuning, 1600×1000 viewport, same wheel and 96-CSS-pixel middle-button gesture. Control rectangles were observed when TrackballControls.handleResize measured its canvas. The baseline client is 6c61f5d3; the direct candidate is the implementation in Turn 10. No runtime errors in either run.",
+  "canvas": { "width": 1339, "height": 950 },
+  "direct": {
+    "controlMeasurements": [{ "width": 300, "height": 150 }, { "width": 1339, "height": 1 }, { "width": 1339, "height": 950 }, { "width": 1339, "height": 950 }, { "width": 1339, "height": 950 }],
+    "distances": { "settled": 165.25236119558818, "wheelIn": 138.03037582946536, "wheelOut": 165.25236119558818, "middleZoom": 89.54128217561997 }
+  },
+  "baseline": {
+    "controlMeasurements": [{ "width": 300, "height": 150 }],
+    "distances": { "settled": 194.0533273965452, "wheelIn": 162.0869635619005, "wheelOut": 194.0533273965452, "middleZoom": 3.142964229767201 }
+  },
+  "finding": "The retired wrapper initialized controls before resizing its renderer and did not call handleResize afterward. Its gesture therefore used the initial canvas dimensions. Preserve correct viewport normalization; the browser regression must use enough actual middle-button gestures to cross the unchanged 65-unit wheel limit. The test caps those attempts and retains its original assertions."
+}

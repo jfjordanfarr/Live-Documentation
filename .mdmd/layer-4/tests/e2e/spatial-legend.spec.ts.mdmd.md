@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/spatial-legend.spec.ts
-- Generated At: 2026-10-24T20:00:17.389Z
+- Generated At: 2026-10-29T18:09:51.851Z
 
 ## Authored
 ### Purpose
@@ -26,8 +26,9 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
+- [`forceGraphBatches.SpatialDrawEntry`](../../packages/explorer/src/client/views/forceGraphBatches.ts.mdmd.md#symbol-spatialdrawentry) (type-only)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
-- `three` - `BufferGeometry`, `Mesh`, `MeshLambertMaterial`, `Scene` (type-only)
+- `three` - `InstancedMesh`, `MeshLambertMaterial`, `Scene` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

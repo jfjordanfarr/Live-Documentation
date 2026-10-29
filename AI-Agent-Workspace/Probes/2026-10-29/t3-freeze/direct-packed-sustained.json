@@ -1,0 +1,2606 @@
+{
+  "active": false,
+  "environment": {
+    "width": 1065,
+    "height": 622,
+    "dpr": 1,
+    "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 (0x00002204) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "errors": [],
+  "snapshots": [
+    {
+      "time": 4185.800000000745,
+      "nodes": 300,
+      "links": 519,
+      "objects": 5,
+      "draws": 1,
+      "positionCommits": 1,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 5015.800000000745,
+      "nodes": 4376,
+      "links": 15618,
+      "objects": 5,
+      "draws": 29,
+      "positionCommits": 29,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 6141.599999997765,
+      "nodes": 12493,
+      "links": 58522,
+      "objects": 5,
+      "draws": 40,
+      "positionCommits": 40,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 7421.89999999851,
+      "nodes": 22136,
+      "links": 80108,
+      "objects": 5,
+      "draws": 46,
+      "positionCommits": 46,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 8197.599999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 49,
+      "positionCommits": 49,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 9002.300000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 49,
+      "positionCommits": 49,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 10004,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 49,
+      "positionCommits": 49,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 11001.099999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 49,
+      "positionCommits": 49,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 12004.599999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 52,
+      "positionCommits": 50,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 13010.699999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 52,
+      "positionCommits": 50,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 14013.199999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 55,
+      "positionCommits": 51,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 15021.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 57,
+      "positionCommits": 52,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 16000.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 58,
+      "positionCommits": 52,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 17008,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 62,
+      "positionCommits": 53,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 18002.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 62,
+      "positionCommits": 53,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 19008.599999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 66,
+      "positionCommits": 54,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 20028.099999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 66,
+      "positionCommits": 54,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 21005.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 70,
+      "positionCommits": 55,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 22034.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 72,
+      "positionCommits": 56,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 23007.699999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 77,
+      "positionCommits": 56,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 24002.800000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 82,
+      "positionCommits": 57,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 25000.099999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 83,
+      "positionCommits": 57,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 26003.699999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 89,
+      "positionCommits": 58,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 27001.300000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 89,
+      "positionCommits": 58,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 28003.099999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 95,
+      "positionCommits": 59,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 29042.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 101,
+      "positionCommits": 60,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 30006,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 101,
+      "positionCommits": 60,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 31000.599999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 106,
+      "positionCommits": 61,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 32054.199999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 112,
+      "positionCommits": 62,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 33005.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 112,
+      "positionCommits": 62,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 34001.599999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 118,
+      "positionCommits": 63,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 35001.199999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 123,
+      "positionCommits": 64,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 36002.199999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 123,
+      "positionCommits": 64,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 37007.300000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 128,
+      "positionCommits": 65,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 38000.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 133,
+      "positionCommits": 66,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 39074.099999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 134,
+      "positionCommits": 67,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 40000.699999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 138,
+      "positionCommits": 67,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 41002.599999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 143,
+      "positionCommits": 68,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 42004,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 147,
+      "positionCommits": 69,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 43002.099999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 147,
+      "positionCommits": 69,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 44002,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 152,
+      "positionCommits": 70,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 45002,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 157,
+      "positionCommits": 71,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 46046,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 159,
+      "positionCommits": 72,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 47002.300000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 162,
+      "positionCommits": 72,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 48002.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 167,
+      "positionCommits": 73,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 49077.699999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 172,
+      "positionCommits": 74,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 50001.199999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 172,
+      "positionCommits": 74,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 51002.199999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 177,
+      "positionCommits": 75,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 52002.300000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 181,
+      "positionCommits": 76,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 53082.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 184,
+      "positionCommits": 77,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 54001.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 185,
+      "positionCommits": 77,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 55000.599999997765,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 189,
+      "positionCommits": 78,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 56002.699999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 193,
+      "positionCommits": 79,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 57026.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 196,
+      "positionCommits": 80,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 58005.199999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 198,
+      "positionCommits": 80,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 59001.699999999255,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 202,
+      "positionCommits": 81,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 60002.300000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 206,
+      "positionCommits": 82,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 61046.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 209,
+      "positionCommits": 83,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 62003.300000000745,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 211,
+      "positionCommits": 83,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 63004.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 216,
+      "positionCommits": 84,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 64005.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 220,
+      "positionCommits": 85,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 65010.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 220,
+      "positionCommits": 85,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 66003.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 224,
+      "positionCommits": 86,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 67011.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 228,
+      "positionCommits": 87,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 68003.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 228,
+      "positionCommits": 87,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 69004,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 232,
+      "positionCommits": 88,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 70001.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 237,
+      "positionCommits": 89,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 71149.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 239,
+      "positionCommits": 90,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 72008.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 241,
+      "positionCommits": 90,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 73005.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 245,
+      "positionCommits": 91,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 74028.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 247,
+      "positionCommits": 92,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 75002.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 249,
+      "positionCommits": 92,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 76005.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 253,
+      "positionCommits": 93,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 77002.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 257,
+      "positionCommits": 94,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 78003.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 257,
+      "positionCommits": 94,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 79007.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 261,
+      "positionCommits": 95,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 80005.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 265,
+      "positionCommits": 96,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 81401.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 268,
+      "positionCommits": 97,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 82088,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 275,
+      "positionCommits": 97,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 83043,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 287,
+      "positionCommits": 97,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 84139.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 301,
+      "positionCommits": 97,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 85138.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 314,
+      "positionCommits": 97,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 86122.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 327,
+      "positionCommits": 97,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 87145.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 340,
+      "positionCommits": 98,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 88100.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 352,
+      "positionCommits": 98,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 89134.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 365,
+      "positionCommits": 98,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 90101.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 377,
+      "positionCommits": 98,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 91099.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 389,
+      "positionCommits": 98,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 92146.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 395,
+      "positionCommits": 98,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 93144.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 407,
+      "positionCommits": 99,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 94076.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 419,
+      "positionCommits": 99,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 95119.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 435,
+      "positionCommits": 99,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 96044.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 450,
+      "positionCommits": 99,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 97058.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 467,
+      "positionCommits": 99,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 98056.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 484,
+      "positionCommits": 100,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 99064.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 502,
+      "positionCommits": 100,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 100099.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 521,
+      "positionCommits": 100,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 101074,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 539,
+      "positionCommits": 100,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 102012.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 548,
+      "positionCommits": 101,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 103006.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 549,
+      "positionCommits": 102,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 104007.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 549,
+      "positionCommits": 102,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 105008.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 550,
+      "positionCommits": 103,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 106007,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 551,
+      "positionCommits": 104,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 107006.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 552,
+      "positionCommits": 105,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 108008.39999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 553,
+      "positionCommits": 106,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 109052.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 554,
+      "positionCommits": 107,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 110006.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 554,
+      "positionCommits": 107,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 111008.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 555,
+      "positionCommits": 108,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 112005.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 556,
+      "positionCommits": 109,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 113007.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 557,
+      "positionCommits": 110,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 114006.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 557,
+      "positionCommits": 110,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 115005.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 558,
+      "positionCommits": 111,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 116009.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 559,
+      "positionCommits": 112,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 117009,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 560,
+      "positionCommits": 113,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 118006.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 560,
+      "positionCommits": 113,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 119004.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 561,
+      "positionCommits": 114,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 120007.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 562,
+      "positionCommits": 115,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 121008.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 563,
+      "positionCommits": 116,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 122004.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 563,
+      "positionCommits": 116,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 123005.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 564,
+      "positionCommits": 117,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 124007.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 565,
+      "positionCommits": 118,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 125017.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 566,
+      "positionCommits": 119,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 126006.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 566,
+      "positionCommits": 119,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 127006.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 567,
+      "positionCommits": 120,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 128005.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 568,
+      "positionCommits": 121,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 129035.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 569,
+      "positionCommits": 122,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 130008.89999999851,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 569,
+      "positionCommits": 122,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 131005.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 570,
+      "positionCommits": 123,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 132010.3999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 571,
+      "positionCommits": 124,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 133001,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 572,
+      "positionCommits": 125,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 134006.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 572,
+      "positionCommits": 125,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 135011.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 574,
+      "positionCommits": 126,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 136009.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 576,
+      "positionCommits": 127,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 137023.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 577,
+      "positionCommits": 128,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 138009.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 577,
+      "positionCommits": 128,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 139006.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 578,
+      "positionCommits": 129,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 140008.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 579,
+      "positionCommits": 130,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 141004.19999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 580,
+      "positionCommits": 131,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 142011.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 580,
+      "positionCommits": 131,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 143007.3999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 581,
+      "positionCommits": 132,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 144005.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 582,
+      "positionCommits": 133,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 145007.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 582,
+      "positionCommits": 133,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 146011.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 583,
+      "positionCommits": 134,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 147010.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 584,
+      "positionCommits": 135,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 148060.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 585,
+      "positionCommits": 136,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 149010.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 585,
+      "positionCommits": 136,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 150008,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 586,
+      "positionCommits": 137,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 151011.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 587,
+      "positionCommits": 138,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 152008.3999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 587,
+      "positionCommits": 138,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 153013.8999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 590,
+      "positionCommits": 139,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 154102.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 593,
+      "positionCommits": 140,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 155013.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 597,
+      "positionCommits": 140,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 156009.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 600,
+      "positionCommits": 141,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 157007.8999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 601,
+      "positionCommits": 141,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 158006.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 602,
+      "positionCommits": 142,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 159012.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 603,
+      "positionCommits": 143,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 160112.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 605,
+      "positionCommits": 144,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 161009.30000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 605,
+      "positionCommits": 144,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 162010,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 607,
+      "positionCommits": 145,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 163023.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 608,
+      "positionCommits": 146,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 164012,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 608,
+      "positionCommits": 146,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 165006.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 609,
+      "positionCommits": 147,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 166011.09999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 610,
+      "positionCommits": 148,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 167023.3999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 610,
+      "positionCommits": 148,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 168008.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 611,
+      "positionCommits": 149,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 169007.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 613,
+      "positionCommits": 150,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 170052.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 614,
+      "positionCommits": 151,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 171008.5,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 615,
+      "positionCommits": 151,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 172009.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 617,
+      "positionCommits": 152,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 173021.3999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 619,
+      "positionCommits": 153,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 174012.59999999776,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 619,
+      "positionCommits": 153,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 175008,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 621,
+      "positionCommits": 154,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 176045.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 623,
+      "positionCommits": 155,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 177008.80000000075,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 623,
+      "positionCommits": 155,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 178012.8999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 625,
+      "positionCommits": 156,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 179009.3999999985,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 627,
+      "positionCommits": 157,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    },
+    {
+      "time": 180071.69999999925,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "draws": 629,
+      "positionCommits": 158,
+      "busy": "true",
+      "visibility": "visible",
+      "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+    }
+  ],
+  "positionCommits": [
+    {
+      "time": 4174.099999997765,
+      "draw": 1
+    },
+    {
+      "time": 4194.800000000745,
+      "draw": 2
+    },
+    {
+      "time": 4225.39999999851,
+      "draw": 3
+    },
+    {
+      "time": 4243.699999999255,
+      "draw": 4
+    },
+    {
+      "time": 4261.699999999255,
+      "draw": 5
+    },
+    {
+      "time": 4299,
+      "draw": 6
+    },
+    {
+      "time": 4325.699999999255,
+      "draw": 7
+    },
+    {
+      "time": 4342.5,
+      "draw": 8
+    },
+    {
+      "time": 4359.89999999851,
+      "draw": 9
+    },
+    {
+      "time": 4378,
+      "draw": 10
+    },
+    {
+      "time": 4411.699999999255,
+      "draw": 11
+    },
+    {
+      "time": 4445.800000000745,
+      "draw": 12
+    },
+    {
+      "time": 4464.5,
+      "draw": 13
+    },
+    {
+      "time": 4484.599999997765,
+      "draw": 14
+    },
+    {
+      "time": 4507.199999999255,
+      "draw": 15
+    },
+    {
+      "time": 4532.099999997765,
+      "draw": 16
+    },
+    {
+      "time": 4558.199999999255,
+      "draw": 17
+    },
+    {
+      "time": 4588,
+      "draw": 18
+    },
+    {
+      "time": 4615.800000000745,
+      "draw": 19
+    },
+    {
+      "time": 4645.199999999255,
+      "draw": 20
+    },
+    {
+      "time": 4676.599999997765,
+      "draw": 21
+    },
+    {
+      "time": 4706.099999997765,
+      "draw": 22
+    },
+    {
+      "time": 4737.5,
+      "draw": 23
+    },
+    {
+      "time": 4770.599999997765,
+      "draw": 24
+    },
+    {
+      "time": 4803.599999997765,
+      "draw": 25
+    },
+    {
+      "time": 4838.099999997765,
+      "draw": 26
+    },
+    {
+      "time": 4883.89999999851,
+      "draw": 27
+    },
+    {
+      "time": 4939.099999997765,
+      "draw": 28
+    },
+    {
+      "time": 4995.800000000745,
+      "draw": 29
+    },
+    {
+      "time": 5065.5,
+      "draw": 30
+    },
+    {
+      "time": 5145.699999999255,
+      "draw": 31
+    },
+    {
+      "time": 5226.699999999255,
+      "draw": 32
+    },
+    {
+      "time": 5304.39999999851,
+      "draw": 33
+    },
+    {
+      "time": 5390.300000000745,
+      "draw": 34
+    },
+    {
+      "time": 5480.699999999255,
+      "draw": 35
+    },
+    {
+      "time": 5573.39999999851,
+      "draw": 36
+    },
+    {
+      "time": 5676.89999999851,
+      "draw": 37
+    },
+    {
+      "time": 5812.39999999851,
+      "draw": 38
+    },
+    {
+      "time": 5948.599999997765,
+      "draw": 39
+    },
+    {
+      "time": 6106.39999999851,
+      "draw": 40
+    },
+    {
+      "time": 6280.699999999255,
+      "draw": 41
+    },
+    {
+      "time": 6471.599999997765,
+      "draw": 42
+    },
+    {
+      "time": 6666.599999997765,
+      "draw": 43
+    },
+    {
+      "time": 6880.699999999255,
+      "draw": 44
+    },
+    {
+      "time": 7107.300000000745,
+      "draw": 45
+    },
+    {
+      "time": 7363.800000000745,
+      "draw": 46
+    },
+    {
+      "time": 7615.199999999255,
+      "draw": 47
+    },
+    {
+      "time": 7867.5,
+      "draw": 48
+    },
+    {
+      "time": 8196.099999997765,
+      "draw": 49
+    },
+    {
+      "time": 11514,
+      "draw": 50
+    },
+    {
+      "time": 13236.599999997765,
+      "draw": 53
+    },
+    {
+      "time": 14964.800000000745,
+      "draw": 56
+    },
+    {
+      "time": 16671.39999999851,
+      "draw": 59
+    },
+    {
+      "time": 18467.099999997765,
+      "draw": 63
+    },
+    {
+      "time": 20263.5,
+      "draw": 67
+    },
+    {
+      "time": 21975.599999997765,
+      "draw": 71
+    },
+    {
+      "time": 23760.699999999255,
+      "draw": 78
+    },
+    {
+      "time": 25443,
+      "draw": 84
+    },
+    {
+      "time": 27131,
+      "draw": 90
+    },
+    {
+      "time": 28742.800000000745,
+      "draw": 96
+    },
+    {
+      "time": 30262.300000000745,
+      "draw": 102
+    },
+    {
+      "time": 31735.5,
+      "draw": 107
+    },
+    {
+      "time": 33191.699999999255,
+      "draw": 113
+    },
+    {
+      "time": 34734.699999999255,
+      "draw": 119
+    },
+    {
+      "time": 36224,
+      "draw": 124
+    },
+    {
+      "time": 37689.300000000745,
+      "draw": 129
+    },
+    {
+      "time": 39072.599999997765,
+      "draw": 134
+    },
+    {
+      "time": 40473.699999999255,
+      "draw": 139
+    },
+    {
+      "time": 41814.800000000745,
+      "draw": 144
+    },
+    {
+      "time": 43125.199999999255,
+      "draw": 148
+    },
+    {
+      "time": 44509.300000000745,
+      "draw": 153
+    },
+    {
+      "time": 45989.5,
+      "draw": 158
+    },
+    {
+      "time": 47426.099999997765,
+      "draw": 163
+    },
+    {
+      "time": 48815.099999997765,
+      "draw": 168
+    },
+    {
+      "time": 50246.300000000745,
+      "draw": 173
+    },
+    {
+      "time": 51614.300000000745,
+      "draw": 178
+    },
+    {
+      "time": 52964.39999999851,
+      "draw": 182
+    },
+    {
+      "time": 54244.699999999255,
+      "draw": 186
+    },
+    {
+      "time": 55565,
+      "draw": 190
+    },
+    {
+      "time": 56914.199999999255,
+      "draw": 194
+    },
+    {
+      "time": 58243.89999999851,
+      "draw": 199
+    },
+    {
+      "time": 59575.099999997765,
+      "draw": 203
+    },
+    {
+      "time": 60932.699999999255,
+      "draw": 207
+    },
+    {
+      "time": 62356.89999999851,
+      "draw": 212
+    },
+    {
+      "time": 63787.300000000745,
+      "draw": 217
+    },
+    {
+      "time": 65228.300000000745,
+      "draw": 221
+    },
+    {
+      "time": 66669.69999999925,
+      "draw": 225
+    },
+    {
+      "time": 68157.80000000075,
+      "draw": 229
+    },
+    {
+      "time": 69575.30000000075,
+      "draw": 233
+    },
+    {
+      "time": 71093.30000000075,
+      "draw": 238
+    },
+    {
+      "time": 72540.30000000075,
+      "draw": 242
+    },
+    {
+      "time": 73972.30000000075,
+      "draw": 246
+    },
+    {
+      "time": 75390.30000000075,
+      "draw": 250
+    },
+    {
+      "time": 76790,
+      "draw": 254
+    },
+    {
+      "time": 78162.19999999925,
+      "draw": 258
+    },
+    {
+      "time": 79557.19999999925,
+      "draw": 262
+    },
+    {
+      "time": 80928.80000000075,
+      "draw": 266
+    },
+    {
+      "time": 86209.30000000075,
+      "draw": 328
+    },
+    {
+      "time": 92826.69999999925,
+      "draw": 403
+    },
+    {
+      "time": 97717.39999999851,
+      "draw": 478
+    },
+    {
+      "time": 101519,
+      "draw": 545
+    },
+    {
+      "time": 102841.5,
+      "draw": 549
+    },
+    {
+      "time": 104080.30000000075,
+      "draw": 550
+    },
+    {
+      "time": 105354.09999999776,
+      "draw": 551
+    },
+    {
+      "time": 106574.39999999851,
+      "draw": 552
+    },
+    {
+      "time": 107806.89999999851,
+      "draw": 553
+    },
+    {
+      "time": 109040.59999999776,
+      "draw": 554
+    },
+    {
+      "time": 110375.09999999776,
+      "draw": 555
+    },
+    {
+      "time": 111633.59999999776,
+      "draw": 556
+    },
+    {
+      "time": 112910.59999999776,
+      "draw": 557
+    },
+    {
+      "time": 114176.19999999925,
+      "draw": 558
+    },
+    {
+      "time": 115474.80000000075,
+      "draw": 559
+    },
+    {
+      "time": 116791.59999999776,
+      "draw": 560
+    },
+    {
+      "time": 118109.19999999925,
+      "draw": 561
+    },
+    {
+      "time": 119440.59999999776,
+      "draw": 562
+    },
+    {
+      "time": 120774.80000000075,
+      "draw": 563
+    },
+    {
+      "time": 122142.39999999851,
+      "draw": 564
+    },
+    {
+      "time": 123526.30000000075,
+      "draw": 565
+    },
+    {
+      "time": 124895.30000000075,
+      "draw": 566
+    },
+    {
+      "time": 126325.80000000075,
+      "draw": 567
+    },
+    {
+      "time": 127689.59999999776,
+      "draw": 568
+    },
+    {
+      "time": 129023,
+      "draw": 569
+    },
+    {
+      "time": 130339.59999999776,
+      "draw": 570
+    },
+    {
+      "time": 131638.69999999925,
+      "draw": 571
+    },
+    {
+      "time": 132972.30000000075,
+      "draw": 572
+    },
+    {
+      "time": 134324.8999999985,
+      "draw": 573
+    },
+    {
+      "time": 135659.59999999776,
+      "draw": 575
+    },
+    {
+      "time": 137010.30000000075,
+      "draw": 577
+    },
+    {
+      "time": 138340,
+      "draw": 578
+    },
+    {
+      "time": 139656.59999999776,
+      "draw": 579
+    },
+    {
+      "time": 140991.8999999985,
+      "draw": 580
+    },
+    {
+      "time": 142338.69999999925,
+      "draw": 581
+    },
+    {
+      "time": 143737.3999999985,
+      "draw": 582
+    },
+    {
+      "time": 145188.19999999925,
+      "draw": 583
+    },
+    {
+      "time": 146630.30000000075,
+      "draw": 584
+    },
+    {
+      "time": 148057,
+      "draw": 585
+    },
+    {
+      "time": 149425.09999999776,
+      "draw": 586
+    },
+    {
+      "time": 150793.30000000075,
+      "draw": 587
+    },
+    {
+      "time": 152377.5,
+      "draw": 588
+    },
+    {
+      "time": 154083.5,
+      "draw": 593
+    },
+    {
+      "time": 155812.09999999776,
+      "draw": 599
+    },
+    {
+      "time": 157325.80000000075,
+      "draw": 602
+    },
+    {
+      "time": 158645.30000000075,
+      "draw": 603
+    },
+    {
+      "time": 160027.59999999776,
+      "draw": 604
+    },
+    {
+      "time": 161480,
+      "draw": 606
+    },
+    {
+      "time": 163009.59999999776,
+      "draw": 608
+    },
+    {
+      "time": 164464.30000000075,
+      "draw": 609
+    },
+    {
+      "time": 165894.8999999985,
+      "draw": 610
+    },
+    {
+      "time": 167275.19999999925,
+      "draw": 611
+    },
+    {
+      "time": 168643.30000000075,
+      "draw": 612
+    },
+    {
+      "time": 170046.59999999776,
+      "draw": 614
+    },
+    {
+      "time": 171511.59999999776,
+      "draw": 616
+    },
+    {
+      "time": 172940.8999999985,
+      "draw": 618
+    },
+    {
+      "time": 174361.3999999985,
+      "draw": 620
+    },
+    {
+      "time": 175775,
+      "draw": 622
+    },
+    {
+      "time": 177174.19999999925,
+      "draw": 624
+    },
+    {
+      "time": 178591.59999999776,
+      "draw": 626
+    },
+    {
+      "time": 179992.09999999776,
+      "draw": 628
+    }
+  ],
+  "changedFrames": {
+    "count": 563,
+    "median": 69.09999999776483,
+    "p95": 88.5,
+    "max": 131.19999999925494
+  },
+  "idleFrames": {
+    "count": 7198,
+    "median": 13,
+    "p95": 19.5,
+    "max": 66.80000000074506
+  },
+  "notes": "Packed numeric working arrays; three-minute foreground trial, including camera and hover profiles. Physics was never deliberately paused. Not a matched-state speedup benchmark."
+}

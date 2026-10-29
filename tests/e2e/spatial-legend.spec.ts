@@ -1,8 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
-import type { BufferGeometry, Mesh, MeshLambertMaterial, Scene } from "three";
+import type { InstancedMesh, MeshLambertMaterial, Scene } from "three";
 
 import { observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/forceGraphBatches";
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -16,10 +17,14 @@ async function matchesNodeColour(page: Page, label: string, id: string): Promise
     const { scene } = (window as unknown as { renderedGraph: { scene: Scene } }).renderedGraph;
     let matches = false;
     scene.traverse(object => {
-      const mesh = object as Mesh<BufferGeometry, MeshLambertMaterial> & { __graphObjType?: string; __data?: { id?: string } };
-      if (mesh.__graphObjType === "node" && mesh.__data?.id === id) {
-        matches = mesh.material.color.clone().setStyle(color).equals(mesh.material.color);
-      }
+      const mesh = object as InstancedMesh;
+      const batch = mesh.userData.spatialBatch as { kind: string; entries: SpatialDrawEntry<{ id: string }>[] } | undefined;
+      if (batch?.kind !== "nodes") return;
+      const entry = batch.entries.find(item => item.data.id === id);
+      if (!entry) return;
+      const actual = (mesh.material as MeshLambertMaterial).color.clone(); mesh.getColorAt(entry.slot, actual);
+      const expected = actual.clone().setStyle(color);
+      matches = actual.r === Math.fround(expected.r) && actual.g === Math.fround(expected.g) && actual.b === Math.fround(expected.b);
     });
     return matches;
   }, { id, color });

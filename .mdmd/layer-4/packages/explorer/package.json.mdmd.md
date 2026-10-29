@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/package.json
 - Entry: tooling
-- Generated At: 2026-10-20T21:28:53.776Z
+- Generated At: 2026-10-29T18:09:46.890Z
 
 ## Authored
 ### Purpose
@@ -24,7 +24,6 @@ Three.js is a direct runtime dependency for camera projection; its matching type
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `3d-force-graph@^1.80.0`
 - `@types/three@^0.186.0`
 - `d3-force-3d@^3.0.6`
 - `esbuild@^0.28.2`

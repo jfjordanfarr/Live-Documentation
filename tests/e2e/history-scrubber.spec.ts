@@ -86,6 +86,26 @@ async function audit(page: Page, what: string): Promise<void> {
 type Rendered = Awaited<ReturnType<typeof renderedNodes>>;
 const byId = (nodes: Rendered) => new Map(nodes.map(node => [node.id, node.world]));
 
+test("a resize-only history step updates the drawn sphere without moving or replacing the graph", async ({ page }) => {
+  const commits = await commitsOf(page, "/samples/history/");
+  await observeGraph(page);
+  await page.goto(entry("/samples/history/", {
+    commit: commits[4].id,
+    layout: { forceGraph: { updateEnergy: 0, nodeZoomResistance: 0, nodeSize: 4, symbolScale: 1 } }
+  }));
+  await settled(page);
+  const before = await renderedNodes(page);
+  const subject = before.find(node => node.id === "src/engine/util.ts")!;
+  expect(subject.radius).toBeCloseTo(4 * Math.cbrt(3), 5);
+  const links = await markRenderedLinks(page, "resize-only");
+  await expect(page.locator(".history-scrubber")).toBeVisible();
+  await stepTo(page, 5);
+  await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === subject.id)!.radius)
+    .toBeCloseTo(4 * Math.cbrt(4), 5);
+  expect(byId(await renderedNodes(page))).toEqual(byId(before));
+  expect(await markedRenderedLinks(page, "resize-only")).toEqual({ marked: links, total: links });
+});
+
 test("the control opens a scrubber with one tick per step and the panel says what the last step changed, with no words on top of each other", async ({ page }) => {
   const commits = await commitsOf(page, "/samples/history/");
   await page.goto(entry("/samples/history/"));

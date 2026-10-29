@@ -7,6 +7,31 @@
     overflow: clip;
 }
 
+.scene-nav-info {
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
+  text-align: center;
+  color: slategrey;
+  opacity: .7;
+  font: 10px sans-serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.spatial-wire-tooltip {
+  position: absolute;
+  z-index: 3;
+  max-width: min(280px, calc(100% - 16px));
+  overflow-wrap: anywhere;
+  padding: 5px 8px;
+  color: white;
+  background: #080c16e8;
+  border: 1px solid #485164;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
 .force-graph-focus,
 .force-graph-label {
     position: absolute;

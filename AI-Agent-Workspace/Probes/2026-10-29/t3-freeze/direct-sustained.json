@@ -1,0 +1,5419 @@
+{
+  "trial": {
+    "environment": {
+      "width": 1065,
+      "height": 622,
+      "dpr": 1,
+      "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3090 (0x00002204) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    "errors": [],
+    "snapshots": [
+      {
+        "time": 4689.400000002235,
+        "nodes": 300,
+        "links": 519,
+        "objects": 5,
+        "draws": 1,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 5221.5,
+        "nodes": 2040,
+        "links": 2439,
+        "objects": 5,
+        "draws": 21,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 6273.20000000298,
+        "nodes": 7755,
+        "links": 33430,
+        "objects": 5,
+        "draws": 35,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 7555,
+        "nodes": 13743,
+        "links": 64791,
+        "objects": 5,
+        "draws": 41,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 8554.10000000149,
+        "nodes": 18293,
+        "links": 76095,
+        "objects": 5,
+        "draws": 44,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 9771.900000002235,
+        "nodes": 24350,
+        "links": 80108,
+        "objects": 5,
+        "draws": 47,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 10550,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 49,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 11206.300000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 49,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 12211.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 49,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 13207.900000002235,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 49,
+        "positionCommits": 0,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 14482.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 52,
+        "positionCommits": 1,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 15208.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 52,
+        "positionCommits": 1,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 16250.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 53,
+        "positionCommits": 2,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 17204.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 55,
+        "positionCommits": 2,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 18369.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 56,
+        "positionCommits": 3,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 19207.800000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 58,
+        "positionCommits": 3,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 20203.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 58,
+        "positionCommits": 3,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 21226.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 62,
+        "positionCommits": 4,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 22204.400000002235,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 62,
+        "positionCommits": 4,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 23296.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 66,
+        "positionCommits": 5,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 24205,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 66,
+        "positionCommits": 5,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 25333.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 69,
+        "positionCommits": 6,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 26206.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 70,
+        "positionCommits": 6,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 27204,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 71,
+        "positionCommits": 7,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 28321.800000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 77,
+        "positionCommits": 7,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 29204.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 77,
+        "positionCommits": 7,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 30409.300000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 81,
+        "positionCommits": 8,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 31202.400000002235,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 83,
+        "positionCommits": 8,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 32493.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 85,
+        "positionCommits": 9,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 33286.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 89,
+        "positionCommits": 9,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 34205.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 89,
+        "positionCommits": 9,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 35520.400000002235,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 94,
+        "positionCommits": 10,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 36203.400000002235,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 95,
+        "positionCommits": 10,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 37422.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 97,
+        "positionCommits": 11,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 38219.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 101,
+        "positionCommits": 11,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 39202.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 101,
+        "positionCommits": 11,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 40394.800000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 106,
+        "positionCommits": 12,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 41205,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 106,
+        "positionCommits": 12,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 42445.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 111,
+        "positionCommits": 13,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 43205.800000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 112,
+        "positionCommits": 13,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 44482,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 116,
+        "positionCommits": 14,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 45204.400000002235,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 118,
+        "positionCommits": 14,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 46430.300000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 120,
+        "positionCommits": 15,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 47205.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 123,
+        "positionCommits": 15,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 48388.800000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 124,
+        "positionCommits": 16,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 49206.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 128,
+        "positionCommits": 16,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 50204.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 128,
+        "positionCommits": 16,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 51225.300000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 133,
+        "positionCommits": 17,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 52205.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 133,
+        "positionCommits": 17,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 53278.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 138,
+        "positionCommits": 18,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 54205.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 138,
+        "positionCommits": 18,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 55380.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 143,
+        "positionCommits": 19,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 56207.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 143,
+        "positionCommits": 19,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 57242.300000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 147,
+        "positionCommits": 20,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 58205.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 147,
+        "positionCommits": 20,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 59260.400000002235,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 152,
+        "positionCommits": 21,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 60204.800000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 152,
+        "positionCommits": 21,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 61381.300000000745,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 157,
+        "positionCommits": 22,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 62204.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 157,
+        "positionCommits": 22,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 63450,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 162,
+        "positionCommits": 23,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 64204.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 162,
+        "positionCommits": 23,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 65511.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 167,
+        "positionCommits": 24,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 66209,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 167,
+        "positionCommits": 24,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 67216.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 170,
+        "positionCommits": 25,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 68205.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 172,
+        "positionCommits": 25,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 69276.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 175,
+        "positionCommits": 26,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 70208.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 177,
+        "positionCommits": 26,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 71499.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 181,
+        "positionCommits": 27,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 72205.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 181,
+        "positionCommits": 27,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 73333.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 185,
+        "positionCommits": 28,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 74206.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 185,
+        "positionCommits": 28,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 75206.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 189,
+        "positionCommits": 29,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 76207.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 189,
+        "positionCommits": 29,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 77207,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 193,
+        "positionCommits": 30,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 78396.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 195,
+        "positionCommits": 31,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 79208,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 198,
+        "positionCommits": 31,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 80544.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 201,
+        "positionCommits": 32,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 81205.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 202,
+        "positionCommits": 32,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 82587.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 206,
+        "positionCommits": 33,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 83211.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 206,
+        "positionCommits": 33,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 84512,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 210,
+        "positionCommits": 34,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 85207.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 211,
+        "positionCommits": 34,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 86534,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 215,
+        "positionCommits": 35,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 87204.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 216,
+        "positionCommits": 35,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 88230.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 218,
+        "positionCommits": 36,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 89209,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 220,
+        "positionCommits": 36,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 90299.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 223,
+        "positionCommits": 37,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 91209.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 224,
+        "positionCommits": 37,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 92217.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 227,
+        "positionCommits": 38,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 93206.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 228,
+        "positionCommits": 38,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 94328.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 232,
+        "positionCommits": 39,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 95210.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 232,
+        "positionCommits": 39,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 96316.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 236,
+        "positionCommits": 40,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 97208.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 237,
+        "positionCommits": 40,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 98215.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 240,
+        "positionCommits": 41,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 99206.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 241,
+        "positionCommits": 41,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 100380.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 245,
+        "positionCommits": 42,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 101206.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 245,
+        "positionCommits": 42,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 102302,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 249,
+        "positionCommits": 43,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 103207,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 249,
+        "positionCommits": 43,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 104209.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 253,
+        "positionCommits": 44,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 105210,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 253,
+        "positionCommits": 44,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 106210.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 257,
+        "positionCommits": 45,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 107208.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 257,
+        "positionCommits": 45,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 108208.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 261,
+        "positionCommits": 46,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 109448.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 263,
+        "positionCommits": 47,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 110210.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 265,
+        "positionCommits": 47,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 111443,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 267,
+        "positionCommits": 48,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 112212.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 270,
+        "positionCommits": 48,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 113208.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 270,
+        "positionCommits": 48,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 114243.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 274,
+        "positionCommits": 49,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 115210.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 274,
+        "positionCommits": 49,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 116368.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 279,
+        "positionCommits": 50,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 117209.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 279,
+        "positionCommits": 50,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 118451.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 284,
+        "positionCommits": 51,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 119212.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 284,
+        "positionCommits": 51,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 120505.60000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 289,
+        "positionCommits": 52,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 121210.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 289,
+        "positionCommits": 52,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 122526.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 294,
+        "positionCommits": 53,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 123211.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 294,
+        "positionCommits": 53,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 124393.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 298,
+        "positionCommits": 54,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 125210.10000000149,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 298,
+        "positionCommits": 54,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 126404.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 303,
+        "positionCommits": 55,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 127213,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 303,
+        "positionCommits": 55,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 128562.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 308,
+        "positionCommits": 56,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 129207.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 308,
+        "positionCommits": 56,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 130767.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 311,
+        "positionCommits": 57,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 131407.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 313,
+        "positionCommits": 57,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 132216,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 313,
+        "positionCommits": 57,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 133220.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 313,
+        "positionCommits": 57,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 134516.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 317,
+        "positionCommits": 58,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 135211.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 317,
+        "positionCommits": 58,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 136572.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 320,
+        "positionCommits": 59,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 137210.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 322,
+        "positionCommits": 59,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 138212,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 322,
+        "positionCommits": 59,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 139209.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 326,
+        "positionCommits": 60,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 140210.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 326,
+        "positionCommits": 60,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 141253.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 330,
+        "positionCommits": 61,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 142214.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 330,
+        "positionCommits": 61,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 143386.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 334,
+        "positionCommits": 62,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 144211,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 334,
+        "positionCommits": 62,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 145333.6000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 337,
+        "positionCommits": 63,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 146213.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 338,
+        "positionCommits": 63,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 147285.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 340,
+        "positionCommits": 64,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 148214.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 342,
+        "positionCommits": 64,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 149651.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 345,
+        "positionCommits": 65,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 150212.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 346,
+        "positionCommits": 65,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 151214.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 346,
+        "positionCommits": 65,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 152214.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 350,
+        "positionCommits": 66,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 153211.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 350,
+        "positionCommits": 66,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 154207.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 354,
+        "positionCommits": 67,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 155211.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 354,
+        "positionCommits": 67,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 156540.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 357,
+        "positionCommits": 68,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 157210.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 357,
+        "positionCommits": 68,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 158574.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 360,
+        "positionCommits": 69,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 159212.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 360,
+        "positionCommits": 69,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 160621.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 362,
+        "positionCommits": 70,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 161209.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 363,
+        "positionCommits": 70,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 162220.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 363,
+        "positionCommits": 70,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 163753.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 365,
+        "positionCommits": 71,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 164212.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 366,
+        "positionCommits": 71,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 165207.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 366,
+        "positionCommits": 71,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 166223.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 366,
+        "positionCommits": 71,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 167310.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 369,
+        "positionCommits": 72,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 168228.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 369,
+        "positionCommits": 72,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 169216.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 369,
+        "positionCommits": 72,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 170250.6000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 372,
+        "positionCommits": 73,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 171207,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 372,
+        "positionCommits": 73,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 172237.6000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 375,
+        "positionCommits": 74,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 173228,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 375,
+        "positionCommits": 74,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 174369.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 378,
+        "positionCommits": 75,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 175215.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 378,
+        "positionCommits": 75,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 176515.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 381,
+        "positionCommits": 76,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 177215.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 381,
+        "positionCommits": 76,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 178611,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 383,
+        "positionCommits": 77,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 179216.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 384,
+        "positionCommits": 77,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 180233.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 384,
+        "positionCommits": 77,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 181660.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 386,
+        "positionCommits": 78,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 182205.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 387,
+        "positionCommits": 78,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 183223.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 387,
+        "positionCommits": 78,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 184204.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 387,
+        "positionCommits": 78,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 185551.6000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 390,
+        "positionCommits": 79,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 186204.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 390,
+        "positionCommits": 79,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 187210.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 390,
+        "positionCommits": 79,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 188220.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 393,
+        "positionCommits": 80,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 189214.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 393,
+        "positionCommits": 80,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 190236.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 396,
+        "positionCommits": 81,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 191213.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 396,
+        "positionCommits": 81,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 192238.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 399,
+        "positionCommits": 82,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 193212.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 399,
+        "positionCommits": 82,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 194221.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 402,
+        "positionCommits": 83,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 195233.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 402,
+        "positionCommits": 83,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 196313.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 405,
+        "positionCommits": 84,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 197220.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 405,
+        "positionCommits": 84,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 198261.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 407,
+        "positionCommits": 85,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 199219.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 408,
+        "positionCommits": 85,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 200692.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 411,
+        "positionCommits": 86,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 201206.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 411,
+        "positionCommits": 86,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 202709.6000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 413,
+        "positionCommits": 87,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 203205,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 414,
+        "positionCommits": 87,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 204209.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 414,
+        "positionCommits": 87,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 205207.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 417,
+        "positionCommits": 88,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 206213.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 417,
+        "positionCommits": 88,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 207374.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 420,
+        "positionCommits": 89,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 208234,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 420,
+        "positionCommits": 89,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 209468.6000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 423,
+        "positionCommits": 90,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 210203,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 423,
+        "positionCommits": 90,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 211562.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 426,
+        "positionCommits": 91,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 212217.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 426,
+        "positionCommits": 91,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 213555.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 428,
+        "positionCommits": 92,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 214215.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 429,
+        "positionCommits": 92,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 215206.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 429,
+        "positionCommits": 92,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 216213.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 432,
+        "positionCommits": 93,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 217234.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 432,
+        "positionCommits": 93,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 218390.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 435,
+        "positionCommits": 94,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 219219.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 435,
+        "positionCommits": 94,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 220456.6000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 438,
+        "positionCommits": 95,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 221204.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 438,
+        "positionCommits": 95,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 222643.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 439,
+        "positionCommits": 96,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 223338.20000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 441,
+        "positionCommits": 96,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 224223.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 441,
+        "positionCommits": 96,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 225212,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 441,
+        "positionCommits": 96,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 226371.1000000015,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 444,
+        "positionCommits": 97,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 227219,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 444,
+        "positionCommits": 97,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 228211.80000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 444,
+        "positionCommits": 97,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 229202.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 447,
+        "positionCommits": 98,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 230208,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 447,
+        "positionCommits": 98,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 231222.90000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 450,
+        "positionCommits": 99,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 232203,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 450,
+        "positionCommits": 99,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 233203.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 453,
+        "positionCommits": 100,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 234433.30000000075,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 455,
+        "positionCommits": 101,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 235220.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 456,
+        "positionCommits": 101,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 236243.70000000298,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 458,
+        "positionCommits": 102,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 237215.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 459,
+        "positionCommits": 102,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 238207.5,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 462,
+        "positionCommits": 103,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 239215.40000000224,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 462,
+        "positionCommits": 103,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      },
+      {
+        "time": 240204,
+        "nodes": 27823,
+        "links": 80108,
+        "objects": 5,
+        "draws": 465,
+        "positionCommits": 104,
+        "busy": "true",
+        "visibility": "visible",
+        "settings": "{\"linkGap\":60,\"charge\":60,\"collisionGap\":5,\"coupling\":1,\"nodeSize\":4,\"symbolScale\":1,\"linkWidth\":1,\"nodeZoomResistance\":0.3,\"wireZoomResistance\":0.2,\"gravity\":0.025,\"chargeRange\":0,\"approximation\":0.3,\"linkStrength\":0.5,\"updateEnergy\":1,\"tether\":0.02,\"citedByPull\":1}"
+      }
+    ],
+    "positionCommits": [
+      {
+        "time": 14109,
+        "draw": 50
+      },
+      {
+        "time": 16247.20000000298,
+        "draw": 53
+      },
+      {
+        "time": 18366.70000000298,
+        "draw": 56
+      },
+      {
+        "time": 20465.900000002235,
+        "draw": 59
+      },
+      {
+        "time": 22718,
+        "draw": 63
+      },
+      {
+        "time": 24964.5,
+        "draw": 67
+      },
+      {
+        "time": 27201,
+        "draw": 71
+      },
+      {
+        "time": 29865,
+        "draw": 78
+      },
+      {
+        "time": 32312.900000002235,
+        "draw": 84
+      },
+      {
+        "time": 34783.70000000298,
+        "draw": 90
+      },
+      {
+        "time": 37233.70000000298,
+        "draw": 96
+      },
+      {
+        "time": 39622.60000000149,
+        "draw": 102
+      },
+      {
+        "time": 41719.60000000149,
+        "draw": 107
+      },
+      {
+        "time": 43923.900000002235,
+        "draw": 113
+      },
+      {
+        "time": 46248.10000000149,
+        "draw": 119
+      },
+      {
+        "time": 48386.10000000149,
+        "draw": 124
+      },
+      {
+        "time": 50469.10000000149,
+        "draw": 129
+      },
+      {
+        "time": 52504.800000000745,
+        "draw": 134
+      },
+      {
+        "time": 54557,
+        "draw": 139
+      },
+      {
+        "time": 56668.70000000298,
+        "draw": 144
+      },
+      {
+        "time": 58486,
+        "draw": 148
+      },
+      {
+        "time": 60618.300000000745,
+        "draw": 153
+      },
+      {
+        "time": 62703.70000000298,
+        "draw": 158
+      },
+      {
+        "time": 64784.900000002235,
+        "draw": 163
+      },
+      {
+        "time": 66802,
+        "draw": 168
+      },
+      {
+        "time": 68898.5,
+        "draw": 173
+      },
+      {
+        "time": 70953.80000000075,
+        "draw": 178
+      },
+      {
+        "time": 72789.60000000149,
+        "draw": 182
+      },
+      {
+        "time": 74588.20000000298,
+        "draw": 186
+      },
+      {
+        "time": 76397.10000000149,
+        "draw": 190
+      },
+      {
+        "time": 78215.70000000298,
+        "draw": 194
+      },
+      {
+        "time": 80183.70000000298,
+        "draw": 199
+      },
+      {
+        "time": 82000.40000000224,
+        "draw": 203
+      },
+      {
+        "time": 83979.70000000298,
+        "draw": 207
+      },
+      {
+        "time": 85996.40000000224,
+        "draw": 212
+      },
+      {
+        "time": 88050.70000000298,
+        "draw": 217
+      },
+      {
+        "time": 89934.60000000149,
+        "draw": 221
+      },
+      {
+        "time": 91838.10000000149,
+        "draw": 225
+      },
+      {
+        "time": 93786.90000000224,
+        "draw": 229
+      },
+      {
+        "time": 95759.70000000298,
+        "draw": 233
+      },
+      {
+        "time": 97855.5,
+        "draw": 238
+      },
+      {
+        "time": 99812.60000000149,
+        "draw": 242
+      },
+      {
+        "time": 101736.10000000149,
+        "draw": 246
+      },
+      {
+        "time": 103642.80000000075,
+        "draw": 250
+      },
+      {
+        "time": 105517.90000000224,
+        "draw": 254
+      },
+      {
+        "time": 107381,
+        "draw": 258
+      },
+      {
+        "time": 109268.80000000075,
+        "draw": 262
+      },
+      {
+        "time": 111233.40000000224,
+        "draw": 266
+      },
+      {
+        "time": 113600.20000000298,
+        "draw": 271
+      },
+      {
+        "time": 115623.20000000298,
+        "draw": 275
+      },
+      {
+        "time": 117726.40000000224,
+        "draw": 280
+      },
+      {
+        "time": 119795.20000000298,
+        "draw": 285
+      },
+      {
+        "time": 121813.40000000224,
+        "draw": 290
+      },
+      {
+        "time": 123816.60000000149,
+        "draw": 295
+      },
+      {
+        "time": 125698.70000000298,
+        "draw": 299
+      },
+      {
+        "time": 127776.60000000149,
+        "draw": 304
+      },
+      {
+        "time": 130183.70000000298,
+        "draw": 309
+      },
+      {
+        "time": 133578.30000000075,
+        "draw": 314
+      },
+      {
+        "time": 136086.90000000224,
+        "draw": 318
+      },
+      {
+        "time": 138447.30000000075,
+        "draw": 323
+      },
+      {
+        "time": 140572,
+        "draw": 327
+      },
+      {
+        "time": 142714.6000000015,
+        "draw": 331
+      },
+      {
+        "time": 144885.30000000075,
+        "draw": 335
+      },
+      {
+        "time": 147066,
+        "draw": 339
+      },
+      {
+        "time": 149193.5,
+        "draw": 343
+      },
+      {
+        "time": 151419.70000000298,
+        "draw": 347
+      },
+      {
+        "time": 153491.1000000015,
+        "draw": 351
+      },
+      {
+        "time": 155964.80000000075,
+        "draw": 355
+      },
+      {
+        "time": 158188,
+        "draw": 358
+      },
+      {
+        "time": 160259.70000000298,
+        "draw": 361
+      },
+      {
+        "time": 163387.70000000298,
+        "draw": 364
+      },
+      {
+        "time": 166583.90000000224,
+        "draw": 367
+      },
+      {
+        "time": 169756.5,
+        "draw": 370
+      },
+      {
+        "time": 171863.5,
+        "draw": 373
+      },
+      {
+        "time": 173804.20000000298,
+        "draw": 376
+      },
+      {
+        "time": 176095.1000000015,
+        "draw": 379
+      },
+      {
+        "time": 178310.5,
+        "draw": 382
+      },
+      {
+        "time": 181284.40000000224,
+        "draw": 385
+      },
+      {
+        "time": 184785.30000000075,
+        "draw": 388
+      },
+      {
+        "time": 187732.20000000298,
+        "draw": 391
+      },
+      {
+        "time": 189730.30000000075,
+        "draw": 394
+      },
+      {
+        "time": 191796.90000000224,
+        "draw": 397
+      },
+      {
+        "time": 193733.1000000015,
+        "draw": 400
+      },
+      {
+        "time": 195750.1000000015,
+        "draw": 403
+      },
+      {
+        "time": 198002.20000000298,
+        "draw": 406
+      },
+      {
+        "time": 200118.1000000015,
+        "draw": 409
+      },
+      {
+        "time": 202450.90000000224,
+        "draw": 412
+      },
+      {
+        "time": 204740,
+        "draw": 415
+      },
+      {
+        "time": 206847.5,
+        "draw": 418
+      },
+      {
+        "time": 209104.1000000015,
+        "draw": 421
+      },
+      {
+        "time": 211138.90000000224,
+        "draw": 424
+      },
+      {
+        "time": 213294.30000000075,
+        "draw": 427
+      },
+      {
+        "time": 215521.5,
+        "draw": 430
+      },
+      {
+        "time": 217834.30000000075,
+        "draw": 433
+      },
+      {
+        "time": 220080.6000000015,
+        "draw": 436
+      },
+      {
+        "time": 222639.40000000224,
+        "draw": 439
+      },
+      {
+        "time": 225706.1000000015,
+        "draw": 442
+      },
+      {
+        "time": 228711.6000000015,
+        "draw": 445
+      },
+      {
+        "time": 230574.5,
+        "draw": 448
+      },
+      {
+        "time": 232417.80000000075,
+        "draw": 451
+      },
+      {
+        "time": 234266.1000000015,
+        "draw": 454
+      },
+      {
+        "time": 236039.90000000224,
+        "draw": 457
+      },
+      {
+        "time": 237797.5,
+        "draw": 460
+      },
+      {
+        "time": 239573,
+        "draw": 463
+      }
+    ],
+    "gpu": [
+      {
+        "time": 4914.900000002235,
+        "cpuSubmissionMs": 0.5,
+        "calls": 2,
+        "triangles": 193968,
+        "ms": 0.362496,
+        "disjoint": false
+      },
+      {
+        "time": 5173.900000002235,
+        "cpuSubmissionMs": 0.3999999985098839,
+        "calls": 2,
+        "triangles": 502938,
+        "ms": 0.628736,
+        "disjoint": false
+      },
+      {
+        "time": 5684.800000000745,
+        "cpuSubmissionMs": 1.6000000014901161,
+        "calls": 2,
+        "triangles": 1385514,
+        "ms": 1.661952,
+        "disjoint": false
+      },
+      {
+        "time": 7225.300000000745,
+        "cpuSubmissionMs": 1,
+        "calls": 2,
+        "triangles": 3649284,
+        "ms": 4.087808,
+        "disjoint": false
+      },
+      {
+        "time": 14109,
+        "cpuSubmissionMs": 1.6000000014901161,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 7.821312,
+        "disjoint": false
+      },
+      {
+        "time": 20640.70000000298,
+        "cpuSubmissionMs": 1.2999999970197678,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 8.087552,
+        "disjoint": false
+      },
+      {
+        "time": 25523.10000000149,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 9.163776,
+        "disjoint": false
+      },
+      {
+        "time": 30228.20000000298,
+        "cpuSubmissionMs": 1.8999999985098839,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 8.127488,
+        "disjoint": false
+      },
+      {
+        "time": 34783.70000000298,
+        "cpuSubmissionMs": 1.199999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 7.790592,
+        "disjoint": false
+      },
+      {
+        "time": 37999.900000002235,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 8.103936,
+        "disjoint": false
+      },
+      {
+        "time": 42261.10000000149,
+        "cpuSubmissionMs": 1.6000000014901161,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 7.84384,
+        "disjoint": false
+      },
+      {
+        "time": 46427.400000002235,
+        "cpuSubmissionMs": 1.3999999985098839,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 7.00928,
+        "disjoint": false
+      },
+      {
+        "time": 50643.70000000298,
+        "cpuSubmissionMs": 1.699999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.550528,
+        "disjoint": false
+      },
+      {
+        "time": 54737.800000000745,
+        "cpuSubmissionMs": 1.4000000022351742,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.532096,
+        "disjoint": false
+      },
+      {
+        "time": 58856,
+        "cpuSubmissionMs": 1.6000000014901161,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.490112,
+        "disjoint": false
+      },
+      {
+        "time": 63073.20000000298,
+        "cpuSubmissionMs": 1.5,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.469632,
+        "disjoint": false
+      },
+      {
+        "time": 67213.5,
+        "cpuSubmissionMs": 1.7000000029802322,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.514688,
+        "disjoint": false
+      },
+      {
+        "time": 71314.80000000075,
+        "cpuSubmissionMs": 1.199999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.503424,
+        "disjoint": false
+      },
+      {
+        "time": 76397.10000000149,
+        "cpuSubmissionMs": 1.699999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.45632,
+        "disjoint": false
+      },
+      {
+        "time": 80364.60000000149,
+        "cpuSubmissionMs": 1.699999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.554624,
+        "disjoint": false
+      },
+      {
+        "time": 84509.60000000149,
+        "cpuSubmissionMs": 1.199999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.509568,
+        "disjoint": false
+      },
+      {
+        "time": 88587.5,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.576128,
+        "disjoint": false
+      },
+      {
+        "time": 93965,
+        "cpuSubmissionMs": 1.7000000029802322,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.644736,
+        "disjoint": false
+      },
+      {
+        "time": 98212.80000000075,
+        "cpuSubmissionMs": 1.5,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.6048,
+        "disjoint": false
+      },
+      {
+        "time": 103642.80000000075,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 4.046848,
+        "disjoint": false
+      },
+      {
+        "time": 107767.80000000075,
+        "cpuSubmissionMs": 1.699999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.631424,
+        "disjoint": false
+      },
+      {
+        "time": 112050.5,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.695936,
+        "disjoint": false
+      },
+      {
+        "time": 117726.40000000224,
+        "cpuSubmissionMs": 1.199999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.688768,
+        "disjoint": false
+      },
+      {
+        "time": 121813.40000000224,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.679552,
+        "disjoint": false
+      },
+      {
+        "time": 125863.30000000075,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.678528,
+        "disjoint": false
+      },
+      {
+        "time": 130502.10000000149,
+        "cpuSubmissionMs": 2.199999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.751232,
+        "disjoint": false
+      },
+      {
+        "time": 136568.20000000298,
+        "cpuSubmissionMs": 1.699999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.53824,
+        "disjoint": false
+      },
+      {
+        "time": 141224.80000000075,
+        "cpuSubmissionMs": 1.199999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.588416,
+        "disjoint": false
+      },
+      {
+        "time": 147282.40000000224,
+        "cpuSubmissionMs": 1.699999999254942,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.54336,
+        "disjoint": false
+      },
+      {
+        "time": 152033.6000000015,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.434816,
+        "disjoint": false
+      },
+      {
+        "time": 158570.6000000015,
+        "cpuSubmissionMs": 2.100000001490116,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.426624,
+        "disjoint": false
+      },
+      {
+        "time": 169756.5,
+        "cpuSubmissionMs": 1.5,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.403072,
+        "disjoint": false
+      },
+      {
+        "time": 176314.70000000298,
+        "cpuSubmissionMs": 1.2999999970197678,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.365184,
+        "disjoint": false
+      },
+      {
+        "time": 185501.40000000224,
+        "cpuSubmissionMs": 1.5,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.280192,
+        "disjoint": false
+      },
+      {
+        "time": 193733.1000000015,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.214656,
+        "disjoint": false
+      },
+      {
+        "time": 200419.20000000298,
+        "cpuSubmissionMs": 1.5,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.207488,
+        "disjoint": false
+      },
+      {
+        "time": 207371.30000000075,
+        "cpuSubmissionMs": 1.800000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.096896,
+        "disjoint": false
+      },
+      {
+        "time": 215521.5,
+        "cpuSubmissionMs": 3,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.055936,
+        "disjoint": false
+      },
+      {
+        "time": 222929.1000000015,
+        "cpuSubmissionMs": 1.5,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 6.030336,
+        "disjoint": false
+      },
+      {
+        "time": 230920.1000000015,
+        "cpuSubmissionMs": 1.5,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 5.993472,
+        "disjoint": false
+      },
+      {
+        "time": 237797.5,
+        "cpuSubmissionMs": 1.300000000745058,
+        "calls": 2,
+        "triangles": 7825920,
+        "ms": 5.9392,
+        "disjoint": false
+      }
+    ],
+    "longTasks": [
+      {
+        "start": 2636.900000002235,
+        "ms": 1991
+      },
+      {
+        "start": 4628.300000000745,
+        "ms": 61
+      },
+      {
+        "start": 5413.900000002235,
+        "ms": 58
+      },
+      {
+        "start": 5472.800000000745,
+        "ms": 69
+      },
+      {
+        "start": 5542.60000000149,
+        "ms": 78
+      },
+      {
+        "start": 5621.10000000149,
+        "ms": 91
+      },
+      {
+        "start": 5712.70000000298,
+        "ms": 102
+      },
+      {
+        "start": 5815.400000002235,
+        "ms": 102
+      },
+      {
+        "start": 5918.400000002235,
+        "ms": 107
+      },
+      {
+        "start": 6025.800000000745,
+        "ms": 117
+      },
+      {
+        "start": 6143,
+        "ms": 130
+      },
+      {
+        "start": 6273.20000000298,
+        "ms": 141
+      },
+      {
+        "start": 6415.10000000149,
+        "ms": 177
+      },
+      {
+        "start": 6592.400000002235,
+        "ms": 211
+      },
+      {
+        "start": 6804.10000000149,
+        "ms": 215
+      },
+      {
+        "start": 7019.5,
+        "ms": 250
+      },
+      {
+        "start": 7270.5,
+        "ms": 284
+      },
+      {
+        "start": 7555.10000000149,
+        "ms": 320
+      },
+      {
+        "start": 7875.20000000298,
+        "ms": 335
+      },
+      {
+        "start": 8210.300000000745,
+        "ms": 343
+      },
+      {
+        "start": 8554.10000000149,
+        "ms": 370
+      },
+      {
+        "start": 8925,
+        "ms": 385
+      },
+      {
+        "start": 9310.400000002235,
+        "ms": 461
+      },
+      {
+        "start": 9772,
+        "ms": 408
+      },
+      {
+        "start": 10196.5,
+        "ms": 340
+      },
+      {
+        "start": 13906.60000000149,
+        "ms": 205
+      },
+      {
+        "start": 14112,
+        "ms": 186
+      },
+      {
+        "start": 14298.70000000298,
+        "ms": 183
+      },
+      {
+        "start": 16056.800000000745,
+        "ms": 193
+      },
+      {
+        "start": 16250.10000000149,
+        "ms": 177
+      },
+      {
+        "start": 16427.70000000298,
+        "ms": 183
+      },
+      {
+        "start": 18173.5,
+        "ms": 195
+      },
+      {
+        "start": 18369.5,
+        "ms": 174
+      },
+      {
+        "start": 18544.300000000745,
+        "ms": 184
+      },
+      {
+        "start": 20273.70000000298,
+        "ms": 194
+      },
+      {
+        "start": 20468.60000000149,
+        "ms": 174
+      },
+      {
+        "start": 20643.300000000745,
+        "ms": 184
+      },
+      {
+        "start": 20828,
+        "ms": 184
+      },
+      {
+        "start": 22523.800000000745,
+        "ms": 197
+      },
+      {
+        "start": 22720.900000002235,
+        "ms": 177
+      },
+      {
+        "start": 22898.300000000745,
+        "ms": 179
+      },
+      {
+        "start": 23077.800000000745,
+        "ms": 192
+      },
+      {
+        "start": 24774,
+        "ms": 193
+      },
+      {
+        "start": 24967.300000000745,
+        "ms": 176
+      },
+      {
+        "start": 25144.20000000298,
+        "ms": 189
+      },
+      {
+        "start": 25333.70000000298,
+        "ms": 191
+      },
+      {
+        "start": 27007.400000002235,
+        "ms": 196
+      },
+      {
+        "start": 27204.10000000149,
+        "ms": 180
+      },
+      {
+        "start": 27384.300000000745,
+        "ms": 180
+      },
+      {
+        "start": 27564.900000002235,
+        "ms": 180
+      },
+      {
+        "start": 27745.5,
+        "ms": 183
+      },
+      {
+        "start": 27929.20000000298,
+        "ms": 179
+      },
+      {
+        "start": 28109.20000000298,
+        "ms": 184
+      },
+      {
+        "start": 29674.20000000298,
+        "ms": 193
+      },
+      {
+        "start": 29867.70000000298,
+        "ms": 180
+      },
+      {
+        "start": 30048.10000000149,
+        "ms": 183
+      },
+      {
+        "start": 30231.900000002235,
+        "ms": 177
+      },
+      {
+        "start": 30409.400000002235,
+        "ms": 184
+      },
+      {
+        "start": 30594.20000000298,
+        "ms": 181
+      },
+      {
+        "start": 32124.400000002235,
+        "ms": 191
+      },
+      {
+        "start": 32315.70000000298,
+        "ms": 177
+      },
+      {
+        "start": 32493.400000002235,
+        "ms": 188
+      },
+      {
+        "start": 32681.900000002235,
+        "ms": 190
+      },
+      {
+        "start": 32872.70000000298,
+        "ms": 195
+      },
+      {
+        "start": 33068.10000000149,
+        "ms": 190
+      },
+      {
+        "start": 34591.20000000298,
+        "ms": 195
+      },
+      {
+        "start": 34786.70000000298,
+        "ms": 176
+      },
+      {
+        "start": 34963.300000000745,
+        "ms": 186
+      },
+      {
+        "start": 35149.300000000745,
+        "ms": 187
+      },
+      {
+        "start": 35336.60000000149,
+        "ms": 183
+      },
+      {
+        "start": 35520.5,
+        "ms": 184
+      },
+      {
+        "start": 37008.10000000149,
+        "ms": 228
+      },
+      {
+        "start": 37236.800000000745,
+        "ms": 185
+      },
+      {
+        "start": 37422.20000000298,
+        "ms": 192
+      },
+      {
+        "start": 37614.70000000298,
+        "ms": 189
+      },
+      {
+        "start": 37804.60000000149,
+        "ms": 198
+      },
+      {
+        "start": 38002.70000000298,
+        "ms": 188
+      },
+      {
+        "start": 39408.20000000298,
+        "ms": 217
+      },
+      {
+        "start": 39625.70000000298,
+        "ms": 196
+      },
+      {
+        "start": 39822.10000000149,
+        "ms": 182
+      },
+      {
+        "start": 40004.10000000149,
+        "ms": 182
+      },
+      {
+        "start": 40186.300000000745,
+        "ms": 180
+      },
+      {
+        "start": 41525,
+        "ms": 197
+      },
+      {
+        "start": 41722.60000000149,
+        "ms": 177
+      },
+      {
+        "start": 41899.70000000298,
+        "ms": 179
+      },
+      {
+        "start": 42079.20000000298,
+        "ms": 184
+      },
+      {
+        "start": 42264,
+        "ms": 181
+      },
+      {
+        "start": 42445.800000000745,
+        "ms": 181
+      },
+      {
+        "start": 43741.900000002235,
+        "ms": 184
+      },
+      {
+        "start": 43926.70000000298,
+        "ms": 192
+      },
+      {
+        "start": 44119.70000000298,
+        "ms": 180
+      },
+      {
+        "start": 44300.20000000298,
+        "ms": 181
+      },
+      {
+        "start": 44482.10000000149,
+        "ms": 180
+      },
+      {
+        "start": 44663.10000000149,
+        "ms": 192
+      },
+      {
+        "start": 46058.60000000149,
+        "ms": 192
+      },
+      {
+        "start": 46250.800000000745,
+        "ms": 179
+      },
+      {
+        "start": 46430.400000002235,
+        "ms": 182
+      },
+      {
+        "start": 46612.900000002235,
+        "ms": 181
+      },
+      {
+        "start": 46794.10000000149,
+        "ms": 180
+      },
+      {
+        "start": 48192.10000000149,
+        "ms": 196
+      },
+      {
+        "start": 48388.900000002235,
+        "ms": 176
+      },
+      {
+        "start": 48565.60000000149,
+        "ms": 185
+      },
+      {
+        "start": 48751,
+        "ms": 179
+      },
+      {
+        "start": 48930.20000000298,
+        "ms": 184
+      },
+      {
+        "start": 50275.5,
+        "ms": 196
+      },
+      {
+        "start": 50471.70000000298,
+        "ms": 175
+      },
+      {
+        "start": 50646.900000002235,
+        "ms": 184
+      },
+      {
+        "start": 50831.400000002235,
+        "ms": 181
+      },
+      {
+        "start": 51013.400000002235,
+        "ms": 187
+      },
+      {
+        "start": 52310,
+        "ms": 197
+      },
+      {
+        "start": 52507.70000000298,
+        "ms": 180
+      },
+      {
+        "start": 52687.900000002235,
+        "ms": 193
+      },
+      {
+        "start": 52881.10000000149,
+        "ms": 182
+      },
+      {
+        "start": 53063.5,
+        "ms": 187
+      },
+      {
+        "start": 54359.10000000149,
+        "ms": 200
+      },
+      {
+        "start": 54559.5,
+        "ms": 181
+      },
+      {
+        "start": 54740.60000000149,
+        "ms": 200
+      },
+      {
+        "start": 54941.10000000149,
+        "ms": 209
+      },
+      {
+        "start": 55150.70000000298,
+        "ms": 201
+      },
+      {
+        "start": 56476,
+        "ms": 195
+      },
+      {
+        "start": 56671.300000000745,
+        "ms": 176
+      },
+      {
+        "start": 56847.5,
+        "ms": 181
+      },
+      {
+        "start": 57028.900000002235,
+        "ms": 184
+      },
+      {
+        "start": 58292.70000000298,
+        "ms": 195
+      },
+      {
+        "start": 58488.5,
+        "ms": 182
+      },
+      {
+        "start": 58671,
+        "ms": 188
+      },
+      {
+        "start": 58859.10000000149,
+        "ms": 189
+      },
+      {
+        "start": 59048.5,
+        "ms": 184
+      },
+      {
+        "start": 60442.900000002235,
+        "ms": 177
+      },
+      {
+        "start": 60620.800000000745,
+        "ms": 213
+      },
+      {
+        "start": 60834,
+        "ms": 178
+      },
+      {
+        "start": 61012.5,
+        "ms": 188
+      },
+      {
+        "start": 61200.900000002235,
+        "ms": 180
+      },
+      {
+        "start": 62509.70000000298,
+        "ms": 196
+      },
+      {
+        "start": 62706.400000002235,
+        "ms": 177
+      },
+      {
+        "start": 62883.900000002235,
+        "ms": 192
+      },
+      {
+        "start": 63076.10000000149,
+        "ms": 189
+      },
+      {
+        "start": 63265.900000002235,
+        "ms": 184
+      },
+      {
+        "start": 64593.20000000298,
+        "ms": 194
+      },
+      {
+        "start": 64787.60000000149,
+        "ms": 178
+      },
+      {
+        "start": 64966.400000002235,
+        "ms": 181
+      },
+      {
+        "start": 65148.5,
+        "ms": 184
+      },
+      {
+        "start": 65332.60000000149,
+        "ms": 178
+      },
+      {
+        "start": 66610.10000000149,
+        "ms": 194
+      },
+      {
+        "start": 66804.40000000224,
+        "ms": 207
+      },
+      {
+        "start": 67012,
+        "ms": 204
+      },
+      {
+        "start": 67216.60000000149,
+        "ms": 186
+      },
+      {
+        "start": 67403.10000000149,
+        "ms": 178
+      },
+      {
+        "start": 68710,
+        "ms": 191
+      },
+      {
+        "start": 68901.40000000224,
+        "ms": 186
+      },
+      {
+        "start": 69088,
+        "ms": 188
+      },
+      {
+        "start": 69276.80000000075,
+        "ms": 185
+      },
+      {
+        "start": 69461.90000000224,
+        "ms": 191
+      },
+      {
+        "start": 70760.20000000298,
+        "ms": 195
+      },
+      {
+        "start": 70956.10000000149,
+        "ms": 176
+      },
+      {
+        "start": 71132.90000000224,
+        "ms": 184
+      },
+      {
+        "start": 71317.30000000075,
+        "ms": 182
+      },
+      {
+        "start": 72578,
+        "ms": 214
+      },
+      {
+        "start": 72792.20000000298,
+        "ms": 175
+      },
+      {
+        "start": 72967.60000000149,
+        "ms": 178
+      },
+      {
+        "start": 73146.40000000224,
+        "ms": 187
+      },
+      {
+        "start": 74393.70000000298,
+        "ms": 197
+      },
+      {
+        "start": 74590.70000000298,
+        "ms": 184
+      },
+      {
+        "start": 74775.60000000149,
+        "ms": 182
+      },
+      {
+        "start": 74957.80000000075,
+        "ms": 175
+      },
+      {
+        "start": 76227.20000000298,
+        "ms": 172
+      },
+      {
+        "start": 76400.20000000298,
+        "ms": 199
+      },
+      {
+        "start": 76599.30000000075,
+        "ms": 185
+      },
+      {
+        "start": 76784.40000000224,
+        "ms": 181
+      },
+      {
+        "start": 78027.30000000075,
+        "ms": 190
+      },
+      {
+        "start": 78218.30000000075,
+        "ms": 178
+      },
+      {
+        "start": 78396.40000000224,
+        "ms": 180
+      },
+      {
+        "start": 78576.5,
+        "ms": 177
+      },
+      {
+        "start": 78754.10000000149,
+        "ms": 182
+      },
+      {
+        "start": 79994.10000000149,
+        "ms": 192
+      },
+      {
+        "start": 80186.20000000298,
+        "ms": 181
+      },
+      {
+        "start": 80367.70000000298,
+        "ms": 177
+      },
+      {
+        "start": 80545,
+        "ms": 184
+      },
+      {
+        "start": 81810.90000000224,
+        "ms": 192
+      },
+      {
+        "start": 82003.20000000298,
+        "ms": 183
+      },
+      {
+        "start": 82187.10000000149,
+        "ms": 205
+      },
+      {
+        "start": 82392.40000000224,
+        "ms": 195
+      },
+      {
+        "start": 83777.60000000149,
+        "ms": 205
+      },
+      {
+        "start": 83982.70000000298,
+        "ms": 177
+      },
+      {
+        "start": 84160,
+        "ms": 173
+      },
+      {
+        "start": 84333.10000000149,
+        "ms": 178
+      },
+      {
+        "start": 84512.10000000149,
+        "ms": 183
+      },
+      {
+        "start": 85811.30000000075,
+        "ms": 187
+      },
+      {
+        "start": 85998.80000000075,
+        "ms": 177
+      },
+      {
+        "start": 86176.10000000149,
+        "ms": 182
+      },
+      {
+        "start": 86358.80000000075,
+        "ms": 175
+      },
+      {
+        "start": 86534,
+        "ms": 188
+      },
+      {
+        "start": 87861.30000000075,
+        "ms": 191
+      },
+      {
+        "start": 88053.10000000149,
+        "ms": 177
+      },
+      {
+        "start": 88230.60000000149,
+        "ms": 181
+      },
+      {
+        "start": 88411.90000000224,
+        "ms": 178
+      },
+      {
+        "start": 89744.70000000298,
+        "ms": 192
+      },
+      {
+        "start": 89937.40000000224,
+        "ms": 180
+      },
+      {
+        "start": 90117.80000000075,
+        "ms": 181
+      },
+      {
+        "start": 90299.10000000149,
+        "ms": 181
+      },
+      {
+        "start": 91661.5,
+        "ms": 178
+      },
+      {
+        "start": 91840.40000000224,
+        "ms": 199
+      },
+      {
+        "start": 92040.20000000298,
+        "ms": 177
+      },
+      {
+        "start": 92217.90000000224,
+        "ms": 183
+      },
+      {
+        "start": 93595.10000000149,
+        "ms": 194
+      },
+      {
+        "start": 93789.20000000298,
+        "ms": 178
+      },
+      {
+        "start": 93968,
+        "ms": 177
+      },
+      {
+        "start": 94145.5,
+        "ms": 182
+      },
+      {
+        "start": 95561.80000000075,
+        "ms": 200
+      },
+      {
+        "start": 95762.30000000075,
+        "ms": 187
+      },
+      {
+        "start": 95950,
+        "ms": 182
+      },
+      {
+        "start": 96132.40000000224,
+        "ms": 183
+      },
+      {
+        "start": 96316.30000000075,
+        "ms": 180
+      },
+      {
+        "start": 97661.80000000075,
+        "ms": 196
+      },
+      {
+        "start": 97857.90000000224,
+        "ms": 176
+      },
+      {
+        "start": 98034.70000000298,
+        "ms": 180
+      },
+      {
+        "start": 98215.70000000298,
+        "ms": 181
+      },
+      {
+        "start": 99612,
+        "ms": 203
+      },
+      {
+        "start": 99815.40000000224,
+        "ms": 180
+      },
+      {
+        "start": 99996.30000000075,
+        "ms": 178
+      },
+      {
+        "start": 100175.20000000298,
+        "ms": 178
+      },
+      {
+        "start": 101545.5,
+        "ms": 193
+      },
+      {
+        "start": 101738.80000000075,
+        "ms": 175
+      },
+      {
+        "start": 101913.80000000075,
+        "ms": 181
+      },
+      {
+        "start": 102095.20000000298,
+        "ms": 182
+      },
+      {
+        "start": 103445.60000000149,
+        "ms": 199
+      },
+      {
+        "start": 103645.40000000224,
+        "ms": 173
+      },
+      {
+        "start": 103818.80000000075,
+        "ms": 178
+      },
+      {
+        "start": 103997.60000000149,
+        "ms": 187
+      },
+      {
+        "start": 105329.10000000149,
+        "ms": 191
+      },
+      {
+        "start": 105520.40000000224,
+        "ms": 176
+      },
+      {
+        "start": 105697.20000000298,
+        "ms": 180
+      },
+      {
+        "start": 105878.20000000298,
+        "ms": 179
+      },
+      {
+        "start": 107212.5,
+        "ms": 171
+      },
+      {
+        "start": 107384,
+        "ms": 206
+      },
+      {
+        "start": 107590.30000000075,
+        "ms": 180
+      },
+      {
+        "start": 107770.90000000224,
+        "ms": 184
+      },
+      {
+        "start": 109079.40000000224,
+        "ms": 192
+      },
+      {
+        "start": 109271.60000000149,
+        "ms": 176
+      },
+      {
+        "start": 109448.20000000298,
+        "ms": 192
+      },
+      {
+        "start": 109641.20000000298,
+        "ms": 189
+      },
+      {
+        "start": 111029.40000000224,
+        "ms": 207
+      },
+      {
+        "start": 111236.60000000149,
+        "ms": 206
+      },
+      {
+        "start": 111443.10000000149,
+        "ms": 194
+      },
+      {
+        "start": 111637.5,
+        "ms": 212
+      },
+      {
+        "start": 111849.60000000149,
+        "ms": 203
+      },
+      {
+        "start": 113362.80000000075,
+        "ms": 240
+      },
+      {
+        "start": 113603.30000000075,
+        "ms": 200
+      },
+      {
+        "start": 113803.60000000149,
+        "ms": 208
+      },
+      {
+        "start": 114011.70000000298,
+        "ms": 202
+      },
+      {
+        "start": 115429.70000000298,
+        "ms": 195
+      },
+      {
+        "start": 115625.60000000149,
+        "ms": 177
+      },
+      {
+        "start": 115803,
+        "ms": 183
+      },
+      {
+        "start": 115986.30000000075,
+        "ms": 179
+      },
+      {
+        "start": 116166.20000000298,
+        "ms": 177
+      },
+      {
+        "start": 117529.80000000075,
+        "ms": 199
+      },
+      {
+        "start": 117728.80000000075,
+        "ms": 179
+      },
+      {
+        "start": 117908.10000000149,
+        "ms": 182
+      },
+      {
+        "start": 118090.30000000075,
+        "ms": 178
+      },
+      {
+        "start": 118269,
+        "ms": 182
+      },
+      {
+        "start": 119613.30000000075,
+        "ms": 184
+      },
+      {
+        "start": 119797.60000000149,
+        "ms": 168
+      },
+      {
+        "start": 119965.90000000224,
+        "ms": 183
+      },
+      {
+        "start": 120149.20000000298,
+        "ms": 177
+      },
+      {
+        "start": 120326.90000000224,
+        "ms": 178
+      },
+      {
+        "start": 121630.10000000149,
+        "ms": 185
+      },
+      {
+        "start": 121815.90000000224,
+        "ms": 169
+      },
+      {
+        "start": 121985.90000000224,
+        "ms": 187
+      },
+      {
+        "start": 122173.30000000075,
+        "ms": 173
+      },
+      {
+        "start": 122347,
+        "ms": 179
+      },
+      {
+        "start": 123646.80000000075,
+        "ms": 172
+      },
+      {
+        "start": 123819.30000000075,
+        "ms": 211
+      },
+      {
+        "start": 124030.70000000298,
+        "ms": 181
+      },
+      {
+        "start": 124212.30000000075,
+        "ms": 180
+      },
+      {
+        "start": 125513.70000000298,
+        "ms": 187
+      },
+      {
+        "start": 125701.20000000298,
+        "ms": 164
+      },
+      {
+        "start": 125866,
+        "ms": 177
+      },
+      {
+        "start": 126043.80000000075,
+        "ms": 179
+      },
+      {
+        "start": 126223,
+        "ms": 181
+      },
+      {
+        "start": 127563.80000000075,
+        "ms": 215
+      },
+      {
+        "start": 127779.20000000298,
+        "ms": 167
+      },
+      {
+        "start": 127947,
+        "ms": 178
+      },
+      {
+        "start": 128125.5,
+        "ms": 226
+      },
+      {
+        "start": 128352.10000000149,
+        "ms": 210
+      },
+      {
+        "start": 129903.20000000298,
+        "ms": 284
+      },
+      {
+        "start": 130188.10000000149,
+        "ms": 317
+      },
+      {
+        "start": 130506,
+        "ms": 261
+      },
+      {
+        "start": 130767.30000000075,
+        "ms": 257
+      },
+      {
+        "start": 131024.90000000224,
+        "ms": 337
+      },
+      {
+        "start": 133271.70000000298,
+        "ms": 310
+      },
+      {
+        "start": 133582.1000000015,
+        "ms": 307
+      },
+      {
+        "start": 133889.40000000224,
+        "ms": 315
+      },
+      {
+        "start": 134205.20000000298,
+        "ms": 311
+      },
+      {
+        "start": 135864.5,
+        "ms": 225
+      },
+      {
+        "start": 136089.5,
+        "ms": 236
+      },
+      {
+        "start": 136326.20000000298,
+        "ms": 245
+      },
+      {
+        "start": 136572.30000000075,
+        "ms": 233
+      },
+      {
+        "start": 136806.30000000075,
+        "ms": 188
+      },
+      {
+        "start": 138231.20000000298,
+        "ms": 219
+      },
+      {
+        "start": 138450.30000000075,
+        "ms": 202
+      },
+      {
+        "start": 138652.80000000075,
+        "ms": 208
+      },
+      {
+        "start": 138861.5,
+        "ms": 204
+      },
+      {
+        "start": 140331.30000000075,
+        "ms": 244
+      },
+      {
+        "start": 140575.80000000075,
+        "ms": 214
+      },
+      {
+        "start": 140790.20000000298,
+        "ms": 220
+      },
+      {
+        "start": 141011,
+        "ms": 216
+      },
+      {
+        "start": 142498.30000000075,
+        "ms": 219
+      },
+      {
+        "start": 142717.70000000298,
+        "ms": 225
+      },
+      {
+        "start": 142943.20000000298,
+        "ms": 217
+      },
+      {
+        "start": 143160.80000000075,
+        "ms": 202
+      },
+      {
+        "start": 144665,
+        "ms": 223
+      },
+      {
+        "start": 144888.80000000075,
+        "ms": 220
+      },
+      {
+        "start": 145109.1000000015,
+        "ms": 224
+      },
+      {
+        "start": 145333.6000000015,
+        "ms": 184
+      },
+      {
+        "start": 146865.1000000015,
+        "ms": 203
+      },
+      {
+        "start": 147068.70000000298,
+        "ms": 216
+      },
+      {
+        "start": 147285.5,
+        "ms": 195
+      },
+      {
+        "start": 147480.6000000015,
+        "ms": 204
+      },
+      {
+        "start": 148981.90000000224,
+        "ms": 214
+      },
+      {
+        "start": 149196.70000000298,
+        "ms": 218
+      },
+      {
+        "start": 149415.5,
+        "ms": 236
+      },
+      {
+        "start": 149651.80000000075,
+        "ms": 216
+      },
+      {
+        "start": 151215.40000000224,
+        "ms": 206
+      },
+      {
+        "start": 151422.30000000075,
+        "ms": 208
+      },
+      {
+        "start": 151630.90000000224,
+        "ms": 231
+      },
+      {
+        "start": 151862.1000000015,
+        "ms": 174
+      },
+      {
+        "start": 153298.90000000224,
+        "ms": 194
+      },
+      {
+        "start": 153493.5,
+        "ms": 178
+      },
+      {
+        "start": 153671.80000000075,
+        "ms": 201
+      },
+      {
+        "start": 153872.90000000224,
+        "ms": 270
+      },
+      {
+        "start": 155658.1000000015,
+        "ms": 309
+      },
+      {
+        "start": 155967.90000000224,
+        "ms": 297
+      },
+      {
+        "start": 156265.6000000015,
+        "ms": 275
+      },
+      {
+        "start": 157915.70000000298,
+        "ms": 274
+      },
+      {
+        "start": 158190.5,
+        "ms": 188
+      },
+      {
+        "start": 158378.5,
+        "ms": 195
+      },
+      {
+        "start": 160020.30000000075,
+        "ms": 242
+      },
+      {
+        "start": 160262.30000000075,
+        "ms": 359
+      },
+      {
+        "start": 160621.80000000075,
+        "ms": 336
+      },
+      {
+        "start": 163020.40000000224,
+        "ms": 371
+      },
+      {
+        "start": 163392.20000000298,
+        "ms": 361
+      },
+      {
+        "start": 163753.90000000224,
+        "ms": 355
+      },
+      {
+        "start": 166255.30000000075,
+        "ms": 332
+      },
+      {
+        "start": 166587.6000000015,
+        "ms": 329
+      },
+      {
+        "start": 166917.30000000075,
+        "ms": 350
+      },
+      {
+        "start": 169424.5,
+        "ms": 335
+      },
+      {
+        "start": 169760.30000000075,
+        "ms": 287
+      },
+      {
+        "start": 170048.40000000224,
+        "ms": 202
+      },
+      {
+        "start": 171649.90000000224,
+        "ms": 216
+      },
+      {
+        "start": 171866.40000000224,
+        "ms": 195
+      },
+      {
+        "start": 172062,
+        "ms": 175
+      },
+      {
+        "start": 173600.1000000015,
+        "ms": 207
+      },
+      {
+        "start": 173807.40000000224,
+        "ms": 204
+      },
+      {
+        "start": 174011.90000000224,
+        "ms": 312
+      },
+      {
+        "start": 175883.6000000015,
+        "ms": 214
+      },
+      {
+        "start": 176097.90000000224,
+        "ms": 219
+      },
+      {
+        "start": 176317.40000000224,
+        "ms": 197
+      },
+      {
+        "start": 178000.70000000298,
+        "ms": 313
+      },
+      {
+        "start": 178314.5,
+        "ms": 296
+      },
+      {
+        "start": 178611,
+        "ms": 290
+      },
+      {
+        "start": 180925.20000000298,
+        "ms": 363
+      },
+      {
+        "start": 181288.20000000298,
+        "ms": 372
+      },
+      {
+        "start": 181660.40000000224,
+        "ms": 374
+      },
+      {
+        "start": 184407,
+        "ms": 382
+      },
+      {
+        "start": 184789.40000000224,
+        "ms": 356
+      },
+      {
+        "start": 185145.5,
+        "ms": 359
+      },
+      {
+        "start": 187550.90000000224,
+        "ms": 183
+      },
+      {
+        "start": 187734.5,
+        "ms": 210
+      },
+      {
+        "start": 187945,
+        "ms": 216
+      },
+      {
+        "start": 189534.6000000015,
+        "ms": 198
+      },
+      {
+        "start": 189732.90000000224,
+        "ms": 198
+      },
+      {
+        "start": 189931.30000000075,
+        "ms": 275
+      },
+      {
+        "start": 191584.5,
+        "ms": 215
+      },
+      {
+        "start": 191799.5,
+        "ms": 219
+      },
+      {
+        "start": 192018.70000000298,
+        "ms": 197
+      },
+      {
+        "start": 193551.5,
+        "ms": 184
+      },
+      {
+        "start": 193735.5,
+        "ms": 169
+      },
+      {
+        "start": 193904.70000000298,
+        "ms": 185
+      },
+      {
+        "start": 195451.5,
+        "ms": 302
+      },
+      {
+        "start": 195754,
+        "ms": 267
+      },
+      {
+        "start": 196021.40000000224,
+        "ms": 264
+      },
+      {
+        "start": 197735,
+        "ms": 270
+      },
+      {
+        "start": 198005.30000000075,
+        "ms": 256
+      },
+      {
+        "start": 198261.70000000298,
+        "ms": 254
+      },
+      {
+        "start": 199851.90000000224,
+        "ms": 269
+      },
+      {
+        "start": 200121.6000000015,
+        "ms": 300
+      },
+      {
+        "start": 200422.6000000015,
+        "ms": 270
+      },
+      {
+        "start": 202168.70000000298,
+        "ms": 285
+      },
+      {
+        "start": 202454.1000000015,
+        "ms": 255
+      },
+      {
+        "start": 202709.6000000015,
+        "ms": 266
+      },
+      {
+        "start": 204472.70000000298,
+        "ms": 271
+      },
+      {
+        "start": 204744,
+        "ms": 232
+      },
+      {
+        "start": 204976.1000000015,
+        "ms": 187
+      },
+      {
+        "start": 206586.80000000075,
+        "ms": 264
+      },
+      {
+        "start": 206851.5,
+        "ms": 257
+      },
+      {
+        "start": 207109.40000000224,
+        "ms": 265
+      },
+      {
+        "start": 208869,
+        "ms": 237
+      },
+      {
+        "start": 209106.80000000075,
+        "ms": 163
+      },
+      {
+        "start": 209270.70000000298,
+        "ms": 197
+      },
+      {
+        "start": 210902.5,
+        "ms": 239
+      },
+      {
+        "start": 211142.1000000015,
+        "ms": 219
+      },
+      {
+        "start": 211361.30000000075,
+        "ms": 201
+      },
+      {
+        "start": 213002.6000000015,
+        "ms": 295
+      },
+      {
+        "start": 213298.20000000298,
+        "ms": 257
+      },
+      {
+        "start": 213555.90000000224,
+        "ms": 277
+      },
+      {
+        "start": 215238,
+        "ms": 288
+      },
+      {
+        "start": 215526.70000000298,
+        "ms": 242
+      },
+      {
+        "start": 215769.40000000224,
+        "ms": 296
+      },
+      {
+        "start": 217574.5,
+        "ms": 263
+      },
+      {
+        "start": 217838.20000000298,
+        "ms": 294
+      },
+      {
+        "start": 218133.20000000298,
+        "ms": 257
+      },
+      {
+        "start": 219853,
+        "ms": 230
+      },
+      {
+        "start": 220083.90000000224,
+        "ms": 185
+      },
+      {
+        "start": 220269.30000000075,
+        "ms": 187
+      },
+      {
+        "start": 222262.90000000224,
+        "ms": 380
+      },
+      {
+        "start": 222643.5,
+        "ms": 289
+      },
+      {
+        "start": 222938.1000000015,
+        "ms": 349
+      },
+      {
+        "start": 225373,
+        "ms": 336
+      },
+      {
+        "start": 225709.90000000224,
+        "ms": 306
+      },
+      {
+        "start": 226016.20000000298,
+        "ms": 303
+      },
+      {
+        "start": 226319.70000000298,
+        "ms": 51
+      },
+      {
+        "start": 226522.30000000075,
+        "ms": 55
+      },
+      {
+        "start": 228475.90000000224,
+        "ms": 238
+      },
+      {
+        "start": 228714.6000000015,
+        "ms": 183
+      },
+      {
+        "start": 228898.6000000015,
+        "ms": 187
+      },
+      {
+        "start": 230387.1000000015,
+        "ms": 190
+      },
+      {
+        "start": 230577.6000000015,
+        "ms": 169
+      },
+      {
+        "start": 230746.90000000224,
+        "ms": 175
+      },
+      {
+        "start": 232237.20000000298,
+        "ms": 182
+      },
+      {
+        "start": 232420.20000000298,
+        "ms": 169
+      },
+      {
+        "start": 232589.30000000075,
+        "ms": 202
+      },
+      {
+        "start": 234087.30000000075,
+        "ms": 181
+      },
+      {
+        "start": 234268.6000000015,
+        "ms": 164
+      },
+      {
+        "start": 234433.30000000075,
+        "ms": 178
+      },
+      {
+        "start": 235887.5,
+        "ms": 155
+      },
+      {
+        "start": 236042.6000000015,
+        "ms": 201
+      },
+      {
+        "start": 236243.70000000298,
+        "ms": 163
+      },
+      {
+        "start": 237620.90000000224,
+        "ms": 179
+      },
+      {
+        "start": 237800,
+        "ms": 165
+      },
+      {
+        "start": 237965.30000000075,
+        "ms": 169
+      },
+      {
+        "start": 239387.70000000298,
+        "ms": 187
+      },
+      {
+        "start": 239575.6000000015,
+        "ms": 162
+      },
+      {
+        "start": 239738.1000000015,
+        "ms": 192
+      }
+    ],
+    "events": [],
+    "changedFrames": {
+      "count": 407,
+      "median": 189.5,
+      "p95": 313.30000000074506,
+      "max": 379.80000000074506
+    },
+    "idleFrames": {
+      "count": 7800,
+      "median": 13.800000000745058,
+      "p95": 23.5,
+      "max": 55.69999999925494
+    },
+    "notes": "Four-minute initial direct candidate, full animation-callback work; ongoing simulation, no deliberate pause. Later owner navigation is outside this finite sample."
+  },
+  "cameraProfile": {
+    "duration": 17599.274,
+    "functions": [
+      {
+        "name": "update",
+        "line": 4836,
+        "column": 3665,
+        "us": 5323772,
+        "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+        "sourceLine": 162,
+        "sourceName": null
+      },
+      {
+        "name": "re",
+        "line": 4836,
+        "column": 3192,
+        "us": 3010558,
+        "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+        "sourceLine": 151,
+        "sourceName": null
+      },
+      {
+        "name": "",
+        "line": 4836,
+        "column": 3117,
+        "us": 1181654,
+        "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+        "sourceLine": 148,
+        "sourceName": null
+      },
+      {
+        "name": "stepThroughTree",
+        "line": 4439,
+        "column": 57516,
+        "us": 966733,
+        "source": "packages/explorer/src/client/views/forceGraphPhysics.ts",
+        "sourceLine": 312,
+        "sourceName": null
+      },
+      {
+        "name": "mP",
+        "line": 4836,
+        "column": 6471,
+        "us": 954346,
+        "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+        "sourceLine": 264,
+        "sourceName": "screenWireIntersectsFrustum"
+      },
+      {
+        "name": "Vn",
+        "line": 4870,
+        "column": 13553,
+        "us": 942854,
+        "source": "packages/explorer/src/client/views/forceGraphView.ts",
+        "sourceLine": 439,
+        "sourceName": "positionNames"
+      },
+      {
+        "name": "O",
+        "line": 4836,
+        "column": 2934,
+        "us": 740653,
+        "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+        "sourceLine": 141,
+        "sourceName": "link"
+      },
+      {
+        "name": "(program)",
+        "line": -1,
+        "column": -1,
+        "us": 611287
+      },
+      {
+        "name": "render",
+        "line": 4870,
+        "column": 713,
+        "us": 492648,
+        "source": "packages/explorer/src/client/views/forceGraphRenderer.ts",
+        "sourceLine": 48,
+        "sourceName": null
+      },
+      {
+        "name": "Hi",
+        "line": 4870,
+        "column": 21134,
+        "us": 390718,
+        "source": "packages/explorer/src/client/views/forceGraphView.ts",
+        "sourceLine": 751,
+        "sourceName": "framingIds"
+      },
+      {
+        "name": "pickLink",
+        "line": 4836,
+        "column": 5483,
+        "us": 208556,
+        "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+        "sourceLine": 215,
+        "sourceName": null
+      },
+      {
+        "name": "multiplyMatrices",
+        "line": 220,
+        "column": 83824,
+        "us": 175393,
+        "source": "node_modules/three/build/three.core.js",
+        "sourceLine": 10570,
+        "sourceName": null
+      },
+      {
+        "name": "",
+        "line": 4439,
+        "column": 69493,
+        "us": 163640,
+        "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+        "sourceLine": 309,
+        "sourceName": null
+      },
+      {
+        "name": "i",
+        "line": 4439,
+        "column": 75893,
+        "us": 162612,
+        "source": "packages/explorer/src/client/views/forceGraphData.ts",
+        "sourceLine": 156,
+        "sourceName": null
+      },
+      {
+        "name": "va",
+        "line": 4439,
+        "column": 70561,
+        "us": 162587,
+        "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+        "sourceLine": 23,
+        "sourceName": "node"
+      },
+      {
+        "name": "(garbage collector)",
+        "line": -1,
+        "column": -1,
+        "us": 160488
+      },
+      {
+        "name": "j",
+        "line": 4836,
+        "column": 2796,
+        "us": 152975,
+        "source": "packages/explorer/src/client/views/forceGraphBatches.ts",
+        "sourceLine": 136,
+        "sourceName": "node"
+      },
+      {
+        "name": "",
+        "line": 4439,
+        "column": 69983,
+        "us": 147901,
+        "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+        "sourceLine": 334,
+        "sourceName": null
+      },
+      {
+        "name": "_i",
+        "line": 4439,
+        "column": 66179,
+        "us": 145135,
+        "source": "packages/explorer/src/client/views/forceGraphLayout.ts",
+        "sourceLine": 49,
+        "sourceName": "spatialNodeRadius"
+      },
+      {
+        "name": "Rb",
+        "line": 4439,
+        "column": 49322,
+        "us": 124088,
+        "source": "packages/explorer/src/client/views/fileConnections.ts",
+        "sourceLine": 10,
+        "sourceName": "fileConnections"
+      },
+      {
+        "name": "Wb",
+        "line": 4439,
+        "column": 75863,
+        "us": 120952,
+        "source": "packages/explorer/src/client/views/forceGraphData.ts",
+        "sourceLine": 154,
+        "sourceName": "labelNamesOf"
+      },
+      {
+        "name": "g",
+        "line": 220,
+        "column": 26938,
+        "us": 112172,
+        "source": "node_modules/d3-force-3d/src/simulation.js",
+        "sourceLine": 49,
+        "sourceName": "tick"
+      },
+      {
+        "name": "Gi",
+        "line": 4870,
+        "column": 21579,
+        "us": 103552,
+        "source": "packages/explorer/src/client/views/forceGraphView.ts",
+        "sourceLine": 777,
+        "sourceName": "render"
+      },
+      {
+        "name": "bufferSubData",
+        "line": -1,
+        "column": -1,
+        "us": 87936
+      },
+      {
+        "name": "Xf",
+        "line": 4831,
+        "column": 4455,
+        "us": 81914,
+        "source": "packages/explorer/src/client/views/forceGraphSizing.ts",
+        "sourceLine": 17,
+        "sourceName": "clipSpatialWireDepth"
+      }
+    ],
+    "errors": [],
+    "clientSha256": "564c24e60baefc88205bc19b4dd124abbf0a1bde9319efb8777ceba9899e9ca1"
+  }
+}

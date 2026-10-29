@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-wires.spec.ts
-- Generated At: 2026-10-24T20:00:16.144Z
+- Generated At: 2026-10-29T18:09:51.239Z
 
 ## Authored
 ### Purpose
@@ -30,5 +30,5 @@ _No public symbols detected_
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
-- `three` - `Camera`, `Mesh`, `PerspectiveCamera`, `Scene`, `WebGLRenderer` (type-only)
+- `three` - `Camera`, `InstancedMesh`, `PerspectiveCamera`, `Scene`, `Vector3`, `WebGLRenderer` (type-only)
 <!-- LIVE-DOC:END Dependencies -->

@@ -1,0 +1,290 @@
+{
+  "description": "First direct renderer candidate before the automatic-framing cache and wire picking broad phase. Full T3 graph, same tuning; different unfolding time from baseline, not a matched-state speedup ratio.",
+  "duration": 15432.502,
+  "functions": [
+    {
+      "name": "stepThroughTree",
+      "line": 4870,
+      "column": 21109,
+      "us": 5007154
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 47357,
+      "us": 2431695
+    },
+    {
+      "name": "Gi",
+      "line": 4870,
+      "column": 55865,
+      "us": 1670092
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 47311,
+      "us": 926847
+    },
+    {
+      "name": "update",
+      "line": 4870,
+      "column": 3647,
+      "us": 737695
+    },
+    {
+      "name": "(program)",
+      "line": -1,
+      "column": -1,
+      "us": 522184
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 3099,
+      "us": 515094
+    },
+    {
+      "name": "ne",
+      "line": 4870,
+      "column": 3174,
+      "us": 505643
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 33576,
+      "us": 421542
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 5016,
+      "us": 360639
+    },
+    {
+      "name": "kb",
+      "line": 4870,
+      "column": 11522,
+      "us": 317980
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 33086,
+      "us": 296187
+    },
+    {
+      "name": "Vn",
+      "line": 4870,
+      "column": 48287,
+      "us": 288167
+    },
+    {
+      "name": "Hi",
+      "line": 4870,
+      "column": 46797,
+      "us": 241141
+    },
+    {
+      "name": "g",
+      "line": 220,
+      "column": 26938,
+      "us": 236243
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 4953,
+      "us": 157251
+    },
+    {
+      "name": "Rb",
+      "line": 4831,
+      "column": 5615,
+      "us": 133412
+    },
+    {
+      "name": "(garbage collector)",
+      "line": -1,
+      "column": -1,
+      "us": 96783
+    },
+    {
+      "name": "f",
+      "line": 4870,
+      "column": 33010,
+      "us": 79380
+    },
+    {
+      "name": "draw",
+      "line": 4870,
+      "column": 10457,
+      "us": 68828
+    },
+    {
+      "name": "querySelectorAll",
+      "line": -1,
+      "column": -1,
+      "us": 63627
+    },
+    {
+      "name": "",
+      "line": 4870,
+      "column": 56240,
+      "us": 46487
+    },
+    {
+      "name": "start",
+      "line": 4870,
+      "column": 18826,
+      "us": 31712
+    },
+    {
+      "name": "bufferSubData",
+      "line": -1,
+      "column": -1,
+      "us": 29277
+    },
+    {
+      "name": "multiplyMatrices",
+      "line": 220,
+      "column": 83817,
+      "us": 23825
+    }
+  ],
+  "samples": [
+    {
+      "time": 142405.6000000015,
+      "frames": 4293,
+      "draws": 314,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 106.54837735276475,
+      "busy": "true"
+    },
+    {
+      "time": 144414.5,
+      "frames": 4358,
+      "draws": 318,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 105.47842609855365,
+      "busy": "true"
+    },
+    {
+      "time": 146494.70000000298,
+      "frames": 4423,
+      "draws": 322,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 104.39771603173213,
+      "busy": "true"
+    },
+    {
+      "time": 148419.70000000298,
+      "frames": 4489,
+      "draws": 325,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 103.30711799304248,
+      "busy": "true"
+    },
+    {
+      "time": 150409.6000000015,
+      "frames": 4557,
+      "draws": 328,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 102.20767824264819,
+      "busy": "true"
+    },
+    {
+      "time": 152411.6000000015,
+      "frames": 4603,
+      "draws": 331,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 0,
+      "delta": 0,
+      "busy": "true"
+    },
+    {
+      "time": 154405.6000000015,
+      "frames": 4660,
+      "draws": 335,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 90.78708057941391,
+      "busy": "true"
+    },
+    {
+      "time": 156409.1000000015,
+      "frames": 4722,
+      "draws": 339,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 100.09979660473343,
+      "busy": "true"
+    },
+    {
+      "time": 158470.5,
+      "frames": 4788,
+      "draws": 343,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 98.97861348516703,
+      "busy": "true"
+    },
+    {
+      "time": 160406.80000000075,
+      "frames": 4860,
+      "draws": 345,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 97.85109223787497,
+      "busy": "true"
+    },
+    {
+      "time": 162615.90000000224,
+      "frames": 4933,
+      "draws": 349,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 100,
+      "delta": 96.71768762623843,
+      "busy": "true"
+    },
+    {
+      "time": 164415.1000000015,
+      "frames": 4998,
+      "draws": 351,
+      "nodes": 27823,
+      "links": 80108,
+      "objects": 5,
+      "moved": 0,
+      "delta": 0,
+      "busy": "true"
+    }
+  ]
+}

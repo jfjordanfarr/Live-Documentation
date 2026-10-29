@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphSizing.ts
-- Generated At: 2026-10-24T19:41:34.985Z
+- Generated At: 2026-10-29T19:49:49.675Z
 
 ## Authored
 ### Purpose
@@ -28,7 +28,7 @@ CSS pixels per world unit at a point's depth; behind-camera points have no visib
 
 #### `spatialSizeScale` {#symbol-spatialsizescale}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L11)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L12)
 - Parameters: `point`: `Vector3`; `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera)
 
 ##### `spatialSizeScale` — Summary
@@ -36,7 +36,7 @@ World-scale compensation: zero keeps perspective; one turns the base radius into
 
 #### `clipSpatialWireDepth` {#symbol-clipspatialwiredepth}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L17)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L18)
 - Parameters: `start`: `Vector4`; `end`: `Vector4`
 
 ##### `clipSpatialWireDepth` — Summary
@@ -44,7 +44,7 @@ Clip homogeneous endpoints to the visible depth interval; return their parameter
 
 #### `pickSpatialWire` {#symbol-pickspatialwire}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L32)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphSizing.ts#L33)
 - Parameters: `matrix`: `Matrix4`; `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `viewport`: `Vector2`; `ray`: `Ray`
 
 ##### `pickSpatialWire` — Summary

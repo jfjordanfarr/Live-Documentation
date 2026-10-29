@@ -1,8 +1,10 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import type { Mesh, Scene, Camera, PerspectiveCamera, WebGLRenderer } from "three";
+import type { InstancedMesh, Vector3, Scene, Camera, PerspectiveCamera, WebGLRenderer } from "three";
 
 import { engineActivity, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+
+type WireIsolation = { wire: InstancedMesh; setEnds(start: Vector3, end: Vector3): void; restore(): void };
 
 /** These contracts exercise both sizing endpoints explicitly, independently of the visually tuned defaults. */
 async function seedSizing(page: Page): Promise<void> {
@@ -31,17 +33,11 @@ async function cameraPose(page: Page): Promise<number[]> {
 /** Isolate a real graph wire and measure its GPU pixels through the production scene hooks and shader. */
 async function resistancePixels(page: Page) {
   return page.evaluate(() => {
-    type NativeMesh = Mesh & { __graphObjType?: string; __linkThreeObjType?: string; __data?: { count?: number } };
     const { scene, camera, renderer } = (window as unknown as {
       renderedGraph: { scene: Scene; camera: PerspectiveCamera; renderer: WebGLRenderer }
     }).renderedGraph;
-    const objects: Array<{ mesh: NativeMesh; visible: boolean }> = [];
-    scene.traverse(object => {
-      const mesh = object as NativeMesh;
-      if (mesh.__graphObjType || mesh.__linkThreeObjType === "arrow") objects.push({ mesh, visible: mesh.visible });
-    });
-    const wire = objects.find(({ mesh }) => mesh.__graphObjType === "link" && mesh.__data?.count === 1)!.mesh;
-    const saved = { position: wire.position.clone(), rotation: wire.quaternion.clone(), scale: wire.scale.clone(), near: camera.near, far: camera.far };
+    const isolated = (window as unknown as { isolateGraphWire: () => WireIsolation }).isolateGraphWire();
+    const saved = { near: camera.near, far: camera.far };
     const canvas = document.createElement("canvas");
     canvas.width = renderer.domElement.width; canvas.height = renderer.domElement.height;
     const context = canvas.getContext("2d")!;
@@ -50,8 +46,7 @@ async function resistancePixels(page: Page) {
     const point = (x: number, depth: number) => camera.position.clone().set(x * depth / camera.projectionMatrix.elements[0], 0, -depth);
     const draw = (from: ReturnType<typeof point>, to: ReturnType<typeof point>): Uint8ClampedArray => {
       const start = from.clone().applyMatrix4(camera.matrixWorld), end = to.clone().applyMatrix4(camera.matrixWorld);
-      wire.position.copy(wire.parent!.worldToLocal(start.clone()));
-      wire.lookAt(end); wire.scale.set(1, 1, start.distanceTo(end));
+      isolated.setEnds(start, end);
       scene.updateMatrixWorld(true); renderer.render(scene, camera);
       context.drawImage(renderer.domElement, 0, 0);
       return context.getImageData(0, 0, canvas.width, canvas.height).data;
@@ -74,8 +69,6 @@ async function resistancePixels(page: Page) {
       return result;
     };
     try {
-      for (const { mesh } of objects) mesh.visible = false;
-      wire.visible = true;
       camera.near = pixelScale / 8; camera.far = pixelScale * 100; camera.updateProjectionMatrix();
       const depthWidths = [pixelScale / 2, pixelScale * 2].map(depth => widths(draw(point(-.55, depth), point(.55, depth)))[1]);
       const near = point(-.55, camera.near), far = point(.55, pixelScale * 4);
@@ -93,8 +86,7 @@ async function resistancePixels(page: Page) {
       return { depthWidths, clipped, betweenCameraAndNear, crossingCamera, capInk, forwardCapDifference, reversedCapDifference };
     } finally {
       camera.near = saved.near; camera.far = saved.far; camera.updateProjectionMatrix();
-      wire.position.copy(saved.position); wire.quaternion.copy(saved.rotation); wire.scale.copy(saved.scale);
-      for (const { mesh, visible } of objects) mesh.visible = visible;
+      isolated.restore();
       scene.updateMatrixWorld(true); renderer.render(scene, camera);
     }
   });
@@ -225,16 +217,10 @@ for (const dpr of [1, 2]) {
       for (let i = 0; i < 10; i++) await page.keyboard.press("ArrowRight");
       await expect.poll(async () => Math.min(...(await renderedLinks(page)).filter(link => link.count === 1).map(link => link.width))).toBe(2);
       const widths = await page.evaluate(() => {
-        type NativeMesh = Mesh & { __graphObjType?: string; __linkThreeObjType?: string; __data?: { count?: number } };
         const observed = (window as unknown as { renderedGraph: { scene: Scene; camera: Camera; renderer: WebGLRenderer } }).renderedGraph;
         const { scene, camera, renderer } = observed;
-        const objects: Array<{ mesh: NativeMesh; visible: boolean }> = [];
-        scene.traverse(object => {
-          const mesh = object as NativeMesh;
-          if (mesh.__graphObjType || mesh.__linkThreeObjType === "arrow") objects.push({ mesh, visible: mesh.visible });
-        });
-        const wire = objects.find(({ mesh }) => mesh.__graphObjType === "link" && mesh.__data?.count === 1)!.mesh;
-        const saved = { position: wire.position.clone(), rotation: wire.quaternion.clone(), scale: wire.scale.clone() };
+        const isolated = (window as unknown as { isolateGraphWire: () => WireIsolation }).isolateGraphWire();
+        const { wire } = isolated;
         const canvas = document.createElement("canvas");
         canvas.width = renderer.domElement.width; canvas.height = renderer.domElement.height;
         const context = canvas.getContext("2d")!;
@@ -243,13 +229,10 @@ for (const dpr of [1, 2]) {
         try {
           // Isolate a real graph wire and draw it at controlled camera-relative depths, through the real scene hooks
           // and GPU shader. Read actual pixels immediately after each draw; no application state or shader formula.
-          for (const { mesh } of objects) mesh.visible = false;
-          wire.visible = true;
           for (const distance of [500, 2000, 8000]) {
             const start = wire.position.clone().set(-distance * .4, 0, -distance).applyMatrix4(camera.matrixWorld);
             const end = wire.position.clone().set(distance * 1.6, 0, -distance * 4).applyMatrix4(camera.matrixWorld);
-            wire.position.copy(wire.parent!.worldToLocal(start.clone()));
-            wire.lookAt(end); wire.scale.set(1, 1, start.distanceTo(end));
+            isolated.setEnds(start, end);
             scene.updateMatrixWorld(true); renderer.render(scene, camera);
             context.drawImage(renderer.domElement, 0, 0);
             const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
@@ -265,8 +248,7 @@ for (const dpr of [1, 2]) {
             }
           }
         } finally {
-          wire.position.copy(saved.position); wire.quaternion.copy(saved.rotation); wire.scale.copy(saved.scale);
-          for (const { mesh, visible } of objects) mesh.visible = visible;
+          isolated.restore();
           scene.updateMatrixWorld(true); renderer.render(scene, camera);
         }
         return result;
