@@ -78,12 +78,12 @@
     gap: 8px;
 }
 
+/* The name wraps whole rather than ellipsizing beside the three buttons (2026-10-30). */
 .sidebar-title {
     flex: 1;
     min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: 1.2;
 }
 
 .nav-item {
@@ -893,9 +893,9 @@
 }
 
 .nav-icon {
-    font-size: 14px;
+    flex: none;
     width: 20px;
-    text-align: center;
+    height: 16px;
 }
 
 /* Sidebar Checkbox */

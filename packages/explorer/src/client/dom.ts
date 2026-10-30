@@ -1,4 +1,5 @@
 import type { LocalMapPerspective, ViewName } from "./types";
+import { seamsOf } from "./views/localView/word-seams";
 
 /** Looks up an element by `id` and throws if not found. */
 export function requireElement<T extends HTMLElement>(id: string): T {
@@ -52,4 +53,12 @@ export function setActiveView(view: ViewName, perspective: LocalMapPerspective):
   } else {
     document.body.classList.remove("zoom-controls-active");
   }
+}
+
+/**
+ * Write a name into an element with a soft break at each of its seams (`seamsOf`), so that a name wider than its box
+ * wraps at a seam rather than at whatever letter the box ran out at; the element's text stays the name.
+ */
+export function setSeamedText(element: HTMLElement, text: string): void {
+  element.replaceChildren(...seamsOf(text).flatMap((segment, index) => index ? [document.createElement("wbr"), segment] : [segment]));
 }

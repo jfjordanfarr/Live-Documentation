@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-30T17:41:11.569Z
+- Generated At: 2026-10-30T19:08:35.701Z
 
 ## Authored
 ### Purpose
@@ -80,6 +80,16 @@ Read each wire's uploaded axis, base width, alpha, flow and visibility beside it
 The axis runs between the two spheres' drawn surfaces (2026-10-30), in the picture's units and on the screen. The
 flow is the number the shader colours by: 1 when the source uses the target, -1 the other way, 0 both, 2 a wire of
 its own colour.
+
+#### `clearStroke` {#symbol-clearstroke}
+- Type: function
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L207)
+- Parameters: `page`: `Page`
+
+##### `clearStroke` — Summary
+A point on a reference wire where a hover reaches the wire and nothing else: the middle of the longest stroke on
+screen whose middle stands clear of every sphere, inside the canvas, and on the bare canvas rather than a name or a
+control, since a sphere or a label under the pointer takes the hover instead.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

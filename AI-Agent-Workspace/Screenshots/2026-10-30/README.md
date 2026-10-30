@@ -34,3 +34,7 @@ For the checklist item "Wires, depth and the legend tell the same story", the ow
 ## The tuning block
 
 For the checklist item "Tuning is usable at the available size", built by an Opus 5.5 builder in a worktree and landed by the root; the pictures and their README are in [tuning/](tuning/README.md): the 3D levers before and after their grouping at 1280×800, and the root's own look at the landed block on main in 3D and 2D.
+
+## Labels and controls
+
+For the checklist item "Labels and controls have room to work", pass C, built by the root after the owner struck the help control from the plan at [Turn 3](../../ChatHistory/2026/10/2026-10-30.1.record.md#turn-3); the pictures and their README are in [labels-and-controls/](labels-and-controls/README.md): names wrapping at their seams in narrowed cards, the counts with their units, the sidebar's whole name and the navigation's icons, the toolbar's groups in 3D and 2D with the hint gone, and the wire tooltip beside the names.

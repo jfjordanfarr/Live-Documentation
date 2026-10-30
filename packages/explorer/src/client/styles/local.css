@@ -286,7 +286,12 @@ span.local-disclosure { cursor: default; }
 .perspective-controls { position: absolute; bottom: calc(18px + var(--history-room)); left: 50%; transform: translateX(-50%); z-index: 105; display: flex; gap: 4px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); }
 .perspective-controls[hidden], .perspective-controls button[hidden] { display: none; }
 .perspective-controls button { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; padding: 7px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; font-size: 13px; }
-.perspective-controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.perspective-controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-subtle); }
+/* The buttons stand in groups, one choice each, parted by a rule, so that which of a pair is on can be read (2026-10-30). */
+.perspective-group { display: inline-flex; gap: 4px; }
+/* A rule before a group only when a shown group stands before it: in 2D the fit's group goes, and no rule stands alone. */
+.perspective-group:has(button:not([hidden])) ~ .perspective-group { margin-left: 4px; padding-left: 8px; border-left: 1px solid var(--border); }
+.perspective-group:not(:has(button:not([hidden]))) { display: none; }
 .perspective-controls button:focus-visible { outline: 2px solid var(--accent); }
 .perspective-controls .custom-layout { border-bottom-color: var(--accent); color: var(--accent); }
 .perspective-controls button:disabled { cursor: default; opacity: .55; }
@@ -338,14 +343,14 @@ span.local-disclosure { cursor: default; }
 .local-directory-band > .local-column, .local-directory-band > .local-directory-label { pointer-events: auto; }
 .local-membrane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .local-membrane-shape { fill: #ffffff03; stroke: var(--border); stroke-width: 1px; stroke-linejoin: round; }
-.local-directory-label { position: absolute; display: flex; gap: 4px; align-items: flex-start; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: anywhere; }
+.local-directory-label { position: absolute; display: flex; gap: 4px; align-items: flex-start; font-size: 12px; color: var(--text-panel-subtle); padding-bottom: 14px; overflow-wrap: break-word; }
 /* The label inspects. Its caption is one text flow, the name and what an encasing directory hides; Open or Close and More
    stand beside it in a column of their own, 18 px tall and raised 2 px as the ancestry control is, so a one-line label
    keeps its height and the layout lab lays the caption out as the page does (2026-10-20). */
 .local-directory-controls { display: flex; flex: none; align-self: flex-start; gap: 2px; margin-top: -2px; }
 .local-directory-controls > button { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; height: 18px; margin: 0; padding: 1px; line-height: 14px; }
 .local-directory-controls > .local-directory-open { padding: 1px 5px; }
-.local-directory-name { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; overflow-wrap: anywhere; cursor: pointer; }
+.local-directory-name { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; overflow-wrap: break-word; cursor: pointer; }
 .local-directory-name:hover { color: var(--accent); }
 .local-directory-more { opacity: .85; }
 .local-directory-open { display: inline-block; vertical-align: middle; margin-top: -2px; padding: 2px 5px; color: var(--text-panel-subtle); background: none; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font: inherit; font-size: 11px; }
@@ -358,7 +363,7 @@ span.local-disclosure { cursor: default; }
 /* A closed directory keeps its box and count while the separate Open control expands it. */
 .local-directory-closed { box-sizing: border-box; width: 100%; min-width: 160px; position: relative; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: #ffffff05; color: var(--text-panel-subtle); cursor: pointer; box-shadow: 4px 4px 0 -1px var(--bg-deep, #15191f), 4px 4px 0 0 var(--border); }
 .local-directory-closed:hover { border-color: var(--accent); color: var(--text-primary); }
-.local-directory-closed__name { display: block; padding: 0; border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; text-align: left; color: var(--text-primary); overflow-wrap: anywhere; cursor: pointer; }
+.local-directory-closed__name { display: block; padding: 0; border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; text-align: left; color: var(--text-primary); overflow-wrap: break-word; cursor: pointer; }
 .local-directory-closed__count { margin-top: 4px; font-size: 11px; }
 .local-directory-closed .local-directory-open { margin-top: 8px; }
 .local-directory-closed .local-directory-actions { margin-left: 4px; margin-top: 8px; }

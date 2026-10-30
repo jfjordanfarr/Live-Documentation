@@ -57,9 +57,6 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     });
     this.orbit = new TrackballControls(this.eye, this.gpu.domElement);
     this.orbit.minDistance = .1; this.orbit.maxDistance = 50000;
-    const help = document.createElement("div"); help.className = "scene-nav-info";
-    help.textContent = "Left-click: rotate, Mouse-wheel/middle-click: zoom, Right-click: pan";
-    this.wrapper.append(help);
     this.tooltip = document.createElement("div"); this.tooltip.className = "spatial-wire-tooltip"; this.tooltip.hidden = true;
     this.tooltip.setAttribute("role", "tooltip"); this.wrapper.append(this.tooltip);
     this.width(container.clientWidth); this.height(container.clientHeight);

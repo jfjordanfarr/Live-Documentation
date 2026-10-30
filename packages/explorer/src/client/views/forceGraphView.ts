@@ -448,7 +448,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     camera.lookAt((instance.controls() as { target: Vector3 }).target);
     camera.updateMatrixWorld();
     const obstacles: LabelBox[] = [];
-    for (const element of document.querySelectorAll<HTMLElement>(".perspective-controls, .pin-tray, .pin-tray-toggle, #detail-panel.visible, .history-scrubber, .history-step-panel, .force-graph-actions")) {
+    for (const element of document.querySelectorAll<HTMLElement>(".perspective-controls, .pin-tray, .pin-tray-toggle, #detail-panel.visible, .history-scrubber, .history-step-panel, .force-graph-actions, .spatial-wire-tooltip")) {
       const box = element.getBoundingClientRect();
       if (box.width && box.height && getComputedStyle(element).visibility !== "hidden") obstacles.push({ x: box.left - frame.left, y: box.top - frame.top, width: box.width, height: box.height });
     }

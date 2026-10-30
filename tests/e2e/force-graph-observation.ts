@@ -195,3 +195,24 @@ export async function renderedLinks(page: Page) {
     return links;
   });
 }
+
+type Sphere = Awaited<ReturnType<typeof renderedNodes>>[number];
+type Wire = Awaited<ReturnType<typeof renderedLinks>>[number];
+
+/**
+ * A point on a reference wire where a hover reaches the wire and nothing else: the middle of the longest stroke on
+ * screen whose middle stands clear of every sphere, inside the canvas, and on the bare canvas rather than a name or a
+ * control, since a sphere or a label under the pointer takes the hover instead.
+ */
+export async function clearStroke(page: Page, spheres: readonly Sphere[], wires: readonly Wire[]): Promise<{ x: number; y: number } | undefined> {
+  const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const strokes = wires.filter(wire => wire.flow !== 2).map(wire => ({
+    middle: { x: (wire.screen.start.x + wire.screen.end.x) / 2, y: (wire.screen.start.y + wire.screen.end.y) / 2 },
+    span: Math.hypot(wire.screen.end.x - wire.screen.start.x, wire.screen.end.y - wire.screen.start.y)
+  })).filter(({ middle }) => middle.x > frame.x + 20 && middle.x < frame.x + frame.width - 20 && middle.y > frame.y + 20 && middle.y < frame.y + frame.height - 20
+    && spheres.every(sphere => Math.hypot(sphere.x - middle.x, sphere.y - middle.y) > sphere.screenRadius + 12)).sort((a, b) => b.span - a.span);
+  for (const { middle } of strokes) {
+    if (await page.evaluate(point => document.elementFromPoint(point.x, point.y)?.tagName === "CANVAS", middle)) return middle;
+  }
+  return undefined;
+}

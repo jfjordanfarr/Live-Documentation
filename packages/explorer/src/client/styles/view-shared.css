@@ -120,16 +120,14 @@
     color: var(--text-secondary);
     margin-bottom: 6px;
     white-space: normal;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 
 .node-path {
     font-size: 10px;
     color: var(--text-muted);
     white-space: normal;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 
 .node-symbols {
@@ -149,8 +147,7 @@
     color: var(--text-secondary);
     font-family: "Segoe UI", sans-serif;
     white-space: normal;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 
 .symbol-anchor {
@@ -258,8 +255,7 @@
     color: var(--text-panel-subtle);
     font-style: italic;
     white-space: normal;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 
 #controls {

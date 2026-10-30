@@ -9,7 +9,9 @@ import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory"
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
 import { membranePath } from "./membrane-outline";
+import { setSeamedText } from "../../dom";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
+import { countOf } from "./word-seams";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -277,7 +279,7 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
   // it, and the caption must wrap as the one text flow it is. The label's click inspects; the name takes the keyboard.
   const name = document.createElement("span");
   name.className = "local-directory-name";
-  name.textContent = directory;
+  setSeamedText(name, directory);
   name.tabIndex = 0;
   name.setAttribute("role", "button");
   name.title = `Inspect ${directory}`;
@@ -940,7 +942,7 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
     if (hidden) {
       const reveal = document.createElement("button");
       reveal.className = "local-disclosure";
-      reveal.textContent = `+${hidden} symbols`;
+      reveal.textContent = `+${countOf(hidden, "symbol")}`;
       reveal.title = "Show the other symbols in this file";
       reveal.addEventListener("click", event => {
         event.stopPropagation(); controller.lastInteracted = id; controller.lastInteractedSymbol = null; controller.expandedCards.add(id); controller.render();
@@ -951,7 +953,7 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
     if (back) {
       const note = document.createElement("span");
       note.className = "local-disclosure local-back-references";
-      note.textContent = `${back} ${back === 1 ? "reference reads" : "references read"} back`;
+      note.textContent = `${countOf(back, "reference reads", "references read")} back`;
       note.title = "Against the reading direction, part of a cycle: drawn as stubs at its pins. Hover a symbol to trace it.";
       card.append(note);
     }
@@ -960,7 +962,7 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       const filePinned = controller.isPinned(id, "*");
       const reveal = document.createElement(filePinned ? "span" : "button");
       reveal.className = "local-disclosure";
-      reveal.textContent = `${outside} ${outside === 1 ? "connection" : "connections"} ${filePinned ? "hidden by filters" : "outside this view"}`;
+      reveal.textContent = `${countOf(outside, "connection")} ${filePinned ? "hidden by filters" : "outside this view"}`;
       if (!filePinned) {
         reveal.title = "Pin this file to reveal its connections; display filters still apply";
         reveal.addEventListener("click", event => { event.stopPropagation(); controller.options.onPressPin(id, "*"); });

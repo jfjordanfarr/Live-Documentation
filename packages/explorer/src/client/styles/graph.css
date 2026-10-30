@@ -7,18 +7,6 @@
     overflow: clip;
 }
 
-.scene-nav-info {
-  position: absolute;
-  bottom: 5px;
-  width: 100%;
-  text-align: center;
-  color: slategrey;
-  opacity: .7;
-  font: 10px sans-serif;
-  pointer-events: none;
-  user-select: none;
-}
-
 .spatial-wire-tooltip {
   position: absolute;
   z-index: 3;

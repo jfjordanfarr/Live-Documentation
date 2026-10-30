@@ -643,13 +643,3 @@
 body.world-active #controls {
   display: none;
 }
-
-.nav-icon--world::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border: 1.5px solid currentColor;
-  transform: rotate(45deg) scale(0.8);
-  border-radius: 1px;
-}

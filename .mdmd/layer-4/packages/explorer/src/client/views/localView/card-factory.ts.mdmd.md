@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-22T16:47:55.813Z
+- Generated At: 2026-10-30T19:08:33.254Z
 
 ## Authored
 ### Purpose
@@ -29,21 +29,21 @@ Symbol order is the Live Doc's appearance order, alphabetical when chosen in Tun
 ### Public Symbols
 #### `CardPresentation` {#symbol-cardpresentation}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L18)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L20)
 
 ##### `CardPresentation` — Summary
 The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt.
 
 #### `CardContext` {#symbol-cardcontext}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L32)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L34)
 
 ##### `CardContext` — Summary
 Only the facts and actions a card needs; navigation targets are looked up when their event occurs.
 
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L63)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L65)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -59,7 +59,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L232)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L234)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -70,7 +70,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L267)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L269)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.
@@ -78,11 +78,13 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`dom.setSeamedText`](../../dom.ts.mdmd.md#symbol-setseamedtext)
 - [`types.SymbolOrder`](../../types.ts.mdmd.md#symbol-symbolorder) (type-only)
 - [`branches.ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 - [`branches.compareSymbolNames`](./branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`directory-bands.parentDirectory`](./directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`types.ColumnRole`](./types.ts.mdmd.md#symbol-columnrole) (type-only)
+- [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`types.ExplorerPublicSymbol`](../../../shared/types.ts.mdmd.md#symbol-explorerpublicsymbol) (type-only)
 - [`types.ExplorerTypeReference`](../../../shared/types.ts.mdmd.md#symbol-explorertypereference) (type-only)

@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import type { InstancedMesh, Vector3, Scene, Camera, PerspectiveCamera, WebGLRenderer } from "three";
 
-import { engineActivity, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { clearStroke, engineActivity, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { pathAddress } from "./search-bar";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -334,19 +334,8 @@ test("reference wires carry their directions, end at the spheres' drawn surfaces
   await expect(legend).toContainText("From what offers to what uses");
   await expect(legend).toContainText("Width: references");
   await expect(legend).not.toContainText("Path");
-  // Hovering a wire names which file uses which. A sphere or a label under the pointer takes the hover instead, so the
-  // stroke hovered is the longest on screen whose middle stands clear of every sphere and on the bare canvas.
-  const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
-  const spheres = [...nodes.values()];
-  const strokes = links.filter(link => link.flow !== 2).map(link => ({
-    middle: { x: (link.screen.start.x + link.screen.end.x) / 2, y: (link.screen.start.y + link.screen.end.y) / 2 },
-    span: Math.hypot(link.screen.end.x - link.screen.start.x, link.screen.end.y - link.screen.start.y)
-  })).filter(({ middle }) => middle.x > frame.x + 20 && middle.x < frame.x + frame.width - 20 && middle.y > frame.y + 20 && middle.y < frame.y + frame.height - 20
-    && spheres.every(node => Math.hypot(node.x - middle.x, node.y - middle.y) > node.screenRadius + 12)).sort((a, b) => b.span - a.span);
-  let hovered: { x: number; y: number } | undefined;
-  for (const { middle } of strokes) {
-    if (await page.evaluate(point => document.elementFromPoint(point.x, point.y)?.tagName === "CANVAS", middle)) { hovered = middle; break; }
-  }
+  // Hovering a wire names which file uses which; the stroke hovered is one a hover reaches and nothing else.
+  const hovered = await clearStroke(page, [...nodes.values()], links);
   expect(hovered, "a stroke clear of the spheres and the labels").toBeDefined();
   await page.mouse.move(hovered!.x, hovered!.y);
   const tooltip = page.locator(".spatial-wire-tooltip");

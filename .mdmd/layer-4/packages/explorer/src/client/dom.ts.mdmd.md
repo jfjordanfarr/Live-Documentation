@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/dom.ts
-- Generated At: 2026-10-22T16:47:53.886Z
+- Generated At: 2026-10-30T19:08:31.104Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Provides required element lookups and coordinates the Explorer's active view, na
 ### Public Symbols
 #### `requireElement` {#symbol-requireelement}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L4)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L5)
 - Returns: `T`
 
 ##### `requireElement` — Summary
@@ -29,17 +29,26 @@ Looks up an element by `id` and throws if not found.
 
 #### `setActiveView` {#symbol-setactiveview}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L13)
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L14)
 - Parameters: `view`: [`ViewName`](./types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective)
 
 ##### `setActiveView` — Summary
 Activates the given view tab and its container while deactivating siblings.
+
+#### `setSeamedText` {#symbol-setseamedtext}
+- Type: function
+- Source: [source](../../../../../../packages/explorer/src/client/dom.ts#L62)
+
+##### `setSeamedText` — Summary
+Write a name into an element with a soft break at each of its seams (`seamsOf`), so that a name wider than its box
+wraps at a seam rather than at whatever letter the box ran out at; the element's text stays the name.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`types.LocalMapPerspective`](./types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.ViewName`](./types.ts.mdmd.md#symbol-viewname) (type-only)
+- [`word-seams.seamsOf`](./views/localView/word-seams.ts.mdmd.md#symbol-seamsof)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

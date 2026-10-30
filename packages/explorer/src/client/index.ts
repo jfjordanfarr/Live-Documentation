@@ -461,7 +461,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   const fitButton = iconButton("Fit current scope", '<path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/>');
   fitButton.title = "Fit the current path or retained scope";
   fitButton.addEventListener("click", () => forceGraphView.fit());
-  perspectiveControls.append(fitButton, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton);
+  // One group per choice, parted by rules: the fit, the packing and its tuning, 2D or 3D, the 3D layout, the history.
+  const group = (...buttons: HTMLElement[]): HTMLElement => {
+    const element = document.createElement("span");
+    element.className = "perspective-group";
+    element.append(...buttons);
+    return element;
+  };
+  perspectiveControls.append(group(fitButton), group(compactButton, relaxedButton, tuningButton), group(mapButton, graphButton),
+    group(connectionsButton, structureButton), group(historyButton));
   requireElement("main").append(perspectiveControls);
   const pinTray = createPinTray({
     parent: requireElement("main"),

@@ -11,7 +11,9 @@
 import { compareSymbolNames, type ClosedDirectory } from "./branches";
 import { parentDirectory } from "./directory-bands";
 import type { ColumnRole } from "./types";
+import { countOf } from "./word-seams";
 import type { ExplorerNodePayload, ExplorerPublicSymbol, ExplorerTypeReference } from "../../../shared/types";
+import { setSeamedText } from "../../dom";
 import type { SymbolOrder } from "../../types";
 
 /** The values a fresh card reads while it is built. The wrapper may survive a render, but its card is rebuilt. */
@@ -115,7 +117,7 @@ export function createNodeCard(
   const inspect = document.createElement("button");
   inspect.type = "button";
   inspect.className = "local-file-inspect";
-  inspect.textContent = node.name;
+  setSeamedText(inspect, node.name);
   inspect.setAttribute("aria-label", `Inspect ${node.codeRelativePath}`);
   inspect.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node); });
   header.append(inspect);
@@ -170,7 +172,7 @@ export function createNodeCard(
 
   const pathElement = document.createElement("div");
   pathElement.className = "node-path";
-  pathElement.textContent = node.codeRelativePath;
+  setSeamedText(pathElement, node.codeRelativePath);
   card.appendChild(pathElement);
 
   card.appendChild(createSymbolSection(context, presentation, node, columnRole));
@@ -237,7 +239,7 @@ export function createClosedDirectory(context: CardContext, closed: ClosedDirect
   const name = document.createElement("button");
   name.type = "button";
   name.className = "local-directory-closed__name";
-  name.textContent = closed.name;
+  setSeamedText(name, closed.name);
   name.setAttribute("aria-label", `Inspect ${closed.path}`);
   name.addEventListener("click", event => { event.stopPropagation(); void context.inspectDirectory(closed.path); });
   const count = document.createElement("div");
@@ -266,8 +268,8 @@ export function createClosedDirectory(context: CardContext, closed: ClosedDirect
 /** "3 files, 2 directories", either part left out at zero; "empty" when both are. */
 export function countsOf(files: number, directories: number): string {
   const parts: string[] = [];
-  if (files) parts.push(`${files} ${files === 1 ? "file" : "files"}`);
-  if (directories) parts.push(`${directories} ${directories === 1 ? "directory" : "directories"}`);
+  if (files) parts.push(countOf(files, "file"));
+  if (directories) parts.push(countOf(directories, "directory", "directories"));
   return parts.length ? parts.join(", ") : "empty";
 }
 
@@ -351,7 +353,7 @@ function createSymbolSection(
     const label = document.createElement("button");
     label.type = "button";
     label.className = "symbol-label";
-    label.textContent = symbol;
+    setSeamedText(label, symbol);
     label.setAttribute("aria-label", `Inspect ${symbol} in ${node.name}`);
     label.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node, symbol); });
     labelWrapper.appendChild(label);
