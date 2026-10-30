@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { FIVE_ESTATE, FIVE_REPOSITORY } from "./scopes";
 import { localMapSettled, localRetainUrl } from "./still-picture";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -13,21 +14,13 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
  * picture's root; no text announces it.
  */
 
-const FILES = [
-  "packages/engine/src/live-docs/graph.ts",
-  "packages/engine/src/live-docs/document.ts",
-  "packages/engine/src/live-docs/graphFiles.ts",
-  "packages/explorer/src/shared/staticExplorerData.ts",
-  "packages/explorer/src/shared/staticBuilder.ts"
-];
-
 test.use({ viewport: { width: 1600, height: 1000 } });
 
 interface SearchReading { status: string; tried: number; next: number; adopted: number; shown: number; score: number; start: string; starts: number; priced: number | null }
 
-async function open(page: Page, localMap: Record<string, number>): Promise<void> {
+async function open(page: Page, localMap: Record<string, number>, base = "/", files: readonly string[] = FIVE_REPOSITORY): Promise<void> {
   await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap } }) });
-  await page.goto(localRetainUrl("/", FILES));
+  await page.goto(localRetainUrl(base, files));
   await page.waitForSelector("#map-container .branch-mode", { timeout: 20_000 });
   await page.waitForSelector("#map-connections .connection-path:not(.bundle-run)", { state: "attached", timeout: 15_000 });
 }
@@ -42,11 +35,14 @@ const readSearch = (page: Page): Promise<SearchReading> => page.evaluate(() => {
 });
 
 test("after the first picture the search tries further starts in idle time and moves to a better one when it clears the churn cost", async ({ page }) => {
-  // The first paint tries only the ranking's order, so there is better to find: on every scope the lab has measured, a
-  // seeded start beats the ranking's bare order (24% on 2026-10-06; 31% on this scope on 2026-10-08, when the first
-  // paint's own seed became the shortest of thirteen and a premise on one seed beating another went). The search
+  // The first paint tries only the ranking's order, so there is better to find. That a seeded start beats the ranking's
+  // bare order is a fact of the scope's docs, so the claim is held on the estate sample, whose docs do not change with
+  // this repository's code: on 2026-10-30 the lab priced seed 3 and seed 5 of its five files at 15,973 px against the
+  // ranking's 17,968 with no pairs swapped (AI-Agent-Workspace/Probes/2026-10-30/layout-lab). This repository's five
+  // files held the premise on the docs of October 6 and 8 (24% and 31%) and no longer did on October 30's, when the
+  // ranking's order came within 1.2% of the shortest start and the search adopted only an alignment of it. The search
   // tries twelve seeds and jumps rather than moves, for speed.
-  await open(page, { orderStarts: 0, searchStarts: 12, searchPatience: 12, moveMs: 0 });
+  await open(page, { orderStarts: 0, searchStarts: 12, searchPatience: 12, moveMs: 0 }, "/samples/estate/", FIVE_ESTATE);
   expect((await readSearch(page)).starts, "the first paint tried only the ranking's order").toBe(1);
   await localMapSettled(page);
   const done = await readSearch(page);
@@ -59,7 +55,7 @@ test("after the first picture the search tries further starts in idle time and m
   expect(done.priced).not.toBeNull();
   expect(Math.abs(done.priced! - done.score) / done.score, "the search's arithmetic price is near the page's measurement").toBeLessThan(0.02);
   // Without the search the page keeps the first paint, which the search's picture beats by its own price, churn aside.
-  await open(page, { orderStarts: 0, searchStarts: 0 });
+  await open(page, { orderStarts: 0, searchStarts: 0 }, "/samples/estate/", FIVE_ESTATE);
   const first = await readSearch(page);
   expect(first.status).toBe("capped");
   expect(first.tried).toBe(0);
