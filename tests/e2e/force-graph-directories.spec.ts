@@ -21,19 +21,20 @@ const referenceFacts = (links: Awaited<ReturnType<typeof renderedLinks>>) => lin
 const gap = (a: { x: number; y: number; z: number }, b: { x: number; y: number; z: number }): number => Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
 
 /**
- * Every line shown is drawn: it has a length and runs from the sphere of one end to the sphere of the other. Visibility
- * alone passed while every reference revealed in the structure layout sat unpositioned at the origin (2026-10-16).
+ * Every line shown is drawn: it has a length and runs from the drawn surface of one end's sphere to the other's
+ * (2026-10-30; before that, from centre to centre). Visibility alone passed while every reference revealed in the
+ * structure layout sat unpositioned at the origin (2026-10-16).
  */
 async function expectDrawnBetweenSpheres(page: Page): Promise<number> {
-  const spheres = new Map((await renderedNodes(page)).map(node => [node.id, node.world]));
+  const spheres = new Map((await renderedNodes(page)).map(node => [node.id, node]));
   const shown = (await renderedLinks(page)).filter(line => line.visible);
   for (const link of shown) {
     const source = spheres.get(link.source)!, target = spheres.get(link.target)!;
     const name = `${link.kind} ${link.source} to ${link.target}`;
     expect(link.length, name).toBeGreaterThan(0);
-    expect(link.length, name).toBeCloseTo(gap(source, target), 1);
-    expect(gap(link.start, source), `${name} starts at its source`).toBeLessThan(.05);
-    expect(gap(link.end, target), `${name} ends at its target`).toBeLessThan(.05);
+    expect(link.length, name).toBeCloseTo(gap(source.world, target.world) - source.radius - target.radius, 1);
+    expect(gap(link.start, source.world), `${name} starts on its source's surface`).toBeCloseTo(source.radius, 1);
+    expect(gap(link.end, target.world), `${name} ends on its target's surface`).toBeCloseTo(target.radius, 1);
   }
   return shown.filter(link => link.kind !== "containment").length;
 }

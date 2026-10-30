@@ -63,6 +63,9 @@ export interface ForceGraphLink {
   target: string | ForceGraphNode;
   kind: SpatialLinkKind;
   count: number;
+  /** The references in which the source uses the target, and those in which the target uses the source. */
+  forward: number;
+  backward: number;
 }
 
 /** A node in the Force Graph, extending the payload with optional archetype. */
@@ -836,7 +839,6 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const shownDocLinks = (moment ? moment.relatedDocLinks : relatedDocLinks ?? [])
       .filter(link => link.direction === "cited-by" ? state.filters.showCitingDocs : state.filters.showRelatedDocs);
     const data = spatialGraphOf(source, includeNode, shownDocLinks, state.spatialLayout);
-    renderSpatialLegend(data, state.tuning.forceGraph.symbolScale);
     // Keep node data by id and link data by pair across membership changes. Positions and stable instance bindings
     // follow those data objects, including through historical renames; the 2D wires keep their elements the same way.
     const graphNodes: ForceGraphNode[] = data.nodes.map(node => {
@@ -851,7 +853,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const graphLinks: ForceGraphLink[] = data.links.map(link => {
       const cached = linkCache.get(linkKey(link));
       if (!cached) { linkCache.set(linkKey(link), link); return link; }
-      cached.count = link.count;
+      cached.count = link.count; cached.forward = link.forward; cached.backward = link.backward;
       // A kept link's ends are the live objects for its ids, never an object a rename or a death left behind in the
       // cache, which D3 would keep as the end once resolved: a line to it leads nowhere (found 2026-10-18).
       cached.source = liveNodes.get(resolveLinkEndpoint(link.source)) ?? link.source;
@@ -874,11 +876,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       pointerPickNeeded = true;
       container.dataset.layoutSettings = JSON.stringify(state.tuning.forceGraph);
       if (wireWidth !== linkWidth) {
-        // A common scale for every wire; reference counts retain their relative weight while camera motion and
-        // spring stretch change no base width. Zoom resistance controls its projection separately.
-        instance.linkWidth((link: ForceGraphLink) => linkWidth * (link.kind === "related-doc" || link.kind === "cited-by" ? 0.5
-          : link.kind === "containment" ? 1 : Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, link.count)))));
+        // The widths are the attention's to set, with the path's emphasis; a changed scale is a change of attention.
         wireWidth = linkWidth;
+        attentionSettings = "";
+        updateAttention();
       }
       const nextSettings = JSON.stringify([forces, state.spatialLayout]);
       if (forceSettings === nextSettings) return;
@@ -989,6 +990,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       : retained.has(node.id) ? 3 : node.directoryPath !== undefined ? 4 : 5]));
     for (const [id, label] of nameLabels) if (!present.has(id)) { label.remove(); nameLabels.delete(id); labelSizes.delete(label); }
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
+    // The key says what is drawn: the references and their directions where they are, the path, and the fading.
+    renderSpatialLegend(data, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention, path: !!path?.length, faded: hasAttention });
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {
         focusedDirectory = directories[0] ?? null;
@@ -1030,22 +1033,37 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
       pictureChanged();
+      renderSpatialLegend(data, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || attention !== null, path: !!path?.length, faded: attention !== null });
       forceGraphInstance?.nodeColor((node: ForceGraphNode) => {
         const color = spatialNodeStyle(node.archetype).color;
         return attention && !attention.has(node.id) ? `${color}33` : color;
       });
-      forceGraphInstance?.linkColor((link: ForceGraphLink) => {
+      /** Whether a wire has the picture's attention, and whether it is a step of the drawn path. */
+      const regard = (link: ForceGraphLink): { visible: boolean; onPath: boolean } => {
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
-        const visible = hovered ? a === hovered || b === hovered
-          : path?.length ? pathPairs.has(JSON.stringify([a, b].sort())) : !attention || (attention.has(a) && attention.has(b));
+        const onPath = !!path?.length && pathPairs.has(JSON.stringify([a, b].sort()));
+        const visible = hovered ? a === hovered || b === hovered : path?.length ? onPath : !attention || (attention.has(a) && attention.has(b));
+        return { visible, onPath: onPath && visible };
+      };
+      forceGraphInstance?.linkColor((link: ForceGraphLink) => {
+        const { visible, onPath } = regard(link);
         // Containment is the structure itself, drawn as a line; a reference revealed in the structure layout reads
-        // against the tree rather than as the faint web of the connections layout.
+        // against the tree rather than as the faint web of the connections layout. A path's wires are drawn at full
+        // strength (2026-10-30), so that the route reads over the web around it.
         if (link.kind === "containment") return `rgba(233, 152, 77, ${visible ? 0.35 : 0.08})`;
         if (link.kind === "related-doc") return `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`;
         // A document's citation of a file, in the documents' violet lightened toward white, drawn from the document.
         if (link.kind === "cited-by") return `rgba(214, 178, 240, ${visible ? 0.55 : 0.06})`;
-        return state.spatialLayout === "structure" ? `rgba(255, 255, 255, ${visible ? 0.5 : 0})` : `rgba(255, 255, 255, ${visible ? 0.16 : 0.025})`;
+        if (onPath) return "rgba(255, 255, 255, 0.9)";
+        if (state.spatialLayout === "structure") return `rgba(255, 255, 255, ${visible ? 0.5 : 0})`;
+        // The whole web at .16 when nothing has the attention; the hovered file's wires at .5 and the retained set's at
+        // .3 when something has, so that the few wires a person is reading show their colours (2026-10-30).
+        return `rgba(255, 255, 255, ${!visible ? 0.025 : hovered ? 0.5 : attention ? 0.3 : 0.16})`;
       });
+      // A common scale for every wire; reference counts retain their relative weight while camera motion and spring
+      // stretch change no base width, and a path's wires are twice as wide. Zoom resistance controls the projection.
+      forceGraphInstance?.linkWidth((link: ForceGraphLink) => state.tuning.forceGraph.linkWidth * (regard(link).onPath ? 2 : 1)
+        * (link.kind === "related-doc" || link.kind === "cited-by" ? 0.5 : link.kind === "containment" ? 1 : Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, link.count)))));
       forceGraphInstance?.linkVisibility((link: ForceGraphLink) => {
         if (state.spatialLayout !== "structure" || link.kind === "containment") return true;
         // In the structure layout a reference is drawn on demand: for the hovered file, within and out of the hovered
@@ -1094,13 +1112,23 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         linkColor: () => "rgba(255, 255, 255, 0.16)",
         linkWidth: () => state.tuning.forceGraph.linkWidth,
         linkVisible: () => true,
-        arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0
+        arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0,
+        // A reference wire's colour runs from the file that uses, green, to the file that offers, blue; a pair that
+        // uses each other is green at both ends; the other kinds keep their own colour (2026-10-30).
+        linkFlow: link => link.kind === "containment" || link.kind === "related-doc" || link.kind === "cited-by" ? 2
+          : link.forward && link.backward ? 0 : link.forward ? 1 : -1
       },
       resistance: () => ({ nodes: state.tuning.forceGraph.nodeZoomResistance, wires: state.tuning.forceGraph.wireZoomResistance }),
-      linkLabel: link => link.kind === "containment" ? "Directory membership"
-        : link.kind === "related-doc" ? `Cites the document: ${link.count} ${link.count === 1 ? "link" : "links"} in the file's words`
-        : link.kind === "cited-by" ? `Cited by the document: ${link.count} ${link.count === 1 ? "link" : "links"} to the file`
-        : link.count + " documented " + (link.count === 1 ? "reference" : "references"),
+      linkLabel: link => {
+        if (link.kind === "containment") return "Directory membership";
+        if (link.kind === "related-doc") return `Cites the document: ${link.count} ${link.count === 1 ? "link" : "links"} in the file's words`;
+        if (link.kind === "cited-by") return `Cited by the document: ${link.count} ${link.count === 1 ? "link" : "links"} to the file`;
+        // Which file uses which, each direction with its count (2026-10-30).
+        const nameOf = (endpoint: string | ForceGraphNode): string => { const id = resolveLinkEndpoint(endpoint); return labelNames.get(id) ?? nodeCache.get(id)?.name ?? id; };
+        const uses = (user: string, offerer: string, count: number): string => `${user} uses ${offerer}: ${count} ${count === 1 ? "reference" : "references"}`;
+        return [link.forward ? uses(nameOf(link.source), nameOf(link.target), link.forward) : "",
+          link.backward ? uses(nameOf(link.target), nameOf(link.source), link.backward) : ""].filter(Boolean).join("; ");
+      },
       onDrag: () => {
         pictureChanged(); cancelPress(); interrupt();
         if (!draggingNode) move(1, "hold");

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-29T18:09:51.143Z
+- Generated At: 2026-10-30T17:41:11.569Z
 
 ## Authored
 ### Purpose
@@ -72,11 +72,14 @@ Read identity from the picking index and geometry/alpha/positions from the actua
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L162)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L167)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
-Read each wire's uploaded axis, base width and visibility beside its documented relationship identity.
+Read each wire's uploaded axis, base width, alpha, flow and visibility beside its documented relationship identity.
+The axis runs between the two spheres' drawn surfaces (2026-10-30), in the picture's units and on the screen. The
+flow is the number the shader colours by: 1 when the source uses the target, -1 the other way, 0 both, 2 a wire of
+its own colour.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

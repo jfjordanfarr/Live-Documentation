@@ -14,7 +14,7 @@ const graph = (): ExplorerGraphPayload => ({ nodes: [node("a"), node("b")], link
 it("shares one counted relationship for parallel and reciprocal facts without mutating the input graph", () => {
   const input = graph(), before = JSON.stringify(input);
   const data = spatialGraphOf(input, () => true);
-  expect(data.links).toEqual([{ source: "a", target: "b", kind: "dependency", count: 5 }]);
+  expect(data.links).toEqual([{ source: "a", target: "b", kind: "dependency", count: 5, forward: 3, backward: 2 }]);
   expect(data.nodes.every(file => file.directoryPath === undefined)).toBe(true);
   data.nodes[0].name = "changed copy";
   expect(JSON.stringify(input)).toBe(before);
@@ -31,8 +31,8 @@ it("includes authored documentation links while excluding Live Doc aliases, hidd
   expect(data.nodes.map(file => file.id)).toEqual(["a", "related:README.md", "related:design.md"]);
   expect(data.nodes[1]).toMatchObject({ archetype: "related-doc", publicSymbols: [], docPath: "README.md" });
   expect(data.links).toEqual([
-    { source: "a", target: "related:README.md", kind: "related-doc", count: 2 },
-    { source: "related:README.md", target: "related:design.md", kind: "related-doc", count: 1 }
+    { source: "a", target: "related:README.md", kind: "related-doc", count: 2, forward: 2, backward: 0 },
+    { source: "related:README.md", target: "related:design.md", kind: "related-doc", count: 1, forward: 1, backward: 0 }
   ]);
 });
 
@@ -45,10 +45,10 @@ it("draws a document's citation of a file from the document, apart from the file
   ]);
   expect(data.nodes.map(file => file.id)).toEqual(["a", "b", "related:docs/design.md", "related:README.md"]);
   expect(data.links).toEqual([
-    { source: "a", target: "b", kind: "dependency", count: 5 },
-    { source: "a", target: "related:docs/design.md", kind: "related-doc", count: 1 },
-    { source: "related:docs/design.md", target: "a", kind: "cited-by", count: 2 },
-    { source: "related:README.md", target: "b", kind: "cited-by", count: 1 }
+    { source: "a", target: "b", kind: "dependency", count: 5, forward: 3, backward: 2 },
+    { source: "a", target: "related:docs/design.md", kind: "related-doc", count: 1, forward: 1, backward: 0 },
+    { source: "related:docs/design.md", target: "a", kind: "cited-by", count: 2, forward: 2, backward: 0 },
+    { source: "related:README.md", target: "b", kind: "cited-by", count: 1, forward: 1, backward: 0 }
   ]);
 });
 
@@ -76,9 +76,9 @@ it("in the structure layout, hangs everything drawn from its directory and every
   const membership = data.links.filter(link => link.kind === "containment");
   expect(membership).toHaveLength(data.nodes.length - 1);
   expect(new Set(membership.map(link => link.target)).size).toBe(membership.length);
-  expect(membership).toContainEqual({ source: directoryNodeId(""), target: directoryNodeId("deep/chain"), kind: "containment", count: 1 });
-  expect(membership).toContainEqual({ source: directoryNodeId("a"), target: directoryNodeId("a/nested"), kind: "containment", count: 1 });
-  expect(membership).toContainEqual({ source: directoryNodeId("docs"), target: "related:docs/readme.md", kind: "containment", count: 1 });
+  expect(membership).toContainEqual({ source: directoryNodeId(""), target: directoryNodeId("deep/chain"), kind: "containment", count: 1, forward: 1, backward: 0 });
+  expect(membership).toContainEqual({ source: directoryNodeId("a"), target: directoryNodeId("a/nested"), kind: "containment", count: 1, forward: 1, backward: 0 });
+  expect(membership).toContainEqual({ source: directoryNodeId("docs"), target: "related:docs/readme.md", kind: "containment", count: 1, forward: 1, backward: 0 });
   expect(membership).not.toContainEqual(expect.objectContaining({ source: directoryNodeId(""), target: "a/nested/two.ts" }));
   expect(JSON.stringify(input)).toBe(before);
   expect(spatialGraphOf(input, () => false, [], "structure")).toEqual({ nodes: [], links: [] });
@@ -92,9 +92,9 @@ it("keeps a scan root that holds only one directory, so that the tree always has
   const data = spatialGraphOf(input, () => true, [], "structure");
   expect(data.nodes.map(file => file.id)).toEqual(["src/a.ts", "src/b.ts", directoryNodeId("src"), directoryNodeId("")]);
   expect(data.links).toEqual([
-    { source: directoryNodeId("src"), target: "src/a.ts", kind: "containment", count: 1 },
-    { source: directoryNodeId("src"), target: "src/b.ts", kind: "containment", count: 1 },
-    { source: directoryNodeId(""), target: directoryNodeId("src"), kind: "containment", count: 1 }
+    { source: directoryNodeId("src"), target: "src/a.ts", kind: "containment", count: 1, forward: 1, backward: 0 },
+    { source: directoryNodeId("src"), target: "src/b.ts", kind: "containment", count: 1, forward: 1, backward: 0 },
+    { source: directoryNodeId(""), target: directoryNodeId("src"), kind: "containment", count: 1, forward: 1, backward: 0 }
   ]);
 });
 

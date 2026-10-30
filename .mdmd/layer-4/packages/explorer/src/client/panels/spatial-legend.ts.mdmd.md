@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/spatial-legend.ts
-- Generated At: 2026-10-24T19:41:34.084Z
+- Generated At: 2026-10-30T15:43:42.756Z
 
 ## Authored
 ### Purpose
@@ -18,10 +18,33 @@ The body-size key is omitted when symbol scaling is disabled. Code-reference wid
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `SpatialLegendDrawn` {#symbol-spatiallegenddrawn}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L7)
+
+##### `SpatialLegendDrawn` — Summary
+What the 3D picture draws beyond its data: the key says only what is on screen (2026-10-30).
+
+#### `SpatialLegendRow` {#symbol-spatiallegendrow}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L17)
+
+##### `SpatialLegendRow` — Summary
+One row of the key: its words and the sample the stylesheet draws from its shape and colour.
+
+#### `spatialLegendRows` {#symbol-spatiallegendrows}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L24)
+- Returns: [`SpatialLegendRow`](#symbol-spatiallegendrow)[]
+- Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
+
+##### `spatialLegendRows` — Summary
+The rows of the key for a filtered graph at the moment shown, in reading order; pure, so that a test can read them.
+
 #### `renderSpatialLegend` {#symbol-renderspatiallegend}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L8)
-- Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L48)
+- Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
 ##### `renderSpatialLegend` — Summary
 Describe the spatial map's filtered, current-moment encodings without changing its geometry or attention.
@@ -32,5 +55,6 @@ Describe the spatial map's filtered, current-moment encodings without changing i
 - [`dom.requireElement`](../dom.ts.mdmd.md#symbol-requireelement)
 - [`forceGraphAppearance.SPATIAL_NODE_STYLES`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatial_node_styles)
 - [`forceGraphAppearance.spatialNodeStyle`](../views/forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
+- [`forceGraphBatches.SPATIAL_FLOW_COLORS`](../views/forceGraphBatches.ts.mdmd.md#symbol-spatial_flow_colors)
 - [`forceGraphData.SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

@@ -433,14 +433,20 @@ test("Knowledge Sources says what the bundle carries of its history, or names th
   await expect(page.getByRole("button", { name: "History", exact: true })).toHaveCount(0);
 });
 
-/** Every rendered line begins and ends on a rendered sphere; a line to an object the caches left behind leads nowhere. */
+/**
+ * Every rendered line begins and ends on a rendered sphere's drawn surface (2026-10-30; before, at its centre), or at
+ * the centres of two spheres that touch, between which no line is drawn; a line to an object the caches left behind
+ * leads nowhere.
+ */
 async function expectEveryLineOnSpheres(page: Page, what: string): Promise<void> {
-  const spheres = byId(await renderedNodes(page));
+  const spheres = new Map((await renderedNodes(page)).map(node => [node.id, node]));
   const lines = await renderedLinks(page);
   expect(lines.length, `${what}: lines to check`).toBeGreaterThan(0);
   const stray = lines.filter(line => {
     const from = spheres.get(line.source), to = spheres.get(line.target);
-    return !from || !to || gap(from, line.start) > 1 || gap(to, line.end) > 1;
+    if (!from || !to) return true;
+    const apart = gap(from.world, to.world) > from.radius + to.radius;
+    return Math.abs(gap(from.world, line.start) - (apart ? from.radius : 0)) > 1 || Math.abs(gap(to.world, line.end) - (apart ? to.radius : 0)) > 1;
   }).map(line => `${line.source} -> ${line.target}`);
   expect(stray, `${what}: lines that lead nowhere`).toEqual([]);
 }

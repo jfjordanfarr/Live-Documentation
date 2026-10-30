@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/fileConnections.ts
-- Generated At: 2026-10-22T16:47:55.131Z
+- Generated At: 2026-10-30T15:43:44.239Z
 
 ## Authored
 ### Purpose
@@ -20,18 +20,22 @@ A projected edge may represent several documented references sharing endpoints. 
 ### Public Symbols
 #### `FileConnection` {#symbol-fileconnection}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L2)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L8)
 
 ##### `FileConnection` — Summary
-A file-pair summary for a connectivity overview; canonical symbol edges remain untouched.
+A file-pair summary for a connectivity overview; the canonical symbol edges remain untouched. One pair stands for
+both directions between two files, its endpoints in path order so that the pair's identity does not depend on which
+way the references run: `forward` counts the references in which `source` uses `target`, `backward` those in which
+`target` uses `source`, and `count` is their sum. The 3D map draws the pair as one wire coloured by its directions
+(2026-10-30; before, the directions were merged away and no wire could say which file used which).
 
 #### `fileConnections` {#symbol-fileconnections}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L10)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L21)
 - Returns: [`FileConnection`](#symbol-fileconnection)[]
 
 ##### `fileConnections` — Summary
-Collapse parallel and reciprocal references to one undirected file-level relationship.
+Collapse parallel and reciprocal references to one file-level relationship that remembers its directions.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

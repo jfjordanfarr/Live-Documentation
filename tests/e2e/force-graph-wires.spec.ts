@@ -2,6 +2,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 import type { InstancedMesh, Vector3, Scene, Camera, PerspectiveCamera, WebGLRenderer } from "three";
 
 import { engineActivity, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { pathAddress } from "./search-bar";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 type WireIsolation = { wire: InstancedMesh; setEnds(start: Vector3, end: Vector3): void; restore(): void };
@@ -298,3 +299,75 @@ for (const dpr of [1, 2]) {
     } finally { await page.close(); }
   });
 }
+
+/** The distance between two points in the picture's units. */
+const apart = (p: { x: number; y: number; z: number }, q: { x: number; y: number; z: number }): number => Math.hypot(p.x - q.x, p.y - q.y, p.z - q.z);
+
+test("reference wires carry their directions, end at the spheres' drawn surfaces, and the key says what is drawn", async ({ page }) => {
+  // Direction in 3D (the October 23 review's findings 5 to 7, the owner's choice of colour over geometry, 2026-10-30):
+  // each pair's references are counted direction by direction, the shader colours the wire from the file that
+  // uses to the file that offers, and the wire runs between the drawn surfaces rather than the centres.
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await observeGraph(page); await seedSizing(page);
+  await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  await page.mouse.move(5, 5);
+  const nodes = new Map((await renderedNodes(page)).map(node => [node.id, node]));
+  const links = (await renderedLinks(page)).filter(link => link.visible);
+  expect(links.length).toBeGreaterThan(3);
+  let reciprocal = 0;
+  for (const link of links) {
+    const a = nodes.get(link.source)!, b = nodes.get(link.target)!;
+    if (link.kind === "containment" || link.kind === "related-doc" || link.kind === "cited-by") { expect(link.flow).toBe(2); continue; }
+    expect(link.forward + link.backward).toBe(link.count);
+    expect(link.flow).toBe(link.forward && link.backward ? 0 : link.forward ? 1 : -1);
+    if (link.flow === 0) reciprocal++;
+    // At node resistance 0 the drawn radius is the physical one; the wire's ends stand on the two surfaces.
+    expect(apart(link.start, a.world)).toBeCloseTo(a.radius, 1);
+    expect(apart(link.end, b.world)).toBeCloseTo(b.radius, 1);
+    expect(link.length + a.radius + b.radius).toBeCloseTo(apart(a.world, b.world), 1);
+  }
+  expect(links.some(link => link.flow === 1 || link.flow === -1)).toBe(true);
+  void reciprocal;
+  const legend = page.locator("#spatial-legend");
+  await expect(legend).toContainText("From what offers to what uses");
+  await expect(legend).toContainText("Width: references");
+  await expect(legend).not.toContainText("Path");
+  // Hovering a wire names which file uses which. A sphere or a label under the pointer takes the hover instead, so the
+  // stroke hovered is the longest on screen whose middle stands clear of every sphere and on the bare canvas.
+  const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const spheres = [...nodes.values()];
+  const strokes = links.filter(link => link.flow !== 2).map(link => ({
+    middle: { x: (link.screen.start.x + link.screen.end.x) / 2, y: (link.screen.start.y + link.screen.end.y) / 2 },
+    span: Math.hypot(link.screen.end.x - link.screen.start.x, link.screen.end.y - link.screen.start.y)
+  })).filter(({ middle }) => middle.x > frame.x + 20 && middle.x < frame.x + frame.width - 20 && middle.y > frame.y + 20 && middle.y < frame.y + frame.height - 20
+    && spheres.every(node => Math.hypot(node.x - middle.x, node.y - middle.y) > node.screenRadius + 12)).sort((a, b) => b.span - a.span);
+  let hovered: { x: number; y: number } | undefined;
+  for (const { middle } of strokes) {
+    if (await page.evaluate(point => document.elementFromPoint(point.x, point.y)?.tagName === "CANVAS", middle)) { hovered = middle; break; }
+  }
+  expect(hovered, "a stroke clear of the spheres and the labels").toBeDefined();
+  await page.mouse.move(hovered!.x, hovered!.y);
+  const tooltip = page.locator(".spatial-wire-tooltip");
+  await expect(tooltip).toBeVisible({ timeout: 5_000 });
+  await expect(tooltip).toHaveText(/ uses .*: \d+ references?/);
+});
+
+test("a path's wires are drawn at full strength and double width, and the key says Path", async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await observeGraph(page); await seedSizing(page);
+  // The estate's route from IPaymentHub.cs to GatewayClient.cs, as the 2D path spec walks it: four files, three hops.
+  await page.goto(pathAddress("/samples/estate/", "Contracts/IPaymentHub.cs", { kind: "file", nodeId: "Portal/Services/GatewayClient.cs" }, "Contracts/IPaymentHub.cs", { perspective: "3d" }));
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  await page.mouse.move(5, 5);
+  const links = (await renderedLinks(page)).filter(link => link.visible && link.flow !== 2);
+  const base = (count: number): number => Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, count)));
+  const onPath = links.filter(link => link.opacity > 0.85), others = links.filter(link => link.opacity <= 0.85);
+  expect(onPath).toHaveLength(3);
+  expect(others.length).toBeGreaterThan(0);
+  for (const link of onPath) expect(Math.abs(link.width - 2 * Math.ceil(base(link.count) * 10) / 10)).toBeLessThan(0.11);
+  for (const link of others) expect(link.width).toBeLessThanOrEqual(Math.ceil(base(link.count) * 10) / 10 + 0.01);
+  await expect(page.locator("#spatial-legend")).toContainText("Path");
+});

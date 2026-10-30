@@ -26,3 +26,7 @@ Built by an Opus 5.5 builder under the root's brief and reviewed by the root in 
 ## The inventory totals
 
 Built by an Opus 5.5 builder under the root's brief and reviewed by the root in these pictures and in the code, for the checklist item "Inventory totals explain their scope"; the pictures and their README are in [inventory/](inventory/README.md): the sidebar's 4,622 against Knowledge Sources' 4,651 before, and both saying the same documented references after, with the sidebar's third count named dependencies outside the scan and the panel saying what its counts are of.
+
+## The 3D map's wires, depth and key
+
+For the checklist item "Wires, depth and the legend tell the same story", the owner's choice of colour before any more geometry at [Turn 3](../../ChatHistory/2026/10/2026-10-30.1.record.md#turn-3); the pictures and their README are in [3d-wires/](3d-wires/README.md): generator.ts hovered before and after, the two-file path before and after, the estate's web before and after, the Portal hub close up for the silhouette question, and four frames of an orbit.

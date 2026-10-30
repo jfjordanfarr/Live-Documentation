@@ -5,7 +5,7 @@ import type { SpatialDrawEntry } from "../../packages/explorer/src/client/views/
 
 interface Datum {
   id?: string; name?: string; directoryPath?: string; directoryFileCount?: number;
-  source?: string | { id: string }; target?: string | { id: string }; kind?: string; count?: number;
+  source?: string | { id: string }; target?: string | { id: string }; kind?: string; count?: number; forward?: number; backward?: number;
 }
 type DrawMesh = InstancedMesh & { userData: { spatialBatch?: { kind: string; entries: SpatialDrawEntry<Datum>[] } } };
 type ObservedWindow = Window & {
@@ -158,13 +158,20 @@ export async function renderedNodes(page: Page) {
   });
 }
 
-/** Read each wire's uploaded axis, base width and visibility beside its documented relationship identity. */
+/**
+ * Read each wire's uploaded axis, base width, alpha, flow and visibility beside its documented relationship identity.
+ * The axis runs between the two spheres' drawn surfaces (2026-10-30), in the picture's units and on the screen. The
+ * flow is the number the shader colours by: 1 when the source uses the target, -1 the other way, 0 both, 2 a wire of
+ * its own colour.
+ */
 export async function renderedLinks(page: Page) {
   return page.evaluate(() => {
     const inspected = window as unknown as ObservedWindow, observed = inspected.renderedGraph!;
     const rect = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
     type Point = { x: number; y: number; z: number };
-    const links: Array<{ source: string; target: string; kind: string; count: number; visible: boolean; start: Point; end: Point; length: number; width: number }> = [];
+    const links: Array<{ source: string; target: string; kind: string; count: number; forward: number; backward: number; visible: boolean;
+      start: Point; end: Point; screen: { start: { x: number; y: number }; end: { x: number; y: number } };
+      length: number; width: number; opacity: number; flow: number }> = [];
     observed.scene.traverse(object => {
       const mesh = object as DrawMesh, batch = mesh.userData.spatialBatch;
       if (batch?.kind !== "links") return;
@@ -173,9 +180,16 @@ export async function renderedLinks(page: Page) {
         const width = !Array.isArray(material) && "resolution" in material
           ? mesh.geometry.getAttribute("spatialWidth").getX(entry.slot) * rect.height / (material.resolution as { y: number }).y : NaN;
         const point = (z: number): Point => { const value = drawn.point(z); return { x: value.x, y: value.y, z: value.z }; };
+        const onScreen = (z: number): { x: number; y: number } => {
+          const projected = drawn.point(z).project(observed.camera);
+          return { x: rect.left + (projected.x + 1) * rect.width / 2, y: rect.top + (1 - projected.y) * rect.height / 2 };
+        };
         links.push({ source: typeof data.source === "string" ? data.source : data.source!.id,
           target: typeof data.target === "string" ? data.target : data.target!.id, kind: data.kind ?? "", count: data.count ?? 0,
-          visible: drawn.visible, start: point(0), end: point(1), length: drawn.point(0).distanceTo(drawn.point(1)), width });
+          forward: data.forward ?? 0, backward: data.backward ?? 0,
+          visible: drawn.visible, start: point(0), end: point(1), screen: { start: onScreen(0), end: onScreen(1) },
+          length: drawn.point(0).distanceTo(drawn.point(1)), width,
+          opacity: drawn.opacity, flow: mesh.geometry.getAttribute("spatialFlow").getX(entry.slot) });
       }
     });
     return links;

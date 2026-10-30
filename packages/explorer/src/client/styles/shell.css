@@ -1142,6 +1142,11 @@ body.force-graph-active #spatial-legend { display: block; }
     top: 3px;
     clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
+/* A reference wire's colours, blue at the end that offers and green at the end that uses; a path's wire, wide and
+   bright; and a faded sphere, as the picture fades what stands outside the pins, the path or the hover (2026-10-30). */
+.spatial-legend-sample--flow::before { width: 20px; height: 3px; top: 6px; background: linear-gradient(to right, #38bdf8, #34d399); }
+.spatial-legend-sample--path::before { width: 20px; height: 4px; top: 5px; box-shadow: 0 0 5px var(--legend-color); }
+.spatial-legend-sample--faded::before { width: 10px; height: 10px; top: 2px; left: 5px; border-radius: 50%; opacity: .2; }
 
 .sidebar-section .legend-row {
     display: flex;

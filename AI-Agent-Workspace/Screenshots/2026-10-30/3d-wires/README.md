@@ -1,0 +1,10 @@
+# The 3D map's wires, depth and key, before and after
+
+Taken on 2026-10-30 at 1440×900 in headless Chromium with a short Playwright script, for the remediation item "Wires, depth and the legend tell the same story"; before from the bundle of `f61fbf16`, after from the build of the wires pass. The arrangement of a 3D picture differs between runs, since the force layout settles afresh each time; compare the wires, not the places.
+
+- [hover-generator-before.png](hover-generator-before.png): generator.ts hovered in this repository's connections layout. Its wires are white at a sixth of full strength, with no sign of which file uses which.
+- [hover-generator-after.png](hover-generator-after.png): the same hover. Each wire runs from green at the file that uses to blue at the file that offers: green at generator.ts toward the engine files it uses, blue at generator.ts toward the tests and scripts that use it; the hovered file's wires at half strength, the rest faded. The key names the gradient, the width and the fading.
+- [path-before.png](path-before.png) and [path-after.png](path-after.png): the two-file path document.ts to generator.ts. After, the path's wire is drawn at full strength and double width, blue at document.ts, which offers, green at generator.ts, which uses, and the key has a Path row.
+- [estate-before.png](estate-before.png) and [estate-after.png](estate-after.png): the estate's Portal retained, the whole web. The gradient is faint at this strength, as the web is meant to be; the key gains the direction row.
+- [structure-close-spheres-after.png](structure-close-spheres-after.png): the estate's Portal hub close up in the structure layout, for finding 20 of the October 23 review. The silhouette at twelve segments, for the owner's eye; the containment wires end at the drawn surfaces.
+- [orbit-0.png](orbit-0.png) to [orbit-3.png](orbit-3.png): four frames of a drag across the estate's connections picture, left to right. No wire pierces a sphere, no faded sphere cuts a wire, and the wires keep their ends on the surfaces through the turn.

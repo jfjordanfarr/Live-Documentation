@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-30T15:33:57.942Z
+- Generated At: 2026-10-30T16:56:08.719Z
 
 ## Authored
 ### Purpose
@@ -66,7 +66,7 @@ A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L69)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L72)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -74,28 +74,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L78)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L81)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L89)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L92)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L114)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L117)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L137)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L140)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 

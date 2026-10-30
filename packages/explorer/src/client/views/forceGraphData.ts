@@ -64,8 +64,8 @@ export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: Expl
       : { source: link.sourceId, target: document, kind: "related-doc" as const };
     const key = `${pair.kind}|${pair.source}|${pair.target}`;
     const counted = related.get(key);
-    if (counted) counted.count += 1;
-    else related.set(key, { ...pair, count: 1 });
+    if (counted) { counted.count += 1; counted.forward += 1; }
+    else related.set(key, { ...pair, count: 1, forward: 1, backward: 0 });
   }
   for (const docPath of [...sources, ...targets]) {
     const nodeId = `related:${docPath}`;
@@ -134,8 +134,8 @@ export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: Expl
       members.delete(path);
     }
     for (const [path, hub] of hubs) {
-      for (const child of children.get(path)!) pairs.push({ source: hub.id, target: hubs.get(child)!.id, kind: "containment", count: 1 });
-      for (const member of members.get(path)!) pairs.push({ source: hub.id, target: member, kind: "containment", count: 1 });
+      for (const child of children.get(path)!) pairs.push({ source: hub.id, target: hubs.get(child)!.id, kind: "containment", count: 1, forward: 1, backward: 0 });
+      for (const member of members.get(path)!) pairs.push({ source: hub.id, target: member, kind: "containment", count: 1, forward: 1, backward: 0 });
     }
     nodes.push(...hubs.values());
   }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-10-29T20:11:41.054Z
+- Generated At: 2026-10-30T15:43:44.365Z
 
 ## Authored
 ### Purpose
@@ -54,9 +54,16 @@ Geometry shares a GPU batch; numeric working arrays keep preparation independent
 ##### `SpatialDrawStyle` — Summary
 Values with visual meaning, supplied by the view without involving the force model.
 
+#### `SPATIAL_FLOW_COLORS` {#symbol-spatial_flow_colors}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L51)
+
+##### `SPATIAL_FLOW_COLORS` — Summary
+The blue of the end that offers and the green of the end that uses, the Local Map's grammar at every scale.
+
 #### `createSpatialBuffers` {#symbol-createspatialbuffers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L45)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L54)
 - Parameters: `scene`: [`Scene`](./localView/branch-scene.ts.mdmd.md#symbol-scene); `style`: [`SpatialDrawStyle`](#symbol-spatialdrawstyle)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](#symbol-spatialdrawlink)
 
@@ -65,7 +72,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L268)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L296)
 - Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -73,7 +80,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L298)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L326)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary

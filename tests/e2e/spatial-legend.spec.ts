@@ -41,8 +41,10 @@ test("the spatial key follows rendered kinds, including a retained test hidden b
     filters: { showTests: true, showAssets: false, showRelatedDocs: false, showCitingDocs: false }
   })}`);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
+  // The subject is selected and a test pinned, so the rest of the picture is faded and the key says so (2026-10-30).
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "Test", "Size: public symbols", "Width: references"
+    "Implementation", "Test", "Size: public symbols", "From what offers to what uses", "Width: references",
+    "Faded: not pinned, on the path or hovered"
   ]);
   await expect(page.locator("#local-legend")).toBeHidden();
   await matchesNodeColour(page, "Implementation", subject);
@@ -77,7 +79,7 @@ test("the Local Map shows the matching legend and lends neither key to another v
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
   await expect(page.locator("#spatial-legend")).toBeVisible();
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "Size: public symbols", "Width: references"
+    "Implementation", "Size: public symbols", "From what offers to what uses", "Width: references"
   ]);
   await expect(page.locator("#local-legend")).toBeHidden();
 

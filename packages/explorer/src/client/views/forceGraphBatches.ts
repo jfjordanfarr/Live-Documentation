@@ -39,7 +39,16 @@ export interface SpatialDrawStyle<N, L> {
   linkWidth: (link: L) => number;
   linkVisible: (link: L) => boolean;
   arrowLength: (link: L) => number;
+  /**
+   * How a wire's colour runs along it, from its source end to its target end: 1 when the source uses the target
+   * (green at the source, blue at the target), -1 when the target uses the source, 0 when each uses the other (green
+   * at both ends, blue between), 2 when the wire keeps its own colour whole (containment, a document's citation).
+   */
+  linkFlow: (link: L) => number;
 }
+
+/** The blue of the end that offers and the green of the end that uses, the Local Map's grammar at every scale. */
+export const SPATIAL_FLOW_COLORS = { offers: "#38bdf8", uses: "#34d399" } as const;
 
 /** Pack documented nodes and wires straight into three instance buffers; camera changes never build scene proxies. */
 export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>) {
@@ -64,16 +73,20 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     scene.add(mesh);
     return batch;
   };
-  const nodes = make<N>("nodes", new SphereGeometry(1, 12, 12), alphaMaterial());
-  const lineSource = new MeshLambertMaterial({ color: 0xffffff, transparent: true, depthWrite: false });
-  const lines = make<L>("links", new BufferGeometry().copy(new LineSegmentsGeometry()), screenWireMaterial(lineSource), 10);
+  // The wires are drawn first and write their depth; the spheres and arrows come after and blend over them. A sphere in
+  // front of a wire covers it by its own alpha, so a faded sphere lets the wire show through instead of cutting a hole
+  // in it, and a sphere behind a wire stays behind it (2026-10-30; before, the spheres were drawn first and every
+  // sphere, faded or not, cut the wires behind it).
+  const nodes = make<N>("nodes", new SphereGeometry(1, 12, 12), alphaMaterial(), 10);
+  const lineSource = new MeshLambertMaterial({ color: 0xffffff, transparent: true, depthWrite: true });
+  const lines = make<L>("links", new BufferGeometry().copy(new LineSegmentsGeometry()), screenWireMaterial(lineSource), 0);
   lineSource.dispose();
-  const arrows = make<L>("arrows", new ConeGeometry(.25, 1, 8).translate(0, .5, 0).rotateX(Math.PI / 2), alphaMaterial());
+  const arrows = make<L>("arrows", new ConeGeometry(.25, 1, 8).translate(0, .5, 0).rotateX(Math.PI / 2), alphaMaterial(), 10);
   const nodeEntries = new WeakMap<N, SpatialDrawEntry<N>>(), linkEntries = new WeakMap<L, SpatialDrawEntry<L>>(), arrowEntries = new WeakMap<L, SpatialDrawEntry<L>>();
   const colors = new Map<string, { color: Color; alpha: number }>();
   let serial = 0, appearanceDirty = true;
   let positions = new Float64Array(), clips = new Float64Array(), drawnRadii = new Float64Array();
-  let lineEnds = new Uint32Array(), arrowEnds = new Uint32Array(), lineBounds = new Float64Array();
+  let lineEnds = new Uint32Array(), arrowEnds = new Uint32Array(), lineBounds = new Float64Array(), lineTrims = new Float64Array();
   const matrix = new Matrix4(), projection = new Matrix4(), rotation = new Matrix4();
   const clipStart = new Vector4(), clipEnd = new Vector4(), bounds: number[] = [];
   const frustum = new Frustum(), sphere = new Sphere(), point = new Vector3(), end = new Vector3(), scale = new Vector3(), quaternion = new Quaternion();
@@ -104,9 +117,12 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       mesh.instanceMatrix = new InstancedBufferAttribute(matrices, 16).setUsage(DynamicDrawUsage);
       mesh.instanceColor = new InstancedBufferAttribute(new Float32Array(3 * batch.capacity), 3).setUsage(DynamicDrawUsage);
       mesh.geometry.setAttribute("spatialOpacity", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
-      if (mesh.material instanceof LineMaterial) mesh.geometry.setAttribute("spatialWidth", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
+      if (mesh.material instanceof LineMaterial) {
+        mesh.geometry.setAttribute("spatialWidth", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
+        mesh.geometry.setAttribute("spatialFlow", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
+      }
       batch.depths = new Float64Array(batch.capacity); batch.serials = new Float64Array(batch.capacity);
-      batch.appearance = new Float64Array(5 * batch.capacity); batch.enabled = new Uint8Array(batch.capacity);
+      batch.appearance = new Float64Array(6 * batch.capacity); batch.enabled = new Uint8Array(batch.capacity);
     }
     batch.ordered.length = batch.entries.length;
     for (let i = 0; i < batch.entries.length; i++) { batch.ordered[i] = i; batch.serials[i] = batch.entries[i].order; }
@@ -115,17 +131,17 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     if (!appearanceDirty) return;
     appearanceDirty = false;
     const read = <T>(batch: SpatialDrawBatch<T>, color: (data: T) => string, size: (data: T) => number,
-      visible: (data: T) => boolean, alpha: number): void => {
+      visible: (data: T) => boolean, alpha: number, flow: (data: T) => number): void => {
       for (let i = 0; i < batch.entries.length; i++) {
-        const entry = batch.entries[i], tint = colorOf(color(entry.data)), at = i * 5;
+        const entry = batch.entries[i], tint = colorOf(color(entry.data)), at = i * 6;
         batch.appearance[at] = tint.color.r; batch.appearance[at + 1] = tint.color.g; batch.appearance[at + 2] = tint.color.b;
-        batch.appearance[at + 3] = alpha * tint.alpha; batch.appearance[at + 4] = size(entry.data);
+        batch.appearance[at + 3] = alpha * tint.alpha; batch.appearance[at + 4] = size(entry.data); batch.appearance[at + 5] = flow(entry.data);
         batch.enabled[i] = Number(entry.enabled = visible(entry.data));
       }
     };
-    read(nodes, style.nodeColor, style.radius, () => true, .75);
-    read(lines, style.linkColor, link => Math.ceil(style.linkWidth(link) * 10) / 10, style.linkVisible, 1);
-    read(arrows, style.linkColor, style.arrowLength, style.linkVisible, 3);
+    read(nodes, style.nodeColor, style.radius, () => true, .75, () => 2);
+    read(lines, style.linkColor, link => Math.ceil(style.linkWidth(link) * 10) / 10, style.linkVisible, 1, style.linkFlow);
+    read(arrows, style.linkColor, style.arrowLength, style.linkVisible, 3, () => 2);
   };
   const setData = (data: { nodes: N[]; links: L[] }): void => {
     const byId = new Map(data.nodes.map((node, index) => [node.id, index]));
@@ -139,7 +155,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     if (positions.length < nodes.capacity * 3) {
       positions = new Float64Array(nodes.capacity * 3); clips = new Float64Array(nodes.capacity * 4); drawnRadii = new Float64Array(nodes.capacity);
     }
-    if (lineEnds.length < lines.capacity * 2) { lineEnds = new Uint32Array(lines.capacity * 2); lineBounds = new Float64Array(lines.capacity * 4); }
+    if (lineEnds.length < lines.capacity * 2) { lineEnds = new Uint32Array(lines.capacity * 2); lineBounds = new Float64Array(lines.capacity * 4); lineTrims = new Float64Array(lines.capacity * 2); }
     if (arrowEnds.length < arrows.capacity * 2) arrowEnds = new Uint32Array(arrows.capacity * 2);
     const bind = (entries: SpatialDrawEntry<L>[], ends: Uint32Array): void => {
       for (let i = 0; i < entries.length; i++) {
@@ -166,18 +182,21 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   };
   const upload = <T>(batch: SpatialDrawBatch<T>, write: (array: InstancedBufferAttribute["array"], offset: number, index: number) => void): void => {
     const { mesh, ordered, appearance } = batch, opacity = mesh.geometry.getAttribute("spatialOpacity"), width = mesh.geometry.getAttribute("spatialWidth");
+    const flow = mesh.geometry.getAttribute("spatialFlow");
     if (!batch.entries.length) { mesh.count = 0; return; }
-    const matrices = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array, alphas = opacity.array, widths = width?.array;
+    const matrices = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array, alphas = opacity.array, widths = width?.array, flows = flow?.array;
     for (let slot = 0; slot < ordered.length; slot++) {
-      const index = ordered[slot], at = index * 5, c = slot * 3;
+      const index = ordered[slot], at = index * 6, c = slot * 3;
       batch.entries[index].slot = slot;
       write(matrices, slot * 16, index);
       colors[c] = appearance[at]; colors[c + 1] = appearance[at + 1]; colors[c + 2] = appearance[at + 2];
       alphas[slot] = appearance[at + 3];
       if (widths) widths[slot] = appearance[at + 4];
+      if (flows) flows[slot] = appearance[at + 5];
     }
     mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true; opacity.needsUpdate = true;
     if (width) width.needsUpdate = true;
+    if (flow) flow.needsUpdate = true;
   };
   const update = (camera: Camera, width: number, height: number, nodeResistance: number, wireResistance: number): void => {
     refreshStyle(); viewport.set(width, height);
@@ -190,7 +209,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       const node = nodes.entries[i].data, p = i * 3, c = i * 4;
       const x = positions[p] = node.x ?? 0, y = positions[p + 1] = node.y ?? 0, z = positions[p + 2] = node.z ?? 0;
       const depth = -(view[2] * x + view[6] * y + view[10] * z + view[14]);
-      drawnRadii[i] = nodes.appearance[i * 5 + 4] * (depth > 0 ? Math.pow(pixelScale / depth, -nodeResistance) : 1);
+      drawnRadii[i] = nodes.appearance[i * 6 + 4] * (depth > 0 ? Math.pow(pixelScale / depth, -nodeResistance) : 1);
       clipStart.set(x, y, z, 1).applyMatrix4(projection).toArray(clips, c);
       nodes.depths[i] = clipStart.z / clipStart.w;
     }
@@ -199,24 +218,32 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       (frustum.intersectsSphere(sphere) ? nodes.visible : nodes.unseen).push(i);
     }
     for (const i of lines.ordered) {
-      const a = lineEnds[2 * i] * 4, b = lineEnds[2 * i + 1] * 4;
-      clipStart.fromArray(clips, a); clipEnd.fromArray(clips, b);
+      const a = lineEnds[2 * i], b = lineEnds[2 * i + 1];
+      clipStart.fromArray(clips, a * 4); clipEnd.fromArray(clips, b * 4);
       lines.depths[i] = (clipStart.z + clipEnd.z) / (clipStart.w + clipEnd.w);
-      const visible = lines.enabled[i] && screenWireEndpointsInFrustum(clipStart, clipEnd, lines.appearance[i * 5 + 4], viewport, wireResistance, pixelScale, bounds);
+      // The wire runs from the drawn surface of one sphere to the other's (2026-10-30): it neither pierces its own
+      // spheres nor is cut by them, and two spheres that touch or overlap have no wire between them to draw.
+      const pa = a * 3, pb = b * 3;
+      const length = Math.hypot(positions[pb] - positions[pa], positions[pb + 1] - positions[pa + 1], positions[pb + 2] - positions[pa + 2]);
+      const apart = length > drawnRadii[a] + drawnRadii[b];
+      lineTrims[2 * i] = apart ? drawnRadii[a] / length : 0; lineTrims[2 * i + 1] = apart ? 1 - drawnRadii[b] / length : 0;
+      const visible = lines.enabled[i] && apart && screenWireEndpointsInFrustum(clipStart, clipEnd, lines.appearance[i * 6 + 4], viewport, wireResistance, pixelScale, bounds);
       if (visible) lineBounds.set(bounds, i * 4);
       (visible ? lines.visible : lines.unseen).push(i);
     }
-    // Arrows retain physical length and terminate at the physical target surface.
+    // An arrow takes its target sphere's units: as the sphere resists the zoom, so does the arrow, and its tip stands
+    // at the drawn surface (2026-10-30; before, an arrow kept its physical length and sank into a sphere drawn larger).
     const arrowMatrix = (i: number): Matrix4 => {
-      const a = arrowEnds[2 * i], b = arrowEnds[2 * i + 1], length = arrows.appearance[i * 5 + 4];
+      const a = arrowEnds[2 * i], b = arrowEnds[2 * i + 1], base = nodes.appearance[b * 6 + 4];
+      const length = arrows.appearance[i * 6 + 4] * (base > 0 ? drawnRadii[b] / base : 1);
       point.fromArray(positions, a * 3); end.fromArray(positions, b * 3);
       const distance = point.distanceTo(end);
-      if (distance) point.lerp(end, (distance - nodes.appearance[b * 5 + 4] - length) / distance);
+      if (distance) point.lerp(end, (distance - drawnRadii[b] - length) / distance);
       rotation.lookAt(end, point, up); quaternion.setFromRotationMatrix(rotation);
       return matrix.compose(point, quaternion, scale.set(length, length, length));
     };
     for (const i of arrows.ordered) {
-      arrowMatrix(i); sphere.center.set(0, 0, .5).applyMatrix4(matrix); sphere.radius = arrows.appearance[i * 5 + 4];
+      arrowMatrix(i); sphere.center.set(0, 0, .5).applyMatrix4(matrix); sphere.radius = scale.x;
       arrows.depths[i] = depthOf(sphere.center.x, sphere.center.y, sphere.center.z);
       (arrows.enabled[i] && frustum.intersectsSphere(sphere) ? arrows.visible : arrows.unseen).push(i);
     }
@@ -227,9 +254,10 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       array[at + 12] = positions[p]; array[at + 13] = positions[p + 1]; array[at + 14] = positions[p + 2];
     });
     upload(lines, (array, at, i) => {
-      const a = lineEnds[2 * i] * 3, b = lineEnds[2 * i + 1] * 3, x = positions[a], y = positions[a + 1], z = positions[a + 2];
-      array[at + 8] = positions[b] - x; array[at + 9] = positions[b + 1] - y; array[at + 10] = positions[b + 2] - z;
-      array[at + 12] = x; array[at + 13] = y; array[at + 14] = z;
+      const a = lineEnds[2 * i] * 3, b = lineEnds[2 * i + 1] * 3, from = lineTrims[2 * i], span = lineTrims[2 * i + 1] - from;
+      const dx = positions[b] - positions[a], dy = positions[b + 1] - positions[a + 1], dz = positions[b + 2] - positions[a + 2];
+      array[at + 8] = dx * span; array[at + 9] = dy * span; array[at + 10] = dz * span;
+      array[at + 12] = positions[a] + dx * from; array[at + 13] = positions[a + 1] + dy * from; array[at + 14] = positions[a + 2] + dz * from;
     });
     upload(arrows, (array, at, i) => { arrowMatrix(i).toArray(array, at); });
     const material = lines.mesh.material as LineMaterial;
@@ -254,7 +282,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       const i = lines.visible[slot], at = i * 4;
       if (x < lineBounds[at] || x > lineBounds[at + 1] || y < lineBounds[at + 2] || y > lineBounds[at + 3]) continue;
       lines.mesh.getMatrixAt(slot, matrix);
-      const hit = pickSpatialWire(matrix, camera, viewport, lines.appearance[i * 5 + 4], resistance, raycaster.ray);
+      const hit = pickSpatialWire(matrix, camera, viewport, lines.appearance[i * 6 + 4], resistance, raycaster.ray);
       if (hit && hit.distance < nearest && hit.distance >= raycaster.near && hit.distance <= raycaster.far) { picked = lines.entries[i].data; nearest = hit.distance; }
     }
     return picked;
@@ -334,12 +362,14 @@ function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: numbe
 function screenWireMaterial(source: MeshLambertMaterial): LineMaterial {
   const material = new LineMaterial();
   material.uniforms.spatialResistance = { value: 1 };
+  material.uniforms.spatialOffers = { value: new Color(SPATIAL_FLOW_COLORS.offers) };
+  material.uniforms.spatialUses = { value: new Color(SPATIAL_FLOW_COLORS.uses) };
   // Copy the base material's blending/depth/clipping rules without replacing the line shader or its uniforms.
   Material.prototype.copy.call(material, source);
   material.vertexColors = false; // RGB comes from the instance attribute, not the line addon's endpoint colours.
   material.vertexShader = material.vertexShader
-    .replace("uniform float linewidth;", "attribute float spatialWidth;\nattribute float spatialOpacity;\nuniform float spatialResistance;\nvarying float vSpatialOpacity;\nvarying vec3 vSpatialColor;\n#define linewidth spatialWidth")
-    .replace("void main() {", "void main() {\nvSpatialOpacity = spatialOpacity;\nvSpatialColor = instanceColor;")
+    .replace("uniform float linewidth;", "attribute float spatialWidth;\nattribute float spatialOpacity;\nattribute float spatialFlow;\nuniform float spatialResistance;\nvarying float vSpatialOpacity;\nvarying vec3 vSpatialColor;\nvarying float vSpatialFlow;\nvarying float vSpatialT;\n#define linewidth spatialWidth")
+    .replace("void main() {", "void main() {\nvSpatialOpacity = spatialOpacity;\nvSpatialColor = instanceColor;\nvSpatialFlow = spatialFlow;")
     .replace("modelViewMatrix * vec4( instanceStart, 1.0 )", "modelViewMatrix * instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0)")
     .replace("modelViewMatrix * vec4( instanceEnd, 1.0 )", "modelViewMatrix * instanceMatrix * vec4(0.0, 0.0, 1.0, 1.0)")
     // Match CPU clipping before calculating endpoint widths. Three's camera-plane trim alone leaves
@@ -363,6 +393,8 @@ function screenWireMaterial(source: MeshLambertMaterial): LineMaterial {
       clipStart = projectionMatrix * start;
       clipEnd = projectionMatrix * end;
       if (clipStart.w <= 0.0 || clipEnd.w <= 0.0) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
+      // Where along the whole wire this vertex stands, so that the colour runs from end to end whatever was clipped.
+      vSpatialT = position.y < 0.5 ? low : high;
       // ndc space`)
     // The two semicircular caps otherwise retain different radii and depths on an end-on segment.
     .replace("// direction", `
@@ -376,7 +408,15 @@ function screenWireMaterial(source: MeshLambertMaterial): LineMaterial {
     .replace("dir = normalize( dir );", "dir = length(dir) > 0.000001 ? normalize(dir) : vec2(1.0, 0.0);");
   material.fragmentShader = material.fragmentShader
     .replace("#include <color_fragment>", "")
-    .replace("uniform float opacity;", "uniform float opacity;\nvarying float vSpatialOpacity;\nvarying vec3 vSpatialColor;")
-    .replace("vec4( diffuseColor.rgb, alpha )", "vec4( diffuseColor.rgb * vSpatialColor, alpha * vSpatialOpacity )");
+    .replace("uniform float opacity;", "uniform float opacity;\nuniform vec3 spatialOffers;\nuniform vec3 spatialUses;\nvarying float vSpatialOpacity;\nvarying vec3 vSpatialColor;\nvarying float vSpatialFlow;\nvarying float vSpatialT;")
+    // The colour runs blue to green by the wire's directions; a wire of its own colour keeps it. A faded wire writes
+    // no depth of its own, so that it never cuts a hole in a bright wire behind it.
+    .replace("gl_FragColor = vec4( diffuseColor.rgb, alpha );", `
+      vec3 spatialTint = vSpatialFlow > 1.5 ? vSpatialColor
+        : vSpatialFlow > 0.5 ? mix(spatialUses, spatialOffers, vSpatialT)
+        : vSpatialFlow < -0.5 ? mix(spatialOffers, spatialUses, vSpatialT)
+        : mix(spatialOffers, spatialUses, abs(2.0 * vSpatialT - 1.0));
+      gl_FragDepthEXT = alpha * vSpatialOpacity < 0.1 ? 1.0 : gl_FragCoord.z;
+      gl_FragColor = vec4( diffuseColor.rgb * spatialTint, alpha * vSpatialOpacity );`);
   return material;
 }
