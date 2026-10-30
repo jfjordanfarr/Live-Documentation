@@ -11,7 +11,14 @@ import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/
  *
  * Run:   npx playwright test --config tests/e2e/playwright.config.ts
  * Or:    npm run test:e2e
+ *
+ * The server's port is 8766 unless `LIVE_DOCS_E2E_PORT` names another, so that two checkouts of the repository
+ * (a builder's worktree beside the main tree, 2026-10-30) can run the suite at the same time, each against its own
+ * built bundle; `reuseExistingServer` would otherwise hand the second run the first one's pages.
  */
+const port = Number(process.env.LIVE_DOCS_E2E_PORT ?? 8766);
+const site = `http://localhost:${port}`;
+
 export default defineConfig({
   testDir: ".",
   testMatch: "**/*.spec.ts",
@@ -24,14 +31,14 @@ export default defineConfig({
   timeout: 30_000,
 
   use: {
-    baseURL: "http://localhost:8766",
+    baseURL: site,
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
     // The Local Map's continuing search is off for the suite, so that a picture read after it is drawn is the picture
     // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07).
     storageState: {
       cookies: [],
-      origins: [{ origin: "http://localhost:8766", localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) }] }]
+      origins: [{ origin: site, localStorage: [{ name: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } }) }] }]
     },
   },
 
@@ -43,8 +50,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "npx http-server ../../dist/explorer -p 8766 -c-1 --silent",
-    port: 8766,
+    command: `npx http-server ../../dist/explorer -p ${port} -c-1 --silent`,
+    port,
     reuseExistingServer: true,
     timeout: 15_000,
   },

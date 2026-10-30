@@ -1,0 +1,1796 @@
+
+❯ Welcome to a new dev day! It's now 10/30/2026. Let's start up a new chat
+  record and list off top items that we might work on today.
+
+● I'll bootstrap per AGENTS.md: read Memory, the ChatHistory README, the
+  narrative and the recent session summaries, then open today's record and rank
+  candidate work against the vision and direction.
+
+  Searched for 1 pattern, read 10 files, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● The initial reading pass is complete. I'm now checking the remediation
+  checklist and the history plan's status sections, which the awk pass didn't
+  catch because their headings are worded differently, then I'll save the record
+  and write up the ranked list. · summary
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Bootstrap is complete and today's record is open: your message is Turn 1 of
+  2026-10-30.1.record.md
+  (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md), committed as
+  2abb22f0. The October 29 summary and the narrative's new chapter were already
+  complete from the Codex closeout. One gap stays: that session's final
+  delivered reply was never captured, and I cannot reach that chat from here.
+
+  No preview server is running. To look at the packed T3 renderer yourself:
+
+  python3 -m http.server 8900 --bind 0.0.0.0 --directory
+  /workspaces/Live-Documentation/dist/explorer
+
+  then open
+  http://127.0.0.1:8900/samples/t3-code-direct-next/?view=local&mode=3d. The
+  exact comparison link is in Turn 12 of the October 29 record
+  (AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-12).
+
+  Top items, ranked against the vision's order of work and direction's standing
+  Next (AI-Agent-Workspace/Memory/direction.md#next):
+
+  1. Your verdict on the packed T3 renderer. Needs your eye, not my hands. Your
+     positive words on October 29 came before the packed arrays landed. Position
+     updates still arrive over a second apart, so settling is the remaining
+     cost. The wire resistance you liked was a comparison setting; the default
+     is unchanged.
+  2. The Structure repair. Uniform folder spheres, with deeper folder names
+     disclosed on approach as files are. Your October 28 complaint decided it
+     and the October 24 comparison
+     (AI-Agent-Workspace/Probes/2026-10-24/structure-sizing/README.md) has the
+     pictures. A bounded build with a full gate, ready to start.
+  3. The 3D controls' axes. Your October 29 question: whether the tuning levers
+     are on the wrong axes and whether the system should tune itself. This is a
+     design conversation first, grounded by a lab measurement of how each
+     lever's effect scales from the estate to T3. No build until we agree.
+  4. Memory prediction and the resource budget. Accepted October 28: predict a
+     picture's memory from the measured line, grow to a budget nearest the
+     subject, say what was left out, and give the generator and builder a
+     parameterized RAM budget after measuring their memory per file.
+  5. The package. A compiled, installable live-docs with help on every command,
+     progress reporting and defaults that are not this repository's. The T3
+     rehearsal showed the tool still needs this checkout. This is the first step
+     of a stranger mapping their own folder, and it wants a design conversation
+     before code.
+  6. The first-arrival journey and the two engine gaps T3 exposed. What the
+     program does with a folder, a bundle or a link; workspace-package imports
+     left unresolved; private names missing from search.
+  7. The seven open remediation items
+     (.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work). 2D
+     initial clipping, wire direction and the legend, label collisions, the
+     history panel's hide control and Created/Deleted wording, exact filename
+     matches first in search, inventory totals, tuning at laptop size.
+  8. Small carried measurements. Uncached history phase timings, and the lab's
+     constants for the 3D reveal.
+
+  Deferred by the standing order unless you move them: the World Map frontier,
+  Unity, the project archetypes, further 3D default tuning.
+
+  My recommendation for today: close the October 28 chapter's buildable pieces.
+  I start item 2, then item 4, while you try item 1 and we discuss item 3 here
+  in the chat. If you would rather turn toward release now, item 5 is the one to
+  design today. Tell me your pick and I will plan it here before building.
+
+❯ Let's go in this order:
+  7, 2, 6
+
+● Recording your pick and the delivered reply, then I'll investigate the seven
+  items read-only, by building the Explorer and looking at each state and
+  reading the code behind it, before I put the concrete plan and its forks to
+  you.
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● I'm sending four read-only helpers to map the code, using Opus 5.5 at high
+  effort as the owner prefers. Meanwhile I'm reading the browser-test helpers so
+  I can run the built page and check the seven states myself. · summary
+
+● 4 background agents launched (↓ to manage)
+   ├ Map history panel, search, reader code
+   ├ Explain inventory totals; map tuning panel
+   ├ Map 3D wires, legend, labels code
+   └ Map 2D Local Map framing code
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● The capture script tripped on tsx treating it as CommonJS; I'm wrapping it in
+  a main function and rerunning.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  # How the history panel, search ranking and reader work today
+
+  I changed no tracked files. My one scratch file is
+  `/tmp/claude-1000/-workspaces-Live-Documentation/568d7099-841e-461b-beed-faa7a
+  0581991/scratchpad/agent1/rank.ts`. It runs the real `searchGraph` over
+  `dist/explorer/explorer-data.json`, using `explorerGraphOf` to build the
+  nodes.
+
+  ## A. The history step panel
+
+  **1. How it is made, sized and placed**
+  - It is created by `createStepPanel`
+  (`packages/explorer/src/client/history/step-panel.ts:113-145`): a `<section
+  class="history-step-panel">`, hidden until synced.
+  - Its parent is `#view-graph`, the 3D container (`client/index.ts:276-278`).
+  - The control creates the scrubber and the panel side by side under that same
+  parent (`history/history-control.ts:129-136`).
+  - The CSS is all of it (`styles/history.css:37`): `position:absolute;
+  left:18px; top:18px; bottom:calc(18px + var(--history-room)); width:min(360px,
+  calc(45% - 18px)); overflow:auto; padding:12px 14px;
+  background:var(--bg-deep)` (#111, opaque), `z-index:104`.
+  - **This is why one sentence gets a nearly full-height panel.** Both `top` and
+  `bottom` are set, so the box always stretches from 18px below the top down to
+  just above the scrubber, whatever it holds. Nothing sizes it to its content
+  (no `max-height`, no `height:auto`).
+  - There is no `box-sizing` rule, so the box is content-box: 360 + 28 padding +
+  2 border = 390px. That matches the October 26 review's "about 390 pixels".
+  - `--history-room` is the scrubber's `offsetHeight + 10`, written onto `#main`
+  (`history-control.ts:241-243`). It defaults to 0 (`styles/local.css:285`).
+  - While the thumb drags, only the header is drawn (`history-control.ts:292`),
+  but the box keeps its full height.
+  - What it shows (`step-panel.ts:131-139`):
+    - the subject as an `h2`;
+    - a meta line: 8-character hash, date, optional author, "step N";
+    - at step 0, a "beginning of what is known" note;
+    - then `body()` (`:94-110`). For a step that changed nothing visible this is
+  the single sentence "This commit changed nothing the docs could see."
+  (`:96`).
+  - Each group is a `<details>`, open when it has 8 rows or fewer (`:56`,
+  `:89-92`).
+  - Small grey text (`.history-path/.history-shape/.history-gone`) is 12px
+  #6c7484 on #111, about 4.0:1 contrast (`history.css:51`).
+
+  **2. Showing and hiding**
+  - The only control is the History icon button in the bottom-centre toolbar
+  (`index.ts:424-429`). It is shown only in 3D and only when the bundle carries
+  a history (`index.ts:712-713`).
+  - `refresh()` computes `visible = open && context.visible && available`
+  (`history-control.ts:246-248`):
+    - the scrubber shows when `visible`;
+    - the panel shows when `visible` **and** the sequence is loaded.
+  - **The two cannot be shown independently today.** There is no hide control on
+  the panel and no separate state for it. The only thing that differs between
+  them is the loading gate.
+  - Closing History (`toggle`, `:312-325`) pauses play and returns to the last
+  step (today), which makes the address drop its commit (`rest(cursor.last)` →
+  `onCommit(null)`). Both the scrubber and the panel hide.
+  - `leave()` (`:342-354`) does the same when the person switches to 2D
+  (`index.ts:775`) or another view (`index.ts:821`, `:1128`).
+  - Each group can be folded individually; the panel as a whole cannot.
+
+  **3. Where "Born", "Dead" and similar words come from**
+
+  User-facing strings:
+  - `step-panel.ts:98-99`: group titles "Born" and "Dead".
+  - `step-panel.ts:72`: "gone since <hash>" or "not in today's docs".
+  - `step-panel.ts:85`: "not in this bundle".
+  - `history-control.ts:363`: the tray's "not yet born".
+  - `history-control.ts:368`: "nothing under it at this commit", for a
+  directory.
+  - The CLI uses the same words, so headless and UI agree:
+  `scripts/live-docs/inspect/history.ts:143-144` prints "Born:" and "Dead:", and
+  the help text at `scripts/live-docs/inspect.ts:476-477` says "files born,
+  dead".
+  - "died" appears in no user-facing string, only in a comment
+  (`engine/.../history/queries.ts:238`).
+
+  Data and format names (not user-facing):
+  - `born`/`dead` are fields of the **persisted history format**:
+  `engine/src/live-docs/history/format.ts:82-84` and `codec.ts:90-111`.
+  - They are also used by `queries.ts` (`changesBetween`, `followChanges`),
+  `ticks.ts`, `shape.ts` and `step-summary.ts:56-57,103-104`.
+  - Renaming the visible words does not require a format change.
+
+  Tests that assert the words:
+  - `tests/e2e/history-scrubber.spec.ts:136,212-220,228,299,413`:
+  `group(page,"Born")`, `"Dead"`, the `gone since` text, and `.pin-tray-absent`
+  = "not yet born".
+  - `client/history/step-summary.test.ts:81-95` uses the field names.
+  - `tests/integration/live-docs/history.test.ts:115-120,261-262` uses the field
+  names.
+
+  Authored docs:
+  - `.mdmd/layer-3/live-documentation-explorer.mdmd.md`, line 67 of the file
+  ("files born, dead…", "not yet born").
+  - `.mdmd/layer-3/change-over-time.mdmd.md:26,48,54,81-82,122`.
+  - `architectural-decisions.mdmd.md:266`.
+  - The owner's preference for "created"/"deleted" is recorded in
+  `AI-Agent-Workspace/Memory/direction.md:37` (October 26).
+
+  **4. How absence is shown at a past moment**
+  - The tray is the only place. `pinTray.sync(..., item =>
+  historyControl.absence(item))` (`index.ts:731`) fills a hidden-by-default
+  `.pin-tray-absent` span on each row (`panels/pin-tray.ts:99-103,144-147`).
+  - `absence()` (`history-control.ts:361-369`):
+    - for a file or symbol pin: "not yet born" when `moment.fileAt(nodeId)` is
+  undefined;
+    - for a directory: "nothing under it at this commit".
+  - **Symbol pins are only checked at file level.** Past moments carry symbol
+  counts, not names (`shared/types.ts:115`).
+  - **Possible mislabel.** `fileAt` uses engine `followPath`
+  (`engine/.../history/ticks.ts:130-149`) and then `shape.files.has`
+  (`history-control.ts:174-179`). A file of today's bundle that the history
+  never contained, for example after a discovery-lens change, would be labelled
+  "not yet born". I did not test this.
+  - The 3D view drops anything absent at the moment without saying so: absent
+  pins (`views/forceGraphView.ts:805-806`), path hops (`:811`) and the subject
+  ("absent there, nothing is in focus", `:949-955`).
+  - These do not react to the moment at all:
+    - **Search field.** It shows the newest pin's name and tooltip from today's
+  state (`search/search-bar.ts:97-112`, fed at `index.ts:738`).
+    - **Destination reach.** It is computed over today's links (`index.ts:736`).
+    - **Path.** `runPath` (`index.ts:657`) and its status and hop strip
+  (`index.ts:878-944`) use today's `graphData.links`.
+    - **Context line.** It shows today's subject path (`index.ts:706`).
+  - **Reader.** The only time-aware text is the note "Today's version. The
+  picture shows <date>, commit <hash>." (`index.ts:1240-1243`;
+  `detailPanel.ts:87-90,298-301`; styled at `styles/shell.css:308`). There is no
+  "this file does not exist at this moment".
+  - The search index is built once from today's nodes (`index.ts:445`).
+
+  **5. Reader and sidebar on narrow screens**
+  - `readerRoom = matchMedia("(max-width: 760px), (max-height: 480px)")`
+  (`index.ts:204`).
+  - In that range the reader is `position:fixed; inset:0; z-index:1000`
+  (`shell.css:378-393`). `syncReaderPresentation` (`index.ts:1246-1263`) makes
+  it a modal dialog and marks the sidebar, `#main`'s children and inactive views
+  inert, so the step panel and scrubber sit hidden and inert underneath.
+  - **Wider than that**, the reader is `width:min(360px,90vw)` over `#views`, at
+  `z-index:200` (`shell.css:144,233-255`; it lives inside `#views`,
+  `template.html:356-400`).
+    - The scrubber pulls its right edge in to the reader's edge
+  (`shell.css:340`).
+    - **The step panel does not move.** At about 800–900px both panels together
+  cover nearly the whole map, and the reader paints over the step panel where
+  they overlap.
+    - Examples, with the sidebar expanded (260px): at 1440 wide, `#main` is
+  1180px and the two panels cover 390 + 361px. At 1024, `#main` is 764px, the
+  panel is min(360, 0.45×764−18 = 326) + 30 = 356px, plus 361px for the reader.
+  - **Sidebar at ≤760px:** it starts collapsed and becomes `position:fixed`;
+  `#main` gets `margin-left:48px` (`shell.css:373-376`; `index.ts:205-211`).
+    - The step panel's 45% rule then gives about 136px of content width at 390px
+  wide (`#main` 342px).
+    - **Likely, not verified in a browser:** `#main`, `#views` and an active
+  `.view-container` create no stacking context, so the panel (104), scrubber
+  (105) and pin tray (106) would paint over an expanded sidebar (`#sidebar` is z
+  100).
+  - Opening the pin tray closes the reader (`index.ts:442`); opening the reader
+  closes the tray (`index.ts:1188`).
+
+  **Tests:**
+  - `tests/e2e/history-scrubber.spec.ts` (1400×900) covers ticks, keys, renames,
+  the born/dead groups, the tray's "not yet born", the address, drag and the
+  truncated beginning, and audits for overlapping and cut-off text.
+  - Its only geometry checks are that the controls and tray sit above the
+  scrubber (`:139-143`) and that the scrubber ends at the reader's edge
+  (`:275-277`).
+  - **Nothing tests the panel's size relative to its content or viewport**, a
+  narrow viewport, or absence shown in the search, path or reader.
+  - Unit tests: `step-summary.test.ts`, `tick-model.test.ts`, `cursor.test.ts`,
+  `rekey.test.ts`, `snapshot.test.ts`.
+
+  ## B. Search ranking
+
+  **1. The rules** (`search/graph-search.ts:107-177`)
+  - Words are the query lowercased and split on whitespace (`:102-104`).
+  - Per word, a file's score is:
+    - its **name** (`node.name`, which **includes the extension**): +100 exact,
+  else +50 prefix, else +25 substring;
+    - +10 if its path contains the word;
+    - +15 if **any** public symbol contains the word (once per word, not per
+  symbol).
+  - A file is kept when its score is above 0. Files are sorted by score, then
+  id, and only the top `FILE_LIMIT` = 12 are kept (`:76`).
+  - A directory scores by the name of its last segment with the same name rule;
+  the top 6 are offered (`:77`, `:149-154`).
+  - `SYMBOL_CAP` = 5 matched symbols are listed per file, followed by an "N more
+  symbols" fold (`:78`, `:166-174`).
+  - **Score decides only which files make the cut.** Groups are then sorted
+  **alphabetically by directory path** (`:176`), with the scan root `""` first.
+  Inside a group, files keep their score order. A matched directory becomes a
+  choosable heading row; an unmatched one becomes a plain `.search-group`
+  heading (`search-field.ts:83-85`).
+  - `SearchFile.matched` (whether the file's own name matched) is computed but
+  **never rendered**.
+  - In the subject field, files past the 12th are dropped silently.
+  `SearchResult.files` drives the "N files match, but no path connects them"
+  fold only in the destination field (`search-field.ts:95-98`).
+  - The explorer doc's "five at a time with a fold that lists the rest" is true
+  only of symbols.
+
+  **2. The `generator` query, reproduced headlessly**
+
+  Scores:
+  - `generator.ts` 75 (prefix 50 + path 10 + symbol `LiveDocGeneratorResult`
+  15), tied with `generatorIdentity.ts` 75.
+  - Test files 60, `packages/generator/package.json` 25.
+  - `format.ts` (symbol `GeneratorIdentity`), `repository-entries.json` and
+  `tsconfig.base.json` (symbol
+  `compilerOptions:paths:@live-documentation/generator/*`) 15 each.
+  - 11 files match, so the limit plays no part.
+
+  Rows in order:
+  1. `tsconfig.base.json` + its symbol (Scan root group)
+  2. `format.ts` + `GeneratorIdentity` (`packages/engine/src/live-docs/history`)
+  3. directory `packages/generator`, then `package.json` + symbol,
+  `tsconfig.json`
+  4. `generator.ts` + `LiveDocGeneratorResult` (row index 8)
+
+  So the cause is the alphabetical directory order, **plus** the extension in
+  the name: "generator" never earns the exact-match +100 for `generator.ts`, and
+  the file ties with `generatorIdentity.ts`.
+
+  **3. How rows are rendered** (`search/search-field.ts:48-53,81-106`;
+  `styles/search.css`)
+  - A file row has the name (13px #fff, `:202-208`), then the **full**
+  `codeRelativePath` as context (repeating the name), then a badge with the
+  archetype in 9px uppercase (`:228-236`).
+  - **The faint paths:** context is 10px `--text-disabled` #666 on
+  `--sidebar-bg` #1f1f22, about **2.9:1** (`search.css:220-226`; `theme.css`).
+  Group headings are 10px uppercase #6c7484 (`:148-156`).
+  - Symbol rows are 12px, indented 34px, with no path and no badge (`:195-212`).
+  - The results box is 640px wide and at most `min(480px,60vh)` tall, scrolling
+  (`:126-141`).
+  - Keyboard: ArrowUp/Down wrap through every row, folds included; Enter
+  chooses; Escape restores what was shown and blurs; a click chooses; mousedown
+  is prevented (`search-field.ts:148-177`). Ctrl+P focuses the field
+  (`search-bar.ts:89-94`).
+  - Rows carry `role=option` and `aria-selected`, but the input has no
+  `combobox`, `aria-controls` or `aria-activedescendant`
+  (`template.html:331-334`), so a screen reader is not told which row is
+  selected.
+  - **Tests:**
+    - `search/graph-search.test.ts` covers within-group order, the symbol cap,
+  directories, the limit and the destination scope. **Nothing tests ordering
+  across groups or a file-name intent.**
+    - `tests/e2e/search-bar.spec.ts` covers grouping, pin and choose, the symbol
+  fold, and an audit of collisions and cut-off text.
+  - I could not test the one-off dark rectangle; nothing in the code suggests a
+  cause.
+
+  ## C. The reader and the evidence panels
+
+  **1. Section order in the reader** (`detailPanel.ts:312-345`)
+  1. Metadata: archetype badge, `CODE:` path, Generated date.
+  2. "Inspected symbol" when a symbol is the target (its kind and Summary).
+  3. **The whole authored block** (Purpose, then Notes, as one string,
+  `file.authored`) rendered as markdown.
+  4. Generated: Public Symbols as badges, Dependencies, Dependents (`:360-395`).
+  5. Cited By.
+
+  There is no section navigation, table of contents, collapsing or Notes fold.
+  Headings get slug ids (`markdown.ts:89-93`); in-document `#` links scroll the
+  reader (`detailPanel.ts:147-161`). The reader scrolls to the top on open
+  (`:184`).
+
+  **How long Notes are:**
+  - `generator.ts`: Purpose 217 characters, Notes about 4,100.
+  - Across 885 files: median Notes 386 characters; 212 files over 1,000; 90 over
+  2,000; 23 over 4,000; 8 over 8,000. The largest is `forceGraphView.ts` at
+  about 19.7k.
+  - Symbols and dependencies always come after all the Notes.
+
+  **2. Sizing and placement**
+  - Wide: 360px (`min(360px,90vw)`) on the right of `#views`, below the search
+  bar and path report (the report is at most `min(260px,35dvh)`,
+  `search.css:281-287`). It overlays the canvas without resizing it.
+  - The pin tray, perspective controls, zoom controls and scrubber make room for
+  it (`shell.css:327-340`).
+  - "Narrow or short" means width ≤760px **or** height ≤480px (`index.ts:204`;
+  `shell.css:378-393`). There the reader is full-screen, a modal, traps focus
+  (`index.ts:1056-1069`), and shows its own Back/Forward.
+  - 1024×768 is **not** narrow, so the review's 1024×768 picture is the overlay
+  with the full search and path stack above it.
+  - **Tests:** `tests/e2e/inspection.spec.ts:193-222` (390×844 and 844×390:
+  modal, bounds, inert, focus, Back/Escape) and journeys at 1600×1000.
+
+  **3. The World Map evidence popup** (`views/worldMap/controller.ts:1013-1150`;
+  `styles/world.css:527-622`)
+  - One `div.world-evidence` (`controller.ts:221`), placed at the last pointer
+  +18px and clamped inside the viewport (`:1036-1039`).
+  - `max-width:440px`, 12px/1.5, `z-index:5`.
+  - Hovering shows a short peek: the first 6 road lines; doors, ghosts and calls
+  as comma lists; no file list. It ignores the pointer.
+  - Clicking pins it. It then becomes `max-height:min(70vh,560px)` with
+  scrolling (`world.css:543-549`) and lists **everything** for a system
+  (`controller.ts:1077-1102`):
+    - every file;
+    - each door with its file;
+    - each ghost with its files;
+    - each stands-on item with its manifest;
+    - an "open <name>" link.
+  - File names use `.f`: monospace 11px, `--w-muted` (`world.css:608-612`).
+  Contrast is fine (7.6:1 light, 6.6:1 dark); the problem is density and size,
+  not colour.
+  - Tests: `tests/e2e/world-map.spec.ts` and `world-map-estate.spec.ts` check
+  its content and opening. **None checks its size or how much of the map it
+  covers.**
+
+  ## Other surprises
+  - `var(--text-primary)` is used throughout `history.css`, `local.css` and
+  `shell.css` but defined nowhere (`theme.css` has none), so those elements
+  inherit the body colour.
+  - `dom.ts:36-37` moves a `#pathfind-toolbar` that no longer exists in the
+  template.
+  - **Stale default values in the authored docs:**
+    - The explorer doc's Remediation section (line 51 of the file) says node
+  resistance 0.45 and thickness 0.9. The template has 0.3 and 1
+  (`template.html:223,227`), which are the owner's October 26 choice.
+    - `change-over-time.mdmd.md:27` lists gravity 0.01, spring 0.25 and tether
+  0.01. The template has 0.025, 0.5 and 0.02.
+
+  ## What I could not determine
+  - Whether the history panels really paint over an expanded narrow sidebar, and
+  how the scrubber lays out at 390px. I inferred these from the CSS and ran no
+  browser.
+  - Whether "not yet born" appears for files outside the history's discovery
+  lens in this repository's actual 646-commit sequence.
+  - The dark rectangle in the search results.
+
+  ## Files I read
+  **In full:**
+  - `AGENTS.md`
+  - `AI-Agent-Workspace/Screenshots/2026-10-23/README.md`,
+  `2026-10-26/README.md`
+  - `client/history/` step-panel.ts, history-control.ts, scrubber.ts,
+  step-summary.ts, moment.ts, cursor.ts, tick-model.ts
+  - `client/styles/` history.css, search.css, theme.css, shell.css
+  - `client/panels/pin-tray.ts`
+  - `client/search/` graph-search.ts, search-field.ts, search-bar.ts,
+  graph-search.test.ts
+  - `client/` detailPanel.ts, markdown.ts, dom.ts
+  - `shared/template.html`
+  - `tests/e2e/history-scrubber.spec.ts`, `tests/e2e/search-bar.spec.ts`
+
+  **In part:**
+  - Explorer layer-3 doc: only lines 38–98, the Remediation section through
+  Pathfinding.
+  - `client/index.ts`: 200–215, 250–340, 420–520, 610–700, 690–830, 860–960,
+  1040–1075, 1180–1285.
+  - `views/forceGraphView.ts`: grep, plus 798–816 and 940–960.
+  - `views/worldMap/controller.ts`: 1–40, 915–1170, 1405–1440.
+  - `styles/world.css`: 1–40, 520–654.
+  - `tests/e2e/inspection.spec.ts`: 186–222, plus grep.
+  - `change-over-time.mdmd.md`: 18–34.
+  - `engine/.../history/ticks.ts`: 130–156.
+  - `direction.md` line 37, `local.css` 285–296, `view-shared.css` 10–40.
+  - Grep sweeps for the vocabulary across packages, tests, scripts and `.mdmd`.
+
+
+● Agent "Map history panel, search, reader code" finished · 9m 15s
+
+› Message from general-purpose
+  # 3D Local Map: wires, direction, legend, labels and controls (code as of
+  2abb22f0)
+
+  I changed no files. I wrote no scratch files and started no servers.
+
+  ## Files read
+  **Read in full:** `packages/explorer/src/client/views/{forceGraphRenderer,forc
+  eGraphBatches,forceGraphAppearance,forceGraphLabels,forceGraphView,forceGraphD
+  ata,forceGraphSizing,forceGraphCamera,fileConnections}.ts`,
+  `panels/spatial-legend.ts`, `panels/icon-button.ts`, `dom.ts`,
+  `styles/{graph,view-shared,shell}.css`, `shared/template.html`, `tests/e2e/{fo
+  rce-graph-wires.spec,spatial-legend.spec,force-graph-identity.spec}.ts`,
+  `tests/e2e/{force-graph-observation,design-audit}.ts`,
+  `AI-Agent-Workspace/Screenshots/2026-10-23/README.md`,
+  `.../2026-10-26/README.md`, and lines 38–121 of
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md` (Remediation work through
+  the Cited By paragraph).
+
+  **Read in part:** `views/localView/card-factory.ts` (lines 1–280 read; the
+  rest searched with grep), `views/localView/branch-renderer.ts:915-965`,
+  `index.ts:370-470, 704-734`, `styles/local.css:280-335`,
+  `styles/world.css:635-655`, `styles/history.css:6`,
+  `views/forceGraphLayout.ts:23-58`, `shared/graph.ts:40-75`, and a grep of
+  `theme.css`.
+
+  ## 1. Wires
+
+  **Geometry.** There are three instanced batches
+  (`forceGraphBatches.ts:67-71`):
+  - **Spheres:** `SphereGeometry(1,12,12)` with a Lambert material that takes
+  per-instance alpha.
+  - **Wires:** one batch of three.js `LineMaterial`/`LineSegmentsGeometry`
+  screen-space strokes with round caps, `renderOrder 10`, `depthWrite:false`.
+  - **Arrows:** `ConeGeometry(.25,1,8)` with the same alpha Lambert material.
+
+  Each wire's instance matrix holds its axis from the source sphere's centre to
+  the target's (`:229-233`).
+
+  **Base width** is set at `forceGraphView.ts:878-879`. It is `linkWidth`
+  (default **1**, `persistence/local-storage.ts:81`) times a factor:
+  - references: `min(3, 1+0.375·log2(count))`, so count 1→1, 4→1.75, 64 and
+  above→3;
+  - containment: 1;
+  - related-doc and cited-by: 0.5.
+
+  The result is rounded up to tenths (`forceGraphBatches.ts:127`).
+
+  **Zoom resistance.** The shader takes a separate width at each endpoint:
+  `linewidth·pow(pixelScale/clip.w, 1−wireResistance)` (`:374`; CPU culling
+  `:309`, picking `forceGraphSizing.ts:278-279`). Default wire resistance is
+  0.9.
+
+  **Colour and alpha** are set per kind in `forceGraphView.ts:1036-1047`.
+  "visible" means the wire is in the current attention (the rule is below the
+  table).
+
+  | Wire kind | Colour | Visible / faded alpha | Arrow |
+  |---|---|---|---|
+  | File reference, Connections | white `rgba(255,255,255,…)` | .16 / .025 |
+  none |
+  | File reference, Structure (on demand only, `:1048-1057`) | white | .5 / 0 |
+  none |
+  | Containment (Structure) | amber `233,152,77` (the directory hub colour) |
+  .35 / .08 | none |
+  | Related doc (file cites document) | violet `153,102,204` | .4 / .04 | length
+  4 |
+  | Cited by (document cites file) | light violet `214,178,240` | .55 / .06 |
+  length 4 |
+
+  - **Type references are not a distinct kind.** `fileConnections()` merges
+  every reference kind for a file pair and keeps the first link's `kind`
+  (`fileConnections.ts:10-20`), and every reference is drawn the same way.
+  - **Path and hover have no emphasis colour or width.** "Visible" means the
+  wire touches the hovered file, or lies on the path, or has both ends in the
+  attention set (`forceGraphView.ts:1038-1039`). Everything else fades. A path
+  wire in Connections therefore stays at the ordinary .16 white.
+  - **Direction cue: none on references.** There is no gradient, arrowhead or
+  motion.
+    - The wire does taper, but the taper is depth, not direction: the nearer
+  endpoint is wider (`:374`). A reader can mistake it for direction.
+    - **Root cause:** the 3D data is undirected by construction.
+  `fileConnections` sorts each pair's endpoints alphabetically and merges
+  reciprocal references (`fileConnections.ts:9,13`; `forceGraphLayout.ts:28`
+  says "One undirected file pair"). The payload itself is directed: `source` is
+  the referencing file (the user) and `target` is the referenced file (the
+  offerer) (`shared/graph.ts:...addLink(file.codePath, reference.targetId…)`).
+  The hover text says only "N documented references" (`forceGraphView.ts:1102`).
+    - `spatialGraphOf` is shared with the headless spatial command and the
+  layout lab (`forceGraphData.ts:32-43`). Any change that keeps direction lands
+  in both.
+  - **Citation arrows** (`forceGraphBatches.ts:209-222`):
+    - The cone's base sits back from the target by the target's *physical*
+  radius plus the arrow length; its tip touches the physical sphere surface.
+    - The arrow is scaled in world units (length 4, radius 1). It has no zoom
+  resistance, while the spheres are drawn with resistance-adjusted radii
+  (`:193`). So the tip sinks inside a sphere drawn larger than physical (zoomed
+  out) and floats off one drawn smaller (zoomed in).
+    - Arrow alpha is the wire's alpha ×3 (`:128`): visible arrows clamp to 1,
+  faded ones are .12–.18.
+    - Direction comes from the data: related-doc runs file→document and cited-by
+  runs document→file (`forceGraphData.ts:62-64`).
+  - **Palette.** `SPATIAL_NODE_STYLES` (`forceGraphAppearance.ts:2-12`) holds
+  sphere colours only. Wire RGBA values are literals in
+  `forceGraphView.ts:1042-1046`.
+    - **Blue-offers / green-uses appears on no 3D wire.** In 3D, blue `#0091ff`
+  (the same as 2D's offer blue and `--accent`, `theme.css:7,13`) is the
+  *implementation* archetype, and green `#28a745` is the *test* archetype. 2D's
+  "uses" colour is teal `0,211,170`.
+
+  ## 2. Depth and occlusion
+
+  - **Spheres** are transparent with base alpha .75
+  (`forceGraphBatches.ts:126`), and they write depth (the Material default).
+  Instances are re-sorted far to near on every update by the centre's NDC z
+  (`:158-166`, `:195`).
+  - **Faded spheres** use alpha `0x33`, about .2 × .75 ≈ .15
+  (`forceGraphView.ts:1034`). They still write depth, so a nearly invisible near
+  sphere cuts holes in bright wires behind it.
+  - **Wires** are drawn after spheres and arrows (`renderOrder 10`),
+  depth-tested against them, and write no depth (`forceGraphBatches.ts:68-69`).
+    - The part of a wire behind a sphere's front face is hidden, including the
+  stub from the surface to the centre.
+    - A wire *in front of* a sphere paints across its face, which is the source
+  of finding 7's "lines across faces".
+    - Wires blend among themselves in far-to-near order of mean clip depth
+  (`:204`).
+  - **Arrows** share `renderOrder 0` with the spheres and write depth.
+  - **Nothing else separates near from far:** no fog (the `Scene` has none), no
+  distance-based alpha and no colour change.
+    - Wires differ only by width: at resistance 0.9 the factor is
+  `(px-per-unit)^0.1`, so a wire twice as near is only ~7% wider.
+    - Spheres differ by resistance 0.3: radius in pixels ∝ `ppu^0.7` (`:193`;
+  labels, framing and the action strip use the same scale,
+  `forceGraphSizing.ts:245`).
+    - Finding 6's broad strokes predate the October 24 resistance sliders.
+  - **Doc vs code mismatch:** the layer-3 doc gives the defaults as "node 0.45,
+  wire 0.9, thickness 0.9" (`live-documentation-explorer.mdmd.md:88`). The code
+  defaults are node 0.3, wire 0.9, thickness 1 (`local-storage.ts:81`), and the
+  template's initial values agree (`template.html:223,227,231`).
+
+  ## 3. The legend
+
+  - **Where it lives:** `#map-legend` in the sidebar, *after* the Tuning
+  `<details>` and before the stats footer (`template.html:292-318`). With Tuning
+  open it sits below a long column of sliders (finding 19).
+  - **Which key shows** is decided in CSS (`shell.css:1066-1069`):
+    - The 3D key `#spatial-legend` shows only under `body.force-graph-active`.
+    - The 2D key `#local-legend` is static HTML (`template.html:295-316`: wire
+  from what offers, wire to what uses, offers, uses, test-backed) and is hidden
+  in 3D.
+    - Both are hidden outside Local Map (`dom.ts:131-138`).
+  - **Content** (`spatial-legend.ts:5-36`), computed from the filtered
+  `spatialGraphOf` output (the whole graph, not the revealed piece, so faded
+  nodes count too):
+    1. One row per sphere archetype present, in palette order.
+    2. "Size: public symbols", when `symbolScale > 0`.
+    3. "Width: references", when any non-containment, non-document link exists.
+    4. "Contains" (amber line), when containment links exist.
+    5. "Cites document" and "Cited by document", as arrow samples, when present.
+  - **Gaps in what it says:**
+    - Nothing says that a directory hub's volume is the sum of its members'
+  volumes (`forceGraphLayout.ts:37-46`). The size row cannot tell aggregation
+  from file symbols, as the October 26 review noted.
+    - Nothing explains fading, hover, path, taper/depth, or that references are
+  undirected.
+    - The "Width" sample is opaque `#ffffff` drawn as 1px and 3px bars
+  (`shell.css:1099-1100`), while the real wires are white at .16 alpha.
+    - In Structure, references stay in the data, so "Width: references" is
+  listed although references are drawn only on demand.
+  - **When it updates:** on every `render()` (`forceGraphView.ts:838`). That
+  covers filters, pins, directories, path, layout, entering 3D, history moments
+  (`setMoment`→`render`, `:1327-1332`) and tuning re-renders. Hover never
+  touches it.
+  - **Dead CSS:** `#legend-panel` and `.legend-title` in
+  `view-shared.css:279-303` style no element in the template.
+
+  ## 4. Labels
+
+  **Elements:**
+  - `.force-graph-focus` is the subject's chip: one button, 14px, padding 5/9
+  (`graph.css:181-197`).
+  - `.force-graph-label` buttons are everyone else: 13px, padding 3/6, dark
+  background (`graph.css:248`). Directory chips are amber (`:249`). Context
+  chips are at .45 opacity (`:250`).
+  - All wrap with `overflow-wrap:anywhere` under `max-width:min(280px,…)`, so a
+  long name can break mid-word.
+  - Duplicate basenames get the shortest path ending no other node shares; hubs
+  show their full directory path (`forceGraphData.ts:154-174`).
+  - Titles carry `path · N public symbol(s)` (singular handled correctly) or the
+  directory's file count (`forceGraphView.ts:505-507`).
+
+  **Priority (the October 23 policy):** `labelPriorities`
+  (`forceGraphView.ts:985-988`) gives 1 to pins and path endpoints, 2 to
+  retained directories, 3 to retained files, 4 to directories and 5 to the rest.
+  Per frame (`:471-475`), the subject gets 0, the hovered or inspected file
+  gets 1, and the subject's neighbours are capped at 3. Contextual names drop
+  out below a 6px (14px when scoped) or 9px perspective radius. Disclosure
+  follows physical-perspective radius, not the resistance size (`:468-469`).
+
+  **Placement** (`forceGraphLabels.ts:17-59`, called at
+  `forceGraphView.ts:522`):
+  - Labels are placed in priority order, then by id.
+  - Each tries 8 sides at `radius+7`, starting from the side it used last frame.
+  - A side is rejected if it is within 8px of the viewport edge, within 10px of
+  a placed label or obstacle, or covers the centre (radius+2) of an equal- or
+  higher-priority sphere.
+  - A label with no free side is hidden; type is never shrunk.
+  - **Obstacles** are `.perspective-controls, .pin-tray, .pin-tray-toggle,
+  #detail-panel.visible, .history-scrubber, .history-step-panel,
+  .force-graph-actions` (`:447`). **Not** obstacles: `.scene-nav-info`,
+  `.spatial-wire-tooltip`, `.item-menu`.
+  - Placement re-runs only when its state key changes (`:451-455`).
+
+  **Hover label (finding 8):** there is no separate hover label any more.
+  - The library's `nodeLabel` was set to `""` on October 23 (`bbc94a28`) and
+  removed with the renderer on October 29.
+  - Hover now raises the sphere's own chip to priority 1, so one name can no
+  longer sit twice in the DOM.
+  - Remaining sources of overlap:
+    - the browser's native `title` tooltip over a hovered chip;
+    - the wire tooltip (`forceGraphRenderer.ts:203-214`), placed at pointer
+  +12px with z 3, above the chips' z 2, and avoided by no label;
+    - the action strip (`forceGraphView.ts:666-699`), which *is* a label
+  obstacle.
+
+  **"+N symbols" (finding 16):** the string is not in `card-factory.ts`. It is
+  built in `views/localView/branch-renderer.ts:943` as `` `+${hidden} symbols`
+  ``, with no singular, so one hidden symbol reads "+1 symbols".
+  `card-factory.ts:198` has only the test-chip remainder `+${n}`, and `countsOf`
+  (`:267-272`) pluralises correctly. The 3D count grammar is already correct
+  (`forceGraphView.ts:507`).
+
+  **2D stranded letters (finding 14):** `.symbol-label` and `.node-title` use
+  `word-break:break-word; overflow-wrap:anywhere`
+  (`view-shared.css:117-125,147-154`) inside a `16px | minmax(0,1fr) | 16px`
+  grid (`:141`) that also holds the symbol actions.
+
+  ## 5. Controls and hints
+
+  - **Navigation hint:**
+    - It is a `div.scene-nav-info` appended inside the renderer's wrapper
+  (`forceGraphRenderer.ts:60-62`), reading "Left-click: rotate,
+  Mouse-wheel/middle-click: zoom, Right-click: pan".
+    - CSS: absolute, `bottom:5px`, full width, centred, 10px sans-serif,
+  slategrey at .7 opacity, `pointer-events:none` (`graph.css:156-166`).
+    - The toolbar `.perspective-controls` hangs from `#main` at
+  `bottom:calc(18px + --history-room)`, centred, z 105 (`local.css:286`); it
+  moves to `bottom:72px` at ≤850px (`local.css:328`) and re-centres beside an
+  open reader (`shell.css:332-337`). The hint follows none of these moves, so it
+  sits directly under the toolbar's lower edge.
+    - The history scrubber (`history.css:6`, `bottom:18px`) also lands just
+  above it.
+    - Its text is partly wrong: a right press on a sphere opens actions
+  (`forceGraphView.ts:1228-1230`), and the wheel is the view's own zoom
+  (`:1277-1291`).
+    - No test references `.scene-nav-info`.
+  - **Toolbar:** built at `index.ts:385-430` in the order Fit, Compact, Relaxed,
+  Layout tuning, 2D, 3D, Connections, Structure, History.
+    - Every button except 2D and 3D is an `iconButton` with `title` and
+  `aria-label` (`icon-button.ts:2-9`). 2D and 3D are text with only a title.
+    - The container has an `aria-label` but no role and no separators between
+  groups.
+    - **One pressed treatment for everything:** accent border plus accent text
+  for 2D/3D, Compact/Relaxed, Connections/Structure and History
+  (`local.css:289`, set in `index.ts:713-722`). The tuning button signals Custom
+  with a bottom border (`:291`).
+  - **View navigation icons:** only World Map draws an icon,
+  `.nav-icon--world::before`, a rotated square (`world.css:646-654`). Knowledge
+  Sources and Local Map have empty `.nav-icon` spans (`template.html:28,34`;
+  `shell.css:956-960`). The accessible names come from the visible text, and the
+  active view gets `.active` plus `aria-current="page"` (`dom.ts:105-113`;
+  `shell.css:111-115`).
+  - **Title ellipsis:** the sidebar is a fixed 260px (`shell.css:2`). The header
+  has 20px padding and holds an 18px bold title plus three buttons with 8px
+  gaps (`:68-87`; `template.html:18-23`). The title's room does not depend on
+  viewport width, so it is cut at every width, not just 1600px. This is an
+  estimate from the CSS; I did not measure it in a browser.
+
+  ## 6. Sphere geometry and antialiasing
+
+  - Spheres use 12 width × 12 height segments (`forceGraphBatches.ts:67`), the
+  same as the old `nodeResolution(12)`. Picking raycasts the same tessellated
+  mesh (`:81,244`).
+  - Arrows use 8 radial segments (`:71`).
+  - The renderer is `new WebGLRenderer({ antialias:true, alpha:true })` with
+  `setPixelRatio(Math.min(2, devicePixelRatio))` and clear colour `0x000011`
+  (`forceGraphRenderer.ts:21,43-44`).
+  - Lighting is ambient `0xcccccc` at π plus directional at 0.6π (`:46`).
+  - `LineMaterial` has no `alphaToCoverage` set
+  (`forceGraphBatches.ts:334-382`), so wire edges rely on MSAA alone.
+  - One line: a higher segment count, or an impostor or level-of-detail scheme,
+  would add per-instance vertex cost at the 21,720-sphere scale measured on
+  2026-10-27.
+
+  ## 7. What the tests assert, and what they cannot catch
+
+  **`force-graph-wires.spec.ts`** seeds node resistance 0, wire resistance 1 and
+  thickness 1, not the defaults.
+  - It checks:
+    - the uploaded per-wire `spatialWidth`: between 1 and 3, monotonic in count,
+  equal for equal counts, exactly 1 for count 1 (`:106-118`);
+    - the thickness slider doubles widths without moving nodes or waking the
+  engine, and zoom keeps them (`:120-149`);
+    - the resistance sliders are independent, persist, and give node radii as
+  the geometric mean (`:153-204`);
+    - rendered pixel widths across depth at DPR 1 and 2, plus clipping and
+  end-on caps (`:206-299`).
+  - The pixel tests isolate one wire and hide every other batch, spheres
+  included (`force-graph-observation.ts:37-64`).
+  - It **cannot** catch: colour or alpha meaning, direction, occlusion against
+  spheres, crossings that look like attachments, near-wire dominance in a real
+  scene, or behaviour at the shipped defaults.
+
+  **`spatial-legend.spec.ts`**
+  - It checks: the exact 3D rows on the history sample and the estate
+  (`:44-46,79-81`); that key swatches match the uploaded sphere instance colour
+  (`:13-32`); that the Test row follows a retained test and the filter; that
+  document and citation rows appear only with data; and that the static 2D key
+  and the per-view hiding work.
+  - It **cannot** catch: Structure (no test of the Directory or Contains rows);
+  whether the Width row is truthful when references are not drawn; whether wire
+  colours match the key (only sphere colours are compared); arrow rendering; the
+  meaning of hub size; history steps.
+
+  **`force-graph-identity.spec.ts`**
+  - `readableNames` (`:31-48`) checks the boxes of chips, perspective controls
+  and action strip for overlaps and truncation, that they sit inside the
+  viewport, and that type is at least 13px.
+  - It also checks: the neighbourhood is framed; Fit recovers it; a stationary
+  scene rewrites no names and draws no frames; the subject's blue pixels are
+  painted; the Portal Structure names show; inspection preserves state.
+  - The action strip has no text, so `textBoxes` skips it
+  (`design-audit.ts:57-60`).
+  - It **cannot** catch: hover states (no test hovers), native or wire tooltips,
+  a chip lying over an unrelated sphere, the nav hint against the toolbar,
+  chips against the pin tray's text, mid-word wraps, or silhouette quality.
+
+  **`force-graph-observation.ts`**
+  - It reads the real instance buffers: node id, screen position, depth,
+  opacity, radius and screen radius (`:138-159`); wire endpoints, base width in
+  CSS pixels, enabled flag, count and kind (`:162-183`).
+  - It **cannot** catch: it reads no wire colour or alpha, and no helper covers
+  the arrows batch.
+
+  **`design-audit.ts`**
+  - It works on DOM geometry only. It finds overlapping text boxes (1px
+  tolerance) and overruns of the element's own box, of clipping ancestors, or of
+  a sibling on the same line.
+  - It skips text below .2 opacity.
+  - It **cannot** catch: anything inside the canvas, or a word wrapped one
+  letter onto its own line, which counts as valid wrapping.
+
+  **Unit tests** in `forceGraphBatches.test.ts` (depth order, culling, picking,
+  arrows at the physical surface) and `forceGraphLabels.test.ts` (priority,
+  panels, crowding, not covering a sphere) test the pure modules only.
+
+  ## Facts that point at a fix (one line each)
+  - Showing reference direction needs the shared
+  `spatialGraphOf`/`fileConnections` to keep each pair's directed counts. The
+  renderer has nothing to draw from today.
+  - Faded spheres writing depth carve holes in bright wires behind them; whether
+  faded spheres should write depth is a single material decision.
+  - The arrows' world-unit sizing ignores both resistances, so they stop
+  agreeing with the drawn spheres when zoom changes.
+  - The nav hint is outside the label obstacles and the toolbar's offsets, and
+  no test looks at it.
+  - The "+1 symbols" fix belongs in `branch-renderer.ts:943`, not in
+  `card-factory.ts`.
+
+
+● Agent "Map 3D wires, legend, labels code" finished · 9m 47s
+
+› Message from general-purpose
+  # Report: inventory totals (Item A) and the Tuning panel at laptop size (Item
+  B)
+
+  Read-only. Nothing tracked was modified. Scratch files are in
+  `/tmp/claude-1000/-workspaces-Live-Documentation/568d7099-841e-461b-beed-faa7a
+  0581991/scratchpad/agent2/`:
+  - `counts.mjs` and `extra.mjs`: my reimplementations of the two counts.
+  - `real.ts`: a cross-check that runs the real modules through tsx.
+  - `measure.mjs`: a Playwright measurement served on port 8957.
+  - `tuning-*.png`: four captures. They are scratch only, not committed.
+
+  ## Item A: "References between files" vs "N references"
+
+  ### The two computations
+  **Knowledge Sources** (`panels/sources-facts.ts:154-158`, rendered at
+  `sources-view.ts:101`):
+  - It counts every `GraphEdge` of every file where `edge.to` is set, `edge.to
+  !== file.codePath` and the target is in the graph.
+  - That is one count per documented reference. It includes dependency lines
+  (`import`, `re-export`, type-only, and `contract`/`configuration` basis) and
+  linked signature type references (`returns`, `parameter`, `extends`,
+  `implements`, `constraint`), as built by
+  `engine/src/live-docs/graph.ts:119-150`.
+  - It leaves out self-references and unresolved lines.
+  - It does not count containment, citations (Related or Cited By docs) or
+  board/manifest wires. Manifest-derived dependency lines do count, as `basis`
+  edges (7 contract, 2 configuration).
+
+  **Sidebar** (`index.ts:222-226`, element `#stats-line` at
+  `template.html:322`):
+  - It prints `${stats.nodes} files, ${stats.links} references,
+  ${stats.referencesOutsideScan} references outside the scan`.
+  - `stats.links` is `links.length` in `shared/graph.ts:146-153`. It counts the
+  Explorer projection's link records, deduplicated by the key `[source, target,
+  kind, sourceSymbol, targetSymbol]` (`graph.ts:55-66`).
+  - A repeat of the same key increments `referenceCount` instead of adding a
+  link.
+  - Self links are dropped in both places: `addLink` returns on `source ===
+  target`, and the facts skip self edges.
+  - `shared/graph.test.ts:7-44` states the intended invariant: the sum of
+  `referenceCount` equals the documented edges ("counts each documented fact
+  once, including repeated parameters").
+
+  So the two numbers have different units:
+  - Knowledge Sources counts documented references.
+  - The sidebar counts distinct symbol-level links. A signature that names the
+  same type more than once (return plus parameter, or two parameters) becomes
+  one link.
+  - Neither number is a count of file pairs.
+
+  **Scope and reactivity, the same for both:**
+  - Both read the whole, unfiltered `bundle.graph`: `index.ts:117` for the
+  sidebar, `index.ts:1426` for Knowledge Sources.
+  - The sidebar line is written once, at startup. Nothing else writes
+  `#stats-line`, so it never changes with filters, the history moment, pins or
+  "Reachable from". `history/snapshot.ts:51` builds its own stats, but nothing
+  displays them.
+  - The Knowledge Sources facts are recomputed only when "Reachable from"
+  changes, and that does not touch the shape counts.
+  - Show Tests / Assets / Related / Citing change neither number. Yet the
+  Display filters stay visible on Knowledge Sources and World Map: nothing hides
+  `.sidebar-section` there; only the two doc checkboxes are 3D-only
+  (`shell.css:1144-1151`).
+  - Tests are included in both counts. Edges touching tests: test→impl 1,143,
+  test→test 221, impl→test 61.
+  - "References outside the scan" (854) counts only dependency lines with no
+  target. All 854 have no link at all, and there are 0 links to a missing doc. A
+  type with no link never becomes an edge and is not counted, so that label
+  really means "dependencies on modules outside the scan".
+
+  ### Current values
+  The bundle is `dist/explorer/explorer-data.json`, built 2026-10-29 20:16. Its
+  graph is byte-identical to `.mdmd/index.json`. The real `explorerGraphOf` and
+  `sourcesFacts`, run via tsx, agree with my reimplementation:
+
+  | quantity | value |
+  |---|---|
+  | files | 885 (implementation 637, test 247, asset 1) |
+  | Knowledge Sources "References between files" | **4,651** |
+  | sidebar "references" (`stats.links`) | **4,622** (dependency 4,057,
+  type-reference 544, extends 16, implements 5) |
+  | sum of `referenceCount` over links | 4,651 (= Knowledge Sources) |
+  | gap | **29** |
+  | self edges excluded by both | 577 |
+  | directed file pairs (sum of `outbound`) | 2,132; undirected 2,090 |
+  | sidebar "outside the scan" | 854 |
+
+  Counted edges by kind: import 4,019; re-export 38; parameter 413; returns 154;
+  extends 16; constraint 6; implements 5.
+
+  ### The cause, item by item
+  All 29 surplus edges sit in **27 `type-reference` links** whose
+  `referenceCount` is more than 1. Every one is a symbol whose signature names
+  the same target type in two or three positions. No import or extends link is
+  ever collapsed. The full list is in `scratchpad/agent2/out.txt`. Examples:
+  - 3x `engine/src/live-docs/dependencies.ts` `mergeDependencyEntries` →
+  `coreTypes.ts#symbol-dependencyentry` (returns, parameter base, parameter
+  extras)
+  - 3x `explorer/.../worldMap/layout.ts` `spreadTokens` →
+  `projection.ts#symbol-point2` (returns, seeds, obstacles)
+  - 2x each, 25 more: `history/derive.ts deriveChange→shape` (before, after);
+  `history/window.ts windowOf→format`; `layout-presets.ts
+  applyLayoutPreset`/`applyLayoutSettings→types#tuningconfig`; `branches.ts
+  buildBranches`/`exploreBranches→shared/types`; `retained-state.ts
+  subjectAfterRelease→pin-state`; `worldMap/layout.ts
+  unitsToPixels`/`pixelsToUnits`; `layout-lab report.ts differences`, `sweep.ts
+  configurations`/`scoreOf`; five in `inspect/emit.ts`
+  (`emitDualDirectionResult`, `emitSymbolPathResult`, `emitSymbolPathNotFound`,
+  `emitDualDirectionSymbolResult` ×2); `oracle/files.ts rebaseOracleEdges`; and
+  the fixture programs (C# `Formatter.Render`, Go `inventory.go` and `memory.go`
+  `Receive`, Java `Inventory` and `MemoryInventory` `receive`, Python
+  `posting.py` `transfer` and `transfer_units`).
+
+  The October 23 (4,491 / 4,462) and October 26 (4,545 / 4,516) observations
+  also differ by exactly 29. That fits the same cause. This is an inference: I
+  did not rebuild those commits.
+
+  ### Which is right (my reading, not a decision)
+  - **Knowledge Sources is right for its label.** It counts documented
+  references between two different files of the scan. It could name its scope
+  ("dependency lines and signature types; tests included; filters do not
+  apply"), but the number is correct.
+  - **The sidebar's label is wrong for its number.** 4,622 counts deduplicated
+  symbol-level links, not references. There are two consistent repairs, and
+  choosing between them is a fork for the owner:
+    - **(a)** Print the sum of `referenceCount`. "References" would then equal
+  Knowledge Sources (4,651), matching the invariant in `graph.test.ts`.
+    - **(b)** Keep 4,622 and name the unit, e.g. "4,622 symbol links".
+  - "References outside the scan" would read truer as "dependencies outside the
+  scan".
+  - The sidebar also lacks `toLocaleString`, so it shows "4622" beside Knowledge
+  Sources' "4,651".
+  - A third quantity is available if a file-level count is wanted: 2,132
+  directed file pairs.
+
+  **Test gap:**
+  - `sources-facts.test.ts:53-70` asserts `references` 7 on a fixture with no
+  self edges, no type references and no duplicates, so it cannot tell the two
+  definitions apart.
+  - No test asserts the sidebar's wording or number. `no-network.spec.ts:63-64`
+  only checks that the line is not "Loading..." or "Error".
+
+  ## Item B: Tuning at laptop size
+
+  ### Controls in order
+  Source: `template.html:61-290`. Defaults are the state's
+  (`persistence/local-storage.ts:47-85`), which overwrite the HTML values at
+  sync (`tuning.ts:131-175`).
+
+  T = has a `title` on its `<label>`, which is a hover tooltip only. Nothing in
+  the panel is help text you can see or reach by keyboard, and the `title` is
+  not wired as an accessible description.
+
+  **2D Wires** (no perspective attribute, closed by default; drives `bezier.*`,
+  redraws 2D wires, `tuning.ts:180-183`). I did not trace who reads `bezier.*`.
+  None of the four has a T:
+  - Stub Factor: 0.1–0.8 / 0.01, default 0.8
+  - Stub Min: 8–64 / 2, default 8
+  - Stub Max Offset: 8–64 / 2, default 40
+  - Vertical Offset: 0–0.5 / 0.02, default 0
+
+  **2D Layout** (`data-tuning-perspective="2d"`, opens in 2D):
+
+  | control | range / step | default | drives | T |
+  |---|---|---|---|---|
+  | Column Gap | 24–160 / 4 | 100 | `--local-column-gap`; re-renders (packing) |
+  no |
+  | Membrane Evenness | 0–5 / 0.25 | 2 | re-renders (packing) | T |
+  | Card Gap `itemGap` | 8–80 / 2 | 24 | packing | T |
+  | Directory Gap `bandGap` | 8–80 / 2 | 28 | packing | T |
+  | Height Cost | 0–40 / 1 | 5 | packing | T |
+  | Membrane Simplicity | 0–1000 / 10 | 200 | packing | T |
+  | Row Levelness | 0–5 / 0.25 | **2** (the HTML says 0.25) | packing | T |
+  | Hover Dim (Symbols) | 0.1–0.8 / 0.05 | 0.5 | CSS variable; redraws wires |
+  no |
+  | Hover Dim (Lines) | 0.1–0.8 / 0.05 | 0.1 | CSS variable | no |
+  | Lace Reach | 4–40 / 1 | 18 | redraws wires | T |
+  | Lace Curl | 2–30 / 1 | 12 | redraws wires | T |
+  | Lace Width | 1–6 / 0.5 | 2.5 | redraws wires | T |
+  | Lace Taper | 0–1 / 0.1 | 0.5 | `--self-loop-taper` | T |
+  | Symbol Order | select: layout / alphabetical / appearance | layout |
+  re-renders 2D | T |
+  | Move | 0–1200 / 50 | 450 | next change only | T |
+  | Hold Still | select: click / hover | click | next change only | T |
+  | Order Starts | 0–16 / 1 | 2 | re-renders 2D | T |
+  | Search Starts | 0–128 / 4 | 32 | re-renders 2D | T |
+  | Search Patience | 1–32 / 1 | 8 | re-renders 2D | T |
+  | Churn Cost | 0–400 / 10 | 100 | re-renders 2D | T |
+
+  **3D Layout** (opens in 3D; all T; each sets `forceGraph.*` and re-renders the
+  map, `tuning.ts:39-45, 265-273`):
+  - Link Gap: 8–200 / 2, default 60 (packing)
+  - Repulsion: 0–300 / 5, default 60 (packing)
+  - Clearance: 0–20 / 0.5, default 5 (packing)
+  - Coupling: 0–3 / 0.1, default 1
+  - Base Radius: 1–10 / 0.25, default 4
+  - Symbol Scaling: 0–2 / 0.1, default 1
+  - Node Zoom Resistance: 0–1 / 0.05, default 0.3
+  - Wire Thickness: 0.1–4 / 0.1, default 1
+  - Wire Zoom Resistance: 0–1 / 0.05, default 0.9
+  - Gravity: 0–0.3 / 0.005, default 0.025
+  - Repulsion Reach: 0–1000 / 10, default 0
+  - Approximation: 0–0.5 / 0.05, default 0.3
+  - Spring Strength: 0–2 / 0.05, default 0.5
+  - Update Energy: 0–1 / 0.01, default 1
+  - Tether: 0–0.1 / 0.001, default 0.02
+  - Citing Pull: 0–1 / 0.05, default 1
+
+  **History** (opens in 3D even when the bundle has no history; all T):
+  - Axis: select, steps / time, default **time** (the HTML's first option is
+  steps). Re-renders 3D.
+  - Ticks: select, auto / step / day / week / month / salient, default auto.
+  Re-renders 3D.
+  - Play Rate: 0.5–10 / 0.5, default 2. State only.
+
+  **Export layout settings** (`template.html:288`, `tuning.ts:284-288`):
+  - It writes `layoutSettingsOf`, which holds only the 7 2D packing values and
+  the 16 `forceGraph` values (`layout-presets.ts:16-26, 78-80`). The share
+  link's `layout` uses the same subset (`index.ts` `explorationSnapshot`).
+  - Wires, laces, hover dims, order, search and history settings persist in
+  localStorage only. They are neither exported nor shared.
+
+  ### Sidebar layout rules
+  **Sizing and scrolling:**
+  - `#sidebar` is 260px wide, `max-height:100vh`, `overflow-y:auto`, inside
+  `body{display:flex;height:100vh}` (`shell.css:1-14`, `theme.css:88-96`).
+  - Collapsed, it is 48px and hides every section (`shell.css:16-32`).
+
+  **Media rules:** the only sidebar ones are `max-width:760px` (fixed overlay,
+  `shell.css:373-376`) and `(max-width:760px),(max-height:480px)` (reader modal,
+  `shell.css:378-393`). Neither fires at 1280×800 or 1024×768, so both sizes
+  get the same 260px column, scrolled.
+
+  **Section order:** header → nav → Display → Tuning `<details>` (closed by
+  default) → Legend `#map-legend` → `#context-bar` (`margin-top:auto`). So the
+  legend and the stats line sit **below** the whole tuning block. The legend
+  shows only in the Local Map: the 2D or the 3D key (`shell.css:1066-1069`).
+
+  **Text sizes:**
+  - Slider labels are 11px; values are 10px monospace (`shell.css:821-848`);
+  each row is 24px tall plus an 8px margin.
+  - Closed subsections keep the `.subsection-label` margin and the 16px
+  `.tuning-subsection` margin, which leaves large empty gaps.
+  - The Export button inherits about 16px from the body, so it is visibly larger
+  than everything else in the panel.
+
+  **The "Layout tuning" button** (`index.ts:393-402`):
+  - It uncollapses the sidebar, opens `.sidebar-details`, focuses its summary
+  and calls `scrollIntoView({block:"nearest", behavior:"smooth"})`.
+  - Which groups are open depends on the perspective (`tuning.ts:132-136`).
+  - When the layout is customised, its name and title change to "Layout tuning:
+  Custom" / "Custom layout — open tuning" (`index.ts:719-721`).
+
+  **Measured** (Chromium, estate sample, after the button was clicked):
+  - **1280×800, 3D:** scrollHeight 1409, the Tuning summary scrolled to the top
+  edge and half cut. All 19 open controls fit (Link Gap at y=123 … Play Rate at
+  y=731). Export is cut at 771, the legend is below at 820, the stats line at
+  940.
+  - **1280×800, 2D:** 20 controls fit (Column Gap at 83 … Churn Cost at 691).
+  Export is below at 811, the legend at 860.
+  - **1024×768:** the same picture. In 3D Export is fully below the fold.
+  - So today all controls are reachable without scrolling at 1280×800. The
+  October 23 capture, cut at Update Energy, was probably taken mid-scroll or
+  before later changes; I cannot tell which.
+  - What remains true: Export and the legend need scrolling; the help is
+  hover-only; seven 2D controls (Stub ×4, Column Gap, Hover Dim ×2) have no
+  explanation at all.
+
+  **Dead CSS:** `#tuning-panel`, `.tuning-section`, `.tuning-header`,
+  `.tuning-body`, `.tuning-group`, `.tuning-checkbox` (`shell.css:760-925`,
+  outside the `.tuning-slider` rules) match no markup in `src/`.
+
+  ### Tests that cover tuning and the legend
+  - `tests/e2e/local-map-presets.spec.ts:22-97` (1600×1000; repository and
+  estate):
+    - Opens Tuning by clicking the summary text, not the button.
+    - Runs the design audit for overlaps and truncation of open-group labels,
+  values, perspective buttons and Export. This is geometry, not "inside the
+  viewport".
+    - Keyboard: Coupling 1→1.1 keeps the preset; other edits produce "Layout
+  tuning: Custom"; Relaxed keeps the non-packing edits.
+    - The exported JSON equals Relaxed packing plus the edits, and a share link
+  restores them in a fresh page.
+  - `local-map-presets.spec.ts:99-186`: a preset click keeps the subject still
+  in 2D and 3D; instant layouts redraw the wires onto their pins; Rosetta
+  alignment.
+  - `force-graph-wires.spec.ts:95-149` (1280×800): Wire Thickness 1→2 by
+  keyboard, the value text, rendered widths double, nodes unmoved, the engine
+  not woken.
+  - `force-graph-wires.spec.ts:151-204`: node and wire zoom resistance are
+  independent, keep placement, and persist across pages.
+  - `force-graph-update.spec.ts:157-183` (1100×700): Update Energy 1→0.5; Tether
+  step re-settles; the settings ride the address.
+  - `local-map-corset.spec.ts:152-178`: the lace dials persist after reload.
+  - `local-map-simplicity.spec.ts:67-69`: Membrane Simplicity shows 50.
+  - `local-map-branches.spec.ts:412-413`: Symbol Order select.
+  - `spatial-legend.spec.ts:34-74` (1280×800): key rows follow the rendered
+  kinds; swatch colours match the Three materials; the Test key follows a
+  retained test under the filter; doc and citation keys appear only with data.
+  - `spatial-legend.spec.ts:76-103`: the right key per representation; hidden in
+  Sources and World.
+  - Unit tests: `layout-presets.test.ts:7-60` (presets, custom detection, share
+  round-trip, bounds). `persistence/local-storage.test.ts` exists; I did not
+  read it.
+  - **Not covered:**
+    - Nothing clicks the "Layout tuning" button and checks what lands in view.
+    - Nothing asserts controls, Export or the legend are inside the viewport at
+  1280×800 or 1024×768.
+    - Nothing tests help text.
+    - `design-audit.spec.ts` does not cover the tuning panel.
+
+  ## Files read
+  **In full:**
+  - `AGENTS.md`
+  - `packages/explorer/src/client/panels/{sources-facts.ts, sources-view.ts,
+  tuning.ts, spatial-legend.ts, sources-facts.test.ts}`
+  - `packages/explorer/src/shared/{template.html, staticExplorerData.ts,
+  graph.ts, graph.test.ts}`
+  - `packages/engine/src/live-docs/graph.ts`
+  - `packages/explorer/src/client/index.ts` (all 1,469 lines, in four chunks)
+  - `packages/explorer/src/client/{dom.ts, views/fileConnections.ts,
+  layout-presets.ts, layout-presets.test.ts, persistence/local-storage.ts,
+  styles.css, styles/shell.css}`
+  - `tests/e2e/{spatial-legend.spec.ts, local-map-presets.spec.ts}`
+
+  **In part:**
+  - Remediation section of `.mdmd/layer-3/live-documentation-explorer.mdmd.md`
+  (lines 38-54, 80-98 via grep)
+  - Screenshots `2026-10-23/README.md` (lines 7-31, 66-74)
+  - Screenshots `2026-10-26/README.md` (line 20)
+  - `force-graph-wires.spec.ts:90-210`, `force-graph-update.spec.ts:150-184`
+  - `theme.css:86-111`, `local.css:320-345`
+  - grep hits in the other specs
+
+
+● Agent "Explain inventory totals; map tuning panel" finished · 10m 11s
+
+● Three helpers have reported; the fourth, on 2D framing, is still running. I'm
+  now looking at the captured pictures myself before writing the plan.
+
+  Read 10 files (ctrl+o to expand)
+
+› Message from general-purpose
+  # How the 2D Local Map frames its picture, and why it clips
+
+  Short answer: every automatic 2D frame is drawn at exactly k = 1. Two rules
+  then place the picture:
+  - **Centre on a focus card, clamped.** The focus is the subject's card or,
+  with no subject, the first card in the DOM. The clamp stops the picture being
+  cut when it fits, and keeps the frame full when it does not.
+  - **On a 3D→2D return, hold the subject still.** The subject's title is moved
+  to where its sphere stood, and the 2D fit is thrown away.
+
+  Both observed clippings follow from these rules, and I reproduced both in the
+  built page (numbers in §6).
+
+  I changed no tracked files. I ran one scratch Playwright probe against
+  `dist/explorer`, which was built 2026-10-29 20:16, before the last commit.
+  That commit touched only the 3D renderer. The probe served the bundle on port
+  8947 and closed it afterwards. The probe is
+  `/tmp/claude-1000/-workspaces-Live-Documentation/568d7099-841e-461b-beed-faa7a
+  0581991/scratchpad/agent4/probe.ts`.
+
+  ## 1. The transform chosen on arrival, on a new subject, on opening a
+  directory, after a pin
+
+  **Where every render goes.** `render()` (controller.ts:356-388) calls
+  `drawScene()` (391-452), which ends with:
+  - `path ? fitMapToPath()`
+  - `: !mapHasInitialFit ? fitMapToContent()`
+  - `: updateMapTransform()` (448-450)
+
+  When the fit is reset:
+  - `mapHasInitialFit` is cleared whenever `!mapUserAdjusted` (426-429).
+  - A changed subject clears it and also clears `mapUserAdjusted`, and sets
+  `lastInteracted` (430-438).
+
+  **The exploration fit.** `fitMapToContent` = `computeFitTransform(extents,
+  frame, branches ? {minScale: 1} : undefined)` (controller.ts:1093-1096). Every
+  scope goes through `renderBranches`, which sets `controller.branches`
+  (branch-renderer.ts:215), so `minScale: 1` always applies.
+
+  Inside `computeFitTransform` (layout-measure.ts:176-236):
+  - Scale is `clamp(min(autoScale·0.96, 1), 1, 1.45)` (227), which is always
+  exactly 1. The focus-plus-buffer "effective size" logic (196-226) is therefore
+  dead in practice.
+  - Position: the focus centre goes to the frame centre, then `keepVisible`
+  (248-250) clamps it.
+    - If the content fits, it is clamped so neither edge passes the padding.
+    - If it does not fit, the frame is kept full.
+  - Padding is `clamp(W·0.02, 8, 72)` and `clamp(H·0.025, 8, 72)` (187-188).
+  - The focus is `.node-card.local-focus`, else `.local-column.center
+  .node-card`, else `.node-card` (layout-measure.ts:142-145).
+    - Every card wrapper is `.local-column.center` (branch-renderer.ts:162), so
+  with no subject the focus is simply the first file card in DOM order.
+    - Subject cards get `local-focus` at creation (card-factory.ts:80).
+
+  **The path fit.** `computePathFitTransform` (layout-measure.ts:258-267) uses
+  `scale = 1`. It is centred if the path fits; otherwise the first file goes at
+  the left padding. Vertically it is always centred.
+
+  **Reading size is k = 1** in CSS pixels. The "do not shrink text" rule
+  (AGENTS.md, Explorer client) is enforced only here:
+  - `minScale: 1` (controller.ts:1095, from commit f6eba721 of 2026-10-05: "The
+  picture is framed at reading size").
+  - The hard-coded `scale = 1` (layout-measure.ts:259, from c394d186 of
+  2026-10-01).
+  - The unit test "never shrinks the text to make the path fit"
+  (layout-measure.test.ts:37).
+
+  Manual zoom is not bound by it: `MIN_SCALE 0.05`, `MAX_SCALE 3`
+  (pan-zoom.ts:15-16).
+
+  **Each case:**
+  - **First arrival with no stage:** the fit runs; it animates over 350 ms
+  (pan-zoom.ts:78-117).
+  - **First arrival with no subject** (root landing via index.ts:972-975, or
+  `?dir=`): the fit runs, centred on the first card.
+  - **New subject (Centre, search, World Map file):**
+    1. `render()` captures the subject's title anchor if its card was visible in
+  the old picture (368).
+    2. `drawScene` starts the fit animation.
+    3. `placeSubjectAnchor` (151-163, called at 384-386) cancels that animation
+  before its first frame and sets `mapUserAdjusted`. The fit is discarded and
+  the subject is held still.
+    4. `recentreOn` and the search's `pinHit` then call `focusNode` →
+  `focusElement`, which animates the card's centre to 40%/40% of the frame
+  (controller.ts:670-681; index.ts:1166-1174, 610-629).
+    - When the old picture is kept, `renderBranches` starts a move from the old
+  pose (branch-renderer.ts:537-541). A fit started in the same render therefore
+  measures the old pose, not the new one.
+  - **Opening a directory inside the map:** `captureDirectoryChange` →
+  `afterRender` translates so that the clicked label or box keeps its screen
+  position. It sets `mapUserAdjusted = true`; there is no fit
+  (controller.ts:573-612; index.ts:521-529).
+  - **Opening a directory from the World Map** (`openThingInLocalMap`,
+  index.ts:308-316): pins are cleared, the subject is set to null, and
+  `changePerspective(..., null)` runs. With no subject there is no anchor, so
+  the fit runs.
+    - Exception: if the subject was already null and the person had panned
+  (`mapUserAdjusted`), no fit runs and the old transform stays
+  (controller.ts:426-438).
+  - **Pin change:** `capturePinChange` holds the acted-on row or title
+  (controller.ts:557-570, 588-612). It sets `lastCenteredNodeId = nextSubjectId`
+  so that a subject changed by a pin does not re-fit (561-562).
+  - **The continuing search** later moves the picture while holding
+  `lastInteracted`, or the subject (branch-renderer.ts:544-562, 628-642). It
+  never re-fits. With no subject and nothing interacted, nothing is held.
+
+  ## 2. How the frame is measured
+
+  **Frame.** The frame is `#map-viewport` (`.viewport-layer`) with its transform
+  reset. It is measured synchronously inside `fitMap` (controller.ts:1111-1116,
+  using `withTransformReset`, layout-measure.ts:101-118).
+  - That layer is a flex child of `#view-map` (search.css:276-297). `#view-map`
+  is absolute at 100% of `#views`, which sits under the search bar and the path
+  report (search.css:5-15; template.html:329-356).
+  - The search bar and the path report are therefore excluded by layout.
+  - The sidebar is excluded too, since `#main` is its flex sibling
+  (shell.css:1-14, 143-150).
+
+  **Content.** `computeLayoutExtents` (layout-measure.ts:123-171) measures
+  `.layout-node, .layout-box, .node-card, .local-pass-through,
+  .local-directory-closed`.
+  - **Bands and labels are left out.** Membrane outlines and
+  `.local-directory-label` are not measured. A band reaches past its cards by
+  about 13 px at the sides and about 43 px above, where its label sits
+  (measured).
+  - **Systematic 12 px offset.** Content bounds have the container's padding
+  subtracted (159-160). The `.cluster-host.local-map-host` padding is 12 px
+  (view-shared.css:40-42). But the content really sits 12 px inside the layer.
+  Every fit therefore lands 12 px right and 12 px down (measured: an estate path
+  centred at 942 against a frame centre of 931, and +12 vertically).
+
+  **Overlays the frame ignores:**
+  - The reader overlay (`#detail-panel`, absolute, right 0, `min(360px, 90vw)`;
+  shell.css:233-255, 327-338).
+  - The pin tray, the perspective controls and the zoom buttons (local.css:286,
+  294; view-shared.css:265-277).
+  - The bottom padding is about 24 px at 950 px high. Bottom cards can therefore
+  sit under the controls (capture 02's `.nvmrc`).
+
+  **The Oct-29 3D class of bug (stale size).** I found no equivalent in 2D.
+  - View containers are never `display: none`; inactive views have opacity 0
+  (shell.css:152-167). The layer keeps its full size, which I measured at
+  1339×950, or 1339×851 with the path report.
+  - Toolbar growth after a fit is handled by a ResizeObserver that shifts `y` by
+  the change of the layer's top, which keeps the picture still rather than
+  re-fitting (controller.ts:279-308). The path status line is set after
+  `renderCurrentView` (index.ts:912-913), so it arrives after the fit and is
+  compensated, not re-framed.
+  - A window resize only redraws wires; it never re-frames (index.ts:859-864).
+  - Collapsing the sidebar does not re-frame either.
+
+  ## 3. The 3D→2D return
+
+  `changePerspective("2d")` (index.ts:757-812):
+  1. It takes the 3D subject's screen anchor (773).
+  2. It calls `renderCurrentView("show")` → `localView.show()` (1411;
+  controller.ts:265-271). If a render is owed, `render()` → `drawScene` →
+  `fitMapToPath`/`fitMapToContent`, which starts an animation only.
+  3. It immediately calls `localView.placeSubjectAnchor(target, anchor3D)` when
+  the anchor lies inside `#view-map` (782-787), and again after `ready` (791).
+
+  `placeSubjectAnchor` cancels the fit animation, which has not yet moved
+  anything. It translates the current transform so the subject's `.node-title`
+  centre lands on the sphere's position, keeps k, and sets `mapUserAdjusted =
+  mapHasInitialFit = true` (controller.ts:151-163).
+
+  So the 2D transform is neither restored nor recomputed: it is the old 2D
+  transform translated by the 3D anchor. `mapInitialTransform` still holds the
+  discarded fit, which is why ⟲ recovers it.
+
+  The behaviour is the documented rule "Perspective controls preserve the
+  selected identity's screen position" (layer-3 doc line 64). It is locked in by
+  local-map-branches.spec.ts:83-125 (within 3 px) and
+  local-map-simplicity.spec.ts:145-147.
+
+  `animatePerspective` only plays the visual bridge from captured snapshots; it
+  does not set the camera (perspectiveTransition.ts:103-224).
+
+  ## 4. Existing 2D controls
+
+  **Buttons.** `#controls` holds +, - and ⟲ (template.html:377-381). They are
+  shown only while `body.zoom-controls-active` is set, which `dom.ts:50-54`
+  applies for the 2D map. They are wired in index.ts:831-843 and ignored outside
+  2D.
+  - **+ / -:** `zoomByFactor` 1.2 or 1/1.2 about the frame centre. Each sets
+  `mapUserAdjusted` (pan-zoom.ts:36-51; controller.ts:684-691).
+  - **⟲ Reset:** animates to `mapInitialTransform`, the last automatic fit as
+  shifted by toolbar moves, or re-fits if there is none (controller.ts:695-704).
+    - Pins, directory opens and subject holds never update it. Reset can
+  therefore return to the frame of an earlier picture.
+  - **Fit current scope:** this button is in the perspective controls but is
+  hidden in 2D and calls `forceGraphView.fit()` only (index.ts:427-429, 711).
+
+  **Gestures.** The wheel zooms about the pointer (animated; instant under
+  reduced motion). Shift-wheel or a horizontal wheel pans. Drag and pinch use
+  pointer events, with inertia. All of these mark the camera as the person's
+  (pan-zoom.ts:227-281; controller.ts:190-239, 1058-1086).
+
+  **Keyboard.** The three buttons are ordinary focusable `<button>`s with
+  aria-labels ("Zoom In", "Zoom Out", "Reset Zoom"), no `title`. There are no
+  keyboard shortcuts for zoom, fit or pan, and no arrow-key panning in 2D.
+
+  ## 5. Tests touching framing, and why none caught this
+
+  - **layout-measure.test.ts:22-40, 129-144.** Asserts k = 1 and containment: a
+  fitting picture lies within [0, W]. It never asserts centring or margin
+  balance. The right-edge Portal picture passes.
+  - **local-map-directories.spec.ts:65-72.** Only the four closed boxes of
+  `packages/engine/src` at 1800×1100. It checks left, right and bottom inside
+  `#view-map`, but not the top, not centring, and not bands or labels.
+  - **local-map-path.spec.ts:288-292.** Only the first path card's x ≥ 260 (the
+  sidebar width, hard-coded) and its right edge ≤ 1600. The last card is never
+  checked. The 2D↔3D round trip (134-139) checks status, hops and snapshot only.
+  - **perspective-zoom.spec.ts:81-115.** Wheel scale below 0.4, Reset clicked
+  but its result not checked, and the card `toBeVisible()`. That checks
+  rendering, not presence in the viewport.
+  - **local-map-branches.spec.ts:83-125** and
+  **local-map-simplicity.spec.ts:145-147.** These assert the subject anchor is
+  held within 3 px or 1.5 px. That is the very mechanism behind observation 3.
+  - **design-audit.ts:67, 163.** The walk stops at `.view-container` on purpose:
+  "off-frame content is not truncated text", which design-audit.spec.ts:144-153
+  locks in. Framing clipping is invisible to it by design, as is
+  world-map-design.spec.ts:79-83 on an opened thing.
+  - **still-picture.ts.** `FRAME = "#main"`, which includes the search bar and
+  report area. `cardsInFrame` and `cardsPartlyInFrame` are reported but never
+  asserted (still-picture.spec.ts:151, 287).
+    - `panIntoView` and `dragBy` (still-picture.ts:795-827) let specs reach
+  off-frame cards. Their doc says the map "never zooms below one while branches
+  are shown, so a picture that outgrew the frame is reached by dragging".
+    - Several specs dispatch clicks via `evaluate` because content is off-frame
+  (for example local-map-directories.spec.ts:144-146, 171-175).
+  - **Coverage gaps.** No test covers the repository-root arrival, the World Map
+  → Portal arrival, 3D→2D framing of a path, or frame use (margin balance,
+  clipped fraction).
+
+  ## 6. Likely causes (from the code and my probe; the root should still confirm
+  in the page)
+
+  **(a) The repository root clips top and bottom.**
+  Measured at 1600×1000: the picture is 1186×1304 at k = 1 and the frame is
+  1339×950. Content runs from top −140 to bottom 1164 (182 px cut above the
+  frame's top at 50, 164 px below the bottom). The left margin is 138 px and the
+  right margin 15 px.
+
+  Causes:
+  - k is forced to 1, so a 1304 px picture cannot fit; about 0.69 would be
+  needed.
+  - With no subject the focus is the first DOM card (`.live-docs.config.json`).
+  It is centred vertically, which splits the overflow between top and bottom
+  rather than showing one edge.
+  - Horizontally, centring on that left-column card is clamped by `keepVisible`
+  to the right padding. Hence the empty left with the right edge at 1600 − 26.8
+  + 12 ≈ 1585.
+
+  The "large horizontal gaps" are partly that 138 px margin and partly gutters
+  inside the layout. At reading size the vertical clip cannot be avoided without
+  a design choice. This is a fork for the owner:
+  - a scale floor below 1 for overview arrivals,
+  - anchoring to the picture's top or start with an honest "more below"
+  indication,
+  - a wider or wrapped layout, or
+  - the fit using the empty horizontal room.
+
+  **(b) Portal opened from the World Map sits far right.**
+  I reproduced this via `/samples/estate/?view=local&dir=Portal`, which takes
+  the same no-subject fit path. The picture is 838×391 and fits. Measured cards
+  span 773-1585, with the band's right edge at 1598 (2 px margin) and 512 px
+  empty on the left.
+  - The focus is `Portal/Portal.csproj`, the first card, in the left column.
+  Centring on it is clamped at the right edge.
+  - The 12 px padding offset and the unmeasured band padding remove the
+  remaining margin.
+
+  The fix is likely mechanical: centre the content when there is no subject, or
+  when it fits; include bands and labels in the extents; correct the 12 px
+  offset.
+
+  **(c) 3D→2D puts the path's consumer past the right edge (Oct 26 capture
+  13).**
+  The picture's numbers match: `document.ts`'s title centre is about (850, 524),
+  exactly where its sphere stood in capture 12.
+
+  I reproduced the mechanism on the estate's two-file path:
+  - Direct 2D fit: x = 385, centred.
+  - After 3D→2D: x = 536, shifted 151 px right and 39 px down.
+  - ⟲ restores exactly x = 385.
+
+  The path fit is cancelled by `placeSubjectAnchor`, which places the subject
+  (the path's first file) where its sphere was. Everything right of it follows.
+
+  A repair needs an owner decision. The identity-hold rule and its tests
+  (local-map-branches.spec.ts:83-125) conflict with framing the scope. One
+  candidate is to hold the subject, then clamp the translation so the scope's
+  extents stay inside the frame where they fit.
+
+  **(d) T3 two-file path (probe captures 10-14).**
+  - The path fit is first-file-left at k = 1, as designed: the card's left edge
+  is about 297 px, which is 260 + 23.6 + 12.
+  - The default `cardMaxWidth` is null (persistence/local-storage.ts:77), so the
+  test-badge rows make both cards very wide. The two-card path is then wider
+  than the 1133 px available.
+  - Hiding tests narrows the cards; collapsing the sidebar adds 212 px.
+  - The reader overlay is not subtracted from the frame, which is why the guide
+  covered the destination.
+
+  ## Files read
+  **In full:**
+  - `packages/explorer/src/client/views/localView/`: controller.ts, pan-zoom.ts,
+  runtime.ts, state.ts, layout-measure.ts, types.ts, index.ts
+  - `packages/explorer/src/client/views/`: perspectiveTransition.ts,
+  perspectiveGeometry.ts, wheel.ts
+  - `packages/explorer/src/client/styles/`: local.css, view-shared.css,
+  shell.css
+  - `packages/explorer/src/shared/template.html`
+  - `packages/explorer/src/client/`: index.ts, dom.ts
+  - `tests/e2e/`: design-audit.ts, design-audit.spec.ts,
+  perspective-zoom.spec.ts, local-map-directories.spec.ts,
+  local-map-path.spec.ts
+  - `AI-Agent-Workspace/Screenshots/2026-10-26/README.md`
+  - `AI-Agent-Workspace/Probes/2026-10-27/t3-code/README.md`
+
+  **In part (named sections only):**
+  - branch-renderer.ts, lines 1-660 of 979
+  - local-map-branches.spec.ts, lines 1-260 of 464
+  - still-picture.ts: lines 1-50, 150-230 and 755-830, plus a grep of the rest
+  - search.css: lines 1-40 and 275-300
+  - layout-measure.test.ts: the path-fit and keep-visible cases
+  - `AI-Agent-Workspace/Screenshots/2026-10-23/README.md`: lines 1-12 and 40-82,
+  plus findings 1, 3, 4 and 13
+  - `.mdmd/layer-3/live-documentation-explorer.mdmd.md`: the remediation items
+  and camera passages
+
+  **Not read** (grep shows they hold no camera logic): branch-scene.ts,
+  branch-placement.ts, directory-bands.ts.
+
+  **Viewed:** captures 02 and 23 (Oct 23); 03, 12, 13 and 19 (Oct 26); T3
+  captures 10 and 11.
+
+
+● Agent "Map 2D Local Map framing code" finished · 11m 30s
+
+  Read 10 files, ran 1 shell command (ctrl+o to expand)
+
+● I looked at all seven states in the built Explorer on this repository and the
+  estate, at laptop and desktop sizes, and four read-only helpers mapped the
+  code behind each. Every finding of the two reviews still reproduces except
+  one: the duplicate hover label in 3D is gone since the renderer change,
+  because hovering now raises the sphere's own chip. The rest have exact causes,
+  and most are small. Here is the plan for item 7: four passes in the
+  checklist's order, each landing as one commit with before-and-after pictures
+  and the full gate. Six forks are marked. Answer by exception.
+
+  Pass A, how the 2D map frames itself on arrival. The picture is always drawn
+  at reading size and centred on one card: the subject's, or, when nothing is
+  selected, the first card in the page's order. That is why opening Portal
+  leaves a third of the frame empty on the left with its membrane cut on the
+  right: it centres the first file card, and the clamp stops at the edge.
+  Returning from 3D to 2D holds the subject's title where its sphere stood and
+  throws the fit away, which is why a path's consumer card ends beyond the right
+  edge. Two smaller faults: membranes and their labels are not measured when
+  fitting, and a padding is subtracted twice, so every fit lands slightly right
+  and down. I will centre the whole picture when there is no subject, measure
+  membranes and labels, fix the offset, and exclude the open reader from the
+  frame. Fork 1, the return from 3D: hold the subject where its sphere stood
+  through the transition, then slide the whole picture into the frame where it
+  fits, one motion the eye can follow. The alternative is the exact hold we
+  have, cut included. I recommend the slide. Fork 2, the root overview, which is
+  taller than any frame at reading size: start it at the top like a page
+  instead of cutting both edges, and darken the edge where content continues as
+  an honest sign of more. The alternatives are scaling down on arrival, which
+  shrinks text against our rule, or leaving it. I recommend top-aligned with the
+  edge sign.
+
+  Pass B, wires, depth and the legend in 3D. Reference wires in 3D carry no
+  direction at all: the 3D graph is built undirected, merging both directions of
+  a pair, though the docs know which file uses which. The only taper on a wire
+  is depth, the nearer end wider, which reads as direction and lies. Faded
+  spheres still write depth, so a nearly invisible sphere in front cuts holes in
+  bright wires behind it. Citation arrows are sized in world units and ignore
+  the zoom resistances, so they sink into spheres as you zoom out. A path's
+  wires get no emphasis beyond not fading. The legend omits fading and
+  direction, does not say a folder's size is the sum of its files', and lists
+  "Width: references" in Structure where references are not drawn. I will keep
+  each pair's directed counts in the shared graph and draw every reference wire
+  as a gradient from blue at the file that offers to green at the file that
+  uses, the same grammar as 2D. Fork 3 is that encoding. A reciprocal pair,
+  about forty of two thousand here, draws green at both ends with blue between,
+  and its hover says both counts. The flow motion you loved on the World Map
+  stays a later lever, not this pass. If the gradient does not read in your eye,
+  arrowheads are the next candidate. Wires will end at the drawn sphere
+  surfaces and faded spheres will stop writing depth, so no wire pierces a ghost
+  and no ghost cuts a wire. Arrows take the spheres' units. Path wires get full
+  strength and extra width. The legend says only what is on screen: the
+  gradient, fading as "outside the current attention", the folder size rule, the
+  path, and rows for kinds actually drawn. Judged by orbit and zoom on both
+  bundles, with a strip of orbit frames kept beside the stills.
+
+  Pass C, labels and controls. "+1 symbols" becomes "+1 symbol". Card names stop
+  breaking mid-word. The permanent navigation hint under the toolbar, tiny and
+  partly wrong, moves into a help control on the toolbar that explains the
+  gestures and the colours. Fork 4: that follows your rule of explainers behind
+  a question mark rather than tutorial text on screen. The toolbar's buttons get
+  groups with separators, so which of 2D/3D, Connections/Structure and
+  Compact/Relaxed is on can be read, and Knowledge Sources and Local Map get
+  icons like the World Map's diamond. The sidebar header reflows so the name is
+  whole. The wire tooltip becomes a label obstacle. Sphere silhouettes look
+  smooth to me at the current segment count in a close-up, so I will put a
+  comparison picture in front of you and raise the count only if your eye says
+  so, since each segment costs at T3's scale.
+
+  Pass D, the panels. History: the step panel's style pins both its top and
+  bottom, which is why one sentence gets a full-height panel. It will size to
+  its content, scroll inside when long, and get a hide control, with the
+  scrubber staying. "Born" and "Dead" become "Created" and "Deleted" in the
+  panel, the inspect command's history output and the tests, as you asked on
+  October 26. The absence of a pinned or selected file at the shown moment is
+  said where you look: on the search chip, in the path report and in the reader.
+  A path asked at a moment will run over that moment's wires, which the 3D view
+  already holds, instead of today's. Search: "generator" ranks generator.ts
+  ninth today, because scores only decide which twelve files make the cut and
+  the groups are then sorted alphabetically by directory, and because a name is
+  scored with its extension, so "generator" is never an exact match. Groups will
+  rank by their best match, names will match without their extension, the faint
+  paths will meet the accessibility contrast floor, and the input gets proper
+  combobox semantics. The reader will show Purpose, then the symbols,
+  dependencies and Cited By, then Notes last with a short jump list at the top.
+  Fork 5: that order is inside the checklist's wording, but it is your reader.
+  Inventory: the two totals differ by exactly 29 because the sidebar counts
+  symbol links deduplicated per signature while Knowledge Sources counts
+  documented references; a signature naming the same type as its return and a
+  parameter is one link but two references. Fork 6: print the reference sum in
+  both places so both say 4,651 references, and rename "references outside the
+  scan" to "dependencies outside the scan", which is what it counts. The
+  alternative keeps two numbers under two labels. I recommend one number, and
+  the sidebar line will follow the history moment. Tuning: the legend moves
+  above the tuning block, since it explains the picture that tuning changes;
+  every control gets a one-line explanation revealed by an Explain toggle and
+  wired to the control for screen readers; the 3D levers are grouped by forces,
+  spacing and appearance; stale template defaults and dead styles go. Two docs
+  still state defaults the code no longer has, and I will correct them in this
+  pass.
+
+  How I will work. Passes A, B and C are mine, because they are judged by eye.
+  Pass D's four pieces are precise enough to hand to Opus builders in worktrees,
+  two at a time, which I review and gate, so the day's machine time goes into
+  gates rather than my typing styles. Each pass: playtest by eye first, pictures
+  into the day's Screenshots folder with their README, then Playwright checks
+  for the accepted behaviour (a picture's extents inside the frame, a wire's end
+  colours read from the GPU buffers, the panel no taller than its content,
+  generator.ts first for "generator", the two totals equal), then the full gate.
+  Order A, B, C, D; B is the largest, and the 3D map is the one you called
+  farthest behind.
+
+  If this reads right, say go, with any fork you want the other way.
+
+● I looked at all seven states in the built Explorer on this repository and the
+  estate, at laptop and desktop sizes, and four read-only helpers mapped the
+  code behind each. Every finding of the two reviews still reproduces except
+  one: the duplicate hover label in 3D is gone since the renderer change,
+  because hovering now raises the sphere's own chip. The rest have exact causes,
+  and most are small. Here is the plan for item 7: four passes in the
+  checklist's order, each landing as one commit with before-and-after pictures
+  and the full gate. Six forks are marked. Answer by exception.
+
+  Pass A, how the 2D map frames itself on arrival. The picture is always drawn
+  at reading size and centred on one card: the subject's, or, when nothing is
+  selected, the first card in the page's order. That is why opening Portal
+  leaves a third of the frame empty on the left with its membrane cut on the
+  right: it centres the first file card, and the clamp stops at the edge.
+  Returning from 3D to 2D holds the subject's title where its sphere stood and
+  throws the fit away, which is why a path's consumer card ends beyond the right
+  edge. Two smaller faults: membranes and their labels are not measured when
+  fitting, and a padding is subtracted twice, so every fit lands slightly right
+  and down. I will centre the whole picture when there is no subject, measure
+  membranes and labels, fix the offset, and exclude the open reader from the
+  frame. Fork 1, the return from 3D: hold the subject where its sphere stood
+  through the transition, then slide the whole picture into the frame where it
+  fits, one motion the eye can follow. The alternative is the exact hold we
+  have, cut included. I recommend the slide. Fork 2, the root overview, which is
+  taller than any frame at reading size: start it at the top like a page
+  instead of cutting both edges, and darken the edge where content continues as
+  an honest sign of more. The alternatives are scaling down on arrival, which
+  shrinks text against our rule, or leaving it. I recommend top-aligned with the
+  edge sign.
+
+  Pass B, wires, depth and the legend in 3D. Reference wires in 3D carry no
+  direction at all: the 3D graph is built undirected, merging both directions of
+  a pair, though the docs know which file uses which. The only taper on a wire
+  is depth, the nearer end wider, which reads as direction and lies. Faded
+  spheres still write depth, so a nearly invisible sphere in front cuts holes in
+  bright wires behind it. Citation arrows are sized in world units and ignore
+  the zoom resistances, so they sink into spheres as you zoom out. A path's
+  wires get no emphasis beyond not fading. The legend omits fading and
+  direction, does not say a folder's size is the sum of its files', and lists
+  "Width: references" in Structure where references are not drawn. I will keep
+  each pair's directed counts in the shared graph and draw every reference wire
+  as a gradient from blue at the file that offers to green at the file that
+  uses, the same grammar as 2D. Fork 3 is that encoding. A reciprocal pair,
+  about forty of two thousand here, draws green at both ends with blue between,
+  and its hover says both counts. The flow motion you loved on the World Map
+  stays a later lever, not this pass. If the gradient does not read in your eye,
+  arrowheads are the next candidate. Wires will end at the drawn sphere
+  surfaces and faded spheres will stop writing depth, so no wire pierces a ghost
+  and no ghost cuts a wire. Arrows take the spheres' units. Path wires get full
+  strength and extra width. The legend says only what is on screen: the
+  gradient, fading as "outside the current attention", the folder size rule, the
+  path, and rows for kinds actually drawn. Judged by orbit and zoom on both
+  bundles, with a strip of orbit frames kept beside the stills.
+
+  Pass C, labels and controls. "+1 symbols" becomes "+1 symbol". Card names stop
+  breaking mid-word. The permanent navigation hint under the toolbar, tiny and
+  partly wrong, moves into a help control on the toolbar that explains the
+  gestures and the colours. Fork 4: that follows your rule of explainers behind
+  a question mark rather than tutorial text on screen. The toolbar's buttons get
+  groups with separators, so which of 2D/3D, Connections/Structure and
+  Compact/Relaxed is on can be read, and Knowledge Sources and Local Map get
+  icons like the World Map's diamond. The sidebar header reflows so the name is
+  whole. The wire tooltip becomes a label obstacle. Sphere silhouettes look
+  smooth to me at the current segment count in a close-up, so I will put a
+  comparison picture in front of you and raise the count only if your eye says
+  so, since each segment costs at T3's scale.
+
+  Pass D, the panels. History: the step panel's style pins both its top and
+  bottom, which is why one sentence gets a full-height panel. It will size to
+  its content, scroll inside when long, and get a hide control, with the
+  scrubber staying. "Born" and "Dead" become "Created" and "Deleted" in the
+  panel, the inspect command's history output and the tests, as you asked on
+  October 26. The absence of a pinned or selected file at the shown moment is
+  said where you look: on the search chip, in the path report and in the reader.
+  A path asked at a moment will run over that moment's wires, which the 3D view
+  already holds, instead of today's. Search: "generator" ranks generator.ts
+  ninth today, because scores only decide which twelve files make the cut and
+  the groups are then sorted alphabetically by directory, and because a name is
+  scored with its extension, so "generator" is never an exact match. Groups will
+  rank by their best match, names will match without their extension, the faint
+  paths will meet the accessibility contrast floor, and the input gets proper
+  combobox semantics. The reader will show Purpose, then the symbols,
+  dependencies and Cited By, then Notes last with a short jump list at the top.
+  Fork 5: that order is inside the checklist's wording, but it is your reader.
+  Inventory: the two totals differ by exactly 29 because the sidebar counts
+  symbol links deduplicated per signature while Knowledge Sources counts
+  documented references; a signature naming the same type as its return and a
+  parameter is one link but two references. Fork 6: print the reference sum in
+  both places so both say 4,651 references, and rename "references outside the
+  scan" to "dependencies outside the scan", which is what it counts. The
+  alternative keeps two numbers under two labels. I recommend one number, and
+  the sidebar line will follow the history moment. Tuning: the legend moves
+  above the tuning block, since it explains the picture that tuning changes;
+  every control gets a one-line explanation revealed by an Explain toggle and
+  wired to the control for screen readers; the 3D levers are grouped by forces,
+  spacing and appearance; stale template defaults and dead styles go. Two docs
+  still state defaults the code no longer has, and I will correct them in this
+  pass.
+
+  How I will work. Passes A, B and C are mine, because they are judged by eye.
+  Pass D's four pieces are precise enough to hand to Opus builders in worktrees,
+  two at a time, which I review and gate, so the day's machine time goes into
+  gates rather than my typing styles. Each pass: playtest by eye first, pictures
+  into the day's Screenshots folder with their README, then Playwright checks
+  for the accepted behaviour (a picture's extents inside the frame, a wire's end
+  colours read from the GPU buffers, the panel no taller than its content,
+  generator.ts first for "generator", the two totals equal), then the full gate.
+  Order A, B, C, D; B is the largest, and the 3D map is the one you called
+  farthest behind.
+
+  If this reads right, say go, with any fork you want the other way.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Referenced file ../../home/node/.claude/projects/-workspaces-Live-Documenta
+     tion/568d7099-841e-461b-beed-faa7a0581991/tool-results/b0yspud1f.txt
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-2
+     9.1.SUMMARIZED.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/narrative.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/direction.md
+  ⎿  Referenced file AI-Agent-Workspace/Memory/ideas.md
+
+● Task "Serve the built Explorer locally for screenshots" still running in
+  background
+❯ Pass A I've read and I agree with all recommendations. No notes here, that
+  sounds like a good plan.
+
+  >If the gradient does not read in your eye, arrowheads are the next
+  candidate.
+
+  Makes sense. Yeah, any more geometric detail I think would be totally
+  unreadable. I'm glad you're exploring this through color first. I think
+  that's wise. Agreed on Pass B recommendations. Let's see how it looks.
+
+  >The permanent navigation hint under the toolbar, tiny and partly wrong,
+  moves into a help control on the toolbar that explains the gestures and the
+  colours.
+
+  Careful. I know this sounds stupid but people _just won't read text_ that you
+  display. At least for a great many cases. If what you are trying to do is
+  "typical", then it should be intuitive. If you look at a piece of software
+  like Microsoft Teams, you see that everything is an icon and text only
+  appears when it is user-authored (channel names, text from messages). That
+  said, hovering over any icon gives you a good idea of what it is with a
+  tooltip. I think we can strike this balance. We should strive heavily to
+  avoid _text authored by us onscreen_. That is: Live Documentation should give
+  you the text that you, the author of your files, wrote -- and not a bunch of
+  text that we -- the creators of Live Documentation, wrote.
+
+  I think a lot of pass C is okay, but an explainer or a tutorial is a big big
+  copout. I don't disagree that text to explain should live somewhere, but it
+  is the very very last resort for an end user. The software should be as
+  intuitive to use as Microsoft Teams.
+
+  Pass D I don't think I have any notes on.

@@ -5,7 +5,7 @@
 - Archetype: test
 - Code Path: tests/e2e/playwright.config.ts
 - Entry: tooling
-- Generated At: 2026-10-22T02:20:05.469Z
+- Generated At: 2026-10-30T14:31:04.339Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,7 @@ Playwright test configuration for the Membrane Map E2E suite, defining browser s
 ### Public Symbols
 #### `default` {#symbol-default}
 - Type: default (default)
-- Source: [source](../../../../tests/e2e/playwright.config.ts#L15)
+- Source: [source](../../../../tests/e2e/playwright.config.ts#L22)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
