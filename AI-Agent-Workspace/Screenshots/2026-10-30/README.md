@@ -30,3 +30,7 @@ Built by an Opus 5.5 builder under the root's brief and reviewed by the root in 
 ## The 3D map's wires, depth and key
 
 For the checklist item "Wires, depth and the legend tell the same story", the owner's choice of colour before any more geometry at [Turn 3](../../ChatHistory/2026/10/2026-10-30.1.record.md#turn-3); the pictures and their README are in [3d-wires/](3d-wires/README.md): generator.ts hovered before and after, the two-file path before and after, the estate's web before and after, the Portal hub close up for the silhouette question, and four frames of an orbit.
+
+## The tuning block
+
+For the checklist item "Tuning is usable at the available size", built by an Opus 5.5 builder in a worktree and landed by the root; the pictures and their README are in [tuning/](tuning/README.md): the 3D levers before and after their grouping at 1280×800, and the root's own look at the landed block on main in 3D and 2D.

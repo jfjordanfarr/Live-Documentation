@@ -58,6 +58,34 @@
       </label>
     </div>
 
+    <!-- Legend -->
+    <section id="map-legend" class="sidebar-section" aria-labelledby="map-legend-title">
+      <div id="map-legend-title" class="section-label">Legend</div>
+      <div id="local-legend">
+        <div class="legend-row">
+          <span class="legend-swatch legend-swatch--outbound"></span>
+          <span>Wire from what offers</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-swatch legend-swatch--inbound"></span>
+          <span>Wire to what uses</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-symbol legend-symbol--outbound"></span>
+          <span>Offers</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-symbol legend-symbol--inbound"></span>
+          <span>Uses</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-shadow"></span>
+          <span>Test-backed</span>
+        </div>
+      </div>
+      <div id="spatial-legend" role="list" aria-label="3D map encodings"></div>
+    </section>
+
     <!-- Tuning Controls (collapsible) -->
     <details class="sidebar-section sidebar-details">
       <summary class="section-label clickable">Tuning</summary>
@@ -92,35 +120,35 @@
             <input type="range" id="tuning-column-gap" min="24" max="160" step="4" value="100" />
             <output id="tuning-column-gap-value">100</output>
           </label>
-          <label class="tuning-slider" title="What a step in a directory's outline between neighbouring columns costs the layout, in wires per pixel: at zero the outline follows its files; higher, it tends to a rectangle">
+          <label class="tuning-slider">
             <span>Membrane Evenness</span>
             <input type="range" id="tuning-membrane-evenness" min="0" max="5" step="0.25" value="2" />
             <output id="tuning-membrane-evenness-value">2</output>
           </label>
-          <label class="tuning-slider" title="Minimum space between cards and routing lanes in the same column">
+          <label class="tuning-slider">
             <span>Card Gap</span>
             <input type="range" id="tuning-item-gap" min="8" max="80" step="2" value="24" />
             <output id="tuning-item-gap-value">24</output>
           </label>
-          <label class="tuning-slider" title="Minimum space between sibling directory boundaries">
+          <label class="tuning-slider">
             <span>Directory Gap</span>
             <input type="range" id="tuning-band-gap" min="8" max="80" step="2" value="28" />
             <output id="tuning-band-gap-value">28</output>
           </label>
-          <label class="tuning-slider" title="How strongly the competition prefers a shorter picture">
+          <label class="tuning-slider">
             <span>Height Cost</span>
             <input type="range" id="tuning-height-cost" min="0" max="40" step="1" value="5" />
             <output id="tuning-height-cost-value">5</output>
           </label>
-          <label class="tuning-slider" title="What each step in a directory's outline costs, in weighted vertical wire pixels: zero gives no preference to fewer steps; higher values favour simpler outlines">
+          <label class="tuning-slider">
             <span>Membrane Simplicity</span>
             <input type="range" id="tuning-membrane-simplicity" min="0" max="1000" step="10" value="200" />
             <output id="tuning-membrane-simplicity-value">200</output>
           </label>
-          <label class="tuning-slider" title="What a difference between the tops of a directory's cards in neighbouring columns costs, in wires per pixel: at zero each card stands where its wires are shortest; higher, the cards stand in rows">
+          <label class="tuning-slider">
             <span>Row Levelness</span>
-            <input type="range" id="tuning-row-levelness" min="0" max="5" step="0.25" value="0.25" />
-            <output id="tuning-row-levelness-value">0.25</output>
+            <input type="range" id="tuning-row-levelness" min="0" max="5" step="0.25" value="2" />
+            <output id="tuning-row-levelness-value">2</output>
           </label>
           <label class="tuning-slider">
             <span>Hover Dim (Symbols)</span>
@@ -132,27 +160,27 @@
             <input type="range" id="tuning-hover-dim-connections" min="0.1" max="0.8" step="0.05" value="0.1" />
             <output id="tuning-hover-dim-connections-value">0.1</output>
           </label>
-          <label class="tuning-slider" title="How far beyond the card's edge a self-reference's lace sweeps before it turns back">
+          <label class="tuning-slider">
             <span>Lace Reach</span>
             <input type="range" id="tuning-lace-reach" min="4" max="40" step="1" value="18" />
             <output id="tuning-lace-reach-value">18</output>
           </label>
-          <label class="tuning-slider" title="How far along the card's edge from its pin's row a lace comes back, toward its partner's row, where the card's edge cuts it">
+          <label class="tuning-slider">
             <span>Lace Curl</span>
             <input type="range" id="tuning-lace-curl" min="2" max="30" step="1" value="12" />
             <output id="tuning-lace-curl-value">12</output>
           </label>
-          <label class="tuning-slider" title="A lace's width where it leaves the pin">
+          <label class="tuning-slider">
             <span>Lace Width</span>
             <input type="range" id="tuning-lace-width" min="1" max="6" step="0.5" value="2.5" />
             <output id="tuning-lace-width-value">2.5</output>
           </label>
-          <label class="tuning-slider" title="How much a lace thins by the card's edge">
+          <label class="tuning-slider">
             <span>Lace Taper</span>
             <input type="range" id="tuning-self-loop-taper" min="0" max="1" step="0.1" value="0.5" />
             <output id="tuning-self-loop-taper-value">0.5</output>
           </label>
-          <label class="tuning-slider" title="How a card's symbol rows stand: where their wires lead, which only the many-file layout can choose; alphabetically; or as the file lists them">
+          <label class="tuning-slider">
             <span>Symbol Order</span>
             <select id="tuning-symbol-order">
               <option value="layout">Layout</option>
@@ -160,34 +188,34 @@
               <option value="appearance">Order of appearance</option>
             </select>
           </label>
-          <label class="tuning-slider" title="How long the picture takes to move from one arrangement to the next, in milliseconds; zero jumps">
+          <label class="tuning-slider">
             <span>Move</span>
             <input type="range" id="tuning-move-ms" min="0" max="1200" step="50" value="450" />
             <output id="tuning-move-ms-value">450</output>
           </label>
-          <label class="tuning-slider" title="Which card stays put on screen while the picture moves around it">
+          <label class="tuning-slider">
             <span>Hold Still</span>
             <select id="tuning-hold-still">
               <option value="click">Last clicked card</option>
               <option value="hover">Last clicked or hovered card</option>
             </select>
           </label>
-          <label class="tuning-slider" title="How many shuffled starts the order step tries before the first picture is drawn, beside the ranking's own order and the previous picture's">
+          <label class="tuning-slider">
             <span>Order Starts</span>
             <input type="range" id="tuning-order-starts" min="0" max="16" step="1" value="2" />
             <output id="tuning-order-starts-value">2</output>
           </label>
-          <label class="tuning-slider" title="How many further starts the search may try after the first picture, one per idle moment, moving to a better one when it clears the churn cost; zero turns the search off">
+          <label class="tuning-slider">
             <span>Search Starts</span>
             <input type="range" id="tuning-search-starts" min="0" max="128" step="4" value="32" />
             <output id="tuning-search-starts-value">32</output>
           </label>
-          <label class="tuning-slider" title="How many starts in a row may fail to better the best picture found before the search rests until the picture changes">
+          <label class="tuning-slider">
             <span>Search Patience</span>
             <input type="range" id="tuning-search-patience" min="1" max="32" step="1" value="8" />
             <output id="tuning-search-patience-value">8</output>
           </label>
-          <label class="tuning-slider" title="What one pair of cards swapped against the picture on screen costs when a start is priced, in pixels of wire; zero moves to any better picture">
+          <label class="tuning-slider">
             <span>Churn Cost</span>
             <input type="range" id="tuning-churn-cost" min="0" max="400" step="10" value="100" />
             <output id="tuning-churn-cost-value">100</output>
@@ -195,81 +223,90 @@
         </details>
         <details class="tuning-subsection" data-tuning-perspective="3d">
           <summary class="subsection-label">3D Layout</summary>
-          <label class="tuning-slider" title="Preferred surface gap for two files connected by one documented reference">
-            <span>Link Gap</span><input type="range" id="tuning-force-link-gap" min="8" max="200" step="2" value="60" />
-            <output id="tuning-force-link-gap-value">60</output>
-          </label>
-          <label class="tuning-slider" title="How strongly files repel one another">
-            <span>Repulsion</span><input type="range" id="tuning-force-charge" min="0" max="300" step="5" value="60" />
-            <output id="tuning-force-charge-value">60</output>
-          </label>
-          <label class="tuning-slider" title="Additional clearance between sphere surfaces">
-            <span>Clearance</span><input type="range" id="tuning-force-collision-gap" min="0" max="20" step="0.5" value="5" />
-            <output id="tuning-force-collision-gap-value">5</output>
-          </label>
-          <label class="tuning-slider" title="How much additional documented coupling reduces the preferred gap, with diminishing returns; independent of packing presets">
-            <span>Coupling</span><input type="range" id="tuning-force-coupling" min="0" max="3" step="0.1" value="1" />
-            <output id="tuning-force-coupling-value">1</output>
-          </label>
-          <label class="tuning-slider" title="Radius of a file with no public symbols; independent of packing presets">
-            <span>Base Radius</span><input type="range" id="tuning-force-node-size" min="1" max="10" step="0.25" value="4" />
-            <output id="tuning-force-node-size-value">4</output>
-          </label>
-          <label class="tuning-slider" title="Growth of sphere volume with exposed symbols: zero gives equal sizes, one gives a cube-root radius; independent of packing presets">
-            <span>Symbol Scaling</span><input type="range" id="tuning-force-symbol-scale" min="0" max="2" step="0.1" value="1" />
-            <output id="tuning-force-symbol-scale-value">1</output>
-          </label>
-          <label class="tuning-slider" title="How much node sizes resist zoom: 0 keeps perspective, 1 keeps screen size constant, and values between soften the change. Node positions stay fixed.">
-            <span>Node Zoom Resistance</span><input type="range" id="tuning-force-node-zoom-resistance" min="0" max="1" step="0.05" value="0.3" />
-            <output id="tuning-force-node-zoom-resistance-value">0.3</output>
-          </label>
-          <label class="tuning-slider" title="Baseline wire diameter, weighted by documented reference count. With full zoom resistance this is in screen pixels; with none it is in layout units.">
-            <span>Wire Thickness</span><input type="range" id="tuning-force-link-width" min="0.1" max="4" step="0.1" value="1" />
-            <output id="tuning-force-link-width-value">1</output>
-          </label>
-          <label class="tuning-slider" title="How much wire widths resist zoom: 0 keeps perspective, 1 keeps screen width constant, and values between soften the change. Node positions stay fixed.">
-            <span>Wire Zoom Resistance</span><input type="range" id="tuning-force-wire-zoom-resistance" min="0" max="1" step="0.05" value="0.9" />
-            <output id="tuning-force-wire-zoom-resistance-value">0.9</output>
-          </label>
-          <label class="tuning-slider" title="How strongly every sphere is drawn toward the picture's centre, so that clusters pushed apart by a change come back; zero is no pull">
-            <span>Gravity</span><input type="range" id="tuning-force-gravity" min="0" max="0.3" step="0.005" value="0.025" />
-            <output id="tuning-force-gravity-value">0.025</output>
-          </label>
-          <label class="tuning-slider" title="How far a sphere's repulsion reaches, in layout units; zero is unbounded">
-            <span>Repulsion Reach</span><input type="range" id="tuning-force-charge-range" min="0" max="1000" step="10" value="0" />
-            <output id="tuning-force-charge-range-value">0</output>
-          </label>
-          <label class="tuning-slider" title="How far the repulsion may be approximated to keep a large picture quick: 0 sums every pair of spheres exactly; larger is faster and less exact">
-            <span>Approximation</span><input type="range" id="tuning-force-approximation" min="0" max="0.5" step="0.05" value="0.3" />
-            <output id="tuning-force-approximation-value">0.3</output>
-          </label>
-          <label class="tuning-slider" title="Scales the spring pull between connected spheres; larger values pull more strongly toward their preferred gap, and zero disables that pull">
-            <span>Spring Strength</span><input type="range" id="tuning-force-link-strength" min="0" max="2" step="0.05" value="0.5" />
-            <output id="tuning-force-link-strength-value">0.5</output>
-          </label>
-          <label class="tuning-slider" title="How hard a change to what is shown moves the picture: at 1 with the full forces, at a fraction more gently and for longer, at 0 the new spheres are placed and nothing moves">
-            <span>Update Energy</span><input type="range" id="tuning-force-update-energy" min="0" max="1" step="0.01" value="1" />
-            <output id="tuning-force-update-energy-value">1</output>
-          </label>
-          <label class="tuning-slider" title="How strongly each sphere is held to where it stood when the picture last began to move: more keeps your bearings and comes to rest sooner; 0 leaves the forces alone to decide">
-            <span>Tether</span><input type="range" id="tuning-force-tether" min="0" max="0.1" step="0.001" value="0.02" />
-            <output id="tuning-force-tether-value">0.02</output>
-          </label>
-          <label class="tuning-slider" title="How hard a document's citation of a file pulls the two together, as a share of a documented reference's spring; zero draws the line and moves nothing">
-            <span>Citing Pull</span><input type="range" id="tuning-force-cited-by-pull" min="0" max="1" step="0.05" value="1" />
-            <output id="tuning-force-cited-by-pull-value">1</output>
-          </label>
+          <details class="tuning-subsection" open>
+            <summary class="subsection-label">Forces</summary>
+            <label class="tuning-slider">
+              <span>Repulsion</span><input type="range" id="tuning-force-charge" min="0" max="300" step="5" value="60" />
+              <output id="tuning-force-charge-value">60</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Spring Strength</span><input type="range" id="tuning-force-link-strength" min="0" max="2" step="0.05" value="0.5" />
+              <output id="tuning-force-link-strength-value">0.5</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Gravity</span><input type="range" id="tuning-force-gravity" min="0" max="0.3" step="0.005" value="0.025" />
+              <output id="tuning-force-gravity-value">0.025</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Tether</span><input type="range" id="tuning-force-tether" min="0" max="0.1" step="0.001" value="0.02" />
+              <output id="tuning-force-tether-value">0.02</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Citing Pull</span><input type="range" id="tuning-force-cited-by-pull" min="0" max="1" step="0.05" value="1" />
+              <output id="tuning-force-cited-by-pull-value">1</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Repulsion Reach</span><input type="range" id="tuning-force-charge-range" min="0" max="1000" step="10" value="0" />
+              <output id="tuning-force-charge-range-value">0</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Update Energy</span><input type="range" id="tuning-force-update-energy" min="0" max="1" step="0.01" value="1" />
+              <output id="tuning-force-update-energy-value">1</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Approximation</span><input type="range" id="tuning-force-approximation" min="0" max="0.5" step="0.05" value="0.3" />
+              <output id="tuning-force-approximation-value">0.3</output>
+            </label>
+          </details>
+          <details class="tuning-subsection" open>
+            <summary class="subsection-label">Spacing</summary>
+            <label class="tuning-slider">
+              <span>Link Gap</span><input type="range" id="tuning-force-link-gap" min="8" max="200" step="2" value="60" />
+              <output id="tuning-force-link-gap-value">60</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Coupling</span><input type="range" id="tuning-force-coupling" min="0" max="3" step="0.1" value="1" />
+              <output id="tuning-force-coupling-value">1</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Clearance</span><input type="range" id="tuning-force-collision-gap" min="0" max="20" step="0.5" value="5" />
+              <output id="tuning-force-collision-gap-value">5</output>
+            </label>
+          </details>
+          <details class="tuning-subsection" open>
+            <summary class="subsection-label">Appearance</summary>
+            <label class="tuning-slider">
+              <span>Base Radius</span><input type="range" id="tuning-force-node-size" min="1" max="10" step="0.25" value="4" />
+              <output id="tuning-force-node-size-value">4</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Symbol Scaling</span><input type="range" id="tuning-force-symbol-scale" min="0" max="2" step="0.1" value="1" />
+              <output id="tuning-force-symbol-scale-value">1</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Wire Thickness</span><input type="range" id="tuning-force-link-width" min="0.1" max="4" step="0.1" value="1" />
+              <output id="tuning-force-link-width-value">1</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Node Zoom Resistance</span><input type="range" id="tuning-force-node-zoom-resistance" min="0" max="1" step="0.05" value="0.3" />
+              <output id="tuning-force-node-zoom-resistance-value">0.3</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Wire Zoom Resistance</span><input type="range" id="tuning-force-wire-zoom-resistance" min="0" max="1" step="0.05" value="0.9" />
+              <output id="tuning-force-wire-zoom-resistance-value">0.9</output>
+            </label>
+          </details>
         </details>
         <details class="tuning-subsection" data-tuning-perspective="3d">
           <summary class="subsection-label">History</summary>
-          <label class="tuning-slider" title="How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap">
+          <label class="tuning-slider">
             <span>Axis</span>
             <select id="tuning-history-axis">
-              <option value="steps">By step</option>
               <option value="time">By date</option>
+              <option value="steps">By step</option>
             </select>
           </label>
-          <label class="tuning-slider" title="Which ticks the scrubber draws and the step key moves between: every step, one per day, week or month, or the salient steps alone; automatic chooses by the number of steps">
+          <label class="tuning-slider">
             <span>Ticks</span>
             <select id="tuning-history-granularity">
               <option value="auto">Automatic</option>
@@ -280,7 +317,7 @@
               <option value="salient">Salient only</option>
             </select>
           </label>
-          <label class="tuning-slider" title="How many steps play passes in a second">
+          <label class="tuning-slider">
             <span>Play Rate</span><input type="range" id="tuning-history-play-rate" min="0.5" max="10" step="0.5" value="2" />
             <output id="tuning-history-play-rate-value">2</output>
           </label>
@@ -288,34 +325,6 @@
         <button id="export-layout-settings" type="button" class="tuning-export">Export layout settings</button>
       </div>
     </details>
-
-    <!-- Legend -->
-    <section id="map-legend" class="sidebar-section" aria-labelledby="map-legend-title">
-      <div id="map-legend-title" class="section-label">Legend</div>
-      <div id="local-legend">
-        <div class="legend-row">
-          <span class="legend-swatch legend-swatch--outbound"></span>
-          <span>Wire from what offers</span>
-        </div>
-        <div class="legend-row">
-          <span class="legend-swatch legend-swatch--inbound"></span>
-          <span>Wire to what uses</span>
-        </div>
-        <div class="legend-row">
-          <span class="legend-symbol legend-symbol--outbound"></span>
-          <span>Offers</span>
-        </div>
-        <div class="legend-row">
-          <span class="legend-symbol legend-symbol--inbound"></span>
-          <span>Uses</span>
-        </div>
-        <div class="legend-row">
-          <span class="legend-shadow"></span>
-          <span>Test-backed</span>
-        </div>
-      </div>
-      <div id="spatial-legend" role="list" aria-label="3D map encodings"></div>
-    </section>
 
     <!-- Stats (at bottom) -->
     <div id="context-bar" class="sidebar-section sidebar-footer">

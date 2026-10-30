@@ -7,6 +7,7 @@
 
 import { applyLayoutPreset, layoutPresetOf, layoutSettingsOf } from "../layout-presets";
 import type { ExplorerState } from "../types";
+import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
 export type TuningChangeCallback = () => void;
@@ -27,6 +28,7 @@ export interface TuningPanelConfig {
  */
 export function initTuningPanel(config: TuningPanelConfig): () => void {
   const { state, onTuningChange: persistChange, onRender, drawLocalConnections } = config;
+  describeTuningControls();
   const presetButtons = document.querySelectorAll<HTMLButtonElement>("[data-layout-preset]");
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
@@ -287,4 +289,29 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     setTimeout(() => URL.revokeObjectURL(url), 0);
   });
   return syncTuningControlsFromState;
+}
+
+/**
+ * Give every tuning control its sentence from {@link TUNING_HELP}: as the tooltip of the control and of its label, for a
+ * pointer, and in a visually hidden element beside the label that the control names by `aria-describedby`, for a screen
+ * reader. The element stands outside the label so that the sentence describes the control without joining its name.
+ */
+function describeTuningControls(): void {
+  for (const [id, sentence] of Object.entries(TUNING_HELP)) {
+    const control = document.getElementById(id);
+    if (!control) continue;
+    const label = control.closest<HTMLElement>(".tuning-slider");
+    const helpId = tuningHelpId(id);
+    let help = document.getElementById(helpId);
+    if (!help) {
+      help = document.createElement("span");
+      help.id = helpId;
+      help.className = "visually-hidden";
+      (label ?? control).after(help);
+    }
+    help.textContent = sentence;
+    control.title = sentence;
+    if (label) label.title = sentence;
+    control.setAttribute("aria-describedby", helpId);
+  }
 }

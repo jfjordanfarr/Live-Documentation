@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-22T16:47:54.608Z
+- Generated At: 2026-10-30T16:33:48.060Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ Connects the Local Map’s shared packing presets and advanced geometry controls
 - Gravity and Repulsion Reach (2026-10-17) join the 3D packing sliders, persisted and shared like them; a change reconfigures the forces and reheats the picture as the other 3D sliders do ([the October 17 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-5)).
 - Approximation (2026-10-28) joins the 3D sliders as `tuning-force-approximation`, persisted and shared like them: how far the repulsion may be approximated, zero the exact sum. Like the other force sliders it is in the settings that rebuild the field, so a change unfolds the picture at full strength.
 - Update Energy (2026-10-18, ticket C2 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)) is wired like the other 3D sliders and re-renders the view as they do, but it changes no force: the 3D view leaves it out of the settings that reheat the picture, so moving it stirs nothing, and the value takes effect at the next change of what is shown.
+- Every control's help (2026-10-30) comes from the table in [tuning-levers.ts](tuning-levers.ts.mdmd.md): `describeTuningControls` writes each sentence into the control's and its label's `title` and into a visually hidden element after the label that the control names by `aria-describedby`. The element stands outside the label so that the sentence does not join the control's accessible name, which the browser computes from the label's text.
 
 The shared Compact/Relaxed selector applies both representations’ packing values. Manual packing changes read as Custom; coupling and size controls survive preset selection. The active perspective’s advanced group opens on a perspective change while either group remains available manually. The returned sync callback keeps controls accurate after navigation. Layout settings can be exported as JSON; the application persists and shares changes and takes over any unfinished camera fit before re-layout. This supports [the shared-preset design](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
@@ -40,28 +41,28 @@ Wire Thickness and the independent Node/Wire Zoom Resistance sliders are persist
 ### Public Symbols
 #### `TuningChangeCallback` {#symbol-tuningchangecallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L12)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L13)
 
 ##### `TuningChangeCallback` — Summary
 Callback for when tuning values change
 
 #### `RenderCallback` {#symbol-rendercallback}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L15)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L16)
 
 ##### `RenderCallback` — Summary
 Callback for when the current view needs to re-render
 
 #### `TuningPanelConfig` {#symbol-tuningpanelconfig}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L19)
 
 ##### `TuningPanelConfig` — Summary
 Tuning panel configuration
 
 #### `initTuningPanel` {#symbol-inittuningpanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L28)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning.ts#L29)
 - Parameters: `config`: [`TuningPanelConfig`](#symbol-tuningpanelconfig)
 
 ##### `initTuningPanel` — Summary
@@ -73,6 +74,8 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`layout-presets.applyLayoutPreset`](../layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`layout-presets.layoutPresetOf`](../layout-presets.ts.mdmd.md#symbol-layoutpresetof)
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
+- [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
+- [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
