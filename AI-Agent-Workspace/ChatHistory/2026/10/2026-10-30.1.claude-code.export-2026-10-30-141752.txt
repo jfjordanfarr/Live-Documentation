@@ -2448,4 +2448,385 @@ output" completed (exit code 0)
 
 ● The rerun has finished. Reading its errors now.
 
+  Searched for 2 patterns, read 2 files, ran 9 shell commands (ctrl+o to expand)
+
+● The seven failures all sit in the test code: five old assertions wrongly
+  assumed centre-to-centre wires and no direction row, and two new wire checks
+  used a path running the wrong way and a hover point under a sphere. I'm fixing
+  the specs now. · summary
+
+  Listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Rerun the seven browser tests after the spec fixes"
+completed (exit code 0)
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● The four spec files are running in the background. Meanwhile I am looking at
+  the one conflict the tuning merge will raise.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The four spec files are still running; the tuning merge's only conflict is two
+  neighbouring lines in the history document, which I will resolve by keeping
+  both sides. I will pick up when the run reports.
+
+● Background command "Run the four changed spec files whole, since the line
+numbers moved" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 25 checks in the four spec files are green. Regenerating the docs, then
+  committing the wires pass.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Pass B is committed to main, and the only thing left uncommitted is the
+  owner's export, re-saved at 17:29 with my later messages appended. I'm
+  recording that file's new hash next, then landing the tuning change. · summary
+
+  Searched for 2 patterns, ran 9 shell commands (ctrl+o to expand)
+
+● The tuning branch is merged with its one conflict resolved, the tree builds
+  and 1,499 unit tests pass. Building the bundles so the browser checks and my
+  own look can run against them.
+
+  Read 3 files, ran 9 shell commands (ctrl+o to expand)
+
+● The template reads "Row Levelness"; my eye misread the small type. While the
+  specs run, I am reading the builders' own specs to playtest their journeys by
+  eye on main's build.
+
+  Searched for 1 pattern, read 16 files, ran 3 shell commands (ctrl+o to expand)
+
+● The history, search and inventory pieces look right on inspection, but
+  pressing Home on the scrubber with a path open did not move it. I'm running
+  the builder's spec for that journey and a probe to see which side is wrong.
+  · summary
+
   Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the specs that touch the tuning block, the legend and
+the 3D levers" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All 33 checks pass and the probe shows the scrubber's Home key works; my
+  capture script had pressed it before the scrubber settled at today. Landing
+  the tuning piece now.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Run the history panel spec on main's bundle" completed
+(exit code 0)
+
+  Searched for 3 patterns, read 1 file, ran 7 shell commands (ctrl+o to expand)
+
+● The full gate is running in the background (about 37 minutes). While it runs I
+  am reading the code sites for pass C, the labels and controls, so I can build
+  it the moment the gate is through.
+
+  Searched for 5 patterns, read 2 files, ran 14 shell commands (ctrl+o to expand)
+
+● The gate is still running. Checking which phase it is in, since product-source
+  edits are safe only once its build and bundle steps are past.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The pass C plan is written down. Everything else waits for the gate's bundle
+  build to finish, which I am watching.
+
+● Background command "Wait until the gate has built its three bundles so source
+edits are safe" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The gate's bundles are built and its browser run is underway, so the product
+  sources can now be edited. I'm working on pass C next, covering the seams,
+  counts, hint, toolbar groups, icons, header, and tooltip obstacle. · summary
+
+  Searched for 1 pattern, ran 8 shell commands (ctrl+o to expand)
+
+● Pass C's source edits are in and the seams unit tests pass. Now checking when
+  the 3D names are re-placed, and drafting the browser spec in the scratchpad
+  until the gate frees the test folder.
+
+  Made 1 scratchpad edit +126, searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Pass C is built in source and checkpointed. The remaining steps, the browser
+  spec, the bundle build and the look by eye, wait for the gate's browser run to
+  finish.
+● Background command "Run the full pre-commit chain with the browser suite over
+the day's landings" completed (exit code 0)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The gate passed every phase but three browser checks: two are the known 3D
+  settle timeouts that fell while my unit and lint runs loaded the machine, and
+  one is the 2D layout's idle-time search. I am rerunning all three alone on the
+  same bundles before touching them.
+
+● Background command "Rerun the three failing spec files alone on the gate's
+bundles" completed (exit code 0)
+
+  Read 3 files, ran 4 shell commands (ctrl+o to expand)
+
+● The two 3D failures come from the large repository scene not settling in time,
+  both alone and in the gate, so the fault is real. I'm now measuring settle
+  time and frame rate on the current bundle against the pre-pass-B bundle in the
+  side worktree. · summary
+
+  Listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● The hybrids show that today's data, not the code, makes the large scene take
+  about a quarter more ticks to settle. I'm now isolating the 2D search failure
+  the same way and finishing the shared test helper for pass C. · summary
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Run the idle-time search check against old code with new
+data and new code with old data" completed (exit code 0)
+
+  Searched for 1 pattern, read 7 files, ran 6 shell commands (ctrl+o to expand)
+
+● The hint still shows only because the estate sample's bundle was never rebuilt
+  after the edit. Regenerating the docs and rebuilding all three bundles, and
+  recording what the hybrids proved.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Price the layout search's starts on the five-file scope
+with today's data" completed (exit code 0)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The new files have no docs yet because the generator documents tracked files
+  only; once the bundle build finishes I will add them, regenerate, author their
+  Purpose and Notes, then run the lab's pricing and the new spec.
+
+● Background command "Regenerate the docs and rebuild the repository, estate and
+history bundles with pass C" completed (exit code 0)
+
+  Read 3 files, ran 7 shell commands (ctrl+o to expand)
+
+● Background command "Run the labels-and-controls spec and a disposable spec
+that pictures the wire tooltip" completed (exit code 0)
+
+● Background command "Capture the five-file scope from the page and price the
+search's starts" completed (exit code 0)
+
+● Unit tests, type-check and lint are green with pass C. Reading the new spec's
+  result and the lab's pricing of the search starts.
+
+  Searched for 3 patterns, read 3 files, ran 9 shell commands (ctrl+o to expand)
+
+● Background command "Price the search's starts on the three other deck scopes"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The lab shows the premise holds on the estate sample but not on this
+  repository's shifting five-file scope. I'm locating the estate scope's files
+  so the test can rest on fixed data, and keeping the lab reports. · summary
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Background command "Let the seams check allow a segment wider than its box to
+break, then rerun the spec" completed (exit code 0)
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Fix the leading rule and the count filter, rebuild the two
+bundles and rerun the spec" completed (exit code 0)
+
+● Reading the labels spec's third run, then running the search spec on the
+  estate.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Run the search spec with its first test on the estate"
+completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Waiting on the spec's rerun. Meanwhile, loading the task-stop tool and listing
+  the servers I started today so the cleanup can follow the commits.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Stop Task
+  ⎿  python3 -m http.server 8901 --bind 127.0.0.1 --directory
+     /workspaces/Live-Documentation/dist/explorer · stopped
+
+● Stop Task
+  ⎿  H=/tmp/claude-1000/-workspaces-Live-Documentation/568d7099-841e-461b-b
+     eed-faa7a0581991/scratchpad/hybrids && rm -rf "$H" && mkdir -p
+     "$H/new-code-old-data" "$H/… · stopped
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+● The search check's move to the estate is committed. The remaining step before
+  the reply is pass C's commit, which waits on its spec's rerun in the
+  background.
+
+● Background command "Replace the count check, regenerate the docs, rebuild the
+repository bundle and rerun the spec" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Run the wires spec with the shared stroke helper"
+completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The day's work is landed and the tree is clean. Here is where things stand and
+  the forks that need your eye.
+
+  Outcome. All seven checklist items are built, looked at by eye, held by
+  browser checks, and ticked in the Explorer document with evidence. Main holds
+  eleven commits since this morning, the last being pass C. The day's full gate
+  passed every phase except three browser checks, described below. No threshold
+  was raised anywhere.
+
+  What landed, in order.
+  - Pass A, the 2D arrival framing: the picture framed whole at reading size, a
+    tall or wide picture started at its top or left with a shadow at each edge
+    it continues past, the open reader kept out of the frame, and a slide into
+    frame after a return from 3D.
+  - The history panel, search and reader, and inventory pieces from the three
+    builders, each walked by me on main afterwards.
+  - Pass B, the 3D wires: each wire coloured from the file that uses (green) to
+    the file that offers (blue), ends at the spheres' drawn surfaces, drawn
+    before the spheres with depth so faded spheres cut nothing, a path at full
+    strength and double width, and a key that says only what is drawn. Seven
+    older checks had assumed wires meet at sphere centres; they now say the
+    surface rule.
+  - Tuning: the legend above Tuning, the 3D levers under Forces, Spacing and
+    Appearance, a one-sentence tooltip and screen-reader description on all 43
+    controls, nothing drawn on screen.
+  - Pass C, labels and controls: names wrap only at seams of their own (slashes,
+    dots, hyphens, underscores, camel humps), counts stay with their units and
+    read "+1 symbol", the "Left-click: rotate" hint is gone with nothing in its
+    place, the toolbar's buttons stand in groups parted by rules with the
+    pressed one filled, Knowledge Sources and Local Map have icons, the
+    sidebar's name is whole, and the wire tooltip pushes the 3D names aside.
+
+  Pictures for every pass are under Screenshots/2026-10-30
+  (AI-Agent-Workspace/Screenshots/2026-10-30/README.md).
+
+  The gate's three failures. All three reproduce alone, so none was load. Two
+  hybrid bundles (today's code over this morning's docs, and the reverse) showed
+  every failure follows the data, not the code. The repository's own growth did
+  it: the 3D picture with tests now needs 592 ticks to come to rest against 472
+  this morning, and the software renderer gives about nine ticks a second, so
+  the settle takes 65 seconds against the specs' 60. The 2D search check's
+  premise, that a seeded start beats the ranking's order on five of this
+  repository's files, no longer held on today's docs; the lab confirmed it, and
+  that check now holds its claim on the estate sample, whose docs do not drift.
+  Committed.
+
+  Fork for you: the two 3D timeouts. The engine ticks once per rendered frame,
+  so a settle's length in seconds is the frame rate's, and it will keep growing
+  with the repository. My recommendation is to tick on wall time: as many ticks
+  per frame as a 60-per-second schedule asks, capped, so a slow renderer skips
+  frames instead of stretching the motion. On a fast machine nothing changes; on
+  a slow one the motion is shorter and coarser. The alternatives are bounding
+  the settle in ticks the specs already count, or shrinking the scene they hold.
+  I did not pick one.
+
+  Smaller forks, all pictured or noted in the record.
+  - Sphere silhouettes at twelve segments, a close-up under the 3D wires
+    pictures: raise the count only if your eye says so.
+  - The dark search rectangle reproduces only headless; every repair routes
+    around the browser, so it is left.
+  - The tuning builder's calls: Base Radius and Symbol Scaling under Appearance,
+    lace sliders left in 2D Layout, Export still a text button, one unused CSS
+    variable.
+  - Noticed and not fixed: the World Map's tier text at 2.9 to 1 on white,
+    search group headings at 10 px, the reader's dependency list showing symbol
+    slugs, and the root overview's left columns starting well below the right
+    one.
+
+  Next is item 2, the Structure repair, which I will plan in the chat before
+  building.
+
+● The day's work is landed and the tree is clean. Here is where things stand and
+  the forks that need your eye.
+
+  Outcome. All seven checklist items are built, looked at by eye, held by
+  browser checks, and ticked in the Explorer document with evidence. Main holds
+  eleven commits since this morning, the last being pass C. The day's full gate
+  passed every phase except three browser checks, described below. No threshold
+  was raised anywhere.
+
+  What landed, in order.
+  - Pass A, the 2D arrival framing: the picture framed whole at reading size, a
+    tall or wide picture started at its top or left with a shadow at each edge
+    it continues past, the open reader kept out of the frame, and a slide into
+    frame after a return from 3D.
+  - The history panel, search and reader, and inventory pieces from the three
+    builders, each walked by me on main afterwards.
+  - Pass B, the 3D wires: each wire coloured from the file that uses (green) to
+    the file that offers (blue), ends at the spheres' drawn surfaces, drawn
+    before the spheres with depth so faded spheres cut nothing, a path at full
+    strength and double width, and a key that says only what is drawn. Seven
+    older checks had assumed wires meet at sphere centres; they now say the
+    surface rule.
+  - Tuning: the legend above Tuning, the 3D levers under Forces, Spacing and
+    Appearance, a one-sentence tooltip and screen-reader description on all 43
+    controls, nothing drawn on screen.
+  - Pass C, labels and controls: names wrap only at seams of their own (slashes,
+    dots, hyphens, underscores, camel humps), counts stay with their units and
+    read "+1 symbol", the "Left-click: rotate" hint is gone with nothing in its
+    place, the toolbar's buttons stand in groups parted by rules with the
+    pressed one filled, Knowledge Sources and Local Map have icons, the
+    sidebar's name is whole, and the wire tooltip pushes the 3D names aside.
+
+  Pictures for every pass are under Screenshots/2026-10-30
+  (AI-Agent-Workspace/Screenshots/2026-10-30/README.md).
+
+  The gate's three failures. All three reproduce alone, so none was load. Two
+  hybrid bundles (today's code over this morning's docs, and the reverse) showed
+  every failure follows the data, not the code. The repository's own growth did
+  it: the 3D picture with tests now needs 592 ticks to come to rest against 472
+  this morning, and the software renderer gives about nine ticks a second, so
+  the settle takes 65 seconds against the specs' 60. The 2D search check's
+  premise, that a seeded start beats the ranking's order on five of this
+  repository's files, no longer held on today's docs; the lab confirmed it, and
+  that check now holds its claim on the estate sample, whose docs do not drift.
+  Committed.
+
+  Fork for you: the two 3D timeouts. The engine ticks once per rendered frame,
+  so a settle's length in seconds is the frame rate's, and it will keep growing
+  with the repository. My recommendation is to tick on wall time: as many ticks
+  per frame as a 60-per-second schedule asks, capped, so a slow renderer skips
+  frames instead of stretching the motion. On a fast machine nothing changes; on
+  a slow one the motion is shorter and coarser. The alternatives are bounding
+  the settle in ticks the specs already count, or shrinking the scene they hold.
+  I did not pick one.
+
+  Smaller forks, all pictured or noted in the record.
+  - Sphere silhouettes at twelve segments, a close-up under the 3D wires
+    pictures: raise the count only if your eye says so.
+  - The dark search rectangle reproduces only headless; every repair routes
+    around the browser, so it is left.
+  - The tuning builder's calls: Base Radius and Symbol Scaling under Appearance,
+    lace sliders left in 2D Layout, Export still a text button, one unused CSS
+    variable.
+  - Noticed and not fixed: the World Map's tier text at 2.9 to 1 on white,
+    search group headings at 10 px, the reader's dependency list showing symbol
+    slugs, and the root overview's left columns starting well below the right
+    one.
+
+  Next is item 2, the Structure repair, which I will plan in the chat before
+  building.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/568d7099-841e-461
+     b-beed-faa7a0581991/tasks/bjl5ms1m7.output (8 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/568d7099-841e-461
+     b-beed-faa7a0581991/scratchpad/search-hybrids.log (11 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/568d7099-841e-461
+     b-beed-faa7a0581991/scratchpad/labels-and-controls.spec.ts (126 lines)
+  ⎿  Referenced file tests/e2e/force-graph-wires.spec.ts
+  ⎿  Referenced file tests/e2e/force-graph-observation.ts
