@@ -133,7 +133,7 @@ test("the control opens a scrubber with one tick per step and the panel says wha
   await expect(panel(page).locator(".history-step-meta code")).toHaveText(commits[last].id.slice(0, 8));
   await expect(group(page, "Content changed, shape kept").locator("summary .history-count")).toHaveText("1");
   await expect(group(page, "Content changed, shape kept").locator("li button")).toHaveText("model.ts");
-  await expect(group(page, "Born")).toHaveCount(0);
+  await expect(group(page, "Created")).toHaveCount(0);
 
   // The open scrubber takes the bottom: the controls and the tray stand above it.
   const scrubber = (await page.locator(".history-scrubber").boundingBox())!;
@@ -152,7 +152,7 @@ test("the keys walk the steps: a renamed file and its directory's hub keep their
   await openHistory(page);
   await track(page).focus();
 
-  // Home: the beginning, the base's snapshot in full, nothing born.
+  // Home: the beginning, the base's snapshot in full, nothing created.
   await page.keyboard.press("Home");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
   await settled(page);
@@ -200,7 +200,7 @@ test("the keys walk the steps: a renamed file and its directory's hub keep their
   await audit(page, "the rename step");
 });
 
-test("a death is shown as a death, the panel says gone since, and a born file that stands today is a link that pins it", async ({ page }) => {
+test("a deletion is shown as a death, the panel says gone since, and a created file that stands today is a link that pins it", async ({ page }) => {
   const commits = await commitsOf(page, "/samples/history/");
   await observeGraph(page);
   await page.goto(entry("/samples/history/"));
@@ -209,11 +209,11 @@ test("a death is shown as a death, the panel says gone since, and a born file th
 
   // Step 3: big.ts rewritten below the threshold is a death and a birth; huge.ts stands today.
   await stepTo(page, 3);
-  const born = group(page, "Born").locator("li");
+  const born = group(page, "Created").locator("li");
   await expect(born).toHaveCount(1);
   await expect(born.locator("button")).toHaveText("huge.ts");
   await expect(born).toContainText("implementation, 2 symbols");
-  const dead = group(page, "Dead").locator("li");
+  const dead = group(page, "Deleted").locator("li");
   await expect(dead).toHaveCount(1);
   await expect(dead.locator(".history-file-name")).toHaveText("big.ts");
   await expect(dead.locator("button")).toHaveCount(0);
@@ -225,11 +225,11 @@ test("a death is shown as a death, the panel says gone since, and a born file th
   // Step 4: the legacy helper retired; its sphere leaves and its wire goes.
   await stepTo(page, 4);
   await expect(panel(page).locator("h2")).toHaveText(commits[4].subject);
-  await expect(group(page, "Dead").locator("li .history-file-name")).toHaveText("legacy.ts");
+  await expect(group(page, "Deleted").locator("li .history-file-name")).toHaveText("legacy.ts");
   await expect(group(page, "Wires removed").locator("li")).toHaveText(/src\/app\/main\.ts\s*to\s*lib\/legacy\.ts/);
   expect(byId(await renderedNodes(page)).has("lib/legacy.ts")).toBe(false);
 
-  // The born file's name pins it today.
+  // The created file's name pins it today.
   await stepTo(page, 3);
   await born.locator("button").click();
   await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
@@ -278,7 +278,7 @@ test("a moment draws the documents its files' authored words linked to then, the
   await audit(page, "a moment's documents with the reader open");
 });
 
-test("a pin whose file is not yet born is said so in the tray and never dropped, and its birth is the one major tick the step key moves to", async ({ page }) => {
+test("a pin whose file is not yet created is said so in the tray and never dropped, and its birth is the one major tick the step key moves to", async ({ page }) => {
   await observeGraph(page);
   await page.goto(entry("/samples/history/"));
   await settled(page);
@@ -296,9 +296,9 @@ test("a pin whose file is not yet born is said so in the tray and never dropped,
   await stepTo(page, 1);
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
   await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
-  await expect(page.locator(".pin-tray-absent")).toHaveText("not yet born");
+  await expect(page.locator(".pin-tray-absent")).toHaveText("not yet created");
   expect(byId(await renderedNodes(page)).has("lib/huge.ts")).toBe(false);
-  await audit(page, "the tray with a pin not yet born");
+  await audit(page, "the tray with a pin not yet created");
   await page.getByRole("button", { name: "Hide pins", exact: true }).click();
 
   // Page Up goes to the birth; Page Down from there back to the beginning, the only stops.
@@ -410,7 +410,7 @@ test("the window's beginning is marked truncated and says why; the whole history
   await page.keyboard.press("Home");
   await settled(page);
   await expect(panel(page).locator(".history-step-note")).toHaveText("The beginning of what is known: 8 files and 8 wires. The export carries the history from this commit on; what came before is not in it.");
-  await expect(group(page, "Born")).toHaveCount(0);
+  await expect(group(page, "Created")).toHaveCount(0);
   // The lane and the ruler start after the band.
   const band = (await mark.boundingBox())!;
   const firstTick = (await page.locator('.history-tick[data-step="0"]').boundingBox())!;

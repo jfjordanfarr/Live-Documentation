@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/scrubber.ts
-- Generated At: 2026-10-22T16:47:54.124Z
+- Generated At: 2026-10-30T14:56:36.791Z
 
 ## Authored
 ### Purpose
@@ -17,33 +17,35 @@ The history's scrubber along the bottom of the 3D Local Map: a track with one ti
 - Since 2026-10-22 ([Turn 9 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-9)) the thumb stands at its step's position in the model, whatever the granularity; its own rule (the step's tick, or else the step's index) misplaced it by date inside a grouped period.
 - Since 2026-10-22 ([Turn 10 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-10)) the pointer reaches three pixels (`POINTER_REACH_PX`) on the axis by date: a tick is one or two pixels wide, and a click on one must choose it.
 
+- Since 2026-10-30 ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) the scrubber carries the step panel's toggle, "Step details", pressed while the panel shows, so that the picture can be seen whole while the scrubber stays; `focusDetails` gives it the focus when the panel's own button hid the panel.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ScrubberState` {#symbol-scrubberstate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L30)
 
 ##### `ScrubberState` — Summary
 What the scrubber draws.
 
 #### `ScrubberOptions` {#symbol-scrubberoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L51)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L54)
 
 ##### `ScrubberOptions` — Summary
 What the scrubber tells.
 
 #### `Scrubber` {#symbol-scrubber}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L62)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L67)
 
 ##### `Scrubber` — Summary
 The scrubber as the control drives it.
 
 #### `createScrubber` {#symbol-createscrubber}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L74)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L83)
 - Returns: [`Scrubber`](#symbol-scrubber)
 - Parameters: `options`: [`ScrubberOptions`](#symbol-scrubberoptions)
 

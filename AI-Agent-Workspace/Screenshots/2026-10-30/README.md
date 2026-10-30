@@ -14,3 +14,7 @@ The October 23 review's findings 2, 9 and 13 in 2D: the picture was centred on o
 - [2d-path-return-after.png](2d-path-return-after.png): the same journey. The subject is held through the motion, then the picture slides the least that brings it into the frame; both cards and their membranes are whole.
 
 The frame now excludes what the open reader covers, which `tests/e2e/local-map-framing.spec.ts` checks with the other three cases; the branches spec checks the hold and the settle of the return.
+
+## The history's step panel
+
+Built by an Opus 5.5 builder under the root's brief and reviewed by the root in these pictures and in the code, for the checklist item "History leaves the map intelligible"; the pictures and their README are in [history-panel/](history-panel/README.md): the full-height panel for a one-line step before, the content-sized panel with its hide button after, the panel hidden with the scrubber staying, and a pinned file said "not yet created" beside the search chip and in the path report at a commit before it existed.

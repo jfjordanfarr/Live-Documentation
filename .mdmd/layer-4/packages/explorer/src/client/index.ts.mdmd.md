@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-10-22T16:47:54.416Z
+- Generated At: 2026-10-30T15:33:56.390Z
 
 ## Authored
 ### Purpose
@@ -34,6 +34,8 @@ Since 2026-10-20 ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026
 
 The October 23 identity/framing pass adds **Fit current scope** to the shared bottom controls, visible only in 3D and disabled during a perspective transition. It invokes the spatial view’s explicit camera recovery without changing selection, pins or the path question; ordinary inspection still leaves the camera alone.
 
+Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) a path, the destination's reach and the references against a path are asked over the ground the picture shows (`history/moment-paths.ts`): today's, or the moment's while the 3D picture shows one, from the moment the history control hands `onMoment`. The path is asked again, and the tray and the search bar told again, at every move of the history and when it closes, before the view draws the moment; the report begins with the commit's date and short hash, an end that does not stand at the moment is reported in the tray's words instead of a path, the search chips and the reader's note say the same absence, and a hop of the strip opens the file as it stands today, a file deleted since doing nothing, as a sphere of the past does.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -60,6 +62,11 @@ _No public symbols detected_
 - [`graph-helpers.resolveLinkEndpoint`](./graph-helpers.ts.mdmd.md#symbol-resolvelinkendpoint)
 - [`history-control.createHistoryControl`](./history/history-control.ts.mdmd.md#symbol-createhistorycontrol)
 - [`history-control.isHistorySequence`](./history/history-control.ts.mdmd.md#symbol-ishistorysequence)
+- [`moment-paths.PathGround`](./history/moment-paths.ts.mdmd.md#symbol-pathground)
+- [`moment-paths.endFiles`](./history/moment-paths.ts.mdmd.md#symbol-endfiles)
+- [`moment-paths.momentGround`](./history/moment-paths.ts.mdmd.md#symbol-momentground)
+- [`moment-paths.reachToday`](./history/moment-paths.ts.mdmd.md#symbol-reachtoday)
+- [`moment-paths.todayGround`](./history/moment-paths.ts.mdmd.md#symbol-todayground)
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
 - [`layout-presets.layoutPresetOf`](./layout-presets.ts.mdmd.md#symbol-layoutpresetof)

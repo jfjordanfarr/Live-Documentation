@@ -473,8 +473,8 @@ function usage(): string {
     `  --at <commit>            From the history, at a commit (a prefix of its id): with --from, whether the\n` +
     `                           file existed and its wires; with --reachable, the walk from that commit's\n` +
     `                           entries. From the shape alone; npm run live-docs:history computes the history.\n` +
-    `  --between <a> <b>        From the history, what changed from commit a to the later commit b: files born,\n` +
-    `                           dead, renamed and resized, wires added and removed. From the shape alone.\n` +
+    `  --between <a> <b>        From the history, what changed from commit a to the later commit b: files created,\n` +
+    `                           deleted, renamed and resized, wires added and removed. From the shape alone.\n` +
     `  --workspace <path>       Workspace root (defaults to current working directory).\n` +
     `  --root <path>            Override liveDocumentation.root.\n` +
     `  --base-layer <name>      Override liveDocumentation.baseLayer.\n` +

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-29T19:49:49.758Z
+- Generated At: 2026-10-30T15:33:57.942Z
 
 ## Authored
 ### Purpose
@@ -52,6 +52,8 @@ The picture enters in pieces, the owner's [October 28 gradual-reveal choice](../
 
 After the first picture, each physics call targets ten milliseconds through the shared motion force's partial-evaluation budget. This is a target for physics work, not a guarantee for a whole frame. An accepted motion substep can move the picture before its complete outer tick finishes; stillness is judged only after complete ticks. Reveal adds a piece per drawn frame, while the headless twin adds one per full tick; those schedules coincide when a tick fits a frame. The [October 28 experiment](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes) found that waiting for whole ticks left T3 half-revealed after four minutes. The October 29 direct renderer preserves that chosen reveal policy and the physical model. Sustained movement and input response, separately from callback counts or screenshots, are the performance evidence required by [the owner's renewed trial](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-8).
 
+- Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) `getPath` gives the path as the picture shown names it, since the application asks it over the moment's wires while a moment is shown; the view no longer follows its files to the moment itself, which named them twice.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -86,14 +88,14 @@ Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L113)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L114)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L136)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L137)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 

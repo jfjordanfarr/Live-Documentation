@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-28T18:35:58.505Z
+- Generated At: 2026-10-30T15:33:59.907Z
 
 ## Authored
 ### Purpose
@@ -35,6 +35,8 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - The Gravity and Spring Strength sliders start at 0.01 and 0.25 since the evening of 2026-10-18, the owner's settings by eye ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-9)).
 
 - Since 2026-10-21 Update Energy defaults to 1, a constant strength rather than a reheat's alpha, and its title says a fraction moves the picture more gently and for longer; Tether (`tuning-force-tether`, 0 to 0.1 by 0.001, 0.01 by default) stands beside it, titled for what it holds ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
+
+- Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) each search field is followed by a hidden span where, while a moment of the history is shown, the bar says that its thing does not stand there.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -129,6 +131,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 #### `search-destination` {#symbol-search-destination}
 - Type: variable
 
+#### `search-destination-absence` {#symbol-search-destination-absence}
+- Type: variable
+
 #### `search-destination-clear` {#symbol-search-destination-clear}
 - Type: variable
 
@@ -139,6 +144,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `search-subject` {#symbol-search-subject}
+- Type: variable
+
+#### `search-subject-absence` {#symbol-search-subject-absence}
 - Type: variable
 
 #### `search-subject-field` {#symbol-search-subject-field}

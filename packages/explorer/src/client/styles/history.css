@@ -34,8 +34,17 @@
 .history-notice { color: var(--text-panel-muted); white-space: nowrap; }
 .history-notice[hidden] { display: none; }
 
-.history-step-panel { position: absolute; left: 18px; top: 18px; bottom: calc(18px + var(--history-room)); width: min(360px, calc(45% - 18px)); z-index: 104; overflow: auto; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text-primary); font-size: 13px; box-shadow: 0 8px 24px #0006; }
+/* The panel is as tall as what it says, never taller than the room between its top margin and the scrubber, where it
+   scrolls inside; a one-line step no longer masks the picture with a full-height panel (2026-10-30). The height is the
+   content's, so the margins, the room, and its own padding and borders (12px and 1px, top and bottom) come off it. */
+.history-step-panel { position: absolute; left: 18px; top: 18px; max-height: calc(100% - 36px - var(--history-room) - 26px); width: min(360px, calc(45% - 18px)); z-index: 104; overflow: auto; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text-primary); font-size: 13px; box-shadow: 0 8px 24px #0006; }
 .history-step-panel[hidden] { display: none; }
+/* The panel's own hide button, at its top right; the subject's words wrap around it. */
+.history-step-hide { float: right; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin: -6px -8px 4px 8px; padding: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-panel-muted); cursor: pointer; }
+.history-step-hide:hover { background: var(--accent-subtle); color: var(--text-primary); }
+.history-step-hide:focus-visible { outline: 2px solid var(--accent); }
+/* The panel ends at its padding: the last words' own bottom margin would leave a gap below them that the top does not have. */
+.history-step-content > :last-child { margin-bottom: 0; }
 .history-step-panel h2 { margin: 0 0 6px; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; }
 .history-step-meta { margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--text-panel-muted); font-size: 12px; }
 .history-step-meta code { font-size: 12px; user-select: all; }

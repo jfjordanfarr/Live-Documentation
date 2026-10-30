@@ -4,6 +4,8 @@
  * only what a path from the newest pin can reach, each row saying how far and which way, and folds the files the
  * words match but no path connects. The bar also owns the path's report in the Local Map: the status line, with the
  * reverse question as a link when the files connect only the other way, and the strip of the drawn path's hops.
+ * While the 3D Local Map shows a moment of the history, a chosen thing that does not stand there is said so, faded,
+ * beside its field, in the pin tray's words, and the report names the commit its path was asked at (2026-10-30).
  */
 
 import { destinationScope, type SearchHit, type SearchIndex, type SearchScope } from "./graph-search";
@@ -16,6 +18,8 @@ import type { PathHop, Reach } from "../pathfind";
 export interface SearchWords {
   name: string;
   context: string;
+  /** Why the thing does not stand at the moment the picture shows, and the moment, for the tooltip; absent when it stands. */
+  absence?: { words: string; moment: string };
 }
 
 /**
@@ -48,8 +52,8 @@ export interface SearchBar {
   sync(subject: SearchWords | null, destination: SearchWords | null, reach: Reach | null, localMapShown: boolean): void;
   /** Draw the strip of a path's hops; an empty path hides it. */
   showPath(hops: readonly PathHop[]): void;
-  /** Write the status line; `tone` colours it. Returns the element so that a link can be appended. */
-  setStatus(text: string, tone: StatusTone): HTMLElement;
+  /** Write the status line; `tone` colours it, and `at` names the commit it was asked at when that is not today. Returns the element so that a link can be appended. */
+  setStatus(text: string, tone: StatusTone, at?: string | null): HTMLElement;
   /** Hide the status and the strip. */
   clearPath(): void;
   focusSubject(): void;
@@ -63,6 +67,8 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   const destinationGroup = requireElement("search-destination-field");
   const destinationInput = requireElement<HTMLInputElement>("search-destination");
   const destinationClear = requireElement<HTMLButtonElement>("search-destination-clear");
+  const subjectAbsence = requireElement("search-subject-absence");
+  const destinationAbsence = requireElement("search-destination-absence");
   const report = requireElement("path-report");
   const status = requireElement("pathfind-status");
   const strip = requireElement("pathfind-path");
@@ -110,6 +116,8 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       destinationInput.title = asked ? asked.context : "";
       destinationInput.classList.toggle("has-selection", !!asked);
       destinationClear.hidden = !asked;
+      sayAbsence(subjectInput, subjectAbsence, newest);
+      sayAbsence(destinationInput, destinationAbsence, asked);
     },
 
     showPath(hops): void {
@@ -156,8 +164,15 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       localMap.classList.add("has-path");
     },
 
-    setStatus(text, tone): HTMLElement {
-      status.textContent = text;
+    setStatus(text, tone, at = null): HTMLElement {
+      status.replaceChildren();
+      if (at) {
+        const moment = document.createElement("span");
+        moment.className = "pathfind-at";
+        moment.textContent = at;
+        status.append(moment, " ");
+      }
+      status.append(text);
       status.className = tone ? `pathfind-status ${tone}` : "pathfind-status";
       status.hidden = false;
       return status;
@@ -175,4 +190,14 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       subject.focus();
     }
   };
+}
+
+/** Say beside a field, faded, that its thing does not stand at the moment shown, the moment on hover and to a screen reader. */
+function sayAbsence(input: HTMLInputElement, element: HTMLElement, words: SearchWords | null): void {
+  const absence = words?.absence;
+  element.hidden = !absence;
+  element.textContent = absence?.words ?? "";
+  element.title = absence?.moment ?? "";
+  if (absence) input.setAttribute("aria-describedby", element.id);
+  else input.removeAttribute("aria-describedby");
 }

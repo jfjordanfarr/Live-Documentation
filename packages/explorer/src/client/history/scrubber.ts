@@ -5,8 +5,9 @@
  * from the tick model, the major and minor ticks drawn apart and the quiet
  * ones faint; a thumb; the ruler of dates beneath; the date and the commit's
  * hash read out beside it, and the date and subject spoken as the slider's
- * value; play and pause as a second control; and the authors toggle, which
- * rides the address. The slider grammar is on the keys: the arrows move a
+ * value; play and pause as a second control; the toggle of the step panel,
+ * which holds while the history is open (2026-10-30); and the authors toggle,
+ * which rides the address. The slider grammar is on the keys: the arrows move a
  * step, Page Up and Page Down between the major ticks, Home and End to the
  * ends. While the thumb drags, the steps it crosses are coalesced into one
  * call per animation frame, so that the thumb never lags the hand; when it
@@ -43,6 +44,8 @@ export interface ScrubberState {
   truncated: string | null;
   playing: boolean;
   authors: { carried: boolean; shown: boolean };
+  /** Whether the step panel shows. */
+  details: boolean;
   /** A word beside the track: the history loading, or a commit the address names that the history lacks. */
   notice: string | null;
 }
@@ -56,6 +59,8 @@ export interface ScrubberOptions {
   onRest(step: number): void;
   onPlay(playing: boolean): void;
   onAuthors(shown: boolean): void;
+  /** Show or hide the step panel. */
+  onDetails(shown: boolean): void;
 }
 
 /** The scrubber as the control drives it. */
@@ -64,8 +69,12 @@ export interface Scrubber {
   sync(state: ScrubberState): void;
   hide(hidden: boolean): void;
   focus(): void;
+  /** Focus the step panel's toggle, as when the panel's own button hid the panel and took the focus with it. */
+  focusDetails(): void;
 }
 
+/** A window with a column of lines down its left side: the step panel beside the picture. */
+const DETAILS_ICON = '<rect x="3.5" y="4.5" width="17" height="15" rx="1.5"/><path d="M9.5 4.5v15M5.5 8.5h2M5.5 11.5h2M5.5 14.5h2"/>';
 const PLAY_ICON = '<path d="M8 5.5v13l10-6.5Z"/>';
 const PAUSE_ICON = '<path d="M8 5.5v13M16 5.5v13"/>';
 const AUTHORS_ICON = '<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/>';
@@ -117,17 +126,22 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   notice.className = "history-notice";
   notice.hidden = true;
 
+  const details = iconButton("Step details", DETAILS_ICON);
+  details.className = "history-details";
+  details.setAttribute("aria-pressed", "true");
+
   const authors = iconButton("Show authors", AUTHORS_ICON);
   authors.className = "history-authors";
   authors.setAttribute("aria-pressed", "false");
 
-  element.append(play, slider, readout, notice, authors);
+  element.append(play, slider, readout, notice, details, authors);
   options.parent.append(element);
 
   let current: ScrubberState | null = null;
   let drawn = "";
 
   play.addEventListener("click", () => { if (current) options.onPlay(!current.playing); });
+  details.addEventListener("click", () => { if (current) options.onDetails(!current.details); });
   authors.addEventListener("click", () => { if (current) options.onAuthors(!current.authors.shown); });
 
   // The keys: a step, a stop, an end; each a rest.
@@ -267,6 +281,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       play.setAttribute("aria-label", state.playing ? "Pause" : "Play");
       play.title = state.playing ? "Pause" : "Play, one step after another";
       play.querySelector("svg")!.innerHTML = state.playing ? PAUSE_ICON : PLAY_ICON;
+      details.setAttribute("aria-pressed", String(state.details));
       authors.hidden = !state.authors.carried;
       authors.setAttribute("aria-pressed", String(state.authors.shown));
       authors.setAttribute("aria-label", state.authors.shown ? "Hide authors" : "Show authors");
@@ -282,6 +297,9 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     },
     focus() {
       track.focus();
+    },
+    focusDetails() {
+      details.focus();
     }
   };
 }

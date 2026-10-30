@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/step-panel.ts
-- Generated At: 2026-10-22T16:47:54.186Z
+- Generated At: 2026-10-30T14:56:36.873Z
 
 ## Authored
 ### Purpose
@@ -14,33 +14,35 @@ The step panel beside the 3D picture: the commit's subject, hash, date and, by t
 - Built 2026-10-18 for ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions), from `step-summary.ts`. At the base it says the shape is the beginning of what is known, and why, when the history is cut there; while the thumb drags only the header is drawn. A file's row carries its archetype and symbol count at the step, since the docs of that day are not in the bundle; the hash is text a person can copy, with the full id on hover, and links no forge (the plan's fog). Groups of up to eight rows open; longer ones fold behind their count, whole, since a cut list hides what a person came to see. The panel stands on the left of the picture, the right being the detail panel's and the tray's; where it lives after the consolidation pass the owner expects is open.
 - Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the panel lists the documents linked and unlinked; a document is a button that reads today's version of it where the bundle carries it, and says "not in this bundle" where it does not.
 
+- Since 2026-10-30 ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) the panel has its own button, "Hide step details", at its top right, outside the words each step redraws; the scrubber's toggle brings it back. It is as tall as what the step says (`history.css`).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `StepPanelView` {#symbol-steppanelview}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L24)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L27)
 
 ##### `StepPanelView` — Summary
 The header, and the whole when the thumb rests.
 
 #### `StepPanelOptions` {#symbol-steppaneloptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L38)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L41)
 
 ##### `StepPanelOptions` — Summary
 What the panel is made with.
 
 #### `StepPanel` {#symbol-steppanel}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L49)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L54)
 
 ##### `StepPanel` — Summary
 The panel as the control drives it.
 
 #### `createStepPanel` {#symbol-createsteppanel}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L113)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-panel.ts#L118)
 - Returns: [`StepPanel`](#symbol-steppanel)
 - Parameters: `options`: [`StepPanelOptions`](#symbol-steppaneloptions)
 
@@ -57,6 +59,8 @@ Make the panel under its parent, hidden until synced.
 - [`step-summary.SummaryEdge`](./step-summary.ts.mdmd.md#symbol-summaryedge)
 - [`step-summary.SummaryFile`](./step-summary.ts.mdmd.md#symbol-summaryfile)
 - [`step-summary.changeCount`](./step-summary.ts.mdmd.md#symbol-changecount)
+- [`icon-button.CLOSE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-close_icon)
+- [`icon-button.iconButton`](../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

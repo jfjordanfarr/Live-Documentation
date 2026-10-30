@@ -118,6 +118,19 @@
     color: var(--text-active);
 }
 
+/* Beside a field, faded: its thing does not stand at the moment of the history the picture shows (2026-10-30) */
+.search-absence {
+    flex: none;
+    margin-left: -6px;
+    font-size: 12px;
+    color: var(--text-panel-muted);
+    white-space: nowrap;
+}
+
+.search-absence[hidden] {
+    display: none;
+}
+
 .search-clear[hidden] {
     display: none;
 }
@@ -325,6 +338,11 @@
 }
 
 /* The reverse question, offered when the files connect only the other way */
+/* The commit a path was asked at, when it is not today: the report's first words, faded */
+.pathfind-status .pathfind-at {
+    color: var(--text-panel-muted);
+}
+
 .pathfind-status a {
     color: var(--color-path);
     text-decoration: underline;

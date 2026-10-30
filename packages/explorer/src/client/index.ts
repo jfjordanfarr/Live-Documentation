@@ -9,6 +9,7 @@ import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
 import { createHistoryControl, isHistorySequence } from "./history/history-control";
 import type { HistoryMoment } from "./history/moment";
+import { endFiles, momentGround, reachToday, todayGround, type PathGround } from "./history/moment-paths";
 import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
 import { createItemMenu } from "./panels/item-menu";
@@ -200,6 +201,24 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   const hasBundledDoc = (path: string): boolean => !!bundledMarkdown && Object.hasOwn(bundledMarkdown, path);
   /** The moment of the history the 3D picture shows, or null for today. */
   let shownMoment: HistoryMoment | null = null;
+  // The ground a path, its reach and the report are asked over: today's files and wires, or the moment's while the
+  // picture shows one, from the moment the history control built for the view (2026-10-30).
+  const groundToday = todayGround(nodesById, graphData.links);
+  let groundShown: { moment: HistoryMoment; ground: PathGround } | null = null;
+  function pathGround(): PathGround {
+    if (!shownMoment) return groundToday;
+    if (groundShown?.moment !== shownMoment) groundShown = { moment: shownMoment, ground: momentGround(shownMoment) };
+    return groundShown.ground;
+  }
+  /** The moment shown, in the words the reader and the path report use; null at today. */
+  function momentWords(): string | null {
+    return shownMoment ? `${shownMoment.commit.date.slice(0, 10)}, commit ${shownMoment.commit.id.slice(0, 8)}` : null;
+  }
+  /** The path report's first words at a moment, naming the commit it was asked at; null at today. */
+  function reportAt(): string | null {
+    const moment = momentWords();
+    return moment ? `At ${moment}:` : null;
+  }
   let inspectionOpener: HTMLElement | null = null;
   const readerRoom = window.matchMedia("(max-width: 760px), (max-height: 480px)");
   const narrowNavigation = window.matchMedia("(max-width: 760px)");
@@ -290,6 +309,10 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     nodesById,
     onMoment: (moment, renames, energy) => {
       shownMoment = moment;
+      // The path and the reach are asked again over the moment's wires, and the absences said, before the picture is drawn.
+      const origin = newestRetained(retentionState());
+      if (origin && state.destination) reportPath(origin, state.destination, false);
+      syncRetainedWords();
       forceGraphView.setMoment(moment, renames, energy);
       syncReaderNote();
     },
@@ -456,10 +479,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     onChooseSubject: pinHit,
     onChooseDestination: askPath,
     onClearDestination: () => { leavePath(); persistExploration(); },
-    onHopClick: node => handleNodeClick(node)
+    // A hop is named as the picture names it; it reaches the file as it stands today, and a file gone since does nothing.
+    onHopClick: node => {
+      const today = pathGround().fileToday(node.id);
+      const now = today === null ? undefined : nodesById.get(today);
+      if (now) handleNodeClick(now);
+    }
   });
   let syncTuningControls = (): void => {};
-  // What a path from the newest pin can reach, computed once per newest pin: the destination field offers only that.
+  // What a path from the newest pin can reach, computed once per newest pin and moment shown: the destination field offers only that.
   let reachKey: string | null = null;
   let reach: Reach | null = null;
 
@@ -582,6 +610,13 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     return { name: words.name, context: words.description };
   }
 
+  /** A field's words with, while the picture shows a moment, the tray's words for a thing that does not stand there. */
+  function chipWordsOf(item: RetainedItem): SearchWords {
+    const absence = historyControl.absence(item);
+    const moment = momentWords();
+    return { ...wordsOf(item), ...(absence && moment ? { absence: { words: absence, moment: `The picture shows ${moment}` } } : {}) };
+  }
+
   /** A destination as the retained item it would be once pinned, for its words, its files and the reverse question. */
   function itemOf(destination: PathDestination): RetainedItem {
     return destination.kind === "directory" ? { kind: "directory", directory: destination.directory }
@@ -597,12 +632,6 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   function destinationOfHit(hit: SearchHit): PathDestination {
     if (hit.kind === "directory") return { kind: "directory", directory: hit.directory };
     return hit.kind === "symbol" ? { kind: "file", nodeId: hit.node.id, symbol: hit.symbol } : { kind: "file", nodeId: hit.node.id };
-  }
-
-  /** The files an end of a path stands for: one file, or every file of a directory. */
-  function filesOf(item: RetainedItem): string[] {
-    if (item.kind === "pin") return [item.pin.nodeId];
-    return graphData.nodes.filter(node => under(node.id, item.directory)).map(node => node.id);
   }
 
   /** Make a retained item the newest, so that a path starts from it. */
@@ -661,14 +690,34 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       persistExploration();
       return;
     }
+    reportPath(origin, destination, true);
+    persistExploration();
+  }
+
+  /**
+   * Ask the path over the ground the picture shows and report it: at a moment of the history over that moment's files
+   * and wires, the report naming the commit, and an end that does not stand there said so instead of a path
+   * (2026-10-30). `draw` draws the view after; a move of the history draws the picture itself.
+   */
+  function reportPath(origin: RetainedItem, destination: PathDestination, draw: boolean): void {
     const target = itemOf(destination);
-    const result = findPath(filesOf(origin), filesOf(target), nodesById, graphData.links);
+    const ground = pathGround();
+    const absent = [origin, target].flatMap(item => {
+      const words = historyControl.absence(item);
+      return words ? [`${wordsOf(item).name}, ${words}`] : [];
+    });
+    if (absent.length > 0) {
+      clearPathResult(draw);
+      searchBar.setStatus(absent.join("; "), "", reportAt());
+      if (draw) renderCurrentView("show");
+      return;
+    }
+    const result = findPath(endFiles(origin, ground), endFiles(target, ground), ground.nodesById, ground.links);
     const first = result.path[0];
     const last = result.path.at(-1);
-    if (origin.kind === "pin" && origin.pin.symbol !== "*" && first?.nodeId === origin.pin.nodeId) first.symbol = origin.pin.symbol;
-    if (destination.kind === "file" && destination.symbol && last?.nodeId === destination.nodeId) last.symbol = destination.symbol;
-    showPathResult(result, wordsOf(origin), wordsOf(target));
-    persistExploration();
+    if (origin.kind === "pin" && origin.pin.symbol !== "*" && first && first.nodeId === ground.fileAt(origin.pin.nodeId)) first.symbol = origin.pin.symbol;
+    if (destination.kind === "file" && destination.symbol && last && last.nodeId === ground.fileAt(destination.nodeId)) last.symbol = destination.symbol;
+    showPathResult(result, wordsOf(origin), wordsOf(target), ground, draw);
   }
 
   /** The exploration with the destination pinned as the newest item: the state the reverse question leads to. */
@@ -736,14 +785,23 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       showAuthors: state.showAuthors ?? false,
       tuning: state.tuning.history
     });
+    syncRetainedWords();
+  }
+
+  /**
+   * The tray and the search bar, which name the retained things: each said absent where it does not stand at the moment
+   * shown, and the destination field offering what a path from the newest pin reaches, at that moment when one is shown.
+   */
+  function syncRetainedWords(): void {
     pinTray.sync(retentionState(), state.view === "map", changingPerspective, item => historyControl.absence(item));
     const newest = newestRetained(retentionState());
-    const key = newest ? retainedKey(newest) : null;
+    const key = newest ? JSON.stringify([retainedKey(newest), shownMoment?.step ?? null]) : null;
     if (key !== reachKey) {
       reachKey = key;
-      reach = newest ? reachOf(filesOf(newest), nodesById, graphData.links) : null;
+      const ground = pathGround();
+      reach = newest ? reachToday(reachOf(endFiles(newest, ground), ground.nodesById, ground.links), ground) : null;
     }
-    searchBar.sync(newest ? wordsOf(newest) : null, state.destination ? wordsOf(itemOf(state.destination)) : null, reach, state.view === "map");
+    searchBar.sync(newest ? chipWordsOf(newest) : null, state.destination ? chipWordsOf(itemOf(state.destination)) : null, reach, state.view === "map");
   }
 
   /** Change how the 3D Local Map places its files; the picture re-settles from where it stands, a step in the history. */
@@ -886,7 +944,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
    * files connect only the other way, nothing is drawn: the status says so and
    * offers the reverse question as a link, the owner's rule of 2025-12-18.
    */
-  const showPathResult = (result: PathfindResult, origin: SearchWords, destination: SearchWords): void => {
+  const showPathResult = (result: PathfindResult, origin: SearchWords, destination: SearchWords, ground: PathGround, draw: boolean): void => {
     const fromName = origin.name;
     const toName = destination.name;
 
@@ -904,7 +962,11 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       // path's first file becomes it. An existing selection is kept, so Clear
       // returns to the place the person was, address included.
       if (!state.selectedNode) {
-        selectNode(result.path[0].node, { suppressDetailPanel: true });
+        // The first file as it stands today: at a moment, a hop is named as the moment names it.
+        const today = ground.fileToday(result.path[0].nodeId);
+        const node = today === null ? undefined : nodesById.get(today);
+        if (node && draw) selectNode(node, { suppressDetailPanel: true });
+        else if (node) markSelected(node);
       }
 
       searchBar.showPath(result.path);
@@ -916,22 +978,23 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
         toSymbol: result.path[result.path.length - 1].symbol
       });
 
-      const against = referencesAgainstPath(nodeIds, graphData.links);
+      const against = referencesAgainstPath(nodeIds, ground.links);
       const notDrawn = against === 0
         ? ""
         : `; ${against} ${against === 1 ? "reference" : "references"} between these files ${against === 1 ? "runs" : "run"} the other way and ${against === 1 ? "is" : "are"} not drawn in 2D`;
-      renderCurrentView();
-      searchBar.setStatus(`Path found: ${result.path.length} files${notDrawn}`, "success");
+      if (draw) renderCurrentView();
+      searchBar.setStatus(`Path found: ${result.path.length} files${notDrawn}`, "success", reportAt());
       return;
     }
 
     // Nothing drawn: a path shown before leaves, and the status says why
-    clearPathResult();
+    clearPathResult(draw);
 
     if (result.reversePath.length > 0) {
       const statusEl = searchBar.setStatus(
         `No path runs from ${fromName} to ${toName}. ${toName} reaches ${fromName} through ${result.reversePath.length} files: `,
-        ""
+        "",
+        reportAt()
       );
       const reverse = document.createElement("a");
       reverse.href = reverseHref();
@@ -941,24 +1004,25 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
         swapPath();
       });
       statusEl.appendChild(reverse);
-      renderCurrentView("show");
+      if (draw) renderCurrentView("show");
       return;
     }
 
     searchBar.setStatus(
       result.maxDepthReached
-        ? `No path within ${Math.max(0, nodesById.size - 1)} hops either way (searched ${result.searchedNodes} files)`
+        ? `No path within ${Math.max(0, ground.nodesById.size - 1)} hops either way (searched ${result.searchedNodes} files)`
         : `No path either way (searched ${result.searchedNodes} files)`,
-      "error"
+      "error",
+      reportAt()
     );
-    renderCurrentView("show");
+    if (draw) renderCurrentView("show");
   };
 
-  /** Take the path's report off the page and the path out of the Local Map; the destination asked is kept by the caller. */
-  const clearPathResult = (): void => {
+  /** Take the path's report off the page and the path out of the Local Map; the destination asked is kept by the caller. `draw` redraws the 3D picture. */
+  const clearPathResult = (draw = true): void => {
     searchBar.clearPath();
     localView.setActivePath(null);
-    if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
+    if (draw && state.view === "map" && state.perspective === "3d") forceGraphView.render();
   };
 
   // The node to focus first, chosen before the first drawing so that the page draws the focused picture once, rather
@@ -1247,10 +1311,18 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     } else detailPanel.setActions([]);
   }
 
-  /** While the 3D picture shows a past commit, the reader says that its evidence is today's version (2026-10-20). */
+  /**
+   * While the 3D picture shows a past commit, the reader says that its evidence is today's version (2026-10-20), and,
+   * in the tray's words, when the file or directory it reads does not stand at that commit (2026-10-30).
+   */
   function syncReaderNote(): void {
-    const past = state.inspection && shownMoment && state.view === "map" && state.perspective === "3d" ? shownMoment.commit : null;
-    detailPanel.setNote(past ? `Today's version. The picture shows ${past.date.slice(0, 10)}, commit ${past.id.slice(0, 8)}.` : null);
+    const target = state.inspection;
+    const moment = target && state.view === "map" && state.perspective === "3d" ? momentWords() : null;
+    if (!target || !moment) { detailPanel.setNote(null); return; }
+    const absence = target.kind === "file" ? historyControl.absence({ kind: "pin", pin: { nodeId: target.nodeId, symbol: "*" } })
+      : target.kind === "directory" ? historyControl.absence({ kind: "directory", directory: target.directory })
+        : null;
+    detailPanel.setNote(`Today's version. The picture shows ${moment}${absence ? `: ${absence}` : ""}.`);
   }
 
   /** A full reader covers a small viewport; opening it never resizes the underlying map. */

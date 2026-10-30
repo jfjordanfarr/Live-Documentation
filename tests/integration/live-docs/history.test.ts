@@ -283,6 +283,12 @@ describe("inspect's history questions", () => {
     expect(text.exitCode, text.stderr).toBe(0);
     expect(text.stdout.split("\n")[0]).toContain("from the shape alone");
     expect(text.stdout).toContain("src/core/model.ts -> src/engine/model.ts");
+    // The words a person reads are Created and Deleted (the owner, 2026-10-26); the format's fields stay born and dead.
+    const words = runInspect(repository, ["--between", commits[2], commits[4]]);
+    expect(words.exitCode, words.stderr).toBe(0);
+    expect(words.stdout).toContain("Created: 1 file\n  lib/huge.ts");
+    expect(words.stdout).toContain("Deleted: 2 files\n  lib/big.ts\n  lib/legacy.ts");
+    expect(words.stdout).not.toMatch(/\b(Born|Dead)\b/u);
   });
 
   it("refuses a commit the sequence does not hold, and says so", () => {

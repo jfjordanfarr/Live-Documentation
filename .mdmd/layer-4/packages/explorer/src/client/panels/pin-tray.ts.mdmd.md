@@ -17,7 +17,7 @@ Opening calls the application's `onOpen` hook; the application coordinates the r
 
 Introduced for the owner’s [October 14 pin-management request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
-At a moment of the history (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its scenario 9) a pin whose thing does not stand there is said so on its row, "not yet born" for a file and "nothing under it at this commit" for a directory, faint beneath its words, and never dropped; the client gives `sync` the words through `absent`.
+At a moment of the history (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its scenario 9) a pin whose thing does not stand there is said so on its row, "not yet created" for a file (until 2026-10-30, "not yet born") and "nothing under it at this commit" for a directory, faint beneath its words, and never dropped; the client gives `sync` the words through `absent`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

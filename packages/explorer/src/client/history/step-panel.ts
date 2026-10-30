@@ -1,7 +1,7 @@
 /**
  * The step panel beside the 3D picture: what the step changed, as the step
  * summary says it (the plan's C4). The commit's subject, hash, date and, when
- * the toggle is on, its author; then the files born, dead, renamed and
+ * the toggle is on, its author; then the files created, deleted, renamed and
  * resized, the directories renamed whole, the wires that came, went and
  * changed their count, the documents linked and unlinked, and the files whose
  * content changed alone, each group folded with its count and open when it is
@@ -11,6 +11,8 @@
  * not, with its archetype and its symbol count at the step. At the base the
  * panel says the shape is the beginning of what is known, and why, when the
  * history is cut there. While the thumb drags, only the header is drawn.
+ * Its own button hides it, and the scrubber's toggle brings it back, so that
+ * the picture can be seen whole while the scrubber stays (2026-10-30).
  *
  * @module step-panel
  */
@@ -19,6 +21,7 @@ import type { CommitInfo } from "@live-documentation/engine/live-docs/history/fo
 
 import { changeCount, type StepSummary, type SummaryDocLink, type SummaryEdge, type SummaryFile } from "./step-summary";
 import { escapeHtml } from "../graph-helpers";
+import { CLOSE_ICON, iconButton } from "../panels/icon-button";
 
 /** The header, and the whole when the thumb rests. */
 export interface StepPanelView {
@@ -43,6 +46,8 @@ export interface StepPanelOptions {
   hasDocument(path: string): boolean;
   /** Read today's version of a document the bundle carries. */
   onReadDocument(path: string): void;
+  /** The panel's own button was pressed: hide the panel, the scrubber staying. */
+  onHide(): void;
 }
 
 /** The panel as the control drives it. */
@@ -95,8 +100,8 @@ function body(summary: StepSummary, hasDocument: (path: string) => boolean): str
   if (summary.base) return "";
   if (changeCount(summary) === 0) return `<p class="history-step-note">This commit changed nothing the docs could see.</p>`;
   return [
-    group("Born", summary.born.map(fileWords)),
-    group("Dead", summary.dead.map(fileWords)),
+    group("Created", summary.born.map(fileWords)),
+    group("Deleted", summary.dead.map(fileWords)),
     group("Renamed", summary.renamed.map(rename => `<span class="history-path">${escapeHtml(rename.from)}</span><span class="history-arrow">to</span>${fileWords(rename.file)}`)),
     group("Renamed whole", summary.directoriesRenamed.map(rename => `<span class="history-path">${escapeHtml(rename.from)}</span><span class="history-arrow">to</span><span class="history-path">${escapeHtml(rename.to)}</span>`)),
     group("Resized", summary.resized.map(resized => `${fileWords({ ...resized.file, symbols: resized.after })}<span class="history-shape">${Number(resized.before)} to ${Number(resized.after)}</span>`)),
@@ -115,6 +120,13 @@ export function createStepPanel(options: StepPanelOptions): StepPanel {
   element.className = "history-step-panel";
   element.setAttribute("aria-label", "What the step changed");
   element.hidden = true;
+  // The button stands outside the words, which each step draws afresh.
+  const hide = iconButton("Hide step details", CLOSE_ICON);
+  hide.className = "history-step-hide";
+  hide.addEventListener("click", () => options.onHide());
+  const content = document.createElement("div");
+  content.className = "history-step-content";
+  element.append(hide, content);
   options.parent.append(element);
   element.addEventListener("click", event => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("button[data-pin], button[data-read]");
@@ -132,7 +144,7 @@ export function createStepPanel(options: StepPanelOptions): StepPanel {
       const beginning = view.base
         ? `<p class="history-step-note">The beginning of what is known: ${plural(view.files, "file")} and ${plural(view.edges, "wire")}.${view.truncated ? ` ${escapeHtml(view.truncated)}` : ""}</p>`
         : "";
-      element.innerHTML = `
+      content.innerHTML = `
         <h2>${escapeHtml(view.commit.subject)}</h2>
         <p class="history-step-meta"><code title="${escapeHtml(view.commit.id)}">${escapeHtml(short(view.commit))}</code><span>${escapeHtml(view.commit.date.slice(0, 10))}</span>${author}<span>step ${view.step}</span></p>
         ${beginning}

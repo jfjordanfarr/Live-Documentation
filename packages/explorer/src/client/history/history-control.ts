@@ -10,6 +10,10 @@
  * standing picture when the drag ended where it placed it). The last step is
  * today: there the view draws today's docs and the address carries no commit.
  *
+ * The step panel can be hidden, by its own button or the scrubber's toggle,
+ * while the scrubber stays; the choice holds while the history is open, and an
+ * opened history shows the panel again (2026-10-30). It is not in the address.
+ *
  * The ticks come from the engine's `ticksFor` for today's pins, followed
  * through the renames; the tray is told, for each pin, when its thing does not
  * stand at the moment shown. Leaving 3D returns the picture to today and
@@ -122,6 +126,8 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
   let playing: number | null = null;
   let playingRate = 0;
   let notice: string | null = null;
+  /** Whether the step panel shows; hidden by a person's choice, it is shown again when the history is next opened. */
+  let detailsShown = true;
   let ticksKey = "";
   let ticks: Ticks = { major: [], minor: [] };
   let context: HistoryContext = { visible: false, pins: { files: [], directories: [] }, subject: null, showAuthors: false, tuning: { axis: "steps", granularity: "auto", playRate: 2 } };
@@ -131,9 +137,21 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     onScrub: step => { dragging = true; scrub(step); },
     onRest: step => { dragging = false; rest(step); },
     onPlay: wanted => { if (wanted) play(); else pause(); },
-    onAuthors: shown => options.onAuthors(shown)
+    onAuthors: shown => options.onAuthors(shown),
+    onDetails: shown => { detailsShown = shown; refresh(); }
   });
-  const panel = createStepPanel({ parent: options.parent, onPinFile: path => options.onPinFile(path), hasDocument: path => options.hasDocument(path), onReadDocument: path => options.onReadDocument(path) });
+  const panel = createStepPanel({
+    parent: options.parent,
+    onPinFile: path => options.onPinFile(path),
+    hasDocument: path => options.hasDocument(path),
+    onReadDocument: path => options.onReadDocument(path),
+    onHide: () => {
+      detailsShown = false;
+      refresh();
+      // The button that had the focus is gone with the panel: the focus goes to the toggle that brings it back.
+      scrubber.focusDetails();
+    }
+  });
 
   function ensureLoaded(): Promise<HistorySequence> {
     if (sequence) return Promise.resolve(sequence);
@@ -245,13 +263,13 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
   function refresh(): void {
     const visible = open && context.visible && available;
     scrubber.hide(!visible);
-    panel.hide(!visible || !sequence || !cursor);
+    panel.hide(!visible || !sequence || !cursor || !detailsShown);
     setRoom(visible);
     if (!visible) return;
     if (!sequence || !cursor) {
       scrubber.sync({
         steps: 0, step: 0, model: { granularity: "step", positions: [], ticks: [], stops: [0], ruler: [] }, axis: context.tuning.axis, dates: [],
-        valueText: "", date: "", hash: "", truncated: null, playing: false, authors: { carried: false, shown: false },
+        valueText: "", date: "", hash: "", truncated: null, playing: false, authors: { carried: false, shown: false }, details: detailsShown,
         notice: notice ?? "Loading the history"
       });
       return;
@@ -279,8 +297,11 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       truncated: truncatedWords(history),
       playing: playing !== null,
       authors: { carried: history.source.authors, shown: context.showAuthors },
+      details: detailsShown,
       notice
     });
+    // A hidden panel is drawn when it is shown again.
+    if (!detailsShown) return;
     panel.sync({
       step,
       commit,
@@ -319,6 +340,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
         return;
       }
       pause();
+      detailsShown = true;
       // Closed, the picture is today's again, and the address carries no commit.
       if (cursor && cursor.step !== cursor.last) rest(cursor.last);
       else refresh();
@@ -344,6 +366,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       const wasOpen = open;
       open = false;
       notice = null;
+      detailsShown = true;
       if (cursor && cursor.step !== cursor.last) {
         moveTo(cursor.last, true);
         placedWithoutTick = false;
@@ -360,7 +383,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     },
     absence(item) {
       if (!moment || !cursor) return null;
-      if (item.kind === "pin") return moment.fileAt(item.pin.nodeId) === undefined ? "not yet born" : null;
+      if (item.kind === "pin") return moment.fileAt(item.pin.nodeId) === undefined ? "not yet created" : null;
       const directory = moment.directoryAt(item.directory);
       for (const path of cursor.shape.files.keys()) {
         if (directory === "" || path.startsWith(`${directory}/`)) return null;

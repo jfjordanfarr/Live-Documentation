@@ -106,6 +106,7 @@ export interface ForceGraphViewOptions {
   onInspectDirectory: (directory: string) => void;
   onOpenDirectory: (directory: string) => void;
   onCloseDirectory: (directory: string) => void;
+  /** The drawn path's files as the picture shown names them: a moment's names while a moment is shown, asked over its wires (2026-10-30). */
   getPath?: () => readonly string[] | undefined;
 }
 
@@ -798,8 +799,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     pendingRenames = NO_RENAMES;
     const energy = pendingEnergy;
     pendingEnergy = undefined;
-    // The data: the moment's snapshot, or today's docs; today's pins, subject, path and open directories are read where
-    // they stand at the moment, and a pin that does not stand there retains nothing.
+    // The data: the moment's snapshot, or today's docs; today's pins, subject and open directories are read where they
+    // stand at the moment, and a pin that does not stand there retains nothing. The path is already the moment's.
     const source = moment?.graph ?? graphData;
     const todayPins = state.pins ?? EMPTY_PIN_SET;
     const pins: PinSet = moment
@@ -808,7 +809,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const subject = state.selectedNode;
     const subjectAt = subject ? fileAt(subject.id) ?? null : null;
     const selectedAt = state.selectedNode ? fileAt(state.selectedNode.id) ?? null : null;
-    const path = options.getPath?.()?.flatMap(id => { const at = fileAt(id); return at ? [at] : []; });
+    const path = options.getPath?.();
     const directories = [...(state.openDirectories ?? [])].map(directoryAt).sort();
     const directoryScope = directories.length && !state.selectedNode && !path?.length ? JSON.stringify(directories) : "";
     container.dataset.directoryScope = directoryScope;

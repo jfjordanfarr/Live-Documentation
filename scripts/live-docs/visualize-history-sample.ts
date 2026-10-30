@@ -31,7 +31,7 @@ interface CliOptions {
     outputDir: string;
     windowOutputDir?: string;
     window: number;
-    /** Where the second script's bundle goes, the rename onto a dead file's path (2026-10-18). */
+    /** Where the second script's bundle goes, the rename onto a deleted file's path (2026-10-18). */
     collisionOutputDir?: string;
 }
 
@@ -86,7 +86,7 @@ async function main(): Promise<void> {
     if (options.windowOutputDir) outputs.push({ dir: options.windowOutputDir, history: { rule: "last", count: options.window } as const, label: `its window of the last ${options.window}` });
     await buildSample(SCRIPT, SCRIPTED_CONFIG, outputs);
     if (options.collisionOutputDir) {
-        await buildSample(COLLISION_SCRIPT, COLLISION_CONFIG, [{ dir: options.collisionOutputDir, history: { rule: "all" } as const, label: "the rename onto a dead file's path" }]);
+        await buildSample(COLLISION_SCRIPT, COLLISION_CONFIG, [{ dir: options.collisionOutputDir, history: { rule: "all" } as const, label: "the rename onto a deleted file's path" }]);
     }
 }
 
