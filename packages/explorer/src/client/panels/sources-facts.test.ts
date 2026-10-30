@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { sourcesFacts, symbolCount } from "./sources-facts";
+import { sourcesFacts as factsWithTotal, symbolCount, type SourcesFactsOptions } from "./sources-facts";
+import { explorerGraphOf } from "../../shared/graph";
 
-type LiveDocGraph = Parameters<typeof sourcesFacts>[0];
+type LiveDocGraph = Parameters<typeof factsWithTotal>[0];
 type GraphFile = LiveDocGraph["files"][string];
 
 /** A graph file with only what the facts read; everything else empty. */
@@ -34,6 +35,10 @@ function graph(files: GraphFile[]): LiveDocGraph {
   }
   return { root: ".docs", baseLayer: "base", extension: ".md", files: byPath };
 }
+
+/** The facts as the client asks for them: with the references the bundle's stats count, the sidebar's number. */
+const sourcesFacts = (of: LiveDocGraph, options: Omit<SourcesFactsOptions, "references"> = {}) =>
+  factsWithTotal(of, { references: explorerGraphOf(of).stats.references, ...options });
 
 const SAMPLE = graph([
   // core offers three symbols: app uses two of them, the test uses the third, nobody names `spare`'s... (see below)

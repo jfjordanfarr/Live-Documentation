@@ -16,6 +16,7 @@ import { createItemMenu } from "./panels/item-menu";
 import { createPinTray } from "./panels/pin-tray";
 import { sourcesFacts } from "./panels/sources-facts";
 import { renderSourcesView } from "./panels/sources-view";
+import { statsLineOf } from "./panels/stats-line";
 import { initTuningPanel } from "./panels/tuning";
 import { findPath, reachOf, referencesAgainstPath, type PathfindResult, type Reach } from "./pathfind";
 import {
@@ -238,11 +239,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   const filterToggleAssets = getInputById("filter-toggle-assets");
   const filterToggleRelatedDocs = getInputById("filter-toggle-related-docs");
   const filterToggleCitingDocs = getInputById("filter-toggle-citing-docs");
-  const statsLine = document.getElementById("stats-line");
-
-  if (statsLine instanceof HTMLElement) {
-    statsLine.textContent = `${graphData.stats.nodes} files, ${graphData.stats.links} references, ${graphData.stats.referencesOutsideScan} references outside the scan`;
-  }
+  const statsLine = requireElement("stats-line");
+  /** The sidebar's counts follow the picture: today's, or the moment of the history the 3D picture shows (2026-10-30). */
+  const syncStatsLine = (): void => {
+    statsLine.textContent = statsLineOf((shownMoment?.graph ?? graphData).stats);
+  };
+  syncStatsLine();
 
   const localView = createLocalView({
     state,
@@ -315,6 +317,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       syncRetainedWords();
       forceGraphView.setMoment(moment, renames, energy);
       syncReaderNote();
+      syncStatsLine();
     },
     onSettle: () => forceGraphView.settle(),
     onCommit: commit => {
@@ -1506,7 +1509,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   function doRenderSourcesView(): void {
     const reachFrom = state.reachFrom ?? null;
     renderSourcesView({
-      facts: sourcesFacts(bundle.graph, { ...(reachFrom ? { from: startFilesOf(reachFrom) } : {}), sampleRoots: bundle.sampleRoots ?? [] }),
+      // Today's docs, whatever the 3D picture showed last: the references are the sidebar's total, read, not recounted.
+      facts: sourcesFacts(bundle.graph, { references: graphData.stats.references, ...(reachFrom ? { from: startFilesOf(reachFrom) } : {}), sampleRoots: bundle.sampleRoots ?? [] }),
       perspective: state.perspective,
       search: searchIndex,
       reachFrom,

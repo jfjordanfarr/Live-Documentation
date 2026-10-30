@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/types.ts
-- Generated At: 2026-10-22T16:47:56.832Z
+- Generated At: 2026-10-30T16:26:09.713Z
 
 ## Authored
 ### Purpose
@@ -13,7 +13,7 @@ The node-and-link payload the Explorer views render, projected from the graph in
 ### Notes
 - Created 2025-11-21 when the monolithic `visualize-explorer.ts` was split into client, server and shared modules. The HTTP API these types once described was retired on 2026-03-10; the detail payload it answered with went on 2026-09-28.
 - Extended in December 2025 with `ExplorerTypeReference` and `ExplorerPublicSymbol` to support type-reference rendering in the Local Map.
-- `ExplorerGraphStats.referencesOutsideScan` (2026-10-14) is the count the footer shows, renamed from `missingDependencies`: nothing is missing, the targets are outside the scan.
+- `ExplorerGraphStats.dependenciesOutsideScan` is the count the footer shows of dependency lines whose target the scan does not hold: `missingDependencies` until 2026-10-14 (nothing is missing, the targets are outside the scan), `referencesOutsideScan` until 2026-10-30, when `references`, the documented references the sidebar and Knowledge Sources both print, was added beside `links` ([Turn 3](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)). It is optional because a moment of the history keeps no dependency lines and so does not know it.
 
 `symbolCount` on a node (2026-10-18, the plan's C4): the public-symbol count alone, for a file at a step of the history whose docs the bundle does not carry; absent for today's files, whose `publicSymbols` are named.
 
@@ -115,15 +115,14 @@ in the dependency columns rather than just file-level cards.
 
 #### `ExplorerGraphStats` {#symbol-explorergraphstats}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L147)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L144)
 
 ##### `ExplorerGraphStats` — Summary
-Summary statistics for the explorer graph, rendered in the Explorer
-header and used by the static builder to emit a quick-access overview.
+Summary statistics for the explorer graph, which the sidebar's line prints.
 
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L160)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L163)
 
 ##### `ExplorerGraphPayload` — Summary
 The node-and-link payload the Explorer views render.

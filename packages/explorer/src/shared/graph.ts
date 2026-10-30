@@ -43,7 +43,7 @@ const isReference = (edge: GraphEdge): boolean => edge.kind !== "import" && edge
 export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
     const links: ExplorerLinkPayload[] = [];
     const seen = new Map<string, ExplorerLinkPayload>();
-    let referencesOutsideScan = 0;
+    let dependenciesOutsideScan = 0;
 
     const addLink = (
         source: string,
@@ -97,9 +97,9 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
             }
         }
 
-        // A reference with no target inside the scan: a package, a builtin, or a file the scan does not hold.
+        // A dependency line with no target inside the scan: a package, a builtin, or a file the scan does not hold.
         const missingDependencies = dependencies.filter(reference => !reference.resolved);
-        referencesOutsideScan += missingDependencies.length;
+        dependenciesOutsideScan += missingDependencies.length;
 
         for (const reference of dependencies) {
             // Signature references remain available in the dependency list, but
@@ -149,9 +149,22 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
         stats: {
             nodes: nodes.length,
             links: links.length,
-            referencesOutsideScan
+            references: documentedReferences(links),
+            dependenciesOutsideScan
         }
     };
+}
+
+/**
+ * How many documented references the links carry between two files of the
+ * scan: each link counts its `referenceCount`, one when it has none. A link
+ * from a signature that names the same type in three places is one link and
+ * three references. Today's stats and a moment of the history count through
+ * this one function, and Knowledge Sources reads today's, so that no two
+ * places in the Explorer give the number differently (2026-10-30).
+ */
+export function documentedReferences(links: readonly ExplorerLinkPayload[]): number {
+    return links.reduce((total, link) => total + (link.referenceCount ?? 1), 0);
 }
 
 /**

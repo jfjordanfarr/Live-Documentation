@@ -14,6 +14,7 @@
 
 import { edgeEnds, type Shape } from "@live-documentation/engine/live-docs/history/shape";
 
+import { documentedReferences } from "../../shared/graph";
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type { ExplorerGraphPayload, ExplorerLinkPayload, ExplorerNodePayload } from "../../shared/types";
 
@@ -48,7 +49,8 @@ export function snapshotGraphOf(shape: Shape): ExplorerGraphPayload {
       symbolCount: file.symbols
     };
   });
-  return { nodes, links, stats: { nodes: nodes.length, links: links.length, referencesOutsideScan: 0 } };
+  // The sequence keeps no dependency lines, so what lay outside the scan then is not known and not said.
+  return { nodes, links, stats: { nodes: nodes.length, links: links.length, references: documentedReferences(links) } };
 }
 
 /**

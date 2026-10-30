@@ -140,15 +140,18 @@ export interface ExplorerLinkPayload {
     referenceCount?: number;
 }
 
-/**
- * Summary statistics for the explorer graph, rendered in the Explorer
- * header and used by the static builder to emit a quick-access overview.
- */
+/** Summary statistics for the explorer graph, which the sidebar's line prints. */
 export interface ExplorerGraphStats {
     nodes: number;
+    /** Links between two files, one per source, target, kind and symbols. */
     links: number;
-    /** References whose target is not a file of the scan: packages, builtins, and files the scan does not hold. */
-    referencesOutsideScan: number;
+    /** Documented references between two files of the scan: the links' reference counts summed. */
+    references: number;
+    /**
+     * Dependency lines whose target is not a file of the scan: packages, builtins, and files the scan does not hold.
+     * Undefined where it is not known, as at a moment of the history, whose sequence keeps no dependency lines.
+     */
+    dependenciesOutsideScan?: number;
 }
 
 /**

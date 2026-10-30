@@ -19,7 +19,7 @@ const links = [
   { source: "b/z.ts", target: "a/y.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const },
   { source: "b/z.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const }
 ];
-const graph: ExplorerGraphPayload = { nodes: files, links, stats: { nodes: 3, links: 3, referencesOutsideScan: 0 } };
+const graph: ExplorerGraphPayload = { nodes: files, links, stats: { nodes: 3, links: 3, references: 3, dependenciesOutsideScan: 0 } };
 const pins = files.reduce((set, file) => addPin(set, file.id, "*"), EMPTY_PIN_SET);
 const branches = buildBranches(files[0], graph, pins, () => true);
 
@@ -124,7 +124,7 @@ describe("the Local Map's scene", () => {
     const mixedGraph: ExplorerGraphPayload = {
       nodes: mixedFiles,
       links: [{ source: "dir/b.ts", target: "dir/a.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }],
-      stats: { nodes: 3, links: 1, referencesOutsideScan: 0 }
+      stats: { nodes: 3, links: 1, references: 1, dependenciesOutsideScan: 0 }
     };
     const mixedPins = mixedFiles.reduce((set, file) => addPin(set, file.id, "*"), EMPTY_PIN_SET);
     const mixed = buildBranches(mixedFiles[0], mixedGraph, mixedPins, () => true);

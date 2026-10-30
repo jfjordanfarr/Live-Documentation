@@ -62,7 +62,7 @@ describe("subgraph-builder", () => {
     return {
       nodes,
       links,
-      stats: { nodes: nodes.length, links: links.length, referencesOutsideScan: 0 }
+      stats: { nodes: nodes.length, links: links.length, references: links.length, dependenciesOutsideScan: 0 }
     };
   }
 

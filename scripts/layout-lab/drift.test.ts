@@ -15,7 +15,7 @@ const graph: ExplorerGraphPayload = {
     { source: "a/one.ts", target: "a/two.ts", kind: "dependency" }, { source: "a/one.test.ts", target: "a/one.ts", kind: "dependency" },
     { source: "b/three.ts", target: "b/four.ts", kind: "dependency" }, { source: "b/three.test.ts", target: "b/three.ts", kind: "dependency" }
   ],
-  stats: { nodes: 6, links: 4, referencesOutsideScan: 0 }
+  stats: { nodes: 6, links: 4, references: 4, dependenciesOutsideScan: 0 }
 };
 const everything = (): boolean => true;
 const tests = (file: ExplorerNodePayload): boolean => file.archetype === "test";

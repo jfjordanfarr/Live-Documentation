@@ -22,3 +22,7 @@ Built by an Opus 5.5 builder under the root's brief and reviewed by the root in 
 ## Search and the reader
 
 Built by an Opus 5.5 builder under the root's brief and reviewed by the root in these pictures and in the code, for the checklist item "Search and evidence answer the immediate question"; the pictures and their README are in [search-and-reader/](search-and-reader/README.md): "generator" typed with generator.ts in the ninth row before and the first after, and the reader on generator.ts with its Notes first before and with Purpose, the facts and a jump list first after.
+
+## The inventory totals
+
+Built by an Opus 5.5 builder under the root's brief and reviewed by the root in these pictures and in the code, for the checklist item "Inventory totals explain their scope"; the pictures and their README are in [inventory/](inventory/README.md): the sidebar's 4,622 against Knowledge Sources' 4,651 before, and both saying the same documented references after, with the sidebar's third count named dependencies outside the scan and the panel saying what its counts are of.

@@ -1,12 +1,15 @@
 /**
  * What the Knowledge Sources panel says about a bundle, computed from the
- * graph index alone: the bundle's shape, the files most used and most using,
+ * graph index: the bundle's shape, the files most used and most using,
  * the entry points and what a walk from them reaches, and the public symbols
  * that nothing references or only tests reference. The entries and the walk
  * are the engine's, the same the CLI prints for `inspect --reachable`; the
  * symbol classes are the ones the dead code sweep of 2026-10-08 found
  * computable from the docs. What the docs cannot see (a use within a symbol's
- * own file) is said in the panel, not guessed here.
+ * own file) is said in the panel, not guessed here. The one number not
+ * computed here is the references between files: the caller hands in the
+ * bundle's stats' total, the number the sidebar prints, so that the two places
+ * give one number (2026-10-30).
  *
  * Pure-function module: no DOM. The renderer draws what this returns.
  *
@@ -28,7 +31,7 @@ export interface BundleShape {
   root: string;
   baseLayer: string;
   files: number;
-  /** Resolved references between files: every edge whose target is another file of the graph. */
+  /** Documented references between two files of the scan: the bundle's stats' total, which the sidebar prints too. */
   references: number;
   byArchetype: Count[];
   /** Files by their first path segment; files at the scan root count under "" . */
@@ -113,6 +116,12 @@ export interface SourcesFacts {
 
 /** What the facts are computed for. */
 export interface SourcesFactsOptions {
+  /**
+   * The documented references between two files of the scan, as the bundle's stats count them
+   * (`documentedReferences` in `shared/graph.ts`): read, not counted again here, so that the panel and the sidebar
+   * cannot give two numbers (2026-10-30).
+   */
+  references: number;
   /** The files to walk from in place of the entry points: the person's choice. */
   from?: readonly string[];
   /** The configuration's sample roots, so that a sample program's entries are told from the system's. */
@@ -145,18 +154,15 @@ const extensionOf = (file: GraphFile): string => {
  * other lists are whole, since a cut list hides exactly what a person came to
  * see.
  */
-export function sourcesFacts(graph: LiveDocGraph, options: SourcesFactsOptions = {}): SourcesFacts {
+export function sourcesFacts(graph: LiveDocGraph, options: SourcesFactsOptions): SourcesFacts {
   const limit = options.limit ?? 8;
   const files = Object.values(graph.files).sort((a, b) => a.codePath.localeCompare(b.codePath));
 
   // Which symbols of each file are named by edges from other files, and whether every such edge comes from a test.
   const namedBy = new Map<string, Map<string, { fromTests: boolean }>>();
-  let references = 0;
   for (const file of files) {
     for (const edge of file.edges) {
-      if (!edge.to || edge.to === file.codePath || !(edge.to in graph.files)) continue;
-      references += 1;
-      if (!edge.toSymbol) continue;
+      if (!edge.to || edge.to === file.codePath || !(edge.to in graph.files) || !edge.toSymbol) continue;
       let symbols = namedBy.get(edge.to);
       if (!symbols) {
         symbols = new Map();
@@ -174,7 +180,7 @@ export function sourcesFacts(graph: LiveDocGraph, options: SourcesFactsOptions =
     root: graph.root,
     baseLayer: graph.baseLayer,
     files: files.length,
-    references,
+    references: options.references,
     byArchetype: counts(files, archetypeOf),
     byDirectory: counts(files, directoryOf),
     byExtension: counts(files, extensionOf),

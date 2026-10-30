@@ -9,7 +9,7 @@ const node = (id: string, symbols = 0): ExplorerNodePayload => ({ id, name: id, 
 const graph = (): ExplorerGraphPayload => ({ nodes: [node("a"), node("b")], links: [
   { source: "a", target: "b", kind: "dependency", referenceCount: 3 },
   { source: { id: "b" }, target: { id: "a" }, kind: "type-reference", referenceCount: 2 }
-], stats: { nodes: 2, links: 2, referencesOutsideScan: 0 } });
+], stats: { nodes: 2, links: 2, references: 2, dependenciesOutsideScan: 0 } });
 
 it("shares one counted relationship for parallel and reciprocal facts without mutating the input graph", () => {
   const input = graph(), before = JSON.stringify(input);
@@ -56,7 +56,7 @@ it("in the structure layout, hangs everything drawn from its directory and every
   const input: ExplorerGraphPayload = {
     nodes: [node("a/one.ts", 2), node("a/nested/two.ts", 5), node("ab/hidden.ts", 9), node("root.ts"), node("deep/chain/leaf.ts", 1)],
     links: [{ source: "a/one.ts", target: "a/nested/two.ts", kind: "dependency", referenceCount: 7 }],
-    stats: { nodes: 5, links: 1, referencesOutsideScan: 0 }
+    stats: { nodes: 5, links: 1, references: 1, dependenciesOutsideScan: 0 }
   };
   const before = JSON.stringify(input);
   const include = (file: ExplorerNodePayload): boolean => !file.id.startsWith("ab/");
@@ -87,7 +87,7 @@ it("in the structure layout, hangs everything drawn from its directory and every
 
 it("keeps a scan root that holds only one directory, so that the tree always has its root", () => {
   const input: ExplorerGraphPayload = {
-    nodes: [node("src/a.ts"), node("src/b.ts")], links: [], stats: { nodes: 2, links: 0, referencesOutsideScan: 0 }
+    nodes: [node("src/a.ts"), node("src/b.ts")], links: [], stats: { nodes: 2, links: 0, references: 0, dependenciesOutsideScan: 0 }
   };
   const data = spatialGraphOf(input, () => true, [], "structure");
   expect(data.nodes.map(file => file.id)).toEqual(["src/a.ts", "src/b.ts", directoryNodeId("src"), directoryNodeId("")]);

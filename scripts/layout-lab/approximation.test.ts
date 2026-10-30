@@ -34,7 +34,7 @@ const node = (id: string, symbols = 1): ExplorerNodePayload => ({ id, name: id, 
 const ring: ExplorerGraphPayload = {
   nodes: Array.from({ length: 64 }, (_, i) => node(`f${i}.ts`, i % 5)),
   links: Array.from({ length: 64 }, (_, i) => ({ source: `f${i}.ts`, target: `f${(i + 1) % 64}.ts`, kind: "dependency" as const })),
-  stats: { nodes: 64, links: 64, referencesOutsideScan: 0 }
+  stats: { nodes: 64, links: 64, references: 64, dependenciesOutsideScan: 0 }
 };
 const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "ring", scope: ["f0.ts"], subject: "f0.ts" };
 

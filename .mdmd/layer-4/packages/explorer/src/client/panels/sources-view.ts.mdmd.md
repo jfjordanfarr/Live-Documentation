@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-view.ts
-- Generated At: 2026-10-22T16:47:54.572Z
+- Generated At: 2026-10-30T16:26:05.745Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ Renders the Knowledge Sources panel from `sources-facts.ts`: the bundle's shape,
 
 The History row (2026-10-18, ticket C4 and C7 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions)): what the bundle carries of its history, how many commits from when to when, the window when it carries one and whether the clone is shallow; or, when none was computed, one line naming `npm run live-docs:history` to copy, then a rebuild of the bundle, with the copy beside the value rather than inside it so that the design audit reads two boxes, not one on another. Nothing else appears for a bundle without history, as the plan's C7 says.
 - Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) the unreachable section closes with "Not read": the files no start reaches whose kind no reader handles yet, by archetype, with one sentence saying that what reaches them, and what they reach, is unknown. They had been counted as unreachable once every file got a doc.
+- Since 2026-10-30 ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) the bundle's "Counts" row says what every count on the panel is of: "the whole scan today, unfiltered by Display", since the panel draws today's docs whatever the Display toggles hide and whatever moment the 3D picture showed last.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -44,14 +45,14 @@ What the panel needs from the client.
 
 #### `HISTORY_COMMAND` {#symbol-history_command}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L70)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L76)
 
 ##### `HISTORY_COMMAND` — Summary
 The command a person copies to compute a history the bundle lacks.
 
 #### `renderSourcesView` {#symbol-rendersourcesview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L355)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-view.ts#L362)
 - Parameters: `config`: [`SourcesViewConfig`](#symbol-sourcesviewconfig)
 
 ##### `renderSourcesView` — Summary

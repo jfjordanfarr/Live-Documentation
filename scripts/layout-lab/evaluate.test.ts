@@ -38,7 +38,7 @@ describe("the lab's alignment evaluation", () => {
 
   it("re-solves the same ordered branches from a fresh scene and prices all three shape signals", () => {
     const nodes = [node("a/x.ts"), node("a/y.ts")];
-    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, referencesOutsideScan: 0 } };
+    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, references: 1, dependenciesOutsideScan: 0 } };
     const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "pair", subject: nodes[0].id, scope: nodes.map(file => file.id) };
     const capture = {} as Capture;
     const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0 };
@@ -64,7 +64,7 @@ describe("the lab's alignment evaluation", () => {
 
   it("interleaves seed and alignment trials and exports the final geometry and every decision", () => {
     const nodes = [node("a/x.ts"), node("a/y.ts")];
-    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, referencesOutsideScan: 0 } };
+    const graph: ExplorerGraphPayload = { nodes, links: [{ source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" }], stats: { nodes: 2, links: 1, references: 1, dependenciesOutsideScan: 0 } };
     const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "pair", subject: nodes[0].id, scope: nodes.map(file => file.id) };
     const capture = { capturedAt: "2026-10-13" } as Capture;
     const config = { ...baselineConfig(), orderStarts: 0, membraneEvenness: 0, membraneSimplicity: 50, rowLevelness: 0, crossingCost: 0, heightCost: 0 };

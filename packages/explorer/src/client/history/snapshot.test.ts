@@ -55,7 +55,7 @@ describe("snapshotGraphOf", () => {
       { source: "src/b.ts", target: "src/a.ts", kind: "dependency", referenceCount: 1 },
       { source: "tests/a.test.ts", target: "src/a.ts", kind: "dependency", referenceCount: 1 }
     ]);
-    expect(graph.stats).toEqual({ nodes: 3, links: 3, referencesOutsideScan: 0 });
+    expect(graph.stats).toEqual({ nodes: 3, links: 3, references: 4 });
   });
 
   it("is sized by the count where the 3D layout reads a file's symbols, and its hubs sum the counts", () => {

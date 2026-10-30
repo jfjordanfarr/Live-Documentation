@@ -22,7 +22,7 @@ describe("independent Local Map branches", () => {
       { source: files[3].id, target: files[2].id, kind: "dependency" as const },
       { source: files[4].id, target: files[1].id, kind: "dependency" as const }
     ];
-    const graph = { nodes: files, links: wires, stats: { nodes: 5, links: 5, referencesOutsideScan: 0 } };
+    const graph = { nodes: files, links: wires, stats: { nodes: 5, links: 5, references: 5, dependenciesOutsideScan: 0 } };
     const pins = { entries: [] };
     const result = exploreBranches(files[1], graph, pins, file => !file.id.startsWith("tests/"));
     expect(result.subgraph.nodes.map(file => file.id).sort()).toEqual(["app/start", "app/user", "lib/provider"]);
@@ -47,7 +47,7 @@ describe("independent Local Map branches", () => {
       { source: files[2].id, target: files[0].id, kind: "dependency" as const },
       { source: files[3].id, target: files[2].id, kind: "dependency" as const }
     ];
-    const graph = { nodes: files, links, stats: { nodes: 4, links: 5, referencesOutsideScan: 0 } };
+    const graph = { nodes: files, links, stats: { nodes: 4, links: 5, references: 5, dependenciesOutsideScan: 0 } };
     const pins = addPin(EMPTY_PIN_SET, files[3].id, "*");
     files[2].publicSymbols.push("unrelated");
     const result = exploreBranches(files[2], graph, pins, () => false, {
@@ -79,7 +79,7 @@ describe("independent Local Map branches", () => {
       { source: "a", target: "b", sourceSymbol: "value", targetSymbol: "used", kind: "dependency" as const },
       { source: "b", target: "c", sourceSymbol: "unrelated", targetSymbol: "value", kind: "dependency" as const }
     ];
-    const graph = { nodes: files, links, stats: { nodes: 3, links: 2, referencesOutsideScan: 0 } };
+    const graph = { nodes: files, links, stats: { nodes: 3, links: 2, references: 2, dependenciesOutsideScan: 0 } };
     const pins = addPin(EMPTY_PIN_SET, "a", "value");
     const result = buildBranches(files[0], graph, pins, () => true);
     expect([...result.relevantSymbols.get("b")!]).toEqual(["used"]);
@@ -91,7 +91,7 @@ describe("independent Local Map branches", () => {
     const files = ["p", "q", "r", "s"].map(id => node(id));
     const wires = ([["q", "p"], ["r", "p"], ["s", "q"], ["s", "r"]] as Array<[string, string]>)
       .map(([source, target]) => ({ source, target, sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const }));
-    const small: ExplorerGraphPayload = { nodes: files, links: wires, stats: { nodes: 4, links: 4, referencesOutsideScan: 0 } };
+    const small: ExplorerGraphPayload = { nodes: files, links: wires, stats: { nodes: 4, links: 4, references: 4, dependenciesOutsideScan: 0 } };
     const pins = files.reduce((set, file) => addPin(set, file.id, "*"), EMPTY_PIN_SET);
     const exploration = exploreBranches(files[0], small, pins, () => true);
     expect(exploration.ranking.columns.map(column => column.map(file => file.id))).toEqual([["p"], ["q", "r"], ["s"]]);
@@ -118,7 +118,7 @@ describe("independent Local Map branches", () => {
     { source: "outside", target: "join", targetSymbol: "symbol-value" },
     { source: "catalog", target: "base" }
   ].map(link => ({ ...link, kind: "dependency" as const }));
-  const graph: ExplorerGraphPayload = { nodes, links, stats: { nodes: nodes.length, links: links.length, referencesOutsideScan: 0 } };
+  const graph: ExplorerGraphPayload = { nodes, links, stats: { nodes: nodes.length, links: links.length, references: links.length, dependenciesOutsideScan: 0 } };
 
   it("retains two branches and their unrequested cross-connection, without exposing the entire graph", () => {
     let pins = addPin(EMPTY_PIN_SET, "base", "value");
@@ -248,7 +248,7 @@ describe("the membrane depth", () => {
     const files = ["a/x/f1", "a/x/f2", "a/y/g1", "a/y/z/h1"].map(id => node(id));
     const wires = ([["a/x/f2", "a/x/f1"], ["a/y/g1", "a/x/f1"], ["a/y/z/h1", "a/y/g1"]] as Array<[string, string]>)
       .map(([source, target]) => ({ source, target, sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const }));
-    const graph: ExplorerGraphPayload = { nodes: files, links: wires, stats: { nodes: 4, links: 3, referencesOutsideScan: 0 } };
+    const graph: ExplorerGraphPayload = { nodes: files, links: wires, stats: { nodes: 4, links: 3, references: 3, dependenciesOutsideScan: 0 } };
     const pins = files.reduce((set, file) => addPin(set, file.id, "*"), EMPTY_PIN_SET);
     const directories = (depth: number | null): string[] => files.map(file => exploreBranches(files[0], graph, pins, () => true, { membraneDepth: depth }).order.directoryOf(file.id));
     expect(directories(null)).toEqual(["a/x", "a/x", "a/y", "a/y/z"]);
@@ -264,7 +264,7 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     { source: "b/z.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const },
     { source: "a/y.ts", target: "a/x.ts", sourceSymbol: "value", targetSymbol: "value", kind: "dependency" as const }
   ];
-  const graph: ExplorerGraphPayload = { nodes: tree, links: treeLinks, stats: { nodes: 6, links: 2, referencesOutsideScan: 0 } };
+  const graph: ExplorerGraphPayload = { nodes: tree, links: treeLinks, stats: { nodes: 6, links: 2, references: 2, dependenciesOutsideScan: 0 } };
   const byId = new Map(tree.map(file => [file.id, file]));
 
   it("indexes every directory's own files and immediate subdirectories", () => {

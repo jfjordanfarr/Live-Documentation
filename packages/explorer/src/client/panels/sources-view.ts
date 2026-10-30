@@ -66,6 +66,12 @@ function fileButton(path: string): string {
     (directory ? `<span class="sources-path">${escapeHtml(directory)}</span>` : "");
 }
 
+/**
+ * What the panel's counts are of: every file of the scan as today's docs say, whatever the Display toggles hide and
+ * whatever moment the 3D picture showed last (2026-10-30).
+ */
+const SCOPE_WORDS = "the whole scan today, unfiltered by Display";
+
 /** The command a person copies to compute a history the bundle lacks. */
 export const HISTORY_COMMAND = "npm run live-docs:history";
 
@@ -97,6 +103,7 @@ function renderShape(facts: SourcesFacts, perspective: LocalMapPerspective, hist
     <section class="sources-panel" data-section="bundle">
       <h2><span class="sources-title">This bundle</span></h2>
       <div class="sources-row" data-row="docs"><span class="sources-row-label">Docs</span><span class="sources-row-value">${escapeHtml(`${shape.root}/${shape.baseLayer}`)}</span></div>
+      <div class="sources-row" data-row="scope"><span class="sources-row-label">Counts</span><span class="sources-row-value">${SCOPE_WORDS}</span></div>
       <div class="sources-row" data-row="files"><span class="sources-row-label">Files</span><span class="sources-row-value">${shape.files.toLocaleString()}: ${escapeHtml(archetypes)}</span></div>
       <div class="sources-row" data-row="references"><span class="sources-row-label">References between files</span><span class="sources-row-value">${shape.references.toLocaleString()}</span></div>
       <div class="sources-row" data-row="generated"><span class="sources-row-label">Generated</span><span class="sources-row-value">${escapeHtml(generated)}</span></div>
