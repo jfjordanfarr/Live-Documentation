@@ -1794,3 +1794,658 @@
   intuitive to use as Microsoft Teams.
 
   Pass D I don't think I have any notes on.
+
+● Recording the reply and your answer first, then starting the build: passes A
+  and B by me, pass D's first two pieces delegated now.
+
+  Searched for 4 patterns, read 2 files, ran 19 shell commands (ctrl+o to expand)
+
+● Record and memory bookkeeping first, then the Playwright port change so two
+  builders can run their checks beside mine.
+
+  Searched for 1 pattern, ran 8 shell commands (ctrl+o to expand)
+
+● 2 background agents launched (↓ to manage)
+   ├ Build the history panel pass
+   └ Build the search and reader pass
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Writing the 2D framing code now: the measurement fix, the fit rules, the
+  settle after a 3D return, and the edge signs, then I will build and look.
+
+  Searched for 1 pattern, read 1 file, ran 8 shell commands (ctrl+o to expand)
+
+● Looking at the new pictures and the one failing unit test.
+
+  Read 3 files, ran 11 shell commands (ctrl+o to expand)
+
+● Running the 2D browser specs against the new framing now, in the background.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Build the pre-change Explorer bundles in a detached
+worktree for the before pictures" completed (exit code 0)
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Capture the pre-change path return state from the old
+bundle" completed (exit code 0)
+
+● Authoring the two new Live Docs and collecting the last before picture while
+  the browser specs run.
+
+  Searched for 3 patterns, read 1 file, ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Run the 2D Local Map browser specs against the rebuilt
+bundles" completed (exit code 0)
+
+● The 2D spec run finished with exit code 0. Reading its summary, then starting
+  the full gate for pass A.
+
+  Searched for 2 patterns, read 1 file, listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● The reader check still fails. Reading its assertion and the page it saw.
+
+  Searched for 2 patterns, read 1 file, ran 10 shell commands (ctrl+o to expand)
+
+● The gate is still running, so I am using the wait to pin down the 3D pass
+  design from the code I have read, and checking the gate's progress once.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● Monitor(full gate for the 2D framing pass finishing)
+  ⎿  Monitor started · task by2qgrs49 · timeout 1800s
+
+● The 2D framing pass is built and under the full gate; the two history and
+  search builders are still working in their worktrees. I will pick up the
+  moment the gate reports.
+
+● Monitor "full gate for the 2D framing pass finishing" stream ended
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Monitor(full gate for the 2D framing pass finishing)
+  ⎿  Monitor started · task bpove4ztf · timeout 1800s
+
+● The gate is still in its browser phase. Waiting on it and on the two builders;
+  nothing else can move until one of them reports.
+
+● Background command "Regenerate the Live Docs and run the full pre-commit gate
+with the browser suite" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Monitor "full gate for the 2D framing pass finishing" stream ended
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Monitor(second full gate run for the 2D framing pass)
+  ⎿  Monitor started · task b0nhoy7ri · timeout 1800s
+
+  Ran 2 shell commands (ctrl+o to expand)
+● While the gate runs, I am reading the builders' finished commits so the later
+  review is quick.
+
+  Searched for 1 pattern, ran 8 shell commands (ctrl+o to expand)
+
+● Now the 3D view's styling, the legend and the tests for the wires pass, all in
+  the side worktree while the main tree's gate runs.
+
+  Searched for 1 pattern, ran 8 shell commands (ctrl+o to expand)
+
+● The 3D wires pass is coded, unit-tested and committed on a side branch;
+  recording that, then waiting for the main gate.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Waiting on the gate and the two builders; everything that can move without
+  them has moved.
+
+● Agent "Build the history panel pass" is waiting on its own background work ·
+1h 12m 40s
+
+● The history builder paused while its own browser checks run; its report will
+  follow. Still waiting on the main gate.
+
+● Agent "Build the search and reader pass" is waiting on its own background work
+· 1h 15m 39s
+
+● Both builders are in their own browser runs. Nothing to act on yet; the gate's
+  result comes next.
+
+● Agent "Build the history panel pass" is waiting on its own background work ·
+1h 18m 44s
+
+● Monitor event: "second full gate run for the 2D framing pass"
+  [Monitor expired after 30m with no events delivered. Re-arm it if you still
+  need the watch — and widen the filter if silence was unexpected.]
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Monitor(second full gate run for the 2D framing pass, browser phase)
+  ⎿  Monitor started · task babvnk2m2 · timeout 1800s
+
+● The gate is near its halfway mark in the browser phase; I have re-armed the
+  watch and will act the moment it ends.
+
+● Monitor "second full gate run for the 2D framing pass, browser phase" stream
+ended
+
+● Monitor(second full gate run for the 2D framing pass, browser phase end)
+  ⎿  Monitor started · task bn9j6g0p3 · timeout 1800s
+
+› Message from general-purpose
+  All four pieces of "History leaves the map intelligible" are built and
+  committed on branch `worktree-agent-ae58a4edfdb68b3fc` (worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-ae58a4edfdb68b3fc`).
+  The checklist item is not ticked.
+
+  **Before starting:** my branch began at 357dacce, and that
+  playwright.config.ts did not read `LIVE_DOCS_E2E_PORT`. I fast-forwarded to
+  main (f61fbf16), which adds it, so every browser run used port 8771.
+
+  **Commits:**
+  - a41de092: the step panel is as tall as its content, at most the room above
+  the scrubber, and scrolls inside; width unchanged.
+  - 2d5c68c1: the panel can be hidden while the scrubber stays.
+    - The panel has a "Hide step details" icon button; the scrubber has a "Step
+  details" toggle with `aria-pressed`. Both have tooltips and work from the
+  keyboard.
+    - Hiding by the panel's button moves focus to the toggle.
+    - The choice holds across steps, is not in the address, and resets when the
+  history is closed (toggle off or `leave()`).
+  - 49368c41: "Created", "Deleted" and "not yet created" replace Born, Dead and
+  "not yet born".
+    - Changed in the step panel, the pin tray words, `inspect --between` output
+  and help, and the sample builder's label.
+    - The format fields `born`/`dead`, identifiers, test-fixture names and the
+  "dead code sweep" comments are unchanged.
+  - ffccad9d: absence is said where the person looks, and paths at a moment run
+  over that moment's wires.
+    - The search chips, the path report and the reader's note use the tray's
+  words. The chip text is faded with the commit on hover and `aria-describedby`.
+    - The reach, path and references-against-path at a moment use a new pure
+  module, `history/moment-paths.ts`, built from the moment the control already
+  hands to `onMoment`. Reach is translated back to today's names.
+    - The report starts "At <date>, commit <hash>:"; if an end is absent it says
+  "<name>, not yet created" instead of a path.
+    - The path is recomputed on every moment change and when the history closes.
+    - The 3D view now reads the path as the picture names it; it no longer maps
+  it through `fileAt` a second time.
+    - The panel's last child loses its bottom margin, which looked unbalanced in
+  the content-sized panel.
+
+  **Files changed:**
+  - In `packages/explorer/src/client/`:
+  `history/{history-control,scrubber,step-panel}.ts`, new
+  `history/moment-paths.ts` and `.test.ts`, `index.ts`, `search/search-bar.ts`,
+  `styles/{history,search}.css`, `views/forceGraphView.ts`.
+  - `packages/explorer/src/shared/template.html`.
+  - `scripts/live-docs/inspect.ts`, `inspect/history.ts`,
+  `visualize-history-sample.ts`.
+  - New `tests/e2e/history-panel.spec.ts`; `tests/e2e/history-scrubber.spec.ts`;
+  `tests/integration/live-docs/history.test.ts`.
+  - `.mdmd/layer-3`: `change-over-time` (a dated "Built 2026-10-30, not yet
+  playtested" sub-bullet under the item), `live-documentation-explorer`, and a
+  dated note in `architectural-decisions`.
+  - `.mdmd/layer-4`: regenerated docs, with authored notes added to the affected
+  files and the four new docs.
+  - Pictures and README.
+
+  **Verified:**
+  - `npm run build` exit 0; client `tsc` and eslint on the changed files are
+  clean.
+  - `npm run test:unit`: 1,459 passed (6 of them new).
+  - `history.test.ts`: 15 passed, including a new check on the `--between` text
+  output.
+  - `live-docs:lint`, `slopcop:markdown` and `docs:links:enforce` are clean.
+  - Playwright on 8771, single runs, no failures:
+    - history-panel plus history-scrubber: 19 passed after the last change.
+    - history-panel, history-scrubber, local-map-path, search-bar and
+  inspection: 45 passed.
+    - explorer-navigation, force-graph-focus, perspective-zoom, still-picture
+  and no-network: 45 passed.
+  - One earlier failure: the Knowledge Sources test needed `samples/estate`,
+  which I hadn't built yet; it passed after building the estate sample.
+
+  **Gap in the tests:** the scripted repository never changes a wire between two
+  files that exist both today and at an earlier commit. The tests therefore
+  tell the moment's wires from today's by renamed hop names, the report's
+  commit, and what the destination field offers. I put the old 3D path mapping
+  back temporarily and the drawing assertion still passed, because in this
+  sample the second mapping happens to give the same names. The view change
+  matters only when a path's names collide across renames, and no spec covers
+  that case.
+
+  **Pictures** in `AI-Agent-Workspace/Screenshots/2026-10-30/history-panel/`
+  (README there):
+  - `before-short-step.png`: the panel 641 px tall for one line.
+  - `after-short-step.png`: 125 px.
+  - `after-panel-hidden.png`
+  - `after-not-yet-created.png`
+
+  The day's entry in the top-level Screenshots README is not written; I left it
+  to you because the other builder also adds pictures under that date.
+
+  **Unfinished:** none. The scratch scripts and `AI-Agent-Workspace/tmp` are
+  deleted and the 8771 server is stopped.
+
+  **Not settled by the brief, decided without asking:**
+  - At a moment, a path hop for a file deleted since does nothing when clicked,
+  as a sphere of the past does.
+  - The report prefix wording, "At <date>, commit <hash>:".
+
+  **Fork:** none met.
+
+● Agent "Build the history panel pass" finished · 1h 20m 32s
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Agent(Build the inventory totals pass) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+● The inventory builder is now running beside the search builder; the history
+  builder's work is reviewed and waits for the gate to clear so it can land
+  after the framing pass.
+
+› Message from general-purpose
+  All five pieces are built and committed on branch
+  `worktree-agent-a616a007e8f02a85e` (worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a616a007e8f02a85e`).
+  Before starting I fast-forwarded the branch to main f61fbf16, which is the
+  commit that adds `LIVE_DOCS_E2E_PORT`. One browser test still fails (details
+  under Verification), and the dark search rectangle does reproduce. I left it
+  unfixed because every fix I found routes around a browser fault, so it is a
+  fork for you.
+
+  **Commits**
+  - 8eeac9c8 Ranking. Each word in a search is scored against the file's name
+  with and without its extension, and the better score counts (new
+  `fileNameScore`, `stemOf`). Groups are ordered by their best score, a matched
+  directory's own score counting too, ties by directory name. Files inside a
+  group go by score, then name. The cut stays at 12.
+  - 3a56fdbf Contrast. Result paths now use `--text-panel-muted`: about 6.6:1 on
+  a plain row and 5.6:1 on a selected one, up from 2.9:1 and 2.5:1, at the same
+  10 px. A new pure module `tests/e2e/contrast.ts` has its own Vitest tests and
+  is used by the spec.
+  - 19d7cb97 Combobox semantics. `search-field.ts` sets every attribute itself,
+  so the Knowledge Sources "Reachable from" field gets them too. I removed the
+  static `role="listbox"` from `template.html` and `sources-view.ts`.
+  - 611e1100 Reader order. New pure module `reader-sections.ts` cuts the
+  authored block at `###` headings outside code fences. It uses the renderer's
+  own fence and heading rules (`fenceClosing`, `headingOf`), now exported from
+  `markdown.ts`. The joined sections always equal the original block, so nothing
+  is dropped. All sections are rendered in the author's order with one shared
+  heading-id generator, so every anchor keeps its old id. The jump list shows
+  every section present, named by its own heading. That means it also shows
+  "Dependents" and uses "Public Symbols" rather than "Symbols". A jump scrolls
+  only the reader and moves focus to the heading.
+  - e5a46aaa World Map evidence. The pinned panel is at most half the view tall
+  (`max-height: 50%`, `box-sizing: border-box`, `max-width` 466 px to keep its
+  width) and scrolls inside. Its names drop the 11 px monospace and read at the
+  panel's 12 px sans-serif; the tier and source lines also go from 11 px to 12
+  px.
+  - 5b02dad2 Pictures and a wording fix. In the before picture `generator.ts` is
+  in the ninth row but is the fifth file, so the docs and comments now say
+  "ninth row".
+
+  **Files changed**
+  - Code: `packages/explorer/src/client/` `search/graph-search.ts`,
+  `search/graph-search.test.ts`, `search/search-field.ts`, `styles/search.css`,
+  `styles/shell.css`, `styles/world.css`, `panels/sources-view.ts`,
+  `detailPanel.ts`, `markdown.ts`, `reader-sections.ts` and
+  `reader-sections.test.ts` (new), plus
+  `packages/explorer/src/shared/template.html`.
+  - Tests: `tests/e2e/contrast.ts` and `contrast.test.ts` (new),
+  `search-bar.spec.ts`, `inspection.spec.ts`, `world-map-estate.spec.ts`.
+  - Docs: `.mdmd/layer-3/live-documentation-explorer.mdmd.md` (search and reader
+  sentences, reader order dated as the owner's choice),
+  `.mdmd/layer-3/world-map.mdmd.md` (one sentence; nothing ticked), and the
+  regenerated layer-4 docs with authored notes, including four new ones.
+
+  **Verification**
+  - `npm run build` passes; the full unit project passes, 145 files and 1,468
+  tests.
+  - `live-docs:lint` passes on 889 docs, `live-docs:generate --dry-run` shows no
+  drift, and eslint passes on every changed TypeScript file.
+  - Each new browser test was run against the old behaviour first and failed.
+  The contrast test read 2.46; the panel measured 486 px tall with 11 px names
+  before the change.
+  - Playwright on port 8772, 13 specs (search-bar, inspection,
+  knowledge-sources, the three world-map specs, local-map-path,
+  force-graph-focus, history-scrubber, design-audit, no-network, cited-by,
+  explorer-navigation): 113 passed, 1 failed.
+  - The failure is `force-graph-focus.spec.ts:60` ("a focused URL centers the
+  actual graph node…"), a 30-second test timeout. Run alone, it failed again the
+  same way. The trace shows the reader steps passing; the run stalls clicking
+  the "2D" button, after "done scrolling". I did not run this test on main, so I
+  can't say whether my changes cause it.
+
+  **Dark rectangle**
+  It reproduces every time at 1280×800, in 3D only, on both bundles, and in
+  every headless Chromium mode I tried (version 145). Cause, by measurement: it
+  appears only when the results list scrolls (content 1,131 px against 480
+  visible) and has a solid background. The scene's pixels are drawn — hiding the
+  list shows them — but the browser's compositor treats the list's whole
+  scrolling content as covering the 3D canvas beneath it, past the visible box.
+  So the page's `#1e1e1e` shows through below the list down to the bottom of the
+  view.
+
+  **Fork: the dark rectangle.** Options, each checked to remove it:
+  - (a) Draw the list's background as a gradient of the same colour.
+  - (b) Add a do-nothing inset box-shadow.
+  - (c) Restructure into an opaque outer frame around a transparent inner
+  scroller.
+  - (d) Leave it and record it as a browser fault.
+
+  All of (a)–(c) route around the browser, and I could not check whether a GPU
+  browser shows it at all.
+
+  **Other things I noticed, not touched:** World Map tier and source text in
+  `--w-faint` is about 2.9:1 on white. Search group headings are
+  `--text-panel-subtle` at 10 px. `local-map-path.spec.ts` has its own inline
+  copy of the contrast arithmetic and could import `contrast.ts`. The reader's
+  dependency list shows symbol slugs such as `symbol-livedocumentationconfig`.
+
+  **Pictures** (four, in
+  `AI-Agent-Workspace/Screenshots/2026-10-30/search-and-reader/`, each named in
+  that folder's `README.md`):
+  - `before-search-generator.png`
+  - `after-search-generator.png`
+  - `before-reader-generator.png`
+  - `after-reader-generator.png`
+
+  The day's README and the top-level Screenshots README are not updated. The
+  scratch scripts are deleted and the 8772 server is stopped.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Agent "Build the search and reader pass" finished · 1h 30m 17s
+
+● Agent(Build the tuning usability pass) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● The gate is near its last tests with two browser failures to examine once it
+  finishes; I have their test code open and will read the failure output as soon
+  as the run ends.
+
+● Background command "Run the full pre-commit gate again with the browser suite,
+logging to the scratchpad" completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Monitor "second full gate run for the 2D framing pass, browser phase end"
+stream ended
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Landing the history builder's work on main: the merge was clean, the build and
+  docs are consistent, so I am rebuilding the bundles and running its browser
+  checks now.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Nothing can move until the history checks finish on main; the next steps (its
+  commit, then the search merge and the 3D cherry-pick) all depend on that
+  result.
+● Background command "Rebuild the three bundles from the merged tree and run the
+history, inspection and path specs" completed (exit code 0)
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Waiting on the search landing's browser checks; the 3D cherry-pick follows
+  them.
+
+› Message from general-purpose
+  Branch `worktree-agent-a141d98cccc02b704`, worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a141d98cccc02b704`. I
+  fast-forwarded the branch to main's f61fbf16 before starting, because my base
+  did not yet read `LIVE_DOCS_E2E_PORT`. All four pieces are done in one commit,
+  11cf68dc.
+
+  **What was built**
+  1. **One number of references.** `ExplorerGraphStats` now has `references`,
+  made by a new `documentedReferences(links)` in `shared/graph.ts`: each link's
+  `referenceCount` added up, counting 1 when a link has none. A moment of the
+  history (`snapshotGraphOf`) counts through the same function. `sourcesFacts`
+  no longer counts references itself; it takes `options.references` from
+  `graphData.stats.references`. On the built bundle of this repository both
+  places print the same number (4,651 before this commit's files existed, 4,660
+  after). There was nothing left to explain: the old panel count and the sum of
+  the links' counts agree.
+  2. **The sidebar line.** It now reads "N files, R references, D dependencies
+  outside the scan", with thousands separators, from a pure `statsLineOf`. The
+  stat field `referencesOutsideScan` is renamed `dependenciesOutsideScan` and is
+  optional.
+  3. **The scope on Knowledge Sources.** A new row in "This bundle": label
+  "Counts", value "the whole scan today, unfiltered by Display".
+  4. **The history moment.** `syncStatsLine()` runs at startup and on every
+  `onMoment`. At a past moment the line shows that moment's files and references
+  and leaves out the third count. It goes back to today's counts when today is
+  shown or the history closes.
+
+  **Files**
+  - Code: `packages/explorer/src/shared/{graph.ts, types.ts}`,
+  `packages/explorer/src/client/index.ts`, `client/history/snapshot.ts`,
+  `client/panels/sources-facts.ts`, `client/panels/sources-view.ts`
+  - New: `client/panels/stats-line.ts`, `client/panels/stats-line.test.ts`,
+  `tests/e2e/inventory-counts.spec.ts`
+  - Tests changed: `shared/graph.test.ts` (new test: a signature naming one type
+  in three places gives 1 link and 3 references, plus a test of
+  `documentedReferences`), `sources-facts.test.ts` (the total now comes through
+  `explorerGraphOf`), `snapshot.test.ts`, and the stats objects in hand-written
+  fixtures in `views/forceGraphData.test.ts`, five `views/localView/*.test.ts`
+  files and four `scripts/layout-lab/*.test.ts` files.
+  - Docs: `.mdmd/layer-3/live-documentation-explorer.mdmd.md` (Knowledge Sources
+  bullet, History paragraph and Panels list, dated 2026-10-30 and citing the
+  record's Turn 3; the checklist item is not ticked). Regenerated
+  `.mdmd/layer-4` docs, with authored notes updated on 9 of them and written for
+  the 3 new ones.
+  - Pictures: `AI-Agent-Workspace/Screenshots/2026-10-30/inventory/{before.png,
+  after.png, README.md}`. Before: "4622 references, 854 references outside the
+  scan" against the panel's 4,651. After: both say 4,660 references, the sidebar
+  says "856 dependencies outside the scan", and the Counts row is visible.
+
+  **Verification**
+  - `npm run build` passes. `npm run test:unit`: 144 files, 1,457 tests passed.
+  - ESLint on the changed files is clean (I fixed one import-order error).
+  `live-docs:lint` validated 888 docs; its 52 disconnected-node warnings are
+  already there on main and none are in the new files. `live-docs:generate
+  --dry-run` shows no drift after the last generate. `slopcop:markdown`: 0
+  broken links. `slopcop:symbols`: 0 issues.
+  - Playwright on port 8773, after building all three bundles:
+    - `inventory-counts.spec.ts` (3 tests) passed on both runs. On this
+  repository and on the estate sample it checks that the sidebar number equals
+  the panel number, and that both equal the count of edges between two scan
+  files read from `explorer-data.json`. It also checks the files count, the
+  third count and the Counts row. On the history sample it checks the line at
+  step 2 against the engine's `seek` and checks that it returns to today's line
+  when the history closes.
+    - Mutation check: with the line written only from today's stats, the history
+  test failed, printing "8 files, 9 references, 0 dependencies outside the
+  scan" where the moment had 10 references. I then put the code back.
+    - `knowledge-sources.spec.ts` (6, run twice), `history-scrubber.spec.ts`
+  (11) and `no-network.spec.ts` (8) all passed, with no failures or flakes.
+
+  **Unfinished work:** none. The scratch scripts and the server are gone.
+
+  **Open questions:** none. The only wording I chose is the Counts row, "the
+  whole scan today, unfiltered by Display", where "Display" is the heading over
+  the toggles. It needs your playtest.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Build the inventory totals pass" finished · 36m 53s
+
+● The inventory builder has handed back too; it lands after the search piece,
+  with one expected hand-resolution where both touched the moment callback.
+
+● Background command "Rebuild the bundles with the search and reader changes and
+run their specs with the focus and audit specs" completed (exit code 0)
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Resolving the two merge conflicts from the inventory landing (both in docs),
+  then building and checking it.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Waiting on the inventory checks; after their commit the 3D cherry-pick is
+  next.
+
+● Background command "Rebuild the bundles with the inventory changes and run the
+inventory, Knowledge Sources, history and network specs" completed (exit code
+0)
+
+  Searched for 1 pattern, ran 7 shell commands (ctrl+o to expand)
+
+● Background command "Rebuild the three bundles from main with the 3D pass"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+› Message from general-purpose
+  All five pieces are built and committed on my branch. The checklist item is
+  not ticked. One timing-sensitive browser test failed:
+  `force-graph-update.spec.ts` "a change at full energy…" timed out three times,
+  once in a batch and twice alone. Details are under Verification.
+
+  **Branch** `worktree-agent-ab8786488f64c3f03`, worktree
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-ab8786488f64c3f03`. I
+  first fast-forwarded it to main `f61fbf16`, because the base it started from
+  had no `LIVE_DOCS_E2E_PORT` and the suite would have reused another checkout's
+  server on 8766.
+
+  **Commits**
+  1. `7ffbf7aa` The legend moves above Tuning. Same elements, nothing renamed.
+  2. `a5feb656` Every one of the 43 controls has a one-sentence help text, in a
+  table in the new `panels/tuning-levers.ts`. `describeTuningControls()` in
+  `tuning.ts` puts it in the control's `title`, the label's `title`, and a
+  `.visually-hidden` span that the control points to with `aria-describedby`.
+     - The span sits after the label, not inside it, so the sentence does not
+  become part of the control's accessible name.
+     - The template's old `title` attributes are removed, so the table is the
+  only source.
+     - All sentences were rewritten from the code that reads each setting. The 7
+  controls without help now have it, and stale wording is gone ("many-file
+  layout", "independent of packing presets", wires-per-pixel phrasing).
+  3. `6c74624a` "3D Layout" now holds three nested groups, open by default:
+  Forces (Repulsion, Spring Strength, Gravity, Tether, Citing Pull, Repulsion
+  Reach, Update Energy, Approximation), Spacing (Link Gap, Coupling, Clearance)
+  and Appearance (Base Radius, Symbol Scaling, Wire Thickness, both zoom
+  resistances). All ids are kept. The 2D groups and History are unchanged.
+  4. `f606c99d`
+     - Template corrected: Row Levelness now starts at 2, and Axis lists By date
+  first (the default).
+     - `.tuning-content` now sets 11px, which labels, selects and Export
+  inherit.
+     - Dead CSS removed: `#tuning-panel`, `.tuning-section/-header/-body/-group`
+  and `.tuning-checkbox*`.
+     - The brief said Export was smaller than the panel text. It was larger:
+  16px against the labels' 11px.
+  5. `9f4cf29b` Both docs now state the code's defaults, name `getDefaultTuning`
+  in `local-storage.ts`, and carry dated corrections. The earlier values stay
+  as history.
+  6. `869da2c8` Pictures.
+
+  **Files**
+  - Changed: `template.html`, `tuning.ts`, `shell.css`,
+  `.mdmd/layer-3/live-documentation-explorer.mdmd.md`,
+  `.mdmd/layer-3/change-over-time.mdmd.md`,
+  `.mdmd/layer-4/.../panels/tuning.ts.mdmd.md`.
+  - Created: `tuning-levers.ts`, `tuning-levers.test.ts`,
+  `tests/e2e/tuning.spec.ts`, and their three Live Docs with Purpose and Notes
+  written.
+
+  **Verification** (`LIVE_DOCS_E2E_PORT=8774`)
+  - Vitest: the new file has 5 tests. They check help coverage against the
+  template and the one-sentence form, and every control's initial value and
+  readout against `getDefaultTuning`. That check failed on Row Levelness and
+  then on Axis before I fixed them. Full `npm run test:unit`: 1458 passed.
+  - `tuning.spec.ts`: 3 passed. They cover title, `aria-describedby` and
+  accessible description for all 43 controls; legend order; the three groups,
+  their members and order; the Gravity readout changing; and Export's font size
+  equal to the labels'.
+  - `local-map-presets.spec.ts` (5) and `spatial-legend.spec.ts` (2) passed.
+  - `force-graph-wires.spec.ts` and `history-scrubber.spec.ts` passed (19 of 20
+  in that batch).
+  - `force-graph-update.spec.ts` "a change at full energy…" failed three times:
+  once in the batch, then twice run alone. Each time it timed out at the first
+  `settled()` after `goto` (line 128), waiting 60s for `aria-busy="false"`,
+  before any tuning control is touched. Load average was 19–26 then. I did not
+  run it on the pre-change bundle, so I can't prove the cause, but nothing in
+  these commits changes forces or startup.
+  - ESLint is clean on the changed TS files. `live-docs:generate`,
+  `live-docs:lint` and `docs:links:enforce` are clean. I did not run
+  `safe:commit`.
+
+  **Pictures** in `AI-Agent-Workspace/Screenshots/2026-10-30/tuning/`, with a
+  README: `before-3d-tuning.png` and `after-3d-tuning.png`, 1280×800, 3D Local
+  Map, Tuning scrolled to 3D Layout.
+
+  **Not done / noticed**
+  - `tuning.ts` still sets a `--self-loop-taper` CSS property that no stylesheet
+  reads.
+  - `history/history-control.ts:127` starts its context with `axis: "steps"`. It
+  is overwritten on the first sync.
+  - "Export layout settings" is still a visible text button. Under the owner's
+  icon-plus-tooltip rule it might become an icon; the brief kept it as text.
+
+  **Judgement calls**
+  - I put Base Radius and Symbol Scaling under Appearance. They also change
+  physical spacing (radius feeds link distance and collision), so Spacing is the
+  other possible home.
+  - I left the four lace sliders in "2D Layout". "2D Wires" fits them better,
+  but that group is collapsed by default and has no perspective tag, so moving
+  them would hide them in 2D.
+
+● Agent "Build the tuning usability pass" finished · 56m 17s
+
+  Read 6 files, ran 1 shell command (ctrl+o to expand)
+
+● Checking the brightened hover picture by eye and taking the orbit frames.
+
+  Read 3 files, ran 6 shell commands (ctrl+o to expand)
+
+● The 3D checks are running; after they pass I commit the wires pass, then land
+  the tuning piece and run the day's full gate.
+
+● The 3D checks are running; after they pass I commit the wires pass, then land
+  the tuning piece and run the day's full gate.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read tests/e2e/force-graph-observation.ts (191 lines)
+  ⎿  Read packages/explorer/src/client/views/forceGraphData.ts (175 lines)
+  ⎿  Referenced file packages/explorer/src/client/views/forceGraphBatches.ts
+  ⎿  Referenced file
+     packages/explorer/src/client/views/forceGraphBatches.test.ts
+  ⎿  Read packages/explorer/src/client/views/fileConnections.ts (40 lines)
+
+● Task "Serve the built Explorer locally for screenshots" still running in
+  background
+
+● Background command "Rebuild the sample bundles and run the 3D specs against
+the wires pass" completed (exit code 0)
+
+  Searched for 3 patterns, ran 2 shell commands (ctrl+o to expand)
+
+● Seven of the 3D checks failed on the wires pass. I am rerunning them with full
+  error output and reading the specs meanwhile.
+
+  Read 1 file, ran 5 shell commands (ctrl+o to expand)
+
+● Three of the failures look like old assertions that wires start at sphere
+  centres, which the wires pass changed on purpose. Checking how the trim is
+  computed before touching any test.
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+● Background command "Rerun the seven failing browser tests with full error
+output" completed (exit code 0)
+
+● The rerun has finished. Reading its errors now.
+
+  Ran 2 shell commands (ctrl+o to expand)
