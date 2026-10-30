@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 
+import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose, currentSnapshot, newestKey } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
@@ -62,6 +63,90 @@ test("one search finds directories, files and symbols, grouped; a chosen one is 
   expect(newestKey(currentSnapshot(page))).toBe(retainedKey({ kind: "pin", pin: { nodeId: INDEX, symbol: "*" } }));
   await expect(page.locator("#search-subject")).toHaveValue("index.ts");
   await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
+});
+
+test("a file named by the words comes first, ahead of files that only expose a symbol of that name", async ({ page }) => {
+  // The October 23 review typed "generator" and found generator.ts in the ninth row, behind a symbol of tsconfig.base.json and
+  // GeneratorIdentity: the name was scored with its extension and the groups were then sorted by directory
+  await page.goto("/");
+  await page.click("#search-subject");
+  await page.keyboard.type("generator");
+  const first = page.locator("#search-subject-results .search-row--file").first();
+  await expect(first.locator(".search-row-context")).toHaveText("packages/generator/src/generator.ts");
+  await expect(first.locator(".search-row-name")).toHaveText("generator.ts");
+});
+
+test("a result's path is readable: at least 4.5:1 against its row, selected or not, at its own size", async ({ page }) => {
+  // The paths were 10 px #666 on the results' #1f1f22, about 2.9:1, under WCAG AA's 4.5:1 for small text
+  await page.goto("/");
+  await page.click("#search-subject");
+  await page.keyboard.type("generator");
+  const results = page.locator("#search-subject-results");
+  await expect(results.locator(".search-row--file.selected .search-row-context")).toHaveCount(1);
+  const paths = await results.locator(".search-row-context").evaluateAll(elements => elements.map(element => {
+    const layers: string[] = [];
+    for (let layer: Element | null = element; layer; layer = layer.parentElement) layers.unshift(getComputedStyle(layer).backgroundColor);
+    const style = getComputedStyle(element);
+    return { text: element.textContent ?? "", selected: !!element.closest(".selected"), colour: style.color, fontSize: parseFloat(style.fontSize), layers };
+  }));
+  expect(paths.length).toBeGreaterThan(3);
+  expect(paths.some(path => path.selected) && paths.some(path => !path.selected), "both a selected and an unselected row are measured").toBe(true);
+  for (const path of paths) {
+    expect(path.fontSize, path.text).toBeGreaterThanOrEqual(10);
+    expect(contrastRatio(parseColour(path.colour), backdrop(path.layers)), `${path.text}${path.selected ? ", selected" : ""}`).toBeGreaterThanOrEqual(AA_SMALL_TEXT);
+  }
+});
+
+test("each field is a combobox over a listbox: open or closed, and the keyboard's row named while focus stays in the field", async ({ page }) => {
+  await page.goto("/");
+  const field = page.getByRole("combobox", { name: /^Search files, symbols and directories/u });
+  await expect(field).toHaveAttribute("aria-autocomplete", "list");
+  await expect(field).toHaveAttribute("aria-controls", "search-subject-results");
+  await expect(field).toHaveAttribute("aria-expanded", "false");
+  await expect(field).not.toHaveAttribute("aria-activedescendant", /./u);
+
+  await field.click();
+  await page.keyboard.type("generator");
+  const results = page.locator("#search-subject-results");
+  await expect(results).toBeVisible();
+  await expect(field).toHaveAttribute("aria-expanded", "true");
+  await expect(results).toHaveAttribute("role", "listbox");
+  const rows = await results.locator(".search-row").evaluateAll(elements => elements.map(element => ({ id: element.id, role: element.getAttribute("role") })));
+  expect(rows.length).toBeGreaterThan(3);
+  expect(rows.every(row => row.role === "option" && row.id !== ""), "every row is an option with an id").toBe(true);
+  expect(new Set(rows.map(row => row.id)).size, "the ids are distinct").toBe(rows.length);
+  expect(await results.locator(".search-group").evaluateAll(groups => groups.map(group => group.getAttribute("role"))))
+    .toEqual(expect.arrayContaining(["presentation"]));
+  expect(await results.locator(".search-group:not([role=presentation])").count(), "group headings are presentational").toBe(0);
+
+  // The active descendant follows the keyboard's row; focus never leaves the field
+  const active = () => field.getAttribute("aria-activedescendant");
+  await expect(field).toHaveAttribute("aria-activedescendant", rows[0].id);
+  await expect(page.locator(`#${rows[0].id}`)).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("ArrowDown");
+  expect(await active()).toBe(rows[1].id);
+  await expect(page.locator(`#${rows[1].id}`)).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(`#${rows[0].id}`)).toHaveAttribute("aria-selected", "false");
+  await page.keyboard.press("ArrowUp");
+  await page.keyboard.press("ArrowUp");
+  expect(await active(), "ArrowUp from the first row wraps to the last").toBe(rows.at(-1)!.id);
+  await expect(field).toBeFocused();
+
+  await page.keyboard.press("Escape");
+  await expect(results).toBeHidden();
+  await expect(field).toHaveAttribute("aria-expanded", "false");
+  await expect(field).not.toHaveAttribute("aria-activedescendant", /./u);
+
+  // The destination field, once anything is pinned, is the same
+  await choose(page, "subject", "generator", { file: "packages/generator/src/generator.ts" });
+  const destination = page.getByRole("combobox", { name: "The end of a path from the newest pin" });
+  await expect(destination).toHaveAttribute("aria-controls", "search-destination-results");
+  await expect(destination).toHaveAttribute("aria-expanded", "false");
+  await destination.click();
+  await page.keyboard.type("engine");
+  await expect(page.locator("#search-destination-results")).toBeVisible();
+  await expect(destination).toHaveAttribute("aria-expanded", "true");
+  await expect(destination).toHaveAttribute("aria-activedescendant", /^search-destination-results-\d+$/u);
 });
 
 test("a file's matched symbols are capped at five with the rest counted, and the fold lists them all", async ({ page }) => {

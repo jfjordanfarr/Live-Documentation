@@ -103,20 +103,42 @@ export function termsOf(query: string): string[] {
   return query.toLowerCase().split(/\s+/u).filter(Boolean);
 }
 
-/** How well a name answers the words: exact, then prefix, then anywhere. Zero when a word is absent. */
+/** How well a name answers one word: exact, then prefix, then anywhere; zero when the word is absent. */
+function termScore(name: string, term: string): number {
+  if (name === term) return 100;
+  if (name.startsWith(term)) return 50;
+  return name.includes(term) ? 25 : 0;
+}
+
+/** How well a directory's name answers the words, each word scored on its own and the scores summed. */
 function nameScore(name: string, terms: readonly string[]): number {
   let score = 0;
-  for (const term of terms) {
-    if (name === term) score += 100;
-    else if (name.startsWith(term)) score += 50;
-    else if (name.includes(term)) score += 25;
-  }
+  for (const term of terms) score += termScore(name, term);
+  return score;
+}
+
+/** A file's name without its extension: "generator" for generator.ts; the whole name when it has none or its only dot leads. */
+export function stemOf(name: string): string {
+  const dot = name.lastIndexOf(".");
+  return dot > 0 ? name.slice(0, dot) : name;
+}
+
+/**
+ * How well a file's name answers the words: each word scored against the name with and without its extension and
+ * the better taken, so that "generator" and "generator.ts" are both an exact match for generator.ts.
+ */
+export function fileNameScore(name: string, terms: readonly string[]): number {
+  const stem = stemOf(name);
+  let score = 0;
+  for (const term of terms) score += Math.max(termScore(name, term), termScore(stem, term));
   return score;
 }
 
 /**
  * The files and directories the words find, grouped by directory. A file scores by its name first, its path and its
- * symbols after, as the Explorer's searches always have; a directory by its last segment.
+ * symbols after, as the Explorer's searches always have; a directory by its last segment. The best-scored files are
+ * kept; the groups stand in the order of their best score, a matched directory's own score counted with its files',
+ * ties by directory, and the files inside a group by score, then name.
  */
 export function searchGraph(query: string, index: SearchIndex, options: SearchOptions = {}): SearchResult {
   const terms = termsOf(query);
@@ -134,7 +156,7 @@ export function searchGraph(query: string, index: SearchIndex, options: SearchOp
         const lower = symbol.toLowerCase();
         return terms.some(term => lower.includes(term));
       });
-      let score = nameScore(name, terms);
+      let score = fileNameScore(name, terms);
       const matched = score > 0 || terms.some(term => path.includes(term));
       for (const term of terms) {
         if (path.includes(term)) score += 10;
@@ -150,30 +172,34 @@ export function searchGraph(query: string, index: SearchIndex, options: SearchOp
     .map(directory => ({ directory, score: nameScore((directory.split("/").pop() ?? "").toLowerCase(), terms) }))
     .filter(entry => entry.score > 0)
     .sort((a, b) => b.score - a.score || a.directory.localeCompare(b.directory))
-    .slice(0, directoryLimit)
-    .map(entry => entry.directory);
+    .slice(0, directoryLimit);
 
-  const groups = new Map<string, SearchGroup>();
-  const groupOf = (directory: string): SearchGroup => {
-    let group = groups.get(directory);
-    if (!group) {
-      group = { directory, matched: false, files: [] };
-      groups.set(directory, group);
+  // Each group with its best score: a matched directory's own, or its best file's
+  const groups = new Map<string, { group: SearchGroup; score: number }>();
+  const groupOf = (directory: string, score: number): SearchGroup => {
+    const found = groups.get(directory);
+    if (found) {
+      found.score = Math.max(found.score, score);
+      return found.group;
     }
+    const group: SearchGroup = { directory, matched: false, files: [] };
+    groups.set(directory, { group, score });
     return group;
   };
-  for (const directory of directories) groupOf(directory).matched = true;
-  for (const entry of files) {
+  for (const entry of directories) groupOf(entry.directory, entry.score).matched = true;
+  const byName = [...files].sort((a, b) => b.score - a.score || a.node.name.localeCompare(b.node.name) || a.node.id.localeCompare(b.node.id));
+  for (const entry of byName) {
     const open = expanded.has(entry.node.id);
     const listed = open ? entry.symbols : entry.symbols.slice(0, symbolCap);
-    groupOf(directoryOf(entry.node.id)).files.push({
+    groupOf(directoryOf(entry.node.id), entry.score).files.push({
       node: entry.node,
       matched: entry.matched,
       symbols: listed,
       moreSymbols: entry.symbols.length - listed.length
     });
   }
-  return { groups: [...groups.values()].sort((a, b) => a.directory.localeCompare(b.directory)), files: matchedFiles.length };
+  const ordered = [...groups.values()].sort((a, b) => b.score - a.score || a.group.directory.localeCompare(b.group.directory));
+  return { groups: ordered.map(entry => entry.group), files: matchedFiles.length };
 }
 
 /** The rows of the groups in reading order: a matched directory, each file, its symbols, then the fold if any. */

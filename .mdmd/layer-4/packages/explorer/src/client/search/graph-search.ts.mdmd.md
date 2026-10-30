@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/graph-search.ts
-- Generated At: 2026-10-22T16:47:54.890Z
+- Generated At: 2026-10-30T14:49:26.050Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,7 @@ The one search of the Explorer, pure: a few typed words find directories by thei
 - Written on 2026-10-14 ([Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-search-at-the-top-and-a-path-starts-at-the-newest-pin-recorded-2026-10-14)) when the owner asked for one search at the top in place of the Ctrl+P dialog and the FROM/TO toolbar, grouped "by directory, group by node, then have symbols". The scoring is the one the dialog and the toolbar each carried since the toolbar's creation on 2025-12-17: a name exact 100, as a prefix 50, anywhere 25; the path 10; a symbol 15. The directories are derived once from the files' ids, the scan root among them as the empty path.
 - A file whose own name or path did not match, found by a symbol alone, is marked unmatched so that the field can show why it is listed; the fold ("n more symbols") is the honest indication of what the cap hides, and expanding a file lists every matched symbol.
 - The scope (2026-10-14, [Turn 7](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-walk-under-the-cli-and-the-explorer-and-a-destination-field-that-offers-only-what-connects-recorded-2026-10-14)): a search returns the count of files matched before the limit, so that the fold under the offered rows can say how many files match but no path connects; `reachWords` are "n files" and "n files, the other way", the status line's own words; a directory offered by name says what its nearest file says, one the map can draw to before one the other way, since the search between sets answers from a directory's nearest file.
+- The order (2026-10-30, the remediation plan the owner accepted at [Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)): the October 23 review typed "generator" and found `generator.ts` in the ninth row, behind a symbol of `tsconfig.base.json` and `GeneratorIdentity`, for two reasons. A file's name was scored with its extension, so a word was never an exact match for a file; and the score only decided which twelve files made the cut, the groups then standing alphabetically by directory. Now each word takes the better of the name with and without its extension (`fileNameScore`), the groups stand by their best score, a directory found by its own name counting its own score beside its files', and a group's files by score, then name. The weights themselves are unchanged.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -106,19 +107,36 @@ The directory a file stands in.
 ##### `termsOf` — Summary
 The words of a query, lowercased; an empty query has none.
 
-#### `searchGraph` {#symbol-searchgraph}
+#### `stemOf` {#symbol-stemof}
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L121)
+
+##### `stemOf` — Summary
+A file's name without its extension: "generator" for generator.ts; the whole name when it has none or its only dot leads.
+
+#### `fileNameScore` {#symbol-filenamescore}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L130)
+
+##### `fileNameScore` — Summary
+How well a file's name answers the words: each word scored against the name with and without its extension and
+the better taken, so that "generator" and "generator.ts" are both an exact match for generator.ts.
+
+#### `searchGraph` {#symbol-searchgraph}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L143)
 - Returns: [`SearchResult`](#symbol-searchresult)
 - Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `options`: [`SearchOptions`](#symbol-searchoptions)
 
 ##### `searchGraph` — Summary
 The files and directories the words find, grouped by directory. A file scores by its name first, its path and its
-symbols after, as the Explorer's searches always have; a directory by its last segment.
+symbols after, as the Explorer's searches always have; a directory by its last segment. The best-scored files are
+kept; the groups stand in the order of their best score, a matched directory's own score counted with its files',
+ties by directory, and the files inside a group by score, then name.
 
 #### `searchRows` {#symbol-searchrows}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L180)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L206)
 - Returns: [`SearchRow`](#symbol-searchrow)[]
 
 ##### `searchRows` — Summary
@@ -126,7 +144,7 @@ The rows of the groups in reading order: a matched directory, each file, its sym
 
 #### `reachWords` {#symbol-reachwords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L194)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L220)
 - Parameters: `reach`: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach)
 
 ##### `reachWords` — Summary
@@ -134,7 +152,7 @@ The words a destination row carries: the files a path to it would show, and whet
 
 #### `destinationScope` {#symbol-destinationscope}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L204)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/graph-search.ts#L230)
 - Returns: [`SearchScope`](#symbol-searchscope)
 - Parameters: `index`: [`SearchIndex`](#symbol-searchindex); `reach`: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach)
 

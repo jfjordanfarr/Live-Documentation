@@ -7,10 +7,12 @@
  */
 import { renderLiveDoc, symbolName } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
+import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger";
 
 import { requireElement } from "./dom";
 import { escapeHtml } from "./graph-helpers";
 import { renderMarkdown } from "./markdown";
+import { authoredSections, readerOrder, type AuthoredSection } from "./reader-sections";
 import type { InspectionTarget } from "./types";
 import { INTERNAL_SYMBOL } from "./views/pin-state";
 import type { ExplorerNodePayload } from "../shared/types";
@@ -155,9 +157,44 @@ export function createDetailPanel(
   /** Scroll only the reader, never the canvas or an ancestor of its overlay. */
   function scrollToFragment(fragment?: string): void {
     const target = fragment ? [...body.querySelectorAll<HTMLElement>("[id]")].find(element => element.id === fragment) : undefined;
+    scrollReaderTo(target);
+  }
+
+  /** Bring an element of the reader to the reader's top, or the reader to its start. */
+  function scrollReaderTo(target?: Element): void {
     body.scrollTop = target
       ? body.scrollTop + target.getBoundingClientRect().top - body.getBoundingClientRect().top
       : 0;
+  }
+
+  /**
+   * Fill the jump list at the top of a file's evidence: one link per section shown, in the order shown, named by the
+   * section's own heading or label. A link scrolls the reader to its section and moves focus there, so that a
+   * keyboard continues from it. Fewer than two sections need no list.
+   */
+  function fillSectionJumps(): void {
+    const list = body.querySelector<HTMLElement>(".reader-jumps");
+    if (!list) return;
+    const sections = [...body.querySelectorAll<HTMLElement>("[data-reader-section]")].flatMap(section => {
+      const name = section.querySelector<HTMLElement>(":scope > :is(h1, h2, h3, h4, h5, h6, .detail-label)");
+      const words = name?.textContent.trim();
+      return name && words ? [{ section, name, words }] : [];
+    });
+    if (sections.length < 2) return;
+    list.replaceChildren(...sections.map(({ section, name, words }) => {
+      const link = document.createElement("a");
+      link.href = "#";
+      link.className = "reader-jump";
+      link.textContent = words;
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        scrollReaderTo(section);
+        name.tabIndex = -1;
+        name.focus({ preventScroll: true });
+      });
+      return link;
+    }));
+    list.hidden = false;
   }
 
   function setLoading(node: ExplorerNodePayload): void {
@@ -181,6 +218,7 @@ export function createDetailPanel(
         ? renderDocumentation(file, node, linkContext, symbol)
         : renderFallbackDetails(node, nodesById);
       attachReaderLinks();
+      fillSectionJumps();
       body.scrollTop = 0;
     } catch (error) {
       console.error(error);
@@ -329,8 +367,14 @@ function renderDocumentation(
       + (summary ? `<p>${escapeHtml(summary)}</p>` : "")));
   }
 
-  const authoredHtml = renderMarkdown(file.authored, { linkHandler: createReaderLinkHandler(node.docPath, links) });
-  parts.push(`<div class="doc-authored reader-prose">${authoredHtml}</div>`);
+  // The authored sections are rendered in the author's order with one slugger, so each heading keeps the id the whole
+  // block would give it, then placed in the reader's: Purpose, the generated facts, then Notes and the rest.
+  const linkHandler = createReaderLinkHandler(node.docPath, links);
+  const slugger = new GitHubSlugger();
+  const sections = authoredSections(file.authored);
+  const rendered = new Map(sections.map((section, index) => [section, authoredSectionHtml(section, index, renderMarkdown(section.markdown, { linkHandler, slugger }))]));
+  const order = readerOrder(sections);
+  if (order.above.length > 0) parts.push(`<div class="doc-authored reader-prose">${order.above.map(section => rendered.get(section)).join("")}</div>`);
 
   if (node.publicSymbols.length > 0 || node.dependencies.length > 0 || node.dependents.length > 0) {
     const generatedHtml = renderGeneratedContent(node, links, inspectedSymbol);
@@ -338,10 +382,17 @@ function renderDocumentation(
   }
 
   if (file.citedBy && file.citedBy.length > 0) {
-    parts.push(`<div class="doc-generated">${sectionHtml("Cited By", `<div class="dep-list">${file.citedBy.map(entry => renderCitedByItem(entry, node.docPath, links)).join("")}</div>`)}</div>`);
+    parts.push(`<div class="doc-generated">${sectionHtml("Cited By", `<div class="dep-list">${file.citedBy.map(entry => renderCitedByItem(entry, node.docPath, links)).join("")}</div>`, "cited-by")}</div>`);
   }
 
-  return parts.join("");
+  if (order.below.length > 0) parts.push(`<div class="doc-authored doc-authored--after reader-prose">${order.below.map(section => rendered.get(section)).join("")}</div>`);
+
+  return `<nav class="reader-jumps" aria-label="Sections" hidden></nav>${parts.join("")}`;
+}
+
+/** One authored section, marked so that the jump list can name it by its heading and scroll to it. */
+function authoredSectionHtml(section: AuthoredSection, index: number, html: string): string {
+  return section.heading === null ? `<div>${html}</div>` : `<div data-reader-section="authored-${index}">${html}</div>`;
 }
 
 /**
@@ -369,7 +420,7 @@ function renderGeneratedContent(
     const symbolBadges = node.publicSymbols
       .map(symbol => `<a href="#" class="node-link symbol-badge${symbol === inspectedSymbol ? " inspected-symbol" : ""}" data-node-id="${escapeHtml(node.id)}" data-symbol="${escapeHtml(symbol)}"${symbol === inspectedSymbol ? ' aria-current="true"' : ""}>${escapeHtml(symbol)}</a>`)
       .join("");
-    parts.push(sectionHtml("Public Symbols", `<div class="symbol-badges">${symbolBadges}</div>`));
+    parts.push(sectionHtml("Public Symbols", `<div class="symbol-badges">${symbolBadges}</div>`, "symbols"));
   }
   
   // Dependencies - render as clickable list items
@@ -379,16 +430,16 @@ function renderGeneratedContent(
       .map(d => renderDependencyItem(d, links))
       .sort()
       .join("");
-    parts.push(sectionHtml("Dependencies", `<div class="dep-list">${depItems}</div>`));
+    parts.push(sectionHtml("Dependencies", `<div class="dep-list">${depItems}</div>`, "dependencies"));
   }
-  
+
   // Dependents - render as clickable list items
   if (node.dependents.length > 0) {
     const depItems = node.dependents
       .map(depId => renderDependentItem(depId, links.nodesById))
       .sort()
       .join("");
-    parts.push(sectionHtml("Dependents", `<div class="dep-list">${depItems}</div>`));
+    parts.push(sectionHtml("Dependents", `<div class="dep-list">${depItems}</div>`, "dependents"));
   }
   
   return parts.join("");
@@ -542,9 +593,10 @@ function renderFallbackDetails(
 // Helper Functions
 // ─────────────────────────────────────────────────────────────────────────────
 
-function sectionHtml(label: string, content: string): string {
+/** A labelled section; `jump` marks it for the reader's jump list, under the label's own words. */
+function sectionHtml(label: string, content: string, jump?: string): string {
   return `
-    <div class="detail-section">
+    <div class="detail-section"${jump ? ` data-reader-section="${jump}"` : ""}>
       <div class="detail-label">${label}</div>
       <div class="detail-content">${content}</div>
     </div>

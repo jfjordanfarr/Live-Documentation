@@ -616,9 +616,46 @@
     margin: 16px 0;
 }
 
-/* A Live Doc's authored block stands above its generated sections. */
+/* A Live Doc's Purpose stands above its generated sections; Notes and any other authored section follow them. */
 .doc-authored {
     margin-bottom: 20px;
+}
+
+.doc-authored--after {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+/* The jump list at the top of a file's evidence: one link per section, in the order shown, by the section's own name */
+.reader-jumps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.reader-jumps[hidden] {
+    display: none;
+}
+
+/* In the colour of the reader's links within a document */
+.reader-jump {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.reader-jump:hover,
+.reader-jump:focus-visible {
+    text-decoration: underline;
+}
+
+/* A section's heading takes focus from its jump without drawing a box around the words */
+#detail-body [data-reader-section] > [tabindex="-1"]:focus {
+    outline: none;
 }
 
 /* Generated content - terse badge/list rendering */

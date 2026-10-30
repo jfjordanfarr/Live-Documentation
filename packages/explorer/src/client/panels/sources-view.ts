@@ -197,7 +197,7 @@ function renderEntries(config: SourcesViewConfig): string {
         <div class="search-field sources-reach-field">
           <input type="text" id="sources-reach-from" class="search-input" placeholder="every entry point" autocomplete="off" spellcheck="false">
           <button type="button" id="sources-reach-clear" class="search-clear" aria-label="Back to the entry points"${config.reachFrom ? "" : " hidden"}>&times;</button>
-          <div id="sources-reach-results" class="search-results" role="listbox" hidden></div>
+          <div id="sources-reach-results" class="search-results" hidden></div>
         </div>
       </div>
       <p class="sources-reach-status" data-row="reach">${status}</p>

@@ -42,7 +42,7 @@ export function renderMarkdown(
     // Process block elements
     const lines = content.split("\n");
     const outputLines: string[] = [];
-    const headings = new GitHubSlugger();
+    const headings = options.slugger ?? new GitHubSlugger();
     let inList = false;
     let listType: "ul" | "ol" | null = null;
 
@@ -51,17 +51,16 @@ export function renderMarkdown(
 
         // Keep fenced contents opaque: a heading, link or emphasis inside code is literal text,
         // and cannot reserve an anchor that belongs to a later real heading.
-        const fence = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
-        if (fence && !(fence[1][0] === "`" && fence[2].includes("`"))) {
+        const closing = fenceClosing(line);
+        if (closing) {
             if (inList) {
                 outputLines.push(listType === "ul" ? "</ul>" : "</ol>");
                 inList = false;
                 listType = null;
             }
-            const closing = new RegExp(`^ {0,3}${fence[1][0]}{${fence[1].length},}[ \\t]*$`);
             const code: string[] = [];
             for (i += 1; i < lines.length && !closing.test(lines[i]); i += 1) code.push(lines[i]);
-            const language = fence[2].trim().split(/\s+/)[0];
+            const language = line.replace(/^ {0,3}(`{3,}|~{3,})/, "").trim().split(/\s+/)[0];
             const langClass = language ? ` class="language-${escapeHtml(language)}"` : "";
             outputLines.push(`<pre><code${langClass}>${escapeHtml(code.join("\n"))}</code></pre>`);
             continue;
@@ -79,15 +78,15 @@ export function renderMarkdown(
         }
 
         // Headings
-        const headingMatch = line.match(/^ {0,3}(#{1,6})[ \t]+(.*)$/);
-        if (headingMatch) {
+        const headingLine = headingOf(line);
+        if (headingLine) {
             if (inList) {
                 outputLines.push(listType === "ul" ? "</ul>" : "</ol>");
                 inList = false;
                 listType = null;
             }
-            const level = Math.min(headingMatch[1].length, maxHeadingLevel);
-            const heading = headingMatch[2].replace(/[ \t]+#+[ \t]*$/, "").trim();
+            const level = Math.min(headingLine.level, maxHeadingLevel);
+            const heading = headingLine.text;
             const text = processInline(heading, linkHandler);
             const id = headings.slug(slugText(heading));
             outputLines.push(`<h${level} id="${escapeHtml(id)}">${text}</h${level}>`);
@@ -164,6 +163,28 @@ export interface RenderMarkdownOptions {
      * Headings deeper than this will be clamped.
      */
     maxHeadingLevel?: number;
+
+    /**
+     * The slugger that names the headings, shared when one document is rendered in parts, so that every heading
+     * keeps the id it has when the whole is rendered at once; a fresh one by default.
+     */
+    slugger?: GitHubSlugger;
+}
+
+/**
+ * The line that closes the fence a line opens, or null when the line opens none. A backtick fence whose info string
+ * holds a backtick is not one. Any reader that splits a document must agree with the renderer on what is fenced.
+ */
+export function fenceClosing(line: string): RegExp | null {
+    const fence = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+    if (!fence || (fence[1][0] === "`" && fence[2].includes("`"))) return null;
+    return new RegExp(`^ {0,3}${fence[1][0]}{${fence[1].length},}[ \\t]*$`);
+}
+
+/** A heading line's level and its text without closing hashes, or null when the line is not a heading. */
+export function headingOf(line: string): { level: number; text: string } | null {
+    const match = line.match(/^ {0,3}(#{1,6})[ \t]+(.*)$/);
+    return match ? { level: match[1].length, text: match[2].replace(/[ \t]+#+[ \t]*$/, "").trim() } : null;
 }
 
 /**

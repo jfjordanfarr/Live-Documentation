@@ -524,10 +524,12 @@
   border-color: var(--w-blue);
 }
 
+/* Its size includes its padding and border, so that a cap on its height is a cap on the whole panel */
 .world-evidence {
   position: absolute;
   display: none;
-  max-width: 440px;
+  box-sizing: border-box;
+  max-width: 466px;
   padding: 10px 12px;
   background: var(--w-panel);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
@@ -540,11 +542,12 @@
   color: var(--w-text);
 }
 
+/* Pinned, the panel stands in at most half the view's height and scrolls inside, so the map stays in sight beside it */
 .world-evidence.pinned {
   pointer-events: auto;
   border-color: var(--w-blue);
   border-left-width: 3px;
-  max-height: min(70vh, 560px);
+  max-height: 50%;
   overflow: auto;
 }
 
@@ -597,7 +600,7 @@
   color: var(--w-faint);
   font-weight: 400;
   margin-left: 8px;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .world-evidence .via {
@@ -605,10 +608,9 @@
   margin-top: 6px;
 }
 
+/* Names in the panel read at its own size and face: files, doors, packages and ghosts are words to read */
 .world-evidence .f {
   color: var(--w-muted);
-  font-family: ui-monospace, Consolas, monospace;
-  font-size: 11px;
 }
 
 .world-evidence .k {
@@ -618,7 +620,6 @@
 .world-evidence .src {
   color: var(--w-faint);
   margin-top: 6px;
-  font-size: 11px;
 }
 
 .world-empty {

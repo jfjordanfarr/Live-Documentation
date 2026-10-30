@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/search/graph-search.test.ts
-- Generated At: 2026-10-14T21:04:58.785Z
+- Generated At: 2026-10-30T14:49:26.024Z
 
 ## Authored
 ### Purpose
@@ -27,10 +27,12 @@ _No public symbols detected_
 - [`graph-search.destinationScope`](./graph-search.ts.mdmd.md#symbol-destinationscope)
 - [`graph-search.directoriesOf`](./graph-search.ts.mdmd.md#symbol-directoriesof)
 - [`graph-search.directoryOf`](./graph-search.ts.mdmd.md#symbol-directoryof)
+- [`graph-search.fileNameScore`](./graph-search.ts.mdmd.md#symbol-filenamescore)
 - [`graph-search.reachWords`](./graph-search.ts.mdmd.md#symbol-reachwords)
 - [`graph-search.searchGraph`](./graph-search.ts.mdmd.md#symbol-searchgraph)
 - [`graph-search.searchIndexOf`](./graph-search.ts.mdmd.md#symbol-searchindexof)
 - [`graph-search.searchRows`](./graph-search.ts.mdmd.md#symbol-searchrows)
+- [`graph-search.stemOf`](./graph-search.ts.mdmd.md#symbol-stemof)
 - [`graph-search.termsOf`](./graph-search.ts.mdmd.md#symbol-termsof)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`

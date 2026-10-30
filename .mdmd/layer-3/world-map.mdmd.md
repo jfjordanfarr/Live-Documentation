@@ -26,6 +26,8 @@ The [October 23 review](../../AI-Agent-Workspace/Screenshots/2026-10-23/README.m
 - [ ] **Keep the entered system recognizable** (T8). Opening Portal into either Local Map representation must retain a readable subject, directory context and useful framing. Changing 2D/3D must preserve that orientation. The broader World/Local navigation gesture remains open; improving the destination's legibility does not require choosing it first.
 - [ ] **Make evidence readable without masking the question**. Names, paths and claims in the retained panel need readable type and useful spacing; a compact panel must not become a dense block that obscures the map it explains. Keep every claim traceable. Long door names and projected overlaps remain visual work, judged through orbit and zoom as well as still pictures.
 
+Since 2026-10-30 the pinned evidence panel stands in at most half the view's height and scrolls inside, so the map stays in sight beside it, and its file, door and package names read at the panel's 12 px in its own sans-serif instead of 11 px monospace; every name is still a link.
+
 The detailed common criteria and verification are in the [Explorer remediation checklist](live-documentation-explorer.mdmd.md#remediation-work). T12's future cross-system symbol path does not block repair of today's Local Map path feedback. Preserve the World Map's useful offers/uses grammar and the visual distinction for imagined pieces.
 
 ### How this document works

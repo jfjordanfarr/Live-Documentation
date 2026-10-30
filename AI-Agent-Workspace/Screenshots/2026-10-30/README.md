@@ -18,3 +18,7 @@ The frame now excludes what the open reader covers, which `tests/e2e/local-map-f
 ## The history's step panel
 
 Built by an Opus 5.5 builder under the root's brief and reviewed by the root in these pictures and in the code, for the checklist item "History leaves the map intelligible"; the pictures and their README are in [history-panel/](history-panel/README.md): the full-height panel for a one-line step before, the content-sized panel with its hide button after, the panel hidden with the scrubber staying, and a pinned file said "not yet created" beside the search chip and in the path report at a commit before it existed.
+
+## Search and the reader
+
+Built by an Opus 5.5 builder under the root's brief and reviewed by the root in these pictures and in the code, for the checklist item "Search and evidence answer the immediate question"; the pictures and their README are in [search-and-reader/](search-and-reader/README.md): "generator" typed with generator.ts in the ninth row before and the first after, and the reader on generator.ts with its Notes first before and with Purpose, the facts and a jump list first after.

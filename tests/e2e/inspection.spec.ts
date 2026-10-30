@@ -161,6 +161,51 @@ test("a real bundled section link uses its canonical punctuation-bearing anchor 
   expect(snapshot(page).selectedNodeId).toBe(source);
 });
 
+test("a file's evidence reads Purpose, then its facts, then Notes, and a jump list at its top reaches each section", async ({ page }) => {
+  // generator.ts's Notes run to about 4,100 characters; they stood between Purpose and the symbols until 2026-10-30
+  const source = "packages/generator/src/generator.ts";
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", selectedNodeId: source, inspection: { kind: "file", nodeId: source } })}`);
+  const body = page.locator("#detail-body");
+  const purpose = body.locator("h3#purpose");
+  const symbols = body.locator('[data-reader-section="symbols"]');
+  const notes = body.locator("h3#notes");
+  await expect(notes).toBeAttached();
+  const top = async (locator: typeof purpose) => (await locator.boundingBox())!.y;
+  expect(await top(purpose), "Purpose stands above the symbols").toBeLessThan(await top(symbols));
+  expect(await top(symbols), "the symbols stand above Notes").toBeLessThan(await top(notes));
+  for (const section of ["dependencies", "dependents", "cited-by"]) {
+    const facts = body.locator(`[data-reader-section="${section}"]`);
+    if (await facts.count()) expect(await top(facts), `${section} stands above Notes`).toBeLessThan(await top(notes));
+  }
+
+  // The jump list names the sections shown, in the order shown, by their own names
+  const jumps = body.locator(".reader-jumps .reader-jump");
+  const named = await body.locator("[data-reader-section]").evaluateAll(sections => sections.map(section =>
+    section.querySelector(":scope > :is(h1, h2, h3, h4, h5, h6, .detail-label)")?.textContent?.trim()));
+  await expect(jumps).toHaveText(named as string[]);
+  expect(named[0]).toBe("Purpose");
+  expect(named.at(-1)).toBe("Notes");
+  expect(named).toContain("Public Symbols");
+  expect(await top(body.locator(".reader-jumps")), "the jump list stands at the top").toBeLessThan(await top(body.locator(".archetype-row")));
+
+  // Notes keep their words and their provenance links
+  expect(await body.locator(".doc-authored--after li").count()).toBeGreaterThan(3);
+  expect(await body.locator(".doc-authored--after a.bundled-doc-link").count(), "the Notes' provenance links are links").toBeGreaterThan(0);
+
+  // The Notes link scrolls the reader, and only the reader, to the Notes heading
+  const pageScroll = await page.evaluate(() => [window.scrollX, window.scrollY, document.documentElement.scrollTop]);
+  expect(await notes.evaluate(heading => { const box = heading.getBoundingClientRect(), panel = document.querySelector("#detail-body")!.getBoundingClientRect(); return box.top >= panel.top && box.bottom <= panel.bottom; }),
+    "Notes start out of the panel's view").toBe(false);
+  await jumps.filter({ hasText: /^Notes$/u }).click();
+  const atNotes = async () => Math.abs(await top(notes) - (await body.boundingBox())!.y);
+  await expect.poll(atNotes).toBeLessThan(2);
+  await expect(notes).toBeInViewport();
+  await expect(notes).toBeFocused();
+  expect(await page.evaluate(() => [window.scrollX, window.scrollY, document.documentElement.scrollTop])).toEqual(pageScroll);
+  await jumps.filter({ hasText: /^Public Symbols$/u }).click();
+  await expect.poll(async () => Math.abs(await top(symbols) - (await body.boundingBox())!.y)).toBeLessThan(2);
+});
+
 test("a bundled document reads like a Live Doc's authored words: their text size and colour, and no link in the browser's own colour", async ({ page }) => {
   const source = "packages/engine/src/config/liveDocumentationConfig.ts";
   const path = "AI-Agent-Workspace/ChatHistory/2025/11/Summarized/2025-11-08.SUMMARIZED.md";

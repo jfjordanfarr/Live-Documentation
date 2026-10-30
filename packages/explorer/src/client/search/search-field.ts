@@ -44,6 +44,14 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   let expanded = new Set<string>();
   let apartOpen = false;
 
+  // A combobox over a listbox, as the ARIA pattern has it: the input owns the list, says whether it is open, and
+  // names the keyboard's row while focus stays in the input.
+  input.setAttribute("role", "combobox");
+  input.setAttribute("aria-autocomplete", "list");
+  input.setAttribute("aria-controls", results.id);
+  input.setAttribute("aria-expanded", "false");
+  results.setAttribute("role", "listbox");
+
   /** A row; `words` marks a badge that is a sentence of the scope's, drawn as words rather than as a kind's capitals. */
   const row = (kind: string, name: string, badge: string, context: string, apart = false, words = false): string =>
     `<div class="search-row search-row--${kind}${apart ? " is-apart" : ""}" role="option" aria-selected="false">`
@@ -52,14 +60,20 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     + (badge ? `<span class="search-row-badge${words ? " search-row-badge--words" : ""}">${escapeHtml(badge)}</span>` : "")
     + "</div>";
 
-  /** Mark the selected row and keep it in view. */
+  /** Mark the selected row, name it as the input's active descendant, and keep it in view. */
   const mark = (): void => {
+    let active: string | null = null;
     for (const element of results.querySelectorAll<HTMLElement>(".search-row")) {
       const on = Number(element.dataset.index) === selected;
       element.classList.toggle("selected", on);
       element.setAttribute("aria-selected", String(on));
-      if (on) element.scrollIntoView({ block: "nearest" });
+      if (on) {
+        active = element.id;
+        element.scrollIntoView({ block: "nearest" });
+      }
     }
+    if (active) input.setAttribute("aria-activedescendant", active);
+    else input.removeAttribute("aria-activedescendant");
   };
 
   /**
@@ -82,7 +96,7 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
       for (const group of groups) {
         const heading = group.directory || "Scan root";
         if (group.matched) html.push(row("directory", heading, badgeOf({ kind: "directory", directory: group.directory }), "", isApart, words));
-        else html.push(`<div class="search-group${isApart ? " is-apart" : ""}">${escapeHtml(heading)}</div>`);
+        else html.push(`<div class="search-group${isApart ? " is-apart" : ""}" role="presentation">${escapeHtml(heading)}</div>`);
         for (const file of group.files) {
           html.push(row("file", file.node.name, badgeOf({ kind: "file", node: file.node }), file.node.codeRelativePath, isApart, words));
           for (const symbol of file.symbols) html.push(row("symbol", symbol, "", "", isApart));
@@ -99,10 +113,14 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     }
     rows = list;
     selected = rows.length ? Math.min(Math.max(selected, 0), rows.length - 1) : -1;
-    results.innerHTML = html.length ? html.join("") : '<div class="search-empty">Nothing found</div>';
+    results.innerHTML = html.length ? html.join("") : '<div class="search-empty" role="presentation">Nothing found</div>';
     let at = 0;
-    for (const element of results.querySelectorAll<HTMLElement>(".search-row")) element.dataset.index = String(at++);
+    for (const element of results.querySelectorAll<HTMLElement>(".search-row")) {
+      element.dataset.index = String(at);
+      element.id = `${results.id}-${at++}`;
+    }
     results.hidden = false;
+    input.setAttribute("aria-expanded", "true");
     mark();
   };
 
@@ -111,6 +129,8 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
     results.innerHTML = "";
     rows = [];
     selected = -1;
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
   };
 
   const settle = (): void => {

@@ -63,6 +63,34 @@ test.describe("The estate on the World Map", () => {
     expect(overlaps, describeFaults(overlaps)).toEqual([]);
   });
 
+  test("a pinned panel stands in at most half the view, scrolls inside, and names its files at the panel's own size and face, each a link", async ({ page }) => {
+    // The October 23 review found the pinned panel up to 70% of the view tall, its file names in 11 px monospace
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await openEstate(page);
+    await page.evaluate(() => window.__worldMap!.pin("piece", "portal"));
+    const evidence = page.locator("#view-world .world-evidence");
+    await expect(evidence).toHaveClass(/pinned/);
+    const measured = await evidence.evaluate(panel => {
+      const box = panel.getBoundingClientRect();
+      const view = document.querySelector("#view-world")!.getBoundingClientRect();
+      const style = getComputedStyle(panel);
+      const names = [...panel.querySelectorAll(".f")].map(name => ({
+        size: parseFloat(getComputedStyle(name).fontSize), family: getComputedStyle(name).fontFamily, linked: !!name.querySelector("a")
+      }));
+      return { height: box.height, width: box.width, viewWidth: view.width, scrolls: panel.scrollHeight > panel.clientHeight, overflow: style.overflowY, family: style.fontFamily, names };
+    });
+    expect(measured.height, "at most half the viewport's height").toBeLessThanOrEqual(800 / 2);
+    expect(measured.scrolls, "portal's evidence is longer than the cap, so the cap is what is measured").toBe(true);
+    expect(measured.overflow).toBe("auto");
+    expect(measured.width, "the map stays in sight beside the panel").toBeLessThan(measured.viewWidth / 2);
+    expect(measured.names.length).toBeGreaterThan(10);
+    for (const name of measured.names) {
+      expect(name.size).toBeGreaterThanOrEqual(12);
+      expect(name.family, "the panel's own sans-serif").toBe(measured.family);
+    }
+    expect(measured.names.every(name => name.linked), "every file, door and package line links to where it was found").toBe(true);
+  });
+
   test("its labels stay off each other at rest and with the built-on layer showing", async ({ page }) => {
     await openEstate(page);
     let boxes = await textBoxes(page, BOARD_TEXT);

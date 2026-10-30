@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { destinationScope, directoriesOf, directoryOf, reachWords, searchGraph, searchIndexOf, searchRows, termsOf, type SearchIndex } from "./graph-search";
+import { destinationScope, directoriesOf, directoryOf, fileNameScore, reachWords, searchGraph, searchIndexOf, searchRows, stemOf, termsOf, type SearchIndex } from "./graph-search";
 import type { ExplorerNodePayload } from "../../shared/types";
 
 const file = (id: string, symbols: string[] = []): ExplorerNodePayload =>
@@ -70,6 +70,61 @@ describe("searchGraph", () => {
     expect(result.groups[0].files[0].node.id).toBe("a/thing0.ts");
     expect(result.files).toBe(30);
     expect(searchGraph("project", index).files).toBe(2);
+  });
+});
+
+describe("ranking", () => {
+  // Shaped like this repository's own: typing "generator" once listed generator.ts in the ninth row, behind a symbol of
+  // tsconfig.base.json and the file exposing GeneratorIdentity, because the name was scored with its extension and the
+  // groups were then sorted by directory
+  const generatorIndex = searchIndexOf([
+    file("packages/generator/src/generator.ts", ["generateLiveDocs"]),
+    file("packages/generator/src/generator-cli.ts", ["main"]),
+    file("packages/generator/src/run-generator.ts", ["run"]),
+    file("packages/generator/src/a-generator.ts", ["a"]),
+    file("packages/generator/src/history/generatorIdentity.ts", ["GeneratorIdentity", "generatorIdentityOf"]),
+    file("packages/engine/src/live-docs/history/lens.ts", ["GeneratorIdentity"]),
+    file("packages/engine/src/index.ts", ["engine"]),
+    file("tsconfig.base.json", ["compilerOptions:paths:@live-documentation/generator/*"])
+  ]);
+
+  it("scores a file's name with and without its extension, the better taken", () => {
+    expect(fileNameScore("generator.ts", ["generator"])).toBe(100);
+    expect(fileNameScore("generator.ts", ["generator.ts"])).toBe(100);
+    expect(fileNameScore("generator.ts", ["generator", "ts"]), "each word takes its own better").toBe(125);
+    expect(fileNameScore("generatoridentity.ts", ["generator"])).toBe(50);
+    expect(fileNameScore("tsconfig.base.json", ["generator"])).toBe(0);
+    expect(stemOf("tsconfig.base.json")).toBe("tsconfig.base");
+    expect(stemOf(".eslintrc")).toBe(".eslintrc");
+    expect(stemOf("Makefile")).toBe("Makefile");
+  });
+
+  it("puts the file named by the words first, whether or not its extension was typed", () => {
+    for (const typed of ["generator", "generator.ts", "Generator"]) {
+      const [first] = searchRows(groupsOf(typed, generatorIndex)).filter(row => row.kind === "file");
+      expect(first.kind === "file" && first.node.id, typed).toBe("packages/generator/src/generator.ts");
+    }
+  });
+
+  it("orders the groups by their best score, a matched directory's own score among them, ties by directory", () => {
+    expect(groupsOf("generator", generatorIndex).map(group => [group.directory, group.matched])).toEqual([
+      ["packages/generator/src", false], // generator.ts, an exact name: 100 and 10 for the path
+      ["packages/generator", true], // the directory's own exact name: 100
+      ["packages/generator/src/history", false], // generatorIdentity.ts, a prefix: 50, the path and a symbol
+      ["", false], // tsconfig.base.json by its symbol alone: 15
+      ["packages/engine/src/live-docs/history", false] // lens.ts by its symbol alone, the tie broken by directory
+    ]);
+  });
+
+  it("orders the files inside a group by score, then name", () => {
+    const [src] = groupsOf("generator", generatorIndex);
+    expect(src.files.map(entry => entry.node.name)).toEqual(["generator.ts", "generator-cli.ts", "a-generator.ts", "run-generator.ts"]);
+  });
+
+  it("still cuts at the best-scored files, whatever their directory", () => {
+    const result = searchGraph("generator", generatorIndex, { fileLimit: 2 });
+    expect(result.groups.flatMap(group => group.files.map(entry => entry.node.name))).toEqual(["generator.ts", "generatorIdentity.ts"]);
+    expect(result.files).toBe(7);
   });
 });
 
