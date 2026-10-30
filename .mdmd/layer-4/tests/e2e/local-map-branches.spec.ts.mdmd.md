@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-branches.spec.ts
-- Generated At: 2026-10-22T16:47:58.409Z
+- Generated At: 2026-10-30T15:02:36.877Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
+- [`layout-measure.framePadding`](../../packages/explorer/src/client/views/localView/layout-measure.ts.mdmd.md#symbol-framepadding)
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
 - [`still-picture.gesture`](./still-picture.ts.mdmd.md#symbol-gesture)

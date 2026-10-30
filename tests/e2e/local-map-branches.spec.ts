@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { displayNames, gesture, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, panIntoView, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
+import { framePadding } from "../../packages/explorer/src/client/views/localView/layout-measure";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);
@@ -114,8 +115,28 @@ test("both perspective changes keep the subject at its screen anchor during moti
   expect(Math.max(...samples.map(p => Math.hypot(p.x - anchor.x, p.y - anchor.y)))).toBeLessThan(3);
   await expect(page.locator(".force-graph-focus")).toHaveAttribute("data-node-id", `${ROOT}helpers.ts`);
   await page.getByRole("button", { name: "2D", exact: true }).click();
+  // Back in 2D the subject's title is held where its sphere stood through the motion...
   const after = (await title.boundingBox())!;
   expect(Math.hypot(after.x + after.width / 2 - anchor.x, after.y + after.height / 2 - anchor.y)).toBeLessThan(3);
+  // ...and once the motion ends, the picture slides the least that brings it into the frame: inside the padding where
+  // it fits, the frame full where it does not (the owner's choice, 2026-10-30; before, the hold alone could leave a
+  // card cut at the edge with the rest of the frame empty).
+  await expect(page.locator(".perspective-transition")).toHaveCount(0, { timeout: 10_000 });
+  await page.waitForTimeout(700);
+  const frame = (await page.locator("#view-map .map-edges").boundingBox())!;
+  const picture = (await page.locator("#map-container .local-layout").boundingBox())!;
+  const { horizontal, vertical } = framePadding(frame);
+  const settledAlong = (near: number, size: number, frameNear: number, frameSize: number, padding: number): void => {
+    if (size <= frameSize - 2 * padding) {
+      expect(near).toBeGreaterThanOrEqual(frameNear + padding - 1);
+      expect(near + size).toBeLessThanOrEqual(frameNear + frameSize - padding + 1);
+    } else {
+      expect(near).toBeLessThanOrEqual(frameNear + padding + 1);
+      expect(near + size).toBeGreaterThanOrEqual(frameNear + frameSize - padding - 1);
+    }
+  };
+  settledAlong(picture.x, picture.width, frame.x, frame.width, horizontal);
+  settledAlong(picture.y, picture.height, frame.y, frame.height, vertical);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   await page.goBack();
   await expect(page.locator("#view-graph")).toHaveClass(/active/);

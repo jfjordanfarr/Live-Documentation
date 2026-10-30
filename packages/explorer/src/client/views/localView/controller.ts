@@ -12,12 +12,16 @@ import {
   tryBuildNormalizedKeyFromAnchorKey
 } from "../symbolAnchors";
 import { clearConnections, drawConnections } from "./connections";
+import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
 import {
   computeLayoutExtents,
   computeFitTransform,
   computePathFitTransform,
   applyContainerDimensions,
+  settleTransform,
   withTransformReset,
+  type Bounds,
+  type Frame,
   type LayoutExtents
 } from "./layout-measure";
 import {
@@ -162,6 +166,11 @@ export class LocalViewController implements LocalViewApi {
     this.drawConnections();
   }
 
+  /** The picture's bounds in the layer's pixels as last measured, which the edge signs and the settle read; null before a picture. */
+  private contentBounds: Bounds | null = null;
+  /** The fades at the frame's edges that say the picture continues past them. */
+  private readonly edgeSigns: EdgeSigns;
+
   /** Watches the map layer so the picture stays put on screen when the toolbar above it grows or shrinks. */
   private layerObserver: ResizeObserver | null = null;
   /** The map layer's top edge, transform reset, as last seen by a fit or by {@link keepContentPutWhenLayerMoves}. */
@@ -242,6 +251,7 @@ export class LocalViewController implements LocalViewApi {
     this.options = options;
     this.localMapState = createStateStore(createInitialState());
     this.container.classList.add("cluster-host", "local-map-host");
+    this.edgeSigns = createEdgeSigns(this.viewport);
     this.viewport.style.cursor = "grab";
     this.bindItemEvents();
     this.bindPointerEvents();
@@ -691,16 +701,17 @@ export class LocalViewController implements LocalViewApi {
   }
 
 
-  /** Restores the map to its initial (fit-to-content) transform, or re-fits if no initial transform was captured. */
+  /**
+   * Frames the picture again, as a first arrival would: the path's frame in path mode, else the content's. A fresh fit
+   * rather than the stored one (2026-10-30), since the frame may have changed since, the reader opened over it or the
+   * window resized, and the picture may have moved under the continuing search.
+   */
   resetZoom(): void {
     if (!this.runtime.contentRoot) {
       return;
     }
-    if (this.runtime.mapInitialTransform) {
-      animateMapTransformFn(this.runtime, this.runtime.mapInitialTransform, () => this.updateMapTransform(), true);
-    } else {
-      this.fitMapToContent();
-    }
+    if (this.getActivePath()) this.fitMapToPath();
+    else this.fitMapToContent();
   }
 
   private startInertia(initialVx: number, initialVy: number): void {
@@ -910,7 +921,9 @@ export class LocalViewController implements LocalViewApi {
 
   /** Measures content and column bounding boxes used for fit-to-content and centering calculations. */
   measureLayoutExtents(): LayoutExtents | null {
-    return computeLayoutExtents(this.container, this.contentRoot);
+    const extents = computeLayoutExtents(this.container, this.contentRoot);
+    this.contentBounds = extents?.content ?? null;
+    return extents;
   }
 
   /** Applies the current {@link mapTransform} to the viewport's CSS `transform`, keeping container and overlay in sync. */
@@ -920,6 +933,58 @@ export class LocalViewController implements LocalViewApi {
     if (viewport) {
       viewport.style.transform = `translate(${this.mapTransform.x}px, ${this.mapTransform.y}px) scale(${this.mapTransform.k})`;
     }
+    this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
+  }
+
+  /**
+   * Where the map layer stands inside the view and how much of it is open: its offsets, which no transform changes,
+   * less what the open reader covers at the right. Cheap enough to read on every camera move.
+   */
+  private framePlace(): FramePlace {
+    const layer = this.container.parentElement ?? this.viewport;
+    const view = this.viewport.getBoundingClientRect();
+    const left = layer.offsetLeft, top = layer.offsetTop, width = layer.offsetWidth, height = layer.offsetHeight;
+    const covered = this.coveredWidth({ left: view.left + left, top: view.top + top, right: view.left + left + width, bottom: view.top + top + height, width });
+    return { left, top, width: width - covered, height };
+  }
+
+  /**
+   * How much of the frame's width the open reader covers at its right, so that a fit keeps the picture out from under
+   * it (the October 23 review's finding 13, 2026-10-30). A reader that leaves less than 240 px, the narrow screens'
+   * full-width reader, covers nothing for this purpose: the fit is then for the map the reader will uncover.
+   */
+  private coveredWidth(frame: { left: number; top: number; right: number; bottom: number; width: number }): number {
+    const obstruction = this.options.obstruction?.() ?? null;
+    if (!obstruction || obstruction.bottom <= frame.top || obstruction.top >= frame.bottom || obstruction.left >= frame.right) return 0;
+    const covered = frame.right - Math.max(obstruction.left, frame.left);
+    return frame.width - covered < 240 ? 0 : covered;
+  }
+
+  /**
+   * The frame a fit is computed for: the map layer's own box under the toolbar, measured with its transform reset,
+   * less what the open reader covers. The layer's top is kept for {@link keepContentPutWhenLayerMoves}.
+   */
+  private frameRect(): Frame & { left: number; top: number } {
+    const layer = this.container.parentElement ?? this.viewport;
+    const rect = withTransformReset(this.container, () => layer.getBoundingClientRect());
+    this.layerTop = rect.top;
+    return { left: rect.left, top: rect.top, width: rect.width - this.coveredWidth(rect), height: rect.height };
+  }
+
+  /**
+   * After the subject has been held where another view left it, the picture slides the least that brings it into the
+   * frame at its current scale: inside the padding when it fits, the frame full when it does not; a picture already in
+   * the frame stays. The return from 3D holds the subject through the motion and then settles so (the owner's choice,
+   * 2026-10-30; before, the hold alone could leave a card cut at the edge with the rest of the frame empty).
+   */
+  settleIntoFrame(): void {
+    const extents = this.measureLayoutExtents();
+    if (!extents) return;
+    const current = this.runtime.mapAnimationTarget ?? this.mapTransform;
+    const next = settleTransform(extents.content, current, this.frameRect());
+    if (Math.abs(next.x - current.x) < 0.5 && Math.abs(next.y - current.y) < 0.5) return;
+    this.cancelInertia();
+    animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
   }
 
   // Placeholder utilities to be implemented below
@@ -1108,12 +1173,10 @@ export class LocalViewController implements LocalViewApi {
    * under the toolbar, measured with its transform reset, not the whole view),
    * sizes the container, and animates to the transform `target` computes.
    */
-  private fitMap(target: (extents: LayoutExtents, frame: DOMRect) => MapTransform): void {
+  private fitMap(target: (extents: LayoutExtents, frame: Frame) => MapTransform): void {
     cancelInertiaFn(this.runtime);
-    const extents = computeLayoutExtents(this.container, this.contentRoot);
-    const layer = this.container.parentElement ?? this.viewport;
-    const frame = withTransformReset(this.container, () => layer.getBoundingClientRect());
-    this.layerTop = frame.top;
+    const extents = this.measureLayoutExtents();
+    const frame = this.frameRect();
 
     if (!extents) {
       this.mapTransform = { x: 0, y: 0, k: 1 };

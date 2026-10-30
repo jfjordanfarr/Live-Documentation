@@ -227,6 +227,14 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   const localView = createLocalView({
     state,
+    // The open reader covers the right of the map; a fit keeps the picture out from under it (2026-10-30). Its box is
+    // its layout box, where it stands once its slide-in has ended, not where the transition has it at this instant.
+    obstruction: () => {
+      const panel = requireElement("detail-panel");
+      if (!panel.classList.contains("visible")) return null;
+      const host = (panel.offsetParent ?? document.body).getBoundingClientRect();
+      return new DOMRect(host.left + panel.offsetLeft, host.top + panel.offsetTop, panel.offsetWidth, panel.offsetHeight);
+    },
     onPressPin: pressPin,
     onUnpinNode: unpinNode,
     onCloseNode: closePinnedNode,
@@ -799,6 +807,9 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
           changingPerspective = false;
           syncPerspectiveControls();
           forceGraphView.setActive(state.view === "map" && state.perspective === "3d");
+          // Back in 2D, the subject was held where its sphere stood through the motion; the picture now slides into
+          // the frame where it fits, one motion the eye can follow (the owner's choice, 2026-10-30).
+          if (perspective === "2d") localView.settleIntoFrame();
           const pending = pendingPerspective; pendingPerspective = null; pending?.();
         });
       } else {

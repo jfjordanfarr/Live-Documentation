@@ -129,44 +129,24 @@ export function computeLayoutExtents(
   }
 
   return withTransformReset(container, containerRect => {
-    // Query for layout elements
+    // The picture is its cards, closed directories, lanes, the membranes and their labels: a membrane reaches past its
+    // members by its padding and its label stands above them, so a frame measured from the cards alone cut both (the
+    // October 23 review's finding 2; measured 2026-10-30). Offsets are from the host's own edge, which is where the
+    // layer's transform puts the origin, so nothing is subtracted from them: the host's padding was, once, and every
+    // fit landed 12 px right and down.
     const trackedElements = contentRoot.querySelectorAll<HTMLElement>(
-      ".layout-node, .layout-box, .node-card, .local-pass-through, .local-directory-closed"
+      ".layout-node, .layout-box, .node-card, .local-pass-through, .local-directory-closed, .local-directory-band, .local-directory-label"
     );
-    const contentBounds = measureElementsBounds(trackedElements, containerRect);
-    if (!contentBounds) {
+    const content = measureElementsBounds(trackedElements, containerRect);
+    if (!content) {
       return null;
     }
 
-    // Find the focus element
-    const focusElement =
-      contentRoot.querySelector<HTMLElement>(".node-card.local-focus") ??
-      contentRoot.querySelector<HTMLElement>(".local-column.center .node-card") ??
-      contentRoot.querySelector<HTMLElement>(".node-card");
-    const focusBounds = measureElementBounds(focusElement, containerRect);
+    // The subject's card is the focus; with no subject the picture has none and is framed whole (2026-10-30; before,
+    // the first card in the page's order stood in, which centred a directory's first file instead of the directory).
+    const focus = measureElementBounds(contentRoot.querySelector<HTMLElement>(".node-card.local-focus"), containerRect);
 
-    // Get container padding
-    const computedStyle = getComputedStyle(container);
-    const paddingLeft = Number.parseFloat(computedStyle.paddingLeft || "0") || 0;
-    const paddingTop = Number.parseFloat(computedStyle.paddingTop || "0") || 0;
-
-    const adjustBounds = (bounds: Bounds | null): Bounds | null => {
-      if (!bounds) {
-        return null;
-      }
-      const width = Math.max(bounds.width, 1);
-      const height = Math.max(bounds.height, 1);
-      const left = Math.max(bounds.left - paddingLeft, 0);
-      const top = Math.max(bounds.top - paddingTop, 0);
-      const right = left + width;
-      const bottom = top + height;
-      return { left, top, right, bottom, width, height };
-    };
-
-    const content = adjustBounds(contentBounds);
-    const focus = adjustBounds(focusBounds);
-
-    return { content: content ?? contentBounds, focus };
+    return { content, focus };
   });
 }
 
@@ -175,7 +155,7 @@ export function computeLayoutExtents(
  */
 export function computeFitTransform(
   extents: LayoutExtents,
-  viewportRect: DOMRect,
+  viewportRect: Frame,
   options?: { minScale?: number; maxScale?: number }
 ): MapTransform {
   const { minScale = 0.6, maxScale = 1.45 } = options ?? {};
@@ -184,8 +164,7 @@ export function computeFitTransform(
   const contentWidth = Math.max(content.width, 1);
   const contentHeight = Math.max(content.height, 1);
 
-  const horizontalPadding = clamp(viewportRect.width * 0.02, 8, 72);
-  const verticalPadding = clamp(viewportRect.height * 0.025, 8, 72);
+  const { horizontal: horizontalPadding, vertical: verticalPadding } = framePadding(viewportRect);
 
   const focusBounds = focus ?? content;
   const focusLeftDistance = Math.max(0, focusBounds.left - content.left);
@@ -229,10 +208,68 @@ export function computeFitTransform(
   const focusCenterX = focusBounds.left + focusBounds.width / 2;
   const focusCenterY = focusBounds.top + focusBounds.height / 2;
 
-  const targetX = keepVisible(viewportRect.width / 2 - focusCenterX * scale, horizontalPadding - content.left * scale, viewportRect.width - horizontalPadding - content.right * scale);
-  const targetY = keepVisible(viewportRect.height / 2 - focusCenterY * scale, verticalPadding - content.top * scale, viewportRect.height - verticalPadding - content.bottom * scale);
+  // With a focus, the camera centres on it and keeps the picture visible; without one, the picture is framed whole:
+  // centred when it fits, and when it does not, started at its near edge like a page, since nothing in it is more
+  // important than the rest and a reader starts at the top left (the owner's choice, 2026-10-30; before, the frame
+  // was centred on the picture's middle and cut both edges). What lies beyond the frame is said by the edge signs.
+  const targetX = focus
+    ? keepVisible(viewportRect.width / 2 - focusCenterX * scale, horizontalPadding - content.left * scale, viewportRect.width - horizontalPadding - content.right * scale)
+    : frameWhole(viewportRect.width / 2 - focusCenterX * scale, horizontalPadding - content.left * scale, viewportRect.width - horizontalPadding - content.right * scale, horizontalPadding);
+  const targetY = focus
+    ? keepVisible(viewportRect.height / 2 - focusCenterY * scale, verticalPadding - content.top * scale, viewportRect.height - verticalPadding - content.bottom * scale)
+    : frameWhole(viewportRect.height / 2 - focusCenterY * scale, verticalPadding - content.top * scale, viewportRect.height - verticalPadding - content.bottom * scale, verticalPadding);
 
   return { x: targetX, y: targetY, k: scale };
+}
+
+/** The size of the frame a fit is computed for; a DOMRect is one. */
+export interface Frame {
+  width: number;
+  height: number;
+}
+
+/** The room a fit leaves between the picture and the frame's edges: two percent of the width, two and a half of the height, 8 to 72 px. */
+export function framePadding(frame: Frame): { horizontal: number; vertical: number } {
+  return { horizontal: clamp(frame.width * 0.02, 8, 72), vertical: clamp(frame.height * 0.025, 8, 72) };
+}
+
+/**
+ * The camera's offset along one axis for a picture framed whole: the centred offset when the picture fits between the
+ * paddings, and still when it exceeds the frame by less than two paddings, since nicking both edges by less than a
+ * padding reads better than a gap at one and a cut of three paddings at the other (the repository's root overview is
+ * 7 px wider than a 1,179 px frame); beyond that, the offset at which the picture's near edge stands at the padding,
+ * so that a picture taller than the frame begins at the top and one wider begins at the left, like a page.
+ */
+function frameWhole(centred: number, lowest: number, highest: number, padding: number): number {
+  if (lowest <= highest) return centred;
+  // `lowest - highest` is the picture's overflow of the frame plus two paddings.
+  return lowest - highest <= 4 * padding ? centred : lowest;
+}
+
+/**
+ * The camera after the subject has been held where another view left it (a return from 3D, 2026-10-30): the same
+ * scale, moved the least that brings the picture into the frame, by the rule of {@link keepVisible} on each axis;
+ * a picture already inside it does not move.
+ */
+export function settleTransform(content: Bounds, current: MapTransform, frame: Frame): MapTransform {
+  const { horizontal, vertical } = framePadding(frame);
+  const k = current.k;
+  return {
+    x: keepVisible(current.x, horizontal - content.left * k, frame.width - horizontal - content.right * k),
+    y: keepVisible(current.y, vertical - content.top * k, frame.height - vertical - content.bottom * k),
+    k
+  };
+}
+
+/** Which edges of the frame the picture continues past, by more than `tolerance` px, at the camera given. */
+export function hiddenEdges(content: Bounds, transform: MapTransform, frame: Frame, tolerance = 4): { above: boolean; below: boolean; left: boolean; right: boolean } {
+  const { x, y, k } = transform;
+  return {
+    above: y + content.top * k < -tolerance,
+    below: y + content.bottom * k > frame.height + tolerance,
+    left: x + content.left * k < -tolerance,
+    right: x + content.right * k > frame.width + tolerance
+  };
 }
 
 /**
@@ -255,9 +292,9 @@ function keepVisible(centred: number, lowest: number, highest: number): number {
  * left edge. A path is read from its first file, so what the frame cannot hold
  * lies to the right, one pan away, and never the start.
  */
-export function computePathFitTransform(content: Bounds, frame: DOMRect): MapTransform {
+export function computePathFitTransform(content: Bounds, frame: Frame): MapTransform {
   const scale = 1;
-  const horizontalPadding = clamp(frame.width * 0.02, 8, 72);
+  const horizontalPadding = framePadding(frame).horizontal;
   const fits = content.width * scale + horizontalPadding * 2 <= frame.width;
   const x = fits
     ? frame.width / 2 - (content.left + content.width / 2) * scale

@@ -11,9 +11,107 @@
 
 import { describe, expect, it } from "vitest";
 
-import { clamp, computeFitTransform, computePathFitTransform, type Bounds, type LayoutExtents } from "./layout-measure";
+import { clamp, computeFitTransform, computePathFitTransform, framePadding, hiddenEdges, settleTransform, type Bounds, type LayoutExtents } from "./layout-measure";
 
 describe("layout-measure", () => {
+  const box = (left: number, top: number, width: number, height: number): Bounds =>
+    ({ left, top, width, height, right: left + width, bottom: top + height });
+
+  describe("framePadding", () => {
+    it("is two percent of the width and two and a half of the height, between 8 and 72 px", () => {
+      expect(framePadding({ width: 1440, height: 900 })).toEqual({ horizontal: 28.8, vertical: 22.5 });
+      expect(framePadding({ width: 200, height: 100 })).toEqual({ horizontal: 8, vertical: 8 });
+      expect(framePadding({ width: 9000, height: 9000 })).toEqual({ horizontal: 72, vertical: 72 });
+    });
+  });
+
+  describe("computeFitTransform without a focus", () => {
+    const frame = { width: 1179, height: 850 };
+
+    it("centres a picture that fits, at reading size", () => {
+      const transform = computeFitTransform({ content: box(12, 12, 800, 500), focus: null }, frame, { minScale: 1 });
+      expect(transform.k).toBe(1);
+      expect(transform.x + 12 + 400).toBeCloseTo(1179 / 2);
+      expect(transform.y + 12 + 250).toBeCloseTo(850 / 2);
+    });
+
+    it("starts a picture taller than the frame at the top, centred across, instead of cutting both ends", () => {
+      // The repository's root overview on October 30: 1,186 by 1,304 px against a frame of 1,179 by 850.
+      const transform = computeFitTransform({ content: box(12, 12, 1186, 1304), focus: null }, frame, { minScale: 1 });
+      expect(transform.k).toBe(1);
+      expect(transform.y + 12).toBeCloseTo(framePadding(frame).vertical);
+      // Wider than the frame by 7 px: centred across, each edge nicked by 3.5 px rather than a gap at the left and a cut
+      // of 30 px at the right.
+      expect(transform.x + 12 + 1186 / 2).toBeCloseTo(1179 / 2);
+    });
+
+    it("starts a picture at its near edge only when it overflows by more than two paddings", () => {
+      const { horizontal } = framePadding(frame);
+      const marginal = computeFitTransform({ content: box(0, 0, 1179 + 2 * horizontal, 400), focus: null }, frame, { minScale: 1 });
+      expect(marginal.x + (1179 + 2 * horizontal) / 2).toBeCloseTo(1179 / 2);
+      const wide = computeFitTransform({ content: box(0, 0, 1179 + 2 * horizontal + 1, 400), focus: null }, frame, { minScale: 1 });
+      expect(wide.x).toBeCloseTo(horizontal);
+    });
+
+    it("starts a picture wider than the frame at the left and centres it vertically when it fits that way", () => {
+      const transform = computeFitTransform({ content: box(0, 0, 3000, 400), focus: null }, frame, { minScale: 1 });
+      expect(transform.x).toBeCloseTo(framePadding(frame).horizontal);
+      expect(transform.y + 200).toBeCloseTo(425);
+    });
+  });
+
+  describe("settleTransform", () => {
+    const frame = { width: 1600, height: 1000 };
+
+    it("leaves a picture that is already inside the frame where it is", () => {
+      const current = { x: 300, y: 200, k: 1 };
+      expect(settleTransform(box(0, 0, 800, 400), current, frame)).toEqual(current);
+    });
+
+    it("slides a picture cut at the right back to the padding, and no further", () => {
+      // A two-file path held where its subject's sphere stood: the consumer card ends 340 px beyond the right edge.
+      const settled = settleTransform(box(0, 0, 1500, 300), { x: 440, y: 350, k: 1 }, frame);
+      expect(settled.x + 1500).toBeCloseTo(1600 - framePadding(frame).horizontal);
+      expect(settled.y).toBe(350);
+      expect(settled.k).toBe(1);
+    });
+
+    it("keeps the frame full when the picture is larger than it", () => {
+      const settled = settleTransform(box(0, 0, 3000, 2000), { x: 500, y: -2500, k: 1 }, frame);
+      const { horizontal, vertical } = framePadding(frame);
+      // Pulled right of the frame: the picture's left edge comes back to the padding.
+      expect(settled.x).toBeCloseTo(horizontal);
+      // Pulled up past its bottom: the picture's bottom edge comes back to the padding.
+      expect(settled.y + 2000).toBeCloseTo(1000 - vertical);
+    });
+
+    it("settles at the picture's scale, whatever it is", () => {
+      const settled = settleTransform(box(0, 0, 1000, 1000), { x: 2000, y: 0, k: 0.5 }, frame);
+      expect(settled.k).toBe(0.5);
+      expect(settled.x + 500).toBeCloseTo(1600 - framePadding(frame).horizontal);
+    });
+  });
+
+  describe("hiddenEdges", () => {
+    const frame = { width: 1179, height: 850 };
+
+    it("names the edges the picture continues past, beyond the tolerance", () => {
+      // The tall root overview, started at the top left: more below and, since it is 7 px wider than the frame
+      // too, more at the right; nothing above or left.
+      expect(hiddenEdges(box(12, 12, 1186, 1304), { x: 16.8, y: 10.5, k: 1 }, frame)).toEqual({ above: false, below: true, left: false, right: true });
+      // Panned down by 300 px: more above, still more below.
+      expect(hiddenEdges(box(12, 12, 1186, 1304), { x: 16.8, y: -289.5, k: 1 }, frame)).toEqual({ above: true, below: true, left: false, right: true });
+      // A picture that fits: no signs.
+      expect(hiddenEdges(box(0, 0, 800, 500), { x: 189.5, y: 175, k: 1 }, frame)).toEqual({ above: false, below: false, left: false, right: false });
+    });
+
+    it("ignores a crossing within the tolerance and reads the scale", () => {
+      expect(hiddenEdges(box(0, 0, 1180, 500), { x: -2, y: 100, k: 1 }, frame).left).toBe(false);
+      expect(hiddenEdges(box(0, 0, 1180, 500), { x: -2, y: 100, k: 1 }, frame).right).toBe(false);
+      expect(hiddenEdges(box(0, 0, 1000, 500), { x: 0, y: 0, k: 1.5 }, frame).right).toBe(true);
+    });
+  });
+
   describe("computePathFitTransform", () => {
     const frame = { width: 1340, height: 880 } as DOMRect;
     const bounds = (left: number, top: number, width: number, height: number): Bounds =>

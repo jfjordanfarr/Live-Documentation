@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-22T16:47:55.904Z
+- Generated At: 2026-10-30T15:02:32.496Z
 
 ## Authored
 ### Purpose
@@ -32,7 +32,7 @@ Controller class for the 2D Local Map. Owns its render lifecycle, camera, and vi
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L64)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L68)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -52,11 +52,17 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
 - [`directory-state.NO_OPEN_DIRECTORIES`](./directory-state.ts.mdmd.md#symbol-no_open_directories)
 - [`directory-state.OpenDirectories`](./directory-state.ts.mdmd.md#symbol-opendirectories)
+- [`edge-signs.EdgeSigns`](./edge-signs.ts.mdmd.md#symbol-edgesigns)
+- [`edge-signs.FramePlace`](./edge-signs.ts.mdmd.md#symbol-frameplace)
+- [`edge-signs.createEdgeSigns`](./edge-signs.ts.mdmd.md#symbol-createedgesigns)
+- [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
+- [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
 - [`layout-measure.applyContainerDimensions`](./layout-measure.ts.mdmd.md#symbol-applycontainerdimensions)
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
 - [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
+- [`layout-measure.settleTransform`](./layout-measure.ts.mdmd.md#symbol-settletransform)
 - [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
 - [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)
 - [`pan-zoom.cancelInertia`](./pan-zoom.ts.mdmd.md#symbol-cancelinertia)

@@ -36,6 +36,8 @@ export interface LocalViewOptions {
   onShowNodeActions: (node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }) => void | Promise<void>;
   onShowDirectoryActions: (directory: string, anchor: { x: number; y: number }) => void | Promise<void>;
   testCoverage: TestCoverageMap;
+  /** The box of whatever covers part of the map's frame, the open reader, so that a fit keeps the picture out from under it; null when nothing does. */
+  obstruction?: () => DOMRect | null;
   /** Map of node IDs to node payloads for type reference navigation. */
   nodesById: Map<string, ExplorerNodePayload>;
 }
@@ -66,6 +68,8 @@ export interface LocalViewApi {
   focusDirectory(directory: string): void;
   getSubjectAnchor(nodeId: string): { x: number; y: number } | null;
   placeSubjectAnchor(nodeId: string, anchor: { x: number; y: number }): void;
+  /** After a hold, slide the picture the least that brings it into the frame at its scale; nothing moves when it is in. */
+  settleIntoFrame(): void;
   drawConnections(): void;
   highlightSelection(): void;
   zoomIn(): void;

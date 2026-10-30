@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-10-22T16:47:56.283Z
+- Generated At: 2026-10-30T15:02:33.017Z
 
 ## Authored
 ### Purpose
@@ -39,14 +39,14 @@ click-to-navigate type references in the Local Map symbol cards.
 
 #### `LocalExplorationFrame` {#symbol-localexplorationframe}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L44)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L46)
 
 ##### `LocalExplorationFrame` — Summary
 The view's before/after presentation work around one application-owned exploration action.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L55)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L57)
 
 ##### `LocalViewApi` — Summary
 Public contract the Local Map exposes to the parent Explorer application.
@@ -56,7 +56,7 @@ Independent exploration pins belong to the shared Explorer state.
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L103)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L107)
 
 ##### `LocalEdge` — Summary
 A directed edge in the local subgraph, annotated with direction relative
@@ -72,7 +72,7 @@ Created 2025-12-04 during Local Map modularization.
 
 #### `LocalSubgraphLink` {#symbol-localsubgraphlink}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L117)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L121)
 - Returns: [`LocalEdge`](#symbol-localedge)
 
 ##### `LocalSubgraphLink` — Summary
@@ -80,7 +80,7 @@ Alias for LocalEdge - used in subgraph contexts.
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L124)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L128)
 
 ##### `LocalSubgraph` — Summary
 The graph disclosed by the current Local Map scope: its files and
@@ -89,7 +89,7 @@ by direction; the common scene determines their layout.
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L137)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L141)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -97,7 +97,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L155)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L159)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -110,7 +110,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L168)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L172)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -122,7 +122,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L183)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L187)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.

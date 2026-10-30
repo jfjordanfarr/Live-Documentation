@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-10-22T16:47:56.034Z
+- Generated At: 2026-10-30T15:02:32.738Z
 
 ## Authored
 ### Purpose
@@ -79,18 +79,52 @@ Computes layout extents for the content and focus element.
 
 #### `computeFitTransform` {#symbol-computefittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L176)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L156)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
-- Parameters: `extents`: [`LayoutExtents`](#symbol-layoutextents); `viewportRect`: `DOMRect`
+- Parameters: `extents`: [`LayoutExtents`](#symbol-layoutextents); `viewportRect`: [`Frame`](#symbol-frame)
 
 ##### `computeFitTransform` — Summary
 Computes the target transform to fit content within the viewport.
 
+#### `Frame` {#symbol-frame}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L226)
+
+##### `Frame` — Summary
+The size of the frame a fit is computed for; a DOMRect is one.
+
+#### `framePadding` {#symbol-framepadding}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L232)
+- Parameters: `frame`: [`Frame`](#symbol-frame)
+
+##### `framePadding` — Summary
+The room a fit leaves between the picture and the frame's edges: two percent of the width, two and a half of the height, 8 to 72 px.
+
+#### `settleTransform` {#symbol-settletransform}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L254)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `content`: [`Bounds`](#symbol-bounds); `current`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
+
+##### `settleTransform` — Summary
+The camera after the subject has been held where another view left it (a return from 3D, 2026-10-30): the same
+scale, moved the least that brings the picture into the frame, by the rule of {@link keepVisible} on each axis;
+a picture already inside it does not move.
+
+#### `hiddenEdges` {#symbol-hiddenedges}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L265)
+- Parameters: `content`: [`Bounds`](#symbol-bounds); `transform`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
+
+##### `hiddenEdges` — Summary
+Which edges of the frame the picture continues past, by more than `tolerance` px, at the camera given.
+
 #### `computePathFitTransform` {#symbol-computepathfittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L258)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L295)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
-- Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: `DOMRect`
+- Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
 
 ##### `computePathFitTransform` — Summary
 The camera for a drawn path: reading size, level with the frame's middle,
@@ -100,7 +134,7 @@ lies to the right, one pan away, and never the start.
 
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L272)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L309)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary
