@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { clearStroke, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { clearStroke, observeGraph, referenceWire, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { seamBefore } from "../../packages/explorer/src/client/views/localView/word-seams";
 
@@ -138,7 +138,7 @@ test("the wire tooltip stands clear of every name", async ({ page }) => {
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   await page.mouse.move(5, 5);
   const nodes = await renderedNodes(page);
-  const links = (await renderedLinks(page)).filter(link => link.visible && link.flow !== 2);
+  const links = (await renderedLinks(page)).filter(link => link.visible && referenceWire(link));
   const stroke = await clearStroke(page, nodes, links);
   expect(stroke, "a stroke clear of the spheres and the labels").toBeDefined();
   await page.mouse.move(stroke!.x, stroke!.y);

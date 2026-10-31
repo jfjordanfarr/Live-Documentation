@@ -159,10 +159,10 @@ export async function renderedNodes(page: Page) {
 }
 
 /**
- * Read each wire's uploaded axis, base width, alpha, flow and visibility beside its documented relationship identity.
- * The axis runs between the two spheres' drawn surfaces (2026-10-30), in the picture's units and on the screen. The
- * flow is the number the shader colours by: 1 when the source uses the target, -1 the other way, 0 both, 2 a wire of
- * its own colour.
+ * Read each wire's uploaded axis, base width, alpha, colour and visibility beside its documented relationship
+ * identity. The axis runs between the two spheres' drawn surfaces (2026-10-30), in the picture's units and on the
+ * screen. The colour is the one RGB the shader draws the whole wire in (the flow number that ran a gradient along it
+ * was withdrawn with the gradient, 2026-10-31).
  */
 export async function renderedLinks(page: Page) {
   return page.evaluate(() => {
@@ -171,7 +171,7 @@ export async function renderedLinks(page: Page) {
     type Point = { x: number; y: number; z: number };
     const links: Array<{ source: string; target: string; kind: string; count: number; forward: number; backward: number; visible: boolean;
       start: Point; end: Point; screen: { start: { x: number; y: number }; end: { x: number; y: number } };
-      length: number; width: number; opacity: number; flow: number }> = [];
+      length: number; width: number; opacity: number; color: [number, number, number] }> = [];
     observed.scene.traverse(object => {
       const mesh = object as DrawMesh, batch = mesh.userData.spatialBatch;
       if (batch?.kind !== "links") return;
@@ -189,7 +189,7 @@ export async function renderedLinks(page: Page) {
           forward: data.forward ?? 0, backward: data.backward ?? 0,
           visible: drawn.visible, start: point(0), end: point(1), screen: { start: onScreen(0), end: onScreen(1) },
           length: drawn.point(0).distanceTo(drawn.point(1)), width,
-          opacity: drawn.opacity, flow: mesh.geometry.getAttribute("spatialFlow").getX(entry.slot) });
+          opacity: drawn.opacity, color: [mesh.instanceColor!.getX(entry.slot), mesh.instanceColor!.getY(entry.slot), mesh.instanceColor!.getZ(entry.slot)] });
       }
     });
     return links;
@@ -199,6 +199,9 @@ export async function renderedLinks(page: Page) {
 type Sphere = Awaited<ReturnType<typeof renderedNodes>>[number];
 type Wire = Awaited<ReturnType<typeof renderedLinks>>[number];
 
+/** Whether a wire is a documented reference between two files, rather than containment or a document's citation. */
+export const referenceWire = (wire: { kind: string }): boolean => wire.kind !== "containment" && wire.kind !== "related-doc" && wire.kind !== "cited-by";
+
 /**
  * A point on a reference wire where a hover reaches the wire and nothing else: the middle of the longest stroke on
  * screen whose middle stands clear of every sphere, inside the canvas, and on the bare canvas rather than a name or a
@@ -206,7 +209,7 @@ type Wire = Awaited<ReturnType<typeof renderedLinks>>[number];
  */
 export async function clearStroke(page: Page, spheres: readonly Sphere[], wires: readonly Wire[]): Promise<{ x: number; y: number } | undefined> {
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
-  const strokes = wires.filter(wire => wire.flow !== 2).map(wire => ({
+  const strokes = wires.filter(referenceWire).map(wire => ({
     middle: { x: (wire.screen.start.x + wire.screen.end.x) / 2, y: (wire.screen.start.y + wire.screen.end.y) / 2 },
     span: Math.hypot(wire.screen.end.x - wire.screen.start.x, wire.screen.end.y - wire.screen.start.y)
   })).filter(({ middle }) => middle.x > frame.x + 20 && middle.x < frame.x + frame.width - 20 && middle.y > frame.y + 20 && middle.y < frame.y + frame.height - 20

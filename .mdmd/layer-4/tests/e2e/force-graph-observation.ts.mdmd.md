@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-30T19:08:35.701Z
+- Generated At: 2026-10-31T15:24:51.217Z
 
 ## Authored
 ### Purpose
@@ -76,14 +76,21 @@ Read identity from the picking index and geometry/alpha/positions from the actua
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
-Read each wire's uploaded axis, base width, alpha, flow and visibility beside its documented relationship identity.
-The axis runs between the two spheres' drawn surfaces (2026-10-30), in the picture's units and on the screen. The
-flow is the number the shader colours by: 1 when the source uses the target, -1 the other way, 0 both, 2 a wire of
-its own colour.
+Read each wire's uploaded axis, base width, alpha, colour and visibility beside its documented relationship
+identity. The axis runs between the two spheres' drawn surfaces (2026-10-30), in the picture's units and on the
+screen. The colour is the one RGB the shader draws the whole wire in (the flow number that ran a gradient along it
+was withdrawn with the gradient, 2026-10-31).
+
+#### `referenceWire` {#symbol-referencewire}
+- Type: const
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L203)
+
+##### `referenceWire` — Summary
+Whether a wire is a documented reference between two files, rather than containment or a document's citation.
 
 #### `clearStroke` {#symbol-clearstroke}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L207)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L210)
 - Parameters: `page`: `Page`
 
 ##### `clearStroke` — Summary

@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import type { InstancedMesh, Vector3, Scene, Camera, PerspectiveCamera, WebGLRenderer } from "three";
 
-import { clearStroke, engineActivity, observeGraph, renderedLinks, renderedNodes } from "./force-graph-observation";
+import { clearStroke, engineActivity, observeGraph, referenceWire, renderedLinks, renderedNodes } from "./force-graph-observation";
 import { pathAddress } from "./search-bar";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -303,10 +303,11 @@ for (const dpr of [1, 2]) {
 /** The distance between two points in the picture's units. */
 const apart = (p: { x: number; y: number; z: number }, q: { x: number; y: number; z: number }): number => Math.hypot(p.x - q.x, p.y - q.y, p.z - q.z);
 
-test("reference wires carry their directions, end at the spheres' drawn surfaces, and the key says what is drawn", async ({ page }) => {
-  // Direction in 3D (the October 23 review's findings 5 to 7, the owner's choice of colour over geometry, 2026-10-30):
-  // each pair's references are counted direction by direction, the shader colours the wire from the file that
-  // uses to the file that offers, and the wire runs between the drawn surfaces rather than the centres.
+test("reference wires count each direction, are one colour, end at the spheres' drawn surfaces, and the key says what is drawn", async ({ page }) => {
+  // Direction in 3D (the October 23 review's findings 5 to 7): each pair's references are counted direction by
+  // direction and the hover says which file uses which (2026-10-30). The colour that ran along a wire from the file
+  // that uses to the file that offers was withdrawn on 2026-10-31 at the owner's eye, so every reference wire is
+  // drawn in one colour, white, and the key has no direction row; the wire runs between the drawn surfaces.
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 1280, height: 800 });
   await observeGraph(page); await seedSizing(page);
@@ -315,24 +316,23 @@ test("reference wires carry their directions, end at the spheres' drawn surfaces
   await page.mouse.move(5, 5);
   const nodes = new Map((await renderedNodes(page)).map(node => [node.id, node]));
   const links = (await renderedLinks(page)).filter(link => link.visible);
-  expect(links.length).toBeGreaterThan(3);
-  let reciprocal = 0;
-  for (const link of links) {
+  const references = links.filter(referenceWire);
+  expect(references.length).toBeGreaterThan(3);
+  for (const link of references) {
     const a = nodes.get(link.source)!, b = nodes.get(link.target)!;
-    if (link.kind === "containment" || link.kind === "related-doc" || link.kind === "cited-by") { expect(link.flow).toBe(2); continue; }
     expect(link.forward + link.backward).toBe(link.count);
-    expect(link.flow).toBe(link.forward && link.backward ? 0 : link.forward ? 1 : -1);
-    if (link.flow === 0) reciprocal++;
+    expect(link.count).toBeGreaterThan(0);
+    expect(link.color).toEqual([1, 1, 1]);
     // At node resistance 0 the drawn radius is the physical one; the wire's ends stand on the two surfaces.
     expect(apart(link.start, a.world)).toBeCloseTo(a.radius, 1);
     expect(apart(link.end, b.world)).toBeCloseTo(b.radius, 1);
     expect(link.length + a.radius + b.radius).toBeCloseTo(apart(a.world, b.world), 1);
   }
-  expect(links.some(link => link.flow === 1 || link.flow === -1)).toBe(true);
-  void reciprocal;
+  // The counts say which way a one-way pair runs, where the colour no longer does.
+  expect(references.some(link => (link.forward > 0) !== (link.backward > 0))).toBe(true);
   const legend = page.locator("#spatial-legend");
-  await expect(legend).toContainText("From what offers to what uses");
   await expect(legend).toContainText("Width: references");
+  await expect(legend).not.toContainText("From what offers");
   await expect(legend).not.toContainText("Path");
   // Hovering a wire names which file uses which; the stroke hovered is one a hover reaches and nothing else.
   const hovered = await clearStroke(page, [...nodes.values()], links);
@@ -351,7 +351,7 @@ test("a path's wires are drawn at full strength and double width, and the key sa
   await page.goto(pathAddress("/samples/estate/", "Contracts/IPaymentHub.cs", { kind: "file", nodeId: "Portal/Services/GatewayClient.cs" }, "Contracts/IPaymentHub.cs", { perspective: "3d" }));
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
   await page.mouse.move(5, 5);
-  const links = (await renderedLinks(page)).filter(link => link.visible && link.flow !== 2);
+  const links = (await renderedLinks(page)).filter(link => link.visible && referenceWire(link));
   const base = (count: number): number => Math.min(3, 1 + 0.375 * Math.log2(Math.max(1, count)));
   const onPath = links.filter(link => link.opacity > 0.85), others = links.filter(link => link.opacity <= 0.85);
   expect(onPath).toHaveLength(3);

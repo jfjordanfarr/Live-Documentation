@@ -1,6 +1,5 @@
 import { requireElement } from "../dom";
 import { SPATIAL_NODE_STYLES, spatialNodeStyle } from "../views/forceGraphAppearance";
-import { SPATIAL_FLOW_COLORS } from "../views/forceGraphBatches";
 import type { SpatialGraphData } from "../views/forceGraphData";
 
 /** What the 3D picture draws beyond its data: the key says only what is on screen (2026-10-30). */
@@ -17,7 +16,7 @@ export interface SpatialLegendDrawn {
 export interface SpatialLegendRow {
   label: string;
   color: string;
-  shape: "node" | "size" | "width" | "wire" | "arrow" | "flow" | "path" | "faded";
+  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "faded";
 }
 
 /** The rows of the key for a filtered graph at the moment shown, in reading order; pure, so that a test can read them. */
@@ -31,7 +30,6 @@ export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, 
   }
   const references = [...kinds].some(kind => kind !== "containment" && kind !== "related-doc" && kind !== "cited-by");
   if (references && drawn.references) {
-    rows.push({ label: "From what offers to what uses", color: SPATIAL_FLOW_COLORS.offers, shape: "flow" });
     rows.push({ label: "Width: references", color: "#ffffff", shape: "width" });
   }
   if (drawn.path) rows.push({ label: "Path", color: "#ffffff", shape: "path" });

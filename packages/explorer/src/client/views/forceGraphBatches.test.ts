@@ -4,15 +4,15 @@ import { describe, expect, it } from "vitest";
 import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum } from "./forceGraphBatches";
 
 interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: number; radius: number; color: string }
-interface Link { source: Node; target: Node; width: number; color: string; visible: boolean; arrow: number; flow: number }
+interface Link { source: Node; target: Node; width: number; color: string; visible: boolean; arrow: number }
 const node = (id: string, x: number, y: number, z: number, radius = 4): Node => ({ id, x, y, z, radius, color: "#0091ff", publicSymbols: [] });
-const link = (source: Node, target: Node, width = 1, flow = 1): Link => ({ source, target, width, color: "rgba(255, 255, 255, 0.16)", visible: true, arrow: 0, flow });
+const link = (source: Node, target: Node, width = 1): Link => ({ source, target, width, color: "rgba(255, 255, 255, 0.16)", visible: true, arrow: 0 });
 const setup = () => {
   const scene = new Scene(), camera = new PerspectiveCamera(60, 1, .1, 20000);
   camera.position.z = 1000; camera.updateMatrixWorld();
   const buffers = createSpatialBuffers<Node, Link>(scene, {
     radius: node => node.radius, nodeColor: node => node.color, linkColor: link => link.color,
-    linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow, linkFlow: link => link.flow
+    linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow
   });
   return { scene, camera, buffers, draw: (nodes = 0, wires = 1) => buffers.update(camera, 1000, 1000, nodes, wires) };
 };
@@ -138,7 +138,7 @@ describe("direct spatial buffers", () => {
 
   it("keeps a citation arrow in its target sphere's units: its length and its tip follow the drawn radius as the node resistance changes", () => {
     const { buffers, camera, draw } = setup(), a = node("source", -100, 10, 20, 7), b = node("target", 60, -35, -80, 13);
-    const wire = link(a, b, 1, 2); wire.arrow = 4; wire.color = "rgba(214, 178, 240, 0.55)";
+    const wire = link(a, b); wire.arrow = 4; wire.color = "rgba(214, 178, 240, 0.55)";
     buffers.setData({ nodes: [a, b], links: [wire] });
     // At resistance 1 a sphere is drawn at its radius times depth over the pixel scale; at 0 at its physical radius.
     const depth = camera.position.z - b.z, pixelScale = Math.abs(camera.projectionMatrix.elements[5]) * 1000 / 2;
@@ -154,18 +154,23 @@ describe("direct spatial buffers", () => {
     buffers.dispose();
   });
 
-  it("uploads each wire's flow for the shader's colours and draws the wires before the spheres, writing depth", () => {
+  it("uploads each wire's one colour whole and draws the wires before the spheres, writing depth", () => {
     const { buffers, draw } = setup(), a = node("a", -100, 0, 0), b = node("b", 100, 0, 0), c = node("c", 0, 100, 0);
-    const ab = link(a, b, 1, 1), bc = link(b, c, 1, -1), ca = link(c, a, 1, 0);
+    const ab = link(a, b), bc = link(b, c), ca = link(c, a);
+    ca.color = "rgba(233, 152, 77, 0.35)";
     buffers.setData({ nodes: [a, b, c], links: [ab, bc, ca] }); draw();
-    const flow = buffers.lines.mesh.geometry.getAttribute("spatialFlow");
-    expect(buffers.lines.entries.map(entry => flow.getX(entry.slot))).toEqual([1, -1, 0]);
+    // A wire carries one RGB for its whole length and no flow number: the colour that ran along a reference wire
+    // by its directions (2026-10-30) was withdrawn on 2026-10-31.
+    const colors = buffers.lines.mesh.instanceColor!, orange = new Color("rgb(233, 152, 77)");
+    const rgb = (slot: number): number[] => [colors.getX(slot), colors.getY(slot), colors.getZ(slot)];
+    expect(rgb(buffers.lines.entries[0].slot)).toEqual([1, 1, 1]);
+    expect(rgb(buffers.lines.entries[1].slot)).toEqual([1, 1, 1]);
+    rgb(buffers.lines.entries[2].slot).forEach((value, i) => expect(value).toBeCloseTo([orange.r, orange.g, orange.b][i], 5));
+    expect(buffers.lines.mesh.geometry.getAttribute("spatialFlow")).toBeUndefined();
+    expect((buffers.lines.mesh.material as unknown as { uniforms: Record<string, unknown> }).uniforms.spatialOffers).toBeUndefined();
     expect(buffers.lines.mesh.renderOrder).toBeLessThan(buffers.nodes.mesh.renderOrder);
     expect(buffers.lines.mesh.renderOrder).toBeLessThan(buffers.arrows.mesh.renderOrder);
     expect(buffers.lines.mesh.material.depthWrite).toBe(true);
-    const material = buffers.lines.mesh.material as unknown as { uniforms: Record<string, { value: Color }> };
-    expect(material.uniforms.spatialOffers.value.getHexString()).toBe("38bdf8");
-    expect(material.uniforms.spatialUses.value.getHexString()).toBe("34d399");
     buffers.dispose();
   });
 

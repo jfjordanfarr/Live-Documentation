@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/labels-and-controls.spec.ts
-- Generated At: 2026-10-30T19:08:35.953Z
+- Generated At: 2026-10-31T15:24:51.488Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - [`word-seams.seamBefore`](../../packages/explorer/src/client/views/localView/word-seams.ts.mdmd.md#symbol-seambefore)
 - [`force-graph-observation.clearStroke`](./force-graph-observation.ts.mdmd.md#symbol-clearstroke)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
+- [`force-graph-observation.referenceWire`](./force-graph-observation.ts.mdmd.md#symbol-referencewire)
 - [`force-graph-observation.renderedLinks`](./force-graph-observation.ts.mdmd.md#symbol-renderedlinks)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
 <!-- LIVE-DOC:END Dependencies -->

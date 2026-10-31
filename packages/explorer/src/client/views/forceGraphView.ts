@@ -1057,7 +1057,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (onPath) return "rgba(255, 255, 255, 0.9)";
         if (state.spatialLayout === "structure") return `rgba(255, 255, 255, ${visible ? 0.5 : 0})`;
         // The whole web at .16 when nothing has the attention; the hovered file's wires at .5 and the retained set's at
-        // .3 when something has, so that the few wires a person is reading show their colours (2026-10-30).
+        // .3 when something has, so that the few wires a person is reading stand out from the web (2026-10-30). Every
+        // reference wire is white: the colour that ran along it from the file that uses to the file that offers
+        // (2026-10-30) was withdrawn on 2026-10-31 at the owner's eye, and the hover's words carry the direction.
         return `rgba(255, 255, 255, ${!visible ? 0.025 : hovered ? 0.5 : attention ? 0.3 : 0.16})`;
       });
       // A common scale for every wire; reference counts retain their relative weight while camera motion and spring
@@ -1112,11 +1114,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         linkColor: () => "rgba(255, 255, 255, 0.16)",
         linkWidth: () => state.tuning.forceGraph.linkWidth,
         linkVisible: () => true,
-        arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0,
-        // A reference wire's colour runs from the file that uses, green, to the file that offers, blue; a pair that
-        // uses each other is green at both ends; the other kinds keep their own colour (2026-10-30).
-        linkFlow: link => link.kind === "containment" || link.kind === "related-doc" || link.kind === "cited-by" ? 2
-          : link.forward && link.backward ? 0 : link.forward ? 1 : -1
+        arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0
       },
       resistance: () => ({ nodes: state.tuning.forceGraph.nodeZoomResistance, wires: state.tuning.forceGraph.wireZoomResistance }),
       linkLabel: link => {

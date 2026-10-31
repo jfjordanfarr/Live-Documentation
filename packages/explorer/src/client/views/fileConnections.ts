@@ -2,8 +2,9 @@
  * A file-pair summary for a connectivity overview; the canonical symbol edges remain untouched. One pair stands for
  * both directions between two files, its endpoints in path order so that the pair's identity does not depend on which
  * way the references run: `forward` counts the references in which `source` uses `target`, `backward` those in which
- * `target` uses `source`, and `count` is their sum. The 3D map draws the pair as one wire coloured by its directions
- * (2026-10-30; before, the directions were merged away and no wire could say which file used which).
+ * `target` uses `source`, and `count` is their sum. The 3D map draws the pair as one wire and says its directions on
+ * hover, each with its count (2026-10-30; before, the directions were merged away and no wire could say which file
+ * used which). The colour that ran along the wire by its directions was withdrawn on 2026-10-31 at the owner's eye.
  */
 export interface FileConnection<T extends string = string> {
   source: string;

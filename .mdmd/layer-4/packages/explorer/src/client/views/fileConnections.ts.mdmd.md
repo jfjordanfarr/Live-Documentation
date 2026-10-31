@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/fileConnections.ts
-- Generated At: 2026-10-30T15:43:44.239Z
+- Generated At: 2026-10-31T15:14:58.011Z
 
 ## Authored
 ### Purpose
@@ -20,18 +20,19 @@ A projected edge may represent several documented references sharing endpoints. 
 ### Public Symbols
 #### `FileConnection` {#symbol-fileconnection}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L8)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L9)
 
 ##### `FileConnection` — Summary
 A file-pair summary for a connectivity overview; the canonical symbol edges remain untouched. One pair stands for
 both directions between two files, its endpoints in path order so that the pair's identity does not depend on which
 way the references run: `forward` counts the references in which `source` uses `target`, `backward` those in which
-`target` uses `source`, and `count` is their sum. The 3D map draws the pair as one wire coloured by its directions
-(2026-10-30; before, the directions were merged away and no wire could say which file used which).
+`target` uses `source`, and `count` is their sum. The 3D map draws the pair as one wire and says its directions on
+hover, each with its count (2026-10-30; before, the directions were merged away and no wire could say which file
+used which). The colour that ran along the wire by its directions was withdrawn on 2026-10-31 at the owner's eye.
 
 #### `fileConnections` {#symbol-fileconnections}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/fileConnections.ts#L22)
 - Returns: [`FileConnection`](#symbol-fileconnection)[]
 
 ##### `fileConnections` — Summary
