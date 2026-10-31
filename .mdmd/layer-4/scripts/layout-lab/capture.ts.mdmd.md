@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-10-21T01:48:37.672Z
+- Generated At: 2026-10-31T16:32:25.399Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ The capture also records the actual test and asset filter controls. The retained
 The membrane ancestry control occupies a separate flex column beside the text caption. Captures therefore retain its actual reserved width and effective height, and prepare the caption itself as text. The headless label model composes the two instead of pretending an SVG button is a text glyph. Older captures without control measurements retain their original text-only geometry. This extension accompanies [the October 14 ancestor disclosure](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 Each row also records its controls, every child of the label's wrapper but the label and its badges (the Pin and More of [October 20](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#the-layout-lab-caught-the-label-buttons)), as their widths with the gap before each and the tallest of them, and the wrapper's frame from its computed style: margins, padding and border on each axis, nothing for a public row and the Internals row's dashed border. A row collapsed at capture has no boxes, so it takes the controls of a row the page showed; its frame needs no box. Both are optional, so older captures read as before. Without them the model ran 1 to 22 px short of every card on the day the controls arrived.
+
+The natural widths are read as the page reads them since 2026-10-31, at the 1/64 px unit and up to the next pixel, after the first full gate over the seams found the page's rounded `offsetWidth` undercutting a path by a few hundredths of a pixel and wrapping it where the lab, holding Pretext to `TEXT_TOLERANCE`, kept the line ([the work notes of October 31](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)). Pretext does not take a zero-width space as a break opportunity, so the seams are not handed to it; the page's own width rule removes the disagreement.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -98,7 +100,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L418)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L419)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -106,7 +108,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L424)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L425)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

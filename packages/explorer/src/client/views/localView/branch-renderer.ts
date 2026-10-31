@@ -336,6 +336,16 @@ function fillLabel(controller: LocalViewController, label: HTMLElement, director
 }
 
 /**
+ * A card's natural width, whole pixels, never less than its content: the browser lays out in 1/64 px, so the width
+ * is read at that unit and taken up to the next pixel. `offsetWidth` rounded to the nearest, and a card whose
+ * content stood a few hundredths over the pixel (a path of 304.08 px, the seams' `<wbr>` elements each a layout
+ * unit wide since 2026-10-30) was given a 304 px box and wrapped its own path at a seam (found 2026-10-31).
+ */
+function naturalWidthOf(wrapper: HTMLElement, scale: number): number {
+  return Math.ceil(Math.round(wrapper.getBoundingClientRect().width / scale * 64) / 64);
+}
+
+/**
  * The page as the scene's measurer. Widths first, every card at its own, no
  * wider than the cap; then heights at the widths the columns give, since a
  * card's rows of test names wrap at its column's width where its own did
@@ -348,7 +358,7 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
     widths(cardMaxWidth) {
       for (const wrapper of stage.wrappers.values()) Object.assign(wrapper.style, { width: "max-content", maxWidth: cardMaxWidth === null ? "" : `${cardMaxWidth}px` });
       const widths = new Map<string, number>();
-      for (const [id, wrapper] of stage.wrappers) widths.set(id, wrapper.offsetWidth);
+      for (const [id, wrapper] of stage.wrappers) widths.set(id, naturalWidthOf(wrapper, scale));
       answers.natural = widths;
       return widths;
     },

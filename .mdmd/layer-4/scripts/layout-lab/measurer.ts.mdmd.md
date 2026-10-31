@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/measurer.ts
-- Generated At: 2026-10-16T01:55:41.304Z
+- Generated At: 2026-10-31T16:40:18.327Z
 
 ## Authored
 ### Purpose
@@ -19,19 +19,21 @@ Rows no pin needs are collapsed unless the file is retained whole or selected. H
 
 The captured measurer was introduced with the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10). Its construction-order and endpoint-identity rules were made explicit during the [October 13 shared competition](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
+The notes are worded with the page's own `countOf` since 2026-10-31, a count and its unit joined by a no-break space as the page has written them since 2026-10-30: the measurer recognizes a captured reveal by that wording, and when it looked for a plain space it counted the page's reveal a second time, 20 px on every card that folds symbols ([the work notes of October 31](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `MeasurerOptions` {#symbol-measureroptions}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L20)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L21)
 
 ##### `MeasurerOptions` — Summary
 What the measurer needs to know of the page's state beyond the exploration: the pins, the subject and the collapse tuning.
 
 #### `cardViews` {#symbol-cardviews}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L29)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L30)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
 ##### `cardViews` — Summary
@@ -39,7 +41,7 @@ Every card's view under an exploration, as `dressCards` would dress it.
 
 #### `capturedMeasurer` {#symbol-capturedmeasurer}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/measurer.ts#L88)
+- Source: [source](../../../../scripts/layout-lab/measurer.ts#L91)
 - Returns: [`SceneMeasurer`](../../packages/explorer/src/client/views/localView/branch-scene.ts.mdmd.md#symbol-scenemeasurer)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `branches`: [`BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph); `options`: [`MeasurerOptions`](#symbol-measureroptions)
 
@@ -54,6 +56,7 @@ A measurer over the capture for one exploration.
 - [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.compareSymbolNames`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-comparesymbolnames)
 - [`branches.edgeKey`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-edgekey)
+- [`word-seams.countOf`](../../packages/explorer/src/client/views/localView/word-seams.ts.mdmd.md#symbol-countof)
 - [`pin-state.PinSet`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../../packages/explorer/src/client/views/symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)

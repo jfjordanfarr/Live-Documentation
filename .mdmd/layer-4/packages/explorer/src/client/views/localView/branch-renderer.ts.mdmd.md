@@ -31,6 +31,8 @@ Since 2026-10-06 (the layout lab's first milestone) this module is the page's sh
 - A card's reveal, "+N symbols", counts the public rows it has folded and not the internals row every card carries, so a file with no public symbols shows no reveal (2026-10-16; found by eye on a reconstruction's cards in [the TH04 probe](../../../../../../../../AI-Agent-Workspace/Probes/2026-10-15/live-docs-over-th04/README.md), kept by `local-map-directories.spec.ts`).
 - `scheduleSearch` schedules a step, and a waiting step runs, only while the map is the view shown and the page visible (`searchAllowed`, 2026-10-16, [the decision](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#the-local-maps-work-stays-with-the-view-and-the-wires-keep-their-elements-recorded-2026-10-16)): leaving the map pauses the search where it stands and the controller's `show` resumes it, where before the search went on behind another view, its work discarded by the return's render. Kept by `local-map-hidden.spec.ts`.
 
+A card's natural width is read at the browser's 1/64 px unit and taken up to the next whole pixel (`naturalWidthOf`, 2026-10-31), never narrower than the content it holds: `offsetWidth`, rounded to the nearest pixel, gave a card whose path stood 304.08 px wide a 304 px box, and with the seams' `<wbr>` elements each a layout unit wide the path wrapped at a seam, found by the first full gate over the seams ([the work notes of October 31](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -13,6 +13,7 @@ import { cardMetrics, labelHeight, pinOffset, synthesizedHeight, textHeight, typ
 import type { SymbolOrder } from "../../packages/explorer/src/client/types";
 import type { SceneMeasurer } from "../../packages/explorer/src/client/views/localView/branch-scene";
 import { compareSymbolNames, edgeKey, type BranchGraph } from "../../packages/explorer/src/client/views/localView/branches";
+import { countOf } from "../../packages/explorer/src/client/views/localView/word-seams";
 import type { PinSet } from "../../packages/explorer/src/client/views/pin-state";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
 
@@ -71,12 +72,14 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
     const hidden = collapsed.filter(row => row.symbol !== "__internals__").length;
     const noteFont = card.notes[0]?.font ?? card.directory.font;
     const notes: Array<(width: number) => number> = [];
-    if (hidden) notes.push(synthesizedHeight(capture, noteFont, `+${hidden} symbols`));
+    // The notes are worded as the page words them (`countOf`, a count and its unit joined by a no-break space since
+    // 2026-10-30), so that the regenerated note wraps as the page's does and the captured one is known for what it is.
+    if (hidden) notes.push(synthesizedHeight(capture, noteFont, `+${countOf(hidden, "symbol")}`));
     const back = backReferences.get(card.id) ?? 0;
-    if (back) notes.push(synthesizedHeight(capture, noteFont, `${back} ${back === 1 ? "reference reads" : "references read"} back`));
+    if (back) notes.push(synthesizedHeight(capture, noteFont, `${countOf(back, "reference reads", "references read")} back`));
     // The connections outside the view are the graph's, the same under every configuration: the captured line serves.
     for (const note of card.notes) {
-      if (/^\+\d+ symbols$/u.test(note.text) || /reads? back$/u.test(note.text)) continue;
+      if (/^\+\d+\u00a0symbols?$/u.test(note.text) || /reads? back$/u.test(note.text)) continue;
       notes.push(width => textHeight(capture, note, width));
     }
     views.set(card.id, { rows: shown, registration, notes });

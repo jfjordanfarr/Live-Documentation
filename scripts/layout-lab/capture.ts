@@ -237,7 +237,8 @@ function readCapture(page: Page): Promise<PageCapture> {
     // Natural widths: every wrapper at max-content with no cap, read together, then restored.
     const saved = wrappers.map(wrapper => [wrapper.style.width, wrapper.style.maxWidth] as const);
     for (const wrapper of wrappers) Object.assign(wrapper.style, { width: "max-content", maxWidth: "" });
-    const naturals = wrappers.map(wrapper => wrapper.offsetWidth);
+    // As the page reads them (`naturalWidthOf`, 2026-10-31): whole pixels, taken up from the browser's 1/64 px unit.
+    const naturals = wrappers.map(wrapper => Math.ceil(Math.round(wrapper.getBoundingClientRect().width / scale * 64) / 64));
     wrappers.forEach((wrapper, i) => Object.assign(wrapper.style, { width: saved[i][0], maxWidth: saved[i][1] }));
     let constants: CardConstants | null = null;
     // Every row's label stands in a wrapper with its badges and its controls; the controls are the wrapper's other children.

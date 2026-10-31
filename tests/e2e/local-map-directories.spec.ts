@@ -112,11 +112,12 @@ test("a closed box opens in place, the membrane growing from the box while the p
   const graphCard = page.locator(`#map-container .node-card[data-id="${LIVE_DOCS}/graph.ts"]`);
   const publicRows = await graphCard.locator(".symbol-row:not(.internals-row)").count();
   expect(publicRows).toBeGreaterThan(0);
-  await expect(graphCard.getByRole("button", { name: /^\+\d+ symbols$/ })).toHaveText(`+${publicRows} symbols`);
+  // The page joins a count and its unit by a no-break space (2026-10-30); `\s` reads it and a plain space alike.
+  await expect(graphCard.getByRole("button", { name: /^\+\d+\ssymbols$/ })).toHaveText(`+${publicRows} symbols`);
   const testCard = page.locator(`#map-container .node-card[data-id="${LIVE_DOCS}/graph.test.ts"]`);
   await expect(testCard).toHaveCount(1);
   await expect(testCard.locator(".symbol-row:not(.internals-row)")).toHaveCount(0);
-  await expect(testCard.getByRole("button", { name: /^\+\d+ symbols$/ })).toHaveCount(0);
+  await expect(testCard.getByRole("button", { name: /^\+\d+\ssymbols$/ })).toHaveCount(0);
   // The label the person clicked through to stands where the box was: what was acted on keeps its place.
   const opened = (await label(page, LIVE_DOCS).boundingBox())!;
   expect(Math.abs(opened.x - before.x)).toBeLessThan(40);
@@ -138,7 +139,7 @@ test("an encasing membrane counts what it hides, Open discloses it around pinned
   expect(drawn).toBeGreaterThan(0);
   // The live-docs membrane encases graph.ts and whatever its pins reach; the rest of its files and its two subdirectories are counted, and no X shows.
   const more = label(page, LIVE_DOCS).locator(".local-directory-more");
-  await expect(more).toHaveText(/^\+\d+ files, 2 directories$/);
+  await expect(more).toHaveText(/^\+\d+\sfiles, 2\sdirectories$/);
   await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toHaveCount(0);
   const partyCards = await cards(page).count();
   // The map does not scroll and the encased picture may be wider than the frame, with its label under the sidebar, so
