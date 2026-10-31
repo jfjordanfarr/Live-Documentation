@@ -1,0 +1,579 @@
+
+[Image #1]
+
+❯ Happy halloween! I am exploring the work you've done yesterday. So far, I
+  admit that the choice to use color in the connectors has unfortunately
+  lessened the readability/interpretability of the graph. I think that there
+  are simply too many connectors drawn in the average 3D local map scene to
+  confer any ability for the end user to understand what color means on any one
+  connector. Go ahead and verify for yourself. We'll need to go back to the
+  prior flat-ish color, but we still need to be thinking about how to make this
+  graph more legible. If we want a user to be able to find what they're
+  looking for.
+
+● Happy Halloween. I'll bootstrap from the memory files and recent session
+  summaries first, then verify the connector colouring in the built Explorer,
+  revert it, and come back with thoughts on legibility.
+
+  Read 9 files, listed 2 directories, ran 4 shell commands (ctrl+o to expand)
+
+● Bootstrap is complete. I'm opening today's record with your message and
+  screenshot kept, then pulling the wire-colour code from yesterday's pass B so
+  I can check it in the built Explorer and revert it. · summary
+
+  Searched for 1 pattern, read 2 files, ran 5 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md)
+  ⎿  Wrote 28 lines to
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md
+      1 # October 31, 2026 — development session
+      2
+      3 Agent-maintained conversation record. Author/harness: Claude Code
+         in VS Code (model label as presented to the agent: Claude Fable
+        5.1), opened at the owner's first message of the day. This is not
+         a harness export.
+      4
+      5 ## Coverage
+      6
+      7 Begins with the owner's first message of October 31, Turn 1 below
+     … +22 lines (~5 KB) (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.images/README.md)
+  ⎿  Wrote 5 lines to
+     AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.images/README.md
+      1 # October 31, 2026 — received images
+      2
+      3 Historical source attachments for [the session record](../2026-10
+        -31.1.record.md). These are owner-provided images, preserved byte
+        -for-byte.
+      4
+      5 - [Turn 1: the 3D Local Map with coloured wires](turn-1-3d-local-
+        map-coloured-wires.png): received with the opening message of the
+         day, in which the owner says the colour in the connectors has le
+        ssened the readability of the graph. 1066×745. SHA-256: `095ef120
+     … +1 line (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/tmp/wire-colour-look-2026-10-31/look.ts)
+  ⎿  Wrote 87 lines to
+     AI-Agent-Workspace/tmp/wire-colour-look-2026-10-31/look.ts
+       1 // Disposable: picture the built 3D Local Map's wires as they st
+         and on 2026-10-31, for the root's eye. Not committed.
+       2 import { mkdirSync } from "node:fs";
+       3 import { chromium, type Page } from "@playwright/test";
+       4
+       5 import { observeGraph } from "../../../tests/e2e/force-graph-obs
+         ervation";
+       6 import { pathAddress } from "../../../tests/e2e/search-bar";
+       7 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../..
+         /packages/explorer/src/client/persistence/local-storage";
+     … +80 lines (ctrl+o to expand)
+
+  Searched for 1 pattern, ran 5 shell commands (ctrl+o to expand)
+
+● Background command "Capture the built 3D map's wires in several states for a
+look by eye" completed (exit code 0)
+
+● The capture script finished. I'm looking at the pictures it took of the built
+  map now, alongside yesterday's before-and-after pair.
+
+  Made 1 scratchpad edit +220, read 3 files, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Capture the hover, path and estate states of the built
+map" completed (exit code 0)
+
+  Read 4 files, ran 3 shell commands (ctrl+o to expand)
+
+● I've confirmed by eye what you reported, and the colour revert is applied in
+  the code with the unit tests and type-check running. Now I'm updating the
+  design documents and regenerating the Live Docs.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Background command "Build the packages and run the unit tests over the revert"
+completed (exit code 0)
+
+  Searched for 1 pattern, ran 6 shell commands (ctrl+o to expand)
+
+● Background command "Regenerate the Live Docs over the changed source"
+completed (exit code 0)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● While the Explorer bundle rebuilds, I'm checkpointing the record and running
+  the lint checks.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Rebuild the Explorer bundle with its history and the
+estate sample from the reverted client" completed (exit code 0)
+
+  Listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Waiting on two background jobs: the flat-colour captures and the lint run.
+  Nothing else to request until they report.
+
+  Read 1 file (ctrl+o to expand)
+
+● Both jobs are still running. I'll pick up when they report.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The flat-colour captures and ESLint are still running in the background. I'll
+  continue when they report.
+
+● Background command "Checkpoint the record's work notes and run the doc lint
+and ESLint" completed (exit code 0)
+
+  Read 2 files (ctrl+o to expand)
+
+● The flat build reads as expected: the web is back to grey wires and the sphere
+  colours stand out again. Waiting on the last two flat captures before writing
+  the screenshot record and starting the full gate.
+● Background command "Picture the same five states from the reverted client"
+completed (exit code 0)
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Background command "Wait for the flat captures and the lint run to finish,
+then show their results" completed (exit code 0)
+
+● Write(AI-Agent-Workspace/Screenshots/2026-10-31/README.md)
+  ⎿  Wrote 13 lines to AI-Agent-Workspace/Screenshots/2026-10-31/README.md
+      1 # October 31, 2026 — the 3D wires' colour, seen and withdrawn
+      2
+      3 Pictures taken by the root agent for the owner's verdict of [Turn
+         1](../../ChatHistory/2026/10/2026-10-31.1.record.md#turn-1), tha
+        t the colour run along each 3D wire the day before (green at the
+        file that uses, blue at the file that offers, pass B of the remed
+        iation, `34c44977`) had lessened the picture's readability, becau
+        se an ordinary scene draws too many wires for the colour on any o
+        ne of them to mean anything. All at 1280×800 in headless Chromium
+        , by a disposable script under the ignored `AI-Agent-Workspace/tm
+     … +11 lines (~3 KB) (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full gate is running in the background with everything else landed in the
+  tree. I'll commit and reply once it reports.
+
+● Background command "Run the full pre-commit chain with the browser suite over
+the withdrawal" completed (exit code 0)
+
+  Searched for 2 patterns, ran 4 shell commands (ctrl+o to expand)
+
+● The gate flagged two leftover uses of the wire's old flow number in the
+  browser checks, and I replaced both with one shared predicate. I'm running the
+  three affected browser specs next, then the full gate. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● The three browser specs are running; the full gate chains after them. I'll
+  pick up on their report.
+
+● Background command "Run the three affected browser specs, then the full gate
+if they pass" completed (exit code 0)
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Background command "Report the three browser specs' result as soon as they
+finish" completed (exit code 0)
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● The failure comes from a stale bundle rather than the code: the history sample
+  wasn't rebuilt after the revert, so it still served the old client. I'm
+  rebuilding that sample, rerunning the spec, and then running the full gate.
+  · summary
+
+  Searched for 1 pattern, read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Waiting on the legend spec's rerun; the full gate follows it automatically.
+
+● Background command "Report the legend spec's rerun as soon as it finishes"
+completed (exit code 0)
+
+  Made 1 scratchpad edit +10, read 1 file (ctrl+o to expand)
+
+● The commit message is drafted; the only thing outstanding is the full gate,
+  which is running. I'll commit and reply when it reports.
+
+❯ As I explore the 3D local map, looking for more ways to better
+  resolve/separate diferent networks visually from one another, it does dawn on
+  me that perhaps the center-seeking gravity of the whole simulation is
+  causing a bit of excess clumping of networks in a way that could otherwise be
+  easier to resolve visually if the non-connected clusters formed
+  separately-crystallizing galaxies alongside one another? I know this leaves
+  us in a tough spot with respect to the image settling, but I'm just trying to
+  point at an element that I think is causing some difficulty. The overall
+  emergent spherical shape of the cumulative 3D local map does indeed cause
+  unrelated elements to collocate together just out of a preference for even
+  packing of the image. I just wonder how easily we can get the user to
+  navigate in 3D space without either getting lost or getting overwhelmed by
+  visual details. We have SO MUCH ROOM to improve, and along SO MANY
+  DIMENSIONS.
+
+● Your message is recorded as Turn 2. The gate for the colour withdrawal is
+  still running, so I'll answer both turns together once it reports. Meanwhile
+  I'm measuring the islands you're describing in the actual graph.
+
+  Searched for 2 patterns, read 1 file, listed 1 directory, ran 5 shell commands (ctrl+o to expand)
+
+● I'm reading the current gravity defaults and where the physics applies the
+  pull toward the centre, so the reply describes today's forces accurately while
+  the gate finishes.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Everything for the reply is in hand: the defaults are gravity 0.025 toward the
+  origin and a tether of 0.02 to each sphere's starting place, and the islands
+  are counted. The only outstanding item is the browser suite inside the gate,
+  which will report when it finishes.
+
+● Background command "Rebuild the history sample, rerun the legend spec, then
+the full gate if it passes" completed (exit code 0)
+
+  Listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● The worktree check of yesterday's main is still running to attribute those
+  eight 2D failures. Meanwhile I'm preparing the commit of the colour
+  withdrawal, whose own checks are green.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The withdrawal's files are the whole list; nothing stray. Waiting for the
+  attribution run on yesterday's main, then I'll commit and reply to both of
+  your messages together.
+
+● Background command "Run the three failing 2D specs on yesterday's main in a
+separate worktree to attribute the failures" completed (exit code 0)
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● The colour withdrawal is committed as 49f495b9, with before-and-after
+  screenshots linked. The eight 2D failures predate this change, so I'm
+  repairing them now, and the design reply to your messages will follow.
+  · summary
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Reading the lab spec and probing one card's parts on the page to find where
+  the 20 px went.
+
+  Searched for 1 pattern, ran 6 shell commands (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/tmp/wire-colour-look-2026-10-31/lab-parts.ts)  ⎿  Wrote 48 lines to
+     AI-Agent-Workspace/tmp/wire-colour-look-2026-10-31/lab-parts.ts
+       1 // Disposable: compare the lab's card model, part by part, with
+         the page's parts for the cards that drift. Not committed.
+       2 import { chromium } from "@playwright/test";
+       3
+       4 import { DECK_SCOPES } from "../../../tests/e2e/scopes";
+       5 import { localRetainUrl } from "../../../tests/e2e/still-picture
+         ";
+       6 import { captureFromPage } from "../../../scripts/layout-lab/cap
+         ture";
+       7 import { textHeight } from "../../../scripts/layout-lab/card-mod
+     … +42 lines (~3 KB) (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● I'm narrowing the 20 px: the lab's text and constant readings match the page,
+  so the difference sits in how the model composes a card's rows or notes.
+  Reading the evaluator's card view next.
+
+  Searched for 3 patterns, listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Testing whether Pretext will wrap at the page's seams if they are handed to it
+  as zero-width spaces, which decides how the lab's capture must change.
+
+  Searched for 2 patterns, ran 5 shell commands (ctrl+o to expand)
+
+● The 20 px offset and the two-line paths came from a card box sized by its
+  rounded width, so content slightly over a pixel wrapped at the seam. I've
+  widened both the page and the lab to the next pixel and am running the
+  affected specs before the full gate. · summary
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Nothing to request until the specs report; the chain is running (build, unit
+  tests, regeneration, bundles, the three 2D specs, then the gate).
+
+● Background command "Build, unit-test, regenerate, rebuild the bundles, run the
+three 2D specs, then the full gate if they pass" completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Background command "Report the three 2D specs' result as soon as they finish"
+completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Three repairs are in and type-checked; the 2D specs are rerunning with the
+  full gate chained behind them. Nothing else to request until they report.
+
+● Background command "Report the three 2D specs' rerun as soon as it finishes"
+completed (exit code 0)
+
+  Made 1 scratchpad edit +8, read 1 file (ctrl+o to expand)
+
+● The 2D specs are green with the repairs, and the full gate is running behind
+  them. The lab repair's commit message is drafted. I'll commit and send the
+  combined reply when the gate reports.
+
+● Background command "Rerun the three 2D specs, then the full gate if they pass"
+completed (exit code 0)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● The full gate is green: 1,504 unit, 113 integration and all 238 browser
+  checks. Committing the lab repair and closing the record for this reply.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Both of your messages are answered here. Everything described is committed and
+  the full gate is green.
+
+  What landed. The colour run along each 3D wire is withdrawn, as 49f495b9:
+  every reference wire is one colour again, white at a sixth of full strength,
+  exactly as before yesterday's pass. The rest of that pass stays, since you did
+  not name it: wires end at the spheres' surfaces, faded spheres no longer cut
+  holes in wires, a path draws at full strength and double width, and hovering a
+  wire still says which file uses which, with each direction's count. The key
+  lost its direction row. Before and after pictures of five states are in the
+  day's screenshot record (AI-Agent-Workspace/Screenshots/2026-10-31/README.md).
+  The full gate then exposed eight 2D failures that reproduce on yesterday's
+  main, so they were the name-wrapping pass's, never gated whole. I fixed them
+  at their causes as 3490ffb0: a card's box was sized by its rounded width and
+  could be a few hundredths narrower than its own path, which then wrapped at a
+  seam; and the layout lab recognised a folded-symbols note by a plain space
+  where the page now writes a no-break one, so it counted the note twice. The
+  gate over the tree passed 1,504 unit, 113 integration and all 238 browser
+  checks.
+
+  What the looking showed. I agree with your eye on the picture you sent. At
+  rest, the whole web is one cyan haze. The blue and green add up to a single
+  teal where wires crowd, and no wire's two ends can be told apart. Zoomed in, a
+  wire that happens to stand alone shows its ends, but wherever wires cross,
+  which is everywhere a person would look for something, the ends cannot be
+  assigned. The gradient only read once a hover or a path had isolated a few
+  wires. That is the scale a person reaches after finding what they want, not
+  before. I removed the colour there too, as you asked; the hover's words carry
+  direction now.
+
+  Why unrelated networks clump
+
+  The physics has one gravity, a pull toward the origin at 0.025, and the
+  many-body repulsion spreads spheres evenly inside it. Unconnected networks
+  have nothing holding them apart, so the forces press them into the gaps of the
+  main mass. The spherical shape is not an accident; it is what those two
+  forces optimise. I counted the islands in the default picture (tests shown,
+  assets and documents hidden):
+
+  ┌─────────────────┬─────────┬───────────────┬──────────────┐
+  │     Picture     │ Islands │  Largest two  │ Single files │
+  ├─────────────────┼─────────┼───────────────┼──────────────┤
+  │ This repository │ 94      │ 455 and 102   │ 52           │
+  ├─────────────────┼─────────┼───────────────┼──────────────┤
+  │ Estate sample   │ 4       │ 30 and 4      │ 2            │
+  ├─────────────────┼─────────┼───────────────┼──────────────┤
+  │ T3 Code         │ 6,369   │ 19,678 and 64 │ 5,689        │
+  └─────────────────┴─────────┴───────────────┴──────────────┘
+
+  Here the islands are the product itself, then the integration sample programs
+  one by one (the C sample with its oracle files, the estate, the Go, Python,
+  Java and PowerShell programs), and the single files are dotfiles, workflows
+  and configs. On T3 the single files are its vendored reference code. All of
+  them are packed into one ball today.
+
+  What I would try, for your eye
+
+  Each is a lever in Tuning at zero by default, pictured on this repository, the
+  estate and T3 before any default moves.
+
+  1. Each island settles around its own centre, and the islands stand side by
+     side. Gravity pulls a sphere toward its island's centre instead of the
+     origin. The islands get places laid out by size around the largest, and a
+     weak pull holds each island to its place. This is your separately
+     crystallising galaxies. It should help the settling rather than hurt it,
+     because today an island has nothing to come to rest against except the
+     whole.
+  2. Single files on a shelf. A file with no documented reference is not wiring.
+     It stays in the picture, but in a belt outside the galaxies rather than
+     sprinkled through them.
+  3. The web as haze far away and as lines up close. Two levers for the wires
+     themselves: fade with distance from the camera, and fade each wire by how
+     many share its patch of screen, so that no region saturates into a blob
+     while a lone long wire stays visible. A third option fades short wires
+     inside a cluster, which the positions already tell, and keeps the long ones
+     between clusters.
+  4. Names as landmarks. Directory names at the island and cluster centres at
+     overview distance, revealed on approach as files are. This is the Structure
+     repair already next in your order, applied to Connections too.
+
+  My recommendation is to build 1 and 2 together as the first probe, since they
+  answer your question directly and the pictures will show whether side-by-side
+  galaxies read. Then 3 as levers, and 4 with the Structure work. Two things I
+  need from you before any of it: a yes on that order, and whether direction
+  should be carried anywhere beyond the hover's words, or left there for now.
+
+● Both of your messages are answered here. Everything described is committed and
+  the full gate is green.
+
+  What landed. The colour run along each 3D wire is withdrawn, as 49f495b9:
+  every reference wire is one colour again, white at a sixth of full strength,
+  exactly as before yesterday's pass. The rest of that pass stays, since you did
+  not name it: wires end at the spheres' surfaces, faded spheres no longer cut
+  holes in wires, a path draws at full strength and double width, and hovering a
+  wire still says which file uses which, with each direction's count. The key
+  lost its direction row. Before and after pictures of five states are in the
+  day's screenshot record (AI-Agent-Workspace/Screenshots/2026-10-31/README.md).
+  The full gate then exposed eight 2D failures that reproduce on yesterday's
+  main, so they were the name-wrapping pass's, never gated whole. I fixed them
+  at their causes as 3490ffb0: a card's box was sized by its rounded width and
+  could be a few hundredths narrower than its own path, which then wrapped at a
+  seam; and the layout lab recognised a folded-symbols note by a plain space
+  where the page now writes a no-break one, so it counted the note twice. The
+  gate over the tree passed 1,504 unit, 113 integration and all 238 browser
+  checks.
+
+  What the looking showed. I agree with your eye on the picture you sent. At
+  rest, the whole web is one cyan haze. The blue and green add up to a single
+  teal where wires crowd, and no wire's two ends can be told apart. Zoomed in, a
+  wire that happens to stand alone shows its ends, but wherever wires cross,
+  which is everywhere a person would look for something, the ends cannot be
+  assigned. The gradient only read once a hover or a path had isolated a few
+  wires. That is the scale a person reaches after finding what they want, not
+  before. I removed the colour there too, as you asked; the hover's words carry
+  direction now.
+
+  Why unrelated networks clump
+
+  The physics has one gravity, a pull toward the origin at 0.025, and the
+  many-body repulsion spreads spheres evenly inside it. Unconnected networks
+  have nothing holding them apart, so the forces press them into the gaps of the
+  main mass. The spherical shape is not an accident; it is what those two
+  forces optimise. I counted the islands in the default picture (tests shown,
+  assets and documents hidden):
+
+  ┌─────────────────┬─────────┬───────────────┬──────────────┐
+  │     Picture     │ Islands │  Largest two  │ Single files │
+  ├─────────────────┼─────────┼───────────────┼──────────────┤
+  │ This repository │ 94      │ 455 and 102   │ 52           │
+  ├─────────────────┼─────────┼───────────────┼──────────────┤
+  │ Estate sample   │ 4       │ 30 and 4      │ 2            │
+  ├─────────────────┼─────────┼───────────────┼──────────────┤
+  │ T3 Code         │ 6,369   │ 19,678 and 64 │ 5,689        │
+  └─────────────────┴─────────┴───────────────┴──────────────┘
+
+  Here the islands are the product itself, then the integration sample programs
+  one by one (the C sample with its oracle files, the estate, the Go, Python,
+  Java and PowerShell programs), and the single files are dotfiles, workflows
+  and configs. On T3 the single files are its vendored reference code. All of
+  them are packed into one ball today.
+
+  What I would try, for your eye
+
+  Each is a lever in Tuning at zero by default, pictured on this repository, the
+  estate and T3 before any default moves.
+
+  1. Each island settles around its own centre, and the islands stand side by
+     side. Gravity pulls a sphere toward its island's centre instead of the
+     origin. The islands get places laid out by size around the largest, and a
+     weak pull holds each island to its place. This is your separately
+     crystallising galaxies. It should help the settling rather than hurt it,
+     because today an island has nothing to come to rest against except the
+     whole.
+  2. Single files on a shelf. A file with no documented reference is not wiring.
+     It stays in the picture, but in a belt outside the galaxies rather than
+     sprinkled through them.
+  3. The web as haze far away and as lines up close. Two levers for the wires
+     themselves: fade with distance from the camera, and fade each wire by how
+     many share its patch of screen, so that no region saturates into a blob
+     while a lone long wire stays visible. A third option fades short wires
+     inside a cluster, which the positions already tell, and keeps the long ones
+     between clusters.
+  4. Names as landmarks. Directory names at the island and cluster centres at
+     overview distance, revealed on approach as files are. This is the Structure
+     repair already next in your order, applied to Connections too.
+
+  My recommendation is to build 1 and 2 together as the first probe, since they
+  answer your question directly and the pictures will show whether side-by-side
+  galaxies read. Then 3 as levers, and 4 with the Structure work. Two things I
+  need from you before any of it: a yes on that order, and whether direction
+  should be carried anywhere beyond the hover's words, or left there for now.
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/7baf8f14-b4c2-415
+     4-84c8-329f7f530029/scratchpad/commit-message-2.txt (8 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/7baf8f14-b4c2-415
+     4-84c8-329f7f530029/tasks/bvydaw2k1.output (5 lines)
+  ⎿  Read AI-Agent-Workspace/tmp/wire-colour-look-2026-10-31/lab-parts.ts (49
+     lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/7baf8f14-b4c2-415
+     4-84c8-329f7f530029/scratchpad/commit-message.txt (10 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/7baf8f14-b4c2-415
+     4-84c8-329f7f530029/tasks/b8jmsp1e0.output (7 lines)
+
+❯ >Single files on a shelf. A file with no documented reference is not wiring.
+  It stays in the picture, but in a belt outside the galaxies rather than
+  sprinkled through them.
+
+  Interesting. But I suspect that adding or removing file types to view can
+  cause files to rapidly move into and out of the "shelf" space. I'm not 100%
+  confident that it will perform well when toggling on and off file types
+  repeatedly.
+
+  >The web as haze far away and as lines up close. Two levers for the wires
+  themselves: fade with distance from the camera, and fade each wire by how
+  many share its patch of screen, so that no region saturates into a blob while
+  a lone long wire stays visible. A third option fades short wires inside a
+  cluster, which the positions already tell, and keeps the long ones between
+  clusters.
+
+  Gosh, I'm not confident I agree with this either. I understand that a haze is
+  liable to emerge at sufficient zoom-out, but a user who is interested in
+  seeing the local structure of a handful of pinned objects should be able to
+  -- well -- leverage the 3D to help visually intuit things which were
+  overcomplex for the 2D local map view. I just don't feel like 3D is kind of
+  earning its keep relative to its informationality. 3D Local Map aims to
+  helpfully orient the user when things get too complex in the 2D local map. At
+  one point in time, we even automatically transitioned between the two at
+  specific zoom levels, but opted against it when it felt crappy (the
+  transition time is very long and I tripped that switch accidentally more than
+  purposely). I personally think we'll need to try a bunch of variations on
+  point 3 until we're satisfied.
+
+  >Names as landmarks. Directory names at the island and cluster centres at
+  overview distance, revealed on approach as files are. This is the Structure
+  repair already next in your order, applied to Connections too.
+
+  Do directory names demarcate island and cluster centers? In the more
+  hierarchical mode which aims to show directories (which, as you correctly
+  recall, we still have quite a bit of polish work to do remaining on) that's
+  the case, but out seeing the emergent structure of the software, I don't see
+  why that would be the case.
+
+  >Each island settles around its own centre, and the islands stand side by
+  side. Gravity pulls a sphere toward its island's centre instead of the
+  origin. The islands get places laid out by size around the largest, and a
+  weak pull holds each island to its place. This is your separately
+  crystallising galaxies. It should help the settling rather than hurt it,
+  because today an island has nothing to come to rest against except the whole.
+
+  But if it requires a heavy  hand on our part demarcating such centers, we've
+  plausibly overcomplicated. Such things should emerge on their own. Indeed,
+  the overall structure should be such that the choices for which bespoke
+  galaxies cluster more together than others are defined by minimizing the
+  amount of surprise that would occur by toggling on and off other file types.
+  That's just an idea on my part, but I suspect it could help deal with
+  breaking ties on 3D local map layout potentially.
+
+● Recording your reply first, then checking what the code does today on a type
+  toggle before I answer.
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
