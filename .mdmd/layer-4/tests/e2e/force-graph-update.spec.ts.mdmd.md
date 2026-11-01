@@ -18,6 +18,8 @@ The stage is this repository's bundle in the connections layout at a modest view
 
 Since 2026-10-21 the second test holds the motion ([Turn 5](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)): a change at full energy and one at half each come to rest, counted as frames between busy and still, and once the container says still, two readings of the scene half a second apart find every sphere where it was; the lines keep their objects; the energy slider stirs nothing and rides the address; the tether's slider starts at the shipped value, rides the layout settings, and a new tether unfolds the picture and lets it come to rest. That a lower energy moves more gently is left to the unit tests, which show it exactly, since in the page a gentler path to the same rest need not take more ticks (251 frames at half against 272 at full for one toggle, measured that day).
 
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the entry opens the root, so that the change moves the whole repository's spheres as the measure wants; the whole enters from one sphere and settles on screen in some eighty seconds of the software renderer, where the first piece's hidden warm-up once took a third of the ticks unseen, so the settle allowance is 150 seconds.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

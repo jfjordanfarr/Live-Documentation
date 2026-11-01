@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/history-control.ts
-- Generated At: 2026-10-30T14:56:36.703Z
+- Generated At: 2026-10-31T20:06:58.327Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ The history control of the 3D Local Map: fetches the bundle's sequence when firs
 - A moment's names are read once per file asked: today's file is followed back by the engine's `followPath`, which stops at its birth, so a file not yet born is absent even where an earlier file stood at its path; a directory by `followPins`. The ticks are `ticksFor` over today's pinned files and open directories, recomputed when the pins change. A commit the sequence lacks, or one a short prefix names more than once, is said beside the track and today shown. A pin absent at the moment is said in the tray as "not yet created" ("not yet born" until 2026-10-30, when the owner's Created and Deleted of 2026-10-26 replaced the words on screen), a directory with nothing under it as such, and never dropped. Held by `tests/e2e/history-scrubber.spec.ts`; the first run of that spec found the names misaligned when a pinned file was also the subject, which is why the moment follows each file on its own.
 - Since 2026-10-20 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-9)) the control builds each moment's related-doc links and hands the step panel the bundle's documents to read.
 
+- Since 2026-10-31 ([Turn 8 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8)) each moment carries what its step changed, the files born, renamed, resized, re-kinded, their entry or content changed, and the two ends of every wire that came, went or changed, with the pairs whose wire came or changed, read from the engine's change at the step, so that the view can tell them apart in the picture; the control tells the client when play starts and pauses, since the emphasis fades only while playing, and takes the rate the scrubber's own speed control chose, which the client writes into Tuning's Play Rate.
 - Since 2026-10-30 ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) the step panel can be hidden while the scrubber stays, by its own button or the scrubber's toggle. The choice holds across steps while the history is open and is not in the address; closing the history forgets it, so an opened history shows its panel. A hidden panel is not drawn until it is shown.
 
 ## Generated
@@ -22,35 +23,35 @@ The history control of the 3D Local Map: fetches the bundle's sequence when firs
 ### Public Symbols
 #### `HistoryControlOptions` {#symbol-historycontroloptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L44)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L45)
 
 ##### `HistoryControlOptions` — Summary
 What the control is made with.
 
 #### `HistoryContext` {#symbol-historycontext}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L74)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L79)
 
 ##### `HistoryContext` — Summary
 What the client tells the control at every change of state.
 
 #### `HistoryControl` {#symbol-historycontrol}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L86)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L91)
 
 ##### `HistoryControl` — Summary
 The control as the client drives it.
 
 #### `isHistorySequence` {#symbol-ishistorysequence}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L104)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L109)
 
 ##### `isHistorySequence` — Summary
 Whether a sequence has the format this client reads.
 
 #### `truncatedWords` {#symbol-truncatedwords}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L109)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L114)
 - Parameters: `sequence`: [`HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 
 ##### `truncatedWords` — Summary
@@ -58,7 +59,7 @@ Why the history begins where it does, when it is cut there; null when it begins 
 
 #### `createHistoryControl` {#symbol-createhistorycontrol}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L116)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/history-control.ts#L121)
 - Returns: [`HistoryControl`](#symbol-historycontrol)
 - Parameters: `options`: [`HistoryControlOptions`](#symbol-historycontroloptions)
 
@@ -71,6 +72,7 @@ Make the control under the 3D view, its scrubber and panel hidden until opened.
 - [`format.HISTORY_FORMAT`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-history_format)
 - [`format.HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence)
 - [`queries.stepsMatching`](../../../../engine/src/live-docs/history/queries.ts.mdmd.md#symbol-stepsmatching)
+- [`sequence.changeAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-changeat)
 - [`sequence.commitAt`](../../../../engine/src/live-docs/history/sequence.ts.mdmd.md#symbol-commitat)
 - [`ticks.Pins`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-pins)
 - [`Ticks`](../../../../engine/src/live-docs/history/ticks.ts.mdmd.md#symbol-ticks)
@@ -87,6 +89,7 @@ Make the control under the 3D view, its scrubber and panel hidden until opened.
 - [`step-summary.stepSummary`](./step-summary.ts.mdmd.md#symbol-stepsummary-function)
 - [`tick-model.tickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-function)
 - [`types.HistoryTuning`](../types.ts.mdmd.md#symbol-historytuning) (type-only)
+- [`forceGraphEmphasis.pairKey`](../views/forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
 - [`retained-state.RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem) (type-only)
 - [`staticExplorerData.BundledHistory`](../../shared/staticExplorerData.ts.mdmd.md#symbol-bundledhistory) (type-only)
 - [`types.ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)

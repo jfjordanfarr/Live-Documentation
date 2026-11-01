@@ -126,7 +126,9 @@ test("an unselected 3D arrival frames the estate without inventing pins", async 
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
   const nodes = await renderedNodes(page);
-  expect(nodes.length).toBeGreaterThan(20);
+  // Nothing asked about: the start, the estate's most connected file and two hops around it, a part of the whole (2026-10-31).
+  expect(nodes.length).toBeGreaterThan(10);
+  expect(nodes.length).toBeLessThan(36);
   for (const node of nodes) {
     expect(node.depth).toBeGreaterThan(-1); expect(node.depth).toBeLessThan(1);
     expect(node.x - node.screenRadius).toBeGreaterThan(frame.x);

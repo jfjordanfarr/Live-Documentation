@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/graph.ts
-- Generated At: 2026-10-30T16:26:09.582Z
+- Generated At: 2026-10-31T20:07:03.452Z
 
 ## Authored
 ### Purpose
@@ -32,7 +32,7 @@ Projects the graph into the Explorer's node-and-link payload.
 
 #### `documentedReferences` {#symbol-documentedreferences}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/graph.ts#L166)
+- Source: [source](../../../../../../packages/explorer/src/shared/graph.ts#L167)
 
 ##### `documentedReferences` — Summary
 How many documented references the links carry between two files of the

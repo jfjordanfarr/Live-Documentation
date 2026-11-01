@@ -1065,6 +1065,8 @@ body.force-graph-active #spatial-legend { display: block; }
    the hover (2026-10-30). The blue-to-green stroke that sampled the wires' colour went with that colour (2026-10-31). */
 .spatial-legend-sample--path::before { width: 20px; height: 4px; top: 5px; box-shadow: 0 0 5px var(--legend-color); }
 .spatial-legend-sample--faded::before { width: 10px; height: 10px; top: 2px; left: 5px; border-radius: 50%; opacity: .2; }
+/* The frontier: the last hop of connections shown, dimmed, a click on which shows more (2026-10-31). */
+.spatial-legend-sample--frontier::before { width: 10px; height: 10px; top: 2px; left: 5px; border-radius: 50%; opacity: .4; }
 
 .sidebar-section .legend-row {
     display: flex;

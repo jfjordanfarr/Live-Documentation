@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/types.ts
-- Generated At: 2026-10-30T16:26:09.713Z
+- Generated At: 2026-10-31T20:07:03.633Z
 
 ## Authored
 ### Purpose
@@ -98,7 +98,7 @@ for type-reference navigation in the Local Map.
 
 #### `ExplorerLinkPayload` {#symbol-explorerlinkpayload}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L133)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L139)
 
 ##### `ExplorerLinkPayload` — Summary
 A directed edge in the explorer graph, connecting two node IDs.
@@ -115,14 +115,14 @@ in the dependency columns rather than just file-level cards.
 
 #### `ExplorerGraphStats` {#symbol-explorergraphstats}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L144)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L150)
 
 ##### `ExplorerGraphStats` — Summary
 Summary statistics for the explorer graph, which the sidebar's line prints.
 
 #### `ExplorerGraphPayload` {#symbol-explorergraphpayload}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L163)
+- Source: [source](../../../../../../packages/explorer/src/shared/types.ts#L169)
 
 ##### `ExplorerGraphPayload` — Summary
 The node-and-link payload the Explorer views render.

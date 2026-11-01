@@ -4,6 +4,15 @@
  * Renders the 3D force-directed graph view for the Live Docs Explorer using
  * direct instance buffers. Supports Related Documentation overlay nodes when enabled.
  *
+ * Since 2026-10-31 the picture is discovered rather than shown whole (the
+ * owner's direction): it holds what a person asked about, the tuning's hops of
+ * connections around it with the last hop dimmed as the frontier, and nothing
+ * beyond; a click on a frontier sphere inspects it, and the inspected file is
+ * asked about, so the picture grows from it until the next click, and a pin
+ * keeps the growth. With nothing asked about, the layout's start is shown
+ * (`forceGraphScope.ts`). While a moment of the history is shown, the files
+ * the step changed glow or the rest dim, by the tuning, fading while it plays.
+ *
  * Two layouts share the renderer (2026-10-14): in the connections layout the
  * documented references pull and are drawn; in the structure layout every file
  * hangs from its directory's hub and the references pull nothing, drawn only
@@ -23,13 +32,16 @@ import { Matrix4, PerspectiveCamera, Vector3 } from "three";
 
 import { spatialNodeStyle } from "./forceGraphAppearance";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera, type CameraPoint } from "./forceGraphCamera";
-import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
+import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphData, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
+import { emphasisStrength, emphasizedSphere, emphasizedWireAlpha, pairKey } from "./forceGraphEmphasis";
 import { placeSpatialLabels, type SpatialLabel, type LabelBox } from "./forceGraphLabels";
 import { SpatialRenderer } from "./forceGraphRenderer";
-import { nextRevealCount, REVEAL, revealOrder } from "./forceGraphReveal";
+import { nextRevealCount, REVEAL, revealLayers } from "./forceGraphReveal";
+import { spatialScope, startOf } from "./forceGraphScope";
 import { spatialSizeScale } from "./forceGraphSizing";
 import { layoutPresetOf } from "../layout-presets";
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart } from "./forceGraphLayout";
+import type { ExplorerState } from "../types";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
@@ -45,7 +57,6 @@ import type { HistoryMoment } from "../history/moment";
 import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
 import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "../panels/icon-button";
 import { renderSpatialLegend } from "../panels/spatial-legend";
-import type { ExplorerState } from "../types";
 
 /**
  * Target milliseconds for the physics part of a frame once the first picture is on screen. A tick that needs more is
@@ -111,6 +122,8 @@ export interface ForceGraphViewOptions {
   onCloseDirectory: (directory: string) => void;
   /** The drawn path's files as the picture shown names them: a moment's names while a moment is shown, asked over its wires (2026-10-30). */
   getPath?: () => readonly string[] | undefined;
+  /** How many files the picture shows of the files the filters allow, told at every change of what is shown (2026-10-31). */
+  onShown?: (shown: number, total: number) => void;
 }
 
 /** Public API surface of the Force Graph view. */
@@ -134,6 +147,8 @@ export interface ForceGraphViewApi {
   setMoment(moment: HistoryMoment | null, renames: Renames, energy?: number): void;
   /** Feed the standing picture at the tuning's energy, after a drag placed it without a tick. */
   settle(): void;
+  /** Whether the history is playing: the emphasis on a step's changed files fades while it does and holds at rest (2026-10-31). */
+  setHistoryPlaying(playing: boolean): void;
 }
 
 /** Creates the Force Graph (3D) view for the Live Docs Explorer. */
@@ -199,6 +214,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   // Grow only after the current piece has been drawn. Each piece receives a physics call and a visible frame.
   let spheresOnScreen = 0;
   let scopedNames = false;
+  /**
+   * The scope of the picture (2026-10-31): each shown sphere's hop from what was asked about, how many connected spheres
+   * each leaves out, and which hop is the frontier, drawn dimmed.
+   */
+  let scopeHops = new Map<string, number>();
+  let scopeBeyond = new Map<string, number>();
+  let frontierHop = Infinity;
+  /** The history's emphasis on a step's changed files: when the moment arrived, and whether the history is playing (2026-10-31). */
+  let momentArrivedAt = 0;
+  let historyPlaying = false;
   let actionStrip: HTMLDivElement | null = null;
   let actionTargetId: string | null = null;
   let menuTargetId: string | null = null;
@@ -375,6 +400,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     requireElement("graph-svg").setAttribute("aria-busy", String(simulationRunning));
     frameDirectory();
     instance.updateControls();
+    // While the history plays, the emphasis on the step's changed files fades frame by frame until the next step.
+    if (moment && historyPlaying && state.tuning.history.changeEmphasis !== "none"
+      && emphasisStrength(true, momentArrivedAt, performance.now(), 1000 / state.tuning.history.playRate) > 0) instance.invalidateAppearance();
     updateFocus(performance.now());
     instance.draw(pictureRevision);
     updatePointerHover();
@@ -506,9 +534,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const name = labelNames.get(node.id) ?? node.name;
       if (label.textContent !== name) { label.textContent = name; labelSizes.delete(label); }
       const count = symbolCountOf(node);
-      const title = node.directoryPath !== undefined ? `${node.directoryPath || "Scan root"} · ${node.directoryFileCount} visible files`
+      const more = scopeBeyond.get(node.id);
+      const title = (node.directoryPath !== undefined ? `${node.directoryPath || "Scan root"} · ${node.directoryFileCount} visible files`
         : node.id.startsWith("related:") ? `${node.codeRelativePath}${hasBundledDoc(node.id.slice(8)) ? "" : " · not in this bundle"}`
-        : `${node.codeRelativePath} · ${count} public ${count === 1 ? "symbol" : "symbols"}`;
+        : `${node.codeRelativePath} · ${count} public ${count === 1 ? "symbol" : "symbols"}`)
+        + (more ? ` · ${more} more connected, not shown` : "");
       if (label.title !== title) label.title = title;
       label.dataset.nodeId = node.id;
       label.dataset.kind = node.directoryPath !== undefined ? "directory" : "file";
@@ -839,9 +869,39 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const shownDocLinks = (moment ? moment.relatedDocLinks : relatedDocLinks ?? [])
       .filter(link => link.direction === "cited-by" ? state.filters.showCitingDocs : state.filters.showRelatedDocs);
     const data = spatialGraphOf(source, includeNode, shownDocLinks, state.spatialLayout);
+    // What is shown (discovery, the owner's direction of 2026-10-31): what was asked about, directly (the pins, the
+    // subject, the inspected file or hub, a path) or as a set (an open directory's files), and the tuning's hops of
+    // connections around it, the last hop the frontier; nothing beyond. With nothing asked about, the layout's start.
+    const pulls = (link: { kind?: string }): boolean => linkPulls(link, state.spatialLayout);
+    const asked = new Set<string>();
+    for (const pin of pins.entries) asked.add(pin.nodeId);
+    if (subjectAt) asked.add(subjectAt);
+    const inspected = state.inspection?.kind === "file" ? fileAt(state.inspection.nodeId)
+      : state.inspection?.kind === "directory" && state.spatialLayout === "structure" ? directoryNodeId(directoryAt(state.inspection.directory)) : undefined;
+    if (inspected) asked.add(inspected);
+    // An open directory's files are asked about as a set; in the structure layout its hub and every hub under it too,
+    // so that the directory stands whole with its tree, the root opened with every hub.
+    const members = new Set<string>();
+    for (const node of data.nodes) {
+      if (node.directoryPath === undefined ? directories.some(directory => under(node.id, directory))
+        : directories.some(directory => node.directoryPath === directory || under(node.directoryPath!, directory))) members.add(node.id);
+    }
+    if (path?.length) { asked.clear(); members.clear(); for (const id of path) asked.add(id); }
+    const inPicture = new Set(data.nodes.map(node => node.id));
+    for (const id of asked) if (!inPicture.has(id)) asked.delete(id);
+    if (!asked.size && !members.size) for (const id of startOf(data.nodes, data.links, state.spatialLayout, pulls)) asked.add(id);
+    const scope = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), state.tuning.forceGraph.hops, pulls);
+    scopeHops = scope.hops;
+    scopeBeyond = scope.beyond;
+    frontierHop = state.tuning.forceGraph.hops;
+    const hasFrontier = [...scope.hops.values()].some(hop => hop === frontierHop);
+    const picture: SpatialGraphData = { nodes: data.nodes.filter(node => scope.hops.has(node.id)),
+      links: data.links.filter(link => scope.hops.has(link.source) && scope.hops.has(link.target)) };
+    const isFile = (node: SpatialGraphNode): boolean => node.directoryPath === undefined && !node.id.startsWith("related:");
+    options.onShown?.(picture.nodes.filter(isFile).length, data.nodes.filter(isFile).length);
     // Keep node data by id and link data by pair across membership changes. Positions and stable instance bindings
     // follow those data objects, including through historical renames; the 2D wires keep their elements the same way.
-    const graphNodes: ForceGraphNode[] = data.nodes.map(node => {
+    const graphNodes: ForceGraphNode[] = picture.nodes.map(node => {
       const cached = nodeCache.get(node.id);
       if (!cached) { nodeCache.set(node.id, node); return node; }
       Object.assign(cached, node);
@@ -850,7 +910,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return cached;
     });
     const liveNodes = new Map(graphNodes.map(node => [node.id, node]));
-    const graphLinks: ForceGraphLink[] = data.links.map(link => {
+    const graphLinks: ForceGraphLink[] = picture.links.map(link => {
       const cached = linkCache.get(linkKey(link));
       if (!cached) { linkCache.set(linkKey(link), link); return link; }
       cached.count = link.count; cached.forward = link.forward; cached.backward = link.backward;
@@ -863,7 +923,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // A history step may change only a file's exposed surface. Its physical size belongs to the field's
     // input too, even when every node and wire keeps its identity.
     const nextMembership = JSON.stringify([graphNodes.map(node => [node.id, symbolCountOf(node), node.containedSymbolCounts]),
-      data.links.map(link => [linkKey(link), link.count])]);
+      picture.links.map(link => [linkKey(link), link.count])]);
     const membershipChanged = nextMembership !== membership;
     container.dataset.layoutPreset = layoutPresetOf(state.tuning);
 
@@ -964,6 +1024,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     if (selectedAt) retained.add(selectedAt);
     if (path?.length) { retained.clear(); for (const id of path) retained.add(id); }
     const retainedFiles = [...retained];
+    /** The pins, what they retain and the subject: the files whose references the structure layout draws at rest. */
+    const pinnedScope = new Set<string>(pins.entries.map(pin => pin.nodeId));
+    for (const { link } of getVisibleConnections(pins, source.links)) { pinnedScope.add(resolveLinkEndpoint(link.source)); pinnedScope.add(resolveLinkEndpoint(link.target)); }
+    if (selectedAt) pinnedScope.add(selectedAt);
     retainedScope = pins.entries.length || directories.length || path?.length ? retained : new Set();
     pathScope = path ?? [];
     for (const node of graphNodes) {
@@ -974,13 +1038,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     // share more at every tick, each sphere placed beside what holds it as it enters. A membership change keeps what is
     // shown and carries on from there in the new order; the attention set is in the piece that enters now.
     if (membershipChanged) {
-      const attention = new Set(retained);
-      if (subjectAt) attention.add(subjectAt);
       const kept = reveal.order.slice(0, reveal.shown).filter(id => liveNodes.has(id));
       const keptIds = new Set(kept);
-      const order = kept.concat(revealOrder(graphNodes, graphLinks, attention, link => linkPulls(link, state.spatialLayout, state.tuning.forceGraph)).filter(id => !keptIds.has(id)));
-      const entering = [...attention].filter(id => liveNodes.has(id) && !keptIds.has(id)).length;
-      const shown = Math.min(order.length, Math.max(kept.length ? nextRevealCount(kept.length, order.length, REVEAL.share, REVEAL.least) : REVEAL.first, kept.length + entering));
+      const layers = revealLayers(graphNodes, graphLinks, { asked, members }, link => linkPulls(link, state.spatialLayout, state.tuning.forceGraph));
+      const order = kept.concat(layers.flat().filter(id => !keptIds.has(id)));
+      // What was asked about directly is on screen at once, with its first hop when it was asked about directly, so that
+      // the 2D picture's neighbourhood crosses into 3D together; the rest, an open directory's files among them, at the pace.
+      const entering = [...asked].filter(id => liveNodes.has(id) && !keptIds.has(id)).length;
+      const first = (layers[0]?.length ?? 0) + (asked.size ? layers[1]?.length ?? 0 : 0);
+      const shown = Math.min(order.length, Math.max(kept.length ? nextRevealCount(kept.length, order.length, state.tuning.forceGraph.revealFrames) : first, kept.length + entering));
       reveal = { order, nodes: liveNodes, links: graphLinks, shown };
     }
     labelNames = labelNamesOf(graphNodes);
@@ -991,7 +1057,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     for (const [id, label] of nameLabels) if (!present.has(id)) { label.remove(); nameLabels.delete(id); labelSizes.delete(label); }
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     // The key says what is drawn: the references and their directions where they are, the path, and the fading.
-    renderSpatialLegend(data, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention, path: !!path?.length, faded: hasAttention });
+    renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention, path: !!path?.length, faded: !!path?.length, frontier: hasFrontier });
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {
         focusedDirectory = directories[0] ?? null;
@@ -1005,11 +1071,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return !!node && under(node.directoryPath ?? node.codeRelativePath, directory);
     };
     updateAttention = (): void => {
-      // Hover is a temporary look at a file's actual connections, including a
-      // file outside the retained scope. Leaving restores the current pins,
-      // directories or path; it never restores a snapshot from graph entry.
+      // Hover is a temporary look at a file's connections among what is shown. Leaving restores the picture; it never
+      // restores a snapshot from graph entry. Since 2026-10-31 nothing fades for standing outside the pins: the picture
+      // shows only what was asked about and its hops, and the last hop shown is dimmed as the frontier.
       const hovered = hoveredId;
-      const attention = hovered ? new Set([hovered]) : hasAttention ? retained : null;
+      // The hover isolates a file and its connections; a drawn path isolates its files; otherwise nothing is faded.
+      const attention = hovered ? new Set([hovered]) : path?.length ? new Set(path) : null;
       const hoveredDirectory = hovered ? nodeCache.get(hovered)?.directoryPath : undefined;
       const directoryAttention = hoveredDirectory ?? (hovered ? undefined : focusedDirectory ?? undefined);
       if (hoveredDirectory !== undefined) {
@@ -1022,45 +1089,59 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           if (a === hovered || b === hovered) { attention!.add(a); attention!.add(b); }
         }
       }
-      // A force or camera edit with identical attention needs no buffer appearance update.
+      // A force or camera edit with identical attention needs no buffer appearance update; the history's emphasis reads
+      // its strength at every draw, so only its mode and step are part of the key.
+      const emphasis = moment ? state.tuning.history.changeEmphasis : "none";
       const nextAttention = JSON.stringify([
         attention ? [...attention].sort() : null,
         hovered,
         path ?? null,
         directoryAttention ?? null,
-        state.spatialLayout
+        state.spatialLayout,
+        frontierHop,
+        emphasis,
+        moment?.step ?? null
       ]);
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
       pictureChanged();
-      renderSpatialLegend(data, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || attention !== null, path: !!path?.length, faded: attention !== null });
+      renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || attention !== null, path: !!path?.length, faded: attention !== null || !!path?.length, frontier: hasFrontier });
+      const frontier = (id: string): boolean => scopeHops.get(id) === frontierHop;
+      // The emphasis fades over the step's time while the history plays and holds at rest; quantized so that the
+      // colours the batches cache stay few.
+      const strength = (): number => Math.round(emphasisStrength(historyPlaying, momentArrivedAt, performance.now(), 1000 / state.tuning.history.playRate) * 50) / 50;
       forceGraphInstance?.nodeColor((node: ForceGraphNode) => {
         const color = spatialNodeStyle(node.archetype).color;
-        return attention && !attention.has(node.id) ? `${color}33` : color;
+        // Faded for the hover, with the hovered file and its connections whole even at the frontier; dimmed as the
+        // frontier otherwise; and under the history's emphasis glowing or dimmed by the step.
+        const alpha = attention ? (attention.has(node.id) ? 1 : 0.2) : frontier(node.id) ? 0.4 : 1;
+        if (emphasis === "none") return alpha === 1 ? color : emphasizedSphere(color, alpha, false, "none", 0);
+        return emphasizedSphere(color, alpha, !!moment?.changed.has(node.id), emphasis, strength());
       });
-      /** Whether a wire has the picture's attention, and whether it is a step of the drawn path. */
-      const regard = (link: ForceGraphLink): { visible: boolean; onPath: boolean } => {
+      /** Whether a wire has the picture's attention, whether it is a step of the drawn path, whether it reaches the frontier, and whether the step changed it. */
+      const regard = (link: ForceGraphLink): { visible: boolean; onPath: boolean; dimmed: boolean; changed: boolean } => {
         const a = resolveLinkEndpoint(link.source), b = resolveLinkEndpoint(link.target);
         const onPath = !!path?.length && pathPairs.has(JSON.stringify([a, b].sort()));
-        const visible = hovered ? a === hovered || b === hovered : path?.length ? onPath : !attention || (attention.has(a) && attention.has(b));
-        return { visible, onPath: onPath && visible };
+        const visible = hovered ? a === hovered || b === hovered : path?.length ? onPath : true;
+        return { visible, onPath: onPath && visible, dimmed: frontier(a) || frontier(b), changed: !!moment?.changedPairs.has(pairKey(a, b)) };
       };
       forceGraphInstance?.linkColor((link: ForceGraphLink) => {
-        const { visible, onPath } = regard(link);
+        const { visible, onPath, dimmed, changed } = regard(link);
         // Containment is the structure itself, drawn as a line; a reference revealed in the structure layout reads
         // against the tree rather than as the faint web of the connections layout. A path's wires are drawn at full
-        // strength (2026-10-30), so that the route reads over the web around it.
-        if (link.kind === "containment") return `rgba(233, 152, 77, ${visible ? 0.35 : 0.08})`;
-        if (link.kind === "related-doc") return `rgba(153, 102, 204, ${visible ? 0.4 : 0.04})`;
+        // strength (2026-10-30), so that the route reads over the web around it. A wire to the frontier is dimmed with it.
+        if (link.kind === "containment") return `rgba(233, 152, 77, ${!visible ? 0.08 : dimmed ? 0.15 : 0.35})`;
+        if (link.kind === "related-doc") return `rgba(153, 102, 204, ${!visible ? 0.04 : dimmed ? 0.15 : 0.4})`;
         // A document's citation of a file, in the documents' violet lightened toward white, drawn from the document.
-        if (link.kind === "cited-by") return `rgba(214, 178, 240, ${visible ? 0.55 : 0.06})`;
+        if (link.kind === "cited-by") return `rgba(214, 178, 240, ${!visible ? 0.06 : dimmed ? 0.2 : 0.55})`;
         if (onPath) return "rgba(255, 255, 255, 0.9)";
         if (state.spatialLayout === "structure") return `rgba(255, 255, 255, ${visible ? 0.5 : 0})`;
-        // The whole web at .16 when nothing has the attention; the hovered file's wires at .5 and the retained set's at
-        // .3 when something has, so that the few wires a person is reading stand out from the web (2026-10-30). Every
-        // reference wire is white: the colour that ran along it from the file that uses to the file that offers
-        // (2026-10-30) was withdrawn on 2026-10-31 at the owner's eye, and the hover's words carry the direction.
-        return `rgba(255, 255, 255, ${!visible ? 0.025 : hovered ? 0.5 : attention ? 0.3 : 0.16})`;
+        // The wires among what is shown at .3, the hovered file's at .5, a wire to the frontier at .12, so that the few
+        // wires a person is reading stand out. Every reference wire is white: the colour that ran along it from the file
+        // that uses to the file that offers (2026-10-30) was withdrawn on 2026-10-31 at the owner's eye, and the hover's
+        // words carry the direction. Under the history's emphasis a wire the step added or changed glows with its files.
+        const alpha = !visible ? 0.025 : hovered ? 0.5 : dimmed ? 0.12 : 0.3;
+        return `rgba(255, 255, 255, ${emphasis === "none" ? alpha : emphasizedWireAlpha(alpha, changed, emphasis, strength()).toFixed(3)})`;
       });
       // A common scale for every wire; reference counts retain their relative weight while camera motion and spring
       // stretch change no base width, and a path's wires are twice as wide. Zoom resistance controls the projection.
@@ -1074,7 +1155,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (hoveredDirectory !== undefined) return within(a, hoveredDirectory) || within(b, hoveredDirectory);
         if (hovered) return a === hovered || b === hovered;
         if (path?.length) return pathPairs.has(JSON.stringify([a, b].sort()));
-        return !!attention && attention.has(a) && attention.has(b);
+        // Among the pinned files and their connections, and the subject; not among an open directory's files, which
+        // would draw the whole web over a directory opened whole (discovery, 2026-10-31).
+        return pinnedScope.has(a) && pinnedScope.has(b);
       });
     };
 
@@ -1353,6 +1436,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function setMoment(next: HistoryMoment | null, renames: Renames, energy?: number): void {
     moment = next;
+    momentArrivedAt = performance.now();
     pendingRenames = composedRenames(pendingRenames, renames);
     pendingEnergy = energy;
     if (active && forceGraphInstance) render();
@@ -1388,7 +1472,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   function grow(): void {
     const instance = forceGraphInstance;
     if (!instance || !motion || reveal.shown >= reveal.order.length || spheresOnScreen !== reveal.shown) return;
-    reveal.shown = nextRevealCount(reveal.shown, reveal.order.length, REVEAL.share, REVEAL.least);
+    reveal.shown = nextRevealCount(reveal.shown, reveal.order.length, state.tuning.forceGraph.revealFrames);
     const shown = shownData();
     setPiece(shown);
     // At zero energy nothing moves, while the pieces still enter, placed, one a frame.
@@ -1426,5 +1510,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.setAttribute("aria-busy", "true");
   }
 
-  return { render, setActive, focusNode, focusDirectory, fit, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  function setHistoryPlaying(playing: boolean): void {
+    if (historyPlaying === playing) return;
+    historyPlaying = playing;
+    // Paused, the emphasis holds whole again at once.
+    momentArrivedAt = performance.now();
+    forceGraphInstance?.invalidateAppearance();
+  }
+
+  return { render, setActive, focusNode, focusDirectory, fit, getSubjectAnchor, placeSubjectAnchor, captureScene, setMoment, settle, setHistoryPlaying, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

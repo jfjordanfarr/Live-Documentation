@@ -4,6 +4,12 @@ import { observeGraph, renderedNodes } from "./force-graph-observation";
 import { currentSnapshot } from "./search-bar";
 import { localRetainUrl } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
+import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
+import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
+import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
+import { spatialScope, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
+import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 
 const GRAPH = "packages/engine/src/live-docs/graph.ts";
 const DOCUMENT = "packages/engine/src/live-docs/document.ts";
@@ -208,8 +214,12 @@ test("mouse Unpin releases hover attention; real keyboard focus previews without
   const empty = await emptyPoint(page);
   await page.mouse.move(empty.x, empty.y);
   const leastOpacity = async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity));
-  await expect.poll(leastOpacity, { message: "moving away after mouse Unpin restores every sphere without a second click" }).toBeGreaterThan(.7);
-  expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(initialIds);
+  // No sphere is faded by the hover any more; the frontier's dimming (.3) is the picture's own (discovery, 2026-10-31).
+  await expect.poll(leastOpacity, { message: "moving away after mouse Unpin restores every sphere without a second click" }).toBeGreaterThan(.25);
+  // Unpinned, the file stays in the picture as the subject's neighbour, and what only its pin reached has left.
+  const afterIds = (await renderedNodes(page)).map(node => node.id).sort();
+  expect(afterIds).toContain(retained);
+  expect(afterIds.length).toBeLessThanOrEqual(initialIds.length);
   expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: subject, inspection: null, pinSet: { entries: [] } });
   await expect(primary).toBeVisible();
   await expect(primary).toBeFocused();
@@ -226,7 +236,7 @@ test("mouse Unpin releases hover attention; real keyboard focus previews without
   expect(await strip.evaluate(element => element.contains(document.activeElement))).toBe(false);
   // The new spatial names are also keyboard preview targets. Leave the map's names and controls deliberately.
   await page.getByRole("button", { name: "Fit current scope", exact: true }).focus();
-  await expect.poll(leastOpacity).toBeGreaterThan(.7);
+  await expect.poll(leastOpacity).toBeGreaterThan(.25);
   expect(currentSnapshot(page)).toEqual(afterUnpin);
 });
 
@@ -290,7 +300,7 @@ test.describe("touch pointer lifetime", () => {
     await input.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
     await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
     await expect(page.locator("#graph-svg")).toHaveAttribute("data-hovered-node", "false");
-    await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.7);
+    await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.25);
     expect(currentSnapshot(page).inspection).toEqual({ kind: "file", nodeId: id });
     expect(currentSnapshot(page).pinSet.entries).toEqual([]);
     await input.detach();
@@ -298,7 +308,8 @@ test.describe("touch pointer lifetime", () => {
 });
 
 test("hover peeks outside the retained scope, leaving restores it, and clearing pins releases dimming", async ({ page }) => {
-  test.setTimeout(90_000);
+  // Two settles of the software renderer, the start's some forty seconds (discovery, 2026-10-31), and the hover search between.
+  test.setTimeout(180_000);
   await page.setViewportSize({ width: 1600, height: 1000 });
   await observeGraph(page);
   const subject = "tests/integration/programs/typescript/rosetta/src/helpers.ts";
@@ -312,7 +323,8 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await page.mouse.move(30, 50);
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
   const initialNodes = await renderedNodes(page);
-  const candidates = initialNodes.filter(node => node.opacity < .3 && node.depth > -1 && node.depth < 1
+  // The frontier's spheres, dimmed to .3 (discovery, 2026-10-31): a hover brings one to full and leaving dims it again.
+  const candidates = initialNodes.filter(node => node.opacity < .35 && node.depth > -1 && node.depth < 1
     && node.x > frame.x + 50 && node.x < frame.x + frame.width - 70 && node.y > frame.y + 50 && node.y < frame.y + frame.height - 100)
     .sort((a, b) => a.distance - b.distance);
   expect(candidates.length).toBeGreaterThan(0);
@@ -326,14 +338,18 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   const opacity = async () => (await renderedNodes(page)).find(node => node.id === found!.id)!.opacity;
   await expect.poll(opacity).toBeGreaterThan(.7);
   await page.mouse.move(30, 50);
-  await expect.poll(opacity).toBeLessThan(.3);
-  // Re-enter the very same sphere: the library can retain its old hover
-  // cache across a viewport exit and emit no second onNodeHover callback.
-  await page.mouse.move(found!.x, found!.y);
+  await expect.poll(opacity).toBeLessThan(.35);
+  // Re-enter the very same sphere, at a point where it is hittable now (a nearer sphere can cover its centre in the
+  // smaller picture of 2026-10-31): the library can retain its old hover cache across a viewport exit and emit no
+  // second onNodeHover callback.
+  const again = await uncover(page, found!.id);
+  await page.mouse.move(again.x, again.y);
   await expect.poll(opacity).toBeGreaterThan(.7);
   // Keyboard focus holds the hover's attention while the pointer moves onto empty canvas. Leaving those controls
   // must release it even after the earlier hover-exit timer already returned because focus was still inside.
   const actions = page.locator(".force-graph-actions");
+  await expect(actions).toHaveAttribute("data-node-id", found!.id);
+  await expect(actions.getByRole("button", { name: `Pin ${found!.name}`, exact: true })).toBeVisible();
   await actions.getByRole("button", { name: `Pin ${found!.name}`, exact: true }).focus();
   await page.keyboard.press("Tab");
   const keyboardTarget = actions.getByRole("button", { name: `Centre on ${found!.name}`, exact: true });
@@ -345,7 +361,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await expect.poll(opacity).toBeGreaterThan(.7);
   // A pointer can temporarily peek elsewhere while the keyboard target stays in the strip. Leaving that sphere
   // must restore the actual keyboard target, not keep whichever sphere the pointer last happened to cross.
-  const otherCandidates = (await renderedNodes(page)).filter(node => node.opacity < .3 && node.depth > -1 && node.depth < 1
+  const otherCandidates = (await renderedNodes(page)).filter(node => node.opacity < .35 && node.depth > -1 && node.depth < 1
     && node.x > frame.x + 50 && node.x < frame.x + frame.width - 70 && node.y > frame.y + 50 && node.y < frame.y + frame.height - 100)
     .sort((a, b) => a.distance - b.distance);
   let peeked = false;
@@ -355,7 +371,7 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
     if ((await renderedNodes(page)).find(candidate => candidate.id === node.id)!.opacity > .7) { peeked = true; break; }
   }
   expect(peeked, "another unrelated sphere can be temporarily peeked").toBe(true);
-  await expect.poll(opacity).toBeLessThan(.3);
+  await expect.poll(opacity).toBeLessThan(.35);
   await keyboardTarget.hover();
   await expect.poll(opacity, { message: "returning over the named controls restores their own preview" }).toBeGreaterThan(.7);
   await page.mouse.move(empty.x, empty.y);
@@ -365,13 +381,21 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
   await page.getByRole("button", { name: "Fit current scope", exact: true }).focus();
-  await expect.poll(opacity).toBeLessThan(.3);
+  await expect.poll(opacity).toBeLessThan(.35);
   await page.mouse.move(30, 50);
-  await expect.poll(opacity).toBeLessThan(.3);
+  await expect.poll(opacity).toBeLessThan(.35);
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
   await page.getByRole("button", { name: "Clear exploration pins" }).click();
-  await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.7);
-  expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(initialNodes.map(node => node.id).sort());
+  // Clearing the pins releases the subject too, so nothing is asked about and the picture is the layout's start, with
+  // nothing faded by attention and the frontier's own dimming (discovery, 2026-10-31).
+  await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.25);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  expect(currentSnapshot(page)).toMatchObject({ pinSet: { entries: [] } });
+  const graph = explorerGraphOf((await (await page.request.get("/explorer-data.json")).json() as StaticExplorerData).graph);
+  const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "connections");
+  const pulls = (link: { kind?: string }): boolean => linkPulls(link, "connections");
+  const start = spatialScope(data.nodes, data.links, startOf(data.nodes, data.links, "connections", pulls), getDefaultTuning().forceGraph.hops, pulls);
+  expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual([...start.hops.keys()].sort());
 });
 
 /**

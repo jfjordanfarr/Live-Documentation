@@ -19,6 +19,8 @@ Since 2026-10-20 ([Turn 9](../../../../AI-Agent-Workspace/ChatHistory/2026/10/20
 
 The resize-only step also has a drawing assertion: the util file grows from two to three public symbols in the uploaded sphere geometry, while zero update energy preserves positions and the links retain their bindings. This caught a stale-size cache during [the direct-renderer work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-12); checking the history panel alone had not tested the picture.
 
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the entries ask four hops from the start, which shows the whole scripted sample with nothing pinned, and the collision sample's check opens the root, since the dead file is an island that nothing reaches.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

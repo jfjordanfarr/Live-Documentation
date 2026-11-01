@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-10-31T15:11:46.630Z
+- Generated At: 2026-10-31T20:07:00.560Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Created in the [October 23 identity/framing pass](../../../../../../../AI-Agent-
 
 Mutable layout positions are read once per draw into packed numeric arrays. Wires bind to numeric endpoint indices when membership changes; projection, cached appearance, bounds and depth sorting then use contiguous numeric inputs rather than repeated reads through graph objects. Projection is shared at node endpoints, including across every incident wire. Exact double-precision depth sorting starts from the preceding order, with creation order for ties; attributes are written directly into their new slots. Stable datum bindings still identify uploaded slots for picking. These reduce CPU preparation without changing the visible set or making subpixel elements unpickable.
 
-The scene holds one instanced mesh each for spheres, wires and arrows. A datum owns a stable binding to a slot, retained across changes when the view retains that datum; the slot may change when depth order changes. Buffers grow geometrically and release old GPU attributes before replacing them. Invisible and culled members stay addressable after the drawn prefix, preserving the distinction between graph membership and what the camera sees. Sphere tessellation remains twelve segments. Since 2026-10-30 the wires are drawn first and write depth, a faded wire none, so that a faded sphere in front lets a wire show through and a faded wire cuts no hole in a bright one behind it; before, the spheres were drawn first and every sphere, faded or not, cut the wires behind it. Colour and alpha are per instance, so attention fades unrelated facts without changing their identities. A wire's colour is one RGB for its whole length: the blue-to-green run by direction of 2026-10-30 was withdrawn on 2026-10-31 at the owner's eye ([Turn 1 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-1)), since in the whole web no wire's two ends could be told apart, and the hover's words carry the direction instead.
+The scene holds one instanced mesh each for spheres, wires and arrows. A datum owns a stable binding to a slot, retained across changes when the view retains that datum; the slot may change when depth order changes. Buffers grow geometrically and release old GPU attributes before replacing them; every batch has its instance attributes from creation, with room for one, since the renderer compiles a mesh's program on its first frame whatever its count and the wire shader reads the instance colour, which Three declares only for a mesh that has one: under discovery a first piece of one sphere has no wires, and the first frame failed to compile the wire program before this (found in the pictures of 2026-10-31). Invisible and culled members stay addressable after the drawn prefix, preserving the distinction between graph membership and what the camera sees. Sphere tessellation remains twelve segments. Since 2026-10-30 the wires are drawn first and write depth, a faded wire none, so that a faded sphere in front lets a wire show through and a faded wire cuts no hole in a bright one behind it; before, the spheres were drawn first and every sphere, faded or not, cut the wires behind it. Colour and alpha are per instance, so attention fades unrelated facts without changing their identities. A wire's colour is one RGB for its whole length: the blue-to-green run by direction of 2026-10-30 was withdrawn on 2026-10-31 at the owner's eye ([Turn 1 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-1)), since in the whole web no wire's two ends could be told apart, and the hover's words carry the direction instead.
 
 The owner's [October 24 resistance request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) supplies the projected round-capped wire shader. Each endpoint's depth controls its resistance-adjusted width; near/far clipping and end-on caps agree with [the sizing math](forceGraphSizing.ts.mdmd.md). Wire transforms store their actual endpoints directly, without cylinder rotation or per-wire geometry; since 2026-10-30 the endpoints are trimmed to the two spheres' drawn surfaces, so a wire neither pierces its own spheres nor is cut by them, and two spheres that touch have no wire drawn between them. Spheres receive the same display-radius compensation used by labels and picking; a citation arrow takes its target sphere's units under that compensation and stands at the drawn surface (2026-10-30; before, it kept its physical length and sank into a sphere drawn larger). Neither display resistance changes the force model's sizes.
 
@@ -65,7 +65,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L281)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L287)
 - Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -73,7 +73,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L311)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L317)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary

@@ -6,7 +6,7 @@
  */
 
 import { applyLayoutPreset, layoutPresetOf, layoutSettingsOf } from "../layout-presets";
-import type { ExplorerState } from "../types";
+import { CHANGE_EMPHASES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -42,7 +42,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       ["coupling", "coupling"], ["nodeSize", "node-size"], ["symbolScale", "symbol-scale"], ["linkWidth", "link-width"],
       ["nodeZoomResistance", "node-zoom-resistance"], ["wireZoomResistance", "wire-zoom-resistance"],
       ["gravity", "gravity"], ["chargeRange", "charge-range"], ["approximation", "approximation"], ["linkStrength", "link-strength"], ["updateEnergy", "update-energy"], ["tether", "tether"],
-      ["citedByPull", "cited-by-pull"] ] as const).map(([key, name]) => ({
+      ["citedByPull", "cited-by-pull"], ["hops", "hops"], ["revealFrames", "reveal-frames"] ] as const).map(([key, name]) => ({
       id: `tuning-force-${name}`, get: () => state.tuning.forceGraph[key], set: (value: number) => { state.tuning.forceGraph[key] = value; }
     }))
   ];
@@ -71,6 +71,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const historyAxisSelect = document.getElementById("tuning-history-axis") as HTMLSelectElement | null;
   const historyGranularitySelect = document.getElementById("tuning-history-granularity") as HTMLSelectElement | null;
   const historyPlayRateInput = document.getElementById("tuning-history-play-rate") as HTMLInputElement | null;
+  const historyChangeEmphasisSelect = document.getElementById("tuning-history-change-emphasis") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -168,6 +169,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (historyAxisSelect) historyAxisSelect.value = state.tuning.history.axis;
     if (historyGranularitySelect) historyGranularitySelect.value = state.tuning.history.granularity;
     state.tuning.history.playRate = setSlider(historyPlayRateInput, "tuning-history-play-rate-value", state.tuning.history.playRate, v => String(v));
+    if (historyChangeEmphasisSelect) historyChangeEmphasisSelect.value = state.tuning.history.changeEmphasis;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -261,6 +263,15 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       state.tuning.history.playRate = parseFloat(historyPlayRateInput.value);
       if (output) output.textContent = historyPlayRateInput.value;
       onTuningChange();
+    });
+  }
+  // How a step's changed files are told apart in the picture: the 3D view draws them again at once (2026-10-31).
+  if (historyChangeEmphasisSelect) {
+    historyChangeEmphasisSelect.addEventListener("change", () => {
+      const value = historyChangeEmphasisSelect.value;
+      state.tuning.history.changeEmphasis = CHANGE_EMPHASES.find(emphasis => emphasis === value) ?? "glow";
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "3d") onRender();
     });
   }
 

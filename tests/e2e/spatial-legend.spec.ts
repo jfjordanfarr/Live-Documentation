@@ -41,10 +41,11 @@ test("the spatial key follows rendered kinds, including a retained test hidden b
     filters: { showTests: true, showAssets: false, showRelatedDocs: false, showCitingDocs: false }
   })}`);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
-  // The subject is selected and a test pinned, so the rest of the picture is faded and the key says so (2026-10-30).
+  // The subject is selected and a test pinned: the picture is their hops, which here reach every connected file in one
+  // hop, so nothing is dimmed as a frontier and the key says nothing of it (discovery, 2026-10-31; until then pins faded
+  // the rest of the picture and the key carried a Faded row for it).
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "Test", "Size: public symbols", "Width: references",
-    "Faded: not pinned, on the path or hovered"
+    "Implementation", "Test", "Size: public symbols", "Width: references"
   ]);
   await expect(page.locator("#local-legend")).toBeHidden();
   await matchesNodeColour(page, "Implementation", subject);
@@ -78,8 +79,9 @@ test("the spatial key follows rendered kinds, including a retained test hidden b
 test("the Local Map shows the matching legend and lends neither key to another view", async ({ page }) => {
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
   await expect(page.locator("#spatial-legend")).toBeVisible();
+  // The subject's two hops end in a frontier, dimmed, and the key says so (discovery, 2026-10-31).
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "Size: public symbols", "Width: references"
+    "Implementation", "Size: public symbols", "Width: references", "Dimmed: a hop beyond; click to see more"
   ]);
   await expect(page.locator("#local-legend")).toBeHidden();
 

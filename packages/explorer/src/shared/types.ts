@@ -115,6 +115,12 @@ export interface ExplorerNodePayload {
      * Absent for today's files, whose `publicSymbols` are named.
      */
     symbolCount?: number;
+    /**
+     * The reasons the file's doc lists it as an entry (`declared`, `program`, `command`, `module`, `opening`,
+     * `tooling`), when it lists any; the 3D Local Map starts from the declared ones with nothing pinned (2026-10-31).
+     * Absent for a file at a step of the history, whose doc the bundle does not carry.
+     */
+    entryReasons?: string[];
 }
 
 /**

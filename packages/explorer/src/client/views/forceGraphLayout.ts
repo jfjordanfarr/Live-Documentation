@@ -2,7 +2,8 @@ import { forceSimulation, type Force, type SimulationNodeDatum } from "d3-force-
 
 import type { ForceGraphTuning, SpatialLayout } from "../types";
 import { diagonalOf, SpatialField, SpatialMotion, type MotionSettings, type MotionTick } from "./forceGraphPhysics";
-import { nextRevealCount, REVEAL, revealOrder, type RevealSettings } from "./forceGraphReveal";
+import { nextRevealCount, REVEAL, revealLayers, type RevealAttention, type RevealSettings } from "./forceGraphReveal";
+import { spatialScope, startOf, type StartableNode } from "./forceGraphScope";
 import { under } from "./localView/directory-state";
 
 /** The documented interface and mutable position of a file, or of a directory hub, in the spatial layout. */
@@ -366,20 +367,26 @@ export interface EaseOptions {
   strength?: number;
   start?: MotionStart;
   maxTicks?: number;
-  /** How the picture is revealed: the attention set enters first, and the constants default to `REVEAL`. */
-  reveal?: Partial<RevealSettings> & { attention?: ReadonlySet<string> };
+  /**
+   * How the picture is revealed: what was asked about enters first, directly or as an open directory's files, and the
+   * warm-up defaults to `REVEAL`; the frames the whole takes are the tuning's. Asked about something that is in the
+   * picture, the picture is scoped as the page scopes it, to the tuning's hops around it (2026-10-31); asked about
+   * nothing that is, every node given is eased, entering from where the page would start (`startOf`).
+   */
+  reveal?: Partial<RevealSettings> & Partial<RevealAttention>;
 }
 
 /**
  * Ease a picture headlessly as the page does: D3's simulation seats the spheres without a position, as the library does,
  * resolves the links and drives the ticks, and the motion force moves the spheres at the strength given until they are
- * still or `maxTicks` have passed. The picture enters in pieces as the page reveals it (2026-10-28): the first piece,
- * holding the attention set, in the order given, so that a picture no larger than it is eased exactly as before; after
- * the hidden ticks the page gives its first picture, a share more at every tick, each sphere placed beside what holds it
- * as it enters. A first picture unfolds (the default); a change carried from a still picture is held from where its
- * spheres stand. Inputs are not mutated; the result says whether the picture came to rest.
+ * still or `maxTicks` have passed. The picture is the page's (2026-10-31): what was asked about and the tuning's hops
+ * around it, the start where nothing was asked, and it enters in pieces as the page reveals it (2026-10-28): the first
+ * piece, the first layer of the order, warmed for the hidden ticks the page gives its first picture, then a share of the
+ * whole at every tick so that the whole is in within the tuning's frames, each sphere placed beside what holds it as it
+ * enters. A first picture unfolds (the default); a change carried from a still picture is held from where its spheres
+ * stand. Inputs are not mutated; the result says whether the picture came to rest, over the spheres shown.
  */
-export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly SpatialLink[], tuning: ForceGraphTuning, layout: SpatialLayout,
+export function easeSpatialLayout(nodes: readonly StartableNode[], links: readonly SpatialLink[], tuning: ForceGraphTuning, layout: SpatialLayout,
   { strength = 1, start = "unfold", maxTicks = 20_000, reveal = {} }: EaseOptions = {}): { nodes: SpatialNode[]; links: SpatialLink[]; ticks: number; still: boolean } {
   if (!Number.isInteger(maxTicks) || maxTicks < 0) throw new Error("Spatial easing's tick bound must be a nonnegative integer.");
   // D3 treats NaN positions/velocities as a request for its seed. Missing coordinates are a new sphere; corrupted
@@ -389,14 +396,29 @@ export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly
       throw new Error(`Spatial node ${JSON.stringify(node.id)} needs finite coordinates and velocities when provided.`);
     }
   }
-  const placed = nodes.map(node => ({ ...node }));
-  const edges: SpatialLink[] = links.map(link => ({ ...link, source: typeof link.source === "string" ? link.source : link.source.id,
-    target: typeof link.target === "string" ? link.target : link.target.id }));
-  const { attention = new Set<string>(), first = REVEAL.first, share = REVEAL.share, least = REVEAL.least, warmup = REVEAL.warmup } = reveal;
-  const byId = new Map(placed.map(node => [node.id, node]));
+  const { warmup = REVEAL.warmup } = reveal;
+  const pulls = (link: SpatialLink): boolean => linkPulls(link, layout, tuning);
   const idOf = (end: string | SpatialNode): string => typeof end === "string" ? end : end.id;
-  const order = revealOrder(placed, edges, attention, link => linkPulls(link, layout, tuning));
-  let shown = Math.min(order.length, Math.max(first, [...attention].filter(id => byId.has(id)).length));
+  const given: SpatialLink[] = links.map(link => ({ ...link, source: idOf(link.source), target: idOf(link.target) }));
+  const ids = new Set(nodes.map(node => node.id));
+  const present = (set?: ReadonlySet<string>): Set<string> => new Set([...(set ?? [])].filter(id => ids.has(id)));
+  const members = present(reveal.members);
+  const given_asked = present(reveal.asked);
+  const scoped = given_asked.size > 0 || members.size > 0;
+  const asked = scoped ? given_asked : startOf(nodes, given, layout, pulls);
+  const scope = scoped ? spatialScope(nodes, given, new Set([...asked, ...members]), tuning.hops, pulls) : null;
+  const placed: SpatialNode[] = nodes.filter(node => !scope || scope.hops.has(node.id)).map(node => ({ ...node }));
+  const byId = new Map(placed.map(node => [node.id, node]));
+  const edges = given.filter(link => byId.has(idOf(link.source)) && byId.has(idOf(link.target)));
+  // A sphere that already stands somewhere is kept, as the page keeps what is shown through a change, and enters first;
+  // the rest enter by the layers. The first piece: what is kept and what was asked about directly with its first hop,
+  // as on the page; an open directory's first layer alone when nothing was asked directly.
+  const kept = placed.filter(node => Number.isFinite(node.x) && Number.isFinite(node.y) && Number.isFinite(node.z)).map(node => node.id);
+  const keptIds = new Set(kept);
+  const layers = revealLayers(placed, edges, { asked, members }, pulls).map(layer => layer.filter(id => !keptIds.has(id))).filter(layer => layer.length);
+  const order = kept.concat(layers.flat());
+  const first = (layers[0]?.length ?? 0) + (asked.size ? layers[1]?.length ?? 0 : 0);
+  let shown = kept.length ? Math.max(kept.length, Math.min(order.length, kept.length + first)) : first;
   const simulation = forceSimulation<SpatialNode>([], 3).stop();
   const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => layout, links: () => edges, strength: () => strength });
   simulation.force("motion", motion);
@@ -415,10 +437,11 @@ export function easeSpatialLayout(nodes: readonly SpatialNode[], links: readonly
   feed();
   motion.wake(start);
   let ticks = 0;
-  if (strength > 0) while (!motion.still && ticks < maxTicks) {
+  // A picture still part way through its reveal is not still: the rest enters first, as on the page.
+  if (strength > 0) while ((!motion.still || shown < order.length) && ticks < maxTicks) {
     simulation.tick(); ticks++;
     // The page grows after each engine tick that follows the hidden warm-up; the piece applies before the next tick.
-    if (ticks > warmup && shown < order.length) { shown = nextRevealCount(shown, order.length, share, least); feed(); motion.stir(); }
+    if (ticks > warmup && shown < order.length) { shown = nextRevealCount(shown, order.length, tuning.revealFrames); feed(); motion.stir(); }
   }
   return { nodes: placed, links: edges, ticks, still: motion.still };
 }

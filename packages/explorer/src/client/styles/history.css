@@ -10,6 +10,9 @@
 .history-scrubber button:focus-visible { outline: 2px solid var(--accent); }
 .history-scrubber button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .history-scrubber button[hidden] { display: none; }
+/* The speed beside play (2026-10-31): a small select in the scrubber's own type. */
+.history-rate { padding: 4px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-deep); color: var(--text-primary); font: inherit; font-size: 12px; }
+.history-rate:focus-visible { outline: 2px solid var(--accent); }
 .history-slider { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .history-track { position: relative; height: 26px; margin-bottom: 3px; cursor: pointer; touch-action: none; }
 .history-track:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }

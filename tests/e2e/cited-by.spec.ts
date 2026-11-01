@@ -29,7 +29,8 @@ test("the 3D picture draws the citing documents by their own filter, from the do
   const citing = (bundle.relatedDocLinks ?? []).filter(link => link.direction === "cited-by" && bundle.graph.files[link.sourceId]?.archetype !== "asset");
   expect(citing.length, "this repository's files are cited by its design documents").toBeGreaterThan(0);
   await observeGraph(page);
-  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "3d", filters: { ...DEFAULT_SNAPSHOT.filters, showCitingDocs: true } })}`);
+  // The root opened: every file asked about, so every citing document is in the picture (discovery, 2026-10-31).
+  await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "3d", openDirectories: new Set([""]), filters: { ...DEFAULT_SNAPSHOT.filters, showCitingDocs: true } })}`);
   await page.locator("#view-graph.active canvas").waitFor();
   await expect(page.locator("#filter-toggle-citing-docs")).toBeChecked();
   await expect(page.locator("#filter-toggle-related-docs")).not.toBeChecked();

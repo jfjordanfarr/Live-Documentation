@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-focus.spec.ts
-- Generated At: 2026-10-22T16:47:58.192Z
+- Generated At: 2026-10-31T21:21:51.006Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,8 @@ Exercises file focus and independent inspection in the rendered Force Graph thro
 - Hit testing includes dim spheres, which remain interactive. Empty points are checked with projected screen radii, the actual DOM canvas, the application pointer target, so neither world-space measurements nor a covering control can masquerade as empty canvas.
 - Full-repository navigation waits for actual stillness with a one-minute allowance. The [October 24 measurements](../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/performance-findings.md) found 31–33 seconds at the selected sphere detail, and over 25 seconds even at the old detail. These are functional journeys, not performance benchmarks; their camera, picking and attention assertions remain independent of that setup allowance.
 
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the frontier's spheres stand at .3 of their alpha by the picture's own rule, so the checks tell that dimming from the hover's fade (.15): a sphere faded by the hover reads under .25, and the hoverable candidates are the frontier's. Clearing the pins releases the subject too, so the picture becomes the layout's start, which the last check computes with the shared scope. The hover check re-enters its sphere at a point where it is hittable, since in the smaller picture a nearer sphere can cover another's centre, and its budget is 180 seconds for the two settles it waits through.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -32,6 +34,13 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)
 - [`compressed-url-state.compressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-compresssnapshot)
+- [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
+- [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
+- [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
+- [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphScope.startOf`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-startof)
+- [`graph.explorerGraphOf`](../../packages/explorer/src/shared/graph.ts.mdmd.md#symbol-explorergraphof)
+- [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
 - [`force-graph-observation.renderedNodes`](./force-graph-observation.ts.mdmd.md#symbol-renderednodes)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)

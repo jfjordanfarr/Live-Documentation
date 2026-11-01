@@ -157,12 +157,24 @@ export const HISTORY_GRANULARITIES: readonly HistoryGranularity[] = ["auto", "st
 /** How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap (scenario 14). */
 export type HistoryAxis = "steps" | "time";
 
-/** The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18). */
+/**
+ * How the files a step of the history changed are told apart in the 3D picture while the history is shown (the owner's
+ * ask of 2026-10-31): the changed spheres glow, the unchanged ones dim, both, or neither. While the history plays, the
+ * emphasis fades over the step's time, so that it is gone as the next step's arrives; at rest it holds.
+ */
+export type ChangeEmphasis = "glow" | "dim" | "both" | "none";
+
+/** Every emphasis, in the order the control offers them. */
+export const CHANGE_EMPHASES: readonly ChangeEmphasis[] = ["glow", "dim", "both", "none"];
+
+/** The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18), and the picture's emphasis on a step's changes (2026-10-31). */
 export interface HistoryTuning {
   axis: HistoryAxis;
   granularity: HistoryGranularity;
   /** How many steps play passes in a second. */
   playRate: number;
+  /** How a step's changed files are told apart in the picture. */
+  changeEmphasis: ChangeEmphasis;
 }
 
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
@@ -234,6 +246,18 @@ export interface ForceGraphTuning {
    * to see such links pull before deciding whether they should (2026-10-22); a lever lets the eye compare.
    */
   citedByPull: number;
+  /**
+   * How many hops around what was asked about the picture shows, the last of them dimmed as the frontier: the pins, the
+   * subject, the inspected file, an open directory's files and a path, then their connections a hop at a time, and
+   * nothing beyond. Two shows a file's connections in full and their connections dimmed, the owner's design of
+   * 2026-10-31, "tunable by starting at 2"; one shows only the direct connections, as the frontier.
+   */
+  hops: number;
+  /**
+   * How many drawn frames the picture takes to enter, hop by hop, whatever its size, at least one sphere a frame: the
+   * pace of the reveal (2026-10-31), so that the structure unfurls before the eye rather than appearing whole.
+   */
+  revealFrames: number;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

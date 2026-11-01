@@ -24,7 +24,7 @@
 
 import { HISTORY_FORMAT, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
 import { stepsMatching } from "@live-documentation/engine/live-docs/history/queries";
-import { commitAt } from "@live-documentation/engine/live-docs/history/sequence";
+import { changeAt, commitAt } from "@live-documentation/engine/live-docs/history/sequence";
 import { followPath, followPins, ticksFor, type Pins, type Ticks } from "@live-documentation/engine/live-docs/history/ticks";
 
 import { HistoryCursor } from "./cursor";
@@ -38,6 +38,7 @@ import { tickModel } from "./tick-model";
 import type { BundledHistory } from "../../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../../shared/types";
 import type { HistoryTuning } from "../types";
+import { pairKey } from "../views/forceGraphEmphasis";
 import type { RetainedItem } from "../views/retained-state";
 
 /** What the control is made with. */
@@ -68,6 +69,10 @@ export interface HistoryControlOptions {
   onReadDocument(path: string): void;
   /** The control opened or closed. */
   onOpenChange(): void;
+  /** Play started or paused: the picture's emphasis on a step's changed files fades while it plays (2026-10-31). */
+  onPlaying(playing: boolean): void;
+  /** The scrubber's own speed control chose a rate, in steps a second (2026-10-31). */
+  onPlayRate(rate: number): void;
 }
 
 /** What the client tells the control at every change of state. */
@@ -130,13 +135,14 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
   let detailsShown = true;
   let ticksKey = "";
   let ticks: Ticks = { major: [], minor: [] };
-  let context: HistoryContext = { visible: false, pins: { files: [], directories: [] }, subject: null, showAuthors: false, tuning: { axis: "steps", granularity: "auto", playRate: 2 } };
+  let context: HistoryContext = { visible: false, pins: { files: [], directories: [] }, subject: null, showAuthors: false, tuning: { axis: "steps", granularity: "auto", playRate: 2, changeEmphasis: "glow" } };
 
   const scrubber = createScrubber({
     parent: options.parent,
     onScrub: step => { dragging = true; scrub(step); },
     onRest: step => { dragging = false; rest(step); },
     onPlay: wanted => { if (wanted) play(); else pause(); },
+    onRate: rate => options.onPlayRate(rate),
     onAuthors: shown => options.onAuthors(shown),
     onDetails: shown => { detailsShown = shown; refresh(); }
   });
@@ -184,11 +190,30 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     const directories = new Map<string, string>();
     const known = followPins(history, { files: [], directories: context.pins.directories }, last, step);
     context.pins.directories.forEach((directory, index) => directories.set(directory, known.directories[index]));
+    // What the step changed, for the picture's emphasis (2026-10-31): the files born, renamed, resized, re-kinded, their
+    // entry or content changed, and the files whose references came, went or changed, at both ends; and the pairs whose
+    // wire came or changed. The base changed nothing.
+    const change = changeAt(history, step);
+    const changed = new Set<string>();
+    const changedPairs = new Set<string>();
+    if (step > 0) {
+      for (const [path] of change.born) changed.add(path);
+      for (const [, to] of change.renamed) changed.add(to);
+      for (const [path] of change.resized) changed.add(path);
+      for (const [path] of change.rekinded) changed.add(path);
+      for (const [path] of change.entries) changed.add(path);
+      for (const path of change.touched) changed.add(path);
+      for (const [from, to] of [...change.edgesAdded, ...change.edgesChanged]) { changed.add(from); changed.add(to); changedPairs.add(pairKey(from, to)); }
+      for (const [from, to] of change.edgesRemoved) { changed.add(from); changed.add(to); }
+      for (const [from] of [...change.docLinksAdded, ...change.docLinksRemoved]) changed.add(from);
+    }
     return {
       step,
       commit: commitAt(history, step),
       graph: snapshotGraphOf(shape),
       relatedDocLinks: relatedDocLinksOf(shape),
+      changed,
+      changedPairs,
       fileAt(todayPath) {
         if (!files.has(todayPath)) {
           const followed = followPath(history, todayPath, last, step);
@@ -245,6 +270,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       if (cursor.step >= cursor.last) { pause(); return; }
       rest(cursor.step + 1);
     }, 1000 / playingRate);
+    options.onPlaying(true);
     refresh();
   }
 
@@ -252,6 +278,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     if (playing === null) return;
     window.clearInterval(playing);
     playing = null;
+    options.onPlaying(false);
     refresh();
   }
 
@@ -269,7 +296,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     if (!sequence || !cursor) {
       scrubber.sync({
         steps: 0, step: 0, model: { granularity: "step", positions: [], ticks: [], stops: [0], ruler: [] }, axis: context.tuning.axis, dates: [],
-        valueText: "", date: "", hash: "", truncated: null, playing: false, authors: { carried: false, shown: false }, details: detailsShown,
+        valueText: "", date: "", hash: "", truncated: null, playing: false, rate: context.tuning.playRate, authors: { carried: false, shown: false }, details: detailsShown,
         notice: notice ?? "Loading the history"
       });
       return;
@@ -296,6 +323,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       hash: commit.id.slice(0, 8),
       truncated: truncatedWords(history),
       playing: playing !== null,
+      rate: context.tuning.playRate,
       authors: { carried: history.source.authors, shown: context.showAuthors },
       details: detailsShown,
       notice

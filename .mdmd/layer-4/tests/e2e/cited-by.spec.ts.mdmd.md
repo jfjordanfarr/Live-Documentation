@@ -15,6 +15,8 @@ Holds the Explorer's two readings of a file's citing documents, the `Cited By` s
 - The 3D reading opens the page by a share link whose filters show the citing documents alone, reads the spheres and lines the renderer drew through `force-graph-observation.ts`, expects exactly the documents that cite a shown file (assets are hidden by default, so a document citing only an asset is not drawn), every `cited-by` line to start at a document and end at a file, no `related-doc` line, and the filter to ride the address and empty the picture when unchecked.
 - The reader reading finds, in the bundle, a file one of whose citing documents the bundle carries, opens its evidence by the address, and looks for the link inside the Cited By section itself, since the file's authored words may link to the same document; the click must open the document in the reader.
 
+Since 2026-10-31 the 3D check opens the root, so that every file is asked about and every citing document is in the picture: under discovery the picture holds only what was asked about and its hops ([Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

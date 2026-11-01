@@ -123,7 +123,8 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
             dependents: file.inbound,
             missingDependencies,
             publicSymbols: file.symbols.map(symbolName),
-            publicSymbolsExtended: publicSymbolsExtendedOf(file)
+            publicSymbolsExtended: publicSymbolsExtendedOf(file),
+            ...(file.entries.length ? { entryReasons: file.entries.map(entry => entry.reason) } : {})
         };
     });
 

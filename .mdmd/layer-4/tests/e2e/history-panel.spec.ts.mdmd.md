@@ -13,6 +13,8 @@ Holds the history's step panel over the scripted sample's bundle: the panel as t
 ### Notes
 - Written 2026-10-30 for the remediation item "History leaves the map intelligible" of [the Explorer's design](../../../layer-3/live-documentation-explorer.mdmd.md#remediation-work), planned in [Turn 2](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-2) of that day's record and accepted in [Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3). Before it the panel's style pinned both its top and its bottom, so a one-line step got a panel the height of the picture. The bundle is `samples/history/`, built by `npm run live-docs:visualize:history-sample`; the commits are read from its own history file. The scripted repository changes no wire between two files that stand both today and at an earlier commit, so the moment's wires are told from today's by the names the path takes there (the core before it became the engine, the view before it became the screen), by the report's commit and by what the destination offers; the 3D view's drawing of the path at a moment is checked, though in this sample it would look the same had the view still followed the path's names to the moment itself.
 
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the entries ask four hops from the start, which shows the whole scripted sample with nothing pinned, and the path check's file off the path is util.ts, in the model's folder, since the legacy helper stands four containment hops away in Structure and is not in the path's picture.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

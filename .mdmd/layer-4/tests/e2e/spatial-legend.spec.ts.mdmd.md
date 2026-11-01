@@ -15,6 +15,8 @@ Written after the root's visual acceptance of the compact key during the [Octobe
 
 The colour comparison reads CSS pseudo-element paint and Three's native node material independently, rather than asserting against the same shared palette that produces both. The scene observer supplies evidence that the retained test and citation wires actually exist or leave; checking labels alone could accept a legend that described an undrawn graph.
 
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) pins fade nothing, since the picture holds only what they reach, so the history sample's rows carry no Faded row; the estate's subject ends in a frontier, so its rows carry the Dimmed row.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

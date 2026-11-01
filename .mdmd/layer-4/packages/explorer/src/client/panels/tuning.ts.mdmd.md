@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-10-30T16:33:48.060Z
+- Generated At: 2026-10-31T20:06:59.543Z
 
 ## Authored
 ### Purpose
@@ -76,11 +76,13 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`tuning-levers.TUNING_HELP`](./tuning-levers.ts.mdmd.md#symbol-tuning_help)
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
-- [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
+- [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)
+- [`template.tuning-history-change-emphasis`](../../shared/template.html.mdmd.md#symbol-tuning-history-change-emphasis)
 - [`template.tuning-history-granularity`](../../shared/template.html.mdmd.md#symbol-tuning-history-granularity)
 - [`template.tuning-history-play-rate`](../../shared/template.html.mdmd.md#symbol-tuning-history-play-rate)
 - [`template.tuning-history-play-rate-value`](../../shared/template.html.mdmd.md#symbol-tuning-history-play-rate-value)

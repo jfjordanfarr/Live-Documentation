@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphReveal.test.ts
-- Generated At: 2026-10-28T18:59:46.844Z
+- Generated At: 2026-10-31T20:07:00.987Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,7 @@ _No public symbols detected_
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
 - [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphReveal.nextRevealCount`](./forceGraphReveal.ts.mdmd.md#symbol-nextrevealcount)
+- [`forceGraphReveal.revealLayers`](./forceGraphReveal.ts.mdmd.md#symbol-reveallayers)
 - [`forceGraphReveal.revealOrder`](./forceGraphReveal.ts.mdmd.md#symbol-revealorder)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

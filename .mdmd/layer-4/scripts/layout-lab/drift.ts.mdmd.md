@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/drift.ts
-- Generated At: 2026-10-22T16:47:57.155Z
+- Generated At: 2026-10-31T20:07:04.423Z
 
 ## Authored
 ### Purpose
@@ -90,14 +90,14 @@ easing stops when still or at the given bound of ticks.
 
 #### `rangeOf` {#symbol-rangeof}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/drift.ts#L142)
+- Source: [source](../../../../scripts/layout-lab/drift.ts#L144)
 
 ##### `rangeOf` — Summary
 The least and the greatest of some counts, as "a to b", or the one count they all are.
 
 #### `renderDriftReports` {#symbol-renderdriftreports}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/drift.ts#L148)
+- Source: [source](../../../../scripts/layout-lab/drift.ts#L150)
 
 ##### `renderDriftReports` — Summary
 A table a person reads: one row per setting, the extent's growth across the cycles, the unchanged spheres' moves and the ticks each change took to be still.

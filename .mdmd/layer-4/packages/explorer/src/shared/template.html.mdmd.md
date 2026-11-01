@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-30T15:33:59.907Z
+- Generated At: 2026-10-31T20:07:03.596Z
 
 ## Authored
 ### Purpose
@@ -230,6 +230,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 #### `tuning-force-gravity-value` {#symbol-tuning-force-gravity-value}
 - Type: variable
 
+#### `tuning-force-hops` {#symbol-tuning-force-hops}
+- Type: variable
+
+#### `tuning-force-hops-value` {#symbol-tuning-force-hops-value}
+- Type: variable
+
 #### `tuning-force-link-gap` {#symbol-tuning-force-link-gap}
 - Type: variable
 
@@ -258,6 +264,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-force-node-zoom-resistance-value` {#symbol-tuning-force-node-zoom-resistance-value}
+- Type: variable
+
+#### `tuning-force-reveal-frames` {#symbol-tuning-force-reveal-frames}
+- Type: variable
+
+#### `tuning-force-reveal-frames-value` {#symbol-tuning-force-reveal-frames-value}
 - Type: variable
 
 #### `tuning-force-symbol-scale` {#symbol-tuning-force-symbol-scale}
@@ -291,6 +303,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-history-axis` {#symbol-tuning-history-axis}
+- Type: variable
+
+#### `tuning-history-change-emphasis` {#symbol-tuning-history-change-emphasis}
 - Type: variable
 
 #### `tuning-history-granularity` {#symbol-tuning-history-granularity}

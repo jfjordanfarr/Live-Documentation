@@ -1,7 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 import { currentSnapshot, newestKey, pathAddress } from "./search-bar";
-import { localMapSettled } from "./still-picture";
+import { loadGraph, localMapSettled } from "./still-picture";
+import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
+import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
+import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
+import { spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
@@ -98,7 +102,17 @@ test("scroll zooms within each perspective; only the 2D and 3D buttons change it
   await page.getByRole("button", { name: "3D", exact: true }).click();
   const bridge = page.locator(".perspective-transition[data-graph-files]");
   await expect(bridge).toBeVisible();
-  expect(Number(await bridge.getAttribute("data-graph-files"))).toBeGreaterThan(10);
+  // The bridge carries the 3D picture as it stands when the transition reads it: at least its first piece, the subject
+  // with its first hop, the neighbourhood the 2D picture showed, and at most the subject's whole picture, since the rest
+  // enters a share a frame (discovery, 2026-10-31; before, the whole picture's first three hundred spheres).
+  const graph = await loadGraph(page, "/");
+  const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "connections");
+  const scope = spatialScope(data.nodes, data.links, new Set([`${ROOT}helpers.ts`]), getDefaultTuning().forceGraph.hops, link => linkPulls(link, "connections"));
+  const neighbourhood = [...scope.hops.values()].filter(hop => hop <= 1).length;
+  expect(neighbourhood).toBeGreaterThan(1);
+  const carried = Number(await bridge.getAttribute("data-graph-files"));
+  expect(carried).toBeGreaterThanOrEqual(neighbourhood);
+  expect(carried).toBeLessThanOrEqual(scope.hops.size);
   await expect(bridge.locator(`[data-node-id="${ROOT}helpers.ts"]`)).toBeAttached();
   await expect(bridge).toHaveCount(0);
   await page.mouse.move(950, 500);

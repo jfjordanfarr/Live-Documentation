@@ -30,4 +30,11 @@ export interface HistoryMoment {
   fileToday(path: string): string | null;
   /** A directory of the step, by its path there, as it stands today. */
   directoryToday(directory: string): string;
+  /**
+   * The files the step changed, by their paths at the step (2026-10-31): born, renamed, resized, re-kinded, their entry
+   * changed, their content changed, and those whose references came, went or changed in count. Empty at the base.
+   */
+  changed: ReadonlySet<string>;
+  /** The pairs of files whose wire the step added or changed in count, by `pairKey`, so that the wire can glow with the files. */
+  changedPairs: ReadonlySet<string>;
 }

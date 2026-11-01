@@ -31,7 +31,8 @@ const entry = (extra: Partial<typeof DEFAULT_SNAPSHOT> = {}): string => `${BASE}
   perspective: "3d",
   spatialLayout: "structure",
   filters: { showTests: true, showAssets: false },
-  layout: { forceGraph: { updateEnergy: 0 } },
+  // Four hops show the whole scripted sample from its start with nothing pinned (discovery, 2026-10-31).
+  layout: { forceGraph: { updateEnergy: 0, hops: 4 } },
   ...extra
 })}`;
 
@@ -156,7 +157,7 @@ const pathEntry = (origin: string, destination: string, commit: string | null = 
   perspective: "3d",
   spatialLayout: "structure",
   filters: { showTests: true, showAssets: false },
-  layout: { forceGraph: { updateEnergy: 0 } },
+  layout: { forceGraph: { updateEnergy: 0, hops: 4 } },
   commit
 });
 
@@ -224,10 +225,11 @@ test("a path asked at a moment runs over that moment's wires and names its files
   await expect(hops(page).first()).toHaveAttribute("title", "src/core/model.ts");
   await expect(hops(page).last()).toHaveAttribute("title", "src/app/view.ts");
   // The picture draws the path as the moment names it: the view, an end that is not pinned, at the pinned model's
-  // strength, and a file off the path fainter.
+  // strength, and a file off the path fainter; util.ts, in the model's folder, is in the path's picture (discovery,
+  // 2026-10-31), where the legacy helper, four containment hops away, is not.
   const opacity = async (id: string): Promise<number> => (await renderedNodes(page)).find(node => node.id === id)!.opacity;
   await expect.poll(() => opacity("src/app/view.ts")).toBe(await opacity("src/core/model.ts"));
-  expect(await opacity("src/app/view.ts")).toBeGreaterThan(await opacity("lib/legacy.ts"));
+  expect(await opacity("src/app/view.ts")).toBeGreaterThan(await opacity("src/core/util.ts"));
 
   // Today the same question runs over today's wires and names today's files.
   await track(page).focus();

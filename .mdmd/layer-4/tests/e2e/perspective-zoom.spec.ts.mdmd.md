@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/perspective-zoom.spec.ts
-- Generated At: 2026-10-22T16:47:58.757Z
+- Generated At: 2026-10-31T22:13:32.928Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Browser journeys verify transient hover under whole-file pins, narrowing to one 
 - Waits for the picture to rest (`localMapSettled`) after the clicks it measures after, since a change of pins moves the branch picture from one arrangement to the next (2026-10-07).
 - A transition copy must retain every computed SVG declaration while removing live identifiers and inline hooks. The check includes a custom property containing quoted punctuation and uses the browser's original per-property CSSOM normalization as its reference, so aliases that change spelling when assigned do not require exclusions. The copied layer remains inert and hidden from the accessibility tree.
 
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the bridge into 3D carries the picture's first piece, the subject with its first hop, which the check computes with the shared scope; before, the whole picture's first three hundred spheres.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -27,10 +29,15 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@playwright/test` - `expect`, `test`
+- [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
+- [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
+- [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
+- [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`retained-state.retainedKey`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retainedkey)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`search-bar.newestKey`](./search-bar.ts.mdmd.md#symbol-newestkey)
 - [`search-bar.pathAddress`](./search-bar.ts.mdmd.md#symbol-pathaddress)
+- [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->
 

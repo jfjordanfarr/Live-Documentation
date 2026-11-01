@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/approximation.ts
-- Generated At: 2026-10-28T22:04:59.546Z
+- Generated At: 2026-10-31T20:07:04.170Z
 
 ## Authored
 ### Purpose
@@ -81,14 +81,14 @@ counted by wrapping the field's one entry for the length of the tick, and the wr
 
 #### `ForceError` {#symbol-forceerror}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L134)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L135)
 
 ##### `ForceError` — Summary
 How far a setting's forces stand from the exact ones at some positions, measured against the exact repulsion's own.
 
 #### `forceErrors` {#symbol-forceerrors}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L151)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L152)
 - Returns: [`ForceError`](#symbol-forceerror)[]
 - Parameters: `tuning`: [`ForceGraphTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-spatiallayout)
 
@@ -99,14 +99,14 @@ same field without charge: at a picture at rest the whole field's forces nearly 
 
 #### `RestPicture` {#symbol-restpicture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L176)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L177)
 
 ##### `RestPicture` — Summary
 A picture eased to rest from D3's seed at one setting, beside the exact field's rest from the same seed.
 
 #### `RestResolution` {#symbol-restresolution}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L200)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L201)
 
 ##### `RestResolution` — Summary
 How exactly the motion settles the exact field's picture: the exact rest eased again, held where it stopped as the page
@@ -116,7 +116,7 @@ them within the motion's own resolution.
 
 #### `restPictures` {#symbol-restpictures}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L214)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L215)
 - Parameters: `graph`: [`ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload); `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `tuning`: [`ForceGraphTuning`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `restPictures` — Summary
@@ -126,14 +126,14 @@ the motion places a sphere. The exact rest's positions are returned too, for the
 
 #### `ApproximationReport` {#symbol-approximationreport}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L247)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L252)
 
 ##### `ApproximationReport` — Summary
 Everything one run measured, for the report and its JSON companion.
 
 #### `renderApproximationReport` {#symbol-renderapproximationreport}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L263)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L268)
 - Parameters: `report`: [`ApproximationReport`](#symbol-approximationreport)
 
 ##### `renderApproximationReport` — Summary
@@ -141,7 +141,7 @@ The tables a person reads, with the run's settings beside them.
 
 #### `restSubject` {#symbol-restsubject}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/approximation.ts#L287)
+- Source: [source](../../../../scripts/layout-lab/approximation.ts#L292)
 
 ##### `restSubject` — Summary
 The subject a scope's rows of error are reported under: its bundle's picture in a layout, at the exact field's rest.

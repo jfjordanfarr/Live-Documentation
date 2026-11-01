@@ -123,7 +123,8 @@ export function firstTick(picture: SavedPicture, approximation: number): FirstTi
   SpatialField.prototype.begin = function (this: SpatialField, ...args: Parameters<typeof original>) { evaluations++; return original.apply(this, args); };
   try {
     const started = performance.now();
-    easeSpatialLayout(picture.nodes, picture.links, { ...picture.tuning, approximation }, picture.layout, { maxTicks: 1 });
+    // The whole picture as one piece: the cost measured is one tick over every sphere, not the reveal's first layer (2026-10-31).
+    easeSpatialLayout(picture.nodes, picture.links, { ...picture.tuning, approximation }, picture.layout, { maxTicks: 1, reveal: { asked: new Set(picture.nodes.map(node => node.id)) } });
     return { spheres: picture.nodes.length, approximation, evaluations, ms: performance.now() - started };
   } finally {
     SpatialField.prototype.begin = original;
@@ -216,7 +217,8 @@ export function restPictures(graph: ExplorerGraphPayload, run: ScopeRun, tuning:
   const filters = getDefaultFilters();
   const ease = (approximation: number) => {
     const started = performance.now();
-    const report = spatialReport(graph, run, { ...tuning, approximation }, maxTicks, filters, [], layout);
+    // The whole filtered picture: the approximation's error is measured over many spheres, not the few a question shows.
+    const report = spatialReport(graph, run, { ...tuning, approximation }, maxTicks, filters, [], layout, true);
     return { report, ms: performance.now() - started };
   };
   const exact = ease(0);
@@ -233,11 +235,14 @@ export function restPictures(graph: ExplorerGraphPayload, run: ScopeRun, tuning:
       meanShift: shifts.reduce((sum, shift) => sum + shift, 0) / shifts.length, maxShift: Math.max(...shifts)
     };
   });
-  // The forces at rest are read, and the rest eased again, over the very spheres and links the report simulated, in its order.
-  const data = spatialGraphOf(graph, includeNode(scopePins(run), retainedSubject(run), filters), [], layout);
+  // The forces at rest are read, and the rest eased again, over the very spheres and links the report simulated, in its
+  // order: the report's picture is the page's, the retained files with the tuning's hops around them (2026-10-31).
+  const filtered = spatialGraphOf(graph, includeNode(scopePins(run), retainedSubject(run), filters), [], layout);
+  const shownIds = new Set(exact.report.nodes.map(node => node.id));
+  const data = { nodes: filtered.nodes.filter(node => shownIds.has(node.id)), links: filtered.links.filter(link => shownIds.has(link.source) && shownIds.has(link.target)) };
   if (data.nodes.length !== exact.report.nodes.length || data.nodes.some((node, i) => node.id !== exact.report.nodes[i].id)) throw new Error("The picture at rest is not the one the report eased.");
   const placed = data.nodes.map((node, i) => ({ ...node, x: exactPlaces[3 * i], y: exactPlaces[3 * i + 1], z: exactPlaces[3 * i + 2] }));
-  const again = easeSpatialLayout(placed, data.links, { ...tuning, approximation: 0 }, layout, { start: "hold", maxTicks });
+  const again = easeSpatialLayout(placed, data.links, { ...tuning, approximation: 0 }, layout, { start: "hold", maxTicks, reveal: { asked: shownIds } });
   const againShifts = shiftsFrom(Float64Array.from(again.nodes.flatMap(node => [node.x!, node.y!, node.z!])));
   const resolution = { bundle: run.bundle, layout, ticks: again.ticks, still: again.still, meanShift: againShifts.reduce((sum, shift) => sum + shift, 0) / againShifts.length, maxShift: Math.max(...againShifts) };
   return { rows, resolution, rest: { nodes: data.nodes, links: data.links, positions: exactPlaces } };

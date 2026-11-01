@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-10-30T16:56:08.719Z
+- Generated At: 2026-10-31T20:07:01.222Z
 
 ## Authored
 ### Purpose
@@ -21,13 +21,13 @@ Renders the force-directed 3D Local Map in either of its layouts, the analyzed c
 - More, a stationary primary hold, right-click release, or Context Menu/Shift+F10 on the focus label or controls opens the shared commands. A hold consumes the later inspection click. Node drag, camera movement, additional pointers, wheel input, cancellation, lost pointer capture, Escape, window blur and view deactivation cancel a pending hold. Right-click waits for release so right-drag remains available to the native camera controls. Centre/Open are the visible navigation actions; no double-click shortcut is required.
 - The application owns one pointer target, picked from the rendered spheres in its existing animation loop. Pointer changes, actual position changes, camera/projection changes, canvas movement, resizing and rendering request a new pick; a physics slice that has not moved a sphere does not. An unchanged picture needs none. Picking stops while hidden, dragging or without a pointer. The direct renderer supplies wire hover and node dragging. The application owns sphere attention; this ownership originally avoided the retired library’s inconsistent hover-cache re-entry.
 - When the pointer leaves a sphere or the viewport, attention returns to the explicit menu target or the deliberate keyboard target identified by `:focus-visible`, otherwise to the retained scope. Keyboard focus establishes its target's preview; focus left behind by a mouse click only keeps the controls reachable. This distinction lets moving away after the last Unpin restore the full graph without a second click, and lets a temporary pointer peek return to the actual keyboard target. Touch release and cancellation clear pointer ownership rather than inventing hover after a finger lifts. Leaving keyboard focus schedules release as well.
-- Shared pins, opened directories and paths fade unrelated nodes and connections. Hover temporarily reveals the inspected file's incident connections, including outside the retained scope; leaving the viewport restores current retained attention. Perspective changes keep the subject’s screen anchor while preserving the current viewing direction.
+- Discovery (2026-10-31, the owner's direction in [Turn 4 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)): the picture holds what was asked about, directly (the pins, the subject, the inspected file or, in Structure, the inspected directory's hub, a path's files) or as a set (an open directory's files), and the tuning's hops of connections around it by `forceGraphScope.ts`, applied after the spatial graph is built and before the physics, so that the simulation holds only what is shown; the last hop is the frontier, its spheres at .4 of their alpha and the wires to them at .12, and a frontier sphere's name says how many of its connections are not shown. With nothing asked about the layout's start is asked about in its place. The inspected file is asked about, so a click, which opens evidence and changes no pin (the October 19 rule), grows the picture from it until the reader closes or another file is inspected; `index.ts` draws the view again on every inspection for this. Pins no longer fade the rest of the picture, since the picture holds only what they reach; the hover's fade and the path's stand. The view tells `index.ts` how many files it shows of those the filters allow, for the sidebar's line. Hover temporarily reveals the hovered file's connections among what is shown; leaving the viewport restores the picture. Perspective changes keep the subject’s screen anchor while preserving the current viewing direction.
 - Projected names stay at reading size. The subject, retained files and path endpoints take priority, followed by directory landmarks and neighbours; more contextual names appear when space permits. Repeated filenames gain enough directory suffix to distinguish them. Placement avoids other names, panels and viewport clipping while preferring a previously usable side. Names inspect and offer the same keyboard/context actions as spheres; the old node tooltip is disabled to avoid a second name covering the first. This implements the owner's [October 23 label choice](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-23.1.record.md#turn-5).
 - Uses [the direct renderer](forceGraphRenderer.ts.mdmd.md) and a stopped D3 simulation that this view ticks explicitly; the former `3d-force-graph` integration was replaced in [October 29, Turn 10](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-10).
 
 The separation of inspection from direct Pin controls follows the owner's [October 19 choice](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24), resumed [October 20](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2): following connections should stay quick while preserving the place under the person's eye, and held gestures must yield to dragging.
 
-In the structure layout (2026-10-14) the amber directory hubs and their containment links are the picture: only the links of the chosen layout make springs, so a reference pulls nothing there, and a hub new to the picture starts at the centroid of its members that already have positions while the files keep theirs, so the motion folds the network into the tree from where the eye left it, without repeating the first picture's hidden warmup. Containment is always drawn; a reference is drawn on demand, for the hovered file, within and out of the hovered hub's subtree, among the retained files and along a path. A hub’s persistent name identifies the directory and its tooltip counts visible files; its explicit Open action retains the directory through the application and frames its actual members about their own center, and the pin tray can release that retention in either representation. Directory camera anchoring belongs to this renderer so a preset change cannot accidentally substitute the last selected file for the focused directory. The hubs were first built inside the connectivity layout for [the October 14 request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs); the owner moved them to a layout of their own [the same day](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-4).
+In the structure layout (2026-10-14) the amber directory hubs and their containment links are the picture: only the links of the chosen layout make springs, so a reference pulls nothing there, and a hub new to the picture starts at the centroid of its members that already have positions while the files keep theirs, so the motion folds the network into the tree from where the eye left it, without repeating the first picture's hidden warmup. Containment is always drawn; a reference is drawn on demand, for the hovered file, within and out of the hovered hub's subtree, among the pinned files and their connections (not among an open directory's files since 2026-10-31, when discovery made a directory opened whole a picture of its own) and along a path. A hub’s persistent name identifies the directory and its tooltip counts visible files; its explicit Open action retains the directory through the application and frames its actual members about their own center, and the pin tray can release that retention in either representation. Directory camera anchoring belongs to this renderer so a preset change cannot accidentally substitute the last selected file for the focused directory. The hubs were first built inside the connectivity layout for [the October 14 request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs); the owner moved them to a layout of their own [the same day](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-4).
 
 Appearance accessors are refreshed only when effective attention, the path, the layout or size settings change. Force-only tuning builds the field again and unfolds the picture at full strength without rebuilding unchanged appearance. Framing is cached by picture and uploaded camera state, so partial physics slices do not repeatedly frame the same graph.
 
@@ -39,6 +39,8 @@ A moment of the history in place of today (2026-10-18, ticket C4 of [the change-
 
 A kept link's ends are set to the live node objects for its ids on every render (2026-10-18), since D3 keeps an end once resolved to an object and a rename or a death can leave that object behind in the cache: the lines to such objects led nowhere after a play through this repository's history ([Turn 8](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-8)); and a past moment's `symbolCount` is cleared from a node when today's payload names its symbols instead. Held, with the re-keying's rule, by the scrubber spec's walk over a rename onto a dead file's path.
 - The citing documents (2026-10-22, [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) are shown by a filter of their own, Show Citing Docs, as the cited documents are by Show Related Docs, each kind of link passed to the data by its direction; a `cited-by` line is drawn in a lighter violet than a `related-doc` line, both thin, and both carry an arrow at the cited end, four units long, so that the direction of a citation is read off the line.
+
+While a moment of the history is shown, the files the step changed stand out by Tuning's Changed Files (2026-10-31, [Turn 8](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8)): the moment carries what the step changed and the pairs whose wire it added or changed, the sphere and wire colours go through `forceGraphEmphasis.ts`, and while the history plays (`setHistoryPlaying`) the appearance is invalidated every frame until the strength has faded to nothing at the next step's time, held at full strength when the play pauses or the thumb rests. The strength is quantized to fiftieths so that the colours the batches cache stay few.
 
 A symbol-count change belongs to the field input even when every file and wire retains its identity. Data renders invalidate cached appearance, so history steps that only resize a file or change its archetype reach the displayed buffers. The resize-only history regression reads the uploaded sphere radius and checks that positions and wire identities remain intact at zero update energy.
 
@@ -59,14 +61,14 @@ After the first picture, each physics call targets ten milliseconds through the 
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L61)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L72)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L72)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L83)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -74,28 +76,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L81)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L92)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L92)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L103)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L117)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L130)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L140)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L155)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -128,11 +130,16 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphCamera.frameCameraSpheres`](./forceGraphCamera.ts.mdmd.md#symbol-framecameraspheres)
 - [`forceGraphCamera.screenAnchorTranslation`](./forceGraphCamera.ts.mdmd.md#symbol-screenanchortranslation)
 - [`forceGraphCamera.wheelZoomCamera`](./forceGraphCamera.ts.mdmd.md#symbol-wheelzoomcamera)
+- [`forceGraphData.SpatialGraphData`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphdata)
 - [`forceGraphData.SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 - [`forceGraphData.SpatialLinkKind`](./forceGraphData.ts.mdmd.md#symbol-spatiallinkkind)
 - [`forceGraphData.directoryNodeId`](./forceGraphData.ts.mdmd.md#symbol-directorynodeid)
 - [`forceGraphData.labelNamesOf`](./forceGraphData.ts.mdmd.md#symbol-labelnamesof)
 - [`forceGraphData.spatialGraphOf`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
+- [`forceGraphEmphasis.emphasisStrength`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasisstrength)
+- [`forceGraphEmphasis.emphasizedSphere`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedsphere)
+- [`forceGraphEmphasis.emphasizedWireAlpha`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedwirealpha)
+- [`forceGraphEmphasis.pairKey`](./forceGraphEmphasis.ts.mdmd.md#symbol-pairkey)
 - [`forceGraphLabels.LabelBox`](./forceGraphLabels.ts.mdmd.md#symbol-labelbox)
 - [`forceGraphLabels.SpatialLabel`](./forceGraphLabels.ts.mdmd.md#symbol-spatiallabel)
 - [`forceGraphLabels.placeSpatialLabels`](./forceGraphLabels.ts.mdmd.md#symbol-placespatiallabels)
@@ -146,7 +153,9 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphRenderer.SpatialRenderer`](./forceGraphRenderer.ts.mdmd.md#symbol-spatialrenderer)
 - [`forceGraphReveal.REVEAL`](./forceGraphReveal.ts.mdmd.md#symbol-reveal)
 - [`forceGraphReveal.nextRevealCount`](./forceGraphReveal.ts.mdmd.md#symbol-nextrevealcount)
-- [`forceGraphReveal.revealOrder`](./forceGraphReveal.ts.mdmd.md#symbol-revealorder)
+- [`forceGraphReveal.revealLayers`](./forceGraphReveal.ts.mdmd.md#symbol-reveallayers)
+- [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 - [`perspectiveTransition.ForceScene`](./perspectiveTransition.ts.mdmd.md#symbol-forcescene) (type-only)

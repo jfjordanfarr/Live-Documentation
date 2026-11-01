@@ -42,6 +42,10 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-search-patience":           "How many tries in a row may fail to improve the picture before the search rests.",
   "tuning-churn-cost":                "How much better a found picture must be before the cards on screen move to it; zero moves to any better one.",
 
+  // 3D discovery: what the picture shows around what was asked about, and how it enters (forceGraphScope.ts, forceGraphReveal.ts).
+  "tuning-force-hops":                "How many hops of connections show around what you asked about; the last hop is dimmed and a click on it shows more.",
+  "tuning-force-reveal-frames":       "How many frames the picture takes to enter, hop by hop; fewer is quicker.",
+
   // 3D forces: the field and its motion (forceGraphPhysics.ts, forceGraphLayout.ts).
   "tuning-force-charge":              "How strongly spheres push one another apart.",
   "tuning-force-link-strength":       "How strongly connected spheres pull toward their preferred gap; zero turns the pull off.",
@@ -67,7 +71,8 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   // History: the scrubber (history/tick-model.ts, history/history-control.ts).
   "tuning-history-axis":              "Lays the scrubber's steps out by date, where a quiet stretch shows as a gap, or evenly by step.",
   "tuning-history-granularity":       "Which ticks the scrubber draws and the step key moves between; automatic chooses by the number of steps.",
-  "tuning-history-play-rate":         "How many steps play passes in a second."
+  "tuning-history-play-rate":         "How many steps play passes in a second.",
+  "tuning-history-change-emphasis":   "How a step's changed files stand out while the history is shown: glowing, the rest dimmed, both, or neither."
 };
 
 /** The id of the visually hidden element that carries a control's sentence. */

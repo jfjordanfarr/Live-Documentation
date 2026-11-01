@@ -15,6 +15,8 @@ Created after the October 23 root playtest. Main-repository and estate arrivals 
 
 The full repository gets one minute to reach stillness before identity and frame checks. [Measured software-rendered settling](../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/performance-findings.md) exceeded the original 25-second setup allowance on October 24, including at the old sphere detail. The small estate retains its existing allowance; visibility, geometry and idle checks are unchanged.
 
+Since 2026-10-31 an unselected arrival is the start's picture, the estate's most connected file and two hops around it, a part of the whole (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

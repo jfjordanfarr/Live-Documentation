@@ -21,6 +21,8 @@ Three later checks hold the independent review's findings of 2026-10-20: a file'
 A bundled document must read as a Live Doc's authored words do: its paragraphs at their size, colour and leading, and none of the decisions log's links in the browser's own colour (2026-10-21, [Turn 2](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-2)). With the class taken off the bundled document's container the check fails at 16 px against 13.
 A file's evidence reads Purpose, then its facts, then Notes (the owner's choice, 2026-10-30, [Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)): on `generator.ts`, whose Notes run to about 4,100 characters, the boxes put Purpose above the symbols and the symbols, dependencies, dependents and Cited By above Notes; the jump list names the sections shown in their order; the Notes keep their list and provenance links; and the Notes link brings the Notes heading to the reader's top and focus to it without scrolling the page. The order before that day fails the second comparison.
 
+Since 2026-10-31 the 3D arrival's settle allowance is 25 seconds: the picture enters over the tuning's frames and settles on screen (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

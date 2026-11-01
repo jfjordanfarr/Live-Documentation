@@ -110,9 +110,11 @@ export function measureDrift(graph: ExplorerGraphPayload, include: (node: Explor
   const toggledIds = new Set(full.nodes.filter(node => !reduced.nodes.some(other => other.id === node.id)).map(node => node.id));
   if (toggledIds.size === 0 && graph.nodes.some(node => include(node) && toggled(node))) throw new Error("The toggle names files the picture does not hold.");
   const unchangedIds = full.nodes.filter(node => !toggledIds.has(node.id)).map(node => node.id);
-  let positions = positionsOf(easeSpatialLayout(full.nodes, full.links, tuning, layout, { maxTicks: ticks }).nodes);
+  // The whole picture as one piece, asked about entire: the measure is of the physics through a change, not of the reveal (2026-10-31).
+  const whole = (nodes: readonly SpatialNode[]): { asked: Set<string> } => ({ asked: new Set(nodes.map(node => node.id)) });
+  let positions = positionsOf(easeSpatialLayout(full.nodes, full.links, tuning, layout, { maxTicks: ticks, reveal: whole(full.nodes) }).nodes);
   const feed = (nodes: SpatialNode[], links: readonly SpatialLink[]): { positions: Map<string, Placed>; ticks: number } => {
-    const eased = easeSpatialLayout(nodes, links, tuning, layout, { strength: tuning.updateEnergy, start: "hold", maxTicks: ticks });
+    const eased = easeSpatialLayout(nodes, links, tuning, layout, { strength: tuning.updateEnergy, start: "hold", maxTicks: ticks, reveal: whole(nodes) });
     return { positions: positionsOf(eased.nodes), ticks: eased.ticks };
   };
   const start = { extent: extentOf([...positions.values()]), diagonal: diagonalOf([...positions.values()]) };

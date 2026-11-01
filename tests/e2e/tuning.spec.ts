@@ -19,7 +19,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
   await page.locator(".local-placed").waitFor();
   await openTuning(page);
   const controls = page.locator(".tuning-content input[type=range], .tuning-content select");
-  await expect(controls).toHaveCount(43);
+  await expect(controls).toHaveCount(46);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -48,8 +48,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   await expect(page.getByRole("combobox", { name: /^Symbol Order/ })).toHaveAccessibleDescription(sentence("tuning-symbol-order"));
 });
 
-/** The 3D layout's three groups, each named by one word, with the levers in the order a person reaches for them. */
+/** The 3D layout's four groups, each named by one word, with the levers in the order a person reaches for them; Discovery since 2026-10-31. */
 const SPATIAL_GROUPS = {
+  Discovery: ["tuning-force-hops", "tuning-force-reveal-frames"],
   Forces: ["tuning-force-charge", "tuning-force-link-strength", "tuning-force-gravity", "tuning-force-tether", "tuning-force-cited-by-pull",
     "tuning-force-charge-range", "tuning-force-update-energy", "tuning-force-approximation"],
   Spacing: ["tuning-force-link-gap", "tuning-force-coupling", "tuning-force-collision-gap"],
@@ -57,7 +58,7 @@ const SPATIAL_GROUPS = {
     "tuning-force-wire-zoom-resistance"]
 };
 
-test("the 3D levers stand in forces, spacing and appearance, and a lever still moves its readout", async ({ page }) => {
+test("the 3D levers stand in discovery, forces, spacing and appearance, and a lever still moves its readout", async ({ page }) => {
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   await openTuning(page);
@@ -70,7 +71,7 @@ test("the 3D levers stand in forces, spacing and appearance, and a lever still m
     await expect(group).toHaveAttribute("open", "");
     expect(await group.locator("input[type=range]").evaluateAll(inputs => inputs.map(input => input.id)), name).toEqual(ids);
   }
-  // Every 3D lever is in one of the three groups, and none is left beside them.
+  // Every 3D lever is in one of the four groups, and none is left beside them.
   await expect(spatial.locator("input[type=range]")).toHaveCount(Object.values(SPATIAL_GROUPS).flat().length);
   await expect(spatial.locator(":scope > label")).toHaveCount(0);
 

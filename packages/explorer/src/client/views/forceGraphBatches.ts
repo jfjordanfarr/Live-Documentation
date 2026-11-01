@@ -54,6 +54,20 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     material.customProgramCacheKey = () => "spatial-instance-alpha";
     return material;
   };
+  /** Give a batch room for `capacity` instances: its matrices, colours, alphas and widths, afresh. */
+  const allocate = <T>(batch: SpatialDrawBatch<T>, capacity: number): void => {
+    const mesh = batch.mesh;
+    if (batch.capacity) { mesh.dispose(); mesh.geometry.dispose(); }
+    batch.capacity = capacity;
+    const matrices = new Float32Array(16 * batch.capacity);
+    for (let i = 0; i < matrices.length; i += 16) matrices[i] = matrices[i + 5] = matrices[i + 10] = matrices[i + 15] = 1;
+    mesh.instanceMatrix = new InstancedBufferAttribute(matrices, 16).setUsage(DynamicDrawUsage);
+    mesh.instanceColor = new InstancedBufferAttribute(new Float32Array(3 * batch.capacity), 3).setUsage(DynamicDrawUsage);
+    mesh.geometry.setAttribute("spatialOpacity", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
+    if (mesh.material instanceof LineMaterial) mesh.geometry.setAttribute("spatialWidth", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
+    batch.depths = new Float64Array(batch.capacity); batch.serials = new Float64Array(batch.capacity);
+    batch.appearance = new Float64Array(5 * batch.capacity); batch.enabled = new Uint8Array(batch.capacity);
+  };
   const make = <T>(kind: string, geometry: BufferGeometry, material: MeshLambertMaterial | LineMaterial, renderOrder = 0): SpatialDrawBatch<T> => {
     const mesh = new InstancedMesh(geometry, material, 1);
     mesh.name = `Spatial ${kind}`; mesh.count = 0; mesh.frustumCulled = false; mesh.renderOrder = renderOrder;
@@ -62,6 +76,10 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     mesh.userData.spatialBatch = { kind, entries: batch.entries };
     mesh.raycast = () => {};
     scene.add(mesh);
+    // The instance attributes exist from the first draw, even with nothing to draw: the renderer compiles a mesh's
+    // program on its first frame whatever its count, and the wire shader reads the instance colour, which Three
+    // declares only for a mesh that has one. A first piece of one sphere has no wires (2026-10-31).
+    allocate(batch, 1);
     return batch;
   };
   // The wires are drawn first and write their depth; the spheres and arrows come after and blend over them. A sphere in
@@ -99,19 +117,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     found = { color: new Color(rgb), alpha }; colors.set(text, found); return found;
   };
   const reserve = <T>(batch: SpatialDrawBatch<T>): void => {
-    const mesh = batch.mesh;
-    if (batch.entries.length > batch.capacity) {
-      if (batch.capacity) { mesh.dispose(); mesh.geometry.dispose(); }
-      batch.capacity = Math.max(batch.entries.length, 2 * batch.capacity);
-      const matrices = new Float32Array(16 * batch.capacity);
-      for (let i = 0; i < matrices.length; i += 16) matrices[i] = matrices[i + 5] = matrices[i + 10] = matrices[i + 15] = 1;
-      mesh.instanceMatrix = new InstancedBufferAttribute(matrices, 16).setUsage(DynamicDrawUsage);
-      mesh.instanceColor = new InstancedBufferAttribute(new Float32Array(3 * batch.capacity), 3).setUsage(DynamicDrawUsage);
-      mesh.geometry.setAttribute("spatialOpacity", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
-      if (mesh.material instanceof LineMaterial) mesh.geometry.setAttribute("spatialWidth", new InstancedBufferAttribute(new Float32Array(batch.capacity), 1).setUsage(DynamicDrawUsage));
-      batch.depths = new Float64Array(batch.capacity); batch.serials = new Float64Array(batch.capacity);
-      batch.appearance = new Float64Array(5 * batch.capacity); batch.enabled = new Uint8Array(batch.capacity);
-    }
+    if (batch.entries.length > batch.capacity) allocate(batch, Math.max(batch.entries.length, 2 * batch.capacity));
     batch.ordered.length = batch.entries.length;
     for (let i = 0; i < batch.entries.length; i++) { batch.ordered[i] = i; batch.serials[i] = batch.entries[i].order; }
   };

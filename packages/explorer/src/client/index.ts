@@ -241,8 +241,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   const filterToggleCitingDocs = getInputById("filter-toggle-citing-docs");
   const statsLine = requireElement("stats-line");
   /** The sidebar's counts follow the picture: today's, or the moment of the history the 3D picture shows (2026-10-30). */
+  // How many files the 3D picture shows of those the filters allow (discovery, 2026-10-31), beside the counts.
+  let shownFiles: { shown: number; total: number } | null = null;
   const syncStatsLine = (): void => {
-    statsLine.textContent = statsLineOf((shownMoment?.graph ?? graphData).stats);
+    const counts = statsLineOf((shownMoment?.graph ?? graphData).stats);
+    const shown = state.view === "map" && state.perspective === "3d" && shownFiles ? ` · ${shownFiles.shown.toLocaleString("en-US")} of ${shownFiles.total.toLocaleString("en-US")} files shown` : "";
+    statsLine.textContent = counts + shown;
   };
   syncStatsLine();
 
@@ -298,7 +302,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       openRetainedDirectory(directory);
       forceGraphView.focusDirectory(directory);
     },
-    onCloseDirectory: closeRetainedDirectory
+    onCloseDirectory: closeRetainedDirectory,
+    onShown: (shown, total) => {
+      if (shownFiles?.shown === shown && shownFiles.total === total) return;
+      shownFiles = { shown, total };
+      syncStatsLine();
+    }
   });
 
   // The history of the 3D Local Map: the scrubber and the step panel over the sequence the bundle carries (ticket C4).
@@ -335,7 +344,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     },
     hasDocument: hasBundledDoc,
     onReadDocument: path => openInspection({ kind: "bundled-doc", path }),
-    onOpenChange: () => syncPerspectiveControls()
+    onOpenChange: () => syncPerspectiveControls(),
+    onPlaying: playing => forceGraphView.setHistoryPlaying(playing),
+    // The scrubber's speed is Tuning's Play Rate, chosen where play is (2026-10-31).
+    onPlayRate: rate => {
+      state.tuning.history.playRate = rate;
+      schedulePersistUi();
+      syncTuningControls();
+      syncPerspectiveControls();
+    }
   });
 
   // Opening a thing is a new Local Map scope, rendered in the remembered representation.
@@ -797,6 +814,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       tuning: state.tuning.history
     });
     syncRetainedWords();
+    syncStatsLine();
   }
 
   /**
@@ -1363,6 +1381,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     state.inspection = validated;
     itemMenu.close();
     renderInspection();
+    // The inspected file is asked about in 3D (2026-10-31): the picture grows from it.
+    if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
     persistExploration();
   }
 
@@ -1398,6 +1418,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     const wasOpen = !!state.inspection;
     state.inspection = null;
     hideInspection();
+    if (wasOpen && state.view === "map" && state.perspective === "3d") forceGraphView.render();
     if (persist && wasOpen) persistExploration();
   }
 

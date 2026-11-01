@@ -96,7 +96,8 @@ describe("spatial layout grammar", () => {
     };
     /** The extent after each of twenty toggle cycles, over the first picture's. */
     const growth = (forces: ForceGraphTuning): number[] => {
-      let placed = easeSpatialLayout(files, links, forces, "connections").nodes;
+      // The first picture whole as one piece: the measure is of the forces over the cycles, not of the reveal.
+      let placed = easeSpatialLayout(files, links, forces, "connections", { reveal: { asked: new Set(files.map(file => file.id)) } }).nodes;
       const start = extent(placed);
       const series: number[] = [];
       for (let cycle = 1; cycle <= 20; cycle++) {
@@ -295,10 +296,12 @@ describe("the easing: one motion through a conservative field, until the spheres
   });
 
   it("comes to rest headlessly, the same way every time, and stays put when eased again from there", () => {
-    const first = easeSpatialLayout(files, links, tuning, "connections");
+    // The whole toy as one piece: the physics is measured, not the reveal, which has its own tests below.
+    const whole = { reveal: { asked: new Set(files.map(file => file.id)) } };
+    const first = easeSpatialLayout(files, links, tuning, "connections", whole);
     expect(first.still).toBe(true);
     expect(first.ticks).toBeGreaterThan(QUIET_TICKS);
-    expect(easeSpatialLayout(files, links, tuning, "connections")).toEqual(first);
+    expect(easeSpatialLayout(files, links, tuning, "connections", whole)).toEqual(first);
     // Held where it stands, a still picture is let only a little further toward the field's own rest.
     const again = easeSpatialLayout(first.nodes, links, tuning, "connections", { start: "hold" });
     expect(again.still).toBe(true);
@@ -306,16 +309,19 @@ describe("the easing: one motion through a conservative field, until the spheres
     expect(files.every(file => file.x === undefined)).toBe(true);
   });
 
+  // The whole toy as one piece, so that the easing is measured and not the reveal.
+  const whole = { reveal: { asked: new Set(files.map(file => file.id)) } };
+
   it("unfolds a first picture from the library's seed and holds it once it calms, where held from the seed it would stay a fraction of its size", () => {
-    const unfolded = easeSpatialLayout(files, links, tuning, "connections");
-    const held = easeSpatialLayout(files, links, tuning, "connections", { start: "hold" });
+    const unfolded = easeSpatialLayout(files, links, tuning, "connections", whole);
+    const held = easeSpatialLayout(files, links, tuning, "connections", { ...whole, start: "hold" });
     expect(unfolded.still && held.still).toBe(true);
     // Measured 2026-10-21 on this toy: held from the seed, 0.75 of the unfolded size and 981 ticks against 155. On this
     // repository the seed is a ball a hundredth of the picture's size, and a picture held there stays far too small.
     expect(sizeOf(held.nodes)).toBeLessThan(0.85 * sizeOf(unfolded.nodes));
     expect(held.ticks).toBeGreaterThan(unfolded.ticks);
     // Without the tether the forces alone shape it, and the unfolded picture is their own size within a percent.
-    const free = easeSpatialLayout(files, links, { ...tuning, tether: 0 }, "connections");
+    const free = easeSpatialLayout(files, links, { ...tuning, tether: 0 }, "connections", whole);
     expect(Math.abs(sizeOf(unfolded.nodes) / sizeOf(free.nodes) - 1)).toBeLessThan(0.05);
   });
 
@@ -344,7 +350,7 @@ describe("the easing: one motion through a conservative field, until the spheres
   });
 
   it("holds a sphere a hand has fixed, falls still once and wakes again", () => {
-    const nodes = easeSpatialLayout(files, links, tuning, "connections").nodes.map(file => ({ ...file }));
+    const nodes = easeSpatialLayout(files, links, tuning, "connections", whole).nodes.map(file => ({ ...file }));
     const held = nodes[0], partner = nodes[1];
     const partnerFrom = { ...partner }, apart = distance(held, partner);
     held.fx = held.x! + 80; held.fy = held.y; held.fz = held.z;
@@ -377,20 +383,31 @@ describe("the reveal of a picture", () => {
   const ring: SpatialLink[] = crowd.map((file, index) => ({ source: file.id, target: crowd[(index + 1) % crowd.length].id, count: 1 }));
   const tuning = getDefaultTuning().forceGraph;
 
-  it("is the plain easing when the whole picture is the first piece", () => {
-    const whole = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400 });
-    const revealed = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { first: 24 } });
-    expect(placesOf(revealed.nodes)).toEqual(placesOf(whole.nodes));
-    expect(revealed.ticks).toBe(whole.ticks);
+  it("eases a picture asked about whole as one piece, the same at any pace, since nothing is left to enter", () => {
+    const asked = new Set(crowd.map(file => file.id));
+    const quick = easeSpatialLayout(crowd, ring, { ...tuning, revealFrames: 1 }, "connections", { maxTicks: 400, reveal: { asked } });
+    const slow = easeSpatialLayout(crowd, ring, { ...tuning, revealFrames: 240 }, "connections", { maxTicks: 400, reveal: { asked } });
+    expect(placesOf(slow.nodes)).toEqual(placesOf(quick.nodes));
+    expect(slow.ticks).toBe(quick.ticks);
+    expect(slow.nodes.length).toBe(24);
   });
 
-  it("enters the rest a share at a tick after the first piece's hidden ticks, places every sphere and comes to rest", () => {
-    const result = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 4000, reveal: { attention: new Set(["n5"]), first: 4, share: 0.5, least: 1, warmup: 3 } });
+  it("enters the rest a share of the whole at a tick after the first piece's hidden ticks, places every sphere and comes to rest", () => {
+    // The ring is twelve hops across: twelve hops around n5 show it whole, and six frames enter four spheres a tick.
+    const result = easeSpatialLayout(crowd, ring, { ...tuning, hops: 12, revealFrames: 6 }, "connections", { maxTicks: 4000, reveal: { asked: new Set(["n5"]), warmup: 3 } });
     expect(result.still).toBe(true);
     expect(result.nodes.every(file => Number.isFinite(file.x) && Number.isFinite(file.y) && Number.isFinite(file.z))).toBe(true);
-    // Pieces of 4, 6, 9, 14, 21 and 24 spheres: five entries after the third tick, then the easing to stillness.
-    expect(result.ticks).toBeGreaterThan(3 + 5 + QUIET_TICKS);
+    // Pieces of 1, 5, 9, 13, 17, 21 and 24 spheres: six entries after the third tick, then the easing to stillness.
+    expect(result.ticks).toBeGreaterThan(3 + 6 + QUIET_TICKS);
     expect(result.nodes.map(file => file.id)).toEqual(crowd.map(file => file.id));
+  });
+
+  it("shows the tuning's hops around what was asked about, and the whole from its start when nothing in the picture was", () => {
+    const around = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(["n5"]) } });
+    expect(around.nodes.map(file => file.id)).toEqual(["n3", "n4", "n5", "n6", "n7"]);
+    expect(around.links.length, "the wires among the spheres shown").toBe(4);
+    const whole = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(["elsewhere"]) } });
+    expect(whole.nodes.length).toBe(24);
   });
 
   it("counts stillness afresh when stirred and finds the same rest again", () => {

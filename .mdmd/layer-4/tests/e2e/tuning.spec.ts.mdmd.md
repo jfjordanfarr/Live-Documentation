@@ -15,6 +15,8 @@ Checks the Explorer's Tuning block in the built page at 1280×800, the size the 
 - Its second check is the 3D layout's grouping of 2026-10-30: three groups named Forces, Spacing and Appearance, each open, holding exactly the levers listed in `SPATIAL_GROUPS` in that order and no lever left outside them, and a lever that still moves its readout. It runs over the estate sample, whose 3D picture settles in seconds where this repository's takes about twenty.
 - Its third check is the rest of that day's remediation: the legend stands before Tuning in the sidebar, and the Export control, which read at 16 pixels beside the block's 11, now has the labels' and selects' type size, all three inheriting the one size the block sets.
 
+Since 2026-10-31 the 3D layout has a fourth group, Discovery, with Hops Shown and Reveal Frames, and History a Changed Files select: 46 controls ([Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4) and [Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

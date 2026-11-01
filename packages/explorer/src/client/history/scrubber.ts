@@ -5,7 +5,9 @@
  * from the tick model, the major and minor ticks drawn apart and the quiet
  * ones faint; a thumb; the ruler of dates beneath; the date and the commit's
  * hash read out beside it, and the date and subject spoken as the slider's
- * value; play and pause as a second control; the toggle of the step panel,
+ * value; play and pause as a second control, with the speed beside it, since
+ * the owner found the step panel "gone too quick to read anything in it at
+ * all" and the rate buried in Tuning (2026-10-31); the toggle of the step panel,
  * which holds while the history is open (2026-10-30); and the authors toggle,
  * which rides the address. The slider grammar is on the keys: the arrows move a
  * step, Page Up and Page Down between the major ticks, Home and End to the
@@ -43,6 +45,8 @@ export interface ScrubberState {
   /** The words of the truncated left edge, or null when the history begins where the repository did. */
   truncated: string | null;
   playing: boolean;
+  /** How many steps play passes in a second, for the speed control beside play (2026-10-31). */
+  rate: number;
   authors: { carried: boolean; shown: boolean };
   /** Whether the step panel shows. */
   details: boolean;
@@ -58,6 +62,8 @@ export interface ScrubberOptions {
   /** The thumb rests at the step, or a key moved to it: show it settled. */
   onRest(step: number): void;
   onPlay(playing: boolean): void;
+  /** The speed control chose a rate, in steps a second. */
+  onRate(rate: number): void;
   onAuthors(shown: boolean): void;
   /** Show or hide the step panel. */
   onDetails(shown: boolean): void;
@@ -79,6 +85,12 @@ const PLAY_ICON = '<path d="M8 5.5v13l10-6.5Z"/>';
 const PAUSE_ICON = '<path d="M8 5.5v13M16 5.5v13"/>';
 const AUTHORS_ICON = '<circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/>';
 
+/** The speeds the control offers, in steps a second, with their words; a rate set elsewhere that is not among them is offered as its own option. */
+export const PLAY_RATES: ReadonlyArray<readonly [number, string]> = [[0.5, "½ step/s"], [1, "1 step/s"], [2, "2 steps/s"], [4, "4 steps/s"], [8, "8 steps/s"]];
+
+/** The words for a rate: the control's own, or the number for one set in Tuning. */
+export const rateWords = (rate: number): string => PLAY_RATES.find(([value]) => value === rate)?.[1] ?? `${rate} steps/s`;
+
 /** Make the scrubber under its parent, hidden until synced. */
 export function createScrubber(options: ScrubberOptions): Scrubber {
   const element = document.createElement("section");
@@ -89,6 +101,17 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   const play = iconButton("Play", PLAY_ICON);
   play.className = "history-play";
   play.setAttribute("aria-pressed", "false");
+  // The speed, in steps a second, beside play: the same setting as Tuning's Play Rate, reachable where play is.
+  const rate = document.createElement("select");
+  rate.className = "history-rate";
+  rate.setAttribute("aria-label", "Playback speed");
+  rate.title = "How many steps a second play passes";
+  for (const [value, words] of PLAY_RATES) {
+    const option = document.createElement("option");
+    option.value = String(value);
+    option.textContent = words;
+    rate.append(option);
+  }
 
   const slider = document.createElement("div");
   slider.className = "history-slider";
@@ -134,13 +157,14 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   authors.className = "history-authors";
   authors.setAttribute("aria-pressed", "false");
 
-  element.append(play, slider, readout, notice, details, authors);
+  element.append(play, rate, slider, readout, notice, details, authors);
   options.parent.append(element);
 
   let current: ScrubberState | null = null;
   let drawn = "";
 
   play.addEventListener("click", () => { if (current) options.onPlay(!current.playing); });
+  rate.addEventListener("change", () => { const chosen = Number(rate.value); if (Number.isFinite(chosen) && chosen > 0) options.onRate(chosen); });
   details.addEventListener("click", () => { if (current) options.onDetails(!current.details); });
   authors.addEventListener("click", () => { if (current) options.onAuthors(!current.authors.shown); });
 
@@ -260,6 +284,20 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     placeRuler();
   }).observe(ruler);
 
+  /** Show the rate: one of the control's own, or the Tuning's as an option of its own, so that the control never lies. */
+  function syncRate(value: number): void {
+    const wanted = String(value);
+    if (![...rate.options].some(option => option.value === wanted)) {
+      const option = document.createElement("option");
+      option.value = wanted;
+      option.textContent = rateWords(value);
+      option.dataset.foreign = "true";
+      rate.append(option);
+    }
+    for (const option of [...rate.options]) if (option.dataset.foreign && option.value !== wanted) option.remove();
+    if (rate.value !== wanted) rate.value = wanted;
+  }
+
   return {
     element,
     sync(state) {
@@ -281,6 +319,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       play.setAttribute("aria-label", state.playing ? "Pause" : "Play");
       play.title = state.playing ? "Pause" : "Play, one step after another";
       play.querySelector("svg")!.innerHTML = state.playing ? PAUSE_ICON : PLAY_ICON;
+      syncRate(state.rate);
       details.setAttribute("aria-pressed", String(state.details));
       authors.hidden = !state.authors.carried;
       authors.setAttribute("aria-pressed", String(state.authors.shown));

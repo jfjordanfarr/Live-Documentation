@@ -20,11 +20,13 @@ test.use({ viewport: { width: 1100, height: 700 } });
 type Rendered = Awaited<ReturnType<typeof renderedNodes>>;
 type Point = { x: number; y: number; z: number };
 
+/** The whole repository, the root opened, so that the change moves many spheres (discovery shows a part otherwise, 2026-10-31). */
 const entry = (updateEnergy: number, showTests: boolean): string => `/?s=${compressSnapshot({
   ...DEFAULT_SNAPSHOT,
   perspective: "3d",
   spatialLayout: "connections",
   filters: { showTests, showAssets: false },
+  openDirectories: new Set([""]),
   layout: { forceGraph: { updateEnergy } }
 })}`;
 
@@ -50,7 +52,9 @@ async function grown(page: Page, atLeast: number): Promise<Rendered> {
 }
 
 async function settled(page: Page): Promise<void> {
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  // The whole repository enters from one sphere and settles on screen (the hop-paced reveal, 2026-10-31): some eighty
+  // seconds of the software renderer, where the first piece's hidden warm-up once took a third of the ticks unseen.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 150_000 });
 }
 
 /** The ticks the engine took for the last change, read as the frames between the container's last busy and its stillness. */

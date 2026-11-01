@@ -17,6 +17,8 @@ Checks that Local Map work belongs to the visible view: 2D layout search pauses 
 - The two pausing tests run the search's eighty seeds to the end after the return, 19 to 29 seconds on one worker, so since 2026-10-19 they declare a minute rather than the default half ([Turn 12 of the October 17 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-12)).
 - The reader-retention regression follows the [October 20 integration review](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). It opens a real 3D scene, inspects the subject and navigates to Knowledge Sources before pinning through the reader. The Three observation helper counts actual WebGL render calls; after any already queued frame finishes, both the pre-action baseline and the post-pin interval must remain paused. Returning to the map must resume rendering and show the pin's attention in native mesh opacities without dropping the other nodes. No application-state hook supplies the result.
 
+Since 2026-10-31 the returning 3D picture's dimmed spheres are the frontier's, at .3 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)), which the last check reads under .35.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

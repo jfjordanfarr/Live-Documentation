@@ -224,6 +224,17 @@
         <details class="tuning-subsection" data-tuning-perspective="3d">
           <summary class="subsection-label">3D Layout</summary>
           <details class="tuning-subsection" open>
+            <summary class="subsection-label">Discovery</summary>
+            <label class="tuning-slider">
+              <span>Hops Shown</span><input type="range" id="tuning-force-hops" min="1" max="4" step="1" value="2" />
+              <output id="tuning-force-hops-value">2</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Reveal Frames</span><input type="range" id="tuning-force-reveal-frames" min="1" max="240" step="1" value="60" />
+              <output id="tuning-force-reveal-frames-value">60</output>
+            </label>
+          </details>
+          <details class="tuning-subsection" open>
             <summary class="subsection-label">Forces</summary>
             <label class="tuning-slider">
               <span>Repulsion</span><input type="range" id="tuning-force-charge" min="0" max="300" step="5" value="60" />
@@ -320,6 +331,15 @@
           <label class="tuning-slider">
             <span>Play Rate</span><input type="range" id="tuning-history-play-rate" min="0.5" max="10" step="0.5" value="2" />
             <output id="tuning-history-play-rate-value">2</output>
+          </label>
+          <label class="tuning-slider">
+            <span>Changed Files</span>
+            <select id="tuning-history-change-emphasis">
+              <option value="glow">Glow</option>
+              <option value="dim">Dim the rest</option>
+              <option value="both">Glow and dim the rest</option>
+              <option value="none">No emphasis</option>
+            </select>
           </label>
         </details>
         <button id="export-layout-settings" type="button" class="tuning-export">Export layout settings</button>

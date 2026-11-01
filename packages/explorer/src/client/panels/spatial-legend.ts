@@ -8,15 +8,17 @@ export interface SpatialLegendDrawn {
   references: boolean;
   /** Whether a path's wires are drawn at full strength. */
   path: boolean;
-  /** Whether anything is faded for standing outside the pins, the path or the hover. */
+  /** Whether anything is faded for standing outside the path or the hover. */
   faded: boolean;
+  /** Whether the picture ends in a frontier: a last hop of connections drawn dimmed, a click on which shows more (2026-10-31). */
+  frontier: boolean;
 }
 
 /** One row of the key: its words and the sample the stylesheet draws from its shape and colour. */
 export interface SpatialLegendRow {
   label: string;
   color: string;
-  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "faded";
+  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "faded" | "frontier";
 }
 
 /** The rows of the key for a filtered graph at the moment shown, in reading order; pure, so that a test can read them. */
@@ -33,7 +35,8 @@ export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, 
     rows.push({ label: "Width: references", color: "#ffffff", shape: "width" });
   }
   if (drawn.path) rows.push({ label: "Path", color: "#ffffff", shape: "path" });
-  if (drawn.faded) rows.push({ label: "Faded: not pinned, on the path or hovered", color: "#aeb8c6", shape: "faded" });
+  if (drawn.frontier) rows.push({ label: "Dimmed: a hop beyond; click to see more", color: "#aeb8c6", shape: "frontier" });
+  if (drawn.faded) rows.push({ label: "Faded: not on the path or hovered", color: "#aeb8c6", shape: "faded" });
   if (kinds.has("containment")) rows.push({ label: "Contains", color: SPATIAL_NODE_STYLES.directory.color, shape: "wire" });
   if (kinds.has("related-doc")) rows.push({ label: "Cites document", color: SPATIAL_NODE_STYLES["related-doc"].color, shape: "arrow" });
   if (kinds.has("cited-by")) rows.push({ label: "Cited by document", color: "#d6b2f0", shape: "arrow" });

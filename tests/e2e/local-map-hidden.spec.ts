@@ -147,7 +147,8 @@ test("pinning from the reader in Knowledge Sources keeps hidden 3D paused and ap
   expect(currentSnapshot(page)).toMatchObject({ view: "map", perspective: "3d", selectedNodeId: subject, pinSet: pins });
   await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
   await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === subject)?.opacity ?? 0).toBeGreaterThan(.7);
-  await expect.poll(async () => (await renderedNodes(page)).filter(node => node.opacity < .3).length,
+  // The pinned subject's picture is its own two hops; the frontier's spheres are present and dimmed (.3), the rest full (2026-10-31).
+  await expect.poll(async () => (await renderedNodes(page)).filter(node => node.opacity < .35).length,
     "returning draws the pin's attention while other native nodes remain present").toBeGreaterThan(0);
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(nodeIds);
 });

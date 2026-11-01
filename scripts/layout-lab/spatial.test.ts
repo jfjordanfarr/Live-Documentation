@@ -17,7 +17,7 @@ const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "example", s
 
 it("reports documented multiplicity, actual radius and the same preferred spacing as the page, with its filters", () => {
   const before = JSON.stringify(graph);
-  const report = spatialReport(graph, run, getDefaultTuning().forceGraph, 100, { showTests: false, showAssets: false });
+  const report = spatialReport(graph, run, getDefaultTuning().forceGraph, 400, { showTests: false, showAssets: false });
   expect(report.nodes.map(file => [file.id, file.radius])).toEqual([["a", 8], ["b", 4]]);
   expect(report.links).toHaveLength(1);
   expect(report.links[0]).toMatchObject({ source: "a", target: "b", references: 4, preferredDistance: 32 });
@@ -26,7 +26,7 @@ it("reports documented multiplicity, actual radius and the same preferred spacin
 });
 
 it("keeps explicitly retained tests/assets and can include the same documentation overlay", () => {
-  const report = spatialReport(graph, { ...run, scope: ["test", "asset"] }, getDefaultTuning().forceGraph, 50,
+  const report = spatialReport(graph, { ...run, scope: ["test", "asset"] }, getDefaultTuning().forceGraph, 400,
     { showTests: false, showAssets: false, showRelatedDocs: true }, [{ sourceId: "a", targetPath: "README.md", direction: "cites" }]);
   expect(report.nodes.map(file => file.id)).toEqual(["a", "b", "test", "asset", "related:README.md"]);
   expect(report.links).toHaveLength(4);
@@ -36,8 +36,8 @@ it("keeps explicitly retained tests/assets and can include the same documentatio
 it("reports the declared structure separately, with hubs sized by their members and references that pull nothing", () => {
   const tuning = getDefaultTuning().forceGraph;
   const filters = { showTests: false, showAssets: false };
-  const tree = spatialReport(graph, run, tuning, 100, filters, [], "structure");
-  const network = spatialReport(graph, run, tuning, 100, filters);
+  const tree = spatialReport(graph, run, tuning, 400, filters, [], "structure");
+  const network = spatialReport(graph, run, tuning, 400, filters);
   expect(tree.layout).toBe("structure");
   expect(tree.nodes.filter(node => node.kind === "directory")).toEqual([
     expect.objectContaining({ id: "directory:", directory: "", files: 2, radius: 4 * Math.cbrt(8 + 1) })

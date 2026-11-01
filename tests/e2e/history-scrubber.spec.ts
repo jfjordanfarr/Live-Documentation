@@ -51,7 +51,8 @@ const entry = (base: string, extra: Partial<typeof DEFAULT_SNAPSHOT> = {}): stri
   perspective: "3d",
   spatialLayout: "structure",
   filters: { showTests: true, showAssets: false },
-  layout: { forceGraph: { updateEnergy: 0 } },
+  // Four hops show the whole scripted sample from its start with nothing pinned (discovery, 2026-10-31).
+  layout: { forceGraph: { updateEnergy: 0, hops: 4 } },
   ...extra
 })}`;
 
@@ -91,7 +92,7 @@ test("a resize-only history step updates the drawn sphere without moving or repl
   await observeGraph(page);
   await page.goto(entry("/samples/history/", {
     commit: commits[4].id,
-    layout: { forceGraph: { updateEnergy: 0, nodeZoomResistance: 0, nodeSize: 4, symbolScale: 1 } }
+    layout: { forceGraph: { updateEnergy: 0, nodeZoomResistance: 0, nodeSize: 4, symbolScale: 1, hops: 4 } }
   }));
   await settled(page);
   const before = await renderedNodes(page);
@@ -456,7 +457,8 @@ const gap = (a: { x: number; y: number; z: number }, b: { x: number; y: number; 
 test("a file renamed onto a dead file's path keeps its own sphere and lines, and no line leads nowhere after walking there and back", async ({ page }) => {
   await observeGraph(page);
   // The connections layout, where the references pull and are drawn: a reference resolved to a left-behind object would be a line to nothing.
-  await page.goto(entry("/samples/history-collision/", { spatialLayout: "connections" }));
+  // The root opened: the dead file, an island, is asked about with the rest (discovery, 2026-10-31).
+  await page.goto(entry("/samples/history-collision/", { spatialLayout: "connections", openDirectories: new Set([""]) }));
   await settled(page);
   await openHistory(page);
   await track(page).focus();

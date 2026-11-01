@@ -7,7 +7,7 @@
 
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
-import { HISTORY_GRANULARITIES, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, type ChangeEmphasis, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -78,10 +78,11 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1 },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1, hops: 2, revealFrames: 60 },
   // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
-  // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played.
-  history: { axis: "time", granularity: "auto", playRate: 2 }
+  // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played, and a step's changed
+  // files glowing while the history is shown (2026-10-31).
+  history: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "glow" }
 });
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -123,6 +124,9 @@ const readHistoryGranularity = (value: unknown): HistoryGranularity | undefined 
 /** A play rate is steps a second: finite and positive. */
 const readPlayRate = (value: unknown): number | undefined =>
   typeof value === "number" && Number.isFinite(value) && value > 0 ? value : undefined;
+
+const readChangeEmphasis = (value: unknown): ChangeEmphasis | undefined =>
+  CHANGE_EMPHASES.find(emphasis => emphasis === value);
 
 /**
  * Reads and validates persisted UI state from localStorage.
@@ -260,10 +264,12 @@ export const readPersistedUi = (): PersistedUi | null => {
         const axis = readHistoryAxis(historyRaw.axis);
         const granularity = readHistoryGranularity(historyRaw.granularity);
         const playRate = readPlayRate(historyRaw.playRate);
+        const changeEmphasis = readChangeEmphasis(historyRaw.changeEmphasis);
         tuning.history = {
           ...(axis !== undefined ? { axis } : null),
           ...(granularity !== undefined ? { granularity } : null),
-          ...(playRate !== undefined ? { playRate } : null)
+          ...(playRate !== undefined ? { playRate } : null),
+          ...(changeEmphasis !== undefined ? { changeEmphasis } : null)
         };
       }
 

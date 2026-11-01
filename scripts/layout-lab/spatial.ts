@@ -8,10 +8,14 @@ import { getVisibleConnections } from "../../packages/explorer/src/client/views/
 import type { RelatedDocLink } from "../../packages/explorer/src/shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../packages/explorer/src/shared/types";
 
-/** Ease the same full filtered graph the 3D view shows, in either layout, until still or `maxTicks`; the retained neighborhood is attention, not hidden physics. */
+/**
+ * Ease the picture the 3D view shows, in either layout, until still or `maxTicks`: since 2026-10-31 the retained files
+ * and the subject are what was asked about, and the picture is the tuning's hops of connections around them, as on the
+ * page; before, the full filtered graph supplied the forces and the retained neighbourhood only the attention.
+ */
 export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning: ForceGraphTuning, maxTicks = 20_000,
   filters: Pick<ExplorerFilters, "showTests" | "showAssets"> & Partial<Pick<ExplorerFilters, "showRelatedDocs" | "showCitingDocs">> = { showTests: true, showAssets: true },
-  relatedDocLinks: readonly RelatedDocLink[] = [], layout: SpatialLayout = "connections") {
+  relatedDocLinks: readonly RelatedDocLink[] = [], layout: SpatialLayout = "connections", whole = false) {
   if (!run.scope.length) throw new Error("A spatial scope must name a retained file.");
   for (const file of run.scope) if (!graph.nodes.some(node => node.id === file)) throw new Error(`The bundle has no retained file ${JSON.stringify(file)}.`);
   const pins = scopePins(run);
@@ -26,7 +30,8 @@ export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning
   const attention = new Set(retained);
   const subject = retainedSubject(run);
   if (subject) attention.add(subject);
-  const result = easeSpatialLayout(data.nodes, data.links, tuning, layout, { maxTicks, reveal: { attention } });
+  // Whole, every filtered file is asked about and eased, as the page shows a directory opened whole: the physics measures want the whole picture.
+  const result = easeSpatialLayout(data.nodes, data.links, tuning, layout, { maxTicks, reveal: { asked: whole ? new Set(data.nodes.map(node => node.id)) : attention } });
   const nodes = result.nodes.map(node => ({
     id: node.id,
     kind: metadata.get(node.id)?.directoryPath !== undefined ? "directory"
@@ -51,7 +56,7 @@ export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning
     const overlap = a.radius + b.radius - Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
     if (overlap > 0.01) { overlaps++; worstOverlap = Math.max(worstOverlap, overlap); }
   }
-  return { bundle: run.bundle, scope: run.scopeName, subject: retainedSubject(run), tuning, ticks: result.ticks, still: result.still, filters, layout,
+  return { bundle: run.bundle, scope: run.scopeName, subject: retainedSubject(run), tuning, ticks: result.ticks, still: result.still, filters, layout, whole,
     bounds: { width: bounds("x"), height: bounds("y"), depth: bounds("z") }, overlaps, worstOverlap, nodes, links: edges };
 }
 
@@ -61,7 +66,7 @@ export function renderSpatialReport(report: ReturnType<typeof spatialReport>): s
   const hubs = report.nodes.filter(node => node.kind === "directory").length;
   const memberships = report.links.filter(link => link.kind === "containment").length;
   return `# 3D Local Map: ${report.bundle}/${report.scope}, the ${report.layout} layout\n\nHistorical layout-lab measurement, ${new Date().toISOString()}.\n\n`
-    + `The full filtered graph supplies the forces; the retained neighborhood supplies attention. ${report.nodes.filter(node => node.kind === "file").length} files, ${hubs} directory hubs, ${report.links.length - memberships} reference pairs, ${memberships} containment links, ${report.still ? `eased until still in ${report.ticks}` : `not yet still after ${report.ticks}`} deterministic ticks.\n\n`
+    + `${report.whole ? "The whole filtered picture, every file asked about" : `The picture is the retained files and the subject with ${report.tuning.hops} ${report.tuning.hops === 1 ? "hop" : "hops"} of connections around them`}, as on the page (2026-10-31). ${report.nodes.filter(node => node.kind === "file").length} files, ${hubs} directory hubs, ${report.links.length - memberships} reference pairs, ${memberships} containment links, ${report.still ? `eased until still in ${report.ticks}` : `not yet still after ${report.ticks}`} deterministic ticks.\n\n`
     + `Bounds: ${fixed(report.bounds.width)} × ${fixed(report.bounds.height)} × ${fixed(report.bounds.depth)} layout units. Sphere overlaps: ${report.overlaps}; largest penetration ${fixed(report.worstOverlap)}.\n\n`
     + `Settings: \`${JSON.stringify(report.tuning)}\`. Filters: \`${JSON.stringify(report.filters)}\`.\n\n`
     + (report.layout === "structure"

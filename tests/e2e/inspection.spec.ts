@@ -328,7 +328,8 @@ test("keys typed in the full-screen reader do not reach the World Map behind it"
 test("a direct 3D Pin and sphere inspection preserve subject and camera across perspective changes", async ({ page }) => {
   await observeGraph(page);
   await page.goto(`/samples/estate/?view=local&mode=3d&node=${encodeURIComponent(A)}`);
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false");
+  // The picture enters over the tuning's frames and then settles (discovery, 2026-10-31): longer than a default wait.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   await page.waitForTimeout(900);
   const point = (await renderedNodes(page)).find(node => node.id === B)!;
   const camera = () => page.evaluate(() => {

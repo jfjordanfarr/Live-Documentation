@@ -7,12 +7,16 @@ import type { SpatialLayout } from "../../packages/explorer/src/client/types";
 
 test.use({ viewport: { width: 1600, height: 1000 } });
 
-const entry = (spatialLayout: SpatialLayout) => `/samples/estate/?s=${compressSnapshot({
+const entry = (spatialLayout: SpatialLayout, extra: Partial<typeof DEFAULT_SNAPSHOT> = {}) => `/samples/estate/?s=${compressSnapshot({
   ...DEFAULT_SNAPSHOT,
   perspective: "3d",
   spatialLayout,
-  filters: { showTests: true, showAssets: false }
+  filters: { showTests: true, showAssets: false },
+  ...extra
 })}`;
+
+/** The whole estate: the root opened asks about every file, in either layout (discovery, 2026-10-31). */
+const whole = { openDirectories: new Set([""]) };
 
 type Rendered = Awaited<ReturnType<typeof renderedNodes>>;
 const referenceFacts = (links: Awaited<ReturnType<typeof renderedLinks>>) => links
@@ -45,7 +49,7 @@ const extent = (nodes: Rendered): number => Math.max(...["x", "y", "z"].map(axis
 test("the structure layout hangs every file from its directory from where it stood, sizes a hub by its members, and draws a reference only on demand", async ({ page }) => {
   test.setTimeout(90_000); // Two complete settlings of the native simulation and a hover search.
   await observeGraph(page);
-  await page.goto(entry("connections"));
+  await page.goto(entry("connections", whole));
   // Volume is a world-space contract. Zoom resistance compensates each node's depth independently, so compare
   // the actual rendered volumes under explicit perspective sizing, rather than assuming a visual default.
   await page.getByText("Tuning", { exact: true }).click();
@@ -165,7 +169,11 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   expect(inspected.inspection).toEqual({ kind: "directory", directory });
   expect(inspected.openDirectories.size, "inspecting a hub does not open it").toBe(0);
   await page.getByRole("button", { name: "Close details", exact: true }).click();
-  await page.mouse.move(chosen!.x, chosen!.y);
+  // Inspected, the hub was asked about and its members came in; closed, they recede: the hub may stand elsewhere now.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const hub = (await renderedNodes(page)).find(node => node.id === chosen!.id)!;
+  await page.mouse.move(hub.x, hub.y);
+  await expect(page.locator(".force-graph-actions")).toHaveAttribute("data-node-id", chosen!.id);
   await page.locator(".force-graph-actions").getByRole("button", { name: `Open ${directory}`, exact: true }).click();
   await expect(page.locator(".force-graph-actions").getByRole("button", { name: `Close ${directory}`, exact: true }),
     "an open directory's primary action closes it, as its 2D label does").toHaveAttribute("aria-pressed", "true");
@@ -194,7 +202,10 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   const snapshot = decompressSnapshot(new URL(page.url()).searchParams.get("s")!);
   expect(snapshot.openDirectories.size).toBe(0);
-  await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.7);
+  // Released, the picture is the start's again once its spheres have come back in at the reveal's pace, its frontier
+  // dimmed as before and nothing faded by attention.
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.25);
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(nodes.map(node => node.id).sort());
 });
 

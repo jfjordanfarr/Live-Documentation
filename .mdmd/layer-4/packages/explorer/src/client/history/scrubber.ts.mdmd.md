@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/scrubber.ts
-- Generated At: 2026-10-30T14:56:36.791Z
+- Generated At: 2026-10-31T20:06:58.521Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,7 @@ The history's scrubber along the bottom of the 3D Local Map: a track with one ti
 - Since 2026-10-22 ([Turn 9 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-9)) the thumb stands at its step's position in the model, whatever the granularity; its own rule (the step's tick, or else the step's index) misplaced it by date inside a grouped period.
 - Since 2026-10-22 ([Turn 10 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-10)) the pointer reaches three pixels (`POINTER_REACH_PX`) on the axis by date: a tick is one or two pixels wide, and a click on one must choose it.
 
+- Since 2026-10-31 ([Turn 8 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8)) the speed stands beside play, a select of steps a second that is the same setting as Tuning's Play Rate, because the owner found the panel "gone too quick to read anything in it at all" and the rate reachable only in Tuning; a rate set in Tuning that the select does not offer is shown as an option of its own, so that the control never lies.
 - Since 2026-10-30 ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) the scrubber carries the step panel's toggle, "Step details", pressed while the panel shows, so that the picture can be seen whole while the scrubber stays; `focusDetails` gives it the focus when the panel's own button hid the panel.
 
 ## Generated
@@ -24,28 +25,43 @@ The history's scrubber along the bottom of the 3D Local Map: a track with one ti
 ### Public Symbols
 #### `ScrubberState` {#symbol-scrubberstate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L30)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L32)
 
 ##### `ScrubberState` — Summary
 What the scrubber draws.
 
 #### `ScrubberOptions` {#symbol-scrubberoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L54)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L58)
 
 ##### `ScrubberOptions` — Summary
 What the scrubber tells.
 
 #### `Scrubber` {#symbol-scrubber}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L67)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L73)
 
 ##### `Scrubber` — Summary
 The scrubber as the control drives it.
 
+#### `PLAY_RATES` {#symbol-play_rates}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L89)
+- Returns: `ReadonlyArray`
+
+##### `PLAY_RATES` — Summary
+The speeds the control offers, in steps a second, with their words; a rate set elsewhere that is not among them is offered as its own option.
+
+#### `rateWords` {#symbol-ratewords}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L92)
+
+##### `rateWords` — Summary
+The words for a rate: the control's own, or the number for one set in Tuning.
+
 #### `createScrubber` {#symbol-createscrubber}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L83)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L95)
 - Returns: [`Scrubber`](#symbol-scrubber)
 - Parameters: `options`: [`ScrubberOptions`](#symbol-scrubberoptions)
 

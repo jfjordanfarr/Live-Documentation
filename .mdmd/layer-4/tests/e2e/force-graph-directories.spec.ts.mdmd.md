@@ -15,6 +15,8 @@ The first test switches from the connections layout to the structure layout by i
 
 The volume comparison explicitly selects perspective node sizing through the public control. Independent zoom resistance, introduced October 24, scales each sphere by its own depth, so compensated world-space volumes do not sum across depths. The underlying symbol-volume contract is unchanged; the remaining directory journeys exercise the selected display defaults.
 
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the structure check opens the root, so that both layouts hold the whole estate; its reference-on-demand premise holds because the references at rest are drawn among the pinned files, not an open directory's. The hub check keeps the start's picture, waits for the picture to come back in after the directory's release, and finds the hub again after its inspection grew the picture and the reader's close receded it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
