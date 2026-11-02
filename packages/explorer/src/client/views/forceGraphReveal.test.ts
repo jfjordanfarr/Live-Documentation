@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { linkPulls, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
-import { nextRevealCount, revealLayers, revealOrder } from "./forceGraphReveal";
+import { nextRevealCount, revealCorresponding, revealLayers, revealOrder } from "./forceGraphReveal";
 import { getDefaultTuning } from "../persistence/local-storage";
 
 const node = (id: string): SpatialNode => ({ id, publicSymbols: [] });
@@ -10,6 +10,15 @@ const every = (): boolean => true;
 const tuning = getDefaultTuning().forceGraph;
 
 describe("the order a 3D picture is revealed in", () => {
+  it("carries corresponding 2D identities forward without adding absent facts or hiding anything already shown", () => {
+    const order = ["hub", "near", "later", "folder", "file", "orphan"];
+    const next = revealCorresponding(order, 2, new Set(["folder", "file", "hub", "outside-scope"]));
+    expect(next).toEqual({ order: ["hub", "near", "folder", "file", "later", "orphan"], shown: 4 });
+    expect(order).toEqual(["hub", "near", "later", "folder", "file", "orphan"]);
+    expect(revealCorresponding(next.order, next.shown, new Set(["folder", "outside-scope"]))).toEqual(next);
+    expect(() => revealCorresponding(order, 7, new Set())).toThrow("within the picture");
+  });
+
   it("enters the attention set first, then what the connecting links reach, a layer at a time, nearest first", () => {
     const chain = ["a", "b", "c", "d", "e"].map(node);
     const links = [link("a", "b"), link("b", "c"), link("c", "d"), link("d", "e")];

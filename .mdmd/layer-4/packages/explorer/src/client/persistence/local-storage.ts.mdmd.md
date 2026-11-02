@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/local-storage.ts
-- Generated At: 2026-11-01T21:06:15.227Z
+- Generated At: 2026-11-02T02:23:36.483Z
 
 ## Authored
 ### Purpose
@@ -147,18 +147,19 @@ values are silently discarded.
 - Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L445)
 
 ##### `PersistUiScheduler` — Summary
-Timer handle for debounced UI persistence
+Debounced persistence with an immediate flush before the page leaves.
 
 #### `PersistNavScheduler` {#symbol-persistnavscheduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L450)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L451)
+- Returns: [`PersistUiScheduler`](#symbol-persistuischeduler)
 
 ##### `PersistNavScheduler` — Summary
-Timer handle for debounced nav persistence
+The same write lifetime for remembered navigation and evidence.
 
 #### `changedFromDefaults` {#symbol-changedfromdefaults}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L473)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L487)
 
 ##### `changedFromDefaults` — Summary
 What of the filters and the tuning a person has changed: every setting that differs from the defaults, and nothing
@@ -166,7 +167,7 @@ else, so that a default changed later reaches every setting they never touched.
 
 #### `createPersistUiScheduler` {#symbol-createpersistuischeduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L490)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L504)
 
 ##### `createPersistUiScheduler` — Summary
 Create a debounced UI persistence scheduler.
@@ -174,11 +175,10 @@ Writes what of the filters and tuning differs from the defaults to localStorage 
 
 #### `createPersistNavScheduler` {#symbol-createpersistnavscheduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L521)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L522)
 
 ##### `createPersistNavScheduler` — Summary
-Create a debounced navigation persistence scheduler.
-Writes view, map subject and independently open evidence to localStorage after a 150ms debounce.
+Coalesce remembered navigation writes for 150ms, with a flush for page exit.
 Inspecting a different file never replaces the remembered subject.
 <!-- LIVE-DOC:END Public Symbols -->
 

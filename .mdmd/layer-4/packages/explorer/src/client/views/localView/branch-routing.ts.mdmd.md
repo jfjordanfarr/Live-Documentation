@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-routing.ts
-- Generated At: 2026-10-22T16:47:55.607Z
+- Generated At: 2026-11-02T02:09:51.685Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,8 @@ The pure geometry of a Local Map wire: the native curve between two pins, and th
 
 ### Notes
 A threaded route is curve, lane, curve, lane, curve: each curve lives in a gutter and each straight run in a lane the ordering reserved between two cards, so by construction it never reaches backward and never enters a card. The lane constants, a 7 px slot per bundle, which is the least between neighbouring wires, 6 px above the first slot and below the last, and a 10 px margin outside the column, are the least room the renderer leaves and the router reads back; since 2026-10-06 the placement spreads a lane's slots further apart where the wires through them ask. This replaced the orthogonal detour over the top of the whole picture on 2026-10-05, after the owner's October 3 criticism of "right-angle-ey hopping-over-a-column connectors" and their answer that routing is a balance of legibility, directionality and no overlaps rather than a rule.
+
+The backward-route predicate checks actual segment direction and the symmetric cubic’s minimum horizontal derivative, including internal lane reversals. The renderer applies it only to ordinary visible connections, excluding intentional self loops and feedback stubs. A settled backward route outlines the 3D switch; the cue clears when the route no longer goes backward. This follows the [November 2 request](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-6--november-2-the-3d-exploration-pass).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -58,9 +60,17 @@ A gap in a column a wire passes through: the column's horizontal extent, widened
 ##### `RoutePiece` — Summary
 One piece of a threaded route: a curve across a gutter, or a straight run along a lane through a column.
 
+#### `routeBacktracks` {#symbol-routebacktracks}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L27)
+- Parameters: `tuning`: [`BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning)
+
+##### `routeBacktracks` — Summary
+Whether an ordinary routed connection ever travels left, including a curve whose horizontal controls overshoot.
+
 #### `curveTo` {#symbol-curveto}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L29)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L41)
 - Parameters: `from`: [`RoutePoint`](#symbol-routepoint); `to`: [`RoutePoint`](#symbol-routepoint); `tuning`: [`BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning)
 
 ##### `curveTo` — Summary
@@ -71,7 +81,7 @@ Returns the path commands after the move to `from`.
 
 #### `threadedRoute` {#symbol-threadedroute}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L54)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L64)
 - Parameters: `from`: [`RoutePoint`](#symbol-routepoint); `to`: [`RoutePoint`](#symbol-routepoint); `tuning`: [`BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning)
 
 ##### `threadedRoute` — Summary

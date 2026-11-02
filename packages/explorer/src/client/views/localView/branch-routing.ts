@@ -20,6 +20,18 @@ export type RoutePiece =
   | { kind: "curve"; from: RoutePoint; to: RoutePoint }
   | { kind: "lane"; from: RoutePoint; to: RoutePoint };
 
+const stubLength = (gap: number, tuning: BezierTuning): number =>
+  Math.min(Math.max(gap * tuning.stubFactor, tuning.stubMin), Math.max(44, gap - tuning.stubMaxOffset));
+
+/** Whether an ordinary routed connection ever travels left, including a curve whose horizontal controls overshoot. */
+export function routeBacktracks(pieces: readonly RoutePiece[], tuning: BezierTuning): boolean {
+  return pieces.some(piece => {
+    const gap = piece.to.x - piece.from.x;
+    // The symmetric cubic's smallest horizontal derivative is at its midpoint: (gap - stub) / 2.
+    return gap < 0 || piece.kind === "curve" && gap >= 24 && stubLength(gap, tuning) > gap;
+  });
+}
+
 /**
  * The curve the Local Map draws between two pins: a cubic whose control points
  * leave and arrive horizontally, so a wire departs an offering pin to the right
@@ -33,9 +45,7 @@ export function curveTo(from: RoutePoint, to: RoutePoint, tuning: BezierTuning):
     const midY = (from.y + to.y) / 2;
     return `Q ${from.x} ${midY} ${to.x} ${to.y}`;
   }
-  const stubBase = Math.max(gapX * tuning.stubFactor, tuning.stubMin);
-  const stubLimit = Math.max(44, gapX - tuning.stubMaxOffset);
-  const stub = Math.min(stubBase, stubLimit);
+  const stub = stubLength(gapX, tuning);
   const control1X = from.x + horizontalDirection * stub;
   const control2X = to.x - horizontalDirection * stub;
   const deltaY = to.y - from.y;

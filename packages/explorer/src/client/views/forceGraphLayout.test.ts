@@ -117,7 +117,7 @@ describe("spatial layout grammar", () => {
     // without it the tenth/twentieth cycles are 1.75/2.26, still growing. Keep its forces and thresholds together, the
     // exact repulsion it was measured with included.
     const historical = { ...tuning, linkGap: 60, charge: 60, collisionGap: 5, coupling: 1, nodeSize: 4, symbolScale: 1,
-      gravity: .01, chargeRange: 0, approximation: 0, linkStrength: .25, updateEnergy: 1, tether: .01, citedByPull: 1 };
+      gravity: .01, componentSeparation: 0, chargeRange: 0, approximation: 0, linkStrength: .25, updateEnergy: 1, tether: .01, citedByPull: 1 };
     const held = growth(historical);
     expect(held[19]).toBeLessThan(1.1);
     expect(Math.abs(held[19] / held[9] - 1)).toBeLessThan(0.05);
@@ -276,6 +276,13 @@ describe("the springs' strength, the lever on the pull between connected neighbo
 describe("the easing: one motion through a conservative field, until the spheres are still (2026-10-21)", () => {
   const tuning = getDefaultTuning().forceGraph;
 
+  it("lets a single isolated file settle using its physical extent, even though its centers-only diagonal is zero", () => {
+    const result = easeSpatialLayout([node("isolated", 0)], [], tuning, "connections", { maxTicks: 1500 });
+    expect(result.still).toBe(true);
+    expect(result.nodes).toHaveLength(1);
+    expect(Math.hypot(result.nodes[0].x!, result.nodes[0].y!, result.nodes[0].z!)).toBeLessThan(tuning.nodeSize);
+  });
+
   it("reports a picture change only when a paced call moves positions", () => {
     const nodes: SpatialNode[] = Array.from({ length: 512 }, (_, index) => ({
       ...node(`paced-${index}`, index % 4), x: (index % 16) * 30, y: Math.floor(index / 16) * 30, z: index % 7
@@ -355,7 +362,11 @@ describe("the easing: one motion through a conservative field, until the spheres
     const nodes = easeSpatialLayout(files, links, tuning, "connections", whole).nodes.map(file => ({ ...file }));
     const held = nodes[0], partner = nodes[1];
     const partnerFrom = { ...partner }, apart = distance(held, partner);
-    held.fx = held.x! + 80; held.fy = held.y; held.fz = held.z;
+    // Stretch the actual spring by half its length. An arbitrary +X drag can instead swing around the partner and
+    // barely stretch it after a different layout, so it cannot establish whether the partner follows the hand.
+    held.fx = held.x! + (held.x! - partner.x!) / 2;
+    held.fy = held.y! + (held.y! - partner.y!) / 2;
+    held.fz = held.z! + (held.z! - partner.z!) / 2;
     const simulation = forceSimulation(nodes, 3).stop().force("link", forceLink<SpatialNode, SpatialLink>(links.map(link => ({ ...link }))).id(file => file.id).strength(0));
     let stillCalls = 0;
     const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => "connections", links: () => links, strength: () => 1, onStill: () => { stillCalls++; } });
@@ -366,9 +377,7 @@ describe("the easing: one motion through a conservative field, until the spheres
     // A held sphere is a hand at work: the picture never counts as still while it holds one.
     expect(motion.still).toBe(false);
     expect(stillCalls).toBe(0);
-    // Its spring partner keeps the spring's length to the hand, swinging after it as far as that asks and no further, since
-    // the tether holds it to where it stood; without the tether its whole cluster slides after the hand over two thousand
-    // ticks (measured 2026-10-21: the partner moved 18 units with the tether, by the fiftieth tick, and 77 without).
+    // The partner must actually follow the outward stretch and keep the pair's distance close to its settled length.
     expect(Math.abs(distance(held, partner) - apart)).toBeLessThan(0.1 * apart);
     expect(distance(partner, partnerFrom)).toBeGreaterThan(10);
     delete held.fx; delete held.fy; delete held.fz;

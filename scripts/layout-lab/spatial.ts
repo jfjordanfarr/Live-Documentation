@@ -27,11 +27,12 @@ export function spatialReport(graph: ExplorerGraphPayload, run: ScopeRun, tuning
   const retained = new Set(run.scope);
   for (const { link } of getVisibleConnections(pins, graph.links)) { retained.add(id(link.source)); retained.add(id(link.target)); }
   // The attention set enters first, as it does on the page: the retained files and the subject.
-  const attention = new Set(retained);
+  const attention = new Set(run.scope);
   const subject = retainedSubject(run);
   if (subject) attention.add(subject);
-  // Whole, every filtered file is asked about and eased, as the page shows a directory opened whole: the physics measures want the whole picture.
-  const result = easeSpatialLayout(data.nodes, data.links, tuning, layout, { maxTicks, reveal: { asked: whole ? new Set(data.nodes.map(node => node.id)) : attention } });
+  // An opened root is a member set revealed by its internal connections, not thousands of simultaneous direct pins.
+  const reveal = whole ? { asked: new Set<string>(), members: new Set(data.nodes.map(node => node.id)) } : { asked: attention };
+  const result = easeSpatialLayout(data.nodes, data.links, tuning, layout, { maxTicks, reveal });
   const nodes = result.nodes.map(node => ({
     id: node.id,
     kind: metadata.get(node.id)?.directoryPath !== undefined ? "directory"

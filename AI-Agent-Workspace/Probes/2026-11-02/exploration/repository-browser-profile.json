@@ -1,0 +1,166 @@
+{
+  "errors": [],
+  "activity": {
+    "frames": 82,
+    "changes": [
+      {
+        "busy": true,
+        "frame": 0
+      }
+    ]
+  },
+  "busy": "true",
+  "nodes": 913,
+  "top": [
+    {
+      "ms": 11586.979,
+      "function": "(program)",
+      "line": -1,
+      "url": ""
+    },
+    {
+      "ms": 259.69,
+      "function": "stepThroughTree",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 253.314,
+      "function": "gs",
+      "line": 4876,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 92.83,
+      "function": "mx",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 35.519,
+      "function": "(garbage collector)",
+      "line": -1,
+      "url": ""
+    },
+    {
+      "ms": 23.897,
+      "function": "fr",
+      "line": 4876,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 23.335,
+      "function": "update",
+      "line": 4840,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 18.458,
+      "function": "querySelectorAll",
+      "line": -1,
+      "url": ""
+    },
+    {
+      "ms": 13.96,
+      "function": "advance",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 13.296,
+      "function": "",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 12.27,
+      "function": "p",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 11.285,
+      "function": "setAttribute",
+      "line": -1,
+      "url": ""
+    },
+    {
+      "ms": 10.02,
+      "function": "De",
+      "line": 4840,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 8.18,
+      "function": "querySelectorAll",
+      "line": -1,
+      "url": ""
+    },
+    {
+      "ms": 7.888,
+      "function": "WR",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 7.185,
+      "function": "",
+      "line": 4840,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 6.72,
+      "function": "ne",
+      "line": 4840,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 6.701,
+      "function": "pr",
+      "line": 4876,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 5.683,
+      "function": "",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 5.615,
+      "function": "requestAnimationFrame",
+      "line": -1,
+      "url": ""
+    },
+    {
+      "ms": 5.607,
+      "function": "hr",
+      "line": 4876,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 5.046,
+      "function": "start",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 4.722,
+      "function": "complete",
+      "line": 4443,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 4.419,
+      "function": "cD",
+      "line": 4840,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    },
+    {
+      "ms": 3.971,
+      "function": "",
+      "line": 4840,
+      "url": "http://127.0.0.1:8900/static/index.js"
+    }
+  ]
+}

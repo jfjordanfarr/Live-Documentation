@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphScope.test.ts
-- Generated At: 2026-10-31T20:07:01.061Z
+- Generated At: 2026-11-02T06:07:14.736Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,11 @@ _No public symbols detected_
 - [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - [`forceGraphLayout.linkPulls`](./forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode)
+- [`forceGraphScope.componentLandmarks`](./forceGraphScope.ts.mdmd.md#symbol-componentlandmarks)
+- [`forceGraphScope.connectedNeighbours`](./forceGraphScope.ts.mdmd.md#symbol-connectedneighbours)
+- [`forceGraphScope.defaultSpatialLayout`](./forceGraphScope.ts.mdmd.md#symbol-defaultspatiallayout)
+- [`forceGraphScope.directoryHubOf`](./forceGraphScope.ts.mdmd.md#symbol-directoryhubof)
+- [`forceGraphScope.directoryMembersWithinHops`](./forceGraphScope.ts.mdmd.md#symbol-directorymemberswithinhops)
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
 - `vitest` - `describe`, `expect`, `it`

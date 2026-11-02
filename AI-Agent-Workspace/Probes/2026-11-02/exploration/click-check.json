@@ -1,0 +1,24 @@
+{
+  "afterRelease": {
+    "pins": [
+      {
+        "nodeId": "Portal/Services/GatewayClient.cs",
+        "symbol": "*"
+      }
+    ],
+    "files": [
+      "Contracts/PaymentQuery.cs",
+      "Contracts/PaymentRequest.cs",
+      "Gateway/Controllers/PaymentsController.cs",
+      "Gateway/GatewaySettings.cs",
+      "Gateway/Wcf/HubProxy.cs",
+      "Portal/App_Code/Globals.cs",
+      "Portal/Controllers/PaymentsController.cs",
+      "Portal/Models/PaymentRequestModel.cs",
+      "Portal/Models/PaymentResultModel.cs",
+      "Portal/Scripts/portal.js",
+      "Portal/Services/GatewayClient.cs"
+    ]
+  },
+  "errors": []
+}

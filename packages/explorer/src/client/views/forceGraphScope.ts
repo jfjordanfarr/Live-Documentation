@@ -18,6 +18,7 @@
 
 import type { SpatialLink, SpatialNode } from "./forceGraphLayout";
 import type { SpatialLayout } from "../types";
+import { under } from "./localView/directory-state";
 
 /** What the start reads of a node beyond its links: a hub's directory, a document's kind, a file's entry reasons. */
 export interface StartableNode extends SpatialNode {
@@ -25,6 +26,33 @@ export interface StartableNode extends SpatialNode {
   archetype?: string;
   /** The reasons the file's doc lists it as an entry, when it does (`declared`, `program`, `command`, ...). */
   entryReasons?: readonly string[];
+  codeRelativePath?: string;
+}
+
+/** Resolve a directory in the pruned containment tree, including an ancestor collapsed into its only descendant hub. */
+export function directoryHubOf(nodes: readonly StartableNode[], directory: string): string | undefined {
+  const exact = nodes.find(node => node.directoryPath === directory);
+  if (exact) return exact.id;
+  const contained = nodes.filter(node => under(node.directoryPath ?? node.codeRelativePath ?? node.id, directory));
+  const hubs = contained.filter(node => node.directoryPath !== undefined)
+    .sort((a, b) => a.directoryPath!.length - b.directoryPath!.length || a.id.localeCompare(b.id));
+  const first = hubs[0];
+  return first && contained.every(node => under(node.directoryPath ?? node.codeRelativePath ?? node.id, first.directoryPath!))
+    ? first.id : undefined;
+}
+
+/** Files/documents inside a discovered directory's visible containment neighborhood, without opening its whole subtree. */
+export function directoryMembersWithinHops<N extends StartableNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], directory: string, hops: number): Set<string> {
+  const hub = directoryHubOf(nodes, directory);
+  if (!hub) return new Set();
+  const scope = spatialScope(nodes, links, new Set([hub]), hops, link => link.kind === "containment");
+  return new Set(nodes.filter(node => node.directoryPath === undefined && scope.hops.has(node.id)
+    && under(node.codeRelativePath ?? node.id, directory)).map(node => node.id));
+}
+
+/** A fresh 3D visit starts from declared entries when present, otherwise from the directory structure. */
+export function defaultSpatialLayout(nodes: readonly Pick<StartableNode, "entryReasons">[]): SpatialLayout {
+  return nodes.some(node => node.entryReasons?.includes("declared")) ? "connections" : "structure";
 }
 
 /** The shown part of a picture: each shown sphere's hop from what was asked about, and the frontier's counts beyond. */
@@ -81,6 +109,24 @@ export function spatialScope<N extends SpatialNode>(nodes: readonly N[], links: 
 /** Most connected first, then by id, so that a choice is the same on every machine. */
 export function mostConnectedFirst(beside: ReadonlyMap<string, ReadonlySet<string>>): (a: string, b: string) => number {
   return (a, b) => (beside.get(b)?.size ?? 0) - (beside.get(a)?.size ?? 0) || (a < b ? -1 : a > b ? 1 : 0);
+}
+
+/** One real file and member count for each disconnected component, including isolates; ties are deterministic. */
+export function componentLandmarks(beside: ReadonlyMap<string, ReadonlySet<string>>): Map<string, number> {
+  const unseen = new Set(beside.keys()), landmarks = new Map<string, number>();
+  const before = mostConnectedFirst(beside);
+  for (const seed of beside.keys()) {
+    if (!unseen.delete(seed)) continue;
+    const queue = [seed];
+    let best = seed;
+    for (let i = 0; i < queue.length; i++) {
+      const id = queue[i];
+      if (before(id, best) < 0) best = id;
+      for (const next of beside.get(id) ?? []) if (unseen.delete(next)) queue.push(next);
+    }
+    landmarks.set(best, queue.length);
+  }
+  return landmarks;
 }
 
 /**

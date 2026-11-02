@@ -62,7 +62,7 @@ describe("projected wire picking", () => {
   const cast = (matrix: Matrix4, x: number, y: number, resistance: number) => {
     const raycaster = new Raycaster();
     raycaster.setFromCamera(new Vector2(x / 500, y / 500), camera);
-    return pickSpatialWire(matrix, camera, viewport, 4, resistance, raycaster.ray);
+    return pickSpatialWire(matrix, camera, viewport, 4 * spatialSizeScale(new Vector3(0, 0, -2000), camera, viewport.y, resistance), raycaster.ray);
   };
   it("hits the stroke's real width at each resistance, with round end caps", () => {
     const matrix = wire(new Vector3(-200, 0, -2000), new Vector3(200, 0, -2000));

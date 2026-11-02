@@ -32,7 +32,7 @@ const restoreTuning = (group: string, saved: string) => {
 
 const restoreLocalMap = (saved: string) => restoreTuning("localMap", saved).localMap;
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); });
 
 describe("persisted membrane tuning", () => {
   it("adds the simplicity default to older settings while retaining the independent shape preferences", () => {
@@ -92,15 +92,19 @@ describe("saving only what a person changed (2026-10-22)", () => {
   });
 
   it("writes only the changes, so that a default changed later reaches what was never touched", () => {
+    vi.useFakeTimers();
     const store = new Map<string, string>();
     vi.stubGlobal("window", {
       localStorage: { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => store.set(key, value), removeItem: (key: string) => store.delete(key) },
-      setTimeout: (run: () => void) => { run(); return 1; },
-      clearTimeout: () => undefined
+      setTimeout,
+      clearTimeout
     });
     const state = defaults();
     state.tuning.forceGraph.gravity = 0.03;
     createPersistUiScheduler(() => state).schedule();
+    vi.advanceTimersByTime(149);
+    expect(store.size).toBe(0);
+    vi.advanceTimersByTime(1);
     expect(JSON.parse(store.get(PERSISTED_UI_KEY)!)).toEqual({ version: PERSISTED_UI_VERSION, tuning: { forceGraph: { gravity: 0.03 } } });
     const restored = applyPersistedUi(defaults(), readPersistedUi());
     expect(restored.tuning.forceGraph.gravity).toBe(0.03);
@@ -150,7 +154,7 @@ describe("remembered map subject and reader evidence", () => {
       inspection
     }));
     scheduler.schedule();
-    vi.advanceTimersByTime(150);
+    scheduler.flush();
     expect(readPersistedNav()).toMatchObject({
       nodeId: "src/a.ts",
       inspection: { kind: "file", nodeId: "src/b.ts", symbol: "run" }
@@ -160,6 +164,14 @@ describe("remembered map subject and reader evidence", () => {
     vi.advanceTimersByTime(150);
     expect(JSON.parse(saved.get(PERSISTED_NAV_KEY)!)).toMatchObject({ nodeId: "src/a.ts", inspection: null });
     expect(readPersistedNav()?.inspection).toBeNull();
+    // A pending final choice survives immediate navigation; flushing twice never writes stale state afterward.
+    inspection = { kind: "file", nodeId: "src/c.ts" };
+    scheduler.schedule();
+    scheduler.flush();
+    inspection = null;
+    scheduler.flush();
+    vi.advanceTimersByTime(150);
+    expect(readPersistedNav()?.inspection).toEqual({ kind: "file", nodeId: "src/c.ts" });
   });
 
   it("reads old places with the reader closed and keeps valid navigation when the evidence shape is invalid", () => {

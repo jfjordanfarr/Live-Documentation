@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { curveTo, threadedRoute, type RoutePoint } from "./branch-routing";
+import { curveTo, routeBacktracks, threadedRoute, type RoutePoint } from "./branch-routing";
 import type { BezierTuning } from "../../types";
 
 const tuning: BezierTuning = { stubFactor: 0.4, stubMin: 24, stubMaxOffset: 20, verticalOffset: 0.1 };
@@ -20,6 +20,19 @@ function sampleCurve(from: RoutePoint, command: string, steps = 24): RoutePoint[
 }
 
 describe("threaded routes", () => {
+  it("detects backward travel in the actual route, including internal reversals and overshooting cubics", () => {
+    const from = { x: 0, y: 0 }, to = { x: 200, y: 100 };
+    expect(routeBacktracks([{ kind: "curve", from, to }], tuning)).toBe(false);
+    expect(routeBacktracks([{ kind: "curve", from: to, to: from }], tuning)).toBe(true);
+    const reversedLane = threadedRoute(from, to, [{ left: 150, right: 100, y: 50 }], tuning);
+    expect(routeBacktracks(reversedLane.pieces, tuning)).toBe(true);
+    const tight = { ...tuning, stubMin: 44 }, end = { x: 30, y: 100 };
+    const points = sampleCurve(from, curveTo(from, end, tight));
+    expect(points.some((point, i) => i > 0 && point.x < points[i - 1].x)).toBe(true);
+    expect(routeBacktracks([{ kind: "curve", from, to: end }], tight)).toBe(true);
+    expect(routeBacktracks([{ kind: "curve", from, to: { x: 10, y: 100 } }], tight)).toBe(false);
+  });
+
   const cards = [
     { left: 0, right: 240, top: 100, bottom: 300 },
     { left: 340, right: 580, top: 60, bottom: 380 },

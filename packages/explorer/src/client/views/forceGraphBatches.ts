@@ -3,7 +3,7 @@ import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
 import type { SpatialNode } from "./forceGraphLayout";
-import { clipSpatialWireDepth, pickSpatialWire } from "./forceGraphSizing";
+import { clipSpatialWireDepth, pickSpatialWire, spatialSizeScale } from "./forceGraphSizing";
 
 /** The endpoints already resolved by the graph feed. */
 export interface SpatialDrawLink<N> { source: string | N; target: string | N }
@@ -94,6 +94,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   const nodeEntries = new WeakMap<N, SpatialDrawEntry<N>>(), linkEntries = new WeakMap<L, SpatialDrawEntry<L>>(), arrowEntries = new WeakMap<L, SpatialDrawEntry<L>>();
   const colors = new Map<string, { color: Color; alpha: number }>();
   let serial = 0, appearanceDirty = true;
+  let wireScale = 1;
   let positions = new Float64Array(), clips = new Float64Array(), drawnRadii = new Float64Array();
   let lineEnds = new Uint32Array(), arrowEnds = new Uint32Array(), lineBounds = new Float64Array(), lineTrims = new Float64Array();
   const matrix = new Matrix4(), projection = new Matrix4(), rotation = new Matrix4();
@@ -189,18 +190,19 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true; opacity.needsUpdate = true;
     if (width) width.needsUpdate = true;
   };
-  const update = (camera: Camera, width: number, height: number, nodeResistance: number, wireResistance: number): void => {
+  const update = (camera: Camera, width: number, height: number, nodeResistance: number, wireResistance: number, target: Vector3): void => {
     refreshStyle(); viewport.set(width, height);
     projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     frustum.setFromProjectionMatrix(projection, camera.coordinateSystem, camera.reversedDepth);
-    const view = camera.matrixWorldInverse.elements, pixelScale = Math.abs(camera.projectionMatrix.elements[5]) * height / 2;
+    const pixelScale = Math.abs(camera.projectionMatrix.elements[5]) * height / 2;
+    const nodeScale = spatialSizeScale(target, camera, height, nodeResistance);
+    wireScale = spatialSizeScale(target, camera, height, wireResistance);
     nodes.visible.length = nodes.unseen.length = lines.visible.length = lines.unseen.length = arrows.visible.length = arrows.unseen.length = 0;
     // Read each mutable layout position once. The far larger wire pass uses only contiguous numeric inputs.
     for (let i = 0; i < nodes.entries.length; i++) {
       const node = nodes.entries[i].data, p = i * 3, c = i * 4;
       const x = positions[p] = node.x ?? 0, y = positions[p + 1] = node.y ?? 0, z = positions[p + 2] = node.z ?? 0;
-      const depth = -(view[2] * x + view[6] * y + view[10] * z + view[14]);
-      drawnRadii[i] = nodes.appearance[i * 5 + 4] * (depth > 0 ? Math.pow(pixelScale / depth, -nodeResistance) : 1);
+      drawnRadii[i] = nodes.appearance[i * 5 + 4] * nodeScale;
       clipStart.set(x, y, z, 1).applyMatrix4(projection).toArray(clips, c);
       nodes.depths[i] = clipStart.z / clipStart.w;
     }
@@ -218,7 +220,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       const length = Math.hypot(positions[pb] - positions[pa], positions[pb + 1] - positions[pa + 1], positions[pb + 2] - positions[pa + 2]);
       const apart = length > drawnRadii[a] + drawnRadii[b];
       lineTrims[2 * i] = apart ? drawnRadii[a] / length : 0; lineTrims[2 * i + 1] = apart ? 1 - drawnRadii[b] / length : 0;
-      const visible = lines.enabled[i] && apart && screenWireEndpointsInFrustum(clipStart, clipEnd, lines.appearance[i * 5 + 4], viewport, wireResistance, pixelScale, bounds);
+      const visible = lines.enabled[i] && apart && screenWireEndpointsInFrustum(clipStart, clipEnd, lines.appearance[i * 5 + 4] * wireScale, viewport, pixelScale, bounds);
       if (visible) lineBounds.set(bounds, i * 4);
       (visible ? lines.visible : lines.unseen).push(i);
     }
@@ -252,7 +254,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     });
     upload(arrows, (array, at, i) => { arrowMatrix(i).toArray(array, at); });
     const material = lines.mesh.material as LineMaterial;
-    material.resolution.copy(viewport); material.uniforms.spatialResistance.value = wireResistance;
+    material.resolution.copy(viewport); material.uniforms.spatialWidthScale.value = wireScale;
   };
   const pickNode = (raycaster: Raycaster): N | undefined => {
     let picked: N | undefined, nearest = Infinity;
@@ -265,7 +267,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     }
     return picked;
   };
-  const pickLink = (raycaster: Raycaster, camera: Camera, resistance: number): L | undefined => {
+  const pickLink = (raycaster: Raycaster, camera: Camera): L | undefined => {
     let picked: L | undefined, nearest = Infinity;
     raycaster.ray.at(1, point).project(camera);
     const x = point.x, y = point.y;
@@ -273,7 +275,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       const i = lines.visible[slot], at = i * 4;
       if (x < lineBounds[at] || x > lineBounds[at + 1] || y < lineBounds[at + 2] || y > lineBounds[at + 3]) continue;
       lines.mesh.getMatrixAt(slot, matrix);
-      const hit = pickSpatialWire(matrix, camera, viewport, lines.appearance[i * 5 + 4], resistance, raycaster.ray);
+      const hit = pickSpatialWire(matrix, camera, viewport, lines.appearance[i * 5 + 4] * wireScale, raycaster.ray);
       if (hit && hit.distance < nearest && hit.distance >= raycaster.near && hit.distance <= raycaster.far) { picked = lines.entries[i].data; nearest = hit.distance; }
     }
     return picked;
@@ -313,19 +315,19 @@ export function drawSpatialGraphOnChange(camera: Camera, renderer: WebGLRenderer
 }
 
 
-/** Clip a unit wire's axis in homogeneous coordinates, allowing its CSS-pixel half width and round caps. */
-export function screenWireIntersectsFrustum(clipMatrix: Matrix4, width: number, viewport: Vector2, resistance = 1, pixelScale = 1, bounds?: number[]): boolean {
+/** Clip a unit wire's axis in homogeneous coordinates, projecting its compensated world width and round caps. */
+export function screenWireIntersectsFrustum(clipMatrix: Matrix4, width: number, viewport: Vector2, pixelScale = 1, bounds?: number[]): boolean {
   const start = new Vector4(0, 0, 0, 1).applyMatrix4(clipMatrix);
   const end = new Vector4(0, 0, 1, 1).applyMatrix4(clipMatrix);
-  return screenWireEndpointsInFrustum(start, end, width, viewport, resistance, pixelScale, bounds);
+  return screenWireEndpointsInFrustum(start, end, width, viewport, pixelScale, bounds);
 }
 
 /** Clip already-projected endpoints, shared between incident wires instead of multiplying a matrix for each wire. */
-function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: number, viewport: Vector2, resistance: number, pixelScale: number, bounds?: number[]): boolean {
+function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: number, viewport: Vector2, pixelScale: number, bounds?: number[]): boolean {
   // Clip depth first so that a wire passing the camera uses its visible endpoint's pixel scale.
   const withinDepth = start.w > 0 && end.w > 0 && Math.abs(start.z) <= start.w && Math.abs(end.z) <= end.w;
   if (!withinDepth && !clipSpatialWireDepth(start, end)) return false;
-  width *= Math.pow(pixelScale / Math.max(0.000001, Math.min(start.w, end.w)), 1 - resistance);
+  width *= pixelScale / Math.max(0.000001, Math.min(start.w, end.w));
   if (bounds) {
     bounds[0] = Math.min(start.x / start.w, end.x / end.w) - width / viewport.x;
     bounds[1] = Math.max(start.x / start.w, end.x / end.w) + width / viewport.x;
@@ -352,12 +354,12 @@ function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: numbe
 /** Use Three's near-plane-safe, round-capped wide-line shader with our batched transforms, widths, colours and alpha. */
 function screenWireMaterial(source: MeshLambertMaterial): LineMaterial {
   const material = new LineMaterial();
-  material.uniforms.spatialResistance = { value: 1 };
+  material.uniforms.spatialWidthScale = { value: 1 };
   // Copy the base material's blending/depth/clipping rules without replacing the line shader or its uniforms.
   Material.prototype.copy.call(material, source);
   material.vertexColors = false; // RGB comes from the instance attribute, not the line addon's endpoint colours.
   material.vertexShader = material.vertexShader
-    .replace("uniform float linewidth;", "attribute float spatialWidth;\nattribute float spatialOpacity;\nuniform float spatialResistance;\nvarying float vSpatialOpacity;\nvarying vec3 vSpatialColor;\n#define linewidth spatialWidth")
+    .replace("uniform float linewidth;", "attribute float spatialWidth;\nattribute float spatialOpacity;\nuniform float spatialWidthScale;\nvarying float vSpatialOpacity;\nvarying vec3 vSpatialColor;\n#define linewidth spatialWidth")
     .replace("void main() {", "void main() {\nvSpatialOpacity = spatialOpacity;\nvSpatialColor = instanceColor;")
     .replace("modelViewMatrix * vec4( instanceStart, 1.0 )", "modelViewMatrix * instanceMatrix * vec4(0.0, 0.0, 0.0, 1.0)")
     .replace("modelViewMatrix * vec4( instanceEnd, 1.0 )", "modelViewMatrix * instanceMatrix * vec4(0.0, 0.0, 1.0, 1.0)")
@@ -390,7 +392,7 @@ function screenWireMaterial(source: MeshLambertMaterial): LineMaterial {
         else { start = end; clipStart = clipEnd; ndcStart = ndcEnd; }
       }
       // direction`)
-    .replace("offset *= linewidth;", "float pixelScale = abs(projectionMatrix[1][1]) * resolution.y / (2.0 * max(0.000001, abs(position.y < 0.5 ? clipStart.w : clipEnd.w)));\noffset *= linewidth * pow(pixelScale, 1.0 - spatialResistance);")
+    .replace("offset *= linewidth;", "float pixelScale = abs(projectionMatrix[1][1]) * resolution.y / (2.0 * max(0.000001, abs(position.y < 0.5 ? clipStart.w : clipEnd.w)));\noffset *= linewidth * spatialWidthScale * pixelScale;")
     // A wire viewed exactly end-on still has a finite round cap.
     .replace("dir = normalize( dir );", "dir = length(dir) > 0.000001 ? normalize(dir) : vec2(1.0, 0.0);");
   material.fragmentShader = material.fragmentShader

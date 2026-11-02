@@ -1,4 +1,4 @@
-import { curveTo, LANE_MARGIN, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
+import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import type { LocalViewRuntime, WireLayer } from "./runtime";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
@@ -68,10 +68,10 @@ function cardEdgesOf(provider: AnchorMeasurement, consumer: AnchorMeasurement, b
  * 2026-10-07 built the SVG anew each frame and reconciled it by key, which
  * cost more than the measuring and the routing together).
  */
-export function drawConnections(context: ConnectionsContext): void {
+export function drawConnections(context: ConnectionsContext): number {
   const layer = layerOf(context.runtime, context.svgNamespace);
   const seen = new Set<string>();
-  const drawn = context.branches ? drawBranchConnections(context, layer, seen) : 0;
+  const { drawn, backward } = context.branches ? drawBranchConnections(context, layer, seen) : { drawn: 0, backward: 0 };
   for (const [key, element] of layer.elements) {
     if (seen.has(key)) continue;
     element.remove();
@@ -80,6 +80,8 @@ export function drawConnections(context: ConnectionsContext): void {
     layer.gradients.delete(key);
   }
   context.runtime.overlay.dataset.active = String(drawn > 0);
+  context.runtime.overlay.dataset.backwardConnections = String(backward);
+  return backward;
 }
 
 /** The overlay's one SVG, with the wires' elements by key, made at the first drawing and kept until the overlay is cleared. */
@@ -101,6 +103,7 @@ function layerOf(runtime: LocalViewRuntime, svgNamespace: string): WireLayer {
 export function clearConnections(runtime: LocalViewRuntime): void {
   runtime.overlay.replaceChildren();
   runtime.overlay.dataset.active = "false";
+  runtime.overlay.dataset.backwardConnections = "0";
   runtime.wires = null;
 }
 
@@ -325,11 +328,11 @@ function drawLaces(
  * their shared run is drawn once more beneath them, as wide as their number,
  * so a bundle says how many it carries before they part.
  */
-function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, seen: Set<string>): number {
+function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, seen: Set<string>): { drawn: number; backward: number } {
   const { runtime, branches, state } = context;
-  if (!branches) return 0;
+  if (!branches) return { drawn: 0, backward: 0 };
   const extents = context.measureLayoutExtents();
-  if (!extents) return 0;
+  if (!extents) return { drawn: 0, backward: 0 };
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
   const measure = createAnchorMeasurer(runtime.container, runtime.mapTransform.k || 1);
   const bounds = extents.content;
@@ -353,7 +356,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     measure(context.getAnchor(edge.targetId, "center", "outbound", edge.targetSymbol));
     measure(context.getAnchor(edge.sourceId, "center", "inbound", edge.sourceSymbol));
   }
-  let drawn = 0;
+  let drawn = 0, backward = 0;
   const laceRanks = new Map<string, number>();
   const shape = laceShape(state.tuning.localMap);
   // One shared run per lane slot: the curve into the lane and the run along it, from the first wire drawn through it.
@@ -402,6 +405,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
         threadedSlots.push(...slots);
       }
     }
+    if (presence >= 1 && routeBacktracks(threaded?.pieces ?? [{ kind: "curve", from, to }], state.tuning.bezier)) backward++;
     const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, route, undefined, presence);
     // The first wire drawn through a slot lends its run and its gradient to the bundle's shared run there.
     threadedSlots.forEach((slot, i) => {
@@ -416,7 +420,7 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     if (run.members < 2) continue;
     drawBundleRun(layer, seen, run.curve, run.lane, run.gradient, run.members, context.svgNamespace, state.tuning.bezier, key, run.presence);
   }
-  return drawn;
+  return { drawn, backward };
 }
 
 /**

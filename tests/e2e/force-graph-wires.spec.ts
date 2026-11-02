@@ -31,6 +31,28 @@ async function cameraPose(page: Page): Promise<number[]> {
   });
 }
 
+test("orbit preserves uploaded body sizes and wire surface endpoints at the default zoom resistance", async ({ page }) => {
+  test.setTimeout(60_000);
+  await observeGraph(page);
+  await page.goto("/samples/estate/?view=local&mode=3d&layout=connections&dir=");
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  await page.mouse.move(5, 5);
+  const bodies = await renderedNodes(page), wires = await renderedLinks(page), camera = await cameraPose(page);
+  const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
+  await page.mouse.move(frame.x + frame.width * .85, frame.y + frame.height * .82);
+  await page.mouse.down();
+  await page.mouse.move(frame.x + frame.width * .95, frame.y + frame.height * .9, { steps: 24 });
+  await page.mouse.up();
+  await expect.poll(() => cameraPose(page)).not.toEqual(camera);
+  const before = new Map(bodies.map(node => [node.id, node]));
+  for (const node of await renderedNodes(page)) {
+    expect(node.world).toEqual(before.get(node.id)!.world);
+    expect(node.radius).toBeCloseTo(before.get(node.id)!.radius, 5);
+  }
+  expect((await renderedLinks(page)).map(link => [link.source, link.target, link.start, link.end]))
+    .toEqual(wires.map(link => [link.source, link.target, link.start, link.end]));
+});
+
 /** Isolate a real graph wire and measure its GPU pixels through the production scene hooks and shader. */
 async function resistancePixels(page: Page) {
   return page.evaluate(() => {
@@ -56,12 +78,18 @@ async function resistancePixels(page: Page) {
       const i = (y * canvas.width + x) * 4, background = x * 4;
       return Math.max(...[0, 1, 2].map(channel => Math.abs(pixels[i + channel] - pixels[background + channel])));
     };
-    const widths = (pixels: Uint8ClampedArray): number[] => [.35, .5, .65].map(fraction => {
-      const x = Math.round(canvas.width * fraction), profile: number[] = [];
-      for (let y = Math.floor(canvas.height / 2 - 30 * cssScale); y <= canvas.height / 2 + 30 * cssScale; y++) profile.push(signal(pixels, x, y));
-      const peak = Math.max(...profile);
-      return peak ? profile.reduce((sum, value) => sum + value / peak, 0) / cssScale : 0;
-    });
+    let solidInk = 0;
+    const widths = (pixels: Uint8ClampedArray): number[] => {
+      const profiles = [.35, .5, .65].map(fraction => {
+        const x = Math.round(canvas.width * fraction), profile: number[] = [];
+        for (let y = Math.floor(canvas.height / 2 - 30 * cssScale); y <= canvas.height / 2 + 30 * cssScale; y++) profile.push(signal(pixels, x, y));
+        return profile;
+      });
+      // The first, thick stroke supplies full coverage. Normalizing a thin stroke to its own antialiased peak
+      // incorrectly makes one pixel split across two rows measure two pixels wide.
+      solidInk = Math.max(solidInk, ...profiles.flat());
+      return profiles.map(profile => solidInk ? profile.reduce((sum, value) => sum + value / solidInk, 0) / cssScale : 0);
+    };
     const cap = (pixels: Uint8ClampedArray): number[] => {
       const result: number[] = [];
       for (let y = Math.floor(canvas.height / 2 - 8 * cssScale); y < canvas.height / 2 + 8 * cssScale; y++) {
@@ -84,7 +112,8 @@ async function resistancePixels(page: Page) {
       const capDifference = (actual: number[]): number => actual.reduce((sum, value, i) => sum + Math.abs(value - expectedCap[i]), 0) / capInk;
       const forwardCapDifference = capDifference(cap(draw(nearCap, farCap)));
       const reversedCapDifference = capDifference(cap(draw(farCap, nearCap)));
-      return { depthWidths, clipped, betweenCameraAndNear, crossingCamera, capInk, forwardCapDifference, reversedCapDifference };
+      const widthScale = (isolated.wire.material as unknown as { uniforms: { spatialWidthScale: { value: number } } }).uniforms.spatialWidthScale.value;
+      return { depthWidths, clipped, betweenCameraAndNear, crossingCamera, capInk, forwardCapDifference, reversedCapDifference, widthScale };
     } finally {
       camera.near = saved.near; camera.far = saved.far; camera.updateProjectionMatrix();
       isolated.restore();
@@ -177,7 +206,9 @@ test("node and wire resistance controls are independent, preserve placement, and
   }
   for (const node of reference) {
     // These are the radii of the actual instanced spheres, not values read back from the controls.
-    expect(radii.get(1)!.get(node.id)!).toBeCloseTo(node.radius, 3);
+    const first = reference[0].id;
+    expect(radii.get(1)!.get(node.id)! / radii.get(0)!.get(node.id)!)
+      .toBeCloseTo(radii.get(1)!.get(first)! / radii.get(0)!.get(first)!, 5);
     expect(radii.get(.5)!.get(node.id)! ** 2).toBeCloseTo(radii.get(0)!.get(node.id)! * radii.get(1)!.get(node.id)!, 3);
   }
   const fixedNodes = await renderedNodes(page);
@@ -205,7 +236,7 @@ test("node and wire resistance controls are independent, preserve placement, and
 });
 
 for (const dpr of [1, 2]) {
-  test(`wire pixels keep their width across depth and zoom at DPR ${dpr}`, async ({ browser, baseURL }) => {
+  test(`wire pixels retain perspective depth with shared zoom compensation at DPR ${dpr}`, async ({ browser, baseURL }) => {
     const page = await browser.newPage({ baseURL, viewport: { width: 1280, height: 800 }, deviceScaleFactor: dpr });
     try {
       await observeGraph(page);
@@ -226,13 +257,15 @@ for (const dpr of [1, 2]) {
         canvas.width = renderer.domElement.width; canvas.height = renderer.domElement.height;
         const context = canvas.getContext("2d")!;
         const cssScale = canvas.height / renderer.domElement.getBoundingClientRect().height;
-        const result: number[] = [];
+        const profiles: number[][] = [];
         try {
           // Isolate a real graph wire and draw it at controlled camera-relative depths, through the real scene hooks
-          // and GPU shader. Read actual pixels immediately after each draw; no application state or shader formula.
-          for (const distance of [500, 2000, 8000]) {
+          // and GPU shader. Choose depths around the uploaded world-width reference, then measure compositor pixels.
+          const worldScale = (wire.material as unknown as { uniforms: { spatialWidthScale: { value: number } } }).uniforms.spatialWidthScale.value;
+          const referenceDepth = Math.abs(camera.projectionMatrix.elements[5]) * canvas.height / (2 * cssScale) * worldScale;
+          for (const distance of [referenceDepth / 2, referenceDepth, referenceDepth * 2]) {
             const start = wire.position.clone().set(-distance * .4, 0, -distance).applyMatrix4(camera.matrixWorld);
-            const end = wire.position.clone().set(distance * 1.6, 0, -distance * 4).applyMatrix4(camera.matrixWorld);
+            const end = wire.position.clone().set(distance * .4, 0, -distance).applyMatrix4(camera.matrixWorld);
             isolated.setEnds(start, end);
             scene.updateMatrixWorld(true); renderer.render(scene, camera);
             context.drawImage(renderer.domElement, 0, 0);
@@ -244,19 +277,18 @@ for (const dpr of [1, 2]) {
               for (let y = Math.floor(canvas.height / 2) - 15 * cssScale; y <= canvas.height / 2 + 15 * cssScale; y++) {
                 profile.push(Math.max(0, pixels[(y * canvas.width + x) * 4] - background));
               }
-              const peak = Math.max(...profile);
-              result.push(peak ? profile.reduce((sum, value) => sum + value / peak, 0) / cssScale : 0);
+              profiles.push(profile);
             }
           }
         } finally {
           isolated.restore();
           scene.updateMatrixWorld(true); renderer.render(scene, camera);
         }
-        return result;
+        const solidInk = Math.max(...profiles.flat());
+        return profiles.map(profile => solidInk ? profile.reduce((sum, value) => sum + value / solidInk, 0) / cssScale : 0);
       });
       expect(widths).toHaveLength(9);
-      for (const width of widths) expect(Math.abs(width - 2)).toBeLessThan(.55);
-      expect(Math.max(...widths) - Math.min(...widths)).toBeLessThan(.55);
+      widths.forEach((width, i) => expect(Math.abs(width - [4, 2, 1][Math.floor(i / 3)])).toBeLessThan(.55));
     } finally { await page.close(); }
   });
 
@@ -286,15 +318,15 @@ for (const dpr of [1, 2]) {
         expect(picture.forwardCapDifference).toBeLessThan(.1);
         expect(picture.reversedCapDifference).toBeLessThan(.1);
       }
-      const perspective = pictures.get(0)!.depthWidths, partial = pictures.get(.5)!.depthWidths, invariant = pictures.get(1)!.depthWidths;
+      const perspective = pictures.get(0)!.depthWidths, partial = pictures.get(.5)!.depthWidths, compensated = pictures.get(1)!.depthWidths;
       for (let i = 0; i < 2; i++) {
         expect(Math.abs(perspective[i] - [8, 2][i])).toBeLessThan(.65);
-        expect(Math.abs(invariant[i] - 4)).toBeLessThan(.65);
+        expect(Math.abs(compensated[i] - [8, 2][i] * pictures.get(1)!.widthScale)).toBeLessThan(.65);
         // The partial response is measured between the two rasterized endpoints, not read from shader uniforms.
-        expect(Math.abs(partial[i] - Math.sqrt(perspective[i] * invariant[i]))).toBeLessThan(.65);
+        expect(Math.abs(partial[i] - Math.sqrt(perspective[i] * compensated[i]))).toBeLessThan(.65);
       }
-      expect(partial[0]).toBeGreaterThan(invariant[0] + 1);
-      expect(partial[1]).toBeLessThan(invariant[1] - .5);
+      expect(compensated[0]).toBeGreaterThan(compensated[1] * 2);
+      expect(partial[0]).toBeGreaterThan(partial[1] * 2);
       expect(errors).toEqual([]);
     } finally { await page.close(); }
   });

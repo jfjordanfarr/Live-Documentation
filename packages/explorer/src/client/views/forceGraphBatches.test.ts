@@ -14,10 +14,31 @@ const setup = () => {
     radius: node => node.radius, nodeColor: node => node.color, linkColor: link => link.color,
     linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow
   });
-  return { scene, camera, buffers, draw: (nodes = 0, wires = 1) => buffers.update(camera, 1000, 1000, nodes, wires) };
+  return { scene, camera, buffers, draw: (nodes = 0, wires = 1) => buffers.update(camera, 1000, 1000, nodes, wires, new Vector3()) };
 };
 
 describe("direct spatial buffers", () => {
+  it("keeps body sizes, wire scale and surface endpoints rigid through an orbit about a translated target", () => {
+    const { buffers, camera } = setup();
+    const target = new Vector3(200, -150, 80);
+    const a = node("near", 240, -150, 500, 7), b = node("far", 200, -200, -200, 13);
+    buffers.setData({ nodes: [a, b], links: [link(a, b)] });
+    const frames: number[][] = [];
+    for (const angle of [0, Math.PI / 2, Math.PI, Math.PI * 1.5, 2 * Math.PI]) {
+      camera.position.copy(target).add(new Vector3(1000 * Math.sin(angle), 0, 1000 * Math.cos(angle)));
+      camera.lookAt(target); camera.updateMatrixWorld();
+      buffers.update(camera, 1000, 1000, .3, .9, target);
+      const matrix = new Matrix4();
+      const radii = buffers.nodes.entries.map(entry => { buffers.nodes.mesh.getMatrixAt(entry.slot, matrix); return matrix.elements[0]; });
+      buffers.lines.mesh.getMatrixAt(buffers.lines.entries[0].slot, matrix);
+      const scale = (buffers.lines.mesh.material as unknown as { uniforms: { spatialWidthScale: { value: number } } }).uniforms.spatialWidthScale.value;
+      frames.push([...radii, scale, ...new Vector3().applyMatrix4(matrix).toArray(), ...new Vector3(0, 0, 1).applyMatrix4(matrix).toArray()]);
+    }
+    for (const frame of frames) frame.forEach((value, index) => expect(value).toBeCloseTo(frames[0][index], 6));
+    expect(frames[0][0] / frames[0][1]).toBeCloseTo(7 / 13, 6);
+    buffers.dispose();
+  });
+
   it("uploads real sphere vertices, colors and alpha without constructing a scene object per node", () => {
     const { buffers, scene, draw } = setup(), a = node("a", 20, -8, 4, 7), b = node("b", -30, 17, 90, 13);
     a.color = "#12345633"; b.color = "#ff6600";
@@ -115,8 +136,8 @@ describe("direct spatial buffers", () => {
     const { buffers, camera, draw } = setup(), a = node("a", -100, 0, 0, 12), b = node("b", 100, 0, 0, 12), wire = link(a, b, 4);
     buffers.setData({ nodes: [a, b], links: [wire] }); draw();
     const ray = new Raycaster(); ray.setFromCamera(new Vector2(0, 0), camera);
-    expect(buffers.pickNode(ray)).toBeUndefined(); expect(buffers.pickLink(ray, camera, 1)).toBe(wire);
-    ray.setFromCamera(new Vector2(0, .02), camera); expect(buffers.pickLink(ray, camera, 1)).toBeUndefined();
+    expect(buffers.pickNode(ray)).toBeUndefined(); expect(buffers.pickLink(ray, camera)).toBe(wire);
+    ray.setFromCamera(new Vector2(0, .02), camera); expect(buffers.pickLink(ray, camera)).toBeUndefined();
     const projected = new Vector3(a.x, a.y, a.z).project(camera); ray.setFromCamera(new Vector2(projected.x, projected.y), camera);
     expect(buffers.pickNode(ray)).toBe(a);
     buffers.dispose();
@@ -129,9 +150,9 @@ describe("direct spatial buffers", () => {
       wire.source = reversed ? b : a; wire.target = reversed ? a : b;
       buffers.setData({ nodes: [a, b], links: [wire] }); draw(0, .5);
       ray.setFromCamera(new Vector2(0, 0), camera);
-      expect(buffers.pickLink(ray, camera, .5)).toBe(wire);
+      expect(buffers.pickLink(ray, camera)).toBe(wire);
       ray.setFromCamera(new Vector2(0, .1), camera);
-      expect(buffers.pickLink(ray, camera, .5)).toBeUndefined();
+      expect(buffers.pickLink(ray, camera)).toBeUndefined();
     }
     buffers.dispose();
   });
@@ -140,8 +161,8 @@ describe("direct spatial buffers", () => {
     const { buffers, camera, draw } = setup(), a = node("source", -100, 10, 20, 7), b = node("target", 60, -35, -80, 13);
     const wire = link(a, b); wire.arrow = 4; wire.color = "rgba(214, 178, 240, 0.55)";
     buffers.setData({ nodes: [a, b], links: [wire] });
-    // At resistance 1 a sphere is drawn at its radius times depth over the pixel scale; at 0 at its physical radius.
-    const depth = camera.position.z - b.z, pixelScale = Math.abs(camera.projectionMatrix.elements[5]) * 1000 / 2;
+    // All bodies use the orbit target's depth, preserving relative world sizes through an orbit.
+    const depth = camera.position.z, pixelScale = Math.abs(camera.projectionMatrix.elements[5]) * 1000 / 2;
     for (const [resistance, factor] of [[0, 1], [1, depth / pixelScale]]) {
       draw(resistance, .5);
       const entry = buffers.arrows.entries[0], matrix = new Matrix4();

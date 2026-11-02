@@ -67,7 +67,7 @@ async function uncover(page: Page, id: string): Promise<{ x: number; y: number }
   throw new Error(`${id} stayed covered by nearer spheres after eight turns of the camera`);
 }
 
-test("a focused URL centers the actual graph node in the uncovered frame and opens its details", async ({ page }) => {
+test("a focused URL centers its node, direct clicks pin it, and More opens its details", async ({ page }) => {
   await observeGraph(page);
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
@@ -75,8 +75,10 @@ test("a focused URL centers the actual graph node in the uncovered frame and ope
   const point = await uncover(page, GRAPH);
   await page.mouse.click(point.x, point.y);
   expect(currentSnapshot(page).selectedNodeId).toBe(GRAPH);
-  expect(currentSnapshot(page).pinSet.entries, "inspection does not retain the sphere").toEqual([]);
-  expect(currentSnapshot(page).inspection).toEqual({ kind: "file", nodeId: GRAPH });
+  expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: GRAPH, symbol: "*" }]);
+  expect(currentSnapshot(page).inspection).toBeNull();
+  await page.locator(".force-graph-actions").getByRole("button", { name: "More actions for graph.ts", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Inspect graph.ts", exact: true }).click();
   await expect(page.locator("#detail-panel")).toContainText(GRAPH);
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
   await page.locator("#detail-panel").getByRole("button", { name: "Centre on graph.ts", exact: true }).click();
@@ -107,6 +109,51 @@ test("search moves focus smoothly, survives filtering, and resizes with its cont
   const canvas = (await page.locator("#graph-svg canvas").boundingBox())!;
   expect(canvas.width).toBe(container.width);
   expect(canvas.height).toBe(container.height);
+});
+
+test("direct labels release independent pins, preserve required neighbors, and share the remaining set into 2D", async ({ page, browser }) => {
+  test.setTimeout(60_000);
+  await observeGraph(page);
+  const file = "Portal/Services/GatewayClient.cs", orphan = "Estate.sln";
+  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d",
+    pinSet: { entries: [{ nodeId: file, symbol: "*" }, { nodeId: orphan, symbol: "*" }] } })}`);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const label = (id: string) => page.locator(`.force-graph-label[data-node-id="${id}"], .force-graph-focus[data-node-id="${id}"]`);
+  await expect(label(orphan)).toHaveAttribute("aria-pressed", "true");
+  await label(orphan).click();
+  await expect.poll(async () => (await renderedNodes(page)).some(node => node.id === orphan)).toBe(false);
+  expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: file, symbol: "*" }]);
+  const shared = await browser.newPage();
+  try {
+    await shared.goto(page.url());
+    await shared.getByRole("button", { name: "2D", exact: true }).click();
+    await expect(shared.locator(`.node-card[data-id="${file}"] .local-file-pin`)).toHaveAttribute("aria-pressed", "true");
+    expect(currentSnapshot(shared).pinSet.entries).toEqual(currentSnapshot(page).pinSet.entries);
+  } finally { await shared.close(); }
+  // A needed neighbor stays visible after withdrawing its own pin, and keyboard activation is the same toggle.
+  const neighbor = "Portal/Models/PaymentResultModel.cs";
+  await label(neighbor).focus(); await page.keyboard.press("Enter");
+  await expect(label(neighbor)).toHaveAttribute("aria-pressed", "true");
+  await label(neighbor).press("Enter");
+  await expect(label(neighbor)).toHaveAttribute("aria-pressed", "false");
+  expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: file, symbol: "*" }]);
+  expect((await renderedNodes(page)).some(node => node.id === neighbor)).toBe(true);
+});
+
+test("a second directory click withdraws discovery without retaining its subtree", async ({ page }) => {
+  test.setTimeout(60_000);
+  await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "structure" })}`);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  const label = page.locator('.force-graph-label[data-node-id="directory:Contracts"]');
+  await label.click();
+  expect(currentSnapshot(page).discovery).toEqual({ kind: "directory", directory: "Contracts" });
+  expect(currentSnapshot(page).openDirectories.size).toBe(0);
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  await label.click();
+  expect(currentSnapshot(page).discovery).toBeUndefined();
+  expect(currentSnapshot(page).inspection).toBeNull();
+  expect(currentSnapshot(page).openDirectories.size).toBe(0);
+  await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/);
 });
 
 test("manual pan survives a 2D and 3D round trip without restarting the settled layout", async ({ page }) => {
@@ -292,7 +339,7 @@ test("a stationary pointer rechecks its sphere when wheel movement changes the c
 test.describe("touch pointer lifetime", () => {
   test.use({ hasTouch: true, viewport: { width: 1600, height: 1000 } });
 
-  test("lifting a finger clears pointer attention while its explicit inspection remains available", async ({ page }) => {
+  test("lifting a finger clears pointer attention while its explicit pin remains", async ({ page }) => {
     await observeGraph(page);
     await page.goto("/samples/estate/?view=local&mode=3d&node=Portal%2FServices%2FGatewayClient.cs");
     await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
@@ -303,11 +350,11 @@ test.describe("touch pointer lifetime", () => {
     await expect(page.locator(".force-graph-actions")).toHaveAttribute("data-node-id", id);
     await expect(page.locator("#graph-svg")).toHaveAttribute("data-hovered-node", "true");
     await input.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-    await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
+    await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/);
     await expect(page.locator("#graph-svg")).toHaveAttribute("data-hovered-node", "false");
     await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.25);
-    expect(currentSnapshot(page).inspection).toEqual({ kind: "file", nodeId: id });
-    expect(currentSnapshot(page).pinSet.entries).toEqual([]);
+    expect(currentSnapshot(page).inspection).toBeNull();
+    expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: id, symbol: "*" }]);
     await input.detach();
   });
 });

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-10-22T16:47:55.848Z
+- Generated At: 2026-11-02T02:09:51.947Z
 
 ## Authored
 ### Purpose
@@ -50,7 +50,7 @@ cost more than the measuring and the routing together).
 
 #### `clearConnections` {#symbol-clearconnections}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L101)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/connections.ts#L103)
 - Parameters: `runtime`: [`LocalViewRuntime`](./runtime.ts.mdmd.md#symbol-localviewruntime)
 
 ##### `clearConnections` — Summary
@@ -70,6 +70,7 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`branch-routing.Passage`](./branch-routing.ts.mdmd.md#symbol-passage)
 - [`branch-routing.RoutePiece`](./branch-routing.ts.mdmd.md#symbol-routepiece)
 - [`branch-routing.curveTo`](./branch-routing.ts.mdmd.md#symbol-curveto)
+- [`branch-routing.routeBacktracks`](./branch-routing.ts.mdmd.md#symbol-routebacktracks)
 - [`branch-routing.threadedRoute`](./branch-routing.ts.mdmd.md#symbol-threadedroute)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph)
 - [`branches.edgeKey`](./branches.ts.mdmd.md#symbol-edgekey)

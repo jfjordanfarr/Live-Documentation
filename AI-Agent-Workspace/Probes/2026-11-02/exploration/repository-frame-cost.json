@@ -1,0 +1,230 @@
+{
+  "samples": [
+    {
+      "name": "normal",
+      "frames": 9,
+      "ms": 5200,
+      "hidden": false
+    },
+    {
+      "name": "labels-hidden",
+      "frames": 10,
+      "ms": 5435,
+      "hidden": false
+    },
+    {
+      "name": "canvas-hidden",
+      "frames": 123,
+      "ms": 5035,
+      "hidden": false
+    },
+    {
+      "name": "normal-again",
+      "frames": 11,
+      "ms": 5027,
+      "hidden": false
+    }
+  ],
+  "top": [
+    {
+      "name": "ProxyMain::BeginMainFrame",
+      "ms": 79345.59899999999,
+      "count": 177
+    },
+    {
+      "name": "Scheduler::RunTask",
+      "ms": 73281.09699999997,
+      "count": 419
+    },
+    {
+      "name": "GpuChannel::ExecuteDeferredRequest",
+      "ms": 73274.41099999998,
+      "count": 419
+    },
+    {
+      "name": "WebGL",
+      "ms": 73226.40600000002,
+      "count": 108
+    },
+    {
+      "name": "CommandBuffer::Flush",
+      "ms": 73226.01299999999,
+      "count": 108
+    },
+    {
+      "name": "CommandBufferStub::OnAsyncFlush",
+      "ms": 73225.43999999999,
+      "count": 108
+    },
+    {
+      "name": "CommandBufferService:PutChanged",
+      "ms": 73220.78500000002,
+      "count": 108
+    },
+    {
+      "name": "LayerTreeHost::DoUpdateLayers",
+      "ms": 72955.51300000002,
+      "count": 129
+    },
+    {
+      "name": "GLES2::ReadPixels",
+      "ms": 72825.263,
+      "count": 40
+    },
+    {
+      "name": "ImplementationBase::WaitForCmd",
+      "ms": 72770.92499999999,
+      "count": 40
+    },
+    {
+      "name": "CommandBufferHelper::Finish",
+      "ms": 72770.713,
+      "count": 40
+    },
+    {
+      "name": "CommandBufferProxyImpl::WaitForGetOffset",
+      "ms": 72765.31199999999,
+      "count": 40
+    },
+    {
+      "name": "WebFrameWidgetImpl::BeginMainFrame",
+      "ms": 4646.896,
+      "count": 177
+    },
+    {
+      "name": "Blink.Animate.UpdateTime",
+      "ms": 4645.091000000003,
+      "count": 177
+    },
+    {
+      "name": "AsyncTask Run",
+      "ms": 4644.087,
+      "count": 355
+    },
+    {
+      "name": "PageAnimator::serviceScriptedAnimations",
+      "ms": 4643.242999999998,
+      "count": 177
+    },
+    {
+      "name": "FrameRequestCallbackCollection::ExecuteFrameCallbacks",
+      "ms": 4633.382,
+      "count": 177
+    },
+    {
+      "name": "FireAnimationFrame",
+      "ms": 4632.295999999999,
+      "count": 177
+    },
+    {
+      "name": "FunctionCall",
+      "ms": 4612.716000000002,
+      "count": 357
+    },
+    {
+      "name": "WebFrameWidgetImpl::UpdateLifecycle",
+      "ms": 2221.6240000000007,
+      "count": 178
+    },
+    {
+      "name": "LocalFrameView::UpdateStyleAndLayout",
+      "ms": 2098.0929999999835,
+      "count": 1915
+    },
+    {
+      "name": "LocalFrameView::RunStyleAndLayoutLifecyclePhases",
+      "ms": 2049.928,
+      "count": 178
+    },
+    {
+      "name": "Blink.Style.UpdateTime",
+      "ms": 2021.0000000000002,
+      "count": 192
+    },
+    {
+      "name": "UpdateLayoutTree",
+      "ms": 2018.603,
+      "count": 192
+    },
+    {
+      "name": "Document::updateStyle",
+      "ms": 1944.3519999999996,
+      "count": 192
+    },
+    {
+      "name": "Document::recalcStyle",
+      "ms": 1911.267,
+      "count": 192
+    },
+    {
+      "name": "auto cc::Scheduler::FinishImplFrame()::(anonymous class)::operator()()::(anonymous class)::operator()(uint32_t) const",
+      "ms": 704.7650000000002,
+      "count": 4807
+    },
+    {
+      "name": "V8.GC_MC_BACKGROUND_MARKING",
+      "ms": 661.2129999999999,
+      "count": 307
+    },
+    {
+      "name": "DidNotSubmitInLastFrame",
+      "ms": 637.4039999999995,
+      "count": 4678
+    },
+    {
+      "name": "auto cc::Scheduler::SendDidNotProduceFrame(const viz::BeginFrameArgs &, FrameSkippedReason)::(anonymous class)::operator()()::(anonymous class)::operator()(uint32_t) const",
+      "ms": 596.039000000002,
+      "count": 4682
+    },
+    {
+      "name": "RasterizerTaskImpl::RunOnWorkerThread",
+      "ms": 425.0929999999997,
+      "count": 1866
+    },
+    {
+      "name": "RasterTask",
+      "ms": 402.5699999999999,
+      "count": 1866
+    },
+    {
+      "name": "LayerTreeHostImpl::DidNotProduceFrame",
+      "ms": 398.64200000000005,
+      "count": 4678
+    },
+    {
+      "name": "ZeroCopyRasterBuffer::Playback",
+      "ms": 388.51500000000004,
+      "count": 1866
+    },
+    {
+      "name": "DisplayItemList::Raster",
+      "ms": 323.27799999999934,
+      "count": 1868
+    },
+    {
+      "name": "Scheduler::BeginImplFrame",
+      "ms": 252.32899999999984,
+      "count": 4807
+    },
+    {
+      "name": "Scheduler::BeginFrame",
+      "ms": 223.81799999999853,
+      "count": 4807
+    },
+    {
+      "name": "ProxyImpl::ReadyToCommit",
+      "ms": 215.26200000000003,
+      "count": 129
+    },
+    {
+      "name": "LayerTreeHostImpl::CommitComplete",
+      "ms": 155.851,
+      "count": 129
+    },
+    {
+      "name": "TileManager::PrepareTiles",
+      "ms": 154.58100000000005,
+      "count": 254
+    }
+  ]
+}

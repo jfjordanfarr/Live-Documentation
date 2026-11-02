@@ -4,6 +4,16 @@ import { compressSnapshot, DEFAULT_SNAPSHOT } from "./compressed-url-state";
 import { parseNavigation } from "./url-state";
 
 describe("navigation and representation", () => {
+  it("leaves an omitted layout to the bundle while preserving explicit, legacy and shared choices", () => {
+    expect(parseNavigation("?view=local&mode=3d").spatialLayout).toBeNull();
+    expect(parseNavigation("?view=local&mode=3d&layout=connections").spatialLayout).toBe("connections");
+    expect(parseNavigation("?view=local&layout=structure").spatialLayout).toBe("structure");
+    expect(parseNavigation("?view=graph").spatialLayout).toBe("connections");
+    expect(parseNavigation("?view=local&mode=3d&node=src/a.ts").spatialLayout).toBe("connections");
+    expect(parseNavigation("?view=local&mode=3d&dir=src").spatialLayout).toBe("connections");
+    expect(parseNavigation(`?s=${compressSnapshot(DEFAULT_SNAPSHOT)}`).spatialLayout).toBe("connections");
+  });
+
   it.each(["local", "map", "membrane", "circuit"])("migrates %s to the 2D Local Map", view => {
     expect(parseNavigation(`?view=${view}&node=src/a.ts`)).toMatchObject({ view: "map", perspective: "2d", nodeId: "src/a.ts", hasUrlState: true });
   });

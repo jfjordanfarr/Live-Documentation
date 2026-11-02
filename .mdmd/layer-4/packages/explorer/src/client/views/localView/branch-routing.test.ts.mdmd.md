@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/branch-routing.test.ts
-- Generated At: 2026-10-05T16:55:01.305Z
+- Generated At: 2026-11-02T02:09:51.663Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ _No public symbols detected_
 - [`types.BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning) (type-only)
 - [`branch-routing.RoutePoint`](./branch-routing.ts.mdmd.md#symbol-routepoint)
 - [`branch-routing.curveTo`](./branch-routing.ts.mdmd.md#symbol-curveto)
+- [`branch-routing.routeBacktracks`](./branch-routing.ts.mdmd.md#symbol-routebacktracks)
 - [`branch-routing.threadedRoute`](./branch-routing.ts.mdmd.md#symbol-threadedroute)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

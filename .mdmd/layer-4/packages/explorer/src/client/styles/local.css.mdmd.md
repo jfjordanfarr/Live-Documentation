@@ -25,6 +25,8 @@ Styles specific to the Local Map view: the placed cards, directory membranes and
 
 Two rules that moved the perspective controls and the pin tray aside when the detail panel was open (`#detail-panel.visible ~ .perspective-controls`, `~ .pin-tray`) were deleted on 2026-10-18: the panel is a child of the views container and the controls and the tray are children of its parent, so the sibling selectors never matched, which the C4 builder noticed while placing the history scrubber.
 
+The pin tray’s transparent positioning wrapper does not receive pointer input; its panel and toggle do. This keeps the adjacent representation/history controls usable when the tray expands above its narrower toggle. The 3D toolbar’s hop selector has the same readable size and focus outline as its buttons.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

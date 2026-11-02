@@ -103,6 +103,13 @@ export function revealOrder<N extends SpatialNode>(nodes: readonly N[], links: r
   return revealLayers(nodes, links, { asked: attention }, pulls).flat();
 }
 
+/** Carry already-visible 2D identities into the first 3D picture, retaining membership and the order of everything else. */
+export function revealCorresponding(order: readonly string[], shown: number, counterparts: ReadonlySet<string>): { order: string[]; shown: number } {
+  if (!Number.isInteger(shown) || shown < 0 || shown > order.length) throw new Error("The revealed count must be within the picture.");
+  const waiting = order.slice(shown), entering = waiting.filter(id => counterparts.has(id));
+  return { order: [...order.slice(0, shown), ...entering, ...waiting.filter(id => !counterparts.has(id))], shown: shown + entering.length };
+}
+
 /**
  * How many spheres are shown after the next frame of a reveal: `shown` plus a share of `total` such that the whole
  * enters in `frames` frames, at least one sphere a frame, never past `total`. A picture of fifteen spheres and one of

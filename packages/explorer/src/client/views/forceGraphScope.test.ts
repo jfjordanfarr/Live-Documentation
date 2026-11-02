@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { linkPulls, type SpatialLink } from "./forceGraphLayout";
-import { spatialScope, startOf, type StartableNode } from "./forceGraphScope";
+import { componentLandmarks, connectedNeighbours, defaultSpatialLayout, directoryHubOf, directoryMembersWithinHops, spatialScope, startOf, type StartableNode } from "./forceGraphScope";
 import { getDefaultTuning } from "../persistence/local-storage";
 
 const node = (id: string, more: Partial<StartableNode> = {}): StartableNode => ({ id, publicSymbols: [], ...more });
@@ -15,6 +15,30 @@ const chain = ["a", "b", "c", "d", "e", "f", "g"].map(id => node(id));
 const chainLinks = [link("a", "b"), link("b", "c"), link("c", "d"), link("d", "e"), link("c", "f")];
 
 describe("what the picture shows around what was asked about", () => {
+  it("carries a directory's bounded file neighborhood into Connections and resolves collapsed chains", () => {
+    const nodes = [node("directory:", { directoryPath: "" }), node("directory:src", { directoryPath: "src" }),
+      node("directory:src/deep", { directoryPath: "src/deep" }), node("directory:src/deep/deeper", { directoryPath: "src/deep/deeper" }),
+      node("src/direct"), node("src/deep/child"), node("src/deep/deeper/leaf"), node("outside")];
+    const links = [link("directory:", "directory:src", "containment"), link("directory:", "outside", "containment"),
+      link("directory:src", "src/direct", "containment"), link("directory:src", "directory:src/deep", "containment"),
+      link("directory:src/deep", "src/deep/child", "containment"), link("directory:src/deep", "directory:src/deep/deeper", "containment"),
+      link("directory:src/deep/deeper", "src/deep/deeper/leaf", "containment")];
+    expect(directoryMembersWithinHops(nodes, links, "src", 1)).toEqual(new Set(["src/direct"]));
+    expect(directoryMembersWithinHops(nodes, links, "src", 2)).toEqual(new Set(["src/direct", "src/deep/child"]));
+    const collapsed = [nodes[0], node("directory:src/deep", { directoryPath: "src/deep" }), node("src/deep/child")];
+    expect(directoryHubOf(collapsed, "src")).toBe("directory:src/deep");
+    expect(directoryHubOf(collapsed, "missing")).toBeUndefined();
+    expect(directoryHubOf([...collapsed, node("src/direct")], "src")).toBeUndefined();
+    expect(directoryMembersWithinHops(collapsed, [link("directory:src/deep", "src/deep/child", "containment")], "src", 1))
+      .toEqual(new Set(["src/deep/child"]));
+  });
+
+  it("names every disconnected group and isolated file, choosing the most connected member deterministically", () => {
+    const graph = [...chain, node("x"), node("y")], links = [...chainLinks, link("x", "y")];
+    expect(componentLandmarks(connectedNeighbours(graph, links, connections))).toEqual(new Map([["c", 6], ["g", 1], ["x", 2]]));
+    expect(componentLandmarks(connectedNeighbours([...graph].reverse(), [...links].reverse(), connections))).toEqual(new Map([["c", 6], ["g", 1], ["x", 2]]));
+  });
+
   it("shows the attention set, then a hop at a time up to the hops asked, each sphere at its nearest hop", () => {
     const scope = spatialScope(chain, chainLinks, new Set(["c"]), 2, connections);
     expect([...scope.hops]).toEqual([["c", 0], ["b", 1], ["d", 1], ["f", 1], ["a", 2], ["e", 2]]);
@@ -52,6 +76,12 @@ describe("what the picture shows around what was asked about", () => {
 });
 
 describe("where a picture starts with nothing asked about", () => {
+  it("defaults to Structure without declared entries, ignoring inferred fixture mains and commands", () => {
+    expect(defaultSpatialLayout([])).toBe("structure");
+    expect(defaultSpatialLayout([node("main", { entryReasons: ["program", "command"] })])).toBe("structure");
+    expect(defaultSpatialLayout([node("entry", { entryReasons: ["declared", "program"] })])).toBe("connections");
+  });
+
   const nodes = [node("src/main.ts", { entryReasons: ["declared"] }), node("src/style.css", { entryReasons: ["declared"] }), node("src/hub.ts", { entryReasons: ["program"] }),
     node("src/a.ts"), node("src/b.ts"), node("related:README.md", { archetype: "related-doc" }), node("directory:", { directoryPath: "" }), node("directory:src", { directoryPath: "src" })];
   const links = [link("src/hub.ts", "src/a.ts"), link("src/hub.ts", "src/b.ts"), link("src/hub.ts", "src/main.ts"), link("src/a.ts", "related:README.md", "related-doc"),

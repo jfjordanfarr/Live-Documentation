@@ -1,0 +1,29 @@
+{
+  "errors": [],
+  "beforeDiscovery": {
+    "kind": "directory",
+    "directory": "Portal"
+  },
+  "afterDiscovery": {
+    "kind": "directory",
+    "directory": "Portal"
+  },
+  "connections": [
+    "Contracts/PaymentQuery.cs",
+    "Contracts/PaymentRequest.cs",
+    "Gateway/Controllers/PaymentsController.cs",
+    "Gateway/GatewaySettings.cs",
+    "Gateway/Wcf/HubProxy.cs",
+    "Portal/App_Code/Globals.cs",
+    "Portal/Controllers/PaymentsController.cs",
+    "Portal/Models/PaymentRequestModel.cs",
+    "Portal/Models/PaymentResultModel.cs",
+    "Portal/Pages/Default.aspx",
+    "Portal/Pages/Default.aspx.cs",
+    "Portal/Pages/Default.aspx.designer.cs",
+    "Portal/Portal.csproj",
+    "Portal/Scripts/portal.js",
+    "Portal/Services/GatewayClient.cs",
+    "Portal/Web.config"
+  ]
+}

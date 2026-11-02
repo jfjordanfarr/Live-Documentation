@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/spatial.ts
-- Generated At: 2026-10-31T20:07:05.021Z
+- Generated At: 2026-11-02T06:07:20.361Z
 
 ## Authored
 ### Purpose
 Produces the headless 3D Local Map report from the same filtered graph, documented counts and force configuration used in the browser, in either of its layouts.
 
 ### Notes
-A named scope's retained files and the subject are what is asked about, and the report's picture is the tuning's hops of connections around them, as on the page since 2026-10-31 (discovery); until then the full filtered graph supplied the forces and the retained neighbourhood only the attention. The physics measures (`approximation.ts`, `drift.ts`) ask for the whole filtered picture instead, every file asked about, since their errors want many spheres. Explicit retained files survive test/asset filtering, optional documentation overlays use the shared projection, and missing retained IDs fail explicitly. The report carries settings, counts, radii, positions, preferred and actual pair distances, bounds and sphere overlaps; it is a deterministic tick-based run rather than a claim to reproduce a time-limited live camera session. The layout (2026-10-14) is the command's `--layout`; the report says of every link whether it pulls in that layout, and in the structure layout the hubs are sized by their members as in the page.
+A named scope's retained files and the subject are what is asked about, and the report's picture is the tuning's hops of connections around them, as on the page since 2026-10-31 (discovery); until then the full filtered graph supplied the forces and the retained neighbourhood only the attention. The physics measures (`approximation.ts`, `drift.ts`) ask for the whole filtered picture instead, every file asked about, since their errors want many spheres. Explicit retained files survive test/asset filtering, optional documentation overlays use the shared projection, and missing retained IDs fail explicitly. The report carries settings, counts, radii, positions, preferred and actual pair distances, bounds and sphere overlaps; it is a deterministic tick-based run rather than a claim to reproduce a time-limited live camera session. The layout (2026-10-14) is the command's `--layout`; the report says of every link whether it pulls in that layout, and in the structure layout hubs have the page's uniform junction size. The November 2 parity correction starts hops at the pins themselves, not their already-retained neighborhood, and whole-root reports reveal files as directory members rather than direct pins.
 
 Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
@@ -32,7 +32,7 @@ page; before, the full filtered graph supplied the forces and the retained neigh
 
 #### `renderSpatialReport` {#symbol-renderspatialreport}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/spatial.ts#L64)
+- Source: [source](../../../../scripts/layout-lab/spatial.ts#L65)
 
 ##### `renderSpatialReport` — Summary
 Human-readable companion to the complete node, reference-count and coordinate JSON.

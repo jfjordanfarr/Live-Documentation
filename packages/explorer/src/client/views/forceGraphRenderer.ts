@@ -5,6 +5,9 @@ import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, t
 import type { CameraPoint } from "./forceGraphCamera";
 import type { SpatialNode } from "./forceGraphLayout";
 
+/** Mouse/touch motion within this CSS-pixel distance is still a click, shared with the view's press/hold handling. */
+export const SPATIAL_DRAG_SLOP = 6;
+
 /** The view owns motion and attention; this layer owns only their picture, camera and direct instance picking. */
 export interface SpatialRendererOptions<N, L> {
   style: SpatialDrawStyle<N, L>;
@@ -34,7 +37,7 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   private pendingData = false;
   private viewWidth = 1;
   private viewHeight = 1;
-  private drag: { node: N; pointerId: number; plane: Plane; offset: Vector3; fixed: [number | null | undefined, number | null | undefined, number | null | undefined]; moved: boolean } | null = null;
+  private drag: { node: N; pointerId: number; x: number; y: number; plane: Plane; offset: Vector3; fixed: [number | null | undefined, number | null | undefined, number | null | undefined]; moved: boolean } | null = null;
 
   constructor(container: HTMLElement, private readonly options: SpatialRendererOptions<N, L>) {
     this.wrapper = document.createElement("div"); this.wrapper.className = "scene-container";
@@ -48,12 +51,12 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.paint = { render: (): void => {
       const resistance = this.options.resistance();
       if (this.pendingData) { this.buffers.setData(this.data); this.pendingData = false; }
-      this.buffers.update(this.eye, this.viewWidth, this.viewHeight, resistance.nodes, resistance.wires);
+      this.buffers.update(this.eye, this.viewWidth, this.viewHeight, resistance.nodes, resistance.wires, this.orbit.target);
       this.gpu.render(this.world, this.eye);
     } };
     drawSpatialGraphOnChange(this.eye, this.gpu, this.paint, () => {
       const resistance = this.options.resistance();
-      return [this.revision, this.appearance, resistance.nodes, resistance.wires];
+      return [this.revision, this.appearance, resistance.nodes, resistance.wires, ...this.orbit.target.toArray().map(Math.fround)];
     });
     this.orbit = new TrackballControls(this.eye, this.gpu.domElement);
     this.orbit.minDistance = .1; this.orbit.maxDistance = 50000;
@@ -67,7 +70,7 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
       const plane = new Plane().setFromNormalAndCoplanarPoint(this.eye.getWorldDirection(new Vector3()), new Vector3(node.x, node.y, node.z));
       this.setRay(event.clientX, event.clientY);
       if (!this.raycaster.ray.intersectPlane(plane, this.point)) return;
-      this.drag = { node, pointerId: event.pointerId, plane, offset: this.point.clone().sub(new Vector3(node.x, node.y, node.z)),
+      this.drag = { node, pointerId: event.pointerId, x: event.clientX, y: event.clientY, plane, offset: this.point.clone().sub(new Vector3(node.x, node.y, node.z)),
         fixed: [node.fx, node.fy, node.fz], moved: false };
       node.fx = node.x; node.fy = node.y; node.fz = node.z;
       this.orbit.enabled = false;
@@ -77,6 +80,7 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.gpu.domElement.addEventListener("pointermove", event => {
       const drag = this.drag;
       if (!drag || event.pointerId !== drag.pointerId) return;
+      if (!drag.moved && Math.hypot(event.clientX - drag.x, event.clientY - drag.y) <= SPATIAL_DRAG_SLOP) return;
       this.setRay(event.clientX, event.clientY);
       if (!this.raycaster.ray.intersectPlane(drag.plane, this.point)) return;
       this.point.sub(drag.offset);
@@ -199,7 +203,7 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   /** Show the documented relationship under the pointer using its projected stroke. */
   showWireAt(clientX: number, clientY: number): void {
     this.setRay(clientX, clientY);
-    const link = this.buffers.pickLink(this.raycaster, this.eye, this.options.resistance().wires);
+    const link = this.buffers.pickLink(this.raycaster, this.eye);
     this.tooltip.hidden = !link;
     if (link) {
       const label = this.options.linkLabel(link);

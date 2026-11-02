@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphRenderer.ts
-- Generated At: 2026-10-29T18:52:11.881Z
+- Generated At: 2026-11-02T06:07:14.574Z
 
 ## Authored
 ### Purpose
@@ -22,16 +22,23 @@ The node/line colour, visibility, radius and width accessors describe appearance
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
+#### `SPATIAL_DRAG_SLOP` {#symbol-spatial_drag_slop}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L9)
+
+##### `SPATIAL_DRAG_SLOP` — Summary
+Mouse/touch motion within this CSS-pixel distance is still a click, shared with the view's press/hold handling.
+
 #### `SpatialRendererOptions` {#symbol-spatialrendereroptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L9)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L12)
 
 ##### `SpatialRendererOptions` — Summary
 The view owns motion and attention; this layer owns only their picture, camera and direct instance picking.
 
 #### `SpatialRenderer` {#symbol-spatialrenderer}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L21)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
 
 ##### `SpatialRenderer` — Summary

@@ -1,8 +1,10 @@
-import { expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import type { ScopeRun } from "./scopes";
 import { spatialReport } from "./spatial";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
+import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
+import { easeSpatialLayout } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
 const node = (id: string, archetype = "implementation", symbols = 0): ExplorerNodePayload => ({ id, name: id,
@@ -47,4 +49,37 @@ it("reports the declared structure separately, with uniform hubs and references 
   expect(tree.links.find(link => link.kind !== "containment")).toMatchObject({ references: 4, pulls: false });
   expect(network.nodes.every(node => node.kind !== "directory")).toBe(true);
   expect(network.links).toEqual([expect.objectContaining({ source: "a", target: "b", references: 4, pulls: true })]);
+});
+
+describe("the spatial report's correspondence to the page", () => {
+  const node = (id: string): ExplorerNodePayload => ({ id, name: id, codePath: id, codeRelativePath: id,
+    docPath: `docs/${id}.md`, docRelativePath: `docs/${id}.md`, archetype: "implementation", publicSymbols: ["run"],
+    dependencies: [], dependents: [], missingDependencies: [] });
+  const graph: ExplorerGraphPayload = {
+    nodes: ["a", "b", "c", "d", "e", "isolated"].map(node),
+    links: [["a", "b"], ["b", "c"], ["c", "d"], ["d", "e"]].map(([source, target]) => ({ source, target, kind: "dependency" })),
+    stats: { nodes: 6, links: 4, references: 4, dependenciesOutsideScan: 0 }
+  };
+  const run: ScopeRun = { bundle: "repository", base: "/", scopeName: "chain", subject: "a", scope: ["a"] };
+
+
+  it("takes hops from the pins themselves, without silently adding another hop through their retained neighbors", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    const one = spatialReport(graph, run, { ...tuning, hops: 1 }, 500);
+    expect(one.nodes.map(node => node.id)).toEqual(["a", "b"]);
+    const two = spatialReport(graph, run, { ...tuning, hops: 2 }, 500);
+    expect(two.nodes.map(node => node.id)).toEqual(["a", "b", "c"]);
+    expect(two.nodes.some(node => node.id === "isolated")).toBe(false);
+  });
+
+  it("reveals a whole root as directory members, keeping disconnected files without turning all members into direct pins", () => {
+    const tuning = getDefaultTuning().forceGraph;
+    const report = spatialReport(graph, run, tuning, 500, { showTests: true, showAssets: true }, [], "connections", true);
+    const data = spatialGraphOf(graph, () => true, [], "connections");
+    const expected = easeSpatialLayout(data.nodes, data.links, tuning, "connections", { maxTicks: 500,
+      reveal: { asked: new Set(), members: new Set(data.nodes.map(node => node.id)) } });
+    expect(report.nodes.map(node => node.id)).toEqual(graph.nodes.map(node => node.id));
+    expect(report.nodes.map(node => [node.x, node.y, node.z])).toEqual(expected.nodes.map(node => [node.x, node.y, node.z]));
+    expect(report.still).toBe(true);
+  });
 });

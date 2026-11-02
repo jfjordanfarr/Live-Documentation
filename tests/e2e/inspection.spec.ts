@@ -344,7 +344,8 @@ test("3D Pin keeps the camera, inspection preserves its bearing and stays clear 
   });
   expect(await camera(), "Pin does not steer the camera").toEqual(beforePin);
   const before = await camera();
-  await page.mouse.click(point.x, point.y);
+  await page.locator(".force-graph-actions").getByRole("button", { name: "More actions for PaymentResultModel.cs", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Inspect PaymentResultModel.cs", exact: true }).click();
   await expect(page.locator("#detail-panel.visible")).toContainText(B);
   expect(snapshot(page).selectedNodeId).toBe(A);
   const canvas = (await page.locator("#graph-svg").boundingBox())!;

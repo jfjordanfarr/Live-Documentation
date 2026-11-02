@@ -1,0 +1,11 @@
+{
+  "errors": [],
+  "observations": [
+    "Fresh Structure shows 118 eligible files and directory landmarks.",
+    "Apps discovery shows 56 files; server discovery 100; source discovery 805.",
+    "Server discovery did not become idle within 60 seconds in this recorded software-renderer run; input remained responsive.",
+    "MCP discovery shows 91 files in Structure and 1242 in Connections; the latter is visually too dense.",
+    "Following the visible OrchestratorMcpService reader link reduces the Connections scope to 441.",
+    "This trial prompted direct toolbar access to the existing hops setting and framing on directory discovery."
+  ]
+}

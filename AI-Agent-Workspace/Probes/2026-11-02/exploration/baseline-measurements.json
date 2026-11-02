@@ -1,0 +1,205 @@
+{
+  "baseline": "b67c3433",
+  "filters": {
+    "showTests": true,
+    "showAssets": false,
+    "showRelatedDocs": false,
+    "showCitingDocs": false
+  },
+  "tuning": {
+    "linkGap": 60,
+    "charge": 60,
+    "collisionGap": 5,
+    "coupling": 1,
+    "nodeSize": 4,
+    "symbolScale": 1,
+    "linkWidth": 1,
+    "nodeZoomResistance": 0.3,
+    "wireZoomResistance": 0.9,
+    "gravity": 0.025,
+    "chargeRange": 0,
+    "approximation": 0.3,
+    "linkStrength": 0.5,
+    "updateEnergy": 1,
+    "tether": 0.02,
+    "citedByPull": 1,
+    "hops": 2,
+    "revealFrames": 60
+  },
+  "graphs": [
+    {
+      "name": "repository",
+      "files": 913,
+      "pairs": 2200,
+      "components": 94,
+      "isolated": 52,
+      "isolatedShown": 0,
+      "componentsShown": 1,
+      "start": [
+        "packages/explorer/src/client/index.ts",
+        "packages/explorer/src/client/styles.css"
+      ],
+      "shown": 191,
+      "largest": [
+        {
+          "files": 465,
+          "seed": "packages/engine/src/config/liveDocumentationConfig.ts"
+        },
+        {
+          "files": 102,
+          "seed": "tests/integration/programs/rosetta-manifest.json"
+        },
+        {
+          "files": 33,
+          "seed": "tests/integration/programs/csharp/estate/expected/compiler-edges.json"
+        },
+        {
+          "files": 15,
+          "seed": "tests/integration/programs/go/depot/expected/compiler-edges.json"
+        },
+        {
+          "files": 14,
+          "seed": "tests/integration/fixtures/slopcop-assets/workspace/pages/index.html"
+        },
+        {
+          "files": 14,
+          "seed": "tests/integration/programs/python/ledger/expected/compiler-edges.json"
+        }
+      ],
+      "isolatedExamples": [
+        ".devcontainer/devcontainer.json",
+        ".devcontainer/post-create.sh",
+        ".gitattributes",
+        ".github/dependabot.yml",
+        ".github/workflows/ci.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/npm-audit.yml",
+        ".github/workflows/pages.yml",
+        ".gitignore",
+        ".nvmrc",
+        ".vscode/settings.json",
+        "eslint.config.js"
+      ]
+    },
+    {
+      "name": "estate",
+      "files": 36,
+      "pairs": 60,
+      "components": 4,
+      "isolated": 2,
+      "isolatedShown": 0,
+      "componentsShown": 1,
+      "start": [
+        "PaymentService/PaymentService.cs"
+      ],
+      "shown": 16,
+      "largest": [
+        {
+          "files": 30,
+          "seed": "PaymentService/PaymentService.cs"
+        },
+        {
+          "files": 4,
+          "seed": "Contracts/Contracts.csproj"
+        },
+        {
+          "files": 1,
+          "seed": "Estate.sln"
+        },
+        {
+          "files": 1,
+          "seed": "Portal/Portal.csproj"
+        }
+      ],
+      "isolatedExamples": [
+        "Estate.sln",
+        "Portal/Portal.csproj"
+      ]
+    },
+    {
+      "name": "t3",
+      "files": 27823,
+      "pairs": 80108,
+      "components": 6369,
+      "isolated": 5689,
+      "isolatedShown": 0,
+      "componentsShown": 1,
+      "start": [
+        ".repos/alchemy-effect/packages/alchemy/src/Binding.ts"
+      ],
+      "shown": 9341,
+      "largest": [
+        {
+          "files": 19678,
+          "seed": ".repos/alchemy-effect/packages/alchemy/src/Binding.ts"
+        },
+        {
+          "files": 64,
+          "seed": "oxlint-plugin-t3code/index.ts"
+        },
+        {
+          "files": 34,
+          "seed": ".repos/effect-smol/packages/effect/test/ai/McpServer/McpConformance/McpConformance.ts"
+        },
+        {
+          "files": 31,
+          "seed": ".repos/effect-smol/packages/effect/runtimeperf/config.json"
+        },
+        {
+          "files": 25,
+          "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ApiGateway/Test.ts"
+        },
+        {
+          "files": 25,
+          "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Dataplex/quota.ts"
+        }
+      ],
+      "isolatedExamples": [
+        ".agents/skills/test-t3-app/agents/openai.yaml",
+        ".agents/skills/test-t3-mobile/agents/openai.yaml",
+        ".agents/skills/test-t3-mobile/scripts/pair-client.sh",
+        ".coderabbit.config.ts",
+        ".cursor/.gitignore",
+        ".cursor/rules/cursor-cloud.mdc",
+        ".devcontainer/devcontainer.json",
+        ".devcontainer/on-create.sh",
+        ".devcontainer/update-content.sh",
+        ".env.example",
+        ".gitattributes",
+        ".github/actions/ci-changes/action.yml"
+      ]
+    }
+  ],
+  "orbit": [
+    {
+      "degrees": 0,
+      "cameraDistance": 1000,
+      "nodeWorldScale": 0.8505008819013428,
+      "wireWorldScale": 0.6152113013976547
+    },
+    {
+      "degrees": 90,
+      "cameraDistance": 1000,
+      "nodeWorldScale": 1.0470894092977625,
+      "wireWorldScale": 1.1480248819406125
+    },
+    {
+      "degrees": 180,
+      "cameraDistance": 1000,
+      "nodeWorldScale": 1.182527215539757,
+      "wireWorldScale": 1.653611310230621
+    },
+    {
+      "degrees": 270,
+      "cameraDistance": 1000,
+      "nodeWorldScale": 1.0470894092977625,
+      "wireWorldScale": 1.1480248819406125
+    },
+    {
+      "degrees": 360,
+      "cameraDistance": 1000,
+      "nodeWorldScale": 0.8505008819013428,
+      "wireWorldScale": 0.6152113013976547
+    }
+  ]
+}

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-10-31T20:07:00.560Z
+- Generated At: 2026-11-02T02:23:36.866Z
 
 ## Authored
 ### Purpose
@@ -17,11 +17,11 @@ Mutable layout positions are read once per draw into packed numeric arrays. Wire
 
 The scene holds one instanced mesh each for spheres, wires and arrows. A datum owns a stable binding to a slot, retained across changes when the view retains that datum; the slot may change when depth order changes. Buffers grow geometrically and release old GPU attributes before replacing them; every batch has its instance attributes from creation, with room for one, since the renderer compiles a mesh's program on its first frame whatever its count and the wire shader reads the instance colour, which Three declares only for a mesh that has one: under discovery a first piece of one sphere has no wires, and the first frame failed to compile the wire program before this (found in the pictures of 2026-10-31). Invisible and culled members stay addressable after the drawn prefix, preserving the distinction between graph membership and what the camera sees. Sphere tessellation remains twelve segments. Since 2026-10-30 the wires are drawn first and write depth, a faded wire none, so that a faded sphere in front lets a wire show through and a faded wire cuts no hole in a bright one behind it; before, the spheres were drawn first and every sphere, faded or not, cut the wires behind it. Colour and alpha are per instance, so attention fades unrelated facts without changing their identities. A wire's colour is one RGB for its whole length: the blue-to-green run by direction of 2026-10-30 was withdrawn on 2026-10-31 at the owner's eye ([Turn 1 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-1)), since in the whole web no wire's two ends could be told apart, and the hover's words carry the direction instead.
 
-The owner's [October 24 resistance request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) supplies the projected round-capped wire shader. Each endpoint's depth controls its resistance-adjusted width; near/far clipping and end-on caps agree with [the sizing math](forceGraphSizing.ts.mdmd.md). Wire transforms store their actual endpoints directly, without cylinder rotation or per-wire geometry; since 2026-10-30 the endpoints are trimmed to the two spheres' drawn surfaces, so a wire neither pierces its own spheres nor is cut by them, and two spheres that touch have no wire drawn between them. Spheres receive the same display-radius compensation used by labels and picking; a citation arrow takes its target sphere's units under that compensation and stands at the drawn surface (2026-10-30; before, it kept its physical length and sank into a sphere drawn larger). Neither display resistance changes the force model's sizes.
+The owner's [October 24 resistance request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) supplies the projected round-capped wire shader. The camera target supplies one world-width compensation for the scene; each endpoint's depth then supplies ordinary perspective taper. Near/far clipping and end-on caps agree with [the sizing math](forceGraphSizing.ts.mdmd.md). Wire transforms store their actual endpoints directly, without cylinder rotation or per-wire geometry; since 2026-10-30 the endpoints are trimmed to the two spheres' drawn surfaces, so a wire neither pierces its own spheres nor is cut by them, and two spheres that touch have no wire drawn between them. Spheres receive the same display-radius compensation used by labels and picking; a citation arrow takes its target sphere's units under that compensation and stands at the drawn surface (2026-10-30; before, it kept its physical length and sank into a sphere drawn larger). Neither display resistance changes the force model's sizes.
 
 Picking reads uploaded matrices. A sphere query rejects nonintersecting bounding spheres, then intersects the actual tessellated geometry through one reusable mesh. A wire query rejects points outside its cached projected stroke bounds, then checks the clipped, tapered stroke. These bindings form the renderer's picking index; browser observations read that same index and the actual GPU attributes, with separate pixel tests for the shader.
 
-The draw guard compares explicit picture/appearance revisions with the camera, projection, canvas and background. Camera values are compared at Float32 upload precision against the last draw, while revision counters retain full precision. Same-size canvas assignments and restored WebGL contexts invalidate the picture. A partial physics evaluation that has not changed positions does not cause a new draw. The view's reveal advances only after the preceding membership has reached the screen.
+The draw guard compares explicit picture/appearance revisions with the camera, orbit target, projection, canvas and background. Camera values are compared at Float32 upload precision against the last draw, while revision counters retain full precision. Same-size canvas assignments and restored WebGL contexts invalidate the picture. A partial physics evaluation that has not changed positions does not cause a new draw. The view's reveal advances only after the preceding membership has reached the screen.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -65,7 +65,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L287)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L289)
 - Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -73,11 +73,11 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L317)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L319)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary
-Clip a unit wire's axis in homogeneous coordinates, allowing its CSS-pixel half width and round caps.
+Clip a unit wire's axis in homogeneous coordinates, projecting its compensated world width and round caps.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -85,6 +85,7 @@ Clip a unit wire's axis in homogeneous coordinates, allowing its CSS-pixel half 
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphSizing.clipSpatialWireDepth`](./forceGraphSizing.ts.mdmd.md#symbol-clipspatialwiredepth)
 - [`forceGraphSizing.pickSpatialWire`](./forceGraphSizing.ts.mdmd.md#symbol-pickspatialwire)
+- [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
 - `three` - `BufferGeometry`, `Camera`, `Color`, `ConeGeometry`, `DynamicDrawUsage`, `Frustum`, `InstancedBufferAttribute`, `InstancedMesh`, `Intersection`, `Material`, `Matrix4`, `Mesh`, `MeshLambertMaterial`, `Quaternion`, `Raycaster`, `Scene`, `Sphere`, `SphereGeometry`, `Vector2`, `Vector3`, `Vector4`, `WebGLRenderer`
 - `three/addons/lines/LineMaterial.js` - `LineMaterial`
 - `three/addons/lines/LineSegmentsGeometry.js` - `LineSegmentsGeometry`

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-11-01T20:01:36.868Z
+- Generated At: 2026-11-02T06:07:14.347Z
 
 ## Authored
 ### Purpose
@@ -184,17 +184,18 @@ How many still ticks in a row end the easing.
 
 #### `UNFOLDED_FRACTION` {#symbol-unfolded_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L186)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L187)
 
 ##### `UNFOLDED_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
-calmed and the tether takes hold where it stands. A tenth of a percent: this repository's pictures pass it after about
+calmed and the tether takes hold where it stands, after the requested membership has entered. A tenth of a percent:
+the original repository pictures passed it after about
 210 to 250 ticks from the library's seed and are still some 140 ticks later; held from the seed, which is a ball a
 hundredth of the picture's size, they would stay far too small (measured 2026-10-21).
 
 #### `spatialFieldOf` {#symbol-spatialfieldof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L193)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L194)
 - Returns: [`SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -206,7 +207,7 @@ Links whose ends are not among the nodes are left out, as D3 would refuse them.
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L220)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L221)
 
 ##### `MotionStart` — Summary
 How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
@@ -215,7 +216,7 @@ forces, which rearrange the whole and leave the old places no reference.
 
 #### `MotionForce (interface)` {#symbol-motionforce-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L223)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L224)
 - Extends: `Force`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -224,7 +225,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L237)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L238)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -232,7 +233,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L270)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L273)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -250,14 +251,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L363)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L366)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L386)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L389)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

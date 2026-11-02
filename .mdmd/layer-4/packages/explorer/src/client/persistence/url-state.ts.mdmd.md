@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/url-state.ts
-- Generated At: 2026-10-22T16:47:54.857Z
+- Generated At: 2026-11-02T02:09:50.619Z
 
 ## Authored
 ### Purpose
@@ -37,14 +37,14 @@ Parse an address without consulting browser storage; an explicit Local Map link 
 
 #### `parseInitialState` {#symbol-parseinitialstate}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L48)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L51)
 
 ##### `parseInitialState` — Summary
 URL navigation takes precedence over saved navigation. A board chooses World Map on a fresh visit.
 
 #### `updateUrlState` {#symbol-updateurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L51)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/url-state.ts#L54)
 - Parameters: `view`: [`ViewName`](../types.ts.mdmd.md#symbol-viewname); `perspective`: [`LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective); `spatialLayout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `updateUrlState` — Summary

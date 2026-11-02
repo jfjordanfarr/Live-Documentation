@@ -35,6 +35,8 @@ export interface LocalViewOptions {
   onInspectDirectory: (directory: string) => void | Promise<void>;
   onShowNodeActions: (node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }) => void | Promise<void>;
   onShowDirectoryActions: (directory: string, anchor: { x: number; y: number }) => void | Promise<void>;
+  /** Ordinary visible connections that travel against the layout's left-to-right grammar; excludes self loops and feedback stubs. */
+  onBackwardConnections?: (count: number) => void;
   testCoverage: TestCoverageMap;
   /** The box of whatever covers part of the map's frame, the open reader, so that a fit keeps the picture out from under it; null when nothing does. */
   obstruction?: () => DOMRect | null;

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-10-31T20:07:03.596Z
+- Generated At: 2026-11-02T06:07:18.565Z
 
 ## Authored
 ### Purpose
@@ -216,6 +216,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-force-collision-gap-value` {#symbol-tuning-force-collision-gap-value}
+- Type: variable
+
+#### `tuning-force-component-separation` {#symbol-tuning-force-component-separation}
+- Type: variable
+
+#### `tuning-force-component-separation-value` {#symbol-tuning-force-component-separation-value}
 - Type: variable
 
 #### `tuning-force-coupling` {#symbol-tuning-force-coupling}

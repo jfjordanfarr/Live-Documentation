@@ -425,6 +425,7 @@ export class LocalViewController implements LocalViewApi {
 
     if (!graphData.nodes.length) {
       clearConnections(this.runtime);
+      this.options.onBackwardConnections?.(0);
       this.container.innerHTML = '<div class="empty-hint" tabindex="-1" role="status">No files in this graph.</div>';
       this.mapTransform = { x: 0, y: 0, k: 1 };
       this.mapHasInitialFit = false;
@@ -465,7 +466,7 @@ export class LocalViewController implements LocalViewApi {
 
   /** Redraws all SVG connection lines between symbol anchors in the current subgraph. */
   drawConnections(): void {
-    drawConnections({
+    const backward = drawConnections({
       runtime: this.runtime,
       state: this.options.state,
       svgNamespace: this.svgNamespace,
@@ -473,6 +474,8 @@ export class LocalViewController implements LocalViewApi {
       measureLayoutExtents: () => this.measureLayoutExtents(),
       branches: this.branches ?? undefined
     });
+    // A transient crossing during rearrangement is not a reason to leave 2D. The final frame reports again.
+    this.options.onBackwardConnections?.(this.stage?.move ? 0 : backward);
   }
 
   /** Applies or removes the `selected` / `local-focus` CSS classes on node cards to reflect the current selection. */

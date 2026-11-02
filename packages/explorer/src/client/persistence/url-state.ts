@@ -11,7 +11,7 @@ const viewNameToUrl = (name: ViewName): string => name === "map" ? "local" : nam
 export interface InitialUrlState {
   view: ViewName;
   perspective: LocalMapPerspective | null;
-  /** The 3D layout an explicit Local Map link names; null outside one, like the perspective. */
+  /** The explicitly named 3D layout; when omitted, the remembered choice or bundle's default supplies it. */
   spatialLayout: SpatialLayout | null;
   nodeId: string | null;
   openDirectories: ReadonlySet<string>;
@@ -37,7 +37,10 @@ export function parseNavigation(search: string): InitialUrlState {
   return {
     view: readView(view),
     perspective: local || mode !== null ? readPerspective(mode, view) : null,
-    spatialLayout: local || layout !== null ? readSpatialLayout(layout) : null,
+    // Existing subject/directory links named a Connections scope before layout was explicit. Preserve those places;
+    // only a fresh arrival with no requested subject chooses the bundle's entry-aware default.
+    spatialLayout: layout !== null ? readSpatialLayout(layout)
+      : view === "graph" || view === "force" || node !== null || directory !== null ? "connections" : null,
     nodeId: node,
     openDirectories: new Set(directory !== null ? [directory.replace(/\/+$/u, "")] : []),
     hasUrlState

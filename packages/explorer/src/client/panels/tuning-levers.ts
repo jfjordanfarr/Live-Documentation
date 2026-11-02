@@ -50,6 +50,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-force-charge":              "How strongly spheres push one another apart.",
   "tuning-force-link-strength":       "How strongly connected spheres pull toward their preferred gap; zero turns the pull off.",
   "tuning-force-gravity":             "How strongly spheres are drawn to the centre, so that clusters pushed apart come back.",
+  "tuning-force-component-separation": "Let disconnected groups separate while keeping each group together; higher weakens their pull to the common centre.",
   "tuning-force-tether":              "How strongly spheres hold to where they stood when the picture began to move; more keeps your bearings.",
   "tuning-force-cited-by-pull":       "How strongly a citing document and the file it cites pull together; zero draws the line and moves nothing.",
   "tuning-force-charge-range":        "How far a sphere's push reaches; zero reaches every sphere.",
@@ -65,8 +66,8 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-force-node-size":           "The size of every sphere, as that of a file with no public symbols.",
   "tuning-force-symbol-scale":        "How much a sphere grows with its public symbols; zero makes every file the same size.",
   "tuning-force-link-width":          "How thick wires are; wires carrying more references stay thicker.",
-  "tuning-force-node-zoom-resistance": "How much spheres keep their size on screen as you zoom: zero scales them with the view, one holds them.",
-  "tuning-force-wire-zoom-resistance": "How much wires keep their width on screen as you zoom: zero scales them with the view, one holds them.",
+  "tuning-force-node-zoom-resistance": "Resist zoom at the centre of your view: 0 follows zoom, 1 holds size there; rotation keeps world proportions.",
+  "tuning-force-wire-zoom-resistance": "Resist zoom at the centre of your view: 0 follows zoom, 1 holds width there; rotation keeps world proportions.",
 
   // History: the scrubber (history/tick-model.ts, history/history-control.ts).
   "tuning-history-axis":              "Lays the scrubber's steps out by date, where a quiet stretch shows as a gap, or evenly by step.",

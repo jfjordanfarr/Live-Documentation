@@ -19,7 +19,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
   await page.locator(".local-placed").waitFor();
   await openTuning(page);
   const controls = page.locator(".tuning-content input[type=range], .tuning-content select");
-  await expect(controls).toHaveCount(46);
+  await expect(controls).toHaveCount(47);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -51,7 +51,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
 /** The 3D layout's four groups, each named by one word, with the levers in the order a person reaches for them; Discovery since 2026-10-31. */
 const SPATIAL_GROUPS = {
   Discovery: ["tuning-force-hops", "tuning-force-reveal-frames"],
-  Forces: ["tuning-force-charge", "tuning-force-link-strength", "tuning-force-gravity", "tuning-force-tether", "tuning-force-cited-by-pull",
+  Forces: ["tuning-force-charge", "tuning-force-link-strength", "tuning-force-gravity", "tuning-force-component-separation", "tuning-force-tether", "tuning-force-cited-by-pull",
     "tuning-force-charge-range", "tuning-force-update-energy", "tuning-force-approximation"],
   Spacing: ["tuning-force-link-gap", "tuning-force-coupling", "tuning-force-collision-gap"],
   Appearance: ["tuning-force-node-size", "tuning-force-symbol-scale", "tuning-force-link-width", "tuning-force-node-zoom-resistance",

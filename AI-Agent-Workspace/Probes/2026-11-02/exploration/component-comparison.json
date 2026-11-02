@@ -1,0 +1,3044 @@
+[
+  {
+    "bundle": "estate",
+    "componentSeparation": 0,
+    "files": 36,
+    "ticks": 264,
+    "still": true,
+    "bodyOverlaps": 0,
+    "bounds": {
+      "width": 440.44767664919726,
+      "height": 378.47931213409265,
+      "depth": 398.9637775911958
+    },
+    "groups": [
+      {
+        "files": 4,
+        "seed": "Contracts/Contracts.csproj",
+        "mean": {
+          "x": -86.33402654377488,
+          "y": 121.13031258204344,
+          "z": -149.07786887126508
+        },
+        "radius": 82.13742147256582
+      },
+      {
+        "files": 30,
+        "seed": "Contracts/IPaymentHub.cs",
+        "mean": {
+          "x": 20.318076647225823,
+          "y": -17.802962630559144,
+          "z": 28.016623253706616
+        },
+        "radius": 230.82505466081315
+      },
+      {
+        "files": 1,
+        "seed": "Estate.sln",
+        "mean": {
+          "x": -63.22695961117599,
+          "y": -57.431277838614854,
+          "z": -214.16775371445664
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "Portal/Portal.csproj",
+        "mean": {
+          "x": -203.14350343184194,
+          "y": 108.74701557933925,
+          "z": -29.63893524955071
+        },
+        "radius": 5.039684199579493
+      }
+    ],
+    "overlappingComponentBounds": 1,
+    "minClearance": -63.88500782810189
+  },
+  {
+    "bundle": "estate",
+    "componentSeparation": 0.5,
+    "files": 36,
+    "ticks": 282,
+    "still": true,
+    "bodyOverlaps": 0,
+    "bounds": {
+      "width": 555.3317436139745,
+      "height": 462.26750058526045,
+      "depth": 536.7636212968348
+    },
+    "groups": [
+      {
+        "files": 4,
+        "seed": "Contracts/Contracts.csproj",
+        "mean": {
+          "x": -46.552457598546134,
+          "y": 231.81333202816924,
+          "z": -240.9482561244853
+        },
+        "radius": 78.59559117307853
+      },
+      {
+        "files": 30,
+        "seed": "Contracts/IPaymentHub.cs",
+        "mean": {
+          "x": 17.96947481046817,
+          "y": -31.935027872038592,
+          "z": 42.439863550306924
+        },
+        "radius": 226.7283434256757
+      },
+      {
+        "files": 1,
+        "seed": "Estate.sln",
+        "mean": {
+          "x": -25.257054618404865,
+          "y": -150.1042865614416,
+          "z": -334.8465225252621
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "Portal/Portal.csproj",
+        "mean": {
+          "x": -325.1338910739816,
+          "y": 177.7215892663491,
+          "z": 31.503266204471693
+        },
+        "radius": 5.039684199579493
+      }
+    ],
+    "overlappingComponentBounds": 0,
+    "minClearance": 87.14912624065846
+  },
+  {
+    "bundle": "estate",
+    "componentSeparation": 0.8,
+    "files": 36,
+    "ticks": 176,
+    "still": true,
+    "bodyOverlaps": 0,
+    "bounds": {
+      "width": 756.47482976541,
+      "height": 807.5986470698601,
+      "depth": 772.9700852028177
+    },
+    "groups": [
+      {
+        "files": 4,
+        "seed": "Contracts/Contracts.csproj",
+        "mean": {
+          "x": 58.145516420317875,
+          "y": 403.371774124406,
+          "z": -390.35640993833124
+        },
+        "radius": 75.19357904574075
+      },
+      {
+        "files": 30,
+        "seed": "Contracts/IPaymentHub.cs",
+        "mean": {
+          "x": 7.7350359845349255,
+          "y": -46.55926472528359,
+          "z": 58.88670051432027
+        },
+        "radius": 222.89132290261963
+      },
+      {
+        "files": 1,
+        "seed": "Estate.sln",
+        "mean": {
+          "x": 66.24072005677594,
+          "y": -374.16217638926526,
+          "z": -478.8265635478079
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "Portal/Portal.csproj",
+        "mean": {
+          "x": -537.9609559589776,
+          "y": 159.03603886407856,
+          "z": 285.1038374554303
+        },
+        "radius": 5.039684199579493
+      }
+    ],
+    "overlappingComponentBounds": 0,
+    "minClearance": 339.7226932927912
+  },
+  {
+    "bundle": "repository",
+    "componentSeparation": 0,
+    "files": 913,
+    "ticks": 602,
+    "still": true,
+    "bodyOverlaps": 0,
+    "bounds": {
+      "width": 2370.9969113571165,
+      "height": 2346.428826947652,
+      "depth": 2417.6398884168284
+    },
+    "groups": [
+      {
+        "files": 1,
+        "seed": ".devcontainer/devcontainer.json",
+        "mean": {
+          "x": 568.0620366065818,
+          "y": -677.1416175565968,
+          "z": -809.9881649272068
+        },
+        "radius": 13.207708995578507
+      },
+      {
+        "files": 1,
+        "seed": ".devcontainer/post-create.sh",
+        "mean": {
+          "x": -154.18748421726292,
+          "y": -1125.5762062656179,
+          "z": 287.7079881845305
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".gitattributes",
+        "mean": {
+          "x": -372.28028568690894,
+          "y": -58.10066099662566,
+          "z": 1226.939802290291
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/dependabot.yml",
+        "mean": {
+          "x": 12.29368008492538,
+          "y": 691.9196997271857,
+          "z": 1021.3927508257702
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/ci.yml",
+        "mean": {
+          "x": 392.94026399434716,
+          "y": -1007.3351659476026,
+          "z": 562.4067487034087
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/codeql.yml",
+        "mean": {
+          "x": 417.22090893162925,
+          "y": 1074.9331813826777,
+          "z": -436.21041830102325
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/npm-audit.yml",
+        "mean": {
+          "x": -1000.1364138556834,
+          "y": -393.9431799203711,
+          "z": -504.6279474410227
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/pages.yml",
+        "mean": {
+          "x": -323.8237982034831,
+          "y": -1144.9484260202464,
+          "z": 147.5997381404708
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".gitignore",
+        "mean": {
+          "x": 69.62034956931473,
+          "y": 945.3029758514863,
+          "z": 833.4089693293921
+        },
+        "radius": 4
+      },
+      {
+        "files": 465,
+        "seed": ".live-docs.config.json",
+        "mean": {
+          "x": 108.67917326041197,
+          "y": 217.8546302168617,
+          "z": 6.1064617730902295
+        },
+        "radius": 1194.583036568012
+      },
+      {
+        "files": 1,
+        "seed": ".nvmrc",
+        "mean": {
+          "x": -216.26710693293055,
+          "y": 162.5888357401059,
+          "z": -1166.1588262848857
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".vscode/settings.json",
+        "mean": {
+          "x": -698.0847148014827,
+          "y": -19.74418617171368,
+          "z": -985.7480655601707
+        },
+        "radius": 8
+      },
+      {
+        "files": 1,
+        "seed": "eslint.config.js",
+        "mean": {
+          "x": -365.77378277076116,
+          "y": -1131.627876763773,
+          "z": -65.05513761203966
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "package.json",
+        "mean": {
+          "x": 614.8842007578027,
+          "y": 958.8667763403145,
+          "z": -386.41561712905417
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 4,
+        "seed": "packages/cli/package.json",
+        "mean": {
+          "x": 399.91970928997097,
+          "y": 780.3686420659773,
+          "z": -809.0227370777226
+        },
+        "radius": 95.08025930559302
+      },
+      {
+        "files": 1,
+        "seed": "packages/cli/src/index.ts",
+        "mean": {
+          "x": 365.13805953399384,
+          "y": -161.78860483943177,
+          "z": -1093.129681198097
+        },
+        "radius": 4
+      },
+      {
+        "files": 9,
+        "seed": "packages/cli/tsconfig.json",
+        "mean": {
+          "x": 390.516135499615,
+          "y": 134.80533594221035,
+          "z": -1048.4015706850228
+        },
+        "radius": 141.24066639838324
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/build.sh",
+        "mean": {
+          "x": 82.84371358463645,
+          "y": -1110.3970817385382,
+          "z": 377.2733919761015
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/grammar.patch",
+        "mean": {
+          "x": 656.2438824221323,
+          "y": 977.3074361502031,
+          "z": -263.6276457905377
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/command_arguments.txt",
+        "mean": {
+          "x": 760.1076277769373,
+          "y": -52.979119022111796,
+          "z": -918.007059158029
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/scripts.txt",
+        "mean": {
+          "x": 454.8730394538031,
+          "y": -581.6463875424535,
+          "z": -902.0518016017616
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/using_statements.txt",
+        "mean": {
+          "x": 557.471074776981,
+          "y": 930.5668994519999,
+          "z": -516.6021504923101
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/upstream.env",
+        "mean": {
+          "x": 394.68329660888594,
+          "y": -864.0221310042693,
+          "z": 776.7715342671828
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts",
+        "mean": {
+          "x": -535.9880434888186,
+          "y": -1026.7407690718458,
+          "z": -344.0785367080977
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "scripts/live-docs/run-all.ts",
+        "mean": {
+          "x": -60.50412602706904,
+          "y": 867.7922694240451,
+          "z": 903.7176292035648
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/oracle/powershell-ast.ps1",
+        "mean": {
+          "x": -679.8725121746157,
+          "y": -806.1526720719759,
+          "z": -602.7016267177477
+        },
+        "radius": 8.617738760127535
+      },
+      {
+        "files": 4,
+        "seed": "scripts/safe-to-commit.mjs",
+        "mean": {
+          "x": 124.30691292980467,
+          "y": -1127.283768453855,
+          "z": 212.08023454971902
+        },
+        "radius": 80.72814884487771
+      },
+      {
+        "files": 1,
+        "seed": "scripts/slopcop/check-asset-paths.test.ts",
+        "mean": {
+          "x": -4.406343610555716,
+          "y": -1161.3617508897146,
+          "z": -18.688269153210147
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/slopcop/check-symbols.test.ts",
+        "mean": {
+          "x": 204.76095353820628,
+          "y": -706.418817908579,
+          "z": -883.6061355713045
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "slopcop.config.json",
+        "mean": {
+          "x": -605.0789661575355,
+          "y": 309.09055044994767,
+          "z": 1046.0829982762934
+        },
+        "radius": 10.079368399158986
+      },
+      {
+        "files": 1,
+        "seed": "tests/e2e/tuning.spec.ts",
+        "mean": {
+          "x": 564.4222472973155,
+          "y": -614.2247087733637,
+          "z": 929.6878673004626
+        },
+        "radius": 4
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml",
+        "mean": {
+          "x": 188.05583924591355,
+          "y": -921.2996668504832,
+          "z": 751.1411595943649
+        },
+        "radius": 111.82617986994916
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/BaseWidget.cs",
+        "mean": {
+          "x": -944.6933174443066,
+          "y": -128.2521488365437,
+          "z": -696.523168607248
+        },
+        "radius": 91.16656067880535
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs",
+        "mean": {
+          "x": 393.0441417944153,
+          "y": 978.6722481914828,
+          "z": -615.5721993169675
+        },
+        "radius": 43.628395095034584
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/package.json",
+        "mean": {
+          "x": 455.78119156475594,
+          "y": -723.7465566863361,
+          "z": -798.5654607683349
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/fixtures/entry-points/workspace/src/cli.ts",
+        "mean": {
+          "x": 561.5011192730726,
+          "y": -290.7331693298631,
+          "z": -963.5882670485528
+        },
+        "radius": 203.9623178706651
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/styles.css",
+        "mean": {
+          "x": 167.47798567961857,
+          "y": 730.9727990654085,
+          "z": 982.5560395970165
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/tsconfig.json",
+        "mean": {
+          "x": 360.2382545459936,
+          "y": 726.1882803241388,
+          "z": 936.031182600021
+        },
+        "radius": 8
+      },
+      {
+        "files": 10,
+        "seed": "tests/integration/fixtures/include-dirs/compile_commands.json",
+        "mean": {
+          "x": -278.7690105922611,
+          "y": -991.9022772951789,
+          "z": 581.0191358354915
+        },
+        "radius": 108.43035823106902
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/extra/core/engine.hpp",
+        "mean": {
+          "x": -14.858882143700102,
+          "y": -1077.2322632842706,
+          "z": 440.3465445441615
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/tests/core/engine.hpp",
+        "mean": {
+          "x": -514.4356502547604,
+          "y": 85.15577952250949,
+          "z": -1098.1876964099429
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/vendor/other/util.hpp",
+        "mean": {
+          "x": 206.15822860376917,
+          "y": 847.8550256773567,
+          "z": -870.5052585765999
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/app/go.mod",
+        "mean": {
+          "x": 349.3792410851877,
+          "y": -802.9862507515112,
+          "z": -766.4232404509571
+        },
+        "radius": 41.42514856176008
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/app/main.go",
+        "mean": {
+          "x": 763.611726943047,
+          "y": 845.1234128888135,
+          "z": -363.65628741385945
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/ledger/ledger.go",
+        "mean": {
+          "x": -105.38461483029809,
+          "y": -453.30114238249405,
+          "z": -1048.606942592309
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 3,
+        "seed": "tests/integration/fixtures/manifests/workspace/java/app/pom.xml",
+        "mean": {
+          "x": 331.4274751015123,
+          "y": 497.00453191320537,
+          "z": -1007.6217987182778
+        },
+        "radius": 48.30097624414301
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java",
+        "mean": {
+          "x": 467.5940225947461,
+          "y": -933.0451286474296,
+          "z": -583.0947388892564
+        },
+        "radius": 43.737198082537006
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/pyproject.toml",
+        "mean": {
+          "x": 266.7382272611746,
+          "y": 1005.9948391607824,
+          "z": 761.1763950527252
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/src/tally/__init__.py",
+        "mean": {
+          "x": 422.5666788520944,
+          "y": -695.4786065338049,
+          "z": 928.0501803384122
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/src/tally/cli.py",
+        "mean": {
+          "x": 535.8925074998095,
+          "y": -488.32689128017745,
+          "z": 1010.3027748656524
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/Cargo.toml",
+        "mean": {
+          "x": 865.3929848214101,
+          "y": 792.920997671046,
+          "z": -263.25520504081163
+        },
+        "radius": 4
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml",
+        "mean": {
+          "x": 204.37828151739163,
+          "y": -1051.4608753487,
+          "z": 500.28710211282646
+        },
+        "radius": 41.15785124589783
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/src/lib.rs",
+        "mean": {
+          "x": -42.043886160142826,
+          "y": 65.39086008455018,
+          "z": 1222.532422060612
+        },
+        "radius": 41.21811597915565
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/fixtures/powershell-compendium/common/logging.ps1",
+        "mean": {
+          "x": -1185.4095390275318,
+          "y": 107.20088912488376,
+          "z": 187.76073607780108
+        },
+        "radius": 103.73230793498912
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs",
+        "mean": {
+          "x": -20.95696967539752,
+          "y": -614.8553632814618,
+          "z": -954.4752485778447
+        },
+        "radius": 85.07900215866975
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml",
+        "mean": {
+          "x": 692.9358496908771,
+          "y": 760.0872973447987,
+          "z": -588.1502719622983
+        },
+        "radius": 106.55781165308414
+      },
+      {
+        "files": 14,
+        "seed": "tests/integration/fixtures/slopcop-assets/workspace/pages/index.html",
+        "mean": {
+          "x": 306.97046855004584,
+          "y": 272.3347297313427,
+          "z": 1139.7938088061835
+        },
+        "radius": 202.9190467168935
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-assets/workspace/slopcop.config.json",
+        "mean": {
+          "x": -130.3287763498327,
+          "y": -1141.3733728925645,
+          "z": -0.17944329652116636
+        },
+        "radius": 6.839903786706788
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-symbols/workspace/slopcop.config.json",
+        "mean": {
+          "x": -1075.2585153494201,
+          "y": -346.49534008469715,
+          "z": -405.18276041491
+        },
+        "radius": 6.839903786706788
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts",
+        "mean": {
+          "x": -245.64043731189747,
+          "y": -1141.405125003103,
+          "z": 39.86795940904415
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts",
+        "mean": {
+          "x": 130.99166321590332,
+          "y": 585.3218904005078,
+          "z": -1049.8564921874136
+        },
+        "radius": 41.36699512659132
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json",
+        "mean": {
+          "x": -340.2644186662139,
+          "y": 108.73802335796978,
+          "z": -1147.9675440490576
+        },
+        "radius": 8.895920362277263
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/webforms-appsettings/workspace/Web.config",
+        "mean": {
+          "x": 124.71012908962784,
+          "y": -12.275642009978133,
+          "z": -1119.0295865186688
+        },
+        "radius": 115.00935821102759
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/live-docs/generate-cli.test.ts",
+        "mean": {
+          "x": 967.6018586452423,
+          "y": 677.3252842347395,
+          "z": -307.34528767555264
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/live-docs/pipeline.test.ts",
+        "mean": {
+          "x": 381.4806425247047,
+          "y": 1161.480685197139,
+          "z": 333.12716652645804
+        },
+        "radius": 4
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/c/basics/compile_commands.json",
+        "mean": {
+          "x": 8.934822173147955,
+          "y": 310.95216749129077,
+          "z": -1139.5004184581949
+        },
+        "radius": 62.05792989677237
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/c/basics/src/helpers.h",
+        "mean": {
+          "x": 472.43008071593863,
+          "y": 617.3040271781867,
+          "z": -887.6621477257445
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/programs/c/modular/compile_commands.json",
+        "mean": {
+          "x": 328.4984093127488,
+          "y": -1125.550548396827,
+          "z": -51.438566044161256
+        },
+        "radius": 106.9753533715422
+      },
+      {
+        "files": 102,
+        "seed": "tests/integration/programs/c/rosetta/compile_commands.json",
+        "mean": {
+          "x": -641.1462273401386,
+          "y": -513.973411880674,
+          "z": 367.4758491242623
+        },
+        "radius": 883.8249734918999
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/programs/csharp/basic/CSharpBasic.csproj",
+        "mean": {
+          "x": -69.03288627808583,
+          "y": -391.57976530275755,
+          "z": 1152.4066739864554
+        },
+        "radius": 137.6231753183278
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/programs/csharp/estate/Contracts/Contracts.csproj",
+        "mean": {
+          "x": 462.00987537272204,
+          "y": 1137.9884771004092,
+          "z": -130.3535155934402
+        },
+        "radius": 83.92025807273284
+      },
+      {
+        "files": 33,
+        "seed": "tests/integration/programs/csharp/estate/Contracts/IPaymentHub.cs",
+        "mean": {
+          "x": -69.13150528135681,
+          "y": -952.7837053194644,
+          "z": -515.4565169554114
+        },
+        "radius": 193.25339431592042
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/csharp/estate/Portal/Portal.csproj",
+        "mean": {
+          "x": 196.380314784444,
+          "y": 1146.7780745643897,
+          "z": 547.9973552607303
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/csharp/webforms/WebForms.csproj",
+        "mean": {
+          "x": -1166.3638014486448,
+          "y": -98.86827962997552,
+          "z": -224.1864151342604
+        },
+        "radius": 176.2729659629405
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/csharp/webforms/src/Web.config",
+        "mean": {
+          "x": 322.3531430455304,
+          "y": -632.8301056780326,
+          "z": -902.118348986567
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 15,
+        "seed": "tests/integration/programs/go/depot/cmd/depot/main.go",
+        "mean": {
+          "x": 745.9224393817601,
+          "y": 371.98909690040773,
+          "z": -801.8162261224596
+        },
+        "radius": 132.54992011051758
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/java/basic/expected/compiler-edges.json",
+        "mean": {
+          "x": -75.777592976115,
+          "y": -166.50860293857156,
+          "z": -1108.5259622911788
+        },
+        "radius": 113.07058316677058
+      },
+      {
+        "files": 10,
+        "seed": "tests/integration/programs/java/service/expected/compiler-edges.json",
+        "mean": {
+          "x": -714.3764474158016,
+          "y": -497.9691318468826,
+          "z": -760.132020782656
+        },
+        "radius": 121.77916452706401
+      },
+      {
+        "files": 13,
+        "seed": "tests/integration/programs/java/warehouse/expected/compiler-edges.json",
+        "mean": {
+          "x": 1004.8669412854481,
+          "y": 180.86286175601617,
+          "z": 698.5471828539844
+        },
+        "radius": 144.49678189230488
+      },
+      {
+        "files": 11,
+        "seed": "tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1",
+        "mean": {
+          "x": -908.9679260531182,
+          "y": 262.30825929305263,
+          "z": 765.794925459789
+        },
+        "radius": 112.97136627110092
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/programs/python/basics/expected/compiler-edges.json",
+        "mean": {
+          "x": -332.1163581687787,
+          "y": -610.8395430518078,
+          "z": -913.4945239614891
+        },
+        "radius": 71.95476573045656
+      },
+      {
+        "files": 14,
+        "seed": "tests/integration/programs/python/ledger/expected/compiler-edges.json",
+        "mean": {
+          "x": 749.1747421916829,
+          "y": 920.7743793308115,
+          "z": 138.8380703662974
+        },
+        "radius": 127.91126147467268
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/python/ledger/pyproject.toml",
+        "mean": {
+          "x": -113.95527106182102,
+          "y": -1119.3119319762727,
+          "z": 169.61844372113993
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/python/pipeline/expected/compiler-edges.json",
+        "mean": {
+          "x": -786.3445919451899,
+          "y": -902.4933992242366,
+          "z": -258.2708867000143
+        },
+        "radius": 120.94364120941418
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/ruby/basic/lib/data_store.rb",
+        "mean": {
+          "x": 636.9962005559784,
+          "y": -209.44273552137648,
+          "z": 1045.7041897112106
+        },
+        "radius": 146.7975565182345
+      },
+      {
+        "files": 6,
+        "seed": "tests/integration/programs/ruby/cli/lib/cli.rb",
+        "mean": {
+          "x": -311.80012954592956,
+          "y": 610.4190720487092,
+          "z": 1024.938569356229
+        },
+        "radius": 143.32634573852522
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/rust/analytics/Cargo.toml",
+        "mean": {
+          "x": 205.58369543532493,
+          "y": -409.92268200251254,
+          "z": -999.0948597949209
+        },
+        "radius": 125.3103520374173
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/rust/basics/Cargo.toml",
+        "mean": {
+          "x": 673.3248784873649,
+          "y": 573.6357144674016,
+          "z": 846.5932897587093
+        },
+        "radius": 112.16935114356566
+      },
+      {
+        "files": 11,
+        "seed": "tests/integration/programs/rust/stockroom/Cargo.toml",
+        "mean": {
+          "x": -425.1390377814609,
+          "y": -243.15482261576253,
+          "z": -1015.6165238249374
+        },
+        "radius": 148.6200064684551
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/typescript/basic/expected/compiler-edges.json",
+        "mean": {
+          "x": 969.119754412754,
+          "y": 621.8085832355173,
+          "z": 387.3989185213646
+        },
+        "radius": 106.40831241920709
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/programs/typescript/layered/expected/compiler-edges.json",
+        "mean": {
+          "x": -592.3604765873522,
+          "y": -458.1450786831328,
+          "z": 950.7728197492544
+        },
+        "radius": 117.41609679084188
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/slopcop/assetsAudit.test.ts",
+        "mean": {
+          "x": 395.0463692431024,
+          "y": -1076.2873731449715,
+          "z": 389.24224144616954
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/slopcop/symbolsAudit.test.ts",
+        "mean": {
+          "x": 889.3910911290034,
+          "y": 683.4274863807761,
+          "z": -441.08153662557595
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "vitest.config.ts",
+        "mean": {
+          "x": 522.726410153751,
+          "y": -876.940509035372,
+          "z": 719.7070421383112
+        },
+        "radius": 5.039684199579493
+      }
+    ],
+    "overlappingComponentBounds": 63,
+    "minClearance": -970.076719921151
+  },
+  {
+    "bundle": "repository",
+    "componentSeparation": 0.5,
+    "files": 913,
+    "ticks": 462,
+    "still": true,
+    "bodyOverlaps": 0,
+    "bounds": {
+      "width": 3526.2539264602483,
+      "height": 3519.7745859568836,
+      "depth": 3595.5361177130353
+    },
+    "groups": [
+      {
+        "files": 1,
+        "seed": ".devcontainer/devcontainer.json",
+        "mean": {
+          "x": 857.6380673029731,
+          "y": -1411.5518290729294,
+          "z": -789.8913080020897
+        },
+        "radius": 13.207708995578507
+      },
+      {
+        "files": 1,
+        "seed": ".devcontainer/post-create.sh",
+        "mean": {
+          "x": -607.7026931864727,
+          "y": -1487.7558414469468,
+          "z": 581.0576424590959
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".gitattributes",
+        "mean": {
+          "x": -63.90889083612373,
+          "y": 89.02179091694246,
+          "z": 1766.6162225329676
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/dependabot.yml",
+        "mean": {
+          "x": 244.00123827297088,
+          "y": 1179.7949835643776,
+          "z": 1310.2534125442426
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/ci.yml",
+        "mean": {
+          "x": 321.8703075985717,
+          "y": -1472.9721810777633,
+          "z": 911.6539496380392
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/codeql.yml",
+        "mean": {
+          "x": -968.4047788238727,
+          "y": 1449.1203247570124,
+          "z": -570.8671586222127
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/npm-audit.yml",
+        "mean": {
+          "x": -1549.295157471024,
+          "y": -635.0531353923122,
+          "z": -344.06573918760773
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/pages.yml",
+        "mean": {
+          "x": -876.369002674582,
+          "y": -1410.077804555719,
+          "z": 361.7169136781522
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".gitignore",
+        "mean": {
+          "x": -161.8999623095867,
+          "y": 1587.6662971720625,
+          "z": 826.0415388265823
+        },
+        "radius": 4
+      },
+      {
+        "files": 465,
+        "seed": ".live-docs.config.json",
+        "mean": {
+          "x": 244.4919456776486,
+          "y": 120.53417118138192,
+          "z": -137.037602082249
+        },
+        "radius": 964.6908903742656
+      },
+      {
+        "files": 1,
+        "seed": ".nvmrc",
+        "mean": {
+          "x": -607.3482053616183,
+          "y": 307.6902226321893,
+          "z": -1698.6240866747448
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".vscode/settings.json",
+        "mean": {
+          "x": -1202.9814447400352,
+          "y": 653.3165411163856,
+          "z": -1185.8411567390294
+        },
+        "radius": 8
+      },
+      {
+        "files": 1,
+        "seed": "eslint.config.js",
+        "mean": {
+          "x": -1019.3902747736938,
+          "y": -1361.0959944770636,
+          "z": 6.927167455716305
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "package.json",
+        "mean": {
+          "x": 523.778753055914,
+          "y": 1768.4919520928815,
+          "z": -156.1287144994522
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 4,
+        "seed": "packages/cli/package.json",
+        "mean": {
+          "x": -310.7384354519872,
+          "y": 1575.43437859047,
+          "z": -944.0461652136242
+        },
+        "radius": 89.04533802987241
+      },
+      {
+        "files": 1,
+        "seed": "packages/cli/src/index.ts",
+        "mean": {
+          "x": 464.2586933086009,
+          "y": 136.8248095755386,
+          "z": -1779.0161129426272
+        },
+        "radius": 4
+      },
+      {
+        "files": 9,
+        "seed": "packages/cli/tsconfig.json",
+        "mean": {
+          "x": 947.8422778167676,
+          "y": 349.0807702384173,
+          "z": -1550.1058980910568
+        },
+        "radius": 134.38977123401875
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/build.sh",
+        "mean": {
+          "x": 24.77511338979979,
+          "y": -1634.9183057257428,
+          "z": 610.9992125227477
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/grammar.patch",
+        "mean": {
+          "x": 735.0820120215507,
+          "y": 1679.83115815651,
+          "z": 215.8083699196842
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/command_arguments.txt",
+        "mean": {
+          "x": 1641.5543045987517,
+          "y": -641.6902498079186,
+          "z": -743.5170555992983
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/scripts.txt",
+        "mean": {
+          "x": 613.8998938835491,
+          "y": -1338.055718661763,
+          "z": -1052.5744371161904
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/using_statements.txt",
+        "mean": {
+          "x": 177.52447649334957,
+          "y": 1750.1950181371308,
+          "z": -610.4789590333598
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/upstream.env",
+        "mean": {
+          "x": 307.4956023700136,
+          "y": -1293.1971172305189,
+          "z": 1152.617689602666
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts",
+        "mean": {
+          "x": -1183.376975333555,
+          "y": -1107.4906335065423,
+          "z": -538.6840897848581
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "scripts/live-docs/run-all.ts",
+        "mean": {
+          "x": -438.4095682767889,
+          "y": 1582.9419398744844,
+          "z": 725.5020132771845
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/oracle/powershell-ast.ps1",
+        "mean": {
+          "x": -1084.9214535879628,
+          "y": -1109.7891859577608,
+          "z": -730.2731229507051
+        },
+        "radius": 8.617738760127535
+      },
+      {
+        "files": 4,
+        "seed": "scripts/safe-to-commit.mjs",
+        "mean": {
+          "x": 159.9987398773369,
+          "y": -1730.896260845734,
+          "z": 241.0145725985849
+        },
+        "radius": 69.57515530391376
+      },
+      {
+        "files": 1,
+        "seed": "scripts/slopcop/check-asset-paths.test.ts",
+        "mean": {
+          "x": 562.3224686553135,
+          "y": -1681.78822815533,
+          "z": 227.94571179135735
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/slopcop/check-symbols.test.ts",
+        "mean": {
+          "x": 246.80328780176433,
+          "y": -1385.8597073552826,
+          "z": -1088.2563268385202
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "slopcop.config.json",
+        "mean": {
+          "x": -360.8927564937857,
+          "y": 754.6871373296281,
+          "z": 1611.9818431866724
+        },
+        "radius": 10.079368399158986
+      },
+      {
+        "files": 1,
+        "seed": "tests/e2e/tuning.spec.ts",
+        "mean": {
+          "x": 1084.2312233411037,
+          "y": -989.0029149075046,
+          "z": 1054.5505872648985
+        },
+        "radius": 4
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml",
+        "mean": {
+          "x": -112.87453117123877,
+          "y": -1260.370576810582,
+          "z": 1181.7074495934792
+        },
+        "radius": 88.29273675187144
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/BaseWidget.cs",
+        "mean": {
+          "x": -1504.8583131568007,
+          "y": 255.28456479041833,
+          "z": -867.6639430291931
+        },
+        "radius": 85.30704460845843
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs",
+        "mean": {
+          "x": -790.1434085533904,
+          "y": 1422.6110004767847,
+          "z": -877.6050693486004
+        },
+        "radius": 43.14206285397937
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/package.json",
+        "mean": {
+          "x": 650.0263836861618,
+          "y": -1551.3875902652183,
+          "z": -664.5692862662297
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/fixtures/entry-points/workspace/src/cli.ts",
+        "mean": {
+          "x": 1047.1437926626595,
+          "y": -796.7763723699796,
+          "z": -1298.0842258806335
+        },
+        "radius": 146.87673125306262
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/styles.css",
+        "mean": {
+          "x": 543.5271059840464,
+          "y": 1037.4523482156071,
+          "z": 1348.077939445234
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/tsconfig.json",
+        "mean": {
+          "x": 867.2714795310292,
+          "y": 832.3725639218603,
+          "z": 1330.7773783739885
+        },
+        "radius": 8
+      },
+      {
+        "files": 10,
+        "seed": "tests/integration/fixtures/include-dirs/compile_commands.json",
+        "mean": {
+          "x": -1140.202626569549,
+          "y": -1152.9048527762454,
+          "z": 507.9171823664216
+        },
+        "radius": 102.68468835016189
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/extra/core/engine.hpp",
+        "mean": {
+          "x": -520.7616262769144,
+          "y": -1426.1524388835853,
+          "z": 798.6962246659681
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/tests/core/engine.hpp",
+        "mean": {
+          "x": -1163.1349132453597,
+          "y": 317.5231883452616,
+          "z": -1336.5650406290345
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/vendor/other/util.hpp",
+        "mean": {
+          "x": -1202.0920139676707,
+          "y": 1128.996925164261,
+          "z": -768.1088472342421
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/app/go.mod",
+        "mean": {
+          "x": 390.9545153092529,
+          "y": -1669.8543643847015,
+          "z": -488.601404033259
+        },
+        "radius": 40.855574449841434
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/app/main.go",
+        "mean": {
+          "x": 469.53904389708714,
+          "y": 1727.5149672494772,
+          "z": -501.9444567537326
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/ledger/ledger.go",
+        "mean": {
+          "x": -191.97531307223505,
+          "y": -850.839702538935,
+          "z": -1544.9199259530312
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 3,
+        "seed": "tests/integration/fixtures/manifests/workspace/java/app/pom.xml",
+        "mean": {
+          "x": 567.4038451956968,
+          "y": 1066.3270633675954,
+          "z": -1418.5493571226832
+        },
+        "radius": 47.795219209224676
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java",
+        "mean": {
+          "x": 766.7594888456988,
+          "y": -1619.8585639255175,
+          "z": -272.1437254166948
+        },
+        "radius": 43.101817836526386
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/pyproject.toml",
+        "mean": {
+          "x": 34.51263713269448,
+          "y": 1689.1346782724474,
+          "z": 653.3579092617214
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/src/tally/__init__.py",
+        "mean": {
+          "x": 562.5271334665397,
+          "y": -1172.596936486043,
+          "z": 1206.3468687734419
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/src/tally/cli.py",
+        "mean": {
+          "x": 880.914109635268,
+          "y": -745.5248969584724,
+          "z": 1367.1523591457685
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/Cargo.toml",
+        "mean": {
+          "x": 774.5943241250992,
+          "y": 1682.7057100645138,
+          "z": -49.10166138848142
+        },
+        "radius": 4
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml",
+        "mean": {
+          "x": -93.35075911596292,
+          "y": -1516.7212319534042,
+          "z": 837.1821065294687
+        },
+        "radius": 40.643615227449736
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/src/lib.rs",
+        "mean": {
+          "x": 159.26418919149904,
+          "y": 60.276584304734776,
+          "z": 1749.4589039626806
+        },
+        "radius": 40.42192317097907
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/fixtures/powershell-compendium/common/logging.ps1",
+        "mean": {
+          "x": -1463.8900928728906,
+          "y": 940.1751037001028,
+          "z": -332.2078422846604
+        },
+        "radius": 130.18303497337206
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs",
+        "mean": {
+          "x": -86.07201519596526,
+          "y": -1088.6738854233452,
+          "z": -1382.6719792947438
+        },
+        "radius": 84.15417432246727
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml",
+        "mean": {
+          "x": 814.8453441807312,
+          "y": 1396.6578296199186,
+          "z": -919.8420432810246
+        },
+        "radius": 83.65377341477803
+      },
+      {
+        "files": 14,
+        "seed": "tests/integration/fixtures/slopcop-assets/workspace/pages/index.html",
+        "mean": {
+          "x": 615.3358547036181,
+          "y": 338.75361592765427,
+          "z": 1607.3399910824573
+        },
+        "radius": 166.66004660610437
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-assets/workspace/slopcop.config.json",
+        "mean": {
+          "x": -380.94311623052556,
+          "y": -1646.220460653021,
+          "z": 344.33883873290523
+        },
+        "radius": 6.839903786706788
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-symbols/workspace/slopcop.config.json",
+        "mean": {
+          "x": -1617.7298039157213,
+          "y": -334.6641083977377,
+          "z": -486.16150064844237
+        },
+        "radius": 6.839903786706788
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts",
+        "mean": {
+          "x": -750.0952119896007,
+          "y": -1497.4031703856233,
+          "z": 317.21397875240484
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts",
+        "mean": {
+          "x": -208.64428138071037,
+          "y": 1241.5380160122093,
+          "z": -1380.5398453038015
+        },
+        "radius": 40.7954476449355
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json",
+        "mean": {
+          "x": -946.2362360020408,
+          "y": 535.6106518576703,
+          "z": -1464.7597893804912
+        },
+        "radius": 8.895920362277263
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/webforms-appsettings/workspace/Web.config",
+        "mean": {
+          "x": 83.35120208403794,
+          "y": 293.42925033733263,
+          "z": -1816.985373286046
+        },
+        "radius": 80.82265545526819
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/live-docs/generate-cli.test.ts",
+        "mean": {
+          "x": 1378.1810673216662,
+          "y": 1248.9049599606824,
+          "z": -261.00600384988405
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/live-docs/pipeline.test.ts",
+        "mean": {
+          "x": 220.89146844151082,
+          "y": 1754.8602324261867,
+          "z": 451.594789586927
+        },
+        "radius": 4
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/c/basics/compile_commands.json",
+        "mean": {
+          "x": -473.74363311352744,
+          "y": 767.1515673035512,
+          "z": -1614.9634573919384
+        },
+        "radius": 60.93016829179783
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/c/basics/src/helpers.h",
+        "mean": {
+          "x": 302.77254533476605,
+          "y": 1358.7495071972762,
+          "z": -1247.7362206050252
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/programs/c/modular/compile_commands.json",
+        "mean": {
+          "x": 1145.9031135041869,
+          "y": -1414.1587933920318,
+          "z": 182.40228135996566
+        },
+        "radius": 103.02878448920156
+      },
+      {
+        "files": 102,
+        "seed": "tests/integration/programs/c/rosetta/compile_commands.json",
+        "mean": {
+          "x": -1119.8242508974524,
+          "y": 78.81968181575459,
+          "z": 1089.1882032697958
+        },
+        "radius": 511.8222499867777
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/programs/csharp/basic/CSharpBasic.csproj",
+        "mean": {
+          "x": 299.7270717890515,
+          "y": -663.9684980861916,
+          "z": 1591.5151823812284
+        },
+        "radius": 126.34533563655964
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/programs/csharp/estate/Contracts/Contracts.csproj",
+        "mean": {
+          "x": -468.6003092987745,
+          "y": 1763.9465881375033,
+          "z": 64.59915216814223
+        },
+        "radius": 78.25145097912733
+      },
+      {
+        "files": 33,
+        "seed": "tests/integration/programs/csharp/estate/Contracts/IPaymentHub.cs",
+        "mean": {
+          "x": -457.68639001377784,
+          "y": -1529.7593079872274,
+          "z": -532.5024873534176
+        },
+        "radius": 180.48221754652187
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/csharp/estate/Portal/Portal.csproj",
+        "mean": {
+          "x": -191.6009168532442,
+          "y": 1768.0776526671918,
+          "z": 386.6520818811976
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/csharp/webforms/WebForms.csproj",
+        "mean": {
+          "x": -1694.0087342661316,
+          "y": -164.17812702251064,
+          "z": -218.86378127504966
+        },
+        "radius": 142.44128517869618
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/csharp/webforms/src/Web.config",
+        "mean": {
+          "x": 276.92546648846974,
+          "y": -1217.891313900617,
+          "z": -1274.4699455443513
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 15,
+        "seed": "tests/integration/programs/go/depot/cmd/depot/main.go",
+        "mean": {
+          "x": 1626.1261664180224,
+          "y": 558.2346132374444,
+          "z": -768.4050672148455
+        },
+        "radius": 128.99026816518472
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/java/basic/expected/compiler-edges.json",
+        "mean": {
+          "x": -315.7079033993743,
+          "y": -413.6968627357304,
+          "z": -1710.6233504976733
+        },
+        "radius": 104.94950662887153
+      },
+      {
+        "files": 10,
+        "seed": "tests/integration/programs/java/service/expected/compiler-edges.json",
+        "mean": {
+          "x": -1386.5120907897228,
+          "y": -613.5200242559961,
+          "z": -786.0975493999805
+        },
+        "radius": 118.04115613652871
+      },
+      {
+        "files": 13,
+        "seed": "tests/integration/programs/java/warehouse/expected/compiler-edges.json",
+        "mean": {
+          "x": 1725.7706638246093,
+          "y": -585.2347612193537,
+          "z": 396.31695714793636
+        },
+        "radius": 136.63816528237308
+      },
+      {
+        "files": 11,
+        "seed": "tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1",
+        "mean": {
+          "x": -1463.7801656721967,
+          "y": 965.7414906440491,
+          "z": 272.79005220588647
+        },
+        "radius": 104.55914142070117
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/programs/python/basics/expected/compiler-edges.json",
+        "mean": {
+          "x": -937.1395524613308,
+          "y": -920.5745822476347,
+          "z": -1124.1477214777706
+        },
+        "radius": 69.73968740872114
+      },
+      {
+        "files": 14,
+        "seed": "tests/integration/programs/python/ledger/expected/compiler-edges.json",
+        "mean": {
+          "x": 987.3131025770771,
+          "y": 1286.5763623438454,
+          "z": 815.429976243057
+        },
+        "radius": 120.57570906905485
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/python/ledger/pyproject.toml",
+        "mean": {
+          "x": -444.15722427520217,
+          "y": -1569.6022505626372,
+          "z": 535.9386148138599
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/python/pipeline/expected/compiler-edges.json",
+        "mean": {
+          "x": -1349.6625644627147,
+          "y": -1001.1360645607106,
+          "z": -158.07061138184608
+        },
+        "radius": 112.03820806372856
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/ruby/basic/lib/data_store.rb",
+        "mean": {
+          "x": 1130.10360014227,
+          "y": -360.1239510665813,
+          "z": 1345.383113719551
+        },
+        "radius": 113.76382493717446
+      },
+      {
+        "files": 6,
+        "seed": "tests/integration/programs/ruby/cli/lib/cli.rb",
+        "mean": {
+          "x": -64.40800386446017,
+          "y": 1006.2308898045327,
+          "z": 1447.7899894404775
+        },
+        "radius": 113.3334315780515
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/rust/analytics/Cargo.toml",
+        "mean": {
+          "x": 357.5477949205498,
+          "y": -576.2770264714145,
+          "z": -1671.3713487774219
+        },
+        "radius": 120.00172878527654
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/rust/basics/Cargo.toml",
+        "mean": {
+          "x": 1493.4346061768158,
+          "y": -97.6090449840992,
+          "z": 1039.7506295283451
+        },
+        "radius": 106.36015133833318
+      },
+      {
+        "files": 11,
+        "seed": "tests/integration/programs/rust/stockroom/Cargo.toml",
+        "mean": {
+          "x": -931.4071140964526,
+          "y": -364.50798103326684,
+          "z": -1446.9627225398463
+        },
+        "radius": 141.75833724870193
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/typescript/basic/expected/compiler-edges.json",
+        "mean": {
+          "x": 1563.5010045460235,
+          "y": 633.540981596726,
+          "z": 734.2126646375325
+        },
+        "radius": 101.3294570605281
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/programs/typescript/layered/expected/compiler-edges.json",
+        "mean": {
+          "x": -363.37713744007874,
+          "y": -918.1165098101407,
+          "z": 1431.036180979749
+        },
+        "radius": 111.71294787670892
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/slopcop/assetsAudit.test.ts",
+        "mean": {
+          "x": 382.3131019408472,
+          "y": -1625.628192856927,
+          "z": 584.6355117443283
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/slopcop/symbolsAudit.test.ts",
+        "mean": {
+          "x": 1083.0995159966344,
+          "y": 1472.6398374213131,
+          "z": -379.98085939160694
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "vitest.config.ts",
+        "mean": {
+          "x": 637.7907303542019,
+          "y": -1320.8521384864803,
+          "z": 1009.2580556723057
+        },
+        "radius": 5.039684199579493
+      }
+    ],
+    "overlappingComponentBounds": 0,
+    "minClearance": 150.80805881947725
+  },
+  {
+    "bundle": "repository",
+    "componentSeparation": 0.8,
+    "files": 913,
+    "ticks": 250,
+    "still": true,
+    "bodyOverlaps": 0,
+    "bounds": {
+      "width": 5860.787419670263,
+      "height": 5685.424697240935,
+      "depth": 5909.41084757381
+    },
+    "groups": [
+      {
+        "files": 1,
+        "seed": ".devcontainer/devcontainer.json",
+        "mean": {
+          "x": 2039.8210311441767,
+          "y": -1710.81507087871,
+          "z": -1207.404495809514
+        },
+        "radius": 13.207708995578507
+      },
+      {
+        "files": 1,
+        "seed": ".devcontainer/post-create.sh",
+        "mean": {
+          "x": -1529.7420647040017,
+          "y": -2060.7910227807524,
+          "z": 1166.5743250843775
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".gitattributes",
+        "mean": {
+          "x": -968.7494340794939,
+          "y": -9.307278535330674,
+          "z": 2837.125237435312
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/dependabot.yml",
+        "mean": {
+          "x": 327.7449024730005,
+          "y": 1338.3108410685575,
+          "z": 2592.84914162815
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/ci.yml",
+        "mean": {
+          "x": 852.2940836145898,
+          "y": -2115.0685388805655,
+          "z": 1760.729060674699
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/codeql.yml",
+        "mean": {
+          "x": -1702.4846717322155,
+          "y": 2008.1361044464225,
+          "z": -1197.8597365278674
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/npm-audit.yml",
+        "mean": {
+          "x": -2695.806185272005,
+          "y": -611.7474024390874,
+          "z": -682.6664725130271
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".github/workflows/pages.yml",
+        "mean": {
+          "x": -2198.874532041249,
+          "y": -1534.2372862955208,
+          "z": 1100.090469946235
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".gitignore",
+        "mean": {
+          "x": -531.986825875174,
+          "y": 2502.427944566814,
+          "z": 1424.9812521736437
+        },
+        "radius": 4
+      },
+      {
+        "files": 465,
+        "seed": ".live-docs.config.json",
+        "mean": {
+          "x": 304.2068501124379,
+          "y": 22.57078054654048,
+          "z": -169.32253244457465
+        },
+        "radius": 927.3413303639795
+      },
+      {
+        "files": 1,
+        "seed": ".nvmrc",
+        "mean": {
+          "x": -784.1782192475646,
+          "y": 596.0118446871642,
+          "z": -2788.2001943433897
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": ".vscode/settings.json",
+        "mean": {
+          "x": -2050.3705313901323,
+          "y": 756.8181824332011,
+          "z": -1902.6238114618752
+        },
+        "radius": 8
+      },
+      {
+        "files": 1,
+        "seed": "eslint.config.js",
+        "mean": {
+          "x": -2117.67328147264,
+          "y": -1858.5949535755044,
+          "z": -265.49315866694036
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "package.json",
+        "mean": {
+          "x": 1582.1587848344434,
+          "y": 2444.571268798414,
+          "z": -370.98808925194055
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 4,
+        "seed": "packages/cli/package.json",
+        "mean": {
+          "x": -619.6850187724693,
+          "y": 2123.1231452671063,
+          "z": -1859.4452226826832
+        },
+        "radius": 76.24132771840446
+      },
+      {
+        "files": 1,
+        "seed": "packages/cli/src/index.ts",
+        "mean": {
+          "x": 911.9237010838273,
+          "y": 217.7430925939115,
+          "z": -2796.8430949141243
+        },
+        "radius": 4
+      },
+      {
+        "files": 9,
+        "seed": "packages/cli/tsconfig.json",
+        "mean": {
+          "x": 2055.033316817711,
+          "y": 303.76546037908815,
+          "z": -2029.3398554858177
+        },
+        "radius": 118.7211237950812
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/build.sh",
+        "mean": {
+          "x": 410.1717819696866,
+          "y": -2711.7314412684627,
+          "z": 852.9827103510935
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/grammar.patch",
+        "mean": {
+          "x": 2064.1130018924227,
+          "y": 2075.0724564273833,
+          "z": 458.51131459292395
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/command_arguments.txt",
+        "mean": {
+          "x": 2878.3004031134283,
+          "y": -453.3420487212384,
+          "z": -934.2078093313813
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/scripts.txt",
+        "mean": {
+          "x": 1750.2401081330836,
+          "y": -1663.3256617008315,
+          "z": -1717.666976960595
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/test/corpus/using_statements.txt",
+        "mean": {
+          "x": 482.98128758563706,
+          "y": 2509.5761840231694,
+          "z": -1418.8022092484457
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "packages/engine/grammars/powershell/upstream.env",
+        "mean": {
+          "x": 640.1371591339889,
+          "y": -1689.449524911405,
+          "z": 2262.0355049170157
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/doc-tools/__fixtures__/documentation-links/sample-tool.ts",
+        "mean": {
+          "x": -2106.7442983861597,
+          "y": -1408.8754272938515,
+          "z": -1403.3829324957203
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "scripts/live-docs/run-all.ts",
+        "mean": {
+          "x": -1076.1893699985153,
+          "y": 2418.4308832304982,
+          "z": 1384.5619746425182
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/oracle/powershell-ast.ps1",
+        "mean": {
+          "x": -1769.7711059766718,
+          "y": -1665.1346959829418,
+          "z": -1597.0684038667312
+        },
+        "radius": 8.617738760127535
+      },
+      {
+        "files": 4,
+        "seed": "scripts/safe-to-commit.mjs",
+        "mean": {
+          "x": 570.0791473471916,
+          "y": -2804.284709802171,
+          "z": -169.0602066217467
+        },
+        "radius": 66.9395756300326
+      },
+      {
+        "files": 1,
+        "seed": "scripts/slopcop/check-asset-paths.test.ts",
+        "mean": {
+          "x": 1693.9028037670435,
+          "y": -2422.436303147181,
+          "z": -68.78995698467277
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "scripts/slopcop/check-symbols.test.ts",
+        "mean": {
+          "x": 98.75532105580658,
+          "y": -2295.126145801937,
+          "z": -1969.6293583239076
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "slopcop.config.json",
+        "mean": {
+          "x": -1675.790641308791,
+          "y": 340.8270919603786,
+          "z": 2696.48760284905
+        },
+        "radius": 10.079368399158986
+      },
+      {
+        "files": 1,
+        "seed": "tests/e2e/tuning.spec.ts",
+        "mean": {
+          "x": 2718.7103960697045,
+          "y": -802.4027683229641,
+          "z": 1149.4524452025553
+        },
+        "radius": 4
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml",
+        "mean": {
+          "x": -735.2350690002659,
+          "y": -1097.440057923507,
+          "z": 2601.9624352432493
+        },
+        "radius": 66.84265614456024
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/BaseWidget.cs",
+        "mean": {
+          "x": -2494.637836780409,
+          "y": 451.3208799535287,
+          "z": -1304.8380508683529
+        },
+        "radius": 79.49909011164881
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs",
+        "mean": {
+          "x": -1122.238353563094,
+          "y": 2045.8438953415603,
+          "z": -1746.4733850084524
+        },
+        "radius": 42.58559726545623
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/package.json",
+        "mean": {
+          "x": 1902.9001772746185,
+          "y": -1998.0723580431916,
+          "z": -1156.0431132521674
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/fixtures/entry-points/workspace/src/cli.ts",
+        "mean": {
+          "x": 2324.5014639338915,
+          "y": -657.5929668665834,
+          "z": -1744.7665584192819
+        },
+        "radius": 120.54032955019618
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/styles.css",
+        "mean": {
+          "x": 1216.732107362879,
+          "y": 1071.7711447994998,
+          "z": 2516.4346577111924
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/entry-points/workspace/tsconfig.json",
+        "mean": {
+          "x": 1859.6188922042345,
+          "y": 1139.8716936971184,
+          "z": 2017.844020288075
+        },
+        "radius": 8
+      },
+      {
+        "files": 10,
+        "seed": "tests/integration/fixtures/include-dirs/compile_commands.json",
+        "mean": {
+          "x": -2388.2732913113264,
+          "y": -910.68936680255,
+          "z": 1434.8431214050697
+        },
+        "radius": 101.5055147834364
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/extra/core/engine.hpp",
+        "mean": {
+          "x": -1574.3189416556236,
+          "y": -1676.1002058193224,
+          "z": 1809.862423879256
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/tests/core/engine.hpp",
+        "mean": {
+          "x": -1874.1811935183164,
+          "y": 447.09033606755486,
+          "z": -2219.8863597004975
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/include-dirs/vendor/other/util.hpp",
+        "mean": {
+          "x": -2174.464278461168,
+          "y": 1585.8349414208376,
+          "z": -1151.0604298168948
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/app/go.mod",
+        "mean": {
+          "x": 366.1289393166037,
+          "y": -2626.9234806972827,
+          "z": -1331.093753923313
+        },
+        "radius": 40.40715625501496
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/app/main.go",
+        "mean": {
+          "x": 1240.3968257729052,
+          "y": 2453.6643939541127,
+          "z": -1109.847239503942
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/go/ledger/ledger.go",
+        "mean": {
+          "x": -201.18575786516703,
+          "y": -1041.820614524513,
+          "z": -2817.6915005108754
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 3,
+        "seed": "tests/integration/fixtures/manifests/workspace/java/app/pom.xml",
+        "mean": {
+          "x": 1476.5612026451024,
+          "y": 1315.7728706517648,
+          "z": -2207.2287310508973
+        },
+        "radius": 47.04657250527868
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java",
+        "mean": {
+          "x": 2237.889475190965,
+          "y": -1900.2498320383215,
+          "z": -547.7888333725809
+        },
+        "radius": 42.636594586856916
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/pyproject.toml",
+        "mean": {
+          "x": 76.17405519601814,
+          "y": 2742.779340781307,
+          "z": 1034.1811688914024
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/src/tally/__init__.py",
+        "mean": {
+          "x": 1191.8214733268721,
+          "y": -1586.1476677052867,
+          "z": 2157.702053941702
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/python/src/tally/cli.py",
+        "mean": {
+          "x": 2234.138461912172,
+          "y": -542.5599731508627,
+          "z": 1917.7466004692587
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/Cargo.toml",
+        "mean": {
+          "x": 1973.0636864940777,
+          "y": 2238.6443709907758,
+          "z": -2.2641237199528685
+        },
+        "radius": 4
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml",
+        "mean": {
+          "x": -123.17234772152608,
+          "y": -2223.252958858291,
+          "z": 1831.9005628424609
+        },
+        "radius": 40.29794082123158
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/src/lib.rs",
+        "mean": {
+          "x": 6.657883710069246,
+          "y": 130.70462982860977,
+          "z": 2991.2442992857923
+        },
+        "radius": 39.82388237233363
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/fixtures/powershell-compendium/common/logging.ps1",
+        "mean": {
+          "x": -2713.306449725799,
+          "y": 1112.8999934134695,
+          "z": -19.605782621948062
+        },
+        "radius": 115.85205871597856
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/queue-worker/workspace/Controllers/TelemetryController.cs",
+        "mean": {
+          "x": -61.21159583182432,
+          "y": -1286.0111146092786,
+          "z": -2607.2498295739215
+        },
+        "radius": 74.93569221498106
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml",
+        "mean": {
+          "x": 1875.803531313032,
+          "y": 1590.3678888314344,
+          "z": -1686.768086125527
+        },
+        "radius": 71.13532397437103
+      },
+      {
+        "files": 14,
+        "seed": "tests/integration/fixtures/slopcop-assets/workspace/pages/index.html",
+        "mean": {
+          "x": 950.7693438450607,
+          "y": 456.1554306994861,
+          "z": 2680.8292754083113
+        },
+        "radius": 139.2912678373878
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-assets/workspace/slopcop.config.json",
+        "mean": {
+          "x": -650.4090403964723,
+          "y": -2831.8078245666497,
+          "z": -355.2297337219685
+        },
+        "radius": 6.839903786706788
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-symbols/workspace/slopcop.config.json",
+        "mean": {
+          "x": -2941.0357731672816,
+          "y": -118.35087833474365,
+          "z": -359.9279404686415
+        },
+        "radius": 6.839903786706788
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/slopcop-symbols/workspace/src/component.ts",
+        "mean": {
+          "x": -1920.6393163868686,
+          "y": -1972.468009053458,
+          "z": 871.3308192400971
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 2,
+        "seed": "tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts",
+        "mean": {
+          "x": -438.8618485554043,
+          "y": 1639.427355547071,
+          "z": -2373.5964517837883
+        },
+        "radius": 40.28981822120378
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/fixtures/spa-runtime-config/workspace/tsconfig.json",
+        "mean": {
+          "x": -1238.8768016179415,
+          "y": 711.9614815975182,
+          "z": -2606.5060723176584
+        },
+        "radius": 8.895920362277263
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/fixtures/webforms-appsettings/workspace/Web.config",
+        "mean": {
+          "x": 216.00803392384182,
+          "y": 357.3664265130501,
+          "z": -2873.304591562639
+        },
+        "radius": 72.07005567966281
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/live-docs/generate-cli.test.ts",
+        "mean": {
+          "x": 2825.861646688027,
+          "y": 1022.2932071387924,
+          "z": -800.2865472356733
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/live-docs/pipeline.test.ts",
+        "mean": {
+          "x": 607.221322401664,
+          "y": 2768.3484413425513,
+          "z": 765.4773916598441
+        },
+        "radius": 4
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/c/basics/compile_commands.json",
+        "mean": {
+          "x": -676.3559734534657,
+          "y": 978.5259452750968,
+          "z": -2643.134745158025
+        },
+        "radius": 59.30472807398204
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/c/basics/src/helpers.h",
+        "mean": {
+          "x": 936.0229398573564,
+          "y": 1703.7316468550841,
+          "z": -2250.995954847622
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 9,
+        "seed": "tests/integration/programs/c/modular/compile_commands.json",
+        "mean": {
+          "x": 2701.4836017951093,
+          "y": -1340.7312842756319,
+          "z": -13.254791523376717
+        },
+        "radius": 99.24366560932329
+      },
+      {
+        "files": 102,
+        "seed": "tests/integration/programs/c/rosetta/compile_commands.json",
+        "mean": {
+          "x": -1550.401955483864,
+          "y": 640.1081607075486,
+          "z": 1598.3877172906239
+        },
+        "radius": 441.5835518248623
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/programs/csharp/basic/CSharpBasic.csproj",
+        "mean": {
+          "x": 20.233000810850285,
+          "y": -540.6238061641604,
+          "z": 2850.4891527396867
+        },
+        "radius": 118.52091072241177
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/programs/csharp/estate/Contracts/Contracts.csproj",
+        "mean": {
+          "x": -980.0400640465823,
+          "y": 2748.42041676432,
+          "z": -5.154629844237762
+        },
+        "radius": 71.12618917202812
+      },
+      {
+        "files": 33,
+        "seed": "tests/integration/programs/csharp/estate/Contracts/IPaymentHub.cs",
+        "mean": {
+          "x": -638.4933267134758,
+          "y": -2335.1219452362984,
+          "z": -1356.78615490934
+        },
+        "radius": 172.54649004401335
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/csharp/estate/Portal/Portal.csproj",
+        "mean": {
+          "x": -674.6015347113567,
+          "y": 2841.7372846879994,
+          "z": 368.91397896527286
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/csharp/webforms/WebForms.csproj",
+        "mean": {
+          "x": -2861.793668780047,
+          "y": 119.11880637942217,
+          "z": 109.66744393129906
+        },
+        "radius": 124.01980818523171
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/csharp/webforms/src/Web.config",
+        "mean": {
+          "x": 254.05769853824617,
+          "y": -1578.5623808734392,
+          "z": -2511.5633329769994
+        },
+        "radius": 5.768998281229633
+      },
+      {
+        "files": 15,
+        "seed": "tests/integration/programs/go/depot/cmd/depot/main.go",
+        "mean": {
+          "x": 2708.6722828248517,
+          "y": 480.76140342920365,
+          "z": -1103.0840016686477
+        },
+        "radius": 124.0892063738598
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/java/basic/expected/compiler-edges.json",
+        "mean": {
+          "x": -696.6895769613694,
+          "y": -464.3948882430436,
+          "z": -2863.6129668735543
+        },
+        "radius": 105.76810669321895
+      },
+      {
+        "files": 10,
+        "seed": "tests/integration/programs/java/service/expected/compiler-edges.json",
+        "mean": {
+          "x": -2415.7806970411593,
+          "y": -548.1369460523568,
+          "z": -1390.557002195864
+        },
+        "radius": 117.52555978331714
+      },
+      {
+        "files": 13,
+        "seed": "tests/integration/programs/java/warehouse/expected/compiler-edges.json",
+        "mean": {
+          "x": 2841.7795670582814,
+          "y": -570.88598503464,
+          "z": 287.73689291030774
+        },
+        "radius": 128.56249225247308
+      },
+      {
+        "files": 11,
+        "seed": "tests/integration/programs/powershell/rollout/Invoke-Rollout.ps1",
+        "mean": {
+          "x": -2787.8522267174144,
+          "y": 602.7160100588021,
+          "z": 1082.0757221631522
+        },
+        "radius": 104.82600883140375
+      },
+      {
+        "files": 4,
+        "seed": "tests/integration/programs/python/basics/expected/compiler-edges.json",
+        "mean": {
+          "x": -1577.5450795497686,
+          "y": -916.0500631943116,
+          "z": -2279.8633091381084
+        },
+        "radius": 63.880170774470805
+      },
+      {
+        "files": 14,
+        "seed": "tests/integration/programs/python/ledger/expected/compiler-edges.json",
+        "mean": {
+          "x": 2259.3262985142983,
+          "y": 1450.9604913027963,
+          "z": 1110.4374496960788
+        },
+        "radius": 112.94654656925884
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/programs/python/ledger/pyproject.toml",
+        "mean": {
+          "x": -1369.7662038322364,
+          "y": -2264.855111197747,
+          "z": 1155.6192681926696
+        },
+        "radius": 5.039684199579493
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/python/pipeline/expected/compiler-edges.json",
+        "mean": {
+          "x": -2663.521726957567,
+          "y": -993.0510120311657,
+          "z": -238.54739937727786
+        },
+        "radius": 109.119814084191
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/ruby/basic/lib/data_store.rb",
+        "mean": {
+          "x": 2449.875544260099,
+          "y": -287.60681955719053,
+          "z": 1570.1274568584176
+        },
+        "radius": 93.9027259592321
+      },
+      {
+        "files": 6,
+        "seed": "tests/integration/programs/ruby/cli/lib/cli.rb",
+        "mean": {
+          "x": -744.4307990996501,
+          "y": 905.0051660464177,
+          "z": 2799.81431842868
+        },
+        "radius": 92.47553750243361
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/rust/analytics/Cargo.toml",
+        "mean": {
+          "x": 695.1496767302779,
+          "y": -557.8895858117751,
+          "z": -2796.192781358671
+        },
+        "radius": 111.82972041212078
+      },
+      {
+        "files": 5,
+        "seed": "tests/integration/programs/rust/basics/Cargo.toml",
+        "mean": {
+          "x": 2827.184546264739,
+          "y": -119.18837533677063,
+          "z": 1019.7211879611683
+        },
+        "radius": 91.97215545589718
+      },
+      {
+        "files": 11,
+        "seed": "tests/integration/programs/rust/stockroom/Cargo.toml",
+        "mean": {
+          "x": -1220.6262720809634,
+          "y": -331.9277167433534,
+          "z": -2490.56272237312
+        },
+        "radius": 136.19027066940583
+      },
+      {
+        "files": 7,
+        "seed": "tests/integration/programs/typescript/basic/expected/compiler-edges.json",
+        "mean": {
+          "x": 2765.981304962104,
+          "y": 835.9563150522066,
+          "z": 885.1822870221511
+        },
+        "radius": 96.51835586706757
+      },
+      {
+        "files": 8,
+        "seed": "tests/integration/programs/typescript/layered/expected/compiler-edges.json",
+        "mean": {
+          "x": -1443.3190370211635,
+          "y": -680.0860484147211,
+          "z": 2531.9153286333494
+        },
+        "radius": 109.94876647821293
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/slopcop/assetsAudit.test.ts",
+        "mean": {
+          "x": 1101.8840978884741,
+          "y": -2662.390714479872,
+          "z": 542.042717033894
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "tests/integration/slopcop/symbolsAudit.test.ts",
+        "mean": {
+          "x": 2433.5609246211848,
+          "y": 1616.8530418507387,
+          "z": -755.9108740347436
+        },
+        "radius": 4
+      },
+      {
+        "files": 1,
+        "seed": "vitest.config.ts",
+        "mean": {
+          "x": 1474.9630641282167,
+          "y": -1762.7090696779153,
+          "z": 1832.1566044110225
+        },
+        "radius": 5.039684199579493
+      }
+    ],
+    "overlappingComponentBounds": 0,
+    "minClearance": 250.4876583187417
+  }
+]

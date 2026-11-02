@@ -36,6 +36,7 @@ import { placeOf } from "./persistence/place";
 import { searchIndexOf, type SearchHit } from "./search/graph-search";
 import { createSearchBar, type SearchWords } from "./search/search-bar";
 import type { ExplorerState, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
+import { defaultSpatialLayout } from "./views/forceGraphScope";
 import { createForceGraphView } from "./views/forceGraphView";
 import { createLocalView } from "./views/localView";
 import { explorerGraphOf } from "../shared/graph";
@@ -167,7 +168,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   const state: ExplorerState = {
     view: resolveInitialView(),
     perspective: initialState.perspective ?? savedNav?.perspective ?? "2d",
-    spatialLayout: initialState.spatialLayout ?? savedNav?.spatialLayout ?? "connections",
+    spatialLayout: initialState.spatialLayout ?? savedNav?.spatialLayout ?? defaultSpatialLayout(graphData.nodes),
     selectedNode: null,
     inspection: null,
     discovery: null,
@@ -213,6 +214,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     discovery: state.discovery
   }));
   const schedulePersistNav = persistNav.schedule;
+  window.addEventListener("pagehide", () => { persistUi.flush(); persistNav.flush(); });
 
   const detailPanel = createDetailPanel(nodesById, {
     files,
@@ -265,13 +267,33 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   const filterToggleRelatedDocs = getInputById("filter-toggle-related-docs");
   const filterToggleCitingDocs = getInputById("filter-toggle-citing-docs");
   const statsLine = requireElement("stats-line");
+  const statsText = document.createTextNode("");
+  const allFilesButton = document.createElement("button");
+  allFilesButton.type = "button";
+  allFilesButton.className = "spatial-overview";
+  allFilesButton.hidden = true;
+  allFilesButton.addEventListener("click", () => {
+    historyControl.pause();
+    if (state.openDirectories?.has("")) closeRetainedDirectory("");
+    else openRetainedDirectory("");
+    forceGraphView.fit();
+  });
+  statsLine.replaceChildren(statsText);
+  statsLine.after(allFilesButton);
   /** The sidebar's counts follow the picture: today's, or the moment of the history the 3D picture shows (2026-10-30). */
   // How many files the 3D picture shows of those the filters allow (discovery, 2026-10-31), beside the counts.
   let shownFiles: { shown: number; total: number } | null = null;
+  let backwardConnections = 0;
   const syncStatsLine = (): void => {
     const counts = statsLineOf((shownMoment?.graph ?? graphData).stats);
     const shown = state.view === "map" && state.perspective === "3d" && shownFiles ? ` · ${shownFiles.shown.toLocaleString("en-US")} of ${shownFiles.total.toLocaleString("en-US")} files shown` : "";
-    statsLine.textContent = counts + shown;
+    statsText.data = counts + shown;
+    allFilesButton.hidden = state.view !== "map" || state.perspective !== "3d" || !shownFiles?.total;
+    const whole = state.openDirectories?.has("") ?? false;
+    allFilesButton.textContent = whole ? "Return to local scope" : "Show all files";
+    allFilesButton.setAttribute("aria-pressed", String(whole));
+    allFilesButton.title = whole ? "Release the scan-root opening; keep your other pins and directory openings"
+      : `Open all ${shownFiles?.total.toLocaleString("en-US") ?? ""} eligible files, including disconnected groups and isolated files`;
   };
   syncStatsLine();
 
@@ -300,6 +322,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     onInspectDirectory: directory => openInspection({ kind: "directory", directory }),
     onShowNodeActions: showNodeActions,
     onShowDirectoryActions: showDirectoryActions,
+    onBackwardConnections: count => {
+      if (count === backwardConnections) return;
+      backwardConnections = count;
+      syncPerspectiveControls();
+    },
     testCoverage,
     nodesById
   });
@@ -315,15 +342,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     onShowBundledDoc: (docPath: string) => {
       showBundledDocInDetailPanel(docPath);
     },
-    onFocusNode: (node: ExplorerNodePayload) => {
-      focusSidebar(node);
-    },
-    onPressPin: pressPin,
-    onReleasePin: unpinNode,
+    onToggleNode: toggleSpatialNode,
+    onTogglePin: toggleSpatialPin,
     onRecenterNode: recentreOn,
     onShowNodeActions: showNodeActions,
     onShowDirectoryActions: showDirectoryActions,
-    onInspectDirectory: directory => openInspection({ kind: "directory", directory }),
+    onToggleDirectory: toggleSpatialDirectory,
     onCentreDirectory: centreOnDirectory,
     onOpenDirectory: directory => {
       openRetainedDirectory(directory);
@@ -498,6 +522,22 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   for (const button of [connectionsButton, structureButton]) {
     button.addEventListener("click", () => changeSpatialLayout(button.dataset.spatialLayout === "structure" ? "structure" : "connections"));
   }
+  const hopsSelect = document.createElement("select");
+  hopsSelect.setAttribute("aria-label", "Hops shown");
+  hopsSelect.title = "How far to explore from your pins or discovery; fewer hops reveal a smaller neighborhood";
+  const hopsRange = requireElement<HTMLInputElement>("tuning-force-hops");
+  for (let hops = Number(hopsRange.min); hops <= Number(hopsRange.max); hops += Number(hopsRange.step)) {
+    hopsSelect.add(new Option(`${hops} ${hops === 1 ? "hop" : "hops"}`, String(hops)));
+  }
+  hopsSelect.addEventListener("change", () => {
+    historyControl.pause();
+    state.tuning.forceGraph.hops = Number(hopsSelect.value);
+    syncTuningControls();
+    schedulePersistUi();
+    renderCurrentView();
+    forceGraphView.fit();
+    persistExploration();
+  });
   // The history: beside the 3D layout's buttons for now, as those went beside 3D, until the consolidation pass the
   // owner expects decides where the control lives (the plan's C4). Offered only when the bundle carries a history.
   const historyButton = iconButton("History", '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>');
@@ -514,7 +554,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     return element;
   };
   perspectiveControls.append(group(fitButton), group(compactButton, relaxedButton, tuningButton), group(mapButton, graphButton),
-    group(connectionsButton, structureButton), group(historyButton));
+    group(connectionsButton, structureButton, hopsSelect), group(historyButton));
   requireElement("main").append(perspectiveControls);
   const pinTray = createPinTray({
     parent: requireElement("main"),
@@ -619,6 +659,47 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const pins = state.pins ?? EMPTY_PIN_SET;
     const next = removePinsForNode(pins, nodeId);
     if (next !== pins) changePinned(nodeId, "*", next, false, true);
+  }
+
+  /** A 3D press adds a shared file pin; another press withdraws this file's own contribution to the neighborhood. */
+  function toggleSpatialNode(nodeId: string): void {
+    historyControl.pause();
+    const retained = (state.pins ?? EMPTY_PIN_SET).entries.some(pin => pin.nodeId === nodeId);
+    const discovered = state.discovery?.kind === "file" && state.discovery.nodeId === nodeId;
+    if (retained || discovered) {
+      releaseSpatialNode(nodeId);
+    } else retainNode(nodeId);
+  }
+
+  /** The explicit Pin button retains an inspected file; only a subsequent Unpin withdraws it. */
+  function toggleSpatialPin(nodeId: string): void {
+    historyControl.pause();
+    if ((state.pins ?? EMPTY_PIN_SET).entries.some(pin => pin.nodeId === nodeId)) releaseSpatialNode(nodeId);
+    else retainNode(nodeId);
+  }
+
+  function releaseSpatialNode(nodeId: string): void {
+    if (state.inspection?.kind === "file" && state.inspection.nodeId === nodeId) {
+      state.inspection = null;
+      hideInspection();
+    }
+    closePinnedNode(nodeId);
+  }
+
+  /** Directory discovery is reversible without implicitly retaining every descendant. Open remains explicit. */
+  function toggleSpatialDirectory(directory: string): void {
+    if (state.discovery?.kind !== "directory" || state.discovery.directory !== directory) {
+      openInspection({ kind: "directory", directory });
+      return;
+    }
+    historyControl.pause();
+    state.discovery = null;
+    if (state.inspection?.kind === "directory" && state.inspection.directory === directory) {
+      state.inspection = null;
+      hideInspection();
+    }
+    forceGraphView.render();
+    persistExploration();
   }
 
   /** An opened directory is shared state; the Local Map owns only its screen anchor and focus. */
@@ -847,12 +928,18 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   function syncPerspectiveControls(): void {
     const contextName = document.getElementById("context-name");
-    if (contextName) contextName.textContent = state.selectedNode?.codeRelativePath
-      ?? ([...(state.openDirectories ?? [])].map(path => path || "Scan root").join(", ") || "Scan root");
+    const selectedPath = state.selectedNode ? shownMoment?.fileAt(state.selectedNode.id) ?? state.selectedNode.codeRelativePath : null;
+    const discoveredPath = state.discovery?.kind === "directory" ? shownMoment?.directoryAt(state.discovery.directory) ?? state.discovery.directory
+      : state.discovery?.kind === "file" ? shownMoment?.fileAt(state.discovery.nodeId) ?? nodesById.get(state.discovery.nodeId)?.codeRelativePath : null;
+    if (contextName) contextName.textContent = selectedPath
+      ?? ([...(state.openDirectories ?? [])].map(path => (shownMoment?.directoryAt(path) ?? path) || "Scan root").join(", ") || discoveredPath || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
     const preset = layoutPresetOf(state.tuning);
     for (const button of [fitButton, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     fitButton.hidden = connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
+    hopsSelect.hidden = state.perspective !== "3d";
+    hopsSelect.disabled = changingPerspective || !!localView.getActivePath();
+    hopsSelect.value = String(state.tuning.forceGraph.hops);
     historyButton.hidden = state.perspective !== "3d" || !historyControl.available;
     historyButton.setAttribute("aria-pressed", String(historyControl.isOpen()));
     connectionsButton.setAttribute("aria-pressed", String(state.spatialLayout === "connections"));
@@ -864,6 +951,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     tuningButton.setAttribute("aria-label", preset === "custom" ? "Layout tuning: Custom" : "Layout tuning");
     mapButton.setAttribute("aria-pressed", String(state.perspective === "2d"));
     graphButton.setAttribute("aria-pressed", String(state.perspective === "3d"));
+    const suggest3d = state.perspective === "2d" && backwardConnections > 0;
+    graphButton.classList.toggle("has-backward-wires", suggest3d);
+    graphButton.title = suggest3d ? `${backwardConnections} ${backwardConnections === 1 ? "connection runs" : "connections run"} backward in 2D. Explore this scope in 3D.` : "Local Map in 3D";
     state.retentionOrder = reconcileRetained(retentionState()).retentionOrder;
     historyControl.sync({
       visible: state.view === "map" && state.perspective === "3d",
@@ -899,6 +989,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (state.spatialLayout === layout || changingPerspective) return;
     state.spatialLayout = layout;
     renderCurrentView();
+    const subject = state.selectedNode;
+    const singleFile = subject && !state.openDirectories?.size && !localView.getActivePath()
+      && (state.pins?.entries ?? []).every(pin => pin.nodeId === subject.id)
+      && (!state.discovery || state.discovery.kind === "file" && state.discovery.nodeId === subject.id);
+    if (singleFile) forceGraphView.focusNode(subject.id);
+    else forceGraphView.fit();
     persistExploration();
   }
 
@@ -921,12 +1017,14 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const sourceSurface = previous === "2d" ? "map" : "graph";
     const sourceCards = previous === "2d" ? captureLocalScene(requireElement("view-map")) : null;
     const sourceGraph = previous === "3d" ? forceGraphView.captureScene() : null;
-    const releaseCover = previous && target ? holdPerspective(requireElement(`view-${sourceSurface}`)) : () => {};
+    const releaseCover = previous ? holdPerspective(requireElement(`view-${sourceSurface}`)) : () => {};
     releasePerspectiveCover = releaseCover;
     changingPerspective = true;
     syncPerspectiveControls();
     const source = previous === "2d" ? localView : previous === "3d" ? forceGraphView : null;
-    let anchor = target && source ? source.getSubjectAnchor(target.id) : null;
+    // A pin-only exploration has an identity to hold too, without turning that pin into the selected subject.
+    const visualId = target?.id ?? state.pins?.entries.at(-1)?.nodeId;
+    let anchor = visualId && source ? source.getSubjectAnchor(visualId) : null;
     // The 2D map draws today's docs: leaving 3D returns the picture to today and closes the history.
     if (perspective === "2d") historyControl.leave();
     state.selectedNode = target;
@@ -934,22 +1032,24 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     state.perspective = perspective;
     setActiveView(state.view, perspective);
     renderCurrentView(subjectChanged ? "change" : "show");
+    if (perspective === "3d" && sourceCards) forceGraphView.revealForTransition(sourceCards.cards.map(card => card.file.id));
     persistExploration();
-    if (target && anchor) {
+    if (visualId && anchor) {
       const viewport = requireElement(`view-${destination}`).getBoundingClientRect();
       if (anchor.x >= viewport.left && anchor.x <= viewport.right && anchor.y >= viewport.top && anchor.y <= viewport.bottom) {
-        (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
+        (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(visualId, anchor);
       } else anchor = null;
     }
     const ready = perspective === "3d" ? forceGraphView.whenReady() : Promise.resolve();
     void ready.then(() => {
       if (epoch !== perspectiveEpoch) { releaseCover(); return; }
-      if (target && anchor) (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(target.id, anchor);
-      if (target && previous && previous !== perspective) {
+      if (visualId && anchor) (perspective === "2d" ? localView : forceGraphView).placeSubjectAnchor(visualId, anchor);
+      if (previous && previous !== perspective) {
         const cards = perspective === "3d" ? sourceCards! : captureLocalScene(requireElement("view-map"));
         const graph = perspective === "3d" ? forceGraphView.captureScene() : sourceGraph!;
         forceGraphView.setActive(false);
-        cancelPerspectiveAnimation = animatePerspective(cards, graph, perspective === "3d", target.id, requireElement(`view-${destination}`).getBoundingClientRect(), () => {
+        const named = visualId ?? "";
+        cancelPerspectiveAnimation = animatePerspective(cards, graph, perspective === "3d", named, requireElement(`view-${destination}`).getBoundingClientRect(), () => {
           if (epoch !== perspectiveEpoch) return;
           transitionDestination = null;
           changingPerspective = false;
@@ -1467,7 +1567,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       const room = requireElement("graph-svg").clientWidth - requireElement("detail-panel").offsetWidth - (stepPanel?.offsetWidth ?? 0);
       if (stepPanel && !readerRoom.matches && room < 320) historyControl.hideDetails();
       forceGraphView.render();
-      forceGraphView.keepInspectionVisible();
+      if (validated.kind === "directory") forceGraphView.fit();
+      else forceGraphView.keepInspectionVisible();
     }
     persistExploration();
   }

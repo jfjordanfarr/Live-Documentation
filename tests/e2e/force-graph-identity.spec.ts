@@ -6,6 +6,14 @@ import { currentSnapshot } from "./search-bar";
 
 const names = [".force-graph-focus", ".force-graph-label"];
 
+test("a fresh 3D visit without declared entries starts in Structure and remembers a deliberate layout choice", async ({ page }) => {
+  await page.goto("/samples/estate/?view=local&mode=3d");
+  await expect(page.getByRole("button", { name: "Structure", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Connections", exact: true }).click();
+  await page.goto("/samples/estate/?view=local&mode=3d");
+  await expect(page.getByRole("button", { name: "Connections", exact: true })).toHaveAttribute("aria-pressed", "true");
+});
+
 /** Inspect compositor pixels, since correct scene objects cannot prove that an idle canvas stayed painted. */
 async function blueSphereIsPainted(page: Page, id: string): Promise<void> {
   const node = (await renderedNodes(page)).find(item => item.id === id)!;
@@ -106,7 +114,9 @@ test("Portal keeps readable directory and file identities through layouts and in
   await readableNames(page);
   await blueSphereIsPainted(page, "Portal/Services/GatewayClient.cs");
   const before = currentSnapshot(page);
-  await gateway.click();
+  await gateway.focus();
+  await page.getByRole("button", { name: "More actions for GatewayClient.cs", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Inspect GatewayClient.cs", exact: true }).click();
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
   expect(currentSnapshot(page).openDirectories).toEqual(before.openDirectories);
   expect(currentSnapshot(page).selectedNodeId).toBe(before.selectedNodeId);
@@ -126,9 +136,12 @@ test("an unselected 3D arrival frames the estate without inventing pins", async 
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
   const nodes = await renderedNodes(page);
-  // Nothing asked about: the start, the estate's most connected file and two hops around it, a part of the whole (2026-10-31).
-  expect(nodes.length).toBeGreaterThan(10);
-  expect(nodes.length).toBeLessThan(36);
+  // With no declared entry, the fresh start is Structure: root, children and grandchildren, including real hubs.
+  await expect(page.getByRole("button", { name: "Structure", exact: true })).toHaveAttribute("aria-pressed", "true");
+  const files = nodes.filter(node => node.directory === undefined);
+  expect(files.length).toBeGreaterThan(10);
+  expect(files.length).toBeLessThan(36);
+  expect(nodes.some(node => node.directory === "")).toBe(true);
   for (const node of nodes) {
     expect(node.depth).toBeGreaterThan(-1); expect(node.depth).toBeLessThan(1);
     expect(node.x - node.screenRadius).toBeGreaterThan(frame.x);

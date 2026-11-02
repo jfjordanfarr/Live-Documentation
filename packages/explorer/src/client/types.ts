@@ -191,11 +191,11 @@ export interface ForceGraphTuning {
   nodeSize: number;
   /** Exponent of symbol count in sphere volume; one gives cube-root radius growth. */
   symbolScale: number;
-  /** Baseline 3D wire diameter: world units at zero resistance, CSS pixels at full resistance. */
+  /** Baseline 3D wire diameter: world units at zero resistance, CSS pixels at the orbit target at full resistance. */
   linkWidth: number;
-  /** Compensation for perspective sizing: zero preserves it, one holds node screen radii constant. */
+  /** Zoom compensation: zero preserves perspective, one holds screen radii at the orbit-target plane. */
   nodeZoomResistance: number;
-  /** Compensation for perspective sizing: zero preserves it, one holds wire screen widths constant. */
+  /** Zoom compensation: zero preserves perspective, one holds screen widths at the orbit-target plane. */
   wireZoomResistance: number;
   /**
    * How strongly every sphere is drawn toward the picture's centre, in proportion to its distance from it: the restoring
@@ -203,6 +203,8 @@ export interface ForceGraphTuning {
    * left to repel each other without end (the owner's "weak gravity", 2026-10-17). Zero is no pull.
    */
   gravity: number;
+  /** Reduce disconnected groups' common-centre attraction without weakening their internal gravity; zero keeps one global pull. */
+  componentSeparation: number;
   /**
    * How far a sphere's repulsion reaches, in layout units; zero is unbounded, the library's default. A bound keeps far
    * clusters from pushing on one another while the springs and the collision still shape the near picture.

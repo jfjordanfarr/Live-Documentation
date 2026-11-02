@@ -56,6 +56,8 @@ export interface FieldSettings {
   approximation: number;
   /** The pull toward the origin per unit of distance. */
   gravity: number;
+  /** Reduce only the common-centre pull of disconnected components, retaining each component's internal gravity. */
+  componentSeparation?: number;
   /** The gap kept between two spheres' surfaces beyond their radii. */
   collisionGap: number;
   /** How hard two spheres closer than their clearance push apart, per unit of overlap. */
@@ -141,6 +143,7 @@ interface Progress {
 export class SpatialField {
   private readonly springStiffness: Float64Array;
   private readonly scratch: Scratch;
+  private componentGroups: number[][] | null = null;
   /** The evaluation begun last: an earlier one shares its scratch, so it may not go on. */
   private current: Progress | null = null;
 
@@ -151,7 +154,10 @@ export class SpatialField {
     }
     for (const spring of springs) {
       if (!(spring.rest > 0 && Number.isFinite(spring.rest) && spring.strength >= 0 && Number.isFinite(spring.strength))) throw new Error("A spring needs a positive rest length and a nonnegative strength.");
+      if (![spring.a, spring.b].every(index => Number.isInteger(index) && index >= 0 && index < radii.length)) throw new Error("A spring needs two valid sphere indices.");
     }
+    const separation = settings.componentSeparation ?? 0;
+    if (!Number.isFinite(separation) || separation < 0 || separation > 1) throw new Error("Component separation must be between zero and one.");
     this.springStiffness = new Float64Array(radii.length);
     for (const spring of springs) {
       // Each spring's radial stiffness is half its strength; the Laplacian's largest eigenvalue is bounded by twice
@@ -417,9 +423,27 @@ export class SpatialField {
       for (let i = 0; i < this.count; i++) greatestStiffness = Math.max(greatestStiffness, scratch.stiffness[i] + (charge > 0 ? scratch.pushStiffness[i] : 0));
     }
     if (gravity > 0) {
-      for (let k = 0; k < x.length; k++) {
-        if (measureEnergy) energy += gravity * x[k] * x[k] / 2;
-        out[k] -= gravity * x[k];
+      const separation = this.settings.componentSeparation ?? 0;
+      if (separation === 0) {
+        for (let k = 0; k < x.length; k++) {
+          if (measureEnergy) energy += gravity * x[k] * x[k] / 2;
+          out[k] -= gravity * x[k];
+        }
+      } else {
+        for (const group of this.groups()) {
+          for (let axis = 0; axis < 3; axis++) {
+            let mean = 0;
+            for (const i of group) mean += x[3 * i + axis];
+            mean /= group.length;
+            const commonPull = gravity * (1 - separation) * mean;
+            if (measureEnergy) energy += group.length * commonPull * mean / 2;
+            for (const i of group) {
+              const k = 3 * i + axis, local = x[k] - mean;
+              out[k] -= gravity * local + commonPull;
+              if (measureEnergy) energy += gravity * local * local / 2;
+            }
+          }
+        }
       }
     }
     if (tether > 0 && anchor) {
@@ -429,6 +453,7 @@ export class SpatialField {
         out[k] += tether * pull;
       }
     }
+    // Component gravity has eigenvalues g internally and g * (1 - separation) in translation: g still bounds both.
     const stiffness = greatestStiffness + gravity + (anchor ? tether : 0);
     if (!out.every(Number.isFinite) || !Number.isFinite(stiffness)) throw new Error("The spatial field produced non-finite forces or stiffness.");
     if (measureEnergy) return { energy, stiffness, overlaps, worstOverlap };
@@ -438,6 +463,23 @@ export class SpatialField {
     let measured: number | undefined;
     const readEnergy = (): number => measured ??= this.measure(positions, anchors);
     return { get energy() { return readEnergy(); }, stiffness, overlaps, worstOverlap };
+  }
+
+  /** Components of positive-strength springs, derived once from this field's fixed membership; isolates stand alone. */
+  private groups(): number[][] {
+    if (this.componentGroups) return this.componentGroups;
+    const parent = Uint32Array.from({ length: this.count }, (_, i) => i);
+    const root = (index: number): number => {
+      while (parent[index] !== index) { parent[index] = parent[parent[index]]; index = parent[index]; }
+      return index;
+    };
+    for (const spring of this.springs) if (spring.strength > 0) parent[root(spring.b)] = root(spring.a);
+    const groups = new Map<number, number[]>();
+    for (let i = 0; i < this.count; i++) {
+      const id = root(i), group = groups.get(id);
+      if (group) group.push(i); else groups.set(id, [i]);
+    }
+    return this.componentGroups = [...groups.values()];
   }
 
   /** A whole evaluation for a later read of an energy, in scratch of its own, so that it never disturbs one in progress. */
@@ -651,14 +693,17 @@ export class SpatialMotion {
 const NO_FIXED: ReadonlySet<number> = new Set();
 
 /** The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against. */
-export function diagonalOf(positions: Float64Array): number {
+export function diagonalOf(positions: Float64Array, radii?: Float64Array): number {
   if (!positions.length) return 0;
+  if (radii && radii.length * 3 !== positions.length) throw new Error("The picture needs one radius per sphere.");
   if (!positions.every(Number.isFinite)) throw new Error("The spatial picture needs finite positions to measure its size.");
   const low = [Infinity, Infinity, Infinity], high = [-Infinity, -Infinity, -Infinity];
   for (let i = 0; i < positions.length; i += 3) {
+    const radius = radii?.[i / 3] ?? 0;
+    if (!Number.isFinite(radius) || radius < 0) throw new Error("The picture needs finite nonnegative radii.");
     for (let k = 0; k < 3; k++) {
-      if (positions[i + k] < low[k]) low[k] = positions[i + k];
-      if (positions[i + k] > high[k]) high[k] = positions[i + k];
+      if (positions[i + k] - radius < low[k]) low[k] = positions[i + k] - radius;
+      if (positions[i + k] + radius > high[k]) high[k] = positions[i + k] + radius;
     }
   }
   const diagonal = Math.hypot(high[0] - low[0], high[1] - low[1], high[2] - low[2]);

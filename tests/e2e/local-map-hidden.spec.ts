@@ -119,7 +119,9 @@ test("pinning from the reader in Knowledge Sources keeps hidden 3D paused and ap
   const nodeIds = (await renderedNodes(page)).map(node => node.id).sort();
   const focus = page.locator(".force-graph-focus");
   await expect(focus).toHaveAttribute("data-node-id", subject);
-  await focus.click();
+  await focus.focus();
+  await page.getByRole("button", { name: "More actions for GatewayClient.cs", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Inspect GatewayClient.cs", exact: true }).click();
   await expect(page.locator("#detail-panel.visible")).toContainText(subject);
   await show(page, "sources");
   await expect(page.locator("#view-sources")).toHaveClass(/active/);

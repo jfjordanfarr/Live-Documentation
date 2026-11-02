@@ -179,7 +179,8 @@ export const QUIET_TICKS = 10;
 
 /**
  * The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
- * calmed and the tether takes hold where it stands. A tenth of a percent: this repository's pictures pass it after about
+ * calmed and the tether takes hold where it stands, after the requested membership has entered. A tenth of a percent:
+ * the original repository pictures passed it after about
  * 210 to 250 ticks from the library's seed and are still some 140 ticks later; held from the seed, which is a ball a
  * hundredth of the picture's size, they would stay far too small (measured 2026-10-21).
  */
@@ -208,7 +209,7 @@ export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links
     rest: spatialLinkDistance(link, tuning), strength: strengthOf(link, i, pulling) * springShare(link, tuning)
   }));
   return new SpatialField(Float64Array.from(nodes.map(node => spatialNodeRadius(node, tuning))), springs,
-    { charge: tuning.charge, chargeRange: tuning.chargeRange, approximation: tuning.approximation, gravity: tuning.gravity, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
+    { charge: tuning.charge, chargeRange: tuning.chargeRange, approximation: tuning.approximation, gravity: tuning.gravity, componentSeparation: tuning.componentSeparation, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
     (low, high) => seededDirection(`${nodes[low].id}\0${nodes[high].id}`));
 }
 
@@ -251,6 +252,8 @@ export interface MotionSource<N extends SpatialNode> {
    * and during the library's hidden warm-up, takes a whole tick at every call.
    */
   budget?(): number | undefined;
+  /** A cold picture cannot finish unfolding while some of its requested membership has yet to enter. */
+  readyToAnchor?(): boolean;
 }
 
 /** The fewest spheres one part of a tick evaluates, whatever the budget, so that a tick always goes forward. */
@@ -336,8 +339,8 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
     });
     if (changed) revision++;
     if (!tick) return;
-    const diagonal = diagonalOf(x);
-    if (!holding && tick.moveMax <= UNFOLDED_FRACTION * diagonal) {
+    const diagonal = diagonalOf(x, motion.field.radii);
+    if (!holding && (source.readyToAnchor?.() ?? true) && tick.moveMax <= UNFOLDED_FRACTION * diagonal) {
       motion.anchorHere();
       holding = true;
     }
@@ -417,7 +420,8 @@ export function easeSpatialLayout(nodes: readonly StartableNode[], links: readon
   const first = (layers[0]?.length ?? 0) + (asked.size ? layers[1]?.length ?? 0 : 0);
   let shown = kept.length ? Math.max(kept.length, Math.min(order.length, kept.length + first)) : first;
   const simulation = forceSimulation<SpatialNode>([], 3).stop();
-  const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => layout, links: () => edges, strength: () => strength });
+  const motion = motionForce<SpatialNode>({ tuning: () => tuning, layout: () => layout, links: () => edges, strength: () => strength,
+    readyToAnchor: () => shown >= order.length });
   simulation.force("motion", motion);
   const feed = (): void => {
     const ids = new Set(order.slice(0, shown));

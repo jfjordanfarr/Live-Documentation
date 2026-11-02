@@ -36,6 +36,8 @@
     font-size: 14px;
     overflow-wrap: anywhere;
     cursor: pointer;
+    user-select: none;
+    touch-action: none;
 }
 
 .force-graph-focus:focus-visible,
@@ -90,4 +92,10 @@
 .force-graph-label { left: 0; top: 0; font-size: 13px; padding: 3px 6px; background: #080c16e8; border-color: #485164; }
 .force-graph-label[data-kind="directory"] { color: #f4c18d; border-color: #6f5237; }
 .force-graph-label[data-context="true"] { opacity: .45; }
+.force-graph-focus[aria-pressed="true"], .force-graph-label[aria-pressed="true"] { border-color: var(--accent, #0091ff); }
 .force-graph-focus[hidden], .force-graph-label[hidden] { display: none; }
+
+.force-graph-empty { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); max-width: min(440px, calc(100% - 40px)); display: grid; justify-items: center; gap: 12px; color: var(--text-secondary); font-size: 14px; text-align: center; }
+.force-graph-empty[hidden], .force-graph-empty button[hidden] { display: none; }
+.force-graph-empty button { max-width: 100%; padding: 7px 12px; border: 1px solid var(--accent); border-radius: 4px; background: var(--bg-surface); color: var(--accent); font: inherit; overflow-wrap: anywhere; cursor: pointer; }
+.force-graph-empty button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

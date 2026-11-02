@@ -78,7 +78,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1, hops: 2, revealFrames: 60 },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, componentSeparation: 0.2, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1, hops: 2, revealFrames: 60 },
   // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
   // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played, and a step's changed
   // files glowing while the history is shown (2026-10-31).
@@ -441,15 +441,29 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
   }
 };
 
-/** Timer handle for debounced UI persistence */
+/** Debounced persistence with an immediate flush before the page leaves. */
 export type PersistUiScheduler = {
   schedule: () => void;
+  flush: () => void;
 };
 
-/** Timer handle for debounced nav persistence */
-export type PersistNavScheduler = {
-  schedule: () => void;
-};
+/** The same write lifetime for remembered navigation and evidence. */
+export type PersistNavScheduler = PersistUiScheduler;
+
+/** Coalesce edits while the page is open; a page exit must not discard the last deliberate choice. */
+function delayedWrite(write: () => void): PersistUiScheduler {
+  let timer: number | null = null;
+  const flush = (): void => {
+    if (timer === null) return;
+    window.clearTimeout(timer);
+    timer = null;
+    write();
+  };
+  return { flush, schedule: (): void => {
+    if (timer !== null) window.clearTimeout(timer);
+    timer = window.setTimeout(flush, 150);
+  } };
+}
 
 /** True when two settings hold the same value: numbers, strings, booleans, null, or a plain object or list of them. */
 const sameSetting = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b);
@@ -489,64 +503,39 @@ export const changedFromDefaults = (
  */
 export const createPersistUiScheduler = (
   getState: () => { filters: ExplorerFilters; tuning: TuningConfig }
-): PersistUiScheduler => {
-  let timer: number | null = null;
-
-  return {
-    schedule: (): void => {
-      if (timer !== null) {
-        window.clearTimeout(timer);
-      }
-      timer = window.setTimeout(() => {
-        timer = null;
-        try {
-          const payload: PersistedUi = {
-            version: PERSISTED_UI_VERSION,
-            ...changedFromDefaults(getState(), { filters: getDefaultFilters(), tuning: getDefaultTuning() })
-          };
-          window.localStorage.setItem(PERSISTED_UI_KEY, JSON.stringify(payload));
-        } catch {
-          // ignore (storage may be unavailable/blocked)
-        }
-      }, 150);
-    }
-  };
-};
+): PersistUiScheduler => delayedWrite(() => {
+  try {
+    const payload: PersistedUi = {
+      version: PERSISTED_UI_VERSION,
+      ...changedFromDefaults(getState(), { filters: getDefaultFilters(), tuning: getDefaultTuning() })
+    };
+    window.localStorage.setItem(PERSISTED_UI_KEY, JSON.stringify(payload));
+  } catch {
+    // Storage may be unavailable or blocked.
+  }
+});
 
 /**
- * Create a debounced navigation persistence scheduler.
- * Writes view, map subject and independently open evidence to localStorage after a 150ms debounce.
+ * Coalesce remembered navigation writes for 150ms, with a flush for page exit.
  * Inspecting a different file never replaces the remembered subject.
  */
 export const createPersistNavScheduler = (
   getState: () => { view: ViewName; perspective: LocalMapPerspective; spatialLayout: SpatialLayout; openDirectories: ReadonlySet<string>; selectedNodeId: string | null; inspection: InspectionTarget | null; discovery?: DiscoveryTarget | null }
-): PersistNavScheduler => {
-  let timer: number | null = null;
-
-  return {
-    schedule: (): void => {
-      if (timer !== null) {
-        window.clearTimeout(timer);
-      }
-      timer = window.setTimeout(() => {
-        timer = null;
-        try {
-          const state = getState();
-          const payload: PersistedNavV1 = {
-            version: PERSISTED_NAV_VERSION,
-            view: state.view,
-            perspective: state.perspective,
-            spatialLayout: state.spatialLayout,
-            openDirectories: [...state.openDirectories],
-            nodeId: state.selectedNodeId,
-            inspection: readPersistedInspection(state.inspection),
-            ...(state.discovery !== undefined ? { discovery: readPersistedDiscovery(state.discovery) } : {})
-          };
-          window.localStorage.setItem(PERSISTED_NAV_KEY, JSON.stringify(payload));
-        } catch {
-          // ignore
-        }
-      }, 150);
-    }
-  };
-};
+): PersistNavScheduler => delayedWrite(() => {
+  try {
+    const state = getState();
+    const payload: PersistedNavV1 = {
+      version: PERSISTED_NAV_VERSION,
+      view: state.view,
+      perspective: state.perspective,
+      spatialLayout: state.spatialLayout,
+      openDirectories: [...state.openDirectories],
+      nodeId: state.selectedNodeId,
+      inspection: readPersistedInspection(state.inspection),
+      ...(state.discovery !== undefined ? { discovery: readPersistedDiscovery(state.discovery) } : {})
+    };
+    window.localStorage.setItem(PERSISTED_NAV_KEY, JSON.stringify(payload));
+  } catch {
+    // Storage may be unavailable or blocked.
+  }
+});

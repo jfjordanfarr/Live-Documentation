@@ -22,6 +22,32 @@ async function branches(page: Page): Promise<void> {
   await localMapSettled(page);
 }
 
+test("a geometrically backward ordinary wire cues 3D and clearing the fault removes the cue", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/samples/estate/?view=local&node=Portal/Services/GatewayClient.cs");
+  await localMapSettled(page);
+  const button = page.getByRole("button", { name: "3D", exact: true });
+  await expect(button).not.toHaveClass(/has-backward-wires/);
+  const wires = page.locator("#map-connections path.connection-path[data-source-id]:not(.back-route)");
+  const consumer = await wires.first().getAttribute("data-source-id");
+  expect(consumer).toBeTruthy();
+  // Controlled rendering fault: the owner's rare natural case has not been captured yet. Move an actual consumer
+  // behind its providers, then use the public packing action to redraw its real anchors and routes.
+  const displacement = await page.addStyleTag({ content: `.node-card[data-id="${consumer}"] { transform: translateX(-3000px) !important; }` });
+  await page.getByRole("button", { name: "Compact", exact: true }).click();
+  await localMapSettled(page);
+  expect(await wires.evaluateAll(elements => elements.some(element => {
+    const path = element as SVGPathElement;
+    return path.getPointAtLength(path.getTotalLength()).x < path.getPointAtLength(0).x;
+  }))).toBe(true);
+  await expect(button).toHaveClass(/has-backward-wires/);
+  await expect(button).toHaveAttribute("title", /backward in 2D/);
+  await displacement.evaluate(element => element.parentNode?.removeChild(element));
+  await page.getByRole("button", { name: "Relaxed", exact: true }).click();
+  await localMapSettled(page);
+  await expect(button).not.toHaveClass(/has-backward-wires/);
+});
+
 /** Every lane's height and the slot lines it publishes, as the router reads them. */
 async function readLanes(page: Page): Promise<Array<{ height: number; slots: number[] }>> {
   return page.locator("#map-container .local-pass-through[data-lane]").evaluateAll(elements => elements.map(element => ({

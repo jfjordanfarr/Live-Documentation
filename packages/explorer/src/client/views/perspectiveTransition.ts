@@ -1,3 +1,4 @@
+import { directoryNodeId } from "./forceGraphData";
 import { directoryOpacity, gatherWire, perspectivePhases, type TransitionPoint } from "./perspectiveGeometry";
 
 /** Screen-space correspondence between native cards and native force positions. */
@@ -52,13 +53,15 @@ export interface LocalScene {
 
 /** Capture native cards, rendered symbol curves and directory shells before hiding their view. */
 export function captureLocalScene(root: HTMLElement): LocalScene {
-  const cards = [...root.querySelectorAll<HTMLElement>(".node-card")].flatMap(card => {
-    const title = card.querySelector<HTMLElement>(".node-title");
+  const cards = [...root.querySelectorAll<HTMLElement>(".node-card, .local-directory-closed")].flatMap(card => {
+    const directory = card.classList.contains("local-directory-closed");
+    const title = card.querySelector<HTMLElement>(directory ? ".local-directory-closed__name" : ".node-title");
     if (!title) return [];
     const rect = card.getBoundingClientRect(), t = title.getBoundingClientRect();
     const clone = visualCopy(card);
     const x = t.left + t.width / 2, y = t.top + t.height / 2;
-    return [{ file: { id: card.dataset.id!, name: title.textContent ?? "", x, y, radius: 5, color: "#0091ff" },
+    return [{ file: { id: directory ? directoryNodeId(card.dataset.directory!) : card.dataset.id!,
+      name: title.textContent ?? "", x, y, radius: 5, color: directory ? "#e9984d" : "#0091ff" },
       clone, width: card.offsetWidth, height: card.offsetHeight, scale: rect.width / card.offsetWidth,
       offsetX: x - rect.left, offsetY: y - rect.top }];
   });
@@ -105,7 +108,7 @@ export function animatePerspective(
   viewport: DOMRect, onFinish: () => void
 ): () => void {
   const { cards, wires, directories } = scene;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !cards.length) { onFinish(); return () => {}; }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !cards.length && !directories.length) { onFinish(); return () => {}; }
   const layer = document.createElement("div");
   layer.className = "perspective-transition local-map-host";
   layer.dataset.graphFiles = String(graph.files.length);
@@ -204,16 +207,19 @@ export function animatePerspective(
     }
     context.globalAlpha = 1;
     for (const { card, wrapper, label } of ghosts) {
-      const destination = projected.get(card.file.id) ?? card.file;
+      const counterpart = projected.get(card.file.id);
+      const destination = counterpart ?? card.file;
       const x = card.file.x + (destination.x - card.file.x) * move - viewport.left;
       const y = card.file.y + (destination.y - card.file.y) * move - viewport.top;
-      const shrink = 1 - fold;
+      // A closed folder has a hub in Structure, but no invented token in Connections. Its whole box fades in/out;
+      // showing only its name during the fold would leave unexplained floating text with no corresponding sphere.
+      const shrink = counterpart ? 1 - fold : 1;
       wrapper.style.left = `${x - card.offsetX * shrink}px`;
       wrapper.style.top = `${y - card.offsetY * shrink}px`;
       wrapper.style.transform = `scale(${card.scale * shrink})`;
       wrapper.style.opacity = String(1 - fold);
       label.style.left = `${x}px`; label.style.top = `${y + destination.radius + 10}px`;
-      label.style.opacity = String(fold * (card.file.id === focusId ? 1 : 1 - background));
+      label.style.opacity = String(counterpart ? fold * (card.file.id === focusId ? 1 : 1 - background) : 0);
     }
     layer.dataset.progress = String(elapsed);
     if (elapsed < 1) frameId = requestAnimationFrame(frame);

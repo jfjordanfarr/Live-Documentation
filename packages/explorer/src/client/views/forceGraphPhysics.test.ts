@@ -21,6 +21,43 @@ function scene(settings: FieldSettings = SETTINGS): { field: SpatialField; x: Fl
 const energyAt = (field: SpatialField, x: Float64Array, anchor?: Float64Array): number => field.forces(x, new Float64Array(x.length), anchor).energy;
 
 describe("the 3D picture's field", () => {
+  it("separates component translation from internal gravity with forces equal to the energy's slope", () => {
+    const radii = new Float64Array(6).fill(4);
+    const springs = [{ a: 0, b: 1, rest: 40, strength: .4 }, { a: 1, b: 2, rest: 50, strength: .3 },
+      { a: 3, b: 4, rest: 30, strength: .5 }];
+    const x = Float64Array.from([20, 10, 5, 60, 25, -7, 90, -20, 15, -100, 40, 80, -130, 65, 90, 200, -150, 60]);
+    const settings = { ...SETTINGS, gravity: .025, tether: .02, componentSeparation: .8 };
+    const separated = new SpatialField(radii, springs, settings, UP);
+    const global = new SpatialField(radii, springs, { ...settings, componentSeparation: 0 }, UP);
+    const anchor = x.map((value, i) => value + Math.cos(i) * 3);
+    const force = new Float64Array(x.length), original = new Float64Array(x.length);
+    const reading = separated.forces(x, force, anchor), baseline = global.forces(x, original, anchor);
+    expect(reading.stiffness).toBe(baseline.stiffness);
+    for (let k = 0; k < x.length; k++) {
+      const plus = x.slice(), minus = x.slice(), step = 1e-5;
+      plus[k] += step; minus[k] -= step;
+      expect(force[k]).toBeCloseTo(-(energyAt(separated, plus, anchor) - energyAt(separated, minus, anchor)) / (2 * step), 4);
+    }
+    // Every member receives the same change in force: no change to internal compression or relative pull.
+    for (const group of [[0, 1, 2], [3, 4], [5]]) for (let axis = 0; axis < 3; axis++) {
+      const mean = group.reduce((sum, i) => sum + x[3 * i + axis], 0) / group.length;
+      for (const i of group) expect(force[3 * i + axis] - original[3 * i + axis]).toBeCloseTo(.025 * .8 * mean, 10);
+    }
+  });
+
+  it("treats slack springs as disconnected, keeps isolates finite, and rejects invalid component settings", () => {
+    const field = new SpatialField(new Float64Array(2).fill(4), [{ a: 0, b: 1, rest: 40, strength: 0 }],
+      { ...SETTINGS, charge: 0, gravity: .1, componentSeparation: .8 }, UP);
+    const x = Float64Array.from([-100, 20, 0, 200, 40, 0]), force = new Float64Array(6);
+    const reading = field.forces(x, force);
+    x.forEach((value, i) => expect(force[i]).toBeCloseTo(-.02 * value, 10));
+    expect(reading.energy).toBeCloseTo(.01 * x.reduce((sum, value) => sum + value * value, 0), 10);
+    for (const componentSeparation of [-.1, 1.1, NaN, Infinity]) {
+      expect(() => new SpatialField(new Float64Array(1).fill(4), [], { ...SETTINGS, componentSeparation }, UP)).toThrow("Component separation");
+    }
+    expect(() => new SpatialField(new Float64Array(1).fill(4), [{ a: 0, b: 2, rest: 40, strength: 1 }], SETTINGS, UP)).toThrow("valid sphere indices");
+  });
+
   it("pushes every sphere down the slope of its energy, overlaps, a bounded reach and the tether included", () => {
     for (const settings of [SETTINGS, { ...SETTINGS, chargeRange: 50 }, { ...SETTINGS, gravity: 0, charge: 0 }, { ...SETTINGS, tether: 0.02 }]) {
       const { field, x } = scene(settings);
@@ -552,7 +589,7 @@ describe("the motion through an approximated field (2026-10-28)", () => {
     while (ticks < most && quiet < QUIET_TICKS) {
       const tick = motion.tick(1);
       ticks++;
-      const diagonal = diagonalOf(x);
+      const diagonal = diagonalOf(x, field.radii);
       if (!holding) {
         if (tick.moveMax <= UNFOLDED_FRACTION * diagonal) { motion.anchorHere(); holding = true; held = last = total(motion.current.energy); }
         continue;

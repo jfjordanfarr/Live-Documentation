@@ -8,9 +8,9 @@ export function pixelsPerWorldUnit(point: Vector3, camera: Camera, height: numbe
   return perspective && depth <= 0 ? 0 : Math.abs(camera.projectionMatrix.elements[5]) * height / (2 * (perspective ? depth : 1));
 }
 
-/** World-scale compensation: zero keeps perspective; one turns the base radius into CSS pixels. */
-export function spatialSizeScale(point: Vector3, camera: Camera, height: number, resistance: number): number {
-  const pixels = pixelsPerWorldUnit(point, camera, height);
+/** Shared world-scale compensation at the orbit target: resist zoom without changing relative sizes during orbit. */
+export function spatialSizeScale(target: Vector3, camera: Camera, height: number, resistance: number): number {
+  const pixels = pixelsPerWorldUnit(target, camera, height);
   return pixels > 0 ? Math.pow(pixels, -resistance) : 1;
 }
 
@@ -30,7 +30,7 @@ export function clipSpatialWireDepth(start: Vector4, end: Vector4): { low: numbe
 }
 
 /** Pick a round-capped wire by its projected, possibly tapered stroke, including near/far clipping. */
-export function pickSpatialWire(matrix: Matrix4, camera: Camera, viewport: Vector2, width: number, resistance: number, ray: Ray): {
+export function pickSpatialWire(matrix: Matrix4, camera: Camera, viewport: Vector2, width: number, ray: Ray): {
   point: Vector3; pointOnLine: Vector3; distance: number;
 } | null {
   const a = new Vector3(0, 0, 0).applyMatrix4(matrix), b = new Vector3(0, 0, 1).applyMatrix4(matrix);
@@ -42,8 +42,8 @@ export function pickSpatialWire(matrix: Matrix4, camera: Camera, viewport: Vecto
   const original = a.clone();
   a.lerp(b, interval.low); b.lerpVectors(original, b, interval.high);
   const pixelScale = Math.abs(camera.projectionMatrix.elements[5]) * viewport.y / 2;
-  const startWidth = width * Math.pow(pixelScale / start.w, 1 - resistance);
-  const endWidth = width * Math.pow(pixelScale / end.w, 1 - resistance);
+  const startWidth = width * pixelScale / start.w;
+  const endWidth = width * pixelScale / end.w;
   const pointer = ray.at(1, new Vector3()).project(camera);
   const ax = start.x / start.w * viewport.x / 2, ay = start.y / start.w * viewport.y / 2;
   const dx = end.x / end.w * viewport.x / 2 - ax, dy = end.y / end.w * viewport.y / 2 - ay;

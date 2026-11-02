@@ -327,7 +327,9 @@ test("a deleted file can be found, read and shared in its own lifetime, and rema
   const address = () => decompressSnapshot(new URL(page.url()).searchParams.get("s") ?? "");
   const id = address().pinSet.entries[0].nodeId;
   expect(id).toMatch(/^history:/u);
-  await page.locator(".force-graph-focus, .force-graph-label").filter({ hasText: /^legacy.ts$/u }).click();
+  await page.locator(".force-graph-focus, .force-graph-label").filter({ hasText: /^legacy.ts$/u }).focus();
+  await page.getByRole("button", { name: "More actions for legacy.ts", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Inspect legacy.ts", exact: true }).click();
   await expect(page.locator("#detail-title")).toHaveText("legacy.ts");
   await expect(page.locator("#detail-panel")).toContainText("Historical text is not bundled");
   await expect(page.locator("#detail-panel")).toContainText("names are not carried in this history");

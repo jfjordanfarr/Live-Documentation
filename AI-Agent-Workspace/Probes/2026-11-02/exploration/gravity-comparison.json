@@ -1,0 +1,80 @@
+[
+  {
+    "scope": "estate/five",
+    "gravity": 0.025,
+    "nodes": 36,
+    "ticks": 264,
+    "still": true,
+    "bounds": {
+      "width": 440.44767664919726,
+      "height": 378.47931213409265,
+      "depth": 398.9637775911958
+    },
+    "overlaps": 0
+  },
+  {
+    "scope": "estate/five",
+    "gravity": 0.005,
+    "nodes": 36,
+    "ticks": 270,
+    "still": true,
+    "bounds": {
+      "width": 861.3112585233396,
+      "height": 802.6921776784106,
+      "depth": 802.9896221679634
+    },
+    "overlaps": 0
+  },
+  {
+    "scope": "estate/five",
+    "gravity": 0.001,
+    "nodes": 36,
+    "ticks": 284,
+    "still": true,
+    "bounds": {
+      "width": 1395.3388124068974,
+      "height": 1524.9101798890852,
+      "depth": 1434.4530567461318
+    },
+    "overlaps": 0
+  },
+  {
+    "scope": "repository/five",
+    "gravity": 0.025,
+    "nodes": 397,
+    "ticks": 297,
+    "still": true,
+    "bounds": {
+      "width": 1391.1129520427733,
+      "height": 1292.5583439383918,
+      "depth": 1334.0225562133237
+    },
+    "overlaps": 0
+  },
+  {
+    "scope": "repository/five",
+    "gravity": 0.005,
+    "nodes": 397,
+    "ticks": 318,
+    "still": true,
+    "bounds": {
+      "width": 2229.3466597321003,
+      "height": 1855.2685743054267,
+      "depth": 2398.428765664051
+    },
+    "overlaps": 0
+  },
+  {
+    "scope": "repository/five",
+    "gravity": 0.001,
+    "nodes": 397,
+    "ticks": 300,
+    "still": true,
+    "bounds": {
+      "width": 2659.58820939422,
+      "height": 2279.8996846772748,
+      "depth": 3018.7076966077802
+    },
+    "overlaps": 0
+  }
+]

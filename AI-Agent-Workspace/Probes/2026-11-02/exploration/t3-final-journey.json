@@ -1,0 +1,103 @@
+{
+  "errors": [],
+  "state": {
+    "view": "map",
+    "perspective": "3d",
+    "spatialLayout": "connections",
+    "selectedNodeId": null,
+    "inspection": null,
+    "pinSet": {
+      "entries": [
+        {
+          "nodeId": "apps/server/src/mcp/OrchestratorMcpService.ts",
+          "symbol": "*"
+        }
+      ]
+    },
+    "openDirectories": [],
+    "filters": {
+      "showTests": true,
+      "showAssets": false,
+      "showRelatedDocs": false,
+      "showCitingDocs": false
+    },
+    "retentionOrder": [
+      "[\"pin\",\"apps/server/src/mcp/OrchestratorMcpService.ts\",\"*\"]"
+    ],
+    "layout": {
+      "localMap": {
+        "columnGap": 100,
+        "itemGap": 24,
+        "bandGap": 28,
+        "heightCost": 5,
+        "membraneEvenness": 2,
+        "membraneSimplicity": 200,
+        "rowLevelness": 2
+      },
+      "forceGraph": {
+        "linkGap": 60,
+        "charge": 60,
+        "collisionGap": 5,
+        "coupling": 1,
+        "nodeSize": 4,
+        "symbolScale": 1,
+        "gravity": 0.025,
+        "componentSeparation": 0.2,
+        "chargeRange": 0,
+        "approximation": 0.3,
+        "linkStrength": 0.5,
+        "updateEnergy": 1,
+        "tether": 0.02,
+        "citedByPull": 1,
+        "linkWidth": 1,
+        "nodeZoomResistance": 0.3,
+        "wireZoomResistance": 0.9,
+        "hops": 1,
+        "revealFrames": 60
+      }
+    },
+    "discovery": {
+      "kind": "file",
+      "nodeId": "apps/server/src/mcp/OrchestratorMcpService.ts"
+    },
+    "destination": null,
+    "reachFrom": null,
+    "commit": null,
+    "authors": false
+  },
+  "files": [
+    "apps/server/src/config.ts",
+    "apps/server/src/mcp/McpHttpServer.test.ts",
+    "apps/server/src/mcp/McpHttpServer.ts",
+    "apps/server/src/mcp/McpInvocationContext.ts",
+    "apps/server/src/mcp/McpToolAccess.ts",
+    "apps/server/src/mcp/OrchestratorMcpService.activity.test.ts",
+    "apps/server/src/mcp/OrchestratorMcpService.test.ts",
+    "apps/server/src/mcp/OrchestratorMcpService.ts",
+    "apps/server/src/mcp/TaskCancelNativeSubagent.integration.test.ts",
+    "apps/server/src/mcp/ThreadMetadataMcpService.ts",
+    "apps/server/src/mcp/threadAccess.ts",
+    "apps/server/src/mcp/toolkits/orchestrator/handlers.ts",
+    "apps/server/src/mcp/toolkits/orchestrator/tools.ts",
+    "apps/server/src/mcp/toolkits/project/handlers.ts",
+    "apps/server/src/observability/Metrics.ts",
+    "apps/server/src/orchestration-v2/DispatchModeLimit.ts",
+    "apps/server/src/orchestration-v2/ProviderAdapterRegistry.ts",
+    "apps/server/src/orchestration-v2/RestartBackgroundNote.ts",
+    "apps/server/src/orchestration-v2/ThreadLaunchService.ts",
+    "apps/server/src/orchestration-v2/ThreadManagementService.ts",
+    "apps/server/src/orchestration-v2/ThreadSettlementService.ts",
+    "apps/server/src/orchestration-v2/UserFacingErrors.ts",
+    "apps/server/src/project/ProjectService.ts",
+    "apps/server/src/provider/ProviderRegistry.ts",
+    "apps/server/src/scheduledTasks/ScheduledTaskService.ts",
+    "apps/server/src/secrets/SecretRequests.ts",
+    "apps/server/src/serverSettings.ts",
+    "apps/server/src/sourceControl/threadPullRequests.ts",
+    "apps/server/src/vcs/GitVcsDriver.ts",
+    "evals/mcp-tool-use/run.test.ts",
+    "evals/mcp-tool-use/run.ts",
+    "packages/contracts/src/orchestratorMcp.ts",
+    "packages/contracts/src/providerPolicy.ts"
+  ]
+}

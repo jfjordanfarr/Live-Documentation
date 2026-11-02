@@ -1,0 +1,74 @@
+[
+  {
+    "componentSeparation": 0,
+    "shift": 1.72912370015969,
+    "diagonal": 210.04200076761776,
+    "shiftFraction": 0.008232275896441895,
+    "still": true,
+    "estateTicks": 352,
+    "estateStill": true
+  },
+  {
+    "componentSeparation": 0.2,
+    "shift": 2.098656207622453,
+    "diagonal": 224.1823038123361,
+    "shiftFraction": 0.009361382107033954,
+    "still": true,
+    "estateTicks": 342,
+    "estateStill": true
+  },
+  {
+    "componentSeparation": 0.25,
+    "shift": 2.778298490396343,
+    "diagonal": 228.28697913389655,
+    "shiftFraction": 0.012170201300735576,
+    "still": true,
+    "estateTicks": 341,
+    "estateStill": true
+  },
+  {
+    "componentSeparation": 0.3,
+    "shift": 3.404680359436348,
+    "diagonal": 232.73102955612342,
+    "shiftFraction": 0.014629249764975172,
+    "still": true,
+    "estateTicks": 340,
+    "estateStill": true
+  },
+  {
+    "componentSeparation": 0.35,
+    "shift": 3.9369310313818398,
+    "diagonal": 238.1170583543284,
+    "shiftFraction": 0.01653359510902204,
+    "still": true,
+    "estateTicks": 340,
+    "estateStill": true
+  },
+  {
+    "componentSeparation": 0.4,
+    "shift": 4.333231764756881,
+    "diagonal": 244.77042126012515,
+    "shiftFraction": 0.017703249201633808,
+    "still": true,
+    "estateTicks": 338,
+    "estateStill": true
+  },
+  {
+    "componentSeparation": 0.45,
+    "shift": 4.537896501561461,
+    "diagonal": 252.04412910369993,
+    "shiftFraction": 0.018004372955239153,
+    "still": true,
+    "estateTicks": 335,
+    "estateStill": true
+  },
+  {
+    "componentSeparation": 0.5,
+    "shift": 4.490854884553855,
+    "diagonal": 260.0993295893355,
+    "shiftFraction": 0.017265922567522015,
+    "still": true,
+    "estateTicks": 301,
+    "estateStill": true
+  }
+]
