@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { GraphEdge, GraphFile, LiveDocGraph } from "./graph";
-import { enumerateTerminalPaths, getNeighbors, isEntry, pathTo, reachFrom, reachability, searchGraph, walk } from "./pathfind";
+import { components, enumerateTerminalPaths, fileGroups, getNeighbors, isEntry, pathTo, reachFrom, reachability, searchGraph, walk } from "./pathfind";
 
 /** A graph from the files each file depends on, and the dependencies of each that resolved to no file. */
 function graphOf(dependencies: Record<string, string[]>, unresolved: Record<string, string[]> = {}): LiveDocGraph {
@@ -127,6 +127,50 @@ describe("reachability", () => {
   });
 });
 
+describe("components", () => {
+  // A chain m - n - o - p with q hanging off n, so n has three neighbours; an island x - y; two lone files, k and z.
+  const links: Record<string, string[]> = { m: ["n"], n: ["o", "q"], o: ["p"], x: ["y"] };
+  const ids = ["k", "m", "n", "o", "p", "q", "x", "y", "z"];
+  const oneWay = (id: string): string[] => links[id] ?? [];
+
+  it("partitions the files into groups, largest first, each with its most connected member as its seed, and a lone file as a group of one", () => {
+    expect(components(ids, oneWay)).toEqual([
+      { seed: "n", members: ["m", "n", "o", "p", "q"] },
+      { seed: "x", members: ["x", "y"] },
+      { seed: "k", members: ["k"] },
+      { seed: "z", members: ["z"] }
+    ]);
+  });
+
+  it("breaks a tie for the seed by id ascending, whichever member the walk meets first", () => {
+    // In the chain e - d - c - b - a, the inner three tie at two neighbours; b is the least id among them.
+    const chain: Record<string, string[]> = { e: ["d"], d: ["c"], c: ["b"], b: ["a"] };
+    expect(components(["e", "d", "c", "b", "a"], (id) => chain[id] ?? [])).toEqual([{ seed: "b", members: ["a", "b", "c", "d", "e"] }]);
+    // Two groups of one size are ordered by their seeds, not by where their members stand in the input.
+    expect(components(["w", "v", "b", "a"], (id) => ({ w: ["v"], b: ["a"] })[id] ?? []).map((group) => group.seed)).toEqual(["a", "v"]);
+  });
+
+  it("joins a link's two ends whichever end names it, and gives the same answer for the ids in any order", () => {
+    const reversed = (id: string): string[] => Object.entries(links).filter(([, targets]) => targets.includes(id)).map(([from]) => from);
+    const expected = components(ids, oneWay);
+    expect(components([...ids].reverse(), oneWay)).toEqual(expected);
+    expect(components(ids, reversed)).toEqual(expected);
+    expect(components([...ids].reverse(), (id) => [...oneWay(id), ...reversed(id)])).toEqual(expected);
+  });
+
+  it("ignores a neighbour outside the ids and a file named as its own neighbour", () => {
+    expect(components(["a", "b"], (id) => (id === "a" ? ["a", "outside", "b"] : ["b"]))).toEqual([{ seed: "a", members: ["a", "b"] }]);
+  });
+
+  it("finds no group in no files", () => {
+    expect(components([], oneWay)).toEqual([]);
+  });
+
+  it("groups a graph's files over their dependencies", () => {
+    // a - b - c - d hang together, a's dependency on b and d's on c both counting; b and c tie at two neighbours, and b is the lesser id. e stands alone.
+    expect(fileGroups(graph)).toEqual({ groups: [{ seed: "b", size: 4, members: ["a", "b", "c", "d"] }], alone: ["e"] });
+  });
+});
 
 describe("searchGraph", () => {
   it("finds the shortest path and the files it visited", () => {

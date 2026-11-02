@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/integration/live-docs/inspect-cli.test.ts
-- Generated At: 2026-09-28T01:00:44.818Z
+- Generated At: 2026-11-02T16:51:00.818Z
 
 ## Authored
 ### Purpose
@@ -29,6 +29,7 @@ _No public symbols detected_
 - `node:os`
 - `node:path`
 - [`liveDocumentationConfig.normalizeLiveDocumentationConfig`](../../../packages/engine/src/config/liveDocumentationConfig.ts.mdmd.md#symbol-normalizelivedocumentationconfig)
+- [`graphFiles.readLiveDocGraph`](../../../packages/engine/src/live-docs/graphFiles.ts.mdmd.md#symbol-readlivedocgraph)
 - [`generator.generateLiveDocs`](../../../packages/generator/src/generator.ts.mdmd.md#symbol-generatelivedocs)
 - `vitest` - `afterAll`, `beforeAll`, `describe`, `it`
 <!-- LIVE-DOC:END Dependencies -->

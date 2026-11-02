@@ -4,11 +4,11 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-facts.ts
-- Generated At: 2026-10-30T16:26:05.698Z
+- Generated At: 2026-11-02T16:50:52.914Z The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
 
 ## Authored
 ### Purpose
-Computes everything the Knowledge Sources panel says from the graph index alone: the bundle's shape (files by archetype, first directory and extension, references between files, the generation span), the files most used and most using, the entry points with their reasons and what a walk from them reaches, what nothing reaches and what only a test reaches, and the public symbols of non-test files that no other file names or only tests name, by file. Pure functions over `LiveDocGraph`; the renderer draws what they return and the JSON export writes it out.
+Computes everything the Knowledge Sources panel says from the graph index alone: the bundle's shape (files by archetype, first directory and extension, references between files, the generation span), the files most used and most using, the entry points with their reasons and what a walk from them reaches, what nothing reaches and what only a test reaches, the disconnected groups of the files, and the public symbols of non-test files that no other file names or only tests name, by file. Pure functions over `LiveDocGraph`; the renderer draws what they return and the JSON export writes it out.
 - The references between files are the one number not computed here (2026-10-30, [Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)): the caller hands in the bundle's stats' `references`, the total the sidebar prints, so that the two places cannot give two numbers. Before, the panel counted edges between two files (4,651 on this repository) while the sidebar printed the deduplicated links (4,622).
 
 ### Notes
@@ -17,48 +17,49 @@ Computes everything the Knowledge Sources panel says from the graph index alone:
 - `symbolCount` sums a class's symbols for the panel's headings. Tested in `sources-facts.test.ts` on a seven-file graph whose inbound and outbound lists are derived from its edges as the generator derives them.
 - Rewritten on 2026-10-15 ([Turn 4](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) around the engine's `reachability`: the one-hop lists of what nothing references went, since the docs now tell an entry from an orphan, and `reach` carries the starts (each with the words of its `Entry` lines, `test` for a test, and the sample root it lies under), the files reached with their hops, the unreachable and the tests-only, each with its archetype for grouping. `from` walks from the files the person chose instead of the entries; `sampleRoots` come from the bundle.
 - Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) `reach.unread` carries the files no start reaches whose kind no reader handles, with their archetypes, apart from `unreachable`; the test's graph holds a deploy script for it.
+- Since 2026-11-02 `groups` carries the engine's `fileGroups`, the same object `inspect --groups --json` prints: the groups of two or more files joined by dependencies either way, each by its most connected file, and the files joined to none. It is of the whole scan, whatever start the person chose for the walk.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `Count` {#symbol-count}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L24)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L26)
 
 ##### `Count` — Summary
 A name and how many of something it has.
 
 #### `BundleShape` {#symbol-bundleshape}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L30)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L32)
 
 ##### `BundleShape` — Summary
 The bundle's shape: where its docs are, how many files by kind, directory and extension, and when they were generated.
 
 #### `FileUse` {#symbol-fileuse}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L47)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L49)
 
 ##### `FileUse` — Summary
 A file and the files that reference it.
 
 #### `FileUsing` {#symbol-fileusing}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L59)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L61)
 
 ##### `FileUsing` — Summary
 A file and the files it references.
 
 #### `FileByArchetype` {#symbol-filebyarchetype}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L66)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L68)
 
 ##### `FileByArchetype` — Summary
 A file named in a class of the walk, with its archetype for grouping.
 
 #### `StartFile` {#symbol-startfile}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L72)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L74)
 - Extends: [`FileByArchetype`](#symbol-filebyarchetype)
 
 ##### `StartFile` — Summary
@@ -66,35 +67,35 @@ A file the walk starts from: an entry point of the docs, or a file the person as
 
 #### `Reach` {#symbol-reach}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L83)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L85)
 
 ##### `Reach` — Summary
 What a walk along dependencies reaches from the entry points, or from the files asked about.
 
 #### `SymbolsOfFile` {#symbol-symbolsoffile}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L98)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L100)
 
 ##### `SymbolsOfFile` — Summary
 A file's public symbols in one class.
 
 #### `SourcesFacts (interface)` {#symbol-sourcesfacts-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L105)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L107)
 
 ##### `SourcesFacts (interface)` — Summary
 Everything the panel shows that the graph alone can say.
 
 #### `SourcesFactsOptions` {#symbol-sourcesfactsoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L118)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L122)
 
 ##### `SourcesFactsOptions` — Summary
 What the facts are computed for.
 
 #### `sourcesFacts (function)` {#symbol-sourcesfacts-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L157)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L161)
 - Returns: [`SourcesFacts`](#symbol-sourcesfacts-interface)
 - Parameters: `graph`: [`LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph); `options`: [`SourcesFactsOptions`](#symbol-sourcesfactsoptions)
 
@@ -105,7 +106,7 @@ see.
 
 #### `symbolCount` {#symbol-symbolcount}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L251)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/sources-facts.ts#L256)
 
 ##### `symbolCount` — Summary
 How many symbols a list of files' classes holds in all.
@@ -117,6 +118,8 @@ How many symbols a list of files' classes holds in all.
 - [`document.entryWords`](../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-entrywords)
 - [`graph.GraphFile`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`graph.LiveDocGraph`](../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
+- [`pathfind.FileGroups`](../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-interface)
+- [`pathfind.fileGroups`](../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-function)
 - [`pathfind.reachability`](../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-reachability-function)
 <!-- LIVE-DOC:END Dependencies -->
 

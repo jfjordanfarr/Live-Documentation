@@ -1,12 +1,14 @@
 /**
  * The Knowledge Sources panel: what this bundle is, the files most used and
- * most using, the entry points and what a walk from them reaches, the symbols
- * nothing references, the related documentation and the export. Everything it
+ * most using, the entry points and what a walk from them reaches, the
+ * disconnected groups of the files, the symbols nothing references, the
+ * related documentation and the export. Everything it
  * says about the graph comes as the facts that `sources-facts.ts` computed
  * from the bundle's graph; the tree of related markdown comes from the bundle.
  * Each file named is a button that puts the file in the detail panel, where
  * its doc and its doors are; each directory counted is a link to the Local
- * Map's directory door.
+ * Map's directory door, and each group's seed a link to the Local Map in 3D
+ * with that file as the subject.
  *
  * The "Reachable from" field (the owner's thought, 2026-10-15) lets a person
  * walk from any file or directory in place of the entry points; the choice is
@@ -250,6 +252,33 @@ function renderUnreachable(config: SourcesViewConfig): string {
     </section>`;
 }
 
+/**
+ * The disconnected groups (2026-11-02): how many files hang together in how many groups and how many stand alone, each
+ * group of two or more by its seed, the most connected file, as a link to the Local Map in 3D with it as the subject,
+ * and the lone files folded, every one a button. The groups are of the whole scan; the "Reachable from" choice does not
+ * change them.
+ */
+function renderGroups(facts: SourcesFacts): string {
+  const { groups, alone } = facts.groups;
+  const grouped = facts.shape.files - alone.length;
+  const rows = groups.map(group =>
+    `<li><a class="sources-seed" href="?view=local&amp;mode=3d&amp;node=${encodeURIComponent(group.seed)}">${escapeHtml(group.seed)}</a><span class="sources-count">${plural(group.size, "file")}</span></li>`).join("");
+  const lone = alone.length
+    ? `
+      <details class="sources-group" data-list="alone">
+        <summary><span class="sources-group-name">Alone</span><span class="sources-count">${plural(alone.length, "file")}</span></summary>
+        <ul class="sources-list">${alone.map(path => `<li>${fileButton(path)}</li>`).join("")}</ul>
+      </details>`
+    : "";
+  return `
+    <section class="sources-panel" data-section="groups">
+      <h2><span class="sources-title">Groups</span><span class="sources-count">${groups.length.toLocaleString()}</span></h2>
+      <p class="sources-status" data-row="groups">${plural(grouped, "file")} in ${plural(groups.length, "group")}; ${plural(alone.length, "file")} alone.</p>
+      ${rows ? `<ol class="sources-list" data-list="groups">${rows}</ol>` : ""}
+      ${lone}
+    </section>`;
+}
+
 function renderSymbolFile(entry: SymbolsOfFile): string {
   return `
     <details class="sources-group" data-file="${escapeHtml(entry.path)}">
@@ -369,6 +398,7 @@ export function renderSourcesView(config: SourcesViewConfig): void {
     ${renderUse(facts)}
     ${renderEntries(config)}
     ${renderUnreachable(config)}
+    ${renderGroups(facts)}
     ${renderSymbols(facts)}
     ${renderRelated(bundledDocs)}
     ${renderExport(facts, bundledDocs)}

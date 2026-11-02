@@ -5,9 +5,9 @@
  * One breadth-first walk over a neighbour function, and what the CLI and the
  * Explorer ask of it: the shortest path between files, every file a path
  * reaches and how far, the same search by symbol, and the enumeration of
- * every terminal path away from a file, and what the graph's entry points
- * reach. Pure functions: the CLI feeds the walk the graph's edges, the
- * Explorer the links it draws.
+ * every terminal path away from a file, what the graph's entry points
+ * reach, and the disconnected groups the files fall into. Pure functions: the
+ * CLI feeds the walk the graph's edges, the Explorer the links it draws.
  *
  * @module
  */
@@ -192,6 +192,78 @@ export function reachability(
 
 function compare(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
+}
+
+// ============================================================================
+// Disconnected groups
+// ============================================================================
+
+/** One connected component: files each joined to every other by some chain of links, whichever way each link runs. */
+export interface Component {
+  /** The most connected member: the most distinct neighbours among the ids, ties by id ascending. */
+  seed: string;
+  /** Every member, by id ascending. */
+  members: string[];
+}
+
+/**
+ * Partitions ids into connected components over the neighbours given. A link
+ * joins its two ends whichever end names it, so a one-way neighbour function
+ * gives the same groups as one that runs both ways, and the result does not
+ * depend on the order of the ids. A neighbour outside the ids, or an id named
+ * as its own neighbour, is ignored; a file with no link is a component of one.
+ * The components come largest first, then by seed; the seed is chosen by
+ * {@link Component.seed}'s rule, so that it is the same on every machine.
+ */
+export function components(ids: Iterable<string>, neighbours: Neighbours): Component[] {
+  const beside = new Map<string, Set<string>>();
+  for (const id of ids) {
+    beside.set(id, new Set());
+  }
+  for (const [id, near] of beside) {
+    for (const next of neighbours(id)) {
+      if (next !== id && beside.has(next)) {
+        near.add(next);
+        beside.get(next)!.add(id);
+      }
+    }
+  }
+
+  const found: Component[] = [];
+  const unseen = new Set([...beside.keys()].sort(compare));
+  for (const start of unseen) {
+    const members = [...walk([start], (id) => beside.get(id)!).hops.keys()].sort(compare);
+    let seed = members[0];
+    for (const id of members) {
+      unseen.delete(id);
+      if (beside.get(id)!.size > beside.get(seed)!.size) {
+        seed = id;
+      }
+    }
+    found.push({ seed, members });
+  }
+  return found.sort((a, b) => b.members.length - a.members.length || compare(a.seed, b.seed));
+}
+
+/** A graph's files as its disconnected groups: the groups of two or more, and the files joined to none. */
+export interface FileGroups {
+  /** Every group of two or more files, largest first, then by seed; each with its size and its members in path order. */
+  groups: { seed: string; size: number; members: string[] }[];
+  /** The files no dependency joins to another, either way, in path order. */
+  alone: string[];
+}
+
+/**
+ * The disconnected groups of a graph's files over their dependencies, either
+ * way: what `inspect --groups` prints and the Knowledge Sources panel lists,
+ * so that the two give one answer.
+ */
+export function fileGroups(graph: LiveDocGraph): FileGroups {
+  const found = components(Object.keys(graph.files), (id) => getNeighbors(graph, id, "outbound"));
+  return {
+    groups: found.filter((group) => group.members.length > 1).map((group) => ({ seed: group.seed, size: group.members.length, members: group.members })),
+    alone: found.filter((group) => group.members.length === 1).map((group) => group.seed)
+  };
 }
 
 /** Entry in the search frontier, representing a node that couldn't be explored further. */

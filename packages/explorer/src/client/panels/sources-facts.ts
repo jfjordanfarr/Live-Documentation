@@ -1,10 +1,12 @@
 /**
  * What the Knowledge Sources panel says about a bundle, computed from the
  * graph index: the bundle's shape, the files most used and most using,
- * the entry points and what a walk from them reaches, and the public symbols
- * that nothing references or only tests reference. The entries and the walk
- * are the engine's, the same the CLI prints for `inspect --reachable`; the
- * symbol classes are the ones the dead code sweep of 2026-10-08 found
+ * the entry points and what a walk from them reaches, the disconnected groups
+ * the files fall into, and the public symbols that nothing references or only
+ * tests reference. The entries and the walk are the engine's, the same the CLI
+ * prints for `inspect --reachable`; the groups are the engine's, the same the
+ * CLI prints for `inspect --groups` (2026-11-02); the symbol classes are the
+ * ones the dead code sweep of 2026-10-08 found
  * computable from the docs. What the docs cannot see (a use within a symbol's
  * own file) is said in the panel, not guessed here. The one number not
  * computed here is the references between files: the caller hands in the
@@ -18,7 +20,7 @@
 
 import { entryWords, type Entry } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
-import { reachability } from "@live-documentation/engine/live-docs/pathfind";
+import { fileGroups, reachability, type FileGroups } from "@live-documentation/engine/live-docs/pathfind";
 
 /** A name and how many of something it has. */
 export interface Count {
@@ -108,6 +110,8 @@ export interface SourcesFacts {
   mostUsing: FileUsing[];
   /** The entry points and what they reach, or what the files asked about reach. */
   reach: Reach;
+  /** The disconnected groups of the files over their dependencies, either way, and the files joined to none; never walked from a chosen start. */
+  groups: FileGroups;
   /** Public symbols of non-test files that no edge from another file names, by file. A symbol its own file uses is among them: the docs carry no local uses. */
   symbolsUnreferenced: SymbolsOfFile[];
   /** Public symbols of non-test files named only by edges from test files, by file. */
@@ -214,6 +218,7 @@ export function sourcesFacts(graph: LiveDocGraph, options: SourcesFactsOptions):
     mostUsed: used.slice(0, limit),
     mostUsing: using.slice(0, limit),
     reach: reachOf(graph, options.from, options.sampleRoots ?? []),
+    groups: fileGroups(graph),
     symbolsUnreferenced,
     symbolsTestsOnly
   };

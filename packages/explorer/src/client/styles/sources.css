@@ -120,9 +120,10 @@
   border-bottom: none;
 }
 
-/* A file's name is a button that puts it in the detail panel; the directory link opens the Local Map on it */
+/* A file's name is a button that puts it in the detail panel; the directory link opens the Local Map on it, a group's seed the Local Map in 3D */
 .sources-file,
-.sources-directory {
+.sources-directory,
+.sources-seed {
   background: none;
   border: none;
   padding: 0;
@@ -137,9 +138,16 @@
 .sources-file:hover,
 .sources-file:focus-visible,
 .sources-directory:hover,
-.sources-directory:focus-visible {
+.sources-directory:focus-visible,
+.sources-seed:hover,
+.sources-seed:focus-visible {
   text-decoration: underline;
   outline: none;
+}
+
+.sources-seed {
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 
 .sources-path {
@@ -453,7 +461,8 @@
   width: 100%;
 }
 
-.sources-reach-status {
+.sources-reach-status,
+.sources-status {
   font-size: 13px;
   color: var(--text);
   margin: 0 0 12px 0;

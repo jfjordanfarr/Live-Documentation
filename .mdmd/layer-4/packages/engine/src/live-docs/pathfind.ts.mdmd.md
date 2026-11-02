@@ -4,11 +4,11 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/engine/src/live-docs/pathfind.ts
-- Generated At: 2026-10-22T16:47:53.593Z
+- Generated At: 2026-11-02T16:50:51.931Z The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
 
 ## Authored
 ### Purpose
-Pathfinding over the graph index: one breadth-first walk over a neighbour function, and what the CLI and the Explorer ask of it: the shortest path between files, every file a path reaches and how far, the same search by symbol, the enumeration of every terminal path away from a file, and what the graph's entry points reach. Pure functions: the CLI feeds the walk the graph's edges, the Explorer the links the Local Map draws.
+Pathfinding over the graph index: one breadth-first walk over a neighbour function, and what the CLI and the Explorer ask of it: the shortest path between files, every file a path reaches and how far, the same search by symbol, the enumeration of every terminal path away from a file, what the graph's entry points reach, and the disconnected groups the files fall into. Pure functions: the CLI feeds the walk the graph's edges, the Explorer the links the Local Map draws.
 
 ### Notes
 - Gathered here on 2026-09-28 from the three pathfinding modules that lived beside the Explorer in `packages/scripts`; the searches were extracted from the inspect CLI on 2025-12-19. They are engine code because the Explorer client's own pathfinding (`client/pathfind.ts`) did the same job over a different shape. Since 2026-10-14 ([Turn 7](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#one-walk-under-the-cli-and-the-explorer-and-a-destination-field-that-offers-only-what-connects-recorded-2026-10-14)) the walk is the one implementation under both, on the owner's condition that "only one pure implementation should underlie both": `searchGraph` is a wrapper over `walk` that keeps the CLI's frontier and visited set as they were, and the client reads its links through `walk` and `reachFrom`.
@@ -19,6 +19,7 @@ Pathfinding over the graph index: one breadth-first walk over a neighbour functi
 - `isEntry` and `reachability` (2026-10-15, [Turn 4](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4); [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)): the walk from the docs' entry points, a file with an `Entry` line or a test, or from the files asked for, along what each depends on, with the files no start reaches and, from the entries, a second walk from the entries that are not tests so that what only a test reaches is told apart. `inspect --reachable` without `--from` and the Knowledge Sources panel share it, and the panel's JSON export is the same object.
 - Since 2026-10-17 (C9 of [the plan](../../../../../../.mdmd/layer-3/change-over-time.mdmd.md)) `reachability` takes the predicate that names the entries, `isEntry` by default: `inspect --at` walks a past commit's graph, made from the history's shape, whose files carry entry marks and no Entry lines, and passes the marks.
 - Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) `reachability` lists a file no path reaches whose kind no reader handles as `unread`, apart from `unreachable`: once every file got a doc, a CI workflow, a shell script or a solution file had no wires only because nothing reads them yet, and calling them unreachable would have called them dead code. A file no reader handles that a path does reach, or that is an entry, is reached or a start like any other. The rule is `noReaderHandles` in the configuration module, which has no imports, so the Explorer client walks by it too.
+- `components` and `fileGroups` (2026-11-02, the owner's ask that the disconnected groups be findable, which only the 3D view had computed): `components` partitions ids into connected components over a neighbour function, each with its seed, the member with the most distinct neighbours, ties by id ascending, largest first and then by seed, so the answer is the same on every machine and for the ids in any order. A link joins its two ends whichever end names it, so a one-way neighbour function gives the same groups as a two-way one; a neighbour outside the ids and a self-link are ignored. `fileGroups` is the one computation over a graph's dependencies: the groups of two or more with their sizes and members, and the files joined to none. `inspect --groups` prints it and the Knowledge Sources panel lists it; its JSON is the CLI's `--json` and the panel's export alike.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -131,58 +132,98 @@ nothing yet reads its wires.
 - `graph`: The graph to walk.
 - `maxDepth`: The most hops a path takes.
 
+#### `Component` {#symbol-component}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L202)
+
+##### `Component` — Summary
+One connected component: files each joined to every other by some chain of links, whichever way each link runs.
+
+#### `components` {#symbol-components}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L218)
+- Returns: [`Component`](#symbol-component)[]
+- Parameters: `ids`: `Iterable`; `neighbours`: [`Neighbours`](#symbol-neighbours)
+
+##### `components` — Summary
+Partitions ids into connected components over the neighbours given. A link
+joins its two ends whichever end names it, so a one-way neighbour function
+gives the same groups as one that runs both ways, and the result does not
+depend on the order of the ids. A neighbour outside the ids, or an id named
+as its own neighbour, is ignored; a file with no link is a component of one.
+The components come largest first, then by seed; the seed is chosen by
+{@link Component.seed}'s rule, so that it is the same on every machine.
+
+#### `FileGroups (interface)` {#symbol-filegroups-interface}
+- Type: interface
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L249)
+
+##### `FileGroups (interface)` — Summary
+A graph's files as its disconnected groups: the groups of two or more, and the files joined to none.
+
+#### `fileGroups (function)` {#symbol-filegroups-function}
+- Type: function
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L261)
+- Returns: [`FileGroups`](#symbol-filegroups-interface)
+- Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph)
+
+##### `fileGroups (function)` — Summary
+The disconnected groups of a graph's files over their dependencies, either
+way: what `inspect --groups` prints and the Knowledge Sources panel lists,
+so that the two give one answer.
+
 #### `FrontierEntry` {#symbol-frontierentry}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L198)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L270)
 
 ##### `FrontierEntry` — Summary
 Entry in the search frontier, representing a node that couldn't be explored further.
 
 #### `PathSearchResult` {#symbol-pathsearchresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L206)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L278)
 
 ##### `PathSearchResult` — Summary
 Result of a file-level path search.
 
 #### `FanoutPath` {#symbol-fanoutpath}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L213)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L285)
 
 ##### `FanoutPath` — Summary
 A terminal path in fanout enumeration.
 
 #### `SymbolReference` {#symbol-symbolreference}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L218)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L290)
 
 ##### `SymbolReference` — Summary
 A reference that may include a symbol (e.g., "file.ts#SymbolName").
 
 #### `SymbolHop` {#symbol-symbolhop}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L224)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L296)
 
 ##### `SymbolHop` — Summary
 A node in a symbol-aware path, tracking both file and symbol at each hop.
 
 #### `SymbolPathSearchResult` {#symbol-symbolpathsearchresult}
 - Type: interface
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L230)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L302)
 
 ##### `SymbolPathSearchResult` — Summary
 Result of a symbol-aware path search.
 
 #### `MAX_ENUMERATED_PATHS` {#symbol-max_enumerated_paths}
 - Type: const
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L236)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L308)
 
 ##### `MAX_ENUMERATED_PATHS` — Summary
 Maximum number of paths to enumerate to avoid combinatorial explosion.
 
 #### `searchGraph` {#symbol-searchgraph}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L254)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L326)
 - Returns: [`PathSearchResult`](#symbol-pathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -203,7 +244,7 @@ Search result with path (if found), visited nodes, and frontier
 
 #### `getNeighbors` {#symbol-getneighbors}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L306)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L378)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
 ##### `getNeighbors` — Summary
@@ -219,7 +260,7 @@ The neighbouring code paths
 
 #### `enumerateTerminalPaths` {#symbol-enumerateterminalpaths}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L326)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L398)
 - Returns: [`FanoutPath`](#symbol-fanoutpath)[]
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -240,7 +281,7 @@ Array of terminal paths (limited to MAX_ENUMERATED_PATHS)
 
 #### `searchSymbolPath` {#symbol-searchsymbolpath}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L373)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L445)
 - Returns: [`SymbolPathSearchResult`](#symbol-symbolpathsearchresult)
 - Parameters: `graph`: [`LiveDocGraph`](./graph.ts.mdmd.md#symbol-livedocgraph); `from`: [`SymbolReference`](#symbol-symbolreference); `to`: [`SymbolReference`](#symbol-symbolreference); `direction`: [`OneWay`](#symbol-oneway)
 
@@ -264,7 +305,7 @@ Search result with path and found status
 
 #### `symbolMatchesAnchor` {#symbol-symbolmatchesanchor}
 - Type: function
-- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L471)
+- Source: [source](../../../../../../packages/engine/src/live-docs/pathfind.ts#L543)
 
 ##### `symbolMatchesAnchor` — Summary
 Whether a symbol name or anchor matches an anchor slug: exactly, or by name

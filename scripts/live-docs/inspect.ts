@@ -4,7 +4,8 @@
  * 
  * Provides pathfinding capabilities across the Live Doc dependency graph.
  * Supports both file-level and symbol-level searches, and the walk from the
- * entry points that the Knowledge Sources panel shows; and, from the history
+ * entry points and the disconnected groups of the files that the Knowledge
+ * Sources panel shows; and, from the history
  * the history command computed, a file's wires and the walk from the entries
  * at a past commit (`--at`) and what changed between two commits
  * (`--between`).
@@ -27,6 +28,7 @@ import { resolveDocLink, type GraphFile } from "@live-documentation/engine/live-
 import { readLiveDocGraph } from "@live-documentation/engine/live-docs/graphFiles";
 import {
   enumerateTerminalPaths,
+  fileGroups,
   getNeighbors,
   reachFrom,
   reachability,
@@ -42,6 +44,7 @@ import {
   emitDualDirectionResult,
   emitDualDirectionSymbolResult,
   emitFanoutResult,
+  emitGroups,
   emitNotFound,
   emitPathResult,
   emitReachableFromEntries,
@@ -65,6 +68,8 @@ interface ParsedArgs {
   from?: string;
   to?: string;
   reachable: boolean;
+  /** Whether `--groups` asks for the disconnected groups of the whole graph. */
+  groups: boolean;
   direction: Direction;
   /** Whether `--direction` was given, which the history's questions do not take. */
   directionGiven: boolean;
@@ -89,8 +94,14 @@ async function main(): Promise<void> {
     return;
   }
 
-  if (!args.from && !args.reachable && !args.between) {
-    console.error("--from is required, unless --reachable asks what the entry points reach or --between what changed. See --help for usage details.");
+  if (args.groups && (args.from !== undefined || args.to !== undefined || args.directionGiven || args.reachable || args.at !== undefined || args.between !== undefined)) {
+    console.error("--groups lists the disconnected groups of the whole graph as today's docs say; it takes no --from, --to, --direction, --reachable, --at or --between.");
+    process.exit(1);
+    return;
+  }
+
+  if (!args.from && !args.reachable && !args.between && !args.groups) {
+    console.error("--from is required, unless --reachable asks what the entry points reach, --groups for the disconnected groups or --between what changed. See --help for usage details.");
     process.exit(1);
     return;
   }
@@ -141,6 +152,11 @@ async function main(): Promise<void> {
   if (Object.keys(graph.files).length === 0) {
     console.error("No Live Docs found. Generate Live Documentation before running inspect.");
     process.exit(1);
+    return;
+  }
+
+  if (args.groups) {
+    emitGroups(fileGroups(graph), graph, args.json);
     return;
   }
 
@@ -332,6 +348,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     json: false,
     verbose: false,
     reachable: false,
+    groups: false,
     direction: "outbound",
     directionGiven: false,
     maxDepth: DEFAULT_MAX_DEPTH
@@ -403,6 +420,11 @@ function parseArgs(argv: string[]): ParsedArgs {
         break;
       }
 
+      case "--groups": {
+        parsed.groups = true;
+        break;
+      }
+
       case "--direction": {
         const value = expectValue(argv, ++index, current).toLowerCase();
         if (value !== "outbound" && value !== "inbound" && value !== "both") {
@@ -465,6 +487,10 @@ function usage(): string {
     `  --reachable              List every file a path reaches from --from, nearest first, with its hops.\n` +
     `                           Without --from: the entry points, what they reach, what nothing reaches,\n` +
     `                           and what only a test reaches.\n` +
+    `  --groups                 The disconnected groups of the files: two or more joined by dependencies, either\n` +
+    `                           way; each by its seed (its most connected file, ties by path) and its size,\n` +
+    `                           largest first; then the files joined to none. Takes no --from, --to or --direction.\n` +
+    `                           With --json: { kind: "groups", files, groups: [{ seed, size, members }], alone }.\n` +
     `  --direction <dir>        Traversal direction: outbound (default) or inbound; both with --to or --reachable.\n` +
     `  --max-depth <n>          Maximum traversal depth (default ${DEFAULT_MAX_DEPTH}).\n` +
     `  --config <file>          Load configuration from JSON file.\n` +
@@ -490,6 +516,7 @@ function usage(): string {
     `  npm run live-docs:inspect -- --from packages/engine/src/config/liveDocumentationConfig.ts --direction inbound --json\n` +
     `  npm run live-docs:inspect -- --from packages/engine/src/live-docs/graph.ts --reachable --direction both\n` +
     `  npm run live-docs:inspect -- --reachable --json\n` +
+    `  npm run live-docs:inspect -- --groups\n` +
     `  npm run live-docs:inspect -- --at 690f5d27 --from packages/engine/src/live-docs/graph.ts\n` +
     `  npm run live-docs:inspect -- --between cad63bdd d23a6f90 --json\n`;
 }

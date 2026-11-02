@@ -23,6 +23,7 @@ Run from the repository root. Add `--json` for data; the JSON is the same walk t
 | What reaches X, who uses it | `npm run live-docs:inspect -- --from <path> --reachable --direction inbound` |
 | The path from A to B, by file or by symbol | `npm run live-docs:inspect -- --from <path>#<Symbol> --to <path>#<Symbol>` |
 | The entry points, what they reach, what nothing reaches, what only a test reaches | `npm run live-docs:inspect -- --reachable` |
+| The disconnected groups: the main structure, the islands and the lone files, each by its most connected file | `npm run live-docs:inspect -- --groups` |
 | What a change to X would touch | `--from <path> --reachable --direction inbound`, then read the reached docs' `Purpose` |
 
 The guide to the command is [cli-reference](../../../.mdmd/layer-1/guides/cli-reference.mdmd.md), and to the question of impact, [tracing-impact](../../../.mdmd/layer-1/guides/tracing-impact.mdmd.md).

@@ -1,7 +1,8 @@
 /**
  * What the inspect CLI prints: node descriptors, and the text or JSON of a
  * path, a symbol path, a fan-out, the files a path reaches from a file or from
- * the entry points, a dual-direction search, or a miss.
+ * the entry points, the disconnected groups of the files, a dual-direction
+ * search, or a miss.
  *
  * @module
  */
@@ -13,6 +14,7 @@ import type { GraphFile, LiveDocGraph } from "@live-documentation/engine/live-do
 import {
   MAX_ENUMERATED_PATHS,
   type Direction,
+  type FileGroups,
   type FanoutPath,
   type OneWay,
   type PathSearchResult,
@@ -394,6 +396,45 @@ export function emitReachableFromEntries(result: Reachability, graph: LiveDocGra
   }
   console.log(`Reached only from tests: ${count(result.testsOnly.length, "file")}`);
   for (const codePath of result.testsOnly) {
+    console.log(`  ${where(codePath)}`);
+  }
+}
+
+/**
+ * Emits the disconnected groups of the files: the headless form of the
+ * Knowledge Sources panel's Groups section, whose JSON export carries the same
+ * object. A group is two or more files joined by dependencies, whichever way
+ * they run; a file joined to none stands alone. The text says how many of
+ * each, then each group, largest first, by its seed (its most connected file)
+ * and its size, then the lone files; the JSON lists every group's members.
+ *
+ * @param result - The engine's groups of the graph's files
+ * @param graph - The Live Doc graph
+ * @param json - If true, emit JSON format
+ */
+export function emitGroups(result: FileGroups, graph: LiveDocGraph, json: boolean): void {
+  const { groups, alone } = result;
+  const files = Object.keys(graph.files).length;
+
+  if (json) {
+    console.log(JSON.stringify({ kind: "groups" as const, files, ...result }, null, 2));
+    return;
+  }
+
+  const where = (codePath: string): string => {
+    const docPath = graph.files[codePath]?.docPath;
+    return docPath ? `${codePath} [${docPath}]` : codePath;
+  };
+  const count = (n: number, noun: string): string => `${n} ${noun}${n === 1 ? "" : "s"}`;
+  const width = String(groups[0]?.size ?? 0).length;
+
+  console.log(`${count(files - alone.length, "file")} in ${count(groups.length, "group")}; ${count(alone.length, "file")} alone.`);
+  console.log("Groups, largest first, each by its most connected file:");
+  for (const group of groups) {
+    console.log(`  ${String(group.size).padStart(width)} files  ${where(group.seed)}`);
+  }
+  console.log(`Alone: ${count(alone.length, "file")}`);
+  for (const codePath of alone) {
     console.log(`  ${where(codePath)}`);
   }
 }

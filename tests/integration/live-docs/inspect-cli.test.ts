@@ -6,6 +6,7 @@ import * as path from "node:path";
 import { afterAll, beforeAll, describe, it } from "vitest";
 
 import { normalizeLiveDocumentationConfig } from "../../../packages/engine/src/config/liveDocumentationConfig";
+import { readLiveDocGraph } from "../../../packages/engine/src/live-docs/graphFiles";
 import { generateLiveDocs } from "../../../packages/generator/src/generator";
 
 interface InspectRunResult {
@@ -580,5 +581,54 @@ describe("Live Docs inspect CLI", () => {
     const payload = JSON.parse(fromFile.stdout) as { kind: string; reached: Array<{ direction: string; files: Array<{ hops: number; node: { codePath: string } }> }> };
     assert.strictEqual(payload.kind, "reachable");
     assert.deepStrictEqual(payload.reached[0].files.map((file) => [file.node.codePath, file.hops]), [["src/lib.ts", 1], ["src/loader.ts", 1], ["src/plugin.ts", 2], ["src/util.ts", 2]]);
+  });
+
+  it("lists the disconnected groups of the files, largest first, each by its most connected file, and the files joined to none", async () => {
+    const run = runInspectCli(fixtures.entryPoints, ["--groups", "--json"]);
+    assert.strictEqual(run.exitCode, 0, run.stderr);
+    const payload = JSON.parse(run.stdout) as { kind: string; files: number; groups: Array<{ seed: string; size: number; members: string[] }>; alone: string[] };
+    assert.strictEqual(payload.kind, "groups");
+
+    // The groups again by a union-find of this test's own over the generated docs' dependencies, apart from the engine's walk.
+    const graph = await readLiveDocGraph({ workspaceRoot: fixtures.entryPoints, config: normalizeLiveDocumentationConfig({ root: ".mdmd", baseLayer: "layer-4", extension: ".mdmd.md" }) });
+    const parent = new Map(Object.keys(graph.files).map((id) => [id, id]));
+    const find = (id: string): string => (parent.get(id) === id ? id : find(parent.get(id)!));
+    for (const file of Object.values(graph.files)) for (const to of file.outbound) parent.set(find(file.codePath), find(to));
+    const byRoot = new Map<string, string[]>();
+    for (const id of Object.keys(graph.files).sort()) byRoot.set(find(id), [...(byRoot.get(find(id)) ?? []), id]);
+    const sets = [...byRoot.values()];
+    assert.strictEqual(payload.files, Object.keys(graph.files).length);
+    assert.deepStrictEqual(payload.groups.map((group) => group.members).sort(), sets.filter((members) => members.length > 1).sort());
+    assert.deepStrictEqual(payload.alone, sets.filter((members) => members.length === 1).map(([id]) => id).sort());
+    assert.ok(payload.groups.every((group) => group.size === group.members.length && group.members.includes(group.seed)));
+    const sizes = payload.groups.map((group) => group.size);
+    assert.deepStrictEqual(sizes, [...sizes].sort((a, b) => b - a), "largest first");
+
+    // What the fixture's sources say: its code hangs together through its imports, around the module three files import;
+    // the configuration written above declares the stylesheet, which joins the two; the manifest and the tsconfig name no file of the scan.
+    assert.deepStrictEqual(payload.groups, [
+      { seed: "src/lib.ts", size: 8, members: ["src/cli.ts", "src/helper.ts", "src/lib.test.ts", "src/lib.ts", "src/loader.ts", "src/orphan.ts", "src/plugin.ts", "src/util.ts"] },
+      { seed: ".live-docs.config.json", size: 2, members: [".live-docs.config.json", "styles.css"] }
+    ]);
+    assert.deepStrictEqual(payload.alone, ["package.json", "tsconfig.json"]);
+
+    const text = runInspectCli(fixtures.entryPoints, ["--groups"]);
+    assert.strictEqual(text.exitCode, 0, text.stderr);
+    const lines = text.stdout.split("\n");
+    const inGroups = payload.files - payload.alone.length;
+    const plural = (n: number, noun: string): string => `${n} ${noun}${n === 1 ? "" : "s"}`;
+    assert.strictEqual(lines[0], `${plural(inGroups, "file")} in ${plural(payload.groups.length, "group")}; ${plural(payload.alone.length, "file")} alone.`);
+    assert.ok(lines.includes(`Alone: ${plural(payload.alone.length, "file")}`), text.stdout);
+    assert.ok(lines.includes("  8 files  src/lib.ts [.mdmd/layer-4/src/lib.ts.mdmd.md]"), text.stdout);
+    assert.ok(lines.includes("  tsconfig.json [.mdmd/layer-4/tsconfig.json.mdmd.md]"), text.stdout);
+  });
+
+  it("refuses --groups with a --from, a --to, a --direction or --reachable", () => {
+    for (const extra of [["--from", "src/cli.ts"], ["--to", "src/lib.ts"], ["--direction", "inbound"], ["--reachable"]]) {
+      const run = runInspectCli(fixtures.entryPoints, ["--groups", ...extra]);
+      assert.strictEqual(run.exitCode, 1, extra.join(" "));
+      assert.match(run.stderr, /--groups lists the disconnected groups of the whole graph/u);
+      assert.strictEqual(run.stdout, "");
+    }
   });
 });

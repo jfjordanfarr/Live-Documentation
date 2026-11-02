@@ -9,8 +9,8 @@ import { noReaderHandles } from "../../packages/engine/src/config/liveDocumentat
  * (rewritten 2026-10-08 from the dead code sweep, and 2026-10-15 around the
  * entry points the docs declare): the bundle's shape, the files most used and
  * most using, the entry points with their reasons, what a walk from them
- * reaches and what it does not, the "Reachable from" field, the related
- * documentation and the export. Each expectation here is computed again from
+ * reaches and what it does not, the "Reachable from" field, the disconnected
+ * groups of the files (2026-11-02), the related documentation and the export. Each expectation here is computed again from
  * `explorer-data.json` by this file's own walk, independently of the panel's
  * module and of the engine's, so that a panel that counted wrong would fail.
  * Which kinds of file a reader handles is the engine's registry by definition
@@ -34,6 +34,8 @@ const TEXT = [
   "#view-sources .sources-reasons",
   "#view-sources .sources-reach-label",
   "#view-sources .sources-reach-status",
+  "#view-sources .sources-status",
+  "#view-sources .sources-seed",
   "#view-sources .sources-declare-line",
   "#view-sources .sources-directory",
   "#view-sources .sources-inline",
@@ -68,6 +70,34 @@ function reachedFrom(files: Record<string, IndexFile>, starts: readonly string[]
   return hops;
 }
 
+/**
+ * The disconnected groups of this file's own, by a union-find over each file's dependencies, so that a link joins its
+ * two files whichever way it runs: each group of two or more by its seed, the member with the most distinct neighbours,
+ * ties by path, largest first and then by seed; and the files joined to none, in path order.
+ */
+function groupsOf(files: Record<string, IndexFile>): { groups: { seed: string; size: number }[]; alone: string[] } {
+  const ids = Object.keys(files).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  const parent = new Map(ids.map(id => [id, id]));
+  const root = (id: string): string => (parent.get(id) === id ? id : root(parent.get(id)!));
+  const near = new Map(ids.map(id => [id, new Set<string>()]));
+  for (const id of ids) {
+    for (const to of files[id].outbound) {
+      if (to === id || !parent.has(to)) continue;
+      near.get(id)!.add(to);
+      near.get(to)!.add(id);
+      parent.set(root(id), root(to));
+    }
+  }
+  const byRoot = new Map<string, string[]>();
+  for (const id of ids) byRoot.set(root(id), [...(byRoot.get(root(id)) ?? []), id]);
+  const sets = [...byRoot.values()];
+  const groups = sets.filter(members => members.length > 1).map(members => ({
+    seed: members.reduce((best, id) => (near.get(id)!.size > near.get(best)!.size ? id : best)),
+    size: members.length
+  })).sort((a, b) => b.size - a.size || (a.seed < b.seed ? -1 : a.seed > b.seed ? 1 : 0));
+  return { groups, alone: sets.filter(members => members.length === 1).map(([id]) => id) };
+}
+
 /** What the index says, read again here. */
 async function expectations(page: Page, base: string) {
   const data = await (await page.request.get(`${base}explorer-data.json`)).json() as Bundle;
@@ -88,7 +118,7 @@ async function expectations(page: Page, base: string) {
   for (const file of files) for (const edge of file.edges) if (edge.to === mostUsed.codePath && edge.toSymbol && edge.to !== file.codePath) named.add(edge.toSymbol);
   const sampleRoots = data.sampleRoots ?? [];
   const underSample = (path: string): boolean => sampleRoots.some(root => path === root || path.startsWith(`${root}/`));
-  return { files, byPath, entries, reached, unreachable, unread, testsOnly, mostUsed, mostUsedSymbolsNamed: named.size, sampleRoots, underSample };
+  return { files, byPath, entries, reached, unreachable, unread, testsOnly, mostUsed, mostUsedSymbolsNamed: named.size, sampleRoots, underSample, groups: groupsOf(byPath) };
 }
 
 async function open(page: Page, base: string): Promise<void> {
@@ -155,6 +185,29 @@ for (const [label, base] of [["this repository", "/"], ["the estate sample", "/s
     await expect(unreachable.locator("h3", { hasText: "Reached only from tests" }).locator(".sources-count")).toHaveText(expected.testsOnly.length.toLocaleString());
     const testsOnlyListed = await unreachable.locator('[data-list="tests-only"] .sources-file').evaluateAll(buttons => buttons.map(button => (button as HTMLElement).dataset.nodeId));
     expect(testsOnlyListed.sort()).toEqual(expected.testsOnly.map(file => file.codePath).sort());
+
+    // The disconnected groups: how many, the status line, each group by its seed as a link to the Local Map in 3D, and the lone files folded.
+    const groupsSection = page.locator('[data-section="groups"]');
+    const { groups: islands, alone } = expected.groups;
+    const plural = (count: number, noun: string): string => `${count.toLocaleString()} ${noun}${count === 1 ? "" : "s"}`;
+    await expect(groupsSection.locator("h2 .sources-title")).toHaveText("Groups");
+    await expect(groupsSection.locator("h2 .sources-count")).toHaveText(islands.length.toLocaleString());
+    await expect(groupsSection.locator(".sources-status")).toHaveText(`${plural(expected.files.length - alone.length, "file")} in ${plural(islands.length, "group")}; ${plural(alone.length, "file")} alone.`);
+    const seeds = await groupsSection.locator('[data-list="groups"] .sources-seed').evaluateAll(links => links.map(link => link.textContent));
+    expect(seeds).toEqual(islands.map(group => group.seed));
+    await expect(groupsSection.locator('[data-list="groups"] > li > .sources-count')).toHaveText(islands.map(group => plural(group.size, "file")));
+    if (islands.length > 0) {
+      await expect(groupsSection.locator(".sources-seed").first()).toHaveAttribute("href", `?view=local&mode=3d&node=${encodeURIComponent(islands[0].seed)}`);
+    }
+    const lone = groupsSection.locator('details[data-list="alone"]');
+    if (alone.length === 0) {
+      await expect(lone).toHaveCount(0);
+    } else {
+      await expect(lone).not.toHaveAttribute("open");
+      await expect(lone.locator("> summary .sources-count")).toHaveText(plural(alone.length, "file"));
+      const loneListed = await lone.locator(".sources-file").evaluateAll(buttons => buttons.map(button => (button as HTMLElement).dataset.nodeId));
+      expect(loneListed).toEqual(alone);
+    }
 
     // Reading a named file leaves the source view, map subject and retained exploration in place.
     const first = section.locator("details[data-reason] > ul .sources-file").first();

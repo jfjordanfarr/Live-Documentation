@@ -117,6 +117,34 @@ describe("the entry points and what they reach", () => {
   });
 });
 
+describe("the disconnected groups", () => {
+  it("groups the files joined by dependencies either way around their most connected file, and lists the files joined to none", () => {
+    const { groups } = sourcesFacts(SAMPLE);
+    // core is named by app, util, the test and the sample's main: four neighbours, the most of its group.
+    expect(groups.groups).toEqual([
+      { seed: "src/core.ts", size: 6, members: ["samples/demo/main.py", "src/app.ts", "src/core.test.ts", "src/core.ts", "src/helper.ts", "src/util.ts"] }
+    ]);
+    expect(groups.alone).toEqual(["assets/data.json", "deploy.sh"]);
+  });
+
+  it("orders the groups largest first, breaks a tie for the seed by path, and does not walk from a chosen start", () => {
+    const islands = graph([
+      file("a.ts", "implementation", [{ to: "b.ts" }], []),
+      file("b.ts", "implementation", [], []),
+      file("c.ts", "implementation", [{ to: "d.ts" }], []),
+      file("d.ts", "implementation", [{ to: "e.ts" }], []),
+      file("e.ts", "implementation", [], []),
+      file("f.ts", "implementation", [], [])
+    ]);
+    const expected = {
+      groups: [{ seed: "d.ts", size: 3, members: ["c.ts", "d.ts", "e.ts"] }, { seed: "a.ts", size: 2, members: ["a.ts", "b.ts"] }],
+      alone: ["f.ts"]
+    };
+    expect(sourcesFacts(islands).groups).toEqual(expected);
+    expect(sourcesFacts(islands, { from: ["c.ts"] }).groups).toEqual(expected);
+  });
+});
+
 describe("what nothing references", () => {
 
   it("lists the public symbols of non-test files that no other file names, and those only tests name, by file", () => {
