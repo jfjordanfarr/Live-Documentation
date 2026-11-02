@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: scripts/layout-lab/drift.test.ts
-- Generated At: 2026-10-21T20:42:26.178Z
+- Generated At: 2026-11-02T17:03:47.304Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,7 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
+- [`forceGraphLayout.spatialNodeRadius`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
 - [`types.ExplorerGraphPayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../packages/explorer/src/shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - [`drift.carryPositions`](./drift.ts.mdmd.md#symbol-carrypositions)

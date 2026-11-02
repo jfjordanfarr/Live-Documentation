@@ -195,6 +195,12 @@ export interface ForceGraphTuning {
   linkWidth: number;
   /** Zoom compensation: zero preserves perspective, one holds screen radii at the orbit-target plane. */
   nodeZoomResistance: number;
+  /**
+   * How large a sphere must draw on screen, in pixels of radius, before its name is shown beside it: the names of what
+   * was asked about and of the hovered sphere show always, the rest "until _the very last second_" (the owner,
+   * 2026-11-02, finding the picture "overexcited to draw text"). Six pixels, unlevered, before.
+   */
+  nameAt: number;
   /** Zoom compensation: zero preserves perspective, one holds screen widths at the orbit-target plane. */
   wireZoomResistance: number;
   /**

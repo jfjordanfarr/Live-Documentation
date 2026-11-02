@@ -123,8 +123,10 @@ test("the control opens a scrubber with one tick per step and the panel says wha
   await expect(track(page)).toHaveAttribute("aria-valuenow", String(last));
   await expect(track(page)).toHaveAttribute("aria-valuetext", `${commits[last].date.slice(0, 10)}: ${commits[last].subject}`);
   await expect(page.locator(".history-tick")).toHaveCount(commits.length);
-  // With nothing pinned every step is a major tick, the beginning too.
-  await expect(page.locator(".history-tick.is-major")).toHaveCount(commits.length);
+  // Opened with nothing asked about, the control opens the whole and retains it (2026-11-02), so the ticks are the whole
+  // repository's: every step that changed any file's shape is major, the one that changed content alone minor, the beginning quiet.
+  await expect(page.locator(".history-tick.is-major")).toHaveCount(commits.length - 2);
+  await expect(page.locator(".history-tick.is-minor")).toHaveAttribute("data-step", String(last));
   await expect(page.locator(".history-ruler-label:not([hidden])").first()).toHaveText("5 Jan 2026");
   await expect(page.locator(".history-readout code")).toHaveText(commits[last].id.slice(0, 8));
   await expect(page.locator(".history-truncated")).toBeHidden();
@@ -187,7 +189,7 @@ test("the keys walk the steps: a renamed file and its directory's hub keep their
   expect(kept.total).toBe(marked);
   expect(kept.marked).toBe(marked);
 
-  // The stops with nothing pinned are every step: End, Page Down, Page Up.
+  // The stops are the whole's shape changes with the ends: End, Page Down to the last shape change, Page Up to the end.
   await page.keyboard.press("End");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "6");
   await page.keyboard.press("PageDown");
@@ -233,10 +235,12 @@ test("deleted and created files are actionable at their own moments without inve
   // The created file's name pins it today.
   await stepTo(page, 3);
   await born.locator("button").click();
-  await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
+  // The whole the control opened is retained beside it (2026-11-02): the root's row and the file's, in the tray's order.
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
-  await expect(page.locator(".pin-tray-name")).toHaveText("huge.ts");
-  await expect(page.locator(".pin-tray-absent")).toBeHidden();
+  await expect(page.locator(".pin-tray-name")).toHaveCount(2);
+  expect((await page.locator(".pin-tray-name").allTextContents()).sort()).toEqual(["Scan root", "huge.ts"]);
+  await expect(page.locator(".pin-tray-absent:not([hidden])"), "neither row says its thing is absent today").toHaveCount(0);
 });
 
 test("commit search, range selection and adjacent controls investigate an interval without dropping its surroundings", async ({ page }) => {
@@ -358,7 +362,8 @@ test("a deleted file can be found, read and shared in its own lifetime, and rema
   await page.reload();
   await settled(page);
   await page.getByRole("button", { name: "Back", exact: true }).first().click();
-  await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
+  // The place returned to holds the whole the control opened beside the file (2026-11-02).
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("2 pins");
   expect(address().pinSet.entries[0].nodeId).toBe(id);
   await expect(page.locator("#search-subject-absence")).toHaveText(`deleted at ${commits[4].id.slice(0, 8)}`);
 });
@@ -440,13 +445,16 @@ test("a pin whose file is not yet created is said so in the tray and never dropp
   await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
 });
 
-test("an absent historical request has an empty idle picture and resumes normal motion at its birth", async ({ page }) => {
+test("an absent historical request shows only the tree's root, dimmed, and resumes normal motion at its birth", async ({ page }) => {
   const commits = await commitsOf(page, "/samples/history/");
   await observeGraph(page);
   await page.goto(entry("/samples/history/", { selectedNodeId: "lib/huge.ts", pinSet: { entries: [{ nodeId: "lib/huge.ts", symbol: "*" }] },
     commit: commits[0].id, layout: { forceGraph: { updateEnergy: 1 } } }));
   await settled(page);
-  expect(await renderedNodes(page)).toEqual([]);
+  // What was asked about is not here yet, so the picture holds only the handle of what is: the tree's root, dimmed (2026-11-02).
+  const idle = await renderedNodes(page);
+  expect(idle.map(node => node.id)).toEqual(["directory:"]);
+  expect(idle[0].opacity).toBeLessThan(.35);
   await expect(page.locator("#search-subject-absence")).toHaveText("not yet created");
   await track(page).press("PageUp");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "3");

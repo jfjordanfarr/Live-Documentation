@@ -68,6 +68,8 @@ describe("ticksFor", () => {
     const sequence = history();
     expect(ticksFor(sequence, { files: [], directories: ["ui"] })).toEqual({ major: [3, 5], minor: [4] });
     expect(ticksFor(sequence, { files: [], directories: ["src"] }, 0)).toEqual({ major: [2, 3, 6], minor: [1] });
+    // The scan root holds every file, so its ticks are every file's: the Explorer's Whole, retained (2026-11-02).
+    expect(ticksFor(sequence, { files: [], directories: [""] })).toEqual({ major: [2, 3, 5, 6], minor: [1, 4] });
   });
 
   it("follows a pinned directory through its rename whole, back to its old name", () => {

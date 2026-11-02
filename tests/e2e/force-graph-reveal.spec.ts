@@ -65,21 +65,32 @@ test("the first picture enters from the subject with its first hop, a share of t
 
 test("a membership change keeps what is shown and brings the newcomers in pieces of the rule's sizes", async ({ page }) => {
   test.setTimeout(150_000);
+  // Around a subject: the start's seeds are what is asked about there, and what is asked about enters at once (2026-11-02).
+  const subject = "packages/explorer/src/client/views/forceGraphView.ts";
   await observeGraph(page);
-  await page.goto(entry(false));
+  await page.goto(entry(false, subject));
   await settled(page);
   const before = await renderedPieces(page);
   const shown = before[before.length - 1];
-  const kept = new Set((await renderedNodes(page)).map(node => node.id));
   const { changes: untilNow } = await engineActivity(page);
+  // The picture before and after, by the shared scope: the tests shown join groups the subject's hops do not reach, and a
+  // group whose most connected file changes stands by its new seed, so a seed or two can leave as the newcomers enter.
+  const graph = await loadGraph(page, "/");
+  const scopeOf = (showTests: boolean): Set<string> => {
+    const data = spatialGraphOf(graph, node => showTests || (node.archetype || "").toLowerCase() !== "test", [], "connections");
+    return new Set(spatialScope(data.nodes, data.links, new Set([subject]), getDefaultTuning().forceGraph.hops, link => linkPulls(link, "connections")).hops.keys());
+  };
+  const was = scopeOf(false), is = scopeOf(true);
+  const kept = [...was].filter(id => is.has(id));
+  expect(shown, "the picture before the change is the subject's scope").toBe(was.size);
   await page.getByLabel("Show Tests").check();
   await settled(page);
   const sizes = (await renderedPieces(page)).slice(before.length - 1);
   const whole = sizes[sizes.length - 1];
-  expect(whole, "the tests shown make the start's picture bigger").toBeGreaterThan(shown);
-  expect(sizes, "the sizes after the change: what was shown, then a share of the whole a frame to the whole").toEqual(rule(shown, whole));
+  expect(whole, "the tests shown make the subject's picture bigger").toBe(is.size);
+  expect(sizes, "the sizes after the change: what was shown, then from what is kept a share of the whole a frame to the whole").toEqual([shown, ...rule(kept.length, whole).slice(1)]);
   const after = await renderedNodes(page);
-  expect(after.filter(node => kept.has(node.id)).length, "every sphere shown before the change is still shown").toBe(kept.size);
+  expect(after.map(node => node.id).filter(id => was.has(id)).sort(), "every sphere shown before the change and still in the picture is shown").toEqual(kept.sort());
   const { changes } = await engineActivity(page);
   expect(changes.slice(untilNow.length).map(change => change.busy), "one run of the engine from the change to its stillness").toEqual([true, false]);
 });

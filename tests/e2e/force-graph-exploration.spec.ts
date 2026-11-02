@@ -37,24 +37,39 @@ test("whole overview finds isolated files and returns to the independent directo
   await observeGraph(page);
   await page.goto("/samples/estate/?view=local&mode=3d&dir=Portal&layout=connections");
   await settled(page);
-  const local = (await renderedNodes(page)).map(node => node.id).sort();
-  expect(local).not.toContain("Estate.sln");
-  await page.getByRole("button", { name: "Show all files", exact: true }).click();
+  const before = await renderedNodes(page);
+  const local = before.map(node => node.id).sort();
+  // The lone file stands in the local picture as its own group's seed, dimmed beyond the frontier (2026-11-02).
+  expect(before.find(node => node.id === "Estate.sln")?.opacity).toBeLessThan(0.5);
+  const whole = page.getByRole("button", { name: "Whole", exact: true });
+  await expect(whole).toHaveAttribute("aria-pressed", "false");
+  await whole.click();
+  await expect(whole).toHaveAttribute("aria-pressed", "true");
   await settled(page);
-  expect((await renderedNodes(page)).map(node => node.id)).toContain("Estate.sln");
+  const everything = await renderedNodes(page);
+  expect(everything.find(node => node.id === "Estate.sln")?.opacity, "the whole picture shows the lone file in full").toBeGreaterThan(0.6);
   expect(currentSnapshot(page).openDirectories).toEqual(new Set(["Portal", ""]));
+  // A lone file is named at rest only when its sphere draws large enough (2026-11-02); hovering it names it at once.
+  const sphere = everything.find(node => node.id === "Estate.sln")!;
+  await page.mouse.move(sphere.x, sphere.y);
   const orphan = page.locator('.force-graph-label[data-node-id="Estate.sln"]');
   await expect(orphan).toBeVisible();
   await orphan.click();
   await expect(orphan).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Return to local scope", exact: true }).click();
+  await whole.click();
+  await expect(whole).toHaveAttribute("aria-pressed", "false");
   await settled(page);
   expect(currentSnapshot(page)).toMatchObject({ selectedNodeId: null, openDirectories: new Set(["Portal"]), pinSet: { entries: [{ nodeId: "Estate.sln", symbol: "*" }] } });
-  expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual([...local, "Estate.sln"].sort());
+  // Back in the local picture the pinned lone file stands in full; the picture's members are the same, since its seed was already there.
+  const returned = await renderedNodes(page);
+  expect(returned.map(node => node.id).sort()).toEqual(local);
+  expect(returned.find(node => node.id === "Estate.sln")?.opacity).toBeGreaterThan(0.6);
   // A portable pin set retains its independent directory and the newly discovered orphan after reload.
   await page.reload();
   await settled(page);
   expect(currentSnapshot(page).openDirectories).toEqual(new Set(["Portal"]));
+  // The pinned file is named at rest; its name releases it as its sphere would.
+  await expect(orphan).toBeVisible();
   await orphan.click();
   await settled(page);
   expect(currentSnapshot(page).pinSet.entries).toEqual([]);
@@ -66,6 +81,13 @@ test("directory discovery survives a layout switch without opening or pinning it
   await observeGraph(page);
   await page.goto("/samples/estate/?view=local&mode=3d&layout=structure");
   await settled(page);
+  // A hub not asked about is named on approach or hover (2026-11-02): hovering it names it for the click.
+  const hoverHub = async (id: string): Promise<void> => {
+    const hub = (await renderedNodes(page)).find(node => node.id === id)!;
+    await page.mouse.move(hub.x, hub.y);
+    await page.locator(`.force-graph-label[data-node-id="${id}"]`).waitFor({ state: "visible" });
+  };
+  await hoverHub("directory:Portal");
   await page.locator('.force-graph-label[data-node-id="directory:Portal"]').click();
   await settled(page);
   await page.getByRole("button", { name: "Connections", exact: true }).click();
@@ -73,7 +95,8 @@ test("directory discovery survives a layout switch without opening or pinning it
   expect(currentSnapshot(page)).toMatchObject({ discovery: { kind: "directory", directory: "Portal" }, openDirectories: new Set(), pinSet: { entries: [] }, selectedNodeId: null });
   const nodes = await renderedNodes(page);
   expect(nodes.map(node => node.id)).toContain("Portal/Services/GatewayClient.cs");
-  expect(nodes.map(node => node.id)).not.toContain("Estate.sln");
+  // The lone file is not discovered with the directory; it stands dimmed as its own group's seed (2026-11-02).
+  expect(nodes.find(node => node.id === "Estate.sln")?.opacity).toBeLessThan(0.5);
   const reader = (await page.locator("#detail-panel").boundingBox())!;
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
   const controls = (await page.locator(".perspective-controls").boundingBox())!;
@@ -86,6 +109,7 @@ test("directory discovery survives a layout switch without opening or pinning it
   }
   await page.getByRole("button", { name: "Structure", exact: true }).click();
   await settled(page);
+  await hoverHub("directory:Portal");
   await page.locator('.force-graph-label[data-node-id="directory:Portal"]').click();
   expect(currentSnapshot(page).discovery).toBeUndefined();
   expect(currentSnapshot(page).openDirectories.size).toBe(0);
@@ -97,9 +121,13 @@ test("a lone file settles, small body jitter pins it, and a moving name releases
   await observeGraph(page);
   await page.goto("/samples/estate/?view=local&mode=3d&node=Estate.sln");
   await settled(page);
+  // The lone file in full, and the other groups' seeds dimmed beside it, since 2026-11-02 no group is out of reach.
   const nodes = await renderedNodes(page);
-  expect(nodes.map(node => node.id)).toEqual(["Estate.sln"]);
-  const only = nodes[0];
+  const only = nodes.find(node => node.id === "Estate.sln")!;
+  expect(only.opacity).toBeGreaterThan(0.6);
+  const seeds = nodes.filter(node => node.id !== "Estate.sln");
+  expect(seeds.length, "one seed for each of the estate's other groups").toBe(3);
+  for (const seed of seeds) expect(seed.opacity, `${seed.id} stands dimmed`).toBeLessThan(0.5);
   await page.mouse.move(only.x, only.y);
   await page.mouse.down();
   await page.mouse.move(only.x + 3, only.y + 1, { steps: 3 });

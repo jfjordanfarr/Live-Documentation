@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-focus.spec.ts
-- Generated At: 2026-10-31T21:21:51.006Z
+- Generated At: 2026-11-02T18:46:08.278Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ Exercises file focus and independent inspection in the rendered Force Graph thro
 - Hit testing includes dim spheres, which remain interactive. Empty points are checked with projected screen radii, the actual DOM canvas, the application pointer target, so neither world-space measurements nor a covering control can masquerade as empty canvas.
 - Full-repository navigation waits for actual stillness with a one-minute allowance. The [October 24 measurements](../../../../AI-Agent-Workspace/Probes/2026-10-24/connections-tuning/performance-findings.md) found 31–33 seconds at the selected sphere detail, and over 25 seconds even at the old detail. These are functional journeys, not performance benchmarks; their camera, picking and attention assertions remain independent of that setup allowance.
 
-Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the frontier's spheres stand at .3 of their alpha by the picture's own rule, so the checks tell that dimming from the hover's fade (.15): a sphere faded by the hover reads under .25, and the hoverable candidates are the frontier's. Clearing the pins releases the subject too, so the picture becomes the layout's start, which the last check computes with the shared scope. The hover check re-enters its sphere at a point where it is hittable, since in the smaller picture a nearer sphere can cover another's centre, and its budget is 180 seconds for the two settles it waits through.
+Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the frontier's spheres stand at .3 of their alpha by the picture's own rule, so the checks tell that dimming from the hover's fade (.15): a sphere faded by the hover reads under .25, and the hoverable candidates are the frontier's. Clearing the pins releases the subject too, so the picture becomes the layout's start, the archipelago of every group's seed since 2026-11-02, which the last check computes with the shared scope over every file, since a retain link's old grammar shows tests and assets both. The hover check re-enters its sphere at a point where it is hittable, since in the smaller picture a nearer sphere can cover another's centre, and its budget is 180 seconds for the two settles it waits through.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -38,6 +38,7 @@ _No public symbols detected_
 - [`forceGraphData.spatialGraphOf`](../../packages/explorer/src/client/views/forceGraphData.ts.mdmd.md#symbol-spatialgraphof)
 - [`forceGraphLayout.linkPulls`](../../packages/explorer/src/client/views/forceGraphLayout.ts.mdmd.md#symbol-linkpulls)
 - [`forceGraphScope.spatialScope`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphScope.startHops`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](../../packages/explorer/src/client/views/forceGraphScope.ts.mdmd.md#symbol-startof)
 - [`graph.explorerGraphOf`](../../packages/explorer/src/shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)

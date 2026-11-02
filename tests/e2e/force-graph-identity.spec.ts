@@ -38,7 +38,9 @@ async function blueSphereIsPainted(page: Page, id: string): Promise<void> {
 
 async function readableNames(page: Page): Promise<void> {
   const boxes = await textBoxes(page, [...names, ".perspective-controls", ".force-graph-actions"]);
-  expect(boxes.length).toBeGreaterThan(3);
+  // At rest only what was asked about is named (2026-11-02), so the boxes are the toolbar and a name or a few; the
+  // rules below, no collision, no cut text, every name in the viewport at reading size, are what the check holds.
+  expect(boxes.length).toBeGreaterThan(1);
   expect(overlapsAmong(boxes)).toEqual([]);
   expect(await truncations(page, names)).toEqual([]);
   const bounds = await page.locator(".force-graph-focus:visible, .force-graph-label:visible").evaluateAll(elements => elements.map(element => {
@@ -109,6 +111,9 @@ test("Portal keeps readable directory and file identities through layouts and in
   await page.goto("/samples/estate/?view=local&mode=3d&dir=Portal&layout=structure");
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   await expect(page.locator('.force-graph-label[data-kind="directory"]').filter({ hasText: /^Portal$/ })).toBeVisible();
+  // The open directory is named as asked about; its member files are named on approach or hover (2026-11-02).
+  const gatewaySphere = (await renderedNodes(page)).find(node => node.id === "Portal/Services/GatewayClient.cs")!;
+  await page.mouse.move(gatewaySphere.x, gatewaySphere.y);
   const gateway = page.locator('.force-graph-label[data-node-id="Portal/Services/GatewayClient.cs"]');
   await expect(gateway).toBeVisible();
   await readableNames(page);

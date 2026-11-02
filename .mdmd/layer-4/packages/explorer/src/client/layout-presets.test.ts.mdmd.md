@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/layout-presets.test.ts
-- Generated At: 2026-10-13T19:38:15.656Z
+- Generated At: 2026-11-02T17:03:44.362Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,6 @@ _No public symbols detected_
 ### Dependencies
 - [`layout-presets.applyLayoutPreset`](./layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
-- [`layout-presets.layoutPresetOf`](./layout-presets.ts.mdmd.md#symbol-layoutpresetof)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`layout-presets.readLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-readlayoutsettings)
 - [`compressed-url-state.DEFAULT_SNAPSHOT`](./persistence/compressed-url-state.ts.mdmd.md#symbol-default_snapshot)

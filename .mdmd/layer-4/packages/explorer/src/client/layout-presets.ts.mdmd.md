@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-10-31T20:06:59.088Z
+- Generated At: 2026-11-02T17:03:44.389Z
 
 ## Authored
 ### Purpose
@@ -67,18 +67,9 @@ Packing defaults only: selecting a preset preserves coupling, symbol scaling and
 ##### `applyLayoutPreset` — Summary
 Return a fresh tuning record with both representations' packing set together.
 
-#### `layoutPresetOf` {#symbol-layoutpresetof}
-- Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L48)
-- Returns: [`LayoutPreset`](#symbol-layoutpreset)
-- Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
-
-##### `layoutPresetOf` — Summary
-Derive the label from actual settings, so advanced edits never masquerade as a stock preset.
-
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L58)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L48)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
@@ -86,7 +77,7 @@ Read only known, finite settings and bound them to their public control ranges.
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L79)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L69)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -95,7 +86,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L84)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L74)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 

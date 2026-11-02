@@ -100,7 +100,7 @@ test("a name wraps only at its seams, and a count stays with its unit and agrees
   }
 });
 
-test("the toolbar's groups each have one choice on, parted by rules, and the 3D canvas carries no hint", async ({ page }) => {
+test("the toolbar's groups stand parted by rules, each choice group with one choice on, and the 3D canvas carries no hint", async ({ page }) => {
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   const groups = page.locator(".perspective-controls .perspective-group:visible");
@@ -110,8 +110,9 @@ test("the toolbar's groups each have one choice on, parted by rules, and the 3D 
     pressed: element.querySelectorAll('button[aria-pressed="true"]').length,
     rule: getComputedStyle(element).borderLeftWidth
   })));
-  expect(facts.map(group => group.buttons)).toEqual([["Fit current scope"], ["Compact", "Relaxed", "Layout tuning"], ["2D", "3D"], ["Connections", "Structure"]]);
-  expect(facts.map(group => group.pressed)).toEqual([0, 1, 1, 1]);
+  // The fit and the whole-or-local toggle are states, not choices; the Whole toggle stands where Compact and Relaxed stood until 2026-11-02.
+  expect(facts.map(group => group.buttons)).toEqual([["Fit current scope"], ["Whole", "Layout tuning"], ["2D", "3D"], ["Connections", "Structure"]]);
+  expect(facts.map(group => group.pressed)).toEqual([0, 0, 1, 1]);
   expect(facts.map(group => group.rule)).toEqual(["0px", "1px", "1px", "1px"]);
   await expect(page.locator(".scene-nav-info")).toHaveCount(0);
   // In 2D the fit's group and the 3D layout's go with their buttons, and no rule is left standing alone.

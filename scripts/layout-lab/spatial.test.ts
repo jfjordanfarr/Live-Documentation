@@ -65,11 +65,11 @@ describe("the spatial report's correspondence to the page", () => {
 
   it("takes hops from the pins themselves, without silently adding another hop through their retained neighbors", () => {
     const tuning = getDefaultTuning().forceGraph;
+    // The isolated file is a group the hops do not reach: it stands in the picture by its seed, past the last hop (2026-11-02), never as a hop.
     const one = spatialReport(graph, run, { ...tuning, hops: 1 }, 500);
-    expect(one.nodes.map(node => node.id)).toEqual(["a", "b"]);
+    expect(one.nodes.map(node => node.id)).toEqual(["a", "b", "isolated"]);
     const two = spatialReport(graph, run, { ...tuning, hops: 2 }, 500);
-    expect(two.nodes.map(node => node.id)).toEqual(["a", "b", "c"]);
-    expect(two.nodes.some(node => node.id === "isolated")).toBe(false);
+    expect(two.nodes.map(node => node.id)).toEqual(["a", "b", "c", "isolated"]);
   });
 
   it("reveals a whole root as directory members, keeping disconnected files without turning all members into direct pins", () => {

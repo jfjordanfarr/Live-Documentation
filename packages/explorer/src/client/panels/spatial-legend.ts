@@ -34,7 +34,7 @@ export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, 
     rows.push({ label: "Width: references", color: "#ffffff", shape: "width" });
   }
   if (drawn.path) rows.push({ label: "Path", color: "#ffffff", shape: "path" });
-  if (drawn.frontier) rows.push({ label: "Dimmed: a hop beyond; click to see more", color: "#aeb8c6", shape: "frontier" });
+  if (drawn.frontier) rows.push({ label: "Dimmed: a hop beyond, or another group; click to see more", color: "#aeb8c6", shape: "frontier" });
   if (drawn.faded) rows.push({ label: "Faded: not on the path or hovered", color: "#aeb8c6", shape: "faded" });
   if (kinds.has("containment")) rows.push({ label: "Contains", color: SPATIAL_NODE_STYLES.directory.color, shape: "wire" });
   if (kinds.has("related-doc")) rows.push({ label: "Cites document", color: SPATIAL_NODE_STYLES["related-doc"].color, shape: "arrow" });

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { carryPositions, diagonalOf, extentOf, measureDrift, rangeOf, renderDriftReports, toggledArchetype } from "./drift";
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
+import { spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../packages/explorer/src/shared/types";
 
 const node = (id: string, archetype = "implementation", symbols = 1): ExplorerNodePayload => ({ id, name: id.split("/").pop()!,
@@ -38,7 +39,9 @@ describe("the drift measure", () => {
     const born = carried[2];
     expect([born.x, born.y, born.z].every(Number.isFinite)).toBe(true);
     expect(Math.hypot(born.x! - 3, born.y! - 4, born.z! - 5)).toBeGreaterThan(8);
-    expect(carryPositions([hub], [], new Map(), tuning, "structure")[0].x).toBeUndefined();
+    // A hub with nothing placed to start from is born on the outside of an empty mass: a spring's length from the origin (2026-11-02).
+    const lone = carryPositions([hub], [], new Map(), tuning, "structure")[0];
+    expect(Math.hypot(lone.x!, lone.y!, lone.z!)).toBeCloseTo(tuning.linkGap + 2 * spatialNodeRadius(hub, tuning), 9);
   });
 
   it("eases each change at the update energy: placement alone takes no tick and moves no unchanged sphere, a tenth eases more gently and so for longer, to much the same rest", () => {

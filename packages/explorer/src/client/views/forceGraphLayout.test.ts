@@ -164,7 +164,7 @@ describe("the update energy, the constant strength of a change's motion (ticket 
     expect(seededDirection("packages/engine/src/live-docs/document.ts")).not.toEqual(direction);
   });
 
-  it("starts a new sphere beside what holds it: a hub at its placed members' centroid, a file at its hub's rest length, a chain one after another, and nothing it cannot place", () => {
+  it("starts a new sphere beside what holds it: a hub at its placed members' centroid, a file at its hub's rest length, a chain one after another, and a partnerless sphere on the outside", () => {
     const tuning = getDefaultTuning().forceGraph;
     const hub = (path: string): PlaceableNode => ({ id: `directory:${path}`, publicSymbols: [], directoryPath: path, codeRelativePath: path });
     const file = (path: string, symbols: number, at?: { x: number; y: number; z: number }): PlaceableNode => ({ ...node(path, symbols), codeRelativePath: path, ...at });
@@ -197,15 +197,25 @@ describe("the update energy, the constant strength of a change's motion (ticket 
     // Nothing placed is moved, and the nodes themselves are untouched.
     expect(nodes[2]).toMatchObject({ x: 100, y: 0, z: 0 });
     expect(nodes[4].x).toBeUndefined();
-    // In the connections layout a born file starts beside the files it references; one wired to nothing placed is left to D3.
-    const network = [file("x.ts", 1, { x: 0, y: 0, z: 0 }), file("y.ts", 1, { x: 60, y: 0, z: 0 }), file("z.ts", 1), file("island.ts", 1), file("w.ts", 1)];
+    // In the connections layout a born file starts beside the files it references; an island wired to nothing placed is
+    // born on the outside of the mass (2026-11-02): its most connected sphere a spring's length beyond the farthest
+    // placed sphere that has a placed partner, in its seeded direction, and its members beside it.
+    const network = [file("x.ts", 1, { x: 0, y: 0, z: 0 }), file("y.ts", 1, { x: 60, y: 0, z: 0 }), file("z.ts", 1), file("island.ts", 1), file("w.ts", 1), file("far.ts", 1, { x: -500, y: 0, z: 0 })];
     const references: SpatialLink<PlaceableNode>[] = [{ source: "z.ts", target: "x.ts", count: 1, kind: "dependency" }, { source: "y.ts", target: "z.ts", count: 3, kind: "dependency" }, { source: "island.ts", target: "w.ts", count: 1, kind: "dependency" }];
     const beside = placeNewSpheres(network, references, tuning, "connections");
     const reach = (spatialLinkDistance({ source: network[2], target: network[0], count: 1 }, tuning) + spatialLinkDistance({ source: network[2], target: network[1], count: 3 }, tuning)) / 2;
     expect(distance(beside.get("z.ts")!, { x: 30, y: 0, z: 0 })).toBeCloseTo(reach, 9);
-    expect([...beside.keys()]).toEqual(["z.ts"]);
-    // Containment pulls nothing in the connections layout, so no file is placed by it there; a hub's centroid needs no link.
-    expect([...placeNewSpheres(nodes, links, tuning, "connections").keys()]).toEqual(["directory:a"]);
+    // far.ts stands 500 units out but has no partner, so the mass it does not belong to ends at y.ts, 60 units out.
+    const seed = beside.get("island.ts")!, outward = seededDirection("island.ts"), shell = 60 + tuning.linkGap + 2 * spatialNodeRadius(network[3], tuning);
+    expect(seed).toEqual({ x: shell * outward.x, y: shell * outward.y, z: shell * outward.z });
+    expect(distance(beside.get("w.ts")!, seed)).toBeCloseTo(spatialLinkDistance({ source: network[3], target: network[4], count: 1 }, tuning), 9);
+    expect([...beside.keys()]).toEqual(["z.ts", "island.ts", "w.ts"]);
+    // Containment pulls nothing in the connections layout, so nothing is placed by it there: the hub's centroid needs no
+    // link, and the rest, partnerless, is born on the outside of a mass that has no partnered sphere, a spring's length
+    // from the origin.
+    const unpulled = placeNewSpheres(nodes, links, tuning, "connections");
+    expect([...unpulled.keys()].sort()).toEqual(["a/born.ts", "alone.ts", "b/new.ts", "directory:a", "directory:b"]);
+    expect(distance(unpulled.get("alone.ts")!, { x: 0, y: 0, z: 0 })).toBeCloseTo(tuning.linkGap + 2 * spatialNodeRadius(nodes[7], tuning), 9);
   });
 
   it("eases a change headlessly as the page does: held where it stands, more gently and for longer at a lower strength, and not at all at zero", () => {
@@ -321,17 +331,20 @@ describe("the easing: one motion through a conservative field, until the spheres
   // The whole toy as one piece, so that the easing is measured and not the reveal.
   const whole = { reveal: { asked: new Set(files.map(file => file.id)) } };
 
-  it("unfolds a first picture from the library's seed and holds it once it calms, where held from the seed it would stay a fraction of its size", () => {
+  it("unfolds a first picture freely to the forces' own size, where a picture held from its seed stays near the seed", () => {
     const unfolded = easeSpatialLayout(files, links, tuning, "connections", whole);
     const held = easeSpatialLayout(files, links, tuning, "connections", { ...whole, start: "hold" });
     expect(unfolded.still && held.still).toBe(true);
-    // Measured 2026-10-21 on this toy: held from the seed, 0.75 of the unfolded size and 981 ticks against 155. On this
-    // repository the seed is a ball a hundredth of the picture's size, and a picture held there stays far too small.
-    expect(sizeOf(held.nodes)).toBeLessThan(0.85 * sizeOf(unfolded.nodes));
-    expect(held.ticks).toBeGreaterThan(unfolded.ticks);
-    // Without the tether the forces alone shape it, and the unfolded picture is their own size within a percent.
+    // The seed is where the spheres are born (2026-11-02: the first on the outside of an empty mass, the rest beside
+    // their partners), and a picture held there is kept near it by the tether, while the unfolded one is let go to
+    // the forces' own size: without the tether the forces alone shape it, within a few percent of the unfolded.
+    const seed = placeNewSpheres(files, links.map(link => ({ ...link })), tuning, "connections");
+    const seeded = files.map(file => ({ ...file, ...seed.get(file.id)! }));
+    expect(seeded.every(file => Number.isFinite(file.x))).toBe(true);
+    expect(Math.abs(sizeOf(held.nodes) / sizeOf(seeded) - 1)).toBeLessThan(0.25);
     const free = easeSpatialLayout(files, links, { ...tuning, tether: 0 }, "connections", whole);
     expect(Math.abs(sizeOf(unfolded.nodes) / sizeOf(free.nodes) - 1)).toBeLessThan(0.05);
+    expect(sizeOf(held.nodes)).not.toBeCloseTo(sizeOf(unfolded.nodes), 0);
   });
 
   it("ticks nothing at zero strength, and stops at the bound it is given", () => {
@@ -413,11 +426,14 @@ describe("the reveal of a picture", () => {
     expect(result.nodes.map(file => file.id)).toEqual(crowd.map(file => file.id));
   });
 
-  it("shows the tuning's hops around what was asked about, and the whole from its start when nothing in the picture was", () => {
+  it("shows the tuning's hops around what was asked about, the archipelago when nothing in the picture was, and the whole when asked for as members", () => {
     const around = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(["n5"]) } });
     expect(around.nodes.map(file => file.id)).toEqual(["n3", "n4", "n5", "n6", "n7"]);
     expect(around.links.length, "the wires among the spheres shown").toBe(4);
-    const whole = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(["elsewhere"]) } });
+    // The ring is one group: its seed alone, nothing grown (2026-11-02); every sphere has two neighbours, ties by id.
+    const start = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(["elsewhere"]) } });
+    expect(start.nodes.map(file => file.id)).toEqual(["n0"]);
+    const whole = easeSpatialLayout(crowd, ring, tuning, "connections", { maxTicks: 400, reveal: { asked: new Set(), members: new Set(crowd.map(file => file.id)) } });
     expect(whole.nodes.length).toBe(24);
   });
 

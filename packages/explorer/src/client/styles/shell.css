@@ -138,10 +138,6 @@
     color: var(--text-subtle);
 }
 
-.spatial-overview { display: block; margin-top: 5px; padding: 2px 0; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 13px; cursor: pointer; text-align: left; }
-.spatial-overview[hidden] { display: none; }
-.spatial-overview:hover { text-decoration: underline; }
-.spatial-overview:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* The column and its views clip and never scroll: hidden would let a reveal (a Tab, a find in the page) scroll them from
    code, sliding a picture and its controls out from under the camera with no way back. */

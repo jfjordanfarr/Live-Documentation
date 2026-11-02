@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-02T06:07:14.998Z
+- Generated At: 2026-11-02T17:03:45.624Z
 
 ## Authored
 ### Purpose
@@ -67,14 +67,14 @@ The [November 2 exploration pass](../../../../../../../AI-Agent-Workspace/ChatHi
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L73)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L78)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L84)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L89)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -82,28 +82,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L93)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L98)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L104)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L109)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L132)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L138)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L159)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L165)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -123,7 +123,6 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`rekey.hasRenames`](../history/rekey.ts.mdmd.md#symbol-hasrenames)
 - [`rekey.rekeyedCaches`](../history/rekey.ts.mdmd.md#symbol-rekeyedcaches)
 - [`rekey.renamedId`](../history/rekey.ts.mdmd.md#symbol-renamedid)
-- [`layout-presets.layoutPresetOf`](../layout-presets.ts.mdmd.md#symbol-layoutpresetof)
 - [`icon-button.CENTRE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-centre_icon)
 - [`icon-button.DIRECTORY_ICON`](../panels/icon-button.ts.mdmd.md#symbol-directory_icon)
 - [`icon-button.MORE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-more_icon)
@@ -167,6 +166,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphScope.directoryHubOf`](./forceGraphScope.ts.mdmd.md#symbol-directoryhubof)
 - [`forceGraphScope.directoryMembersWithinHops`](./forceGraphScope.ts.mdmd.md#symbol-directorymemberswithinhops)
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphScope.startHops`](./forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
 - [`directory-bands.parentDirectory`](./localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)

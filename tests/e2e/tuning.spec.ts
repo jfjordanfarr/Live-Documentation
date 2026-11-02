@@ -19,7 +19,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
   await page.locator(".local-placed").waitFor();
   await openTuning(page);
   const controls = page.locator(".tuning-content input[type=range], .tuning-content select");
-  await expect(controls).toHaveCount(47);
+  await expect(controls).toHaveCount(48);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -55,7 +55,7 @@ const SPATIAL_GROUPS = {
     "tuning-force-charge-range", "tuning-force-update-energy", "tuning-force-approximation"],
   Spacing: ["tuning-force-link-gap", "tuning-force-coupling", "tuning-force-collision-gap"],
   Appearance: ["tuning-force-node-size", "tuning-force-symbol-scale", "tuning-force-link-width", "tuning-force-node-zoom-resistance",
-    "tuning-force-wire-zoom-resistance"]
+    "tuning-force-name-at", "tuning-force-wire-zoom-resistance"]
 };
 
 test("the 3D levers stand in discovery, forces, spacing and appearance, and a lever still moves its readout", async ({ page }) => {

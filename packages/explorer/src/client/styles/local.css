@@ -295,7 +295,6 @@ span.local-disclosure { cursor: default; }
 .perspective-group:not(:has(button:not([hidden]))) { display: none; }
 .perspective-controls :is(button, select):focus-visible { outline: 2px solid var(--accent); }
 .perspective-controls button.has-backward-wires { border-color: #e9b86d; box-shadow: 0 0 0 2px #e9b86d33; }
-.perspective-controls .custom-layout { border-bottom-color: var(--accent); color: var(--accent); }
 .perspective-controls button:disabled { cursor: default; opacity: .55; }
 
 .pin-tray { position: absolute; right: 18px; bottom: calc(18px + var(--history-room)); z-index: 106; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-size: 13px; pointer-events: none; }

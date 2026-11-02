@@ -3,7 +3,7 @@ import { forceSimulation, type Force, type SimulationNodeDatum } from "d3-force-
 import type { ForceGraphTuning, SpatialLayout } from "../types";
 import { diagonalOf, SpatialField, SpatialMotion, type MotionSettings, type MotionTick } from "./forceGraphPhysics";
 import { nextRevealCount, REVEAL, revealLayers, type RevealAttention, type RevealSettings } from "./forceGraphReveal";
-import { spatialScope, startOf, type StartableNode } from "./forceGraphScope";
+import { spatialScope, startHops, startOf, type StartableNode } from "./forceGraphScope";
 import { under } from "./localView/directory-state";
 
 /** The documented interface and mutable position of a file, or of a directory hub, in the spatial layout. */
@@ -93,13 +93,41 @@ export function seededDirection(id: string): Placed {
 }
 
 /**
+ * How far out the largest placed group reaches: the greatest distance from the origin among the placed spheres of the
+ * placed group with the most members, groups being joined by the pulling links. Zero when nothing is placed.
+ */
+function massRadiusOf<N extends PlaceableNode>(nodes: readonly N[], positionOf: (node: N) => Placed | undefined,
+  neighbours: ReadonlyMap<string, Array<{ node: N; count: number }>>): number {
+  const placed = nodes.filter(node => positionOf(node));
+  const seen = new Set<string>();
+  let largest: N[] = [];
+  for (const start of placed) {
+    if (seen.has(start.id)) continue;
+    const group: N[] = [start];
+    seen.add(start.id);
+    for (let i = 0; i < group.length; i++) {
+      for (const { node: other } of neighbours.get(group[i].id) ?? []) {
+        if (!seen.has(other.id) && positionOf(other)) { seen.add(other.id); group.push(other); }
+      }
+    }
+    if (group.length > largest.length) largest = group;
+  }
+  return largest.reduce((radius, node) => { const at = positionOf(node)!; return Math.max(radius, Math.hypot(at.x, at.y, at.z)); }, 0);
+}
+
+/**
  * Where the spheres new to the picture start, read from the spheres that already stand somewhere (the carry of ticket C2
  * of the change-over-time plan): a hub new to the picture starts at the centroid of its placed members, at every depth; any
  * other new sphere starts beside what it is wired to by a pulling link, its hub in the structure layout or the files it
  * references in the connections layout, at the mean of those neighbours plus the spring's rest length in a direction seeded
  * by its id, so that nothing erupts from the origin, where D3 would otherwise seat it. A chain of new spheres is placed one
- * after another. A sphere with nothing placed to start from is left to D3. The nodes are not changed; the result is the
- * start of each sphere placed here.
+ * after another. A sphere with nothing placed to start from, a lone file or the first sphere of an island, is born on the
+ * outside of the picture (2026-11-02): at the radius of the largest placed group, its farthest sphere from the origin,
+ * plus a spring's length, in its seeded direction; before, D3 seated it on a spiral around the origin, inside the
+ * mass, at most some hundred units out, and it spent the settle pushing its way through what had already settled, so that
+ * the owner could not find the islands and orphans ("Nice little stars -- or maybe a kuiper belt -- of orphans"). An
+ * island's first sphere is born there and its members are placed beside it as they enter, so the island is born outside
+ * as a whole. The nodes are not changed; the result is the start of each sphere placed here.
  */
 export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout): Map<string, Placed> {
   const starts = new Map<string, Placed>();
@@ -133,13 +161,31 @@ export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], li
     return { x: anchor.x + reach * direction.x, y: anchor.y + reach * direction.y, z: anchor.z + reach * direction.z };
   };
   const waiting = nodes.filter(node => !isPlaced(node));
-  for (let placed = true; placed;) {
-    placed = false;
-    for (const node of waiting) {
-      if (starts.has(node.id)) continue;
-      const start = startOf(node);
-      if (start) { starts.set(node.id, start); placed = true; }
+  const besidePlaced = (): void => {
+    for (let placed = true; placed;) {
+      placed = false;
+      for (const node of waiting) {
+        if (starts.has(node.id)) continue;
+        const start = startOf(node);
+        if (start) { starts.set(node.id, start); placed = true; }
+      }
     }
+  };
+  besidePlaced();
+  // The rest has no placed partner: each is born on the outside of the connected mass, in its own seeded direction, a
+  // spring's length beyond the farthest sphere of the largest placed group (so that islands born one after another
+  // share one belt, rather than each born beyond the last), the most connected first, so that an island's seed is born
+  // and its members are then placed beside it.
+  const mass = massRadiusOf(nodes, positionOf, neighbours);
+  const degree = (node: N): number => (neighbours.get(node.id) ?? []).length;
+  for (;;) {
+    const outside = waiting.filter(node => !starts.has(node.id));
+    if (!outside.length) break;
+    const seed = outside.reduce((best, node) => degree(node) > degree(best) || (degree(node) === degree(best) && node.id < best.id) ? node : best);
+    const reach = mass + tuning.linkGap + 2 * spatialNodeRadius(seed, tuning);
+    const direction = seededDirection(seed.id);
+    starts.set(seed.id, { x: reach * direction.x, y: reach * direction.y, z: reach * direction.z });
+    besidePlaced();
   }
   return starts;
 }
@@ -380,7 +426,9 @@ export interface EaseOptions {
  * Ease a picture headlessly as the page does: D3's simulation seats the spheres without a position, as the library does,
  * resolves the links and drives the ticks, and the motion force moves the spheres at the strength given until they are
  * still or `maxTicks` have passed. The picture is the page's (2026-10-31): what was asked about and the tuning's hops
- * around it, the start where nothing was asked, and it enters in pieces as the page reveals it (2026-10-28): the first
+ * around it, with the seeds of the groups the hops do not reach, or the start where nothing was asked, the archipelago
+ * in the connections layout and the root with its hops in the structure layout (2026-11-02); a whole picture is asked
+ * for as members. It enters in pieces as the page reveals it (2026-10-28): the first
  * piece, the first layer of the order, warmed for the hidden ticks the page gives its first picture, then a share of the
  * whole at every tick so that the whole is in within the tuning's frames, each sphere placed beside what holds it as it
  * enters. A first picture unfolds (the default); a change carried from a still picture is held from where its spheres
@@ -402,12 +450,16 @@ export function easeSpatialLayout(nodes: readonly StartableNode[], links: readon
   const given: SpatialLink[] = links.map(link => ({ ...link, source: idOf(link.source), target: idOf(link.target) }));
   const ids = new Set(nodes.map(node => node.id));
   const present = (set?: ReadonlySet<string>): Set<string> => new Set([...(set ?? [])].filter(id => ids.has(id)));
-  const members = present(reveal.members);
+  // Told nothing of what was asked, a headless easing takes the whole picture it is given, as members; told what was
+  // asked, even nothing present, it shows what the page would: the hops, or the start.
+  const wholePicture = reveal.asked === undefined && reveal.members === undefined;
+  const members = wholePicture ? ids : present(reveal.members);
   const given_asked = present(reveal.asked);
   const scoped = given_asked.size > 0 || members.size > 0;
   const asked = scoped ? given_asked : startOf(nodes, given, layout, pulls);
-  const scope = scoped ? spatialScope(nodes, given, new Set([...asked, ...members]), tuning.hops, pulls) : null;
-  const placed: SpatialNode[] = nodes.filter(node => !scope || scope.hops.has(node.id)).map(node => ({ ...node }));
+  // As on the page: the hops around what was asked about, or around the start what the start shows (2026-11-02).
+  const scope = spatialScope(nodes, given, new Set([...asked, ...members]), scoped ? tuning.hops : startHops(layout, tuning.hops), pulls);
+  const placed: SpatialNode[] = nodes.filter(node => scope.hops.has(node.id)).map(node => ({ ...node }));
   const byId = new Map(placed.map(node => [node.id, node]));
   const edges = given.filter(link => byId.has(idOf(link.source)) && byId.has(idOf(link.target)));
   // A sphere that already stands somewhere is kept, as the page keeps what is shown through a change, and enters first;

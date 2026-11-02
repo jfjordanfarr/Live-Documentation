@@ -14,7 +14,7 @@ Holds the Explorer's inventory totals in the page: on this repository and on the
 - Written on 2026-10-30 for the owner's decision of [Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3): one number of references in both places, the third count named dependencies outside the scan, and the sidebar following the history's moment. Before, the sidebar printed 4,622 and Knowledge Sources 4,651 on this repository.
 - Seen to fail when the line is written from today's stats while a moment is shown: it then printed "8 files, 9 references, 0 dependencies outside the scan" where the moment had 10 references.
 
-Since 2026-10-31 the sidebar's line goes on, in 3D, to say how many files the picture shows of those the filters allow (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)); the reading admits that ending.
+Since 2026-10-31 the sidebar's line goes on, in 3D, to say how many files the picture shows of those the filters allow (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)); the reading admits that ending, and since 2026-11-02 the line's further words in 3D, how many groups the files fall into over their references and how many stand alone ([Turn 3 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

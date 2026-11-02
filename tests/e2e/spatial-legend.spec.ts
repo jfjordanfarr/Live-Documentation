@@ -42,10 +42,10 @@ test("the spatial key follows rendered kinds, including a retained test hidden b
   })}`);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25000 });
   // The subject is selected and a test pinned: the picture is their hops, which here reach every connected file in one
-  // hop, so nothing is dimmed as a frontier and the key says nothing of it (discovery, 2026-10-31; until then pins faded
-  // the rest of the picture and the key carried a Faded row for it).
+  // hop, so no hop is dimmed as a frontier (discovery, 2026-10-31; until then pins faded the rest of the picture and the
+  // key carried a Faded row for it); the sample's other groups stand by their seeds, dimmed, and the key says so (2026-11-02).
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "Test", "Size: public symbols", "Width: references"
+    "Implementation", "Test", "Size: public symbols", "Width: references", "Dimmed: a hop beyond, or another group; click to see more"
   ]);
   await expect(page.locator("#local-legend")).toBeHidden();
   await matchesNodeColour(page, "Implementation", subject);
@@ -81,7 +81,7 @@ test("the Local Map shows the matching legend and lends neither key to another v
   await expect(page.locator("#spatial-legend")).toBeVisible();
   // The subject's two hops end in a frontier, dimmed, and the key says so (discovery, 2026-10-31).
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "Size: public symbols", "Width: references", "Dimmed: a hop beyond; click to see more"
+    "Implementation", "Size: public symbols", "Width: references", "Dimmed: a hop beyond, or another group; click to see more"
   ]);
   await expect(page.locator("#local-legend")).toBeHidden();
 

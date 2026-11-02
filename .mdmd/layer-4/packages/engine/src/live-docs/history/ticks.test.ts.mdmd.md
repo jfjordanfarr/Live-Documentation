@@ -8,7 +8,7 @@
 
 ## Authored
 ### Purpose
-Vitest over C3's ticks: a file's major and minor ticks through its rename, read from either side of it, a wire to a pinned file as a change of its shape, a pinned directory and its rename whole, and every step a major tick with nothing pinned.
+Vitest over C3's ticks: a file's major and minor ticks through its rename, read from either side of it, a wire to a pinned file as a change of its shape, a pinned directory and its rename whole, the scan root holding every file (2026-11-02), and every step a major tick with nothing pinned.
 
 ### Notes
 - Written 2026-10-17 for C1.

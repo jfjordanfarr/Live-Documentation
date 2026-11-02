@@ -241,7 +241,9 @@ test("changing a preset keeps the framed directory in place even when a file rem
     const label = document.querySelector<HTMLElement>(".force-graph-focus")!;
     const position = () => ({ id: label.dataset.nodeId, x: parseFloat(label.style.left), y: parseFloat(label.style.top) });
     const before = position();
-    document.querySelector<HTMLButtonElement>('[data-layout-preset="compact"]')!.click();
+    // A packing change through its lever (the Compact preset button went on 2026-11-02): the gap between connected spheres, narrowed.
+    const gap = document.querySelector<HTMLInputElement>("#tuning-force-link-gap")!;
+    gap.value = String(Number(gap.value) - 20); gap.dispatchEvent(new Event("input", { bubbles: true }));
     const frames: ReturnType<typeof position>[] = [];
     await new Promise<void>(resolve => {
       const read = () => {

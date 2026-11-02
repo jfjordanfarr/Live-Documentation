@@ -10,7 +10,8 @@
  * step in which a pinned file was born, died, was renamed, resized, rekinded
  * or re-marked as an entry, an edge from or to it came, went or changed its
  * count, or a link from its authored words to a document came or went (since
- * 2026-10-20); for a pinned directory, any file under it. A minor tick is a step
+ * 2026-10-20); for a pinned directory, any file under it, and for the scan root
+ * every file. A minor tick is a step
  * that is no major tick and in which a pinned file was touched. With nothing
  * pinned every step is a major tick.
  *
@@ -195,7 +196,8 @@ function holdsPath(pins: PinnedPaths, path: string): boolean {
     return true;
   }
   for (const directory of pins.directories) {
-    if (path.startsWith(`${directory}/`)) {
+    // The scan root, pinned, holds every file: the Explorer's Whole (2026-11-02).
+    if (directory === "" || path.startsWith(`${directory}/`)) {
       return true;
     }
   }

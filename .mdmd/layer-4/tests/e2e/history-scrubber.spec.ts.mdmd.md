@@ -21,6 +21,8 @@ The resize-only step also has a drawing assertion: the util file grows from two 
 
 Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the entries ask four hops from the start, which shows the whole scripted sample with nothing pinned, and the collision sample's check opens the root, since the dead file is an island that nothing reaches.
 
+Since 2026-11-02 ([Turn 3 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)) the control opened with nothing asked about opens and retains the whole, so the tests that open it this way expect the whole's ticks, every step that changed a file's shape major and the content-only step minor, and the root's row in the tray beside a file's; and a moment at which the asked-about file does not yet stand shows the tree's root dimmed, the handle of what is there, where before the picture stayed empty. The run of that day found that the engine's `ticksFor` had never let the scan root hold a path.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

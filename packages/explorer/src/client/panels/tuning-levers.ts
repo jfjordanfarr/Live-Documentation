@@ -67,6 +67,7 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-force-symbol-scale":        "How much a sphere grows with its public symbols; zero makes every file the same size.",
   "tuning-force-link-width":          "How thick wires are; wires carrying more references stay thicker.",
   "tuning-force-node-zoom-resistance": "Resist zoom at the centre of your view: 0 follows zoom, 1 holds size there; rotation keeps world proportions.",
+  "tuning-force-name-at":             "How large a sphere draws before its name appears; what you asked about and the hovered sphere are always named.",
   "tuning-force-wire-zoom-resistance": "Resist zoom at the centre of your view: 0 follows zoom, 1 holds width there; rotation keeps world proportions.",
 
   // History: the scrubber (history/tick-model.ts, history/history-control.ts).

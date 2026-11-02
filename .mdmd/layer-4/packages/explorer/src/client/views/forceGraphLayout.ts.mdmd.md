@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-11-02T06:07:14.347Z
+- Generated At: 2026-11-02T17:16:59.139Z
 
 ## Authored
 ### Purpose
@@ -129,7 +129,7 @@ A unit vector seeded by the id, the same on every machine, so that a born sphere
 
 #### `placeNewSpheres` {#symbol-placenewspheres}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L104)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L132)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`PlaceableNode`](#symbol-placeablenode)
 
@@ -139,12 +139,17 @@ of the change-over-time plan): a hub new to the picture starts at the centroid o
 other new sphere starts beside what it is wired to by a pulling link, its hub in the structure layout or the files it
 references in the connections layout, at the mean of those neighbours plus the spring's rest length in a direction seeded
 by its id, so that nothing erupts from the origin, where D3 would otherwise seat it. A chain of new spheres is placed one
-after another. A sphere with nothing placed to start from is left to D3. The nodes are not changed; the result is the
-start of each sphere placed here.
+after another. A sphere with nothing placed to start from, a lone file or the first sphere of an island, is born on the
+outside of the picture (2026-11-02): at the radius of the largest placed group, its farthest sphere from the origin,
+plus a spring's length, in its seeded direction; before, D3 seated it on a spiral around the origin, inside the
+mass, at most some hundred units out, and it spent the settle pushing its way through what had already settled, so that
+the owner could not find the islands and orphans ("Nice little stars -- or maybe a kuiper belt -- of orphans"). An
+island's first sphere is born there and its members are placed beside it as they enter, so the island is born outside
+as a whole. The nodes are not changed; the result is the start of each sphere placed here.
 
 #### `springStrength` {#symbol-springstrength}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L152)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L198)
 - Parameters: `edge`: `L`; `links`: `L`[]
 - Constraints: [`SpatialNode`](#symbol-spatialnode), [`SpatialLink`](#symbol-spatiallink)
 
@@ -155,7 +160,7 @@ spring keeps full strength because the leaf has degree one. Counts come from pul
 
 #### `MOTION` {#symbol-motion}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L169)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L215)
 - Returns: [`MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings)
 
 ##### `MOTION` — Summary
@@ -163,28 +168,28 @@ The motion's step and drag: the probe's smooth control, which the owner found "q
 
 #### `COLLISION_STIFFNESS` {#symbol-collision_stiffness}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L172)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L218)
 
 ##### `COLLISION_STIFFNESS` — Summary
 How hard two spheres closer than their clearance push apart, per unit of overlap.
 
 #### `STILL_FRACTION` {#symbol-still_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L175)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L221)
 
 ##### `STILL_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, below which the spheres count as still.
 
 #### `QUIET_TICKS` {#symbol-quiet_ticks}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L178)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L224)
 
 ##### `QUIET_TICKS` — Summary
 How many still ticks in a row end the easing.
 
 #### `UNFOLDED_FRACTION` {#symbol-unfolded_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L187)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L233)
 
 ##### `UNFOLDED_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
@@ -195,7 +200,7 @@ hundredth of the picture's size, they would stay far too small (measured 2026-10
 
 #### `spatialFieldOf` {#symbol-spatialfieldof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L194)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L240)
 - Returns: [`SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -207,7 +212,7 @@ Links whose ends are not among the nodes are left out, as D3 would refuse them.
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L221)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L267)
 
 ##### `MotionStart` — Summary
 How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
@@ -216,7 +221,7 @@ forces, which rearrange the whole and leave the old places no reference.
 
 #### `MotionForce (interface)` {#symbol-motionforce-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L224)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L270)
 - Extends: `Force`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -225,7 +230,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L238)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L284)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -233,7 +238,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L273)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L319)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -251,21 +256,23 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L366)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L412)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L389)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L437)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary
 Ease a picture headlessly as the page does: D3's simulation seats the spheres without a position, as the library does,
 resolves the links and drives the ticks, and the motion force moves the spheres at the strength given until they are
 still or `maxTicks` have passed. The picture is the page's (2026-10-31): what was asked about and the tuning's hops
-around it, the start where nothing was asked, and it enters in pieces as the page reveals it (2026-10-28): the first
+around it, with the seeds of the groups the hops do not reach, or the start where nothing was asked, the archipelago
+in the connections layout and the root with its hops in the structure layout (2026-11-02); a whole picture is asked
+for as members. It enters in pieces as the page reveals it (2026-10-28): the first
 piece, the first layer of the order, warmed for the hidden ticks the page gives its first picture, then a share of the
 whole at every tick so that the whole is in within the tuning's frames, each sphere placed beside what holds it as it
 enters. A first picture unfolds (the default); a change carried from a still picture is held from where its spheres
@@ -289,6 +296,7 @@ stand. Inputs are not mutated; the result says whether the picture came to rest,
 - [`forceGraphReveal.revealLayers`](./forceGraphReveal.ts.mdmd.md#symbol-reveallayers)
 - [`forceGraphScope.StartableNode`](./forceGraphScope.ts.mdmd.md#symbol-startablenode)
 - [`forceGraphScope.spatialScope`](./forceGraphScope.ts.mdmd.md#symbol-spatialscope-function)
+- [`forceGraphScope.startHops`](./forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 <!-- LIVE-DOC:END Dependencies -->

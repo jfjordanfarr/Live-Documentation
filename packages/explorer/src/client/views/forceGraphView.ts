@@ -6,12 +6,18 @@
  *
  * Since 2026-10-31 the picture is discovered rather than shown whole (the
  * owner's direction): it holds what a person asked about, the tuning's hops of
- * connections around it with the last hop dimmed as the frontier, and nothing
- * beyond; a click on a frontier sphere inspects it, and the inspected file is
- * asked about, so the picture grows from it until the next click, and a pin
- * keeps the growth. With nothing asked about, the layout's start is shown
- * (`forceGraphScope.ts`). While a moment of the history is shown, the files
- * the step changed glow or the rest dim, by the tuning, fading while it plays.
+ * connections around it with the last hop dimmed as the frontier, and, since
+ * 2026-11-02, the seed of every group the hops do not reach, dimmed too, so
+ * that no island is more than a click away; a click on a sphere pins it, and
+ * the pinned file is asked about, so the picture grows from it, and a second
+ * click releases it. With nothing asked about, the layout's start is shown
+ * (`forceGraphScope.ts`): in Connections the archipelago, every group's seed
+ * and nothing grown; in Structure the root with its children. The whole
+ * picture is the root opened, the Whole toggle of the toolbar. Names stand at
+ * rest only beside what was asked about and the hovered sphere; the rest are
+ * named when their sphere draws at the tuning's `nameAt` (the owner, 2026-11-02:
+ * "until _the very last second_"). While a moment of the history is shown, the
+ * files the step changed glow or the rest dim, by the tuning.
  *
  * Two layouts share the renderer (2026-10-14): in the connections layout the
  * documented references pull and are drawn; in the structure layout every file
@@ -38,7 +44,7 @@ import { placeSpatialLabels, type SpatialLabel, type LabelBox } from "./forceGra
 import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
 import { nextRevealCount, REVEAL, revealCorresponding, revealLayers } from "./forceGraphReveal";
-import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startOf } from "./forceGraphScope";
+import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf } from "./forceGraphScope";
 import { spatialSizeScale } from "./forceGraphSizing";
 import type { ExplorerState } from "../types";
 import { under } from "./localView/directory-state";
@@ -53,7 +59,6 @@ import type {
 } from "../../shared/types";
 import { requireElement } from "../dom";
 import type { HistoryChanges, HistoryMoment } from "../history/moment";
-import { layoutPresetOf } from "../layout-presets";
 import { parentDirectory } from "./localView/directory-bands";
 import { composedRenames, hasRenames, NO_RENAMES, rekeyedCaches, renamedId, type Renames } from "../history/rekey";
 import { CENTRE_ICON, DIRECTORY_ICON, iconButton, MORE_ICON, PIN_ICON } from "../panels/icon-button";
@@ -125,7 +130,8 @@ export interface ForceGraphViewOptions {
   /** The drawn path's files as the picture shown names them: a moment's names while a moment is shown, asked over its wires (2026-10-30). */
   getPath?: () => readonly string[] | undefined;
   /** How many files the picture shows of the files the filters allow, told at every change of what is shown (2026-10-31). */
-  onShown?: (shown: number, total: number) => void;
+  /** How many files the picture shows of those the filters allow, and among them the groups of two or more files and the lone files (2026-11-02). */
+  onShown?: (shown: number, total: number, groups: number, alone: number) => void;
 }
 
 /** Public API surface of the Force Graph view. */
@@ -243,7 +249,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
    */
   let scopeHops = new Map<string, number>();
   let scopeBeyond = new Map<string, number>();
+  /** The groups shown only by their seed: the seed's id to the group's size in files (2026-11-02). */
+  let scopeGroups = new Map<string, number>();
   let frontierHop = Infinity;
+  /** Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed one past it; never at hop 0. */
+  const atFrontier = (id: string): boolean => { const hop = scopeHops.get(id); return hop !== undefined && hop > 0 && hop >= frontierHop; };
   let actionStrip: HTMLDivElement | null = null;
   let actionTargetId: string | null = null;
   let menuTargetId: string | null = null;
@@ -517,7 +527,6 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const measuring: Array<Omit<SpatialLabel, "width" | "height"> & { label: HTMLButtonElement; name: string }> = [];
     const buttons = new Map<string, HTMLButtonElement>();
     // A directory's framing scope includes its entire subtree, but its deep descendants are not all label priorities.
-    const neighbours = focusedId && focusedDirectory === null && !fittingScope ? framingIds() : null;
     const projection = new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     const point = new Vector3(), projected = new Vector3(), edge = new Vector3();
     const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
@@ -530,10 +539,10 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       edge.copy(point).addScaledVector(right, spatialNodeRadius(node, state.tuning.forceGraph)).applyMatrix4(projection);
       const perspectiveRadius = Math.abs(edge.x - projected.x) * frame.width / 2;
       const basePriority = labelPriorities.get(node.id) ?? 5;
-      const priority = node.id === focusedId ? 0 : node.id === hoveredId || node.id === inspectedActionId ? 1
-        : neighbours?.has(node.id) ? Math.min(3, basePriority) : basePriority;
-      // Disclosure still follows proximity; resistance changes the sphere's outline, not when names become useful.
-      if (priority >= 5 && perspectiveRadius < 6) continue;
+      const priority = node.id === focusedId ? 0 : node.id === hoveredId || node.id === inspectedActionId ? 1 : basePriority;
+      // Disclosure follows proximity, at the tuning's size (2026-11-02; six pixels before, which named far too much):
+      // resistance changes the sphere's outline, not when a name becomes useful.
+      if (priority >= 5 && perspectiveRadius < state.tuning.forceGraph.nameAt) continue;
       const radius = perspectiveRadius * spatialSizeScale(instance.controls().target, camera, frame.height, state.tuning.forceGraph.nodeZoomResistance);
       let label = node.id === focusedId ? focusLabel : nameLabels.get(node.id);
       if (!label) {
@@ -560,6 +569,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const title = (node.directoryPath !== undefined ? `${node.directoryPath || "Scan root"} · ${node.directoryFileCount} visible files`
         : node.id.startsWith("related:") ? `${node.codeRelativePath}${hasBundledDoc(node.id.slice(8)) ? "" : " · not in this bundle"}`
         : `${node.codeRelativePath} · ${count} public ${count === 1 ? "symbol" : "symbols"}`)
+        + (scopeGroups.has(node.id) && scopeGroups.get(node.id)! > 1 ? ` · ${scopeGroups.get(node.id)!.toLocaleString("en-US")} files in this group` : "")
         + (more ? ` · ${more} more connected, not shown` : "")
         + (action?.kind === "file" ? ` · ${retained ? "Unpin this file" : discovered ? "Release this discovery" : "Pin this file"}`
           : action?.kind === "directory" ? ` · ${discovered ? "Release this discovery" : "Explore this directory"}` : "");
@@ -569,7 +579,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (action) label.setAttribute("aria-pressed", String(retained || discovered));
       else label.removeAttribute("aria-pressed");
       label.dataset.priority = String(priority);
-      label.dataset.context = String(frontierHop > 0 && scopeHops.get(node.id) === frontierHop);
+      label.dataset.context = String(atFrontier(node.id));
       const size = labelSizes.get(label);
       if (!size || size.text !== name || size.availableWidth !== frame.width) label.hidden = false;
       measuring.push({ id: node.id, x, y, radius, priority, label, name });
@@ -1009,11 +1019,17 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     for (const id of asked) if (!inPicture.has(id)) asked.delete(id);
     const hasQuestion = todayPins.entries.length > 0 || !!subject || directories.length > 0 || !!discovery || !!path?.length;
     if (!hasQuestion) for (const id of startOf(data.nodes, data.links, state.spatialLayout, pulls)) asked.add(id);
-    const scope = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), state.tuning.forceGraph.hops, pulls);
+    // The hops shown: around a question the tuning's; around a start what the start shows, the archipelago's seeds
+    // alone and the root with its children (2026-11-02).
+    const hopsShown = hasQuestion ? state.tuning.forceGraph.hops : startHops(state.spatialLayout, state.tuning.forceGraph.hops);
+    const scope = spatialScope(data.nodes, data.links, new Set([...asked, ...members]), hopsShown, pulls);
     scopeHops = scope.hops;
     scopeBeyond = scope.beyond;
-    frontierHop = state.tuning.forceGraph.hops;
-    const hasFrontier = [...scope.hops.values()].some(hop => hop === frontierHop);
+    scopeGroups = scope.groups;
+    frontierHop = hopsShown;
+    const hasFrontier = [...scope.hops.keys()].some(atFrontier);
+    // The repository's groups over its references, whatever the layout: how many, and how many files stand alone.
+    const groupSizes = [...componentLandmarks(connectedNeighbours(data.nodes.filter(node => node.directoryPath === undefined && node.archetype !== "related-doc"), data.links, link => linkPulls(link, "connections"))).values()];
     const picture: SpatialGraphData = { nodes: data.nodes.filter(node => scope.hops.has(node.id)),
       links: data.links.filter(link => scope.hops.has(link.source) && scope.hops.has(link.target)) };
     emptyHint.hidden = picture.nodes.length > 0;
@@ -1032,7 +1048,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     openDeeper.setAttribute("aria-label", `Open ${deeperPath || "Scan root"}`);
     openDeeper.title = `Show every eligible file under ${deeperPath || "the scan root"}`;
     const isFile = (node: SpatialGraphNode): boolean => node.directoryPath === undefined && !node.id.startsWith("related:");
-    options.onShown?.(picture.nodes.filter(isFile).length, data.nodes.filter(isFile).length);
+    options.onShown?.(picture.nodes.filter(isFile).length, data.nodes.filter(isFile).length, groupSizes.filter(size => size > 1).length, groupSizes.filter(size => size === 1).length);
     // Keep node data by id and link data by pair across membership changes. Positions and stable instance bindings
     // follow those data objects, including through historical renames; the 2D wires keep their elements the same way.
     const graphNodes: ForceGraphNode[] = picture.nodes.map(node => {
@@ -1059,7 +1075,6 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const nextMembership = JSON.stringify([graphNodes.map(node => [node.id, symbolCountOf(node), node.directoryPath]),
       picture.links.map(link => [linkKey(link), link.count])]);
     const membershipChanged = nextMembership !== membership;
-    container.dataset.layoutPreset = layoutPresetOf(state.tuning);
 
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
@@ -1198,27 +1213,24 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         }
       }
     }
-    // Keep directory landmarks named, not every ancestor of every retained file. Deeper folders use the same
-    // proximity disclosure as files; opening a whole tree must not turn its overview into a wall of paths.
+    // Keep the directories asked about named, not every ancestor of every retained file nor their children. Deeper
+    // folders use the same proximity disclosure as files; opening a whole tree must not turn its overview into a wall of paths.
     const directoryRoots = new Set([directoryNodeId(""), ...directories.map(directoryNodeId)]);
     for (const id of asked) if (liveNodes.get(id)?.directoryPath !== undefined) directoryRoots.add(id);
     for (const link of graphLinks) {
       if (link.kind === "containment" && asked.has(resolveLinkEndpoint(link.target))) directoryRoots.add(resolveLinkEndpoint(link.source));
     }
-    const directoryLandmarks = new Set(directoryRoots);
-    for (const link of graphLinks) {
-      const target = resolveLinkEndpoint(link.target);
-      if (link.kind === "containment" && directoryRoots.has(resolveLinkEndpoint(link.source)) && liveNodes.get(target)?.directoryPath !== undefined) directoryLandmarks.add(target);
-    }
-    const landmarks = state.spatialLayout === "connections"
-      ? componentLandmarks(connectedNeighbours(graphNodes.filter(isFile), graphLinks, pulls)) : new Map<string, number>();
+    // Names at rest only beside what was asked about: the pins, the inspected file, a path's ends and, in the tree, the
+    // root and the directories opened (2026-11-02, the owner: "we don't draw a node's name (unless hovered over) until
+    // _the very last second_"); a path's inner files and a step's changed files keep their names where they fit; the
+    // rest, the archipelago's seeds and every landmark among them, are named only on approach, at the tuning's size.
     labelPriorities = new Map(graphNodes.map(node => [node.id,
-      pins.entries.some(pin => pin.nodeId === node.id) || node.id === inspected || !hasQuestion && asked.has(node.id)
+      pins.entries.some(pin => pin.nodeId === node.id) || node.id === inspected || !hasQuestion && asked.has(node.id) && state.spatialLayout === "structure"
         || node.id === path?.[0] || node.id === path?.[path.length - 1] ? 1
       : state.tuning.history.changeEmphasis !== "none" && changedNames.has(node.id) ? 2
-      : node.directoryPath !== undefined ? directoryLandmarks.has(node.id) ? 3 : 5
-      : pinnedScope.has(node.id) || path?.includes(node.id) ? 3
-      : landmarks.has(node.id) ? 3 + 1 / landmarks.get(node.id)! : 5]));
+      : node.directoryPath !== undefined ? directoryRoots.has(node.id) ? 1 : 5
+      : path?.includes(node.id) ? 3
+      : 5]));
     for (const [id, label] of nameLabels) if (!present.has(id)) { label.remove(); nameLabels.delete(id); labelSizes.delete(label); }
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     const rootOverview = directories.includes("");
@@ -1273,7 +1285,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       attentionSettings = nextAttention;
       pictureChanged();
       renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || attention !== null, path: !!path?.length, faded: attention !== null || !!path?.length, frontier: hasFrontier });
-      const frontier = (id: string): boolean => scopeHops.get(id) === frontierHop;
+      const frontier = atFrontier;
       forceGraphInstance?.nodeColor((node: ForceGraphNode) => {
         const color = spatialNodeStyle(node.archetype).color;
         // Faded for the hover, with the hovered file and its connections whole even at the frontier; dimmed as the

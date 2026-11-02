@@ -7,7 +7,7 @@ import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/
 import { getDefaultTuning } from "../../packages/explorer/src/client/persistence/local-storage";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
-import { spatialScope, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 
@@ -121,7 +121,8 @@ test("direct labels release independent pins, preserve required neighbors, and s
   const label = (id: string) => page.locator(`.force-graph-label[data-node-id="${id}"], .force-graph-focus[data-node-id="${id}"]`);
   await expect(label(orphan)).toHaveAttribute("aria-pressed", "true");
   await label(orphan).click();
-  await expect.poll(async () => (await renderedNodes(page)).some(node => node.id === orphan)).toBe(false);
+  // Released, the lone file stays in the picture as its own group's seed, dimmed beyond the frontier (2026-11-02).
+  await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === orphan)?.opacity).toBeLessThan(0.5);
   expect(currentSnapshot(page).pinSet.entries).toEqual([{ nodeId: file, symbol: "*" }]);
   const shared = await browser.newPage();
   try {
@@ -130,8 +131,11 @@ test("direct labels release independent pins, preserve required neighbors, and s
     await expect(shared.locator(`.node-card[data-id="${file}"] .local-file-pin`)).toHaveAttribute("aria-pressed", "true");
     expect(currentSnapshot(shared).pinSet.entries).toEqual(currentSnapshot(page).pinSet.entries);
   } finally { await shared.close(); }
-  // A needed neighbor stays visible after withdrawing its own pin, and keyboard activation is the same toggle.
+  // A needed neighbor stays visible after withdrawing its own pin, and keyboard activation is the same toggle. A
+  // neighbour is named at rest only when its sphere draws large enough (2026-11-02), so it is hovered to be named.
   const neighbor = "Portal/Models/PaymentResultModel.cs";
+  const neighbourSphere = (await renderedNodes(page)).find(node => node.id === neighbor)!;
+  await page.mouse.move(neighbourSphere.x, neighbourSphere.y);
   await label(neighbor).focus(); await page.keyboard.press("Enter");
   await expect(label(neighbor)).toHaveAttribute("aria-pressed", "true");
   await label(neighbor).press("Enter");
@@ -142,8 +146,12 @@ test("direct labels release independent pins, preserve required neighbors, and s
 
 test("a second directory click withdraws discovery without retaining its subtree", async ({ page }) => {
   test.setTimeout(60_000);
+  await observeGraph(page);
   await page.goto(`/samples/estate/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", spatialLayout: "structure" })}`);
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  // A hub not asked about is named at rest only when it draws large enough (2026-11-02): hovering it names it.
+  const hub = (await renderedNodes(page)).find(node => node.id === "directory:Contracts")!;
+  await page.mouse.move(hub.x, hub.y);
   const label = page.locator('.force-graph-label[data-node-id="directory:Contracts"]');
   await label.click();
   expect(currentSnapshot(page).discovery).toEqual({ kind: "directory", directory: "Contracts" });
@@ -444,9 +452,11 @@ test("hover peeks outside the retained scope, leaving restores it, and clearing 
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
   expect(currentSnapshot(page)).toMatchObject({ pinSet: { entries: [] } });
   const graph = explorerGraphOf((await (await page.request.get("/explorer-data.json")).json() as StaticExplorerData).graph);
-  const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], "connections");
+  // The retain link carries no filters, which its old grammar reads as tests and assets both shown: every file is in the picture.
+  const data = spatialGraphOf(graph, () => true, [], "connections");
   const pulls = (link: { kind?: string }): boolean => linkPulls(link, "connections");
-  const start = spatialScope(data.nodes, data.links, startOf(data.nodes, data.links, "connections", pulls), getDefaultTuning().forceGraph.hops, pulls);
+  // The start shows what a start shows: in Connections the archipelago of seeds, nothing grown (2026-11-02).
+  const start = spatialScope(data.nodes, data.links, startOf(data.nodes, data.links, "connections", pulls), startHops("connections", getDefaultTuning().forceGraph.hops), pulls);
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual([...start.hops.keys()].sort());
 });
 

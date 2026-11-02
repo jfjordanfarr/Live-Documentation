@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-02T02:09:50.168Z
+- Generated At: 2026-11-02T17:03:44.331Z
 
 ## Authored
 ### Purpose
@@ -72,7 +72,6 @@ _No public symbols detected_
 - [`moment-paths.todayGround`](./history/moment-paths.ts.mdmd.md#symbol-todayground)
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)
-- [`layout-presets.layoutPresetOf`](./layout-presets.ts.mdmd.md#symbol-layoutpresetof)
 - [`layout-presets.layoutSettingsOf`](./layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`icon-button.iconButton`](./panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`item-menu.createItemMenu`](./panels/item-menu.ts.mdmd.md#symbol-createitemmenu)

@@ -24,8 +24,9 @@ const count = (text: string): number => Number(text.replace(/[^0-9]/g, ""));
 /** The sidebar's line in its three parts; the third is absent at a moment of the history. */
 async function statsLine(page: Page): Promise<{ text: string; files: number; references: number; outside?: number }> {
   const text = await page.locator("#stats-line").innerText();
-  // In 3D the line goes on to say how many files the picture shows of those the filters allow (discovery, 2026-10-31).
-  const match = /^([\d,.\s]+) files, ([\d,.\s]+) references(?:, ([\d,.\s]+) dependencies outside the scan)?(?: · [\d,]+ of [\d,]+ files shown)?$/.exec(text);
+  // In 3D the line goes on to say how many files the picture shows of those the filters allow (discovery, 2026-10-31), and
+  // how many groups the files fall into over their references, with the files alone (2026-11-02).
+  const match = /^([\d,.\s]+) files, ([\d,.\s]+) references(?:, ([\d,.\s]+) dependencies outside the scan)?(?: · [\d,]+ of [\d,]+ files shown · [\d,]+ groups?, [\d,]+ alone)?$/.exec(text);
   expect(match, `the sidebar's line: ${text}`).not.toBeNull();
   return { text, files: count(match![1]), references: count(match![2]), ...(match![3] !== undefined ? { outside: count(match![3]) } : {}) };
 }
@@ -75,7 +76,7 @@ test("the history sample: the sidebar's line counts the moment the 3D picture sh
   await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", String(step));
 
   // The moment's files and references; what lay outside the scan then is not known, so not said.
-  await expect(page.locator("#stats-line")).toHaveText(new RegExp(`^${atStep.files.toLocaleString()} files, ${atStep.references.toLocaleString()} references · \\d+ of ${atStep.files.toLocaleString()} files shown$`));
+  await expect(page.locator("#stats-line")).toHaveText(new RegExp(`^${atStep.files.toLocaleString()} files, ${atStep.references.toLocaleString()} references · \\d+ of ${atStep.files.toLocaleString()} files shown · \\d+ groups?, \\d+ alone$`));
   expect(atStep, "the step differs from today, so the line's change is seen").not.toEqual({ files: today.files, references: today.references });
 
   // Closed, the picture is today's, and so is the line.

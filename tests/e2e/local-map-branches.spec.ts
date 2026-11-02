@@ -34,7 +34,11 @@ test("a geometrically backward ordinary wire cues 3D and clearing the fault remo
   // Controlled rendering fault: the owner's rare natural case has not been captured yet. Move an actual consumer
   // behind its providers, then use the public packing action to redraw its real anchors and routes.
   const displacement = await page.addStyleTag({ content: `.node-card[data-id="${consumer}"] { transform: translateX(-3000px) !important; }` });
-  await page.getByRole("button", { name: "Compact", exact: true }).click();
+  const repack = async (itemGap: number): Promise<void> => page.evaluate(value => {
+    const input = document.querySelector<HTMLInputElement>("#tuning-item-gap")!;
+    input.value = String(value); input.dispatchEvent(new Event("input", { bubbles: true }));
+  }, itemGap);
+  await repack(16);
   await localMapSettled(page);
   expect(await wires.evaluateAll(elements => elements.some(element => {
     const path = element as SVGPathElement;
@@ -43,7 +47,7 @@ test("a geometrically backward ordinary wire cues 3D and clearing the fault remo
   await expect(button).toHaveClass(/has-backward-wires/);
   await expect(button).toHaveAttribute("title", /backward in 2D/);
   await displacement.evaluate(element => element.parentNode?.removeChild(element));
-  await page.getByRole("button", { name: "Relaxed", exact: true }).click();
+  await repack(24);
   await localMapSettled(page);
   await expect(button).not.toHaveClass(/has-backward-wires/);
 });
@@ -287,7 +291,8 @@ test("a retained exploration threads skipped references through lanes: nothing o
   expect(lanes.length).toBeGreaterThan(0);
   expectLaneBoxes(lanes);
   const top = await page.evaluate(() => Math.min(...[...document.querySelectorAll<HTMLElement>("#map-container .node-card, #map-container .local-pass-through")].map(el => el.getBoundingClientRect().top)));
-  const highest = Math.min(...picture.wires.flatMap(wire => wire.points.filter((_, i) => i % 2 === 1)));
+  // Folded, not spread: a retained picture's wires sample more points than one call's arguments may hold.
+  const highest = picture.wires.reduce((least, wire) => wire.points.reduce((m, point, i) => i % 2 === 1 && point < m ? point : m, least), Infinity);
   expect(highest).toBeGreaterThanOrEqual(top - 1);
   // The old detour drew every skipped reference as an orthogonal route; a threaded wire is curves and lane runs only.
   const detours = await page.locator('#map-connections path.connection-path:not(.back-route)').evaluateAll(paths => paths.filter(path => /\sQ\s.*\sQ\s/u.test(path.getAttribute("d") ?? "")).length);

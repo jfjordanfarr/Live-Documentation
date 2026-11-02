@@ -5,7 +5,7 @@
  * for bezier curves, click behavior, visual options, and Local Map settings.
  */
 
-import { applyLayoutPreset, layoutPresetOf, layoutSettingsOf } from "../layout-presets";
+import { layoutSettingsOf } from "../layout-presets";
 import { CHANGE_EMPHASES, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
@@ -29,7 +29,6 @@ export interface TuningPanelConfig {
 export function initTuningPanel(config: TuningPanelConfig): () => void {
   const { state, onTuningChange: persistChange, onRender, drawLocalConnections } = config;
   describeTuningControls();
-  const presetButtons = document.querySelectorAll<HTMLButtonElement>("[data-layout-preset]");
   let controlPerspective: ExplorerState["perspective"] | undefined;
   const onTuningChange = (): void => {
     persistChange();
@@ -42,7 +41,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       ["coupling", "coupling"], ["nodeSize", "node-size"], ["symbolScale", "symbol-scale"], ["linkWidth", "link-width"],
       ["nodeZoomResistance", "node-zoom-resistance"], ["wireZoomResistance", "wire-zoom-resistance"],
       ["gravity", "gravity"], ["componentSeparation", "component-separation"], ["chargeRange", "charge-range"], ["approximation", "approximation"], ["linkStrength", "link-strength"], ["updateEnergy", "update-energy"], ["tether", "tether"],
-      ["citedByPull", "cited-by-pull"], ["hops", "hops"], ["revealFrames", "reveal-frames"] ] as const).map(([key, name]) => ({
+      ["citedByPull", "cited-by-pull"], ["hops", "hops"], ["revealFrames", "reveal-frames"], ["nameAt", "name-at"] ] as const).map(([key, name]) => ({
       id: `tuning-force-${name}`, get: () => state.tuning.forceGraph[key], set: (value: number) => { state.tuning.forceGraph[key] = value; }
     }))
   ];
@@ -140,9 +139,6 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     }
     for (const slider of packingSliders) {
       slider.set(setSlider(document.getElementById(slider.id) as HTMLInputElement | null, `${slider.id}-value`, slider.get()));
-    }
-    for (const button of presetButtons) {
-      button.setAttribute("aria-pressed", String(button.dataset.layoutPreset === layoutPresetOf(state.tuning)));
     }
     state.tuning.bezier.stubFactor = setSlider(stubFactorInput, "tuning-stub-factor-value", state.tuning.bezier.stubFactor);
     state.tuning.bezier.stubMin = setSlider(stubMinInput, "tuning-stub-min-value", state.tuning.bezier.stubMin);
@@ -279,16 +275,6 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     const input = document.getElementById(slider.id) as HTMLInputElement | null;
     input?.addEventListener("input", () => {
       slider.set(Number(input.value));
-      syncTuningControlsFromState();
-      onTuningChange();
-      if (state.view === "map") onRender();
-    });
-  }
-  for (const button of presetButtons) {
-    button.addEventListener("click", () => {
-      const preset = button.dataset.layoutPreset;
-      if (preset !== "compact" && preset !== "relaxed") return;
-      state.tuning = applyLayoutPreset(state.tuning, preset);
       syncTuningControlsFromState();
       onTuningChange();
       if (state.view === "map") onRender();

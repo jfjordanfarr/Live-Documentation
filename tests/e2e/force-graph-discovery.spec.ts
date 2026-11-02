@@ -7,13 +7,15 @@ import { getDefaultTuning } from "../../packages/explorer/src/client/persistence
 import type { SpatialLayout } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
 import { linkPulls } from "../../packages/explorer/src/client/views/forceGraphLayout";
-import { spatialScope, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
+import { spatialScope, startHops, startOf } from "../../packages/explorer/src/client/views/forceGraphScope";
 
 /**
  * Discovery, the 3D Local Map's default since 2026-10-31 (the owner's direction, [Turn 4 of the October 31 record]
  * (../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)): the picture is what a person asked
- * about and the tuning's hops of connections around it, the last hop dimmed as the frontier, and nothing beyond; with
- * nothing asked about, the layout's start. The spheres are read from the rendered scene and the expected picture is
+ * about and the tuning's hops of connections around it, the last hop dimmed as the frontier, and, since 2026-11-02, the
+ * seed of every group the hops do not reach, dimmed past the frontier; with nothing asked about, the layout's start, in
+ * Connections the archipelago of every group's seed ([Turn 3 of the November 2 record]
+ * (../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)). The spheres are read from the rendered scene and the expected picture is
  * computed from the bundle by the same pure scope the page uses, so that the test says what the picture must hold and
  * not merely that it holds something. On this repository's bundle; the counts are read from the sidebar's line.
  */
@@ -35,41 +37,69 @@ async function expected(page: Page, layout: SpatialLayout, attention: ReadonlySe
   const data = spatialGraphOf(graph, node => (node.archetype || "").toLowerCase() !== "asset", [], layout);
   const pulls = (link: { kind?: string }): boolean => linkPulls(link, layout);
   const asked = attention.size ? attention : startOf(data.nodes, data.links, layout, pulls);
-  const scope = spatialScope(data.nodes, data.links, asked, hops, pulls);
+  const scope = spatialScope(data.nodes, data.links, asked, attention.size ? hops : startHops(layout, hops), pulls);
   return { asked, scope, files: data.nodes.filter(node => node.directoryPath === undefined).length };
 }
 
-/** What is on screen: every sphere's id and alpha, and the sidebar's count of files shown. */
-async function shown(page: Page): Promise<{ ids: Set<string>; alpha: Map<string, number>; counts: { shown: number; total: number } }> {
+/** Whether a shown sphere is drawn dimmed: at the last hop shown, or an unreached group's seed one past it. */
+const dimmed = (hop: number, hops: number): boolean => hop > 0 && hop >= hops;
+
+/** What is on screen: every sphere's id and alpha, and the sidebar's counts of files shown, groups and lone files. */
+async function shown(page: Page): Promise<{ ids: Set<string>; alpha: Map<string, number>; counts: { shown: number; total: number; groups: number; alone: number } }> {
   const nodes = await renderedNodes(page);
   const text = (await page.locator("#stats-line").textContent()) ?? "";
-  const counts = /([\d,]+) of ([\d,]+) files shown/.exec(text);
-  expect(counts, `the sidebar says how many files are shown: ${text}`).not.toBeNull();
+  const counts = /([\d,]+) of ([\d,]+) files shown · ([\d,]+) groups?, ([\d,]+) alone/.exec(text);
+  expect(counts, `the sidebar says how many files are shown, in how many groups, and how many stand alone: ${text}`).not.toBeNull();
+  const number = (index: number): number => Number(counts![index].replace(/,/g, ""));
   return { ids: new Set(nodes.map(node => node.id)), alpha: new Map(nodes.map(node => [node.id, node.opacity])),
-    counts: { shown: Number(counts![1].replace(/,/g, "")), total: Number(counts![2].replace(/,/g, "")) } };
+    counts: { shown: number(1), total: number(2), groups: number(3), alone: number(4) } };
 }
 
-test("with nothing asked about, the connections layout starts at the declared entry points, their hops in full and the last hop dimmed, and says how much is shown", async ({ page }) => {
+test("with nothing asked about, the connections layout starts at the archipelago, every group's seed and nothing grown; a click on a seed pins it and grows its group, the other seeds dimmed", async ({ page }) => {
   // Each picture enters over the tuning's frames and settles on screen: the start takes some forty seconds of the software renderer.
   test.setTimeout(300_000);
   await observeGraph(page);
   await page.goto(entry());
   await settled(page);
   const { asked, scope, files } = await expected(page, "connections", new Set());
-  expect([...asked], "this repository declares the Explorer's page and stylesheet as its entry points").toEqual(["packages/explorer/src/client/index.ts", "packages/explorer/src/client/styles.css"]);
+  // This repository's references fall into many groups: one large structure, islands and lone files, each with a seed.
+  expect(asked.size, "every group has a seed").toBeGreaterThan(10);
+  expect(scope.hops.size, "nothing is grown around a seed").toBe(asked.size);
   const picture = await shown(page);
-  expect([...picture.ids].sort(), "the picture is exactly the start's hops").toEqual([...scope.hops.keys()].sort());
-  for (const [id, hop] of scope.hops) expect(picture.alpha.get(id), `${id} at hop ${hop}`).toBeCloseTo(hop === 2 ? FRONTIER : FULL, 2);
-  expect(picture.counts).toEqual({ shown: scope.hops.size, total: files });
+  expect([...picture.ids].sort(), "the picture is exactly the seeds").toEqual([...asked].sort());
+  for (const id of asked) expect(picture.alpha.get(id), `${id}, a seed, in full`).toBeCloseTo(FULL, 2);
+  // The sidebar counts the groups of two or more files and the lone files apart, as Knowledge Sources and `inspect --groups` do.
+  const alone = [...asked].filter(id => !scope.groups.has(id)).length, groups = asked.size - alone;
+  expect(picture.counts).toEqual({ shown: asked.size, total: files, groups, alone });
   expect(picture.counts.shown, "a start is a part of the whole").toBeLessThan(files / 2);
-  await expect(page.locator("#spatial-legend .legend-row").filter({ hasText: /^Dimmed: a hop beyond; click to see more$/ })).toBeVisible();
+  expect((await renderedLinks(page)).filter(wire => wire.visible), "no wire joins two groups").toEqual([]);
+  await expect(page.locator("#spatial-legend .legend-row").filter({ hasText: /^Dimmed: a hop beyond, or another group; click to see more$/ })).toHaveCount(0);
+  // The names stay off the seeds at rest (2026-11-02: "until the very last second"), so a seed is found by hovering it.
+  const seeds = (await renderedNodes(page)).filter(node => asked.has(node.id));
+  await expect(page.locator(".force-graph-label[data-node-id]")).toHaveCount(0);
+  const largest = [...scope.groups.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
+  const seed = seeds.find(node => node.id === largest[0])!;
+  await page.mouse.move(seed.x, seed.y);
+  const label = page.locator(`.force-graph-label[data-node-id="${seed.id}"]`);
+  await expect(label).toBeVisible();
+  await expect(label, "the seed's hover says how large its group is").toHaveAttribute("title", new RegExp(`${largest[1].toLocaleString("en-US")} files in this group`));
+  // A click pins the seed: its hops are shown in full with the last hop dimmed, and every other group stands by its seed, dimmed past the frontier.
+  await label.click();
+  await settled(page);
+  const grown = await expected(page, "connections", new Set([seed.id]));
+  const after = await shown(page);
+  expect([...after.ids].sort(), "the pinned seed's hops, and the other seeds").toEqual([...grown.scope.hops.keys()].sort());
+  for (const [id, hop] of grown.scope.hops) expect(after.alpha.get(id), `${id} at hop ${hop}`).toBeCloseTo(dimmed(hop, 2) ? FRONTIER : FULL, 2);
+  expect(grown.scope.groups.size, "every other group stands by its seed").toBe(asked.size - 1);
+  expect(after.counts).toEqual({ shown: grown.scope.hops.size, total: files, groups, alone });
+  await expect(page.locator("#spatial-legend .legend-row").filter({ hasText: /^Dimmed: a hop beyond, or another group; click to see more$/ })).toBeVisible();
   // A wire to the frontier is dimmed with it; a wire among the full spheres is not.
   const wires = await renderedLinks(page);
-  const frontier = (id: string): boolean => scope.hops.get(id) === 2;
+  const frontier = (id: string): boolean => dimmed(grown.scope.hops.get(id) ?? 0, 2);
   expect(wires.some(wire => (frontier(wire.source) || frontier(wire.target)) && wire.opacity < 0.2), "a wire to the frontier is dimmed").toBe(true);
   expect(wires.filter(wire => !frontier(wire.source) && !frontier(wire.target)).every(wire => wire.opacity > 0.25), "the wires among the full spheres are drawn whole").toBe(true);
   // A frontier sphere's name says how many of its connections the picture leaves out.
-  const beyond = [...scope.beyond.entries()].filter(([id]) => frontier(id));
+  const beyond = [...grown.scope.beyond.entries()].filter(([id]) => frontier(id));
   expect(beyond.length, "the frontier has connections beyond it").toBeGreaterThan(0);
   // The amount omitted stays visible in a short viewport, including while the person scrolls through Tuning.
   await page.setViewportSize({ width: 1065, height: 530 });
@@ -103,7 +133,7 @@ test("a pin is asked about: its hops are the picture, the hops lever narrows it,
   const narrowed = await shown(page);
   expect([...narrowed.ids].sort(), "one hop around the pin").toEqual([...one.scope.hops.keys()].sort());
   expect(narrowed.counts.shown).toBeLessThan(pinned.counts.shown);
-  for (const [id, hop] of one.scope.hops) expect(narrowed.alpha.get(id), `${id} at hop ${hop}`).toBeCloseTo(hop === 1 ? FRONTIER : FULL, 2);
+  for (const [id, hop] of one.scope.hops) expect(narrowed.alpha.get(id), `${id} at hop ${hop}`).toBeCloseTo(dimmed(hop, 1) ? FRONTIER : FULL, 2);
   await expect(page.locator("#tuning-force-hops")).toHaveValue("1");
 
   // The structure layout, with nothing asked about, starts at the scan root: its children in full, their children dimmed.

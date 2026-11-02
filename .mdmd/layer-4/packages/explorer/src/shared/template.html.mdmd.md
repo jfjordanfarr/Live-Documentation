@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-02T06:07:18.565Z
+- Generated At: 2026-11-02T17:03:46.932Z
 
 ## Authored
 ### Purpose
@@ -258,6 +258,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-force-link-width-value` {#symbol-tuning-force-link-width-value}
+- Type: variable
+
+#### `tuning-force-name-at` {#symbol-tuning-force-name-at}
+- Type: variable
+
+#### `tuning-force-name-at-value` {#symbol-tuning-force-name-at-value}
 - Type: variable
 
 #### `tuning-force-node-size` {#symbol-tuning-force-node-size}

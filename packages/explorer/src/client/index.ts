@@ -11,7 +11,7 @@ import { historicalDirectories, historicalNode } from "./history/file-identity";
 import { createHistoryControl, isHistorySequence } from "./history/history-control";
 import type { HistoryMoment } from "./history/moment";
 import { endFiles, momentGround, todayGround, type PathGround } from "./history/moment-paths";
-import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
+import { applyLayoutSettings, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
 import { createItemMenu } from "./panels/item-menu";
 import { createPinTray } from "./panels/pin-tray";
@@ -268,32 +268,19 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   const filterToggleCitingDocs = getInputById("filter-toggle-citing-docs");
   const statsLine = requireElement("stats-line");
   const statsText = document.createTextNode("");
-  const allFilesButton = document.createElement("button");
-  allFilesButton.type = "button";
-  allFilesButton.className = "spatial-overview";
-  allFilesButton.hidden = true;
-  allFilesButton.addEventListener("click", () => {
-    historyControl.pause();
-    if (state.openDirectories?.has("")) closeRetainedDirectory("");
-    else openRetainedDirectory("");
-    forceGraphView.fit();
-  });
   statsLine.replaceChildren(statsText);
-  statsLine.after(allFilesButton);
   /** The sidebar's counts follow the picture: today's, or the moment of the history the 3D picture shows (2026-10-30). */
-  // How many files the 3D picture shows of those the filters allow (discovery, 2026-10-31), beside the counts.
-  let shownFiles: { shown: number; total: number } | null = null;
+  // How many files the 3D picture shows of those the filters allow (discovery, 2026-10-31), and the repository's groups
+  // over its references with the files standing alone (2026-11-02), beside the counts. The door to the whole picture
+  // was a text link here until 2026-11-02, which the owner never found; it is the Whole toggle of the toolbar now.
+  let shownFiles: { shown: number; total: number; groups: number; alone: number } | null = null;
   let backwardConnections = 0;
   const syncStatsLine = (): void => {
     const counts = statsLineOf((shownMoment?.graph ?? graphData).stats);
-    const shown = state.view === "map" && state.perspective === "3d" && shownFiles ? ` · ${shownFiles.shown.toLocaleString("en-US")} of ${shownFiles.total.toLocaleString("en-US")} files shown` : "";
+    const n = (count: number): string => count.toLocaleString("en-US");
+    const shown = state.view === "map" && state.perspective === "3d" && shownFiles
+      ? ` · ${n(shownFiles.shown)} of ${n(shownFiles.total)} files shown · ${n(shownFiles.groups)} ${shownFiles.groups === 1 ? "group" : "groups"}, ${n(shownFiles.alone)} alone` : "";
     statsText.data = counts + shown;
-    allFilesButton.hidden = state.view !== "map" || state.perspective !== "3d" || !shownFiles?.total;
-    const whole = state.openDirectories?.has("") ?? false;
-    allFilesButton.textContent = whole ? "Return to local scope" : "Show all files";
-    allFilesButton.setAttribute("aria-pressed", String(whole));
-    allFilesButton.title = whole ? "Release the scan-root opening; keep your other pins and directory openings"
-      : `Open all ${shownFiles?.total.toLocaleString("en-US") ?? ""} eligible files, including disconnected groups and isolated files`;
   };
   syncStatsLine();
 
@@ -354,9 +341,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       forceGraphView.focusDirectory(directory);
     },
     onCloseDirectory: closeRetainedDirectory,
-    onShown: (shown, total) => {
-      if (shownFiles?.shown === shown && shownFiles.total === total) return;
-      shownFiles = { shown, total };
+    onShown: (shown, total, groups, alone) => {
+      if (shownFiles?.shown === shown && shownFiles.total === total && shownFiles.groups === groups && shownFiles.alone === alone) return;
+      shownFiles = { shown, total, groups, alone };
       syncStatsLine();
     }
   });
@@ -489,10 +476,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   const perspectiveControls = document.createElement("div");
   perspectiveControls.className = "perspective-controls";
   perspectiveControls.setAttribute("aria-label", "Local Map layout and representation");
-  const compactButton = iconButton("Compact", '<rect x="6" y="6" width="5" height="5" rx="1"/><rect x="13" y="6" width="5" height="5" rx="1"/><rect x="6" y="13" width="5" height="5" rx="1"/><rect x="13" y="13" width="5" height="5" rx="1"/>');
-  compactButton.dataset.layoutPreset = "compact";
-  const relaxedButton = iconButton("Relaxed", '<rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>');
-  relaxedButton.dataset.layoutPreset = "relaxed";
+  // Whole or Local (2026-11-02, in the slot of the Compact and Relaxed packing presets, which the owner found
+  // "surprisingly unuseful"): the scan root opened, which in 3D is every file and in 2D the root's own level around the
+  // retained branches, or released, which is what was asked about. The one state the address already carries.
+  const wholeButton = iconButton("Whole", '<circle cx="12" cy="12" r="9"/><g fill="currentColor" stroke="none"><circle cx="9" cy="9.5" r="1.3"/><circle cx="14.5" cy="8" r="1.3"/><circle cx="15" cy="13.5" r="1.3"/><circle cx="9.5" cy="15" r="1.3"/><circle cx="12" cy="12" r="1.3"/></g>');
+  const nothingAsked = (): boolean => !state.pins?.entries.length && !state.selectedNode && !state.openDirectories?.size && !state.discovery && !localView.getActivePath();
+  wholeButton.addEventListener("click", () => {
+    historyControl.pause();
+    if (state.openDirectories?.has("")) closeRetainedDirectory("");
+    else openRetainedDirectory("");
+    if (state.perspective === "3d") forceGraphView.fit();
+  });
   const tuningButton = iconButton("Layout tuning", '<path d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6M10 15v6"/>');
   tuningButton.addEventListener("click", () => {
     document.getElementById("sidebar")?.classList.remove("collapsed");
@@ -542,18 +536,23 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   // owner expects decides where the control lives (the plan's C4). Offered only when the bundle carries a history.
   const historyButton = iconButton("History", '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>');
   historyButton.title = "History: scrub the picture through the commits";
-  historyButton.addEventListener("click", () => historyControl.toggle());
+  historyButton.addEventListener("click", () => {
+    // Opening the history with nothing asked about shows the whole picture, since a repository's history is the whole
+    // repository's (the owner, 2026-11-02); with a question, the mode that is on stands, and the toggle changes it.
+    if (!historyControl.isOpen() && nothingAsked() && !state.openDirectories?.has("")) openRetainedDirectory("");
+    historyControl.toggle();
+  });
   const fitButton = iconButton("Fit current scope", '<path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/>');
   fitButton.title = "Fit the current path or retained scope";
   fitButton.addEventListener("click", () => forceGraphView.fit());
-  // One group per choice, parted by rules: the fit, the packing and its tuning, 2D or 3D, the 3D layout, the history.
+  // One group per choice, parted by rules: the fit, the whole or local picture and the tuning, 2D or 3D, the 3D layout, the history.
   const group = (...buttons: HTMLElement[]): HTMLElement => {
     const element = document.createElement("span");
     element.className = "perspective-group";
     element.append(...buttons);
     return element;
   };
-  perspectiveControls.append(group(fitButton), group(compactButton, relaxedButton, tuningButton), group(mapButton, graphButton),
+  perspectiveControls.append(group(fitButton), group(wholeButton, tuningButton), group(mapButton, graphButton),
     group(connectionsButton, structureButton, hopsSelect), group(historyButton));
   requireElement("main").append(perspectiveControls);
   const pinTray = createPinTray({
@@ -934,8 +933,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (contextName) contextName.textContent = selectedPath
       ?? ([...(state.openDirectories ?? [])].map(path => (shownMoment?.directoryAt(path) ?? path) || "Scan root").join(", ") || discoveredPath || "Scan root");
     perspectiveControls.hidden = state.view !== "map";
-    const preset = layoutPresetOf(state.tuning);
-    for (const button of [fitButton, compactButton, relaxedButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
+    for (const button of [fitButton, wholeButton, tuningButton, mapButton, graphButton, connectionsButton, structureButton, historyButton]) button.disabled = changingPerspective;
     fitButton.hidden = connectionsButton.hidden = structureButton.hidden = state.perspective !== "3d";
     hopsSelect.hidden = state.perspective !== "3d";
     hopsSelect.disabled = changingPerspective || !!localView.getActivePath();
@@ -944,11 +942,10 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     historyButton.setAttribute("aria-pressed", String(historyControl.isOpen()));
     connectionsButton.setAttribute("aria-pressed", String(state.spatialLayout === "connections"));
     structureButton.setAttribute("aria-pressed", String(state.spatialLayout === "structure"));
-    compactButton.setAttribute("aria-pressed", String(preset === "compact"));
-    relaxedButton.setAttribute("aria-pressed", String(preset === "relaxed"));
-    tuningButton.classList.toggle("custom-layout", preset === "custom");
-    tuningButton.title = preset === "custom" ? "Custom layout — open tuning" : "Layout tuning";
-    tuningButton.setAttribute("aria-label", preset === "custom" ? "Layout tuning: Custom" : "Layout tuning");
+    const whole = state.openDirectories?.has("") ?? false;
+    wholeButton.setAttribute("aria-pressed", String(whole));
+    wholeButton.title = whole ? "Whole picture on: every file is shown; press to return to what you asked about"
+      : state.perspective === "3d" ? "Show the whole picture: every file, the other groups and the lone files included" : "Show the whole picture: the scan root around what you asked about";
     mapButton.setAttribute("aria-pressed", String(state.perspective === "2d"));
     graphButton.setAttribute("aria-pressed", String(state.perspective === "3d"));
     const suggest3d = state.perspective === "2d" && backwardConnections > 0;
