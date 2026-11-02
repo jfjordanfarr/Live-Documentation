@@ -24,17 +24,18 @@
 
 import { HISTORY_FORMAT, type HistorySequence } from "@live-documentation/engine/live-docs/history/format";
 import { stepsMatching } from "@live-documentation/engine/live-docs/history/queries";
-import { changeAt, commitAt } from "@live-documentation/engine/live-docs/history/sequence";
+import { changeAt, commitAt, seek } from "@live-documentation/engine/live-docs/history/sequence";
 import { followPath, followPins, ticksFor, type Pins, type Ticks } from "@live-documentation/engine/live-docs/history/ticks";
 
 import { HistoryCursor } from "./cursor";
-import type { HistoryMoment } from "./moment";
-import type { Renames } from "./rekey";
+import { historicalDirectories, historicalNode, historicalOrigin, referenceAt, referenceFor } from "./file-identity";
+import type { HistoryChanges, HistoryMoment } from "./moment";
+import { rangedTickModel, type HistoryRange } from "./navigation";
+import { NO_RENAMES, type Renames } from "./rekey";
 import { createScrubber } from "./scrubber";
 import { relatedDocLinksOf, snapshotGraphOf } from "./snapshot";
 import { createStepPanel } from "./step-panel";
 import { stepSummary } from "./step-summary";
-import { tickModel } from "./tick-model";
 import type { BundledHistory } from "../../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../../shared/types";
 import type { HistoryTuning } from "../types";
@@ -53,9 +54,10 @@ export interface HistoryControlOptions {
   load(): Promise<HistorySequence>;
   /** A sequence fetched before the page started, when the address named a commit. */
   preloaded?: HistorySequence;
-  nodesById: ReadonlyMap<string, ExplorerNodePayload>;
+  /** Selection lookup: current files plus validated historical identities. The canonical current graph stays separate. */
+  nodesById: Map<string, ExplorerNodePayload>;
   /** Show the moment, or today (null), re-keyed through the renames, fed at the energy, or at the tuning's when none. */
-  onMoment(moment: HistoryMoment | null, renames: Renames, energy?: number): void;
+  onMoment(moment: HistoryMoment | null, renames: Renames, energy?: number, changes?: HistoryChanges | null): void;
   /** Feed the standing picture at the tuning's energy. */
   onSettle(): void;
   /** The commit the address carries changed: the id, or null for today. */
@@ -69,8 +71,6 @@ export interface HistoryControlOptions {
   onReadDocument(path: string): void;
   /** The control opened or closed. */
   onOpenChange(): void;
-  /** Play started or paused: the picture's emphasis on a step's changed files fades while it plays (2026-10-31). */
-  onPlaying(playing: boolean): void;
   /** The scrubber's own speed control chose a rate, in steps a second (2026-10-31). */
   onPlayRate(rate: number): void;
 }
@@ -93,6 +93,12 @@ export interface HistoryControl {
   readonly available: boolean;
   isOpen(): boolean;
   toggle(): void;
+  /** Stop playback for deliberate investigation without closing the timeline or changing its moment. */
+  pause(): void;
+  /** Make room for an evidence reader while keeping the scrubber available. */
+  hideDetails(): void;
+  /** Bring a retained file to the nearest moment in which it exists, keeping its identity. */
+  showFile(id: string): void;
   /** Show the moment an address names, or today for null; opens the control for a commit, loading the sequence first. */
   showCommit(commit: string | null): Promise<void>;
   /** Leaving 3D: the picture returns to today and the control closes. */
@@ -100,6 +106,10 @@ export interface HistoryControl {
   sync(context: HistoryContext): void;
   /** Why a retained thing does not stand at the moment shown, or null when it does or today is shown. */
   absence(item: RetainedItem): string | null;
+  /** Load the needed history before restoring references, including Back after reloading a place without history. */
+  restoreReferences(ids: readonly string[], needsMoment?: boolean): Promise<void>;
+  /** Whether a directory is known in this history, even if it has no files at the displayed moment. */
+  hasDirectory(directory: string): boolean;
 }
 
 /** The space the open scrubber takes from the bottom, beyond its own height. */
@@ -121,6 +131,7 @@ export function truncatedWords(sequence: HistorySequence): string | null {
 export function createHistoryControl(options: HistoryControlOptions): HistoryControl {
   const available = options.bundled !== undefined;
   let sequence: HistorySequence | null = options.preloaded ?? null;
+  let knownDirectories = sequence ? historicalDirectories(sequence) : new Set<string>();
   let loading: Promise<HistorySequence> | null = null;
   let cursor: HistoryCursor | null = sequence ? new HistoryCursor(sequence) : null;
   let open = false;
@@ -133,22 +144,30 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
   let notice: string | null = null;
   /** Whether the step panel shows; hidden by a person's choice, it is shown again when the history is next opened. */
   let detailsShown = true;
+  let range: HistoryRange | null = null;
+  let emphasizedStep: number | null = null;
+  const todayIds = new Set([...options.nodesById.values()].filter(node => node.docPath).map(node => node.id));
   let ticksKey = "";
   let ticks: Ticks = { major: [], minor: [] };
-  let context: HistoryContext = { visible: false, pins: { files: [], directories: [] }, subject: null, showAuthors: false, tuning: { axis: "steps", granularity: "auto", playRate: 2, changeEmphasis: "glow" } };
+  let context: HistoryContext = { visible: false, pins: { files: [], directories: [] }, subject: null, showAuthors: false, tuning: { axis: "time", granularity: "auto", playRate: 2, changeEmphasis: "glow" } };
 
   const scrubber = createScrubber({
     parent: options.parent,
-    onScrub: step => { dragging = true; scrub(step); },
-    onRest: step => { dragging = false; rest(step); },
+    onScrub: step => { pause(); dragging = true; scrub(step); },
+    onRest: step => { pause(); dragging = false; rest(step); },
     onPlay: wanted => { if (wanted) play(); else pause(); },
     onRate: rate => options.onPlayRate(rate),
     onAuthors: shown => options.onAuthors(shown),
-    onDetails: shown => { detailsShown = shown; refresh(); }
+    onDetails: shown => { detailsShown = shown; refresh(); },
+    onRange: next => { pause(); range = next; refresh(); }
   });
   const panel = createStepPanel({
     parent: options.parent,
-    onPinFile: path => options.onPinFile(path),
+    onChooseFile: (path, step) => {
+      pause();
+      rest(step);
+      options.onPinFile(registerFile(path, step));
+    },
     hasDocument: path => options.hasDocument(path),
     onReadDocument: path => options.onReadDocument(path),
     onHide: () => {
@@ -159,11 +178,27 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     }
   });
 
+  /** Register a past-only file for shared selection without adding it to today's graph or inventing old prose. */
+  function registerFile(path: string, step: number): string {
+    const id = referenceFor(sequence!, path, step, path => todayIds.has(path));
+    if (!todayIds.has(id)) {
+      const graph = moment?.step === step ? moment.graph : snapshotGraphOf(seek(sequence!, step));
+      const node = graph.nodes.find(file => file.id === path);
+      if (node) {
+        const existing = options.nodesById.get(id);
+        if (existing) Object.assign(existing, node, { id });
+        else options.nodesById.set(id, { ...node, id });
+      }
+    }
+    return id;
+  }
+
   function ensureLoaded(): Promise<HistorySequence> {
     if (sequence) return Promise.resolve(sequence);
     loading ??= options.load().then(loaded => {
       if (!isHistorySequence(loaded)) throw new Error(`The history file is not written in ${HISTORY_FORMAT}.`);
       sequence = loaded;
+      knownDirectories = historicalDirectories(loaded);
       cursor = new HistoryCursor(loaded);
       notice = null;
       return loaded;
@@ -187,6 +222,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     const last = at.last;
     const shape = at.shape;
     const files = new Map<string, string | undefined>();
+    const references = new Map<string, string>();
     const directories = new Map<string, string>();
     const known = followPins(history, { files: [], directories: context.pins.directories }, last, step);
     context.pins.directories.forEach((directory, index) => directories.set(directory, known.directories[index]));
@@ -195,6 +231,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     // wire came or changed. The base changed nothing.
     const change = changeAt(history, step);
     const changed = new Set<string>();
+    const changedFiles = new Set<string>();
     const changedPairs = new Set<string>();
     if (step > 0) {
       for (const [path] of change.born) changed.add(path);
@@ -203,9 +240,11 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       for (const [path] of change.rekinded) changed.add(path);
       for (const [path] of change.entries) changed.add(path);
       for (const path of change.touched) changed.add(path);
+      for (const path of changed) changedFiles.add(path);
+      for (const [from] of [...change.edgesAdded, ...change.edgesChanged, ...change.edgesRemoved]) changedFiles.add(from);
       for (const [from, to] of [...change.edgesAdded, ...change.edgesChanged]) { changed.add(from); changed.add(to); changedPairs.add(pairKey(from, to)); }
       for (const [from, to] of change.edgesRemoved) { changed.add(from); changed.add(to); }
-      for (const [from] of [...change.docLinksAdded, ...change.docLinksRemoved]) changed.add(from);
+      for (const [from] of [...change.docLinksAdded, ...change.docLinksRemoved]) { changed.add(from); changedFiles.add(from); }
     }
     return {
       step,
@@ -213,10 +252,12 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       graph: snapshotGraphOf(shape),
       relatedDocLinks: relatedDocLinksOf(shape),
       changed,
+      changedFiles,
+      deletedFiles: new Set(change.dead),
       changedPairs,
       fileAt(todayPath) {
         if (!files.has(todayPath)) {
-          const followed = followPath(history, todayPath, last, step);
+          const followed = referenceAt(history, todayPath, step);
           files.set(todayPath, followed.path !== null && shape.files.has(followed.path) ? followed.path : undefined);
         }
         return files.get(todayPath);
@@ -227,7 +268,11 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       },
       fileToday(path) {
         const followed = followPath(history, path, step, last);
-        return followed.path !== null && options.nodesById.has(followed.path) ? followed.path : null;
+        return followed.path !== null && todayIds.has(followed.path) ? followed.path : null;
+      },
+      fileReference(path) {
+        if (!references.has(path)) references.set(path, registerFile(path, step));
+        return references.get(path)!;
       },
       directoryToday(directory) {
         return followPins(history, { files: [], directories: [directory] }, step, last).directories[0];
@@ -240,8 +285,15 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     const at = cursor!;
     const renames = at.moveTo(step);
     moment = step === at.last ? null : momentAt(step);
-    options.onMoment(moment, renames, settle ? undefined : 0);
+    publishMoment(renames, settle ? undefined : 0);
     placedWithoutTick = !settle;
+  }
+
+  /** The current graph and the displayed commit's changes have different lifetimes at the last step. */
+  function publishMoment(renames: Renames, energy?: number): void {
+    emphasizedStep = open && context.visible && cursor ? cursor.step : null;
+    const changes = emphasizedStep === null ? null : moment ?? momentAt(emphasizedStep);
+    options.onMoment(moment, renames, energy, changes);
   }
 
   function scrub(step: number): void {
@@ -252,6 +304,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
 
   function rest(step: number): void {
     if (!cursor) return;
+    if (range && (step < range[0] || step > range[1])) range = null;
     if (step !== cursor.step) moveTo(step, true);
     else if (placedWithoutTick) {
       options.onSettle();
@@ -263,14 +316,13 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
 
   function play(): void {
     if (!cursor || playing !== null) return;
-    if (cursor.step >= cursor.last) rest(0);
+    if (cursor.step >= (range?.[1] ?? cursor.last)) rest(range?.[0] ?? 0);
     playingRate = context.tuning.playRate;
     playing = window.setInterval(() => {
       if (!cursor) return;
-      if (cursor.step >= cursor.last) { pause(); return; }
+      if (cursor.step >= (range?.[1] ?? cursor.last)) { pause(); return; }
       rest(cursor.step + 1);
     }, 1000 / playingRate);
-    options.onPlaying(true);
     refresh();
   }
 
@@ -278,7 +330,6 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     if (playing === null) return;
     window.clearInterval(playing);
     playing = null;
-    options.onPlaying(false);
     refresh();
   }
 
@@ -288,6 +339,8 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
   }
 
   function refresh(): void {
+    const nextEmphasis = open && context.visible && cursor ? cursor.step : null;
+    if (nextEmphasis !== emphasizedStep) publishMoment(NO_RENAMES);
     const visible = open && context.visible && available;
     scrubber.hide(!visible);
     panel.hide(!visible || !sequence || !cursor || !detailsShown);
@@ -295,7 +348,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     if (!visible) return;
     if (!sequence || !cursor) {
       scrubber.sync({
-        steps: 0, step: 0, model: { granularity: "step", positions: [], ticks: [], stops: [0], ruler: [] }, axis: context.tuning.axis, dates: [],
+        steps: 0, step: 0, range: [0, 0], commits: [], model: { granularity: "step", positions: [], ticks: [], stops: [0], ruler: [] }, axis: context.tuning.axis, dates: [],
         valueText: "", date: "", hash: "", truncated: null, playing: false, rate: context.tuning.playRate, authors: { carried: false, shown: false }, details: detailsShown,
         notice: notice ?? "Loading the history"
       });
@@ -307,21 +360,41 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
     const key = JSON.stringify([pins.files, pins.directories]);
     if (key !== ticksKey) {
       ticksKey = key;
-      ticks = ticksFor(history, pins);
+      if (!pins.files.length && !pins.directories.length) ticks = ticksFor(history, pins);
+      else {
+        // Each past-only pin has its own anchor; comparing its raw path against today's files confuses path reuse.
+        const groups = new Map<number, { files: string[]; directories: string[] }>();
+        const at = (step: number) => groups.get(step) ?? groups.set(step, { files: [], directories: [] }).get(step)!;
+        if (pins.directories.length) at(cursor.last).directories.push(...pins.directories);
+        for (const id of pins.files) {
+          const origin = historicalOrigin(history, id);
+          at(origin?.step ?? cursor.last).files.push(origin?.path ?? id);
+        }
+        const major = new Set<number>(), minor = new Set<number>();
+        for (const [step, group] of groups) {
+          const found = ticksFor(history, group, step);
+          found.major.forEach(tick => major.add(tick));
+          found.minor.forEach(tick => minor.add(tick));
+        }
+        ticks = { major: [...major].sort((a, b) => a - b), minor: [...minor].filter(tick => !major.has(tick)).sort((a, b) => a - b) };
+      }
     }
     const dates = [history.base.commit.date, ...history.steps.map(entry => entry.commit.date)];
-    const model = tickModel({ dates, ticks, pinned: pins.files.length + pins.directories.length > 0, granularity: context.tuning.granularity, axis: context.tuning.axis });
+    const shownRange: HistoryRange = range ?? [0, cursor.last];
+    const model = rangedTickModel({ dates, ticks, pinned: pins.files.length + pins.directories.length > 0, granularity: context.tuning.granularity, axis: context.tuning.axis }, shownRange);
     const commit = commitAt(history, step);
     scrubber.sync({
       steps: cursor.last,
       step,
+      range: shownRange,
+      commits: [history.base.commit, ...history.steps.map(entry => entry.commit)],
       model,
       axis: context.tuning.axis,
       dates,
       valueText: `${commit.date.slice(0, 10)}: ${commit.subject}`,
       date: commit.date.slice(0, 10),
       hash: commit.id.slice(0, 8),
-      truncated: truncatedWords(history),
+      truncated: shownRange[0] === 0 ? truncatedWords(history) : null,
       playing: playing !== null,
       rate: context.tuning.playRate,
       authors: { carried: history.source.authors, shown: context.showAuthors },
@@ -338,7 +411,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       edges: cursor.shape.edges.size,
       showAuthors: context.showAuthors && history.source.authors,
       truncated: truncatedWords(history),
-      ...(dragging ? {} : { summary: stepSummary(history, step, cursor.shape, path => options.nodesById.has(path)) })
+      ...(dragging ? {} : { summary: stepSummary(history, step, cursor.shape, path => todayIds.has(path)) })
     });
   }
 
@@ -357,7 +430,19 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
 
   return {
     available,
+    hasDirectory: directory => knownDirectories.has(directory),
     isOpen: () => open,
+    pause,
+    hideDetails() { detailsShown = false; refresh(); },
+    showFile(id) {
+      if (!sequence || !cursor) return;
+      pause();
+      const followed = referenceAt(sequence, id, cursor.step);
+      const step = followed.path !== null ? cursor.step : followed.step > cursor.step ? followed.step : Math.max(0, followed.step - 1);
+      open = true;
+      options.onOpenChange();
+      rest(step);
+    },
     toggle() {
       if (!available) return;
       open = !open;
@@ -369,6 +454,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       }
       pause();
       detailsShown = true;
+      range = null;
       // Closed, the picture is today's again, and the address carries no commit.
       if (cursor && cursor.step !== cursor.last) rest(cursor.last);
       else refresh();
@@ -395,6 +481,7 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       open = false;
       notice = null;
       detailsShown = true;
+      range = null;
       if (cursor && cursor.step !== cursor.last) {
         moveTo(cursor.last, true);
         placedWithoutTick = false;
@@ -410,13 +497,27 @@ export function createHistoryControl(options: HistoryControlOptions): HistoryCon
       refresh();
     },
     absence(item) {
-      if (!moment || !cursor) return null;
-      if (item.kind === "pin") return moment.fileAt(item.pin.nodeId) === undefined ? "not yet created" : null;
+      if (!cursor || !sequence) return null;
+      if (item.kind === "pin") {
+        if (!moment && todayIds.has(item.pin.nodeId)) return null;
+        const followed = referenceAt(sequence, item.pin.nodeId, cursor.step);
+        if (followed.path !== null && cursor.shape.files.has(followed.path)) return null;
+        return followed.step > cursor.step ? "not yet created" : `deleted at ${commitAt(sequence, followed.step).id.slice(0, 8)}`;
+      }
+      if (!moment) return [...todayIds].some(path => item.directory === "" || path.startsWith(`${item.directory}/`)) ? null : "nothing under it today";
       const directory = moment.directoryAt(item.directory);
       for (const path of cursor.shape.files.keys()) {
         if (directory === "" || path.startsWith(`${directory}/`)) return null;
       }
       return "nothing under it at this commit";
+    },
+    async restoreReferences(ids, needsMoment = false) {
+      if (!sequence && available && (needsMoment || ids.some(id => id.startsWith("history:")))) await ensureLoaded();
+      if (!sequence) return;
+      for (const id of ids) if (!options.nodesById.has(id)) {
+        const node = historicalNode(sequence, id);
+        if (node) options.nodesById.set(id, node);
+      }
     }
   };
 }

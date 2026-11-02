@@ -2,9 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import { edgeKey, type Shape } from "@live-documentation/engine/live-docs/history/shape";
 
-import { endFiles, momentGround, reachToday, todayGround } from "./moment-paths";
+import { endFiles, momentGround, todayGround } from "./moment-paths";
 import { snapshotGraphOf } from "./snapshot";
 import { findPath, reachOf, referencesAgainstPath } from "../pathfind";
+import { destinationScope, searchGraph, searchIndexOf } from "../search/graph-search";
 
 /**
  * A moment before two changes of today: the core is renamed to the engine since, and the legacy helper is deleted
@@ -68,12 +69,11 @@ describe("a moment's ground", () => {
     expect(referencesAgainstPath(["src/core/model.ts", "src/app/main.ts"], ground.links)).toBe(0);
   });
 
-  it("says a reach found at the moment in today's names, and drops a file deleted since", () => {
+  it("offers a reachable past-only file in the historical destination search", () => {
     const reach = reachOf(["src/app/main.ts"], ground.nodesById, ground.links);
     expect([...reach.reverse.keys()].sort()).toEqual(["lib/legacy.ts", "src/core/model.ts"]);
-    const today = reachToday(reach, ground);
-    expect(today.reverse).toEqual(new Map([["src/engine/model.ts", 2]]));
-    expect(today.forward).toEqual(new Map([["tests/main.test.ts", 2]]));
+    const scope = destinationScope(searchIndexOf(moment.graph.nodes), reach);
+    expect(searchGraph("legacy", scope.index).groups.flatMap(group => group.files).map(file => file.node.id)).toEqual(["lib/legacy.ts"]);
   });
 });
 

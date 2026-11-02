@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/step-summary.ts
-- Generated At: 2026-10-22T16:47:54.230Z
+- Generated At: 2026-11-01T20:26:50.013Z
 
 ## Authored
 ### Purpose
@@ -33,35 +33,35 @@ A file as the panel names it: its path at the step, its shape there, and where i
 
 #### `SummaryEdge` {#symbol-summaryedge}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L35)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L37)
 
 ##### `SummaryEdge` — Summary
 A directed wire between two files, by their paths at the step.
 
 #### `SummaryDocLink` {#symbol-summarydoclink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L42)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L44)
 
 ##### `SummaryDocLink` — Summary
 A link from a file's authored words to a document, the file as the panel names it.
 
 #### `StepSummary (interface)` {#symbol-stepsummary-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L48)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L50)
 
 ##### `StepSummary (interface)` — Summary
 The step, in the panel's order.
 
 #### `changeCount` {#symbol-changecount}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L70)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L72)
 
 ##### `changeCount` — Summary
 How many things the step changed, the wires counted with the files.
 
 #### `stepSummary (function)` {#symbol-stepsummary-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L78)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/step-summary.ts#L80)
 - Returns: [`StepSummary`](#symbol-stepsummary-interface)
 - Parameters: `sequence`: [`HistorySequence`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-historysequence); `shape`: [`Shape`](../views/worldMap/layout.ts.mdmd.md#symbol-shape)
 

@@ -41,7 +41,7 @@ describe("stepSummary's documents", () => {
     const has = (path: string): boolean => path === "main.ts";
 
     const linked = stepSummary(history, 1, seek(history, 1), has);
-    expect(linked.docLinksAdded).toEqual([{ file: { path: "main.ts", name: "main.ts", archetype: "implementation", symbols: 1, today: { kind: "today", path: "main.ts" } }, doc: "docs/plan.md" }]);
+    expect(linked.docLinksAdded).toEqual([{ file: { at: 1, path: "main.ts", name: "main.ts", archetype: "implementation", symbols: 1, today: { kind: "today", path: "main.ts" } }, doc: "docs/plan.md" }]);
     expect(linked.docLinksRemoved).toEqual([]);
     // A file whose links alone changed has changed shape: it is not a content-only touch.
     expect(linked.touched).toEqual([]);
@@ -50,7 +50,7 @@ describe("stepSummary's documents", () => {
     const unlinked = stepSummary(history, 2, seek(history, 2), has);
     expect(unlinked.docLinksAdded.map((link) => [link.file.path, link.doc])).toEqual([["main.ts", "docs/notes.md"]]);
     expect(unlinked.docLinksRemoved).toEqual([
-      { file: { path: "lib/old.ts", name: "old.ts", archetype: "implementation", symbols: 0, today: { kind: "gone", since: expect.objectContaining({ subject: "change 2" }) } }, doc: "docs/old.md" },
+      { file: { at: 1, path: "lib/old.ts", name: "old.ts", archetype: "implementation", symbols: 0, today: { kind: "gone", since: expect.objectContaining({ subject: "change 2" }) } }, doc: "docs/old.md" },
       { file: expect.objectContaining({ path: "main.ts" }), doc: "docs/plan.md" }
     ]);
     expect(changeCount(unlinked)).toBe(4);
@@ -68,8 +68,8 @@ describe("stepSummary", () => {
     expect(summary.commit.subject).toBe("change 1");
     expect([summary.files, summary.edges]).toEqual([4, 2]);
     expect(summary.renamed).toEqual([
-      { from: "core/a.ts", file: { path: "engine/a.ts", name: "a.ts", archetype: "implementation", symbols: 1, today: { kind: "today", path: "engine/a.ts" } } },
-      { from: "core/b.ts", file: { path: "engine/b.ts", name: "b.ts", archetype: "implementation", symbols: 2, today: { kind: "today", path: "engine/b.ts" } } }
+      { from: "core/a.ts", file: { at: 1, path: "engine/a.ts", name: "a.ts", archetype: "implementation", symbols: 1, today: { kind: "today", path: "engine/a.ts" } } },
+      { from: "core/b.ts", file: { at: 1, path: "engine/b.ts", name: "b.ts", archetype: "implementation", symbols: 2, today: { kind: "today", path: "engine/b.ts" } } }
     ]);
     expect(summary.directoriesRenamed).toEqual([{ from: "core", to: "engine" }]);
     expect(summary.resized).toEqual([{ file: expect.objectContaining({ path: "main.ts", symbols: 3 }), before: 1, after: 3 }]);
@@ -81,8 +81,8 @@ describe("stepSummary", () => {
   it("says a dead file is gone since the step that killed it, with its shape before, and a born file where it stands today", () => {
     const history = sequence();
     const summary = stepSummary(history, 2, seek(history, 2), has);
-    expect(summary.dead).toEqual([{ path: "lib/old.ts", name: "old.ts", archetype: "implementation", symbols: 0, today: { kind: "gone", since: expect.objectContaining({ subject: "change 2" }) } }]);
-    expect(summary.born).toEqual([{ path: "lib/new.ts", name: "new.ts", archetype: "test", symbols: 0, today: { kind: "today", path: "lib/new.ts" } }]);
+    expect(summary.dead).toEqual([{ at: 1, path: "lib/old.ts", name: "old.ts", archetype: "implementation", symbols: 0, today: { kind: "gone", since: expect.objectContaining({ subject: "change 2" }) } }]);
+    expect(summary.born).toEqual([{ at: 2, path: "lib/new.ts", name: "new.ts", archetype: "test", symbols: 0, today: { kind: "today", path: "lib/new.ts" } }]);
     expect(summary.edgesAdded).toEqual([{ from: "main.ts", to: "lib/new.ts", count: 1 }]);
     expect(summary.edgesRemoved).toEqual([{ from: "main.ts", to: "lib/old.ts", count: 0 }]);
     expect(summary.edgesChanged).toEqual([{ from: "main.ts", to: "engine/a.ts", count: 2, before: 1 }]);
@@ -96,7 +96,7 @@ describe("stepSummary", () => {
     expect([atBase.files, atBase.edges]).toEqual([4, 2]);
     // A file of the base, followed to today: renamed with its directory, so pinnable under the new name.
     const touched = stepSummary(history, 3, seek(history, 3), (path) => path !== "main.ts");
-    expect(touched.touched).toEqual([{ path: "main.ts", name: "main.ts", archetype: "implementation", symbols: 3, today: { kind: "gone", since: null } }]);
+    expect(touched.touched).toEqual([{ at: 3, path: "main.ts", name: "main.ts", archetype: "implementation", symbols: 3, today: { kind: "gone", since: null } }]);
     expect(changeCount(touched)).toBe(1);
   });
 });

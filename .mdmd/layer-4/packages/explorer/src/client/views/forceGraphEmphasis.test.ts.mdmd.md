@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphEmphasis.test.ts
-- Generated At: 2026-10-31T20:07:00.677Z
+- Generated At: 2026-11-01T22:32:19.508Z
 
 ## Authored
 ### Purpose
-Holds the emphasis to its numbers: the strength's fade and hold, the lifted and dimmed colours in every mode, the wires' alpha, and the pair key's symmetry.
+Verify that commit emphasis uses immediate white, restores normal colour when a node leaves the changed set, and preserves the chosen background alpha without a temporal ramp.
 
 ### Notes
-Written with the module on 2026-10-31; the arithmetic of the lifted blue is spelled out so that a change of the lift is a deliberate change of the test.
+The [November 1 live correction](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-3) replaced the original linear-fade assertions. Cases include frontier nodes, all optional emphasis modes, invalid colour input, wire visibility and symmetric pair identity. Browser playback tests measure uploaded colours and alpha at several times within a commit and across its boundary.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -22,7 +22,6 @@ _No public symbols detected_
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`forceGraphEmphasis.dims`](./forceGraphEmphasis.ts.mdmd.md#symbol-dims)
-- [`forceGraphEmphasis.emphasisStrength`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasisstrength)
 - [`forceGraphEmphasis.emphasizedSphere`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedsphere)
 - [`forceGraphEmphasis.emphasizedWireAlpha`](./forceGraphEmphasis.ts.mdmd.md#symbol-emphasizedwirealpha)
 - [`forceGraphEmphasis.glows`](./forceGraphEmphasis.ts.mdmd.md#symbol-glows)

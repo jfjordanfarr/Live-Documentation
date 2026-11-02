@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/history.ts
-- Generated At: 2026-10-22T16:47:54.718Z
+- Generated At: 2026-11-01T21:36:08.660Z
 
 ## Authored
 ### Purpose
@@ -14,6 +14,8 @@ The one place the Explorer writes its address: it decides whether a change is a 
 - Written on 2026-09-30 at the owner's ask for back and forward ("I am known to hop around navigating a lot"). Before it every write used `replaceState`, on purpose, so the browser's Back left the page.
 - A move to another place is an entry; pins, expanded cards, pan and zoom rewrite the place's entry, so Back never walks through pin toggles (the owner: "we can split out the pinning history from the navigation history"). Which a write is comes from `place.ts`, from the parsed address.
 - Writes before the first pointer, key or wheel input never add an entry, and every write in the same task as a new entry joins it, so one click that writes twice is one step back. Joining is by task rather than by time so that two quick clicks stay two steps.
+
+Back and Forward can require an asynchronously loaded historical selection. Restoration waits for that sequence before validating retained identities, stays a replacement of the existing browser-history entry while it waits, and yields to a newer navigation. This fixes the [November 1 reload-and-Back journey](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2), where a cleared present-day page otherwise dropped its past-only pin before loading the evidence needed to recognize it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -51,28 +53,28 @@ an entry. Returns a function that stops listening.
 
 #### `commitUrl` {#symbol-commiturl}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L108)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L117)
 
 ##### `commitUrl` — Summary
 Writes an address: a new entry when it names another place, a rewrite of the current entry when it does not.
 
 #### `canGoBack` {#symbol-cangoback}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L133)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L142)
 
 ##### `canGoBack` — Summary
 Whether Back would return to an earlier place on this page.
 
 #### `canGoForward` {#symbol-cangoforward}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L138)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L147)
 
 ##### `canGoForward` — Summary
 Whether Forward would return to a place this page left by Back.
 
 #### `onHistoryChange` {#symbol-onhistorychange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L143)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/history.ts#L152)
 
 ##### `onHistoryChange` — Summary
 Calls `listener` whenever the current entry changes.

@@ -40,8 +40,8 @@ export interface StepPanelView {
 /** What the panel is made with. */
 export interface StepPanelOptions {
   parent: HTMLElement;
-  /** Pin the file, by its path today. */
-  onPinFile(path: string): void;
+  /** Show and retain the file at the moment containing it, including immediately before deletion. */
+  onChooseFile(path: string, step: number): void;
   /** Whether today's bundle carries the document. */
   hasDocument(path: string): boolean;
   /** Read today's version of a document the bundle carries. */
@@ -65,11 +65,9 @@ const plural = (count: number, noun: string): string => `${Number(count).toLocal
 const short = (commit: CommitInfo): string => commit.id.slice(0, 8);
 const directoryOf = (path: string): string => (path.includes("/") ? path.slice(0, path.lastIndexOf("/")) : "");
 
-/** A file's name as a button that pins it today, or as words with where it went. */
+/** Every historical file is actionable at its own moment; today's absence never disables that evidence. */
 function fileWords(file: SummaryFile): string {
-  const name = file.today.kind === "today"
-    ? `<button type="button" class="history-file" data-pin="${escapeHtml(file.today.path)}">${escapeHtml(file.name)}</button>`
-    : `<span class="history-file-name">${escapeHtml(file.name)}</span>`;
+  const name = `<button type="button" class="history-file" data-file="${escapeHtml(file.path)}" data-at="${file.at}" title="Show ${escapeHtml(file.path)} at step ${file.at}">${escapeHtml(file.name)}</button>`;
   const directory = directoryOf(file.path);
   const where = directory ? `<span class="history-path">${escapeHtml(directory)}</span>` : "";
   const shape = `<span class="history-shape">${escapeHtml(file.archetype || "file")}, ${plural(file.symbols, "symbol")}</span>`;
@@ -129,8 +127,8 @@ export function createStepPanel(options: StepPanelOptions): StepPanel {
   element.append(hide, content);
   options.parent.append(element);
   element.addEventListener("click", event => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("button[data-pin], button[data-read]");
-    if (button?.dataset.pin) options.onPinFile(button.dataset.pin);
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("button[data-file], button[data-read]");
+    if (button?.dataset.file) options.onChooseFile(button.dataset.file, Number(button.dataset.at));
     else if (button?.dataset.read) options.onReadDocument(button.dataset.read);
   });
   let drawn = "";

@@ -23,5 +23,7 @@ export function placeOf(search: string): string {
   const reader = inspection?.kind === "file" ? ["file", inspection.nodeId, inspection.symbol ?? ""]
     : inspection?.kind === "bundled-doc" ? ["bundled-doc", inspection.path, inspection.fragment ?? ""]
     : inspection?.kind === "directory" ? ["directory", inspection.directory] : [];
-  return JSON.stringify([view, view === "map" ? navigation.perspective : null, view === "map" ? navigation.spatialLayout : null, node, folders, path, reader]);
+  const discovery = snapshot?.discovery;
+  const discovered = discovery?.kind === "file" ? ["file", discovery.nodeId] : discovery?.kind === "directory" ? ["directory", discovery.directory] : [];
+  return JSON.stringify([view, view === "map" ? navigation.perspective : null, view === "map" ? navigation.spatialLayout : null, node, folders, path, reader, discovered]);
 }

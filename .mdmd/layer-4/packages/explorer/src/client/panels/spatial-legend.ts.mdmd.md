@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/spatial-legend.ts
-- Generated At: 2026-10-31T20:06:59.370Z
+- Generated At: 2026-11-01T20:01:36.134Z
 
 ## Authored
 ### Purpose
@@ -43,7 +43,7 @@ The rows of the key for a filtered graph at the moment shown, in reading order; 
 
 #### `renderSpatialLegend` {#symbol-renderspatiallegend}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L49)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L48)
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
 ##### `renderSpatialLegend` — Summary

@@ -47,6 +47,7 @@ test("a directory opened with no subject is framed whole: centred, nothing cut, 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/samples/estate/?view=local&dir=Portal");
   await settled(page);
+  await expect(page.getByRole("button", { name: "Close Portal", exact: true })).toBeVisible();
   const frame = await frameOf(page), picture = await pictureOf(page);
   expect(picture.width).toBeLessThan(frame.width);
   expect(picture.height).toBeLessThan(frame.height);
@@ -60,8 +61,29 @@ test("a directory opened with no subject is framed whole: centred, nothing cut, 
   expect(await signsOf(page)).toEqual({ above: "false", below: "false", left: "false", right: "false" });
 });
 
-test("the root overview, taller than the frame, starts at the top like a page and says there is more below", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
+test("opening a directory from the root recovers its contents after preserving the unfolding anchor", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/samples/estate/?view=local&mode=2d");
+  await settled(page);
+  // A direct directory URL never exercised the old label-hold transaction that cancelled the useful fit.
+  await page.getByRole("button", { name: "Open Portal", exact: true }).click();
+  await settled(page);
+  const frame = await frameOf(page), picture = await pictureOf(page);
+  expect(picture.width).toBeLessThan(frame.width);
+  expect(picture.height).toBeLessThan(frame.height);
+  expect(picture.left).toBeGreaterThanOrEqual(frame.left);
+  expect(picture.right).toBeLessThanOrEqual(frame.right);
+  expect(picture.top).toBeGreaterThanOrEqual(frame.top);
+  expect(picture.bottom).toBeLessThanOrEqual(frame.bottom);
+  await expect(page.getByRole("button", { name: "Inspect Portal/Services", exact: true })).toBeInViewport();
+  const controls = await boxOf(page, ".perspective-controls");
+  expect(picture.bottom, "the lower cards stand above the floating map controls").toBeLessThanOrEqual(controls.top);
+  expect(await signsOf(page)).toEqual({ above: "false", below: "false", left: "false", right: "false" });
+});
+
+test("a root overview taller than a short frame starts at the top like a page and says there is more below", async ({ page }) => {
+  // Unconnected columns now align, so the old 900px viewport no longer requires vertical overflow.
+  await page.setViewportSize({ width: 1440, height: 400 });
   await page.goto("/?view=local");
   await settled(page);
   const frame = await frameOf(page), picture = await pictureOf(page);
@@ -74,6 +96,29 @@ test("the root overview, taller than the frame, starts at the top like a page an
   // Panned down, the sign moves to where the hidden content now is.
   await dragBy(page, LOCAL_MAP, 0, -300);
   expect((await signsOf(page)).above).toBe("true");
+});
+
+test("independent root columns align and their directory names read as available choices", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/samples/estate/?view=local&mode=2d");
+  await settled(page);
+  const tops = await page.locator(".local-directory-root > .local-column").evaluateAll(items => {
+    // Each card has its own local-column element; compare the first content in each actual x column, not every row.
+    const columns = new Map<number, number>();
+    for (const item of items) {
+      const box = item.getBoundingClientRect();
+      columns.set(box.left, Math.min(columns.get(box.left) ?? Infinity, box.top));
+    }
+    return [...columns.values()];
+  });
+  expect(tops.length).toBeGreaterThan(1);
+  expect(Math.max(...tops) - Math.min(...tops)).toBeLessThan(1);
+  const frame = await frameOf(page), picture = await pictureOf(page);
+  expect(picture.height).toBeLessThan(frame.height);
+  expectFramedWhole(picture.top, picture.bottom, frame.top, frame.bottom, framePadding(frame).vertical);
+  const name = page.getByRole("button", { name: "Inspect Portal", exact: true });
+  expect(await name.evaluate(element => getComputedStyle(element).color)).toBe("rgb(228, 228, 228)");
+  await expect(page.getByRole("button", { name: "Open Portal", exact: true })).toBeEnabled();
 });
 
 test("a picture wider than the frame by more than two paddings starts at the left, with the sign of more at the right", async ({ page }) => {

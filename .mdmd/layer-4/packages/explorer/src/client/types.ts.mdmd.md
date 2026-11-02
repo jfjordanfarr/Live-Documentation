@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-10-31T21:21:48.023Z
+- Generated At: 2026-11-01T22:32:19.355Z
 
 ## Authored
 ### Purpose
@@ -134,7 +134,7 @@ How the scrubber lays its steps out: evenly by step, or by date, where a quiet s
 ##### `ChangeEmphasis` — Summary
 How the files a step of the history changed are told apart in the 3D picture while the history is shown (the owner's
 ask of 2026-10-31): the changed spheres glow, the unchanged ones dim, both, or neither. While the history plays, the
-emphasis fades over the step's time, so that it is gone as the next step's arrives; at rest it holds.
+emphasis holds for the whole displayed commit, in playback and at rest; the next commit replaces the changed set.
 
 #### `CHANGE_EMPHASES` {#symbol-change_emphases}
 - Type: const
@@ -171,9 +171,16 @@ The end of a path a person asked for: a file, perhaps one symbol of it, or a dir
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
+#### `DiscoveryTarget` {#symbol-discoverytarget}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L275)
+
+##### `DiscoveryTarget` — Summary
+The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
+
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L278)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L281)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -181,7 +188,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L304)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L308)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

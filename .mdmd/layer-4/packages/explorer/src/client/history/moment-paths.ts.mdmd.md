@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/moment-paths.ts
-- Generated At: 2026-10-30T15:33:55.887Z
+- Generated At: 2026-11-01T20:26:49.857Z
 
 ## Authored
 ### Purpose
@@ -18,14 +18,14 @@ The ground a path is asked over: today's files and wires, or, while the 3D Local
 ### Public Symbols
 #### `PathGround` {#symbol-pathground}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L26)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L25)
 
 ##### `PathGround` — Summary
 The files and wires a path is asked over, and the names of today's things on them.
 
 #### `todayGround` {#symbol-todayground}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L40)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L39)
 - Returns: [`PathGround`](#symbol-pathground)
 - Parameters: `links`: [`ExplorerLinkPayload`](../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload)[]
 
@@ -34,7 +34,7 @@ Today's ground: the bundle's files and links, every name its own.
 
 #### `momentGround` {#symbol-momentground}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L51)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L50)
 - Returns: [`PathGround`](#symbol-pathground)
 
 ##### `momentGround` — Summary
@@ -42,28 +42,16 @@ A moment's ground: its own graph, and today's things followed to it, and back, t
 
 #### `endFiles` {#symbol-endfiles}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L62)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L61)
 - Parameters: `item`: [`RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem); `ground`: [`PathGround`](#symbol-pathground)
 
 ##### `endFiles` — Summary
 The files an end of a path stands for on the ground: its one file where it stands, or every file under its directory.
-
-#### `reachToday` {#symbol-reachtoday}
-- Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/moment-paths.ts#L76)
-- Returns: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach)
-- Parameters: `reach`: [`Reach`](../panels/sources-facts.ts.mdmd.md#symbol-reach); `ground`: [`PathGround`](#symbol-pathground)
-
-##### `reachToday` — Summary
-A reach found on the ground, said in today's names: a file gone since is dropped, since nothing of today can name
-it. Two names never meet in one today's file, since a file's names are one line of renames; the nearer count is kept
-all the same.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`moment.HistoryMoment`](./moment.ts.mdmd.md#symbol-historymoment) (type-only)
-- [`pathfind.Reach`](../pathfind.ts.mdmd.md#symbol-reach) (type-only)
 - [`directory-state.under`](../views/localView/directory-state.ts.mdmd.md#symbol-under)
 - [`retained-state.RetainedItem`](../views/retained-state.ts.mdmd.md#symbol-retaineditem) (type-only)
 - [`types.ExplorerLinkPayload`](../../shared/types.ts.mdmd.md#symbol-explorerlinkpayload) (type-only)

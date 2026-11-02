@@ -16,8 +16,7 @@ import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type { ExplorerGraphPayload } from "../../shared/types";
 
 /** One step of the history as the view draws it. */
-export interface HistoryMoment {
-  step: number;
+export interface HistoryMoment extends HistoryChanges {
   commit: CommitInfo;
   graph: ExplorerGraphPayload;
   /** The documents the step's files linked to then, by their paths at the step: the moment's Related Docs. */
@@ -28,13 +27,24 @@ export interface HistoryMoment {
   directoryAt(todayDirectory: string): string;
   /** A file of the step, by its path there, as it stands today; null when it is gone or today's bundle lacks it. */
   fileToday(path: string): string | null;
+  /** A file at this moment as a retained identity, including one that has no counterpart in today's bundle. */
+  fileReference(path: string): string;
   /** A directory of the step, by its path there, as it stands today. */
   directoryToday(directory: string): string;
+}
+
+/** The displayed commit's change facts, also usable over today's graph at the last commit while history is open. */
+export interface HistoryChanges {
+  step: number;
   /**
    * The files the step changed, by their paths at the step (2026-10-31): born, renamed, resized, re-kinded, their entry
    * changed, their content changed, and those whose references came, went or changed in count. Empty at the base.
    */
   changed: ReadonlySet<string>;
+  /** Files changed directly, rather than only the other endpoint of a changed reference; their names take priority. */
+  changedFiles: ReadonlySet<string>;
+  /** Paths removed by this step, read before it; retained for containment/change context, never drawn as live files. */
+  deletedFiles: ReadonlySet<string>;
   /** The pairs of files whose wire the step added or changed in count, by `pairKey`, so that the wire can glow with the files. */
   changedPairs: ReadonlySet<string>;
 }

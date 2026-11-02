@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphCamera.ts
-- Generated At: 2026-10-29T14:53:24.564Z
+- Generated At: 2026-11-01T21:06:15.640Z
 
 ## Authored
 ### Purpose
@@ -44,7 +44,7 @@ Frame a group about its own center or an explicit subject, preserving the camera
 
 #### `focusedCameraPosition` {#symbol-focusedcameraposition}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphCamera.ts#L50)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphCamera.ts#L64)
 - Returns: [`CameraPoint`](#symbol-camerapoint)
 - Parameters: `camera`: [`CameraPoint`](#symbol-camerapoint); `lookingAt`: [`CameraPoint`](#symbol-camerapoint); `node`: [`CameraPoint`](#symbol-camerapoint)
 
@@ -53,7 +53,7 @@ Move toward a file without changing the direction from which the person is looki
 
 #### `wheelZoomCamera` {#symbol-wheelzoomcamera}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphCamera.ts#L69)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphCamera.ts#L83)
 - Parameters: `camera`: [`CameraPoint`](#symbol-camerapoint); `target`: [`CameraPoint`](#symbol-camerapoint); `point`: [`CameraPoint`](#symbol-camerapoint)
 
 ##### `wheelZoomCamera` — Summary
@@ -61,7 +61,7 @@ Zoom around the inspected point, keeping its screen position and never reversing
 
 #### `screenAnchorTranslation` {#symbol-screenanchortranslation}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphCamera.ts#L86)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphCamera.ts#L100)
 - Returns: `Vector3`
 - Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `point`: [`CameraPoint`](#symbol-camerapoint)
 

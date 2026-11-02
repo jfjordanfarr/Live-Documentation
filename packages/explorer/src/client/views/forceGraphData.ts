@@ -1,5 +1,4 @@
 import { fileConnections, type FileConnection } from "./fileConnections";
-import { symbolCountOf } from "./forceGraphLayout";
 import { parentDirectory } from "./localView/directory-bands";
 import type { RelatedDocLink } from "../../shared/staticExplorerData";
 import type { ExplorerGraphPayload, ExplorerLinkKind, ExplorerNodePayload } from "../../shared/types";
@@ -10,8 +9,6 @@ export interface SpatialGraphNode extends ExplorerNodePayload {
   directoryPath?: string;
   /** Number of filtered source files below this directory, at every depth. */
   directoryFileCount?: number;
-  /** The public-symbol counts of everything drawn below this directory, at every depth; the hub's volume is the sum of their volumes. */
-  containedSymbolCounts?: readonly number[];
 }
 
 /**
@@ -94,7 +91,6 @@ export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: Expl
         archetype: "directory",
         directoryPath: path,
         directoryFileCount: 0,
-        containedSymbolCounts: [],
         publicSymbols: [],
         dependencies: [],
         dependents: [],
@@ -112,7 +108,6 @@ export function spatialGraphOf(graph: ExplorerGraphPayload, include: (node: Expl
       members.get(parent.directoryPath!)!.push(node.id);
       for (let path = parent.directoryPath!; ; path = parentDirectory(path)) {
         const hub = hubs.get(path)!;
-        (hub.containedSymbolCounts as number[]).push(symbolCountOf(node));
         if (node.archetype !== "related-doc") hub.directoryFileCount = (hub.directoryFileCount ?? 0) + 1;
         if (path === "") break;
       }

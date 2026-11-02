@@ -11,6 +11,7 @@ import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger"
 
 import { requireElement } from "./dom";
 import { escapeHtml } from "./graph-helpers";
+import type { HistoryMoment } from "./history/moment";
 import { renderMarkdown } from "./markdown";
 import { authoredSections, readerOrder, type AuthoredSection } from "./reader-sections";
 import type { InspectionTarget } from "./types";
@@ -48,6 +49,8 @@ export interface DetailPanelOptions {
   files: Record<string, GraphFile>;
   /** Bundled authored documents, keyed by their actual workspace paths. */
   bundledMarkdown?: Readonly<Record<string, string>>;
+  /** The displayed historical structure, when present; old source text is not inferred from it. */
+  history?: () => HistoryMoment | null;
 
   /**
    * Callback when user clicks a node link in the documentation.
@@ -98,6 +101,7 @@ export function createDetailPanel(
   // Track current bundled doc (for non-graph markdown files)
   let currentBundledDoc: { path: string; content: string } | null = null;
   let currentTarget: InspectionTarget | null = null;
+  let evidenceMoment: string | null = null;
 
   const hide = (): void => {
     panel.classList.remove("visible");
@@ -207,19 +211,23 @@ export function createDetailPanel(
   }
 
   function showNode(node: ExplorerNodePayload, symbol?: string): void {
-    if (currentTarget?.kind === "file" && currentTarget.nodeId === node.id && currentTarget.symbol === symbol && currentNode === node) return;
+    const moment = options.history?.() ?? null;
+    const file = files[node.id];
+    const evidence = file ? null : moment?.commit.id ?? null;
+    if (currentTarget?.kind === "file" && currentTarget.nodeId === node.id && currentTarget.symbol === symbol && currentNode === node && evidenceMoment === evidence) return;
+    const scroll = currentTarget?.kind === "file" && currentTarget.nodeId === node.id ? body.scrollTop : 0;
     setLoading(node);
+    evidenceMoment = evidence;
     currentTarget = { kind: "file", nodeId: node.id, ...(symbol ? { symbol } : {}) };
-    downloadButton.hidden = false;
+    downloadButton.hidden = !file;
 
     try {
-      const file = files[node.id];
       body.innerHTML = file
         ? renderDocumentation(file, node, linkContext, symbol)
-        : renderFallbackDetails(node, nodesById);
+        : moment ? renderHistoricalDetails(node, moment) : renderFallbackDetails(node, nodesById);
       attachReaderLinks();
       fillSectionJumps();
-      body.scrollTop = 0;
+      body.scrollTop = scroll;
     } catch (error) {
       console.error(error);
       body.innerHTML = '<p class="error-message">Failed to load documentation for this node.</p>';
@@ -228,15 +236,19 @@ export function createDetailPanel(
 
   /** A directory is read from the bundled graph's file inventory, without a separate data channel. */
   function showDirectory(directory: string): void {
-    if (currentTarget?.kind === "directory" && currentTarget.directory === directory) return;
+    const moment = options.history?.() ?? null;
+    if (currentTarget?.kind === "directory" && currentTarget.directory === directory && evidenceMoment === (moment?.commit.id ?? null)) return;
+    evidenceMoment = moment?.commit.id ?? null;
     reveal();
     currentNode = null;
     currentBundledDoc = null;
     currentTarget = { kind: "directory", directory };
-    title.textContent = directory || "Scan root";
+    const shownDirectory = moment?.directoryAt(directory) ?? directory;
+    title.textContent = shownDirectory || "Scan root";
     downloadButton.hidden = true;
-    const prefix = directory ? `${directory}/` : "";
-    const filesHere = [...nodesById.values()].filter(node => node.id.startsWith(prefix)).sort((a, b) => a.id.localeCompare(b.id));
+    const prefix = shownDirectory ? `${shownDirectory}/` : "";
+    const inventory = moment?.graph.nodes ?? [...nodesById.values()].filter(node => Object.hasOwn(files, node.id));
+    const filesHere = inventory.filter(node => node.id.startsWith(prefix)).sort((a, b) => a.id.localeCompare(b.id));
     const directFiles = filesHere.filter(node => !node.id.slice(prefix.length).includes("/"));
     const subdirectories = [...new Set(filesHere.flatMap(node => {
       const tail = node.id.slice(prefix.length);
@@ -244,8 +256,8 @@ export function createDetailPanel(
       return slash < 0 ? [] : [`${prefix}${tail.slice(0, slash)}`];
     }))].sort();
     body.innerHTML = `<div><p class="reader-prose">${filesHere.length} ${filesHere.length === 1 ? "file" : "files"} in this directory and its subdirectories</p>`
-      + (subdirectories.length ? `<div class="detail-section"><div class="detail-label">Directories</div><div class="detail-content">${subdirectories.map(path => `<div class="dep-item"><a href="#" class="directory-link" data-directory="${escapeHtml(path)}">${escapeHtml(path)}</a></div>`).join("")}</div></div>` : "")
-      + (directFiles.length ? `<div class="detail-section"><div class="detail-label">Files</div><div class="detail-content">${directFiles.map(node => `<div class="dep-item"><a href="#" class="node-link" data-node-id="${escapeHtml(node.id)}">${escapeHtml(node.name)}</a></div>`).join("")}</div></div>` : "")
+      + (subdirectories.length ? `<div class="detail-section"><div class="detail-label">Directories</div><div class="detail-content">${subdirectories.map(path => `<div class="dep-item"><a href="#" class="directory-link" data-directory="${escapeHtml(moment?.directoryToday(path) ?? path)}">${escapeHtml(path)}</a></div>`).join("")}</div></div>` : "")
+      + (directFiles.length ? `<div class="detail-section"><div class="detail-label">Files</div><div class="detail-content">${directFiles.map(node => `<div class="dep-item"><a href="#" class="node-link" data-node-id="${escapeHtml(moment?.fileReference(node.id) ?? node.id)}">${escapeHtml(node.name)}</a></div>`).join("")}</div></div>` : "")
       + `</div>`;
     attachReaderLinks();
     body.scrollTop = 0;
@@ -454,12 +466,14 @@ function renderDependencyItem(
 ): string {
   const target = dep.targetId ? links.nodesById.get(dep.targetId) : undefined;
   const displayPath = target?.codeRelativePath ?? dep.targetId ?? dep.label ?? dep.raw ?? "unknown";
-  const symbolLine = dep.targetSymbol 
-    ? `<div class="dep-symbol">${escapeHtml(dep.targetSymbol)}</div>` 
+  const inspection = target ? fileInspection(target, dep.targetSymbol, links) : undefined;
+  const symbol = inspection?.symbol ?? dep.targetSymbol;
+  const symbolLine = symbol
+    ? `<div class="dep-symbol">${escapeHtml(symbol)}</div>`
     : "";
   
   if (target) {
-    return `<div class="dep-item">${readerLink(fileInspection(target, dep.targetSymbol, links), escapeHtml(displayPath))}${symbolLine}</div>`;
+    return `<div class="dep-item">${readerLink(inspection!, escapeHtml(displayPath))}${symbolLine}</div>`;
   }
   return `<div class="dep-item"><span class="dep-path">${escapeHtml(displayPath)}</span>${symbolLine}</div>`;
 }
@@ -587,6 +601,28 @@ function renderFallbackDetails(
   }
 
   return parts.join("");
+}
+
+/** Read a past-only file from the snapshot's counts and connections, with navigable historical endpoints. */
+function renderHistoricalDetails(selection: ExplorerNodePayload, moment: HistoryMoment): string {
+  const path = moment.fileAt(selection.id);
+  const node = moment.graph.nodes.find(file => file.id === path);
+  if (!node) return renderNodeMetadata(selection);
+  const endpoint = (id: string, count: number): string => {
+    const name = id.slice(id.lastIndexOf("/") + 1);
+    return `<div class="dep-item"><a href="#" class="node-link" data-node-id="${escapeHtml(moment.fileReference(id))}" title="${escapeHtml(id)}">${escapeHtml(name)}</a><span class="dep-symbol">${Number(count)} ${count === 1 ? "reference" : "references"}</span><div class="dep-path">${escapeHtml(id)}</div></div>`;
+  };
+  const idOf = (end: string | { id: string }): string => typeof end === "string" ? end : end.id;
+  const dependencies: string[] = [], dependents: string[] = [];
+  for (const link of moment.graph.links) {
+    const source = idOf(link.source), target = idOf(link.target), count = link.referenceCount ?? 1;
+    if (source === path) dependencies.push(endpoint(target, count));
+    if (target === path) dependents.push(endpoint(source, count));
+  }
+  return `<nav class="reader-jumps" aria-label="Sections" hidden></nav>` + renderNodeMetadata(node)
+    + sectionHtml("Public Symbols", `${Number(node.symbolCount ?? 0)} · names are not carried in this history`, "symbols")
+    + (dependencies.length ? sectionHtml("Dependencies", `<div class="dep-list">${dependencies.join("")}</div>`, "dependencies") : "")
+    + (dependents.length ? sectionHtml("Dependents", `<div class="dep-list">${dependents.join("")}</div>`, "dependents") : "");
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

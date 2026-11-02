@@ -3,15 +3,35 @@
    of dates beneath; and the step panel beside the picture saying what the step changed. Both stand inside the 3D view,
    so they come and go with it; the controls and the tray stand above the open scrubber by the room it asks for. */
 
-.history-scrubber { position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 105; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); color: var(--text-primary); font-size: 12px; }
+.history-scrubber { position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 105; container-type: inline-size; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-deep); color: var(--text); font-size: 12px; }
+.history-controls { display: flex; align-items: center; gap: 12px; }
 .history-scrubber[hidden] { display: none; }
-.history-scrubber button { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; padding: 6px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; }
+.history-scrubber:has(.history-finder:not([hidden])) { z-index: 110; }
+.history-scrubber button { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; padding: 6px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text); cursor: pointer; font: inherit; }
 .history-scrubber button:hover { background: var(--accent-subtle); }
 .history-scrubber button:focus-visible { outline: 2px solid var(--accent); }
 .history-scrubber button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .history-scrubber button[hidden] { display: none; }
+.history-scrubber button:disabled { opacity: .35; cursor: default; }
+.history-playback { display: flex; flex: none; gap: 0; }
+.history-scrubber .history-readout { position: relative; padding-right: 24px; }
+.history-readout::after { content: ""; position: absolute; right: 8px; top: 12px; width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 50%; }
+.history-readout::before { content: ""; position: absolute; right: 5px; top: 22px; width: 6px; height: 1.5px; background: currentColor; transform: rotate(45deg); }
+.history-finder { position: absolute; right: 0; bottom: calc(100% + 8px); width: min(460px, 100%); box-sizing: border-box; padding: 12px; background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px #0006; }
+.history-finder[hidden] { display: none; }
+.history-finder input { width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; font: inherit; font-size: 13px; color: var(--text); background: var(--bg-deep); }
+.history-range-actions { display: flex; align-items: center; gap: 6px; margin: 6px 0; }
+.history-range-actions > span { flex: 1; color: var(--text-panel-muted); }
+.history-commit-results { max-height: min(340px, 45vh); overflow-y: auto; }
+.history-scrubber .history-commit-result { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px; width: 100%; padding: 8px; border-bottom: 1px solid var(--border); font-size: 13px; overflow-wrap: anywhere; }
+.history-commit-meta { color: var(--text-panel-muted); font-size: 12px; }
+@container (max-width: 714px) {
+  .history-controls { gap: 6px; flex-wrap: wrap; }
+  .history-slider { order: -1; flex-basis: 100%; }
+  .history-controls .history-readout { margin-left: auto; }
+}
 /* The speed beside play (2026-10-31): a small select in the scrubber's own type. */
-.history-rate { padding: 4px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-deep); color: var(--text-primary); font: inherit; font-size: 12px; }
+.history-rate { padding: 4px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-deep); color: var(--text); font: inherit; font-size: 12px; }
 .history-rate:focus-visible { outline: 2px solid var(--accent); }
 .history-slider { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .history-track { position: relative; height: 26px; margin-bottom: 3px; cursor: pointer; touch-action: none; }
@@ -40,11 +60,11 @@
 /* The panel is as tall as what it says, never taller than the room between its top margin and the scrubber, where it
    scrolls inside; a one-line step no longer masks the picture with a full-height panel (2026-10-30). The height is the
    content's, so the margins, the room, and its own padding and borders (12px and 1px, top and bottom) come off it. */
-.history-step-panel { position: absolute; left: 18px; top: 18px; max-height: calc(100% - 36px - var(--history-room) - 26px); width: min(360px, calc(45% - 18px)); z-index: 104; overflow: auto; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text-primary); font-size: 13px; box-shadow: 0 8px 24px #0006; }
+.history-step-panel { position: absolute; left: 18px; top: 18px; max-height: calc(100% - 36px - var(--history-room) - 26px); width: min(360px, calc(45% - 18px)); z-index: 104; overflow: auto; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-deep); color: var(--text); font-size: 13px; box-shadow: 0 8px 24px #0006; }
 .history-step-panel[hidden] { display: none; }
 /* The panel's own hide button, at its top right; the subject's words wrap around it. */
 .history-step-hide { float: right; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin: -6px -8px 4px 8px; padding: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--text-panel-muted); cursor: pointer; }
-.history-step-hide:hover { background: var(--accent-subtle); color: var(--text-primary); }
+.history-step-hide:hover { background: var(--accent-subtle); color: var(--text); }
 .history-step-hide:focus-visible { outline: 2px solid var(--accent); }
 /* The panel ends at its padding: the last words' own bottom margin would leave a gap below them that the top does not have. */
 .history-step-content > :last-child { margin-bottom: 0; }
@@ -54,6 +74,9 @@
 .history-step-note { margin: 0 0 10px; color: var(--text-panel-muted); font-size: 12px; line-height: 1.45; }
 .history-step-panel details { border-top: 1px solid var(--border); padding: 6px 0; }
 .history-step-panel summary { cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+.history-step-panel summary::before { content: ""; width: 6px; height: 6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(-45deg); align-self: center; flex: none; }
+.history-step-panel details[open] > summary::before { transform: rotate(45deg); }
+.history-step-panel summary > span:first-child { flex: 1; }
 .history-step-panel summary .history-count { color: var(--text-panel-subtle); }
 .history-step-panel ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
 .history-step-panel li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; overflow-wrap: anywhere; }

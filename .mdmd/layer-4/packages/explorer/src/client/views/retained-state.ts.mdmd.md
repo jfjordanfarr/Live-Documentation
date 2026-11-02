@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/retained-state.ts
-- Generated At: 2026-10-14T18:27:59.376Z
+- Generated At: 2026-11-01T21:06:16.953Z
 
 ## Authored
 ### Purpose
@@ -75,14 +75,14 @@ Release precisely this selection. Other selections, including opened descendants
 - Type: function
 - Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L63)
 - Returns: [`RetainedState`](#symbol-retainedstate)
-- Parameters: `state`: [`RetainedState`](#symbol-retainedstate)
+- Parameters: `state`: [`RetainedState`](#symbol-retainedstate); `item`: [`RetainedItem`](#symbol-retaineditem)
 
 ##### `clearRetainedDirectory` — Summary
 Explicit bulk operation: release this directory and every deliberate selection within it.
 
 #### `subjectAfterRelease` {#symbol-subjectafterrelease}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L72)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L73)
 - Parameters: `previous`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset); `next`: [`PinSet`](./pin-state.ts.mdmd.md#symbol-pinset)
 
 ##### `subjectAfterRelease` — Summary
@@ -90,7 +90,7 @@ Keep an independent inspected file; replace it only when its own pin or explicit
 
 #### `newestRetained` {#symbol-newestretained}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L79)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L80)
 - Returns: [`RetainedItem`](#symbol-retaineditem)
 - Parameters: `state`: [`RetainedState`](#symbol-retainedstate)
 
@@ -99,14 +99,14 @@ The most recently retained item, or null; a path a person asks for starts here.
 
 #### `RetainedWords` {#symbol-retainedwords}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L84)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L85)
 
 ##### `RetainedWords` — Summary
 The words for a retained item, shared by the tray and the search bar.
 
 #### `describeRetained` {#symbol-describeretained}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L98)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/retained-state.ts#L99)
 - Returns: [`RetainedWords`](#symbol-retainedwords)
 - Parameters: `item`: [`RetainedItem`](#symbol-retaineditem)
 

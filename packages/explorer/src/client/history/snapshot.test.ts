@@ -58,13 +58,14 @@ describe("snapshotGraphOf", () => {
     expect(graph.stats).toEqual({ nodes: 3, links: 3, references: 4 });
   });
 
-  it("is sized by the count where the 3D layout reads a file's symbols, and its hubs sum the counts", () => {
+  it("sizes historical files by their symbol count and keeps historical directories uniform", () => {
     const tuning = getDefaultTuning().forceGraph;
     const spatial = spatialGraphOf(snapshotGraphOf(shape), () => true, [], "structure");
     const b = spatial.nodes.find((node) => node.id === "src/b.ts")!;
     expect(spatialNodeValue(b, tuning)).toBe(Math.pow(1 + 3, tuning.symbolScale));
     const src = spatial.nodes.find((node) => node.id === "directory:src")!;
-    expect([...(src.containedSymbolCounts ?? [])].sort()).toEqual([1, 3]);
+    expect(spatialNodeValue(src, tuning)).toBe(4);
+    expect(spatialNodeValue(spatial.nodes.find(node => node.id === "directory:")!, tuning)).toBe(spatialNodeValue(src, tuning));
     // The reciprocal edges merge into one counted pair, as today's references do.
     expect(spatial.links.find((link) => link.kind !== "containment" && link.source === "src/a.ts" && link.target === "src/b.ts")?.count).toBe(3);
   });

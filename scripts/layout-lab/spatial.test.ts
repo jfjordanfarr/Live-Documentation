@@ -33,14 +33,14 @@ it("keeps explicitly retained tests/assets and can include the same documentatio
   expect(() => spatialReport(graph, { ...run, scope: ["gone"] }, getDefaultTuning().forceGraph)).toThrow("no retained file");
 });
 
-it("reports the declared structure separately, with hubs sized by their members and references that pull nothing", () => {
+it("reports the declared structure separately, with uniform hubs and references that pull nothing", () => {
   const tuning = getDefaultTuning().forceGraph;
   const filters = { showTests: false, showAssets: false };
   const tree = spatialReport(graph, run, tuning, 400, filters, [], "structure");
   const network = spatialReport(graph, run, tuning, 400, filters);
   expect(tree.layout).toBe("structure");
   expect(tree.nodes.filter(node => node.kind === "directory")).toEqual([
-    expect.objectContaining({ id: "directory:", directory: "", files: 2, radius: 4 * Math.cbrt(8 + 1) })
+    expect.objectContaining({ id: "directory:", directory: "", files: 2, radius: 4 * Math.cbrt(4) })
   ]);
   expect(tree.links.filter(link => link.kind === "containment")).toHaveLength(2);
   expect(tree.links.filter(link => link.kind === "containment").every(link => link.references === null && link.pulls)).toBe(true);

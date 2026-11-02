@@ -27,8 +27,7 @@ export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, 
   const kinds = new Set(graph.links.map(link => link.kind));
   const rows: SpatialLegendRow[] = Object.values(SPATIAL_NODE_STYLES).filter(style => styles.has(style)).map(style => ({ ...style, shape: "node" }));
   if (graph.nodes.length && symbolScale > 0) {
-    // A directory hub's volume is the sum of its files' volumes.
-    rows.push({ label: styles.has(SPATIAL_NODE_STYLES.directory) ? "Size: public symbols; a folder sums its files" : "Size: public symbols", color: "#aeb8c6", shape: "size" });
+    rows.push({ label: styles.has(SPATIAL_NODE_STYLES.directory) ? "Size: file symbols; folders uniform" : "Size: public symbols", color: "#aeb8c6", shape: "size" });
   }
   const references = [...kinds].some(kind => kind !== "containment" && kind !== "related-doc" && kind !== "cited-by");
   if (references && drawn.references) {

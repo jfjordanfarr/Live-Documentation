@@ -32,14 +32,16 @@ describe("spatial layout grammar", () => {
     expect(spatialNodeRadius(node("many", 63), compact.forceGraph)).toBe(16);
   });
 
-  it("gives a directory hub the volume of its members, so that size is exposed surface at every scale", () => {
+  it("keeps every directory junction the same size across depth, symbol counts and packing presets", () => {
     const tuning = getDefaultTuning().forceGraph;
-    const hub: SpatialNode = { id: "directory:a", publicSymbols: [], containedSymbolCounts: [0, 7, 63] };
-    expect(spatialNodeValue(hub, tuning)).toBe(1 + 8 + 64);
-    expect(spatialNodeValue(hub, tuning)).toBe([0, 7, 63].reduce((sum, count) => sum + spatialNodeValue(node("file", count), tuning), 0));
-    expect(spatialNodeRadius(hub, tuning)).toBeCloseTo(4 * Math.cbrt(73));
-    expect(spatialNodeValue(hub, { ...tuning, symbolScale: 0 })).toBe(3);
-    expect(spatialNodeValue({ ...hub, containedSymbolCounts: [] }, tuning)).toBe(1);
+    for (const directoryPath of ["", "src", "src/deep/nested"]) {
+      const hub: SpatialNode = { id: `directory:${directoryPath}`, directoryPath, publicSymbols: [], symbolCount: 10000 };
+      expect(spatialNodeValue(hub, tuning)).toBe(4);
+      expect(spatialNodeRadius(hub, tuning)).toBeCloseTo(4 * Math.cbrt(4));
+      expect(spatialNodeRadius(hub, { ...tuning, symbolScale: 0 })).toBe(spatialNodeRadius(hub, tuning));
+      expect(spatialNodeRadius(hub, applyLayoutPreset(getDefaultTuning(), "compact").forceGraph)).toBe(spatialNodeRadius(hub, tuning));
+    }
+    expect(spatialNodeRadius(node("file", 63), tuning)).toBe(16);
   });
 
   it("sizes a sphere whose count cannot be read as one with no symbols, so that a bad history file cannot stop the motion", () => {
@@ -75,7 +77,7 @@ describe("spatial layout grammar", () => {
     expect(all.map(link => linkPulls(link, "structure"))).toEqual([true, true, false]);
     expect(all.map(link => linkPulls(link, "connections"))).toEqual([false, false, true]);
     const tuning = getDefaultTuning().forceGraph;
-    const nodes: SpatialNode[] = [{ id: "directory:", publicSymbols: [], containedSymbolCounts: [3, 7] }, node("a", 3), node("b", 7)];
+    const nodes: SpatialNode[] = [{ id: "directory:", directoryPath: "", publicSymbols: [] }, node("a", 3), node("b", 7)];
     const declared = easeSpatialLayout(nodes, all, tuning, "structure");
     // A reference drawn on demand in the structure layout moves nothing...
     expect(declared.nodes).toEqual(easeSpatialLayout(nodes, containment, tuning, "structure").nodes);
@@ -164,14 +166,14 @@ describe("the update energy, the constant strength of a change's motion (ticket 
 
   it("starts a new sphere beside what holds it: a hub at its placed members' centroid, a file at its hub's rest length, a chain one after another, and nothing it cannot place", () => {
     const tuning = getDefaultTuning().forceGraph;
-    const hub = (path: string, counts: number[]): PlaceableNode => ({ id: `directory:${path}`, publicSymbols: [], containedSymbolCounts: counts, directoryPath: path, codeRelativePath: path });
+    const hub = (path: string): PlaceableNode => ({ id: `directory:${path}`, publicSymbols: [], directoryPath: path, codeRelativePath: path });
     const file = (path: string, symbols: number, at?: { x: number; y: number; z: number }): PlaceableNode => ({ ...node(path, symbols), codeRelativePath: path, ...at });
     const nodes: PlaceableNode[] = [
-      { ...hub("", [1, 1, 1, 1]), x: 0, y: 0, z: 0 },
-      hub("a", [1, 1]),
+      { ...hub(""), x: 0, y: 0, z: 0 },
+      hub("a"),
       file("a/one.ts", 1, { x: 100, y: 0, z: 0 }), file("a/two.ts", 1, { x: 100, y: 20, z: 0 }),
       file("a/born.ts", 1),
-      hub("b", [1]), file("b/new.ts", 1),
+      hub("b"), file("b/new.ts", 1),
       file("alone.ts", 1)
     ];
     const containment = (parent: string, child: string): SpatialLink<PlaceableNode> => ({ source: parent, target: child, count: 1, kind: "containment" });

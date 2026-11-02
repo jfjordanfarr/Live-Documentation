@@ -70,6 +70,6 @@ export function renderSpatialReport(report: ReturnType<typeof spatialReport>): s
     + `Bounds: ${fixed(report.bounds.width)} × ${fixed(report.bounds.height)} × ${fixed(report.bounds.depth)} layout units. Sphere overlaps: ${report.overlaps}; largest penetration ${fixed(report.worstOverlap)}.\n\n`
     + `Settings: \`${JSON.stringify(report.tuning)}\`. Filters: \`${JSON.stringify(report.filters)}\`.\n\n`
     + (report.layout === "structure"
-      ? "The declared structure: every file and document hangs from its directory's hub and every hub from its parent's, up to the scan root, by one degree-normalized spring each; a hub holding nothing but one child collapses into it. A hub's volume is the sum of its members' volumes, so size is exposed surface at every scale. The reference pairs are reported with their distances but pull nothing here.\n"
+      ? "The declared structure: every file and document hangs from its directory's hub and every hub from its parent's, up to the scan root, by one degree-normalized spring each; a hub holding nothing but one child collapses into it. Directory junctions have uniform size; file size follows public symbols. The reference pairs are reported with their distances but pull nothing here.\n"
       : "The analyzed connections: file sphere volume grows with exposed symbols plus one baseline unit; coupling shortens the preferred surface gap logarithmically; there are no directory hubs in this layout. The JSON companion carries every node, radius, coordinate and relationship.\n");
 }

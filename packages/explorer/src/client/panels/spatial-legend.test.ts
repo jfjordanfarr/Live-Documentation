@@ -22,7 +22,7 @@ it("adds the path, the frontier, the fading, the folders' size rule and containm
     links: [link("src", "src/a.ts", "containment"), link("src/a.ts", "src/b.ts", "dependency")] };
   const rows = spatialLegendRows(graph, 1, { references: true, path: true, faded: true, frontier: true });
   expect(rows.map(row => row.label)).toEqual([
-    "Implementation", "Directory", "Size: public symbols; a folder sums its files", "Width: references",
+    "Implementation", "Directory", "Size: file symbols; folders uniform", "Width: references",
     "Path", "Dimmed: a hop beyond; click to see more", "Faded: not on the path or hovered", "Contains"
   ]);
   expect(spatialLegendRows({ ...graph, nodes: [] }, 0, { references: true, path: false, faded: false, frontier: false }).map(row => row.shape)).toEqual(["width", "wire"]);

@@ -8,8 +8,8 @@
  * time; its names are the moment's, so a path can run through a file that is
  * gone today, and an end that does not stand at the moment has no files.
  *
- * The search field that offers a path's end searches today's files, so a
- * reach found at a moment is said back in today's names ({@link reachToday}).
+ * Search and path results keep the displayed moment's names. Selection is converted to a persistent historical
+ * reference only when a person chooses it; a reachable past-only file must not disappear from the offered results.
  *
  * Pure-function module: no DOM.
  *
@@ -18,7 +18,6 @@
 
 import type { HistoryMoment } from "./moment";
 import type { ExplorerLinkPayload, ExplorerNodePayload } from "../../shared/types";
-import type { Reach } from "../pathfind";
 import { under } from "../views/localView/directory-state";
 import type { RetainedItem } from "../views/retained-state";
 
@@ -66,21 +65,4 @@ export function endFiles(item: RetainedItem, ground: PathGround): string[] {
   }
   const directory = ground.directoryAt(item.directory);
   return [...ground.nodesById.keys()].filter(id => under(id, directory));
-}
-
-/**
- * A reach found on the ground, said in today's names: a file gone since is dropped, since nothing of today can name
- * it. Two names never meet in one today's file, since a file's names are one line of renames; the nearer count is kept
- * all the same.
- */
-export function reachToday(reach: Reach, ground: PathGround): Reach {
-  const today = (hops: Map<string, number>): Map<string, number> => {
-    const named = new Map<string, number>();
-    for (const [id, count] of hops) {
-      const now = ground.fileToday(id);
-      if (now !== null) named.set(now, Math.min(count, named.get(now) ?? Infinity));
-    }
-    return named;
-  };
-  return { forward: today(reach.forward), reverse: today(reach.reverse) };
 }

@@ -4,14 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-10-31T20:07:00.824Z
+- Generated At: 2026-11-01T20:01:36.868Z
 
 ## Authored
 ### Purpose
-Implements the 3D Local Map’s shared geometry and motion: symbol-sized spheres, hubs sized by their members, coupling-dependent gaps, the rule for which links pull in each layout, the field those settings make, and the force that eases the picture through it until the spheres are still, in the browser and headlessly alike.
+Implements the 3D Local Map’s shared geometry and motion: symbol-sized spheres, uniform directory hubs, coupling-dependent gaps, the rule for which links pull in each layout, the field those settings make, and the force that eases the picture through it until the spheres are still, in the browser and headlessly alike.
 
 ### Notes
-Sphere volume grows from one baseline unit plus the documented public-symbol count; a directory hub's volume is the sum of its members' volumes, so that size means exposed surface at every scale (2026-10-14). A logarithmic coupling term shortens surface gaps, bounded below by collision clearance. `springStrength` gives each wire D3's own rule, one over the smaller of its two ends' pulling-link counts, times the tuning's `linkStrength`, so that one is the picture as it was and the owner can raise the pull between connected neighbours against a weaker pull to the centre ([Turn 7 of the October 17 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)). `symbolCountOf` reads the count a node carries when its symbols' names are not at hand, as at a step of the history, so that a sphere breathes with its symbols at every step (2026-10-18). A count that is not a number of symbols, as a broken or hostile history file can carry, is read as none: the no-network spec's history with markup for a count gave a sphere a radius the motion refuses, and its picture never came to rest (2026-10-21). Neither positions nor symbol counts imply runtime call frequency or code complexity.
+Sphere volume grows from one baseline unit plus the documented public-symbol count; directory hubs use four baseline volume units regardless of descendants, depth or symbol scaling (the [November 1 repairs](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2)). A logarithmic coupling term shortens surface gaps, bounded below by collision clearance. `springStrength` gives each wire D3's own rule, one over the smaller of its two ends' pulling-link counts, times the tuning's `linkStrength`, so that one is the picture as it was and the owner can raise the pull between connected neighbours against a weaker pull to the centre ([Turn 7 of the October 17 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-7)). `symbolCountOf` reads the count a node carries when its symbols' names are not at hand, as at a step of the history, so that a sphere breathes with its symbols at every step (2026-10-18). A count that is not a number of symbols, as a broken or hostile history file can carry, is read as none: the no-network spec's history with markup for a count gave a sphere a radius the motion refuses, and its picture never came to rest (2026-10-21). Neither positions nor symbol counts imply runtime call frequency or code complexity.
 
 Which links pull: references in the connections layout, containment in the structure layout (`linkPulls`); `spatialFieldOf` makes a spring of the pulling ones alone. Every shown link is bound to its actual node objects when membership is fed, in the page and headless twin alike; three-forcegraph draws no line whose ends remain ids. Until 2026-10-16 the revealed Structure references were only unit tubes at the origin. A zero-strength D3 link force originally supplied that binding, but still evaluated every spring on every partial physics tick. Explicit binding removes that repeated work without changing the forces ([the T3 responsiveness repair](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-29.1.record.md#turn-3)). The motion's revision advances only when a call changes positions, so an evaluation-only slice needs no new picture.
 
@@ -66,13 +66,13 @@ One undirected file pair; count is the number of documented references in either
 - Parameters: `node`: [`SpatialNode`](#symbol-spatialnode); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialNodeValue` — Summary
-The value is sphere volume. A file's grows with its exposed symbols plus one baseline unit, so a zero-symbol file still
-has a visible body; a directory hub's is the sum of its members' volumes, so that size means exposed surface at every
-scale (the owner's "pedagogical" invariant, 2026-10-14).
+Sphere volume in baseline units. Files grow with their exposed symbols; every directory is the same four-unit
+junction, independent of depth, contents and symbol scaling. This is the moderate uniform marker of the October 24
+comparison, reaffirmed November 1: hierarchy is carried by containment, not by large ancestors covering their children.
 
 #### `spatialNodeRadius` {#symbol-spatialnoderadius}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L50)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L48)
 - Parameters: `node`: [`SpatialNode`](#symbol-spatialnode); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialNodeRadius` — Summary
@@ -80,7 +80,7 @@ Actual sphere radius, shared by rendering, collision clearance and the command's
 
 #### `spatialLinkDistance` {#symbol-spatiallinkdistance}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L55)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L53)
 - Parameters: `link`: [`SpatialLink`](#symbol-spatiallink); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialLinkDistance` — Summary
@@ -88,7 +88,7 @@ More coupling reduces the desired surface gap with diminishing returns, without 
 
 #### `linkPulls` {#symbol-linkpulls}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L67)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L65)
 - Parameters: `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `linkPulls` — Summary
@@ -99,21 +99,21 @@ that whether such a link should shape the picture can be seen before it is decid
 
 #### `springShare` {#symbol-springshare}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L74)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L72)
 
 ##### `springShare` — Summary
 How hard a pulling link's spring pulls, as a share of a reference's: the tuning's lever for a document's citation, one for the rest.
 
 #### `Placed` {#symbol-placed}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L79)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L77)
 
 ##### `Placed` — Summary
 A point the simulation placed, or the carry did.
 
 #### `PlaceableNode` {#symbol-placeablenode}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L82)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L80)
 - Extends: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `PlaceableNode` — Summary
@@ -121,7 +121,7 @@ What the placement of a new sphere reads of a node beside its position: for a hu
 
 #### `seededDirection` {#symbol-seededdirection}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L90)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L87)
 - Returns: [`Placed`](#symbol-placed)
 
 ##### `seededDirection` — Summary
@@ -129,7 +129,7 @@ A unit vector seeded by the id, the same on every machine, so that a born sphere
 
 #### `placeNewSpheres` {#symbol-placenewspheres}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L107)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L104)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`PlaceableNode`](#symbol-placeablenode)
 
@@ -144,7 +144,7 @@ start of each sphere placed here.
 
 #### `springStrength` {#symbol-springstrength}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L155)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L152)
 - Parameters: `edge`: `L`; `links`: `L`[]
 - Constraints: [`SpatialNode`](#symbol-spatialnode), [`SpatialLink`](#symbol-spatiallink)
 
@@ -155,7 +155,7 @@ spring keeps full strength because the leaf has degree one. Counts come from pul
 
 #### `MOTION` {#symbol-motion}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L172)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L169)
 - Returns: [`MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings)
 
 ##### `MOTION` — Summary
@@ -163,28 +163,28 @@ The motion's step and drag: the probe's smooth control, which the owner found "q
 
 #### `COLLISION_STIFFNESS` {#symbol-collision_stiffness}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L175)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L172)
 
 ##### `COLLISION_STIFFNESS` — Summary
 How hard two spheres closer than their clearance push apart, per unit of overlap.
 
 #### `STILL_FRACTION` {#symbol-still_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L178)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L175)
 
 ##### `STILL_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, below which the spheres count as still.
 
 #### `QUIET_TICKS` {#symbol-quiet_ticks}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L181)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L178)
 
 ##### `QUIET_TICKS` — Summary
 How many still ticks in a row end the easing.
 
 #### `UNFOLDED_FRACTION` {#symbol-unfolded_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L189)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L186)
 
 ##### `UNFOLDED_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
@@ -194,7 +194,7 @@ hundredth of the picture's size, they would stay far too small (measured 2026-10
 
 #### `spatialFieldOf` {#symbol-spatialfieldof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L196)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L193)
 - Returns: [`SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -206,7 +206,7 @@ Links whose ends are not among the nodes are left out, as D3 would refuse them.
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L223)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L220)
 
 ##### `MotionStart` — Summary
 How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
@@ -215,7 +215,7 @@ forces, which rearrange the whole and leave the old places no reference.
 
 #### `MotionForce (interface)` {#symbol-motionforce-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L226)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L223)
 - Extends: `Force`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -224,7 +224,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L240)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L237)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -232,7 +232,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L273)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L270)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -250,14 +250,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L366)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L363)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L389)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L386)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

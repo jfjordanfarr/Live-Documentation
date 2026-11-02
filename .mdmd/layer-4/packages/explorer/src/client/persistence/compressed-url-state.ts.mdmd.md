@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/compressed-url-state.ts
-- Generated At: 2026-10-22T17:22:32.799Z
+- Generated At: 2026-11-01T21:06:15.155Z
 
 ## Authored
 ### Purpose
@@ -15,7 +15,7 @@ Encodes the Explorer's portable state, including the map subject and independent
 
 - Originated in Step 9 of the [March 23 Membrane Map implementation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/03/2026-03-23.1.md), using lz-string for comprehensive shareable state.
 - [View consolidation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-4) introduced version 2. Version 1 Force Graph views become Local Map in 3D; Membrane/Circuit views become 2D, with their deepest opened directories retained. Retired camera and expanded-card fields are no longer emitted.
-- Explicit snapshots are always written, including an empty Local Map: a bare URL may instead land on a board. The data-source parameter survives writes. Missing files, directories and pins are scrubbed against the current graph, and so is a destination whose file is gone or whose directory holds no live file.
+- Explicit snapshots are always written, including an empty Local Map: a bare URL may instead land on a board. The data-source parameter survives writes. Missing files, directories and pins are scrubbed against the selection lookup: today’s graph plus validated historical identities when the bundle carries history. Destinations follow the same rule.
 - Open evidence rides the optional `i` field independently of the subject's `n`: a file and optional symbol, a directory, or a bundled document and optional fragment. An omitted or malformed target leaves the reader closed; closing evidence omits only that target. This preserves the investigation the owner chose to share in [October 19 Turn 19](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#turn-19), with the inspect-first grammar accepted in [Turn 24](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-19.1.SUMMARIZED.md#turn-24).
 - Scrubbing a missing evidence target does not promote it to the map subject or change the retained pins. A missing public symbol falls back to its surviving file; the existing Internals endpoint remains a distinct valid target. Bundled evidence must be an own entry in the supplied document inventory, including an empty document. Fragment existence is resolved by the reader, not guessed from source.
 - The path's destination (2026-10-14, [Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)) rides the snapshot as `x`: a file `n` with perhaps one symbol `s`, or a directory `d`. The path starts at the newest pin, which the snapshot already carries, so the four loose parameters `from`, `to`, `fromSymbol` and `toSymbol` that rode beside it, and the `preservePath` option that kept them, are gone.
@@ -28,6 +28,8 @@ Optional layout settings carry both representations’ packing and spatial encod
 
 The moment of the history (2026-10-18, ticket C4 of [the change-over-time plan](../../../../../../../.mdmd/layer-3/change-over-time.mdmd.md#open-questions) and its scenario 9): the commit the 3D Local Map shows rides as `h` and the authors toggle as `b` (the plan's C8, "include that in share links"), both left out for today without authors, so that a link to a moment opens on it; neither is part of the place Back returns to, as pins are not, so scrubbing rewrites the entry rather than walking the history through every step. Whether the commit is in the sequence is the sequence's to say, so the scrub against the live nodes leaves it.
 - `j` (2026-10-22) carries whether the citing documents are shown, as `r` carries the cited ones; a link that omits it keeps the viewer's own setting.
+
+The [November 1 repairs](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2) added optional `g` for a discovered file or directory, independent of open evidence. Closing the reader retains this context; a new exploration or Clear releases it. An old address has no explicit discovery, so the root derives it from valid open evidence. Historical references are validated against their sequence before scrubbing, and known historical directories can survive absence from today’s inventory.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -45,7 +47,7 @@ minimize serialized size while remaining readable in code.
 
 #### `UrlStateSnapshot` {#symbol-urlstatesnapshot}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L97)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L99)
 
 ##### `UrlStateSnapshot` — Summary
 Application-level state snapshot that maps 1:1 with the URL.
@@ -54,7 +56,7 @@ This is what the controller produces and consumes; the
 
 #### `DEFAULT_SNAPSHOT` {#symbol-default_snapshot}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L129)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L132)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `DEFAULT_SNAPSHOT` — Summary
@@ -64,7 +66,7 @@ shows (2026-10-16; until then this said assets shown and every written link carr
 
 #### `snapshotToPayload` {#symbol-snapshottopayload}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L150)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L153)
 - Returns: [`CompressedPayload`](#symbol-compressedpayload)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
@@ -74,7 +76,7 @@ Omits fields that match defaults to keep the output small.
 
 #### `payloadToSnapshot` {#symbol-payloadtosnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L210)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L215)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `payload`: [`CompressedPayload`](#symbol-compressedpayload)
 
@@ -84,7 +86,7 @@ Applies version migrations and defaults for missing fields.
 
 #### `compressSnapshot` {#symbol-compresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L275)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L284)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `compressSnapshot` — Summary
@@ -92,7 +94,7 @@ Compress a snapshot into a URL-safe string.
 
 #### `decompressSnapshot` {#symbol-decompresssnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L284)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L293)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `decompressSnapshot` — Summary
@@ -101,7 +103,7 @@ Returns the default snapshot if decompression or parsing fails.
 
 #### `scrubSnapshot` {#symbol-scrubsnapshot}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L304)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L313)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot); `nodesById`: `ReadonlyMap`
 
@@ -114,7 +116,7 @@ Pure function — returns a new snapshot; does not mutate the input.
 
 #### `readUrlState` {#symbol-readurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L374)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L387)
 - Returns: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `readUrlState` — Summary
@@ -123,7 +125,7 @@ Falls back to defaults if no `?s=` parameter is present.
 
 #### `writeUrlState` {#symbol-writeurlstate}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L385)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/compressed-url-state.ts#L398)
 - Parameters: `snapshot`: [`UrlStateSnapshot`](#symbol-urlstatesnapshot)
 
 ##### `writeUrlState` — Summary
@@ -141,6 +143,7 @@ Preserves the `?data=` parameter if present (used for custom data sources).
 - [`navigation.readPerspective`](./navigation.ts.mdmd.md#symbol-readperspective)
 - [`navigation.readSpatialLayout`](./navigation.ts.mdmd.md#symbol-readspatiallayout)
 - [`navigation.readView`](./navigation.ts.mdmd.md#symbol-readview)
+- [`types.DiscoveryTarget`](../types.ts.mdmd.md#symbol-discoverytarget) (type-only)
 - [`types.InspectionTarget`](../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 - [`types.LocalMapPerspective`](../types.ts.mdmd.md#symbol-localmapperspective) (type-only)
 - [`types.PathDestination`](../types.ts.mdmd.md#symbol-pathdestination) (type-only)

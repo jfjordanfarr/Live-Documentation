@@ -360,7 +360,7 @@
     padding: 10px 12px;
     text-align: left;
     font: inherit;
-    color: var(--text-primary);
+    color: var(--text);
     background: transparent;
     cursor: pointer;
 }
@@ -698,12 +698,12 @@
     border-left-color: var(--accent);
 }
 
-.dep-item a.node-link {
+.dep-item a.node-link, .dep-item a.directory-link {
     color: var(--color-path);
     text-decoration: none;
 }
 
-.dep-item a.node-link:hover {
+.dep-item a.node-link:hover, .dep-item a.directory-link:hover {
     text-decoration: underline;
     color: var(--color-path-hover);
 }
@@ -829,7 +829,7 @@
     flex: 1;
     min-width: 0;
     font: inherit;
-    color: var(--text-primary);
+    color: var(--text);
     background: var(--bg-deep);
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -985,7 +985,7 @@ details.tuning-subsection > summary { cursor: pointer; }
 /* A group inside a group, such as the 3D layout's forces, spacing and appearance: named more quietly than its parent. */
 .tuning-subsection .tuning-subsection { margin: 8px 0 12px; }
 .tuning-subsection .tuning-subsection > .subsection-label { color: var(--text-muted); border-bottom: none; padding-bottom: 0; }
-.tuning-export { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-deep); color: var(--text-primary); font: inherit; cursor: pointer; }
+.tuning-export { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-deep); color: var(--text); font: inherit; cursor: pointer; }
 .tuning-export:hover, .tuning-export:focus-visible { border-color: var(--accent); outline: 1px solid var(--accent); }
 
 .subsection-label {
@@ -1015,6 +1015,11 @@ details.tuning-subsection > summary { cursor: pointer; }
 /* Sidebar Footer */
 .sidebar-footer {
     margin-top: auto;
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    border-top: 1px solid var(--border);
     background: var(--bg-deep);
 }
 

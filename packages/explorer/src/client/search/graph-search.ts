@@ -78,7 +78,7 @@ const DIRECTORY_LIMIT = 6;
 const SYMBOL_CAP = 5;
 
 /** Every directory above the files, the scan root as "", deepest last within a branch. */
-export function directoriesOf(nodes: readonly ExplorerNodePayload[]): string[] {
+export function directoriesOf(nodes: readonly Pick<ExplorerNodePayload, "id">[]): string[] {
   const seen = new Set<string>([""]);
   for (const node of nodes) {
     const parts = node.id.split("/");

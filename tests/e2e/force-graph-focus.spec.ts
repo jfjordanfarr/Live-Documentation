@@ -20,7 +20,11 @@ async function expectFocused(page: Page, id: string): Promise<void> {
   await expect(label).toBeVisible();
   await expect.poll(() => page.locator("#graph-svg").evaluate(element => {
     const marker = element.querySelector<HTMLElement>(".force-graph-focus")!;
-    return Math.hypot(parseFloat(marker.style.left) - element.clientWidth / 2, parseFloat(marker.style.top) - element.clientHeight / 2);
+    const frame = element.getBoundingClientRect();
+    const controls = [...document.querySelectorAll<HTMLElement>(".perspective-controls:not([hidden]), .history-scrubber:not([hidden])")]
+      .map(control => control.getBoundingClientRect()).filter(box => box.width && box.top > frame.top && box.bottom <= frame.bottom + 1);
+    const bottom = Math.min(frame.bottom, ...controls.map(box => box.top)) - frame.top;
+    return Math.hypot(parseFloat(marker.style.left) - element.clientWidth / 2, parseFloat(marker.style.top) - bottom / 2);
   })).toBeLessThan(8);
 }
 
@@ -63,7 +67,7 @@ async function uncover(page: Page, id: string): Promise<{ x: number; y: number }
   throw new Error(`${id} stayed covered by nearer spheres after eight turns of the camera`);
 }
 
-test("a focused URL centers the actual graph node and opens that file's details", async ({ page }) => {
+test("a focused URL centers the actual graph node in the uncovered frame and opens its details", async ({ page }) => {
   await observeGraph(page);
   await page.goto(`/?view=local&mode=3d&node=${encodeURIComponent(GRAPH)}`);
   await expectFocused(page, GRAPH);
@@ -113,6 +117,8 @@ test("manual pan survives a 2D and 3D round trip without restarting the settled 
   // Chromium; this is setup for navigation assertions, not a frame-time benchmark.
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
   const canvas = (await page.locator("#graph-svg canvas").boundingBox())!;
+  const position = (): Promise<{ x: number; y: number }> => page.locator(".force-graph-focus").evaluate(element => ({ x: parseFloat((element as HTMLElement).style.left), y: parseFloat((element as HTMLElement).style.top) }));
+  const centered = await position();
   // File-pair aggregation changes placement. Pan the background: a press on
   // a sphere invokes the library's node drag and reheats the simulation.
   let x = 0, y = 0, background = false;
@@ -132,7 +138,6 @@ test("manual pan survives a 2D and 3D round trip without restarting the settled 
   }
   await page.mouse.up({ button: "right" });
   await expect(page.getByRole("menu", { name: "Item actions" }), "a camera pan is not a context request").toBeHidden();
-  const position = (): Promise<{ x: number; y: number }> => page.locator(".force-graph-focus").evaluate(element => ({ x: parseFloat((element as HTMLElement).style.left), y: parseFloat((element as HTMLElement).style.top) }));
   let previous = await position();
   let stillFrames = 0;
   await expect.poll(async () => {
@@ -142,7 +147,7 @@ test("manual pan survives a 2D and 3D round trip without restarting the settled 
     return stillFrames;
   }, { intervals: [100], timeout: 5000 }).toBeGreaterThanOrEqual(3);
   const before = await position();
-  expect(Math.hypot(before.x - canvas.width / 2, before.y - canvas.height / 2)).toBeGreaterThan(20);
+  expect(Math.hypot(before.x - centered.x, before.y - centered.y)).toBeGreaterThan(20);
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await page.waitForTimeout(800);

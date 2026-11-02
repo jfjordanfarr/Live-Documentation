@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/moment.ts
-- Generated At: 2026-10-22T16:47:54.069Z
+- Generated At: 2026-11-01T22:32:18.358Z
 
 ## Authored
 ### Purpose
@@ -20,9 +20,17 @@ The type of a moment of the history the 3D Local Map shows in place of today: th
 #### `HistoryMoment` {#symbol-historymoment}
 - Type: interface
 - Source: [source](../../../../../../../packages/explorer/src/client/history/moment.ts#L19)
+- Extends: [`HistoryChanges`](#symbol-historychanges)
 
 ##### `HistoryMoment` — Summary
 One step of the history as the view draws it.
+
+#### `HistoryChanges` {#symbol-historychanges}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/history/moment.ts#L37)
+
+##### `HistoryChanges` — Summary
+The displayed commit's change facts, also usable over today's graph at the last commit while history is open.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

@@ -118,10 +118,15 @@ test("a closed box opens in place, the membrane growing from the box while the p
   await expect(testCard).toHaveCount(1);
   await expect(testCard.locator(".symbol-row:not(.internals-row)")).toHaveCount(0);
   await expect(testCard.getByRole("button", { name: /^\+\d+\ssymbols$/ })).toHaveCount(0);
-  // The label the person clicked through to stands where the box was: what was acted on keeps its place.
+  // The unfolding began at the clicked box (asserted above). The final camera may recover the expanded picture's
+  // frame; its directory identity and Close remain inside that frame instead of being held offscreen indefinitely.
   const opened = (await label(page, LIVE_DOCS).boundingBox())!;
-  expect(Math.abs(opened.x - before.x)).toBeLessThan(40);
-  expect(Math.abs(opened.y - before.y)).toBeLessThan(40);
+  const frame = (await page.locator("#view-map").boundingBox())!;
+  expect(opened.x).toBeGreaterThanOrEqual(frame.x);
+  expect(opened.y).toBeGreaterThanOrEqual(frame.y);
+  expect(opened.x + opened.width).toBeLessThanOrEqual(frame.x + frame.width);
+  expect(opened.y + opened.height).toBeLessThanOrEqual(frame.y + frame.height);
+  await expect(label(page, LIVE_DOCS).locator(".local-directory-close")).toBeInViewport();
   await label(page, LIVE_DOCS).locator(".local-directory-close").click();
   await settled(page);
   await expect(box(page, LIVE_DOCS)).toBeVisible();

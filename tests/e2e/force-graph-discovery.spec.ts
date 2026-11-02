@@ -71,6 +71,13 @@ test("with nothing asked about, the connections layout starts at the declared en
   // A frontier sphere's name says how many of its connections the picture leaves out.
   const beyond = [...scope.beyond.entries()].filter(([id]) => frontier(id));
   expect(beyond.length, "the frontier has connections beyond it").toBeGreaterThan(0);
+  // The amount omitted stays visible in a short viewport, including while the person scrolls through Tuning.
+  await page.setViewportSize({ width: 1065, height: 530 });
+  await expect(page.locator("#stats-line")).toBeInViewport({ ratio: 1 });
+  await page.locator(".sidebar-details > summary").click();
+  await page.locator(".tuning-export").scrollIntoViewIfNeeded();
+  await expect(page.locator("#stats-line")).toBeInViewport({ ratio: 1 });
+  await page.locator(".tuning-export").click({ trial: true });
 });
 
 test("a pin is asked about: its hops are the picture, the hops lever narrows it, and the structure layout starts at the root", async ({ page }) => {
@@ -113,7 +120,7 @@ test("a pin is asked about: its hops are the picture, the hops lever narrows it,
   expect(root.counts.shown, "the root's own files are shown; the rest are not").toBeLessThan(40);
 });
 
-test("the inspected file is asked about, so the picture grows from it and recedes when the reader closes; an open directory is shown whole", async ({ page }) => {
+test("discovery survives closing and sharing the reader; an open directory is shown whole", async ({ page }) => {
   // Each picture enters over the tuning's frames and settles on screen: the start takes some forty seconds of the software renderer.
   test.setTimeout(300_000);
   const pin = "packages/generator/src/generator.ts";
@@ -135,8 +142,14 @@ test("the inspected file is asked about, so the picture grows from it and recede
   expect(grown.counts.shown).toBeGreaterThan(before.counts.shown);
   await page.getByRole("button", { name: "Close" }).first().click();
   await settled(page);
-  const receded = await shown(page);
-  expect([...receded.ids].sort(), "the growth recedes with the reader; the pin's picture stays").toEqual([...before.ids].sort());
+  const closed = await shown(page);
+  expect([...closed.ids].sort(), "Close keeps the discovered neighborhood").toEqual([...grown.ids].sort());
+  const shared = page.url();
+  await page.goto("about:blank");
+  await page.goto(shared);
+  await settled(page);
+  await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
+  expect([...(await shown(page)).ids].sort(), "the closed-reader address keeps discovery independently").toEqual([...grown.ids].sort());
 
   await page.goto(entry({ openDirectories: new Set(["packages/explorer/src/client/views"]) }));
   await settled(page);

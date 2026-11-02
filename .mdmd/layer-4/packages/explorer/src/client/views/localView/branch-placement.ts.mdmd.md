@@ -22,6 +22,8 @@ Places the cards and lanes of a retained Local Map exploration on the vertical a
 
 Boundary-alignment candidates use validated inclusive column intervals whose top or bottom variables share node IDs. Overlapping groups merge; independent adjacent runs remain separate. Existing containment, labels, sibling separation and neck constraints remain in force. The returned `optimal` flag describes this constrained linear solve, not a globally optimal count of outline steps. A separate row-item list lets a drawn directory price its directly owned loose-file bucket without changing containment. These distinctions follow [the October13 refinement](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
+The November 1 root-framing repair applies neck overlap only to drawn membranes. After the linear solve, disconnected constraint components align at their own content origins. Translating a complete component preserves all inequalities and the objective, while an actual wire or membrane still couples its columns. This prevents an invisible root from producing an arbitrary staircase. See the [accepted review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

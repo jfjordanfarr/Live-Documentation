@@ -45,6 +45,8 @@ export interface SearchBarOptions {
  *
  */
 export interface SearchBar {
+  /** Replace the available subjects with the graph at the moment being viewed. */
+  setIndex(index: SearchIndex): void;
   /**
    * The first field shows the newest pin; the second appears once there is one, shows the destination asked, and
    * offers what the reach from the newest pin holds.
@@ -75,7 +77,7 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   const localMap = requireElement("view-map");
   const askWords = destinationInput.placeholder;
 
-  const everything: SearchScope = { index: options.index };
+  let everything: SearchScope = { index: options.index };
   let reachShown: Reach | null = null;
   let destinationScopeShown: SearchScope = everything;
 
@@ -100,6 +102,11 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
   });
 
   return {
+    setIndex(index): void {
+      if (everything.index === index) return;
+      everything = { index };
+      destinationScopeShown = reachShown ? destinationScope(index, reachShown) : everything;
+    },
     sync(newest, asked, reach, localMapShown): void {
       report.hidden = !localMapShown || !asked;
       subject.show(newest?.name ?? "");
@@ -108,7 +115,7 @@ export function createSearchBar(options: SearchBarOptions): SearchBar {
       destinationGroup.hidden = !newest;
       if (reach !== reachShown) {
         reachShown = reach;
-        destinationScopeShown = reach ? destinationScope(options.index, reach) : everything;
+        destinationScopeShown = reach ? destinationScope(everything.index, reach) : everything;
       }
       const connects = !reach || reach.forward.size + reach.reverse.size > 0;
       destinationInput.placeholder = connects || !newest ? askWords : `Nothing connects to ${newest.name}`;

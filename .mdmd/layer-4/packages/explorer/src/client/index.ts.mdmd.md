@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-10-30T15:33:56.390Z
+- Generated At: 2026-11-01T21:06:14.837Z
 
 ## Authored
 ### Purpose
@@ -60,12 +60,13 @@ _No public symbols detected_
 - [`graph-helpers.buildTestCoverageMap`](./graph-helpers.ts.mdmd.md#symbol-buildtestcoveragemap)
 - [`graph-helpers.getInputById`](./graph-helpers.ts.mdmd.md#symbol-getinputbyid)
 - [`graph-helpers.resolveLinkEndpoint`](./graph-helpers.ts.mdmd.md#symbol-resolvelinkendpoint)
+- [`file-identity.historicalDirectories`](./history/file-identity.ts.mdmd.md#symbol-historicaldirectories)
+- [`file-identity.historicalNode`](./history/file-identity.ts.mdmd.md#symbol-historicalnode)
 - [`history-control.createHistoryControl`](./history/history-control.ts.mdmd.md#symbol-createhistorycontrol)
 - [`history-control.isHistorySequence`](./history/history-control.ts.mdmd.md#symbol-ishistorysequence)
 - [`moment-paths.PathGround`](./history/moment-paths.ts.mdmd.md#symbol-pathground)
 - [`moment-paths.endFiles`](./history/moment-paths.ts.mdmd.md#symbol-endfiles)
 - [`moment-paths.momentGround`](./history/moment-paths.ts.mdmd.md#symbol-momentground)
-- [`moment-paths.reachToday`](./history/moment-paths.ts.mdmd.md#symbol-reachtoday)
 - [`moment-paths.todayGround`](./history/moment-paths.ts.mdmd.md#symbol-todayground)
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`layout-presets.applyLayoutSettings`](./layout-presets.ts.mdmd.md#symbol-applylayoutsettings)

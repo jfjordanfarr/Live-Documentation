@@ -137,6 +137,7 @@ export class LocalViewController implements LocalViewApi {
     }
   };
   private renderedPath = false;
+  private directoryArrivalPending = false;
   private restoreExplorationCamera = false;
   private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
   /** Shared pins are owned by the application, not this renderer. */
@@ -225,6 +226,7 @@ export class LocalViewController implements LocalViewApi {
   };
 
   private readonly handleWheel = (event: WheelEvent): void => {
+    this.directoryArrivalPending = false;
     const { state } = this.options;
     if ((state.view !== "map" || state.perspective !== "2d")) {
       return;
@@ -586,7 +588,19 @@ export class LocalViewController implements LocalViewApi {
     const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
     const label = `.local-directory-label[data-directory="${CSS.escape(directory)}"]`;
     const focusSelector = `${label} .local-directory-open, ${label} .local-directory-close, .local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-open`;
-    return this.captureExplorationFrame(selector, focusSelector, ".local-file-inspect, .local-directory-closed__name, .empty-hint");
+    const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-inspect, .local-directory-closed__name, .empty-hint");
+    return { ...frame, afterRender: () => {
+      frame.afterRender();
+      this.directoryArrivalPending = this.isShown();
+      if (!this.stage?.move) this.settleDirectoryArrival();
+    } };
+  }
+
+  /** Keep the opened identity through its unfolding, then recover usable space; a person's camera gesture cancels this. */
+  settleDirectoryArrival(): void {
+    if (!this.directoryArrivalPending) return;
+    this.directoryArrivalPending = false;
+    if (this.isShown()) this.settleIntoFrame();
   }
 
   /** A pin or opening leaves path mode without restoring the former exploration camera. */
@@ -944,8 +958,8 @@ export class LocalViewController implements LocalViewApi {
     const layer = this.container.parentElement ?? this.viewport;
     const view = this.viewport.getBoundingClientRect();
     const left = layer.offsetLeft, top = layer.offsetTop, width = layer.offsetWidth, height = layer.offsetHeight;
-    const covered = this.coveredWidth({ left: view.left + left, top: view.top + top, right: view.left + left + width, bottom: view.top + top + height, width });
-    return { left, top, width: width - covered, height };
+    const frame = { left: view.left + left, top: view.top + top, right: view.left + left + width, bottom: view.top + top + height, width };
+    return { left, top, width: width - this.coveredWidth(frame), height: this.uncoveredHeight(frame) };
   }
 
   /**
@@ -960,6 +974,15 @@ export class LocalViewController implements LocalViewApi {
     return frame.width - covered < 240 ? 0 : covered;
   }
 
+  /** Keep a fit above the persistent floating controls, using their actual boxes at this viewport size. */
+  private uncoveredHeight(frame: { left: number; top: number; right: number; bottom: number }): number {
+    let bottom = frame.bottom;
+    for (const box of this.options.bottomObstructions?.() ?? []) {
+      if (box.right > frame.left && box.left < frame.right && box.top >= frame.top && box.top < bottom) bottom = box.top;
+    }
+    return Math.max(1, bottom - frame.top);
+  }
+
   /**
    * The frame a fit is computed for: the map layer's own box under the toolbar, measured with its transform reset,
    * less what the open reader covers. The layer's top is kept for {@link keepContentPutWhenLayerMoves}.
@@ -968,7 +991,7 @@ export class LocalViewController implements LocalViewApi {
     const layer = this.container.parentElement ?? this.viewport;
     const rect = withTransformReset(this.container, () => layer.getBoundingClientRect());
     this.layerTop = rect.top;
-    return { left: rect.left, top: rect.top, width: rect.width - this.coveredWidth(rect), height: rect.height };
+    return { left: rect.left, top: rect.top, width: rect.width - this.coveredWidth(rect), height: this.uncoveredHeight(rect) };
   }
 
   /**
@@ -1130,6 +1153,7 @@ export class LocalViewController implements LocalViewApi {
       if ((event.target as HTMLElement | null)?.closest?.(".node-card, .pathfind-toolbar, button, [role=button], input, select, a")) {
         return;
       }
+      this.directoryArrivalPending = false;
       this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
       if (this.pointers.size === 2) {
         const [a, b] = [...this.pointers.values()];

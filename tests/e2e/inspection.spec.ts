@@ -325,7 +325,7 @@ test("keys typed in the full-screen reader do not reach the World Map behind it"
   await expect(page.locator("#view-world .world-help")).not.toHaveClass(/\bon\b/u);
 });
 
-test("a direct 3D Pin and sphere inspection preserve subject and camera across perspective changes", async ({ page }) => {
+test("3D Pin keeps the camera, inspection preserves its bearing and stays clear of the reader, and both keep the subject", async ({ page }) => {
   await observeGraph(page);
   await page.goto(`/samples/estate/?view=local&mode=3d&node=${encodeURIComponent(A)}`);
   // The picture enters over the tuning's frames and then settles (discovery, 2026-10-31): longer than a default wait.
@@ -336,16 +336,28 @@ test("a direct 3D Pin and sphere inspection preserve subject and camera across p
     const observed = (window as unknown as { renderedGraph: { camera: Camera } }).renderedGraph.camera;
     return { position: observed.position.toArray(), matrix: [...observed.matrixWorld.elements] };
   });
+  const beforePin = await camera();
   await page.mouse.move(point.x, point.y);
   await page.getByRole("button", { name: "Pin PaymentResultModel.cs", exact: true }).click();
   expect(snapshot(page)).toMatchObject({
     selectedNodeId: A, pinSet: { entries: [{ nodeId: B, symbol: "*" }] }, inspection: null
   });
+  expect(await camera(), "Pin does not steer the camera").toEqual(beforePin);
   const before = await camera();
   await page.mouse.click(point.x, point.y);
   await expect(page.locator("#detail-panel.visible")).toContainText(B);
   expect(snapshot(page).selectedNodeId).toBe(A);
-  expect(await camera()).toEqual(before);
+  const canvas = (await page.locator("#graph-svg").boundingBox())!;
+  const readerLeft = await page.locator("#detail-panel").evaluate(element => {
+    const panel = element as HTMLElement;
+    return (panel.offsetParent ?? document.body).getBoundingClientRect().left + panel.offsetLeft;
+  });
+  await expect.poll(async () => {
+    const target = (await renderedNodes(page)).find(node => node.id === B)!;
+    return target.x - target.screenRadius >= canvas.x && target.x + target.screenRadius <= readerLeft;
+  }, { message: "the inspected sphere remains in the space beside the reader" }).toBe(true);
+  const after = await camera();
+  for (const i of [0, 1, 2, 4, 5, 6, 8, 9, 10]) expect(after.matrix[i], "framing preserves the viewing direction").toBeCloseTo(before.matrix[i], 7);
   await page.getByRole("button", { name: "2D", exact: true }).click();
   await expect(card(page, A)).toBeVisible();
   await expect(page.locator("#detail-panel.visible")).toContainText(B);

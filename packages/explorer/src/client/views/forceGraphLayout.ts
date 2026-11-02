@@ -12,8 +12,8 @@ export interface SpatialNode extends SimulationNodeDatum {
   publicSymbols: readonly string[];
   /** The public-symbol count when the names are not at hand, as at a step of the history (2026-10-18); `publicSymbols.length` otherwise. */
   symbolCount?: number;
-  /** A directory hub's members' public-symbol counts, at every depth; its volume is the sum of theirs (2026-10-14). */
-  containedSymbolCounts?: readonly number[];
+  /** A directory junction, including the scan root as the empty path; its size is independent of its descendants. */
+  directoryPath?: string;
 }
 
 /**
@@ -36,14 +36,12 @@ export interface SpatialLink<N extends SpatialNode = SpatialNode> {
 }
 
 /**
- * The value is sphere volume. A file's grows with its exposed symbols plus one baseline unit, so a zero-symbol file still
- * has a visible body; a directory hub's is the sum of its members' volumes, so that size means exposed surface at every
- * scale (the owner's "pedagogical" invariant, 2026-10-14).
+ * Sphere volume in baseline units. Files grow with their exposed symbols; every directory is the same four-unit
+ * junction, independent of depth, contents and symbol scaling. This is the moderate uniform marker of the October 24
+ * comparison, reaffirmed November 1: hierarchy is carried by containment, not by large ancestors covering their children.
  */
 export function spatialNodeValue(node: SpatialNode, tuning: ForceGraphTuning): number {
-  const volume = (symbols: number): number => Math.pow(1 + symbols, tuning.symbolScale);
-  if (!node.containedSymbolCounts) return volume(symbolCountOf(node));
-  return Math.max(1, node.containedSymbolCounts.reduce((sum, count) => sum + volume(count), 0));
+  return node.directoryPath !== undefined ? 4 : Math.pow(1 + symbolCountOf(node), tuning.symbolScale);
 }
 
 /** Actual sphere radius, shared by rendering, collision clearance and the command's report. */
@@ -80,7 +78,6 @@ export interface Placed { x: number; y: number; z: number }
 
 /** What the placement of a new sphere reads of a node beside its position: for a hub its directory, for a file its path. */
 export interface PlaceableNode extends SpatialNode {
-  directoryPath?: string;
   codeRelativePath?: string;
 }
 

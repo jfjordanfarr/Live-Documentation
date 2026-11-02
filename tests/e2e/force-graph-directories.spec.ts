@@ -46,12 +46,12 @@ async function expectDrawnBetweenSpheres(page: Page): Promise<number> {
 const extent = (nodes: Rendered): number => Math.max(...["x", "y", "z"].map(axis =>
   Math.max(...nodes.map(node => node.world[axis as "x" | "y" | "z"])) - Math.min(...nodes.map(node => node.world[axis as "x" | "y" | "z"]))));
 
-test("the structure layout hangs every file from its directory from where it stood, sizes a hub by its members, and draws a reference only on demand", async ({ page }) => {
+test("the structure layout preserves files, uses uniform directory junctions, and draws references only on demand", async ({ page }) => {
   test.setTimeout(90_000); // Two complete settlings of the native simulation and a hover search.
   await observeGraph(page);
   await page.goto(entry("connections", whole));
-  // Volume is a world-space contract. Zoom resistance compensates each node's depth independently, so compare
-  // the actual rendered volumes under explicit perspective sizing, rather than assuming a visual default.
+  // Uniform directory size is physical, with the same perspective treatment as files. Read the actual rendered
+  // radii under explicit perspective sizing so different depths do not disguise unequal directory geometry.
   await page.getByText("Tuning", { exact: true }).click();
   const resistance = page.getByRole("slider", { name: /Node Zoom Resistance/ });
   await resistance.press("Home");
@@ -103,12 +103,14 @@ test("the structure layout hangs every file from its directory from where it sto
   const parent = tree.find(node => node.directory === "Portal")!;
   const child = tree.find(node => node.directory === "Portal/Models")!;
   expect(membership).toContainEqual(expect.objectContaining({ source: parent.id, target: child.id, kind: "containment", count: 1, visible: true }));
-  // A hub's volume is the sum of its members' volumes, read from the rendered spheres themselves.
-  const volume = (node: Rendered[number]): number => Math.pow(node.radius, 3);
+  // The scan root, a large parent and its small child have the same uploaded radius, despite different contents.
+  const hubs = tree.filter(node => node.directory !== undefined);
   const files = tree.filter(node => node.directory === undefined);
-  expect(volume(root)).toBeCloseTo(files.reduce((sum, node) => sum + volume(node), 0), 0);
-  expect(volume(parent)).toBeCloseTo(files.filter(node => node.id.startsWith("Portal/")).reduce((sum, node) => sum + volume(node), 0), 0);
-  expect(root.radius).toBeGreaterThan(Math.max(...files.map(node => node.radius)));
+  expect(new Set(hubs.map(node => node.files)).size).toBeGreaterThan(2);
+  for (const hub of hubs) expect(hub.radius, hub.id).toBeCloseTo(parent.radius, 4);
+  expect(parent.radius).toBeCloseTo(4 * Math.cbrt(4), 4);
+  expect(child.radius).toBeCloseTo(parent.radius, 4);
+  expect(new Set(files.map(node => node.radius.toFixed(3))).size).toBeGreaterThan(1);
 
   // A reference is drawn for the hovered file and put away when the pointer leaves it.
   const frame = (await page.locator("#graph-svg canvas").boundingBox())!;
@@ -169,9 +171,10 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   expect(inspected.inspection).toEqual({ kind: "directory", directory });
   expect(inspected.openDirectories.size, "inspecting a hub does not open it").toBe(0);
   await page.getByRole("button", { name: "Close details", exact: true }).click();
-  // Inspected, the hub was asked about and its members came in; closed, they recede: the hub may stand elsewhere now.
+  // Closing evidence keeps the discovered directory neighborhood independently of whole-directory retention.
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
-  const hub = (await renderedNodes(page)).find(node => node.id === chosen!.id)!;
+  const discovered = await renderedNodes(page);
+  const hub = discovered.find(node => node.id === chosen!.id)!;
   await page.mouse.move(hub.x, hub.y);
   await expect(page.locator(".force-graph-actions")).toHaveAttribute("data-node-id", chosen!.id);
   await page.locator(".force-graph-actions").getByRole("button", { name: `Open ${directory}`, exact: true }).click();
@@ -202,10 +205,13 @@ test("a directory hub inspects, its Open action frames its members, and the shar
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   const snapshot = decompressSnapshot(new URL(page.url()).searchParams.get("s")!);
   expect(snapshot.openDirectories.size).toBe(0);
-  // Released, the picture is the start's again once its spheres have come back in at the reveal's pace, its frontier
-  // dimmed as before and nothing faded by attention.
+  expect(snapshot.discovery).toEqual({ kind: "directory", directory });
+  // Release removes the whole-directory retention; discovery still stands until Clear or a new exploration.
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   await expect.poll(async () => Math.min(...(await renderedNodes(page)).map(node => node.opacity))).toBeGreaterThan(.25);
+  expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(discovered.map(node => node.id).sort());
+  await page.getByRole("button", { name: "Clear exploration pins", exact: true }).click();
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   expect((await renderedNodes(page)).map(node => node.id).sort()).toEqual(nodes.map(node => node.id).sort());
 });
 

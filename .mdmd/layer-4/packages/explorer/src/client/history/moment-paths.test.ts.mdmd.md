@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/history/moment-paths.test.ts
-- Generated At: 2026-10-30T15:33:55.847Z
+- Generated At: 2026-11-01T20:26:49.833Z
 
 ## Authored
 ### Purpose
@@ -25,11 +25,13 @@ _No public symbols detected_
 - [`shape.edgeKey`](../../../../engine/src/live-docs/history/shape.ts.mdmd.md#symbol-edgekey)
 - [`moment-paths.endFiles`](./moment-paths.ts.mdmd.md#symbol-endfiles)
 - [`moment-paths.momentGround`](./moment-paths.ts.mdmd.md#symbol-momentground)
-- [`moment-paths.reachToday`](./moment-paths.ts.mdmd.md#symbol-reachtoday)
 - [`moment-paths.todayGround`](./moment-paths.ts.mdmd.md#symbol-todayground)
 - [`snapshot.snapshotGraphOf`](./snapshot.ts.mdmd.md#symbol-snapshotgraphof)
 - [`pathfind.findPath`](../pathfind.ts.mdmd.md#symbol-findpath)
 - [`pathfind.reachOf`](../pathfind.ts.mdmd.md#symbol-reachof)
 - [`pathfind.referencesAgainstPath`](../pathfind.ts.mdmd.md#symbol-referencesagainstpath)
+- [`graph-search.destinationScope`](../search/graph-search.ts.mdmd.md#symbol-destinationscope)
+- [`graph-search.searchGraph`](../search/graph-search.ts.mdmd.md#symbol-searchgraph)
+- [`graph-search.searchIndexOf`](../search/graph-search.ts.mdmd.md#symbol-searchindexof)
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

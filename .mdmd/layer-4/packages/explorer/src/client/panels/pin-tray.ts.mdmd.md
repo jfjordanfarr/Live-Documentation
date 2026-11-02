@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/pin-tray.ts
-- Generated At: 2026-10-20T14:51:18.239Z
+- Generated At: 2026-11-01T21:06:14.923Z
 
 ## Authored
 ### Purpose
@@ -31,7 +31,7 @@ Actions operate on the shared selection; opening the tray or focusing a row does
 
 #### `createPinTray` {#symbol-createpintray}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L22)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/pin-tray.ts#L24)
 - Parameters: `options`: [`PinTrayOptions`](#symbol-pintrayoptions)
 
 ##### `createPinTray` — Summary

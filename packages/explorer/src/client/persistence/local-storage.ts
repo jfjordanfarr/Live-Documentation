@@ -7,7 +7,7 @@
 
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
-import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, type ChangeEmphasis, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -354,6 +354,7 @@ export type PersistedNavV1 = {
   nodeId?: string | null;
   /** Explicitly open evidence, separate from the remembered map subject. */
   inspection?: InspectionTarget | null;
+  discovery?: DiscoveryTarget | null;
 };
 
 /** Validate stored target syntax here; the application checks its membership against the current bundle. */
@@ -377,6 +378,12 @@ function readPersistedInspection(value: unknown): InspectionTarget | null {
     };
   }
   return null;
+}
+
+/** The remembered neighborhood is independent of its reader and names a file or directory, never an authored document. */
+function readPersistedDiscovery(value: unknown): DiscoveryTarget | null {
+  const target = readPersistedInspection(value);
+  return target?.kind === "file" ? { kind: "file", nodeId: target.nodeId } : target?.kind === "directory" ? target : null;
 }
 
 /**
@@ -421,6 +428,7 @@ export const readPersistedNav = (): PersistedNavV1 | null => {
       spatialLayout,
       openDirectories,
       inspection: readPersistedInspection(parsed.inspection),
+      ...(parsed.discovery !== undefined ? { discovery: readPersistedDiscovery(parsed.discovery) } : {}),
       ...(nodeId !== undefined ? { nodeId } : null)
     };
   } catch {
@@ -511,7 +519,7 @@ export const createPersistUiScheduler = (
  * Inspecting a different file never replaces the remembered subject.
  */
 export const createPersistNavScheduler = (
-  getState: () => { view: ViewName; perspective: LocalMapPerspective; spatialLayout: SpatialLayout; openDirectories: ReadonlySet<string>; selectedNodeId: string | null; inspection: InspectionTarget | null }
+  getState: () => { view: ViewName; perspective: LocalMapPerspective; spatialLayout: SpatialLayout; openDirectories: ReadonlySet<string>; selectedNodeId: string | null; inspection: InspectionTarget | null; discovery?: DiscoveryTarget | null }
 ): PersistNavScheduler => {
   let timer: number | null = null;
 
@@ -531,7 +539,8 @@ export const createPersistNavScheduler = (
             spatialLayout: state.spatialLayout,
             openDirectories: [...state.openDirectories],
             nodeId: state.selectedNodeId,
-            inspection: readPersistedInspection(state.inspection)
+            inspection: readPersistedInspection(state.inspection),
+            ...(state.discovery !== undefined ? { discovery: readPersistedDiscovery(state.discovery) } : {})
           };
           window.localStorage.setItem(PERSISTED_NAV_KEY, JSON.stringify(payload));
         } catch {

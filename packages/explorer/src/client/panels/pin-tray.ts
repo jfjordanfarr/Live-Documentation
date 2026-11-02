@@ -12,6 +12,8 @@ export interface PinTrayOptions {
   onFocus(item: RetainedItem): void;
   /** The application closes any open reader before the tray takes the shared edge. */
   onOpen?: () => void;
+  /** An unpinned subject or discovered neighborhood can also be cleared. */
+  canClear?: () => boolean;
 }
 
 /**
@@ -83,7 +85,7 @@ export function createPinTray(options: PinTrayOptions): {
     row.className = "pin-tray-row";
     row.dataset.retainedKey = retainedKey(item);
     const directory = item.kind === "directory";
-    const { name, context, description, symbol, path } = describeRetained(item, id => options.nodes.get(id)?.name);
+    const { name, context, description, symbol, path } = describeRetained(item, id => options.nodes.get(id)?.name, id => options.nodes.get(id)?.codeRelativePath ?? id);
 
     const focus = iconButton(`Show ${description}`, directory ? DIRECTORY_ICON
       : '<path d="M6 3h8l4 4v14H6ZM14 3v5h4"/>');
@@ -152,7 +154,7 @@ export function createPinTray(options: PinTrayOptions): {
         (next?.querySelector<HTMLButtonElement>(".pin-tray-release") ?? toggle).focus({ preventScroll: true });
       }
       count.textContent = `${items.length} ${items.length === 1 ? "pin" : "pins"}`;
-      clear.disabled = busy || items.length === 0;
+      clear.disabled = busy || items.length === 0 && !options.canClear?.();
       empty.hidden = items.length > 0;
     }
   };

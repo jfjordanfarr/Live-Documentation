@@ -160,7 +160,7 @@ export type HistoryAxis = "steps" | "time";
 /**
  * How the files a step of the history changed are told apart in the 3D picture while the history is shown (the owner's
  * ask of 2026-10-31): the changed spheres glow, the unchanged ones dim, both, or neither. While the history plays, the
- * emphasis fades over the step's time, so that it is gone as the next step's arrives; at rest it holds.
+ * emphasis holds for the whole displayed commit, in playback and at rest; the next commit replaces the changed set.
  */
 export type ChangeEmphasis = "glow" | "dim" | "both" | "none";
 
@@ -271,6 +271,9 @@ export type InspectionTarget =
   | { kind: "bundled-doc"; path: string; fragment?: string }
   | { kind: "directory"; directory: string };
 
+/** The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it. */
+export type DiscoveryTarget = { kind: "file"; nodeId: string } | { kind: "directory"; directory: string };
+
 /**
  * Root state object for the Explorer client, managed by
  * `persistence/local-storage.ts` and consumed by every view.
@@ -296,6 +299,7 @@ export interface ExplorerState {
   spatialLayout: SpatialLayout;
   selectedNode: ExplorerNodePayload | null;
   inspection: InspectionTarget | null;
+  discovery?: DiscoveryTarget | null;
   filters: ExplorerFilters;
   tuning: TuningConfig;
 }

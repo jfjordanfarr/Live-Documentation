@@ -30,7 +30,7 @@ describe("the drift measure", () => {
 
   it("carries a sphere's place across a membership change and starts a new hub at its members' centroid, a born file beside its hub", () => {
     const tuning = getDefaultTuning().forceGraph;
-    const hub = { ...node("directory:a"), directoryPath: "a", directoryFileCount: 2, containedSymbolCounts: [1, 1] };
+    const hub = { ...node("directory:a"), directoryPath: "a", directoryFileCount: 2 };
     const links = [{ source: "directory:a", target: "a/one.ts", count: 1, kind: "containment" }, { source: "directory:a", target: "a/born.ts", count: 1, kind: "containment" }];
     const carried = carryPositions([node("a/one.ts"), hub, node("a/born.ts")], links, new Map([["a/one.ts", { x: 3, y: 4, z: 5 }]]), tuning, "structure");
     expect(carried[0]).toMatchObject({ x: 3, y: 4, z: 5 });

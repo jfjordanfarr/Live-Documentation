@@ -1,0 +1,738 @@
+[
+  {
+    "mode": "glow",
+    "rate": 1,
+    "samples": [
+      {
+        "elapsedMs": 101,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          }
+        }
+      },
+      {
+        "elapsedMs": 500,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          }
+        }
+      },
+      {
+        "elapsedMs": 850,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          }
+        }
+      }
+    ],
+    "next": {
+      "step": 5,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "last": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "closed": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "errors": []
+  },
+  {
+    "mode": "glow",
+    "rate": 0.5,
+    "samples": [
+      {
+        "elapsedMs": 201,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          }
+        }
+      },
+      {
+        "elapsedMs": 1001,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          }
+        }
+      },
+      {
+        "elapsedMs": 1701,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              1,
+              1,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          }
+        }
+      }
+    ],
+    "next": {
+      "step": 5,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "last": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "closed": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "errors": []
+  },
+  {
+    "mode": "dim",
+    "rate": 1,
+    "samples": [
+      {
+        "elapsedMs": 101,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          }
+        }
+      },
+      {
+        "elapsedMs": 501,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          }
+        }
+      },
+      {
+        "elapsedMs": 851,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          }
+        }
+      }
+    ],
+    "next": {
+      "step": 5,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "last": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        }
+      }
+    },
+    "closed": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "errors": []
+  },
+  {
+    "mode": "dim",
+    "rate": 0.5,
+    "samples": [
+      {
+        "elapsedMs": 201,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          }
+        }
+      },
+      {
+        "elapsedMs": 1001,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          }
+        }
+      },
+      {
+        "elapsedMs": 1701,
+        "step": 4,
+        "files": {
+          "src/app/main.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.75
+          },
+          "src/engine/model.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          },
+          "src/engine/util.ts": {
+            "rgb": [
+              0,
+              0.28314873576164246,
+              1
+            ],
+            "alpha": 0.15000000596046448
+          }
+        }
+      }
+    ],
+    "next": {
+      "step": 5,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "last": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.15000000596046448
+        }
+      }
+    },
+    "closed": {
+      "step": 6,
+      "files": {
+        "src/app/main.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/model.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        },
+        "src/engine/util.ts": {
+          "rgb": [
+            0,
+            0.28314873576164246,
+            1
+          ],
+          "alpha": 0.75
+        }
+      }
+    },
+    "errors": []
+  }
+]

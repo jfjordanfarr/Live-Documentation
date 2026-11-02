@@ -31,7 +31,12 @@ const entry = (commit: string): string => `/samples/history/?s=${compressSnapsho
 })}`;
 
 async function settled(page: Page): Promise<void> {
-  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
+  // Zero-energy placement can be idle before the paced reveal has submitted every sphere. Read actual instances.
+  await expect.poll(async () => {
+    if (await page.locator("#graph-svg").getAttribute("aria-busy") !== "false") return false;
+    const ids = new Set((await renderedNodes(page)).map(node => node.id));
+    return ["src/app/main.ts", "src/engine/util.ts", "src/engine/model.ts"].every(id => ids.has(id));
+  }, { timeout: 60_000, message: "the settled sample's measured spheres have actually been drawn" }).toBe(true);
 }
 
 /** The colour the sphere is drawn in, read from the instance buffer. */
@@ -58,23 +63,67 @@ const emphasis = (mode: string) => async ({ context }: { context: import("@playw
   }, mode);
 };
 
-test("a step's changed file glows, its colour lifted toward white, while the rest keep theirs", async ({ page, context }) => {
+test("a commit's changed file is white immediately while the rest keep their base colour", async ({ page, context }) => {
   await emphasis("glow")({ context });
   await observeGraph(page);
   await page.goto(entry(await commitWith(page, "Retire the legacy helper")));
   await settled(page);
   const changed = await drawnColour(page, "src/app/main.ts"), unchanged = await drawnColour(page, "src/engine/util.ts");
   expect(unchanged.every(Number.isFinite) && changed.every(Number.isFinite)).toBe(true);
-  // Both are implementation files, blue; the changed one is lifted toward white in every channel.
-  expect(changed[0]).toBeGreaterThan(unchanged[0] + 0.3);
-  expect(changed[1]).toBeGreaterThan(unchanged[1] + 0.2);
-  expect(changed[2]).toBeGreaterThanOrEqual(unchanged[2]);
+  expect(changed).toEqual([1, 1, 1]);
+  expect(unchanged).not.toEqual([1, 1, 1]);
   const nodes = await renderedNodes(page);
   expect(nodes.find(node => node.id === "src/engine/util.ts")!.opacity, "under glow the rest are not dimmed").toBeCloseTo(0.75, 2);
   await expect(page.locator("#tuning-history-change-emphasis")).toHaveValue("glow");
 });
 
-test("with the rest dimmed, the changed file keeps its alpha and the others lose most of theirs; at today nothing is emphasized", async ({ page, context }) => {
+for (const mode of ["glow", "dim"] as const) for (const rate of [1, 0.5]) {
+  test(`${mode} holds colours and alpha through a commit at ${rate} step/s and changes them only at the next event`, async ({ page, context }) => {
+    await emphasis(mode)({ context });
+    await observeGraph(page);
+    await page.goto(entry(await commitWith(page, "Retire the legacy helper")));
+    await settled(page);
+    const main = "src/app/main.ts", util = "src/engine/util.ts", model = "src/engine/model.ts";
+    const base = await drawnColour(page, util);
+    expect(base.every(Number.isFinite)).toBe(true);
+    expect(base).not.toEqual([1, 1, 1]);
+    const eventColour = mode === "glow" ? [1, 1, 1] : base;
+    const backgroundAlpha = mode === "glow" ? 0.75 : 0.15;
+    const appearance = async () => {
+      const [mainColour, utilColour, nodes] = await Promise.all([drawnColour(page, main), drawnColour(page, util), renderedNodes(page)]);
+      return { mainColour, utilColour, mainAlpha: nodes.find(node => node.id === main)!.opacity, utilAlpha: nodes.find(node => node.id === util)!.opacity };
+    };
+    const first = await appearance();
+    expect(first.mainColour).toEqual(eventColour);
+    expect(first.mainAlpha).toBeCloseTo(0.75, 5);
+    expect(first.utilAlpha).toBeCloseTo(backgroundAlpha, 5);
+    await page.getByLabel("Playback speed").selectOption(String(rate));
+    await page.getByRole("button", { name: "Play", exact: true }).click();
+    const began = Date.now(), interval = 1000 / rate;
+    for (const fraction of [0.1, 0.5, 0.85]) {
+      await page.waitForTimeout(Math.max(0, interval * fraction - (Date.now() - began)));
+      await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "4");
+      await expect(page.locator(".history-play")).toHaveAttribute("aria-pressed", "true");
+      expect(await appearance(), `no brightness ramp at ${fraction * 100}% of the interval`).toEqual(first);
+    }
+    await expect(page.locator(".history-track")).toHaveAttribute("aria-valuenow", "5");
+    await page.getByRole("button", { name: "Pause", exact: true }).click();
+    await expect.poll(() => drawnColour(page, main)).toEqual(base);
+    await expect.poll(() => drawnColour(page, util)).toEqual(eventColour);
+    const next = await appearance();
+    expect(next.mainAlpha).toBeCloseTo(backgroundAlpha, 5);
+    expect(next.utilAlpha).toBeCloseTo(0.75, 5);
+    // The final commit still has an event, although it uses today's graph. Closing history ends the emphasis.
+    await page.locator(".history-track").press("End");
+    await expect.poll(() => drawnColour(page, model)).toEqual(eventColour);
+    await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === model)!.opacity).toBeCloseTo(0.75, 5);
+    await page.getByRole("button", { name: "History", exact: true }).click();
+    await expect.poll(() => drawnColour(page, model)).toEqual(base);
+    await expect.poll(async () => (await renderedNodes(page)).find(node => node.id === util)!.opacity).toBeCloseTo(0.75, 5);
+  });
+}
+
+test("with the rest dimmed, the changed file keeps its alpha; closing history restores normal appearance", async ({ page, context }) => {
   await emphasis("dim")({ context });
   await observeGraph(page);
   await page.goto(entry(await commitWith(page, "Retire the legacy helper")));

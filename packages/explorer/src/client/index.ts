@@ -7,9 +7,10 @@ import { requireElement, setActiveView } from "./dom";
 import { downloadDocs, downloadFactsJson, type DownloadBundleType, type DownloadFormat } from "./download";
 import { attachGlobalErrorHandler, reportFatalExplorerError } from "./errors";
 import { buildTestCoverageMap, resolveLinkEndpoint, getInputById } from "./graph-helpers";
+import { historicalDirectories, historicalNode } from "./history/file-identity";
 import { createHistoryControl, isHistorySequence } from "./history/history-control";
 import type { HistoryMoment } from "./history/moment";
-import { endFiles, momentGround, reachToday, todayGround, type PathGround } from "./history/moment-paths";
+import { endFiles, momentGround, todayGround, type PathGround } from "./history/moment-paths";
 import { applyLayoutSettings, layoutPresetOf, layoutSettingsOf } from "./layout-presets";
 import { iconButton } from "./panels/icon-button";
 import { createItemMenu } from "./panels/item-menu";
@@ -58,12 +59,29 @@ async function bootstrapExplorer(): Promise<void> {
     const bundle = await loadExplorerData();
     // An address that names a commit of the history opens on it: the sequence is fetched before the first picture is
     // drawn, so that the page draws that moment once rather than today and then the moment.
-    const named = readUrlState().commit;
-    const history = named && bundle.history ? await loadHistory(bundle.history.file) : undefined;
-    startExplorer(bundle, history);
+    let snapshot = readUrlState();
+    const navigation = parseInitialState();
+    if (navigation.hasUrlState) snapshot = { ...snapshot, openDirectories: navigation.openDirectories };
+    else {
+      const saved = readPersistedNav();
+      snapshot = { ...snapshot, selectedNodeId: saved?.nodeId ?? null, inspection: saved?.inspection,
+        discovery: saved?.discovery, openDirectories: new Set(saved?.openDirectories ?? []) };
+    }
+    const needsHistory = snapshot.commit || selectedFileIds(snapshot).some(id => id.startsWith("history:"));
+    const history = needsHistory && bundle.history ? await loadHistory(bundle.history.file) : undefined;
+    startExplorer(bundle, snapshot, history);
   } catch (error) {
     reportFatalExplorerError(error);
   }
+}
+
+/** File identities a shared place needs, including retained past-only files when the picture is back at today. */
+function selectedFileIds(snapshot: UrlStateSnapshot): string[] {
+  return [snapshot.selectedNodeId, ...snapshot.pinSet.entries.map(pin => pin.nodeId),
+    snapshot.inspection?.kind === "file" ? snapshot.inspection.nodeId : null,
+    snapshot.destination?.kind === "file" ? snapshot.destination.nodeId : null,
+    snapshot.reachFrom?.kind === "file" ? snapshot.reachFrom.nodeId : null,
+    snapshot.discovery?.kind === "file" ? snapshot.discovery.nodeId : null].filter((id): id is string => !!id);
 }
 
 /** Where the bundle's data is read from: the path named by `?data=`, or `explorer-data.json` beside the page. */
@@ -115,7 +133,7 @@ async function loadExplorerData(): Promise<StaticExplorerData> {
   return bundle as StaticExplorerData;
 }
 
-function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySequence): void {
+function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnapshot, preloadedHistory?: HistorySequence): void {
   const graphData = explorerGraphOf(bundle.graph);
   const files = bundle.graph.files;
   const { bundledMarkdown, bundledMarkdownTree, relatedDocLinks } = bundle;
@@ -152,6 +170,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     spatialLayout: initialState.spatialLayout ?? savedNav?.spatialLayout ?? "connections",
     selectedNode: null,
     inspection: null,
+    discovery: null,
     filters: initialUi.filters,
     tuning: applyLayoutSettings(initialUi.tuning, readUrlState().layout)
   };
@@ -162,14 +181,16 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   }));
   const schedulePersistUi = persistUi.schedule;
 
-  const nodesById = new Map(graphData.nodes.map(node => [node.id, node]));
+  const currentNodesById = new Map(graphData.nodes.map(node => [node.id, node]));
+  // Historical selection identities are a lookup alongside today's files, never additional nodes in today's graph.
+  const nodesById = new Map(currentNodesById);
+  const historyDirectories = preloadedHistory ? historicalDirectories(preloadedHistory) : new Set<string>();
+  if (preloadedHistory) for (const id of selectedFileIds(initialSnapshot)) {
+    const node = historicalNode(preloadedHistory, id);
+    if (node) nodesById.set(id, node);
+  }
   // The pins and the opened directories ride the address together; `?dir=` names an opened directory on its own.
-  const initialExploration = scrubSnapshot({
-    ...readUrlState(),
-    inspection: initialState.hasUrlState ? readUrlState().inspection : persistedNav?.inspection,
-    openDirectories: initialState.hasUrlState
-      ? initialState.openDirectories : new Set(persistedNav?.openDirectories ?? [])
-  }, nodesById, bundledMarkdown);
+  const initialExploration = scrubSnapshot(initialSnapshot, nodesById, bundledMarkdown, directory => historyDirectories.has(directory));
   if (new URLSearchParams(window.location.search).has("s")) state.filters = { ...state.filters, ...initialExploration.filters };
   state.pins = initialExploration.pinSet;
   state.openDirectories = initialExploration.openDirectories;
@@ -179,6 +200,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   state.historyCommit = initialExploration.commit;
   state.showAuthors = initialExploration.authors;
   state.inspection = initialExploration.inspection ?? null;
+  state.discovery = initialExploration.discovery ?? (state.inspection?.kind === "file" ? { kind: "file", nodeId: state.inspection.nodeId }
+    : state.inspection?.kind === "directory" ? state.inspection : null);
 
   const persistNav = createPersistNavScheduler(() => ({
     view: state.view,
@@ -186,13 +209,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     spatialLayout: state.spatialLayout,
     openDirectories: state.openDirectories ?? new Set(),
     selectedNodeId: state.selectedNode?.id ?? null,
-    inspection: state.inspection
+    inspection: state.inspection,
+    discovery: state.discovery
   }));
   const schedulePersistNav = persistNav.schedule;
 
   const detailPanel = createDetailPanel(nodesById, {
     files,
     bundledMarkdown,
+    history: () => shownMoment,
     onClose: () => closeInspection(),
     onNodeClick: (nodeId, symbol) => openInspection({ kind: "file", nodeId, ...(symbol ? { symbol } : {}) }),
     onDirectoryClick: directory => openInspection({ kind: "directory", directory }),
@@ -204,7 +229,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   let shownMoment: HistoryMoment | null = null;
   // The ground a path, its reach and the report are asked over: today's files and wires, or the moment's while the
   // picture shows one, from the moment the history control built for the view (2026-10-30).
-  const groundToday = todayGround(nodesById, graphData.links);
+  const groundToday = todayGround(currentNodesById, graphData.links);
   let groundShown: { moment: HistoryMoment; ground: PathGround } | null = null;
   function pathGround(): PathGround {
     if (!shownMoment) return groundToday;
@@ -260,6 +285,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       const host = (panel.offsetParent ?? document.body).getBoundingClientRect();
       return new DOMRect(host.left + panel.offsetLeft, host.top + panel.offsetTop, panel.offsetWidth, panel.offsetHeight);
     },
+    bottomObstructions: () => [...document.querySelectorAll<HTMLElement>(".perspective-controls:not([hidden]), #controls")]
+      .map(element => element.getBoundingClientRect()).filter(rect => rect.width > 0 && rect.height > 0),
     onPressPin: pressPin,
     onUnpinNode: unpinNode,
     onCloseNode: closePinnedNode,
@@ -318,13 +345,14 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     preloaded: preloadedHistory,
     load: () => loadHistory(bundle.history!.file),
     nodesById,
-    onMoment: (moment, renames, energy) => {
+    onMoment: (moment, renames, energy, changes) => {
       shownMoment = moment;
       // The path and the reach are asked again over the moment's wires, and the absences said, before the picture is drawn.
       const origin = newestRetained(retentionState());
       if (origin && state.destination) reportPath(origin, state.destination, false);
       syncRetainedWords();
-      forceGraphView.setMoment(moment, renames, energy);
+      forceGraphView.setMoment(moment, renames, energy, changes);
+      if (state.inspection) renderInspection();
       syncReaderNote();
       syncStatsLine();
     },
@@ -340,12 +368,11 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     },
     onPinFile: path => {
       const node = nodesById.get(path);
-      if (node) retainNode(node.id);
+      if (node) pinHit({ kind: "file", node });
     },
     hasDocument: hasBundledDoc,
     onReadDocument: path => openInspection({ kind: "bundled-doc", path }),
     onOpenChange: () => syncPerspectiveControls(),
-    onPlaying: playing => forceGraphView.setHistoryPlaying(playing),
     // The scrubber's speed is Tuning's Play Rate, chosen where play is (2026-10-31).
     onPlayRate: rate => {
       state.tuning.history.playRate = rate;
@@ -358,6 +385,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   // Opening a thing is a new Local Map scope, rendered in the remembered representation.
   const openThingInLocalMap = (thing: { name: string; folder: string }): void => {
     leavePath();
+    state.discovery = null;
     state.pins = { entries: [] };
     state.openDirectories = new Set([thing.folder]);
     state.selectedNode = null;
@@ -493,27 +521,32 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     nodes: nodesById,
     onRelease: item => applyRetentionChange(releaseRetained(retentionState(), item)),
     onClearDirectory: directory => applyRetentionChange(
-      clearRetainedDirectory(retentionState(), directory),
-      !!state.selectedNode && under(state.selectedNode.id, directory)
+      clearRetainedDirectory(retentionState(), directory, retainedPath),
+      !!state.selectedNode && under(shownMoment?.fileAt(state.selectedNode.id) ?? state.selectedNode.codeRelativePath, shownMoment?.directoryAt(directory) ?? directory)
     ),
     onClear: () => applyRetentionChange({ pins: EMPTY_PIN_SET, openDirectories: new Set(), retentionOrder: [] }, true),
     onFocus: focusRetained,
-    onOpen: () => closeInspection()
+    onOpen: () => closeInspection(),
+    canClear: () => !!state.discovery || !!state.selectedNode
   });
   // One search for the whole Explorer, in place of the Ctrl+P dialog and the FROM/TO toolbar (the owner's ask, 2026-10-14).
   const searchIndex = searchIndexOf(graphData.nodes);
+  let historicalSearch: { moment: HistoryMoment; index: ReturnType<typeof searchIndexOf> } | null = null;
   const searchBar = createSearchBar({
     index: searchIndex,
     onChooseSubject: pinHit,
     onChooseDestination: askPath,
     onClearDestination: () => { leavePath(); persistExploration(); },
-    // A hop is named as the picture names it; it reaches the file as it stands today, and a file gone since does nothing.
+    // A hop is inspected at the moment that supplies the path, even when the file is gone today.
     onHopClick: node => {
-      const today = pathGround().fileToday(node.id);
+      const today = shownMoment ? shownMoment.fileReference(node.id) : node.id;
       const now = today === null ? undefined : nodesById.get(today);
       if (now) handleNodeClick(now);
     }
   });
+  for (const input of document.querySelectorAll<HTMLInputElement>("#search-subject, #search-destination")) {
+    input.addEventListener("focus", () => historyControl.pause());
+  }
   let syncTuningControls = (): void => {};
   // What a path from the newest pin can reach, computed once per newest pin and moment shown: the destination field offers only that.
   let reachKey: string | null = null;
@@ -521,6 +554,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   function retentionState(): RetainedState {
     return { pins: state.pins ?? EMPTY_PIN_SET, openDirectories: state.openDirectories ?? new Set(), retentionOrder: state.retentionOrder };
+  }
+
+  /** A retained identity's displayed path, for directory membership even when its portable id names a past lifetime. */
+  function retainedPath(item: RetainedItem): string {
+    return item.kind === "directory" ? shownMoment?.directoryAt(item.directory) ?? item.directory
+      : shownMoment?.fileAt(item.pin.nodeId) ?? nodesById.get(item.pin.nodeId)?.codeRelativePath ?? item.pin.nodeId;
   }
 
   /** Apply a card, search, 3D or history pin with one policy; the 2D view only keeps its visual anchor. */
@@ -568,6 +607,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   /** The card's X releases all its pins and its 2D expansion, preserving any other retained file. */
   function closePinnedNode(nodeId: string): void {
+    if (state.discovery?.kind === "file" && state.discovery.nodeId === nodeId) state.discovery = null;
     changePinned(nodeId, "*", removePinsForNode(state.pins ?? EMPTY_PIN_SET, nodeId), true);
   }
 
@@ -605,6 +645,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   }
 
   function applyRetentionChange(next: RetainedState, releaseSubject = false): void {
+    if (releaseSubject) state.discovery = null;
     const current = state.selectedNode;
     const selectedId = subjectAfterRelease(state.pins ?? EMPTY_PIN_SET, next.pins, current?.id ?? null, releaseSubject);
     const selected = selectedId ? nodesById.get(selectedId) ?? null : null;
@@ -615,6 +656,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     state.selectedNode = selected;
     persistExploration(!!localView.getActivePath());
     renderCurrentView();
+    if (releaseSubject && state.perspective === "3d") forceGraphView.fit();
     if (focused && anchor) view.placeSubjectAnchor(focused.id, anchor);
   }
 
@@ -627,6 +669,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     }
     const node = nodesById.get(item.pin.nodeId);
     if (!node) return;
+    if (historyControl.absence(item) && state.perspective === "3d") historyControl.showFile(node.id);
     if (state.perspective === "2d") localView.focusNode(node.id);
     else forceGraphView.focusNode(node.id);
     persistExploration();
@@ -634,7 +677,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   /** The words a field shows for a retained thing: its name, and where it stands for the tooltip. */
   function wordsOf(item: RetainedItem): SearchWords {
-    const words = describeRetained(item, id => nodesById.get(id)?.name);
+    const words = describeRetained(item, id => nodesById.get(id)?.name, id => nodesById.get(id)?.codeRelativePath ?? id);
     return { name: words.name, context: words.description };
   }
 
@@ -642,7 +685,12 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   function chipWordsOf(item: RetainedItem): SearchWords {
     const absence = historyControl.absence(item);
     const moment = momentWords();
-    return { ...wordsOf(item), ...(absence && moment ? { absence: { words: absence, moment: `The picture shows ${moment}` } } : {}) };
+    const at = item.kind === "pin" ? shownMoment?.fileAt(item.pin.nodeId) : null;
+    const retained = wordsOf(item);
+    const specific = item.kind === "pin" && item.pin.symbol !== "*";
+    const words = at ? { name: specific ? retained.name : at.slice(at.lastIndexOf("/") + 1),
+      context: specific ? `${retained.name} in ${at}` : at } : retained;
+    return { ...words, ...(absence ? { absence: { words: absence, moment: moment ? `The picture shows ${moment}` : "The picture shows today's bundle" } } : {}) };
   }
 
   /** A destination as the retained item it would be once pinned, for its words, its files and the reverse question. */
@@ -658,8 +706,10 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   }
 
   function destinationOfHit(hit: SearchHit): PathDestination {
-    if (hit.kind === "directory") return { kind: "directory", directory: hit.directory };
-    return hit.kind === "symbol" ? { kind: "file", nodeId: hit.node.id, symbol: hit.symbol } : { kind: "file", nodeId: hit.node.id };
+    if (hit.kind === "directory") return { kind: "directory", directory: shownMoment?.directoryToday(hit.directory) ?? hit.directory };
+    const nodeId = shownMoment && shownMoment.graph.nodes.some(node => node.id === hit.node.id)
+      ? shownMoment.fileReference(hit.node.id) : hit.node.id;
+    return hit.kind === "symbol" ? { kind: "file", nodeId, symbol: hit.symbol } : { kind: "file", nodeId };
   }
 
   /** Make a retained item the newest, so that a path starts from it. */
@@ -673,6 +723,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
    * The chosen thing becomes the newest pin. A destination already asked is asked again from it.
    */
   function pinHit(hit: SearchHit): void {
+    state.discovery = null;
+    // Search rows use the displayed moment's names. Selection uses a lifetime-stable id across moments.
+    const destination = destinationOfHit(hit);
+    if (destination.kind === "directory") hit = { kind: "directory", directory: destination.directory };
+    else {
+      const node = nodesById.get(destination.nodeId);
+      if (!node) return;
+      hit = destination.symbol ? { kind: "symbol", node, symbol: destination.symbol } : { kind: "file", node };
+    }
     const asked = state.destination ?? null;
     closeInspection(false);
     if (hit.kind === "directory") {
@@ -822,13 +881,15 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
    * shown, and the destination field offering what a path from the newest pin reaches, at that moment when one is shown.
    */
   function syncRetainedWords(): void {
+    if (shownMoment && historicalSearch?.moment !== shownMoment) historicalSearch = { moment: shownMoment, index: searchIndexOf(shownMoment.graph.nodes) };
+    searchBar.setIndex(shownMoment ? historicalSearch!.index : searchIndex);
     pinTray.sync(retentionState(), state.view === "map", changingPerspective, item => historyControl.absence(item));
     const newest = newestRetained(retentionState());
     const key = newest ? JSON.stringify([retainedKey(newest), shownMoment?.step ?? null]) : null;
     if (key !== reachKey) {
       reachKey = key;
       const ground = pathGround();
-      reach = newest ? reachToday(reachOf(endFiles(newest, ground), ground.nodesById, ground.links), ground) : null;
+      reach = newest ? reachOf(endFiles(newest, ground), ground.nodesById, ground.links) : null;
     }
     searchBar.sync(newest ? chipWordsOf(newest) : null, state.destination ? chipWordsOf(itemOf(state.destination)) : null, reach, state.view === "map");
   }
@@ -992,7 +1053,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       // returns to the place the person was, address included.
       if (!state.selectedNode) {
         // The first file as it stands today: at a moment, a hop is named as the moment names it.
-        const today = ground.fileToday(result.path[0].nodeId);
+        const today = shownMoment ? shownMoment.fileReference(result.path[0].nodeId) : result.path[0].nodeId;
         const node = today === null ? undefined : nodesById.get(today);
         if (node && draw) selectNode(node, { suppressDetailPanel: true });
         else if (node) markSelected(node);
@@ -1174,10 +1235,16 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   });
 
   /** Shows the place the address names, after Back or Forward; the history turns any write it makes into a rewrite of that entry. */
-  function restoreFromUrl(): void {
+  async function restoreFromUrl(): Promise<void> {
+    const address = window.location.href;
+    const requested = readUrlState();
+    historyControl.pause();
+    await historyControl.restoreReferences(selectedFileIds(requested), !!requested.commit);
+    // A second Back/Forward or deliberate navigation may have superseded the request while the sequence loaded.
+    if (window.location.href !== address) return;
     const place = parseInitialState();
     const view: ViewName = place.hasUrlState ? place.view : bundle.board ? "world" : place.view;
-    const exploration = scrubSnapshot({ ...readUrlState(), openDirectories: place.openDirectories }, nodesById, bundledMarkdown);
+    const exploration = scrubSnapshot({ ...requested, openDirectories: place.openDirectories }, nodesById, bundledMarkdown, directory => historyControl.hasDirectory(directory));
     const nextTuning = applyLayoutSettings(state.tuning, exploration.layout);
     const nextFilters = new URLSearchParams(window.location.search).has("s")
       ? { ...state.filters, ...exploration.filters } : state.filters;
@@ -1203,6 +1270,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     state.perspective = place.perspective ?? state.perspective;
     state.spatialLayout = place.spatialLayout ?? state.spatialLayout;
     state.inspection = exploration.inspection ?? null;
+    state.discovery = exploration.discovery ?? (state.inspection?.kind === "file" ? { kind: "file", nodeId: state.inspection.nodeId }
+      : state.inspection?.kind === "directory" ? state.inspection : null);
     state.tuning = nextTuning;
     state.filters = nextFilters;
     syncFilterControls();
@@ -1228,7 +1297,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     }
     renderCurrentView();
     // The moment the address names, or today; the history turns the write this makes into a rewrite of the entry.
-    if (view === "map" && state.perspective === "3d") void historyControl.showCommit(exploration.commit);
+    if (view === "map" && state.perspective === "3d") await historyControl.showCommit(exploration.commit);
     else historyControl.leave();
     schedulePersistNav();
     highlightSelectedCards();
@@ -1268,6 +1337,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
 
   /** Centre is deliberate navigation: retain the working set and close the reader. */
   function recentreOn(node: ExplorerNodePayload): void {
+    state.discovery = null;
     closeInspection(false);
     leavePath();
     if (state.view !== "map") changePerspective(state.perspective, node);
@@ -1347,11 +1417,18 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   function syncReaderNote(): void {
     const target = state.inspection;
     const moment = target && state.view === "map" && state.perspective === "3d" ? momentWords() : null;
-    if (!target || !moment) { detailPanel.setNote(null); return; }
+    if (!target || !moment) {
+      const absent = target?.kind === "file" ? historyControl.absence({ kind: "pin", pin: { nodeId: target.nodeId, symbol: "*" } }) : null;
+      detailPanel.setNote(absent ? `Not in today's bundle: ${absent}.` : null);
+      return;
+    }
     const absence = target.kind === "file" ? historyControl.absence({ kind: "pin", pin: { nodeId: target.nodeId, symbol: "*" } })
       : target.kind === "directory" ? historyControl.absence({ kind: "directory", directory: target.directory })
         : null;
-    detailPanel.setNote(`Today's version. The picture shows ${moment}${absence ? `: ${absence}` : ""}.`);
+    const structural = target.kind === "directory" || target.kind === "file" && !Object.hasOwn(files, target.nodeId);
+    detailPanel.setNote(structural
+      ? `Structure at ${moment}${absence ? `: ${absence}` : ""}.${target.kind === "file" ? " Historical text is not bundled." : ""}`
+      : `Today's version. The picture shows ${moment}${absence ? `: ${absence}` : ""}.`);
   }
 
   /** A full reader covers a small viewport; opening it never resizes the underlying map. */
@@ -1374,15 +1451,24 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
     if (modal && !panel.contains(document.activeElement)) requireElement("detail-close").focus({ preventScroll: true });
   }
 
-  /** Reader actions never change the subject, working set, path or camera. */
+  /** Evidence keeps the selected subject and pins; its discovery survives Close and its target stays outside the reader. */
   function openInspection(target: InspectionTarget): void {
-    const validated = scrubSnapshot({ ...readUrlState(), inspection: target }, nodesById, bundledMarkdown).inspection;
+    const validated = scrubSnapshot({ ...readUrlState(), inspection: target }, nodesById, bundledMarkdown, directory => historyControl.hasDirectory(directory)).inspection;
     if (!validated) return;
+    historyControl.pause();
     state.inspection = validated;
+    if (state.view === "map" && state.perspective === "3d" && validated.kind !== "bundled-doc") {
+      state.discovery = validated.kind === "file" ? { kind: "file", nodeId: validated.nodeId } : validated;
+    }
     itemMenu.close();
     renderInspection();
-    // The inspected file is asked about in 3D (2026-10-31): the picture grows from it.
-    if (state.view === "map" && state.perspective === "3d") forceGraphView.render();
+    if (state.view === "map" && state.perspective === "3d") {
+      const stepPanel = document.querySelector<HTMLElement>(".history-step-panel:not([hidden])");
+      const room = requireElement("graph-svg").clientWidth - requireElement("detail-panel").offsetWidth - (stepPanel?.offsetWidth ?? 0);
+      if (stepPanel && !readerRoom.matches && room < 320) historyControl.hideDetails();
+      forceGraphView.render();
+      forceGraphView.keepInspectionVisible();
+    }
     persistExploration();
   }
 
@@ -1430,6 +1516,7 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
   }
 
   function centreOnDirectory(directory: string): void {
+    state.discovery = null;
     closeInspection(false);
     leavePath();
     const current = state.openDirectories ?? new Set<string>();
@@ -1448,8 +1535,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       { label: "Centre on directory", run: () => centreOnDirectory(directory) },
       {
         label: "Clear pins inside this directory",
-        run: () => applyRetentionChange(clearRetainedDirectory(retentionState(), directory),
-          !!state.selectedNode && under(state.selectedNode.id, directory))
+        run: () => applyRetentionChange(clearRetainedDirectory(retentionState(), directory, retainedPath),
+          !!state.selectedNode && under(shownMoment?.fileAt(state.selectedNode.id) ?? state.selectedNode.codeRelativePath, shownMoment?.directoryAt(directory) ?? directory))
       }
     ], onClose);
   }
@@ -1482,7 +1569,8 @@ function startExplorer(bundle: StaticExplorerData, preloadedHistory?: HistorySeq
       reachFrom: state.reachFrom ?? null,
       commit: state.historyCommit ?? null,
       authors: state.showAuthors ?? false,
-      inspection: state.inspection
+      inspection: state.inspection,
+      discovery: state.discovery ?? null
     };
   }
 

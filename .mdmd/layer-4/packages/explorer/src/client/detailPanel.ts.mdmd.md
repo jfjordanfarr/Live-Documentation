@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-10-30T15:19:36.217Z
+- Generated At: 2026-11-01T20:26:49.587Z
 
 ## Authored
 ### Purpose
@@ -27,28 +27,28 @@ The Explorer's evidence reader: renders a file or symbol from the bundled Live D
 ### Public Symbols
 #### `DetailPanelAction` {#symbol-detailpanelaction}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L21)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L22)
 
 ##### `DetailPanelAction` — Summary
 A reader control whose meaning and state belong to the application.
 
 #### `DetailPanelApi` {#symbol-detailpanelapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L30)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L31)
 
 ##### `DetailPanelApi` — Summary
 Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L46)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L47)
 
 ##### `DetailPanelOptions` — Summary
 Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L74)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L77)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 
@@ -65,6 +65,7 @@ and node metadata.
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
+- [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
 - [`reader-sections.AuthoredSection`](./reader-sections.ts.mdmd.md#symbol-authoredsection)
 - [`reader-sections.authoredSections`](./reader-sections.ts.mdmd.md#symbol-authoredsections)

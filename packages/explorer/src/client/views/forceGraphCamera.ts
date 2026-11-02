@@ -13,11 +13,16 @@ export interface CameraSphere {
 export function frameCameraSpheres(
   camera: PerspectiveCamera,
   spheres: readonly CameraSphere[],
-  viewport: { width: number; height: number },
+  viewport: { width: number; height: number; insets?: { left: number; right: number; top: number; bottom: number } },
   padding = 70,
   subject?: CameraPoint
 ): { camera: CameraPoint; target: CameraPoint } | null {
   if (!spheres.length) return null;
+  const insets = viewport.insets ?? { left: 0, right: 0, top: 0, bottom: 0 };
+  const usableWidth = viewport.width - insets.left - insets.right;
+  const usableHeight = viewport.height - insets.top - insets.bottom;
+  if (usableWidth <= 0 || usableHeight <= 0) return null;
+  const margin = Math.min(padding, (usableWidth - 1) / 2, (usableHeight - 1) / 2);
   let minX = Infinity, minY = Infinity, minZ = Infinity;
   let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
   for (const { center, radius } of spheres) {
@@ -30,19 +35,28 @@ export function frameCameraSpheres(
   const up = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
   const back = new Vector3(0, 0, 1).applyQuaternion(camera.quaternion);
   const tangent = Math.tan(camera.getEffectiveFOV() * Math.PI / 360);
-  const horizontal = tangent * camera.aspect * Math.max(.1, 1 - 2 * padding / viewport.width);
-  const vertical = tangent * Math.max(.1, 1 - 2 * padding / viewport.height);
+  const left = -1 + 2 * (insets.left + margin) / viewport.width;
+  const rightEdge = 1 - 2 * (insets.right + margin) / viewport.width;
+  const bottom = -1 + 2 * (insets.bottom + margin) / viewport.height;
+  const top = 1 - 2 * (insets.top + margin) / viewport.height;
+  const centerX = (left + rightEdge) / 2, centerY = (bottom + top) / 2;
+  const horizontal = tangent * camera.aspect;
   let distance = 140;
   for (const { center, radius } of spheres) {
     const x = center.x - target.x, y = center.y - target.y, z = center.z - target.z;
-    const front = x * back.x + y * back.y + z * back.z + radius;
+    const depth = x * back.x + y * back.y + z * back.z;
     distance = Math.max(
       distance,
-      front + (Math.abs(x * right.x + y * right.y + z * right.z) + radius) / horizontal,
-      front + (Math.abs(x * up.x + y * up.y + z * up.z) + radius) / vertical,
-      front + camera.near
+      ((x * right.x + y * right.y + z * right.z + radius) / horizontal + rightEdge * depth + Math.abs(rightEdge) * radius) / (rightEdge - centerX),
+      ((-x * right.x - y * right.y - z * right.z + radius) / horizontal - left * depth + Math.abs(left) * radius) / (centerX - left),
+      ((x * up.x + y * up.y + z * up.z + radius) / tangent + top * depth + Math.abs(top) * radius) / (top - centerY),
+      ((-x * up.x - y * up.y - z * up.z + radius) / tangent - bottom * depth + Math.abs(bottom) * radius) / (centerY - bottom),
+      depth + radius + camera.near
     );
   }
+  // Translate camera and target together: the bearing and canvas stay unchanged, while the subject is centered in
+  // the uncovered rectangle. The asymmetric frustum bounds above account for every sphere's depth and radius.
+  target.addScaledVector(right, -centerX * distance * horizontal).addScaledVector(up, -centerY * distance * tangent);
   return { camera: target.clone().addScaledVector(back, distance), target };
 }
 

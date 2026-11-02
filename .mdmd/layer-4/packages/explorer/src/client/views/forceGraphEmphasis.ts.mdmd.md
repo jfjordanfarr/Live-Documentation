@@ -4,52 +4,46 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphEmphasis.ts
-- Generated At: 2026-10-31T21:21:48.181Z
+- Generated At: 2026-11-01T22:32:19.526Z
 
 ## Authored
 ### Purpose
-Says how a step of the history tells its changed files apart in the 3D picture: a changed sphere's colour lifted toward white, an unchanged one's alpha reduced, by the tuning's mode, with a strength that fades over the play's interval while the history plays and holds at rest.
+Give the displayed commit a stable visual event: changed nodes become white immediately, while the rest keep their normal colour or an optionally dimmed background. The next commit replaces the changed set; playback time does not alter brightness.
 
 ### Notes
-Written on 2026-10-31 for the owner's ask in [Turn 8 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8): "As the history plays, we should get a glow around files which changed in a commit, which dims by the time the next commit's changes are played. Whether the "glow" is performed by dimming nodes which are not participating in a commit or by finding some other way to visually highlight the nodes which are in play in a given commit will be a matter of taste, and worth trying many permutations." So the modes are a lever (`ChangeEmphasis`: glow, dim, both, none) and the module is pure, so that the view, the history control and a test agree on the colours. The glow lifts each channel seven tenths of the way to white at full strength and draws the sphere whole; the dimming leaves a fifth of the alpha; a changed wire rises toward .85. The fade is linear from the step's arrival to the next step's, the play's interval; at rest the strength is one, so that a person who stops at a step sees what it changed. `pairKey` names an undirected pair so that the control and the view agree on which wires a step added or changed.
+Created for the [October 31 change-emphasis request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8), then corrected after the owner's [November 1 live playback observation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-3): the old fade reduced darkening over an interval, making unaffected nodes steadily brighten before the next commit reset them. The owner's metaphor is a network of occasionally firing fireflies, with sharp local events against a steady field.
+
+Glow uses white for the whole displayed commit. Dim leaves unaffected nodes and wires at a fifth of their base alpha; Both combines the two; None keeps ordinary appearance. A changed wire can rise to .85 alpha. There is no clock or play-state input. Pair keys are undirected so both endpoints name the same counted wire.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `glows` {#symbol-glows}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L23)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L20)
 
 ##### `glows` — Summary
 Whether the mode glows the changed.
 
 #### `dims` {#symbol-dims}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L25)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L22)
 
 ##### `dims` — Summary
 Whether the mode dims the unchanged.
 
-#### `emphasisStrength` {#symbol-emphasisstrength}
-- Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L31)
-
-##### `emphasisStrength` — Summary
-The strength of the emphasis at `now`: one while the history rests; while it plays, falling from one at the step's
-arrival to nothing at the next step's, `interval` later. Nothing before the arrival.
-
 #### `emphasizedSphere` {#symbol-emphasizedsphere}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L48)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L35)
 - Parameters: `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedSphere` — Summary
-A sphere's colour under the emphasis, as `rgba()`: a changed sphere's lifted toward white by the strength and drawn
-whole, an unchanged one's alpha reduced by the strength, where the mode says so; otherwise the colour at its alpha.
+A sphere's colour for the displayed commit: changed spheres white and whole where the mode glows; unchanged ones
+dimmed where the mode dims. The result remains constant until the changed set, mode or deliberate attention changes.
 
 #### `emphasizedWireAlpha` {#symbol-emphasizedwirealpha}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L60)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L43)
 - Parameters: `mode`: [`ChangeEmphasis`](../types.ts.mdmd.md#symbol-changeemphasis)
 
 ##### `emphasizedWireAlpha` — Summary
@@ -57,7 +51,7 @@ A white reference wire's alpha under the emphasis: a changed wire's raised towar
 
 #### `pairKey` {#symbol-pairkey}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L68)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphEmphasis.ts#L50)
 
 ##### `pairKey` — Summary
 The key of an undirected pair of files, the same whichever end is named first.

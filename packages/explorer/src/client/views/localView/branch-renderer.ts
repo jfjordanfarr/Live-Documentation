@@ -599,6 +599,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
       // (a residual of two pixels over a long move, measured 2026-10-15).
       hold();
       controller.drawConnections();
+      controller.settleDirectoryArrival();
       const hovered = controller.localMapState.getState().hoveredSymbol;
       if (hovered) controller.highlightSymbolConnections(hovered.nodeId, hovered.symbol);
       stage.search?.resume();

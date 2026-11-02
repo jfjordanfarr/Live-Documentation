@@ -24,6 +24,8 @@ export type FileToday = { kind: "today"; path: string } | { kind: "gone"; since:
 
 /** A file as the panel names it: its path at the step, its shape there, and where it stands today. */
 export interface SummaryFile {
+  /** The moment containing this file: the preceding step for a deletion. */
+  at: number;
   path: string;
   name: string;
   archetype: string;
@@ -85,6 +87,7 @@ export function stepSummary(sequence: HistorySequence, step: number, shape: Shap
     return todayHas(followed.path) ? { kind: "today", path: followed.path } : { kind: "gone", since: null };
   };
   const file = (path: string, shapeOf: FileShape | undefined, at: number): SummaryFile => ({
+    at,
     path,
     name: path.slice(path.lastIndexOf("/") + 1),
     archetype: shapeOf?.archetype ?? "",

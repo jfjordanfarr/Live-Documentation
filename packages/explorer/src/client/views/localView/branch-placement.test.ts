@@ -60,7 +60,7 @@ function expectWellFormed(input: PlacementInput, placement: ReturnType<typeof pl
           expect(inner.bottom).toBeLessThanOrEqual(outer.bottom - b.insetBottom);
         }
       }
-      for (let i = 1; i < segments.length; i++) {
+      for (let i = 1; b.shaped && i < segments.length; i++) {
         expect(Math.min(segments[i - 1].bottom, segments[i].bottom) - Math.max(segments[i - 1].top, segments[i].top)).toBeGreaterThanOrEqual(input.neck);
       }
       for (const other of bands) {
@@ -76,6 +76,23 @@ function expectWellFormed(input: PlacementInput, placement: ReturnType<typeof pl
 }
 
 describe("placing the retained files", () => {
+  it("starts unrelated columns at the top without imposing the invisible root's membrane neck", () => {
+    const input: PlacementInput = {
+      columns: [["tall", "last"], ["small"], ["other"]], heights: heights([["tall", 400], ["last", 50], ["small", 20], ["other", 100]]),
+      wires: [], bands: [band("root", ["tall", "last", "small", "other"], [0, 2], 0, [], [0, 0])], gap: 24, bandGap: 28, neck: 60
+    };
+    const placement = placeBranches(input);
+    expect([placement.top.get("tall"), placement.top.get("small"), placement.top.get("other")]).toEqual([0, 0, 0]);
+    expect(placement.top.get("last")).toBe(424);
+    expect(placement.boxes.get("root")!.map(segment => segment.bottom)).toEqual([474, 20, 100]);
+    expectWellFormed(input, placement);
+    // A real reference still determines relative height; only the unrelated third column remains independently at zero.
+    const connected = placeBranches({ ...input, wires: [wire(["tall", 300], ["small", 0])] });
+    expect(connected.top.get("small")! - connected.top.get("tall")!).toBe(300);
+    expect(connected.top.get("other")).toBe(0);
+    expect(connected.cost).toBe(0);
+  });
+
   it("stacks a column at its gaps when nothing pulls, and starts the picture at zero", () => {
     const input: PlacementInput = { columns: [["a", "b", "c"]], heights: heights([["a", 100], ["b", 50], ["c", 80]]), wires: [], bands: [band("root", ["a", "b", "c"], [0, 0], 0, [], [0, 0])], gap: 24, bandGap: 28, neck: 60 };
     const placement = placeBranches(input);

@@ -1,10 +1,14 @@
 # The owner
 
-_Current as of 2026-10-31. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
+_Current as of 2026-11-01. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
 
 The owner of this repository is its only human contributor. They act as product manager and architect and expect the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
 
 ## What the tool has to serve
+
+Reaffirmed 2026-11-01 ([Turn 2](../ChatHistory/2026/11/2026-11-01.1.record.md#turn-2)): "We are trying to build something very very common-sense: we want to be able to look at directories and understand their contents well, especially if those contents have interconnectivity of some kind." The owner accepts the screenshot-grounded end-user critique and grants the root latitude to address it, explicitly including the still-unfinished uniform directory sizing in Structure.
+
+Reaffirmed in live playback on 2026-11-01 ([Turns 3–5](../ChatHistory/2026/11/2026-11-01.1.record.md#turn-3)): the owner's eye for temporal behavior outranks an agent's inference from stills. They identified an actual rising-opacity ramp that the root initially described too weakly as an impression. For history: “a network of occasionally firing fireflies,” “maximize surprise”; sharp local change events against a steady background. Verify multiple points in an interval and across its boundary, not only a paused picture.
 
 Their day job is public-facing, PCI-DSS-secured applications at a mid-sized multi-state legal enterprise: .NET Framework 4.8, WebForms, C#, PowerShell 5.1. That C# estate is where they mean to run this tool, and the sample program under `tests/integration/programs/csharp/estate` is its miniature. The shape, in their words (2026-09-27):
 

@@ -273,12 +273,14 @@ export function placeBranches(input: PlacementInput): Placement {
           constraints.push({ tail: segmentBottom(child.key, column), head: segmentBottom(band.key, column), delta: insetBottom, weight: 0 });
         }
       }
-      const neck = band.minColumn < band.maxColumn ? Math.round(input.neck) : 0;
+      // Only a drawn membrane needs a connected outline. The invisible picture root must not tie unrelated columns
+      // together merely to overlap an outline that does not exist.
+      const neck = band.shaped && band.minColumn < band.maxColumn ? Math.round(input.neck) : 0;
       for (let column = band.minColumn; column <= band.maxColumn; column++) {
         // Each segment as tight as its members allow, and no shorter than the neck it must share: its height costs, far beneath any wire.
         constraints.push({ tail: segmentTop(band.key, column), head: segmentBottom(band.key, column), delta: neck, weight: 1 });
         // Neighbouring segments overlap by the neck, so the membrane is one shape.
-        if (column > band.minColumn) {
+        if (band.shaped && column > band.minColumn) {
           constraints.push({ tail: segmentTop(band.key, column - 1), head: segmentBottom(band.key, column), delta: neck, weight: 0 });
           constraints.push({ tail: segmentTop(band.key, column), head: segmentBottom(band.key, column - 1), delta: neck, weight: 0 });
         }
@@ -339,6 +341,22 @@ export function placeBranches(input: PlacementInput): Placement {
   for (const id of input.heights.keys()) itemNode(id);
 
   const ranking = rankByNetworkSimplex(count, constraints);
+  // Disconnected constraint components have no relative vertical meaning. Align their content origins without
+  // changing any constraint or objective: every wire, lane and real membrane stays inside its own component.
+  const parents = Array.from({ length: count }, (_, i) => i);
+  const component = (id: number): number => {
+    while (parents[id] !== id) { parents[id] = parents[parents[id]]; id = parents[id]; }
+    return id;
+  };
+  for (const edge of constraints) parents[component(edge.head)] = component(edge.tail);
+  const origins = new Map<number, number>();
+  const include = (id: number): void => {
+    const root = component(id);
+    origins.set(root, Math.min(origins.get(root) ?? Infinity, ranking.position[id]));
+  };
+  for (const id of input.heights.keys()) include(itemNode(id));
+  for (const band of spans.values()) for (let column = band.minColumn; column <= band.maxColumn; column++) include(segmentTop(band.key, column));
+  for (let id = 0; id < count; id++) ranking.position[id] -= origins.get(component(id)) ?? 0;
   const top = new Map<string, number>();
   for (const id of input.heights.keys()) top.set(id, ranking.position[itemNode(id)]);
   const boxes = new Map<string, Segment[]>();

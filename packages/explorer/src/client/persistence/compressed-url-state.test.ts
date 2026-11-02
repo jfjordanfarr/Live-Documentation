@@ -397,6 +397,21 @@ describe("the moment of the history (2026-10-18)", () => {
 });
 
 describe("explicitly open reader evidence", () => {
+  it("keeps discovered context in a closed-reader address and validates it independently of pins", () => {
+    const nodes = new Map([["src/a.ts", { publicSymbols: [] }]]);
+    const discovery = { kind: "file", nodeId: "src/a.ts" } as const;
+    const snapshot = { ...DEFAULT_SNAPSHOT, discovery, inspection: null };
+    const restored = scrubSnapshot(decompressSnapshot(compressSnapshot(snapshot)), nodes);
+    expect(restored.discovery).toEqual(discovery);
+    expect(restored.inspection).toBeNull();
+    expect(restored.pinSet).toEqual(EMPTY_PIN_SET);
+    expect(scrubSnapshot({ ...snapshot, discovery: { kind: "file", nodeId: "gone.ts" } }, nodes).discovery).toBeNull();
+    expect(scrubSnapshot({ ...snapshot, discovery: { kind: "directory", directory: "old" } }, nodes, {}, directory => directory === "old").discovery)
+      .toEqual({ kind: "directory", directory: "old" });
+    // An older address leaves the field absent; the root derives its initial discovery from valid open evidence.
+    expect(scrubSnapshot(payloadToSnapshot({ v: 3, i: { n: "src/a.ts" } }), nodes)).toMatchObject({ inspection: discovery });
+  });
+
   it("round-trips a file symbol, a directory and a bundled document without changing the subject", () => {
     const subject = "src/a.ts";
     for (const inspection of [

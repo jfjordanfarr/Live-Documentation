@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/search/search-bar.ts
-- Generated At: 2026-10-30T15:33:57.083Z
+- Generated At: 2026-11-01T20:26:50.713Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,8 @@ The search bar at the top of the Explorer: the first field shows the newest pin 
 - The report belongs above both map surfaces rather than inside either one, following the [October 23 review's path-feedback requirement](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#remediation-work). Leaving Local Map hides it while the application retains the question. Its hop buttons inspect through the same application callback as the map's file labels. Focus reveals the complete button within the scrollable report: the browser's ordinary focus scrolling can leave a partly visible hop clipped. Clear used by keyboard returns focus to the destination field after removing its own button.
 
 - Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) a field's words may carry an absence: while the 3D Local Map shows a moment of the history, a thing that does not stand there is said so faded beside its field, in the pin tray's words, with the moment on hover and the words given to a screen reader as the field's description; `index.ts` passes them in from the history control. `setStatus` takes the words naming the commit a path was asked at, drawn faded before the report.
+
+The [November 1 repairs](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2) added `setIndex`: both fields search the displayed snapshot while history is open, and return to the current inventory afterward. Past-only candidates remain searchable and reachable; the root converts a chosen path to its portable lifetime identity. Historical symbol names are not inferred from today’s docs.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -44,7 +46,7 @@ The words a field shows for a pinned thing or a destination: its name, and where
 
 #### `createSearchBar` {#symbol-createsearchbar}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L65)
+- Source: [source](../../../../../../../packages/explorer/src/client/search/search-bar.ts#L67)
 - Returns: [`SearchBar`](#symbol-searchbar)
 - Parameters: `options`: [`SearchBarOptions`](#symbol-searchbaroptions)
 <!-- LIVE-DOC:END Public Symbols -->

@@ -21,6 +21,9 @@
  * @module scrubber
  */
 
+import type { CommitInfo } from "@live-documentation/engine/live-docs/history/format";
+
+import { findCommits, type HistoryRange } from "./navigation";
 import { nextStop, stepAtPosition, type TickModel } from "./tick-model";
 import { iconButton } from "../panels/icon-button";
 import type { HistoryAxis } from "../types";
@@ -33,6 +36,8 @@ export interface ScrubberState {
   /** The last step. */
   steps: number;
   step: number;
+  range: HistoryRange;
+  commits: readonly CommitInfo[];
   model: TickModel;
   axis: HistoryAxis;
   /** Every step's commit date, for the pointer's reading of the track. */
@@ -67,6 +72,7 @@ export interface ScrubberOptions {
   onAuthors(shown: boolean): void;
   /** Show or hide the step panel. */
   onDetails(shown: boolean): void;
+  onRange(range: HistoryRange | null): void;
 }
 
 /** The scrubber as the control drives it. */
@@ -101,6 +107,11 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   const play = iconButton("Play", PLAY_ICON);
   play.className = "history-play";
   play.setAttribute("aria-pressed", "false");
+  const previous = iconButton("Previous commit", '<path d="M15 5l-7 7 7 7"/>');
+  const next = iconButton("Next commit", '<path d="m9 5 7 7-7 7"/>');
+  const playback = document.createElement("div");
+  playback.className = "history-playback";
+  playback.append(previous, play, next);
   // The speed, in steps a second, beside play: the same setting as Tuning's Play Rate, reachable where play is.
   const rate = document.createElement("select");
   rate.className = "history-rate";
@@ -138,13 +149,38 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   ruler.className = "history-ruler";
   slider.append(track, ruler);
 
-  const readout = document.createElement("span");
+  const readout = document.createElement("button");
+  readout.type = "button";
   readout.className = "history-readout";
+  readout.setAttribute("aria-label", "Find a commit or select a range");
+  readout.setAttribute("aria-expanded", "false");
+  readout.title = "Find a commit or select a range";
   const date = document.createElement("span");
   date.className = "history-date";
   const hash = document.createElement("code");
   hash.className = "history-hash";
   readout.append(date, hash);
+  const entire = iconButton("Show entire history", '<path d="M8 5H4v14h4m8-14h4v14h-4M8 12h8"/>');
+  entire.hidden = true;
+
+  const finder = document.createElement("div");
+  finder.className = "history-finder";
+  finder.hidden = true;
+  finder.setAttribute("role", "dialog");
+  finder.setAttribute("aria-label", "Find a commit or select a range");
+  const query = document.createElement("input");
+  query.type = "search";
+  query.placeholder = "Commit, date or message";
+  query.setAttribute("aria-label", "Find a commit");
+  const rangeActions = document.createElement("div");
+  rangeActions.className = "history-range-actions";
+  const startRange = iconButton("Start range at this commit", '<path d="M9 5H5v14h4m3-7h8m-4-4 4 4-4 4"/>');
+  const endRange = iconButton("End range at this commit", '<path d="M15 5h4v14h-4m-3-7H4m4-4-4 4 4 4"/>');
+  const rangeLabel = document.createElement("span");
+  rangeActions.append(rangeLabel, startRange, endRange);
+  const results = document.createElement("div");
+  results.className = "history-commit-results";
+  finder.append(query, rangeActions, results);
   const notice = document.createElement("span");
   notice.className = "history-notice";
   notice.hidden = true;
@@ -157,11 +193,75 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   authors.className = "history-authors";
   authors.setAttribute("aria-pressed", "false");
 
-  element.append(play, rate, slider, readout, notice, details, authors);
+  const body = document.createElement("div");
+  body.className = "history-controls";
+  body.append(playback, rate, slider, readout, entire, notice, details, authors);
+  element.append(body, finder);
   options.parent.append(element);
 
   let current: ScrubberState | null = null;
   let drawn = "";
+  let limit = 12;
+
+  const closeFinder = (restoreFocus = false): void => {
+    finder.hidden = true;
+    readout.setAttribute("aria-expanded", "false");
+    if (restoreFocus) readout.focus();
+  };
+  function drawResults(): void {
+    if (!current) return;
+    rangeLabel.textContent = `${current.range[1] - current.range[0] + 1} of ${current.commits.length} commits`;
+    const matches = findCommits(current.commits, query.value);
+    const entries = matches.slice(0, limit).map(step => {
+      const commit = current!.commits[step];
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "history-commit-result";
+      button.dataset.step = String(step);
+      const meta = document.createElement("span");
+      meta.className = "history-commit-meta";
+      meta.textContent = `${commit.date.slice(0, 10)} · ${commit.id.slice(0, 8)}`;
+      const subject = document.createElement("span");
+      subject.textContent = commit.subject;
+      button.append(meta, subject);
+      button.addEventListener("click", () => { options.onRest(step); closeFinder(true); });
+      return button;
+    });
+    results.replaceChildren(...entries);
+    if (!matches.length) results.textContent = "No matching commits";
+    if (matches.length > limit) {
+      const more = document.createElement("button");
+      more.type = "button";
+      more.textContent = `Show more (${matches.length - limit} remaining)`;
+      more.addEventListener("click", () => { limit += 12; drawResults(); results.querySelectorAll<HTMLButtonElement>(".history-commit-result")[limit - 12]?.focus(); });
+      results.append(more);
+    }
+  }
+  readout.addEventListener("click", () => {
+    if (!finder.hidden) { closeFinder(); return; }
+    options.onPlay(false);
+    finder.hidden = false;
+    readout.setAttribute("aria-expanded", "true");
+    limit = 12;
+    drawResults();
+    query.focus();
+    query.select();
+  });
+  query.addEventListener("input", () => { limit = 12; drawResults(); });
+  query.addEventListener("keydown", event => {
+    const first = results.querySelector<HTMLButtonElement>(".history-commit-result");
+    if (event.key === "Enter" && first) { event.preventDefault(); first.click(); }
+    else if (event.key === "ArrowDown" && first) { event.preventDefault(); first.focus(); }
+  });
+  finder.addEventListener("keydown", event => { if (event.key === "Escape") { event.stopPropagation(); closeFinder(true); } });
+  document.addEventListener("pointerdown", event => {
+    if (!finder.hidden && !finder.contains(event.target as Node) && !readout.contains(event.target as Node)) closeFinder();
+  });
+  startRange.addEventListener("click", () => { if (current) options.onRange([current.step, current.range[1]]); closeFinder(true); });
+  endRange.addEventListener("click", () => { if (current) options.onRange([current.range[0], current.step]); closeFinder(true); });
+  entire.addEventListener("click", () => { options.onRange(null); track.focus(); });
+  previous.addEventListener("click", () => { if (current) options.onRest(Math.max(current.range[0], current.step - 1)); });
+  next.addEventListener("click", () => { if (current) options.onRest(Math.min(current.range[1], current.step + 1)); });
 
   play.addEventListener("click", () => { if (current) options.onPlay(!current.playing); });
   rate.addEventListener("change", () => { const chosen = Number(rate.value); if (Number.isFinite(chosen) && chosen > 0) options.onRate(chosen); });
@@ -171,15 +271,15 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   // The keys: a step, a stop, an end; each a rest.
   track.addEventListener("keydown", event => {
     if (!current) return;
-    const { step, steps, model } = current;
+    const { step, range: [first, last], model } = current;
     let next: number;
     switch (event.key) {
-      case "ArrowLeft": case "ArrowDown": next = Math.max(0, step - 1); break;
-      case "ArrowRight": case "ArrowUp": next = Math.min(steps, step + 1); break;
+      case "ArrowLeft": case "ArrowDown": next = Math.max(first, step - 1); break;
+      case "ArrowRight": case "ArrowUp": next = Math.min(last, step + 1); break;
       case "PageDown": next = nextStop(model, step, -1); break;
       case "PageUp": next = nextStop(model, step, 1); break;
-      case "Home": next = 0; break;
-      case "End": next = steps; break;
+      case "Home": next = first; break;
+      case "End": next = last; break;
       default: return;
     }
     event.preventDefault();
@@ -194,7 +294,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
   const stepUnder = (clientX: number): number => {
     const rect = lane.getBoundingClientRect();
     // A step within three pixels of the pointer is the one meant: a tick is one or two pixels wide.
-    return rect.width > 0 ? stepAtPosition(current!.dates, current!.axis, (clientX - rect.left) / rect.width, POINTER_REACH_PX / rect.width) : 0;
+    const [first, last] = current!.range;
+    return rect.width > 0 ? first + stepAtPosition(current!.dates.slice(first, last + 1), current!.axis, (clientX - rect.left) / rect.width, POINTER_REACH_PX / rect.width) : first;
   };
   const flush = (): void => {
     frame = 0;
@@ -303,7 +404,8 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     sync(state) {
       current = state;
       drawModel(state);
-      track.setAttribute("aria-valuemax", String(state.steps));
+      track.setAttribute("aria-valuemin", String(state.range[0]));
+      track.setAttribute("aria-valuemax", String(state.range[1]));
       track.setAttribute("aria-valuenow", String(state.step));
       track.setAttribute("aria-valuetext", state.valueText);
       thumb.style.left = `${(state.model.positions[state.step] ?? 0) * 100}%`;
@@ -313,6 +415,13 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
       ruler.classList.toggle("is-truncated", state.truncated !== null);
       date.textContent = state.date;
       hash.textContent = state.hash;
+      previous.disabled = state.step <= state.range[0];
+      next.disabled = state.step >= state.range[1];
+      play.disabled = state.range[0] === state.range[1];
+      readout.disabled = state.commits.length === 0;
+      entire.hidden = state.range[0] === 0 && state.range[1] === state.steps;
+      entire.title = `Show all ${state.commits.length} commits`;
+      if (!finder.hidden) drawResults();
       notice.hidden = state.notice === null;
       notice.textContent = state.notice ?? "";
       play.setAttribute("aria-pressed", String(state.playing));
@@ -328,6 +437,7 @@ export function createScrubber(options: ScrubberOptions): Scrubber {
     },
     hide(hidden) {
       element.hidden = hidden;
+      if (hidden) closeFinder();
       if (!hidden && current) {
         // Drawn while hidden, the ruler could not be measured; draw it again now that it has a width.
         drawn = "";

@@ -4,6 +4,32 @@ import { describe, expect, it } from "vitest";
 import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, wheelZoomCamera } from "./forceGraphCamera";
 
 describe("Force Graph focus camera", () => {
+  it.each([
+    { left: 0, right: 400, top: 0, bottom: 90 },
+    { left: 400, right: 0, top: 0, bottom: 90 },
+    { left: 200, right: 100, top: 0, bottom: 140 }
+  ])("fits complete bodies into the uncovered rectangle %j without changing bearing", insets => {
+    const camera = new PerspectiveCamera(60, 800 / 600, .1, 100000);
+    camera.position.set(70, 90, 200); camera.lookAt(30, 20, 10); camera.updateMatrixWorld();
+    const bearing = camera.getWorldDirection(new Vector3());
+    const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
+    const up = new Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
+    const back = new Vector3(0, 0, 1).applyQuaternion(camera.quaternion);
+    const spheres = [{ center: { x: 900, y: -800, z: 450 }, radius: 40 }, { center: { x: 300, y: 500, z: -1200 }, radius: 80 }];
+    const framed = frameCameraSpheres(camera, spheres, { width: 800, height: 600, insets }, 40)!;
+    camera.position.copy(framed.camera); camera.lookAt(framed.target.x, framed.target.y, framed.target.z); camera.updateMatrixWorld();
+    expect(camera.getWorldDirection(new Vector3()).distanceTo(bearing)).toBeLessThan(1e-12);
+    for (const sphere of spheres) for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) {
+      const point = new Vector3(sphere.center.x, sphere.center.y, sphere.center.z)
+        .addScaledVector(right, x * sphere.radius).addScaledVector(up, y * sphere.radius).addScaledVector(back, z * sphere.radius).project(camera);
+      const px = (point.x + 1) * 400, py = (1 - point.y) * 300;
+      expect(px).toBeGreaterThanOrEqual(insets.left + 40 - 1e-8);
+      expect(px).toBeLessThanOrEqual(800 - insets.right - 40 + 1e-8);
+      expect(py).toBeGreaterThanOrEqual(insets.top + 40 - 1e-8);
+      expect(py).toBeLessThanOrEqual(600 - insets.bottom - 40 + 1e-8);
+    }
+  });
+
   it("keeps the requested subject centered while fitting asymmetric neighbours and a large sphere", () => {
     const camera = new PerspectiveCamera(60, 1.6, .1, 100000);
     camera.position.set(30, 80, 300);

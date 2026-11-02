@@ -21,7 +21,7 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 import { getDefaultFilters } from "./local-storage";
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
-import type { InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
+import type { DiscoveryTarget, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
 import { commitUrl } from "./history";
 import type { PinSet } from "../views/pin-state";
 import { serializePins, deserializePins, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
@@ -55,6 +55,8 @@ export interface CompressedPayload {
   n?: string;
   /** Explicitly open evidence: file `n` (symbol `s`), bundled Markdown `m` (section `a`), or directory `d`. */
   i?: { n: string; s?: string } | { m: string; a?: string } | { d: string };
+  /** The last discovered file or directory, independent of whether its reader is open. */
+  g?: { n: string } | { d: string };
   /** Pin entries (compact: `{ n, s, h? }[]`). */
   p?: Array<{ n: string; s: string; h?: number }>;
   /** Version 1 Membrane Map directories; read only for migration. */
@@ -102,6 +104,7 @@ export interface UrlStateSnapshot {
   selectedNodeId: string | null;
   /** The reader is closed when absent, including in links written before this field existed. */
   inspection?: InspectionTarget | null;
+  discovery?: DiscoveryTarget | null;
   pinSet: PinSet;
   /** The directories opened in the Local Map; folder navigation is a history step, while pin edits remain within it. */
   openDirectories: ReadonlySet<string>;
@@ -174,6 +177,8 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   else if (snapshot.inspection?.kind === "bundled-doc") payload.i = snapshot.inspection.fragment
     ? { m: snapshot.inspection.path, a: snapshot.inspection.fragment } : { m: snapshot.inspection.path };
   else if (snapshot.inspection?.kind === "directory") payload.i = { d: snapshot.inspection.directory };
+  if (snapshot.discovery?.kind === "file") payload.g = { n: snapshot.discovery.nodeId };
+  else if (snapshot.discovery?.kind === "directory") payload.g = { d: snapshot.discovery.directory };
   if (snapshot.pinSet.entries.length > 0) {
     payload.p = serializePins(snapshot.pinSet);
   }
@@ -230,10 +235,14 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     ? payload.o.filter((key): key is string => typeof key === "string") : undefined;
 
   const layout = readLayoutSettings(payload.l);
+  const discovered = readInspection(payload.g);
+  const discovery: DiscoveryTarget | null = discovered?.kind === "file" ? { kind: "file", nodeId: discovered.nodeId }
+    : discovered?.kind === "directory" ? discovered : null;
   return {
     view, perspective, spatialLayout, selectedNodeId, inspection: readInspection(payload.i), pinSet, openDirectories, filters,
     ...(retentionOrder ? { retentionOrder } : {}),
     ...(layout ? { layout } : {}),
+    ...(discovery ? { discovery } : {}),
     destination: readDestination(payload.x),
     reachFrom: readDestination(payload.a),
     commit: typeof payload.h === "string" && payload.h.trim() ? payload.h.trim() : null,
@@ -305,6 +314,7 @@ export function scrubSnapshot(
   snapshot: UrlStateSnapshot,
   nodesById: ReadonlyMap<string, unknown>,
   bundledMarkdown?: Readonly<Record<string, string>>,
+  historicalDirectory?: (directory: string) => boolean,
 ): UrlStateSnapshot {
   const nodeIds = [...nodesById.keys()];
 
@@ -312,7 +322,7 @@ export function scrubSnapshot(
   const openDirectories = new Set<string>();
   for (const dir of snapshot.openDirectories) {
     const prefix = dir === "" ? "" : dir.endsWith("/") ? dir : dir + "/";
-    if (nodeIds.some(id => id.startsWith(prefix))) openDirectories.add(dir);
+    if (nodeIds.some(id => id.startsWith(prefix)) || historicalDirectory?.(dir)) openDirectories.add(dir);
   }
 
   // Pins: keep only entries whose node still exists
@@ -332,15 +342,17 @@ export function scrubSnapshot(
     const symbols = (nodesById.get(target.nodeId) as { publicSymbols?: unknown } | undefined)?.publicSymbols;
     inspection = target.symbol && (target.symbol === INTERNAL_SYMBOL || Array.isArray(symbols) && symbols.includes(target.symbol))
       ? target : { kind: "file", nodeId: target.nodeId };
-  } else if (target?.kind === "directory" && destinationLives(target, nodesById, nodeIds)) {
+  } else if (target?.kind === "directory" && (destinationLives(target, nodesById, nodeIds) || historicalDirectory?.(target.directory))) {
     inspection = target;
   } else if (target?.kind === "bundled-doc" && bundledMarkdown && Object.hasOwn(bundledMarkdown, target.path)) {
     inspection = target;
   }
 
   // The destination and the panel's start: a file that still exists, or a directory with a live file under it
-  const destination = snapshot.destination && destinationLives(snapshot.destination, nodesById, nodeIds) ? snapshot.destination : null;
-  const reachFrom = snapshot.reachFrom && destinationLives(snapshot.reachFrom, nodesById, nodeIds) ? snapshot.reachFrom : null;
+  const lives = (target: PathDestination): boolean => destinationLives(target, nodesById, nodeIds) || target.kind === "directory" && !!historicalDirectory?.(target.directory);
+  const destination = snapshot.destination && lives(snapshot.destination) ? snapshot.destination : null;
+  const reachFrom = snapshot.reachFrom && lives(snapshot.reachFrom) ? snapshot.reachFrom : null;
+  const discovery = snapshot.discovery && lives(snapshot.discovery) ? snapshot.discovery : null;
 
   return {
     ...snapshot,
@@ -348,6 +360,7 @@ export function scrubSnapshot(
     pinSet,
     selectedNodeId,
     inspection,
+    ...(snapshot.discovery !== undefined ? { discovery } : {}),
     destination,
     reachFrom,
     ...(snapshot.retentionOrder ? {

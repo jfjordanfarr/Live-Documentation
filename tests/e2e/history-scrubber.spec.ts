@@ -201,7 +201,7 @@ test("the keys walk the steps: a renamed file and its directory's hub keep their
   await audit(page, "the rename step");
 });
 
-test("a deletion is shown as a death, the panel says gone since, and a created file that stands today is a link that pins it", async ({ page }) => {
+test("deleted and created files are actionable at their own moments without inventing their presence today", async ({ page }) => {
   const commits = await commitsOf(page, "/samples/history/");
   await observeGraph(page);
   await page.goto(entry("/samples/history/"));
@@ -216,8 +216,8 @@ test("a deletion is shown as a death, the panel says gone since, and a created f
   await expect(born).toContainText("implementation, 2 symbols");
   const dead = group(page, "Deleted").locator("li");
   await expect(dead).toHaveCount(1);
-  await expect(dead.locator(".history-file-name")).toHaveText("big.ts");
-  await expect(dead.locator("button")).toHaveCount(0);
+  await expect(dead.locator("button")).toHaveText("big.ts");
+  await expect(dead.locator("button")).toHaveAttribute("data-at", "2");
   await expect(dead.locator(".history-gone")).toHaveText(`gone since ${commits[3].id.slice(0, 8)}`);
   const at3 = byId(await renderedNodes(page));
   expect(at3.has("lib/huge.ts")).toBe(true);
@@ -226,7 +226,7 @@ test("a deletion is shown as a death, the panel says gone since, and a created f
   // Step 4: the legacy helper retired; its sphere leaves and its wire goes.
   await stepTo(page, 4);
   await expect(panel(page).locator("h2")).toHaveText(commits[4].subject);
-  await expect(group(page, "Deleted").locator("li .history-file-name")).toHaveText("legacy.ts");
+  await expect(group(page, "Deleted").locator("li button")).toHaveText("legacy.ts");
   await expect(group(page, "Wires removed").locator("li")).toHaveText(/src\/app\/main\.ts\s*to\s*lib\/legacy\.ts/);
   expect(byId(await renderedNodes(page)).has("lib/legacy.ts")).toBe(false);
 
@@ -237,6 +237,128 @@ test("a deletion is shown as a death, the panel says gone since, and a created f
   await page.getByRole("button", { name: "Show pins", exact: true }).click();
   await expect(page.locator(".pin-tray-name")).toHaveText("huge.ts");
   await expect(page.locator(".pin-tray-absent")).toBeHidden();
+});
+
+test("commit search, range selection and adjacent controls investigate an interval without dropping its surroundings", async ({ page }) => {
+  const commits = await commitsOf(page, "/samples/history/");
+  await page.goto(entry("/samples/history/"));
+  await settled(page);
+  await openHistory(page);
+  const find = page.getByRole("button", { name: "Find a commit or select a range", exact: true });
+  const query = page.getByRole("searchbox", { name: "Find a commit", exact: true });
+  await find.click();
+  await query.fill(commits[2].id.slice(0, 8));
+  await query.press("Enter");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  await find.click();
+  await page.getByRole("button", { name: "Start range at this commit", exact: true }).click();
+  await page.getByRole("button", { name: "Next commit", exact: true }).click();
+  await page.getByRole("button", { name: "Next commit", exact: true }).click();
+  await find.click();
+  await page.getByRole("button", { name: "End range at this commit", exact: true }).click();
+  await expect(track(page)).toHaveAttribute("aria-valuemin", "2");
+  await expect(track(page)).toHaveAttribute("aria-valuemax", "4");
+  await expect(page.locator(".history-tick")).toHaveCount(3);
+  await expect(page.getByRole("button", { name: "Next commit", exact: true })).toBeDisabled();
+  await track(page).press("Home");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "2");
+  await expect(page.getByRole("button", { name: "Previous commit", exact: true })).toBeDisabled();
+  await find.click();
+  await query.fill(commits[0].date.slice(0, 10));
+  await query.press("Enter");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
+  await expect(track(page)).toHaveAttribute("aria-valuemax", "6");
+  await find.click();
+  await query.fill("no such event");
+  await expect(page.locator(".history-commit-results")).toHaveText("No matching commits");
+  await query.press("Escape");
+  await expect(find).toBeFocused();
+  await expect(page.locator(".history-finder")).toBeHidden();
+  await audit(page, "direct history navigation");
+});
+
+test("a requested overview follows historical growth, and a manual camera gesture cancels that following", async ({ page }) => {
+  const commits = await commitsOf(page, "/");
+  await observeGraph(page);
+  await page.goto(entry("/", { spatialLayout: "connections", openDirectories: new Set([""]), commit: commits[0].id }));
+  await settled(page);
+  await page.getByRole("button", { name: "Hide step details", exact: true }).click();
+  await page.getByRole("button", { name: "Fit current scope", exact: true }).click();
+  const first = (await renderedNodes(page)).length;
+  const outside = async (): Promise<string[]> => {
+    const frame = (await page.locator("#graph-svg").boundingBox())!;
+    const controls = (await page.locator(".perspective-controls").boundingBox())!;
+    return (await renderedNodes(page)).filter(node => node.x - node.screenRadius < frame.x
+      || node.x + node.screenRadius > frame.x + frame.width || node.y - node.screenRadius < frame.y
+      || node.y + node.screenRadius > controls.y || node.depth < -1 || node.depth > 1).map(node => node.id);
+  };
+  await expect.poll(outside, { timeout: 10_000 }).toEqual([]);
+  await track(page).press("End");
+  await settled(page);
+  expect((await renderedNodes(page)).length).toBeGreaterThan(first * 10);
+  await expect.poll(outside, { timeout: 10_000, message: "the growing scope remains in the uncovered frame" }).toEqual([]);
+  const frame = (await page.locator("#graph-svg").boundingBox())!;
+  await page.mouse.move(frame.x + frame.width / 2, frame.y + frame.height / 2);
+  await page.mouse.wheel(0, -200);
+  await page.waitForTimeout(400);
+  const camera = () => page.evaluate(() => {
+    const c = (window as unknown as { renderedGraph: { camera: { position: { x: number; y: number; z: number }; matrixWorld: { elements: number[] } } } }).renderedGraph.camera;
+    return { x: c.position.x, y: c.position.y, z: c.position.z, matrix: [...c.matrixWorld.elements] };
+  });
+  const held = await camera();
+  await track(page).press("Home");
+  await settled(page);
+  await page.waitForTimeout(800);
+  expect(await camera(), "the next moment respects the camera the person chose").toEqual(held);
+});
+
+test("a deleted file can be found, read and shared in its own lifetime, and remains absent on return to today", async ({ page, browser }) => {
+  const commits = await commitsOf(page, "/samples/history/");
+  await page.goto(entry("/samples/history/"));
+  await settled(page);
+  await openHistory(page);
+  await stepTo(page, 4);
+  await group(page, "Deleted").locator("button[data-file='lib/legacy.ts']").click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+  await page.locator("#search-subject").fill("legacy");
+  await expect(page.locator("#search-subject-results .search-row--file")).toHaveCount(1);
+  await page.locator("#search-subject-results .search-row--file").click();
+  await settled(page);
+  const address = () => decompressSnapshot(new URL(page.url()).searchParams.get("s") ?? "");
+  const id = address().pinSet.entries[0].nodeId;
+  expect(id).toMatch(/^history:/u);
+  await page.locator(".force-graph-focus, .force-graph-label").filter({ hasText: /^legacy.ts$/u }).click();
+  await expect(page.locator("#detail-title")).toHaveText("legacy.ts");
+  await expect(page.locator("#detail-panel")).toContainText("Historical text is not bundled");
+  await expect(page.locator("#detail-panel")).toContainText("names are not carried in this history");
+  await expect(page.locator("#detail-panel")).toContainText("src/app/main.ts");
+  const shared = page.url();
+  const fresh = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  try {
+    const reopened = await fresh.newPage();
+    await reopened.goto(shared);
+    await settled(reopened);
+    await expect(track(reopened)).toHaveAttribute("aria-valuenow", "3");
+    await expect(reopened.locator("#detail-title")).toHaveText("legacy.ts");
+    expect(decompressSnapshot(new URL(reopened.url()).searchParams.get("s") ?? "").pinSet.entries[0].nodeId).toBe(id);
+  } finally { await fresh.close(); }
+  await page.getByRole("button", { name: "Close details", exact: true }).click();
+  await track(page).press("End");
+  await expect(page.locator("#search-subject-absence")).toHaveText(`deleted at ${commits[4].id.slice(0, 8)}`);
+  await page.getByRole("button", { name: "Show pins", exact: true }).click();
+  await page.getByRole("button", { name: "Show lib/legacy.ts", exact: true }).click();
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+  await expect(page.locator("#search-subject-absence")).toBeHidden();
+  // Reload a cleared present-day place, then Back to a historical selection: the new page has not loaded history yet.
+  await page.getByRole("button", { name: "History", exact: true }).click();
+  if (await page.getByRole("button", { name: "Show pins", exact: true }).isVisible()) await page.getByRole("button", { name: "Show pins", exact: true }).click();
+  await page.getByRole("button", { name: "Clear exploration pins", exact: true }).click();
+  await page.reload();
+  await settled(page);
+  await page.getByRole("button", { name: "Back", exact: true }).first().click();
+  await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
+  expect(address().pinSet.entries[0].nodeId).toBe(id);
+  await expect(page.locator("#search-subject-absence")).toHaveText(`deleted at ${commits[4].id.slice(0, 8)}`);
 });
 
 test("a moment draws the documents its files' authored words linked to then, the panel names the links that came and went, and the reader says it reads today's version", async ({ page }) => {
@@ -256,7 +378,7 @@ test("a moment draws the documents its files' authored words linked to then, the
   await expect.poll(documents).toEqual(["related:docs/design.md", "related:docs/later.md", "related:docs/old-notes.md"]);
   const linked = group(page, "Documents linked").locator("li");
   await expect(linked).toHaveCount(1);
-  await expect(linked.locator("button[data-pin]")).toHaveText("main.ts");
+  await expect(linked.locator("button[data-file]")).toHaveText("main.ts");
   await expect(linked.locator("button[data-read]")).toHaveText("later.md");
 
   // Step 4: the legacy helper's link leaves with it, its notes deleted; the main file's doc drops the design.
@@ -314,6 +436,20 @@ test("a pin whose file is not yet created is said so in the tray and never dropp
   await track(page).focus();
   await page.keyboard.press("PageDown");
   await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
+});
+
+test("an absent historical request has an empty idle picture and resumes normal motion at its birth", async ({ page }) => {
+  const commits = await commitsOf(page, "/samples/history/");
+  await observeGraph(page);
+  await page.goto(entry("/samples/history/", { selectedNodeId: "lib/huge.ts", pinSet: { entries: [{ nodeId: "lib/huge.ts", symbol: "*" }] },
+    commit: commits[0].id, layout: { forceGraph: { updateEnergy: 1 } } }));
+  await settled(page);
+  expect(await renderedNodes(page)).toEqual([]);
+  await expect(page.locator("#search-subject-absence")).toHaveText("not yet created");
+  await track(page).press("PageUp");
+  await expect(track(page)).toHaveAttribute("aria-valuenow", "3");
+  await settled(page);
+  expect((await renderedNodes(page)).some(node => node.id === "lib/huge.ts")).toBe(true);
 });
 
 test("the address carries the commit and the authors toggle, a link to a moment opens on it, and leaving 3D returns the picture to today", async ({ page }) => {

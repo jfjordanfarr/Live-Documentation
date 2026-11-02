@@ -60,11 +60,12 @@ export function releaseRetained(state: RetainedState, item: RetainedItem): Retai
 }
 
 /** Explicit bulk operation: release this directory and every deliberate selection within it. */
-export function clearRetainedDirectory(state: RetainedState, directory: string): RetainedState {
+export function clearRetainedDirectory(state: RetainedState, directory: string, pathOf: (item: RetainedItem) => string = item => item.kind === "directory" ? item.directory : item.pin.nodeId): RetainedState {
+  const parent = pathOf({ kind: "directory", directory });
   return reconcileRetained({
     ...state,
-    pins: { entries: state.pins.entries.filter(pin => !under(pin.nodeId, directory)) },
-    openDirectories: new Set([...state.openDirectories].filter(path => !under(path, directory)))
+    pins: { entries: state.pins.entries.filter(pin => !under(pathOf({ kind: "pin", pin }), parent)) },
+    openDirectories: new Set([...state.openDirectories].filter(path => !under(pathOf({ kind: "directory", directory: path }), parent)))
   });
 }
 
@@ -95,9 +96,9 @@ export interface RetainedWords {
 }
 
 /** The words for an item; `nameOf` gives a file's name from its id. */
-export function describeRetained(item: RetainedItem, nameOf: (nodeId: string) => string | undefined): RetainedWords {
+export function describeRetained(item: RetainedItem, nameOf: (nodeId: string) => string | undefined, pathOf: (nodeId: string) => string = id => id): RetainedWords {
   const directory = item.kind === "directory";
-  const path = directory ? item.directory : item.pin.nodeId;
+  const path = directory ? item.directory : pathOf(item.pin.nodeId);
   const name = directory ? path.split("/").pop() || "Scan root" : nameOf(item.pin.nodeId) ?? item.pin.nodeId;
   const symbol = !directory && item.pin.symbol !== "*"
     ? item.pin.symbol === "__internals__" ? "Internals" : item.pin.symbol : null;

@@ -72,7 +72,7 @@ function notify(): void {
  * Starts the history for this page: how to read a place from an address, and what to do when Back or Forward lands on
  * an entry. Returns a function that stops listening.
  */
-export function startHistory(options: { placeOf: (search: string) => string; restore: () => void }): () => void {
+export function startHistory(options: { placeOf: (search: string) => string; restore: () => void | Promise<void> }): () => void {
   placeOf = options.placeOf;
   position = positionOf(window.history.state);
   furthest = position;
@@ -80,16 +80,25 @@ export function startHistory(options: { placeOf: (search: string) => string; res
   const arm = (): void => {
     armed = true;
   };
+  let restoration = 0;
   const onPop = (event: PopStateEvent): void => {
     position = positionOf(event.state);
     joinRestOfTask();
     restoring = true;
-    try {
-      options.restore();
-    } finally {
+    const own = ++restoration;
+    const finished = (): void => {
+      if (own !== restoration) return;
       restoring = false;
+      notify();
+    };
+    try {
+      const pending = options.restore();
+      if (pending) void pending.finally(finished);
+      else finished();
+    } catch (error) {
+      finished();
+      throw error;
     }
-    notify();
   };
   const inputs = ["pointerdown", "keydown", "wheel"] as const;
   for (const type of inputs) {

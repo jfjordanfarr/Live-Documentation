@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/history/scrubber.ts
-- Generated At: 2026-10-31T20:06:58.521Z
+- Generated At: 2026-11-01T21:21:02.331Z
 
 ## Authored
 ### Purpose
@@ -20,33 +20,35 @@ The history's scrubber along the bottom of the 3D Local Map: a track with one ti
 - Since 2026-10-31 ([Turn 8 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8)) the speed stands beside play, a select of steps a second that is the same setting as Tuning's Play Rate, because the owner found the panel "gone too quick to read anything in it at all" and the rate reachable only in Tuning; a rate set in Tuning that the select does not offer is shown as an option of its own, so that the control never lies.
 - Since 2026-10-30 ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) the scrubber carries the step panel's toggle, "Step details", pressed while the panel shows, so that the picture can be seen whole while the scrubber stays; `focusDetails` gives it the focus when the panel's own button hid the panel.
 
+The [November 1 repairs](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2) added previous/next controls and a commit finder on the date/hash readout. Search matches hashes, displayed dates and messages. Range start/end use the selected commit; the pure navigation module recomputes density in that inclusive interval without dropping any sequence entries. Home/End, arrows and playback respect the range; direct seek outside it restores the whole range. The range is temporary presentation state. Container queries give a narrow scrubber two rows without a resize observer changing its own box.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ScrubberState` {#symbol-scrubberstate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L32)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L35)
 
 ##### `ScrubberState` — Summary
 What the scrubber draws.
 
 #### `ScrubberOptions` {#symbol-scrubberoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L58)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L63)
 
 ##### `ScrubberOptions` — Summary
 What the scrubber tells.
 
 #### `Scrubber` {#symbol-scrubber}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L73)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L79)
 
 ##### `Scrubber` — Summary
 The scrubber as the control drives it.
 
 #### `PLAY_RATES` {#symbol-play_rates}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L89)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L95)
 - Returns: `ReadonlyArray`
 
 ##### `PLAY_RATES` — Summary
@@ -54,14 +56,14 @@ The speeds the control offers, in steps a second, with their words; a rate set e
 
 #### `rateWords` {#symbol-ratewords}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L92)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L98)
 
 ##### `rateWords` — Summary
 The words for a rate: the control's own, or the number for one set in Tuning.
 
 #### `createScrubber` {#symbol-createscrubber}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L95)
+- Source: [source](../../../../../../../packages/explorer/src/client/history/scrubber.ts#L101)
 - Returns: [`Scrubber`](#symbol-scrubber)
 - Parameters: `options`: [`ScrubberOptions`](#symbol-scrubberoptions)
 
@@ -71,6 +73,9 @@ Make the scrubber under its parent, hidden until synced.
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`format.CommitInfo`](../../../../engine/src/live-docs/history/format.ts.mdmd.md#symbol-commitinfo) (type-only)
+- [`navigation.HistoryRange`](./navigation.ts.mdmd.md#symbol-historyrange)
+- [`navigation.findCommits`](./navigation.ts.mdmd.md#symbol-findcommits)
 - [`tick-model.TickModel`](./tick-model.ts.mdmd.md#symbol-tickmodel-interface)
 - [`tick-model.nextStop`](./tick-model.ts.mdmd.md#symbol-nextstop)
 - [`tick-model.stepAtPosition`](./tick-model.ts.mdmd.md#symbol-stepatposition)

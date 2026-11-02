@@ -266,6 +266,6 @@ test("the destination offers what a path from the newest pin reaches at the mome
   await expect(track(page)).toHaveAttribute("aria-valuenow", "0");
   await page.click("#search-destination");
   await page.keyboard.type("huge");
-  await expect(page.locator("#search-destination-results .search-row--apart")).toBeVisible();
+  await expect(page.locator("#search-destination-results .search-empty")).toHaveText("Nothing found");
   await expect(offered).toHaveCount(0);
 });

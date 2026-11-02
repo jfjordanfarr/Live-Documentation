@@ -65,12 +65,11 @@ it("in the structure layout, hangs everything drawn from its directory and every
   const hub = (path: string) => data.nodes.find(file => file.id === directoryNodeId(path));
   expect(data.nodes.filter(file => file.directoryPath !== undefined).map(file => file.directoryPath).sort()).toEqual(["", "a", "a/nested", "deep/chain", "docs"]);
   expect(hub("deep")).toBeUndefined();
-  expect(hub("deep/chain")).toMatchObject({ name: "deep/chain", directoryFileCount: 1, containedSymbolCounts: [1] });
+  expect(hub("deep/chain")).toMatchObject({ name: "deep/chain", directoryFileCount: 1 });
   expect(hub("")).toMatchObject({ name: "Scan root", directoryFileCount: 4 });
-  // The document hangs from its own directory and counts as a member of volume one; a chain's survivor keeps the chain's members.
-  expect([...hub("")!.containedSymbolCounts!].sort()).toEqual([0, 0, 1, 2, 5]);
-  expect([...hub("a")!.containedSymbolCounts!].sort()).toEqual([2, 5]);
-  expect(hub("docs")).toMatchObject({ directoryFileCount: 0, containedSymbolCounts: [0] });
+  // The document hangs from its own directory, but is not counted as a source file.
+  expect(hub("a")!.directoryFileCount).toBe(2);
+  expect(hub("docs")).toMatchObject({ directoryFileCount: 0 });
   // The references stay in the data, counted as in the connections layout; containment is one tree over everything drawn.
   expect(data.links.filter(link => link.kind !== "containment")).toEqual(spatialGraphOf(input, include, docs).links);
   const membership = data.links.filter(link => link.kind === "containment");

@@ -38,6 +38,8 @@ export interface LocalViewOptions {
   testCoverage: TestCoverageMap;
   /** The box of whatever covers part of the map's frame, the open reader, so that a fit keeps the picture out from under it; null when nothing does. */
   obstruction?: () => DOMRect | null;
+  /** Persistent controls along the bottom of the canvas; their top bounds the usable reading frame. */
+  bottomObstructions?: () => readonly DOMRect[];
   /** Map of node IDs to node payloads for type reference navigation. */
   nodesById: Map<string, ExplorerNodePayload>;
 }
