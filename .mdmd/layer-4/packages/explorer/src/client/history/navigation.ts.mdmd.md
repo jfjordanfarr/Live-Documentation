@@ -11,7 +11,7 @@
 Find commits by their hash, date or message and give a selected interval the timeline's full width, keeping the original commit identities and the complete history available.
 
 ### Notes
-The [November 1 end-user review](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2) found that the full history's quiet months compressed a busy period into a few pixels. Range selection recomputes tick density over an inclusive interval; it does not sample or discard commits. Returned tick and stop indices still refer to the complete sequence. A range's first step preserves its actual change weight rather than becoming a fictitious base commit.
+The [November 1 end-user review](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-2) found that the full history's quiet months compressed a busy period into a few pixels. Range selection recomputes tick density over an inclusive interval; it does not sample or discard commits. Returned tick and stop indices still refer to the complete sequence. A range's first step preserves its actual change weight rather than becoming a fictitious base commit.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -11,7 +11,7 @@
 Give a file from the displayed history a portable identity that search, pins, evidence and shared addresses can keep even after the file has been deleted. A surviving file uses its ordinary current id; a past-only file is anchored to its creation or the known base so that renames preserve identity and a later file at the same path remains distinct.
 
 ### Notes
-Created for the [November 1 review and authorized repairs](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2): GraphStore existed in the displayed pre-removal snapshot but search offered only today's files. Identity follows the engine's existing lifetime-aware path walk. A shared historical reference is checked against its named snapshot before entering the selection lookup; it never adds a file to today's canonical graph. Historical snapshots provide counts and relationships, not old symbol names or prose.
+Created for the [November 1 review and authorized repairs](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-2): GraphStore existed in the displayed pre-removal snapshot but search offered only today's files. Identity follows the engine's existing lifetime-aware path walk. A shared historical reference is checked against its named snapshot before entering the selection lookup; it never adds a file to today's canonical graph. Historical snapshots provide counts and relationships, not old symbol names or prose.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

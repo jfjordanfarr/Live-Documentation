@@ -11,7 +11,7 @@
 Give the displayed commit a stable visual event: changed nodes become white immediately, while the rest keep their normal colour or an optionally dimmed background. The next commit replaces the changed set; playback time does not alter brightness.
 
 ### Notes
-Created for the [October 31 change-emphasis request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8), then corrected after the owner's [November 1 live playback observation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-3): the old fade reduced darkening over an interval, making unaffected nodes steadily brighten before the next commit reset them. The owner's metaphor is a network of occasionally firing fireflies, with sharp local events against a steady field.
+Created for the [October 31 change-emphasis request](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-8), then corrected after the owner's [November 1 live playback observation](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-3): the old fade reduced darkening over an interval, making unaffected nodes steadily brighten before the next commit reset them. The owner's metaphor is a network of occasionally firing fireflies, with sharp local events against a steady field.
 
 Glow uses white for the whole displayed commit. Dim leaves unaffected nodes and wires at a fifth of their base alpha; Both combines the two; None keeps ordinary appearance. A changed wire can rise to .85 alpha. There is no clock or play-state input. Pair keys are undirected so both endpoints name the same counted wire.
 

@@ -11,7 +11,7 @@
 Protects the ordinary 3D directory-exploration journey: discover and retain a neighborhood, find disconnected files, release each contribution, and carry the same question across perspectives.
 
 ### Notes
-Written after the [November 2 estate playtest](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-8--continue-until-the-directory-exploration-journey-is-ready-for-new-users). Reads actual submitted spheres and the shared address while exercising ordinary controls: overview/reload/release, temporary directory discovery beside its reader, a lone orphan, small pointer jitter and a label moving during a press. The visible hop selector must narrow the actual submitted set, agree with Tuning and survive a shared-address reload. Directory-only and pin-only transitions must animate without inventing a selected subject or changing the retained set. These checks follow the pictured journeys; they do not substitute for judging motion by eye.
+Written after the [November 2 estate playtest](../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-8). Reads actual submitted spheres and the shared address while exercising ordinary controls: overview/reload/release, temporary directory discovery beside its reader, a lone orphan, small pointer jitter and a label moving during a press. The visible hop selector must narrow the actual submitted set, agree with Tuning and survive a shared-address reload. Directory-only and pin-only transitions must animate without inventing a selected subject or changing the retained set. These checks follow the pictured journeys; they do not substitute for judging motion by eye.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
