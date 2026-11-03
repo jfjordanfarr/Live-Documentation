@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-10-30T15:02:32.496Z
+- Generated At: 2026-11-03T19:06:09.235Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,7 @@
 Controller class for the 2D Local Map. Owns its render lifecycle, camera, and visual response to shared exploration actions while drawing every scope through the same directory-aware branch stage and router.
 
 ### Notes
+- An explicit search or focus request names a file or a particular symbol row. Its target is measured after the retained layout's current move, then framed inside the usable canvas, including the row's actions and excluding the reader and floating controls. The requested row becomes the held identity for subsequent layout changes. A camera gesture cancels a pending request, so delayed layout work cannot pull the view back after the person takes over ([November 3](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-2)).
 
 - Created in the [December 4 modularisation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md#turn-14-local-map-modularization-the-refactor), which separated the growing Local Map's orchestration, drawing and public API. After the [owner's October 12 walkthrough](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3) found unpinned links and paths still using older renderers, all scopes came through one branch scene. This controller owns the lifecycle; scope construction stays in `branches.ts`, the branch renderer owns cards, placement and motion, and `connections.ts` draws the wires.
 - A stage is reused within the same mode to preserve card identity and motion. A path uses the view with its own first-file fit; entering or leaving path mode replaces the stage, and leaving restores the exploration camera after drawing. An empty graph clears the wires through `clearConnections`, so the runtime forgets its layer with the overlay's children (2026-10-16). These were the remaining responsibilities of the retired `render.ts`, carried here with its source removed.
@@ -34,7 +35,7 @@ The November 1 directory-arrival repair keeps the unfolding label anchor through
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L68)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L69)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -64,6 +65,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
 - [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
+- [`layout-measure.focusTransform`](./layout-measure.ts.mdmd.md#symbol-focustransform)
 - [`layout-measure.settleTransform`](./layout-measure.ts.mdmd.md#symbol-settletransform)
 - [`layout-measure.withTransformReset`](./layout-measure.ts.mdmd.md#symbol-withtransformreset)
 - [`pan-zoom.animateMapTransform`](./pan-zoom.ts.mdmd.md#symbol-animatemaptransform)

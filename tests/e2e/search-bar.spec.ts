@@ -4,6 +4,7 @@ import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast"
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose, currentSnapshot, newestKey } from "./search-bar";
 import { loadGraph, localMapSettled } from "./still-picture";
+import type { LiveDocGraph } from "../../packages/engine/src/live-docs/graph";
 import { retainedKey } from "../../packages/explorer/src/client/views/retained-state";
 
 /**
@@ -19,6 +20,79 @@ const ESTATE = "/samples/estate/";
 const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-symbol"];
 
 test.use({ viewport: { width: 1600, height: 1000 } });
+
+for (const width of [952, 1280]) {
+  test(`symbol search frames the requested row and its actions after retained layout movement at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    const config = "packages/engine/src/config/liveDocumentationConfig.ts";
+    const pathfind = "packages/engine/src/live-docs/pathfind.ts";
+    await page.goto(`/?view=local&mode=2d&node=${config}`);
+    await page.locator(".local-placed").waitFor();
+    await localMapSettled(page);
+    await choose(page, "subject", "liveDocumentationConfig", {file:config});
+    await choose(page, "subject", "Neighbours", {file:pathfind,symbol:"Neighbours"});
+    await localMapSettled(page);
+    const row=page.locator(`.node-card[data-id="${pathfind}"] .symbol-row[data-symbol="Neighbours"]`);
+    await expect(row.locator(".symbol-label-wrapper")).toBeInViewport({ratio:1});
+    await expect(row.locator(".local-symbol-pin")).toBeInViewport({ratio:1});
+    // A trial click also checks occlusion by the bottom controls; mere DOM visibility would miss the original failure.
+    await row.locator(".local-symbol-pin").click({trial:true});
+    expect(currentSnapshot(page).pinSet.entries).toContainEqual({nodeId:config,symbol:"*"});
+    expect(currentSnapshot(page).pinSet.entries).toContainEqual({nodeId:pathfind,symbol:"Neighbours"});
+    await row.locator(".symbol-label").hover();
+    const highlighted=page.locator(`.node-card[data-id="${pathfind}"] .symbol-highlighted`);
+    expect(await highlighted.evaluateAll(rows=>rows.map(row=>row.getAttribute("data-symbol"))).then(names=>names.sort()))
+      .toEqual(["Neighbours","components","reachFrom","walk (function)"].sort());
+  });
+}
+
+test("same-name declarations remain distinct through search, inspection and reload", async ({ page }) => {
+  const file="packages/engine/src/live-docs/pathfind.ts";
+  await page.goto(`/?view=local&mode=2d&node=${file}`);
+  await page.locator(".local-placed").waitFor();
+  await localMapSettled(page);
+  await choose(page,"subject","walk",{file,symbol:"walk (function)"});
+  await localMapSettled(page);
+  await page.getByRole("button",{name:"Inspect walk (function) in pathfind.ts",exact:true}).click();
+  const panel=page.locator("#detail-panel");
+  await expect(panel).toContainText("Walks breadth-first from a set of files");
+  expect(currentSnapshot(page).pinSet.entries).toEqual([{nodeId:file,symbol:"walk (function)"}]);
+  expect(currentSnapshot(page).inspection).toEqual({kind:"file",nodeId:file,symbol:"walk (function)"});
+  await page.reload();
+  await expect(panel).toContainText("Walks breadth-first from a set of files");
+  await page.getByRole("button",{name:"Close details",exact:true}).click();
+  await choose(page,"subject","walk",{file,symbol:"Walk (interface)"});
+  await localMapSettled(page);
+  await page.getByRole("button",{name:"Inspect Walk (interface) in pathfind.ts",exact:true}).click();
+  await expect(panel).toContainText("What one breadth-first walk from a set of files found.");
+  expect(currentSnapshot(page).pinSet.entries).toEqual([
+    {nodeId:file,symbol:"walk (function)"},{nodeId:file,symbol:"Walk (interface)"}
+  ]);
+});
+
+test("a reader link's explicit anchor wins over a different declaration with that heading", async ({ page }) => {
+  const file="packages/engine/src/live-docs/pathfind.ts";
+  await page.route("**/explorer-data.json", async route => {
+    const response=await route.fetch();
+    const data=await response.json() as {graph:LiveDocGraph};
+    const document=data.graph.files[file];
+    const base={kind:"type",flags:[],references:[]};
+    document.symbols.unshift(
+      {...base,name:"reader-fragment",slug:"heading-declaration",sections:[{title:"Summary",body:["The similarly spelled heading."]}]},
+      {...base,name:"Actual anchor target",slug:"reader-fragment",sections:[{title:"Summary",body:["The explicitly anchored declaration."]}]}
+    );
+    document.reExports=[...(document.reExports??[]),{name:"reader-fragment",slug:"alias-declaration",flags:[],from:{label:"other declaration",link:"#heading-declaration"}}];
+    document.authored+="\n\n[Read the anchored declaration](#reader-fragment)\n";
+    await route.fulfill({response,json:data});
+  });
+  await page.goto(`/?view=local&mode=2d&node=${file}`);
+  await page.locator(".local-placed").waitFor();
+  await localMapSettled(page);
+  await page.getByRole("button",{name:`Inspect ${file}`,exact:true}).click();
+  await page.locator("#detail-panel").getByRole("link",{name:"Read the anchored declaration",exact:true}).click();
+  expect(currentSnapshot(page).inspection).toEqual({kind:"file",nodeId:file,symbol:"Actual anchor target"});
+  await expect(page.locator("#detail-panel")).toContainText("The explicitly anchored declaration.");
+});
 
 test("one search finds directories, files and symbols, grouped; a chosen one is pinned and becomes the newest pin", async ({ page }) => {
   await page.goto(`/?view=local&node=${encodeURIComponent(INDEX)}`);

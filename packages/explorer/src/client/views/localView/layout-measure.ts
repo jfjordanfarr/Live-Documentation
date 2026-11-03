@@ -261,6 +261,21 @@ export function settleTransform(content: Bounds, current: MapTransform, frame: F
   };
 }
 
+/** Frame an explicitly requested row or file at reading size, including its actions, inside the usable canvas. */
+export function focusTransform(target: Bounds, current: MapTransform, frame: Frame): MapTransform {
+  const { horizontal, vertical } = framePadding(frame);
+  const k = Math.max(1, Math.min(current.k,
+    (frame.width - 2 * horizontal) / Math.max(1, target.width),
+    (frame.height - 2 * vertical) / Math.max(1, target.height)));
+  return {
+    x: target.width * k > frame.width - 2 * horizontal
+      ? horizontal - target.left * k : frame.width / 2 - (target.left + target.width / 2) * k,
+    y: target.height * k > frame.height - 2 * vertical
+      ? vertical - target.top * k : frame.height / 2 - (target.top + target.height / 2) * k,
+    k
+  };
+}
+
 /** Which edges of the frame the picture continues past, by more than `tolerance` px, at the camera given. */
 export function hiddenEdges(content: Bounds, transform: MapTransform, frame: Frame, tolerance = 4): { above: boolean; below: boolean; left: boolean; right: boolean } {
   const { x, y, k } = transform;

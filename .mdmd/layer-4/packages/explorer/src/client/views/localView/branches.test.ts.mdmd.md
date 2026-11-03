@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/branches.test.ts
-- Generated At: 2026-10-08T01:58:14.075Z
+- Generated At: 2026-11-03T19:22:41.876Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,10 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`document.LiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-livedoc)
+- [`document.parseLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
+- [`document.renderLiveDoc`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
+- [`graph.deriveLiveDocGraph`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
 - [`branches.buildBranches`](./branches.ts.mdmd.md#symbol-buildbranches)
 - [`branches.commonDirectory`](./branches.ts.mdmd.md#symbol-commondirectory)
 - [`branches.directoryIndex`](./branches.ts.mdmd.md#symbol-directoryindex)
@@ -40,7 +44,9 @@ _No public symbols detected_
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.addPin`](../pin-state.ts.mdmd.md#symbol-addpin)
+- [`pin-state.getVisibleConnections`](../pin-state.ts.mdmd.md#symbol-getvisibleconnections)
 - [`pin-state.removePin`](../pin-state.ts.mdmd.md#symbol-removepin)
+- [`graph.explorerGraphOf`](../../../shared/graph.ts.mdmd.md#symbol-explorergraphof)
 - [`types.ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 - `vitest` - `describe`, `expect`, `it`

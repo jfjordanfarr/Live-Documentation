@@ -152,7 +152,7 @@ test("instant continuing layouts redraw the actual wires onto their pins", async
   await localMapSettled(page);
   expect(Number(await page.locator(".local-placed").getAttribute("data-search-adopted"))).toBeGreaterThan(0);
   const separation = await page.evaluate(() => {
-    const path = document.querySelector<SVGPathElement>('.connection-path[data-source-id="Contracts/IPaymentService.cs"][data-source-symbol="post"][data-target-id="Contracts/PaymentRequest.cs"]')!;
+    const path = document.querySelector<SVGPathElement>('.connection-path[data-source-id="Contracts/IPaymentService.cs"][data-source-symbol="Post"][data-target-id="Contracts/PaymentRequest.cs"]')!;
     const source = document.querySelector<HTMLElement>('.node-card[data-id="Contracts/PaymentRequest.cs"] .symbol-row[data-symbol="PaymentRequest"] .symbol-anchor.outbound')!.getBoundingClientRect();
     const target = document.querySelector<HTMLElement>('.node-card[data-id="Contracts/IPaymentService.cs"] .symbol-row[data-symbol="Post"] .symbol-anchor.inbound')!.getBoundingClientRect();
     const matrix = path.getScreenCTM()!;

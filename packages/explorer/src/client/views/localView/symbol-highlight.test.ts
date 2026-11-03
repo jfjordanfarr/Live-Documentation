@@ -82,7 +82,7 @@ describe("symbol-highlight", () => {
 
       const result = computeSymbolHighlight(subgraph, options, "center", "MyFunction", false);
 
-      expect(result.relatedSymbols.has("center:myfunction")).toBe(true);
+      expect(result.relatedSymbols.has("center:MyFunction")).toBe(true);
       expect(result.relatedNodeIds.has("center")).toBe(true);
     });
 
@@ -103,7 +103,7 @@ describe("symbol-highlight", () => {
       const result = computeSymbolHighlight(subgraph, options, "center", "useHelper", false);
 
       expect(result.relatedEdges).toHaveLength(1);
-      expect(result.relatedSymbols.has("center:usehelper")).toBe(true);
+      expect(result.relatedSymbols.has("center:useHelper")).toBe(true);
       expect(result.relatedSymbols.has("dep:helper")).toBe(true);
       expect(result.relatedNodeIds.has("dep")).toBe(true);
     });
@@ -125,12 +125,12 @@ describe("symbol-highlight", () => {
       const result = computeSymbolHighlight(subgraph, options, "center", "exportedAPI", false);
 
       expect(result.relatedEdges).toHaveLength(1);
-      expect(result.relatedSymbols.has("center:exportedapi")).toBe(true);
-      expect(result.relatedSymbols.has("dependent:consumerfunc")).toBe(true);
+      expect(result.relatedSymbols.has("center:exportedAPI")).toBe(true);
+      expect(result.relatedSymbols.has("dependent:consumerFunc")).toBe(true);
       expect(result.relatedNodeIds.has("dependent")).toBe(true);
     });
 
-    it("normalizes symbol names for case-insensitive matching", () => {
+    it("does not merge distinct case-sensitive documented identities", () => {
       const center = createNode("center");
       const dep = createNode("dep");
       const subgraph: LocalSubgraph = {
@@ -144,10 +144,11 @@ describe("symbol-highlight", () => {
       };
       const options = createOptions();
 
-      // Hover with different casing
+      // The projection resolves references to exact documented headings; a differently named symbol has no such edge.
       const result = computeSymbolHighlight(subgraph, options, "center", "MYFUNCTION", false);
 
-      expect(result.relatedEdges).toHaveLength(1);
+      expect(result.relatedEdges).toHaveLength(0);
+      expect(computeSymbolHighlight(subgraph, options, "center", "MyFunction", false).relatedEdges).toHaveLength(1);
     });
 
     it("handles __internals__ hover on center node", () => {

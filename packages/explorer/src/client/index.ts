@@ -828,7 +828,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       const pin = (state.pins ?? EMPTY_PIN_SET).entries.find(entry => entry.nodeId === hit.node.id
         && (hit.kind === "file" ? entry.symbol === "*" : entry.symbol === hit.symbol || entry.symbol === "*"));
       if (pin) promoteRetained({ kind: "pin", pin });
-      if (state.perspective === "2d") localView.focusNode(hit.node.id);
+      if (state.perspective === "2d") localView.focusNode(hit.node.id, hit.kind === "symbol" ? hit.symbol : undefined);
       else forceGraphView.render();
     }
     state.destination = asked;

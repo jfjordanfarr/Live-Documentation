@@ -57,7 +57,7 @@ test("wires keep their elements and follow pins through interrupted, zoomed pin 
   await page.evaluate(root => {
     const stored = window as unknown as { wireFrames: WireFrame[]; wireFramesDone: boolean };
     stored.wireFrames = []; stored.wireFramesDone = false;
-    const selector = `.connection-path[data-source-id="${root}main.ts"][data-target-id="${root}models.ts"][data-target-symbol="report"]`;
+    const selector = `.connection-path[data-source-id="${root}main.ts"][data-target-id="${root}models.ts"][data-target-symbol="Report"]`;
     const original = document.querySelector<SVGPathElement>(selector)!;
     const start = performance.now();
     const sample = (): void => {

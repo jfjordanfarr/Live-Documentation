@@ -4,13 +4,14 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/graph.ts
-- Generated At: 2026-10-31T20:07:03.452Z
+- Generated At: 2026-11-03T19:06:10.062Z
 
 ## Authored
 ### Purpose
 Projects the graph index into the `ExplorerGraphPayload` the Explorer views render: nodes with dependency references and type references, links, and statistics. One pure function, which the client runs on the bundle it loads.
 
 ### Notes
+- Complete documented headings are retained as symbol identities, including kind and overload suffixes. Reference anchors are resolved once through each target document's symbol table before links reach the views; the extended symbols retain their anchors for same-file references. This boundary prevents the display, pins, hover and reader from independently guessing which declaration a bare name meant ([November 3](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-2)).
 - Created 2025-11-22 as `server/graph.ts`, moved to `shared/` on 2026-03-09, and rewritten on 2026-09-28 to read the graph index instead of building a graph of its own.
 - The stat `dependenciesOutsideScan` counts the dependency lines whose edge has no target inside the scan, packages, builtins and files the scan does not hold. It was `referencesOutsideScan` from 2026-10-14, when the footer stopped calling them "missing dependencies", which told a reader something was broken ([Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)), and was renamed on 2026-10-30 for what it counts: dependency lines, not references.
 - The stat `references` (2026-10-30, the owner's decision of [Turn 3](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) is the documented references between two files of the scan, `documentedReferences` over the links: each link's `referenceCount`, one when it has none. It is the one number the sidebar and Knowledge Sources print. `links` is smaller wherever a signature names one type in several places, one link carrying several references: 4,622 links and 4,651 references on this repository that day. The history's moments count through the same function.
@@ -23,7 +24,7 @@ Signature facts remain available as dependency metadata but are emitted as links
 ### Public Symbols
 #### `explorerGraphOf` {#symbol-explorergraphof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/graph.ts#L43)
+- Source: [source](../../../../../../packages/explorer/src/shared/graph.ts#L42)
 - Returns: [`ExplorerGraphPayload`](./types.ts.mdmd.md#symbol-explorergraphpayload)
 - Parameters: `graph`: [`LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 
@@ -32,7 +33,7 @@ Projects the graph into the Explorer's node-and-link payload.
 
 #### `documentedReferences` {#symbol-documentedreferences}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/shared/graph.ts#L167)
+- Source: [source](../../../../../../packages/explorer/src/shared/graph.ts#L172)
 
 ##### `documentedReferences` — Summary
 How many documented references the links carry between two files of the
@@ -45,7 +46,6 @@ places in the Explorer give the number differently (2026-10-30).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`document.symbolName`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
 - [`graph.GraphEdge`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphedge) (type-only)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`graph.LiveDocGraph`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)

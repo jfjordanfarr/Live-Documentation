@@ -454,7 +454,7 @@ test("a card's rows stand where their wires lead by default, and Tuning offers t
       const row = path.dataset.targetId === id ? [path.dataset.targetSymbol!, end] as const : path.dataset.sourceId === id ? [path.dataset.sourceSymbol!, start] as const : null;
       if (row) (far.get(row[0]) ?? far.set(row[0], []).get(row[0])!).push(row[1]);
     });
-    const rows = [...document.querySelectorAll<HTMLElement>(`#map-container .node-card[data-id="${id}"] .symbol-row:not(.internals-row)`)].map(row => row.dataset.symbol!.toLowerCase());
+    const rows = [...document.querySelectorAll<HTMLElement>(`#map-container .node-card[data-id="${id}"] .symbol-row:not(.internals-row)`)].map(row => row.dataset.symbol!);
     const means = rows.map(name => { const ends = far.get(name); return ends ? ends.reduce((a, b) => a + b, 0) / ends.length : null; });
     let pairs = 0;
     for (let i = 0; i < means.length; i++) for (let j = i + 1; j < means.length; j++) if (means[i] !== null && means[j] !== null && means[i]! > means[j]! + 1) pairs++;
@@ -465,7 +465,7 @@ test("a card's rows stand where their wires lead by default, and Tuning offers t
     await page.locator("#tuning-symbol-order").selectOption(order);
     await settle();
   };
-  /** Every card keeps every symbol row whatever the order: graph.ts has LinkTarget and linkTarget, which share a normalized name. */
+  /** Every card keeps every symbol row whatever the order, including graph.ts's distinct LinkTarget and linkTarget declarations. */
   const everyRowKept = async (): Promise<void> => {
     const cards = await page.locator("#map-container .node-card").evaluateAll(cards => cards.map(card => ({
       id: (card as HTMLElement).dataset.id!,

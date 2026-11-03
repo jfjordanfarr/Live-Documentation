@@ -372,7 +372,7 @@ function renderDocumentation(
   if (inspectedSymbol === INTERNAL_SYMBOL) {
     parts.push(sectionHtml("Internal implementation", "File-level connections that are not attributed to a public symbol."));
   } else if (inspectedSymbol) {
-    const block = file.symbols.find(entry => symbolName(entry) === inspectedSymbol);
+    const block = file.symbols.find(entry => entry.name === inspectedSymbol);
     const summary = block?.sections.find(section => section.title === "Summary")?.body.join(" ");
     parts.push(sectionHtml("Inspected symbol", `<strong>${escapeHtml(inspectedSymbol)}</strong>`
       + (block?.kind ? ` · ${escapeHtml(block.kind)}` : "")
@@ -713,13 +713,17 @@ function fileInspection(
   if (visited.has(key)) return whole;
   visited.add(key);
   const file = context.files[node.id];
-  const reExport = file?.reExports?.find(entry => entry.slug === fragment || entry.name === fragment);
+  const anchored = file?.symbols.find(entry => entry.slug === fragment);
+  const reExport = file?.reExports?.find(entry => entry.slug === fragment)
+    ?? (anchored ? undefined : file?.reExports?.find(entry => entry.name === fragment));
   if (reExport?.from) {
     const origin = resolveReaderTarget(reExport.from.link, node.docPath, context, visited);
     if (origin?.kind === "file") return origin;
   }
-  const block = file?.symbols.find(entry => entry.slug === fragment || symbolName(entry) === fragment);
-  const symbol = block ? symbolName(block) : node.publicSymbols.includes(fragment) ? fragment : undefined;
+  const exact = anchored ?? file?.symbols.find(entry => entry.name === fragment);
+  const named = file?.symbols.filter(entry => symbolName(entry) === fragment) ?? [];
+  const block = exact ?? (named.length === 1 ? named[0] : undefined);
+  const symbol = block ? block.name : node.publicSymbols.includes(fragment) ? fragment : undefined;
   return symbol ? { ...whole, symbol } : whole;
 }
 

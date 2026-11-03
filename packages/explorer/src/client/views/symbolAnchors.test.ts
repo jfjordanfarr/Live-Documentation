@@ -7,23 +7,23 @@ import {
 } from "./symbolAnchors";
 
 describe("normalizeSymbolIdentifier", () => {
-    it("lowercases and trims simple identifiers", () => {
-        expect(normalizeSymbolIdentifier(" FooBar ")).toBe("foobar");
+    it("trims only surrounding whitespace", () => {
+        expect(normalizeSymbolIdentifier(" FooBar ")).toBe("FooBar");
     });
 
-    it("drops trailing invocation syntax", () => {
-        expect(normalizeSymbolIdentifier("createThing(): Promise<void>")).toBe("creatething");
+    it("preserves signature text rather than guessing a bare name", () => {
+        expect(normalizeSymbolIdentifier("createThing(): Promise<void>")).toBe("createThing(): Promise<void>");
     });
 
-    it("removes generic markers and punctuation", () => {
-        expect(normalizeSymbolIdentifier("makeWidget<TDependency>")).toBe("makewidget");
-        expect(normalizeSymbolIdentifier("'DefaultExport'")).toBe("defaultexport");
+    it("preserves generic markers and punctuation", () => {
+        expect(normalizeSymbolIdentifier("makeWidget<TDependency>")).toBe("makeWidget<TDependency>");
+        expect(normalizeSymbolIdentifier("'DefaultExport'")).toBe("'DefaultExport'");
     });
 
-    it("strips namespace prefixes and slug markers", () => {
-        expect(normalizeSymbolIdentifier("shared.cleanupReference")).toBe("cleanupreference");
-        expect(normalizeSymbolIdentifier("fallbackHeuristicTypes.HeuristicArtifact")).toBe("heuristicartifact");
-        expect(normalizeSymbolIdentifier("symbol-computeReferenceStart")).toBe("computereferencestart");
+    it("preserves qualification and distinguishes an unresolved anchor from a name", () => {
+        expect(normalizeSymbolIdentifier("shared.cleanupReference")).toBe("shared.cleanupReference");
+        expect(normalizeSymbolIdentifier("fallbackHeuristicTypes.HeuristicArtifact")).toBe("fallbackHeuristicTypes.HeuristicArtifact");
+        expect(normalizeSymbolIdentifier("symbol-computeReferenceStart")).toBe("symbol-computeReferenceStart");
     });
 
     it("returns null for empty or undefined inputs", () => {
@@ -34,7 +34,7 @@ describe("normalizeSymbolIdentifier", () => {
 
 describe("buildNormalizedAnchorKey", () => {
     it("creates normalized keys when a symbol is provided", () => {
-        expect(buildNormalizedAnchorKey("inbound", "CreateThing")).toBe("normalized:inbound:creatething");
+        expect(buildNormalizedAnchorKey("inbound", "CreateThing")).toBe("normalized:inbound:CreateThing");
     });
 
     it("returns null when normalization fails", () => {
@@ -44,7 +44,7 @@ describe("buildNormalizedAnchorKey", () => {
 
 describe("tryBuildNormalizedKeyFromAnchorKey", () => {
     it("parses standard anchor keys", () => {
-        expect(tryBuildNormalizedKeyFromAnchorKey("inbound:Create")).toBe("normalized:inbound:create");
+        expect(tryBuildNormalizedKeyFromAnchorKey("inbound:Create")).toBe("normalized:inbound:Create");
     });
 
     it("ignores wildcard anchors", () => {

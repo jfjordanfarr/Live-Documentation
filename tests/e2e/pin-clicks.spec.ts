@@ -97,7 +97,7 @@ test("a symbol pin discloses the rows its own file's references join to it, with
   expect(await subject(page), "no pin moved the subject").toBe(PY_PROCESSOR);
   await expect(row(page, PY_MODELS, "create_record"), "the pinned symbol's user in its own file is disclosed").toBeVisible();
   await expect(symbolRow(page, PY_MODELS, "create_record"), "connected: neither folded nor muted").not.toHaveClass(/branch-symbol-(hidden|muted)/);
-  await expect(page.locator(`#map-connections .connection-path.self-loop[data-source-id="${PY_MODELS}"][data-source-symbol="create_record"][data-target-symbol="record"]`),
+  await expect(page.locator(`#map-connections .connection-path.self-loop[data-source-id="${PY_MODELS}"][data-source-symbol="create_record"][data-target-symbol="Record"]`),
     "and both laces of the reference drawn").toHaveCount(2);
   // A row no pin needs is folded behind the reveal, which counts the six fields of Record and Report.
   await expect(symbolRow(page, PY_MODELS, "value")).toHaveClass(/branch-symbol-hidden/);

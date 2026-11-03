@@ -4,16 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/symbolAnchors.ts
-- Generated At: 2026-10-22T16:47:56.408Z
+- Generated At: 2026-11-03T19:06:09.773Z
 
 ## Authored
 ### Purpose
-Symbol anchor key normalisation utilities for the Local Map. Ensures that symbol identifiers from different sources (graph payloads, DOM data attributes) resolve to consistent anchor keys for connection routing.[AI-Agent-Workspace/ChatHistory/2025/12/2025-12-03.md]
+Exact symbol keys and direction-qualified anchor keys for the Local Map's routing, disclosure and attention. A complete documented heading identifies its row; case, kind, overload and qualification are retained.
 
 ### Notes
-- Created 2025-12-03 to centralise symbol matching logic.
-- `normalizeSymbolIdentifier` strips decorators like `(class)`, `(function)` and converts to lowercase.
-- `buildNormalizedAnchorKey` combines node ID, direction, and optional symbol into a canonical key.
+- Created in the [December 3 symbol-anchor work](../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-03.SUMMARIZED.md#turn-05-symbol-anchors-foundation) to make wires reach their symbol pins. The original text-stripping rule could merge distinct declarations; the [November 3 repair](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-2) moves anchor-to-heading resolution to the graph projection, where the document supplies the answer.
+- `normalizeSymbolIdentifier` now trims surrounding whitespace only. The projection supplies exact headings to links, and same-file references resolve through their stored document anchors. Never strip a kind or overload suffix here: it is part of the identity the generated document established.
+- `buildNormalizedAnchorKey` qualifies the exact heading by direction. File and column identity belong to the outer anchor registry, not this key.
 - The `NormalizedAnchorKey` template-literal type, which nothing used, was deleted on 2026-10-08 in [the dead code sweep](../../../../../../../AI-Agent-Workspace/Probes/2026-10-08/dead-code-sweep.md).
 
 ## Generated
@@ -31,25 +31,26 @@ Direction of a dependency edge relative to a Live Doc node.
 
 #### `normalizeSymbolIdentifier` {#symbol-normalizesymbolidentifier}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts#L14)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts#L15)
 
 ##### `normalizeSymbolIdentifier` — Summary
-Normalizes a symbol identifier so different textual representations resolve to the same anchor key.
+The complete documented heading is the row's identity. The graph projection resolves anchors to headings
+before a view sees them, so matching must preserve case, kind, overloads and qualification verbatim.
 
 #### `buildNormalizedAnchorKey` {#symbol-buildnormalizedanchorkey}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts#L70)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts#L25)
 - Parameters: `direction`: [`AnchorDirection`](#symbol-anchordirection)
 
 ##### `buildNormalizedAnchorKey` — Summary
 Constructs a normalised anchor key from a direction and raw symbol name.
 
 Returns `null` when the symbol cannot be meaningfully normalised (e.g. empty or whitespace-only).
-The resulting key has the form `"normalized:<direction>:<lowercased-symbol>"`.
+The resulting key has the form `"normalized:<direction>:<documented-heading>"`.
 
 #### `tryBuildNormalizedKeyFromAnchorKey` {#symbol-trybuildnormalizedkeyfromanchorkey}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts#L85)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/symbolAnchors.ts#L40)
 
 ##### `tryBuildNormalizedKeyFromAnchorKey` — Summary
 Attempts to derive a normalised anchor key from an existing raw anchor key.

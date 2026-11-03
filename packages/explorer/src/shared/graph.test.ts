@@ -32,7 +32,7 @@ describe("documented reference multiplicity in the Explorer projection", () => {
     const projected = explorerGraphOf(graph);
     expect(projected.links).toHaveLength(4);
     expect(projected.links.find(edge => edge.sourceSymbol === "send")).toMatchObject({
-      kind: "type-reference", targetSymbol: "symbol-widget", referenceCount: 3
+      kind: "type-reference", targetSymbol: "Widget", referenceCount: 3
     });
     expect(projected.links.find(edge => edge.kind === "extends")).toMatchObject({ referenceCount: 1 });
     expect(projected.links.filter(edge => edge.sourceSymbol === "send")).toHaveLength(1);
@@ -75,5 +75,23 @@ describe("the stats' reference total", () => {
       { source: "c", target: "b", kind: "dependency", referenceCount: 1 }
     ])).toBe(5);
     expect(documentedReferences([])).toBe(0);
+  });
+
+  it("does not interpret an already resolved symbol heading as another symbol's anchor", () => {
+    const graph = deriveLiveDocGraph([
+      doc("src/consumer.ts", { symbols: [
+        { name: "send", slug: "symbol-send", kind: "function", flags: [], sections: [], references: [
+          { role: "Returns", types: [{ name: "Widget", link: "./types.ts.md#symbol-widget" }] }
+        ] },
+        { name: "Different", slug: "send", kind: "function", flags: [], sections: [], references: [] }
+      ] }),
+      doc("src/types.ts", { symbols: [
+        { name: "Widget", slug: "symbol-widget", kind: "interface", flags: [], references: [], sections: [] },
+        { name: "Different", slug: "Widget", kind: "interface", flags: [], references: [], sections: [] }
+      ] })
+    ], location);
+    expect(explorerGraphOf(graph).links).toEqual([
+      expect.objectContaining({ sourceSymbol: "send", targetSymbol: "Widget", kind: "type-reference" })
+    ]);
   });
 });

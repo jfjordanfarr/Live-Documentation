@@ -11,7 +11,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     capturePinChange: (nodeId, symbol, nextSubjectId, closeExpansion) => controller.capturePinChange(nodeId, symbol, nextSubjectId, closeExpansion),
     captureDirectoryChange: directory => controller.captureDirectoryChange(directory),
     clearPathForExploration: () => controller.clearPathForExploration(),
-    focusNode: nodeId => controller.focusNode(nodeId),
+    focusNode: (nodeId, symbol) => controller.focusNode(nodeId, symbol),
     focusDirectory: directory => controller.focusDirectory(directory),
     getSubjectAnchor: nodeId => controller.getSubjectAnchor(nodeId),
     placeSubjectAnchor: (nodeId, anchor) => controller.placeSubjectAnchor(nodeId, anchor),

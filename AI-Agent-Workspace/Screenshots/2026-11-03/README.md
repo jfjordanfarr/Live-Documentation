@@ -46,3 +46,7 @@ The rebuilt reader now displays **Nov 2, 2026**, and the provenance sentence rem
 First make a selected symbol a dependable 2D destination: preserve canonical identity, bring the acted-on row and its controls into the usable frame, and keep the relationship visible while reading. Then compare semantic-zoom treatments that reveal the existing file Purpose and symbol summaries on the map, with progressive disclosure for longer Notes. Try the real pathfind.ts card, a small estate card with no authored prose, a long documented symbol, several pins, zoom-out, and a return from 3D. The home of authored prose stays a separate design fork.
 
 This advances the vision's single-folder understanding journey and its first two audiences. The installable package and cold-folder rehearsal remain the next substantial delivery milestone; this review does not silently demote them or reopen the whole 3D tuning effort.
+
+## Later November 3: repairs and reading proposals
+
+The identity and search-arrival findings above were repaired in the continuation of this session. The [three repair pictures](symbols/README.md) show the requested row in the usable map, distinct function/interface attention, and the function's own reader summary. The [four-layout reading comparison](../../Probes/2026-11-03/reading-layouts/README.md) then tries twelve real-content cases, including the owner's suggestion of descriptions on hover/tap. These later results leave this opening review intact as the evidence of what prompted the work.

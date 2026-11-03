@@ -73,8 +73,10 @@ export interface ExplorerTypeReference {
  * Extended symbol information including type references.
  */
 export interface ExplorerPublicSymbol {
-    /** The symbol name. */
+    /** The complete documented heading, including any kind or overload distinction. */
     name: string;
+    /** The document's exact anchor, including distinctions a bare type name cannot carry. */
+    anchor?: string;
     /** Type references extracted from the symbol's signature. */
     typeReferences?: ExplorerTypeReference[];
 }
@@ -117,7 +119,7 @@ export interface ExplorerNodePayload {
     symbolCount?: number;
     /**
      * The reasons the file's doc lists it as an entry (`declared`, `program`, `command`, `module`, `opening`,
-     * `tooling`), when it lists any; the 3D Local Map starts from the declared ones with nothing pinned (2026-10-31).
+     * `tooling`), when it lists any; a fresh 3D visit uses their presence to choose its initial layout.
      * Absent for a file at a step of the history, whose doc the bundle does not carry.
      */
     entryReasons?: string[];

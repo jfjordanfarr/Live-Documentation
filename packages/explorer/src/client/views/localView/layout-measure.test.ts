@@ -11,7 +11,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import { clamp, computeFitTransform, computePathFitTransform, framePadding, hiddenEdges, settleTransform, type Bounds, type LayoutExtents } from "./layout-measure";
+import { clamp, computeFitTransform, computePathFitTransform, focusTransform, framePadding, hiddenEdges, settleTransform, type Bounds, type LayoutExtents } from "./layout-measure";
 
 describe("layout-measure", () => {
   const box = (left: number, top: number, width: number, height: number): Bounds =>
@@ -22,6 +22,30 @@ describe("layout-measure", () => {
       expect(framePadding({ width: 1440, height: 900 })).toEqual({ horizontal: 28.8, vertical: 22.5 });
       expect(framePadding({ width: 200, height: 100 })).toEqual({ horizontal: 8, vertical: 8 });
       expect(framePadding({ width: 9000, height: 9000 })).toEqual({ horizontal: 72, vertical: 72 });
+    });
+  });
+
+  describe("focusTransform", () => {
+    it("brings a distant row and its full horizontal actions into the available frame at reading size", () => {
+      const frame = { width: 650, height: 500 };
+      const target = box(2400, 1900, 440, 28);
+      const focused = focusTransform(target, { x: -900, y: -100, k: 0.2 }, frame);
+      expect(focused.k).toBe(1);
+      expect(focused.x + target.left).toBeGreaterThan(0);
+      expect(focused.x + target.right).toBeLessThan(frame.width);
+      expect(focused.y + target.top).toBeGreaterThan(0);
+      expect(focused.y + target.bottom).toBeLessThan(frame.height);
+    });
+
+    it("backs out of excessive zoom without shrinking text below its reading size", () => {
+      const frame = { width: 650, height: 500 };
+      const target = box(100, 200, 440, 30);
+      const focused = focusTransform(target, { x: 0, y: 0, k: 3 }, frame);
+      expect(focused.k).toBeGreaterThanOrEqual(1);
+      expect(focused.k).toBeLessThan(3);
+      expect(focused.x + target.left * focused.k).toBeCloseTo(framePadding(frame).horizontal);
+      expect(focused.x + target.right * focused.k).toBeCloseTo(frame.width - framePadding(frame).horizontal);
+      expect(focusTransform(box(100, 200, 1000, 30), focused, frame).k).toBe(1);
     });
   });
 

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-10-30T15:02:32.738Z
+- Generated At: 2026-11-03T19:06:09.397Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,7 @@
 Pure functions for measuring layout extents and computing fit transforms. Calculates bounding boxes, determines the camera that frames the selected card or a drawn path.
 
 ### Notes
+- `focusTransform` frames a requested row or file within the available canvas at reading size, backing out of excessive magnification when necessary but never shrinking text below that size. The controller supplies the row's full horizontal extent, including its controls, separately from the whole picture's bounds ([the November 3 search-framing repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-2)).
 
 - Extracted from controller.ts during Dev Day 50 (12/19). Functions like `computeLayoutExtents()` and `computeFitTransform()` are pure math; DOM measurement is isolated to `withTransformReset()` callbacks.
 - `computeFitTransform` frames the focus card with buffers around it, at a scale between 0.6 and 1.45. `computePathFitTransform` frames a drawn path at reading size only: centred when the whole path fits the frame, its first file at the left edge when it is wider, so what the frame cannot hold is to the right and never the start ([Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)).
@@ -112,9 +113,18 @@ The camera after the subject has been held where another view left it (a return 
 scale, moved the least that brings the picture into the frame, by the rule of {@link keepVisible} on each axis;
 a picture already inside it does not move.
 
-#### `hiddenEdges` {#symbol-hiddenedges}
+#### `focusTransform` {#symbol-focustransform}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L265)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `target`: [`Bounds`](#symbol-bounds); `current`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
+
+##### `focusTransform` — Summary
+Frame an explicitly requested row or file at reading size, including its actions, inside the usable canvas.
+
+#### `hiddenEdges` {#symbol-hiddenedges}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L280)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `transform`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
 
 ##### `hiddenEdges` — Summary
@@ -122,7 +132,7 @@ Which edges of the frame the picture continues past, by more than `tolerance` px
 
 #### `computePathFitTransform` {#symbol-computepathfittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L295)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L310)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
 
@@ -134,7 +144,7 @@ lies to the right, one pan away, and never the start.
 
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L309)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L324)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary

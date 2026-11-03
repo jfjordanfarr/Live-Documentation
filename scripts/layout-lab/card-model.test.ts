@@ -27,10 +27,10 @@ describe("the lab's card model, the parts that need no page", () => {
   });
 
   it("resolves a wire's pin as the page's registry does: the row by name or normalized name, else the direction's default, else the middle", () => {
-    const metrics: CardMetrics = { height: 100, pins: new Map([["inbound:Foo", 20], ["outbound:Foo", 20], ["normalized:inbound:foo", 20], ["normalized:outbound:foo", 20], ["inbound:__internals__", 80], ["inbound:*", 80], ["outbound:*", 50]]), rowKeys: new Set(["inbound:Foo", "outbound:Foo", "normalized:inbound:foo", "normalized:outbound:foo", "inbound:__internals__", "inbound:*"]), hiddenKeys: new Set(["inbound:Bar", "outbound:Bar", "normalized:inbound:bar", "normalized:outbound:bar"]) };
+    const metrics: CardMetrics = { height: 100, pins: new Map([["inbound:Foo", 20], ["outbound:Foo", 20], ["normalized:inbound:Foo", 20], ["normalized:outbound:Foo", 20], ["inbound:__internals__", 80], ["inbound:*", 80], ["outbound:*", 50]]), rowKeys: new Set(["inbound:Foo", "outbound:Foo", "normalized:inbound:Foo", "normalized:outbound:Foo", "inbound:__internals__", "inbound:*"]), hiddenKeys: new Set(["inbound:Bar", "outbound:Bar", "normalized:inbound:Bar", "normalized:outbound:Bar"]) };
     expect(resolvePin(metrics, "inbound", "Foo")).toEqual({ offset: 20, key: "inbound:Foo" });
-    // A call's parentheses normalize away, and the normalized name is the key the page registered beside the raw one.
-    expect(resolvePin(metrics, "outbound", "Foo()")).toEqual({ offset: 20, key: "normalized:outbound:foo" });
+    // Surrounding whitespace may be trimmed; declaration distinctions are preserved by the projected heading.
+    expect(resolvePin(metrics, "outbound", " Foo ")).toEqual({ offset: 20, key: "normalized:outbound:Foo" });
     expect(resolvePin(metrics, "inbound", undefined)).toEqual({ offset: 80, key: "inbound:*" });
     expect(resolvePin(metrics, "outbound", "Missing")).toEqual({ offset: 50, key: "outbound:*" });
     // A collapsed row's pin is known but unreachable: the page places no wire to it.
@@ -38,20 +38,20 @@ describe("the lab's card model, the parts that need no page", () => {
     expect(resolvePin({ height: 100, pins: new Map(), rowKeys: new Set(), hiddenKeys: new Set() }, "inbound", "x")).toEqual({ offset: 50, key: null });
   });
 
-  it("keeps original registration identity when rows move, with exact names ahead of normalized collisions", () => {
+  it("keeps original registration identity when rows move, without merging case-distinct names", () => {
     const row = (symbol: string): { symbol: string } => ({ symbol });
     const lower = row("item"), upper = row("Item"), duplicate = row("Item"), internals = row("__internals__");
     // The last original Item remains the endpoint, although it is now above the first Item in the proposed layout.
     const metrics = registerPins([lower, upper, duplicate, internals], new Map([[lower, 90], [upper, 70], [duplicate, 20], [internals, 130]]), 180);
     expect(resolvePin(metrics, "outbound", "Item").offset).toBe(20);
     expect(resolvePin(metrics, "outbound", "item").offset).toBe(90);
-    expect(resolvePin(metrics, "outbound", "Item()").offset).toBe(20);
+    expect(resolvePin(metrics, "outbound", " Item ").offset).toBe(20);
     expect(resolvePin(metrics, "inbound", undefined).offset).toBe(130);
     expect(resolvePin(metrics, "outbound", undefined).offset).toBe(90);
     // A winning registration whose row is hidden prevents a wire; an earlier shown duplicate cannot replace it.
     const hidden = registerPins([lower, upper, duplicate, internals], new Map([[lower, 90], [upper, 70], [internals, 130]]), 180);
     expect(resolvePin(hidden, "outbound", "Item").offset).toBeNull();
-    expect(resolvePin(hidden, "outbound", "Item()").offset).toBeNull();
+    expect(resolvePin(hidden, "outbound", " Item ").offset).toBeNull();
     expect(resolvePin(hidden, "outbound", "item").offset).toBe(90);
     const asset = registerPins([], new Map(), 100);
     expect(resolvePin(asset, "inbound", undefined).offset).toBe(50);
@@ -62,7 +62,7 @@ describe("the lab's card model, the parts that need no page", () => {
     const row = (symbol: string) => ({ symbol });
     const lower = row("item"), upper = row("Item"), duplicate = row("Item"), internals = row("__internals__");
     const capture = { cards: { a: { id: "a", rows: [upper, duplicate, lower, internals], notes: [], directory: { font: "row" } } } } as unknown as Capture;
-    const branches = { subgraph: { nodes: [{ id: "a", publicSymbols: ["item", "Item", "Item"] }], links: [] }, rows: new Map([["a", ["item", "item", "item", "__internals__"]]]), relevantSymbols: new Map(), back: new Set() } as unknown as BranchGraph;
+    const branches = { subgraph: { nodes: [{ id: "a", publicSymbols: ["item", "Item", "Item"] }], links: [] }, rows: new Map([["a", ["item", "Item", "Item", "__internals__"]]]), relevantSymbols: new Map(), back: new Set() } as unknown as BranchGraph;
     const view = cardViews(capture, branches, { pins: EMPTY_PIN_SET, selected: "a", collapseOnPin: true, symbolOrder: "layout" }).get("a")!;
     expect(view.rows).toEqual([lower, upper, duplicate, internals]);
     expect(view.registration).toEqual([lower, upper, duplicate, internals]);
@@ -72,13 +72,13 @@ describe("the lab's card model, the parts that need no page", () => {
     const row = (symbol: string, badgesWidth = 0) => ({ symbol, badgesWidth });
     const upper = row("Item"), duplicate = row("Item", 20), lower = row("item"), z = row("z"), internals = row("__internals__");
     const capture = { cards: { a: { id: "a", rows: [upper, duplicate, lower, z, internals], notes: [], directory: { font: "row" } } } } as unknown as Capture;
-    const branches = { subgraph: { nodes: [{ id: "a", publicSymbols: ["Item", "Item", "item", "z"] }], links: [] }, rows: new Map([["a", ["item", "item", "item", "z", "__internals__"]]]), relevantSymbols: new Map(), back: new Set() } as unknown as BranchGraph;
+    const branches = { subgraph: { nodes: [{ id: "a", publicSymbols: ["Item", "Item", "item", "z"] }], links: [] }, rows: new Map([["a", ["item", "Item", "Item", "z", "__internals__"]]]), relevantSymbols: new Map(), back: new Set() } as unknown as BranchGraph;
     const options = { pins: EMPTY_PIN_SET, selected: "a", collapseOnPin: true };
     const alphabetical = cardViews(capture, branches, { ...options, symbolOrder: "alphabetical" }).get("a")!;
     expect(alphabetical.rows).toEqual([lower, upper, duplicate, z, internals]);
     expect(alphabetical.registration).toEqual([lower, upper, duplicate, z, internals]);
     // The layout can move z ahead, but cannot reverse distinct rows with the same normalized name.
-    branches.rows.set("a", ["z", "item", "item", "item", "__internals__"]);
+    branches.rows.set("a", ["z", "Item", "Item", "item", "__internals__"]);
     const layout = cardViews(capture, branches, { ...options, symbolOrder: "layout" }).get("a")!;
     expect(layout.rows).toEqual([z, upper, duplicate, lower, internals]);
     expect(layout.registration).toEqual([upper, duplicate, lower, z, internals]);
@@ -86,7 +86,7 @@ describe("the lab's card model, the parts that need no page", () => {
     const metrics = registerPins(layout.registration, centres, 140);
     expect(resolvePin(metrics, "outbound", "Item").offset).toBe(60);
     expect(resolvePin(metrics, "outbound", "item").offset).toBe(80);
-    expect(resolvePin(metrics, "outbound", "Item()").offset).toBe(80);
+    expect(resolvePin(metrics, "outbound", " Item ").offset).toBe(60);
   });
 
   it("tells a point inside a stepped membrane from one outside, by the even-odd rule", () => {

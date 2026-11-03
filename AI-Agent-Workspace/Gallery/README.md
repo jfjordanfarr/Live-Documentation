@@ -120,3 +120,16 @@ The [motion recording](../Screenshots/2026-10-02/native-branches-journey.webm) a
 The [retained Local Map](slopcop-retention/local-map.png) and [pruned Local Map](slopcop-retention/local-map-pruned.png) are copies of `local-click-retained.png` and `local-close-pruned.png` in the [October 3 evidence](../Screenshots/2026-10-03/README.md#later-october-3-pass--retention-pruning-and-transition-detail). Both use the same 617-file graph: the second releases the symbol-reference file's own pins and keeps only its interfaces needed by the checker. The [side-by-side sheet](sheets/slopcop-retention.png) compares those two disclosure states. Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh slopcop-retention.png`.
 
 The native configuration provider now sits beside its consumer instead of routing over an unrelated column. The [round-trip recording](../Screenshots/2026-10-03/wire-directory-roundtrip.webm) preserves the corresponding wire gathering and hierarchical directory animation. In [the October 5 closing review](../ChatHistory/2026/10/2026-10-03.1.record.md#turn-5), the owner reports repeated viewing and being “really impressed”. Further cyclic layout work and a separate sphere-to-card shape morph remain open.
+
+## Descriptions on the map, November 3
+
+The [four-way sheet](sheets/pathfind-reading.png) compares Neighbours on the same 28-symbol pathfind.ts card, using the same real provider/consumer context and a 1440×960 viewport. These are disposable layout proposals, not shipped Explorer views. The [probe record](../Probes/2026-11-03/reading-layouts/README.md) contains the other content cases, interaction findings and limits. The fourth proposal follows the owner's suggestion that file and symbol descriptions appear only on hover/tap; no product design has been chosen.
+
+| Gallery copy | Origin in the probe record |
+| --- | --- |
+| [Expanded](pathfind-reading/expanded.png) | [expanded.png](../Probes/2026-11-03/reading-layouts/expanded.png) |
+| [One open row](pathfind-reading/one-row.png) | [one-row.png](../Probes/2026-11-03/reading-layouts/one-row.png) |
+| [Attached reading card](pathfind-reading/attached.png) | [attached.png](../Probes/2026-11-03/reading-layouts/attached.png) |
+| [On attention](pathfind-reading/attention.png) | [attention-short.png](../Probes/2026-11-03/reading-layouts/attention-short.png) |
+
+Rebuild just this comparison with `bash AI-Agent-Workspace/Gallery/sheets.sh pathfind-reading.png`.

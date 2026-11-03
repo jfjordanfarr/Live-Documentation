@@ -19,6 +19,7 @@ import {
   computePathFitTransform,
   applyContainerDimensions,
   settleTransform,
+  focusTransform,
   withTransformReset,
   type Bounds,
   type Frame,
@@ -138,6 +139,8 @@ export class LocalViewController implements LocalViewApi {
   };
   private renderedPath = false;
   private directoryArrivalPending = false;
+  /** The requested identity is measured after its layout move, never from a transient pose. */
+  private focusRequest: string | null = null;
   private restoreExplorationCamera = false;
   private explorationCamera: { transform: MapTransform; initial: MapTransform | null; userAdjusted: boolean; layerTop: number } | null = null;
   /** Shared pins are owned by the application, not this renderer. */
@@ -227,6 +230,7 @@ export class LocalViewController implements LocalViewApi {
 
   private readonly handleWheel = (event: WheelEvent): void => {
     this.directoryArrivalPending = false;
+    this.focusRequest = null;
     const { state } = this.options;
     if ((state.view !== "map" || state.perspective !== "2d")) {
       return;
@@ -507,10 +511,9 @@ export class LocalViewController implements LocalViewApi {
    * 
    * Symbol format note:
    * - Symbol rows store display names: "collectIdentifierUsage"
-   * - Cross-file edges store slugified anchors: "symbol-collectidentifierusage"
-   * - Self-loop edges store display names: "OracleEdge"
+   * - Cross-file and self-loop edges store complete documented headings: "OracleEdge"
    * - The special "__internals__" symbol represents private implementation
-   * We normalize everything to lowercase for matching.
+   * Names keep their case, kind and overload distinctions throughout matching.
    * 
    * Special cases:
    * - Hovering "__internals__" isolates edges with no named symbol on that file,
@@ -595,12 +598,20 @@ export class LocalViewController implements LocalViewApi {
     return { ...frame, afterRender: () => {
       frame.afterRender();
       this.directoryArrivalPending = this.isShown();
-      if (!this.stage?.move) this.settleDirectoryArrival();
+      if (!this.stage?.move) this.settleArrival();
     } };
   }
 
   /** Keep the opened identity through its unfolding, then recover usable space; a person's camera gesture cancels this. */
-  settleDirectoryArrival(): void {
+  settleArrival(): void {
+    if (this.stage?.move || !this.isShown()) return;
+    if (this.focusRequest) {
+      const element = this.container.querySelector<HTMLElement>(this.focusRequest);
+      this.focusRequest = null;
+      this.directoryArrivalPending = false;
+      if (element) this.focusElement(element);
+      return;
+    }
     if (!this.directoryArrivalPending) return;
     this.directoryArrivalPending = false;
     if (this.isShown()) this.settleIntoFrame();
@@ -682,38 +693,54 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /** Bring a retained file into reading position without changing the retained selections. */
-  focusNode(nodeId: string): void {
-    const element = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(nodeId)}"]`);
-    if (element) this.focusElement(element);
+  focusNode(nodeId: string, symbol?: string): void {
+    this.lastInteracted = nodeId;
+    this.lastInteractedSymbol = symbol ?? null;
+    const card = `.node-card[data-id="${CSS.escape(nodeId)}"]`;
+    this.focusRequest = symbol ? `${card} .symbol-row[data-symbol="${CSS.escape(symbol)}"] .symbol-label-wrapper` : card;
+    this.settleArrival();
   }
 
   /** Bring a directory's label into reading position without opening or pinning anything. */
   focusDirectory(directory: string): void {
-    const element = this.container.querySelector<HTMLElement>(`.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`);
-    if (element) this.focusElement(element);
+    const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
+    const element = this.container.querySelector<HTMLElement>(selector);
+    if (element) {
+      this.lastInteracted = directory;
+      this.lastInteractedSymbol = null;
+      this.focusRequest = selector;
+      this.settleArrival();
+    }
     else if (directory === "") this.fitMapToContent();
   }
 
   private focusElement(element: HTMLElement): void {
     this.cancelInertia();
-    const frame = this.viewport.getBoundingClientRect();
-    const target = element.getBoundingClientRect();
-    const next = {
-      ...this.mapTransform,
-      x: this.mapTransform.x + frame.left + frame.width * 0.4 - (target.left + target.width / 2),
-      y: this.mapTransform.y + frame.top + frame.height * 0.4 - (target.top + target.height / 2)
-    };
+    const frame = this.frameRect();
+    const target = withTransformReset(this.container, origin => {
+      const card = element.closest<HTMLElement>(".node-card");
+      const across = (card ?? element).getBoundingClientRect();
+      const whole = element.getBoundingClientRect();
+      // A tall file is entered at its name; a symbol is entered at its own row, however far down the file it lies.
+      const vertical = element === card && whole.height > frame.height
+        ? card.querySelector<HTMLElement>(".node-title")!.getBoundingClientRect() : whole;
+      const left = across.left - origin.left, top = vertical.top - origin.top;
+      return { left, top, right: left + across.width, bottom: top + vertical.height, width: across.width, height: vertical.height };
+    });
+    const next = focusTransform(target, this.mapTransform, frame);
     this.mapUserAdjusted = true;
     animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
   }
 
   /** Zooms the map in by 20%. */
   zoomIn(): void {
+    this.focusRequest = null;
     zoomByFactorFn(this.runtime, 1.2, () => this.updateMapTransform());
   }
 
   /** Zooms the map out by ~17%. */
   zoomOut(): void {
+    this.focusRequest = null;
     zoomByFactorFn(this.runtime, 1 / 1.2, () => this.updateMapTransform());
   }
 
@@ -724,6 +751,7 @@ export class LocalViewController implements LocalViewApi {
    * window resized, and the picture may have moved under the continuing search.
    */
   resetZoom(): void {
+    this.focusRequest = null;
     if (!this.runtime.contentRoot) {
       return;
     }
@@ -1157,6 +1185,7 @@ export class LocalViewController implements LocalViewApi {
         return;
       }
       this.directoryArrivalPending = false;
+      this.focusRequest = null;
       this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
       if (this.pointers.size === 2) {
         const [a, b] = [...this.pointers.values()];

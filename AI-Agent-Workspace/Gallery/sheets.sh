@@ -69,3 +69,9 @@ sheet rosetta-native-perspectives.png "TypeScript Rosetta: retained branches, tw
 sheet slopcop-retention.png "Checker exploration: retain by clicking, prune with close" \
   "Implementation and checker retained" slopcop-retention/local-map.png \
   "Implementation closed; checker keeps its needed interfaces" slopcop-retention/local-map-pruned.png
+
+sheet pathfind-reading.png "Neighbours on pathfind.ts: four reading proposals, November 3" \
+  "Expanded cards: every Summary visible" pathfind-reading/expanded.png \
+  "One open row: file Purpose stays visible" pathfind-reading/one-row.png \
+  "Attached reading card: compact symbol list" pathfind-reading/attached.png \
+  "On attention: file and symbol prose on hover or tap" pathfind-reading/attention.png

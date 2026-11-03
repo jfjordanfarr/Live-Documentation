@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.test.ts
-- Generated At: 2026-10-30T15:02:32.708Z
+- Generated At: 2026-11-03T19:06:09.373Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,7 @@ _No public symbols detected_
 - [`layout-measure.clamp`](./layout-measure.ts.mdmd.md#symbol-clamp)
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)
+- [`layout-measure.focusTransform`](./layout-measure.ts.mdmd.md#symbol-focustransform)
 - [`layout-measure.framePadding`](./layout-measure.ts.mdmd.md#symbol-framepadding)
 - [`layout-measure.hiddenEdges`](./layout-measure.ts.mdmd.md#symbol-hiddenedges)
 - [`layout-measure.settleTransform`](./layout-measure.ts.mdmd.md#symbol-settletransform)

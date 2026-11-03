@@ -36,6 +36,7 @@ export function buildSelfLoopEdges(center: ExplorerNodePayload): LocalSubgraphLi
 
   // Build a set of symbol names in this file for quick lookup
   const localSymbolNames = new Set(symbols.map(s => s.name));
+  const namesByAnchor = new Map(symbols.filter(s => s.anchor).map(s => [s.anchor, s.name]));
 
   for (const symbol of symbols) {
     const typeRefs = symbol.typeReferences;
@@ -45,10 +46,11 @@ export function buildSelfLoopEdges(center: ExplorerNodePayload): LocalSubgraphLi
       // Check if this type reference points to a symbol in the same file
       const isSelfReference =
         (ref.isResolved && ref.targetId === center.id) ||
-        (!ref.isResolved && localSymbolNames.has(ref.typeName));
+        (!ref.isResolved && (namesByAnchor.has(ref.targetAnchor) || localSymbolNames.has(ref.typeName)));
 
       if (isSelfReference) {
-        const key = `${center.id}|${center.id}|type-reference|${symbol.name}|${ref.typeName}`;
+        const targetSymbol = namesByAnchor.get(ref.targetAnchor) ?? ref.typeName;
+        const key = `${center.id}|${center.id}|type-reference|${symbol.name}|${targetSymbol}`;
         if (seenKeys.has(key)) continue;
         seenKeys.add(key);
 
@@ -58,7 +60,7 @@ export function buildSelfLoopEdges(center: ExplorerNodePayload): LocalSubgraphLi
           direction: "outbound",
           kind: "type-reference",
           sourceSymbol: symbol.name,
-          targetSymbol: ref.typeName
+          targetSymbol
         });
       }
     }

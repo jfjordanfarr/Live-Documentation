@@ -8,7 +8,6 @@
  * bundle the static builder wrote. It keeps the shape the views expect, quirks
  * included, until the views read the graph directly.
  */
-import { symbolName } from "@live-documentation/engine/live-docs/document";
 import type { GraphEdge, GraphFile, LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
 
 import type {
@@ -44,6 +43,11 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
     const links: ExplorerLinkPayload[] = [];
     const seen = new Map<string, ExplorerLinkPayload>();
     let dependenciesOutsideScan = 0;
+    // Resolve the docs' anchors once, before presentation. A heading's kind/overload suffix is identity,
+    // not decoration: dropping it merges, for example, Walk (interface) and walk (function).
+    const names = new Map(Object.values(graph.files).map(file => [file.codePath,
+        new Map(file.symbols.map(symbol => [symbol.slug, symbol.name]))]));
+    const nameOfAnchor = (file: string, anchor: string | undefined): string | undefined => names.get(file)?.get(anchor) ?? anchor;
 
     const addLink = (
         source: string,
@@ -67,7 +71,7 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
     };
 
     const nodes: ExplorerNodePayload[] = Object.values(graph.files).map(file => {
-        const nameOfSlug = new Map(file.symbols.map(symbol => [symbol.slug, symbolName(symbol)]));
+        const nameOfSlug = names.get(file.codePath)!;
         const dependencies: ExplorerDependencyReference[] = [];
 
         for (const edge of file.edges) {
@@ -107,7 +111,7 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
             // made a single documented fact count twice in the 3D overview.
             const signature = reference.sourceSymbol !== undefined;
             if (reference.resolved && reference.targetId && (!signature || reference.kind === "extends" || reference.kind === "implements")) {
-                addLink(file.codePath, reference.targetId, reference.kind, reference.sourceSymbol, reference.targetSymbol);
+                addLink(file.codePath, reference.targetId, reference.kind, reference.sourceSymbol, nameOfAnchor(reference.targetId, reference.targetSymbol));
             }
         }
 
@@ -122,7 +126,7 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
             dependencies,
             dependents: file.inbound,
             missingDependencies,
-            publicSymbols: file.symbols.map(symbolName),
+            publicSymbols: file.symbols.map(symbol => symbol.name),
             publicSymbolsExtended: publicSymbolsExtendedOf(file),
             ...(file.entries.length ? { entryReasons: file.entries.map(entry => entry.reason) } : {})
         };
@@ -139,7 +143,8 @@ export function explorerGraphOf(graph: LiveDocGraph): ExplorerGraphPayload {
                 if (reference.role === "extends" || reference.role === "implements") {
                     continue;
                 }
-                addLink(node.id, reference.targetId, "type-reference", symbol.name, reference.targetAnchor ?? reference.typeName);
+                addLink(node.id, reference.targetId, "type-reference", symbol.name,
+                    reference.targetAnchor ? nameOfAnchor(reference.targetId, reference.targetAnchor) : reference.typeName);
             }
         }
     }
@@ -200,7 +205,6 @@ function publicSymbolsExtendedOf(file: GraphFile): ExplorerPublicSymbol[] {
                 });
             }
         }
-        const name = symbolName(symbol);
-        return typeReferences.length > 0 ? { name, typeReferences } : { name };
+        return { name: symbol.name, anchor: symbol.slug, ...(typeReferences.length ? { typeReferences } : {}) };
     });
 }

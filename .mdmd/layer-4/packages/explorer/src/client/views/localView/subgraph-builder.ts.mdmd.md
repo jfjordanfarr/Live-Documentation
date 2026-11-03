@@ -4,13 +4,15 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/subgraph-builder.ts
-- Generated At: 2026-10-22T16:47:56.217Z
+- Generated At: 2026-11-03T19:06:09.572Z
 
 ## Authored
 ### Purpose
 Builds self-reference edges and the adjacent-hop subgraph of an explicit path from Explorer graph data.
 
 ### Notes
+Same-file references resolve their stored target anchor to the complete local heading before falling back to an unresolved exact name. A type named `Walk` can therefore connect to `Walk (interface)` without making `walk (function)` its target. This follows the [symbol-identity repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-2); a self-reference's display label alone is insufficient when names collide.
+
 Extracted from the controller during the December 19, 2025 modularization. Neighborhood disclosure now belongs to branches.ts. Path construction preserves reference direction and metadata; the common disclosure draws forward references and the pathfinder reports those that run against the path.
 
 ## Generated
@@ -46,7 +48,7 @@ which the connections module draws as the two laces of the French Corset.
 
 #### `buildPathSubgraph` {#symbol-buildpathsubgraph}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L87)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/subgraph-builder.ts#L89)
 - Returns: [`LocalSubgraph`](./types.ts.mdmd.md#symbol-localsubgraph)
 - Parameters: `graphData`: [`ExplorerGraphPayload`](../../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `resolveLinkEndpoint`: [`LinkEndpointResolver`](#symbol-linkendpointresolver); `resolveNode`: [`NodeResolver`](#symbol-noderesolver)
 

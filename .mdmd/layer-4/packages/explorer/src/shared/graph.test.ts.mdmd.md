@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/shared/graph.test.ts
-- Generated At: 2026-10-30T16:26:09.542Z
+- Generated At: 2026-11-03T19:22:42.741Z
 
 ## Authored
 ### Purpose

@@ -1,9 +1,14 @@
 import { describe, expect, it } from "vitest";
 
+import { parseLiveDoc, renderLiveDoc, type LiveDoc } from "@live-documentation/engine/live-docs/document";
+import { deriveLiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+
+
 import { buildBranches, commonDirectory, directoryIndex, edgeKey, exploreBranches, isClosedDirectory, membraneDirectory, orderExploration, placeMembers, rankBranches } from "./branches";
 import type { LocalEdge } from "./types";
+import { explorerGraphOf } from "../../../shared/graph";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
-import { addPin, EMPTY_PIN_SET, removePin } from "../pin-state";
+import { addPin, EMPTY_PIN_SET, removePin, getVisibleConnections } from "../pin-state";
 
 function node(id: string, archetype = "implementation"): ExplorerNodePayload {
   return { id, name: id, codePath: id, codeRelativePath: id, docPath: `${id}.md`, docRelativePath: `${id}.md`,
@@ -110,12 +115,12 @@ describe("independent Local Map branches", () => {
 
   const nodes = [node("base"), node("left"), node("right"), node("join"), node("outside"), node("catalog", "asset")];
   const links = [
-    { source: "left", target: "base", targetSymbol: "symbol-value" },
-    { source: "right", target: "base", targetSymbol: "symbol-value" },
-    { source: "join", target: "left", targetSymbol: "symbol-value" },
-    { source: "join", target: "right", targetSymbol: "symbol-value" },
-    { source: "right", target: "left", targetSymbol: "symbol-other" },
-    { source: "outside", target: "join", targetSymbol: "symbol-value" },
+    { source: "left", target: "base", targetSymbol: "value" },
+    { source: "right", target: "base", targetSymbol: "value" },
+    { source: "join", target: "left", targetSymbol: "value" },
+    { source: "join", target: "right", targetSymbol: "value" },
+    { source: "right", target: "left", targetSymbol: "other" },
+    { source: "outside", target: "join", targetSymbol: "value" },
     { source: "catalog", target: "base" }
   ].map(link => ({ ...link, kind: "dependency" as const }));
   const graph: ExplorerGraphPayload = { nodes, links, stats: { nodes: nodes.length, links: links.length, references: links.length, dependenciesOutsideScan: 0 } };
@@ -127,7 +132,7 @@ describe("independent Local Map branches", () => {
     const result = buildBranches(nodes[0], graph, pins, n => n.archetype !== "asset");
     expect(result.subgraph.nodes.map(n => n.id).sort()).toEqual(["base", "join", "left", "right"]);
     expect(result.subgraph.links).toHaveLength(5);
-    expect(result.subgraph.links).toContainEqual(expect.objectContaining({ sourceId: "right", targetId: "left", targetSymbol: "symbol-other" }));
+    expect(result.subgraph.links).toContainEqual(expect.objectContaining({ sourceId: "right", targetId: "left", targetSymbol: "other" }));
     expect(result.hiddenConnections.get("join")).toBe(1);
     expect(result.hiddenConnections.get("base")).toBe(1);
     expect(result.columns.map(c => c.map(n => n.id))).toEqual([["base"], ["left"], ["right"], ["join"]]);
@@ -348,16 +353,16 @@ describe("a symbol pin's partners in its own file (2026-11-03)", () => {
 
   it("discloses, one hop either way, what the pinned symbol uses in its file and what there uses it", () => {
     const result = buildBranches(null, graph, addPin(EMPTY_PIN_SET, "lib/shapes", "Shape"), () => true);
-    expect(result.relevantSymbols.get("lib/shapes")).toEqual(new Set(["shape", "point", "draw"]));
-    expect([...result.rows.get("lib/shapes")!].sort(), "Colour stays folded").toEqual(["draw", "point", "shape"]);
+    expect(result.relevantSymbols.get("lib/shapes")).toEqual(new Set(["Shape", "Point", "draw"]));
+    expect([...result.rows.get("lib/shapes")!].sort(), "Colour stays folded").toEqual(["Point", "Shape", "draw"]);
     // Both self-references join rows the card shows, so both laces are drawn.
     expect(result.subgraph.links).toContainEqual(expect.objectContaining({ sourceId: "lib/shapes", targetId: "lib/shapes", sourceSymbol: "Shape", targetSymbol: "Point" }));
     expect(result.subgraph.links).toContainEqual(expect.objectContaining({ sourceId: "lib/shapes", targetId: "lib/shapes", sourceSymbol: "draw", targetSymbol: "Shape" }));
   });
 
   it("pinning the user discloses what it uses, pinning the used discloses its user, and neither goes a second hop", () => {
-    expect(rows("lib/shapes", "draw"), "draw's Shape, not Shape's Point").toEqual(["draw", "shape"]);
-    expect(rows("lib/shapes", "Point"), "Point's user Shape, not Shape's user draw").toEqual(["point", "shape"]);
+    expect(rows("lib/shapes", "draw"), "draw's Shape, not Shape's Point").toEqual(["Shape", "draw"]);
+    expect(rows("lib/shapes", "Point"), "Point's user Shape, not Shape's user draw").toEqual(["Point", "Shape"]);
   });
 
   it("discloses nothing of a file's own from a row that a link between files lands on", () => {
@@ -368,7 +373,48 @@ describe("a symbol pin's partners in its own file (2026-11-03)", () => {
   it("names the partners of the subject's own symbol pin, so that its card shows them connected rather than muted", () => {
     // The subject shows every row; once it holds a pin of its own, the rows that pin needs are the ones not muted.
     const subject = exploreBranches(shapes, graph, addPin(EMPTY_PIN_SET, "lib/shapes", "draw"), () => true);
-    expect(subject.relevantSymbols.get("lib/shapes")).toEqual(new Set(["draw", "shape"]));
-    expect([...subject.order.rows.get("lib/shapes")!].sort()).toEqual(["__internals__", "colour", "draw", "point", "shape"]);
+    expect(subject.relevantSymbols.get("lib/shapes")).toEqual(new Set(["draw", "Shape"]));
+    expect([...subject.order.rows.get("lib/shapes")!].sort()).toEqual(["Colour", "Point", "Shape", "__internals__", "draw"]);
+  });
+});
+
+describe("documented symbol identities through projection and disclosure", () => {
+  it("keeps kinds, overloads and exact local anchors distinct in pins and one-hop rows", () => {
+    const location = { root: "docs", baseLayer: "source", extension: ".md" };
+    const symbol = (name: string, slug: string, references: LiveDoc["symbols"][number]["references"] = []) =>
+      ({ name, slug, kind: "function", flags: [], sections: [], references });
+    const doc = (codePath: string, symbols: LiveDoc["symbols"], dependencies: LiveDoc["dependencies"] = []) => ({
+      docPath: `docs/source/${codePath}.md`,
+      doc: parseLiveDoc(renderLiveDoc({ codePath, layer: 4, archetype: "implementation", entries: [], authored: "### Purpose\nTest.", symbols, dependencies }))
+    });
+    const projected = explorerGraphOf(deriveLiveDocGraph([
+      doc("walk.ts", [
+        symbol("Neighbours", "symbol-neighbours"),
+        symbol("Walk (interface)", "an-explicit-interface-anchor"),
+        symbol("walk (function)", "symbol-walk-function", [
+          { role: "Returns", types: [{ name: "Walk", link: "#an-explicit-interface-anchor" }] },
+          { role: "Parameters", parameters: [{ name: "next", types: [{ name: "Neighbours", link: "#symbol-neighbours" }] }] }
+        ]),
+        symbol("read (method overload 1)", "symbol-read-method-overload-1"),
+        symbol("read (method overload 2)", "symbol-read-method-overload-2")
+      ]),
+      doc("consumer.ts", [], [
+        { label: "walk", link: "./walk.ts.md#symbol-walk-function", qualifiers: [] },
+        { label: "read", link: "./walk.ts.md#symbol-read-method-overload-2", qualifiers: [] }
+      ])
+    ], location));
+    const node = projected.nodes.find(n => n.id === "walk.ts")!;
+    expect(node.publicSymbols).toEqual(["Neighbours", "Walk (interface)", "walk (function)", "read (method overload 1)", "read (method overload 2)"]);
+    expect(projected.links.map(link => link.targetSymbol)).toEqual(["walk (function)", "read (method overload 2)"]);
+    const pins = (symbol: string) => ({ entries: [{ nodeId: "walk.ts", symbol }] });
+    expect(getVisibleConnections(pins("Walk (interface)"), projected.links)).toEqual([]);
+    expect(getVisibleConnections(pins("walk (function)"), projected.links)).toHaveLength(1);
+    expect(getVisibleConnections(pins("read (method overload 1)"), projected.links)).toEqual([]);
+    expect(getVisibleConnections(pins("read (method overload 2)"), projected.links)).toHaveLength(1);
+    const neighbours = buildBranches(node, projected, pins("Neighbours"), () => true);
+    expect([...neighbours.relevantSymbols.get(node.id)!].sort()).toEqual(["Neighbours", "walk (function)"].sort());
+    const walk = buildBranches(node, projected, pins("walk (function)"), () => true);
+    expect([...walk.relevantSymbols.get(node.id)!].sort()).toEqual(["Neighbours", "Walk (interface)", "walk (function)"].sort());
+    expect(walk.subgraph.links).toContainEqual(expect.objectContaining({sourceSymbol:"walk (function)",targetSymbol:"Walk (interface)"}));
   });
 });
