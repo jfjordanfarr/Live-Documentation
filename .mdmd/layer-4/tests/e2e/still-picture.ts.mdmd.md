@@ -25,7 +25,7 @@ The still-picture instrument: quantized measures of one Explorer view in one sta
 - `localMapSettled` (2026-10-07) waits for the branch picture to rest, since a change of pins now moves it over the tuning's move length and the root says `data-moving` while it does; the specs that measure after a click wait on it.
 - A press on the search bar or the path's report counts as a control outside the frame, as the toolbar did (2026-10-14).
 - The Local Map's text audit reads the membrane labels' names and counts and the closed boxes' names and counts since 2026-10-08.
-- The tour reads the picture without sampling along the wires (`readPicture`'s `along: false`, 2026-11-02): which wires are legible is decided by their endpoints' rows and names, never by the samples, and the samples were nearly all of a reading's time, 30 s a reading of the repository's retained five files (381 wires, 128,513 samples; `getPointAtLength` and `elementFromPoint` most of it). The still-picture spec's scoreboard came out identical in every row, and the spec took 306 s of tests on one worker instead of 520.
+- The tour reads the picture without sampling along the wires (`readPicture`'s `along: false`, 2026-11-02): which wires are legible is decided by their endpoints' rows and names, never by the samples, and the samples were nearly all of a reading's time, 30 s a reading of the repository's retained five files (381 wires, 128,513 samples; `getPointAtLength` and `elementFromPoint` most of it). The still-picture spec's scoreboard came out identical in every row, and the spec took 306 s of tests on one worker instead of 520 ([the measurements](../../../../AI-Agent-Workspace/Probes/2026-11-02/e2e-speed/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -24,8 +24,9 @@ export default defineConfig({
   testMatch: "**/*.spec.ts",
   fullyParallel: false,
   retries: 0,
-  // One worker, the owner's rule (2026-10-19): a 3D test's software renderer takes about nine of the box's ten cores
-  // alone, so tests run beside each other overrun their budgets; the measurements are in this file's Live Doc.
+  // One worker, the owner's rule (2026-10-19): a 3D test's software renderer keeps most of the machine busy alone (about
+  // fourteen of this box's twenty hardware threads, ten cores, 2026-11-02), so tests run beside each other overrun their
+  // budgets; the measurements are in this file's Live Doc.
   workers: 1,
   reporter: [["list"], ["html", { open: "never", outputFolder: "../../reports/e2e" }]],
   timeout: 30_000,
