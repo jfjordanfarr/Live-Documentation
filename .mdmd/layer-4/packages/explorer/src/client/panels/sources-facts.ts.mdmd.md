@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/sources-facts.ts
-- Generated At: 2026-11-02T16:50:52.914Z The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
+- Generated At: 2026-11-02T16:50:52.914Z
 
 ## Authored
 ### Purpose
@@ -17,7 +17,7 @@ Computes everything the Knowledge Sources panel says from the graph index alone:
 - `symbolCount` sums a class's symbols for the panel's headings. Tested in `sources-facts.test.ts` on a seven-file graph whose inbound and outbound lists are derived from its edges as the generator derives them.
 - Rewritten on 2026-10-15 ([Turn 4](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-15.1.record.md#turn-4); [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#entry-points-are-written-on-the-entry-and-what-they-reach-is-one-walk-recorded-2026-10-15)) around the engine's `reachability`: the one-hop lists of what nothing references went, since the docs now tell an entry from an orphan, and `reach` carries the starts (each with the words of its `Entry` lines, `test` for a test, and the sample root it lies under), the files reached with their hops, the unreachable and the tests-only, each with its archetype for grouping. `from` walks from the files the person chose instead of the entries; `sampleRoots` come from the bundle.
 - Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) `reach.unread` carries the files no start reaches whose kind no reader handles, with their archetypes, apart from `unreachable`; the test's graph holds a deploy script for it.
-- Since 2026-11-02 `groups` carries the engine's `fileGroups`, the same object `inspect --groups --json` prints: the groups of two or more files joined by dependencies either way, each by its most connected file, and the files joined to none. It is of the whole scan, whatever start the person chose for the walk.
+- Since 2026-11-02 `groups` carries the engine's `fileGroups`, the same object `inspect --groups --json` prints: the groups of two or more files joined by dependencies either way, each by its most connected file, and the files joined to none. It is of the whole scan, whatever start the person chose for the walk. The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

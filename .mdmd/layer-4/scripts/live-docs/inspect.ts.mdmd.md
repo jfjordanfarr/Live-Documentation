@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect.ts
 - Entry: command `live-docs:inspect` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-11-02T16:50:56.094Z The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
+- Generated At: 2026-11-02T16:50:56.094Z
 
 ## Authored
 ### Purpose
@@ -19,7 +19,7 @@ Trace Live Documentation dependencies from the command line, supporting outbound
 - `--at <commit>` and `--between <a> <b>` (2026-10-17, C9 of [the plan](../../../../.mdmd/layer-3/change-over-time.mdmd.md)) answer from `<root>/history/history.json`, never from today's docs: at a commit, with `--from`, whether the file existed and its wires with their counts, and with `--reachable`, the walk from that commit's entries by the same `reachability`; between two commits, the files created, deleted, renamed and resized (headed Created and Deleted since 2026-10-30, the owner's words of 2026-10-26, where they had been Born and Dead; the JSON keeps the format's `born` and `dead`) and the wires added and removed, each file followed through every rename between. Each answer says first that it comes from the shape alone, a commit is named by a prefix of its id, and a workspace with no history is refused with the command that computes it.
 - Since 2026-10-18 `--version` prints the engine package's version, whose graph and pathfinder answer every question, through [cli.ts](cli.ts.mdmd.md), and a reader that closes the pipe early, as `head` does, ends the listing quietly instead of with an EPIPE trace.
 - A fan-out from a file (2026-10-22, [the decision](../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) also names the file's documents both ways, `Cites:` from its doc's authored words by `relatedDocsOf` and `Cited by:` from its doc's `Cited By` section, and `--json` carries them as `documents`; the headless form of the reader's Cited By list and the 3D picture's citation lines.
-- `--groups` (2026-11-02) is the headless form of the Knowledge Sources panel's Groups section, from the engine's `fileGroups`: how many files hang together in how many groups and how many stand alone, each group by its seed and size, largest first, then the lone files; `--json` prints `{ kind, files, groups: [{ seed, size, members }], alone }`. The groups are of the whole graph as today's docs say, so it refuses `--from`, `--to`, `--direction`, `--reachable`, `--at` and `--between`.
+- `--groups` (2026-11-02) is the headless form of the Knowledge Sources panel's Groups section, from the engine's `fileGroups`: how many files hang together in how many groups and how many stand alone, each group by its seed and size, largest first, then the lone files; `--json` prints `{ kind, files, groups: [{ seed, size, members }], alone }`. The groups are of the whole graph as today's docs say, so it refuses `--from`, `--to`, `--direction`, `--reachable`, `--at` and `--between`. The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

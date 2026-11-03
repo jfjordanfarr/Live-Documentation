@@ -1373,3 +1373,577 @@ completed (exit code 0)
   unit tests; the lint reading the engine's groups, with its test. The rest,
   rebuild, pictures, the two specs, the full gate and the commits, starts when
   the subagent hands the box back.
+
+❯ Hey on the 2D Local map I just clicked "Pin Only this Symbol" from the Detail
+  Panel for the Neighbors symbol of pathfind.ts... and it failed to show the
+  other self-looped-to symbols that Neighbors actually connects to? (Walk,
+  walk, reachFrom and components based on the hover over the Neighbors symbol
+  when it isn't isolated). Why did those other self-connected symbols get
+  excluded as recipients?
+  ⎿  Read packages/explorer/src/client/panels/spatial-legend.test.ts (30 lines)
+  ⎿  Referenced file
+     packages/explorer/src/client/views/forceGraphBatches.test.ts
+  ⎿  Read AI-Agent-Workspace/ChatHistory/2026/11/README.md (17 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/edb6173f-6303-4b5
+     f-af42-4a37268f0627/scratchpad/commit-groups.txt (36 lines)
+  ⎿  Read ../../tmp/claude-1000/-workspaces-Live-Documentation/edb6173f-6303-4b5
+     f-af42-4a37268f0627/scratchpad/commit-scope.txt (50 lines)
+
+● Task "Measure and speed up the e2e suite" still running in background
+
+● Compacted using a summary written while you were away · turn off with
+  "idleCompaction": false in settings.json
+
+● Recording the turn first, then tracing what "Pin only this symbol" does with
+  references inside the same file.
+
+  Searched for 2 patterns, listed 2 directories, ran 2 shell commands (ctrl+o to expand)
+
+● Tracing the symbol pin through the pin state and the 2D subgraph builder now.
+
+  Searched for 7 patterns, read 5 files, listed 1 directory, ran 9 shell commands (ctrl+o to expand)
+
+● Found the mechanism in the 2D branch builder; now checking the bundle's data
+  for Neighbours, the row-naming normalisation, and what the design doc promises
+  for a symbol pin.
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+❯ Ppppphahaha what's with the weird vignette in these screenshots? I move to a
+  particular position and this rather odd bar of vignette apears on the bottom
+  of the screen...ish?
+
+● Two questions on the table now: the symbol pin's missing self-references, and
+  the lighter bar in your screenshots. Checking the band and lane styles for the
+  second while I finish the first.
+
+  Searched for 5 patterns, read 1 file, ran 10 shell commands (ctrl+o to expand)
+
+❯ Yeah feel free to spin up Opus...es(?) as needed to correct things as we see
+  them
+
+  Searched for 4 patterns, listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● Writing the owner's two standing preferences into Memory and briefing an Opus
+  subagent for the symbol-pin fix, then the answer.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent(Fix symbol pin self-references) Opus 5.5
+  ⎿  Backgrounded agent (↓ to manage · ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● The symbol pin leaves out same-file references by construction. When a file is
+  narrowed to one symbol, its card shows the rows some pin needs: the pinned
+  row, plus the row at the far end of every cross-file connection that pin makes
+  visible. Those connections are read from the bundle's link list, and that
+  list holds no same-file reference at all, because the bundle drops a link
+  whose two ends are one file. The references inside a file live with each
+  symbol's type references instead. The 2D builder turns them into laces only
+  after the rows have been chosen, and never feeds their other ends back into
+  the rows. So walk, reachFrom and components were treated like any unrelated
+  row: folded under the "+N symbols" reveal, or muted when the file is the
+  subject, and with their rows gone the laces had nothing to end at. Hover shows
+  them because the hover runs over the drawn edges, laces included. The rule
+  dates from the symbol-pin grammar of 2026-10-15, which was written for
+  cross-file connections only.
+
+  A fix is underway. An Opus subagent at XHigh is building it in a worktree: a
+  symbol pin discloses the rows joined to it by its own file's references, one
+  hop, in both directions, with their laces, exactly as a cross-file connection
+  discloses its far row. It writes the unit test and a browser spec. I review
+  it, run the spec and the full gate once the browser is free, and commit.
+
+  Walk in your list is a false light. The Walk interface does not use
+  Neighbours; the walk function does. The client's name normaliser maps "walk
+  (function)" and "Walk (interface)" to one key, "walk", and the doc's two
+  anchors the same way, so the highlight for the function's edge lights the
+  interface's row as well. The same happens to Reachability and reachability,
+  and to FileGroups and fileGroups. The docs add the kind to such names
+  precisely to tell them apart, and the client throws it away. The right fix
+  keeps the kind in the key and has same-file references carry the doc's anchor
+  instead of a bare type name. That touches every place the client matches a
+  symbol: pins in links, search, the reader's anchors, the 3D map's symbol pins.
+  I would send a second Opus at it; say the word.
+
+  The vignette is the edge sign you chose on 2026-10-30. It is a shadow 56 px
+  deep along an edge of the frame that the picture continues past, none along an
+  edge it does not, fading in over a quarter second. It appears at "a
+  particular position" because it comes the moment a card or wire crosses that
+  edge by more than a few pixels. The frame stops above the floating controls at
+  the bottom, so the bottom shadow stands just above the +, − and reset buttons
+  rather than at the screen's edge, which is the "ish". I cannot see your
+  pictures sharply enough to say whether it is drawn where it should be. If it
+  reads as a glitch rather than as a sign, that is your eye's call: keep it,
+  soften it, or remove it. If what you see is a lighter block beside the card
+  rather than a dark bar along the bottom, tell me, and I will look myself when
+  the browser frees up.
+
+  Where things stand. The speed subagent is still measuring and holds the box's
+  one browser; the ring, its pictures and its gate wait on it. Your grant to
+  spin up Opus subagents for corrections as we see them, and the XHigh-never-Max
+  rule, are in owner.md with their dates.
+
+› Message from general-purpose
+  ## Report: can the Playwright suite run faster without weakening a test?
+
+  **Short answer:** I found one safe change, built it, and kept it. It saves 5 %
+  of a run. Every route to more workers made tests fail. Two Chromium launch
+  settings save a few percent more; I measured them but did not build them,
+  because they are the owner's to weigh.
+
+  The full write-up, with every number in tables, is
+  `/workspaces/Live-Documentation/.claude/worktrees/agent-a58d3df017f55fcbb/AI-A
+  gent-Workspace/Probes/2026-11-02/e2e-speed/README.md`.
+
+  ### Commits on branch `worktree-agent-a58d3df017f55fcbb`
+  Before measuring, I fast-forwarded the branch to main `8e473140`, the commit
+  tonight's baseline ran on. The branch had no commits of its own yet. Then I
+  made two commits, neither amended:
+
+  - **`493efd74` Read the still-picture tour without sampling along the wires**
+    - `tests/e2e/still-picture.ts`: `readPicture` gains an `along = true`
+  parameter. `runTour` now reads with `along: false`.
+    - The tour only asks which wires are legible. That depends on the endpoints'
+  rows and names, never on the samples taken every 8 px along each wire.
+    - Those samples were almost all of a reading's cost. One reading of the
+  repository's retained five files took 30 s: 381 wires, 128,513 samples.
+  `getPointAtLength` was 38 % of it and `elementFromPoint` 28 %.
+    - The still-picture spec on one worker fell from 520 s to 306 s. The two
+  retained tests went 183→88 s and 164→74 s.
+    - The scoreboard the spec writes is identical in all 14 rows, tours
+  included. No assertion, budget or threshold changed.
+    - The Live Doc's Notes have a dated bullet.
+  - **`adf50f24` Record the browser suite's speed measurements on this machine**
+    - Adds the probe README.
+    - In `tests/e2e/playwright.config.ts`, only the one-worker comment changed.
+  It now says the 3D renderer keeps about 14 of the box's 20 hardware threads
+  busy, instead of "nine of ten cores". The config itself is unchanged.
+    - Adds a dated re-measurement bullet to the config's Live Doc and a link
+  from the still-picture doc.
+    - `live-docs:generate` was run, and nothing else was regenerated.
+
+  ### Measured numbers
+
+  **Whole suite:**
+
+  | Configuration | Wall clock | Passed | Failed |
+  | --- | ---: | ---: | --- |
+  | Tonight, 1 worker | 2,197 s (36.6 min) | 265 | 0 |
+  | After the tour change, 1 worker | 2,084 s (34.7 min) | 265 | 0 |
+  | 2 workers | 23.6 min | 262 | 2 over budget, 1 transient element never seen |
+  | 3 workers | 20.9 min | 257 | 8 |
+
+  - At two workers, the median test ran 1.28× slower in the 3D files and 1.17×
+  in the rest. At three workers, 1.58× and 1.35×.
+  - Every failure was either a test already near its budget or one that samples
+  a picture in motion. Each one passes on one worker.
+
+  **Split (2D tests in parallel, then 3D tests one at a time):**
+  - Playwright 1.58 does have a per-project worker limit
+  (`testProject.workers`), unlike the brief assumed.
+  - To classify tests, I ran everything outside the 3D-named files with WebGL
+  disabled. 25 tests in 12 mixed files failed, so they draw 3D and moved to the
+  3D side.
+  - The per-test GPU-process CPU confirmed this exactly: all 100 tests that keep
+  the GPU process at one thread or more are on the 3D side.
+  - The 2D side alone (156 tests) on four workers took 512 s, still slowed by a
+  median 1.37×, and failed 4.
+  - The 3D side (109 tests) takes 1,201 s on one worker by tonight's times, so a
+  split cannot get much below about 28.5 min. I did not build it.
+
+  **The machine:** `lscpu` shows an i9-10900K, 10 physical cores with 2 threads
+  each. The "20 cores" are 20 threads.
+
+  **Renderer:** whole-repository settle, 1100×700. The settled canvas hash was
+  the same in every configuration.
+  - Default: 77–83 s, 571 frames of about 138 ms.
+  - New headless mode and `--ignore-gpu-blocklist`: no change.
+  - A quarter of the pixels: only 4 % faster, so the viewport is not a lever.
+  - Pinned to one thread per physical core with `taskset`: 63–66 s, about 18–21
+  % faster.
+  - Two settles at once: each took 1.32× as long. Three at once: 1.8×. Pinning
+  the two to disjoint halves of the machine made them slower still, 118–120 s
+  each.
+  - Small pictures are capped at 60 frames a second instead. With the frame-rate
+  limit removed (`--disable-gpu-vsync --disable-frame-rate-limit`), the history
+  sample settles 29 % faster and the estate sample 39 % faster. But one second
+  after settling, the estate canvas still differed, because the page's
+  time-based camera motion had not finished.
+  - Both settings together, whole suite on one worker: 265 passed, 2,004 s
+  against 2,084 s, about 4 % saved. 3D specs got 7–25 % faster, but 2D specs got
+  up to 15 % slower: still-picture +5 %, local-map-path +15 %.
+
+  **Where the time goes in the five heaviest files** (1,173 s on one worker):
+  waiting for the 3D picture to settle 44 %, `page.evaluate` readings 23 %,
+  input 17 %, fixed `waitForTimeout` 8 %.
+  - A large 3D settle is 571 frames times the frame cost, and only the frame
+  cost can move.
+  - A small 3D settle is held by the 60 fps cap. That is why every
+  history-scrubber settle takes 5.1–5.2 s.
+
+  **Shared page per file:** none of the heavy files qualifies. Each test opens
+  its own state, so sharing a page would make tests fail on another test's
+  state.
+
+  ### What I did not do, and why
+  - **No worker or split config.** Every count above one fails tests, so the
+  measurements say the one-worker rule stands.
+  - **`dragBy`'s fixed waits are untouched** (160 ms before release, 700 ms
+  after; 55 s in still-picture). The 700 ms is the window in which the route
+  measure would catch a wire that changes shape after a pan. A condition-based
+  wait would close that window early.
+  - **CPU pinning and the frame-rate settings are not built.** Together they
+  save about 4 %. Getting the 3D gain without the 2D loss would mean splitting
+  the suite into projects by test. The frame-rate setting also moves the page's
+  physics ahead of its camera motion, which some specs may rely on.
+  - **No budgets touched.**
+
+  ### Verification
+  - `npm run safe:commit` passed on the final tree: Live Docs, lint, build, unit
+  and integration tests.
+  - The full Playwright suite passed 265/265 on one worker on `493efd74`, the
+  code that commit added.
+  - After that, only a config comment and docs changed, so I did not re-run
+  `safe:commit -- --e2e` (35 min).
+
+  ### Questions for the owner
+  1. **The serialization rule.** Today's numbers support keeping one worker.
+  Reopening it would need the budgets declined on 2026-10-19, and the tests that
+  sample a picture in motion would still fail under load.
+  2. **Tests near their budget even on one worker.**
+     - local-map-search's "a change of pins" ran 25.8–27.2 s against its 30 s
+  budget.
+     - local-map-hidden's two search tests do 23–29 s of search inside
+  `localMapSettled`'s fixed 30 s wait.
+
+     Whether those searches should take that long is a question about the page.
+  3. **Launch settings.** Should CPU pinning or lifting the frame-rate limit be
+  adopted for the 3D tests, with the project split that would need?
+  4. **Product findings, not test issues.**
+     - A 3D frame costs about 138 ms on the software renderer whatever the
+  canvas size, and the physics gets at most 10 ms of each frame
+  (`FRAME_BUDGET`).
+     - Panning the Local Map over the retained repository picture takes about
+  0.5 s per mouse event in headless Chromium. Worth a look in a real browser.
+
+  ### Housekeeping
+  - **History file copied.** I copied the main tree's
+  `.mdmd/history/history.json` into this worktree's gitignored `.mdmd/history/`.
+  Without it the repository bundle has no history and history-scrubber's
+  overview test fails.
+  - **Temporary files removed.** I deleted my temporary probe configs
+  (`tests/e2e/split-probe.config.ts`, `flags-probe.config.ts`) and
+  `test-results/`.
+  - **Scratchpad.** The probe scripts and raw run data are in
+  `/tmp/claude-1000/-workspaces-Live-Documentation/edb6173f-6303-4b5f-af42-4a372
+  68f0627/scratchpad/` and are not committed.
+  - **Servers I left running.** Servers on ports 8766 and 8900 were running and
+  are not mine; I left them alone.
+  - **Chat record not touched.** I did not write the chat record or the shared
+  memory files; those are yours.
+
+● The speed subagent has handed back, so the browser frees up. Reviewing its two
+  commits first, then the ring's pictures, specs and the gate.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Agent "Measure and speed up the e2e suite" finished · 4h 4m 8s
+
+  Read 1 file, listed 1 directory, ran 7 shell commands (ctrl+o to expand)
+
+● Background command "Build the repository's Explorer bundle with the ring code"
+completed (exit code 0)
+
+● The tour change is holding, and I'm carrying the two commits onto main and
+  building the estate bundle next. · summary
+
+  Searched for 1 pattern, read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Background command "Build the estate sample's Explorer bundle with the ring
+code" completed (exit code 0)
+
+● Both bundles are fresh and the server serves them. Taking the ring's pictures
+  now.
+
+  Searched for 1 pattern, read 8 files, listed 1 directory, ran 4 shell commands (ctrl+o to expand)
+● Taking the frontier close-up again at one-to-one, and checking why the ring
+  flag read false at the higher pixel ratio.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+› Message from general-purpose
+  The fix is done and nothing is committed. `npm run build`, `npm run
+  test:unit`, `npm run lint`, `npm run live-docs:generate` and `npm run
+  live-docs:lint` all pass. The browser spec is written but not run, and
+  `slopcop:markdown` reports 4 broken links in this worktree because the
+  November 2 record isn't here yet.
+
+  **Cause.** Your trace holds as written. `relevantSymbols` was filled only from
+  the pins and from cross-file links. A file's references to its own symbols
+  (the self-loops) were added to the picture after the rows were chosen. So
+  `dressCards` folded or muted the partner rows, and their laces had no anchor
+  to draw to. Hover works because it reads the subgraph's links, which do
+  include the self-loops.
+
+  **Rule as implemented** (`exploreBranches` in
+  `packages/explorer/src/client/views/localView/branches.ts`). I moved the
+  existing `row` helper up so the new block could reuse it.
+  ```ts
+    const row = (symbol: string | undefined): string =>
+  normalizeSymbolIdentifier(symbol) ?? "__internals__";
+    // A file's own references. Each one that touches a pinned symbol discloses
+  the row at its other end, as a visible
+    // connection between files discloses its far row: one hop either way, from
+  the pinned rows only, so that a disclosed
+    // partner discloses nothing of its own (the owner's question, 2026-11-03).
+    const pinnedRows = new Map<string, Set<string>>();
+    for (const pin of disclosure.entries) {
+      if (pin.symbol === "*") continue;
+      (pinnedRows.get(pin.nodeId) ?? pinnedRows.set(pin.nodeId, new
+  Set()).get(pin.nodeId)!).add(row(pin.symbol));
+    }
+    for (const node of path ? [] : party) for (const edge of
+  buildSelfLoopEdges(node)) {
+      if (!keys.has(edgeKey(edge))) { links.push(edge); keys.add(edgeKey(edge));
+  }
+      const pinned = pinnedRows.get(node.id);
+      if (pinned?.has(row(edge.sourceSymbol))) remember(node.id,
+  edge.targetSymbol);
+      if (pinned?.has(row(edge.targetSymbol))) remember(node.id,
+  edge.sourceSymbol);
+    }
+  ```
+  - The set of pinned rows is built from the pins before the loop, so the
+  disclosure is one hop and never transitive.
+  - Rows disclosed by a cross-file link never disclose their own partners.
+  - A whole-file pin (`*`) is skipped, so the case of a file pinned whole or in
+  focus is unchanged.
+  - Path mode is unchanged: it builds no self-loops and `disclosure` is empty
+  there.
+
+  **Files changed:**
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a10dbce1f5d76047b/pa
+  ckages/explorer/src/client/views/localView/branches.ts`: the rule above.
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a10dbce1f5d76047b/pa
+  ckages/explorer/src/client/views/localView/branches.test.ts`: a new `describe`
+  block with four tests on a small file (`Shape extends Point`, `draw(shape:
+  Shape)`, `Colour` unrelated) plus `app/paint#brush`, which links to `draw`.
+    - Pinning `Shape` discloses both `point` and `draw`, and both self-loops are
+  in the links.
+    - Pinning `draw` gives only `shape`, and pinning `Point` gives only `shape`:
+  one hop, no second.
+    - Pinning `brush` discloses `draw` but not `draw`'s partner `shape`.
+    - When the file is the subject and holds its own pin on `draw`, `shape` is
+  in `relevantSymbols`, which is what clears the mute.
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a10dbce1f5d76047b/te
+  sts/e2e/pin-clicks.spec.ts`: a new test, a `symbolRow` helper (`row` now
+  builds on it), two constants, and one clause in the header comment.
+  - `/workspaces/Live-Documentation/.claude/worktrees/agent-a10dbce1f5d76047b/.m
+  dmd/layer-3/live-documentation-explorer.mdmd.md`, line 74: one dated sentence
+  linking `#turn-14` of the November 2 record.
+  - `.mdmd/layer-4/packages/explorer/src/client/views/localView/branches.ts.mdmd
+  .md`, `.mdmd/layer-4/packages/explorer/src/client/views/localView/branches.tes
+  t.ts.mdmd.md` and `.mdmd/layer-4/tests/e2e/pin-clicks.spec.ts.mdmd.md` (all in
+  the worktree): one authored Notes bullet each, with the origin linked. Only
+  the regenerated parts of `branches.ts.mdmd.md` changed otherwise (timestamp
+  and source line numbers).
+
+  **The tests can fail:**
+  - With the two `remember` lines disabled, 3 of the 4 new tests fail; the
+  cross-file negative test still passes, as it should.
+  - With a wrong version that discloses from every relevant row instead of only
+  pinned ones, the no-second-hop test and the cross-file test fail.
+
+  **Commands run:**
+  - `npm ci`: OK.
+  - `npm run live-docs:visualize`: OK, built `dist/explorer` for checking the
+  data; no browser involved.
+  - `npm run build`: passed.
+  - `npm run test:unit`: 154 files, 1545 tests passed.
+  - `npm run lint`: no problems; eslint on the three changed files exits 0.
+  - `npm run live-docs:generate`: 1 doc updated, and the second run changed
+  nothing. It printed "This folder lies inside a scan at
+  /workspaces/Live-Documentation; a scan never lies inside another scan", which
+  comes from the worktree sitting under the main checkout; the run completed.
+  - `npm run live-docs:lint`: exit 0. The only warning is "53 disconnected
+  node(s)", which was there before.
+  - `npm run slopcop:markdown`: 4 broken links, all mine, all to
+  `AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-14`. That
+  record is committed on `main` (`8e473140`) after this worktree's branch point
+  `14f42779`, so the links resolve once this lands on `main`. The paths follow
+  the existing November 1 links. Of the files I touched, `main` has changed only
+  the layer-3 doc, on other lines (22, 24, 78 and later), so line 74 should
+  merge cleanly.
+
+  **Not verified: the browser spec.** I checked its fixture against real data by
+  running `exploreBranches` over the bundle with a scratch script:
+  - It opens on subject
+  `tests/integration/programs/python/rosetta/src/processor.py`, pins `models.py`
+  whole, then narrows it to `Record`.
+  - `processor.py` was chosen because `main.py` imports `create_record` itself,
+  so with `main.py` as subject the row would show even without the fix.
+  - It expects:
+    - the pins `[models.py#*]`, then `[models.py#Record]`, with `aria-pressed`
+  true and the subject unchanged;
+    - the `create_record` row visible and neither `branch-symbol-hidden` nor
+  `branch-symbol-muted`;
+    - exactly 2 `.connection-path.self-loop` polygons with
+  `data-source-symbol="create_record"` and `data-target-symbol="record"`;
+    - `value` folded and hidden, and a `+6 symbols` reveal;
+    - the unfolded rows, sorted, to be
+  `["Record","Report","__internals__","create_record","validate_config"]`.
+  - The places most likely to need adjusting on first run are the exact `+6
+  symbols` count and the lace count of 2. I added a `panIntoView` on the
+  `Record` row before pressing its pin, which the existing test of the same kind
+  doesn't do.
+
+  **Noticed, not changed:**
+  1. The `walk`/`Walk` name collision you flagged: so a pin on `Neighbours` will
+  also light the `Walk` row. The tests use names that don't collide.
+  2. On a subject that holds no pin, a row whose only references are within its
+  own file is still muted, though its laces are drawn. That's because the
+  whole-file `*` adds no rows to `relevantSymbols`, and the rule applies only to
+  symbol pins. I worked this out from the code and haven't looked at it in a
+  browser. It may be worth a look against "fade the irrelevant".
+
+  Scratch files are only in the session scratchpad. `dist/`, `node_modules` and
+  `.mdmd/index.json` in the worktree are gitignored.
+
+● Agent "Fix symbol pin self-references" finished · 20m 14s
+
+● Frontier close-ups now run at both pixel ratios, after my script misread a
+  field the observation doesn't report. The symbol-pin subagent has returned,
+  and I'm reviewing its diff before merging it. · summary
+
+  Read 2 files, ran 8 shell commands (ctrl+o to expand)
+
+● Background command "Apply the symbol-pin fix to main and rebuild the
+repository bundle" completed (exit code 0)
+
+● Patch applied and the bundle rebuilt. Running the three specs that hold the
+  ring and the symbol pin.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● All three specs pass on the first run, the new pin spec included. Removing the
+  two finished worktrees, then launching the full gate.
+
+  Searched for 1 pattern, ran 8 shell commands (ctrl+o to expand)
+
+● Gate running over the combined tree (the ring, the lint change and the
+  symbol-pin fix); the markdown audit is clean after the day's doc edits.
+  Everything else for the commits is staged in words: the two commit messages
+  drafted, the pictures named in the screenshots README, direction.md, owner.md,
+  the vision's status and the month's inventory brought current. I will make
+  the commits and send the full reply with the pictures when the gate reports.
+
+● Background command "Run the full pre-commit gate with Playwright" completed
+(exit code 0)
+
+● The gate has finished; reading its result before committing.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Gate green: 1,555 unit, 115 integration and 266 browser tests, no broken
+  links. Making the two code commits now, then the record.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Four commits landed on main while you were away, each through the full gate,
+  and nothing is left uncommitted. The gate over the final tree passed 1,555
+  unit, 115 integration and 266 browser tests, with no broken links. The record
+  and Memory went in as a fifth commit, 48507564.
+
+  - 58889c2a and 31a34c06: the speed subagent's work, reviewed and carried in.
+    The still-picture tour no longer samples every wire along its length, which
+    it never used; that spec fell from 520 s to 306 s and the suite from 36.6 to
+    34.7 minutes, every assertion kept and the scoreboard identical. The rest
+    is a measurement record under Probes/2026-11-02/e2e-speed
+    (AI-Agent-Workspace/Probes/2026-11-02/e2e-speed/README.md).
+  - ccf8b804: the ring, with the lint reading the engine's groups.
+  - f50747e9: the symbol pin's same-file partners, the Opus builder's fix from
+    your Neighbours report.
+
+  The ring, for your eye. All in Screenshots/2026-11-02
+  (AI-Agent-Workspace/Screenshots/2026-11-02/README.md#the-ring-november-2-the-s
+  econd-sessions-evening-pictured-november-3-utc).
+
+  - The archipelago
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-archipelago.png): the 42
+    seeds ringed, the 52 lone files bare. Close up
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-archipelago-close.png), and
+    a seed hovered
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-seed-hovered-close.png), the
+    other rings faded with the picture.
+  - The seed pinned
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-seed-pinned.png) and its
+    close-up
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-seed-pinned-close.png): 86
+    rings on 203 spheres. By construction every ring sits on a dimmed sphere,
+    the frontier and the other groups' seeds, since a sphere within the hops has
+    every connection shown. So the frontier reads as a band of bright rings
+    around the full mass, and a ring is brighter than the sphere it circles.
+    That is B as built; whether it is too loud is yours to say.
+  - The legend (AI-Agent-Workspace/Screenshots/2026-11-02/ring-legend.png), the
+    estate pinned
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-estate-seed-pinned.png), and
+    a frontier sphere bare
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-frontier-close.png) and
+    hovered
+    (AI-Agent-Workspace/Screenshots/2026-11-02/ring-frontier-hovered-close.png),
+    its title saying "1 more connected, not shown".
+
+  Your Neighbours case now works as you expected. Narrowing a file to one symbol
+  discloses the rows its own file's references join to it, one hop either way,
+  with their laces, and folds the rest. A browser spec holds it on the Python
+  Rosetta sample. The Walk interface still lights beside walk until the name
+  collision is fixed.
+
+  Open for your word.
+
+  1. The Walk and walk collision. The right fix keeps the kind in the key
+     everywhere the client matches a symbol, and has same-file references carry
+     the doc's anchor. Say go and an Opus takes it.
+  2. The edge sign you called a vignette: keep, soften, or remove. Your eye
+     decides.
+  3. The builder noticed that a subject holding no pin mutes a row whose only
+     references are within its own file, though its laces draw. Worth fixing
+     under "fade the irrelevant"?
+  4. From the speed probe: the one-worker rule stands on today's numbers, since
+     two workers fail 3 tests and three fail 8. Two launch settings would take a
+     few per cent more at the cost of splitting the suite into 2D and 3D
+     projects; not built. Three tests run within a tenth of their budgets alone,
+     which is a question about how long the page's searches take. And a 2D pan
+     over the large retained picture costs half a second an event in the
+     headless browser; worth a look in your window.
+
+❯ Thank you for your efforts. I'll respond and analyze in the morning. I see
+  the prompt cache is hot for 20 more minutes. Can you please wrap up and
+  summarize the dev day chat and update the narrative.md? Thanks again for your
+  efforts and putting up with my waffling. It will continue, alas. We continue
+  to get closer to an excellent explorer of all things in a directory.
+
+● Recording your message, then running the handoff routine: the session summary,
+  the month's inventory, the narrative, and a closing commit.
+
+  Searched for 1 pattern, ran 9 shell commands (ctrl+o to expand)
+
+● Writing the summary, the inventory entry, the narrative chapter and the
+  record's close, then one commit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Closed out. The summary is at 2026-11-02.1.SUMMARIZED.md (AI-Agent-Workspace/C
+  hatHistory/2026/11/Summarized/2026-11-02.1.SUMMARIZED.md), complete through
+  this turn; the month's inventory links it; the narrative has the session as
+  its last chapter, with the harness row and its date brought to today; the
+  record's coverage and resumption say the session is closed. One commit,
+  e4f64a2f, carries all of it, the link audit is clean, and the tree is clean.
+
+  The questions waiting for your morning are in the summary's open ends and in
+  direction.md's Next: the Walk and walk collision, the edge sign, the muted
+  same-file rows, the probe's launch settings, and the build's defaults for your
+  eye. Thank you for the day. The waffling is how the forks get decided; keep
+  it coming.

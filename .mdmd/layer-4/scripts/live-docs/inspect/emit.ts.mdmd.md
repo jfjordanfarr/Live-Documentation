@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/live-docs/inspect/emit.ts
-- Generated At: 2026-11-02T16:50:56.118Z The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
+- Generated At: 2026-11-02T16:50:56.118Z
 
 ## Authored
 ### Purpose
@@ -18,7 +18,7 @@ What the inspect CLI prints: node descriptors, and the text or JSON of a path, a
 - `emitReachableFromEntries` (2026-10-15) prints the entries walk: in text the entry points with `entryWords` of their lines and `test` for a test, then the reached, the unreachable with their archetypes and the tests-only; in JSON the engine's `Reachability` object with the kind and the depth.
 - The frontier's lines separate the file from its reason with a colon since 2026-10-18; they carried the only em dash in the commands' printed text, where every other line uses a colon or two spaces.
 - Since 2026-10-22 ([Turn 8 of the October 21 session](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-8)) the entries walk prints the files not read, whose kind no reader handles, between the unreachable and the tests-only, and its JSON carries them as `unread`.
-- `emitGroups` (2026-11-02) prints the engine's `fileGroups`: the summary line, each group of two or more by its size and seed, then the lone files, every file with its doc; in JSON the engine's object with the kind and the number of files.
+- `emitGroups` (2026-11-02) prints the engine's `fileGroups`: the summary line, each group of two or more by its size and seed, then the lone files, every file with its doc; in JSON the engine's object with the kind and the number of files. The ask and the owner's answers are in [Turns 2 to 4 of the November 2 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
