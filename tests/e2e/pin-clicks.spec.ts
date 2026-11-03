@@ -6,7 +6,8 @@ import { decompressSnapshot } from "../../packages/explorer/src/client/persisten
 /**
  * Direct Pin controls retain what they name while body/label clicks inspect (the owner's accepted grammar,
  * 2026-10-19, Turn 24). A neighbour's symbol remains one pin with the subject drawn whole; whole-file and symbol pins
- * retain the narrow/add/release/fallback rule of 2026-10-15. Centre changes the subject without pinning; inspection
+ * retain the narrow/add/release/fallback rule of 2026-10-15, and a symbol pin discloses the rows its own file's
+ * references join to it, with their laces (2026-11-03). Centre changes the subject without pinning; inspection
  * and double-clicks leave the working set alone; the Knowledge Sources journey still reaches a far symbol in five
  * explicit actions; and a finger drags the 2D map. The earlier click-only journey is in the probe record
  * `AI-Agent-Workspace/Probes/2026-10-14/pin-clicks/`.
@@ -14,6 +15,8 @@ import { decompressSnapshot } from "../../packages/explorer/src/client/persisten
 const ROSETTA = "tests/integration/programs/typescript/rosetta/src";
 const MAIN = `${ROSETTA}/main.ts`;
 const MODELS = `${ROSETTA}/models.ts`;
+const PY_PROCESSOR = "tests/integration/programs/python/rosetta/src/processor.py";
+const PY_MODELS = "tests/integration/programs/python/rosetta/src/models.py";
 const BRANCHES = "packages/explorer/src/client/views/localView/branches.ts";
 const GATEWAY_CLIENT = "Portal/Services/GatewayClient.cs";
 const PAYMENT_RESULT = "Portal/Models/PaymentResultModel.cs";
@@ -27,7 +30,9 @@ const pins = (page: Page): string[] => {
 };
 const subject = (page: Page): Promise<string | null> => page.locator("#context-name").textContent();
 const card = (page: Page, id: string) => page.locator(`#map-container .node-card[data-id="${id}"]`);
-const row = (page: Page, id: string, symbol: string) => card(page, id).locator(`.symbol-row[data-symbol="${symbol}"] .symbol-label-wrapper`);
+/** A symbol's row, which carries its fold and mute; it lays out its parts in the card's grid and has no box of its own. */
+const symbolRow = (page: Page, id: string, symbol: string) => card(page, id).locator(`.symbol-row[data-symbol="${symbol}"]`);
+const row = (page: Page, id: string, symbol: string) => symbolRow(page, id, symbol).locator(".symbol-label-wrapper");
 const symbolPin = (page: Page, id: string, symbol: string) => row(page, id, symbol).locator(".local-symbol-pin");
 
 test("a neighbour's direct symbol Pin retains only that symbol; the subject stays, drawn whole", async ({ page }) => {
@@ -73,6 +78,33 @@ test("a file's direct Pin retains it whole; symbol pins narrow, add, release, an
   expect(pins(page), "the last symbol released leaves the file pinned whole").toEqual([`${MODELS}#*`]);
   expect(await subject(page), "no pin moved the subject").toBe(MAIN);
   await expect(card(page, MODELS).locator(".local-file-close")).toHaveCount(1);
+});
+
+test("a symbol pin discloses the rows its own file's references join to it, with their laces, and folds the rest", async ({ page }) => {
+  // models.py's create_record returns its Record: a reference within the file. processor.py, the subject, uses Record,
+  // Report and validate_config but not create_record, so only the pin can disclose that row (the owner's report, 2026-11-03).
+  await page.goto(`/?view=local&node=${PY_PROCESSOR}`);
+  await localMapSettled(page);
+  await panIntoView(page, card(page, PY_MODELS));
+  await card(page, PY_MODELS).locator(".local-file-pin").click();
+  await localMapSettled(page);
+  expect(pins(page)).toEqual([`${PY_MODELS}#*`]);
+  await panIntoView(page, row(page, PY_MODELS, "Record"));
+  await symbolPin(page, PY_MODELS, "Record").click();
+  await localMapSettled(page);
+  expect(pins(page), "narrowed to the symbol pressed").toEqual([`${PY_MODELS}#Record`]);
+  await expect(symbolPin(page, PY_MODELS, "Record")).toHaveAttribute("aria-pressed", "true");
+  expect(await subject(page), "no pin moved the subject").toBe(PY_PROCESSOR);
+  await expect(row(page, PY_MODELS, "create_record"), "the pinned symbol's user in its own file is disclosed").toBeVisible();
+  await expect(symbolRow(page, PY_MODELS, "create_record"), "connected: neither folded nor muted").not.toHaveClass(/branch-symbol-(hidden|muted)/);
+  await expect(page.locator(`#map-connections .connection-path.self-loop[data-source-id="${PY_MODELS}"][data-source-symbol="create_record"][data-target-symbol="record"]`),
+    "and both laces of the reference drawn").toHaveCount(2);
+  // A row no pin needs is folded behind the reveal, which counts the six fields of Record and Report.
+  await expect(symbolRow(page, PY_MODELS, "value")).toHaveClass(/branch-symbol-hidden/);
+  await expect(row(page, PY_MODELS, "value")).toBeHidden();
+  await expect(card(page, PY_MODELS).getByRole("button", { name: "+6 symbols", exact: true })).toBeVisible();
+  expect(await card(page, PY_MODELS).locator(".symbol-row:not(.branch-symbol-hidden)").evaluateAll(rows => rows.map(row => (row as HTMLElement).dataset.symbol!).sort()),
+    "the pin, the rows the subject's links reach, the partner and Internals").toEqual(["Record", "Report", "__internals__", "create_record", "validate_config"]);
 });
 
 test("Centre makes a neighbour the subject without a pin; double-clicking another file only inspects it", async ({ page }) => {

@@ -329,3 +329,46 @@ describe("directories opening in the Local Map (2026-10-08)", () => {
     expect(placeMembers([], new Set(["p/q"]), items, directoryOf)).toEqual([["p/q/1"], ["p/q/2"]]);
   });
 });
+
+describe("a symbol pin's partners in its own file (2026-11-03)", () => {
+  // lib/shapes: Shape extends Point, draw takes a Shape, Colour stands alone. Each is a reference within the file,
+  // unresolved because it names no other doc, so it is a self-loop, not a link. app/paint's brush calls draw.
+  const shapes: ExplorerNodePayload = { ...node("lib/shapes"), publicSymbols: ["Point", "Shape", "draw", "Colour"], publicSymbolsExtended: [
+    { name: "Point" },
+    { name: "Shape", typeReferences: [{ typeName: "Point", role: "extends", isResolved: false }] },
+    { name: "draw", typeReferences: [{ typeName: "Shape", role: "parameter", parameterName: "shape", isResolved: false }] },
+    { name: "Colour" }
+  ] };
+  const paint: ExplorerNodePayload = { ...node("app/paint"), publicSymbols: ["brush"] };
+  const links = [{ source: "app/paint", target: "lib/shapes", sourceSymbol: "brush", targetSymbol: "draw", kind: "dependency" as const }];
+  const graph: ExplorerGraphPayload = { nodes: [shapes, paint], links, stats: { nodes: 2, links: 1, references: 1, dependenciesOutsideScan: 0 } };
+  // The rows the shapes card shows, sorted, with no file in focus, so that only the one pin decides them.
+  const rows = (nodeId: string, symbol: string): string[] =>
+    [...buildBranches(null, graph, addPin(EMPTY_PIN_SET, nodeId, symbol), () => true).rows.get("lib/shapes")!].sort();
+
+  it("discloses, one hop either way, what the pinned symbol uses in its file and what there uses it", () => {
+    const result = buildBranches(null, graph, addPin(EMPTY_PIN_SET, "lib/shapes", "Shape"), () => true);
+    expect(result.relevantSymbols.get("lib/shapes")).toEqual(new Set(["shape", "point", "draw"]));
+    expect([...result.rows.get("lib/shapes")!].sort(), "Colour stays folded").toEqual(["draw", "point", "shape"]);
+    // Both self-references join rows the card shows, so both laces are drawn.
+    expect(result.subgraph.links).toContainEqual(expect.objectContaining({ sourceId: "lib/shapes", targetId: "lib/shapes", sourceSymbol: "Shape", targetSymbol: "Point" }));
+    expect(result.subgraph.links).toContainEqual(expect.objectContaining({ sourceId: "lib/shapes", targetId: "lib/shapes", sourceSymbol: "draw", targetSymbol: "Shape" }));
+  });
+
+  it("pinning the user discloses what it uses, pinning the used discloses its user, and neither goes a second hop", () => {
+    expect(rows("lib/shapes", "draw"), "draw's Shape, not Shape's Point").toEqual(["draw", "shape"]);
+    expect(rows("lib/shapes", "Point"), "Point's user Shape, not Shape's user draw").toEqual(["point", "shape"]);
+  });
+
+  it("discloses nothing of a file's own from a row that a link between files lands on", () => {
+    // brush pinned: its link discloses shapes' draw, and draw's own Shape stays folded, as draw's links elsewhere would.
+    expect(rows("app/paint", "brush")).toEqual(["draw"]);
+  });
+
+  it("names the partners of the subject's own symbol pin, so that its card shows them connected rather than muted", () => {
+    // The subject shows every row; once it holds a pin of its own, the rows that pin needs are the ones not muted.
+    const subject = exploreBranches(shapes, graph, addPin(EMPTY_PIN_SET, "lib/shapes", "draw"), () => true);
+    expect(subject.relevantSymbols.get("lib/shapes")).toEqual(new Set(["draw", "shape"]));
+    expect([...subject.order.rows.get("lib/shapes")!].sort()).toEqual(["__internals__", "colour", "draw", "point", "shape"]);
+  });
+});

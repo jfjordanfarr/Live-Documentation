@@ -290,8 +290,20 @@ export function exploreBranches(
   }
   const keys = new Set(links.map(edgeKey));
   const party = files.filter(node => retained.has(node.id));
+  const row = (symbol: string | undefined): string => normalizeSymbolIdentifier(symbol) ?? "__internals__";
+  // A file's own references. Each one that touches a pinned symbol discloses the row at its other end, as a visible
+  // connection between files discloses its far row: one hop either way, from the pinned rows only, so that a disclosed
+  // partner discloses nothing of its own (the owner's question, 2026-11-03).
+  const pinnedRows = new Map<string, Set<string>>();
+  for (const pin of disclosure.entries) {
+    if (pin.symbol === "*") continue;
+    (pinnedRows.get(pin.nodeId) ?? pinnedRows.set(pin.nodeId, new Set()).get(pin.nodeId)!).add(row(pin.symbol));
+  }
   for (const node of path ? [] : party) for (const edge of buildSelfLoopEdges(node)) {
     if (!keys.has(edgeKey(edge))) { links.push(edge); keys.add(edgeKey(edge)); }
+    const pinned = pinnedRows.get(node.id);
+    if (pinned?.has(row(edge.sourceSymbol))) remember(node.id, edge.targetSymbol);
+    if (pinned?.has(row(edge.targetSymbol))) remember(node.id, edge.sourceSymbol);
   }
   const directoryOfNode = (nodeId: string): string => parentDirectory(byId.get(nodeId)?.codeRelativePath ?? nodeId);
   const ranked = rankBranches(party, links, options.ranking);
@@ -318,7 +330,6 @@ export function exploreBranches(
       });
     }
   }
-  const row = (symbol: string | undefined): string => normalizeSymbolIdentifier(symbol) ?? "__internals__";
   const forward: ForwardReference[] = links
     .filter(edge => edge.sourceId !== edge.targetId && !ranking.back.has(edgeKey(edge)))
     .map(edge => ({ key: edgeKey(edge), provider: edge.targetId, consumer: edge.sourceId,

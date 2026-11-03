@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branches.ts
-- Generated At: 2026-10-22T16:47:55.782Z
+- Generated At: 2026-11-03T00:33:32.208Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,7 @@ A cycle no longer shares a column. Its members stand in the provider-first order
 The earlier linear hop-layout module originated in the [December 18, 2025 extraction](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/2025-12-18.1.md). Its truncating path model and duplicate-card exploration renderer were retired in the [October 2, 2026 native-view pass](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-02.1.record.md#turn-11); explicit FROM/TO paths retain their own renderer.
 - `membraneDepth` (2026-10-07, [Turn 20](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-06.1.record.md#turn-20)): how many levels of directory below the retained files' common directory are membranes (`commonDirectory`, `membraneDirectory`); files deeper belong to the membrane at that level, so the order step's bands, the placement's segments and the drawn outlines all follow the cut directories, and at zero no directory shapes the picture and the cards interleave freely. Null, the default, keeps every level. A lever of the layout lab for pricing the membrane rule, and a tuning value so that the page can be seeded with it and the lab's verify can confirm the lab; the page agreed to the pixel at depths 0, 1 and full on the five files.
 - Directories open and close (2026-10-08, [Turn 6 of the October 7 session](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-07.1.record.md#turn-6); [the decisions log](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08)): `exploreBranches` takes the opened set in `BranchOptions.openDirectories`. The party files, retained as before, keep every reference between them; each file directly in an opened directory that is not retained joins as a member (`Exploration.members`), a compact card with no row and no wire, its references counted among the hidden connections, so a sibling is seen until a click retains it; each immediate subdirectory of an opened directory neither opened nor encasing joins as a closed box, a pseudo-node of the `directory` archetype whose id is its path (`closedDirectoryNode`, `isClosedDirectory`, `Exploration.closed`), with no rows and no references. `directoryIndex` reads every directory's own files and immediate subdirectories from the graph once a render. The party is ranked alone; `placeMembers` lays an opened directory's unwired items, boxes first then files, each by name, over a span of columns from an anchor (the first column of the party files under it, else its nearest ancestor's, else the first) as wide as the party span or the square root of their count, item i in column anchor plus i modulo the width, appending columns past the party's; so a directory entered alone is a grid about as wide as tall. `Exploration.directories` says of every directory the picture may draw whether it is open or encasing and what it hides, for the labels. The center may be null: a picture entered by directory has no file in focus.
+- A symbol pin's partners in its own file (2026-11-03, [the owner's question](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-14), Turn 14 of the November 2 record): the rows a pin needs are the pinned rows, the far ends of the visible connections between files, and, one hop either way, the rows its own file's references join to a pinned symbol: what it uses there and what there uses it. A file's references to itself are not among the graph's links (`shared/graph.ts` leaves them out); `buildSelfLoopEdges` makes them from the symbols' type references, and `exploreBranches` remembers the other end of each one that touches a pinned symbol as it adds them to the picture. Until then a symbol pinned alone folded those rows away, or muted them on the subject's card, and their laces went with them, though hovering the row, which reads the subgraph's links, lit them. Only pinned rows disclose, so a partner, or a row that a link from another file lands on, discloses no partners of its own; a file pinned whole or in focus shows every row already, and a path adds no self-loops.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -159,7 +160,7 @@ it (2026-10-15); a picture entered by directory has no center.
 
 #### `orderExploration` {#symbol-orderexploration}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L354)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L365)
 - Returns: [`BranchGraph`](#symbol-branchgraph)
 - Parameters: `exploration`: [`Exploration`](#symbol-exploration); `options`: [`OrderOptions`](#symbol-orderoptions)
 
@@ -168,14 +169,14 @@ The exploration's third step: its columns ordered from the given start, with the
 
 #### `commonDirectory` {#symbol-commondirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L376)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L387)
 
 ##### `commonDirectory` — Summary
 The deepest directory every given directory is in or under; "" when they share none.
 
 #### `membraneDirectory` {#symbol-membranedirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L393)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L404)
 
 ##### `membraneDirectory` — Summary
 The membrane a file's directory belongs to when only `depth` levels below the common directory are membranes: the
@@ -183,14 +184,14 @@ directory cut to that many levels below the root, the root itself at zero, the d
 
 #### `compareSymbolNames` {#symbol-comparesymbolnames}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L421)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L432)
 
 ##### `compareSymbolNames` — Summary
 Alphabetical order of symbol names, case first set aside, then as the names compare.
 
 #### `rankBranches` {#symbol-rankbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L437)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branches.ts#L448)
 - Returns: [`BranchRanking`](#symbol-branchranking)
 - Parameters: `nodes`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload)[]; `links`: [`LocalEdge`](./types.ts.mdmd.md#symbol-localedge)[]; `options`: [`RankingOptions`](#symbol-rankingoptions)
 
