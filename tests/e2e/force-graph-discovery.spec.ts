@@ -76,6 +76,11 @@ test("with nothing asked about, the connections layout starts at the archipelago
   await expect(page.locator("#spatial-legend .legend-row").filter({ hasText: /^Dimmed: a hop beyond, or another group; click to see more$/ })).toHaveCount(0);
   // The names stay off the seeds at rest (2026-11-02: "until the very last second"), so a seed is found by hovering it.
   const seeds = (await renderedNodes(page)).filter(node => asked.has(node.id));
+  // A ring says a click will show more (the owner's choice of 2026-11-02): on a group's seed, whose connections the
+  // start does not show, and on no lone file; the key says what the ring means.
+  for (const node of seeds) expect(node.ring, `${node.id}: a ring only where the picture leaves connections out`).toBe((scope.beyond.get(node.id) ?? 0) > 0);
+  expect(seeds.filter(node => node.ring).length, "the groups' seeds wear rings, the lone files none").toBe(groups);
+  await expect(page.locator("#spatial-legend .legend-row").filter({ hasText: /^Ring: more connected, not shown; click to see it$/ })).toBeVisible();
   await expect(page.locator(".force-graph-label[data-node-id]")).toHaveCount(0);
   const largest = [...scope.groups.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
   const seed = seeds.find(node => node.id === largest[0])!;
@@ -90,6 +95,9 @@ test("with nothing asked about, the connections layout starts at the archipelago
   const after = await shown(page);
   expect([...after.ids].sort(), "the pinned seed's hops, and the other seeds").toEqual([...grown.scope.hops.keys()].sort());
   for (const [id, hop] of grown.scope.hops) expect(after.alpha.get(id), `${id} at hop ${hop}`).toBeCloseTo(dimmed(hop, 2) ? FRONTIER : FULL, 2);
+  // Grown, the rings move to where there is more now: a frontier sphere with connections beyond, another group's seed
+  // with a group behind it, and none on a sphere whose connections are all on screen.
+  for (const node of await renderedNodes(page)) expect(node.ring, `${node.id}: a ring only where the picture leaves connections out`).toBe((grown.scope.beyond.get(node.id) ?? 0) > 0);
   expect(grown.scope.groups.size, "every other group stands by its seed").toBe(asked.size - 1);
   expect(after.counts).toEqual({ shown: grown.scope.hops.size, total: files, groups, alone });
   await expect(page.locator("#spatial-legend .legend-row").filter({ hasText: /^Dimmed: a hop beyond, or another group; click to see more$/ })).toBeVisible();

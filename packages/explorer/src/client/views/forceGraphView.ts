@@ -1028,6 +1028,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     scopeGroups = scope.groups;
     frontierHop = hopsShown;
     const hasFrontier = [...scope.hops.keys()].some(atFrontier);
+    // Whether any sphere has connections the picture does not show: it wears a ring (the owner's choice of 2026-11-02).
+    const hasRings = scope.beyond.size > 0;
     // The repository's groups over its references, whatever the layout: how many, and how many files stand alone.
     const groupSizes = [...componentLandmarks(connectedNeighbours(data.nodes.filter(node => node.directoryPath === undefined && node.archetype !== "related-doc"), data.links, link => linkPulls(link, "connections"))).values()];
     const picture: SpatialGraphData = { nodes: data.nodes.filter(node => scope.hops.has(node.id)),
@@ -1235,7 +1237,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     const rootOverview = directories.includes("");
     // The key says what is drawn: the references and their directions where they are, the path, and the fading.
-    renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention, path: !!path?.length, faded: !!path?.length, frontier: hasFrontier });
+    renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention, path: !!path?.length, faded: !!path?.length, frontier: hasFrontier, rings: hasRings });
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {
         focusedDirectory = directories[0] ?? null;
@@ -1284,7 +1286,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
       pictureChanged();
-      renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || attention !== null, path: !!path?.length, faded: attention !== null || !!path?.length, frontier: hasFrontier });
+      renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || attention !== null, path: !!path?.length, faded: attention !== null || !!path?.length, frontier: hasFrontier, rings: hasRings });
       const frontier = atFrontier;
       forceGraphInstance?.nodeColor((node: ForceGraphNode) => {
         const color = spatialNodeStyle(node.archetype).color;
@@ -1293,6 +1295,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         const alpha = attention ? (attention.has(node.id) ? 1 : 0.2) : frontier(node.id) ? 0.4 : 1;
         if (emphasis === "none") return alpha === 1 ? color : emphasizedSphere(color, alpha, false, "none");
         return emphasizedSphere(color, alpha, changedNodes.has(node.id), emphasis);
+      });
+      // A ring around every sphere with connections the picture does not show, a click on which shows them: the owner's
+      // choice of 2026-11-02, B over A, the frontier's dimming kept and the ring saying where there is more. The ring
+      // keeps its strength at the frontier, where it is the cue, and fades with the hover's attention.
+      forceGraphInstance?.nodeRing((node: ForceGraphNode) => {
+        if (!scopeBeyond.get(node.id)) return null;
+        const alpha = attention ? (attention.has(node.id) ? .85 : .15) : .85;
+        return emphasizedSphere(spatialNodeStyle(node.archetype).color, alpha, changedNodes.has(node.id), emphasis);
       });
       /** Whether a wire has the picture's attention, whether it is a step of the drawn path, whether it reaches the frontier, and whether the step changed it. */
       const regard = (link: ForceGraphLink): { visible: boolean; onPath: boolean; dimmed: boolean; changed: boolean } => {
@@ -1373,7 +1383,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         linkColor: () => "rgba(255, 255, 255, 0.16)",
         linkWidth: () => state.tuning.forceGraph.linkWidth,
         linkVisible: () => true,
-        arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0
+        arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0,
+        ring: () => null
       },
       resistance: () => ({ nodes: state.tuning.forceGraph.nodeZoomResistance, wires: state.tuning.forceGraph.wireZoomResistance }),
       linkLabel: link => {

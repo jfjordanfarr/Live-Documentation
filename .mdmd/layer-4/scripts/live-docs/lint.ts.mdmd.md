@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: scripts/live-docs/lint.ts
 - Entry: command `live-docs:lint` of [`package.json`](../../package.json.mdmd.md)
-- Generated At: 2026-10-22T16:47:57.652Z
+- Generated At: 2026-11-03T00:48:35.565Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,8 @@ Checks every Live Doc against the grammar, refuses absolute links, warns about a
 - Introduced alongside the first Live Docs CLI (Aug 2024) and expanded repeatedly through the MDMD migration. In Nov 2025 authored-section warnings were added to surface pending Purpose and Notes placeholders without blocking commits.
 - Since 2026-09-28 the connectivity check derives the graph from the docs the run has just validated, and is skipped when any doc fails the grammar, so the structural failures are reported instead of a crash.
 - Since 2026-10-18 `--version` prints the engine package's version, whose grammar the lint applies, through [cli.ts](cli.ts.mdmd.md); until then a constant, 0.1.0, or an environment variable.
+
+Since 2026-11-02 the connectivity warning's islands are the files the engine's `fileGroups` calls alone, the set `inspect --groups` prints and the Knowledge Sources panel lists, so that the three give one answer; before, the lint counted the files with no outbound and no inbound edge itself, the same set by a second computation, a note the builder of the groups left for the root ([Turn 12 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-12)). The groups test of `tests/integration/live-docs/inspect-cli.test.ts` holds the agreement.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -38,6 +40,7 @@ _No public symbols detected_
 - [`document.parseLiveDoc`](../../packages/engine/src/live-docs/document.ts.mdmd.md#symbol-parselivedoc)
 - [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph)
 - [`graph.deriveLiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-derivelivedocgraph)
+- [`pathfind.fileGroups`](../../packages/engine/src/live-docs/pathfind.ts.mdmd.md#symbol-filegroups-function)
 - [`cli.packageVersion`](./cli.ts.mdmd.md#symbol-packageversion)
 <!-- LIVE-DOC:END Dependencies -->
 

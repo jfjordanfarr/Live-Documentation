@@ -148,6 +148,8 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   linkWidth(read: (link: L) => number): this { this.options.style.linkWidth = read; this.invalidateAppearance(); return this; }
   /** Replace physical node radii used for drawing; layout is owned by the view. */
   nodeRadius(read: (node: N) => number): this { this.options.style.radius = read; this.invalidateAppearance(); return this; }
+  /** Replace the rule for the ring around a sphere that has more behind it: its colour, or null for none (2026-11-02). */
+  nodeRing(read: (node: N) => string | null): this { this.options.style.ring = read; this.invalidateAppearance(); return this; }
 
   /** Read or set the canvas width in CSS pixels. */
   width(): number;

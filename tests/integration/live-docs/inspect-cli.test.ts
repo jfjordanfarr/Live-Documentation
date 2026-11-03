@@ -30,6 +30,7 @@ const repoRoot = findRepoRoot(__dirname);
 const tsxCli = path.join(repoRoot, "node_modules", "tsx", "dist", "cli.mjs");
 const tsconfigPath = path.join(repoRoot, "tsconfig.base.json");
 const inspectScript = path.join(repoRoot, "scripts", "live-docs", "inspect.ts");
+const lintScript = path.join(repoRoot, "scripts", "live-docs", "lint.ts");
 
 /** The fixture workspaces, by the folder under tests/integration/fixtures. */
 const fixtureFolders = {
@@ -76,13 +77,25 @@ afterAll(() => {
 });
 
 function runInspectCli(workspace: string, args: string[]): InspectRunResult {
+  return runCli(inspectScript, workspace, args);
+}
+
+/**
+ * The lint over a generated fixture workspace, told its configuration as the repository's script tells it, whose
+ * connectivity warning must agree with `inspect --groups` (2026-11-02).
+ */
+function runLintCli(workspace: string, args: string[] = []): InspectRunResult {
+  return runCli(lintScript, workspace, ["--config", path.join(workspace, ".live-docs.config.json"), ...args]);
+}
+
+function runCli(script: string, workspace: string, args: string[]): InspectRunResult {
   const result = spawnSync(
     process.execPath,
     [
       tsxCli,
       "--tsconfig",
       tsconfigPath,
-      inspectScript,
+      script,
       "--workspace",
       workspace,
       ...args
@@ -621,6 +634,11 @@ describe("Live Docs inspect CLI", () => {
     assert.ok(lines.includes(`Alone: ${plural(payload.alone.length, "file")}`), text.stdout);
     assert.ok(lines.includes("  8 files  src/lib.ts [.mdmd/layer-4/src/lib.ts.mdmd.md]"), text.stdout);
     assert.ok(lines.includes("  tsconfig.json [.mdmd/layer-4/tsconfig.json.mdmd.md]"), text.stdout);
+
+    // The lint's connectivity warning names the same files alone, from the same computation (2026-11-02).
+    const lint = runLintCli(fixtures.entryPoints);
+    assert.strictEqual(lint.exitCode, 0, lint.stderr);
+    assert.match(lint.stderr, /^- \(graph\): 2 disconnected node\(s\) detected \(no dependencies and no dependents\):\n {4}- \.\/package\.json\n {4}- \.\/tsconfig\.json$/mu, lint.stderr);
   });
 
   it("refuses --groups with a --from, a --to, a --direction or --reachable", () => {

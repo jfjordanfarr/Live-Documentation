@@ -583,6 +583,13 @@ The following decisions were explored and explicitly removed from scope during t
 
 ## System References
 
+### A Ring Says a Sphere Has More Behind It _(Recorded 2026-11-02)_
+
+- **Context**: Playing in the evening's build, the owner found that "in the 3D Local Map, there is positively no way for me to know which node I can click which will cause expansion. Even knowing our software, it feels genuinely random whether or not my click will cause a new node to appear" ([Turn 9 of the November 2 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-9)). The cause was exact: a click pins a sphere and shows the hops around it, so new spheres appear only when it has connections the picture does not show; the view knew that number for every sphere and said it only in the hover title; dimming meant the last hop and the other groups' seeds, among them the 52 lone files of this repository's 94 seeds, which grow nothing.
+- **Decision**: Every sphere with connections the picture does not show wears a ring: flat, turned to the camera, in the sphere's colour at strength even where the sphere is dimmed, fading only with the hover's attention; a lone file, a sphere whose connections are all on screen, has none. The frontier's dimming stays what it was. The legend gains a Ring row while any ring is drawn; the hover title keeps its count.
+- **Rationale**: The rule a person needs at a sphere is "will this grow?", and the picture had no channel for it. Offered a dimming made to mean exactly that (one channel, the October 31 frontier reading gone) or a ring beside the frontier's dimming (two channels, the edge still a shell), the owner: "I cannot predict whether A or B would be better, but I personally am leaning towards B" ([Turn 10](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-10)). The ring is a fourth instanced batch of the direct renderer, one entry per sphere, so that it costs what the spheres cost and no scene object per file.
+- **Alternatives considered**: dimming redefined as "more behind it" (the agent's recommendation, declined by the owner's lean); a halo, a second translucent sphere, which would read as the history's glow; a count drawn at rest, which the names-at-the-last-second rule forbids; sizing a seed by its group, which conflates the size rule with the group's weight and moves on a click. The pictures of the ring are the next judgment; a sticky handle under a filter change stays open beside it.
+
 ### Related Architecture Docs
 
 - [Live Documentation Pipeline](live-documentation-pipeline.mdmd.md) — generator, lint, and edge aggregation architecture

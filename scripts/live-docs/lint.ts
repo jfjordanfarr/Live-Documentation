@@ -12,6 +12,7 @@ import {
 import { hasMeaningfulAuthoredContent } from "@live-documentation/engine/live-docs/core";
 import { LiveDocSyntaxError, authoredBlockOf, parseLiveDoc, type LiveDoc } from "@live-documentation/engine/live-docs/document";
 import { deriveLiveDocGraph, type LiveDocGraph } from "@live-documentation/engine/live-docs/graph";
+import { fileGroups } from "@live-documentation/engine/live-docs/pathfind";
 
 import { packageVersion } from "./cli";
 
@@ -300,15 +301,13 @@ function validateRelativeLinks(file: string, content: string, issues: LintIssue[
  * - Missing adapter detection for the file's language
  * - Cruft from deleted infrastructure
  * - Truly standalone utility files (rare)
+ *
+ * The islands are the files the engine's `fileGroups` calls alone, the same set `inspect --groups` prints and the
+ * Knowledge Sources panel lists, so that the three give one answer (2026-11-02; before, the lint counted the files
+ * with no outbound and no inbound edge itself, the same set by a second computation).
  */
 function validateConnectivity(graph: LiveDocGraph, warnings: LintWarning[]): void {
-  const islands: string[] = [];
-
-  for (const file of Object.values(graph.files)) {
-    if (file.outbound.length === 0 && file.inbound.length === 0) {
-      islands.push(file.codePath);
-    }
-  }
+  const islands = fileGroups(graph).alone;
 
   if (islands.length === 0) {
     return;

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-observation.ts
-- Generated At: 2026-10-31T15:24:51.217Z
+- Generated At: 2026-11-03T00:48:36.298Z
 
 ## Authored
 ### Purpose
@@ -72,7 +72,7 @@ Read identity from the picking index and geometry/alpha/positions from the actua
 
 #### `renderedLinks` {#symbol-renderedlinks}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L167)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L171)
 - Parameters: `page`: `Page`
 
 ##### `renderedLinks` — Summary
@@ -83,14 +83,14 @@ was withdrawn with the gradient, 2026-10-31).
 
 #### `referenceWire` {#symbol-referencewire}
 - Type: const
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L203)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L207)
 
 ##### `referenceWire` — Summary
 Whether a wire is a documented reference between two files, rather than containment or a document's citation.
 
 #### `clearStroke` {#symbol-clearstroke}
 - Type: function
-- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L210)
+- Source: [source](../../../../tests/e2e/force-graph-observation.ts#L214)
 - Parameters: `page`: `Page`
 
 ##### `clearStroke` — Summary

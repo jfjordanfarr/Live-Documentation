@@ -12,13 +12,15 @@ export interface SpatialLegendDrawn {
   faded: boolean;
   /** Whether the picture ends in a frontier: a last hop of connections drawn dimmed, a click on which shows more (2026-10-31). */
   frontier: boolean;
+  /** Whether any sphere wears a ring: connections the picture does not show, a click on which shows them (2026-11-02). */
+  rings: boolean;
 }
 
 /** One row of the key: its words and the sample the stylesheet draws from its shape and colour. */
 export interface SpatialLegendRow {
   label: string;
   color: string;
-  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "faded" | "frontier";
+  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "faded" | "frontier" | "ring";
 }
 
 /** The rows of the key for a filtered graph at the moment shown, in reading order; pure, so that a test can read them. */
@@ -35,6 +37,7 @@ export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, 
   }
   if (drawn.path) rows.push({ label: "Path", color: "#ffffff", shape: "path" });
   if (drawn.frontier) rows.push({ label: "Dimmed: a hop beyond, or another group; click to see more", color: "#aeb8c6", shape: "frontier" });
+  if (drawn.rings) rows.push({ label: "Ring: more connected, not shown; click to see it", color: "#aeb8c6", shape: "ring" });
   if (drawn.faded) rows.push({ label: "Faded: not on the path or hovered", color: "#aeb8c6", shape: "faded" });
   if (kinds.has("containment")) rows.push({ label: "Contains", color: SPATIAL_NODE_STYLES.directory.color, shape: "wire" });
   if (kinds.has("related-doc")) rows.push({ label: "Cites document", color: SPATIAL_NODE_STYLES["related-doc"].color, shape: "arrow" });

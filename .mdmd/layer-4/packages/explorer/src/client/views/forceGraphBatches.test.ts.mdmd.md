@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.test.ts
-- Generated At: 2026-10-29T18:09:48.079Z
+- Generated At: 2026-11-03T00:48:32.560Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,6 @@ _No public symbols detected_
 - [`forceGraphBatches.createSpatialBuffers`](./forceGraphBatches.ts.mdmd.md#symbol-createspatialbuffers)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphBatches.screenWireIntersectsFrustum`](./forceGraphBatches.ts.mdmd.md#symbol-screenwireintersectsfrustum)
-- `three` - `Color`, `Matrix4`, `PerspectiveCamera`, `Raycaster`, `Scene`, `SphereGeometry`, `Vector2`, `Vector3`, `WebGLRenderer`
+- `three` - `Color`, `Matrix4`, `PerspectiveCamera`, `Quaternion`, `Raycaster`, `Scene`, `SphereGeometry`, `Vector2`, `Vector3`, `WebGLRenderer`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

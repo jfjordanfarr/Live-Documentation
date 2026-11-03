@@ -1,4 +1,4 @@
-import { BufferGeometry, Color, ConeGeometry, DynamicDrawUsage, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshLambertMaterial, Quaternion, Sphere, SphereGeometry, Vector2, Vector3, Vector4, type Camera, type Intersection, type Raycaster, type Scene, type WebGLRenderer } from "three";
+import { BufferGeometry, Color, ConeGeometry, DynamicDrawUsage, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, MeshLambertMaterial, Quaternion, RingGeometry, Sphere, SphereGeometry, Vector2, Vector3, Vector4, type Camera, type Intersection, type Raycaster, type Scene, type WebGLRenderer } from "three";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
@@ -18,7 +18,7 @@ export interface SpatialDrawEntry<T> {
 
 /** Geometry shares a GPU batch; numeric working arrays keep preparation independent of graph-object shapes. */
 export interface SpatialDrawBatch<T> {
-  mesh: InstancedMesh<BufferGeometry, MeshLambertMaterial | LineMaterial>;
+  mesh: InstancedMesh<BufferGeometry, MeshLambertMaterial | MeshBasicMaterial | LineMaterial>;
   entries: SpatialDrawEntry<T>[];
   ordered: number[];
   visible: number[];
@@ -39,19 +39,21 @@ export interface SpatialDrawStyle<N, L> {
   linkWidth: (link: L) => number;
   linkVisible: (link: L) => boolean;
   arrowLength: (link: L) => number;
+  /** The colour of the ring around a sphere that has more behind it, or null for no ring (2026-11-02). */
+  ring: (node: N) => string | null;
 }
 
 /** Pack documented nodes and wires straight into three instance buffers; camera changes never build scene proxies. */
 export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDrawLink<N>>(scene: Scene, style: SpatialDrawStyle<N, L>) {
-  const alphaMaterial = (): MeshLambertMaterial => {
-    const material = new MeshLambertMaterial({ color: 0xffffff, transparent: true });
+  const alphaMaterial = (lit = true): MeshLambertMaterial | MeshBasicMaterial => {
+    const material = lit ? new MeshLambertMaterial({ color: 0xffffff, transparent: true }) : new MeshBasicMaterial({ color: 0xffffff, transparent: true, depthWrite: false });
     material.onBeforeCompile = shader => {
       shader.vertexShader = shader.vertexShader.replace("#include <common>", "#include <common>\nattribute float spatialOpacity;\nvarying float vSpatialOpacity;")
         .replace("#include <begin_vertex>", "#include <begin_vertex>\nvSpatialOpacity = spatialOpacity;");
       shader.fragmentShader = shader.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vSpatialOpacity;")
         .replace("#include <color_fragment>", "#include <color_fragment>\ndiffuseColor.a *= vSpatialOpacity;");
     };
-    material.customProgramCacheKey = () => "spatial-instance-alpha";
+    material.customProgramCacheKey = () => `spatial-instance-alpha-${lit ? "lit" : "flat"}`;
     return material;
   };
   /** Give a batch room for `capacity` instances: its matrices, colours, alphas and widths, afresh. */
@@ -68,7 +70,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     batch.depths = new Float64Array(batch.capacity); batch.serials = new Float64Array(batch.capacity);
     batch.appearance = new Float64Array(5 * batch.capacity); batch.enabled = new Uint8Array(batch.capacity);
   };
-  const make = <T>(kind: string, geometry: BufferGeometry, material: MeshLambertMaterial | LineMaterial, renderOrder = 0): SpatialDrawBatch<T> => {
+  const make = <T>(kind: string, geometry: BufferGeometry, material: MeshLambertMaterial | MeshBasicMaterial | LineMaterial, renderOrder = 0): SpatialDrawBatch<T> => {
     const mesh = new InstancedMesh(geometry, material, 1);
     mesh.name = `Spatial ${kind}`; mesh.count = 0; mesh.frustumCulled = false; mesh.renderOrder = renderOrder;
     const batch: SpatialDrawBatch<T> = { mesh, entries: [], ordered: [], visible: [], unseen: [], depths: new Float64Array(),
@@ -91,11 +93,17 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   const lines = make<L>("links", new BufferGeometry().copy(new LineSegmentsGeometry()), screenWireMaterial(lineSource), 0);
   lineSource.dispose();
   const arrows = make<L>("arrows", new ConeGeometry(.25, 1, 8).translate(0, .5, 0).rotateX(Math.PI / 2), alphaMaterial(), 10);
+  // A ring around a sphere that has more behind it (the owner's choice of 2026-11-02): flat, turned to the camera, unlit
+  // so that it reads the same from every side, drawn after the spheres and writing no depth, so that it cuts no wire.
+  // One entry per sphere, enabled while the style gives it a colour, so that the set of rings follows the appearance.
+  const rings = make<N>("rings", new RingGeometry(1.35, 1.6, 32), alphaMaterial(false), 11);
   const nodeEntries = new WeakMap<N, SpatialDrawEntry<N>>(), linkEntries = new WeakMap<L, SpatialDrawEntry<L>>(), arrowEntries = new WeakMap<L, SpatialDrawEntry<L>>();
+  const ringEntries = new WeakMap<N, SpatialDrawEntry<N>>();
   const colors = new Map<string, { color: Color; alpha: number }>();
   let serial = 0, appearanceDirty = true;
   let wireScale = 1;
-  let positions = new Float64Array(), clips = new Float64Array(), drawnRadii = new Float64Array();
+  let positions = new Float64Array(), clips = new Float64Array(), drawnRadii = new Float64Array(), nodeSeen = new Uint8Array();
+  const billboard = new Quaternion();
   let lineEnds = new Uint32Array(), arrowEnds = new Uint32Array(), lineBounds = new Float64Array(), lineTrims = new Float64Array();
   const matrix = new Matrix4(), projection = new Matrix4(), rotation = new Matrix4();
   const clipStart = new Vector4(), clipEnd = new Vector4(), bounds: number[] = [];
@@ -137,18 +145,26 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     read(nodes, style.nodeColor, style.radius, () => true, .75);
     read(lines, style.linkColor, link => Math.ceil(style.linkWidth(link) * 10) / 10, style.linkVisible, 1);
     read(arrows, style.linkColor, style.arrowLength, style.linkVisible, 3);
+    // A ring takes its sphere's radius, read above, and its own colour and alpha; no colour, no ring.
+    for (let i = 0; i < rings.entries.length; i++) {
+      const ring = style.ring(rings.entries[i].data), tint = ring === null ? null : colorOf(ring), at = i * 5;
+      rings.appearance[at] = tint?.color.r ?? 0; rings.appearance[at + 1] = tint?.color.g ?? 0; rings.appearance[at + 2] = tint?.color.b ?? 0;
+      rings.appearance[at + 3] = tint?.alpha ?? 0; rings.appearance[at + 4] = nodes.appearance[at + 4];
+      rings.enabled[i] = Number(rings.entries[i].enabled = tint !== null);
+    }
   };
   const setData = (data: { nodes: N[]; links: L[] }): void => {
     const byId = new Map(data.nodes.map((node, index) => [node.id, index]));
-    nodes.entries.length = lines.entries.length = arrows.entries.length = 0;
-    for (const node of data.nodes) nodes.entries.push(entryFor(nodeEntries, node));
+    nodes.entries.length = lines.entries.length = arrows.entries.length = rings.entries.length = 0;
+    for (const node of data.nodes) { nodes.entries.push(entryFor(nodeEntries, node)); rings.entries.push(entryFor(ringEntries, node)); }
     for (const link of data.links) {
       lines.entries.push(entryFor(linkEntries, link));
       if (style.arrowLength(link) > 0) arrows.entries.push(entryFor(arrowEntries, link));
     }
-    reserve(nodes); reserve(lines); reserve(arrows);
+    reserve(nodes); reserve(lines); reserve(arrows); reserve(rings);
     if (positions.length < nodes.capacity * 3) {
       positions = new Float64Array(nodes.capacity * 3); clips = new Float64Array(nodes.capacity * 4); drawnRadii = new Float64Array(nodes.capacity);
+      nodeSeen = new Uint8Array(nodes.capacity);
     }
     if (lineEnds.length < lines.capacity * 2) { lineEnds = new Uint32Array(lines.capacity * 2); lineBounds = new Float64Array(lines.capacity * 4); lineTrims = new Float64Array(lines.capacity * 2); }
     if (arrowEnds.length < arrows.capacity * 2) arrowEnds = new Uint32Array(arrows.capacity * 2);
@@ -197,7 +213,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     const pixelScale = Math.abs(camera.projectionMatrix.elements[5]) * height / 2;
     const nodeScale = spatialSizeScale(target, camera, height, nodeResistance);
     wireScale = spatialSizeScale(target, camera, height, wireResistance);
-    nodes.visible.length = nodes.unseen.length = lines.visible.length = lines.unseen.length = arrows.visible.length = arrows.unseen.length = 0;
+    nodes.visible.length = nodes.unseen.length = lines.visible.length = lines.unseen.length = arrows.visible.length = arrows.unseen.length = rings.visible.length = rings.unseen.length = 0;
     // Read each mutable layout position once. The far larger wire pass uses only contiguous numeric inputs.
     for (let i = 0; i < nodes.entries.length; i++) {
       const node = nodes.entries[i].data, p = i * 3, c = i * 4;
@@ -208,7 +224,9 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     }
     for (const i of nodes.ordered) {
       sphere.center.fromArray(positions, i * 3); sphere.radius = drawnRadii[i];
-      (frustum.intersectsSphere(sphere) ? nodes.visible : nodes.unseen).push(i);
+      const seen = frustum.intersectsSphere(sphere);
+      nodeSeen[i] = Number(seen);
+      (seen ? nodes.visible : nodes.unseen).push(i);
     }
     for (const i of lines.ordered) {
       const a = lineEnds[2 * i], b = lineEnds[2 * i + 1];
@@ -240,7 +258,14 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       arrows.depths[i] = depthOf(sphere.center.x, sphere.center.y, sphere.center.z);
       (arrows.enabled[i] && frustum.intersectsSphere(sphere) ? arrows.visible : arrows.unseen).push(i);
     }
-    sort(nodes); sort(lines); sort(arrows);
+    // A ring stands where its sphere stands, at the sphere's depth, turned to the camera.
+    camera.getWorldQuaternion(billboard);
+    for (const i of rings.ordered) { rings.depths[i] = nodes.depths[i]; (rings.enabled[i] && nodeSeen[i] ? rings.visible : rings.unseen).push(i); }
+    sort(nodes); sort(lines); sort(arrows); sort(rings);
+    upload(rings, (array, at, i) => {
+      const r = drawnRadii[i];
+      matrix.compose(point.fromArray(positions, i * 3), billboard, scale.set(r, r, r)).toArray(array, at);
+    });
     upload(nodes, (array, at, i) => {
       const p = i * 3;
       array[at] = array[at + 5] = array[at + 10] = drawnRadii[i];
@@ -280,8 +305,8 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     }
     return picked;
   };
-  return { nodes, lines, arrows, setData, update, pickNode, pickLink, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {
-    for (const batch of [nodes, lines, arrows]) { batch.mesh.removeFromParent(); batch.mesh.dispose(); batch.mesh.geometry.dispose(); batch.mesh.material.dispose(); }
+  return { nodes, lines, arrows, rings, setData, update, pickNode, pickLink, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {
+    for (const batch of [nodes, lines, arrows, rings]) { batch.mesh.removeFromParent(); batch.mesh.dispose(); batch.mesh.geometry.dispose(); batch.mesh.material.dispose(); }
   } };
 }
 

@@ -140,18 +140,22 @@ export async function renderedNodes(page: Page) {
     const inspected = window as unknown as ObservedWindow, observed = inspected.renderedGraph!;
     const rect = document.querySelector("#graph-svg canvas")!.getBoundingClientRect();
     const nodes: Array<{ id: string; name: string; directory?: string; files?: number; x: number; y: number; depth: number;
-      distance: number; opacity: number; radius: number; screenRadius: number; world: { x: number; y: number; z: number } }> = [];
+      distance: number; opacity: number; radius: number; screenRadius: number; ring: boolean; world: { x: number; y: number; z: number } }> = [];
+    // The rings batch has one entry per sphere, in the spheres' order, enabled where the sphere wears a ring (2026-11-02).
+    let rings: DrawMesh | undefined;
+    observed.scene.traverse(object => { const mesh = object as DrawMesh; if (mesh.userData.spatialBatch?.kind === "rings") rings = mesh; });
     observed.scene.traverse(object => {
       const mesh = object as DrawMesh, batch = mesh.userData.spatialBatch;
       if (batch?.kind !== "nodes") return;
-      for (const entry of batch.entries) {
+      for (const [index, entry] of batch.entries.entries()) {
         const data = entry.data, drawn = inspected.drawnInstance!(mesh, entry), position = drawn.center;
+        const ring = rings?.userData.spatialBatch!.entries[index]?.enabled ?? false;
         const projected = position.clone().project(observed.camera), right = observed.camera.matrixWorld.elements;
         const rim = position.clone().add(position.clone().set(right[0], right[1], right[2]).multiplyScalar(drawn.radius)).project(observed.camera);
         nodes.push({ id: data.id!, name: data.name ?? data.id!, directory: data.directoryPath, files: data.directoryFileCount,
           x: rect.left + (projected.x + 1) * rect.width / 2, y: rect.top + (1 - projected.y) * rect.height / 2,
           depth: projected.z, distance: position.distanceTo(observed.camera.position), opacity: drawn.opacity, radius: drawn.radius,
-          screenRadius: Math.abs(rim.x - projected.x) * rect.width / 2, world: { x: position.x, y: position.y, z: position.z } });
+          screenRadius: Math.abs(rim.x - projected.x) * rect.width / 2, ring, world: { x: position.x, y: position.y, z: position.z } });
       }
     });
     return nodes;

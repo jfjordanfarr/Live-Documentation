@@ -1,9 +1,9 @@
-import { Color, Matrix4, PerspectiveCamera, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
+import { Color, Matrix4, PerspectiveCamera, Quaternion, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
 import { describe, expect, it } from "vitest";
 
 import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum } from "./forceGraphBatches";
 
-interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: number; radius: number; color: string }
+interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: number; radius: number; color: string; ring?: string }
 interface Link { source: Node; target: Node; width: number; color: string; visible: boolean; arrow: number }
 const node = (id: string, x: number, y: number, z: number, radius = 4): Node => ({ id, x, y, z, radius, color: "#0091ff", publicSymbols: [] });
 const link = (source: Node, target: Node, width = 1): Link => ({ source, target, width, color: "rgba(255, 255, 255, 0.16)", visible: true, arrow: 0 });
@@ -12,7 +12,7 @@ const setup = () => {
   camera.position.z = 1000; camera.updateMatrixWorld();
   const buffers = createSpatialBuffers<Node, Link>(scene, {
     radius: node => node.radius, nodeColor: node => node.color, linkColor: link => link.color,
-    linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow
+    linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow, ring: node => node.ring ?? null
   });
   return { scene, camera, buffers, draw: (nodes = 0, wires = 1) => buffers.update(camera, 1000, 1000, nodes, wires, new Vector3()) };
 };
@@ -43,7 +43,7 @@ describe("direct spatial buffers", () => {
     const { buffers, scene, draw } = setup(), a = node("a", 20, -8, 4, 7), b = node("b", -30, 17, 90, 13);
     a.color = "#12345633"; b.color = "#ff6600";
     buffers.setData({ nodes: [a, b], links: [] }); draw();
-    expect(scene.children).toHaveLength(3);
+    expect(scene.children).toHaveLength(4);
     const { mesh, entries } = buffers.nodes;
     for (const entry of entries) {
       const matrix = new Matrix4(); mesh.getMatrixAt(entry.slot, matrix);
@@ -125,10 +125,38 @@ describe("direct spatial buffers", () => {
     buffers.setData({ nodes: nodes.slice(0, 2), links: links.slice(0, 1) }); draw();
     const first = buffers.nodes.entries[0], batch = buffers.nodes.mesh;
     buffers.setData({ nodes, links }); draw();
-    expect(scene.children).toHaveLength(3); expect(buffers.nodes.mesh).toBe(batch); expect(buffers.nodes.entries[0]).toBe(first);
+    expect(scene.children).toHaveLength(4); expect(buffers.nodes.mesh).toBe(batch); expect(buffers.nodes.entries[0]).toBe(first);
     expect(buffers.nodes.entries).toHaveLength(2000); expect(buffers.lines.entries).toHaveLength(1999);
     buffers.setData({ nodes: nodes.slice(0, 1), links: [] }); draw();
     expect(buffers.nodes.entries).toEqual([first]); expect(batch.count).toBe(1); expect(buffers.lines.mesh.count).toBe(0);
+    buffers.dispose();
+  });
+
+  it("rings a sphere that says it has more, at its drawn radius and turned to the camera, and leaves the others bare", () => {
+    const { buffers, camera, draw } = setup(), a = node("more", 40, -20, 10, 7), b = node("whole", -60, 30, -50, 13);
+    a.ring = "#0091ffd9";
+    buffers.setData({ nodes: [a, b], links: [] }); draw();
+    expect(buffers.rings.entries).toHaveLength(2);
+    expect(buffers.rings.mesh.count).toBe(1);
+    const ring = buffers.rings.entries[0], bare = buffers.rings.entries[1];
+    expect(ring.enabled).toBe(true); expect(bare.enabled).toBe(false);
+    expect(buffers.rings.mesh.geometry.getAttribute("spatialOpacity").getX(ring.slot)).toBeCloseTo(0xd9 / 255, 6);
+    // Drawn after the spheres and writing no depth, so that it cuts no wire.
+    expect(buffers.rings.mesh.renderOrder).toBeGreaterThan(buffers.nodes.mesh.renderOrder);
+    expect(buffers.rings.mesh.material.depthWrite).toBe(false);
+    const matrix = new Matrix4(), position = new Vector3(), rotation = new Quaternion(), size = new Vector3();
+    for (const angle of [0, Math.PI / 3, Math.PI]) {
+      camera.position.set(1000 * Math.sin(angle), 200, 1000 * Math.cos(angle)); camera.lookAt(0, 0, 0); camera.updateMatrixWorld();
+      draw();
+      buffers.rings.mesh.getMatrixAt(ring.slot, matrix); matrix.decompose(position, rotation, size);
+      expect(position.distanceTo(new Vector3(a.x, a.y, a.z))).toBeLessThan(1e-3);
+      expect(size.x).toBeCloseTo(7, 4);
+      // Turned to the camera from every side: the ring's rotation is the camera's own.
+      expect(Math.abs(rotation.dot(camera.quaternion))).toBeCloseTo(1, 5);
+    }
+    // The ring follows the appearance: taken away, it is gone at the next draw, the binding kept.
+    a.ring = undefined; buffers.invalidateAppearance(); draw();
+    expect(buffers.rings.mesh.count).toBe(0); expect(buffers.rings.entries[0]).toBe(ring); expect(ring.enabled).toBe(false);
     buffers.dispose();
   });
 

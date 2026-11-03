@@ -15,6 +15,8 @@ Exercises the `npm run live-docs:inspect` CLI against representative workspaces 
 - The reachable listing (2026-10-14, [Turn 7](../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7)): nearest first, a file never reaching itself, both ways on request with the outbound list first, the text's first lines, and a fan-out asked both ways refused with nothing on stdout.
 - Blazor coverage was added on 2025-11-18 to lock in the `.razor` → partial class → `appsettings.json` chain discussed during the LD-402 expansion.
 
+Since the evening of 2026-11-02 the groups test also runs the lint over the same generated workspace and holds its connectivity warning to the same files alone, since the lint reads `fileGroups` too ([Turn 12 of the November 2 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-12)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -79,9 +79,11 @@ test("the spatial key follows rendered kinds, including a retained test hidden b
 test("the Local Map shows the matching legend and lends neither key to another view", async ({ page }) => {
   await page.goto("/samples/estate/?view=local&mode=3d&node=Portal/Services/GatewayClient.cs");
   await expect(page.locator("#spatial-legend")).toBeVisible();
-  // The subject's two hops end in a frontier, dimmed, and the key says so (discovery, 2026-10-31).
+  // The subject's two hops end in a frontier, dimmed, and the key says so (discovery, 2026-10-31); the frontier's spheres
+  // with more behind them wear rings, and the key says what the ring means (2026-11-02).
   await expect(page.locator("#spatial-legend .legend-row")).toHaveText([
-    "Implementation", "Size: public symbols", "Width: references", "Dimmed: a hop beyond, or another group; click to see more"
+    "Implementation", "Size: public symbols", "Width: references", "Dimmed: a hop beyond, or another group; click to see more",
+    "Ring: more connected, not shown; click to see it"
   ]);
   await expect(page.locator("#local-legend")).toBeHidden();
 
