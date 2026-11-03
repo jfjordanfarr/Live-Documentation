@@ -284,10 +284,16 @@ export interface PictureReading {
   smallestLabelPx: number | null;
 }
 
-/** Reads the wires, cards and camera of a view as drawn now. */
-export async function readPicture(page: Page, view: ViewReading, names: Record<string, Record<string, string>>): Promise<PictureReading> {
+/**
+ * Reads the wires, cards and camera of a view as drawn now. Each wire is sampled along its whole length, every 8 px,
+ * for the measures of where it runs (occlusion, foreign directories, lanes, length, flow); `along: false` leaves the
+ * sampling out, so that the path measures read zero and the points none, for a reader that asks only which wires are
+ * legible: that is decided by the endpoints' rows and names, never by the samples, and the sampling is nearly all of a
+ * reading's time (a retained scope of hundreds of wires took 30 s a reading, measured 2026-11-02).
+ */
+export async function readPicture(page: Page, view: ViewReading, names: Record<string, Record<string, string>>, along = true): Promise<PictureReading> {
   return page.evaluate(
-    ({ view, names, frameSelector, readingPx }) => {
+    ({ view, names, frameSelector, readingPx, along }) => {
       const frame = document.querySelector(frameSelector)!.getBoundingClientRect();
       const inside = (r: DOMRect): boolean => r.width > 0 && r.height > 0 && r.left >= frame.left - 0.5 && r.right <= frame.right + 0.5 && r.top >= frame.top - 0.5 && r.bottom <= frame.bottom + 0.5;
       const meets = (r: DOMRect): boolean => r.width > 0 && r.height > 0 && r.right > frame.left && r.left < frame.right && r.bottom > frame.top && r.top < frame.bottom;
@@ -417,7 +423,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
         let lengthPx = 0;
         const points: number[] = [];
         const ctm = el.getScreenCTM();
-        if (ctm && typeof el.getTotalLength === "function") {
+        if (along && ctm && typeof el.getTotalLength === "function") {
           const length = el.getTotalLength();
           lengthPx = length * Math.hypot(ctm.a, ctm.b);
           const sample = (at: number): DOMPoint => el.getPointAtLength(at).matrixTransform(ctm);
@@ -474,7 +480,7 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
       }
       return { wires, cards: cardReadings, frame: toBox(frame), scale, cardsTotal: cards.length, cardsInFrame, cardsPartlyInFrame, smallestLabelPx };
     },
-    { view, names, frameSelector: FRAME, readingPx: READING_PX }
+    { view, names, frameSelector: FRAME, readingPx: READING_PX, along }
   );
 }
 
@@ -877,10 +883,11 @@ export interface TourScore {
 
 /**
  * Test 15: plan the tour from the picture as it stands, then make the pans by mouse and count what became legible.
- * The camera is left where the tour ends.
+ * The camera is left where the tour ends. The tour asks only which wires are legible and where their endpoints and the
+ * cards stand, so its readings leave out the sampling along the wires.
  */
 export async function runTour(page: Page, view: ViewReading, facts: readonly Fact[], names: Record<string, Record<string, string>>): Promise<TourScore> {
-  const picture = await readPicture(page, view, names);
+  const picture = await readPicture(page, view, names, false);
   const byKey = new Map<string, WireReading[]>();
   for (const wire of picture.wires) byKey.set(wire.key, [...(byKey.get(wire.key) ?? []), wire]);
   const tourFacts: TourFact[] = [];
@@ -905,7 +912,7 @@ export async function runTour(page: Page, view: ViewReading, facts: readonly Fac
       remainingY -= made.dy;
       if (drag > 0) notes.push(`a planned pan took ${drag + 1} drags`);
     }
-    const now = await readPicture(page, view, names);
+    const now = await readPicture(page, view, names, false);
     for (const wire of now.wires) if (wireLegible(wire)) seen.add(wire.key);
   }
   const verified = tourFacts.filter(fact => seen.has(fact.key)).length;
