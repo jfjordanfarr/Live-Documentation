@@ -2,6 +2,8 @@
 
 Historical design probe, November 3, 2026. Requested in [Turn 4](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-4). This is a disposable comparison under the ignored Explorer output, not a selected product behavior.
 
+Later that day, [Turns 5–6](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-5) select file-plus-all-symbols as the initial file-pin default, retain both hover disclosures and request both name-click alternatives. The live page has advanced to that [combined comparison](../pinned-hover-reading/README.md). The pictures and behavior below preserve this earlier stage, including its modal name action and hover-only wire highlighting.
+
 The owner reports cumulative downward drift in the previous attention proposal and finds its presentation rough beside the native 2D map. [Their supplied screenshot](owner-hover-drift.png) is copied unchanged from the attachment and is evidence of that report. They accept hover expansion as an idea and ask for another throwaway in which pins expand descriptions, with both rules left open.
 
 ## The four combinations

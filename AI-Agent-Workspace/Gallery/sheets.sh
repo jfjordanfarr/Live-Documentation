@@ -81,3 +81,7 @@ sheet pathfind-pinned-reading.png "Pinned descriptions: the same two pins, four 
   "File description / Symbol + file" pathfind-reading/pins-purpose-context.png \
   "File + all symbols / Symbol description" pathfind-reading/pins-all-only.png \
   "File + all symbols / Symbol + file" pathfind-reading/pins-all-context.png
+
+sheet pathfind-name-click.png "Same file-name click, two actions: pathfind.ts" \
+  "Hold file description; pins unchanged" pathfind-reading/name-read.png \
+  "Pin the file; open all descriptions" pathfind-reading/name-pin.png

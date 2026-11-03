@@ -136,7 +136,7 @@ Rebuild just this comparison with `bash AI-Agent-Workspace/Gallery/sheets.sh pat
 
 ## Pin-driven descriptions, later November 3
 
-The [four-policy sheet](sheets/pathfind-pinned-reading.png) keeps Neighbours pinned on the subject and the configuration provider pinned whole. It compares both pin-disclosure axes using native cards. The owner's [Turn 4](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-4) requests these permutations after finding cumulative drift in the earlier hover-only prototype. The [probe record](../Probes/2026-11-03/pinned-reading/README.md) preserves the feedback, native pin transitions, repeated-cycle checks and limits. No policy is selected.
+The [four-policy sheet](sheets/pathfind-pinned-reading.png) keeps Neighbours pinned on the subject and the configuration provider pinned whole. It compares both pin-disclosure axes using native cards. The owner's [Turn 4](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-4) requests these permutations after finding cumulative drift in the earlier hover-only prototype. The [probe record](../Probes/2026-11-03/pinned-reading/README.md) preserves the feedback, native pin transitions, repeated-cycle checks and limits. No policy was selected at that stage; the following comparison records the later default.
 
 | Gallery copy | Origin in the probe record |
 | --- | --- |
@@ -146,3 +146,14 @@ The [four-policy sheet](sheets/pathfind-pinned-reading.png) keeps Neighbours pin
 | [File and all symbols / symbol and file](pathfind-reading/pins-all-context.png) | [file-all-symbol-context.png](../Probes/2026-11-03/pinned-reading/file-all-symbol-context.png) |
 
 Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh pathfind-pinned-reading.png`.
+
+## Two name-click actions with hover, November 3
+
+The [two-action sheet](sheets/pathfind-name-click.png) starts with the same unpinned files and clicks the same file name after hovering it. Separate reading holds Purpose open with no pin; pin-on-name opens Purpose and all symbol descriptions. The owner selected that file-pin default in [Turn 5](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-5) and asked to try both name actions in [Turn 6](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-6). Neither name action has won. The [probe record](../Probes/2026-11-03/pinned-hover-reading/README.md) includes the hover journeys, narrow view, content pressure and fixed-scope limitations.
+
+| Gallery copy | Source capture |
+| --- | --- |
+| [Separate file reading](pathfind-reading/name-read.png) | [file-name-read.png](../Probes/2026-11-03/pinned-hover-reading/file-name-read.png) |
+| [File pinning](pathfind-reading/name-pin.png) | [file-name-pin.png](../Probes/2026-11-03/pinned-hover-reading/file-name-pin.png) |
+
+Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh pathfind-name-click.png`.
