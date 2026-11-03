@@ -133,3 +133,16 @@ The [four-way sheet](sheets/pathfind-reading.png) compares Neighbours on the sam
 | [On attention](pathfind-reading/attention.png) | [attention-short.png](../Probes/2026-11-03/reading-layouts/attention-short.png) |
 
 Rebuild just this comparison with `bash AI-Agent-Workspace/Gallery/sheets.sh pathfind-reading.png`.
+
+## Pin-driven descriptions, later November 3
+
+The [four-policy sheet](sheets/pathfind-pinned-reading.png) keeps Neighbours pinned on the subject and the configuration provider pinned whole. It compares both pin-disclosure axes using native cards. The owner's [Turn 4](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-4) requests these permutations after finding cumulative drift in the earlier hover-only prototype. The [probe record](../Probes/2026-11-03/pinned-reading/README.md) preserves the feedback, native pin transitions, repeated-cycle checks and limits. No policy is selected.
+
+| Gallery copy | Origin in the probe record |
+| --- | --- |
+| [File description / symbol description](pathfind-reading/pins-purpose-only.png) | [file-description-symbol-description.png](../Probes/2026-11-03/pinned-reading/file-description-symbol-description.png) |
+| [File description / symbol and file](pathfind-reading/pins-purpose-context.png) | [file-description-symbol-context.png](../Probes/2026-11-03/pinned-reading/file-description-symbol-context.png) |
+| [File and all symbols / symbol description](pathfind-reading/pins-all-only.png) | [file-all-symbol-description.png](../Probes/2026-11-03/pinned-reading/file-all-symbol-description.png) |
+| [File and all symbols / symbol and file](pathfind-reading/pins-all-context.png) | [file-all-symbol-context.png](../Probes/2026-11-03/pinned-reading/file-all-symbol-context.png) |
+
+Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh pathfind-pinned-reading.png`.

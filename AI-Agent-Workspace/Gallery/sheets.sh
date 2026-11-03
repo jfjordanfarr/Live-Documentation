@@ -75,3 +75,9 @@ sheet pathfind-reading.png "Neighbours on pathfind.ts: four reading proposals, N
   "One open row: file Purpose stays visible" pathfind-reading/one-row.png \
   "Attached reading card: compact symbol list" pathfind-reading/attached.png \
   "On attention: file and symbol prose on hover or tap" pathfind-reading/attention.png
+
+sheet pathfind-pinned-reading.png "Pinned descriptions: the same two pins, four policies" \
+  "File description / Symbol description" pathfind-reading/pins-purpose-only.png \
+  "File description / Symbol + file" pathfind-reading/pins-purpose-context.png \
+  "File + all symbols / Symbol description" pathfind-reading/pins-all-only.png \
+  "File + all symbols / Symbol + file" pathfind-reading/pins-all-context.png
