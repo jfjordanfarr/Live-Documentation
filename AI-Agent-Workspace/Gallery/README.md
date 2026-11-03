@@ -157,3 +157,16 @@ The [two-action sheet](sheets/pathfind-name-click.png) starts with the same unpi
 | [File pinning](pathfind-reading/name-pin.png) | [file-name-pin.png](../Probes/2026-11-03/pinned-hover-reading/file-name-pin.png) |
 
 Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh pathfind-name-click.png`.
+
+## Reading across zoom, November 3
+
+The [zoom and long-text sheet](sheets/reading-zoom.png) compares the same whole-file pin at 45% with prose scaled versus folded, then the same long structured comment inline versus in an explicitly opened reader. The [probe record](../Probes/2026-11-03/reading-zoom/README.md) separates established UX guidance from the proposed behaviors and preserves their limits. These are controlled comparisons supporting the owner's [request for visible alternatives and design teaching](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-11), not shipped product choices.
+
+| Gallery copy | Source capture |
+| --- | --- |
+| [Scaled prose at overview](pathfind-reading/zoom-scale.png) | [scale-overview.png](../Probes/2026-11-03/reading-zoom/scale-overview.png) |
+| [Folded prose at overview](pathfind-reading/zoom-fold.png) | [fold-overview.png](../Probes/2026-11-03/reading-zoom/fold-overview.png) |
+| [Long inline comment](discovery-reading/inline.png) | [bounded-long-comment.png](../Probes/2026-11-03/reading-zoom/bounded-long-comment.png) |
+| [Explicit full-text reader](discovery-reading/reader.png) | [long-comment-reader.png](../Probes/2026-11-03/reading-zoom/long-comment-reader.png) |
+
+Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh reading-zoom.png`.

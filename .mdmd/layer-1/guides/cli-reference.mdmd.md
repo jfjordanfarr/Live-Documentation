@@ -1,6 +1,6 @@
 # CLI Reference
 
-_Current as of 2026-10-23._
+_Current as of 2026-11-03._
 
 ## Metadata
 
@@ -130,12 +130,25 @@ npm run live-docs:inspect -- --from src/auth.ts --to src/api.ts --json
 | `--from <path[#symbol]>` | Starting artifact |
 | `--to <path[#symbol]>` | Destination artifact |
 | `--reachable` | List every file a path reaches from `--from`, nearest first, with its hops; without `--from`, the entry points the docs declare, what they reach, what nothing reaches and what only a test reaches |
+| `--groups` | List the disconnected groups of files in the graph. |
+| `--at <commit>` | Inspect the generated historical graph at a commit, with `--from` or `--reachable`. |
+| `--between <a> <b>` | Compare two recorded historical graphs. |
 | `--direction <outbound\|inbound\|both>` | Traversal direction (default: `outbound`); `both` with `--to` or `--reachable` |
 | `--max-depth <n>` | Maximum hops (default: 25) |
 | `--json` | Machine-readable output |
 | `--verbose` | Include additional diagnostics |
 
+`--groups` describes today's entire graph and does not combine with path, reachability or history selectors. Historical inspection supports a file's wires or entry reachability at one commit, and changes between commits; `--at` and `--between` do not accept `--to` or `--direction`. `--between` also takes no `--from` or `--reachable`.
+
 ---
+
+### History
+
+`npm run live-docs:history -- [--every <n>] [--since <date>] [--step commit|day|week|tag] [--jobs <n>]` regenerates sampled mainline commits under one lens into `<root>/history/history.json`, with a cache beside it. `--every` applies only to commit sampling. A repeat run builds only the missing cache entries. The output is derived and never committed; its directory ignores itself. Use the inspection flags above to ask about a recorded commit or compare two of them.
+
+### Boards
+
+`npm run live-docs:board -- <board.md>` reads a board, validates it, joins it to the Live Docs, and prints its things, doors, wires and their bases. Pass that board to the visualization command to build its World Map.
 
 ### Visualization
 
@@ -157,6 +170,7 @@ npm run live-docs:visualize -- --output ./public --pretty
 | `--output <dir>` | Output directory (default: `dist/explorer/`) |
 | `--config <file>` | Path to config file |
 | `--board <file>` | A board file (see `live-docs:board`) to draw the World Map from; the bundle then opens on it |
+| `--history none\|all\|since <date>\|last <n>` | Choose how much generated history is included in the Explorer bundle. |
 | `--pretty` | Pretty-print JSON for debugging |
 
 ---

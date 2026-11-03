@@ -85,3 +85,9 @@ sheet pathfind-pinned-reading.png "Pinned descriptions: the same two pins, four 
 sheet pathfind-name-click.png "Same file-name click, two actions: pathfind.ts" \
   "Hold file description; pins unchanged" pathfind-reading/name-read.png \
   "Pin the file; open all descriptions" pathfind-reading/name-pin.png
+
+sheet reading-zoom.png "Reading across zoom: overview and long text" \
+  "pathfind.ts at 45%: scale expanded prose" pathfind-reading/zoom-scale.png \
+  "Same pin and scale: fold prose for the overview" pathfind-reading/zoom-fold.png \
+  "discovery.ts: bounded inline explanation" discovery-reading/inline.png \
+  "Same comment: explicit full-text reader" discovery-reading/reader.png

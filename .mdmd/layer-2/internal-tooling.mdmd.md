@@ -1,6 +1,6 @@
 # Internal Tooling Reference
 
-_Current as of 2026-10-23._
+_Current as of 2026-11-03._
 
 ## Metadata
 
@@ -41,7 +41,7 @@ Lint, build, type-check, both Vitest projects, and link enforcement, without the
 Both Vitest projects import TypeScript sources directly, so neither needs a build first. The Playwright specs check each view's plumbing (state in the URL, containment, stable layout, explicit changes between 2D and 3D), not whether the picture is right; the owner said as much on 2026-09-28. Two instruments say a little more: `tests/e2e/design-audit.ts` (2026-09-29) fails a spec when words collide or are cut off, and `tests/e2e/still-picture.ts` (2026-10-01) measures what one picture shows legibly against predictions written in `AI-Agent-Workspace/Probes/2026-10-01/still-picture-deck.md`. Taste is still judged by eye. The AST accuracy benchmark was retired on 2026-09-27: it scored an inference path the product did not ship, against per-fixture thresholds as low as 5% recall. Its replacement is the oracle below.
 
 
-The [October 23 remediation checklist](../layer-3/live-documentation-explorer.mdmd.md#remediation-work) supplies unfinished visual acceptance work. Try its journeys in the built page on both the main repository and estate before writing their browser checks. Assert that path results and reverse recovery are rendered and usable in both representations, labels and controls remain readable, and identity survives orbit, zoom, filtering, history and representation changes. Element existence and persisted state alone did not catch the review's failures; DOM collision checks also cannot establish that projected 3D wires look attached to the right spheres. Keep the existing audits and thresholds. The separate numerical finding from the October 22 tuning probe requires non-finite positions to fail measurement, never to be reported as settled.
+The [Explorer remediation checklist](../layer-3/live-documentation-explorer.mdmd.md#remediation-work) records journeys and visual acceptance criteria. Try the relevant journeys in the built page on both the main repository and estate before writing their browser checks. Assert that path results and reverse recovery are rendered and usable in both representations, labels and controls remain readable, and identity survives orbit, zoom, filtering, history and representation changes. Element existence and persisted state alone did not catch the review's failures; DOM collision checks also cannot establish that projected 3D wires look attached to the right spheres. Keep the existing audits and thresholds. Non-finite layout positions must fail measurement, never be reported as settled.
 
 ---
 
@@ -85,7 +85,13 @@ Fixture workspaces live under `tests/integration/fixtures/` (hand-authored scena
 | `npm run live-docs:generate -- --dry-run` | Report mirror drift without writing; the cheapest "is the mirror current?" check                                                                  |
 | `npm run live-docs:orphans`               | Live Docs whose source file no longer exists. The generator never prunes a doc that has authored content, so run this after deleting source files |
 | `npm run build`                           | `tsc` for the engine, the Explorer and the generator; the CLI package is not included                                                             |
+| `npm run lint`                            | Type-aware ESLint over the configured source and tests. |
 | `npm run live-docs:visualize:estate`      | Build the estate sample's Explorer, from a copy of it, into `dist/explorer/samples/estate/`; `test:e2e` runs it before the suite                  |
+| `npm run live-docs:visualize:history-sample` | Build the scripted repository's Explorer with its complete history, a last-four-commit window and a symbol-identity collision sample under `dist/explorer/samples/history/`, `history-window/` and `history-collision/`. |
+
+### Local Map layout lab
+
+`npm run layout:lab -- <capture|sweep|restarts|verify> <bundle/scope>` captures a deck scope's cards from the built page, sweeps the pure layout's levers headlessly, compares ordering starts with the page's costs, or verifies a configuration in the page with the deck's instrument. Run reports belong under the day's `AI-Agent-Workspace/Probes/` folder. Page captures are disposable and rebuilt on demand, not committed.
 
 ---
 
