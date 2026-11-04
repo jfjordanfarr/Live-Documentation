@@ -12,7 +12,7 @@
 Pure functions for measuring layout extents and computing fit transforms. Calculates bounding boxes, determines the camera that frames the selected card or a drawn path.
 
 ### Notes
-- `focusTransform` frames a requested row or file within the available canvas at reading size, backing out of excessive magnification when necessary but never shrinking text below that size. The controller supplies the row's full horizontal extent, including its controls, separately from the whole picture's bounds ([the November 3 search-framing repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-2)).
+- `focusTransform` frames a requested row or file within the available canvas at reading size, backing out of excessive magnification when necessary but never shrinking text below that size. The controller supplies the row's full horizontal extent, including its controls, separately from the whole picture's bounds ([the November 3 search-framing repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-03.1.SUMMARIZED.md#turn-2)).
 
 - Extracted from controller.ts during Dev Day 50 (12/19). Functions like `computeLayoutExtents()` and `computeFitTransform()` are pure math; DOM measurement is isolated to `withTransformReset()` callbacks.
 - `computeFitTransform` frames the focus card with buffers around it, at a scale between 0.6 and 1.45. `computePathFitTransform` frames a drawn path at reading size only: centred when the whole path fits the frame, its first file at the left edge when it is wider, so what the frame cannot hold is to the right and never the start ([Turn 10 of 2026-10-01](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-01.1.record.md#turn-10)).
