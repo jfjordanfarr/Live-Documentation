@@ -9,6 +9,7 @@ import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory"
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
 import { membranePath } from "./membrane-outline";
+import type { MapTransform } from "./types";
 import { setSeamedText } from "../../dom";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { countOf } from "./word-seams";
@@ -38,6 +39,8 @@ export interface BranchStage {
   pose: Pose | null;
   move: Move | null;
   search: Search | null;
+  /** The unchanged layout and camera to which a temporary reading visit returns. */
+  readingHome: { scene: Scene; search: Search; camera: MapTransform } | null;
 }
 
 /** One move of the picture from one pose to the next, running. */
@@ -51,6 +54,9 @@ interface Move {
   entering: HTMLElement[];
   /** The children of rows whose place on their card changed, each with how far from its new place it starts. */
   rows: Array<{ element: HTMLElement; delta: number }>;
+  heights?: Array<{ element: HTMLElement; from: number; to: number }>;
+  anchor?: DOMRect;
+  cameraTarget?: MapTransform;
 }
 
 /** What the page answered the scene's measurer that no start changes, kept so that the search can price a start without the page. */
@@ -86,11 +92,12 @@ interface Search {
 
 /** A stage for a root that holds nothing yet. */
 export function createStage(root: HTMLElement, overlay: HTMLElement): BranchStage {
-  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null };
+  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null, readingHome: null };
 }
 
 /** Ends whatever move the stage runs, where it stands, and its search; the stage's elements are the caller's to remove. */
 export function dropStage(stage: BranchStage): void {
+  stage.readingHome = null;
   stopSearch(stage);
   endMove(stage, false);
 }
@@ -124,6 +131,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const tuning = state.tuning.localMap;
   const { root } = stage;
   const path = controller.getActivePath();
+  stage.readingHome = null;
   // A move still running ends where it stands, and the search for the previous picture ends: the new picture starts
   // from the frame the page shows and searches anew.
   stopSearch(stage);
@@ -137,6 +145,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
     ranking: { pull: tuning.rankingPull, tie: tuning.rankingTie },
     membraneDepth: tuning.membraneDepth,
     openDirectories: controller.openDirectories,
+    reading: state.reading,
     path: path ?? undefined
   });
   // Every drawn directory's label says what this picture makes of it; the labels already made are refilled.
@@ -244,6 +253,58 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   stage.search = search;
   writeSearch(stage);
   if (!stage.move) scheduleSearch(controller, stage);
+}
+
+/**
+ * Remeasure an existing scene after text disclosure without rebuilding cards or changing row order. A temporary
+ * reading visit pauses the search and retains the original complete scene/camera; leaving restores that exact
+ * arrangement. Deliberate camera changes discard the return point and start a fresh measured competition.
+ */
+export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void, temporary: boolean, restore = false): void {
+  const search = stage.search;
+  const previous = stage.pose;
+  if (!search || !previous) { change(); return; }
+  if (temporary && !stage.readingHome) stage.readingHome = { scene: search.incumbent.scene, search, camera: { ...controller.mapTransform } };
+  const home = stage.readingHome;
+  pauseSearch(search);
+  const scale = controller.mapTransform.k || 1;
+  const rows = rowOffsets(stage, scale);
+  const fileCards = cardsOf(stage).filter(card => card.classList.contains("node-card"));
+  const beforeHeights = new Map(fileCards.map(card => [card.dataset.id!, card.getBoundingClientRect().height / scale]));
+  const anchor = elementHeld(controller, stage, previous, previous)?.getBoundingClientRect();
+  endMove(stage, false);
+  change();
+  controller.reading?.measure();
+  const branches = search.incumbent.branches;
+  const plan = planBranches(branches, search.sceneTuning.bandPadding);
+  const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
+  const scene = restore && home ? home.scene
+    : layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), search.sceneTuning);
+  stage.root.dataset.placementCost = String(scene.placement.cost);
+  stage.root.dataset.placementOptimal = String(scene.placement.optimal);
+  if (restore && home) {
+    stage.readingHome = null;
+    stage.search = home.search;
+    controller.previousTops = scene.tops;
+  } else if (!temporary) {
+    stage.readingHome = null;
+    search.incumbent = { branches, scene };
+    search.answers = answers;
+    search.rows = rowsOf(controller, stage, scale, branches);
+    const options = controller.options.state.tuning.localMap;
+    search.state = beginSearch({ from: 1, to: Math.max(0, Math.floor(options.searchStarts)), patience: Math.floor(options.searchPatience) }, scoreOf(signalsOf(branches, scene, scene.tops), { ...search.costs, churn: 0 }));
+    search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
+    search.alignmentIndex = 0;
+    controller.previousTops = scene.tops;
+  }
+  const heights = fileCards.flatMap(card => {
+    const from = beforeHeights.get(card.dataset.id!), to = card.offsetHeight;
+    return from !== undefined && Math.abs(from - to) > 0.5 ? [{ element: card, from, to }] : [];
+  });
+  showScene(controller, stage, scene, search.sceneTuning, Math.min(180, search.moveMs), [], [], rows, {
+    heights, anchor, ...(restore && home ? { cameraTarget: home.camera } : {})
+  });
+  if (!stage.move && !stage.readingHome) scheduleSearch(controller, stage);
 }
 
 /** The outline's stroke, which the scene counts in a membrane's inset. */
@@ -365,6 +426,7 @@ function pageMeasurer(controller: LocalViewController, stage: BranchStage, plan:
     measure(cardWidths, labelWidths) {
       const boxes = new Map(plan.boxes.map(box => [box.key, box]));
       for (const [id, width] of cardWidths) { const wrapper = stage.wrappers.get(id); if (wrapper) wrapper.style.width = `${width}px`; }
+      controller.reading?.measure();
       for (const [key, width] of labelWidths) { const box = boxes.get(key)!; Object.assign(labelFor(controller, stage, box.directory).style, { left: `${box.inset}px`, width: `${width}px` }); }
       const heights = new Map<string, number>();
       for (const [id, wrapper] of stage.wrappers) heights.set(id, wrapper.offsetHeight);
@@ -418,12 +480,12 @@ function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph)
  * and a lane's slots, and shows the scene: at once when `moveMs` is zero or
  * no picture was shown, else moved to from the pose the page shows.
  */
-function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null): void {
+function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null, reading: Pick<Move, "heights" | "anchor" | "cameraTarget"> = {}): void {
   const { root } = stage;
   const previous = stage.pose;
   const pose = scenePose(scene);
   const instantHeld = previous && moveMs <= 0 ? elementHeld(controller, stage, previous, pose) : null;
-  const instantAnchor = instantHeld?.getBoundingClientRect();
+  const instantAnchor = reading.anchor ?? instantHeld?.getBoundingClientRect();
   const scale = controller.runtime.mapTransform.k || 1;
   const leaving = [...leavingCards];
   const entering = [...enteringCards];
@@ -469,12 +531,18 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
   const drawn = new Set(scene.boxes.filter(box => box.kind === "directory").map(box => box.directory));
   for (const [directory, label] of stage.labels) if (!drawn.has(directory)) { label.remove(); stage.labels.delete(directory); }
   const hostElement = (anchor: SceneBox | null): HTMLElement => (anchor ? elements.get(anchor)! : root);
-  for (const box of scene.boxes) if (box.kind !== "files") hostElement(box.anchor).append(elements.get(box)!);
+  for (const box of scene.boxes) if (box.kind !== "files") {
+    const element = elements.get(box)!, host = hostElement(box.anchor);
+    // Appending an element to its existing parent still blurs a focused descendant in Chromium. A geometry-only
+    // change has no structural move to make; keep its reading controls and keyboard focus in place.
+    if (element.parentElement !== host) host.append(element);
+  }
   // Each item's wrapper in the element of the box that holds it, saying its column for the router's column bounds.
   for (const item of scene.items.values()) {
     const wrapper = stage.wrappers.get(item.id)!;
     wrapper.dataset.column = String(item.column);
-    hostElement(hostOf(item.box)).append(wrapper);
+    const host = hostElement(hostOf(item.box));
+    if (wrapper.parentElement !== host) host.append(wrapper);
   }
   // A drawn directory publishes its segments, a lane where its slots came to rest, for the router and the tests.
   for (const box of scene.boxes) {
@@ -489,7 +557,10 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
     for (const element of leaving) element.remove();
     applyPose(stage, pose, sceneTuning.bandPadding);
     stage.pose = pose;
-    if (instantHeld && instantAnchor) {
+    if (reading.cameraTarget) {
+      controller.mapTransform = { ...reading.cameraTarget };
+      controller.updateMapTransform();
+    } else if (instantHeld && instantAnchor) {
       const rect = instantHeld.getBoundingClientRect();
       const camera = controller.mapTransform;
       controller.mapTransform = { ...camera, x: camera.x + instantAnchor.left - rect.left, y: camera.y + instantAnchor.top - rect.top };
@@ -499,7 +570,7 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
     return;
   }
   const rows = oldRows ? rowMotions(stage, oldRows, scale) : [];
-  startMove(controller, stage, previous, pose, moveMs, { to: pose, bandPadding: sceneTuning.bandPadding, leaving, entering, rows, frame: 0 });
+  startMove(controller, stage, previous, pose, moveMs, { to: pose, bandPadding: sceneTuning.bandPadding, leaving, entering, rows, frame: 0, ...reading });
 }
 
 /**
@@ -556,11 +627,17 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   let heldId = controller.lastInteracted;
   let heldSymbol = controller.lastInteractedSymbol;
   let heldElement = elementHeld(controller, stage, from, to);
-  let heldRect = heldElement?.getBoundingClientRect() ?? null;
+  let heldRect = move.anchor ?? heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
+  const cameraFrom = { ...controller.mapTransform };
+  const cameraApplied = { ...cameraFrom };
+  for (const { element, from } of move.heights ?? []) {
+    element.style.height = `${from}px`;
+    element.style.overflow = "clip";
+  }
   /** Put the held card back where the eye left it, moved by whatever the camera itself has moved since (a drag, say). */
   const hold = (): void => {
-    if (!heldElement || !heldRect) return;
+    if (move.cameraTarget || !heldElement || !heldRect) return;
     const camera = controller.mapTransform;
     const rect = heldElement.getBoundingClientRect();
     const dx = heldRect.left + (camera.x - cameraAtStart.x) - rect.left;
@@ -586,10 +663,22 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
     const eased = easeInOutCubic(t);
     const frame = tweenPose(from, to, eased);
     applyPose(stage, frame, move.bandPadding);
+    for (const { element, from, to } of move.heights ?? []) element.style.height = `${from + (to - from) * eased}px`;
     for (const element of move.entering) element.style.opacity = String(eased);
     for (const element of move.leaving) element.style.opacity = String(1 - eased);
     for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta * (1 - eased)}px)`;
     hold();
+    if (move.cameraTarget) {
+      const camera = controller.mapTransform;
+      // Keep any actual pan made during this return; the animation owns only its own displacement.
+      cameraFrom.x += camera.x - cameraApplied.x;
+      cameraFrom.y += camera.y - cameraApplied.y;
+      const next = { x: cameraFrom.x + (move.cameraTarget.x - cameraFrom.x) * eased,
+        y: cameraFrom.y + (move.cameraTarget.y - cameraFrom.y) * eased, k: camera.k };
+      controller.mapTransform = next;
+      Object.assign(cameraApplied, next);
+      controller.updateMapTransform();
+    }
     stage.pose = frame;
     controller.drawConnections();
     if (t < 1) move.frame = requestAnimationFrame(step);
@@ -621,6 +710,7 @@ function endMove(stage: BranchStage, finished: boolean): void {
   for (const element of move.leaving) element.remove();
   for (const element of move.entering) element.style.opacity = "";
   for (const { element } of move.rows) element.style.transform = "";
+  for (const { element } of move.heights ?? []) { element.style.height = ""; element.style.overflow = ""; }
   if (finished) {
     applyPose(stage, move.to, move.bandPadding);
     stage.pose = move.to;
@@ -667,12 +757,12 @@ function elementHeld(controller: LocalViewController, stage: BranchStage, from: 
  */
 function scheduleSearch(controller: LocalViewController, stage: BranchStage): void {
   const search = stage.search;
-  if (!search || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment) || stage.move || search.handle) return;
+  if (!search || stage.readingHome || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment) || stage.move || search.handle) return;
   if (!searchAllowed(controller)) return;
   const run = (): void => {
     search.handle = 0;
     // A step whose moment comes after the map was hidden does nothing; the controller's resume schedules the next.
-    if (stage.search !== search || !searchAllowed(controller)) return;
+    if (stage.search !== search || stage.readingHome || !searchAllowed(controller)) return;
     searchStep(controller, stage, search);
     scheduleSearch(controller, stage);
   };
@@ -680,17 +770,26 @@ function scheduleSearch(controller: LocalViewController, stage: BranchStage): vo
 }
 
 /** Whether a search may step now: the map is the view shown and the page is visible. */
-const searchAllowed = (controller: LocalViewController): boolean => controller.isShown() && document.visibilityState !== "hidden";
+const searchAllowed = (controller: LocalViewController): boolean => controller.isShown()
+  && !controller.reading?.hasAttention
+  && !controller.runtime.mapAnimationTarget && controller.options.state.inspection?.presentation !== "reading"
+  && document.visibilityState !== "hidden";
 
 /** Ends the stage's search, if one runs, and lets any waiting step go. */
 function stopSearch(stage: BranchStage): void {
   const search = stage.search;
   if (!search) return;
+  pauseSearch(search);
+  stage.search = null;
+}
+
+/** Cancel the pending competition step while keeping its measured state available for a preview's return. */
+function pauseSearch(search: Search): void {
   if (search.handle) {
     if (typeof cancelIdleCallback === "function") cancelIdleCallback(search.handle);
     window.clearTimeout(search.handle);
+    search.handle = 0;
   }
-  stage.search = null;
 }
 
 /**
@@ -787,7 +886,7 @@ function writeSearch(stage: BranchStage): void {
 
 // ─── Measuring the cards ────────────────────────────────────────────────
 
-/** A row's name and its place among rows of that name on its card, since LinkTarget and linkTarget share one. */
+/** An exact projected heading and its occurrence among duplicates; case and declaration-kind distinctions remain separate. */
 function rowKeys(card: HTMLElement): Array<[HTMLElement, string]> {
   const seen = new Map<string, number>();
   return [...card.querySelectorAll<HTMLElement>(".symbol-row")].map(row => {
@@ -941,12 +1040,14 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
     // A closed directory's box has no rows and no notes.
     if (!card.classList.contains("node-card")) continue;
     const id = card.dataset.id!;
-    const all = controller.expandedCards.has(id) || (!path && (controller.isPinned(id, "*") || id === state.selectedNode?.id));
+    const all = controller.expandedCards.has(id) || (!path && (controller.reading?.showsAllRows(id) || controller.isPinned(id, "*") || id === state.selectedNode?.id));
     let hidden = 0;
     card.querySelectorAll<HTMLElement>(".symbol-row").forEach(row => {
-      const collapse = !all && (path || state.tuning.localMap.collapseOnPin) && !connected.has(key(id, row.dataset.symbol));
+      const collapse = !all && (path || !controller.reading?.showsRow(id, row.dataset.symbol ?? "__internals__"))
+        && (path || state.tuning.localMap.collapseOnPin) && !connected.has(key(id, row.dataset.symbol));
       row.classList.toggle("branch-symbol-hidden", collapse);
-      row.classList.toggle("branch-symbol-muted", !controller.isPinned(id, "*") && !connected.has(key(id, row.dataset.symbol)));
+      row.classList.toggle("branch-symbol-muted", !controller.isPinned(id, "*") && !controller.reading?.showsRow(id, row.dataset.symbol ?? "__internals__")
+        && !connected.has(key(id, row.dataset.symbol)));
       // The Internals row stands for the file's private contents, not for a symbol: it is not counted on the reveal.
       if (collapse && !row.classList.contains("internals-row")) hidden++;
     });

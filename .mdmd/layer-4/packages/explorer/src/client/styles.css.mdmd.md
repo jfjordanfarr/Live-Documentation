@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/styles.css
 - Entry: declared
-- Generated At: 2026-10-18T05:36:02.222Z
+- Generated At: 2026-11-04T15:03:16.079Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,7 @@ _No public symbols detected_
 - [`graph`](./styles/graph.css.mdmd.md)
 - [`history`](./styles/history.css.mdmd.md)
 - [`local`](./styles/local.css.mdmd.md)
+- [`reading`](./styles/reading.css.mdmd.md)
 - [`search`](./styles/search.css.mdmd.md)
 - [`shell`](./styles/shell.css.mdmd.md)
 - [`sources`](./styles/sources.css.mdmd.md)

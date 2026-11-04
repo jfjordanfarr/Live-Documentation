@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/card-model.ts
-- Generated At: 2026-10-20T19:16:04.731Z
+- Generated At: 2026-11-04T16:32:46.710Z
 
 ## Authored
 ### Purpose
@@ -19,19 +19,21 @@ Endpoint identity follows card construction, not the proposed vertical row order
 
 Directory labels compose their prepared text caption with the captured ancestry-control column: reserve the control width before wrapping and take the taller of the text or control before adding label padding. Optional measurements keep older captures valid. The page and model use the same separation of text and controls, introduced during [the October 14 pin-management work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
+November 4 extends the composition to the portrait card: per-card constants, Purpose and per-symbol reading blocks, conditional full-description actions, hidden duplicate directory text and the relationship footer. Reading hubs sit beside the header; compact hubs retain the midpoint rule above. The model accounts for collapsed adjacent margins and quantized grid alignment, then independently predicts a narrower card from the same prepared text. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `CardView` {#symbol-cardview}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L17)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L18)
 
 ##### `CardView` — Summary
 What a card shows under a configuration: its rows in order, and the lines under it.
 
 #### `CardMetrics (interface)` {#symbol-cardmetrics-interface}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L29)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L30)
 
 ##### `CardMetrics (interface)` — Summary
 The card's height, and every anchor's distance from its top, before rounding; `rowKeys` names the anchors that
@@ -39,7 +41,7 @@ are a row's dots, and `hiddenKeys` the anchors of collapsed rows, which the page
 
 #### `TEXT_TOLERANCE` {#symbol-text_tolerance}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L42)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L45)
 
 ##### `TEXT_TOLERANCE` — Summary
 How far a text may overflow its box and still stay on one line, in CSS pixels: one of Chromium's layout units.
@@ -49,7 +51,7 @@ breaks at the box's edge, so the lab lends it the unit.
 
 #### `textHeight` {#symbol-textheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L45)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L48)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `text`: [`PreparedText`](./capture.ts.mdmd.md#symbol-preparedtext)
 
 ##### `textHeight` — Summary
@@ -57,7 +59,7 @@ The height of a prepared text set in a width, by Pretext's arithmetic, with the 
 
 #### `synthesizedHeight` {#symbol-synthesizedheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L51)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L54)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `synthesizedHeight` — Summary
@@ -65,14 +67,14 @@ The height of a text the page never showed, set in a font from its glyphs' width
 
 #### `chipsHeight` {#symbol-chipsheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L66)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L69)
 
 ##### `chipsHeight` — Summary
 How many lines a row of chips wraps to, and the height they take: each line as tall as its tallest chip, the lines a gap apart.
 
 #### `cardMetrics (function)` {#symbol-cardmetrics-function}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L86)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L89)
 - Returns: [`CardMetrics`](#symbol-cardmetrics-interface)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture); `card`: [`CardCapture`](./capture.ts.mdmd.md#symbol-cardcapture); `view`: [`CardView`](#symbol-cardview)
 
@@ -87,7 +89,7 @@ the middle of the card.
 
 #### `registerPins` {#symbol-registerpins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L124)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L144)
 - Returns: [`CardMetrics`](#symbol-cardmetrics-interface)
 - Parameters: `centres`: `ReadonlyMap`
 
@@ -96,7 +98,7 @@ Registers row endpoints in construction order, retaining exact and normalized na
 
 #### `resolvePin` {#symbol-resolvepin}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L154)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L174)
 - Parameters: `metrics`: [`CardMetrics`](#symbol-cardmetrics-interface)
 
 ##### `resolvePin` — Summary
@@ -107,14 +109,14 @@ card's middle. A row the page collapses resolves to no offset at all.
 
 #### `pinOffset` {#symbol-pinoffset}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L172)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L192)
 
 ##### `pinOffset` — Summary
 A pin's offset, or null where the page would place no wire.
 
 #### `labelHeight` {#symbol-labelheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L175)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L195)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `labelHeight` — Summary
@@ -130,4 +132,5 @@ The height of a drawn directory's label at a width: its lines and the padding un
 - [`capture.ChipCapture`](./capture.ts.mdmd.md#symbol-chipcapture) (type-only)
 - [`capture.PreparedText`](./capture.ts.mdmd.md#symbol-preparedtext) (type-only)
 - [`capture.RowCapture`](./capture.ts.mdmd.md#symbol-rowcapture) (type-only)
+- [`reading-model.readingHeight`](./reading-model.ts.mdmd.md#symbol-readingheight)
 <!-- LIVE-DOC:END Dependencies -->

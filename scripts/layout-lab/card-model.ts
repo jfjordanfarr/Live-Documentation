@@ -11,6 +11,7 @@
 import { layout } from "@chenglou/pretext";
 
 import type { Capture, CardCapture, ChipCapture, PreparedText, RowCapture } from "./capture";
+import { readingHeight } from "./reading-model";
 import { buildNormalizedAnchorKey } from "../../packages/explorer/src/client/views/symbolAnchors";
 
 /** What a card shows under a configuration: its rows in order, and the lines under it. */
@@ -27,6 +28,8 @@ export interface CardView {
  * are a row's dots, and `hiddenKeys` the anchors of collapsed rows, which the page has but cannot measure.
  */
 export interface CardMetrics {
+  /** Actual card width after its cap; a column's slot can be wider. Absent for standalone pin-registration tests. */
+  width?: number;
   height: number;
   pins: Map<string, number>;
   rowKeys: Set<string>;
@@ -84,13 +87,15 @@ export function chipsHeight(items: readonly ChipCapture[], width: number, gap: n
  * the middle of the card.
  */
 export function cardMetrics(capture: Capture, card: CardCapture, width: number, view: CardView): CardMetrics {
-  const c = capture.constants;
+  const c = card.constants ?? capture.constants;
+  width = Math.min(width, card.maxWidth ?? Infinity);
   const edge = card.borderWidth + card.padding;
-  const content = width - 2 * edge;
+  const content = width - 2 * (card.borderWidth + (card.paddingInline ?? card.padding));
   const text = (t: PreparedText, w: number): number => textHeight(capture, t, w);
   let y = edge;
-  y += text(card.title, content - c.titlePaddingRight) + c.titleMarginBottom;
+  y += text(card.title, content - c.titlePaddingRight) + c.titleMarginBottom + (c.titlePaddingTop ?? 0);
   y += text(card.path, content);
+  if (card.purpose) y += readingHeight(card.purpose, content);
   y += c.symbolsMarginTop;
   if (card.meta) y += text(card.meta, content);
   const cell = content - 2 * c.gridSideColumn - 2 * c.gridColumnGap;
@@ -104,20 +109,35 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
     const wrapper = frame.height + Math.max(text(row.label, labelWidth), row.badgesWidth > 0 ? c.badgeHeight : 0, row.controls?.height ?? 0);
     const height = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, wrapper);
     if (i > 0) y += c.gridRowGap;
-    const centre = y + (height - c.dotHeight - dotMargin) / 2 + dotMargin + c.dotHeight / 2;
+    const centre = y + Math.floor((height - c.dotHeight - dotMargin) / 2 * 64 + 1e-3) / 64 + dotMargin + c.dotHeight / 2;
     centres.set(row, centre);
     y += height;
+    if (row.reading) y += c.gridRowGap + readingHeight(row.reading, cell);
   });
   if (card.tests) {
     y += c.testsMarginTop + chipsHeight([card.tests.label, ...card.tests.chips], content, c.testsGap);
-    y += Math.max(c.testsMarginBottom, c.directoryMarginTop);
-  } else {
+    y += Math.max(c.testsMarginBottom, card.directoryHidden ? 0 : c.directoryMarginTop);
+  } else if (!card.directoryHidden) {
     y += c.directoryMarginTop;
   }
-  y += text(card.directory, content);
+  if (!card.directoryHidden) y += text(card.directory, content);
+  if (card.footer) y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap)
+    - (card.directoryHidden && card.tests ? Math.min(c.testsMarginBottom, card.footer.marginTop) : 0);
   for (const note of view.notes) y += c.disclosureMarginTop + note(content);
-  y += edge;
-  return registerPins(view.registration, centres, y);
+  y += card.borderWidth + (card.paddingBottom ?? card.padding);
+  if (Math.round(y - 2 * card.borderWidth) > (card.readingFrameHeight ?? Infinity)) {
+    const extra = card.purpose ? readingHeight(card.purpose, content, true) - readingHeight(card.purpose, content)
+      : card.overflow ? card.overflow.margin.top + readingHeight(card.overflow, content) + card.overflow.margin.bottom : 0;
+    y += extra;
+    for (const [row, centre] of centres) centres.set(row, centre + extra);
+  }
+  const metrics = registerPins(view.registration, centres, y);
+  metrics.width = width;
+  if (card.hubY !== undefined) {
+    metrics.pins.set("outbound:*", card.hubY);
+    if (!view.registration.some(row => row.symbol === "__internals__")) metrics.pins.set("inbound:*", card.hubY);
+  }
+  return metrics;
 }
 
 /** Registers row endpoints in construction order, retaining exact and normalized names separately as the browser does. */

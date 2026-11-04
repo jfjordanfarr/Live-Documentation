@@ -233,6 +233,20 @@ describe("connection-geometry", () => {
       expect(Math.min(...ys(lace))).toBeGreaterThanOrEqual(provider.y - params.baseWidth);
     });
 
+    it("keeps the entire inset exit straight when a reading card has wider padding and a deep curl", () => {
+      for (const inset of [24, 36, 80]) {
+        const shape = { ...params, reach: 32, curlAmount: 24 };
+        const cuts = { provider: provider.x + inset, consumer: consumer.x - inset };
+        const result = computeSelfLoopStubs(provider, consumer, cuts, shape);
+        for (const [points, pin, edge, side] of [[result.providerPoints, provider, cuts.provider, 1],
+          [result.consumerPoints, consumer, cuts.consumer, -1]] as const) {
+          const inside = parse(points).filter(point => side * (point.x - edge) < -0.01);
+          expect(inside.length).toBeGreaterThan(2);
+          for (const point of inside) expect(Math.abs(point.y - pin.y)).toBeLessThanOrEqual(shape.baseWidth / 2 + 0.01);
+        }
+      }
+    });
+
     it("nests the laces of one pin that turn the same way outward by the pitch, sharing their cut", () => {
       const first = parse(computeSelfLoopStubs(provider, consumer, edges, params, { provider: 0, consumer: 0 }).providerPoints);
       const second = parse(computeSelfLoopStubs(provider, consumer, edges, params, { provider: 1, consumer: 0 }).providerPoints);

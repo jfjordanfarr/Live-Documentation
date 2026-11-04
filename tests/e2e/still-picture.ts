@@ -154,11 +154,11 @@ export const forceGraphUrl = (base: string, file: string): string => `${base}?vi
  * next over the tuning's move length, and the continuing search may move it again to a better arrangement
  * (2026-10-07); the root says `data-moving` while a move runs and `data-search-status` what the search is doing.
  */
-export async function localMapSettled(page: Page): Promise<void> {
+export async function localMapSettled(page: Page, timeout = 30_000): Promise<void> {
   await page.waitForFunction(() => {
     const root = document.querySelector<HTMLElement>("#map-container .local-placed");
     return !root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running");
-  }, undefined, { timeout: 30_000 });
+  }, undefined, { timeout });
 }
 
 // ─── Reading a view ───────────────────────────────────────────────────────
@@ -774,7 +774,7 @@ async function emptySpot(page: Page, view: ViewReading, dx = 0, dy = 0): Promise
   const spot = await page.evaluate(({ pannable, card, frameSelector, dx, dy }) => {
     const frame = document.querySelector(frameSelector)!.getBoundingClientRect();
     const surface = document.querySelector(pannable);
-    let fallback: { x: number; y: number } | null = null;
+    let fallback: { x: number; y: number } | null = null, bestProgress = -Infinity;
     for (let y = frame.bottom - 40; y > frame.top + 60; y -= 24) {
       for (let x = frame.left + 40; x < frame.right - 40; x += 24) {
         const top = document.elementFromPoint(x, y);
@@ -782,7 +782,10 @@ async function emptySpot(page: Page, view: ViewReading, dx = 0, dy = 0): Promise
         if (top.closest(`${card}, button, [role="button"], input, select, a, #detail-panel, #controls, .search-bar, .path-report`)) continue;
         const fits = x + dx > frame.left + 20 && x + dx < frame.right - 20 && y + dy > frame.top + 20 && y + dy < frame.bottom - 20;
         if (fits) return { x, y };
-        fallback ??= { x, y };
+        const travelX = Math.max(frame.left + 20, Math.min(frame.right - 20, x + dx)) - x;
+        const travelY = Math.max(frame.top + 20, Math.min(frame.bottom - 20, y + dy)) - y;
+        const progress = Math.hypot(dx, dy) - Math.hypot(dx - travelX, dy - travelY);
+        if (progress > bestProgress) { fallback = { x, y }; bestProgress = progress; }
       }
     }
     return fallback;
@@ -800,11 +803,11 @@ async function emptySpot(page: Page, view: ViewReading, dx = 0, dy = 0): Promise
  */
 export async function panIntoView(page: Page, element: Locator): Promise<void> {
   for (let panned = 0; panned < 4; panned += 1) {
-    const frame = (await boxOf(page, FRAME))!;
+    const frame = await page.locator("#view-map .map-edges").boundingBox() ?? (await boxOf(page, FRAME))!;
     const box = (await element.boundingBox())!;
-    const top = frame.y + 80, bottom = frame.y + frame.height - 40, left = frame.x + 40, right = frame.x + frame.width - 40;
-    const dx = box.x < left ? left - box.x : box.x + box.width > right ? right - box.x - box.width : 0;
-    const dy = box.y < top ? top - box.y : box.y + box.height > bottom ? bottom - box.y - box.height : 0;
+    const top = frame.y + 24, bottom = frame.y + frame.height - 24, left = frame.x + 24, right = frame.x + frame.width - 24;
+    const dx = box.width > right - left || box.x < left ? left - box.x : box.x + box.width > right ? right - box.x - box.width : 0;
+    const dy = box.height > bottom - top || box.y < top ? top - box.y : box.y + box.height > bottom ? bottom - box.y - box.height : 0;
     if (dx === 0 && dy === 0) return;
     await dragBy(page, LOCAL_MAP, dx, dy);
     await localMapSettled(page);

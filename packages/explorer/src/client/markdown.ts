@@ -138,7 +138,15 @@ export function renderMarkdown(
             inList = false;
             listType = null;
         }
-        const text = processInline(line, linkHandler);
+        const paragraph = [line.trim()];
+        while (i + 1 < lines.length) {
+            const next = lines[i + 1];
+            if (!next.trim() || headingOf(next) || fenceClosing(next)
+                || /^\s*(?:[-*+]\s+|\d+\.\s+|---+\s*$|\*\*\*+\s*$)/u.test(next)) break;
+            paragraph.push(next.trim());
+            i += 1;
+        }
+        const text = processInline(paragraph.join(" "), linkHandler);
         outputLines.push(`<p>${text}</p>`);
     }
 

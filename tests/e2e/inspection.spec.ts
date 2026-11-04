@@ -43,7 +43,7 @@ test("inspection and Back preserve the map; direct pins and shared evidence rema
   const originalMap = await page.locator(".local-placed").elementHandle();
   const before = await geometry(page);
 
-  await row.locator(".type-badge-return").click();
+  await row.locator(`.local-reading-types a[data-node-id="${B}"]`).first().click();
   await expect(page.locator("#detail-panel.visible")).toContainText(B);
   expect(snapshot(page)).toMatchObject({
     selectedNodeId: A, pinSet: { entries: [] },

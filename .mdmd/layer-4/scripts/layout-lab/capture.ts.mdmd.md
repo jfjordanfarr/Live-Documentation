@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-10-31T16:32:25.399Z
+- Generated At: 2026-11-04T18:23:40.110Z
 
 ## Authored
 ### Purpose
@@ -26,61 +26,65 @@ Each row also records its controls, every child of the label's wrapper but the l
 
 The natural widths are read as the page reads them since 2026-10-31, at the 1/64 px unit and up to the next pixel, after the first full gate over the seams found the page's rounded `offsetWidth` undercutting a path by a few hundredths of a pixel and wrapping it where the lab, holding Pretext to `TEXT_TOLERANCE`, kept the line ([the work notes of October 31](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)). Pretext does not take a zero-width space as a break opportunity, so the seams are not handed to it; the page's own width rule removes the disagreement.
 
+November 4 captures each card’s actual typography, padding axes, reading blocks and overflow actions. Mixed-font runs are prepared with Pretext’s rich-inline API, preserving the text for standalone reflow. Font calibration uses a short line in a visible label’s real formatting context, restoring its original nodes/listeners immediately; this avoids accumulating fractional flex line-box differences. DOM geometry is quantized back to Chromium’s 1/64 px layout units after removing the camera transform. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
+The current capture uses PERSISTED_UI_VERSION rather than a stale literal, so its requested first-paint/search settings are applied. Fenced code is prepared with pre-wrap, retaining indentation and blank lines. A short line is calibrated inside the actual pre/code strut as well as flex labels: the formatting context can differ from a plain div probe by a layout unit per line. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `PreparedText` {#symbol-preparedtext}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L25)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L27)
 
 ##### `PreparedText` — Summary
 A text as Pretext prepared it in the page: its segments and their measured widths, laid out again by arithmetic.
 
 #### `FontMetrics` {#symbol-fontmetrics}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L34)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L36)
 
 ##### `FontMetrics` — Summary
 A font as the page renders it: the canvas font string, the letter spacing, and the height of one line.
 
 #### `RowCapture` {#symbol-rowcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L43)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L45)
 
 ##### `RowCapture` — Summary
 One symbol row of a card: its name, its label's prepared text and the width of its type badges.
 
 #### `ChipCapture` {#symbol-chipcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L63)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L67)
 
 ##### `ChipCapture` — Summary
 A test chip's, or the test label's, box as the page drew it.
 
 #### `CardCapture` {#symbol-cardcapture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L69)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L73)
 
 ##### `CardCapture` — Summary
 One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L95)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L110)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L117)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L133)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L145)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L161)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -88,7 +92,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L166)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L182)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -100,7 +104,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L419)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L520)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -108,7 +112,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L425)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L526)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.
@@ -117,14 +121,17 @@ Reads a capture written by `writeCapture`.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - `@chenglou/pretext` - `PreparedTextWithSegments` (type-only)
+- `@chenglou/pretext/rich-inline` - `PreparedRichInline`, `RichInlineItem` (type-only)
 - `@playwright/test` - `Page`, `chromium`
 - `node:fs/promises`
 - `node:path` - `path`
 - [`layout-presets.LAYOUT_PRESETS`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layout_presets)
 - [`layout-presets.LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
+- [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`types.ExplorerFilters`](../../packages/explorer/src/client/types.ts.mdmd.md#symbol-explorerfilters) (type-only)
 - [`card-model.TEXT_TOLERANCE`](./card-model.ts.mdmd.md#symbol-text_tolerance)
+- [`reading-model.ReadingFlow`](./reading-model.ts.mdmd.md#symbol-readingflow) (type-only)
 - [`scopes.ORIGIN`](./scopes.ts.mdmd.md#symbol-origin)
 - [`scopes.ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 - [`scopes.admitCompiledFunctions`](./scopes.ts.mdmd.md#symbol-admitcompiledfunctions)

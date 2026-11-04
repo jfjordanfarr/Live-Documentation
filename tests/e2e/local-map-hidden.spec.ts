@@ -48,6 +48,19 @@ const mark = (page: Page): Promise<void> => page.evaluate(() => { document.query
 
 const show = async (page: Page, view: "sources" | "world" | "map"): Promise<void> => { await page.click(`.nav-item[data-view="${view}"]`); };
 
+test("attention to already-open reading pauses further layout work and leaving resumes it", async ({ page }) => {
+  await open(page);
+  const label = page.locator(".local-focus .symbol-row .symbol-label").first();
+  await label.hover();
+  await page.waitForTimeout(250);
+  const paused = await read(page);
+  expect(paused.status).toBe("running");
+  await page.waitForTimeout(600);
+  expect((await read(page)).tried).toBe(paused.tried);
+  await page.mouse.move(5, 5);
+  await expect.poll(async () => (await read(page)).tried).toBeGreaterThan(paused.tried);
+});
+
 test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", async ({ page }) => {
   // The search runs its eighty seeds to the end after the return: 23 to 29 seconds on one worker (2026-10-19); the half
   // minute is not its measure.
@@ -69,7 +82,8 @@ test("the search pauses while another view is shown, and a return to the unchang
   const back = await read(page);
   expect(back.marked, "the picture is the one that stood before: every card kept its element").toBe(back.cards);
   expect(back.next, "the search goes on from the seed after the last tried, not from the first").toBeGreaterThanOrEqual(away.next);
-  await localMapSettled(page);
+  // The existing 60-second test budget covers the boundary-alignment trials that continue after all 80 seeds.
+  await localMapSettled(page, 45_000);
   const done = await read(page);
   expect(done.tried, "the search tried more starts after the return").toBeGreaterThan(later.tried);
   expect(done.marked, "the search's adoptions move the cards without drawing them anew").toBe(done.cards);
@@ -107,7 +121,7 @@ test("the search pauses while the page is hidden and resumes when it is visible 
   const stillHidden = await read(page);
   expect(stillHidden.tried, "no start is tried while the page is hidden").toBe(hidden.tried);
   await setVisibility("visible");
-  await localMapSettled(page);
+  await localMapSettled(page, 45_000);
   expect((await read(page)).tried, "the search went on once the page was visible").toBeGreaterThan(hidden.tried);
 });
 

@@ -91,6 +91,8 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
 export function capturedMeasurer(capture: Capture, branches: BranchGraph, options: MeasurerOptions): SceneMeasurer & { metrics: Map<string, CardMetrics> } {
   const views = cardViews(capture, branches, options);
   const metrics = new Map<string, CardMetrics>();
+  const readingWidths = new Map<string, number>();
+  let widthCap = Infinity;
   const cardOf = (id: string): CardCapture => {
     const card = capture.cards[id];
     if (!card) throw new Error(`The capture has no card ${JSON.stringify(id)}; the scope's exploration has changed since it was taken.`);
@@ -99,10 +101,15 @@ export function capturedMeasurer(capture: Capture, branches: BranchGraph, option
   return {
     metrics,
     widths(cardMaxWidth) {
+      widthCap = cardMaxWidth ?? Infinity;
       const widths = new Map<string, number>();
       for (const id of views.keys()) {
         const card = cardOf(id);
-        widths.set(id, Math.max(Math.min(card.naturalWidth, cardMaxWidth ?? Infinity), card.minWidth));
+        if (card.readingWidth) {
+          const width = Math.max(200, Math.min(card.readingWidth, cardMaxWidth ?? Infinity));
+          readingWidths.set(id, width);
+          widths.set(id, width);
+        } else widths.set(id, Math.max(Math.min(card.naturalWidth, cardMaxWidth ?? Infinity), card.minWidth));
       }
       return widths;
     },
@@ -110,7 +117,9 @@ export function capturedMeasurer(capture: Capture, branches: BranchGraph, option
       const heights = new Map<string, number>();
       metrics.clear();
       for (const [id, width] of cardWidths) {
-        const found = cardMetrics(capture, cardOf(id), width, views.get(id)!);
+        const card = cardOf(id), readingWidth = readingWidths.get(id);
+        const found = cardMetrics(capture, readingWidth ? { ...card, maxWidth: readingWidth } : card,
+          Math.min(width, widthCap), views.get(id)!);
         metrics.set(id, found);
         heights.set(id, Math.round(found.height));
       }

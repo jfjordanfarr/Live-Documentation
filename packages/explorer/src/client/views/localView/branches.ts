@@ -1,5 +1,6 @@
 import { parentDirectory } from "./directory-bands";
 import type { ExplorerGraphPayload, ExplorerNodePayload } from "../../../shared/types";
+import { readingFiles, type ReadingChoice } from "../../reading-state";
 import type { SymbolOrder } from "../../types";
 import { getVisibleConnections, retainFile, type PinSet } from "../pin-state";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
@@ -73,6 +74,8 @@ export interface BranchOptions {
    * (the owner's grammar, 2026-10-08).
    */
   openDirectories?: OpenDirectories;
+  /** Explicit reading keeps those files available without disclosing their neighbors or changing pins. */
+  reading?: readonly ReadingChoice[];
 }
 
 /** A closed directory drawn as a box: a pseudo-node with no symbols, standing in for everything under it. */
@@ -220,23 +223,24 @@ export function exploreBranches(
   graph: ExplorerGraphPayload,
   pins: PinSet,
   include: (node: ExplorerNodePayload) => boolean,
-  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories" | "path"> = {}
+  options: Pick<BranchOptions, "symbolOrder" | "ranking" | "membraneDepth" | "openDirectories" | "path" | "reading"> = {}
 ): Exploration {
   const symbolOrder = options.symbolOrder ?? "layout";
   const id = (endpoint: string | { id: string }): string => typeof endpoint === "string" ? endpoint : endpoint.id;
   const byId = new Map(graph.nodes.map(node => [node.id, node]));
   const path = options.path;
+  const readFiles = readingFiles(options.reading ?? []);
   const pathGraph = path ? buildPathSubgraph(path.nodeIds, graph, id, nodeId => byId.get(nodeId)) : null;
   const pathColumns = path ? new Map((pathGraph?.nodes ?? []).map((node, column) => [node.id, column])) : null;
   // An empty exploration is a browseable scan root, not a hidden directory pin.
-  const rootLanding = !path && !center && !pins.entries.length && !options.openDirectories?.size;
+  const rootLanding = !path && !center && !pins.entries.length && !options.openDirectories?.size && !readFiles.size;
   const opened = path ? NO_OPEN_DIRECTORIES : rootLanding ? new Set([""]) : options.openDirectories ?? NO_OPEN_DIRECTORIES;
   // A direct file link discloses its neighborhood without manufacturing persistent pins, and keeps it while pins
   // elsewhere grow the picture; the center's own pins, once it has any, say what of it is disclosed.
   const centerPinned = !!center && pins.entries.some(pin => pin.nodeId === center.id);
   const disclosure = path ? { entries: [] } : center && !centerPinned ? retainFile(pins, center.id) : pins;
   const retained = path ? new Set(pathColumns!.keys())
-    : new Set([...(center ? [center.id] : []), ...pins.entries.map(pin => pin.nodeId)]);
+    : new Set([...(center ? [center.id] : []), ...pins.entries.map(pin => pin.nodeId), ...readFiles]);
   const relevantSymbols = new Map<string, Set<string>>();
   const remember = (nodeId: string, symbol?: string): void => {
     const rows = relevantSymbols.get(nodeId) ?? new Set<string>();
@@ -315,7 +319,14 @@ export function exploreBranches(
   const ranking: BranchRanking = { columns: columns.map(column => column.flatMap(nodeId => byId.get(nodeId) ?? [])), back: ranked.back };
   if (path?.fromSymbol && pathGraph) remember(pathGraph.nodes[0].id, path.fromSymbol);
   if (path?.toSymbol && pathGraph) remember(pathGraph.nodes[pathGraph.nodes.length - 1].id, path.toSymbol);
-  const rows = visibleRows(files, path ? null : center?.id ?? null, relevantSymbols, symbolOrder);
+  // Reading adds rows to the order, without describing them as a pinned connection or extending their neighborhood.
+  const shownRows = new Map([...relevantSymbols].map(([id, rows]) => [id, new Set(rows)]));
+  if (!path) for (const choice of options.reading ?? []) if (choice.open) {
+    const rows = shownRows.get(choice.nodeId) ?? new Set<string>();
+    rows.add(choice.symbol ?? "*");
+    shownRows.set(choice.nodeId, rows);
+  }
+  const rows = visibleRows(files, path ? null : center?.id ?? null, shownRows, symbolOrder);
   for (const box of boxes) rows.set(box.id, []);
   // Every directory the picture may draw as a membrane: an ancestor of something shown, the scan root aside.
   const directories = new Map<string, DirectoryDisclosure>();

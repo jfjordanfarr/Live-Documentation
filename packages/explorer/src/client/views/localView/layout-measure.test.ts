@@ -4,18 +4,38 @@
  * Tests cover the mathematical computations for layout bounds,
  * transform fitting, and alignment calculations.
  *
- * Note: DOM-dependent functions like measureElementsBounds require jsdom/happy-dom
- * and are tested via integration tests. These unit tests focus on the pure
- * mathematical logic.
+ * DOM-dependent measurement is verified in Playwright. These tests exercise only pure geometry.
  */
 
 import { describe, expect, it } from "vitest";
 
-import { clamp, computeFitTransform, computePathFitTransform, focusTransform, framePadding, hiddenEdges, settleTransform, type Bounds, type LayoutExtents } from "./layout-measure";
+import { cardReadingTransform, clamp, computeFitTransform, computePathFitTransform, focusTransform, framePadding, hiddenEdges, settleTransform, type Bounds, type LayoutExtents } from "./layout-measure";
 
 describe("layout-measure", () => {
   const box = (left: number, top: number, width: number, height: number): Bounds =>
     ({ left, top, width, height, right: left + width, bottom: top + height });
+
+  describe("the centered reading card", () => {
+    it("frames the subject independently of distant neighbors, at readable scale", () => {
+      const card = box(2400, 1700, 520, 620), frame = { width: 1100, height: 850 };
+      const view = cardReadingTransform(card, frame);
+      expect(view.k).toBeGreaterThan(1);
+      expect(view.x + (card.left + card.width / 2) * view.k).toBeCloseTo(frame.width / 2);
+      expect(view.y + (card.top + card.height / 2) * view.k).toBeCloseTo(frame.height / 2);
+      expect(view.y + card.bottom * view.k).toBeLessThan(frame.height);
+    });
+
+    it("uses the actual frame when preferred margins cannot fit and starts genuinely oversized cards at the top", () => {
+      const almost = box(1000, 2000, 320, 590), frame = { width: 375, height: 600 };
+      const centred = cardReadingTransform(almost, frame);
+      expect(centred.k).toBe(1);
+      expect(centred.y + almost.top).toBeCloseTo(5);
+      const tall = box(1000, 2000, 320, 2600);
+      const top = cardReadingTransform(tall, frame);
+      expect(top.k).toBe(1);
+      expect(top.y + tall.top).toBeCloseTo(framePadding(frame).vertical);
+    });
+  });
 
   describe("framePadding", () => {
     it("is two percent of the width and two and a half of the height, between 8 and 72 px", () => {

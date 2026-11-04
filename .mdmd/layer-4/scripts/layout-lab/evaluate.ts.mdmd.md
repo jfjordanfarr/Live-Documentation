@@ -19,6 +19,8 @@ The levers are the Local Map tuning the layout reads (`LabConfig`), the baseline
 
 `membraneSimplicity` prices each nonzero top or bottom boundary step. Shape signals come from the same pure measurement as the page; `evaluateAlignment` re-solves the current branches on a fresh scene under explicit boundary equalities and records those equalities with the result. These additions implement the [October 13 preference for weighted competition](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply). An ordinary evaluation remains first paint; [refine](./refine.ts.mdmd.md) runs the continuing search.
 
+November 4’s cross-width browser check compares a capture’s prediction at a narrower cap with a fresh page at that cap. The drift check compares the actual capped wrapper width, while the scene keeps its larger column slot where nested membrane insets need that space. Dimensions, pin positions and placement costs still require exact agreement. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

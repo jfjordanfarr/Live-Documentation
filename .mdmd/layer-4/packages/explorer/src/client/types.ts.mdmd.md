@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-02T17:03:45.114Z
+- Generated At: 2026-11-04T16:15:10.745Z
 
 ## Authored
 ### Purpose
@@ -44,21 +44,21 @@ The history's levers (2026-10-18, ticket C4 of [the change-over-time plan](../..
 ### Public Symbols
 #### `ViewName` {#symbol-viewname}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L5)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L6)
 
 ##### `ViewName` — Summary
 The three navigable Explorer views. Local Map has two representations.
 
 #### `LocalMapPerspective` {#symbol-localmapperspective}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L8)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L9)
 
 ##### `LocalMapPerspective` — Summary
 The remembered representation of the Local Map.
 
 #### `SpatialLayout` {#symbol-spatiallayout}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L14)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L15)
 
 ##### `SpatialLayout` — Summary
 How the 3D Local Map places its files: by their analyzed references, the emergent network of what the code does, or by
@@ -66,14 +66,14 @@ their declared directories, the emergent tree of what the file system says (the 
 
 #### `ExplorerFilters` {#symbol-explorerfilters}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L17)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L18)
 
 ##### `ExplorerFilters` — Summary
 Toggle flags for the Explorer filter panel.
 
 #### `BezierTuning` {#symbol-beziertuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L30)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L31)
 
 ##### `BezierTuning` — Summary
 Cubic-Bézier connection path tuning parameters.
@@ -81,7 +81,7 @@ Exposed in the Explorer tuning panel (2025-12-05, commit `9047949`).
 
 #### `LocalMapTuning` {#symbol-localmaptuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L42)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L43)
 
 ##### `LocalMapTuning` — Summary
 Tuning knobs specific to the two-dimensional Local Map.
@@ -90,7 +90,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L137)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L138)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -99,14 +99,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L140)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L141)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `HistoryGranularity` {#symbol-historygranularity}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L152)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L153)
 
 ##### `HistoryGranularity` — Summary
 Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
@@ -115,21 +115,21 @@ five-commit repository shows five ticks and a long history shows months (the vie
 
 #### `HISTORY_GRANULARITIES` {#symbol-history_granularities}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L155)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L156)
 
 ##### `HISTORY_GRANULARITIES` — Summary
 Every granularity, in the order the control offers them.
 
 #### `HistoryAxis` {#symbol-historyaxis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L158)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L159)
 
 ##### `HistoryAxis` — Summary
 How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap (scenario 14).
 
 #### `ChangeEmphasis` {#symbol-changeemphasis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L165)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L166)
 
 ##### `ChangeEmphasis` — Summary
 How the files a step of the history changed are told apart in the 3D picture while the history is shown (the owner's
@@ -138,49 +138,49 @@ emphasis holds for the whole displayed commit, in playback and at rest; the next
 
 #### `CHANGE_EMPHASES` {#symbol-change_emphases}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L168)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L169)
 
 ##### `CHANGE_EMPHASES` — Summary
 Every emphasis, in the order the control offers them.
 
 #### `HistoryTuning` {#symbol-historytuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L171)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L172)
 
 ##### `HistoryTuning` — Summary
 The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18), and the picture's emphasis on a step's changes (2026-10-31).
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L181)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L182)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L272)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L273)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L277)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L278)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L283)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L285)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L289)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L291)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -188,7 +188,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L316)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L320)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).
@@ -196,6 +196,7 @@ Map from implementation file path → covering test node(s).
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
+- [`reading-state.ReadingChoice`](./reading-state.ts.mdmd.md#symbol-readingchoice) (type-only)
 - [`pin-state.PinSet`](./views/pin-state.ts.mdmd.md#symbol-pinset) (type-only)
 - [`types.ExplorerNodePayload`](../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

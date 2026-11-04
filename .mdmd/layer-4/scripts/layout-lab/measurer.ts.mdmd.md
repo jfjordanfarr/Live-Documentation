@@ -21,6 +21,8 @@ The captured measurer was introduced with the [October 6 lab](../../../../AI-Age
 
 The notes are worded with the page's own `countOf` since 2026-10-31, a count and its unit joined by a no-break space as the page has written them since 2026-10-30: the measurer recognizes a captured reveal by that wording, and when it looked for a plain space it counted the page's reveal a second time, 20 px on every card that folds symbols ([the work notes of October 31](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)).
 
+November 4 recomputes a reading card’s width from the captured available frame and a proposed card-width cap. The actual card may be narrower than its column slot; heights and routes use that rendered width. Conditional overflow actions are recalculated when text is reflowed, rather than frozen from the original screenshot. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

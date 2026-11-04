@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/explorer-history.spec.ts
-- Generated At: 2026-10-22T16:47:58.081Z
+- Generated At: 2026-11-04T18:23:41.406Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,7 @@ _No public symbols detected_
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

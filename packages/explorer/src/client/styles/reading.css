@@ -1,0 +1,107 @@
+/* Descriptions occupy measured space in the native scene. They never introduce a nested text scroller. */
+.node-card:has(.local-file-read) .symbol-row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    row-gap: inherit;
+    align-items: center;
+    min-width: 0;
+}
+.node-card:has(.local-file-read) .symbol-row.branch-symbol-hidden,
+.node-card:has(.local-file-read) .symbol-row.symbol-collapsed { display: none; }
+.local-reading-block {
+    grid-column: 2;
+    min-width: 0;
+    contain: inline-size;
+    padding: 6px 2px 7px;
+    cursor: text;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.local-reading-block[hidden] { display: none; }
+.local-reading-purpose { padding: 14px 0; border-bottom: 1px solid var(--border-interactive); }
+.local-reading-prose { overflow: hidden; max-height: var(--reading-prose-height, 280px); }
+.local-reading-prose:empty { display: none; }
+.local-reading-prose p { margin: 0 0 8px; }
+.local-reading-prose p:last-child { margin-bottom: 0; }
+.local-reading-prose ul, .local-reading-prose ol { margin: 8px 0; padding-left: 22px; }
+.local-reading-prose code, .local-reading-prose pre { font-size: 0.9em; }
+.local-reading-prose pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 10px; background: var(--bg-deep); }
+.local-reading-block a { color: var(--accent-text, #9ed2fa); }
+.local-reading-prose h1, .local-reading-prose h2, .local-reading-prose h3 { font-size: 1em; margin: 12px 0 6px; }
+.local-reading-full { display: block; margin: 7px 0 0; padding: 0; border: 0; background: none; color: #9ed2fa; font: inherit; text-decoration: underline; cursor: pointer; }
+.local-reading-full[hidden] { display: none; }
+.local-reading-file-full { font-size: 14px; line-height: 1.5; margin-top: 12px; }
+.local-reading-types { font-size: 12px; line-height: 1.55; margin: 0 0 6px; overflow-wrap: anywhere; }
+.local-reading-role { display: inline-block; color: var(--text-panel-muted); margin-right: 10px; }
+.local-reading-role::first-letter { text-transform: uppercase; }
+.local-reading-types + .local-reading-prose:not(:empty) { margin-top: 8px; }
+.local-reading-types:has(+ .local-reading-prose:empty) { margin-bottom: 0; }
+
+.local-reading-card {
+    min-width: var(--reading-card-width, 520px);
+    max-width: var(--reading-card-width, 520px);
+    padding: 20px 24px 16px;
+    border-radius: 12px;
+}
+.local-column .local-reading-card .node-title { font-size: 22px; line-height: 1.3; margin-bottom: 12px; padding-right: 112px; }
+.local-reading-card .node-path { font-size: 11px; line-height: 1.5; }
+.local-reading-card .node-symbols { margin-top: 16px; }
+.local-reading-card .symbol-grid { row-gap: 8px; column-gap: 10px; }
+.local-column .local-reading-card .symbol-label { font-size: 16px; line-height: 1.45; }
+.local-reading-card .local-reading-block { font-size: 15px; }
+.local-reading-card .local-reading-purpose { font-size: 16px; }
+.local-reading-card .symbol-row .symbol-label-wrapper { padding: 4px 7px; }
+.local-reading-card .symbol-anchor.hub { top: 36px; }
+.local-reading-card .local-card-actions { top: 10px; right: 10px; }
+.local-reading-card .internals-row .symbol-label { font-size: 12px; }
+.local-reading-card .node-directory { display: none; }
+
+.local-reading-counts { display: none; }
+.local-reading-card .local-reading-counts { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--border-interactive); margin-top: 16px; padding-top: 12px; font-size: 12px; color: var(--text-panel-muted); }
+.local-reading-card .type-refs-indicator { display: none; }
+.local-symbol-read { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 17px; width: 17px; height: 17px; padding: 1px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: var(--text-panel-muted); cursor: pointer; }
+.local-symbol-read svg { width: 12px; height: 12px; }
+.local-reading-card .local-symbol-read { flex-basis: 20px; width: 20px; height: 20px; padding: 2px; }
+.local-reading-card .local-symbol-read svg { width: 14px; height: 14px; }
+.local-symbol-read:hover, .local-symbol-read[aria-pressed=true], .local-file-read[aria-pressed=true] { color: var(--accent); }
+.local-symbol-read:focus-visible, .local-file-read:focus-visible, .local-reading-full:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-column .node-card:not(.local-reading-card):has(.local-file-read) .node-title { padding-right: 112px; }
+.local-column .local-reading-card .symbol-pinned .symbol-label-wrapper { background: var(--accent-muted); }
+
+@media (max-width: 600px) {
+    .local-reading-card { padding: 16px 14px; }
+    .local-column .local-reading-card .node-title { padding-top: 25px; padding-right: 0; }
+    .local-reading-card .local-reading-counts { flex-wrap: wrap; gap: 5px; }
+}
+
+.reading-dialog-backdrop { position: fixed; inset: 0; background: #0008; z-index: 999; }
+.reading-dialog-backdrop[hidden] { display: none; }
+#detail-panel.reading-dialog {
+    position: fixed;
+    inset: 24px max(18px, calc((100vw - 760px) / 2));
+    width: auto;
+    max-height: calc(100dvh - 48px);
+    border: 1px solid var(--border-interactive);
+    border-radius: 10px;
+    background: var(--bg-card);
+    backdrop-filter: none;
+    z-index: 1000;
+    transform: none;
+    transition: none;
+}
+#detail-panel.reading-dialog .detail-scroll { font-size: 15px; line-height: 1.65; padding: 20px 26px; }
+#detail-panel.reading-dialog .detail-section { font-size: 15px; line-height: 1.65; }
+#detail-panel.reading-dialog .reader-prose, #detail-panel.reading-dialog .detail-content { font-size: 15px; line-height: 1.65; }
+#detail-panel.reading-dialog .reader-prose :is(h4, h5, h6) { font-size: 1em; }
+#detail-panel.reading-dialog .reader-prose code { font-size: 0.95em; }
+#detail-panel.reading-dialog .metadata-row { flex-wrap: wrap; }
+#detail-panel.reading-dialog .metadata-label { flex-shrink: 0; }
+#detail-panel.reading-dialog .detail-label { font-size: 13px; }
+#detail-panel.reading-dialog .metadata-row { font-size: 13px; }
+@media (max-width: 600px), (max-height: 480px) {
+    #detail-panel.reading-dialog { inset: 8px; max-height: calc(100dvh - 16px); }
+    #detail-panel.reading-dialog .detail-scroll { padding: 16px; }
+}

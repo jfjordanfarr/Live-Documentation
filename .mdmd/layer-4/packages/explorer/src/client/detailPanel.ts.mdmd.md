@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/detailPanel.ts
-- Generated At: 2026-11-01T20:26:49.587Z
+- Generated At: 2026-11-04T16:15:09.316Z
 
 ## Authored
 ### Purpose
@@ -22,33 +22,35 @@ The Explorer's evidence reader: renders a file or symbol from the bundled Live D
 - `Cited By` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): below the generated sections the reader lists the documents whose links name the file, from the doc's own section, each a link that opens the document here where the bundle carries it, resolved by the same rules as an authored link, and its path alone otherwise.
 - A file's evidence reads in the order a question is answered (the owner's choice, 2026-10-30, [Turn 3](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)): metadata and any inspected symbol, Purpose, the generated sections and Cited By, then Notes and any other authored section. Until then the whole authored block stood first, and a long Notes, about 4,100 characters for `generator.ts`, kept the symbols a long scroll away. [reader-sections.ts](reader-sections.ts.mdmd.md) cuts and orders the block; the sections are rendered in the author's order with one slugger, so every heading keeps the anchor the whole block would give it, and then placed. A jump list at the top is filled from the sections drawn, each named by its own heading or label; a link scrolls only the reader and moves focus to the section's heading, so a keyboard continues from there. A file without its doc, the fallback view, has no list.
 
+November 4 uses this same canonical reader for an explicitly opened full-text dialog. Selected-symbol content is rendered from the grammar’s complete symbol block, including references, Parameters and other sections; the former Summary-only fragment was insufficient for a full-description action. Link resolution is shared with on-map prose through reader-links. The ordinary directory/history/evidence functions remain available. See the [integration record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `DetailPanelAction` {#symbol-detailpanelaction}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L22)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L23)
 
 ##### `DetailPanelAction` — Summary
 A reader control whose meaning and state belong to the application.
 
 #### `DetailPanelApi` {#symbol-detailpanelapi}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L31)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L32)
 
 ##### `DetailPanelApi` — Summary
 Public API surface of the Explorer detail panel component.
 
 #### `DetailPanelOptions` {#symbol-detailpaneloptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L47)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L50)
 
 ##### `DetailPanelOptions` — Summary
 Configuration options for the Explorer detail panel.
 
 #### `createDetailPanel` {#symbol-createdetailpanel}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L77)
+- Source: [source](../../../../../../packages/explorer/src/client/detailPanel.ts#L80)
 - Returns: [`DetailPanelApi`](#symbol-detailpanelapi)
 - Parameters: `options`: [`DetailPanelOptions`](#symbol-detailpaneloptions)
 
@@ -60,13 +62,18 @@ and node metadata.
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`document.renderLiveDoc`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-renderlivedoc)
-- [`document.symbolName`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-symbolname)
+- [`document.renderSymbolBlocks`](../../../engine/src/live-docs/document.ts.mdmd.md#symbol-rendersymbolblocks)
 - [`graph.GraphFile`](../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
 - [`GitHubSlugger`](../../../engine/src/tooling/githubSlugger.ts.mdmd.md#symbol-githubslugger)
 - [`dom.requireElement`](./dom.ts.mdmd.md#symbol-requireelement)
 - [`graph-helpers.escapeHtml`](./graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`moment.HistoryMoment`](./history/moment.ts.mdmd.md#symbol-historymoment) (type-only)
 - [`markdown.renderMarkdown`](./markdown.ts.mdmd.md#symbol-rendermarkdown)
+- [`reader-links.ReaderLinkContext`](./reader-links.ts.mdmd.md#symbol-readerlinkcontext)
+- [`reader-links.createReaderLinkHandler`](./reader-links.ts.mdmd.md#symbol-createreaderlinkhandler)
+- [`reader-links.fileInspection`](./reader-links.ts.mdmd.md#symbol-fileinspection)
+- [`reader-links.readerLink`](./reader-links.ts.mdmd.md#symbol-readerlink)
+- [`reader-links.resolveReaderTarget`](./reader-links.ts.mdmd.md#symbol-resolvereadertarget)
 - [`reader-sections.AuthoredSection`](./reader-sections.ts.mdmd.md#symbol-authoredsection)
 - [`reader-sections.authoredSections`](./reader-sections.ts.mdmd.md#symbol-authoredsections)
 - [`reader-sections.readerOrder`](./reader-sections.ts.mdmd.md#symbol-readerorder-function)

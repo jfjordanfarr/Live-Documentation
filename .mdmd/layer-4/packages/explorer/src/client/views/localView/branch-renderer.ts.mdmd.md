@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-10-30T19:08:32.968Z
+- Generated At: 2026-11-04T16:15:11.550Z
 
 ## Authored
 ### Purpose
@@ -33,12 +33,16 @@ Since 2026-10-06 (the layout lab's first milestone) this module is the page's sh
 
 A card's natural width is read at the browser's 1/64 px unit and taken up to the next whole pixel (`naturalWidthOf`, 2026-10-31), never narrower than the content it holds: `offsetWidth`, rounded to the nearest pixel, gave a card whose path stood 304.08 px wide a 304 px box, and with the seams' `<wbr>` elements each a layout unit wide the path wrapped at a seam, found by the first full gate over the seams ([the work notes of October 31](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)).
 
+November 4 adds a disclosure-only geometry transaction over the existing card DOM and frozen row order. It pauses the continuing search, measures new prose, animates height/rows/wires/membranes together and restores the original scene and camera after temporary attention. The displayed placement cost updates with every measured reading scene. Explicit reading rows participate in ordering without being described as pinned relationships. See the [integration record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
+Reading measurements keep containers in their existing parents when there is no structural move. Re-appending even the same container blurs a focused descendant in Chromium; avoiding that no-op preserves keyboard reading. Attention to already-open text also pauses further search, without requiring a height change.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `BranchStage` {#symbol-branchstage}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L27)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L28)
 
 ##### `BranchStage` — Summary
 The branch picture's elements, kept across renders by what each one is: a
@@ -51,7 +55,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L88)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L94)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -59,7 +63,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L93)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L99)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -67,7 +71,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L121)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L128)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -93,9 +97,19 @@ After the picture is drawn, the continuing search alternates ordering
 starts and boundary joins in idle moments, moving to a better picture.
 The layout's dials come from the Local Map's tuning.
 
+#### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L263)
+- Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
+
+##### `refreshReadingGeometry` — Summary
+Remeasure an existing scene after text disclosure without rebuilding cards or changing row order. A temporary
+reading visit pauses the search and retains the original complete scene/camera; leaving restores that exact
+arrangement. Deliberate camera changes discard the return point and start a fresh measured competition.
+
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L250)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L311)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -148,6 +162,7 @@ The layout's dials come from the Local Map's tuning.
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
+- [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->

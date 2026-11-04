@@ -276,6 +276,18 @@ export function focusTransform(target: Bounds, current: MapTransform, frame: Fra
   };
 }
 
+/** A card's own reading reference: use available room, keep text at least its authored size, and enter overflow at the top. */
+export function cardReadingTransform(card: Bounds, frame: Frame): MapTransform {
+  const { horizontal, vertical } = framePadding(frame);
+  const k = Math.max(1, Math.min(1.45, (frame.width - 2 * horizontal) / Math.max(1, card.width),
+    (frame.height - 2 * vertical) / Math.max(1, card.height)));
+  return {
+    x: card.width * k > frame.width ? horizontal - card.left * k : frame.width / 2 - (card.left + card.width / 2) * k,
+    y: card.height * k > frame.height ? vertical - card.top * k : frame.height / 2 - (card.top + card.height / 2) * k,
+    k
+  };
+}
+
 /** Which edges of the frame the picture continues past, by more than `tolerance` px, at the camera given. */
 export function hiddenEdges(content: Bounds, transform: MapTransform, frame: Frame, tolerance = 4): { above: boolean; below: boolean; left: boolean; right: boolean } {
   const { x, y, k } = transform;

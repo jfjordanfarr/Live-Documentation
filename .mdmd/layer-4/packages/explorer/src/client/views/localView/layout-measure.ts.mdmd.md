@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.ts
-- Generated At: 2026-11-03T19:06:09.397Z
+- Generated At: 2026-11-04T15:03:17.732Z
 
 ## Authored
 ### Purpose
@@ -122,9 +122,18 @@ a picture already inside it does not move.
 ##### `focusTransform` — Summary
 Frame an explicitly requested row or file at reading size, including its actions, inside the usable canvas.
 
-#### `hiddenEdges` {#symbol-hiddenedges}
+#### `cardReadingTransform` {#symbol-cardreadingtransform}
 - Type: function
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L280)
+- Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
+- Parameters: `card`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
+
+##### `cardReadingTransform` — Summary
+A card's own reading reference: use available room, keep text at least its authored size, and enter overflow at the top.
+
+#### `hiddenEdges` {#symbol-hiddenedges}
+- Type: function
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L292)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `transform`: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform); `frame`: [`Frame`](#symbol-frame)
 
 ##### `hiddenEdges` — Summary
@@ -132,7 +141,7 @@ Which edges of the frame the picture continues past, by more than `tolerance` px
 
 #### `computePathFitTransform` {#symbol-computepathfittransform}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L310)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L322)
 - Returns: [`MapTransform`](./types.ts.mdmd.md#symbol-maptransform)
 - Parameters: `content`: [`Bounds`](#symbol-bounds); `frame`: [`Frame`](#symbol-frame)
 
@@ -144,7 +153,7 @@ lies to the right, one pan away, and never the start.
 
 #### `applyContainerDimensions` {#symbol-applycontainerdimensions}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L324)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/layout-measure.ts#L336)
 - Parameters: `content`: [`Bounds`](#symbol-bounds)
 
 ##### `applyContainerDimensions` — Summary

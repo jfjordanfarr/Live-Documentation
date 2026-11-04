@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-02T17:03:44.331Z
+- Generated At: 2026-11-04T15:03:15.260Z
 
 ## Authored
 ### Purpose
@@ -103,6 +103,8 @@ _No public symbols detected_
 - [`index.readPersistedNav`](./persistence/index.ts.mdmd.md#symbol-readpersistednav)
 - [`index.readPersistedUi`](./persistence/index.ts.mdmd.md#symbol-readpersistedui)
 - [`place.placeOf`](./persistence/place.ts.mdmd.md#symbol-placeof)
+- [`reading-state.chooseReading`](./reading-state.ts.mdmd.md#symbol-choosereading)
+- [`reading-state.releaseReading`](./reading-state.ts.mdmd.md#symbol-releasereading)
 - [`graph-search.SearchHit`](./search/graph-search.ts.mdmd.md#symbol-searchhit)
 - [`graph-search.searchIndexOf`](./search/graph-search.ts.mdmd.md#symbol-searchindexof)
 - [`search-bar.SearchWords`](./search/search-bar.ts.mdmd.md#symbol-searchwords)

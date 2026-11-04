@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 import { DECK_SCOPES } from "./scopes";
 import { localRetainUrl } from "./still-picture";
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
+import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
 import { captureFromPage } from "../../scripts/layout-lab/capture";
 import { baselineConfig, driftOf, evaluate } from "../../scripts/layout-lab/evaluate";
 import { loadBundleGraph } from "../../scripts/layout-lab/scopes";
@@ -51,3 +52,48 @@ for (const run of DECK_SCOPES) {
     if (chosen.start === "ranked") expect(chosen.cost).toBe(ranked.cost);
   });
 }
+
+for (const run of [DECK_SCOPES[0], DECK_SCOPES[3]]) {
+  test(`the captured reading text predicts a narrower card cap: ${run.bundle}`, async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.setViewportSize({ width: 1600, height: 1000 });
+    await page.goto(localRetainUrl(run.base, run.scope));
+    const capture = await captureFromPage(page, run);
+    const graph = await loadBundleGraph(run);
+    const config = { ...baselineConfig(), cardMaxWidth: 400 };
+    const predicted = evaluate(capture, graph, run, config);
+    await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY,
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400 } } })
+    });
+    await page.goto(localRetainUrl(run.base, run.scope));
+    const narrower = await captureFromPage(page, run);
+    expect(narrower.warnings).toEqual([]);
+    expect(driftOf(narrower, predicted), "the original text measurements predict the actual narrower page").toEqual([]);
+  });
+}
+
+test("indented code in a reading block preserves whitespace in the capture and narrower prediction", async ({ page }) => {
+  test.setTimeout(60_000);
+  const run = DECK_SCOPES[3];
+  const code = ["            const aVeryLongVariableName = leftValue + middleValue + rightValue;", "",
+    "    align     these     columns     without     collapsing     their     spaces;"];
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await page.route("**/samples/estate/explorer-data.json", async route => {
+    const response = await route.fetch();
+    const bundle = await response.json() as StaticExplorerData;
+    bundle.graph.files[run.subject].authored = ["### Purpose", "A **formatted** paragraph with `inline code`.", "", "```ts", ...code, "```"].join("\n");
+    await route.fulfill({ response, json: bundle });
+  });
+  await page.goto(localRetainUrl(run.base, run.scope));
+  const capture = await captureFromPage(page, run), graph = await loadBundleGraph(run);
+  expect(driftOf(capture, evaluate(capture, graph, run, baselineConfig()))).toEqual([]);
+  expect(await page.locator(`.node-card[data-id="${run.subject}"] .local-reading-purpose pre code`).textContent()).toBe(code.join("\n"));
+  const config = { ...baselineConfig(), cardMaxWidth: 400 };
+  const predicted = evaluate(capture, graph, run, config);
+  await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400 } } })
+  });
+  await page.goto(localRetainUrl(run.base, run.scope));
+  expect(driftOf(await captureFromPage(page, run), predicted)).toEqual([]);
+});

@@ -155,7 +155,7 @@ export function driftOf(capture: Capture, evaluation: Evaluation): string[] {
   for (const card of Object.values(capture.cards)) {
     const item = scene.items.get(card.id);
     if (!item) { drift.push(`${card.id}: not in the lab's exploration`); continue; }
-    const width = scene.widths[item.column] - 2 * item.inset;
+    const width = Math.min(scene.widths[item.column] - 2 * item.inset, evaluation.config.cardMaxWidth ?? Infinity);
     if (width !== card.truth.width) drift.push(`${card.id}: width ${width}, page ${card.truth.width}`);
     const height = scene.heights.get(card.id);
     if (height !== card.truth.height) drift.push(`${card.id}: height ${height}, page ${card.truth.height}`);

@@ -152,6 +152,8 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 
 ## Formatting and visual taste
 
+- **Portrait is the default card composition** (2026-11-04, [Turn 2 of the new session](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-2)). The owner prefers portrait in general to work across many screen sizes and because “a Card is more portrait.” Root confirms that the comparison concerns the card's shape, not the device orientation; content-driven height and readable overflow are implementation interpretations under that direction.
+
 - **Compose a card as a meaningful whole before designing zoom-out** (2026-11-04, [Turn 15](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-15--november-4)). The owner stresses that “Card” carries trading/playing-card semantics. A shared 2D view of one C# class should center and explain that subject in one view as far as feasible, even with neighboring cards clipped; zooming out is part of learning the surroundings. The normalized card is an aesthetic benchmark and navigational reference. Their complementary framing is 2D learning outward and 3D learning inward. Do not reduce this to a tweak of a generic zoom threshold.
 
   In [Turn 16](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4), the owner adds that they have a professional game-development background. Relate relevant ideas about level of detail, animation and interaction feel to that experience while explaining the map-specific tradeoffs; their requests for UX teaching do not imply a lack of engineering experience.

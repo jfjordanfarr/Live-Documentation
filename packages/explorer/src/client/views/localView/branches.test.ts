@@ -18,6 +18,37 @@ function node(id: string, archetype = "implementation"): ExplorerNodePayload {
 const dependency = ([sourceId, targetId]: [string, string]): LocalEdge => ({ sourceId, targetId, direction: "outbound", kind: "dependency" });
 
 describe("independent Local Map branches", () => {
+  it("keeps an unpinned reading card without acquiring its neighborhood, and leaves an explicit path's scope intact", () => {
+    const files = [node("src/caller"), node("src/provider"), node("src/private-neighbor")];
+    const graph: ExplorerGraphPayload = {
+      nodes: files,
+      links: [
+        { source: files[0].id, target: files[1].id, kind: "dependency" },
+        { source: files[1].id, target: files[2].id, kind: "dependency" }
+      ],
+      stats: { nodes: 3, links: 2, references: 2, dependenciesOutsideScan: 0 }
+    };
+    const reading = [{ nodeId: files[1].id, open: true }];
+    const readingOnly = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, { reading });
+    expect(readingOnly.subgraph.nodes.map(file => file.id)).toEqual([files[1].id]);
+    expect(readingOnly.subgraph.links).toEqual([]);
+    expect(readingOnly.hiddenConnections.get(files[1].id)).toBe(2);
+    expect(readingOnly.order.rows.get(files[1].id)).toEqual(["value", "__internals__"]);
+    expect(readingOnly.relevantSymbols.has(files[1].id)).toBe(false);
+    const oneRow = exploreBranches(null, graph, EMPTY_PIN_SET, () => true, {
+      reading: [{ nodeId: files[1].id, symbol: "value", open: true }]
+    });
+    expect(oneRow.order.rows.get(files[1].id)).toEqual(["value"]);
+    const pins = addPin(EMPTY_PIN_SET, files[0].id, "*");
+    const alongside = exploreBranches(null, graph, pins, () => true, { reading });
+    expect(alongside.subgraph.nodes.map(file => file.id)).toEqual([files[0].id, files[1].id]);
+    expect(alongside.subgraph.links).toHaveLength(1);
+    expect(pins.entries).toEqual([{ nodeId: files[0].id, symbol: "*" }]);
+    const path = exploreBranches(null, graph, pins, () => true, {
+      reading: [{ nodeId: files[2].id, open: true }], path: { nodeIds: [files[1].id, files[0].id] }
+    });
+    expect(path.subgraph.nodes.map(file => file.id)).toEqual([files[1].id, files[0].id]);
+  });
   it("opens a file's filtered neighborhood through the common layout without storing pins", () => {
     const files = ["lib/provider", "app/start", "app/user", "other/remote", "tests/check"].map(id => node(id));
     const wires = [

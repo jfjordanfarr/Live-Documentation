@@ -15,8 +15,12 @@ async function start(page: Page): Promise<void> {
 }
 
 async function branches(page: Page): Promise<void> {
+  await panIntoView(page, pin(page, "helpers.ts", "format"));
   await pin(page, "helpers.ts", "format").click();
-  await card(page, "processor.ts").getByRole("button", { name: "+2 symbols", exact: true }).click();
+  const reveal = card(page, "processor.ts").getByRole("button", { name: "+2 symbols", exact: true });
+  await panIntoView(page, reveal);
+  await reveal.click();
+  await panIntoView(page, pin(page, "processor.ts", "run"));
   await pin(page, "processor.ts", "run").click();
   // Each pin moves the picture to its next arrangement; the measurements below are of the picture at rest.
   await localMapSettled(page);
@@ -117,6 +121,7 @@ test("both perspective changes keep the subject at its screen anchor during moti
   await branches(page);
   // The subject is still helpers.ts: a pin never moves it (2026-10-15)
   const title = card(page, "helpers.ts").locator(".node-title");
+  await panIntoView(page, title);
   const before = (await title.boundingBox())!;
   const anchor = { x: before.x + before.width / 2, y: before.y + before.height / 2 };
   const recording = page.evaluate(async () => {
@@ -307,6 +312,7 @@ test("a hovered row dims every wire it does not touch, the bundles' shared runs 
   await branches(page);
   const runs = await page.locator(".connection-svg .connection-path.bundle-run").count();
   expect(runs, "the scene has bundles whose shared runs are drawn").toBeGreaterThan(0);
+  await panIntoView(page, pin(page, "helpers.ts", "format"));
   await pin(page, "helpers.ts", "format").hover();
   await page.waitForTimeout(400);
   const wires = await page.locator(".connection-svg .connection-path").evaluateAll(elements => elements.map(element => ({
@@ -410,10 +416,12 @@ test("directories are membranes: one connected shape per directory, siblings nev
   expect(bands.some(band => band.segments.some(s => s.top !== band.segments[0].top || s.bottom !== band.segments[0].bottom)), "a membrane follows its members from column to column").toBe(true);
 });
 
-test("a type-reference badge inspects the referenced file without pinning or changing the subject across perspectives", async ({ page }) => {
+test("a recorded type inspects the referenced file without pinning or changing the subject across perspectives", async ({ page }) => {
   const graph = "packages/engine/src/live-docs/graph.ts";
   await page.goto(`/?view=local&node=${graph}`);
-  await page.locator('.local-focus .symbol-row[data-symbol="GraphFile"] .type-badge-extends').click();
+  const type = page.locator('.local-focus .symbol-row[data-symbol="GraphFile"] .local-reading-types a').first();
+  await panIntoView(page, type);
+  await type.click();
   await expect(page.locator("#context-name")).toHaveText(graph);
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
   await expect(page.locator("#detail-title")).toHaveText("document.ts");

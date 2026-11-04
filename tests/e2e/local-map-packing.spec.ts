@@ -163,10 +163,15 @@ test("instant continuing layouts redraw the actual wires onto their pins", async
   for (const distance of separation) expect(distance).toBeLessThan(1);
 });
 
-test("the default packing aligns the three Rosetta cards, and a packing change preserves their facts", async ({ page }) => {
+test("the default packing aligns the three folded Rosetta cards, and a packing change preserves their facts", async ({ page }) => {
   const root = "tests/integration/programs/typescript/rosetta/src/";
   await page.goto(`/?view=local&node=${root}main.ts`);
   await page.locator(".local-placed").waitFor();
+  // Compare the same compact presentation across packing choices; the independently expanded reading text has
+  // different row offsets, which the wire-length objective legitimately places differently.
+  await page.locator(".local-focus .local-file-read").click();
+  await page.mouse.move(5, 5);
+  await localMapSettled(page);
   const read = async () => page.locator(".local-placed").evaluate(element => {
     const cards = [...element.querySelectorAll<HTMLElement>(".node-card")];
     // The three source cards stand in one row under Relaxed; the sample's data files, cards since the asset rule of

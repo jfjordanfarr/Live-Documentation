@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/localView/layout-measure.test.ts
-- Generated At: 2026-11-03T19:06:09.373Z
+- Generated At: 2026-11-04T16:15:12.133Z
 
 ## Authored
 ### Purpose
@@ -24,6 +24,7 @@ _No public symbols detected_
 ### Dependencies
 - [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
+- [`layout-measure.cardReadingTransform`](./layout-measure.ts.mdmd.md#symbol-cardreadingtransform)
 - [`layout-measure.clamp`](./layout-measure.ts.mdmd.md#symbol-clamp)
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)

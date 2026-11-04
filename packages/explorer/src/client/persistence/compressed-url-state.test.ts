@@ -502,3 +502,43 @@ describe("explicitly open reader evidence", () => {
     expect(nodes.get("src/b.ts")?.publicSymbols).toEqual(["run"]);
   });
 });
+
+describe("independently shared reading", () => {
+  it("keeps explicit full-text presentation through links and stale-symbol fallback", () => {
+    const targets = [
+      { kind: "file" as const, nodeId: "src/a.ts", symbol: "run", presentation: "reading" as const },
+      { kind: "directory" as const, directory: "src", presentation: "reading" as const },
+      { kind: "bundled-doc" as const, path: "guide.md", fragment: "details", presentation: "reading" as const }
+    ] as const;
+    const nodes = new Map([["src/a.ts", { publicSymbols: ["run"] }]]);
+    for (const inspection of targets) {
+      const roundTrip = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, inspection }));
+      expect(scrubSnapshot(roundTrip, nodes, { "guide.md": "# Guide" }).inspection).toEqual(inspection);
+    }
+    expect(scrubSnapshot({ ...DEFAULT_SNAPSHOT, inspection: { ...targets[0], symbol: "gone" } }, nodes).inspection)
+      .toEqual({ kind: "file", nodeId: "src/a.ts", presentation: "reading" });
+  });
+
+  it("restores open unpinned text and folded pinned text while dropping only stale reading targets", () => {
+    const pins = addPin(EMPTY_PIN_SET, "src/caller.ts", "*");
+    const reading = [
+      { nodeId: "src/caller.ts", open: false },
+      { nodeId: "src/provider.ts", open: true },
+      { nodeId: "src/provider.ts", symbol: "Walk (interface)", open: false },
+      { nodeId: "gone.ts", open: true },
+      { nodeId: "src/provider.ts", symbol: "walk", open: true }
+    ];
+    const snapshot = { ...DEFAULT_SNAPSHOT, pinSet: pins, reading };
+    const decoded = decompressSnapshot(compressSnapshot(snapshot));
+    expect(decoded.reading).toEqual(reading);
+    const restored = scrubSnapshot(decoded, new Map([
+      ["src/caller.ts", { publicSymbols: [] }],
+      ["src/provider.ts", { publicSymbols: ["Walk (interface)", "walk (function)"] }]
+    ]));
+    expect(restored.reading).toEqual(reading.slice(0, 3));
+    expect(restored.pinSet).toEqual(pins);
+    expect(restored.selectedNodeId).toBeNull();
+    expect(snapshotToPayload(DEFAULT_SNAPSHOT).u).toBeUndefined();
+    expect(payloadToSnapshot({ v: 3, u: [null, { nodeId: "a", open: "false" }] as never }).reading).toEqual([]);
+  });
+});

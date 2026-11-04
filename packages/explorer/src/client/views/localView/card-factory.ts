@@ -47,6 +47,8 @@ export interface CardContext {
   highlightSymbolConnections(nodeId: string, symbol: string): void;
   clearSymbolHighlight(): void;
   focusTypeTarget(targetId: string): void | Promise<void>;
+  /** The reading surface receives canonical documentation separately from the graph's render projection. */
+  attachReading?(card: HTMLElement, node: ExplorerNodePayload): void;
 }
 
 const actionAnchor = (element: HTMLElement): { x: number; y: number } => {
@@ -222,6 +224,7 @@ export function createNodeCard(
     }
   });
 
+  context.attachReading?.(card, node);
   return card;
 }
 

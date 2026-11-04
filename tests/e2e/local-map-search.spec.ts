@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { FIVE_ESTATE, FIVE_REPOSITORY } from "./scopes";
-import { localMapSettled, localRetainUrl } from "./still-picture";
+import { localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
@@ -63,30 +63,33 @@ test("after the first picture the search tries further starts in idle time and m
 });
 
 test("a change of pins starts the search afresh, from the seed after the first paint's last", async ({ page }) => {
+  // Two complete competitions include boundary alignment after the four ordering seeds. The first took 27.7 s
+  // and 203 alignment trials with reading cards; the default 30 s cannot also cover the second competition.
+  test.setTimeout(90_000);
   // The first paint takes the ranking's order alone; four starts and a patience of four then end capped, or settled when
   // none of the four bettered the seed, which this picture does since document.ts grew its Entry lines (2026-10-15).
   // Either way the search is over, which is what the change of pins must start afresh.
   await open(page, { orderStarts: 0, searchStarts: 4, searchPatience: 4, moveMs: 0 });
-  await localMapSettled(page);
+  await localMapSettled(page, 45_000);
   const before = await readSearch(page);
   expect(["capped", "settled"]).toContain(before.status);
   expect(before.tried).toBe(4);
-  // A row on a card wholly in the frame, since the map does not scroll and a click lands only on what is shown.
+  // Reach an offered row by panning; centered reading does not promise that a neighboring card fits in the frame.
   const found = await page.evaluate(() => {
     for (const card of document.querySelectorAll<HTMLElement>("#map-container .node-card:not(.local-focus)")) {
-      const r = card.getBoundingClientRect();
-      if (r.left < 0 || r.top < 0 || r.right > innerWidth || r.bottom > innerHeight) continue;
       const row = card.querySelector<HTMLElement>(".symbol-row:not(.branch-symbol-hidden)");
       if (row) return { id: card.dataset.id!, symbol: row.dataset.symbol! };
     }
     return null;
   });
   expect(found).not.toBeNull();
-  await page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .local-symbol-pin`).click();
+  const pin = page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .local-symbol-pin`);
+  await panIntoView(page, pin);
+  await pin.click();
   const fresh = await readSearch(page);
   expect(fresh.tried, "the new picture's search has only begun").toBeLessThan(4);
   expect(fresh.next).toBeGreaterThanOrEqual(1);
-  await localMapSettled(page);
+  await localMapSettled(page, 45_000);
   const again = await readSearch(page);
   // Four starts and a patience of four: the search ends capped, or settled when none of the four was adopted.
   expect(["capped", "settled"]).toContain(again.status);

@@ -99,8 +99,8 @@ async function expectLacesCut(page: Page, file: string, shape: Pick<LocalMapTuni
   expect(card, `the card of ${file}`).toBeDefined();
   for (const lace of own) {
     const side = lace.role === "provider" ? "outbound" : "inbound";
-    // Two symbols may share a normalized name (graph.ts's LinkTarget and linkTarget), so of the pins that carry the
-    // lace's name, take the one on whose row the lace starts.
+    // Match the projected heading, preserving case and declaration kind. If duplicate headings exist, compare the
+    // actual drawn row of the candidate pins.
     const candidates = pins.filter(candidate => candidate.file === file && candidate.side === side && (normalizeSymbolIdentifier(candidate.symbol) ?? candidate.symbol) === lace.symbol);
     const pin = candidates.sort((a, b) => Math.abs(a.y - lace.start.y) - Math.abs(b.y - lace.start.y))[0];
     expect(pin, `a pin for the ${lace.role} lace of ${lace.symbol}`).toBeDefined();

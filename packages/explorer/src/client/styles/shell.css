@@ -326,19 +326,19 @@
 .detail-footer .action-btn[aria-pressed="true"] { border-color: var(--accent); }
 
 /* The reader overlays the map. Its controls occupy the visible room without resizing the canvas. */
-#main:has(#detail-panel.visible) .pin-tray {
+#main:has(#detail-panel.visible:not(.reading-dialog)) .pin-tray {
     right: calc(var(--detail-panel-width) + 12px);
     bottom: calc(110px + var(--history-room));
 }
-#main:has(#detail-panel.visible) .perspective-controls {
+#main:has(#detail-panel.visible:not(.reading-dialog)) .perspective-controls {
     left: calc((100% - var(--detail-panel-width)) / 2);
     max-width: calc(100% - var(--detail-panel-width) - 24px);
     flex-wrap: wrap;
     justify-content: center;
 }
-#main:has(#detail-panel.visible) #controls { bottom: calc(110px + var(--history-room)); }
+#main:has(#detail-panel.visible:not(.reading-dialog)) #controls { bottom: calc(110px + var(--history-room)); }
 /* The history's scrubber ends at the reader's edge, its ticks and readout in the visible room (2026-10-20). */
-#main:has(#detail-panel.visible) .history-scrubber { right: calc(var(--detail-panel-width) + 12px); }
+#main:has(#detail-panel.visible:not(.reading-dialog)) .history-scrubber { right: calc(var(--detail-panel-width) + 12px); }
 
 .item-menu {
     position: fixed;

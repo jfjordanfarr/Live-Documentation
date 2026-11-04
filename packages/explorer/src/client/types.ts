@@ -1,3 +1,4 @@
+import type { ReadingChoice } from "./reading-state";
 import type { PinSet } from "./views/pin-state";
 import type { ExplorerNodePayload } from "../shared/types";
 
@@ -274,10 +275,11 @@ export type PathDestination =
   | { kind: "directory"; directory: string };
 
 /** The evidence explicitly open in the reader, independent of the Local Map subject and its pins. */
-export type InspectionTarget =
+export type InspectionTarget = (
   | { kind: "file"; nodeId: string; symbol?: string }
   | { kind: "bundled-doc"; path: string; fragment?: string }
-  | { kind: "directory"; directory: string };
+  | { kind: "directory"; directory: string }
+) & { presentation?: "reading" };
 
 /** The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it. */
 export type DiscoveryTarget = { kind: "file"; nodeId: string } | { kind: "directory"; directory: string };
@@ -287,6 +289,8 @@ export type DiscoveryTarget = { kind: "file"; nodeId: string } | { kind: "direct
  * `persistence/local-storage.ts` and consumed by every view.
  */
 export interface ExplorerState {
+  /** Deliberate reading overrides, shared independently of pinning; temporary hover is view-local. */
+  reading?: readonly ReadingChoice[];
   /** Independent exploration branches, retained across perspectives. */
   pins?: PinSet;
   /** The end of the path asked for, drawn from the newest pin; null or absent when none is asked. */

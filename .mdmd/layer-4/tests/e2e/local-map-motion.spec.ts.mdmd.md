@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-motion.spec.ts
-- Generated At: 2026-10-22T02:20:05.196Z
+- Generated At: 2026-11-04T18:23:42.139Z
 
 ## Authored
 ### Purpose
@@ -29,4 +29,5 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
+- [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->

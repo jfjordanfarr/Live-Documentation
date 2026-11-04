@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-10-30T19:08:33.254Z
+- Generated At: 2026-11-04T15:03:17.358Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ More controls identify file, symbol and directory targets for the shared applica
 Symbol order is the Live Doc's appearance order, alphabetical when chosen in Tuning, or the branch renderer's subsequent layout order. Public symbol rows register both interface sides; Internals registers the private-implementation input and file-level fallback, while assets use file hubs instead. These anchors remain available independently of the controls drawn beside their labels.
 
 `createClosedDirectory` represents a closed directory as a named, counted box without symbol pins, following the [directory disclosure design](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08). Its body and name inspect; its separate Open button discloses files and subdirectories. A directory containing a file that participates in a drawn connection is at least encasing, so no wire reaches a closed box. `countsOf` also supplies the count of contents hidden by an encasing membrane.
+
+November 4 reading is attached through the card context after the native card is built. Canonical documentation and explicit reading choices remain owned by the separate reading surface; the factory keeps its established file/symbol inspection and pin actions. See the [integration record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -43,7 +45,7 @@ Only the facts and actions a card needs; navigation targets are looked up when t
 
 #### `createNodeCard` {#symbol-createnodecard}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L65)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L67)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `node`: [`ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `columnRole`: [`ColumnRole`](./types.ts.mdmd.md#symbol-columnrole)
 
 ##### `createNodeCard` — Summary
@@ -59,7 +61,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L234)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L237)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -70,7 +72,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L269)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L272)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

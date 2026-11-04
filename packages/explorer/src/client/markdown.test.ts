@@ -4,6 +4,13 @@ import { renderMarkdown } from "./markdown";
 
 const headingIds = (html: string): string[] => [...html.matchAll(/<h[1-6] id="([^"]*)">/g)].map(match => match[1]);
 
+describe("paragraphs in recorded comments", () => {
+  it("joins soft source wraps but preserves blank paragraphs, lists, headings and fenced code", () => {
+    expect(renderMarkdown("One wrapped\n**description**.\n\nAnother\nparagraph.\n- A list\n## Next\n```ts\nfirst\nsecond\n```"))
+      .toBe('<p>One wrapped <strong>description</strong>.</p>\n<p>Another paragraph.</p>\n<ul>\n<li>A list</li>\n</ul>\n<h2 id="next">Next</h2>\n<pre><code class="language-ts">first\nsecond</code></pre>');
+  });
+});
+
 describe("reader heading anchors", () => {
   it("matches the punctuation-containing section named by an actual bundled provenance link", () => {
     const html = renderMarkdown("## Turn 19: Config & Schema Hardening (Lines 3,561-3,760)");

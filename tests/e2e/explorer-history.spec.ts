@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 
 import { currentSnapshot } from "./search-bar";
-import { localMapSettled } from "./still-picture";
+import { localMapSettled, panIntoView } from "./still-picture";
 
 const FIXTURE_DIR = "packages/engine/src";
 const FIXTURE_SUBDIR = `${FIXTURE_DIR}/config`;
@@ -48,11 +48,15 @@ test.describe("Back and Forward", () => {
 
   test("an opened folder is a step back, and pins made in it are not", async ({ page }) => {
     await page.goto(`/?view=local&node=${FIXTURE_FILE}&dir=${FIXTURE_DIR}`);
-    await page.getByRole("button", { name: `Open ${FIXTURE_SUBDIR}`, exact: true }).click();
+    const open = page.getByRole("button", { name: `Open ${FIXTURE_SUBDIR}`, exact: true });
+    await panIntoView(page, open);
+    await open.click();
     await localMapSettled(page);
     const folderUrl = page.url();
 
-    await page.locator(`.node-card[data-id="${FIXTURE_FILE}"]`).getByRole("button", { name: "Pin liveDocumentationConfig.ts", exact: true }).click();
+    const pin = page.locator(`.node-card[data-id="${FIXTURE_FILE}"]`).getByRole("button", { name: "Pin liveDocumentationConfig.ts", exact: true });
+    await panIntoView(page, pin);
+    await pin.click();
     await expect(page.locator(".pin-tray-toggle")).toHaveText("3 pins");
     expect(currentSnapshot(page).inspection, "an explicit pin does not create an evidence-history step").toBeNull();
     await page.getByRole("button", { name: "Show pins", exact: true }).click();

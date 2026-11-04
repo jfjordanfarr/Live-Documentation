@@ -250,8 +250,8 @@ export function computeSelfLoopStubs(
 }
 
 /**
- * One lace as a tapered polygon. Its centre line is a hairpin of two quarter
- * ellipses: out from the pin, level, to a tip `reach` beyond the card's edge
+ * One lace as a tapered polygon. A straight stem reaches the card's edge,
+ * followed by a hairpin of two quarter ellipses to a tip `reach` beyond it
  * (nested laces further by the pitch), turning `toward` (1 down, -1 up); then
  * back from the tip to a point under the card, level again, `curlAmount` from
  * the pin's row. The return is cut where it crosses the card's edge, its end
@@ -260,21 +260,28 @@ export function computeSelfLoopStubs(
  * thins from the pin to the cut by the taper.
  */
 function lace(pin: Point, side: 1 | -1, toward: 1 | -1, edge: number, params: SelfLoopParams, rank: number): string {
-  // The tip, as a distance from the pin along `side`: at least a bend's worth beyond a pin that stands outside its card.
-  const tip = Math.max(side * (edge - pin.x) + params.reach + Math.max(0, rank) * LACE_PITCH, 4);
+  const bend = { x: side * Math.max(side * edge, side * pin.x), y: pin.y };
+  // An external pin still gets a bend's worth of room; an inset pin exits level before any curvature begins.
+  const tip = Math.max(side * (edge - bend.x) + params.reach + Math.max(0, rank) * LACE_PITCH, 4);
   const half = params.curlAmount / 2;
-  const apex = { x: pin.x + side * tip, y: pin.y + toward * half };
+  const apex = { x: bend.x + side * tip, y: pin.y + toward * half };
   const end = { x: edge - side * LACE_UNDER, y: pin.y + toward * params.curlAmount };
   const back = side * (apex.x - end.x);
-  const outbound: Cubic = [pin, { x: pin.x + side * QUARTER_TURN * tip, y: pin.y }, { x: apex.x, y: apex.y - toward * QUARTER_TURN * half }, apex];
+  const outbound: Cubic = [bend, { x: bend.x + side * QUARTER_TURN * tip, y: pin.y }, { x: apex.x, y: apex.y - toward * QUARTER_TURN * half }, apex];
   const inbound: Cubic = [apex, { x: apex.x, y: apex.y + toward * QUARTER_TURN * half }, { x: end.x + side * QUARTER_TURN * back, y: end.y }, end];
   const steps = 10;
   const line: Sample[] = [];
+  if (bend.x !== pin.x) {
+    line.push({ point: pin, tangent: { x: side, y: 0 } },
+      { point: { x: (pin.x + bend.x) / 2, y: pin.y }, tangent: { x: side, y: 0 } });
+  }
+  const bendIndex = line.length;
   for (let i = 0; i <= steps; i++) line.push(sampleCubic(outbound, i / steps));
+  const apexIndex = line.length - 1;
   for (let i = 1; i <= steps; i++) line.push(sampleCubic(inbound, i / steps));
   // The cut: the return's first sample at or past the edge, and the point on the edge between it and the one before.
   let cut = line.length - 1;
-  for (let i = steps + 1; i < line.length; i++) if (side * (line[i].point.x - edge) <= 0) { cut = i; break; }
+  for (let i = apexIndex + 1; i < line.length; i++) if (side * (line[i].point.x - edge) <= 0) { cut = i; break; }
   const before = line[cut - 1], after = line[cut];
   const f = after.point.x === before.point.x ? 1 : (edge - before.point.x) / (after.point.x - before.point.x);
   const atEdge: Sample = {
@@ -294,8 +301,8 @@ function lace(pin: Point, side: 1 | -1, toward: 1 | -1, edge: number, params: Se
     const normal = { x: -tangent.y, y: tangent.x };
     let a = { x: point.x + normal.x * halfWidth, y: point.y + normal.y * halfWidth };
     let b = { x: point.x - normal.x * halfWidth, y: point.y - normal.y * halfWidth };
-    // On the return, nothing past the edge; at the cut, both sides flush with it.
-    if (i > steps) {
+    // Curvature is outside the card, even when its stroke is wider than the bend; at the cut both sides are flush.
+    if (i >= bendIndex) {
       a = { x: side * Math.max(side * a.x, side * edge), y: a.y };
       b = { x: side * Math.max(side * b.x, side * edge), y: b.y };
     }

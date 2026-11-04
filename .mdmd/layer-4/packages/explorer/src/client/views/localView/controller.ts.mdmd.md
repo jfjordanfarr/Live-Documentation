@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-03T19:06:09.235Z
+- Generated At: 2026-11-04T15:03:17.521Z
 
 ## Authored
 ### Purpose
@@ -30,12 +30,14 @@ Controller class for the 2D Local Map. Owns its render lifecycle, camera, and vi
 
 The November 1 directory-arrival repair keeps the unfolding label anchor through the branch animation, then settles the contents into the available frame with the minimum camera movement. A wheel or background-drag gesture cancels that pending arrival. Direct directory URLs and ordinary Open actions now use the same final frame rule. The usable frame also ends above the actual floating control boxes, so a fitted lower card cannot sit behind the map controls; edge signs use that same frame. See the [accepted review](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-01.1.record.md#turn-2).
 
+November 4 native reading calibrates a portrait card to the usable frame before interpreting zoom. A reset waits for the native height move; a resize follows the remembered reading subject until manual camera input or an exploration action takes over. Temporary description visits retain a scene/camera return point, while deliberate book controls use the normal focus/anchor transaction and independent reading state. See the [integration record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L69)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L72)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -45,12 +47,16 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
 - [`dom.requireElement`](../../dom.ts.mdmd.md#symbol-requireelement)
+- [`reading-state.readingFiles`](../../reading-state.ts.mdmd.md#symbol-readingfiles)
 - [`branch-renderer.BranchStage`](./branch-renderer.ts.mdmd.md#symbol-branchstage)
 - [`branch-renderer.createStage`](./branch-renderer.ts.mdmd.md#symbol-createstage)
 - [`branch-renderer.dropStage`](./branch-renderer.ts.mdmd.md#symbol-dropstage)
+- [`branch-renderer.refreshReadingGeometry`](./branch-renderer.ts.mdmd.md#symbol-refreshreadinggeometry)
 - [`branch-renderer.renderBranches`](./branch-renderer.ts.mdmd.md#symbol-renderbranches)
 - [`branches.BranchGraph`](./branches.ts.mdmd.md#symbol-branchgraph) (type-only)
 - [`card-factory.CardContext`](./card-factory.ts.mdmd.md#symbol-cardcontext) (type-only)
+- [`card-reading.CardReading`](./card-reading.ts.mdmd.md#symbol-cardreading)
+- [`card-reading.ReadingTarget`](./card-reading.ts.mdmd.md#symbol-readingtarget)
 - [`connections.clearConnections`](./connections.ts.mdmd.md#symbol-clearconnections)
 - [`connections.drawConnections`](./connections.ts.mdmd.md#symbol-drawconnections)
 - [`directory-state.NO_OPEN_DIRECTORIES`](./directory-state.ts.mdmd.md#symbol-no_open_directories)
@@ -62,6 +68,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)
 - [`layout-measure.applyContainerDimensions`](./layout-measure.ts.mdmd.md#symbol-applycontainerdimensions)
+- [`layout-measure.cardReadingTransform`](./layout-measure.ts.mdmd.md#symbol-cardreadingtransform)
 - [`layout-measure.computeFitTransform`](./layout-measure.ts.mdmd.md#symbol-computefittransform)
 - [`layout-measure.computeLayoutExtents`](./layout-measure.ts.mdmd.md#symbol-computelayoutextents)
 - [`layout-measure.computePathFitTransform`](./layout-measure.ts.mdmd.md#symbol-computepathfittransform)

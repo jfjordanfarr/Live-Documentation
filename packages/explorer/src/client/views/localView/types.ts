@@ -5,7 +5,9 @@ import type {
   ExplorerLinkPayload,
   ExplorerNodePayload
 } from "../../../shared/types";
+import type { ReaderLinkContext } from "../../reader-links";
 import type { ExplorerState, TestCoverageMap } from "../../types";
+import type { InspectionTarget } from "../../types";
 
 /**
  * Dependency-injection options for constructing a Local Map view.
@@ -44,6 +46,10 @@ export interface LocalViewOptions {
   bottomObstructions?: () => readonly DOMRect[];
   /** Map of node IDs to node payloads for type reference navigation. */
   nodesById: Map<string, ExplorerNodePayload>;
+  /** Canonical text and link destinations, shared with the full reader. */
+  readingLinks?: ReaderLinkContext;
+  onReadingChange?: (nodeId: string, symbol: string | undefined, open: boolean) => void;
+  onReadTarget?: (target: InspectionTarget, fragment?: string) => void;
 }
 
 /** The view's before/after presentation work around one application-owned exploration action. */
@@ -66,6 +72,7 @@ export interface LocalViewApi {
   show(): void;
   capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion?: boolean): LocalExplorationFrame;
   captureDirectoryChange(directory: string): LocalExplorationFrame;
+  captureReadingChange(nodeId: string, symbol?: string): LocalExplorationFrame;
   /** Clear a path for a new exploration action without restoring its old camera. */
   clearPathForExploration(): void;
   focusNode(nodeId: string, symbol?: string): void;

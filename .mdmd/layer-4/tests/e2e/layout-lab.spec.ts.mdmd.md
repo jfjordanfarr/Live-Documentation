@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/layout-lab.spec.ts
-- Generated At: 2026-10-22T02:20:05.039Z
+- Generated At: 2026-11-04T18:23:41.964Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,8 @@ Holds the layout lab's model to the page: on every deck scope, a capture laid ou
 
 For each scope the test's own page shows the retained Local Map, `captureFromPage` reads it, and the lab's baseline must show no drift: every card's width, height and pin, every label's height, the placement measure and the picture's size; Pretext must have agreed with the page on every text. A failure here means the card model has fallen behind the stylesheet, or Pretext and the browser disagree on a text. A second test per scope (2026-10-06) reads the start the page drew and its price from the placed root, loads the scope again with no restarts (`orderStarts` 0 seeded into the Explorer's storage) and holds the chosen start no costlier than the ranking's order; the page may have drawn more than once before the reading, so the previous picture may be among the starts.
 - The seeded run of the second test keeps the search off too (`searchStarts: 0`), so the page's choice among the starts before paint is what it reads (2026-10-07).
+
+November 4 adds predictions from the original capture at a different width cap, over repository and estate data, and a controlled canonical-document fixture with mixed prose, indented code and a blank line. The code text is checked verbatim before the independent browser geometry comparison. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -28,6 +30,7 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_UI_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_key)
 - [`local-storage.PERSISTED_UI_VERSION`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_ui_version)
 - [`local-storage.getDefaultTuning`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
+- [`StaticExplorerData`](../../packages/explorer/src/shared/staticExplorerData.ts.mdmd.md#symbol-staticexplorerdata) (type-only)
 - [`capture.captureFromPage`](../../scripts/layout-lab/capture.ts.mdmd.md#symbol-capturefrompage)
 - [`evaluate.baselineConfig`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-baselineconfig)
 - [`evaluate.driftOf`](../../scripts/layout-lab/evaluate.ts.mdmd.md#symbol-driftof)

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/markdown.ts
-- Generated At: 2026-10-30T15:19:36.862Z
+- Generated At: 2026-11-04T16:15:09.979Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Renders authored Live Doc content and bundled Markdown in the Explorer's reader.
 - A doc's raw HTML is text (2026-10-21, [Turn 12 of the October 20 session](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-12)). Until then the renderer passed it through, so an `<img src="https://…">` in a doc made the page fetch from the internet and an `onerror` ran as script; no doc relied on raw HTML. Inline processing now finishes each link, autolink and code span first and holds it aside behind a private-use character, U+E000; one a doc writes is held first as its own character reference, so the doc keeps it and cannot forge a piece; the rest is escaped whole and only then emphasized. The same change ended three faults of the old order: a path in backticks showed its anchor's markup, underscores inside code became italics, and emphasis rewrote link attributes (`target="<em>blank"`). An underscore inside a word is a letter of it, as in CommonMark.
 - An image's syntax is a link to the image, never fetched, and the default link handler keeps any scheme but the web and mail as text, so `javascript:` never becomes a link. The reader's own handler in `detailPanel.ts` makes the same refusal.
 - `fenceClosing` and `headingOf` (2026-10-30) are the renderer's own rules for a fence and a heading, exported so that [reader-sections.ts](reader-sections.ts.mdmd.md), which cuts a doc's authored block at its headings, agrees with the renderer on what is fenced and what is a heading. The `slugger` option lets the reader render the block section by section with one slugger, so each heading keeps the id it has when the block is rendered whole.
+
+November 4 joins soft source line wraps into one paragraph while keeping blank paragraphs, lists, headings and fenced code distinct. The native long-symbol reading test exposed the former per-line paragraphs; the correction applies consistently to both reading surfaces and preserves the raw-HTML-as-text policy. See the [integration record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -39,14 +41,14 @@ HTML string
 
 #### `RenderMarkdownOptions` {#symbol-rendermarkdownoptions}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L154)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L162)
 
 ##### `RenderMarkdownOptions` — Summary
 Options for the lightweight markdown-to-HTML renderer.
 
 #### `fenceClosing` {#symbol-fenceclosing}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L178)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L186)
 
 ##### `fenceClosing` — Summary
 The line that closes the fence a line opens, or null when the line opens none. A backtick fence whose info string
@@ -54,7 +56,7 @@ holds a backtick is not one. Any reader that splits a document must agree with t
 
 #### `headingOf` {#symbol-headingof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L185)
+- Source: [source](../../../../../../packages/explorer/src/client/markdown.ts#L193)
 
 ##### `headingOf` — Summary
 A heading line's level and its text without closing hashes, or null when the line is not a heading.

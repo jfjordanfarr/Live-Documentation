@@ -34,6 +34,7 @@ interface DrawnName {
 /** Each drawn name's lines and segments. */
 async function drawnNames(page: Page, selector: string): Promise<DrawnName[]> {
   return page.evaluate(selector => {
+    const scale = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a || 1;
     const result: DrawnName[] = [];
     for (const element of document.querySelectorAll<HTMLElement>(selector)) {
       const text = element.textContent ?? "";
@@ -44,10 +45,11 @@ async function drawnNames(page: Page, selector: string): Promise<DrawnName[]> {
       let index = 0, lastTop: number | null = null;
       for (let node = walker.nextNode(); node; node = walker.nextNode()) {
         const data = node.textContent ?? "", parent = node.parentElement!, style = getComputedStyle(parent);
-        const limit = parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        const limit = parent.getBoundingClientRect().width / scale - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight)
+          - parseFloat(style.borderLeftWidth) - parseFloat(style.borderRightWidth);
         range.selectNodeContents(node);
-        const width = [...range.getClientRects()].reduce((sum, box) => sum + box.width, 0);
-        segments.push({ start: index, end: index + data.length, over: width > limit + 0.5 });
+        const width = [...range.getClientRects()].reduce((sum, box) => sum + box.width / scale, 0);
+        segments.push({ start: index, end: index + data.length, over: width > limit + 1 / 64 });
         for (let i = 0; i < data.length; i++) {
           range.setStart(node, i); range.setEnd(node, i + 1);
           const box = range.getBoundingClientRect();

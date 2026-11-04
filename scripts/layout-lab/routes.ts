@@ -40,19 +40,19 @@ export interface Route {
 export interface CardRect { left: number; top: number; right: number; bottom: number }
 
 /** Every card's rectangle in the picture. */
-export function cardRects(scene: Scene): Map<string, CardRect> {
+export function cardRects(scene: Scene, metrics?: ReadonlyMap<string, CardMetrics>): Map<string, CardRect> {
   const rects = new Map<string, CardRect>();
   for (const item of scene.items.values()) {
     const left = scene.lefts[item.column] + item.inset;
     const top = scene.tops.get(item.id) ?? 0;
-    rects.set(item.id, { left, top, right: left + scene.widths[item.column] - 2 * item.inset, bottom: top + (scene.heights.get(item.id) ?? 0) });
+    rects.set(item.id, { left, top, right: left + (metrics?.get(item.id)?.width ?? scene.widths[item.column] - 2 * item.inset), bottom: top + (scene.heights.get(item.id) ?? 0) });
   }
   return rects;
 }
 
 /** The routes of every forward reference; a self-reference and a reference read back are stubs, not routes. */
 export function routeScene(scene: Scene, branches: BranchGraph, capture: Capture, metrics: Map<string, CardMetrics>, bezier: BezierTuning): Route[] {
-  const rects = cardRects(scene);
+  const rects = cardRects(scene, metrics);
   const columnOf = new Map(branches.columns.flatMap((nodes, column) => nodes.map(node => [node.id, column] as const)));
   const bounds = branches.columns.map(nodes => {
     const cards = nodes.flatMap(node => rects.get(node.id) ?? []);

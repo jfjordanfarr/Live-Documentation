@@ -5,7 +5,7 @@
  * Renders a file's Live Doc from the graph in the bundle: its metadata, its
  * authored block as markdown, and its generated sections as navigable lists.
  */
-import { renderLiveDoc, symbolName } from "@live-documentation/engine/live-docs/document";
+import { renderLiveDoc, renderSymbolBlocks } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { GitHubSlugger } from "@live-documentation/engine/tooling/githubSlugger";
 
@@ -13,6 +13,7 @@ import { requireElement } from "./dom";
 import { escapeHtml } from "./graph-helpers";
 import type { HistoryMoment } from "./history/moment";
 import { renderMarkdown } from "./markdown";
+import { createReaderLinkHandler, fileInspection, readerLink, resolveReaderTarget, type ReaderLinkContext } from "./reader-links";
 import { authoredSections, readerOrder, type AuthoredSection } from "./reader-sections";
 import type { InspectionTarget } from "./types";
 import { INTERNAL_SYMBOL } from "./views/pin-state";
@@ -41,6 +42,8 @@ export interface DetailPanelApi {
   downloadCurrentDoc(): void;
   /** Get the current node (if any) */
   getCurrentNode(): ExplorerNodePayload | null;
+  /** Follow an authored section link from an on-map description without moving the map. */
+  scrollToFragment(fragment?: string): void;
 }
 
 /** Configuration options for the Explorer detail panel. */
@@ -350,7 +353,7 @@ export function createDetailPanel(
     note.hidden = text === null;
   }
 
-  return { showNode, showDirectory, showBundledDoc, setActions, setNote, setLoading, hide, downloadCurrentDoc, getCurrentNode };
+  return { showNode, showDirectory, showBundledDoc, setActions, setNote, setLoading, hide, downloadCurrentDoc, getCurrentNode, scrollToFragment };
 }
 
 /**
@@ -368,20 +371,19 @@ function renderDocumentation(
   const parts: string[] = [];
 
   parts.push(renderNodeMetadata(node, file.generatedAt));
+  const linkHandler = createReaderLinkHandler(node.docPath, links);
 
   if (inspectedSymbol === INTERNAL_SYMBOL) {
     parts.push(sectionHtml("Internal implementation", "File-level connections that are not attributed to a public symbol."));
   } else if (inspectedSymbol) {
     const block = file.symbols.find(entry => entry.name === inspectedSymbol);
-    const summary = block?.sections.find(section => section.title === "Summary")?.body.join(" ");
-    parts.push(sectionHtml("Inspected symbol", `<strong>${escapeHtml(inspectedSymbol)}</strong>`
-      + (block?.kind ? ` · ${escapeHtml(block.kind)}` : "")
-      + (summary ? `<p>${escapeHtml(summary)}</p>` : "")));
+    parts.push(sectionHtml("Inspected symbol", block
+      ? `<div class="reader-prose">${renderMarkdown(renderSymbolBlocks([{ ...block, slug: undefined }]).join("\n"), { linkHandler })}</div>`
+      : `<strong>${escapeHtml(inspectedSymbol)}</strong>`));
   }
 
   // The authored sections are rendered in the author's order with one slugger, so each heading keeps the id the whole
   // block would give it, then placed in the reader's: Purpose, the generated facts, then Notes and the rest.
-  const linkHandler = createReaderLinkHandler(node.docPath, links);
   const slugger = new GitHubSlugger();
   const sections = authoredSections(file.authored);
   const rendered = new Map(sections.map((section, index) => [section, authoredSectionHtml(section, index, renderMarkdown(section.markdown, { linkHandler, slugger }))]));
@@ -674,114 +676,4 @@ function attachBundledDocLinkHandlers(
       }
     });
   });
-}
-
-interface ReaderLinkContext {
-  nodesById: ReadonlyMap<string, ExplorerNodePayload>;
-  files: Readonly<Record<string, GraphFile>>;
-  bundledMarkdown?: Readonly<Record<string, string>>;
-}
-
-/** Resolve against the document's real path; neither the docs root nor its extension is special. */
-function resolveDocLink(relativePath: string, fromDocPath: string): string | null {
-  if (!relativePath) return fromDocPath;
-  const parts = relativePath.startsWith("/") ? [] : fromDocPath.split("/").slice(0, -1);
-  for (const part of relativePath.split("/")) {
-    if (!part || part === ".") continue;
-    if (part === "..") {
-      if (!parts.length) return null;
-      parts.pop();
-    } else parts.push(part);
-  }
-  return parts.join("/");
-}
-
-function decodeLinkPart(value: string): string {
-  try { return decodeURIComponent(value); } catch { return value; }
-}
-
-/** Follow a documented re-export to its origin where the bundle carries that evidence. */
-function fileInspection(
-  node: ExplorerNodePayload,
-  fragment: string | undefined,
-  context: ReaderLinkContext,
-  visited = new Set<string>()
-): Extract<InspectionTarget, { kind: "file" }> {
-  const whole: Extract<InspectionTarget, { kind: "file" }> = { kind: "file", nodeId: node.id };
-  if (!fragment) return whole;
-  const key = `${node.id}#${fragment}`;
-  if (visited.has(key)) return whole;
-  visited.add(key);
-  const file = context.files[node.id];
-  const anchored = file?.symbols.find(entry => entry.slug === fragment);
-  const reExport = file?.reExports?.find(entry => entry.slug === fragment)
-    ?? (anchored ? undefined : file?.reExports?.find(entry => entry.name === fragment));
-  if (reExport?.from) {
-    const origin = resolveReaderTarget(reExport.from.link, node.docPath, context, visited);
-    if (origin?.kind === "file") return origin;
-  }
-  const exact = anchored ?? file?.symbols.find(entry => entry.name === fragment);
-  const named = file?.symbols.filter(entry => symbolName(entry) === fragment) ?? [];
-  const block = exact ?? (named.length === 1 ? named[0] : undefined);
-  const symbol = block ? block.name : node.publicSymbols.includes(fragment) ? fragment : undefined;
-  return symbol ? { ...whole, symbol } : whole;
-}
-
-function resolveReaderTarget(
-  href: string,
-  fromDocPath: string,
-  context: ReaderLinkContext,
-  visited?: Set<string>
-): InspectionTarget | null {
-  href = href.trim();
-  if (href.startsWith("<") && href.endsWith(">")) href = href.slice(1, -1);
-  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/iu.test(href)) return null;
-  const hash = href.indexOf("#");
-  const pathPart = hash < 0 ? href : href.slice(0, hash);
-  const fragment = hash < 0 ? undefined : decodeLinkPart(href.slice(hash + 1)) || undefined;
-  const path = resolveDocLink(decodeLinkPart(pathPart), fromDocPath);
-  if (path === null) return null;
-  for (const node of context.nodesById.values()) {
-    if (node.docPath === path || node.codePath === path || node.id === path) {
-      return fileInspection(node, fragment, context, visited);
-    }
-  }
-  if (context.bundledMarkdown && Object.hasOwn(context.bundledMarkdown, path)) {
-    return { kind: "bundled-doc", path, ...(fragment ? { fragment } : {}) };
-  }
-  const directory = path.replace(/\/+$/u, "");
-  const prefix = directory ? `${directory}/` : "";
-  if ([...context.nodesById.keys()].some(id => id.startsWith(prefix))) return { kind: "directory", directory };
-  return null;
-}
-
-function readerLink(target: InspectionTarget, text: string): string {
-  if (target.kind === "file") {
-    return `<a href="#" class="node-link" data-node-id="${escapeHtml(target.nodeId)}"${target.symbol ? ` data-symbol="${escapeHtml(target.symbol)}"` : ""}>${text}</a>`;
-  }
-  if (target.kind === "directory") {
-    return `<a href="#" class="directory-link" data-directory="${escapeHtml(target.directory)}">${text}</a>`;
-  }
-  return `<a href="#" class="bundled-doc-link" data-doc-path="${escapeHtml(target.path)}"${target.fragment ? ` data-fragment="${escapeHtml(target.fragment)}"` : ""}>${text}</a>`;
-}
-
-/** Authored Live Doc prose and bundled Markdown use exactly the same navigation rules. */
-function createReaderLinkHandler(fromDocPath: string, context: ReaderLinkContext): (href: string, text: string) => string {
-  return (href, text) => {
-    href = href.trim();
-    if (href.startsWith("<") && href.endsWith(">")) href = href.slice(1, -1);
-    const target = resolveReaderTarget(href, fromDocPath, context);
-    if (target) {
-      // A local authored heading does not name another evidence item or a generated symbol.
-      if (href.startsWith("#") && target.kind === "file" && !target.symbol) {
-        return `<a href="#" class="reader-anchor" data-fragment="${escapeHtml(decodeLinkPart(href.slice(1)))}">${text}</a>`;
-      }
-      return readerLink(target, text);
-    }
-    if (/^(?:https?:|mailto:|\/\/)/iu.test(href)) {
-      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${text}</a>`;
-    }
-    // A source-relative path unavailable in this static bundle has no truthful reader destination.
-    return `<span class="unavailable-link" title="Not included in this bundle">${text}</span>`;
-  };
 }

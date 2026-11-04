@@ -33,6 +33,7 @@ import {
 import { compressSnapshot, readUrlState, scrubSnapshot, writeUrlState, type UrlStateSnapshot } from "./persistence/compressed-url-state";
 import { canGoBack, canGoForward, onHistoryChange, startHistory } from "./persistence/history";
 import { placeOf } from "./persistence/place";
+import { chooseReading, releaseReading } from "./reading-state";
 import { searchIndexOf, type SearchHit } from "./search/graph-search";
 import { createSearchBar, type SearchWords } from "./search/search-bar";
 import type { ExplorerState, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "./types";
@@ -66,7 +67,7 @@ async function bootstrapExplorer(): Promise<void> {
     else {
       const saved = readPersistedNav();
       snapshot = { ...snapshot, selectedNodeId: saved?.nodeId ?? null, inspection: saved?.inspection,
-        discovery: saved?.discovery, openDirectories: new Set(saved?.openDirectories ?? []) };
+        discovery: saved?.discovery, reading: saved?.reading, openDirectories: new Set(saved?.openDirectories ?? []) };
     }
     const needsHistory = snapshot.commit || selectedFileIds(snapshot).some(id => id.startsWith("history:"));
     const history = needsHistory && bundle.history ? await loadHistory(bundle.history.file) : undefined;
@@ -79,6 +80,7 @@ async function bootstrapExplorer(): Promise<void> {
 /** File identities a shared place needs, including retained past-only files when the picture is back at today. */
 function selectedFileIds(snapshot: UrlStateSnapshot): string[] {
   return [snapshot.selectedNodeId, ...snapshot.pinSet.entries.map(pin => pin.nodeId),
+    ...(snapshot.reading ?? []).map(choice => choice.nodeId),
     snapshot.inspection?.kind === "file" ? snapshot.inspection.nodeId : null,
     snapshot.destination?.kind === "file" ? snapshot.destination.nodeId : null,
     snapshot.reachFrom?.kind === "file" ? snapshot.reachFrom.nodeId : null,
@@ -201,7 +203,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   state.historyCommit = initialExploration.commit;
   state.showAuthors = initialExploration.authors;
   state.inspection = initialExploration.inspection ?? null;
-  state.discovery = initialExploration.discovery ?? (state.inspection?.kind === "file" ? { kind: "file", nodeId: state.inspection.nodeId }
+  state.reading = initialExploration.reading;
+  state.discovery = initialExploration.discovery ?? (state.inspection?.presentation === "reading" ? null : state.inspection?.kind === "file" ? { kind: "file", nodeId: state.inspection.nodeId }
     : state.inspection?.kind === "directory" ? state.inspection : null);
 
   const persistNav = createPersistNavScheduler(() => ({
@@ -211,6 +214,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     openDirectories: state.openDirectories ?? new Set(),
     selectedNodeId: state.selectedNode?.id ?? null,
     inspection: state.inspection,
+    reading: state.reading,
     discovery: state.discovery
   }));
   const schedulePersistNav = persistNav.schedule;
@@ -221,9 +225,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     bundledMarkdown,
     history: () => shownMoment,
     onClose: () => closeInspection(),
-    onNodeClick: (nodeId, symbol) => openInspection({ kind: "file", nodeId, ...(symbol ? { symbol } : {}) }),
-    onDirectoryClick: directory => openInspection({ kind: "directory", directory }),
-    onBundledDocClick: (path, fragment) => openInspection({ kind: "bundled-doc", path, ...(fragment ? { fragment } : {}) })
+    onNodeClick: (nodeId, symbol) => followReaderLink({ kind: "file", nodeId, ...(symbol ? { symbol } : {}) }),
+    onDirectoryClick: directory => followReaderLink({ kind: "directory", directory }),
+    onBundledDocClick: (path, fragment) => followReaderLink({ kind: "bundled-doc", path, ...(fragment ? { fragment } : {}) })
   });
   const itemMenu = createItemMenu();
   const hasBundledDoc = (path: string): boolean => !!bundledMarkdown && Object.hasOwn(bundledMarkdown, path);
@@ -249,6 +253,13 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   }
   let inspectionOpener: HTMLElement | null = null;
   const readerRoom = window.matchMedia("(max-width: 760px), (max-height: 480px)");
+  const readingDialog = (): boolean => state.inspection?.presentation === "reading";
+  const readerIsModal = (): boolean => !!state.inspection && (readerRoom.matches || readingDialog());
+  const readerBackdrop = document.createElement("div");
+  readerBackdrop.className = "reading-dialog-backdrop";
+  readerBackdrop.hidden = true;
+  readerBackdrop.addEventListener("click", () => closeInspection());
+  document.body.append(readerBackdrop);
   const narrowNavigation = window.matchMedia("(max-width: 760px)");
   const sidebar = requireElement("sidebar");
   if (narrowNavigation.matches) sidebar.classList.add("collapsed");
@@ -286,10 +297,17 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   const localView = createLocalView({
     state,
+    readingLinks: { files, nodesById, bundledMarkdown },
+    onReadingChange: changeReading,
+    onReadTarget: (target, fragment) => {
+      openInspection(target);
+      if (fragment) detailPanel.scrollToFragment(fragment);
+    },
     // The open reader covers the right of the map; a fit keeps the picture out from under it (2026-10-30). Its box is
     // its layout box, where it stands once its slide-in has ended, not where the transition has it at this instant.
     obstruction: () => {
       const panel = requireElement("detail-panel");
+      if (panel.classList.contains("reading-dialog")) return null;
       if (!panel.classList.contains("visible")) return null;
       const host = (panel.offsetParent ?? document.body).getBoundingClientRect();
       return new DOMRect(host.left + panel.offsetLeft, host.top + panel.offsetTop, panel.offsetWidth, panel.offsetHeight);
@@ -646,6 +664,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
 
   /** The card's X releases all its pins and its 2D expansion, preserving any other retained file. */
   function closePinnedNode(nodeId: string): void {
+    state.reading = releaseReading(state.reading ?? [], nodeId);
     if (state.discovery?.kind === "file" && state.discovery.nodeId === nodeId) state.discovery = null;
     changePinned(nodeId, "*", removePinsForNode(state.pins ?? EMPTY_PIN_SET, nodeId), true);
   }
@@ -658,6 +677,16 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     const pins = state.pins ?? EMPTY_PIN_SET;
     const next = removePinsForNode(pins, nodeId);
     if (next !== pins) changePinned(nodeId, "*", next, false, true);
+  }
+
+  /** Keep or fold explanations independently of connections, retaining a readable unpinned file on restoration. */
+  function changeReading(nodeId: string, symbol: string | undefined, open: boolean): void {
+    if (!nodesById.has(nodeId)) return;
+    const frame = localView.captureReadingChange(nodeId, symbol);
+    state.reading = chooseReading(state.reading ?? [], nodeId, symbol, open);
+    localView.render();
+    frame.afterRender();
+    persistExploration();
   }
 
   /** A 3D press adds a shared file pin; another press withdraws this file's own contribution to the neighborhood. */
@@ -1316,7 +1345,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       closeInspection();
       return;
     }
-    if (event.key !== "Tab" || !readerRoom.matches) return;
+    if (event.key !== "Tab" || !readerIsModal()) return;
     const controls = [...requireElement("detail-panel").querySelectorAll<HTMLElement>(
       'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), [tabindex="0"]'
     )].filter(element => !element.closest("[hidden], [inert]") && element.getClientRects().length > 0);
@@ -1367,7 +1396,8 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     state.perspective = place.perspective ?? state.perspective;
     state.spatialLayout = place.spatialLayout ?? state.spatialLayout;
     state.inspection = exploration.inspection ?? null;
-    state.discovery = exploration.discovery ?? (state.inspection?.kind === "file" ? { kind: "file", nodeId: state.inspection.nodeId }
+    state.reading = exploration.reading;
+    state.discovery = exploration.discovery ?? (state.inspection?.presentation === "reading" ? null : state.inspection?.kind === "file" ? { kind: "file", nodeId: state.inspection.nodeId }
       : state.inspection?.kind === "directory" ? state.inspection : null);
     state.tuning = nextTuning;
     state.filters = nextFilters;
@@ -1531,7 +1561,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   /** A full reader covers a small viewport; opening it never resizes the underlying map. */
   function syncReaderPresentation(): void {
     const panel = requireElement("detail-panel");
-    const modal = !!state.inspection && readerRoom.matches;
+    const modal = readerIsModal();
+    panel.classList.toggle("reading-dialog", readingDialog());
+    readerBackdrop.hidden = !readingDialog();
     panel.setAttribute("role", modal ? "dialog" : "complementary");
     if (modal) panel.setAttribute("aria-modal", "true");
     else panel.removeAttribute("aria-modal");
@@ -1554,12 +1586,12 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
     if (!validated) return;
     historyControl.pause();
     state.inspection = validated;
-    if (state.view === "map" && state.perspective === "3d" && validated.kind !== "bundled-doc") {
+    if (state.view === "map" && state.perspective === "3d" && validated.kind !== "bundled-doc" && !readingDialog()) {
       state.discovery = validated.kind === "file" ? { kind: "file", nodeId: validated.nodeId } : validated;
     }
     itemMenu.close();
     renderInspection();
-    if (state.view === "map" && state.perspective === "3d") {
+    if (state.view === "map" && state.perspective === "3d" && !readingDialog()) {
       const stepPanel = document.querySelector<HTMLElement>(".history-step-panel:not([hidden])");
       const room = requireElement("graph-svg").clientWidth - requireElement("detail-panel").offsetWidth - (stepPanel?.offsetWidth ?? 0);
       if (stepPanel && !readerRoom.matches && room < 320) historyControl.hideDetails();
@@ -1568,6 +1600,11 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       else forceGraphView.keepInspectionVisible();
     }
     persistExploration();
+  }
+
+  /** Following a link stays in the explicit reading dialog until the person closes that reading session. */
+  function followReaderLink(target: InspectionTarget): void {
+    openInspection(readingDialog() ? { ...target, presentation: "reading" } : target);
   }
 
   /** Hiding by Close or by Back gives keyboard focus back to the visible inspection opener. */
@@ -1587,6 +1624,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       if (target) focusWithoutTabStop(target);
     }
     inspectionOpener = null;
+    if (localView.isShown()) localView.show();
   }
 
   /** Focus an element; one that is not a control takes focus without joining the tab order. */
@@ -1668,6 +1706,7 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       commit: state.historyCommit ?? null,
       authors: state.showAuthors ?? false,
       inspection: state.inspection,
+      reading: state.reading,
       discovery: state.discovery ?? null
     };
   }

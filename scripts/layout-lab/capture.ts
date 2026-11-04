@@ -9,15 +9,17 @@
  * @module layout-lab/capture
  */
 import type { PreparedTextWithSegments } from "@chenglou/pretext";
+import type { PreparedRichInline, RichInlineItem } from "@chenglou/pretext/rich-inline";
 import { chromium, type Page } from "@playwright/test";
 import * as fs from "node:fs/promises";
 import path from "node:path";
 
 
 import { TEXT_TOLERANCE } from "./card-model";
+import type { ReadingFlow } from "./reading-model";
 import { admitCompiledFunctions, ORIGIN, serveBundle, type ScopeRun } from "./scopes";
 import { LAYOUT_PRESETS, type LayoutPreset } from "../../packages/explorer/src/client/layout-presets";
-import { PERSISTED_UI_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { ExplorerFilters } from "../../packages/explorer/src/client/types";
 import { localRetainUrl } from "../../tests/e2e/still-picture";
 
@@ -57,6 +59,8 @@ export interface RowCapture {
    * row, whose padding its negative margin cancels; the Internals row's dashed border. Absent in older captures.
    */
   frame?: { width: number; height: number };
+  /** Open description under this row's name and pins, measured again at the proposed text width. */
+  reading?: ReadingFlow;
 }
 
 /** A test chip's, or the test label's, box as the page drew it. */
@@ -73,7 +77,18 @@ export interface CardCapture {
   /** The card's border on each side (two pixels for the subject) and its padding. */
   borderWidth: number;
   padding: number;
+  paddingInline?: number;
+  paddingBottom?: number;
   minWidth: number;
+  maxWidth?: number;
+  readingWidth?: number;
+  readingFrameHeight?: number;
+  constants?: CardConstants;
+  purpose?: ReadingFlow;
+  overflow?: ReadingFlow;
+  directoryHidden?: boolean;
+  footer?: { items: ChipCapture[]; gap: number; top: number; marginTop: number };
+  hubY?: number;
   title: PreparedText;
   path: PreparedText;
   directory: PreparedText;
@@ -95,6 +110,7 @@ export interface CardCapture {
 export interface CardConstants {
   titleMarginBottom: number;
   titlePaddingRight: number;
+  titlePaddingTop?: number;
   symbolsMarginTop: number;
   gridRowGap: number;
   gridColumnGap: number;
@@ -148,7 +164,7 @@ export async function captureScope(run: ScopeRun, preset: LayoutPreset = "relaxe
     const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
     await serveBundle(page);
     // A capture is of the first paint: the continuing search is off, so the page keeps the picture it first drew.
-    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: 1, tuning: { localMap: { ...LAYOUT_PRESETS[preset].localMap, searchStarts: 0 } } }) });
+    await page.addInitScript(({ key, value }) => { window.localStorage.setItem(key, value); }, { key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { ...LAYOUT_PRESETS[preset].localMap, searchStarts: 0 } } }) });
     await page.goto(`${ORIGIN}${localRetainUrl(run.base, run.scope)}`);
     return await captureFromPage(page, run);
   } finally {
@@ -169,7 +185,7 @@ export async function captureFromPage(page: Page, run: ScopeRun): Promise<Captur
   await page.waitForTimeout(500);
   await page.route("**/__pretext/**", async route => {
     const name = new URL(route.request().url()).pathname.replace(/^.*\/__pretext\//u, "");
-    const body = name === PRETEXT_ENTRY ? `import * as pretext from "./layout.js"; window.__pretext = pretext;` : await fs.readFile(path.join(PRETEXT_DIST, name));
+    const body = name === PRETEXT_ENTRY ? `import * as pretext from "./layout.js"; import * as rich from "./rich-inline.js"; window.__pretext = {...pretext, ...rich};` : await fs.readFile(path.join(PRETEXT_DIST, name));
     await route.fulfill({ body, contentType: "application/javascript" });
   });
   await page.addScriptTag({ type: "module", url: `/__pretext/${PRETEXT_ENTRY}` });
@@ -185,37 +201,53 @@ type PageCapture = Pick<Capture, "userAgent" | "fonts" | "constants" | "cards" |
 function readCapture(page: Page): Promise<PageCapture> {
   return page.evaluate(({ tolerance }) => {
     type Pretext = {
-      prepareWithSegments: (text: string, font: string, options?: { letterSpacing?: number }) => PreparedTextWithSegments;
+      prepareWithSegments: (text: string, font: string, options?: { letterSpacing?: number; whiteSpace?: "pre-wrap" }) => PreparedTextWithSegments;
       layout: (prepared: PreparedTextWithSegments, maxWidth: number, lineHeight: number) => { height: number; lineCount: number };
+      prepareRichInline: (items: RichInlineItem[]) => PreparedRichInline;
     };
     const pretext = (window as unknown as { __pretext: Pretext }).__pretext;
     const warnings: string[] = [];
     const viewport = document.querySelector<HTMLElement>("#map-viewport")!;
     const scale = new DOMMatrix(getComputedStyle(viewport).transform).a || 1;
     const px = (value: string): number => parseFloat(value) || 0;
+    const unit = (value: number): number => Math.round(value * 64) / 64;
     const root = document.querySelector<HTMLElement>("#map-container .local-placed")!;
 
     // Fonts: one entry per distinct font string and letter spacing, with the height of one line measured on a probe.
     const fonts: Record<string, { font: string; letterSpacing: number; lineHeight: number; glyphs: Record<string, number> }> = {};
-    const probe = document.createElement("div");
-    Object.assign(probe.style, { position: "absolute", visibility: "hidden", whiteSpace: "nowrap", left: "0", top: "0" });
-    probe.textContent = "Xg";
-    root.append(probe);
+    const calibrated = new Set<string>();
     const canvas = document.createElement("canvas").getContext("2d")!;
     const GLYPHS = " +0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const fontOf = (element: Element): string => {
       const style = getComputedStyle(element);
       const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
       const letterSpacing = style.letterSpacing === "normal" ? 0 : px(style.letterSpacing);
-      const key = `${font}|${letterSpacing}`;
+      const label = element.matches(".symbol-label");
+      const code = element.matches("pre") ? element.querySelector("code") : null;
+      const key = `${font}|${letterSpacing}|${style.lineHeight}|${label ? "label" : code ? "pre-code" : "text"}`;
       if (!fonts[key]) {
-        probe.style.font = font;
-        probe.style.letterSpacing = `${letterSpacing}px`;
-        const lineHeight = probe.getBoundingClientRect().height / scale;
+        const probe = document.createElement("div");
+        Object.assign(probe.style, { position: "absolute", visibility: "hidden", whiteSpace: "nowrap", left: "0", top: "0",
+          padding: "0", border: "0", margin: "0", font, letterSpacing: `${letterSpacing}px`, lineHeight: style.lineHeight });
+        probe.textContent = "Xg";
+        root.append(probe);
+        const lineHeight = Math.round(probe.getBoundingClientRect().height / scale * 64) / 64;
+        probe.remove();
         canvas.font = font;
         const glyphs: Record<string, number> = {};
         for (const glyph of GLYPHS) glyphs[glyph] = canvas.measureText(glyph).width + letterSpacing;
         fonts[key] = { font, letterSpacing, lineHeight, glyphs };
+      }
+      if ((label || code) && !calibrated.has(key) && element.getBoundingClientRect().width > 0) {
+        // Flex labels and pre/code struts round their fractional line boxes in their formatting context. Calibrate
+        // one short line there, preserving the original nodes/listeners; Pretext independently reflows the real text.
+        const host = code ?? element, children = [...host.childNodes];
+        host.replaceChildren("Xg");
+        const height = element.getBoundingClientRect().height / scale - px(style.paddingTop) - px(style.paddingBottom)
+          - px(style.borderTopWidth) - px(style.borderBottomWidth);
+        fonts[key].lineHeight = Math.round(height * 64) / 64;
+        host.replaceChildren(...children);
+        calibrated.add(key);
       }
       return key;
     };
@@ -225,12 +257,56 @@ function readCapture(page: Page): Promise<PageCapture> {
       // Hold Pretext to the page: its height at the element's width against the element's own, where the element is shown.
       const rect = element.getBoundingClientRect();
       const style = getComputedStyle(element);
-      const width = (rect.width - px(style.paddingLeft) - px(style.paddingRight)) / scale;
+      const width = rect.width / scale - px(style.paddingLeft) - px(style.paddingRight);
       const laid = pretext.layout(value, width + tolerance, fonts[font].lineHeight);
-      const own = (rect.height - px(style.paddingTop) - px(style.paddingBottom)) / scale;
+      const own = rect.height / scale - px(style.paddingTop) - px(style.paddingBottom);
       if (rect.width > 0 && Math.abs(laid.height - own) > 0.5) warnings.push(`${JSON.stringify(text)} at ${width.toFixed(2)} px: Pretext ${laid.height.toFixed(2)}, page ${own.toFixed(2)} (${laid.lineCount} lines)`);
       return { text, font, prepared: JSON.parse(JSON.stringify(value)) };
     };
+
+    const flow = (element: HTMLElement): ReadingFlow => {
+      const style = getComputedStyle(element);
+      const length = (value: string): number => Math.trunc(px(value) * 64) / 64;
+      const more = element.classList.contains("local-reading-block") ? element.querySelector<HTMLButtonElement>(":scope > .local-reading-full") : null;
+      const children = [...element.children].filter(child => child !== more && getComputedStyle(child).display !== "none");
+      const blocks = children.filter(child => /^(block|flow-root|list-item)$/u.test(getComputedStyle(child).display));
+      const result: ReadingFlow = {
+        children: blocks.map(child => flow(child as HTMLElement)), lineHeight: fonts[fontOf(element)].lineHeight,
+        inset: { horizontal: length(style.paddingLeft) + length(style.paddingRight) + length(style.borderLeftWidth) + length(style.borderRightWidth),
+          vertical: length(style.paddingTop) + length(style.paddingBottom) + length(style.borderTopWidth) + length(style.borderBottomWidth) },
+        margin: { top: length(style.marginTop), bottom: length(style.marginBottom) },
+        maxHeight: style.maxHeight === "none" ? null : length(style.maxHeight)
+      };
+      if (!blocks.length) {
+        const items: RichInlineItem[] = [];
+        const visit = (node: Node): void => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const parent = node.parentElement!, computed = getComputedStyle(parent), font = fonts[fontOf(parent)];
+            let text = node.textContent ?? "";
+            if (getComputedStyle(parent, "::first-letter").textTransform === "uppercase") text = text.replace(/^./u, char => char.toUpperCase());
+            items.push({ text, font: font.font, letterSpacing: font.letterSpacing,
+              ...(computed.display === "inline-block" ? { break: "never" as const, extraWidth: px(computed.marginRight) + px(computed.marginLeft) } : {}) });
+          } else if (node instanceof HTMLElement && getComputedStyle(node).display !== "none") {
+            for (const child of node.childNodes) if (child !== more) visit(child);
+          }
+        };
+        visit(element);
+        // Fenced code keeps indentation and whitespace as well as its line boundaries; rich inline is normal flow.
+        if (style.whiteSpace.startsWith("pre")) {
+          const font = fonts[fontOf(element.querySelector("code") ?? element)];
+          result.pre = JSON.parse(JSON.stringify(pretext.prepareWithSegments(element.textContent ?? "", font.font,
+            { whiteSpace: "pre-wrap", letterSpacing: font.letterSpacing })));
+        } else if (items.some(item => item.text.trim())) result.inline = JSON.parse(JSON.stringify(pretext.prepareRichInline(items)));
+      }
+      if (more) {
+        const hidden = more.hidden;
+        more.hidden = false;
+        result.more = { flow: flow(more), always: element.dataset.hasMore === "true" };
+        more.hidden = hidden;
+      }
+      return result;
+    };
+    const visibleFlow = (element: HTMLElement | null): ReadingFlow | undefined => element && !element.hidden && getComputedStyle(element).display !== "none" ? flow(element) : undefined;
 
     const cards: Record<string, CardCapture> = {};
     const wrappers = [...root.querySelectorAll<HTMLElement>(".local-column")];
@@ -251,8 +327,8 @@ function readCapture(page: Page): Promise<PageCapture> {
       if (label.getBoundingClientRect().width === 0 || rects.some(rect => rect.width === 0)) return null;
       const gap = px(getComputedStyle(wrapper).columnGap);
       return {
-        width: rects.reduce((sum, rect) => sum + rect.width / scale + gap, 0),
-        height: Math.max(0, ...rects.map(rect => rect.height / scale))
+        width: rects.reduce((sum, rect) => sum + unit(rect.width / scale) + gap, 0),
+        height: Math.max(0, ...rects.map(rect => unit(rect.height / scale)))
       };
     };
     wrappers.forEach((wrapper, i) => {
@@ -283,17 +359,18 @@ function readCapture(page: Page): Promise<PageCapture> {
           height: sides("marginTop", "marginBottom", "paddingTop", "paddingBottom", "borderTopWidth", "borderBottomWidth")
         };
         const captured: RowCapture = { symbol: row.dataset.symbol ?? "", label: prepared(label), badgesWidth: badges ? badges.getBoundingClientRect().width / scale : 0, frame };
+        captured.reading = visibleFlow(row.querySelector<HTMLElement>(".local-reading-block"));
         if (controls) captured.controls = controls;
         else if (label.parentElement!.children.length > (badges ? 2 : 1)) unmeasuredControls.push(captured);
         return captured;
       });
-      if (!constants) {
+      {
         // A dot of the stylesheet's size, from a probe rather than this card's first dot, which may be collapsed to nothing.
         const dot = document.createElement("div");
         dot.className = "symbol-anchor dot inbound";
         dot.style.visibility = "hidden";
         grid.append(dot);
-        const dotHeight = dot.getBoundingClientRect().height / scale;
+        const dotHeight = unit(dot.getBoundingClientRect().height / scale);
         dot.remove();
         const gridStyle = getComputedStyle(grid);
         const titleStyle = getComputedStyle(title);
@@ -321,6 +398,7 @@ function readCapture(page: Page): Promise<PageCapture> {
           placeholderHeight: px(placeholder.height) + px(placeholder.marginTop),
           titleMarginBottom: px(titleStyle.marginBottom),
           titlePaddingRight: px(titleStyle.paddingRight),
+          titlePaddingTop: px(titleStyle.paddingTop),
           symbolsMarginTop: px(getComputedStyle(symbols).marginTop),
           gridRowGap: px(gridStyle.rowGap),
           gridColumnGap: px(gridStyle.columnGap),
@@ -336,7 +414,7 @@ function readCapture(page: Page): Promise<PageCapture> {
           labelPaddingBottom: px(labelStyle.paddingBottom)
         };
       }
-      const chip = (element: Element): ChipCapture => { const r = element.getBoundingClientRect(); return { width: r.width / scale, height: r.height / scale }; };
+      const chip = (element: Element): ChipCapture => { const r = element.getBoundingClientRect(); return { width: unit(r.width / scale), height: unit(r.height / scale) }; };
       const pins: Record<string, number> = {};
       const round = (value: number): number => Math.round(value + 1e-3);
       const wrapperRect = wrapper.getBoundingClientRect();
@@ -362,7 +440,31 @@ function readCapture(page: Page): Promise<PageCapture> {
         naturalWidth: naturals[i],
         borderWidth: px(cardStyle.borderTopWidth),
         padding: px(cardStyle.paddingTop),
+        paddingInline: px(cardStyle.paddingLeft),
+        paddingBottom: px(cardStyle.paddingBottom),
         minWidth: px(cardStyle.minWidth),
+        maxWidth: cardStyle.maxWidth === "none" ? undefined : px(cardStyle.maxWidth),
+        readingWidth: card.classList.contains("local-reading-card") ? px(cardStyle.getPropertyValue("--reading-available-width")) : undefined,
+        readingFrameHeight: card.classList.contains("local-reading-card") ? px(cardStyle.getPropertyValue("--reading-frame-height")) : undefined,
+        constants: constants!,
+        purpose: visibleFlow(card.querySelector<HTMLElement>(":scope > .local-reading-purpose")),
+        overflow: (() => {
+          const button = card.querySelector<HTMLButtonElement>(":scope > .local-reading-file-full");
+          if (!button || !card.classList.contains("local-reading-card")) return undefined;
+          const hidden = button.hidden;
+          button.hidden = false;
+          const captured = flow(button);
+          button.hidden = hidden;
+          return captured;
+        })(),
+        directoryHidden: getComputedStyle(directory).display === "none",
+        hubY: card.classList.contains("local-reading-card") ? px(getComputedStyle(hub!).top) + px(cardStyle.borderTopWidth) : undefined,
+        footer: (() => {
+          const footer = card.querySelector<HTMLElement>(".local-reading-counts");
+          if (!footer || getComputedStyle(footer).display === "none") return undefined;
+          const style = getComputedStyle(footer);
+          return { items: [...footer.children].map(chip), gap: px(style.gap), marginTop: px(style.marginTop), top: px(style.marginTop) + px(style.paddingTop) + px(style.borderTopWidth) };
+        })(),
         title: prepared(title),
         path: prepared(pathElement),
         directory: prepared(directory),
@@ -397,7 +499,6 @@ function readCapture(page: Page): Promise<PageCapture> {
       }
       labelHeights[directory] = label.offsetHeight;
     }
-    probe.remove();
     return {
       userAgent: navigator.userAgent,
       fonts,

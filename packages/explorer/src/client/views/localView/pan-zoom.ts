@@ -102,15 +102,15 @@ export function animateMapTransform(
       y: from.y + (to.y - from.y) * eased,
       k: from.k + (to.k - from.k) * eased
     };
-    onTransformChange();
-    if (progress < 1) {
-      runtime.mapAnimationFrame = requestAnimationFrame(step);
-    } else {
+    if (progress >= 1) {
       runtime.mapAnimationTarget = null;
       if (!suppressUserState) {
         runtime.mapUserAdjusted = true;
       }
     }
+    // Consumers can resume geometry work only after the final camera pose has actually been installed.
+    onTransformChange();
+    if (progress < 1) runtime.mapAnimationFrame = requestAnimationFrame(step);
   };
 
   runtime.mapAnimationFrame = requestAnimationFrame(step);

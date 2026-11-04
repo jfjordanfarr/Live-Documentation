@@ -23,6 +23,7 @@ import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { readLayoutSettings, type LayoutSettings } from "../layout-presets";
 import type { DiscoveryTarget, InspectionTarget, LocalMapPerspective, PathDestination, SpatialLayout, ViewName } from "../types";
 import { commitUrl } from "./history";
+import { readReadingChoices, scrubReadingChoices, type ReadingChoice } from "../reading-state";
 import type { PinSet } from "../views/pin-state";
 import { serializePins, deserializePins, EMPTY_PIN_SET, INTERNAL_SYMBOL } from "../views/pin-state";
 import { reconcileRetained } from "../views/retained-state";
@@ -54,7 +55,7 @@ export interface CompressedPayload {
   /** Selected node ID. */
   n?: string;
   /** Explicitly open evidence: file `n` (symbol `s`), bundled Markdown `m` (section `a`), or directory `d`. */
-  i?: { n: string; s?: string } | { m: string; a?: string } | { d: string };
+  i?: ({ n: string; s?: string } | { m: string; a?: string } | { d: string }) & { r?: boolean };
   /** The last discovered file or directory, independent of whether its reader is open. */
   g?: { n: string } | { d: string };
   /** Pin entries (compact: `{ n, s, h? }[]`). */
@@ -87,6 +88,8 @@ export interface CompressedPayload {
   h?: string;
   /** Whether the history's step panel names each commit's author (the plan's C8); omitted when it does not. */
   b?: boolean;
+  /** Deliberate reading choices, independent of pins: file, optional exact symbol, open/folded. Hover is never stored. */
+  u?: ReadingChoice[];
 }
 
 // ─── Snapshot (typed application-level state) ──────────────────────
@@ -120,6 +123,8 @@ export interface UrlStateSnapshot {
   commit: string | null;
   /** Whether the history's step panel names each commit's author. */
   authors: boolean;
+  /** Explicit on-map reading choices; absent on older addresses. */
+  reading?: readonly ReadingChoice[];
 }
 
 const COLD_FILTERS = getDefaultFilters();
@@ -172,11 +177,14 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   if (snapshot.selectedNodeId) {
     payload.n = snapshot.selectedNodeId;
   }
-  if (snapshot.inspection?.kind === "file") payload.i = snapshot.inspection.symbol
-    ? { n: snapshot.inspection.nodeId, s: snapshot.inspection.symbol } : { n: snapshot.inspection.nodeId };
+  if (snapshot.inspection?.kind === "file") payload.i = {
+    n: snapshot.inspection.nodeId,
+    ...(snapshot.inspection.symbol ? { s: snapshot.inspection.symbol } : {})
+  };
   else if (snapshot.inspection?.kind === "bundled-doc") payload.i = snapshot.inspection.fragment
     ? { m: snapshot.inspection.path, a: snapshot.inspection.fragment } : { m: snapshot.inspection.path };
   else if (snapshot.inspection?.kind === "directory") payload.i = { d: snapshot.inspection.directory };
+  if (payload.i && snapshot.inspection?.presentation === "reading") payload.i.r = true;
   if (snapshot.discovery?.kind === "file") payload.g = { n: snapshot.discovery.nodeId };
   else if (snapshot.discovery?.kind === "directory") payload.g = { d: snapshot.discovery.directory };
   if (snapshot.pinSet.entries.length > 0) {
@@ -197,6 +205,7 @@ export function snapshotToPayload(snapshot: UrlStateSnapshot): CompressedPayload
   if (reachFrom) payload.a = reachFrom;
   if (snapshot.commit) payload.h = snapshot.commit;
   if (snapshot.authors) payload.b = true;
+  if (snapshot.reading?.length) payload.u = readReadingChoices(snapshot.reading);
 
   return payload;
 }
@@ -243,6 +252,7 @@ export function payloadToSnapshot(payload: CompressedPayload): UrlStateSnapshot 
     ...(retentionOrder ? { retentionOrder } : {}),
     ...(layout ? { layout } : {}),
     ...(discovery ? { discovery } : {}),
+    ...(payload.u !== undefined ? { reading: readReadingChoices(payload.u) } : {}),
     destination: readDestination(payload.x),
     reachFrom: readDestination(payload.a),
     commit: typeof payload.h === "string" && payload.h.trim() ? payload.h.trim() : null,
@@ -258,13 +268,17 @@ function readInspection(value: unknown): InspectionTarget | null {
   if (["n", "m", "d"].filter(key => Object.hasOwn(target, key)).length !== 1) return null;
   if (Object.hasOwn(target, "n") && typeof target.n === "string" && target.n) return {
     kind: "file", nodeId: target.n,
-    ...(typeof target.s === "string" && target.s ? { symbol: target.s } : {})
+    ...(typeof target.s === "string" && target.s ? { symbol: target.s } : {}),
+    ...(target.r === true ? { presentation: "reading" as const } : {})
   };
   if (Object.hasOwn(target, "m") && typeof target.m === "string" && target.m) return {
     kind: "bundled-doc", path: target.m,
-    ...(typeof target.a === "string" && target.a ? { fragment: target.a } : {})
+    ...(typeof target.a === "string" && target.a ? { fragment: target.a } : {}),
+    ...(target.r === true ? { presentation: "reading" as const } : {})
   };
-  if (Object.hasOwn(target, "d") && typeof target.d === "string") return { kind: "directory", directory: target.d };
+  if (Object.hasOwn(target, "d") && typeof target.d === "string") return {
+    kind: "directory", directory: target.d, ...(target.r === true ? { presentation: "reading" as const } : {})
+  };
   return null;
 }
 
@@ -341,7 +355,7 @@ export function scrubSnapshot(
   if (target?.kind === "file" && nodesById.has(target.nodeId)) {
     const symbols = (nodesById.get(target.nodeId) as { publicSymbols?: unknown } | undefined)?.publicSymbols;
     inspection = target.symbol && (target.symbol === INTERNAL_SYMBOL || Array.isArray(symbols) && symbols.includes(target.symbol))
-      ? target : { kind: "file", nodeId: target.nodeId };
+      ? target : { kind: "file", nodeId: target.nodeId, ...(target.presentation === "reading" ? { presentation: "reading" } : {}) };
   } else if (target?.kind === "directory" && (destinationLives(target, nodesById, nodeIds) || historicalDirectory?.(target.directory))) {
     inspection = target;
   } else if (target?.kind === "bundled-doc" && bundledMarkdown && Object.hasOwn(bundledMarkdown, target.path)) {
@@ -361,6 +375,7 @@ export function scrubSnapshot(
     selectedNodeId,
     inspection,
     ...(snapshot.discovery !== undefined ? { discovery } : {}),
+    ...(snapshot.reading !== undefined ? { reading: scrubReadingChoices(snapshot.reading, nodesById) } : {}),
     destination,
     reachFrom,
     ...(snapshot.retentionOrder ? {

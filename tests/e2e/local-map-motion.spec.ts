@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapSettled, localRetainUrl } from "./still-picture";
+import { localMapSettled, localRetainUrl, panIntoView } from "./still-picture";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
 /**
@@ -111,8 +111,8 @@ async function openPicture(page: Page, moveMs?: number): Promise<void> {
 interface IndexFile { symbols: Array<{ name: string; slug?: string }>; edges: Array<{ to?: string; toSymbol?: string }>; outbound: string[] }
 
 /**
- * A row to pin on a card that is not the subject and stands wholly in the frame, since the map does not scroll and a
- * click lands only on what is shown, chosen so that pinning it rearranges the picture: first the internals row of a
+ * A row to pin on a card that is not the subject, reached by panning because the reading frame may clip neighbors,
+ * chosen so that pinning it rearranges the picture: first the internals row of a
  * card with a dependency not yet drawn, since what it brings in lands in a column already drawn and moves its
  * neighbours, then a symbol row whose symbol a file not yet drawn uses. The choice is made from the bundle's own data,
  * so it holds whatever this repository's graph becomes.
@@ -121,15 +121,17 @@ async function rowToPin(page: Page) {
   const data = await (await page.request.get("/explorer-data.json")).json() as { graph: { files: Record<string, IndexFile> } };
   const seen = await page.evaluate(() => {
     const drawn = [...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(card => card.dataset.id!);
-    const rows: Array<{ id: string; symbol: string }> = [];
+    const rows: Array<{ id: string; symbol: string; distance: number }> = [];
+    const frame = document.querySelector("#view-map")!.getBoundingClientRect();
     for (const card of document.querySelectorAll<HTMLElement>("#map-container .node-card:not(.local-focus)")) {
-      const r = card.getBoundingClientRect();
-      if (r.left < 0 || r.top < 0 || r.right > innerWidth || r.bottom > innerHeight) continue;
       for (const row of card.querySelectorAll<HTMLElement>(".symbol-row:not(.branch-symbol-hidden)")) {
-        rows.push({ id: card.dataset.id!, symbol: row.dataset.symbol! });
+        const r = row.querySelector(".symbol-label-wrapper")!.getBoundingClientRect();
+        if (!r.width || !r.height) continue;
+        rows.push({ id: card.dataset.id!, symbol: row.dataset.symbol!, distance: Math.hypot(
+          Math.max(0, frame.left - r.left, r.right - frame.right), Math.max(0, frame.top - r.top, r.bottom - frame.bottom)) });
       }
     }
-    return { drawn, rows };
+    return { drawn, rows: rows.sort((a, b) => a.distance - b.distance) };
   });
   const shown = new Set(seen.drawn);
   const internals = seen.rows.find(({ id, symbol }) => symbol === "__internals__" && (data.graph.files[id]?.outbound ?? []).some(other => !shown.has(other)));
@@ -139,8 +141,11 @@ async function rowToPin(page: Page) {
     return slug !== undefined && Object.entries(data.graph.files).some(([other, file]) => !shown.has(other) && file.edges.some(edge => edge.to === id && edge.toSymbol === slug));
   });
   const found = internals ?? offered;
-  expect(found, "a card wholly in the frame with a row whose pin brings a file not yet drawn").toBeDefined();
-  return page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .symbol-label-wrapper`);
+  expect(found, "a row whose pin brings a file not yet drawn").toBeDefined();
+  const row = page.locator(`#map-container .node-card[data-id="${found!.id}"] .symbol-row[data-symbol="${found!.symbol}"] .symbol-label-wrapper`);
+  await panIntoView(page, row);
+  await expect(row.locator(".local-symbol-pin")).toBeInViewport();
+  return row;
 }
 
 interface Frame { t: number; moving: boolean; cards: Array<[string, number, number]>; held: [number, number] | null }
@@ -167,10 +172,10 @@ async function recordFrames(page: Page, heldSelector: string): Promise<void> {
 
 test("a pin moves the picture: cards keep their elements, the acted-on row holds still, and the rest slide to their new places", async ({ page }) => {
   await openPicture(page, LONG_MOVE_MS);
+  const row = await rowToPin(page);
   await stamp(page);
   const before = await cards(page);
   expect(before.length).toBeGreaterThan(2);
-  const row = await rowToPin(page);
   const clicked = await row.evaluate(el => ({
     id: el.closest<HTMLElement>(".node-card")!.dataset.id!,
     symbol: el.closest<HTMLElement>(".symbol-row")!.dataset.symbol!
@@ -228,9 +233,10 @@ for (const way of ["the move length at zero", "motion reduced"] as const) {
   test(`with ${way} the picture jumps to its new arrangement, as it did before`, async ({ page }) => {
     if (way === "motion reduced") await page.emulateMedia({ reducedMotion: "reduce" });
     await openPicture(page, way === "motion reduced" ? undefined : 0);
+    const row = await rowToPin(page);
     await stamp(page);
     const before = await cards(page);
-    await (await rowToPin(page)).locator(".local-symbol-pin").click();
+    await row.locator(".local-symbol-pin").click();
     expect(await moving(page), "no move runs").toBe(false);
     const after = await cards(page);
     await page.waitForTimeout(300);

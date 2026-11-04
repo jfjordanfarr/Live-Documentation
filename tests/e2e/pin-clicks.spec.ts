@@ -58,21 +58,27 @@ test("a file's direct Pin retains it whole; symbol pins narrow, add, release, an
   await card(page, MODELS).locator(".local-file-pin").click();
   await localMapSettled(page);
   expect(pins(page)).toEqual([`${MODELS}#*`]);
+  await panIntoView(page, symbolPin(page, MODELS, "Report"));
   await symbolPin(page, MODELS, "Report").click();
   await localMapSettled(page);
   expect(pins(page), "narrowed to the symbol pressed").toEqual([`${MODELS}#Report`]);
   await expect(symbolPin(page, MODELS, "Report")).toHaveAttribute("aria-pressed", "true");
   // The narrowed card folds its other rows away; the reveal shows them without pinning, and then one is added
-  await card(page, MODELS).getByRole("button", { name: /^\+\d+ symbols?$/ }).click();
+  const reveal = card(page, MODELS).getByRole("button", { name: /^\+\d+ symbols?$/ });
+  await panIntoView(page, reveal);
+  await reveal.click();
   await localMapSettled(page);
   expect(pins(page), "the reveal pins nothing").toEqual([`${MODELS}#Report`]);
   await expect(symbolPin(page, MODELS, "Record")).toHaveAttribute("aria-pressed", "false");
+  await panIntoView(page, symbolPin(page, MODELS, "Record"));
   await symbolPin(page, MODELS, "Record").click();
   await localMapSettled(page);
   expect(pins(page), "the next symbol added").toEqual([`${MODELS}#Report`, `${MODELS}#Record`]);
+  await panIntoView(page, symbolPin(page, MODELS, "Report"));
   await symbolPin(page, MODELS, "Report").click();
   await localMapSettled(page);
   expect(pins(page), "a pressed symbol released").toEqual([`${MODELS}#Record`]);
+  await panIntoView(page, symbolPin(page, MODELS, "Record"));
   await symbolPin(page, MODELS, "Record").click();
   await localMapSettled(page);
   expect(pins(page), "the last symbol released leaves the file pinned whole").toEqual([`${MODELS}#*`]);
@@ -131,7 +137,7 @@ test("Centre makes a neighbour the subject without a pin; double-clicking anothe
 
 for (const gesture of [
   { name: "symbol label", selector: ".symbol-label", inspectsType: false },
-  { name: "return type badge", selector: ".type-badge-return", inspectsType: true }
+  { name: "recorded return type", selector: ".local-reading-types a", inspectsType: true }
 ] as const) {
   test(`double-clicking an estate ${gesture.name} keeps the source as subject`, async ({ page }) => {
     await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(GATEWAY_CLIENT)}`);
@@ -140,8 +146,11 @@ for (const gesture of [
 
     const labelWrapper = row(page, GATEWAY_CLIENT, "GetPaymentAsync");
     await panIntoView(page, labelWrapper);
-    const target = labelWrapper.locator(gesture.selector);
-    if (gesture.inspectsType) await expect(target).toHaveAttribute("data-target-id", PAYMENT_RESULT);
+    const target = gesture.inspectsType
+      ? card(page, GATEWAY_CLIENT).locator('.symbol-row[data-symbol="GetPaymentAsync"]').locator(gesture.selector).first()
+      : labelWrapper.locator(gesture.selector);
+    if (gesture.inspectsType) await expect(target).toHaveAttribute("data-node-id", PAYMENT_RESULT);
+    await panIntoView(page, target);
     await target.dblclick();
     await localMapSettled(page);
 
