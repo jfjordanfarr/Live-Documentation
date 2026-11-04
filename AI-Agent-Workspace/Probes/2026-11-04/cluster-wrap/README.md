@@ -34,6 +34,8 @@ Root suggests a cloud at rest with a smooth rim on hover/focus as a future compa
 
 ### Open technical questions
 
+The owner's [Turn 19 clarification](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-19--november-4) asks for systematic optimization toward a Pareto-frontier-like balance of legibility and truthfulness, drawing confidence from the 2D map's constraint balancing. The limitations below delimit this first appearance trial; they are not a verdict against finding substantially better 3D layouts. Root's evaluation recommendation is to compare competing good arrangements through actual camera and pin/reveal journeys, including perceptual ambiguity, rather than accepting one attractive still or treating every objective as simultaneously maximizable.
+
 - A ring's hidden neighborhood is not necessarily a disjoint bag. If two frontier files both reach the same hidden file, independent wrappers can claim it twice. Recursive refinement needs a grouping/ownership policy and a representation of cross-group relationships.
 - An exact future silhouette requires positions for hidden members. Computing their complete layout can spend the work that discovery currently avoids. A cache, a coarser layout or an explicitly approximate envelope has different costs and meanings.
 - A transparent, detailed or continuously animated surface can itself be expensive. Current instancing already limits draw-call overhead. Measure prepared vertices, picking, physics, GPU work and idle behavior separately before claiming a speedup.
