@@ -27,3 +27,11 @@ The root recommends overview folding with explicit reading choices restored on z
 One huge comment and a card with many ordinary comments are different problems. Limiting individual passages can solve the first while leaving the second tall. A file-level reader provides access to all text but does not itself settle how much prose a file pin should show. The owner's initial file-pin-all default remains in force for the experiment.
 
 Evaluate journeys: find a symbol, follow a reference, read its explanation, compare it with another, zoom out and back, and share/reopen the deliberate choices. Compare the same content, pins, viewport and start point. Use judgment to reject predictable failures before implementation, and use prototypes for the questions that genuinely depend on seeing and using the result. The owner's eye and automated geometry/accessibility checks answer different parts of that evaluation.
+
+## November 4: the subject determines the starting view
+
+The owner [grounds the next step in sharing one C# class](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-15--november-4): compose and frame its card to teach the subject before zooming outward to its neighbors. That changes the calibration target. A raw zoom percentage is arbitrary until a useful reading view exists, and overview-first should not be treated as a universal entry requirement for a link whose subject is already known.
+
+[Cockburn, Karlson and Bederson's review](https://doi.org/10.1145/1456650.1456652) distinguishes approaches that separate focused and contextual views spatially, approaches that move between them through zoom, and approaches that blend them in one view. It supports discussing these as different ways to serve a task; it does not select this card design or a numerical threshold. The root's application is a dependable card reference for 2D outward learning, complementary to the owner's 3D inward-discovery journey.
+
+The [card comparison](../Probes/2026-11-04/card-reference/README.md) preserves readable type and tests its actual frame, including repeated returns and recipient viewports. The [3D wrapper comparison](../Probes/2026-11-04/cluster-wrap/README.md) separately tests an enclosure and its reveal over real frozen positions. A visual wrapper does not by itself establish cheaper graph simulation or a meaningful recursive hierarchy.

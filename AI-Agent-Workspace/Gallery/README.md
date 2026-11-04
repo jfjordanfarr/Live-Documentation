@@ -170,3 +170,22 @@ The [zoom and long-text sheet](sheets/reading-zoom.png) compares the same whole-
 | [Explicit full-text reader](discovery-reading/reader.png) | [long-comment-reader.png](../Probes/2026-11-03/reading-zoom/long-comment-reader.png) |
 
 Rebuild just this sheet with `bash AI-Agent-Workspace/Gallery/sheets.sh reading-zoom.png`.
+
+## A card reference and a wrapped island, November 4
+
+The [card-reference sheet](sheets/payment-card-reference.png) follows the owner's [centered-card scenario](../ChatHistory/2026/11/2026-11-03.1.record.md#turn-15--november-4): the same payment-service file read as a portrait or wide card, then seen from two greater distances. These four captures use the same repository mirror, whole-file pin and 1440×960 viewport. Its direct-neighbor scope includes the fixture's expected-edge JSON files; it is not the same inventory as the standalone estate bundle used by some earlier pictures. The [report](../Probes/2026-11-04/card-reference/README.md) includes narrower, colder and larger content cases.
+
+The [wrapped-component sheet](sheets/wrapped-estate-component.png) uses the standalone estate's largest connected component: the same frozen production-physics positions, 30 files and 57 reference pairs, under three materials and unwrapped. The [report](../Probes/2026-11-04/cluster-wrap/README.md) distinguishes this convex-envelope appearance trial from recursive grouping and performance work.
+
+| Gallery copy | Source capture |
+| --- | --- |
+| [Portrait card](payment-service/card-portrait.png) | [payment-portrait.png](../Probes/2026-11-04/card-reference/payment-portrait.png) |
+| [Wide card](payment-service/card-wide.png) | [payment-wide.png](../Probes/2026-11-04/card-reference/payment-wide.png) |
+| [Connections](payment-service/card-connections.png) | [payment-connections.png](../Probes/2026-11-04/card-reference/payment-connections.png) |
+| [Wider](payment-service/card-wider.png) | [payment-wider.png](../Probes/2026-11-04/card-reference/payment-wider.png) |
+| [Skin](estate-component/skin.png) | [skin.png](../Probes/2026-11-04/cluster-wrap/skin.png) |
+| [Cage](estate-component/cage.png) | [cage.png](../Probes/2026-11-04/cluster-wrap/cage.png) |
+| [Cloud](estate-component/cloud.png) | [cloud.png](../Probes/2026-11-04/cluster-wrap/cloud.png) |
+| [Unwrapped](estate-component/unwrapped.png) | [unwrapped.png](../Probes/2026-11-04/cluster-wrap/unwrapped.png) |
+
+Rebuild with `bash AI-Agent-Workspace/Gallery/sheets.sh payment-card-reference.png` or `bash AI-Agent-Workspace/Gallery/sheets.sh wrapped-estate-component.png`.

@@ -2,6 +2,8 @@
 
 Historical design comparison, November 3, 2026. Follows [Turns 8–13](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-8): authorization to begin integrating on-map reading, faster/less-sticky hover feedback, the reminder to make the Detail Panel unnecessary, a possible explicit reader for overwhelming text, and the request for informed UI/UX guidance with visible alternatives. The [research note](../../../Research/2026-11-03-on-map-reading-ux.md) separates primary guidance from the root's design hypotheses.
 
+**Owner feedback, November 4:** the unwrap threshold did not meet the need. [Turn 15](../../../ChatHistory/2026/11/2026-11-03.1.record.md#turn-15--november-4) supplies a more concrete reference: a centered card that teaches a typical subject before outward zoom reveals its neighbors. The [next comparison](../../2026-11-04/card-reference/README.md) starts from that composition. The numerical thresholds below remain this earlier experiment, not an adopted product rule.
+
 The live page is under ignored `dist/explorer/probes/reading-zoom/`, beside the previous native-card comparison. Both name-click modes and all twelve real-content cases remain available. This is a small controlled comparison before selecting the unresolved production behavior; no production source has changed.
 
 ## Three treatments on the same content

@@ -91,3 +91,15 @@ sheet reading-zoom.png "Reading across zoom: overview and long text" \
   "Same pin and scale: fold prose for the overview" pathfind-reading/zoom-fold.png \
   "discovery.ts: bounded inline explanation" discovery-reading/inline.png \
   "Same comment: explicit full-text reader" discovery-reading/reader.png
+
+sheet payment-card-reference.png "One C# card, then its surroundings" \
+  "Payment service: portrait reading reference" payment-service/card-portrait.png \
+  "Same facts: wide reading reference" payment-service/card-wide.png \
+  "Connections: outward from the card" payment-service/card-connections.png \
+  "Wider: the whole direct-neighbor scope" payment-service/card-wider.png
+
+sheet wrapped-estate-component.png "One real component: three wrappers and the contents" \
+  "Translucent skin" estate-component/skin.png \
+  "Taut cage" estate-component/cage.png \
+  "Clouded shell" estate-component/cloud.png \
+  "Unwrapped: 30 files, 57 reference pairs" estate-component/unwrapped.png

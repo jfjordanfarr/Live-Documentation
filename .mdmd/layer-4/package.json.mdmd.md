@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: package.json
 - Entry: tooling
-- Generated At: 2026-10-22T18:45:21.347Z
+- Generated At: 2026-11-04T02:15:48.564Z
 
 ## Authored
 ### Purpose
@@ -49,3 +49,8 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 - `typescript@^5.4.0`
 - `vitest@^4.1.11`
 <!-- LIVE-DOC:END Dependencies -->
+
+<!-- LIVE-DOC:BEGIN Cited By -->
+### Cited By
+- [`AGENTS.md`](../../AGENTS.md)
+<!-- LIVE-DOC:END Cited By -->

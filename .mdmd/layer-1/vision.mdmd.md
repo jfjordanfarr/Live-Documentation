@@ -1,6 +1,6 @@
 # Live Documentation
 
-_Current as of 2026-11-02. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in [direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
+_Current as of 2026-11-04. Nothing below is set in stone: the picture is on trial, and the owner's words at every fork are in [direction.md](../../AI-Agent-Workspace/Memory/direction.md)._
 
 _Design clarification, 2026-09-30: the owner has [reopened the dimensional split and separation of views](../../AI-Agent-Workspace/ChatHistory/2026/09/2026-09-30.2.record.md#turn-19). File symbols and system endpoints pose the same interface-display problem: show relevant connections and selectively reveal contents while preserving orientation. The September 28 picture below records the design explored then; its allocation of 2D/3D and separate renderings is under exploration, with no replacement chosen._
 
@@ -46,6 +46,8 @@ What holds at every scale is the model: a thing exposes and consumes, and the pi
 Each scale is its own designed experience, complete on its own terms. The closest view, one file with its public symbols, consumers flanking it, and wires crossing between them, should feel intimate and exact. The furthest, systems as pieces on a board, should feel like a map. The mechanics are continuous: the same model, the same fading, the same navigation everywhere. The renderings are crafted separately; which they are is the next section. You move between scales; the view does not morph under you. A change of perspective is not a change of scale: the Local Map and the Force Graph are two renderings of the same file scale, and moving between them keeps the thing under the eye in place while its surroundings rearrange around it (the owner, 2026-10-02). From any scale, the next one out should be visible enough to pull you toward it.
 
 The upper limit of scale is set by what the data can honestly support, not by the renderer.
+
+_Direction clarified November 4, 2026 ([the owner's card scenario](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-15--november-4)): a shared 2D exploration can begin with one deliberately framed card, composed to teach its subject in a single view as far as feasible, with neighbors allowed beyond the viewport. The card is the aesthetic and navigational reference; zooming outward reveals the relationships around it. The owner imagines learning in the 2D Local Map by zooming out, and in the 3D Local Map by zooming in. These are complementary learning journeys, not a requirement that every arrival begin at an overview. Shareable traversals across both, including a possible timed zoom-out, are future ideas; no automatic perspective switch or autoplay is selected._
 
 ## The picture (2026-09-28)
 
