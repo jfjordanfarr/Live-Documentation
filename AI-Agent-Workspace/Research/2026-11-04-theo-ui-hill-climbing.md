@@ -62,3 +62,21 @@ This makes success concrete: another person can explain and navigate the softwar
 ## Source coverage
 
 Read YouTube's own transcript through its final caption at 31:39, all four PR descriptions, and the pinned council skill and README; inspected the linked annotated comparison. The player reported an unsupported browser, so this was a transcript and published-evidence review, not a viewing of the complete moving video. Caption mirrors helped locate passages, but the conclusions above use the original transcript and Theo's repositories. No model council was run and no skill was installed.
+
+## November 4 follow up for this workspace
+
+In [Turn 7](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-7), the owner specifies GPT-6.1 Sol as the subagent model for this experiment and asks the lead to select the next work from the preferences already supplied. The proposed adaptation uses fresh Sol review contexts and explicit criteria. Provider diversity is not a precondition for this local experiment; the historical description of Theo's protocol above remains accurate.
+
+The lead's chosen next task is the 2D portrait-card and outward-learning journey. Start by grading the existing build, then address its largest observed weakness and compare the resulting journey with the baseline. The first scope includes one ordinary estate subject, one dense repository subject, long descriptions, desktop and phone. It tests the remaining name-click alternatives in context without treating either as already selected.
+
+| Criterion | What a strong result looks like |
+| --- | --- |
+| Visual hierarchy and appeal | The subject leads; the card feels coherent and carefully composed; controls and neighboring content have a clear visual order. |
+| Reading | Names, purpose and useful symbol explanations are readable at the starting frame, and more content is easy to reach. |
+| Controls and state | A person can predict an action and tell what is retained, temporarily previewed, or deliberately open. |
+| Navigation continuity | Following, returning, opening text and changing scale preserve recognizable subjects and context. |
+| Interpreting relationships | A person can identify what offers, what uses, and what the picture omits or sends backward, with answers checked against the docs. |
+
+Use the same descriptive anchors on each dimension: 1–3 means an ordinary task fails; 4–6 means it works with substantial guessing or friction; 7–8 means it is clear with identifiable rough edges; 9–10 means it is clear and coherent with no consequential friction observed in the tested journey. Every grade must name the evidence and explain the remaining weakness. These are proposed evaluation anchors, not measured results or a claim that a perfect interface exists.
+
+Keep dimensions separate, preserve factual and accessibility checks, and compare actual preferences between matched candidates. A new review context receives neither the previous score nor a requested passing number. The useful output is a visibly and behaviorally better journey, with before/after evidence for the owner, not a newly built evaluation framework as an end in itself.
