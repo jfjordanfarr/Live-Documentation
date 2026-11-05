@@ -198,9 +198,15 @@ test.describe("phone reading", () => {
     await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
     expect(decompressSnapshot(new URL(page.url()).searchParams.get("s")!)?.pinSet.entries).toEqual([]);
     await page.keyboard.press("Escape");
-    // Reading prose deliberately absorbs a tap; the ordinary card path retains body inspection.
+    // Since November 5 a tap on the card's body opens nothing: the file's name folds and opens its reading, and the
+    // evidence reader lives in the More menu above.
     await subject.locator(".node-path").tap();
-    await expect(page.locator("#detail-panel")).toHaveClass(/visible/u);
+    await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
+    const name = subject.locator(".local-file-name");
+    await name.tap();
+    await expect(name).toHaveAttribute("aria-expanded", "false");
+    await expect(read).toHaveAttribute("aria-pressed", "false");
+    await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
   });
 
   test("the map ends above its controls and a lower symbol can be panned into clear space", async ({ page }) => {

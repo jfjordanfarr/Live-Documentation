@@ -62,7 +62,8 @@ test("inspection and Back preserve the map; direct pins and shared evidence rema
   await localMapSettled(page);
   const pinSet = { entries: [{ nodeId: A, symbol: "GetPaymentAsync" }] };
   expect(snapshot(page)).toMatchObject({ selectedNodeId: A, pinSet, inspection: null });
-  await card(page, A).locator(".local-file-inspect").click();
+  await card(page, A).locator(".local-file-more").click();
+  await page.getByRole("menuitem", { name: "Inspect GatewayClient.cs", exact: true }).click();
   await page.locator(`#detail-panel .node-link[data-node-id="${B}"]`).first().click();
   const inspection = snapshot(page).inspection;
   expect(inspection).toEqual({ kind: "file", nodeId: B, symbol: "PaymentResultModel" });
@@ -119,9 +120,11 @@ test("Internals inspection pins its own endpoint; centring an already open direc
 test("keyboard reading keeps focus through links and an Inspect–Back–Forward–Close journey", async ({ page }) => {
   await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(A)}`);
   await ready(page);
-  const opener = card(page, A).locator(".local-file-inspect");
+  // A name reads its card since 2026-11-05; the evidence reader opens from More, which then owns the focus return.
+  const opener = card(page, A).locator(".local-file-more");
   await opener.focus();
   await page.keyboard.press("Enter");
+  await page.getByRole("menuitem", { name: "Inspect GatewayClient.cs", exact: true }).press("Enter");
   const link = page.locator(`#detail-panel .node-link[data-node-id="${B}"]`).first();
   await link.focus();
   await page.keyboard.press("Enter");
@@ -282,14 +285,15 @@ test("a Pin pressed twice leaves the map as it was, and closing the reader finds
   await expect(pin()).toHaveAttribute("aria-pressed", "false");
 
   // The reader's own Pin and Unpin re-render every card, the opener among them.
-  const opener = card(page, A).locator(".local-file-inspect");
+  const opener = card(page, A).locator(".local-file-more");
   await opener.focus();
   await page.keyboard.press("Enter");
+  await page.getByRole("menuitem", { name: "Inspect GatewayClient.cs", exact: true }).press("Enter");
   await page.locator("#detail-panel").getByRole("button", { name: "Pin file", exact: true }).click();
   await page.locator("#detail-panel").getByRole("button", { name: "Unpin file", exact: true }).click();
   expect(snapshot(page)).toMatchObject({ selectedNodeId: A, pinSet: { entries: [] } });
   await page.getByRole("button", { name: "Close details", exact: true }).click();
-  await expect(card(page, A).locator(".local-file-inspect")).toBeFocused();
+  await expect(card(page, A).locator(".local-file-more")).toBeFocused();
 });
 
 test("one Escape closes only the topmost surface: the search field, then the reader, then the World Map's help", async ({ page }) => {

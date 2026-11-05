@@ -5,7 +5,7 @@
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/index.ts
 - Entry: declared
-- Generated At: 2026-11-04T15:03:15.260Z
+- Generated At: 2026-11-05T15:19:42.192Z
 
 ## Authored
 ### Purpose
@@ -38,6 +38,8 @@ The October 23 identity/framing pass adds **Fit current scope** to the shared bo
 Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) a path, the destination's reach and the references against a path are asked over the ground the picture shows (`history/moment-paths.ts`): today's, or the moment's while the 3D picture shows one, from the moment the history control hands `onMoment`. The path is asked again, and the tray and the search bar told again, at every move of the history and when it closes, before the view draws the moment; the report begins with the commit's date and short hash, an end that does not stand at the moment is reported in the tray's words instead of a path, the search chips and the reader's note say the same absence, and a hop of the strip opens the file as it stands today, a file deleted since doing nothing, as a sphere of the past does.
 
 The [November 2 exploration pass](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-8) makes the root overview reversible through existing Open/Close state and puts the existing Hops shown setting beside the 3D layout buttons. Pin-only perspective changes hold the newest pin visually without selecting it. A fresh visit without declared entries chooses Structure, explicit and remembered choices still win, and page exit flushes pending persistence so immediate navigation does not lose that choice.
+
+Since [November 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) `changeReading` carries the control the person used (the name or the book) into the view's capture, so that the render returns focus to it; names read their descriptions and the evidence reader opens from More.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -123,6 +125,7 @@ _No public symbols detected_
 - [`directory-state.openDirectory`](./views/localView/directory-state.ts.mdmd.md#symbol-opendirectory)
 - [`directory-state.under`](./views/localView/directory-state.ts.mdmd.md#symbol-under)
 - [`index.createLocalView`](./views/localView/index.ts.mdmd.md#symbol-createlocalview)
+- [`types.ReadingControl`](./views/localView/types.ts.mdmd.md#symbol-readingcontrol) (type-only)
 - [`perspectiveTransition.animatePerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-animateperspective)
 - [`perspectiveTransition.captureLocalScene`](./views/perspectiveTransition.ts.mdmd.md#symbol-capturelocalscene)
 - [`perspectiveTransition.holdPerspective`](./views/perspectiveTransition.ts.mdmd.md#symbol-holdperspective)

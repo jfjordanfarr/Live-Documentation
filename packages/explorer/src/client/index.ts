@@ -44,6 +44,7 @@ import { explorerGraphOf } from "../shared/graph";
 import type { StaticExplorerData } from "../shared/staticExplorerData";
 import type { ExplorerNodePayload } from "../shared/types";
 import { closeDirectory as closeOpenedDirectory, openDirectory as addOpenedDirectory, under, type OpenDirectories } from "./views/localView/directory-state";
+import type { ReadingControl } from "./views/localView/types";
 import { animatePerspective, captureLocalScene, holdPerspective } from "./views/perspectiveTransition";
 import { addPin, EMPTY_PIN_SET, INTERNAL_SYMBOL, isSymbolPinned, pressSymbol, removePinsForNode, retainFile, type PinSet } from "./views/pin-state";
 import { clearRetainedDirectory, describeRetained, newestRetained, reconcileRetained, releaseRetained, retainedKey, subjectAfterRelease, type RetainedItem, type RetainedState } from "./views/retained-state";
@@ -682,9 +683,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
   }
 
   /** Keep or fold explanations independently of connections, retaining a readable unpinned file on restoration. */
-  function changeReading(nodeId: string, symbol: string | undefined, open: boolean): void {
+  function changeReading(nodeId: string, symbol: string | undefined, open: boolean, control?: ReadingControl): void {
     if (!nodesById.has(nodeId)) return;
-    const frame = localView.captureReadingChange(nodeId, symbol);
+    const frame = localView.captureReadingChange(nodeId, symbol, control);
     state.reading = chooseReading(state.reading ?? [], nodeId, symbol, open);
     localView.render();
     frame.afterRender();

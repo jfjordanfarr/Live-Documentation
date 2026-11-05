@@ -17,6 +17,8 @@ Exercises the Local Map's explicit interaction grammar: direct Pin controls reta
 - The Knowledge Sources journey opens a distant file's evidence, uses its visible Centre command and pins one chosen symbol directly. This keeps the fast connection-following route while checking that neither inspection nor centring inserts a pin.
 - A symbol pin's partners in its own file (2026-11-03, [the owner's question](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-14), Turn 14 of the November 2 record): the TypeScript Rosetta sample has no reference within a file, so this test uses the Python sample, where `models.py`'s `create_record` returns its `Record`. The subject is `processor.py`, which uses `Record`, `Report` and `validate_config` but not `create_record`; `main.py` would not do, since it imports `create_record` and the row would show without the rule. Pinning `models.py` whole and narrowing it to `Record` must leave `create_record` neither folded nor muted, draw both laces of the reference, and fold the six fields of `Record` and `Report` behind a `+6 symbols` reveal.
 
+Since [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) a name's click reads its description rather than inspecting. The double-click cases keep their point, that no click on a name adds a pin or moves the subject, and now also assert that the evidence reader stays closed; the recorded-type case still inspects the referenced file.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

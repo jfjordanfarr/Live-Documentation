@@ -17,6 +17,8 @@ A later review found that Back restored the correct settled camera but temporari
 
 The first full gate caught a separate persistent failure after pinning: header growth during the native move left the title above the usable frame. The regression settles initial arrival, uses a deliberate 1,200 ms move, and requires the larger header while that move is still active before checking final visibility, unchanged horizontal placement and exact pins. It fails against the previous bundle, so stable initial camera setup cannot disguise the animation defect.
 
+Since [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) a tap on the card's body opens nothing: the phone case now checks that a tap on the path leaves the reader closed and that a tap on the file's name folds its reading, the book agreeing, with the evidence reader reached through the stationary hold's menu above.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

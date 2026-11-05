@@ -48,19 +48,6 @@ const mark = (page: Page): Promise<void> => page.evaluate(() => { document.query
 
 const show = async (page: Page, view: "sources" | "world" | "map"): Promise<void> => { await page.click(`.nav-item[data-view="${view}"]`); };
 
-test("attention to already-open reading pauses further layout work and leaving resumes it", async ({ page }) => {
-  await open(page);
-  const label = page.locator(".local-focus .symbol-row .symbol-label").first();
-  await label.hover();
-  await page.waitForTimeout(250);
-  const paused = await read(page);
-  expect(paused.status).toBe("running");
-  await page.waitForTimeout(600);
-  expect((await read(page)).tried).toBe(paused.tried);
-  await page.mouse.move(5, 5);
-  await expect.poll(async () => (await read(page)).tried).toBeGreaterThan(paused.tried);
-});
-
 test("the search pauses while another view is shown, and a return to the unchanged picture keeps it and resumes the search", async ({ page }) => {
   // The search runs its eighty seeds to the end after the return: 23 to 29 seconds on one worker (2026-10-19); the half
   // minute is not its measure.

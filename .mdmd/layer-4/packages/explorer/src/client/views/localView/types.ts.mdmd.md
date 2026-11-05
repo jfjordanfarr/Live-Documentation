@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/types.ts
-- Generated At: 2026-11-04T15:03:17.991Z
+- Generated At: 2026-11-05T15:19:45.023Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ Defines the 2D Local Map's application boundary and the subgraph, geometry and c
 - `LocalViewOptions` injects graph and presentation state plus distinct application actions for Inspect, Pin, Close, Centre, directory disclosure and contextual commands. A symbol is carried with its inspection target, and menu callbacks receive a viewport anchor. Separating these actions implements the grammar accepted in [October 19, Turn 24](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and continued in [October 20, Turn 2](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2); the view supplies their 2D presentation while the application owns shared retention, subject and evidence state.
 - `LocalExplorationFrame` captures the view's work around one application action: whether it leaves a path, then an `afterRender` restoration of the acted-on row or directory's screen anchor and native control focus. `LocalViewApi` also exposes direct path clearing without restoring the former camera, explicit path presentation, camera focus and subject anchors for perspective changes. Pin and directory reducers remain outside this API.
 - `LocalViewApi.isShown` and `show` (2026-10-16): whether the map is the view shown, and the map shown again, which runs an owed render or resumes the search.
+
+`ReadingControl` (November 5) names the control a person used to open or fold a description, the name or the book, so that `onReadingChange` and `captureReadingChange` can return keyboard focus to it after the render.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -38,16 +40,23 @@ Created 2025-12-04 when the monolithic `localView.ts` was extracted into
 the `localView/` module. `nodesById` was added on 2025-12-05 to support
 click-to-navigate type references in the Local Map symbol cards.
 
+#### `ReadingControl` {#symbol-readingcontrol}
+- Type: type
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L57)
+
+##### `ReadingControl` — Summary
+The control a person used to open or fold a description: the name it belongs to, or the book beside it.
+
 #### `LocalExplorationFrame` {#symbol-localexplorationframe}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L56)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L60)
 
 ##### `LocalExplorationFrame` — Summary
 The view's before/after presentation work around one application-owned exploration action.
 
 #### `LocalViewApi` {#symbol-localviewapi}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L67)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L71)
 
 ##### `LocalViewApi` — Summary
 Public contract the Local Map exposes to the parent Explorer application.
@@ -57,7 +66,7 @@ Independent exploration pins belong to the shared Explorer state.
 
 #### `LocalEdge` {#symbol-localedge}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L118)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L122)
 
 ##### `LocalEdge` — Summary
 A directed edge in the local subgraph, annotated with direction relative
@@ -73,7 +82,7 @@ Created 2025-12-04 during Local Map modularization.
 
 #### `LocalSubgraphLink` {#symbol-localsubgraphlink}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L132)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L136)
 - Returns: [`LocalEdge`](#symbol-localedge)
 
 ##### `LocalSubgraphLink` — Summary
@@ -81,7 +90,7 @@ Alias for LocalEdge - used in subgraph contexts.
 
 #### `LocalSubgraph` {#symbol-localsubgraph}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L139)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L143)
 
 ##### `LocalSubgraph` — Summary
 The graph disclosed by the current Local Map scope: its files and
@@ -90,7 +99,7 @@ by direction; the common scene determines their layout.
 
 #### `Bounds` {#symbol-bounds}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L152)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L156)
 
 ##### `Bounds` — Summary
 Axis-aligned bounding rectangle in pixel coordinates, used for DOM
@@ -98,7 +107,7 @@ measurement of cards, columns, and the overall layout container.
 
 #### `LayoutExtents` {#symbol-layoutextents}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L170)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L174)
 
 ##### `LayoutExtents` — Summary
 The measured bounding boxes of the Local Map layout, used by
@@ -111,7 +120,7 @@ node's card mounts).
 
 #### `MapTransform` {#symbol-maptransform}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L183)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L187)
 
 ##### `MapTransform` — Summary
 Pan/zoom state for the Local Map viewport.
@@ -123,7 +132,7 @@ and its SVG connection overlay.
 
 #### `ColumnRole` {#symbol-columnrole}
 - Type: type
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L198)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/types.ts#L202)
 
 ##### `ColumnRole` — Summary
 Column role for anchor registration disambiguation.

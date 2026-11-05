@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/search-bar.spec.ts
-- Generated At: 2026-11-03T19:56:27.045Z
+- Generated At: 2026-11-05T15:54:10.090Z
 
 ## Authored
 ### Purpose
@@ -15,6 +15,7 @@ Playwright over the search bar: one search finds directories, files and symbols,
 
 - Written on 2026-10-14 ([Turn 6](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-6)) after the bar was played by eye on both bundles. The fold is tested against a file found from the graph itself, a uniquely named one with at least seven symbols containing an e, so the test does not depend on which file that is.
 - The ranking and contrast tests were added on 2026-10-30 for findings the [October 23 review](../../../../AI-Agent-Workspace/Screenshots/2026-10-23/README.md) made and the owner accepted ([Turn 3](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)): "generator" listed `generator.ts` in the ninth row, and the paths were 10 px `#666` on `#1f1f22`, about 2.5:1 on a selected row. The contrast is judged by [contrast.ts](contrast.ts.mdmd.md) from the colours the page computes, each row's backgrounds laid over one another, so a selected row's tint counts.
+- On [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) the two tests that clicked a name to inspect moved to More → Inspect on the row or the card, since names open their descriptions now; what they check is unchanged.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -24,7 +25,7 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- `@playwright/test` - `expect`, `test`
+- `@playwright/test` - `Locator`, `Page`, `expect`, `test`
 - [`graph.LiveDocGraph`](../../packages/engine/src/live-docs/graph.ts.mdmd.md#symbol-livedocgraph) (type-only)
 - [`retained-state.retainedKey`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retainedkey)
 - [`contrast.AA_SMALL_TEXT`](./contrast.ts.mdmd.md#symbol-aa_small_text)

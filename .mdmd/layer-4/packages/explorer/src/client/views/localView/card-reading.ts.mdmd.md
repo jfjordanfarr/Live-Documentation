@@ -4,22 +4,16 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-04T23:39:46.857Z
+- Generated At: 2026-11-05T15:19:44.516Z
 
 ## Authored
 ### Purpose
-Current on-map reading surface built from canonical file Purpose, exact symbol sections and recorded type references.
+Current on-map reading surface built from canonical file Purpose, exact symbol sections and recorded type references, opened and folded by a tap on a name or on the book beside it.
 
 ### Notes
-The application owns deliberate reading choices; this module owns their controls and one temporary pointer or keyboard target. Only real pointer movement changes hover intent, so geometry-induced boundary events cannot oscillate disclosure. The controller measures and animates the stable card DOM, and restores the original scene after a preview visit. Full descriptions use the shared reader and link resolver. Missing prose is not fabricated.
+The application owns deliberate reading choices; this module owns their controls, the names that share them and the text itself. A description opens and folds only by a deliberate act: `toggle` serves the book beside a description and, through the card context, the name it belongs to. A symbol's name opens its own description; the file's name opens its Purpose and every described symbol, or folds them when all are kept visible. Hover draws no text and moves nothing, the owner's verdict of [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1): expansion on hover was "too difficult and finicky to actually work as a human end user with a computer mouse". The controller holds the card's name still while the layout grows, and focus returns to the control used. Full descriptions use the shared reader and link resolver. Missing prose is not fabricated; a card with nothing to open returns false from `toggle` so that its name can inspect instead.
 
-Introduced during the [November 4 portrait integration](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
-
-Keep-open intent is exposed with aria-pressed, while aria-expanded describes the content actually shown, including transient attention and semantic zoom. Preview intent ends when leaving the map; Escape yields to inspection and popovers, and inactive 2D does not consume keys. Empty Summary-only records do not create a blank reading control. A file-level overflow action remains reachable when Purpose is folded. See the [integration record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
-
-A structural redraw retains physical pointer coordinates and deliberate dismissal. It is not new pointer input, and restoring focus after Fold must not reopen the text. The keyboard-fold browser case protects both the held choice and native focus.
-
-The [November 5 owner feedback](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed that global overview suppression made hover, Read and pin defaults ineffective. Requested presentation is now scoped to a file or exact symbol and survives a structural redraw. Held intent remains separate from visible content: the book offers Fold only when its descriptions are being kept visible, while suppressed or preview-only content offers Read/Keep open. Hover targeting remains available in overview. An outward scale change clears scoped presentation requests; pans and inward zoom retain them. No request adds a graph fact or merges reading choices with pins.
+Introduced during the [November 4 portrait integration](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2) with hover and keyboard-focus previews, an intent timer, dismissals and Escape; the [November 5 repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) scoped requested presentation to a file or exact symbol so that overview folding could not veto a direct request. That scoping stays: the book offers Fold only when its descriptions are being kept visible, a suppressed description offers Read, an outward scale change clears scoped requests, and pans and inward zoom retain them. The previews and their machinery were removed on November 5 rather than repaired further. Keep-open intent is exposed with aria-pressed on the books; aria-expanded on books and names describes the content actually shown, including semantic zoom. Empty Summary-only records do not create a blank reading control. A file-level overflow action remains reachable when Purpose is folded.
 
 The [November 4 learning-journey pass](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8) turns canonical outbound/inbound file counts into accessible menus near the card introduction. Choosing a file invokes ordinary subject navigation, without pinning it. The branch renderer supplies the displayed ranking's return references separately, so cycle annotations cannot be mistaken for additional graph facts. Their menu names both endpoints and navigates to the other file. A witness path from the engine’s existing breadth-first walk explains the complete file dependency cycle, including intermediate files; duplicate basenames use their paths. The transient menu closes on a structural redraw and is disposed with the reading surface.
 
@@ -31,23 +25,26 @@ The [November 4 learning-journey pass](../../../../../../../../AI-Agent-Workspac
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L16)
 
 ##### `ReadingTarget` — Summary
-The file Purpose or exact symbol temporarily being read; never a new retained neighborhood.
+A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
 - Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L19)
 
 ##### `CardReadingOptions` — Summary
-Canonical text, application-owned choices and the native layout's geometry transaction.
+Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L55)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L57)
 
 ##### `CardReading` — Summary
-Builds on-card explanations from the same bundled docs as the full reader. Pointer intent is delegated to the
-stable map container: layout-generated boundary events cannot start another preview. Geometry changes belong
-to the controller, which measures and animates the existing card elements without rebuilding them.
+Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
+by a deliberate action, a tap on the name it belongs to or on the book beside it; hover draws no text and moves
+nothing (the owner's verdict of 2026-11-05: expansion on hover was "too difficult and finicky to actually work
+as a human end user with a computer mouse"). The application saves every choice, so what a person opened is
+what a shared link shows. Geometry changes belong to the controller and the renderer, which hold the acted-on
+name still while the card grows or shrinks around it.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -66,5 +63,6 @@ to the controller, which measures and animates the existing card elements withou
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
+- [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

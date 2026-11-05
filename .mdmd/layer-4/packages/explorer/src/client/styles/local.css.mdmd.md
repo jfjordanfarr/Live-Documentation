@@ -27,6 +27,8 @@ Two rules that moved the perspective controls and the pin tray aside when the de
 
 The pin tray’s transparent positioning wrapper does not receive pointer input; its panel and toggle do. This keeps the adjacent representation/history controls usable when the tray expands above its narrower toggle. The 3D toolbar’s hop selector has the same readable size and focus outline as its buttons.
 
+The card's title button is `.local-file-name` since [November 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1), when a file's name began to open its descriptions rather than inspect; the rule is otherwise the one that dressed `.local-file-inspect`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -42,6 +42,8 @@ export interface CardContext {
   recenterNode(node: ExplorerNodePayload): void | Promise<void>;
   togglePinnedSymbol(nodeId: string, symbol: string): void;
   inspectNode(node: ExplorerNodePayload, symbol?: string): void | Promise<void>;
+  /** A name's own action: open or fold the description it names; a card with nothing to open inspects instead. */
+  readNode(node: ExplorerNodePayload, symbol?: string): void | Promise<void>;
   showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }): void | Promise<void>;
   showDirectoryActions(directory: string, anchor: { x: number; y: number }): void | Promise<void>;
   highlightSymbolConnections(nodeId: string, symbol: string): void;
@@ -116,13 +118,14 @@ export function createNodeCard(
 
   const header = document.createElement("div");
   header.className = "node-title";
-  const inspect = document.createElement("button");
-  inspect.type = "button";
-  inspect.className = "local-file-inspect";
-  setSeamedText(inspect, node.name);
-  inspect.setAttribute("aria-label", `Inspect ${node.codeRelativePath}`);
-  inspect.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node); });
-  header.append(inspect);
+  // The file's name opens its descriptions and folds them again; the evidence reader is behind More (2026-11-05).
+  const name = document.createElement("button");
+  name.type = "button";
+  name.className = "local-file-name";
+  setSeamedText(name, node.name);
+  name.setAttribute("aria-label", node.codeRelativePath);
+  name.addEventListener("click", event => { event.stopPropagation(); void context.readNode(node); });
+  header.append(name);
   card.appendChild(header);
   const actions = document.createElement("div");
   actions.className = "local-card-actions";
@@ -213,14 +216,12 @@ export function createNodeCard(
   directory.textContent = parentDirectory(node.id) || "(root)";
   card.appendChild(directory);
 
-  card.addEventListener("click", event => {
-    event.stopPropagation();
-    void context.inspectNode(node);
-  });
+  // A press on the card's body is not an action of its own; it must not reach the map behind it either.
+  card.addEventListener("click", event => event.stopPropagation());
 
   card.addEventListener("keydown", event => {
     if (event.target === card && (event.key === "Enter" || event.key === " ")) {
-      event.preventDefault(); void context.inspectNode(node);
+      event.preventDefault(); void context.readNode(node);
     }
   });
 
@@ -339,10 +340,10 @@ function createSymbolSection(
     symbolRow.addEventListener("mouseleave", () => {
       context.clearSymbolHighlight();
     });
-    // A row names its symbol. Pinning is the adjacent explicit action.
+    // A row names its symbol; a tap on it opens or folds that symbol's description. Pinning is the adjacent explicit action.
     symbolRow.addEventListener("click", (event) => {
       event.stopPropagation();
-      void context.inspectNode(node, symbol);
+      void context.readNode(node, symbol);
     });
     const inboundAnchor = document.createElement("div");
     inboundAnchor.className = "symbol-anchor dot inbound";
@@ -357,8 +358,8 @@ function createSymbolSection(
     label.type = "button";
     label.className = "symbol-label";
     setSeamedText(label, symbol);
-    label.setAttribute("aria-label", `Inspect ${symbol} in ${node.name}`);
-    label.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node, symbol); });
+    label.setAttribute("aria-label", `${symbol} in ${node.name}`);
+    label.addEventListener("click", event => { event.stopPropagation(); void context.readNode(node, symbol); });
     labelWrapper.appendChild(label);
 
     // Add type reference indicator if present

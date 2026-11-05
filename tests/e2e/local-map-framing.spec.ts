@@ -138,7 +138,8 @@ test("the open reader is kept out of the frame: a fit beside it never puts the s
   await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(subject)}`);
   await settled(page);
   const before = await boxOf(page, "#map-container .node-card.local-focus");
-  await page.locator(`#map-container .node-card[data-id="${subject}"] .local-file-inspect`).click();
+  await page.locator(`#map-container .node-card[data-id="${subject}"] .local-file-more`).click();
+  await page.getByRole("menuitem", { name: "Inspect GatewayClient.cs", exact: true }).click();
   const reader = page.locator("#detail-panel");
   await expect(reader).toHaveClass(/visible/);
   // The reader slides in over 300 ms; its box is read once it stands.

@@ -272,14 +272,14 @@
 }
 .local-card-actions button:hover { color: var(--accent); border-color: var(--accent); }
 .local-column .node-title { padding-right: 88px; }
-.local-file-inspect { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; overflow-wrap: inherit; cursor: pointer; }
-.local-file-inspect:hover { color: var(--accent); }
+.local-file-name { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; overflow-wrap: inherit; cursor: pointer; }
+.local-file-name:hover { color: var(--accent); }
 .local-disclosure { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--text-panel-subtle); cursor: pointer; text-align: left; font: inherit; font-size: 11px; }
 button.local-disclosure:hover { color: var(--accent); }
 span.local-disclosure { cursor: default; }
 .branch-symbol-hidden > * { display: none; }
 .branch-mode .local-column-label:empty { min-height: 13px; }
-.local-file-inspect:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-file-name:focus-visible, .local-column .symbol-label:focus-visible, .local-column .type-badge:focus-visible, .local-card-actions button:focus-visible, .local-symbol-pin:focus-visible, .local-symbol-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 /* The open history scrubber takes the bottom of the map; the controls and the tray stand above it by the room it asks for. */
 #main { --history-room: 0px; }

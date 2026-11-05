@@ -48,9 +48,13 @@ export interface LocalViewOptions {
   nodesById: Map<string, ExplorerNodePayload>;
   /** Canonical text and link destinations, shared with the full reader. */
   readingLinks?: ReaderLinkContext;
-  onReadingChange?: (nodeId: string, symbol: string | undefined, open: boolean) => void;
+  /** A deliberate reading change, with the control the person used so that focus returns to it after the render. */
+  onReadingChange?: (nodeId: string, symbol: string | undefined, open: boolean, control?: ReadingControl) => void;
   onReadTarget?: (target: InspectionTarget, fragment?: string) => void;
 }
+
+/** The control a person used to open or fold a description: the name it belongs to, or the book beside it. */
+export type ReadingControl = "name" | "book";
 
 /** The view's before/after presentation work around one application-owned exploration action. */
 export interface LocalExplorationFrame {
@@ -72,7 +76,7 @@ export interface LocalViewApi {
   show(): void;
   capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion?: boolean, newlyRetainedSymbol?: string): LocalExplorationFrame;
   captureDirectoryChange(directory: string): LocalExplorationFrame;
-  captureReadingChange(nodeId: string, symbol?: string): LocalExplorationFrame;
+  captureReadingChange(nodeId: string, symbol?: string, control?: ReadingControl): LocalExplorationFrame;
   /** Clear a path for a new exploration action without restoring its old camera. */
   clearPathForExploration(): void;
   focusNode(nodeId: string, symbol?: string): void;

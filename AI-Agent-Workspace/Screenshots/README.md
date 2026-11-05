@@ -6,6 +6,8 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 [Reading access and hover stability](2026-11-05/reading-access/README.md): owner-reported blocked descriptions at useful zoom, cumulative displacement during uninterrupted symbol hovering, and interrupted-return/zoom cases. Baseline failures, repaired pictures, a supplemental estate 3D motion look and the passing full gate remain explicit.
 
+[Tap reading](2026-11-05/tap-reading/README.md): descriptions opened by a tap on a name or on the book beside it rather than on hover, with hover drawing nothing, the card's name held still through the growth, the file's name opening everything, the phone tap and the keyboard, and the first candidate's 103 px leap corrected. Verification is in the session record; no owner acceptance is implied.
+
 ## 2026-11-04
 
 [Native portrait reading](2026-11-04/reading/README.md): the real 2D map's file and symbol descriptions, centered desktop/phone composition, reversible hover and zoom journeys, and the explicit full-text reader. Includes the rejected first symbol grid and narrow framing, with the resulting corrections and verification kept distinct from owner acceptance.

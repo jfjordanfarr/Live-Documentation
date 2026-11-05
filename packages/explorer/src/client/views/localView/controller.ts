@@ -64,7 +64,8 @@ import type {
   LocalExplorationFrame,
   LocalViewOptions,
   LocalSubgraph,
-  MapTransform
+  MapTransform,
+  ReadingControl
 } from "./types";
 import { readingFiles } from "../../reading-state";
 
@@ -112,6 +113,8 @@ export class LocalViewController implements LocalViewApi {
   readonly expandedCards = new Set<string>();
   /** Stable card text and temporary attention, with deliberate choices owned by the application. */
   readonly reading: CardReading | null;
+  /** A reading change holds the card's name through its move; under hover anchoring the pointer re-anchors only once that move has ended. */
+  readingHold = false;
   private readingVisible = true;
   private readingReferenceScale = 1;
   private readingFrame = 0;
@@ -140,6 +143,7 @@ export class LocalViewController implements LocalViewApi {
     recenterNode: node => this.recenterNode(node),
     togglePinnedSymbol: (nodeId, symbol) => this.options.onPressPin(nodeId, symbol),
     inspectNode: (node, symbol) => this.focusSidebar(node, symbol),
+    readNode: (node, symbol) => this.readNode(node, symbol),
     showNodeActions: (node, symbol, anchor) => this.showNodeActions(node, symbol, anchor),
     showDirectoryActions: (directory, anchor) => this.showDirectoryActions(directory, anchor),
     highlightSymbolConnections: (nodeId, symbol) => this.highlightSymbolConnections(nodeId, symbol),
@@ -260,7 +264,6 @@ export class LocalViewController implements LocalViewApi {
     if ((state.view !== "map" || state.perspective !== "2d")) {
       return;
     }
-    this.cancelReadingVisit();
     handleWheelFn(this.runtime, event, () => this.updateMapTransform());
   };
 
@@ -290,12 +293,9 @@ export class LocalViewController implements LocalViewApi {
         return pins.some(pin => pin.symbol === "*") || (pins.length === 0 && options.state.selectedNode?.id === nodeId)
           || symbol !== undefined && pins.some(pin => pin.symbol === symbol);
       },
-      change: (nodeId, symbol, open) => options.onReadingChange?.(nodeId, symbol, open),
-      preview: target => this.previewReading(target),
+      change: (nodeId, symbol, open, control) => options.onReadingChange?.(nodeId, symbol, open, control),
       inspect: (target, fragment) => options.onReadTarget?.(target, fragment),
-      navigate: node => { void this.recenterNode(node); },
-      canPreview: () => this.isShown() && options.state.inspection?.presentation !== "reading" && !this.container.closest("[inert]"),
-      canDismiss: () => this.isShown() && !options.state.inspection
+      navigate: node => { void this.recenterNode(node); }
     }) : null;
     this.localMapState = createStateStore(createInitialState());
     this.container.classList.add("cluster-host", "local-map-host");
@@ -380,9 +380,8 @@ export class LocalViewController implements LocalViewApi {
         // A layout improvement can move the camera to keep its subject still. Remember who owns the reading frame;
         // neither the responsive rectangle nor the old transform can reliably reconstruct that intent afterwards.
         const centered = !!target;
-        this.cancelReadingVisit();
         this.configureReadingFrame(frame);
-        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(null, this.readingVisible), false);
+        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(this.readingVisible));
         if (centered && selector) { this.focusRequest = selector; this.settleArrival(); }
       }
     }
@@ -544,7 +543,7 @@ export class LocalViewController implements LocalViewApi {
       this.container.append(root);
     }
     this.contentRoot = root;
-    this.reading?.updatePresentation(null, this.readingVisible);
+    this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root, this.overlay));
     renderBranches(this, stage);
     if (path) this.fitMapToPath();
@@ -613,10 +612,13 @@ export class LocalViewController implements LocalViewApi {
     // Update hover state in the state store (for reactive updates)
     if (!fromPin) {
       this.localMapState.update(s => setHoveredSymbol(s, { nodeId, symbol }));
-      if (options.state.tuning.localMap.holdStill === "hover") {
+      // The render after a tap on a name puts a new row under a resting pointer, and Chromium reports that as a
+      // hover; re-anchoring to it mid-move would leap the card's name, which the reading change is holding.
+      if (options.state.tuning.localMap.holdStill === "hover" && !(this.readingHold && this.stage?.move)) {
         this.lastInteracted = nodeId;
         this.lastInteractedSymbol = symbol;
       }
+      if (!this.stage?.move) this.readingHold = false;
     }
 
     // Compute the highlight using pure function
@@ -658,7 +660,6 @@ export class LocalViewController implements LocalViewApi {
 
   /** Capture a 2D pin action's screen anchor and keyboard focus; shared pin policy belongs to the application. */
   capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false, newlyRetainedSymbol?: string): LocalExplorationFrame {
-    this.reading?.cancelPreview();
     if (newlyRetainedSymbol !== undefined) this.reading?.reveal({ nodeId, ...(newlyRetainedSymbol === "*" ? {} : { symbol: newlyRetainedSymbol }) });
     if (closeExpansion) this.expandedCards.delete(nodeId);
     this.lastInteracted = nodeId;
@@ -671,18 +672,17 @@ export class LocalViewController implements LocalViewApi {
     const focusSelector = symbol === "*"
       ? `.node-card[data-id="${CSS.escape(nodeId)}"] .local-file-pin`
       : `${selector} .local-symbol-pin`;
-    return this.captureExplorationFrame(selector, focusSelector, ".local-file-inspect, .local-directory-closed__name, .empty-hint");
+    return this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
   }
 
   /** Capture an opened directory's label or closed box before the application changes the opened set. */
   captureDirectoryChange(directory: string): LocalExplorationFrame {
-    this.reading?.cancelPreview();
     this.lastInteracted = directory;
     this.lastInteractedSymbol = null;
     const selector = `.local-directory-label[data-directory="${CSS.escape(directory)}"], .local-directory-closed[data-directory="${CSS.escape(directory)}"]`;
     const label = `.local-directory-label[data-directory="${CSS.escape(directory)}"]`;
     const focusSelector = `${label} .local-directory-open, ${label} .local-directory-close, .local-directory-closed[data-directory="${CSS.escape(directory)}"] .local-directory-open`;
-    const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-inspect, .local-directory-closed__name, .empty-hint");
+    const frame = this.captureExplorationFrame(selector, focusSelector, ".local-file-name, .local-directory-closed__name, .empty-hint");
     return { ...frame, afterRender: () => {
       frame.afterRender();
       this.directoryArrivalPending = this.isShown();
@@ -690,26 +690,21 @@ export class LocalViewController implements LocalViewApi {
     } };
   }
 
-  /** Deliberate reading changes share the native anchor/focus transaction, without changing the pin set. */
-  captureReadingChange(nodeId: string, symbol?: string): LocalExplorationFrame {
-    this.reading?.cancelPreview();
+  /**
+   * Deliberate reading changes share the native anchor/focus transaction, without changing the pin set. The card
+   * being read is what the eye is on, so its name is held still and the card grows downward from the tapped row;
+   * holding the row itself let the re-solved layout seat the taller card higher and leap its name upward
+   * (measured at 103 px on the payment service, 2026-11-05). Focus returns to the control used.
+   */
+  captureReadingChange(nodeId: string, symbol?: string, control: ReadingControl = "book"): LocalExplorationFrame {
     this.lastInteracted = nodeId;
-    this.lastInteractedSymbol = symbol ?? null;
+    this.lastInteractedSymbol = null;
+    this.readingHold = true;
     const card = `.node-card[data-id="${CSS.escape(nodeId)}"]`;
     const row = symbol ? `${card} .symbol-row[data-symbol="${CSS.escape(symbol)}"]` : card;
-    return this.captureExplorationFrame(symbol ? `${row} .symbol-label-wrapper` : `${card} .node-title`,
-      `${row} ${symbol ? ".local-symbol-read" : ".local-file-read"}`, ".local-file-inspect");
-  }
-
-  private previewReading(target: ReadingTarget | null): void {
-    if (!this.reading || !this.stage || !this.isShown()) return;
-    if (!this.reading.needsLayout(target) && !(target === null && this.stage.readingHome)) {
-      this.reading.updatePresentation(target, this.readingVisible);
-      if (!target) this.stage.search?.resume();
-      return;
-    }
-    refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(target, this.readingVisible), !!target, !target,
-      target ? this.stage.wrappers.get(target.nodeId) : undefined);
+    const focus = control === "name" ? (symbol ? `${row} .symbol-label` : `${card} .local-file-name`)
+      : `${row} ${symbol ? ".local-symbol-read" : ".local-file-read"}`;
+    return this.captureExplorationFrame(`${card} .node-title`, focus, ".local-file-name");
   }
 
   private configureReadingFrame(frame: Frame): void {
@@ -720,15 +715,6 @@ export class LocalViewController implements LocalViewApi {
     this.container.style.setProperty("--reading-card-width", `${Math.max(200, Math.min(520, frame.width - 32, cap))}px`);
     this.container.style.setProperty("--reading-prose-height", `${Math.max(140, Math.min(280, frame.height * 0.4))}px`);
     this.container.style.setProperty("--reading-frame-height", `${frame.height}px`);
-  }
-
-  /** A camera gesture owns its destination; ending a preview must not restore an earlier camera over that gesture. */
-  private cancelReadingVisit(): void {
-    if (!this.reading) return;
-    this.reading.cancelPreview();
-    if (!this.stage?.readingHome) return;
-    this.stage.readingHome = null;
-    refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(null, this.readingVisible), false);
   }
 
   /** Keep the opened identity through its unfolding, then recover usable space; a person's camera gesture cancels this. */
@@ -849,7 +835,7 @@ export class LocalViewController implements LocalViewApi {
       this.readingFrame = 0;
       if (!this.readingVisible && this.stage) {
         this.readingVisible = true;
-        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(null, true), false);
+        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(true));
       }
     }
     this.settleArrival();
@@ -897,7 +883,6 @@ export class LocalViewController implements LocalViewApi {
   zoomIn(): void {
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
-    this.cancelReadingVisit();
     this.focusRequest = null;
     zoomByFactorFn(this.runtime, 1.2, () => this.updateMapTransform());
   }
@@ -906,7 +891,6 @@ export class LocalViewController implements LocalViewApi {
   zoomOut(): void {
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
-    this.cancelReadingVisit();
     this.focusRequest = null;
     zoomByFactorFn(this.runtime, 1 / 1.2, () => this.updateMapTransform());
   }
@@ -1103,11 +1087,16 @@ export class LocalViewController implements LocalViewApi {
     await this.options.onRecenterNode(node);
   }
 
+  /** A name's tap opens or folds what it names; a card with nothing to open inspects instead. */
+  async readNode(node: ExplorerNodePayload, symbol?: string): Promise<void> {
+    if (this.reading?.toggle(node.id, symbol, "name")) return;
+    await this.focusSidebar(node, symbol);
+  }
+
   /** Inspect a file or symbol without changing its retained pins or the map subject. */
   async focusSidebar(node: ExplorerNodePayload, symbol?: string): Promise<void> {
     this.lastInteracted = node.id;
     this.lastInteractedSymbol = symbol ?? null;
-    this.cancelReadingVisit();
     await this.options.onFocusSidebar(node, symbol);
   }
 
@@ -1115,7 +1104,6 @@ export class LocalViewController implements LocalViewApi {
   async inspectDirectory(directory: string): Promise<void> {
     this.lastInteracted = directory;
     this.lastInteractedSymbol = null;
-    this.cancelReadingVisit();
     await this.options.onInspectDirectory(directory);
   }
 
@@ -1123,7 +1111,6 @@ export class LocalViewController implements LocalViewApi {
   async showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }): Promise<void> {
     this.lastInteracted = node.id;
     this.lastInteractedSymbol = symbol ?? null;
-    this.cancelReadingVisit();
     await this.options.onShowNodeActions(node, symbol, anchor);
   }
 
@@ -1131,7 +1118,6 @@ export class LocalViewController implements LocalViewApi {
   async showDirectoryActions(directory: string, anchor: { x: number; y: number }): Promise<void> {
     this.lastInteracted = directory;
     this.lastInteractedSymbol = null;
-    this.cancelReadingVisit();
     await this.options.onShowDirectoryActions(directory, anchor);
   }
 
@@ -1162,9 +1148,7 @@ export class LocalViewController implements LocalViewApi {
         this.readingFrame = 0;
         if (!this.stage || !this.isShown()) return;
         this.readingVisible = visible;
-        this.reading!.cancelPreview();
-        this.stage.readingHome = null;
-        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(null, visible), false);
+        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(visible));
       });
     }
   }
@@ -1294,7 +1278,7 @@ export class LocalViewController implements LocalViewApi {
       if (!target.closest(entitySelector)) return;
       press = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, target, cancelled: false, held: false };
       // The primary action of a visible command remains that command; only entity surfaces have a held gesture.
-      if (target.closest("button:not(.local-file-inspect):not(.symbol-label):not(.local-directory-name):not(.local-directory-closed__name), a, input, select")) return;
+      if (target.closest("button:not(.local-file-name):not(.symbol-label):not(.local-directory-name):not(.local-directory-closed__name), a, input, select")) return;
       const pending = press;
       timer = window.setTimeout(() => {
         timer = 0;
@@ -1436,7 +1420,6 @@ export class LocalViewController implements LocalViewApi {
     this.focusRequest = null;
     this.readingCalibrationPending = false;
     this.readingFrameTarget = null;
-    this.cancelReadingVisit();
   }
 
   private bindWheelEvents(): void {
@@ -1459,10 +1442,9 @@ export class LocalViewController implements LocalViewApi {
       cancelAnimationFrame(this.readingFrame);
       this.readingFrame = 0;
       this.readingCalibrationPending = true;
-      this.cancelReadingVisit();
       if (!this.readingVisible && this.stage) {
         this.readingVisible = true;
-        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(null, true), false);
+        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(true));
       }
       if (this.stage?.move) {
         this.focusRequest = `.node-card[data-id="${CSS.escape(subject!)}"]`;

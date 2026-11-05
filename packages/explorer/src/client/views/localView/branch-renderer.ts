@@ -9,7 +9,7 @@ import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory"
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
 import { membranePath } from "./membrane-outline";
-import type { LocalEdge, MapTransform } from "./types";
+import type { LocalEdge } from "./types";
 import { setSeamedText } from "../../dom";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { countOf } from "./word-seams";
@@ -39,8 +39,6 @@ export interface BranchStage {
   pose: Pose | null;
   move: Move | null;
   search: Search | null;
-  /** The unchanged layout and camera to which a temporary reading visit returns. */
-  readingHome: { scene: Scene; search: Search; camera: MapTransform; held: HTMLElement | null; anchor?: DOMRect } | null;
 }
 
 /** One move of the picture from one pose to the next, running. */
@@ -56,9 +54,6 @@ interface Move {
   rows: Array<{ element: HTMLElement; delta: number }>;
   heights?: Array<{ element: HTMLElement; from: number; to: number }>;
   anchor?: DOMRect;
-  /** Temporary reading keeps one identity for the whole visit, even when hover chooses another symbol. */
-  held?: HTMLElement | null;
-  cameraTarget?: MapTransform;
 }
 
 /** What the page answered the scene's measurer that no start changes, kept so that the search can price a start without the page. */
@@ -94,12 +89,11 @@ interface Search {
 
 /** A stage for a root that holds nothing yet. */
 export function createStage(root: HTMLElement, overlay: HTMLElement): BranchStage {
-  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null, readingHome: null };
+  return { root, overlay, wrappers: new Map(), boxes: new Map(), shapes: new Map(), labels: new Map(), disclosures: new Map(), pose: null, move: null, search: null };
 }
 
 /** Ends whatever move the stage runs, where it stands, and its search; the stage's elements are the caller's to remove. */
 export function dropStage(stage: BranchStage): void {
-  stage.readingHome = null;
   stopSearch(stage);
   endMove(stage, false);
 }
@@ -133,7 +127,6 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const tuning = state.tuning.localMap;
   const { root } = stage;
   const path = controller.getActivePath();
-  stage.readingHome = null;
   const scale = controller.runtime.mapTransform.k || 1;
   // Capture the visible rows before ending an interrupted move removes their current displacement.
   const oldRows = stage.pose ? rowOffsets(stage, scale) : null;
@@ -259,59 +252,44 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
 }
 
 /**
- * Remeasure an existing scene after text disclosure without rebuilding cards or changing row order. A temporary
- * reading visit pauses the search and retains the original complete scene/camera; leaving restores that exact
- * arrangement. Deliberate camera changes discard the return point and start a fresh measured competition.
+ * Remeasure an existing scene after a disclosure change without rebuilding cards or changing row order: the zoom
+ * fold or restore, a resize, or an arrival that unfolds. The opened or folded text changes card heights, so the
+ * same branches are laid out again and moved to with the acted-on element held still, and a fresh measured
+ * competition begins from the new picture.
  */
-export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void, temporary: boolean, restore = false, fallbackAnchor?: HTMLElement): void {
+export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void): void {
   const search = stage.search;
   const previous = stage.pose;
   if (!search || !previous) { change(); return; }
-  if (temporary && !stage.readingHome) {
-    const held = elementHeld(controller, stage, previous, previous) ?? fallbackAnchor ?? null;
-    stage.readingHome = { scene: search.incumbent.scene, search, camera: { ...controller.mapTransform }, held, anchor: held?.getBoundingClientRect() };
-  }
-  const home = stage.readingHome;
   pauseSearch(search);
   const scale = controller.mapTransform.k || 1;
   const rows = rowOffsets(stage, scale);
   const fileCards = cardsOf(stage).filter(card => card.classList.contains("node-card"));
   const beforeHeights = new Map(fileCards.map(card => [card.dataset.id!, card.getBoundingClientRect().height / scale]));
-  const anchor = temporary && home ? home.anchor : elementHeld(controller, stage, previous, previous)?.getBoundingClientRect();
+  const anchor = elementHeld(controller, stage, previous, previous)?.getBoundingClientRect();
   endMove(stage, false);
   change();
   controller.reading?.measure();
   const branches = search.incumbent.branches;
   const plan = planBranches(branches, search.sceneTuning.bandPadding);
   const answers: PageAnswers = { natural: new Map(), heights: new Map(), labelHeights: new Map() };
-  const scene = restore && home ? home.scene
-    : layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), search.sceneTuning);
+  const scene = layoutScene(plan, branches, pageMeasurer(controller, stage, plan, scale, answers), search.sceneTuning);
   stage.root.dataset.placementCost = String(scene.placement.cost);
   stage.root.dataset.placementOptimal = String(scene.placement.optimal);
-  if (restore && home) {
-    stage.search = home.search;
-    controller.previousTops = scene.tops;
-  } else if (!temporary) {
-    stage.readingHome = null;
-    search.incumbent = { branches, scene };
-    search.answers = answers;
-    search.rows = rowsOf(controller, stage, scale, branches);
-    const options = controller.options.state.tuning.localMap;
-    search.state = beginSearch({ from: 1, to: Math.max(0, Math.floor(options.searchStarts)), patience: Math.floor(options.searchPatience) }, scoreOf(signalsOf(branches, scene, scene.tops), { ...search.costs, churn: 0 }));
-    search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
-    search.alignmentIndex = 0;
-    controller.previousTops = scene.tops;
-  }
+  search.incumbent = { branches, scene };
+  search.answers = answers;
+  search.rows = rowsOf(controller, stage, scale, branches);
+  const options = controller.options.state.tuning.localMap;
+  search.state = beginSearch({ from: 1, to: Math.max(0, Math.floor(options.searchStarts)), patience: Math.floor(options.searchPatience) }, scoreOf(signalsOf(branches, scene, scene.tops), { ...search.costs, churn: 0 }));
+  search.alignments = search.alignmentEnabled ? alignmentCandidates(scene) : [];
+  search.alignmentIndex = 0;
+  controller.previousTops = scene.tops;
   const heights = fileCards.flatMap(card => {
     const from = beforeHeights.get(card.dataset.id!), to = card.offsetHeight;
     return from !== undefined && Math.abs(from - to) > 0.5 ? [{ element: card, from, to }] : [];
   });
-  showScene(controller, stage, scene, search.sceneTuning, Math.min(180, search.moveMs), [], [], rows, {
-    heights, anchor, ...(temporary && home ? { held: home.held } : {}), ...(restore && home ? { cameraTarget: home.camera } : {})
-  });
-  // An interrupted return still belongs to the original visit. Only a completed return releases its baseline.
-  if (restore && home && !stage.move && stage.readingHome === home) stage.readingHome = null;
-  if (!stage.move && !stage.readingHome) scheduleSearch(controller, stage);
+  showScene(controller, stage, scene, search.sceneTuning, Math.min(180, search.moveMs), [], [], rows, { heights, anchor });
+  if (!stage.move) scheduleSearch(controller, stage);
 }
 
 /** The outline's stroke, which the scene counts in a membrane's inset. */
@@ -487,11 +465,11 @@ function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph)
  * and a lane's slots, and shows the scene: at once when `moveMs` is zero or
  * no picture was shown, else moved to from the pose the page shows.
  */
-function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null, reading: Pick<Move, "heights" | "anchor" | "held" | "cameraTarget"> = {}): void {
+function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null, reading: Pick<Move, "heights" | "anchor"> = {}): void {
   const { root } = stage;
   const previous = stage.pose;
   const pose = scenePose(scene);
-  const instantHeld = previous && moveMs <= 0 ? reading.held === undefined ? elementHeld(controller, stage, previous, pose) : reading.held : null;
+  const instantHeld = previous && moveMs <= 0 ? elementHeld(controller, stage, previous, pose) : null;
   const instantAnchor = reading.anchor ?? instantHeld?.getBoundingClientRect();
   const scale = controller.runtime.mapTransform.k || 1;
   const leaving = [...leavingCards];
@@ -564,10 +542,7 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
     for (const element of leaving) element.remove();
     applyPose(stage, pose, sceneTuning.bandPadding);
     stage.pose = pose;
-    if (reading.cameraTarget) {
-      controller.mapTransform = { ...reading.cameraTarget };
-      controller.updateMapTransform();
-    } else if (instantHeld && instantAnchor) {
+    if (instantHeld && instantAnchor) {
       const rect = instantHeld.getBoundingClientRect();
       const camera = controller.mapTransform;
       controller.mapTransform = { ...camera, x: camera.x + instantAnchor.left - rect.left, y: camera.y + instantAnchor.top - rect.top };
@@ -633,20 +608,18 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta}px)`;
   let heldId = controller.lastInteracted;
   let heldSymbol = controller.lastInteractedSymbol;
-  let heldElement = move.held === undefined ? elementHeld(controller, stage, from, to) : move.held;
+  let heldElement = elementHeld(controller, stage, from, to);
   let heldRect = move.anchor ?? heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
   const layerTop = (): number => controller.getViewport().getBoundingClientRect().top + (controller.getContainer().parentElement?.offsetTop ?? 0);
   let layerTopAtStart = layerTop();
-  const cameraFrom = { ...controller.mapTransform };
-  const cameraApplied = { ...cameraFrom };
   for (const { element, from } of move.heights ?? []) {
     element.style.height = `${from}px`;
     element.style.overflow = "clip";
   }
   /** Keep camera gestures and header compensation; the latter also changes the frame's screen origin. */
   const hold = (): void => {
-    if (move.cameraTarget || !heldElement || !heldRect) return;
+    if (!heldElement || !heldRect) return;
     const camera = controller.mapTransform;
     const rect = heldElement.getBoundingClientRect();
     const dx = heldRect.left + (camera.x - cameraAtStart.x) - rect.left;
@@ -663,7 +636,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   const step = (now: number): void => {
     // A real zoom already moved the visible anchor. Rebase before changing the pose so holding corrects only
     // layout motion, rather than retaining zoom's translation while cancelling its scale.
-    const changedIdentity = move.held === undefined && (heldId !== controller.lastInteracted || heldSymbol !== controller.lastInteractedSymbol);
+    const changedIdentity = heldId !== controller.lastInteracted || heldSymbol !== controller.lastInteractedSymbol;
     if (changedIdentity || cameraAtStart.k !== controller.mapTransform.k) {
       if (changedIdentity) {
         heldId = controller.lastInteracted;
@@ -683,17 +656,6 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
     for (const element of move.leaving) element.style.opacity = String(1 - eased);
     for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta * (1 - eased)}px)`;
     hold();
-    if (move.cameraTarget) {
-      const camera = controller.mapTransform;
-      // Keep any actual pan made during this return; the animation owns only its own displacement.
-      cameraFrom.x += camera.x - cameraApplied.x;
-      cameraFrom.y += camera.y - cameraApplied.y;
-      const next = { x: cameraFrom.x + (move.cameraTarget.x - cameraFrom.x) * eased,
-        y: cameraFrom.y + (move.cameraTarget.y - cameraFrom.y) * eased, k: camera.k };
-      controller.mapTransform = next;
-      Object.assign(cameraApplied, next);
-      controller.updateMapTransform();
-    }
     stage.pose = frame;
     controller.drawConnections();
     if (t < 1) move.frame = requestAnimationFrame(step);
@@ -704,6 +666,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
       hold();
       controller.drawConnections();
       controller.settleArrival();
+      controller.readingHold = false;
       const hovered = controller.localMapState.getState().hoveredSymbol;
       if (hovered) controller.highlightSymbolConnections(hovered.nodeId, hovered.symbol);
       stage.search?.resume();
@@ -732,7 +695,6 @@ function endMove(stage: BranchStage, finished: boolean): void {
   if (finished) {
     applyPose(stage, move.to, move.bandPadding);
     stage.pose = move.to;
-    if (move.cameraTarget && stage.readingHome?.camera === move.cameraTarget) stage.readingHome = null;
   }
   delete stage.root.dataset.moving;
   stage.overlay.classList.remove("moving");
@@ -776,12 +738,12 @@ function elementHeld(controller: LocalViewController, stage: BranchStage, from: 
  */
 function scheduleSearch(controller: LocalViewController, stage: BranchStage): void {
   const search = stage.search;
-  if (!search || stage.readingHome || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment) || stage.move || search.handle) return;
+  if (!search || !nextTrialKind(search.state, search.alignmentIndex < search.alignments.length, search.preferAlignment) || stage.move || search.handle) return;
   if (!searchAllowed(controller)) return;
   const run = (): void => {
     search.handle = 0;
     // A step whose moment comes after the map was hidden does nothing; the controller's resume schedules the next.
-    if (stage.search !== search || stage.readingHome || !searchAllowed(controller)) return;
+    if (stage.search !== search || !searchAllowed(controller)) return;
     searchStep(controller, stage, search);
     scheduleSearch(controller, stage);
   };
@@ -790,7 +752,6 @@ function scheduleSearch(controller: LocalViewController, stage: BranchStage): vo
 
 /** Whether a search may step now: the map is the view shown and the page is visible. */
 const searchAllowed = (controller: LocalViewController): boolean => controller.isShown()
-  && !controller.reading?.hasAttention
   && !controller.runtime.mapAnimationTarget && controller.options.state.inspection?.presentation !== "reading"
   && document.visibilityState !== "hidden";
 

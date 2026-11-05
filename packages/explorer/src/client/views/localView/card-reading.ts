@@ -2,7 +2,7 @@ import type { TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
 import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
-import type { LocalEdge } from "./types";
+import type { LocalEdge, ReadingControl } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
 import { escapeHtml } from "../../graph-helpers";
 import { renderMarkdown } from "../../markdown";
@@ -12,20 +12,17 @@ import { authoredSections } from "../../reader-sections";
 import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
 import type { InspectionTarget } from "../../types";
 
-/** The file Purpose or exact symbol temporarily being read; never a new retained neighborhood. */
+/** A file's Purpose or one exact symbol's description, named by the card it is read on. */
 export interface ReadingTarget { nodeId: string; symbol?: string; }
 
-/** Canonical text, application-owned choices and the native layout's geometry transaction. */
+/** Canonical text, application-owned choices and the actions a card's text can lead to. */
 export interface CardReadingOptions {
   links: ReaderLinkContext;
   choices(): readonly ReadingChoice[];
   defaultOpen(nodeId: string, symbol?: string): boolean;
-  change(nodeId: string, symbol: string | undefined, open: boolean): void;
-  preview(target: ReadingTarget | null): void;
+  change(nodeId: string, symbol: string | undefined, open: boolean, control: ReadingControl): void;
   inspect(target: InspectionTarget, fragment?: string): void;
   navigate(node: ExplorerNodePayload): void;
-  canPreview(): boolean;
-  canDismiss(): boolean;
 }
 
 interface ReadingBlock {
@@ -41,16 +38,21 @@ interface ReadingCard {
   purpose: ReadingBlock | null;
   overflow: HTMLButtonElement | null;
   symbols: Map<string, ReadingBlock>;
+  /** The book beside the file's name and beside each described symbol. */
   controls: Map<string | undefined, HTMLButtonElement>;
+  /** The file's name and each described symbol's name: the other way to open what they name. */
+  names: Map<string | undefined, HTMLElement>;
 }
 
 const BOOK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5C8 2 4 3 2 4v15c3-1 6-1 10 1 4-2 7-2 10-1V4c-2-1-6-2-10 1Zm0 0v15"/></svg>';
-const sameTarget = (a: ReadingTarget | null, b: ReadingTarget | null): boolean => a?.nodeId === b?.nodeId && a?.symbol === b?.symbol;
 
 /**
- * Builds on-card explanations from the same bundled docs as the full reader. Pointer intent is delegated to the
- * stable map container: layout-generated boundary events cannot start another preview. Geometry changes belong
- * to the controller, which measures and animates the existing card elements without rebuilding them.
+ * Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
+ * by a deliberate action, a tap on the name it belongs to or on the book beside it; hover draws no text and moves
+ * nothing (the owner's verdict of 2026-11-05: expansion on hover was "too difficult and finicky to actually work
+ * as a human end user with a computer mouse"). The application saves every choice, so what a person opened is
+ * what a shared link shows. Geometry changes belong to the controller and the renderer, which hold the acted-on
+ * name still while the card grows or shrinks around it.
  */
 export class CardReading {
   private readonly cards = new Map<string, ReadingCard>();
@@ -58,51 +60,36 @@ export class CardReading {
   private readonly backReferences = new Map<string, readonly LocalEdge[]>();
   private readonly reveals = new Map<string, Set<string | undefined>>();
   private observedScale: number | null = null;
-  private previewTarget: ReadingTarget | null = null;
-  private candidate: ReadingTarget | null = null;
-  private dismissed: ReadingTarget | null = null;
-  private intentTimer = 0;
-  private lastPointer: { x: number; y: number } | null = null;
-  private keyboard = false;
   private visible = true;
 
-  /** Reading attention pauses further ordering even when the pointed-to text was already kept open. */
-  get hasAttention(): boolean { return this.previewTarget !== null; }
+  constructor(private readonly container: HTMLElement, private readonly options: CardReadingOptions) {}
 
-  constructor(private readonly container: HTMLElement, private readonly options: CardReadingOptions) {
-    container.addEventListener("pointermove", this.pointerMove);
-    container.addEventListener("pointerleave", this.pointerLeave);
-    container.addEventListener("focusin", this.focusIn);
-    container.addEventListener("focusout", this.focusOut);
-    document.addEventListener("keydown", this.keyDown);
-  }
-
-  /** Release listeners and delayed previews with the Local Map. */
+  /** Release the transient menu with the Local Map. */
   dispose(): void {
     this.reset();
     this.connectionsMenu.dispose();
-    this.container.removeEventListener("pointermove", this.pointerMove);
-    this.container.removeEventListener("pointerleave", this.pointerLeave);
-    this.container.removeEventListener("focusin", this.focusIn);
-    this.container.removeEventListener("focusout", this.focusOut);
-    document.removeEventListener("keydown", this.keyDown);
   }
 
-  /** A structural render replaces cards; no old preview or delayed event may act on their successors. */
+  /** A structural render replaces cards; nothing of the old cards may act on their successors. */
   reset(): void {
-    window.clearTimeout(this.intentTimer);
     this.connectionsMenu.close();
     this.backReferences.clear();
     this.cards.clear();
-    this.previewTarget = this.candidate = null;
-    // Replacing the DOM is neither new pointer input nor permission to undo an explicit dismissal.
   }
 
-  /** Stop preview intent when a camera or retained-state action takes ownership of the scene. */
-  cancelPreview(): void {
-    window.clearTimeout(this.intentTimer);
-    this.candidate = null;
-    this.previewTarget = null;
+  /**
+   * Open the description a name or book names, or fold it when it is being kept visible: a file's name opens its
+   * Purpose and every described symbol, a symbol's name its own. The application saves the choice. False when
+   * the card has nothing to open, so that the caller can offer what it does have.
+   */
+  toggle(nodeId: string, symbol: string | undefined, control: ReadingControl): boolean {
+    const model = this.cards.get(nodeId);
+    if (!model) return false;
+    if (symbol === undefined ? !model.purpose && !model.symbols.size : !model.symbols.has(symbol)) return false;
+    const folds = this.controlKeepsVisible(model, symbol);
+    if (!folds) this.reveal({ nodeId, ...(symbol ? { symbol } : {}) });
+    this.options.change(nodeId, symbol, !folds, control);
+    return true;
   }
 
   /** A requested target may keep held descriptions visible without unfolding unrelated cards. */
@@ -110,7 +97,6 @@ export class CardReading {
     let symbols = this.reveals.get(target.nodeId);
     if (!symbols) this.reveals.set(target.nodeId, symbols = new Set());
     symbols.add(target.symbol);
-    if (this.dismissed?.nodeId === target.nodeId && (target.symbol === undefined || this.dismissed.symbol === target.symbol)) this.dismissed = null;
   }
 
   /** A subsequent outward zoom restores automatic overview disclosure; pans and inward zoom do not. */
@@ -133,17 +119,20 @@ export class CardReading {
     if (purpose) card.querySelector(".node-path")?.after(purpose.element);
     const symbols = new Map<string, ReadingBlock>();
     const controls = new Map<string | undefined, HTMLButtonElement>();
+    const names = new Map<string | undefined, HTMLElement>();
     const overflow = this.block(node, undefined, "", false).more;
     if (overflow) {
       overflow.classList.add("local-reading-file-full");
       card.querySelector(".node-path")?.after(overflow);
     }
-    const model = { card, node, purpose, overflow, symbols, controls };
+    const model = { card, node, purpose, overflow, symbols, controls, names };
     this.cards.set(node.id, model);
 
     const book = this.readingButton(node);
     card.querySelector(".local-card-actions")?.prepend(book);
     controls.set(undefined, book);
+    const title = card.querySelector<HTMLElement>(".local-file-name");
+    if (title) names.set(undefined, title);
     for (const row of card.querySelectorAll<HTMLElement>(".symbol-row:not(.internals-row)")) {
       const name = row.dataset.symbol!;
       const symbol = file.symbols.find(entry => entry.name === name);
@@ -170,19 +159,22 @@ export class CardReading {
           const line = document.createElement("div"), label = document.createElement("span");
           label.className = "local-reading-role";
           label.textContent = reference.role;
-          const names = document.createElement("span");
-          names.innerHTML = reference.html;
-          line.append(label, names);
+          const values = document.createElement("span");
+          values.innerHTML = reference.html;
+          line.append(label, values);
           facts.append(line);
         }
         block.element.prepend(facts);
       }
       block.element.dataset.symbol = name;
       row.append(block.element);
+      row.classList.add("local-row-readable");
       symbols.set(name, block);
       const action = this.readingButton(node, name);
       row.querySelector(".local-symbol-pin")?.before(action);
       controls.set(name, action);
+      const label = row.querySelector<HTMLElement>(".symbol-label");
+      if (label) names.set(name, label);
     }
 
     const counts = document.createElement("div");
@@ -251,20 +243,9 @@ export class CardReading {
   }
 
   /** Change only disclosure, leaving DOM identities and row order for the layout to preserve. */
-  updatePresentation(target: ReadingTarget | null = this.previewTarget, visible = this.visible): void {
-    this.previewTarget = target;
+  updatePresentation(visible = this.visible): void {
     this.visible = visible;
     for (const card of this.cards.values()) this.updateCard(card);
-  }
-
-  /** Already-open pinned text needs no geometry work when the pointer merely reads another row. */
-  needsLayout(target: ReadingTarget | null): boolean {
-    for (const model of this.cards.values()) {
-      const wants = (symbol?: string): boolean => this.disclosed(model.node.id, symbol, target);
-      if (model.purpose && model.purpose.element.hidden === wants()) return true;
-      for (const [name, block] of model.symbols) if (block.element.hidden === wants(name)) return true;
-    }
-    return false;
   }
 
   /** Explicit whole-card reading also discloses its symbol rows, without claiming additional connections. */
@@ -292,38 +273,32 @@ export class CardReading {
     }
   }
 
-  /** A deliberate preview keeps existing pinned/explicit text and adds only the one temporary target. */
+  /** Every kept-visible description shows; the books and the names say what each one would do next. */
   private updateCard(model: ReadingCard): void {
-    const open = (symbol?: string): boolean => this.disclosed(model.node.id, symbol, this.previewTarget);
+    const open = (symbol?: string): boolean => this.keepingVisible(model.node.id, symbol);
     if (model.purpose) model.purpose.element.hidden = !open();
     for (const [name, block] of model.symbols) block.element.hidden = !open(name);
     const reading = !!model.purpose && !model.purpose.element.hidden
       || [...model.symbols.values()].some(block => !block.element.hidden);
-    const deliberate = this.keepingVisible(model.node.id) || [...model.symbols.keys()].some(name => this.keepingVisible(model.node.id, name));
-    model.card.classList.toggle("local-reading-card", deliberate);
-    model.card.classList.toggle("local-reading-preview", reading && !deliberate);
+    model.card.classList.toggle("local-reading-card", reading);
+    const expandedOf = (symbol?: string): boolean => symbol === undefined ? reading : !model.symbols.get(symbol)?.element.hidden;
     for (const [symbol, button] of model.controls) {
       const held = symbol === undefined
         ? this.held(model.node.id) && [...model.symbols.keys()].every(name => this.held(model.node.id, name))
         : this.held(model.node.id, symbol);
-      const expanded = symbol === undefined ? !!model.purpose && !model.purpose.element.hidden
-        || [...model.symbols.values()].some(block => !block.element.hidden) : !model.symbols.get(symbol)?.element.hidden;
       button.setAttribute("aria-pressed", String(held));
-      button.setAttribute("aria-expanded", String(expanded));
+      button.setAttribute("aria-expanded", String(expandedOf(symbol)));
       const folds = this.controlKeepsVisible(model, symbol);
       button.setAttribute("aria-label", `${folds ? "Fold" : "Read"} ${symbol ?? model.node.name}${symbol ? ` in ${model.node.name}` : ""}`);
       button.title = symbol ? `${folds ? "Fold" : "Keep open"} this explanation; connections stay pinned independently`
         : `${folds ? "Fold" : "Read"} all descriptions in this card; connections stay pinned independently`;
     }
+    for (const [symbol, name] of model.names) name.setAttribute("aria-expanded", String(expandedOf(symbol)));
   }
 
   private keepingVisible(nodeId: string, symbol?: string): boolean {
     const reveals = this.reveals.get(nodeId);
     return this.held(nodeId, symbol) && (this.visible || !!reveals && (reveals.has(undefined) || reveals.has(symbol)));
-  }
-
-  private disclosed(nodeId: string, symbol: string | undefined, preview: ReadingTarget | null): boolean {
-    return this.keepingVisible(nodeId, symbol) || sameTarget(preview, { nodeId, symbol });
   }
 
   private controlKeepsVisible(model: ReadingCard, symbol?: string): boolean {
@@ -343,11 +318,7 @@ export class CardReading {
     button.innerHTML = BOOK;
     button.addEventListener("click", event => {
       event.stopPropagation();
-      const folds = this.controlKeepsVisible(this.cards.get(node.id)!, symbol);
-      const target = { nodeId: node.id, ...(symbol ? { symbol } : {}) };
-      this.dismissed = folds ? target : null;
-      if (!folds) this.reveal(target);
-      this.options.change(node.id, symbol, !folds);
+      this.toggle(node.id, symbol, "book");
     });
     return button;
   }
@@ -384,57 +355,6 @@ export class CardReading {
     });
     return { element, prose, more, hasMore };
   }
-
-  private targetOf(element: EventTarget | null): ReadingTarget | null {
-    if (!(element instanceof Element)) return null;
-    const card = element.closest<HTMLElement>(".node-card"), id = card?.dataset.id;
-    const model = id ? this.cards.get(id) : undefined;
-    if (!model) return null;
-    const row = element.closest<HTMLElement>(".symbol-row");
-    if (row) return row.dataset.symbol && model.symbols.has(row.dataset.symbol) ? { nodeId: id!, symbol: row.dataset.symbol } : null;
-    if (element.closest(".node-symbols") || !model.purpose) return null;
-    return { nodeId: id! };
-  }
-
-  private request(target: ReadingTarget | null, immediate = false): void {
-    if (!this.options.canPreview()) return;
-    if (sameTarget(target, this.candidate)) return;
-    window.clearTimeout(this.intentTimer);
-    this.candidate = target;
-    if (!sameTarget(target, this.dismissed)) this.dismissed = null;
-    if (sameTarget(target, this.dismissed) && target) return;
-    const show = (): void => {
-      if (!sameTarget(target, this.candidate) || sameTarget(target, this.previewTarget)) return;
-      this.options.preview(target);
-    };
-    if (immediate) show();
-    else this.intentTimer = window.setTimeout(show, target ? 70 : 100);
-  }
-
-  private readonly pointerMove = (event: PointerEvent): void => {
-    if (event.pointerType === "touch" || event.buttons) return;
-    if (this.lastPointer && this.lastPointer.x === event.clientX && this.lastPointer.y === event.clientY) return;
-    this.lastPointer = { x: event.clientX, y: event.clientY };
-    this.keyboard = false;
-    this.request(this.targetOf(event.target));
-  };
-  private readonly pointerLeave = (): void => { if (!this.keyboard) this.request(null, true); };
-  private readonly focusIn = (event: FocusEvent): void => {
-    if (!(event.target instanceof Element) || !event.target.matches(":focus-visible")) return;
-    this.keyboard = true;
-    this.request(this.targetOf(event.target), true);
-  };
-  private readonly focusOut = (event: FocusEvent): void => {
-    if (this.keyboard && !(event.relatedTarget instanceof Node && this.container.contains(event.relatedTarget))) this.request(null, true);
-  };
-  private readonly keyDown = (event: KeyboardEvent): void => {
-    if (event.defaultPrevented || event.key !== "Escape" || !this.previewTarget || !this.options.canDismiss() || document.querySelector(":popover-open")) return;
-    event.preventDefault();
-    this.dismissed = this.previewTarget;
-    window.clearTimeout(this.intentTimer);
-    this.candidate = null;
-    this.options.preview(null);
-  };
 }
 
 /** Empty generated placeholders are not a file description. The complete authored text remains in the reader. */

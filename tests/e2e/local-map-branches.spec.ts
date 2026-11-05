@@ -220,7 +220,7 @@ test("file retention, individual pruning and close work by keyboard with reduced
   expect(await page.locator("#map-container .local-directory-closed").count()).toBeGreaterThan(0);
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   await expect(page.locator("#context-name")).toHaveText("Scan root");
-  await expect(page.locator("#map-container .local-file-inspect, #map-container .local-directory-closed__name").first()).toBeFocused();
+  await expect(page.locator("#map-container .local-file-name, #map-container .local-directory-closed__name").first()).toBeFocused();
 });
 
 test("closing a retained file keeps only symbols needed elsewhere and removes its unneeded branch", async ({ page }) => {

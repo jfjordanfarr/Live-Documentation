@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-04T15:03:17.521Z
+- Generated At: 2026-11-05T15:54:06.085Z
 
 ## Authored
 ### Purpose
@@ -34,12 +34,14 @@ The November 1 directory-arrival repair keeps the unfolding label anchor through
 
 November 4 native reading calibrates a portrait card to the usable frame before interpreting zoom. A reset waits for the native height move; a resize follows the remembered reading subject until manual camera input or an exploration action takes over. Temporary description visits retain a scene/camera return point, while deliberate book controls use the normal focus/anchor transaction and independent reading state. See the [integration record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
+On [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) hover reading went: the preview and visit-cancel paths and their options are gone, `readNode` opens or folds what a name names through the reading surface and falls back to inspection for a card with nothing to open, and `captureReadingChange` holds the card's name rather than the tapped row, since holding the row let the re-solved layout seat the taller card higher and leap its name by 103 px; focus returns to the name or book used. `refreshReadingGeometry` is called only for the zoom fold and restore, a resize and an arrival that unfolds. Under the hover anchor tuning the render after a tap puts a new row under the resting pointer, and Chromium reports that as a hover; `readingHold` keeps `highlightSymbolConnections` from re-anchoring to it while the reading change's move runs, since the renderer would switch its hold to the row and leap the name (272 px in the browser spec); the renderer clears the flag when the move ends.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L72)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L73)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -106,6 +108,7 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`types.LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi) (type-only)
 - [`types.LocalViewOptions`](./types.ts.mdmd.md#symbol-localviewoptions) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
+- [`types.ReadingControl`](./types.ts.mdmd.md#symbol-readingcontrol) (type-only)
 - [`pin-state.EMPTY_PIN_SET`](../pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`pin-state.PinSet`](../pin-state.ts.mdmd.md#symbol-pinset)
 - [`pin-state.isSymbolPinned`](../pin-state.ts.mdmd.md#symbol-issymbolpinned)

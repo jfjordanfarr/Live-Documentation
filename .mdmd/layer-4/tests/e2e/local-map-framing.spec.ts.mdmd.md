@@ -15,6 +15,8 @@ The browser checks of how the 2D Local Map frames itself on arrival, written aft
 - The rule for a picture framed whole is restated in the spec (`expectFramedWhole`) rather than imported, so that a change to the rule fails here first; `framePadding` is imported since the padding is a shared quantity, not a rule under test.
 - The return from 3D, the hold and the settle, is checked in `local-map-branches.spec.ts`, where the 3D setup already stands.
 
+Since [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) the reader case opens the evidence reader from More → Inspect, since a card's name reads its descriptions.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

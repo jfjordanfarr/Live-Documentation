@@ -19,6 +19,8 @@ Checks that Local Map work belongs to the visible view: 2D layout search pauses 
 
 Since 2026-10-31 the returning 3D picture's dimmed spheres are the frontier's, at .3 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)), which the last check reads under .35.
 
+The case that hover attention to open text pauses the layout search went on [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) with hover reading: the search no longer pauses for a pointer, since a pointer draws nothing; the acted-on row is held through its moves by the ordinary rule.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

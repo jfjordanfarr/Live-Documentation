@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-05T03:49:51.271Z
+- Generated At: 2026-11-05T15:19:44.090Z
 
 ## Authored
 ### Purpose
@@ -45,6 +45,8 @@ November 4 adds a disclosure-only geometry transaction over the existing card DO
 
 Reading measurements keep containers in their existing parents when there is no structural move. Re-appending even the same container blurs a focused descendant in Chromium; avoiding that no-op preserves keyboard reading. Attention to already-open text also pauses further search, without requiring a height change.
 
+On [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) the temporary reading visit left this file with hover reading: the stage's return point, the move's held-element and camera-target overrides and the search's pause on reading attention are gone. `refreshReadingGeometry` keeps one job, remeasuring the same branches after a disclosure change and beginning a fresh competition from the new picture, with the acted-on element held by the ordinary rule. The end of a move also clears the controller's `readingHold`, so a hover that arrives after a tap's move may anchor again.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -63,7 +65,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L96)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L91)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -71,7 +73,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L101)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L96)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -79,7 +81,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L130)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L124)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -107,17 +109,18 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L266)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L260)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
-Remeasure an existing scene after text disclosure without rebuilding cards or changing row order. A temporary
-reading visit pauses the search and retains the original complete scene/camera; leaving restores that exact
-arrangement. Deliberate camera changes discard the return point and start a fresh measured competition.
+Remeasure an existing scene after a disclosure change without rebuilding cards or changing row order: the zoom
+fold or restore, a resize, or an arrival that unfolds. The opened or folded text changes card heights, so the
+same branches are laid out again and moved to with the acted-on element held still, and a fresh measured
+competition begins from the new picture.
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L318)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L296)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -171,7 +174,6 @@ arrangement. Deliberate camera changes discard the return point and start a fres
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
 - [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
-- [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)
 <!-- LIVE-DOC:END Dependencies -->

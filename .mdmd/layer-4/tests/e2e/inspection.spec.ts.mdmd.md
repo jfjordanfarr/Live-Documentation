@@ -23,6 +23,8 @@ A file's evidence reads Purpose, then its facts, then Notes (the owner's choice,
 
 Since 2026-10-31 the 3D arrival's settle allowance is 25 seconds: the picture enters over the tuning's frames and settles on screen (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)).
 
+Since [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) a card's name reads its descriptions, so these journeys open the evidence reader from More → Inspect; the keyboard journeys start at the More button, which the menu returns focus to before the command runs, so that is the opener the reader gives focus back to.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

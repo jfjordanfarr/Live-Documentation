@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
@@ -20,6 +20,12 @@ const ESTATE = "/samples/estate/";
 const BAR_TEXT = [".search-group", ".search-row-name", ".search-row-context", ".search-row-badge", "#pathfind-status", ".pathfind-path-hop-name", ".pathfind-path-hop-symbol"];
 
 test.use({ viewport: { width: 1600, height: 1000 } });
+
+/** Names read since November 5; the evidence reader is reached through More → Inspect on the card or the row. */
+async function inspectFromMore(page: Page, scope: Locator, name: string): Promise<void> {
+  await scope.locator(".local-symbol-more, .local-file-more").first().click();
+  await page.getByRole("menuitem", { name: `Inspect ${name}`, exact: true }).click();
+}
 
 for (const width of [952, 1280]) {
   test(`symbol search frames the requested row and its actions after retained layout movement at ${width}px`, async ({ page }) => {
@@ -53,7 +59,8 @@ test("same-name declarations remain distinct through search, inspection and relo
   await localMapSettled(page);
   await choose(page,"subject","walk",{file,symbol:"walk (function)"});
   await localMapSettled(page);
-  await page.getByRole("button",{name:"Inspect walk (function) in pathfind.ts",exact:true}).click();
+  const card=page.locator(`.node-card[data-id="${file}"]`);
+  await inspectFromMore(page,card.locator('.symbol-row[data-symbol="walk (function)"]'),"walk (function)");
   const panel=page.locator("#detail-panel");
   await expect(panel).toContainText("Walks breadth-first from a set of files");
   expect(currentSnapshot(page).pinSet.entries).toEqual([{nodeId:file,symbol:"walk (function)"}]);
@@ -63,7 +70,7 @@ test("same-name declarations remain distinct through search, inspection and relo
   await page.getByRole("button",{name:"Close details",exact:true}).click();
   await choose(page,"subject","walk",{file,symbol:"Walk (interface)"});
   await localMapSettled(page);
-  await page.getByRole("button",{name:"Inspect Walk (interface) in pathfind.ts",exact:true}).click();
+  await inspectFromMore(page,card.locator('.symbol-row[data-symbol="Walk (interface)"]'),"Walk (interface)");
   await expect(panel).toContainText("What one breadth-first walk from a set of files found.");
   expect(currentSnapshot(page).pinSet.entries).toEqual([
     {nodeId:file,symbol:"walk (function)"},{nodeId:file,symbol:"Walk (interface)"}
@@ -88,7 +95,7 @@ test("a reader link's explicit anchor wins over a different declaration with tha
   await page.goto(`/?view=local&mode=2d&node=${file}`);
   await page.locator(".local-placed").waitFor();
   await localMapSettled(page);
-  await page.getByRole("button",{name:`Inspect ${file}`,exact:true}).click();
+  await inspectFromMore(page,page.locator(`.node-card[data-id="${file}"]`),"pathfind.ts");
   await page.locator("#detail-panel").getByRole("link",{name:"Read the anchored declaration",exact:true}).click();
   expect(currentSnapshot(page).inspection).toEqual({kind:"file",nodeId:file,symbol:"Actual anchor target"});
   await expect(page.locator("#detail-panel")).toContainText("The explicitly anchored declaration.");

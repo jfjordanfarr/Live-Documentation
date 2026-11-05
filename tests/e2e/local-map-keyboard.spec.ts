@@ -16,7 +16,7 @@ test("Tab keeps each native map command in the unobstructed frame without changi
   const snapshot = () => decompressSnapshot(new URL(page.url()).searchParams.get("s")!);
   const before = snapshot();
   // Start at a native name, then use actual browser Tab navigation through rows and neighboring cards.
-  await page.locator(`.node-card[data-id="${nodeId}"] .local-file-inspect`).focus();
+  await page.locator(`.node-card[data-id="${nodeId}"] .local-file-name`).focus();
   let commands = 0;
   for (let index = 0; index < 100; index++) {
     await page.keyboard.press("Tab");

@@ -4,8 +4,8 @@ import { localMapSettled, panIntoView } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
- * Direct Pin controls retain what they name while body/label clicks inspect (the owner's accepted grammar,
- * 2026-10-19, Turn 24). A neighbour's symbol remains one pin with the subject drawn whole; whole-file and symbol pins
+ * Direct Pin controls retain what they name while a name's click reads its description (2026-11-05; from 2026-10-19 to
+ * then a name inspected, the owner's accepted grammar of Turn 24 that day). A neighbour's symbol remains one pin with the subject drawn whole; whole-file and symbol pins
  * retain the narrow/add/release/fallback rule of 2026-10-15, and a symbol pin discloses the rows its own file's
  * references join to it, with their laces (2026-11-03). Centre changes the subject without pinning; inspection
  * and double-clicks leave the working set alone; the Knowledge Sources journey still reaches a far symbol in five
@@ -129,17 +129,16 @@ test("Centre makes a neighbour the subject without a pin; double-clicking anothe
   await panIntoView(page, card(page, MAIN));
   await card(page, MAIN).locator(".node-title").dblclick();
   await localMapSettled(page);
-  expect(pins(page), "inspection never adds a pin").toEqual([]);
+  expect(pins(page), "reading never adds a pin").toEqual([]);
   expect(await subject(page), "and nothing recentres").toBe(MODELS);
-  await expect(page.locator("#detail-panel")).toHaveClass(/visible/);
-  await expect(page.locator("#detail-title")).toHaveText("main.ts");
+  await expect(page.locator("#detail-panel"), "a name reads its card; the evidence reader is behind More").not.toHaveClass(/visible/);
 });
 
 for (const gesture of [
   { name: "symbol label", selector: ".symbol-label", inspectsType: false },
   { name: "recorded return type", selector: ".local-reading-types a", inspectsType: true }
 ] as const) {
-  test(`double-clicking an estate ${gesture.name} keeps the source as subject`, async ({ page }) => {
+  test(`double-clicking an estate ${gesture.name} keeps the source as subject and adds no pin`, async ({ page }) => {
     await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(GATEWAY_CLIENT)}`);
     await localMapSettled(page);
     await expect(page.locator("#map-container .node-card.local-focus")).toHaveAttribute("data-id", GATEWAY_CLIENT);
@@ -154,17 +153,18 @@ for (const gesture of [
     await target.dblclick();
     await localMapSettled(page);
 
-    await expect(page.locator("#map-container .node-card.local-focus"), "a pin or inspection must not move the subject").toHaveAttribute("data-id", GATEWAY_CLIENT);
-    expect(pins(page), "neither inspection click pins its source or target").toEqual([]);
+    await expect(page.locator("#map-container .node-card.local-focus"), "a pin, reading or inspection must not move the subject").toHaveAttribute("data-id", GATEWAY_CLIENT);
+    expect(pins(page), "neither click pins its source or target").toEqual([]);
     await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
-    await expect(page.locator("#detail-panel")).toHaveClass(/visible/u);
     await expect(page.locator("#context-name"), "context continues to name the map subject").toHaveText(GATEWAY_CLIENT);
     if (gesture.inspectsType) {
+      await expect(page.locator("#detail-panel")).toHaveClass(/visible/u);
       await expect(page.locator("#detail-title")).toHaveText("PaymentResultModel.cs");
     } else {
-      await expect(page.locator("#detail-title")).toHaveText("GatewayClient.cs");
+      // A name reads its description (2026-11-05); two clicks open and fold it, and the evidence reader stays closed.
+      await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
       const snapshot = decompressSnapshot(new URL(page.url()).searchParams.get("s")!);
-      expect(snapshot.inspection).toEqual({ kind: "file", nodeId: GATEWAY_CLIENT, symbol: "GetPaymentAsync" });
+      expect(snapshot.inspection ?? null).toBeNull();
     }
   });
 }

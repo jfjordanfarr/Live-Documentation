@@ -17,6 +17,8 @@ Constructs the 2D Local Map controller and exposes its rendering, camera, path a
 - The application supplies Inspect, Pin, Centre and directory actions through `LocalViewOptions`, following the [accepted interaction grammar](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and [its resumed implementation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). This factory forwards the 2D capture/after-render boundary that keeps an acted-on item in place around those shared state changes; it adds no pin, inspection or directory policy of its own.
 - `isShown` and `show` (2026-10-16): whether the map is the view shown, and the map shown again, the owed render's two doors for the application's view switch.
 
+Since [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) `captureReadingChange` forwards the control used, so focus can return to a tapped name as well as to a book.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
