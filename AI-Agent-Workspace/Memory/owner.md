@@ -1,6 +1,6 @@
 # The owner
 
-_Current as of 2026-11-04. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
+_Current as of 2026-11-05. Any agent working here keeps this file: when the owner says something that changes how to work with them, add it with the date, in their words where you can._
 
 The owner of this repository is its only human contributor. They act as product manager and architect and expect the agent to be the lead developer who owns the code. They built the repository between October 2025 and April 2026 with GitHub Copilot, stopped when the models of the day could not see or design a user interface well enough to help with the Explorer, and came back on 2026-09-26 with the Claude 5 models. There is no deadline: "It's okay if it's ready when it's ready."
 
@@ -153,6 +153,8 @@ What they want from the tool at work (2026-09-26): "I just want to be able to sh
 - **Aesthetic judgment wants a vision-capable model** (2026-10-22, [Turn 2](../ChatHistory/2026/10/2026-10-22.1.record.md#turn-2)). On delegating the 3D tuning: "it would need to be pretty vision-capable. Might have to be a Fable instance rather than an Opus instance to ensure that aesthetic instincts are still in place -- we've led ourselves astray a bit chasing metrics whose resulting aesthetics weren't terribly aligned with what we set out to measure anyway, and I worry about falling into a similar trap by asking Opus to try and solve it purely numerically, yknow?" A delegated tuning task is judged by eye on the most capable vision model, and a metric stands in for the eye only when the two have been seen to agree.
 
 ## Formatting and visual taste
+
+- **A gesture that fires on hover is not a working gesture for a mouse user** (2026-11-05, [Turn 1](../ChatHistory/2026/11/2026-11-05.1.record.md#turn-1)). After the November 3–5 reading work made descriptions open on hover: “text expansion does not occur on hover but instead on tap/click. The emergent behavior we have in the 2D local map right now is just too difficult and finicky to actually work as a human end user with a computer mouse.” The root's reading: a disclosure that changes the picture is deliberate, on a tap or click; hover may indicate, it should not rearrange. In the same message they ask the current root, Fable 5.1, for its own design instincts on the recent sessions' changes rather than a continuation by default.
 
 - **Portrait is the default card composition** (2026-11-04, [Turn 2 of the new session](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-2)). The owner prefers portrait in general to work across many screen sizes and because “a Card is more portrait.” Root confirms that the comparison concerns the card's shape, not the device orientation; content-driven height and readable overflow are implementation interpretations under that direction.
 
