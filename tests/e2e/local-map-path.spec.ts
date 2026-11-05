@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 
+import { AA_SMALL_TEXT, backdrop, contrastRatio, parseColour } from "./contrast";
 import { choose, currentSnapshot, newestKey, pathAddress } from "./search-bar";
 import { LOCAL_MAP, boxOf, centerDistance, displayNames, loadGraph, localMapSettled, panIntoView, readPicture, scoreExpanded, symbolCounts } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
@@ -70,27 +71,17 @@ async function readablePathStatus(page: Page): Promise<void> {
   const status = page.locator("#pathfind-status");
   await expect(status).toBeVisible();
   await expect(status).toBeInViewport({ ratio: 1 });
+  // The page gives the computed colours; the shared helper judges them, over the browser's white canvas like every
+  // other contrast check (this spec had assumed a black one, found 2026-11-05).
   const text = await status.evaluate(element => [element, ...element.querySelectorAll("a")].map(part => {
-    const rgba = (colour: string): number[] => colour.match(/[\d.]+/gu)!.map(Number);
-    let background = [0, 0, 0];
-    const layers: Element[] = [];
-    for (let layer: Element | null = part; layer; layer = layer.parentElement) layers.unshift(layer);
-    for (const layer of layers) {
-      const colour = rgba(getComputedStyle(layer).backgroundColor);
-      const alpha = colour[3] ?? 1;
-      background = background.map((channel, i) => colour[i] * alpha + channel * (1 - alpha));
-    }
+    const layers: string[] = [];
+    for (let layer: Element | null = part; layer; layer = layer.parentElement) layers.unshift(getComputedStyle(layer).backgroundColor);
     const style = getComputedStyle(part);
-    const luminance = (colour: number[]): number => colour.slice(0, 3).reduce((sum, channel, i) => {
-      const srgb = channel / 255;
-      return sum + (srgb <= .04045 ? srgb / 12.92 : ((srgb + .055) / 1.055) ** 2.4) * [.2126, .7152, .0722][i];
-    }, 0);
-    const foreground = luminance(rgba(style.color)), behind = luminance(background);
-    return { fontSize: parseFloat(style.fontSize), contrast: (Math.max(foreground, behind) + .05) / (Math.min(foreground, behind) + .05) };
+    return { fontSize: parseFloat(style.fontSize), colour: style.color, layers };
   }));
   for (const part of text) {
     expect(part.fontSize, "path answers use the readable body/control scale").toBeGreaterThanOrEqual(13);
-    expect(part.contrast, "the answer and reverse link have readable contrast against their actual backgrounds").toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(parseColour(part.colour), backdrop(part.layers)), "the answer and reverse link have readable contrast against their actual backgrounds").toBeGreaterThanOrEqual(AA_SMALL_TEXT);
   }
 }
 

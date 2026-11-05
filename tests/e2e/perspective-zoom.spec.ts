@@ -201,26 +201,32 @@ test("native symbol wires gather by file pair and directory shells reverse their
   const nativeWires = await page.locator("#map-connections .connection-path").count();
   expect(nativeWires).toBeGreaterThan(10);
   for (const button of ["3D", "2D"]) {
-    await page.getByRole("button", { name: button, exact: true }).click();
-    const bridge = page.locator(".perspective-transition[data-graph-files]");
-    await expect(bridge).toBeVisible();
-    expect(Number(await bridge.getAttribute("data-symbol-wires"))).toBe(nativeWires);
-    expect(Number(await bridge.getAttribute("data-file-pairs"))).toBeGreaterThan(1);
-    expect(Number(await bridge.getAttribute("data-file-pairs"))).toBeLessThan(nativeWires);
-    const frames = await page.evaluate(async () => {
+    // The sampler stands before the click and records every frame from the layer's first to its last: installed after
+    // four round trips to a page busy drawing the transition, it could miss the fold window entirely (2026-11-05).
+    const recording = page.evaluate(async () => {
       const samples: Array<{ fold: number; root: number; children: number[] }> = [];
+      let wires = 0, pairs = 0;
       await new Promise<void>(resolve => {
+        let seen = false;
         const sample = (): void => {
           const layer = document.querySelector<HTMLElement>(".perspective-transition[data-graph-files]");
-          if (!layer) { resolve(); return; }
+          if (!layer) { if (seen) resolve(); else requestAnimationFrame(sample); return; }
+          seen = true;
+          wires = Number(layer.dataset.symbolWires);
+          pairs = Number(layer.dataset.filePairs);
           const root = layer.querySelector<HTMLElement>('[data-transition-directory=""]')!;
           const children = [...layer.querySelectorAll<HTMLElement>('[data-depth="1"]')];
           samples.push({ fold: Number(layer.dataset.wireFold), root: Number(root.style.opacity), children: children.map(child => Number(child.style.opacity)) });
           requestAnimationFrame(sample);
         }; requestAnimationFrame(sample);
       });
-      return samples;
+      return { samples, wires, pairs };
     });
+    await page.getByRole("button", { name: button, exact: true }).click();
+    const { samples: frames, wires, pairs } = await recording;
+    expect(wires).toBe(nativeWires);
+    expect(pairs).toBeGreaterThan(1);
+    expect(pairs).toBeLessThan(nativeWires);
     expect(frames.length).toBeGreaterThan(5);
     expect(frames.some(frame => frame.fold > 0 && frame.fold < 1)).toBe(true);
     expect(frames.every(frame => frame.children.length === 2 && frame.children.every(child => child >= frame.root))).toBe(true);

@@ -1,9 +1,13 @@
 import path from "node:path";
-import { defineConfig } from "vitest/config";
+import { defaultExclude, defineConfig } from "vitest/config";
 
 const engineSrc = path.resolve(__dirname, "packages/engine/src");
 const explorerSrc = path.resolve(__dirname, "packages/explorer/src");
 const generatorSrc = path.resolve(__dirname, "packages/generator/src");
+
+// Suites whose numerical comparisons must finish within the default five-second deadline only when nothing else
+// competes for the machine; they run in the `unit-serial` project, alone, after every other file.
+const serialUnitFiles = ["packages/explorer/src/client/views/forceGraphPhysics.test.ts"];
 
 const toPosix = (value: string): string => value.split(path.sep).join("/");
 
@@ -40,9 +44,6 @@ export default defineConfig({
         extends: true,
         test: {
           name: "unit",
-          // Covered numerical reference tests need a worker free from competing file suites; parallel runs
-          // exceeded their unchanged deadlines. The scheduling measurements are in this file's Live Doc.
-          maxWorkers: 1,
           include: [
             "packages/engine/src/**/*.test.ts",
             "packages/generator/src/**/*.test.ts",
@@ -50,7 +51,19 @@ export default defineConfig({
             "scripts/**/*.test.ts",
             "tests/integration/slopcop/**/*.test.ts",
             "tests/e2e/**/*.test.ts"
-          ]
+          ],
+          exclude: [...defaultExclude, ...serialUnitFiles]
+        }
+      },
+      {
+        extends: true,
+        test: {
+          name: "unit-serial",
+          include: serialUnitFiles,
+          // One worker, in a later group than every other project's files, so that nothing runs beside these
+          // suites: parallel runs exceeded their unchanged deadlines. The measurements are in this file's Live Doc.
+          maxWorkers: 1,
+          sequence: { groupOrder: 1 }
         }
       },
       {

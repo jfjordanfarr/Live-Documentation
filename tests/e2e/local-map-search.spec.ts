@@ -98,7 +98,9 @@ test("a change of pins starts the search afresh, from the seed after the first p
 });
 
 test("the search settles when a run of starts betters nothing, short of its cap", async ({ page }) => {
-  await open(page, { orderStarts: 4, searchStarts: 64, searchPatience: 3, moveMs: 0 });
+  // The stopping rule is the search's own, so it is held on the estate sample like the first case: on this repository's
+  // five files the case took 29 s of its 30 s budget by 2026-11-05 and timed out once, the cards having grown.
+  await open(page, { orderStarts: 4, searchStarts: 64, searchPatience: 3, moveMs: 0 }, "/samples/estate/", FIVE_ESTATE);
   await localMapSettled(page);
   const done = await readSearch(page);
   expect(done.status).toBe("settled");

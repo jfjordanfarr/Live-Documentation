@@ -21,6 +21,8 @@ The workspace manifest: the four npm workspaces (engine, generator, explorer, cl
 
 `live-docs:visualize:history-sample` (2026-10-18, the plan's C4) builds the scripted repository's two bundles for the history specs, and `test:e2e` runs it before Playwright.
 
+`test:unit` runs the `unit` and `unit-serial` projects since [2026-11-05](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8): the deadline-bound physics suite alone on one worker after everything else, the rest on the default workers, about 70 s where the one-worker project had taken 350 in the gate.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

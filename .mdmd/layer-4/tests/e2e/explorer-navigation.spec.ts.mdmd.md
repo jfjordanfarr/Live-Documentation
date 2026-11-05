@@ -17,6 +17,8 @@ Exercises the three navigable Explorer views and the remembered Local Map repres
 - Navigation assertions read the canonical compressed state and require an explicit Local Map address, rather than depending on loose query parameters beside it. The subject, view and perspective must still survive reload, a recipient with fresh storage, and remembered navigation.
 - The reveal test asks the browser to show every element of each view, at both ends, and then requires that nothing which clips has a scroll offset and that the Local Map's card stands where it stood. It failed on the World Map with `#main` scrolled 345 px before the views took `overflow: clip` (2026-10-21, [the work note](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#work-notes-the-gate-and-the-clipped-views)).
 
+- Since [2026-11-05](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8) the sender leaves its 3D picture for `about:blank` before a second browser context loads its own: the recipient's whole-repository settle beside the sender's still-running one, two renders in the one GPU process, took the first case to 36.5 s of its 30 s budget against 19 s alone; measured five times after the change at 15 to 16 s. Nothing is asserted on the sender after that point.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

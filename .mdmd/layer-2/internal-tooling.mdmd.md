@@ -34,7 +34,7 @@ Lint, build, type-check, both Vitest projects, and link enforcement, without the
 
 | Command                    | What it runs                                                                                                                                                                               |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run test:unit`        | The Vitest `unit` project: `packages/*/src`, `scripts/` and the SlopCop suites                                                                                                             |
+| `npm run test:unit`        | The Vitest `unit` and `unit-serial` projects: `packages/*/src`, `scripts/` and the SlopCop suites; the deadline-bound physics suite runs alone, after the rest |
 | `npm run test:integration` | The Vitest `integration` project (`tests/integration/live-docs/`): generator determinism, polyglot fixtures, CLI pathfinding, Rosetta parity, the oracle (~20 s)                           |
 | `npm run test:e2e`         | Playwright against the built Explorer, estate and history samples (`tests/e2e/`): every view, explicit changes between 2D and 3D, Back and Forward, the design audit and the still-picture instrument |
 

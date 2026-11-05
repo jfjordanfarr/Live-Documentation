@@ -34,7 +34,10 @@ export default defineConfig({
   use: {
     baseURL: site,
     screenshot: "only-on-failure",
-    trace: "retain-on-failure",
+    // A trace is kept only for a failure, without DOM snapshots: recording them for every test cost about a sixth of the
+    // suite's time (measured 2026-11-05, a 36-test subset: 5.7 min with them, 5.2 without them, 4.8 with the trace off), and one failing
+    // test's trace held 57 MB of them. The action log, console, network and screencast remain.
+    trace: { mode: "retain-on-failure", snapshots: false },
     // The Local Map's continuing search is off for the suite, so that a picture read after it is drawn is the picture
     // it first drew; the search has its own spec, and a spec that seeds the tuning itself chooses (2026-10-07).
     storageState: {

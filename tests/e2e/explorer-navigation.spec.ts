@@ -44,6 +44,9 @@ test("3D survives navigation, reload, a fresh shared-link recipient and a return
   await page.getByRole("button", { name: "Local Map", exact: true }).click();
   await ready(page, "3d");
 
+  // The sender leaves its 3D picture before the recipient loads its own: two whole-repository settles at once took
+  // this case to 36.5 s of its 30 s budget on 2026-11-05, against 19 s alone. Nothing is asserted on the sender after this.
+  await page.goto("about:blank");
   const context = await browser.newContext();
   try {
     const recipient = await context.newPage();
@@ -89,6 +92,9 @@ test("World Map folder entry retains 3D, and its shared link restores the folder
   await expect(page.locator("#view-world.active")).toBeVisible();
   await page.goForward();
   await ready(page, "3d");
+  // The sender leaves its 3D picture before the recipient loads its own: two whole-repository settles at once took
+  // this case to 36.5 s of its 30 s budget on 2026-11-05, against 19 s alone. Nothing is asserted on the sender after this.
+  await page.goto("about:blank");
   const context = await browser.newContext();
   try {
     const recipient = await context.newPage();

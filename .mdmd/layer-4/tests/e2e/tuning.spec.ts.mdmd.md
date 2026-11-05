@@ -19,6 +19,8 @@ October 31 added a fourth 3D group, Discovery, with Hops Shown and Reveal Frames
 
 Group Separation joined Forces on November 2, bringing the complete Tuning inventory to 47; the browser checks cover its accessible description and grouping alongside the existing controls. The toolbar’s separate Hops shown selector shares the same setting and is covered by the exploration journey tests.
 
+Card Text and Slot Lines joined the 2D layout group on November 5, the card composition comparison, bringing the inventory to 50; the tooltip and description checks cover them like the rest.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

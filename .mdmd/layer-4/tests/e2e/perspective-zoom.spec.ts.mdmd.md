@@ -20,6 +20,8 @@ Browser journeys verify transient hover under whole-file pins, narrowing to one 
 
 Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the bridge into 3D carries the picture's first piece, the subject with its first hop, which the check computes with the shared scope; before, the whole picture's first three hundred spheres.
 
+Since [2026-11-05](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8) the gathering case installs its frame sampler before the click and records from the layer's first frame to its last, reading the wire and pair counts from the first: installed after four round trips to a page busy drawing the transition, it had missed the fold window entirely once in a full run. It now sees every frame the page draws, and passed five runs in a row at 7.7 s.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

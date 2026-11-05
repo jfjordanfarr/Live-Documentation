@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-path.spec.ts
-- Generated At: 2026-10-22T16:47:58.567Z
+- Generated At: 2026-11-05T20:59:22.104Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,8 @@ The already-open-directory case exercises the same transition with unchanged ret
 - The reach test (2026-10-14, [Turn 7](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-14.1.record.md#turn-7)) reads the offered rows' words on the estate from `GatewayClient.cs`: both `PaymentsController.cs` files connect, the Portal's in two files and the Gateway's the other way; `IPaymentHub.cs` in four the other way; `Contracts` by its nearest file; the files that match "Payment" with no path, the project file and those matched by a symbol alone, stand under the fold marked "no path", and one can still be asked, answered "No path either way"; `Portal.csproj`, which nothing connects to, says so in the placeholder.
 - Each wire's two ends are read in screen coordinates and matched to the nearest pin within 12 px, so the test checks the grammar on the picture, not on the data that drew it.
 
+- Since [2026-11-05](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8) the path answer's contrast is judged by the shared [contrast helper](contrast.ts.mdmd.md), the page giving the computed colours and the helper laying them over the browser's white canvas like every other check; the spec's own arithmetic had assumed a black one. The threshold is the helper's AA figure, 4.5, as before.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -39,6 +41,10 @@ _No public symbols detected_
 - [`retained-state.describeRetained`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-describeretained)
 - [`retained-state.retainedItems`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retaineditems)
 - [`retained-state.retainedKey`](../../packages/explorer/src/client/views/retained-state.ts.mdmd.md#symbol-retainedkey)
+- [`contrast.AA_SMALL_TEXT`](./contrast.ts.mdmd.md#symbol-aa_small_text)
+- [`contrast.backdrop`](./contrast.ts.mdmd.md#symbol-backdrop)
+- [`contrast.contrastRatio`](./contrast.ts.mdmd.md#symbol-contrastratio)
+- [`contrast.parseColour`](./contrast.ts.mdmd.md#symbol-parsecolour)
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`search-bar.newestKey`](./search-bar.ts.mdmd.md#symbol-newestkey)

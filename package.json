@@ -36,7 +36,7 @@
   "scripts": {
     "build": "npm run build -w packages/engine && npm run build -w packages/explorer && npm run build -w packages/generator",
     "lint": "eslint .",
-    "test:unit": "vitest run --project unit",
+    "test:unit": "vitest run --project unit --project unit-serial",
     "test:integration": "vitest run --project integration",
     "test:e2e": "npm run live-docs:visualize && npm run live-docs:visualize:estate && npm run live-docs:visualize:history-sample && npx playwright test --config tests/e2e/playwright.config.ts",
     "verify": "node ./scripts/verify.mjs",
