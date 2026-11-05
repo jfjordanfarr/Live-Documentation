@@ -20,6 +20,8 @@ export interface CardReadingOptions {
   links: ReaderLinkContext;
   choices(): readonly ReadingChoice[];
   defaultOpen(nodeId: string, symbol?: string): boolean;
+  /** The card composition the person chose in Tuning: descriptions that open and grow, or fixed slots. */
+  mode(): "grow" | "slot";
   change(nodeId: string, symbol: string | undefined, open: boolean, control: ReadingControl): void;
   inspect(target: InspectionTarget, fragment?: string): void;
   navigate(node: ExplorerNodePayload): void;
@@ -52,14 +54,14 @@ const BOOK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke
  * nothing (the owner's verdict of 2026-11-05: expansion on hover was "too difficult and finicky to actually work
  * as a human end user with a computer mouse"). The application saves every choice, so what a person opened is
  * what a shared link shows. Geometry changes belong to the controller and the renderer, which hold the acted-on
- * name still while the card grows or shrinks around it.
+ * name still while the card grows or shrinks around it. Zoom never changes a card's box: below reading scale the
+ * prose fades (the owner, 2026-11-05: "I really would prefer that the cards don't themselves resize when we zoom
+ * out"). With fixed slots, the comparison composition, every symbol has the same allotment of text lines.
  */
 export class CardReading {
   private readonly cards = new Map<string, ReadingCard>();
   private readonly connectionsMenu = createItemMenu();
   private readonly backReferences = new Map<string, readonly LocalEdge[]>();
-  private readonly reveals = new Map<string, Set<string | undefined>>();
-  private observedScale: number | null = null;
   private visible = true;
 
   constructor(private readonly container: HTMLElement, private readonly options: CardReadingOptions) {}
@@ -86,27 +88,18 @@ export class CardReading {
     const model = this.cards.get(nodeId);
     if (!model) return false;
     if (symbol === undefined ? !model.purpose && !model.symbols.size : !model.symbols.has(symbol)) return false;
+    if (this.slots) {
+      // A fixed slot never opens in the layout: the name opens the full text in the reader (the 2026-11-05 comparison).
+      this.options.inspect({ kind: "file", nodeId, ...(symbol ? { symbol } : {}), presentation: "reading" });
+      return true;
+    }
     const folds = this.controlKeepsVisible(model, symbol);
-    if (!folds) this.reveal({ nodeId, ...(symbol ? { symbol } : {}) });
     this.options.change(nodeId, symbol, !folds, control);
     return true;
   }
 
-  /** A requested target may keep held descriptions visible without unfolding unrelated cards. */
-  reveal(target: ReadingTarget): void {
-    let symbols = this.reveals.get(target.nodeId);
-    if (!symbols) this.reveals.set(target.nodeId, symbols = new Set());
-    symbols.add(target.symbol);
-  }
-
-  /** A subsequent outward zoom restores automatic overview disclosure; pans and inward zoom do not. */
-  observeScale(scale: number): boolean {
-    if (!Number.isFinite(scale) || scale <= 0) return false;
-    const decreased = this.observedScale !== null && scale < this.observedScale - 1e-6;
-    this.observedScale = scale;
-    if (!decreased || !this.reveals.size) return false;
-    this.reveals.clear();
-    return true;
+  private get slots(): boolean {
+    return this.options.mode() === "slot";
   }
 
   /** Add canonical Purpose, symbol summaries and recorded signature facts to a newly constructed native card. */
@@ -114,7 +107,8 @@ export class CardReading {
     const file = this.options.links.files[node.id];
     if (!file) return;
     const summary = purposeOf(file);
-    const purpose = summary ? this.block(node, undefined, summary, false) : null;
+    // With fixed slots every card has its Purpose slot and every symbol its slot, filled or not: the same allotment.
+    const purpose = summary || this.slots ? this.block(node, undefined, summary, false) : null;
     purpose?.element.classList.add("local-reading-purpose");
     if (purpose) card.querySelector(".node-path")?.after(purpose.element);
     const symbols = new Map<string, ReadingBlock>();
@@ -128,9 +122,11 @@ export class CardReading {
     const model = { card, node, purpose, overflow, symbols, controls, names };
     this.cards.set(node.id, model);
 
-    const book = this.readingButton(node);
-    card.querySelector(".local-card-actions")?.prepend(book);
-    controls.set(undefined, book);
+    if (!this.slots) {
+      const book = this.readingButton(node);
+      card.querySelector(".local-card-actions")?.prepend(book);
+      controls.set(undefined, book);
+    }
     const title = card.querySelector<HTMLElement>(".local-file-name");
     if (title) names.set(undefined, title);
     for (const row of card.querySelectorAll<HTMLElement>(".symbol-row:not(.internals-row)")) {
@@ -150,7 +146,7 @@ export class CardReading {
         return { role: reference.role, html: values.join(" · ") };
       }).filter(reference => reference.html);
       const hasMore = symbol.sections.some(section => section.title !== "Summary" && section.body.some(line => line.trim()));
-      if (!text && !references.length && !hasMore) continue;
+      if (!this.slots && !text && !references.length && !hasMore) continue;
       const block = this.block(node, name, text, hasMore);
       if (references.length) {
         const facts = document.createElement("div");
@@ -170,9 +166,11 @@ export class CardReading {
       row.append(block.element);
       row.classList.add("local-row-readable");
       symbols.set(name, block);
-      const action = this.readingButton(node, name);
-      row.querySelector(".local-symbol-pin")?.before(action);
-      controls.set(name, action);
+      if (!this.slots) {
+        const action = this.readingButton(node, name);
+        row.querySelector(".local-symbol-pin")?.before(action);
+        controls.set(name, action);
+      }
       const label = row.querySelector<HTMLElement>(".symbol-label");
       if (label) names.set(name, label);
     }
@@ -242,7 +240,7 @@ export class CardReading {
     return `File dependency cycle: ${names.join(" → ")}`;
   }
 
-  /** Change only disclosure, leaving DOM identities and row order for the layout to preserve. */
+  /** Below reading scale the prose fades; no box changes, so DOM identities, row order and the layout stand. */
   updatePresentation(visible = this.visible): void {
     this.visible = visible;
     for (const card of this.cards.values()) this.updateCard(card);
@@ -264,8 +262,10 @@ export class CardReading {
     for (const { card, purpose, overflow, symbols } of this.cards.values()) {
       if (overflow) overflow.hidden = true;
       for (const block of [...(purpose ? [purpose] : []), ...symbols.values()]) {
-        block.more.hidden = block.element.hidden || !(block.hasMore || block.prose.scrollHeight > block.prose.clientHeight + 1);
+        // A slot's ellipsis says there is more; the name opens it. The link would add a line to every card.
+        block.more.hidden = this.slots || block.element.hidden || !(block.hasMore || block.prose.scrollHeight > block.prose.clientHeight + 1);
       }
+      if (this.slots) continue;
       // A file with many individually short descriptions can still exceed a phone's reading frame. Keep its plain
       // full reader reachable near the top, without shrinking text or installing a scrollbar inside the card.
       if (purpose && !purpose.element.hidden && card.scrollHeight > available) purpose.more.hidden = false;
@@ -275,11 +275,15 @@ export class CardReading {
 
   /** Every kept-visible description shows; the books and the names say what each one would do next. */
   private updateCard(model: ReadingCard): void {
-    const open = (symbol?: string): boolean => this.keepingVisible(model.node.id, symbol);
+    const slots = this.slots;
+    const open = (symbol?: string): boolean => slots || this.held(model.node.id, symbol);
     if (model.purpose) model.purpose.element.hidden = !open();
     for (const [name, block] of model.symbols) block.element.hidden = !open(name);
-    const reading = !!model.purpose && !model.purpose.element.hidden
-      || [...model.symbols.values()].some(block => !block.element.hidden);
+    // Below reading scale the prose fades in either composition; a card's box never depends on zoom.
+    model.card.classList.toggle("local-slot-card", slots);
+    model.card.classList.toggle("local-reading-faded", !this.visible);
+    const reading = !slots && (!!model.purpose && !model.purpose.element.hidden
+      || [...model.symbols.values()].some(block => !block.element.hidden));
     model.card.classList.toggle("local-reading-card", reading);
     const expandedOf = (symbol?: string): boolean => symbol === undefined ? reading : !model.symbols.get(symbol)?.element.hidden;
     for (const [symbol, button] of model.controls) {
@@ -293,18 +297,16 @@ export class CardReading {
       button.title = symbol ? `${folds ? "Fold" : "Keep open"} this explanation; connections stay pinned independently`
         : `${folds ? "Fold" : "Read"} all descriptions in this card; connections stay pinned independently`;
     }
-    for (const [symbol, name] of model.names) name.setAttribute("aria-expanded", String(expandedOf(symbol)));
-  }
-
-  private keepingVisible(nodeId: string, symbol?: string): boolean {
-    const reveals = this.reveals.get(nodeId);
-    return this.held(nodeId, symbol) && (this.visible || !!reveals && (reveals.has(undefined) || reveals.has(symbol)));
+    for (const [symbol, name] of model.names) {
+      if (slots) name.removeAttribute("aria-expanded");
+      else name.setAttribute("aria-expanded", String(expandedOf(symbol)));
+    }
   }
 
   private controlKeepsVisible(model: ReadingCard, symbol?: string): boolean {
     return symbol === undefined
-      ? this.keepingVisible(model.node.id) && [...model.symbols.keys()].every(name => this.keepingVisible(model.node.id, name))
-      : this.keepingVisible(model.node.id, symbol);
+      ? this.held(model.node.id) && [...model.symbols.keys()].every(name => this.held(model.node.id, name))
+      : this.held(model.node.id, symbol);
   }
 
   private held(nodeId: string, symbol?: string): boolean {
@@ -326,6 +328,7 @@ export class CardReading {
   private block(node: ExplorerNodePayload, symbol: string | undefined, text: string, hasMore: boolean): ReadingBlock {
     const element = document.createElement("div"), prose = document.createElement("div"), more = document.createElement("button");
     element.className = "local-reading-block";
+    if (this.slots) element.classList.add("local-reading-slot");
     element.dataset.hasMore = String(hasMore);
     element.hidden = true;
     prose.className = "local-reading-prose";

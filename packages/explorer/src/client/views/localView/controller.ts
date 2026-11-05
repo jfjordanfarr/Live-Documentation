@@ -293,6 +293,7 @@ export class LocalViewController implements LocalViewApi {
         return pins.some(pin => pin.symbol === "*") || (pins.length === 0 && options.state.selectedNode?.id === nodeId)
           || symbol !== undefined && pins.some(pin => pin.symbol === symbol);
       },
+      mode: () => options.state.tuning.localMap.cardText,
       change: (nodeId, symbol, open, control) => options.onReadingChange?.(nodeId, symbol, open, control),
       inspect: (target, fragment) => options.onReadTarget?.(target, fragment),
       navigate: node => { void this.recenterNode(node); }
@@ -543,6 +544,7 @@ export class LocalViewController implements LocalViewApi {
       this.container.append(root);
     }
     this.contentRoot = root;
+    this.container.style.setProperty("--slot-lines", String(Math.max(1, Math.round(this.options.state.tuning.localMap.slotLines))));
     this.reading?.updatePresentation(this.readingVisible);
     const stage = this.stage ?? (this.stage = createStage(root, this.overlay));
     renderBranches(this, stage);
@@ -659,8 +661,7 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /** Capture a 2D pin action's screen anchor and keyboard focus; shared pin policy belongs to the application. */
-  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false, newlyRetainedSymbol?: string): LocalExplorationFrame {
-    if (newlyRetainedSymbol !== undefined) this.reading?.reveal({ nodeId, ...(newlyRetainedSymbol === "*" ? {} : { symbol: newlyRetainedSymbol }) });
+  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false): LocalExplorationFrame {
     if (closeExpansion) this.expandedCards.delete(nodeId);
     this.lastInteracted = nodeId;
     this.lastInteractedSymbol = symbol === "*" ? null : symbol;
@@ -835,7 +836,7 @@ export class LocalViewController implements LocalViewApi {
       this.readingFrame = 0;
       if (!this.readingVisible && this.stage) {
         this.readingVisible = true;
-        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(true));
+        this.reading?.updatePresentation(true);
       }
     }
     this.settleArrival();
@@ -1140,15 +1141,16 @@ export class LocalViewController implements LocalViewApi {
     }
     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
     if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
-    const readingRequestChanged = this.reading?.observeScale(this.mapTransform.k) ?? false;
     if (this.reading && this.stage?.search && !this.readingFrame && !this.readingCalibrationPending) {
+      // Below reading scale the prose fades and above it returns, with the same two ratios so that the edge does not
+      // chatter; a card's box never changes with zoom (the owner, 2026-11-05).
       const ratio = (this.runtime.mapAnimationTarget?.k ?? this.mapTransform.k) / this.readingReferenceScale;
       const visible = this.readingVisible ? ratio >= 0.74 : ratio >= 0.92;
-      if (visible !== this.readingVisible || readingRequestChanged) this.readingFrame = requestAnimationFrame(() => {
+      if (visible !== this.readingVisible) this.readingFrame = requestAnimationFrame(() => {
         this.readingFrame = 0;
         if (!this.stage || !this.isShown()) return;
         this.readingVisible = visible;
-        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(visible));
+        this.reading!.updatePresentation(visible);
       });
     }
   }
@@ -1444,7 +1446,7 @@ export class LocalViewController implements LocalViewApi {
       this.readingCalibrationPending = true;
       if (!this.readingVisible && this.stage) {
         this.readingVisible = true;
-        refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(true));
+        this.reading?.updatePresentation(true);
       }
       if (this.stage?.move) {
         this.focusRequest = `.node-card[data-id="${CSS.escape(subject!)}"]`;

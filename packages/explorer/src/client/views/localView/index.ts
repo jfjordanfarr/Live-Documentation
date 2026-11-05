@@ -8,7 +8,7 @@ export function createLocalView(options: LocalViewOptions): LocalViewApi {
     render: () => controller.render(),
     isShown: () => controller.isShown(),
     show: () => controller.show(),
-    capturePinChange: (nodeId, symbol, nextSubjectId, closeExpansion, newlyRetainedSymbol) => controller.capturePinChange(nodeId, symbol, nextSubjectId, closeExpansion, newlyRetainedSymbol),
+    capturePinChange: (nodeId, symbol, nextSubjectId, closeExpansion) => controller.capturePinChange(nodeId, symbol, nextSubjectId, closeExpansion),
     captureDirectoryChange: directory => controller.captureDirectoryChange(directory),
     captureReadingChange: (nodeId, symbol, control) => controller.captureReadingChange(nodeId, symbol, control),
     clearPathForExploration: () => controller.clearPathForExploration(),

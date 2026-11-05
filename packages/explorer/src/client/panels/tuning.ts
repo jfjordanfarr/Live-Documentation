@@ -60,6 +60,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const symbolOrderSelect = document.getElementById("tuning-symbol-order") as HTMLSelectElement | null;
   const moveMsInput = document.getElementById("tuning-move-ms") as HTMLInputElement | null;
   const holdStillSelect = document.getElementById("tuning-hold-still") as HTMLSelectElement | null;
+  const cardTextSelect = document.getElementById("tuning-card-text") as HTMLSelectElement | null;
+  const slotLinesInput = document.getElementById("tuning-slot-lines") as HTMLInputElement | null;
   const orderStartsInput = document.getElementById("tuning-order-starts") as HTMLInputElement | null;
   const searchStartsInput = document.getElementById("tuning-search-starts") as HTMLInputElement | null;
   const searchPatienceInput = document.getElementById("tuning-search-patience") as HTMLInputElement | null;
@@ -155,6 +157,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (symbolOrderSelect) symbolOrderSelect.value = state.tuning.localMap.symbolOrder;
     state.tuning.localMap.moveMs = setSlider(moveMsInput, "tuning-move-ms-value", state.tuning.localMap.moveMs, v => String(v));
     if (holdStillSelect) holdStillSelect.value = state.tuning.localMap.holdStill;
+    if (cardTextSelect) cardTextSelect.value = state.tuning.localMap.cardText;
+    state.tuning.localMap.slotLines = setSlider(slotLinesInput, "tuning-slot-lines-value", state.tuning.localMap.slotLines, v => String(v));
     state.tuning.localMap.orderStarts = setSlider(orderStartsInput, "tuning-order-starts-value", state.tuning.localMap.orderStarts, v => String(v));
     state.tuning.localMap.searchStarts = setSlider(searchStartsInput, "tuning-search-starts-value", state.tuning.localMap.searchStarts, v => String(v));
     state.tuning.localMap.searchPatience = setSlider(searchPatienceInput, "tuning-search-patience-value", state.tuning.localMap.searchPatience, v => String(v));
@@ -217,6 +221,14 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       onTuningChange();
     });
   }
+  // The card's composition changes every card's drawing and box: the view re-renders.
+  if (cardTextSelect) {
+    cardTextSelect.addEventListener("change", () => {
+      state.tuning.localMap.cardText = cardTextSelect.value === "slot" ? "slot" : "grow";
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "2d") onRender();
+    });
+  }
 
   // The starts before paint and the continuing search's cap and patience change which picture is drawn: the view re-renders.
   const rerenderSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
@@ -230,6 +242,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     });
   };
   rerenderSlider(orderStartsInput, "tuning-order-starts-value", v => { state.tuning.localMap.orderStarts = v; });
+  rerenderSlider(slotLinesInput, "tuning-slot-lines-value", v => { state.tuning.localMap.slotLines = v; });
   rerenderSlider(searchStartsInput, "tuning-search-starts-value", v => { state.tuning.localMap.searchStarts = v; });
   rerenderSlider(searchPatienceInput, "tuning-search-patience-value", v => { state.tuning.localMap.searchPatience = v; });
   rerenderSlider(churnCostInput, "tuning-churn-cost-value", v => { state.tuning.localMap.churnCost = v; });

@@ -1,5 +1,5 @@
 /* Descriptions occupy measured space in the native scene. They never introduce a nested text scroller. */
-.node-card:has(.local-file-read) .symbol-row {
+.node-card:is(:has(.local-file-read), .local-slot-card) .symbol-row {
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
@@ -7,8 +7,8 @@
     align-items: center;
     min-width: 0;
 }
-.node-card:has(.local-file-read) .symbol-row.branch-symbol-hidden,
-.node-card:has(.local-file-read) .symbol-row.symbol-collapsed { display: none; }
+.node-card:is(:has(.local-file-read), .local-slot-card) .symbol-row.branch-symbol-hidden,
+.node-card:is(:has(.local-file-read), .local-slot-card) .symbol-row.symbol-collapsed { display: none; }
 /* Reordering explanations pass as complete surfaces, with the later row consistently in front. */
 .local-placed .symbol-row.local-row-moving {
     position: relative;
@@ -104,6 +104,21 @@
     .local-column .local-reading-card .node-title { padding-top: 28px; padding-right: 0; }
     .local-reading-card :is(.local-symbol-read, .local-symbol-pin, .local-symbol-more) { flex-basis: 26px; width: 26px; height: 26px; padding: 4px; }
 }
+
+/* Fixed slots, the comparison of 2026-11-05: a card's box depends on the file's structure, never on what is read or on
+   zoom. The ordinary type stays; every symbol's slot holds the same number of lines (Slot Lines in Tuning), filled or
+   not, cut with an ellipsis; a tap on the name opens the reader. */
+.local-slot-card { min-width: min(440px, var(--reading-card-width, 520px)); max-width: min(440px, var(--reading-card-width, 520px)); }
+.local-reading-slot { padding: 1px 2px 6px; font-size: 12px; line-height: 17px; }
+.local-reading-slot .local-reading-prose { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--slot-lines, 2); overflow: hidden; height: calc(var(--slot-lines, 2) * 17px); max-height: none; }
+.local-reading-slot .local-reading-prose:empty { display: -webkit-box; }
+.local-reading-slot .local-reading-prose :is(p, ul, ol, h1, h2, h3) { margin: 0; }
+.local-reading-slot .local-reading-types, .local-reading-slot .local-reading-full { display: none; }
+/* Hidden facts must not keep the margin the reading card gives prose beneath them: every slot is the same height. */
+.local-reading-slot .local-reading-types + .local-reading-prose:not(:empty) { margin-top: 0; }
+.local-slot-card .local-reading-purpose { padding: 6px 0 8px; }
+/* Below reading scale the prose fades in either composition; no box changes with zoom (the owner, 2026-11-05). */
+.local-reading-faded .local-reading-block { opacity: .35; }
 
 /* Text leads at reading scale; highlighted relationships retain their usual emphasis. */
 #map-viewport:has(.local-reading-card) .connection-path:not(.connection-highlighted) { filter: none; }

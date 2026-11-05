@@ -37,6 +37,10 @@ const geometry = (page: Page) => page.locator(".node-card").evaluateAll(elements
   return { id: (element as HTMLElement).dataset.id!, box: [rect.x, rect.y, rect.width, rect.height] };
 }));
 type Picture = Awaited<ReturnType<typeof geometry>>;
+/** Every card's box in the map's own pixels, which no zoom changes. */
+const layoutBoxes = (page: Page) => page.locator(".node-card").evaluateAll(elements => elements.map(element => ({
+  id: (element as HTMLElement).dataset.id!, width: (element as HTMLElement).offsetWidth, height: (element as HTMLElement).offsetHeight
+})).sort((a, b) => a.id.localeCompare(b.id)));
 function samePicture(before: Picture, after: Picture): void {
   expect(after.map(item => item.id).sort()).toEqual(before.map(item => item.id).sort());
   for (const item of before) {
@@ -118,7 +122,7 @@ for (const holdStill of ["click", "hover"] as const) for (const fixture of [
 }
 
 for (const viewport of [{ width: 900, height: 700 }, { width: 1440, height: 960 }]) {
-  test(`overview reading responds to a tap, the book and new pins at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+  test(`two steps out the prose fades and no card resizes; a tap, the book and a new pin still read at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     // The idle search is off so that each picture below is the solve's own; the search's motion is tested elsewhere.
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
@@ -129,82 +133,50 @@ for (const viewport of [{ width: 900, height: 700 }, { width: 1440, height: 960 
     const subject = card(page, payment), book = subject.locator(".local-file-read");
     await subject.waitFor();
     await still(page);
-    // Cross into automatic overview, then approach to a useful scale without resetting the reading frame.
+    const layout = await layoutBoxes(page);
     await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
     await still(page);
     await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
     await still(page);
-    await page.getByRole("button", { name: "Zoom In", exact: true }).click();
-    await still(page);
-    await expect(subject.locator(".local-reading-purpose")).toBeHidden();
-    const initial = state(page), before = await geometry(page);
-    const title = (await subject.locator(".node-title").boundingBox())!;
+    // Zoom changes no card's box (the owner, 2026-11-05): the prose stays and fades.
+    await expect(subject.locator(".local-reading-purpose")).toBeVisible();
+    await expect(subject).toHaveClass(/local-reading-faded/u);
+    expect(await layoutBoxes(page)).toEqual(layout);
+    const initial = state(page);
     const row = subject.locator('.symbol-row[data-symbol="PaymentService"]');
-    await pointAt(page, row.locator(".symbol-label"), true);
-    await expect(row.locator(".local-reading-block")).toBeVisible();
-    await still(page);
-    expect(state(page).pinSet).toEqual(initial.pinSet);
-    expect(state(page).reading).toEqual([...(initial.reading ?? []), { nodeId: payment, symbol: "PaymentService", open: true }]);
+    // A tap folds one description at this scale as at any other, and a second tap opens it again.
     await pointAt(page, row.locator(".symbol-label"), true);
     await expect(row.locator(".local-reading-block")).toBeHidden();
     await still(page);
-    // The fold re-solves the layout from the picture the open made: the cards are the same and the name is held, while
-    // neighbours may settle in another order than before the open (the left column did, measured 2026-11-05).
-    const after = await geometry(page);
-    expect(after.map(item => item.id).sort()).toEqual(before.map(item => item.id).sort());
-    const name = (await subject.locator(".node-title").boundingBox())!;
-    expect(Math.abs(name.y - title.y), "the name stays put through an open and a fold").toBeLessThan(1);
-    expect(Math.abs(name.x - title.x)).toBeLessThan(1);
+    expect(state(page).pinSet).toEqual(initial.pinSet);
+    expect(state(page).reading).toEqual([...(initial.reading ?? []), { nodeId: payment, symbol: "PaymentService", open: false }]);
+    await pointAt(page, row.locator(".symbol-label"), true);
+    await expect(row.locator(".local-reading-block")).toBeVisible();
+    await still(page);
+    // The book folds everything and opens everything.
+    await pointAt(page, book, true);
+    await expect(subject.locator(".local-reading-block:visible")).toHaveCount(0);
+    await expect(book).toHaveAttribute("aria-label", "Read PaymentService.cs");
+    expect(state(page).reading).toEqual([{ nodeId: payment, open: false }]);
+    await still(page);
     await pointAt(page, book, true);
     await expect(subject.locator(".local-reading-purpose")).toBeVisible();
     await expect(subject.locator(".symbol-row:not(.internals-row) .local-reading-block:visible")).toHaveCount(3);
     await expect(book).toHaveAttribute("aria-label", "Fold PaymentService.cs");
     expect(state(page).reading).toEqual([{ nodeId: payment, open: true }]);
-    expect(state(page).pinSet.entries).toEqual([]);
     await still(page);
-    await pointAt(page, book, true);
-    await expect(subject.locator(".local-reading-block:visible")).toHaveCount(0);
-    await expect(book).toHaveAttribute("aria-label", "Read PaymentService.cs");
-    const folded = state(page).reading;
+    // Back at reading scale the prose returns to full strength; with everything open again, no box has changed.
+    await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
     await still(page);
+    await expect(subject).not.toHaveClass(/local-reading-faded/u);
+    expect(await layoutBoxes(page)).toEqual(layout);
+    // A new pin changes no reading choice.
+    const open = state(page).reading;
     await pointAt(page, subject.locator(".local-file-pin"), true);
-    await expect(subject.locator(".local-reading-block:visible")).toHaveCount(0);
-    expect(state(page).reading).toEqual(folded);
+    await still(page);
+    expect(state(page).reading).toEqual(open);
     expect(state(page).pinSet.entries).toEqual([{ nodeId: payment, symbol: "*" }]);
-    // A fresh pin can request automatic descriptions, while the saved explicit Fold above remains authoritative.
-    await page.goto(url({ selectedNodeId: payment }));
-    await subject.waitFor();
-    await still(page);
-    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-    await still(page);
-    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-    await still(page);
-    await page.getByRole("button", { name: "Zoom In", exact: true }).click();
-    await still(page);
-    await expect(subject.locator(".local-reading-purpose")).toBeHidden();
-    const freshReading = state(page).reading;
-    await pointAt(page, subject.locator(".local-file-pin"), true);
     await expect(subject.locator(".symbol-row:not(.internals-row) .local-reading-block:visible")).toHaveCount(3);
-    await expect(subject.locator(".local-reading-purpose")).toBeVisible();
-    const requested = state(page);
-    expect(requested.reading).toEqual(freshReading);
-    expect(requested.pinSet.entries).toEqual([{ nodeId: payment, symbol: "*" }]);
-    await page.mouse.move(280, 100);
-    await page.mouse.wheel(80, 0);
-    await still(page);
-    await expect(subject.locator(".local-reading-purpose")).toBeVisible();
-    const scaleBefore = await page.locator("#map-viewport").evaluate(element => new DOMMatrix(getComputedStyle(element).transform).a);
-    // A small inward step stays below automatic restoration, so this checks the request itself survives.
-    await page.mouse.wheel(0, -20);
-    await still(page);
-    expect(await page.locator("#map-viewport").evaluate(element => new DOMMatrix(getComputedStyle(element).transform).a)).toBeGreaterThan(scaleBefore);
-    await expect(subject.locator(".local-reading-purpose")).toBeVisible();
-    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-    await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-    await still(page);
-    await expect(subject.locator(".local-reading-block:visible")).toHaveCount(0);
-    expect(state(page).reading).toEqual(freshReading);
-    expect(state(page).pinSet).toEqual(requested.pinSet);
   });
 }
 
@@ -317,11 +289,13 @@ test("the portrait reading frame returns from overview and follows a phone resiz
   const before = await geometry(page);
   await page.mouse.move(280, 60);
   await page.mouse.wheel(0, 500);
-  await expect(subject.locator(".local-reading-purpose")).toBeHidden();
-  await expect(subject.locator(".local-file-read")).toHaveAttribute("aria-expanded", "false");
-  await expect(subject.locator(".local-file-read")).toHaveAttribute("aria-pressed", "true");
   await still(page);
+  await expect(subject.locator(".local-reading-purpose")).toBeVisible();
+  await expect(subject).toHaveClass(/local-reading-faded/u);
+  await expect(subject.locator(".local-file-read")).toHaveAttribute("aria-expanded", "true");
+  await expect(subject.locator(".local-file-read")).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
+  await expect(subject).not.toHaveClass(/local-reading-faded/u);
   await expect(subject.locator(".local-reading-purpose")).toBeVisible();
   await still(page);
   samePicture(before, await geometry(page));
@@ -453,6 +427,7 @@ test("a symbol search restores reading from overview and follows the row on resi
   const row = card(page, pathfind).locator('.symbol-row[data-symbol="walk (function)"]');
   await still(page);
   await expect(row.locator(".local-reading-block")).toBeVisible();
+  await expect(card(page, pathfind)).not.toHaveClass(/local-reading-faded/u);
   await expect(row.locator(".symbol-label")).toBeInViewport();
   await page.setViewportSize({ width: 390, height: 844 });
   await still(page);

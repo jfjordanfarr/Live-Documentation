@@ -8,6 +8,8 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 [Tap reading](2026-11-05/tap-reading/README.md): descriptions opened by a tap on a name or on the book beside it rather than on hover, with hover drawing nothing, the card's name held still through the growth, the file's name opening everything, the phone tap and the keyboard, and the first candidate's 103 px leap corrected. Verification is in the session record; no owner acceptance is implied.
 
+[Card composition](2026-11-05/card-composition/README.md): the two card compositions side by side on the same bundle behind the Card Text switch, descriptions that open and grow against fixed slots of a chosen number of lines, the same for every symbol, cut with an ellipsis, on the payment service and on pathfind.ts at reading scale and two steps out, with each card's box measured in the map's own pixels and no box changing with zoom; evidence for the owner's judgement, not a decision (2026-11-05).
+
 ## 2026-11-04
 
 [Native portrait reading](2026-11-04/reading/README.md): the real 2D map's file and symbol descriptions, centered desktop/phone composition, reversible hover and zoom journeys, and the explicit full-text reader. Includes the rejected first symbol grid and narrow framing, with the resulting corrections and verification kept distinct from owner acceptance.

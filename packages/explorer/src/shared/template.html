@@ -201,6 +201,18 @@
             </select>
           </label>
           <label class="tuning-slider">
+            <span>Card Text</span>
+            <select id="tuning-card-text">
+              <option value="grow">Opens on a tap; the card grows</option>
+              <option value="slot">Fixed slots, cut with an ellipsis</option>
+            </select>
+          </label>
+          <label class="tuning-slider">
+            <span>Slot Lines</span>
+            <input type="range" id="tuning-slot-lines" min="1" max="4" step="1" value="2" />
+            <output id="tuning-slot-lines-value">2</output>
+          </label>
+          <label class="tuning-slider">
             <span>Order Starts</span>
             <input type="range" id="tuning-order-starts" min="0" max="16" step="1" value="2" />
             <output id="tuning-order-starts-value">2</output>

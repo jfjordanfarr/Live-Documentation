@@ -73,6 +73,15 @@ export interface LocalMapTuning {
   /** Which card a move holds still on screen: the one last clicked, or the one last clicked or hovered (2026-10-07). */
   holdStill: "click" | "hover";
   /**
+   * How a card shows its authored text, a comparison the owner asked for on 2026-11-05: "grow" opens a description on a
+   * tap and the card grows around its held name; "slot" gives the Purpose and every described symbol a fixed two-line
+   * slot cut with an ellipsis, and a tap on the name opens the full text in the reader, so a card's box depends on the
+   * file's structure alone, never on what is read or on zoom.
+   */
+  cardText: "grow" | "slot";
+  /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
+  slotLines: number;
+  /**
    * How strongly the ranking pulls every file toward the last column: zero ranks by the fewest column spans, a weight
    * above every pair's by longest-chain depth, as before 2026-10-06. A lever of the layout lab.
    */

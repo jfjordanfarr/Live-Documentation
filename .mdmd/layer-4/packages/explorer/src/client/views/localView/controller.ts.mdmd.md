@@ -36,6 +36,8 @@ November 4 native reading calibrates a portrait card to the usable frame before 
 
 On [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) hover reading went: the preview and visit-cancel paths and their options are gone, `readNode` opens or folds what a name names through the reading surface and falls back to inspection for a card with nothing to open, and `captureReadingChange` holds the card's name rather than the tapped row, since holding the row let the re-solved layout seat the taller card higher and leap its name by 103 px; focus returns to the name or book used. `refreshReadingGeometry` is called only for the zoom fold and restore, a resize and an arrival that unfolds. Under the hover anchor tuning the render after a tap puts a new row under the resting pointer, and Chromium reports that as a hover; `readingHold` keeps `highlightSymbolConnections` from re-anchoring to it while the reading change's move runs, since the renderer would switch its hold to the row and leap the name (272 px in the browser spec); the renderer clears the flag when the move ends.
 
+The same day's comparison ([Turn 4](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4)): the composition reaches the reading surface as `mode`, and `render` sets `--slot-lines` from Slot Lines. Since [Turn 6](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6) the zoom handler only fades prose below reading scale, with the same two ratios; no re-measure follows a zoom, and `capturePinChange` no longer carries the newly retained symbol that fed the fold's reveal exception.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

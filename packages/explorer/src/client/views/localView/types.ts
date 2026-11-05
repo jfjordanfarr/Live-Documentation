@@ -74,7 +74,7 @@ export interface LocalViewApi {
   isShown(): boolean;
   /** The map shown again: an owed render runs; else the picture stands and its search resumes. */
   show(): void;
-  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion?: boolean, newlyRetainedSymbol?: string): LocalExplorationFrame;
+  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion?: boolean): LocalExplorationFrame;
   captureDirectoryChange(directory: string): LocalExplorationFrame;
   captureReadingChange(nodeId: string, symbol?: string, control?: ReadingControl): LocalExplorationFrame;
   /** Clear a path for a new exploration action without restoring its old camera. */

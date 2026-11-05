@@ -15,6 +15,8 @@ Descriptions occupy measured space under their own symbol rows. Subgrid keeps th
 
 Introduced during the [November 4 portrait integration](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
+Since [November 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4) the fixed-slot composition draws beside the growing one, behind the Card Text switch: `.local-slot-card` fixes the box at 440 px within the reading width and keeps the ordinary type, `.local-reading-slot` draws 12 px prose at the number of lines Slot Lines gives (`--slot-lines`, two by default) with an ellipsis, the same height whether the prose fills it or is empty, and hides the recorded facts and the full-text link; hidden facts give the prose beside them no margin, since an 8 px margin had made rows without facts shorter, the unevenness the owner saw ([Turn 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-5)); and `.local-reading-faded` dims every description block to 0.35 below reading scale in either composition, since zoom never changes a box ([Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)). Rows lay out as a grid for a slot card as they do for a card with the book, since the slot card has no book. The composition the owner does not choose is to be deleted.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

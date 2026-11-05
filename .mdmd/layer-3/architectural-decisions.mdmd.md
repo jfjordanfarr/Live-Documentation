@@ -579,6 +579,14 @@ Settled in September 2026: derived views (the graph index, the Explorer bundle) 
 - **Alternatives considered**: keeping hover and making it harmless with reserved space per symbol, the owner's original picture, which makes every documented card tall by default and still needs a tap for the full text, so it is a question of the card's composition rather than of the gesture and is left for a matched comparison; a hover popover floating over the card without moving the layout, with a tap to keep it, which the same comparison can picture; the book icons alone as the tap target, too small for a finger and leaving a name that does nothing when tapped; names that pin, the November 4 recommendation, declined because an exploratory tap would change the retained state before the person has read anything.
 - **Superseded**: the hover and keyboard-focus previews of 2026-11-04 and their November 5 repairs; names as the route to the evidence reader (2026-10-20, inspect-first, whose separate Pin and More remain); and the October 3 idea of a card that unrolls on hover, closed by the owner's words.
 
+### A Card's Box Never Depends on Zoom _(Recorded 2026-11-05)_
+
+- **Context**: Since November 4 zooming outward past reading scale folded a card's prose and the card shrank, with reveal exceptions so that a tap or a new pin could still read at that scale. Playing on the served build after the tap change, the owner saw an expanded card resize as they zoomed out ([Turn 6](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)).
+- **Decision**: In the 2D Local Map a card's box never changes with zoom, in either card composition. Below reading scale the prose fades to 0.35 and returns above it, with the same two ratios as before so that the edge does not chatter; nothing is hidden and no layout is re-solved by a zoom.
+- **Rationale**: The owner: "I really would prefer that the cards don't _themselves_ resize when we zoom out." It is the same rule the card composition comparison states, that a box depends on the file's structure alone, applied to scale. Fading keeps the honest indication of text without a drawing switch, in the spirit of fading the irrelevant rather than moving it.
+- **Alternatives considered**: keeping the fold only for the growing composition, rejected because the owner's objection was to the resize itself; hiding the prose without re-solving the layout, rejected because a box with nothing drawn in it is a lie about what is there.
+- **Superseded**: the automatic overview fold and restore of 2026-11-04 and its reveal exceptions of 2026-11-05.
+
 ## Descoped Decisions (Audit Trail)
 
 The following decisions were explored and explicitly removed from scope during the Dev Day 70–72 codebase cleanup (February 2026). They are retained here for architectural traceability.

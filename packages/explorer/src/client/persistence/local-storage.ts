@@ -64,6 +64,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     symbolOrder: "layout",
     moveMs: 450,
     holdStill: "click",
+    cardText: "grow",
+    slotLines: 2,
     searchStarts: 32,
     searchPatience: 8,
     rankingPull: 0,
@@ -115,6 +117,9 @@ const readRankingTie = (value: unknown): "fewest" | "right" | "left" | undefined
 
 const readHoldStill = (value: unknown): "click" | "hover" | undefined =>
   value === "click" || value === "hover" ? value : undefined;
+
+const readCardText = (value: unknown): "grow" | "slot" | undefined =>
+  value === "grow" || value === "slot" ? value : undefined;
 
 const readHistoryAxis = (value: unknown): HistoryAxis | undefined =>
   value === "steps" || value === "time" ? value : undefined;
@@ -205,6 +210,8 @@ export const readPersistedUi = (): PersistedUi | null => {
         const symbolOrder = readSymbolOrder(localMapRaw.symbolOrder);
         const moveMs = readFiniteNumber(localMapRaw.moveMs);
         const holdStill = readHoldStill(localMapRaw.holdStill);
+        const cardText = readCardText(localMapRaw.cardText);
+        const slotLines = readFiniteNumber(localMapRaw.slotLines);
         const searchStarts = readFiniteNumber(localMapRaw.searchStarts);
         const searchPatience = readFiniteNumber(localMapRaw.searchPatience);
         const rankingPull = readFiniteNumber(localMapRaw.rankingPull);
@@ -237,6 +244,8 @@ export const readPersistedUi = (): PersistedUi | null => {
           ...(symbolOrder !== undefined ? { symbolOrder } : null),
           ...(moveMs !== undefined ? { moveMs } : null),
           ...(holdStill !== undefined ? { holdStill } : null),
+          ...(cardText !== undefined ? { cardText } : null),
+          ...(slotLines !== undefined ? { slotLines } : null),
           ...(searchStarts !== undefined ? { searchStarts } : null),
           ...(searchPatience !== undefined ? { searchPatience } : null),
           ...(rankingPull !== undefined ? { rankingPull } : null),

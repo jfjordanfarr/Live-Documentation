@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-02T17:03:46.932Z
+- Generated At: 2026-11-05T19:04:00.770Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,8 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Since 2026-10-21 Update Energy defaults to 1, a constant strength rather than a reheat's alpha, and its title says a fraction moves the picture more gently and for longer; Tether (`tuning-force-tether`, 0 to 0.1 by 0.001, 0.01 by default) stands beside it, titled for what it holds ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
 - Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) each search field is followed by a hidden span where, while a moment of the history is shown, the bar says that its thing does not stand there.
+
+- Since [2026-11-05](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4) Card Text stands under 2D Layout after Hold Still: a description opens on a tap and the card grows, or every symbol has the same fixed slot cut with an ellipsis; the two compositions the owner asked to compare on the same bundle before choosing. Slot Lines, 1 to 4 and 2 by default, follows it ([Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -174,6 +176,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-band-gap-value` {#symbol-tuning-band-gap-value}
+- Type: variable
+
+#### `tuning-card-text` {#symbol-tuning-card-text}
 - Type: variable
 
 #### `tuning-churn-cost` {#symbol-tuning-churn-cost}
@@ -414,6 +419,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-self-loop-taper-value` {#symbol-tuning-self-loop-taper-value}
+- Type: variable
+
+#### `tuning-slot-lines` {#symbol-tuning-slot-lines}
+- Type: variable
+
+#### `tuning-slot-lines-value` {#symbol-tuning-slot-lines-value}
 - Type: variable
 
 #### `tuning-stub-factor` {#symbol-tuning-stub-factor}
