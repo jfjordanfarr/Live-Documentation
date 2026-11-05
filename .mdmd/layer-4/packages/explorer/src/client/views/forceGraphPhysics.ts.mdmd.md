@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-11-02T06:07:14.515Z
+- Generated At: 2026-11-05T05:00:02.866Z
 
 ## Authored
 ### Purpose
@@ -28,6 +28,8 @@ The tether is what lets a large picture come to rest. Without it, measured on th
 A tick can be taken in parts (`SpatialMotion.advance`, 2026-10-28): each part evaluates the field over at most a budget of spheres, through the field's steps, and the tick completes when its time is spent; forces left stale by `refresh`, by a hand or by the tether taking hold, are read again in parts first, and the motion no longer reads the field in its constructor, so that a picture of 21,720 spheres is not held for an evaluation at every piece of its reveal. A call at another strength or with another sphere held drops the substep being tried and goes on with the time that is left. The numbers are the whole tick's however it is divided, which the tests hold part size by part size. This is the pacing the owner's standard asked for, that the page never reach the browser's offer to kill it ([Turn 4 of the October 28 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4)): at the T3 bundle's full size the page's physics took a median 11.8 ms a frame and never more than 28.5 ms in headless Chromium, where before a tick held the thread for seconds ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes)).
 
 In the [November 2 exploration pass](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-8), Group Separation added component-centroid gravity. Positive-strength springs define the components; a singleton is a component. For each member, gravity toward its component centroid is unchanged while gravity of that centroid toward the common origin is multiplied by one minus the separation. The potential keeps the same split, so exact repulsion still gives a conservative field. Zero preserves ordinary origin gravity and the stiffness bound stays valid. Settling uses physical sphere extents as well as center positions, avoiding a zero size reference for one isolated file.
+
+The full gate during the [November 5 reading repair](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed two slow existing physics tests. When both repulsion and collision stiffness are zero, exact evaluation now skips the inactive quadratic pair work while retaining each step's maximum spring stiffness and the normal completion checks. The bounded octree walk keeps its nearest-corner prune, but computes a cell's farthest corner only after the cell could pass the aggregate opening rule. Accepted cells, pair arithmetic and summation order are unchanged. Original/candidate force arrays and readings, including lazy energy, compare bit-for-bit across 48 bounded/unbounded, exact/approximated, coincident and partitioned-evaluation scenarios. The existing reference tests, coverage and deadlines remain intact; no force constant or approximation rule changed.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -83,14 +85,14 @@ spheres.
 
 #### `MotionSettings` {#symbol-motionsettings}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L494)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L497)
 
 ##### `MotionSettings` — Summary
 The motion's constants: the step of time per tick and the drag per unit of time.
 
 #### `MotionTick` {#symbol-motiontick}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L501)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L504)
 - Extends: [`FieldReading`](#symbol-fieldreading)
 
 ##### `MotionTick` — Summary
@@ -98,7 +100,7 @@ How far one tick moved the spheres, beside the field's reading at the new positi
 
 #### `SpatialMotion` {#symbol-spatialmotion}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L533)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L536)
 
 ##### `SpatialMotion` — Summary
 Damped velocity Verlet through a field at a constant strength: half a kick, a drift, the forces at the new place, half a
@@ -118,7 +120,7 @@ are the same either way.
 
 #### `diagonalOf` {#symbol-diagonalof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L696)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L699)
 
 ##### `diagonalOf` — Summary
 The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against.

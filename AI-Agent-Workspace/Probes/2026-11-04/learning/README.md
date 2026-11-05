@@ -2,6 +2,8 @@
 
 Implemented and verified November 5, 2026, under the [Turn 8 authorization](../../../ChatHistory/2026/11/2026-11-04.1.record.md#turn-8). The owner selected GPT-6.1 Sol for delegates and gave the root high autonomy. This records the implementation, comparison and verification; owner acceptance is not inferred from the reviewers' preferences.
 
+**Subsequent owner testing:** [Turn 9](../../../ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) reports inaccessible descriptions at useful zoom and cumulative displacement during symbol hovering. Those journeys were not established by the passing gate or these reviews. The [follow-up evidence](../../../Screenshots/2026-11-05/reading-access/README.md) preserves their reproduction and repair work; the results below remain the historical record of this earlier pass.
+
 ## Scope and method
 
 The [rubric](../../../Research/2026-11-04-theo-ui-hill-climbing.md#november-4-follow-up-for-this-workspace) covers hierarchy/appeal, reading, controls/state, continuity and relationship interpretation. Baseline is commit e433e484, following the verified portrait integration. Three fresh Sol contexts reviewed the same application from visual, ordinary-navigation and phone/keyboard perspectives, without prior scores, a target score, implementation source or the answer to the cycle question. All reviewers used the supplied pictures; two exercised private Chromium sessions. These are separate contexts of one model, not independent model families.

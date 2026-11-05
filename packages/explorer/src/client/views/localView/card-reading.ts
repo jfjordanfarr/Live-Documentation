@@ -56,6 +56,8 @@ export class CardReading {
   private readonly cards = new Map<string, ReadingCard>();
   private readonly connectionsMenu = createItemMenu();
   private readonly backReferences = new Map<string, readonly LocalEdge[]>();
+  private readonly reveals = new Map<string, Set<string | undefined>>();
+  private observedScale: number | null = null;
   private previewTarget: ReadingTarget | null = null;
   private candidate: ReadingTarget | null = null;
   private dismissed: ReadingTarget | null = null;
@@ -101,6 +103,24 @@ export class CardReading {
     window.clearTimeout(this.intentTimer);
     this.candidate = null;
     this.previewTarget = null;
+  }
+
+  /** A requested target may keep held descriptions visible without unfolding unrelated cards. */
+  reveal(target: ReadingTarget): void {
+    let symbols = this.reveals.get(target.nodeId);
+    if (!symbols) this.reveals.set(target.nodeId, symbols = new Set());
+    symbols.add(target.symbol);
+    if (this.dismissed?.nodeId === target.nodeId && (target.symbol === undefined || this.dismissed.symbol === target.symbol)) this.dismissed = null;
+  }
+
+  /** A subsequent outward zoom restores automatic overview disclosure; pans and inward zoom do not. */
+  observeScale(scale: number): boolean {
+    if (!Number.isFinite(scale) || scale <= 0) return false;
+    const decreased = this.observedScale !== null && scale < this.observedScale - 1e-6;
+    this.observedScale = scale;
+    if (!decreased || !this.reveals.size) return false;
+    this.reveals.clear();
+    return true;
   }
 
   /** Add canonical Purpose, symbol summaries and recorded signature facts to a newly constructed native card. */
@@ -240,8 +260,7 @@ export class CardReading {
   /** Already-open pinned text needs no geometry work when the pointer merely reads another row. */
   needsLayout(target: ReadingTarget | null): boolean {
     for (const model of this.cards.values()) {
-      const wants = (symbol?: string): boolean => this.visible && (this.held(model.node.id, symbol)
-        || sameTarget(target, { nodeId: model.node.id, ...(symbol ? { symbol } : {}) }));
+      const wants = (symbol?: string): boolean => this.disclosed(model.node.id, symbol, target);
       if (model.purpose && model.purpose.element.hidden === wants()) return true;
       for (const [name, block] of model.symbols) if (block.element.hidden === wants(name)) return true;
     }
@@ -275,14 +294,12 @@ export class CardReading {
 
   /** A deliberate preview keeps existing pinned/explicit text and adds only the one temporary target. */
   private updateCard(model: ReadingCard): void {
-    const open = (symbol?: string): boolean => this.visible && (
-      this.held(model.node.id, symbol) || sameTarget(this.previewTarget, { nodeId: model.node.id, ...(symbol ? { symbol } : {}) })
-    );
+    const open = (symbol?: string): boolean => this.disclosed(model.node.id, symbol, this.previewTarget);
     if (model.purpose) model.purpose.element.hidden = !open();
     for (const [name, block] of model.symbols) block.element.hidden = !open(name);
-    const reading = this.visible && (this.held(model.node.id)
-      || [...model.symbols].some(([, block]) => !block.element.hidden));
-    const deliberate = this.visible && (this.held(model.node.id) || [...model.symbols.keys()].some(name => this.held(model.node.id, name)));
+    const reading = !!model.purpose && !model.purpose.element.hidden
+      || [...model.symbols.values()].some(block => !block.element.hidden);
+    const deliberate = this.keepingVisible(model.node.id) || [...model.symbols.keys()].some(name => this.keepingVisible(model.node.id, name));
     model.card.classList.toggle("local-reading-card", deliberate);
     model.card.classList.toggle("local-reading-preview", reading && !deliberate);
     for (const [symbol, button] of model.controls) {
@@ -293,10 +310,26 @@ export class CardReading {
         || [...model.symbols.values()].some(block => !block.element.hidden) : !model.symbols.get(symbol)?.element.hidden;
       button.setAttribute("aria-pressed", String(held));
       button.setAttribute("aria-expanded", String(expanded));
-      button.setAttribute("aria-label", `${held ? "Fold" : "Read"} ${symbol ?? model.node.name}${symbol ? ` in ${model.node.name}` : ""}`);
-      button.title = symbol ? `${held ? "Fold" : "Keep open"} this explanation; connections stay pinned independently`
-        : `${held ? "Fold" : "Read"} all descriptions in this card; connections stay pinned independently`;
+      const folds = this.controlKeepsVisible(model, symbol);
+      button.setAttribute("aria-label", `${folds ? "Fold" : "Read"} ${symbol ?? model.node.name}${symbol ? ` in ${model.node.name}` : ""}`);
+      button.title = symbol ? `${folds ? "Fold" : "Keep open"} this explanation; connections stay pinned independently`
+        : `${folds ? "Fold" : "Read"} all descriptions in this card; connections stay pinned independently`;
     }
+  }
+
+  private keepingVisible(nodeId: string, symbol?: string): boolean {
+    const reveals = this.reveals.get(nodeId);
+    return this.held(nodeId, symbol) && (this.visible || !!reveals && (reveals.has(undefined) || reveals.has(symbol)));
+  }
+
+  private disclosed(nodeId: string, symbol: string | undefined, preview: ReadingTarget | null): boolean {
+    return this.keepingVisible(nodeId, symbol) || sameTarget(preview, { nodeId, symbol });
+  }
+
+  private controlKeepsVisible(model: ReadingCard, symbol?: string): boolean {
+    return symbol === undefined
+      ? this.keepingVisible(model.node.id) && [...model.symbols.keys()].every(name => this.keepingVisible(model.node.id, name))
+      : this.keepingVisible(model.node.id, symbol);
   }
 
   private held(nodeId: string, symbol?: string): boolean {
@@ -310,11 +343,11 @@ export class CardReading {
     button.innerHTML = BOOK;
     button.addEventListener("click", event => {
       event.stopPropagation();
-      const all = symbol === undefined
-        ? this.held(node.id) && [...this.cards.get(node.id)!.symbols.keys()].every(name => this.held(node.id, name))
-        : this.held(node.id, symbol);
-      this.dismissed = all ? { nodeId: node.id, ...(symbol ? { symbol } : {}) } : null;
-      this.options.change(node.id, symbol, !all);
+      const folds = this.controlKeepsVisible(this.cards.get(node.id)!, symbol);
+      const target = { nodeId: node.id, ...(symbol ? { symbol } : {}) };
+      this.dismissed = folds ? target : null;
+      if (!folds) this.reveal(target);
+      this.options.change(node.id, symbol, !folds);
     });
     return button;
   }
@@ -356,7 +389,7 @@ export class CardReading {
     if (!(element instanceof Element)) return null;
     const card = element.closest<HTMLElement>(".node-card"), id = card?.dataset.id;
     const model = id ? this.cards.get(id) : undefined;
-    if (!model || !this.visible) return null;
+    if (!model) return null;
     const row = element.closest<HTMLElement>(".symbol-row");
     if (row) return row.dataset.symbol && model.symbols.has(row.dataset.symbol) ? { nodeId: id!, symbol: row.dataset.symbol } : null;
     if (element.closest(".node-symbols") || !model.purpose) return null;

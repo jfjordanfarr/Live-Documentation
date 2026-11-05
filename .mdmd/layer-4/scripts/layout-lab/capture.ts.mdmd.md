@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-04T23:30:39.602Z
+- Generated At: 2026-11-05T04:20:08.623Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,8 @@ November 4 captures each card’s actual typography, padding axes, reading block
 The current capture uses PERSISTED_UI_VERSION rather than a stale literal, so its requested first-paint/search settings are applied. Fenced code is prepared with pre-wrap, retaining indentation and blank lines. A short line is calibrated inside the actual pre/code strut as well as flex labels: the formatting context can differ from a plain div probe by a layout unit per line. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
 The same learning-journey pass captures relationship controls above Purpose, including their intrinsic button sizes for independent flex wrapping. Short test labels are measured at intrinsic height rather than a neighboring chip’s stretched flex height. Rich prose preserves its computed word-wrapping behavior; the product explicitly wraps long prose tokens. Coarse-pointer browser checks compare the original phone capture with a separately rendered narrower cap. Older captures without placement metadata retain bottom-count behavior.
+
+The [November 5 reading repair](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed a capture-performance failure in the 93-card repository chain: repeated append/read/remove probes caused over a thousand stylesheet recalculations, and the test exceeded its deadline despite matching geometry. Independent constant probes are now appended together, read together and removed together for each card. The unused node-meta probe is removed. Complete before/after captures agree after excluding only their capture timestamp; this changes the measurement work, not the fixture, model, deadline or tolerances.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -106,7 +108,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L548)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L554)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -114,7 +116,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L554)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L560)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

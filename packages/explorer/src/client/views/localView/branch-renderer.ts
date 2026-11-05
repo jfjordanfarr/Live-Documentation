@@ -40,7 +40,7 @@ export interface BranchStage {
   move: Move | null;
   search: Search | null;
   /** The unchanged layout and camera to which a temporary reading visit returns. */
-  readingHome: { scene: Scene; search: Search; camera: MapTransform } | null;
+  readingHome: { scene: Scene; search: Search; camera: MapTransform; held: HTMLElement | null; anchor?: DOMRect } | null;
 }
 
 /** One move of the picture from one pose to the next, running. */
@@ -56,6 +56,8 @@ interface Move {
   rows: Array<{ element: HTMLElement; delta: number }>;
   heights?: Array<{ element: HTMLElement; from: number; to: number }>;
   anchor?: DOMRect;
+  /** Temporary reading keeps one identity for the whole visit, even when hover chooses another symbol. */
+  held?: HTMLElement | null;
   cameraTarget?: MapTransform;
 }
 
@@ -261,18 +263,21 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
  * reading visit pauses the search and retains the original complete scene/camera; leaving restores that exact
  * arrangement. Deliberate camera changes discard the return point and start a fresh measured competition.
  */
-export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void, temporary: boolean, restore = false): void {
+export function refreshReadingGeometry(controller: LocalViewController, stage: BranchStage, change: () => void, temporary: boolean, restore = false, fallbackAnchor?: HTMLElement): void {
   const search = stage.search;
   const previous = stage.pose;
   if (!search || !previous) { change(); return; }
-  if (temporary && !stage.readingHome) stage.readingHome = { scene: search.incumbent.scene, search, camera: { ...controller.mapTransform } };
+  if (temporary && !stage.readingHome) {
+    const held = elementHeld(controller, stage, previous, previous) ?? fallbackAnchor ?? null;
+    stage.readingHome = { scene: search.incumbent.scene, search, camera: { ...controller.mapTransform }, held, anchor: held?.getBoundingClientRect() };
+  }
   const home = stage.readingHome;
   pauseSearch(search);
   const scale = controller.mapTransform.k || 1;
   const rows = rowOffsets(stage, scale);
   const fileCards = cardsOf(stage).filter(card => card.classList.contains("node-card"));
   const beforeHeights = new Map(fileCards.map(card => [card.dataset.id!, card.getBoundingClientRect().height / scale]));
-  const anchor = elementHeld(controller, stage, previous, previous)?.getBoundingClientRect();
+  const anchor = temporary && home ? home.anchor : elementHeld(controller, stage, previous, previous)?.getBoundingClientRect();
   endMove(stage, false);
   change();
   controller.reading?.measure();
@@ -284,7 +289,6 @@ export function refreshReadingGeometry(controller: LocalViewController, stage: B
   stage.root.dataset.placementCost = String(scene.placement.cost);
   stage.root.dataset.placementOptimal = String(scene.placement.optimal);
   if (restore && home) {
-    stage.readingHome = null;
     stage.search = home.search;
     controller.previousTops = scene.tops;
   } else if (!temporary) {
@@ -303,8 +307,10 @@ export function refreshReadingGeometry(controller: LocalViewController, stage: B
     return from !== undefined && Math.abs(from - to) > 0.5 ? [{ element: card, from, to }] : [];
   });
   showScene(controller, stage, scene, search.sceneTuning, Math.min(180, search.moveMs), [], [], rows, {
-    heights, anchor, ...(restore && home ? { cameraTarget: home.camera } : {})
+    heights, anchor, ...(temporary && home ? { held: home.held } : {}), ...(restore && home ? { cameraTarget: home.camera } : {})
   });
+  // An interrupted return still belongs to the original visit. Only a completed return releases its baseline.
+  if (restore && home && !stage.move && stage.readingHome === home) stage.readingHome = null;
   if (!stage.move && !stage.readingHome) scheduleSearch(controller, stage);
 }
 
@@ -481,11 +487,11 @@ function answersMeasurer(search: Search, plan: ScenePlan, branches: BranchGraph)
  * and a lane's slots, and shows the scene: at once when `moveMs` is zero or
  * no picture was shown, else moved to from the pose the page shows.
  */
-function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null, reading: Pick<Move, "heights" | "anchor" | "cameraTarget"> = {}): void {
+function showScene(controller: LocalViewController, stage: BranchStage, scene: Scene, sceneTuning: SceneTuning, moveMs: number, leavingCards: HTMLElement[], enteringCards: HTMLElement[], oldRows: Map<string, Map<string, number>> | null, reading: Pick<Move, "heights" | "anchor" | "held" | "cameraTarget"> = {}): void {
   const { root } = stage;
   const previous = stage.pose;
   const pose = scenePose(scene);
-  const instantHeld = previous && moveMs <= 0 ? elementHeld(controller, stage, previous, pose) : null;
+  const instantHeld = previous && moveMs <= 0 ? reading.held === undefined ? elementHeld(controller, stage, previous, pose) : reading.held : null;
   const instantAnchor = reading.anchor ?? instantHeld?.getBoundingClientRect();
   const scale = controller.runtime.mapTransform.k || 1;
   const leaving = [...leavingCards];
@@ -627,7 +633,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   for (const { element, delta } of move.rows) element.style.transform = `translateY(${delta}px)`;
   let heldId = controller.lastInteracted;
   let heldSymbol = controller.lastInteractedSymbol;
-  let heldElement = elementHeld(controller, stage, from, to);
+  let heldElement = move.held === undefined ? elementHeld(controller, stage, from, to) : move.held;
   let heldRect = move.anchor ?? heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
   const layerTop = (): number => controller.getViewport().getBoundingClientRect().top + (controller.getContainer().parentElement?.offsetTop ?? 0);
@@ -655,11 +661,15 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   };
   const start = performance.now();
   const step = (now: number): void => {
-    // A person can inspect another item during a move. Hold that new context from its current visible place.
-    if (heldId !== controller.lastInteracted || heldSymbol !== controller.lastInteractedSymbol) {
-      heldId = controller.lastInteracted;
-      heldSymbol = controller.lastInteractedSymbol;
-      heldElement = elementHeld(controller, stage, from, to);
+    // A real zoom already moved the visible anchor. Rebase before changing the pose so holding corrects only
+    // layout motion, rather than retaining zoom's translation while cancelling its scale.
+    const changedIdentity = move.held === undefined && (heldId !== controller.lastInteracted || heldSymbol !== controller.lastInteractedSymbol);
+    if (changedIdentity || cameraAtStart.k !== controller.mapTransform.k) {
+      if (changedIdentity) {
+        heldId = controller.lastInteracted;
+        heldSymbol = controller.lastInteractedSymbol;
+        heldElement = elementHeld(controller, stage, from, to);
+      }
       heldRect = heldElement?.getBoundingClientRect() ?? null;
       Object.assign(cameraAtStart, controller.mapTransform);
       layerTopAtStart = layerTop();
@@ -722,6 +732,7 @@ function endMove(stage: BranchStage, finished: boolean): void {
   if (finished) {
     applyPose(stage, move.to, move.bandPadding);
     stage.pose = move.to;
+    if (move.cameraTarget && stage.readingHome?.camera === move.cameraTarget) stage.readingHome = null;
   }
   delete stage.root.dataset.moving;
   stage.overlay.classList.remove("moving");

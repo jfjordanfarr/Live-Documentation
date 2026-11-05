@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-05
+
+[Reading access and hover stability](2026-11-05/reading-access/README.md): owner-reported blocked descriptions at useful zoom, cumulative displacement during uninterrupted symbol hovering, and interrupted-return/zoom cases. Baseline failures, repaired pictures, a supplemental estate 3D motion look and the passing full gate remain explicit.
+
 ## 2026-11-04
 
 [Native portrait reading](2026-11-04/reading/README.md): the real 2D map's file and symbol descriptions, centered desktop/phone composition, reversible hover and zoom journeys, and the explicit full-text reader. Includes the rejected first symbol grid and narrow framing, with the resulting corrections and verification kept distinct from owner acceptance.

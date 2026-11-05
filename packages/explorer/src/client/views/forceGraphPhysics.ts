@@ -257,6 +257,12 @@ export class SpatialField {
     const { charge, collisionGap, collisionStiffness } = this.settings;
     const range2 = range * range;
     let { energy, overlaps, worstOverlap, greatest: greatestStiffness } = progress;
+    if (charge === 0 && collisionStiffness === 0) {
+      // With neither pair interaction enabled, only the already summed springs contribute stiffness.
+      for (let i = from; i < to; i++) greatestStiffness = Math.max(greatestStiffness, pairStiffness[i]);
+      progress.greatest = greatestStiffness;
+      return;
+    }
     for (let i = from; i < to; i++) {
       const a = 3 * i, ax = x[a], ay = x[a + 1], az = x[a + 2], radius = this.radii[i];
       // Each pair visits this end in the same order; keep its sum in registers instead of writing the array each time.
@@ -365,14 +371,11 @@ export class SpatialField {
         let fx = 0, fy = 0, fz = 0, stiffness = 0, potential = 0;
         for (let c = 0; c < cells;) {
           const after = next[c], first = start[c], last = end[c];
-          let inReach = true;
-          if (bounded) {
-            if (tree.nearest2(c, ax, ay, az) >= range2) { c = after; continue; }
-            inReach = tree.farthest2(c, ax, ay, az) < range2;
-          }
-          if (inReach && (p < first || p >= last)) {
+          if (bounded && tree.nearest2(c, ax, ay, az) >= range2) { c = after; continue; }
+          if (p < first || p >= last) {
             const dx = ax - centreX[c], dy = ay - centreY[c], dz = az - centreZ[c], d2 = dx * dx + dy * dy + dz * dz;
-            if (width[c] * width[c] < theta2 * d2) {
+            // Only a cell eligible to be taken whole needs its farthest corner checked against the reach.
+            if (width[c] * width[c] < theta2 * d2 && (!bounded || tree.farthest2(c, ax, ay, az) < range2)) {
               if (d2 < range2) {
                 const bodies = last - first, d = Math.sqrt(d2), k = bodies * charge / (d < 1 ? d : d2);
                 fx += k * dx; fy += k * dy; fz += k * dz;

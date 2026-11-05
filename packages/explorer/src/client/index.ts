@@ -631,7 +631,9 @@ function startExplorer(bundle: StaticExplorerData, initialSnapshot: UrlStateSnap
       ? keepSubject ? previousSelected.id : subjectAfterRelease(previousPins, nextPins, previousSelected.id)
       : null;
     const selected = selectedId ? nodesById.get(selectedId) ?? null : null;
-    const frame = localView.capturePinChange(nodeId, symbol, selected?.id ?? null, closeExpansion);
+    const newlyRetained = nextPins.entries.find(pin => pin.nodeId === nodeId
+      && !previousPins.entries.some(previous => previous.nodeId === pin.nodeId && previous.symbol === pin.symbol));
+    const frame = localView.capturePinChange(nodeId, symbol, selected?.id ?? null, closeExpansion, newlyRetained?.symbol);
     state.selectedNode = selected;
     state.pins = nextPins;
     localView.clearPathForExploration();

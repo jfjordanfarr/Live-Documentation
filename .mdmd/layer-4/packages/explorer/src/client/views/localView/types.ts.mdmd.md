@@ -11,6 +11,7 @@
 Defines the 2D Local Map's application boundary and the subgraph, geometry and column-role values its renderer shares.
 
 ### Notes
+- The [November 5 reading repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) lets the pin capture carry an optional newly retained symbol, with the existing whole-file marker. This identifies a reading request without making the view infer retention policy or treating release as a request to unfold text.
 - Created in the [December 4 Local Map modularisation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md#turn-14-local-map-modularization-the-refactor), beside the controller and public factory.
 - `LocalSubgraph` carries the files and annotated references of the current disclosure.
 - `LocalSubgraph.center` may be null since 2026-10-08: a branch picture entered by directory has no file in focus.

@@ -40,6 +40,9 @@ export default defineConfig({
         extends: true,
         test: {
           name: "unit",
+          // Covered numerical reference tests need a worker free from competing file suites; parallel runs
+          // exceeded their unchanged deadlines. The scheduling measurements are in this file's Live Doc.
+          maxWorkers: 1,
           include: [
             "packages/engine/src/**/*.test.ts",
             "packages/generator/src/**/*.test.ts",

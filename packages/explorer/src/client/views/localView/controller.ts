@@ -657,8 +657,9 @@ export class LocalViewController implements LocalViewApi {
   }
 
   /** Capture a 2D pin action's screen anchor and keyboard focus; shared pin policy belongs to the application. */
-  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false): LocalExplorationFrame {
+  capturePinChange(nodeId: string, symbol: string, nextSubjectId: string | null, closeExpansion = false, newlyRetainedSymbol?: string): LocalExplorationFrame {
     this.reading?.cancelPreview();
+    if (newlyRetainedSymbol !== undefined) this.reading?.reveal({ nodeId, ...(newlyRetainedSymbol === "*" ? {} : { symbol: newlyRetainedSymbol }) });
     if (closeExpansion) this.expandedCards.delete(nodeId);
     this.lastInteracted = nodeId;
     this.lastInteractedSymbol = symbol === "*" ? null : symbol;
@@ -707,11 +708,8 @@ export class LocalViewController implements LocalViewApi {
       if (!target) this.stage.search?.resume();
       return;
     }
-    if (target) {
-      this.lastInteracted = target.nodeId;
-      this.lastInteractedSymbol = target.symbol ?? null;
-    }
-    refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(target, this.readingVisible), !!target, !target);
+    refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(target, this.readingVisible), !!target, !target,
+      target ? this.stage.wrappers.get(target.nodeId) : undefined);
   }
 
   private configureReadingFrame(frame: Frame): void {
@@ -1109,6 +1107,7 @@ export class LocalViewController implements LocalViewApi {
   async focusSidebar(node: ExplorerNodePayload, symbol?: string): Promise<void> {
     this.lastInteracted = node.id;
     this.lastInteractedSymbol = symbol ?? null;
+    this.cancelReadingVisit();
     await this.options.onFocusSidebar(node, symbol);
   }
 
@@ -1116,6 +1115,7 @@ export class LocalViewController implements LocalViewApi {
   async inspectDirectory(directory: string): Promise<void> {
     this.lastInteracted = directory;
     this.lastInteractedSymbol = null;
+    this.cancelReadingVisit();
     await this.options.onInspectDirectory(directory);
   }
 
@@ -1123,6 +1123,7 @@ export class LocalViewController implements LocalViewApi {
   async showNodeActions(node: ExplorerNodePayload, symbol: string | undefined, anchor: { x: number; y: number }): Promise<void> {
     this.lastInteracted = node.id;
     this.lastInteractedSymbol = symbol ?? null;
+    this.cancelReadingVisit();
     await this.options.onShowNodeActions(node, symbol, anchor);
   }
 
@@ -1130,6 +1131,7 @@ export class LocalViewController implements LocalViewApi {
   async showDirectoryActions(directory: string, anchor: { x: number; y: number }): Promise<void> {
     this.lastInteracted = directory;
     this.lastInteractedSymbol = null;
+    this.cancelReadingVisit();
     await this.options.onShowDirectoryActions(directory, anchor);
   }
 
@@ -1152,10 +1154,11 @@ export class LocalViewController implements LocalViewApi {
     }
     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
     if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
+    const readingRequestChanged = this.reading?.observeScale(this.mapTransform.k) ?? false;
     if (this.reading && this.stage?.search && !this.readingFrame && !this.readingCalibrationPending) {
       const ratio = (this.runtime.mapAnimationTarget?.k ?? this.mapTransform.k) / this.readingReferenceScale;
       const visible = this.readingVisible ? ratio >= 0.74 : ratio >= 0.92;
-      if (visible !== this.readingVisible) this.readingFrame = requestAnimationFrame(() => {
+      if (visible !== this.readingVisible || readingRequestChanged) this.readingFrame = requestAnimationFrame(() => {
         this.readingFrame = 0;
         if (!this.stage || !this.isShown()) return;
         this.readingVisible = visible;

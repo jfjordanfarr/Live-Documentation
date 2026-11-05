@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-04T23:30:37.390Z
+- Generated At: 2026-11-05T03:49:51.271Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,11 @@
 Builds, measures and animates the 2D Local Map's retained branch scene, keeping file cards, directory membranes and symbol rows connected while the layout improves.
 
 ### Notes
+- The [November 5 owner test](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) found cumulative displacement while hovering between descriptions, despite exact restoration on leaving. A reading visit now retains its initial held element and screen anchor alongside the original scene/camera. Both instant and animated disclosure use that element until the visit ends, independently of later hover-tuning updates to the exploration anchor. This prevents each replacement from treating the previous expansion's displaced row as a new baseline.
+
+The original scene/camera remain available until the return animation completes. Reentering during that return resumes the same visit; it must not adopt the intermediate camera as a new home. The visual probe reproduced almost 397 px of displacement after ten such interruptions when the home was cleared at the start of the return. Instant returns release it immediately, and a genuine action may still supersede it.
+
+The same investigation exposed a rapid zoom reversal during disclosure moving the subject behind the sidebar. When scale changes, the animation rebases its held rectangle and camera/layer baselines before applying the next pose. The rectangle already contains the requested zoom, so the hold corrects only subsequent layout movement; keeping translation while cancelling scale had introduced an unwanted pan. Matched fast and settled input sequences protect this distinction.
 - In the [November 4 learning-journey pass](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8), boxed symbol rows animate as groups. A temporary opaque surface covers only the middle text column, keeping crossing explanations from blending while preserving the moving pins and attached wires. Interrupted renders capture the displayed row positions before clearing previous transforms. Legacy rows with display:contents retain their child movement. The renderer also supplies exact return-reference edges to the card reading menu; it does not derive a second graph.
 
 The same pass's November 5 full gate exposed a coordinate mismatch when pinning grew the search header during native movement. The controller compensated for the moved layer, then the animation's hold compensated again and left the title clipped. The hold now includes the untransformed layer-origin displacement, including the inner status offset, alongside camera displacement. A new held identity resets both baselines together. This preserves deliberate camera movement and the controller's visibility correction; the strengthened header regression fails against the preceding bundle.
@@ -58,7 +63,7 @@ also carries the continuing search that runs after each picture.
 
 #### `createStage` {#symbol-createstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L94)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L96)
 - Returns: [`BranchStage`](#symbol-branchstage)
 
 ##### `createStage` — Summary
@@ -66,7 +71,7 @@ A stage for a root that holds nothing yet.
 
 #### `dropStage` {#symbol-dropstage}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L99)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L101)
 - Parameters: `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `dropStage` — Summary
@@ -74,7 +79,7 @@ Ends whatever move the stage runs, where it stands, and its search; the stage's 
 
 #### `renderBranches` {#symbol-renderbranches}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L128)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L130)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `renderBranches` — Summary
@@ -102,7 +107,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L264)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L266)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -112,7 +117,7 @@ arrangement. Deliberate camera changes discard the return point and start a fres
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L312)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L318)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->

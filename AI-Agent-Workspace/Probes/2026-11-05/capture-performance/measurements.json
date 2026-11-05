@@ -1,0 +1,47 @@
+{
+  "scope": "repository/chain",
+  "cards": 93,
+  "normalizedEqual": true,
+  "ignoredFields": [
+    "capturedAt"
+  ],
+  "normalizedSha256": "156db81d2656115b3cd71dbd9a7bf67aa5017963c4778f1137243eb123ecfbae",
+  "before": {
+    "captureMs": 15689.352994,
+    "modelMs": 4717.804315,
+    "layouts": 1097,
+    "styleRecalculations": 1103,
+    "layoutMs": 409.381,
+    "styleMs": 12662.902
+  },
+  "after": {
+    "captureMs": 7410.352542,
+    "modelMs": 4632.375305,
+    "layouts": 446,
+    "styleRecalculations": 453,
+    "layoutMs": 235.664,
+    "styleMs": 4525.071
+  },
+  "warnings": [],
+  "independentModelDrift": [],
+  "final": {
+    "captureMs": 6505.577681,
+    "modelMs": 4859.879348,
+    "layouts": 446,
+    "styleRecalculations": 452,
+    "layoutMs": 202.865,
+    "styleMs": 3847.28,
+    "normalizedEqual": true,
+    "unusedNodeMetaProbeRemoved": true
+  },
+  "finalValidation": {
+    "command": "npx playwright test --config tests/e2e/playwright.config.ts tests/e2e/layout-lab.spec.ts",
+    "passed": 12,
+    "failed": 0,
+    "suiteDuration": "2.8m",
+    "repositoryFiveExactSeconds": 18.3,
+    "repositoryChainExactSeconds": 17.7,
+    "timeoutChanged": false,
+    "assertionsChanged": false
+  }
+}

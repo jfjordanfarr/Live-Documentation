@@ -11,6 +11,7 @@
 Constructs the 2D Local Map controller and exposes its rendering, camera, path and action-framing API to the application.
 
 ### Notes
+- The [November 5 reading repair](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) forwards the newly retained symbol, when one exists, through the pin transaction. The application identifies that change; the controller owns its scoped reading presentation at the current zoom.
 - Created as the public factory and type-export boundary in the [December 4 Local Map modularisation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2025/12/Summarized/2025-12-04.SUMMARIZED.md#turn-14-local-map-modularization-the-refactor).
 - Every operation delegates to one `LocalViewController`; the getter exposes that controller's existing hover/path store. Consumers use `LocalViewApi` without depending on the controller's mutable runtime.
 - The application supplies Inspect, Pin, Centre and directory actions through `LocalViewOptions`, following the [accepted interaction grammar](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-19.1.record.md#turn-24) and [its resumed implementation](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#turn-2). This factory forwards the 2D capture/after-render boundary that keeps an acted-on item in place around those shared state changes; it adds no pin, inspection or directory policy of its own.
