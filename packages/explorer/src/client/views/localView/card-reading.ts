@@ -1,9 +1,12 @@
 import type { TypeRef } from "@live-documentation/engine/live-docs/document";
 import type { GraphFile } from "@live-documentation/engine/live-docs/graph";
+import { pathTo, walk } from "@live-documentation/engine/live-docs/pathfind";
 
+import type { LocalEdge } from "./types";
 import type { ExplorerNodePayload } from "../../../shared/types";
 import { escapeHtml } from "../../graph-helpers";
 import { renderMarkdown } from "../../markdown";
+import { createItemMenu } from "../../panels/item-menu";
 import { createReaderLinkHandler, type ReaderLinkContext } from "../../reader-links";
 import { authoredSections } from "../../reader-sections";
 import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
@@ -20,6 +23,7 @@ export interface CardReadingOptions {
   change(nodeId: string, symbol: string | undefined, open: boolean): void;
   preview(target: ReadingTarget | null): void;
   inspect(target: InspectionTarget, fragment?: string): void;
+  navigate(node: ExplorerNodePayload): void;
   canPreview(): boolean;
   canDismiss(): boolean;
 }
@@ -50,6 +54,8 @@ const sameTarget = (a: ReadingTarget | null, b: ReadingTarget | null): boolean =
  */
 export class CardReading {
   private readonly cards = new Map<string, ReadingCard>();
+  private readonly connectionsMenu = createItemMenu();
+  private readonly backReferences = new Map<string, readonly LocalEdge[]>();
   private previewTarget: ReadingTarget | null = null;
   private candidate: ReadingTarget | null = null;
   private dismissed: ReadingTarget | null = null;
@@ -72,6 +78,7 @@ export class CardReading {
   /** Release listeners and delayed previews with the Local Map. */
   dispose(): void {
     this.reset();
+    this.connectionsMenu.dispose();
     this.container.removeEventListener("pointermove", this.pointerMove);
     this.container.removeEventListener("pointerleave", this.pointerLeave);
     this.container.removeEventListener("focusin", this.focusIn);
@@ -82,6 +89,8 @@ export class CardReading {
   /** A structural render replaces cards; no old preview or delayed event may act on their successors. */
   reset(): void {
     window.clearTimeout(this.intentTimer);
+    this.connectionsMenu.close();
+    this.backReferences.clear();
     this.cards.clear();
     this.previewTarget = this.candidate = null;
     // Replacing the DOM is neither new pointer input nor permission to undo an explicit dismissal.
@@ -158,13 +167,67 @@ export class CardReading {
 
     const counts = document.createElement("div");
     counts.className = "local-reading-counts";
-    for (const [count, label] of [[file.outbound.length, "Uses"], [file.inbound.length, "Referenced by"]] as const) {
-      const item = document.createElement("span");
+    for (const [count, label, direction] of [[file.outbound.length, "Uses", "uses"], [file.inbound.length, "Used by", "used-by"]] as const) {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = `local-connections-${direction}`;
+      item.disabled = count === 0;
+      item.setAttribute("aria-haspopup", "menu");
       item.textContent = `${label} ${count} ${count === 1 ? "file" : "files"}`;
+      item.title = `${label} ${count} ${count === 1 ? "file" : "files"}; choose one to explore`;
+      item.addEventListener("click", event => {
+        event.stopPropagation();
+        const ids = direction === "uses" ? file.outbound : file.inbound;
+        const commands = ids.flatMap(id => {
+          const target = this.options.links.nodesById.get(id);
+          if (!target) return [];
+          const returns = this.backReferences.get(node.id)?.find(edge => direction === "uses"
+            ? edge.sourceId === node.id && edge.targetId === id : edge.sourceId === id && edge.targetId === node.id);
+          return [{ label: target.name, detail: `${returns ? `${this.cycleSummary(returns)}\n` : ""}${target.codeRelativePath}`,
+            run: () => this.options.navigate(target) }];
+        });
+        const rect = item.getBoundingClientRect();
+        this.connectionsMenu.show({ x: rect.left, y: rect.bottom + 4 }, commands, undefined, `${node.name} · ${label.toLowerCase()} ${count} files`);
+      });
       counts.append(item);
     }
-    card.append(counts);
+    card.querySelector(".node-path")?.after(counts);
     this.updateCard(model);
+  }
+
+  /** Return references come from the actual displayed ranking, while file counts remain canonical. */
+  setBackReferences(nodeId: string, edges: readonly LocalEdge[]): void {
+    this.backReferences.set(nodeId, edges);
+  }
+
+  /** Name both ends of each return connection and offer ordinary navigation to its other file. */
+  showBackReferences(nodeId: string, anchor: { x: number; y: number }): void {
+    const commands = (this.backReferences.get(nodeId) ?? []).flatMap(edge => {
+      const consumer = this.options.links.nodesById.get(edge.sourceId), provider = this.options.links.nodesById.get(edge.targetId);
+      if (!consumer || !provider) return [];
+      const other = nodeId === consumer.id ? provider : consumer;
+      return [{ label: `${consumer.name} uses ${edge.targetSymbol ?? provider.name}`,
+        detail: `${this.cycleSummary(edge)}\nExplore ${other.codeRelativePath}`, run: () => this.options.navigate(other) }];
+    });
+    this.connectionsMenu.show(anchor, commands, undefined, "Connections returning in a cycle");
+  }
+
+  /** Explain the closing reference with a dependency path from the same canonical graph the CLI walks. */
+  private cycleSummary(edge: LocalEdge): string {
+    const found = walk([edge.targetId], id => this.options.links.files[id]?.outbound ?? [], Infinity, new Set([edge.sourceId]));
+    if (!found.reached) return "Returns in a cycle";
+    const ids = [...pathTo(found, edge.sourceId), edge.targetId];
+    const identities = new Map<string, Set<string>>();
+    for (const id of ids) {
+      const name = this.options.links.nodesById.get(id)?.name ?? id;
+      if (!identities.has(name)) identities.set(name, new Set());
+      identities.get(name)!.add(id);
+    }
+    const names = ids.map(id => {
+      const node = this.options.links.nodesById.get(id), name = node?.name ?? id;
+      return identities.get(name)!.size > 1 ? node?.codeRelativePath ?? id : name;
+    });
+    return `File dependency cycle: ${names.join(" → ")}`;
   }
 
   /** Change only disclosure, leaving DOM identities and row order for the layout to preserve. */

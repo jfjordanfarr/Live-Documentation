@@ -1,6 +1,6 @@
 # Theo and UI hill climbing
 
-Historical research, November 4, 2026, requested in [Turn 6](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-6). The proposed Explorer experiment below is the root agent's recommendation; no workflow or product change has been adopted.
+Historical research, November 4, 2026, requested in [Turn 6](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-6). The proposed Explorer experiment below was the root agent's recommendation at research time. The owner subsequently authorized it in [Turn 8](../ChatHistory/2026/11/2026-11-04.1.record.md#turn-8); its actual implementation, reviews and verification are tracked in the [learning-journey experiment](../Probes/2026-11-04/learning/README.md).
 
 Theo's [Agents Sucked At UI (Until Today)](https://www.youtube.com/watch?v=xq0eB8vxeqk), published November 3, describes repeatedly improving T3 Code using screenshot reviews from several models. Its useful contribution here is an explicit feedback loop with comparative visual evidence. Our experiment should optimize what a viewer can understand and do, while independently protecting the documented facts.
 

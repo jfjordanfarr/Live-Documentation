@@ -1,14 +1,17 @@
 /** Contextual commands for a map entity, reached by More or the platform context-menu gesture. */
 export interface ItemCommand {
   label: string;
+  detail?: string;
   run(): void;
 }
 
 /** A transient command menu. Application callbacks own every change it offers. */
 export function createItemMenu(): {
-  show(anchor: { x: number; y: number }, commands: readonly ItemCommand[], onClose?: () => void): void;
+  show(anchor: { x: number; y: number }, commands: readonly ItemCommand[], onClose?: () => void, title?: string): void;
   close(): void;
+  dispose(): void;
 } {
+  const lifetime = new AbortController();
   const menu = document.createElement("div");
   menu.className = "item-menu";
   menu.setAttribute("role", "menu");
@@ -39,17 +42,19 @@ export function createItemMenu(): {
         : (index + (event.key === "ArrowDown" ? 1 : -1) + buttons.length) % buttons.length;
       buttons[next]?.focus();
     }
-  });
+  }, { signal: lifetime.signal });
   document.addEventListener("pointerdown", event => {
     if (!menu.hidden && event.target instanceof Node && !menu.contains(event.target)) close();
-  }, true);
-  window.addEventListener("resize", close);
-  window.addEventListener("popstate", close);
+  }, { capture: true, signal: lifetime.signal });
+  window.addEventListener("resize", close, { signal: lifetime.signal });
+  window.addEventListener("popstate", close, { signal: lifetime.signal });
 
   return {
     close,
-    show(anchor, commands, onClose): void {
+    dispose(): void { close(); lifetime.abort(); menu.remove(); },
+    show(anchor, commands, onClose, title): void {
       close();
+      menu.setAttribute("aria-label", title ?? "Item actions");
       opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       afterClose = onClose;
       menu.replaceChildren(...commands.map(command => {
@@ -58,9 +63,22 @@ export function createItemMenu(): {
         button.setAttribute("role", "menuitem");
         button.tabIndex = -1;
         button.textContent = command.label;
+        if (command.detail) {
+          const detail = document.createElement("span");
+          detail.className = "item-menu-detail";
+          detail.textContent = command.detail;
+          button.append(detail);
+        }
         button.addEventListener("click", () => { close(); command.run(); });
         return button;
       }));
+      if (title) {
+        const heading = document.createElement("div");
+        heading.className = "item-menu-heading";
+        heading.setAttribute("role", "presentation");
+        heading.textContent = title;
+        menu.prepend(heading);
+      }
       menu.hidden = false;
       menu.style.left = "0px";
       menu.style.top = "0px";

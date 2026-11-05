@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-04T18:23:40.110Z
+- Generated At: 2026-11-04T23:30:39.602Z
 
 ## Authored
 ### Purpose
@@ -24,11 +24,13 @@ The membrane ancestry control occupies a separate flex column beside the text ca
 
 Each row also records its controls, every child of the label's wrapper but the label and its badges (the Pin and More of [October 20](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-20.1.record.md#the-layout-lab-caught-the-label-buttons)), as their widths with the gap before each and the tallest of them, and the wrapper's frame from its computed style: margins, padding and border on each axis, nothing for a public row and the Internals row's dashed border. A row collapsed at capture has no boxes, so it takes the controls of a row the page showed; its frame needs no box. Both are optional, so older captures read as before. Without them the model ran 1 to 22 px short of every card on the day the controls arrived.
 
-The natural widths are read as the page reads them since 2026-10-31, at the 1/64 px unit and up to the next pixel, after the first full gate over the seams found the page's rounded `offsetWidth` undercutting a path by a few hundredths of a pixel and wrapping it where the lab, holding Pretext to `TEXT_TOLERANCE`, kept the line ([the work notes of October 31](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)). Pretext does not take a zero-width space as a break opportunity, so the seams are not handed to it; the page's own width rule removes the disagreement.
+The natural widths are read as the page reads them since 2026-10-31, at the 1/64 px unit and up to the next pixel, after the first full gate over the seams found the page's rounded `offsetWidth` undercutting a path by a few hundredths of a pixel and wrapping it where the lab, holding Pretext to `TEXT_TOLERANCE`, kept the line ([the work notes of October 31](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-2)). The capture originally discarded explicit seams. The November 4 phone comparison found that flat text lost a real break opportunity: the current capture carries each wbr as a zero-width break in prepared text while retaining the plain name for consumers (dated correction from [Turn 8](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8)).
 
 November 4 captures each card’s actual typography, padding axes, reading blocks and overflow actions. Mixed-font runs are prepared with Pretext’s rich-inline API, preserving the text for standalone reflow. Font calibration uses a short line in a visible label’s real formatting context, restoring its original nodes/listeners immediately; this avoids accumulating fractional flex line-box differences. DOM geometry is quantized back to Chromium’s 1/64 px layout units after removing the camera transform. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
 The current capture uses PERSISTED_UI_VERSION rather than a stale literal, so its requested first-paint/search settings are applied. Fenced code is prepared with pre-wrap, retaining indentation and blank lines. A short line is calibrated inside the actual pre/code strut as well as flex labels: the formatting context can differ from a plain div probe by a layout unit per line. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
+The same learning-journey pass captures relationship controls above Purpose, including their intrinsic button sizes for independent flex wrapping. Short test labels are measured at intrinsic height rather than a neighboring chip’s stretched flex height. Rich prose preserves its computed word-wrapping behavior; the product explicitly wraps long prose tokens. Coarse-pointer browser checks compare the original phone capture with a separately rendered narrower cap. Older captures without placement metadata retain bottom-count behavior.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -70,21 +72,21 @@ One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L110)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L111)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L133)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L134)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L161)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L162)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -92,7 +94,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L182)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L183)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -104,7 +106,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L520)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L548)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -112,7 +114,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L526)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L554)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

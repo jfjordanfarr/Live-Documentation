@@ -76,10 +76,10 @@ export function cardViews(capture: Capture, branches: BranchGraph, options: Meas
     // 2026-10-30), so that the regenerated note wraps as the page's does and the captured one is known for what it is.
     if (hidden) notes.push(synthesizedHeight(capture, noteFont, `+${countOf(hidden, "symbol")}`));
     const back = backReferences.get(card.id) ?? 0;
-    if (back) notes.push(synthesizedHeight(capture, noteFont, `${countOf(back, "reference reads", "references read")} back`));
+    if (back) notes.push(synthesizedHeight(capture, noteFont, `${countOf(back, "connection returns", "connections return")} in a cycle`));
     // The connections outside the view are the graph's, the same under every configuration: the captured line serves.
     for (const note of card.notes) {
-      if (/^\+\d+\u00a0symbols?$/u.test(note.text) || /reads? back$/u.test(note.text)) continue;
+      if (/^\+\d+\u00a0symbols?$/u.test(note.text) || /reads? back$|returns? in a cycle$/u.test(note.text)) continue;
       notes.push(width => textHeight(capture, note, width));
     }
     views.set(card.id, { rows: shown, registration, notes });

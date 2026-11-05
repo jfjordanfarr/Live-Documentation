@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: scripts/layout-lab/card-model.test.ts
-- Generated At: 2026-10-19T17:05:04.167Z
+- Generated At: 2026-11-04T23:30:39.634Z
 
 ## Authored
 ### Purpose
@@ -25,10 +25,14 @@ _No public symbols detected_
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph) (type-only)
+- [`branches.BranchGraph`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-branchgraph)
+- [`branches.edgeKey`](../../packages/explorer/src/client/views/localView/branches.ts.mdmd.md#symbol-edgekey)
 - [`pin-state.EMPTY_PIN_SET`](../../packages/explorer/src/client/views/pin-state.ts.mdmd.md#symbol-empty_pin_set)
 - [`Capture`](./capture.ts.mdmd.md#symbol-capture) (type-only)
+- [`capture.CardCapture`](./capture.ts.mdmd.md#symbol-cardcapture) (type-only)
+- [`capture.PreparedText`](./capture.ts.mdmd.md#symbol-preparedtext) (type-only)
 - [`card-model.CardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-interface)
+- [`card-model.cardMetrics`](./card-model.ts.mdmd.md#symbol-cardmetrics-function)
 - [`card-model.chipsHeight`](./card-model.ts.mdmd.md#symbol-chipsheight)
 - [`card-model.registerPins`](./card-model.ts.mdmd.md#symbol-registerpins)
 - [`card-model.resolvePin`](./card-model.ts.mdmd.md#symbol-resolvepin)

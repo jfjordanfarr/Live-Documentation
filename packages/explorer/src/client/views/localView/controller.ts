@@ -118,6 +118,7 @@ export class LocalViewController implements LocalViewApi {
   private readingViewportSize: { width: number; windowHeight: number } | null = null;
   private readingCalibrationPending = false;
   private readingFrameTarget: ReadingTarget | null = null;
+  private keyboardFocusTarget: HTMLElement | null = null;
   /** The card builder reads only presentation facts and named actions, never this controller's state bag. */
   readonly cardContext: CardContext = {
     presentation: node => ({
@@ -212,6 +213,7 @@ export class LocalViewController implements LocalViewApi {
   /** The pointers pressed on the viewport, by id: one drags, two pinch. */
   private readonly pointers = new Map<number, { x: number; y: number }>();
   private pinch: { distance: number; x: number; y: number } | null = null;
+  private pendingCardTouch: { pointerId: number; x: number; y: number } | null = null;
   private disposeItemEvents = (): void => {};
 
   private readonly handleWindowPointerMove = (event: PointerEvent): void => {
@@ -220,6 +222,13 @@ export class LocalViewController implements LocalViewApi {
       return;
     }
     this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const pending = this.pendingCardTouch;
+    if (pending?.pointerId === event.pointerId) {
+      if (Math.hypot(event.clientX - pending.x, event.clientY - pending.y) <= 6) return;
+      this.pendingCardTouch = null;
+      this.beginCameraGesture();
+      startDrag(this.runtime, pending.x, pending.y, this.viewport);
+    }
     if (this.pointers.size >= 2 && this.pinch) {
       // Two fingers: zoom around their midpoint by the change in their distance, and pan with the midpoint.
       event.preventDefault();
@@ -256,6 +265,7 @@ export class LocalViewController implements LocalViewApi {
   };
 
   private readonly handleWindowPointerUp = (event: PointerEvent): void => {
+    if (this.pendingCardTouch?.pointerId === event.pointerId) this.pendingCardTouch = null;
     if (!this.pointers.delete(event.pointerId)) {
       return;
     }
@@ -283,6 +293,7 @@ export class LocalViewController implements LocalViewApi {
       change: (nodeId, symbol, open) => options.onReadingChange?.(nodeId, symbol, open),
       preview: target => this.previewReading(target),
       inspect: (target, fragment) => options.onReadTarget?.(target, fragment),
+      navigate: node => { void this.recenterNode(node); },
       canPreview: () => this.isShown() && options.state.inspection?.presentation !== "reading" && !this.container.closest("[inert]"),
       canDismiss: () => this.isShown() && !options.state.inspection
     }) : null;
@@ -343,12 +354,17 @@ export class LocalViewController implements LocalViewApi {
     const top = this.measureLayerTop();
     if (this.layerTop !== null && top !== this.layerTop) {
       const dy = top - this.layerTop;
-      this.mapTransform = { ...this.mapTransform, y: this.mapTransform.y - dy };
+      const held = this.actedOnElement()?.getBoundingClientRect();
+      // A new status/header may cover an identity that was visible before it grew. Keep ordinary anchors still,
+      // but move that newly covered identity just below the new edge rather than preserving an invisible place.
+      const uncover = dy > 0 && held && held.top - dy >= this.layerTop ? Math.max(0, top + 8 - (held.top - dy)) : 0;
+      const shift = -dy + uncover;
+      this.mapTransform = { ...this.mapTransform, y: this.mapTransform.y + shift };
       if (this.mapInitialTransform) {
-        this.mapInitialTransform = { ...this.mapInitialTransform, y: this.mapInitialTransform.y - dy };
+        this.mapInitialTransform = { ...this.mapInitialTransform, y: this.mapInitialTransform.y + shift };
       }
       if (this.runtime.mapAnimationTarget) {
-        this.runtime.mapAnimationTarget = { ...this.runtime.mapAnimationTarget, y: this.runtime.mapAnimationTarget.y - dy };
+        this.runtime.mapAnimationTarget = { ...this.runtime.mapAnimationTarget, y: this.runtime.mapAnimationTarget.y + shift };
       }
       this.updateMapTransform();
     }
@@ -432,6 +448,7 @@ export class LocalViewController implements LocalViewApi {
     this.keepContentPutWhenLayerMoves();
     const id = this.options.state.selectedNode?.id;
     const path = this.localMapState.getState().activePath;
+    const changedSubject = !!id && !!this.lastCenteredNodeId && id !== this.lastCenteredNodeId;
     const anchor = id && !this.renderedPath && !this.runtime.mapAnimationTarget ? this.getSubjectAnchor(id) : null;
     this.drawScene();
     if (this.restoreExplorationCamera && this.explorationCamera) {
@@ -448,7 +465,17 @@ export class LocalViewController implements LocalViewApi {
       this.drawConnections();
       this.restoreExplorationCamera = false;
       this.explorationCamera = null;
-    } else if (id && anchor && !path) {
+    } else if (id && changedSubject && !path && this.stage?.move) {
+      // A returning subject can already exist as an offscreen neighbour. The native move holds its identity;
+      // bring that title into the frame now, then let the pending reading arrival settle its final position.
+      const title = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(id)}"] .node-title`);
+      if (title) {
+        const box = title.getBoundingClientRect(), frame = this.frameRect();
+        const x = Math.max(frame.left + 16, Math.min(box.left, frame.left + frame.width - box.width - 16));
+        const y = Math.max(frame.top + 16, Math.min(box.top, frame.top + frame.height - box.height - 16));
+        this.placeSubjectAnchor(id, { x: x + box.width / 2, y: y + box.height / 2 });
+      }
+    } else if (id && anchor && !path && !changedSubject) {
       this.placeSubjectAnchor(id, anchor);
     }
     this.renderedPath = !!path;
@@ -732,6 +759,7 @@ export class LocalViewController implements LocalViewApi {
     this.readingFrameTarget = null;
     const leavingPath = !!this.localMapState.getState().activePath;
     const before = this.isShown() ? this.container.querySelector<HTMLElement>(selector)?.getBoundingClientRect() : undefined;
+    const beforeTop = this.isShown() ? this.viewport.getBoundingClientRect().top + this.framePlace().top : 0;
     const keyboardFocus = this.container.contains(document.activeElement);
     return {
       leavingPath,
@@ -746,7 +774,9 @@ export class LocalViewController implements LocalViewApi {
           this.runtime.mapAnimationTarget = null;
           this.mapHasInitialFit = true;
           this.mapUserAdjusted = true;
-          this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + before.left - after.left, y: this.mapTransform.y + before.top - after.top };
+          const top = this.viewport.getBoundingClientRect().top + this.framePlace().top;
+          const heldTop = top > beforeTop && before.top >= beforeTop ? Math.max(before.top, top + 8) : before.top;
+          this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + before.left - after.left, y: this.mapTransform.y + heldTop - after.top };
           this.updateMapTransform();
           this.drawConnections();
         }
@@ -757,6 +787,13 @@ export class LocalViewController implements LocalViewApi {
         }
       }
     };
+  }
+
+  private actedOnElement(): HTMLElement | null {
+    if (!this.lastInteracted) return null;
+    const card = this.container.querySelector<HTMLElement>(`.node-card[data-id="${CSS.escape(this.lastInteracted)}"]`);
+    return (this.lastInteractedSymbol ? card?.querySelector<HTMLElement>(`.symbol-row[data-symbol="${CSS.escape(this.lastInteractedSymbol)}"] .symbol-label-wrapper`) : null)
+      ?? card?.querySelector<HTMLElement>(".node-title") ?? null;
   }
 
   /**
@@ -1109,6 +1146,9 @@ export class LocalViewController implements LocalViewApi {
     const viewport = this.runtime.container.parentElement;
     if (viewport) {
       viewport.style.transform = `translate(${this.mapTransform.x}px, ${this.mapTransform.y}px) scale(${this.mapTransform.k})`;
+      if (this.revealKeyboardFocus()) {
+        viewport.style.transform = `translate(${this.mapTransform.x}px, ${this.mapTransform.y}px) scale(${this.mapTransform.k})`;
+      }
     }
     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
     if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
@@ -1124,6 +1164,23 @@ export class LocalViewController implements LocalViewApi {
         refreshReadingGeometry(this, this.stage, () => this.reading!.updatePresentation(null, visible), false);
       });
     }
+  }
+
+  /** Pan only as far as the focused command needs, including while its native row is moving. */
+  private revealKeyboardFocus(): boolean {
+    const target = this.keyboardFocusTarget;
+    if (!this.isShown() || !target?.isConnected || target !== document.activeElement) return false;
+    const box = target.getBoundingClientRect();
+    if (!box.width || !box.height) return false;
+    const place = this.framePlace(), view = this.viewport.getBoundingClientRect();
+    const left = view.left + place.left + 8, top = view.top + place.top + 8;
+    const right = left + Math.max(1, place.width - 16), bottom = top + Math.max(1, place.height - 16);
+    const shift = (start: number, end: number, min: number, max: number): number =>
+      start < min ? min - start : end > max ? Math.max(min - start, max - end) : 0;
+    const x = shift(box.left, box.right, left, right), y = shift(box.top, box.bottom, top, bottom);
+    if (Math.abs(x) < 0.5 && Math.abs(y) < 0.5) return false;
+    this.mapTransform = { ...this.mapTransform, x: this.mapTransform.x + x, y: this.mapTransform.y + y };
+    return true;
   }
 
   /**
@@ -1223,6 +1280,7 @@ export class LocalViewController implements LocalViewApi {
       return false;
     };
     const pointerDown = (event: PointerEvent): void => {
+      this.keyboardFocusTarget = null;
       pressed.add(event.pointerId);
       clearTimer();
       if (pressed.size > 1) { multiPointerGesture = true; cancel(); return; }
@@ -1285,13 +1343,25 @@ export class LocalViewController implements LocalViewApi {
       context(target, { x: rect.left + rect.width / 2, y: rect.bottom });
     };
     const escape = (event: KeyboardEvent): void => { if (event.key === "Escape") cancel(); };
+    const focusIn = (event: FocusEvent): void => {
+      const target = htmlTarget(event.target);
+      this.keyboardFocusTarget = target?.closest(".node-card") && target.matches(":focus-visible") ? target : null;
+      if (this.keyboardFocusTarget && this.isShown()) {
+        this.cancelInertia();
+        this.updateMapTransform();
+      }
+    };
+    const focusOut = (): void => { this.keyboardFocusTarget = null; };
+    const wheel = (): void => { this.keyboardFocusTarget = null; cancel(); };
     const blur = (): void => { cancel(); pressed.clear(); };
     const visibility = (): void => { if (document.visibilityState !== "visible") blur(); };
     this.viewport.addEventListener("pointerdown", pointerDown, true);
     this.viewport.addEventListener("click", click, true);
     this.viewport.addEventListener("contextmenu", contextMenu);
     this.viewport.addEventListener("keydown", keyDown);
-    this.viewport.addEventListener("wheel", cancel, { passive: true });
+    this.viewport.addEventListener("focusin", focusIn);
+    this.viewport.addEventListener("focusout", focusOut);
+    this.viewport.addEventListener("wheel", wheel, { passive: true });
     window.addEventListener("pointermove", pointerMove, true);
     window.addEventListener("pointerup", pointerUp, true);
     window.addEventListener("pointercancel", pointerUp, true);
@@ -1304,7 +1374,9 @@ export class LocalViewController implements LocalViewApi {
       this.viewport.removeEventListener("click", click, true);
       this.viewport.removeEventListener("contextmenu", contextMenu);
       this.viewport.removeEventListener("keydown", keyDown);
-      this.viewport.removeEventListener("wheel", cancel);
+      this.viewport.removeEventListener("focusin", focusIn);
+      this.viewport.removeEventListener("focusout", focusOut);
+      this.viewport.removeEventListener("wheel", wheel);
       window.removeEventListener("pointermove", pointerMove, true);
       window.removeEventListener("pointerup", pointerUp, true);
       window.removeEventListener("pointercancel", pointerUp, true);
@@ -1321,33 +1393,47 @@ export class LocalViewController implements LocalViewApi {
    */
   private bindPointerEvents(): void {
     this.viewport.addEventListener("pointerdown", event => {
-      // A press on a card, a directory control or a button is not the start of a drag; nor is a mouse's other button.
+      // Mouse presses on cards preserve text selection. Touch can pan from prose after movement, while commands
+      // keep their native activation; neither a command nor a mouse's other button starts a drag.
       // A drag marks the camera as the person's own, after which no render re-fits
       // it; toolbar clicks used to do that too, which left Clear unable to bring
       // the subject back into the frame (measured 3,846 px off, 2026-10-01).
       if (event.pointerType === "mouse" && event.button !== 0) return;
-      if ((event.target as HTMLElement | null)?.closest?.(".node-card, .pathfind-toolbar, button, [role=button], input, select, a")) {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest?.(".pathfind-toolbar, button, [role=button], input, select, textarea, a")
+        || (event.pointerType !== "touch" && target?.closest?.(".node-card"))) {
         return;
       }
-      this.directoryArrivalPending = false;
-      this.focusRequest = null;
-      this.readingCalibrationPending = false;
-      this.readingFrameTarget = null;
-      this.cancelReadingVisit();
       this.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
       if (this.pointers.size === 2) {
+        this.pendingCardTouch = null;
+        this.beginCameraGesture();
         const [a, b] = [...this.pointers.values()];
         if (this.isDragging) handleDragEnd(this.runtime, this.viewport, () => this.updateMapTransform());
         this.pinch = { distance: Math.hypot(b.x - a.x, b.y - a.y), x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
         return;
       }
       if (this.pointers.size > 2) return;
+      if (event.pointerType === "touch" && target?.closest?.(".node-card")) {
+        this.pendingCardTouch = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+        return;
+      }
+      this.beginCameraGesture();
       startDrag(this.runtime, event.clientX, event.clientY, this.viewport);
     });
 
     window.addEventListener("pointermove", this.handleWindowPointerMove);
     window.addEventListener("pointerup", this.handleWindowPointerUp);
     window.addEventListener("pointercancel", this.handleWindowPointerUp);
+  }
+
+  /** A movement, rather than a tap on readable prose, takes ownership of the camera. */
+  private beginCameraGesture(): void {
+    this.directoryArrivalPending = false;
+    this.focusRequest = null;
+    this.readingCalibrationPending = false;
+    this.readingFrameTarget = null;
+    this.cancelReadingVisit();
   }
 
   private bindWheelEvents(): void {

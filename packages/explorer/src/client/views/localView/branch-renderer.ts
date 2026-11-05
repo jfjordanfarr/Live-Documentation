@@ -9,7 +9,7 @@ import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory"
 import type { LocalViewController } from "./controller";
 import { ancestryButton } from "./directory-ancestry";
 import { membranePath } from "./membrane-outline";
-import type { MapTransform } from "./types";
+import type { LocalEdge, MapTransform } from "./types";
 import { setSeamedText } from "../../dom";
 import { normalizeSymbolIdentifier } from "../symbolAnchors";
 import { countOf } from "./word-seams";
@@ -52,7 +52,7 @@ interface Move {
   leaving: HTMLElement[];
   /** Elements new to the picture: they fade in at their place. */
   entering: HTMLElement[];
-  /** The children of rows whose place on their card changed, each with how far from its new place it starts. */
+  /** Boxed rows (or children of legacy display:contents rows), with their displacement from the new place. */
   rows: Array<{ element: HTMLElement; delta: number }>;
   heights?: Array<{ element: HTMLElement; from: number; to: number }>;
   anchor?: DOMRect;
@@ -132,13 +132,14 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
   const { root } = stage;
   const path = controller.getActivePath();
   stage.readingHome = null;
+  const scale = controller.runtime.mapTransform.k || 1;
+  // Capture the visible rows before ending an interrupted move removes their current displacement.
+  const oldRows = stage.pose ? rowOffsets(stage, scale) : null;
   // A move still running ends where it stands, and the search for the previous picture ends: the new picture starts
   // from the frame the page shows and searches anew.
   stopSearch(stage);
   endMove(stage, false);
   const previous = stage.pose;
-  const scale = controller.runtime.mapTransform.k || 1;
-  const oldRows = previous ? rowOffsets(stage, scale) : null;
 
   const exploration = exploreBranches(state.selectedNode, graphData, controller.pins, node => controller.shouldIncludeNode(node), {
     symbolOrder: tuning.symbolOrder,
@@ -629,19 +630,22 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
   let heldElement = elementHeld(controller, stage, from, to);
   let heldRect = move.anchor ?? heldElement?.getBoundingClientRect() ?? null;
   const cameraAtStart = { ...controller.mapTransform };
+  const layerTop = (): number => controller.getViewport().getBoundingClientRect().top + (controller.getContainer().parentElement?.offsetTop ?? 0);
+  let layerTopAtStart = layerTop();
   const cameraFrom = { ...controller.mapTransform };
   const cameraApplied = { ...cameraFrom };
   for (const { element, from } of move.heights ?? []) {
     element.style.height = `${from}px`;
     element.style.overflow = "clip";
   }
-  /** Put the held card back where the eye left it, moved by whatever the camera itself has moved since (a drag, say). */
+  /** Keep camera gestures and header compensation; the latter also changes the frame's screen origin. */
   const hold = (): void => {
     if (move.cameraTarget || !heldElement || !heldRect) return;
     const camera = controller.mapTransform;
     const rect = heldElement.getBoundingClientRect();
     const dx = heldRect.left + (camera.x - cameraAtStart.x) - rect.left;
-    const dy = heldRect.top + (camera.y - cameraAtStart.y) - rect.top;
+    const layerShift = layerTop() - layerTopAtStart;
+    const dy = heldRect.top + (camera.y - cameraAtStart.y) + layerShift - rect.top;
     if (dx || dy) {
       controller.mapTransform = { ...camera, x: camera.x + dx, y: camera.y + dy };
       cameraAtStart.x += dx;
@@ -658,6 +662,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
       heldElement = elementHeld(controller, stage, from, to);
       heldRect = heldElement?.getBoundingClientRect() ?? null;
       Object.assign(cameraAtStart, controller.mapTransform);
+      layerTopAtStart = layerTop();
     }
     const t = Math.min(1, (now - start) / duration);
     const eased = easeInOutCubic(t);
@@ -709,7 +714,10 @@ function endMove(stage: BranchStage, finished: boolean): void {
   cancelAnimationFrame(move.frame);
   for (const element of move.leaving) element.remove();
   for (const element of move.entering) element.style.opacity = "";
-  for (const { element } of move.rows) element.style.transform = "";
+  for (const { element } of move.rows) {
+    element.style.transform = "";
+    element.classList.remove("local-row-moving");
+  }
   for (const { element } of move.heights ?? []) { element.style.height = ""; element.style.overflow = ""; }
   if (finished) {
     applyPose(stage, move.to, move.bandPadding);
@@ -976,7 +984,10 @@ function rowOffsets(stage: BranchStage, scale: number): Map<string, Map<string, 
   return offsets;
 }
 
-/** The children of every row that stands elsewhere on its card than it did, each with how far from its new place it starts. */
+/**
+ * Move a boxed symbol as one surface, so its explanation and name cannot be interleaved with another row's text
+ * when their order changes. Legacy display:contents rows have no surface and still move through their children.
+ */
 function rowMotions(stage: BranchStage, before: Map<string, Map<string, number>>, scale: number): Array<{ element: HTMLElement; delta: number }> {
   const motions: Array<{ element: HTMLElement; delta: number }> = [];
   const after = rowOffsets(stage, scale);
@@ -988,7 +999,12 @@ function rowMotions(stage: BranchStage, before: Map<string, Map<string, number>>
     for (const [row, key] of rowKeys(card)) {
       const from = was.get(key), to = now.get(key);
       if (from === undefined || to === undefined || Math.abs(from - to) < 0.5) continue;
-      for (const child of row.children) motions.push({ element: child as HTMLElement, delta: from - to });
+      if (getComputedStyle(row).display !== "contents") {
+        row.classList.add("local-row-moving");
+        motions.push({ element: row, delta: from - to });
+      } else {
+        for (const child of row.children) motions.push({ element: child as HTMLElement, delta: from - to });
+      }
     }
   }
   return motions;
@@ -1031,10 +1047,10 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
   const key = (id: string, symbol?: string): string => `${id}\0${normalizeSymbolIdentifier(symbol) ?? "__internals__"}`;
   for (const [id, rows] of exploration.relevantSymbols) for (const row of rows) connected.add(key(id, row));
   if (!path) for (const pin of controller.pins.entries) connected.add(key(pin.nodeId, pin.symbol));
-  const backReferences = new Map<string, number>();
+  const backReferences = new Map<string, LocalEdge[]>();
   for (const edge of exploration.subgraph.links) {
     if (!exploration.ranking.back.has(edgeKey(edge))) continue;
-    for (const id of new Set([edge.sourceId, edge.targetId])) backReferences.set(id, (backReferences.get(id) ?? 0) + 1);
+    for (const id of new Set([edge.sourceId, edge.targetId])) backReferences.set(id, [...(backReferences.get(id) ?? []), edge]);
   }
   for (const card of cards) {
     // A closed directory's box has no rows and no notes.
@@ -1061,12 +1077,21 @@ function dressCards(controller: LocalViewController, cards: readonly HTMLElement
       });
       card.append(reveal);
     }
-    const back = backReferences.get(id) ?? 0;
-    if (back) {
-      const note = document.createElement("span");
+    const back = backReferences.get(id) ?? [];
+    controller.reading?.setBackReferences(id, back);
+    if (back.length) {
+      const note = document.createElement(controller.reading ? "button" : "span");
       note.className = "local-disclosure local-back-references";
-      note.textContent = `${countOf(back, "reference reads", "references read")} back`;
-      note.title = "Against the reading direction, part of a cycle: drawn as stubs at its pins. Hover a symbol to trace it.";
+      note.textContent = `${countOf(back.length, "connection returns", "connections return")} in a cycle`;
+      note.title = "Show the files joined by connections that return against the layout's reading direction";
+      if (controller.reading) {
+        note.setAttribute("aria-haspopup", "menu");
+        note.addEventListener("click", event => {
+          event.stopPropagation();
+          const rect = note.getBoundingClientRect();
+          controller.reading!.showBackReferences(id, { x: rect.left, y: rect.bottom + 4 });
+        });
+      }
       card.append(note);
     }
     const outside = exploration.hiddenConnections.get(id) ?? 0;

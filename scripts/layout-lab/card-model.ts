@@ -95,6 +95,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   let y = edge;
   y += text(card.title, content - c.titlePaddingRight) + c.titleMarginBottom + (c.titlePaddingTop ?? 0);
   y += text(card.path, content);
+  if (card.footer?.position === "after-path") y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap) + (card.footer.bottom ?? 0);
   if (card.purpose) y += readingHeight(card.purpose, content);
   y += c.symbolsMarginTop;
   if (card.meta) y += text(card.meta, content);
@@ -121,7 +122,7 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
     y += c.directoryMarginTop;
   }
   if (!card.directoryHidden) y += text(card.directory, content);
-  if (card.footer) y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap)
+  if (card.footer && card.footer.position !== "after-path") y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap) + (card.footer.bottom ?? 0)
     - (card.directoryHidden && card.tests ? Math.min(c.testsMarginBottom, card.footer.marginTop) : 0);
   for (const note of view.notes) y += c.disclosureMarginTop + note(content);
   y += card.borderWidth + (card.paddingBottom ?? card.padding);

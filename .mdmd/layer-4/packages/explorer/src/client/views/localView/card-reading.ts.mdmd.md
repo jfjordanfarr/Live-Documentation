@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-04T18:23:38.819Z
+- Generated At: 2026-11-04T23:39:46.857Z
 
 ## Authored
 ### Purpose
@@ -19,26 +19,28 @@ Keep-open intent is exposed with aria-pressed, while aria-expanded describes the
 
 A structural redraw retains physical pointer coordinates and deliberate dismissal. It is not new pointer input, and restoring focus after Fold must not reopen the text. The keyboard-fold browser case protects both the held choice and native focus.
 
+The [November 4 learning-journey pass](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8) turns canonical outbound/inbound file counts into accessible menus near the card introduction. Choosing a file invokes ordinary subject navigation, without pinning it. The branch renderer supplies the displayed ranking's return references separately, so cycle annotations cannot be mistaken for additional graph facts. Their menu names both endpoints and navigates to the other file. A witness path from the engine’s existing breadth-first walk explains the complete file dependency cycle, including intermediate files; duplicate basenames use their paths. The transient menu closes on a structural redraw and is disposed with the reading surface.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L13)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L16)
 
 ##### `ReadingTarget` — Summary
 The file Purpose or exact symbol temporarily being read; never a new retained neighborhood.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L16)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L19)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the native layout's geometry transaction.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L51)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L55)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. Pointer intent is delegated to the
@@ -50,13 +52,17 @@ to the controller, which measures and animates the existing card elements withou
 ### Dependencies
 - [`document.TypeRef`](../../../../../engine/src/live-docs/document.ts.mdmd.md#symbol-typeref) (type-only)
 - [`graph.GraphFile`](../../../../../engine/src/live-docs/graph.ts.mdmd.md#symbol-graphfile) (type-only)
+- [`pathfind.pathTo`](../../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-pathto)
+- [`pathfind.walk`](../../../../../engine/src/live-docs/pathfind.ts.mdmd.md#symbol-walk-function)
 - [`graph-helpers.escapeHtml`](../../graph-helpers.ts.mdmd.md#symbol-escapehtml)
 - [`markdown.renderMarkdown`](../../markdown.ts.mdmd.md#symbol-rendermarkdown)
+- [`item-menu.createItemMenu`](../../panels/item-menu.ts.mdmd.md#symbol-createitemmenu)
 - [`reader-links.ReaderLinkContext`](../../reader-links.ts.mdmd.md#symbol-readerlinkcontext)
 - [`reader-links.createReaderLinkHandler`](../../reader-links.ts.mdmd.md#symbol-createreaderlinkhandler)
 - [`reader-sections.authoredSections`](../../reader-sections.ts.mdmd.md#symbol-authoredsections)
 - [`reading-state.ReadingChoice`](../../reading-state.ts.mdmd.md#symbol-readingchoice)
 - [`reading-state.descriptionIsOpen`](../../reading-state.ts.mdmd.md#symbol-descriptionisopen)
 - [`types.InspectionTarget`](../../types.ts.mdmd.md#symbol-inspectiontarget) (type-only)
+- [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.ExplorerNodePayload`](../../../shared/types.ts.mdmd.md#symbol-explorernodepayload) (type-only)
 <!-- LIVE-DOC:END Dependencies -->

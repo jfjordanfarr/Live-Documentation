@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-renderer.ts
-- Generated At: 2026-11-04T16:15:11.550Z
+- Generated At: 2026-11-04T23:30:37.390Z
 
 ## Authored
 ### Purpose
@@ -12,6 +12,9 @@
 Builds, measures and animates the 2D Local Map's retained branch scene, keeping file cards, directory membranes and symbol rows connected while the layout improves.
 
 ### Notes
+- In the [November 4 learning-journey pass](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8), boxed symbol rows animate as groups. A temporary opaque surface covers only the middle text column, keeping crossing explanations from blending while preserving the moving pins and attached wires. Interrupted renders capture the displayed row positions before clearing previous transforms. Legacy rows with display:contents retain their child movement. The renderer also supplies exact return-reference edges to the card reading menu; it does not derive a second graph.
+
+The same pass's November 5 full gate exposed a coordinate mismatch when pinning grew the search header during native movement. The controller compensated for the moved layer, then the animation's hold compensated again and left the title clipped. The hold now includes the untransformed layer-origin displacement, including the inner status offset, alongside camera displacement. A new held identity resets both baselines together. This preserves deliberate camera movement and the controller's visibility correction; the strengthened header regression fails against the preceding bundle.
 
 Introduced with the native retained-branch implementation in [October 2, Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-02.1.SUMMARIZED.md#turn-11), reusing file cards while retaining independent neighborhoods and every induced relationship. Neighborhoods and explicit paths use this same renderer after the [owner’s October 12 walkthrough](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-12.1.record.md#turn-3). A path keeps its requested scope and compact relevant rows regardless of exploration pins; its wrapper marks the original hop for navigation and tests.
 
@@ -99,7 +102,7 @@ The layout's dials come from the Local Map's tuning.
 
 #### `refreshReadingGeometry` {#symbol-refreshreadinggeometry}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L263)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L264)
 - Parameters: `controller`: [`LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller); `stage`: [`BranchStage`](#symbol-branchstage)
 
 ##### `refreshReadingGeometry` — Summary
@@ -109,7 +112,7 @@ arrangement. Deliberate camera changes discard the return point and start a fres
 
 #### `BAND_BORDER` {#symbol-band_border}
 - Type: unknown
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L311)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-renderer.ts#L312)
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
@@ -162,6 +165,7 @@ arrangement. Deliberate camera changes discard the return point and start a fres
 - [`controller.LocalViewController`](./controller.ts.mdmd.md#symbol-localviewcontroller) (type-only)
 - [`directory-ancestry.ancestryButton`](./directory-ancestry.ts.mdmd.md#symbol-ancestrybutton)
 - [`membrane-outline.membranePath`](./membrane-outline.ts.mdmd.md#symbol-membranepath)
+- [`types.LocalEdge`](./types.ts.mdmd.md#symbol-localedge) (type-only)
 - [`types.MapTransform`](./types.ts.mdmd.md#symbol-maptransform) (type-only)
 - [`word-seams.countOf`](./word-seams.ts.mdmd.md#symbol-countof)
 - [`symbolAnchors.normalizeSymbolIdentifier`](../symbolAnchors.ts.mdmd.md#symbol-normalizesymbolidentifier)

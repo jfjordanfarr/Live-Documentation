@@ -155,10 +155,15 @@ const generatorFile = "packages/generator/src/generator.ts";
  * adopted picture on each bundle. The warehouse report adopted until 2026-10-20, when the symbol rows' Pin and More
  * made its first placement start at the one membrane step its search used to reach (2 then 1 under the old rows, 1
  * from the start under the new, measured by the lab on both); it stays as the case whose tried alignment is rejected,
- * and the generator, which adopts under both, carries the repository bundle's adoption.
+ * and the generator, which adopts under both, carries the repository bundle's adoption. The reading-card controls
+ * and relationship counts changed the estate five-files geometry on 2026-11-05: its seven alignment trials now all
+ * cost more (the closest costs 94 extra), so its default case retains agreement coverage. The same scope with the
+ * lower row-levelness setting already used above adopts twice, removes two steps, and carries estate adoption.
  */
-const runs: Array<ScopeRun & { adopts: boolean }> = [
-  { ...DECK_SCOPES.find(run => run.bundle === "estate" && run.scopeName === "five files")!, adopts: true },
+const estateFiveFiles = DECK_SCOPES.find(run => run.bundle === "estate" && run.scopeName === "five files")!;
+const runs: Array<ScopeRun & { adopts: boolean; rowLevelness?: number }> = [
+  { ...estateFiveFiles, adopts: false },
+  { ...estateFiveFiles, scopeName: "five files, lower row levelness", rowLevelness: 0.25, adopts: true },
   { bundle: "repository", base: "/", scopeName: "generator", scope: [generatorFile], subject: generatorFile, adopts: true },
   { bundle: "repository", base: "/", scopeName: "warehouse report", scope: [warehouseFile], subject: warehouseFile, adopts: false }];
 
@@ -166,19 +171,20 @@ for (const run of runs) {
   test(`continuing geometry competition agrees with the headless command: ${run.scopeName}`, async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", error => errors.push(error.message));
-    await tuning(page, { searchStarts: 0, membraneSimplicity: 50, moveMs: 0 });
+    const config = { ...baselineConfig(), membraneSimplicity: 50 };
+    if (run.rowLevelness !== undefined) config.rowLevelness = run.rowLevelness;
+    await tuning(page, { searchStarts: 0, membraneSimplicity: 50, rowLevelness: config.rowLevelness, moveMs: 0 });
     await page.goto(localRetainUrl(run.base, run.scope));
     const capture = await captureFromPage(page, run);
     const first = await picture(page);
     const graph = await loadBundleGraph(run);
-    const config = { ...baselineConfig(), membraneSimplicity: 50 };
     expect(capture.warnings).toEqual([]);
     expect(driftOf(capture, evaluate(capture, graph, run, config))).toEqual([]);
     const settings = { searchStarts: 4, searchPatience: 2, churnCost: getDefaultTuning().localMap.churnCost };
     const expected = refine(capture, graph, run, config, settings);
     expect(expected.alignmentTried).toBeGreaterThan(0);
     if (run.adopts) expect(expected.alignmentAdopted).toBeGreaterThan(0);
-    await tuning(page, { ...settings, membraneSimplicity: 50, moveMs: 0 });
+    await tuning(page, { ...settings, membraneSimplicity: 50, rowLevelness: config.rowLevelness, moveMs: 0 });
     await page.goto(localRetainUrl(run.base, run.scope));
     await page.locator(".local-placed").waitFor();
     await localMapSettled(page);

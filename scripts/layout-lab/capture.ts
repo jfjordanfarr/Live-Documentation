@@ -87,7 +87,8 @@ export interface CardCapture {
   purpose?: ReadingFlow;
   overflow?: ReadingFlow;
   directoryHidden?: boolean;
-  footer?: { items: ChipCapture[]; gap: number; top: number; marginTop: number };
+  /** Relationship counts; older captures place them after the rows. */
+  footer?: { items: ChipCapture[]; gap: number; top: number; marginTop: number; bottom?: number; position?: "after-path" };
   hubY?: number;
   title: PreparedText;
   path: PreparedText;
@@ -253,7 +254,12 @@ function readCapture(page: Page): Promise<PageCapture> {
     };
     const prepared = (element: Element, text = element.textContent ?? ""): PreparedText => {
       const font = fontOf(element);
-      const value = pretext.prepareWithSegments(text, fonts[font].font, { letterSpacing: fonts[font].letterSpacing });
+      // Name seams are real break opportunities, carried by <wbr> rather than textContent.
+      // Keep the name itself for consumers, but give Pretext the same break opportunities as the page.
+      const withBreaks = (node: Node): string => node instanceof Element && node.tagName === "WBR" ? "\u200b"
+        : node.nodeType === Node.TEXT_NODE ? node.textContent ?? "" : [...node.childNodes].map(withBreaks).join("");
+      const layoutText = text === element.textContent ? withBreaks(element) : text;
+      const value = pretext.prepareWithSegments(layoutText, fonts[font].font, { letterSpacing: fonts[font].letterSpacing });
       // Hold Pretext to the page: its height at the element's width against the element's own, where the element is shown.
       const rect = element.getBoundingClientRect();
       const style = getComputedStyle(element);
@@ -296,7 +302,16 @@ function readCapture(page: Page): Promise<PageCapture> {
           const font = fonts[fontOf(element.querySelector("code") ?? element)];
           result.pre = JSON.parse(JSON.stringify(pretext.prepareWithSegments(element.textContent ?? "", font.font,
             { whiteSpace: "pre-wrap", letterSpacing: font.letterSpacing })));
-        } else if (items.some(item => item.text.trim())) result.inline = JSON.parse(JSON.stringify(pretext.prepareRichInline(items)));
+        } else if (items.some(item => item.text.trim())) {
+          const serialized = JSON.parse(JSON.stringify(pretext.prepareRichInline(items))) as PreparedRichInline
+            & { items: Array<{ prepared: PreparedTextWithSegments } | null> };
+          // Normal prose lets an over-wide word overflow; names with break-word may split it.
+          // Pretext supplies emergency grapheme breaks by default, so remove those where CSS does not.
+          if (style.overflowWrap === "normal" && style.wordBreak === "normal") {
+            for (const item of serialized.items) item?.prepared.breakableFitAdvances.fill(null);
+          }
+          result.inline = serialized;
+        }
       }
       if (more) {
         const hidden = more.hidden;
@@ -414,7 +429,15 @@ function readCapture(page: Page): Promise<PageCapture> {
           labelPaddingBottom: px(labelStyle.paddingBottom)
         };
       }
-      const chip = (element: Element): ChipCapture => { const r = element.getBoundingClientRect(); return { width: unit(r.width / scale), height: unit(r.height / scale) }; };
+      const chip = (element: Element): ChipCapture => {
+        // A flex line stretches its shorter items. Capture the intrinsic box, since at another width
+        // the TESTS label may stand on a line of its own rather than beside a taller test chip.
+        const item = element as HTMLElement, savedAlign = item.style.alignSelf;
+        item.style.alignSelf = "flex-start";
+        const r = item.getBoundingClientRect();
+        item.style.alignSelf = savedAlign;
+        return { width: unit(r.width / scale), height: unit(r.height / scale) };
+      };
       const pins: Record<string, number> = {};
       const round = (value: number): number => Math.round(value + 1e-3);
       const wrapperRect = wrapper.getBoundingClientRect();
@@ -463,7 +486,12 @@ function readCapture(page: Page): Promise<PageCapture> {
           const footer = card.querySelector<HTMLElement>(".local-reading-counts");
           if (!footer || getComputedStyle(footer).display === "none") return undefined;
           const style = getComputedStyle(footer);
-          return { items: [...footer.children].map(chip), gap: px(style.gap), marginTop: px(style.marginTop), top: px(style.marginTop) + px(style.paddingTop) + px(style.borderTopWidth) };
+          return {
+            items: [...footer.children].map(chip), gap: px(style.gap), marginTop: px(style.marginTop),
+            top: px(style.marginTop) + px(style.paddingTop) + px(style.borderTopWidth),
+            bottom: px(style.marginBottom) + px(style.paddingBottom) + px(style.borderBottomWidth),
+            position: pathElement.nextElementSibling === footer ? "after-path" : undefined
+          };
         })(),
         title: prepared(title),
         path: prepared(pathElement),

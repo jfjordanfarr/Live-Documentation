@@ -23,6 +23,8 @@ The notes are worded with the page's own `countOf` since 2026-10-31, a count and
 
 November 4 recomputes a reading card’s width from the captured available frame and a proposed card-width cap. The actual card may be narrower than its column slot; heights and routes use that rendered width. Conditional overflow actions are recalculated when text is reflowed, rather than frozen from the original screenshot. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
+The [November 4 learning-journey pass](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8) composes the relationship controls above prose when the capture identifies that placement, retaining older bottom-count captures. Narrow phone predictions include wrapped controls and actual name break opportunities. Cycle notes use the current return-connection wording once, so a captured note is not counted again after regenerating it from the graph.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

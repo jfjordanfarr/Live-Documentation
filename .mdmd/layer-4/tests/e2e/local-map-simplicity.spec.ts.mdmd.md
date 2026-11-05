@@ -17,6 +17,8 @@ The generator case changes the live simplicity slider, requires fewer steps and 
 
 Created for the owner’s October 13, 2026 request to tune aesthetic preferences within the existing competition: [the originating discussion](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
+The [November 4–5 reading pass](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8) changed the estate card dimensions. All seven default five-file alignment trials now cost more, the closest by 94; rejecting them is correct. The original case retains its full browser/headless agreement checks. An additional case uses the same five files with row levelness 0.25, the setting already used by the generator comparison: two adopted alignments remove two outline steps and improve cost by 23.75 and 44.75. It retains mandatory adoption and exact final geometry agreement without changing the judge or thresholds.
+
 The animation case reads, since 2026-10-22, whichever membranes stand differently once the new weight has settled, and requires each to have passed through intermediate poses; until then it watched the engine's band alone, and the dependency the generator gained that day (`relatedDocs.ts`, for the `Cited By` sections) left that band a rectangle under both weights, so the band it watched had nothing to animate ([Turn 2 of the October 22 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-22.1.record.md#turn-2)).
 
 ## Generated

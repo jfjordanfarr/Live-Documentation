@@ -73,6 +73,39 @@ for (const run of [DECK_SCOPES[0], DECK_SCOPES[3]]) {
   });
 }
 
+test.describe("phone coarse-pointer reading geometry", () => {
+  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+
+  test("the original capture predicts narrower cards with wrapped relationship buttons and long names", async ({ page }) => {
+    test.setTimeout(60_000);
+    const run = DECK_SCOPES[0];
+    await page.goto(localRetainUrl(run.base, run.scope));
+    const capture = await captureFromPage(page, run);
+    const graph = await loadBundleGraph(run);
+    expect(capture.warnings).toEqual([]);
+    expect(driftOf(capture, evaluate(capture, graph, run, baselineConfig()))).toEqual([]);
+    expect(capture.cards[run.subject].minWidth).toBe(310);
+    expect(capture.cards[run.subject].footer?.position).toBe("after-path");
+    expect(capture.cards[run.subject].footer?.items.map(item => item.height)).toEqual([44, 44]);
+
+    // This cap puts the relationship buttons on separate lines, separates TESTS from its taller chips,
+    // and exercises the name seams and long prose tokens that the ordinary phone width does not.
+    const config = { ...baselineConfig(), cardMaxWidth: 225 };
+    const predicted = evaluate(capture, graph, run, config);
+    await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY,
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 225 } } })
+    });
+    await page.goto(localRetainUrl(run.base, run.scope));
+    const narrower = await captureFromPage(page, run);
+    expect(narrower.warnings).toEqual([]);
+    expect(driftOf(narrower, predicted), "the original measurements predict the narrower phone page").toEqual([]);
+    expect(driftOf(narrower, evaluate(narrower, graph, run, config))).toEqual([]);
+    const longToken = page.locator('.node-card[data-id="packages/engine/src/live-docs/document.ts"] .symbol-row[data-symbol="UNREAD_AUTHORED_BLOCK"] .local-reading-prose p');
+    expect(await longToken.evaluate(element => element.scrollWidth <= element.clientWidth + 1), "long prose tokens remain within the readable paragraph").toBe(true);
+  });
+});
+
 test("indented code in a reading block preserves whitespace in the capture and narrower prediction", async ({ page }) => {
   test.setTimeout(60_000);
   const run = DECK_SCOPES[3];

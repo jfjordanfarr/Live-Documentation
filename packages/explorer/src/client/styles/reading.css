@@ -9,6 +9,20 @@
 }
 .node-card:has(.local-file-read) .symbol-row.branch-symbol-hidden,
 .node-card:has(.local-file-read) .symbol-row.symbol-collapsed { display: none; }
+/* Reordering explanations pass as complete surfaces, with the later row consistently in front. */
+.local-placed .symbol-row.local-row-moving {
+    position: relative;
+    z-index: 1;
+}
+.local-placed .symbol-row.local-row-moving::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    grid-column: 2 / 3;
+    z-index: -1;
+    background: var(--node-bg);
+}
+.local-placed .node-card:hover .symbol-row.local-row-moving::before { background: var(--node-hover); }
 .local-reading-block {
     grid-column: 2;
     min-width: 0;
@@ -21,8 +35,8 @@
 }
 
 .local-reading-block[hidden] { display: none; }
-.local-reading-purpose { padding: 14px 0; border-bottom: 1px solid var(--border-interactive); }
-.local-reading-prose { overflow: hidden; max-height: var(--reading-prose-height, 280px); }
+.local-reading-purpose { padding: 10px 0; border-bottom: 1px solid var(--border-interactive); }
+.local-reading-prose { overflow: hidden; overflow-wrap: anywhere; max-height: var(--reading-prose-height, 280px); }
 .local-reading-prose:empty { display: none; }
 .local-reading-prose p { margin: 0 0 8px; }
 .local-reading-prose p:last-child { margin-bottom: 0; }
@@ -48,25 +62,33 @@
 }
 .local-column .local-reading-card .node-title { font-size: 22px; line-height: 1.3; margin-bottom: 12px; padding-right: 112px; }
 .local-reading-card .node-path { font-size: 11px; line-height: 1.5; }
-.local-reading-card .node-symbols { margin-top: 16px; }
-.local-reading-card .symbol-grid { row-gap: 8px; column-gap: 10px; }
+.local-reading-card .node-symbols { margin-top: 12px; }
+.local-reading-card .symbol-grid { row-gap: 6px; column-gap: 10px; }
 .local-column .local-reading-card .symbol-label { font-size: 16px; line-height: 1.45; }
 .local-reading-card .local-reading-block { font-size: 15px; }
 .local-reading-card .local-reading-purpose { font-size: 16px; }
 .local-reading-card .symbol-row .symbol-label-wrapper { padding: 4px 7px; }
 .local-reading-card .symbol-anchor.hub { top: 36px; }
-.local-reading-card .local-card-actions { top: 10px; right: 10px; }
+.local-reading-card .local-card-actions { top: 12px; right: 12px; }
+.local-reading-card .local-card-actions button { width: 28px; height: 28px; color: var(--text-panel-muted); }
+.local-column .local-reading-card .node-title { padding-top: 0; padding-right: 160px; }
 .local-reading-card .internals-row .symbol-label { font-size: 12px; }
 .local-reading-card .node-directory { display: none; }
 
 .local-reading-counts { display: none; }
-.local-reading-card .local-reading-counts { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--border-interactive); margin-top: 16px; padding-top: 12px; font-size: 12px; color: var(--text-panel-muted); }
+.local-reading-card .local-reading-counts { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: 12px 0 0; padding: 0; border: 0; }
+.local-reading-counts button { flex: 0 0 auto; box-sizing: border-box; white-space: nowrap; min-height: 32px; padding: 6px 8px; border: 1px solid var(--border-interactive); border-radius: 5px; background: var(--bg-deep); color: var(--text-secondary); font: inherit; font-size: 13px; line-height: 18px; cursor: pointer; }
+.local-reading-counts button:hover { border-color: var(--accent); color: var(--text); }
+.local-reading-counts button:disabled { cursor: default; opacity: .65; }
+.local-reading-counts button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.local-reading-card .local-back-references { font-size: 13px; line-height: 1.5; text-decoration: underline; }
 .local-reading-card .type-refs-indicator { display: none; }
 .local-symbol-read { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 17px; width: 17px; height: 17px; padding: 1px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: var(--text-panel-muted); cursor: pointer; }
 .local-symbol-read svg { width: 12px; height: 12px; }
-.local-reading-card .local-symbol-read { flex-basis: 20px; width: 20px; height: 20px; padding: 2px; }
+.local-reading-card :is(.local-symbol-read, .local-symbol-pin, .local-symbol-more) { flex-basis: 24px; width: 24px; height: 24px; padding: 3px; color: var(--text-panel-muted); }
 .local-reading-card .local-symbol-read svg { width: 14px; height: 14px; }
 .local-symbol-read:hover, .local-symbol-read[aria-pressed=true], .local-file-read[aria-pressed=true] { color: var(--accent); }
+.local-reading-card :is(.local-symbol-read, .local-file-read, .local-symbol-pin, .local-file-pin)[aria-pressed=true] { color: var(--accent); background: var(--accent-subtle); border-color: var(--border-interactive); }
 .local-symbol-read:focus-visible, .local-file-read:focus-visible, .local-reading-full:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .local-column .node-card:not(.local-reading-card):has(.local-file-read) .node-title { padding-right: 112px; }
 .local-column .local-reading-card .symbol-pinned .symbol-label-wrapper { background: var(--accent-muted); }
@@ -74,8 +96,17 @@
 @media (max-width: 600px) {
     .local-reading-card { padding: 16px 14px; }
     .local-column .local-reading-card .node-title { padding-top: 25px; padding-right: 0; }
-    .local-reading-card .local-reading-counts { flex-wrap: wrap; gap: 5px; }
 }
+
+@media (pointer: coarse) {
+    .local-reading-counts button { min-height: 44px; }
+    .local-reading-card .local-card-actions button { width: 32px; height: 32px; }
+    .local-column .local-reading-card .node-title { padding-top: 28px; padding-right: 0; }
+    .local-reading-card :is(.local-symbol-read, .local-symbol-pin, .local-symbol-more) { flex-basis: 26px; width: 26px; height: 26px; padding: 4px; }
+}
+
+/* Text leads at reading scale; highlighted relationships retain their usual emphasis. */
+#map-viewport:has(.local-reading-card) .connection-path:not(.connection-highlighted) { filter: none; }
 
 .reading-dialog-backdrop { position: fixed; inset: 0; background: #0008; z-index: 999; }
 .reading-dialog-backdrop[hidden] { display: none; }

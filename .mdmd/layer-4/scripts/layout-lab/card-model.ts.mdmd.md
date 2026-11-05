@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/card-model.ts
-- Generated At: 2026-11-04T16:32:46.710Z
+- Generated At: 2026-11-04T23:30:39.682Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,8 @@ Endpoint identity follows card construction, not the proposed vertical row order
 Directory labels compose their prepared text caption with the captured ancestry-control column: reserve the control width before wrapping and take the taller of the text or control before adding label padding. Optional measurements keep older captures valid. The page and model use the same separation of text and controls, introduced during [the October 14 pin-management work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-11--pin-management-approved-ancestor-disclosure-and-directory-hubs).
 
 November 4 extends the composition to the portrait card: per-card constants, Purpose and per-symbol reading blocks, conditional full-description actions, hidden duplicate directory text and the relationship footer. Reading hubs sit beside the header; compact hubs retain the midpoint rule above. The model accounts for collapsed adjacent margins and quantized grid alignment, then independently predicts a narrower card from the same prepared text. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
+The [November 4 learning-journey pass](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-8) composes the relationship controls above prose when the capture identifies that placement, retaining older bottom-count captures. Narrow phone predictions include wrapped controls and actual name break opportunities. Cycle notes use the current return-connection wording once, so a captured note is not counted again after regenerating it from the graph.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -89,7 +91,7 @@ the middle of the card.
 
 #### `registerPins` {#symbol-registerpins}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L144)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L145)
 - Returns: [`CardMetrics`](#symbol-cardmetrics-interface)
 - Parameters: `centres`: `ReadonlyMap`
 
@@ -98,7 +100,7 @@ Registers row endpoints in construction order, retaining exact and normalized na
 
 #### `resolvePin` {#symbol-resolvepin}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L174)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L175)
 - Parameters: `metrics`: [`CardMetrics`](#symbol-cardmetrics-interface)
 
 ##### `resolvePin` — Summary
@@ -109,14 +111,14 @@ card's middle. A row the page collapses resolves to no offset at all.
 
 #### `pinOffset` {#symbol-pinoffset}
 - Type: const
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L192)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L193)
 
 ##### `pinOffset` — Summary
 A pin's offset, or null where the page would place no wire.
 
 #### `labelHeight` {#symbol-labelheight}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/card-model.ts#L195)
+- Source: [source](../../../../scripts/layout-lab/card-model.ts#L196)
 - Parameters: `capture`: [`Capture`](./capture.ts.mdmd.md#symbol-capture)
 
 ##### `labelHeight` — Summary

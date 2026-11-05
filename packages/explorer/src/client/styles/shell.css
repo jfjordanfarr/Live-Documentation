@@ -355,7 +355,10 @@
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
 }
 .item-menu[hidden] { display: none; }
+.item-menu-heading { padding: 8px 12px; color: var(--text-panel-muted); font-size: 13px; font-weight: 600; }
+.item-menu-detail { display: block; margin-top: 3px; font-size: 11px; line-height: 1.5; color: var(--text-panel-muted); overflow-wrap: anywhere; white-space: pre-line; }
 .item-menu button {
+    flex-shrink: 0;
     border: 0;
     border-radius: 4px;
     padding: 10px 12px;
