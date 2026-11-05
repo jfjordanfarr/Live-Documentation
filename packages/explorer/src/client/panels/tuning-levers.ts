@@ -39,6 +39,8 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-hold-still":                "Which card stays put on screen while the picture moves around it.",
   "tuning-card-text":                 "How a card shows its text: a description opens on a tap and the card grows, or every symbol has a fixed slot.",
   "tuning-slot-lines":                "With fixed slots, how many lines of text each symbol's slot holds, filled or not.",
+  "tuning-text-resistance":           "With fixed slots, how much names resist the zoom below reading scale: 0 follows it, 1 holds their screen size.",
+  "tuning-control-resistance":        "With fixed slots, how much a card's buttons and anchors resist the zoom: 0 follows it, 1 holds their screen size.",
   "tuning-order-starts":              "More tries before the first picture may find a better one, and draw it later.",
   "tuning-search-starts":             "How many more arrangements are tried, one at a time while idle, after the picture is drawn; zero stops the search.",
   "tuning-search-patience":           "How many tries in a row may fail to improve the picture before the search rests.",

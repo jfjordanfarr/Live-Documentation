@@ -117,8 +117,27 @@
 /* Hidden facts must not keep the margin the reading card gives prose beneath them: every slot is the same height. */
 .local-reading-slot .local-reading-types + .local-reading-prose:not(:empty) { margin-top: 0; }
 .local-slot-card .local-reading-purpose { padding: 6px 0 8px; }
-/* Below reading scale the prose fades in either composition; no box changes with zoom (the owner, 2026-11-05). */
-.local-reading-faded .local-reading-block { opacity: .35; }
+/* Below reading scale the prose of a growing card fades; no box changes with zoom (the owner, 2026-11-05). A slot card
+   follows the ladder below instead. */
+.local-reading-faded:not(.local-slot-card) .local-reading-block { opacity: .35; }
+
+/* The card ladder (2026-11-05, Turn 9), slot cards only: inside a box that never changes, a description gains lines as
+   the camera comes closer; below reading scale the band leaves out one tier after another, keeping each element's box so
+   that nothing re-flows, and names, the node's controls and the anchor dots hold their screen size by the resistances
+   the controller writes as --text-scale and --control-scale; transforms change no layout. */
+.local-slot-card .local-reading-slot .local-reading-prose { font-size: calc(12px * var(--prose-scale, 1)); line-height: calc(17px * var(--prose-scale, 1)); -webkit-line-clamp: var(--prose-lines, var(--slot-lines, 2)); }
+.local-slot-card .local-card-actions { transform: scale(var(--control-scale, 1)); transform-origin: top right; }
+.local-slot-card .symbol-anchor.dot { transform: scale(var(--control-scale, 1)); }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: var(--text-scale, 1); }
+.local-slot-card .symbol-label { transform: scale(var(--name-scale, 1)); transform-origin: left center; }
+.local-slot-card .local-file-name { display: inline-block; transform: scale(var(--name-scale, 1)); transform-origin: left top; }
+/* A symbol row keeps its allotment in every band; when the slot leaves, the name stands centred in it. */
+.local-slot-card .symbol-row:not(.internals-row) { height: calc(32px + var(--slot-lines, 2) * 17px); grid-template-rows: auto minmax(0, 1fr); align-content: start; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row:not(.internals-row) { align-content: center; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row .local-reading-slot { display: none; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-reading-purpose, .local-symbol-pin, .local-symbol-more, .type-refs-indicator) { visibility: hidden; }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.node-path, .node-directory, .node-tests, .node-meta, .local-disclosure, .local-back-references) { visibility: hidden; }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions > :not(.local-file-more) { display: none; }
 
 /* Text leads at reading scale; highlighted relationships retain their usual emphasis. */
 #map-viewport:has(.local-reading-card) .connection-path:not(.connection-highlighted) { filter: none; }

@@ -21,6 +21,8 @@ Group Separation joined Forces on November 2, bringing the complete Tuning inven
 
 Card Text and Slot Lines joined the 2D layout group on November 5, the card composition comparison, bringing the inventory to 50; the tooltip and description checks cover them like the rest.
 
+Text Resistance and Control Resistance brought the inventory to 52 on November 5, the card ladder's levers.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

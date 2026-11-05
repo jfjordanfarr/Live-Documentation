@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-05T19:04:00.770Z
+- Generated At: 2026-11-05T22:04:03.180Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,8 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) each search field is followed by a hidden span where, while a moment of the history is shown, the bar says that its thing does not stand there.
 
 - Since [2026-11-05](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4) Card Text stands under 2D Layout after Hold Still: a description opens on a tap and the card grows, or every symbol has the same fixed slot cut with an ellipsis; the two compositions the owner asked to compare on the same bundle before choosing. Slot Lines, 1 to 4 and 2 by default, follows it ([Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)).
+
+- Text Resistance (0 to 1, 0.8) and Control Resistance (0 to 1, 1) follow Slot Lines under 2D Layout ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)), the card ladder's two levers; the inventory stands at 52.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -191,6 +193,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-column-gap-value` {#symbol-tuning-column-gap-value}
+- Type: variable
+
+#### `tuning-control-resistance` {#symbol-tuning-control-resistance}
+- Type: variable
+
+#### `tuning-control-resistance-value` {#symbol-tuning-control-resistance-value}
 - Type: variable
 
 #### `tuning-force-approximation` {#symbol-tuning-force-approximation}
@@ -446,6 +454,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-symbol-order` {#symbol-tuning-symbol-order}
+- Type: variable
+
+#### `tuning-text-resistance` {#symbol-tuning-text-resistance}
+- Type: variable
+
+#### `tuning-text-resistance-value` {#symbol-tuning-text-resistance-value}
 - Type: variable
 
 #### `tuning-vertical-offset` {#symbol-tuning-vertical-offset}

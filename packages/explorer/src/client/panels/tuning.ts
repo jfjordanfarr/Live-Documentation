@@ -62,6 +62,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const holdStillSelect = document.getElementById("tuning-hold-still") as HTMLSelectElement | null;
   const cardTextSelect = document.getElementById("tuning-card-text") as HTMLSelectElement | null;
   const slotLinesInput = document.getElementById("tuning-slot-lines") as HTMLInputElement | null;
+  const textResistanceInput = document.getElementById("tuning-text-resistance") as HTMLInputElement | null;
+  const controlResistanceInput = document.getElementById("tuning-control-resistance") as HTMLInputElement | null;
   const orderStartsInput = document.getElementById("tuning-order-starts") as HTMLInputElement | null;
   const searchStartsInput = document.getElementById("tuning-search-starts") as HTMLInputElement | null;
   const searchPatienceInput = document.getElementById("tuning-search-patience") as HTMLInputElement | null;
@@ -159,6 +161,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (holdStillSelect) holdStillSelect.value = state.tuning.localMap.holdStill;
     if (cardTextSelect) cardTextSelect.value = state.tuning.localMap.cardText;
     state.tuning.localMap.slotLines = setSlider(slotLinesInput, "tuning-slot-lines-value", state.tuning.localMap.slotLines, v => String(v));
+    state.tuning.localMap.textResistance = setSlider(textResistanceInput, "tuning-text-resistance-value", state.tuning.localMap.textResistance, v => String(v));
+    state.tuning.localMap.controlResistance = setSlider(controlResistanceInput, "tuning-control-resistance-value", state.tuning.localMap.controlResistance, v => String(v));
     state.tuning.localMap.orderStarts = setSlider(orderStartsInput, "tuning-order-starts-value", state.tuning.localMap.orderStarts, v => String(v));
     state.tuning.localMap.searchStarts = setSlider(searchStartsInput, "tuning-search-starts-value", state.tuning.localMap.searchStarts, v => String(v));
     state.tuning.localMap.searchPatience = setSlider(searchPatienceInput, "tuning-search-patience-value", state.tuning.localMap.searchPatience, v => String(v));
@@ -243,6 +247,8 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   };
   rerenderSlider(orderStartsInput, "tuning-order-starts-value", v => { state.tuning.localMap.orderStarts = v; });
   rerenderSlider(slotLinesInput, "tuning-slot-lines-value", v => { state.tuning.localMap.slotLines = v; });
+  rerenderSlider(textResistanceInput, "tuning-text-resistance-value", v => { state.tuning.localMap.textResistance = v; });
+  rerenderSlider(controlResistanceInput, "tuning-control-resistance-value", v => { state.tuning.localMap.controlResistance = v; });
   rerenderSlider(searchStartsInput, "tuning-search-starts-value", v => { state.tuning.localMap.searchStarts = v; });
   rerenderSlider(searchPatienceInput, "tuning-search-patience-value", v => { state.tuning.localMap.searchPatience = v; });
   rerenderSlider(churnCostInput, "tuning-churn-cost-value", v => { state.tuning.localMap.churnCost = v; });

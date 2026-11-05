@@ -19,8 +19,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   await page.locator(".local-placed").waitFor();
   await openTuning(page);
   const controls = page.locator(".tuning-content input[type=range], .tuning-content select");
-  // Card Text and Slot Lines joined the 2D layout group on 2026-11-05 (the card composition comparison).
-  await expect(controls).toHaveCount(50);
+  // Card Text, Slot Lines, Text Resistance and Control Resistance joined the 2D layout group on 2026-11-05 (the card
+  // composition comparison and its ladder).
+  await expect(controls).toHaveCount(52);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);

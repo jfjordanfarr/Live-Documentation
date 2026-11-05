@@ -81,6 +81,10 @@ export interface LocalMapTuning {
   cardText: "grow" | "slot";
   /** With fixed slots, how many lines of text each symbol's slot holds, filled or not; the default is to be found by eye (2026-11-05). */
   slotLines: number;
+  /** With fixed slots, how much names resist the zoom below reading scale: 0 follows the map, 1 holds screen size (2026-11-05). */
+  textResistance: number;
+  /** With fixed slots, how much a card's buttons and anchor dots resist the zoom: 0 follows the map, 1 holds screen size (2026-11-05). */
+  controlResistance: number;
   /**
    * How strongly the ranking pulls every file toward the last column: zero ranks by the fewest column spans, a weight
    * above every pair's by longest-chain depth, as before 2026-10-06. A lever of the layout lab.

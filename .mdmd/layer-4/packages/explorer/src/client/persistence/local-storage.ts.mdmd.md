@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/persistence/local-storage.ts
-- Generated At: 2026-11-05T19:03:57.355Z
+- Generated At: 2026-11-05T22:04:00.572Z
 
 ## Authored
 ### Purpose
@@ -49,6 +49,8 @@ Since 2026-10-22 ([Turn 10 of the October 21 session](../../../../../../../AI-Ag
 
 `cardText` defaults to `grow` since [2026-11-05](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4), the composition committed that day; `slot` is the comparison's fixed-slot composition, read like the other named settings and saved only when it differs; `slotLines` defaults to 2, a default the owner means to find by eye ([Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)).
 
+`textResistance` defaults to 0.8 and `controlResistance` to 1 ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)), the root's starting points for the card ladder, to be found by the owner's eye.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -92,7 +94,7 @@ Returns the factory-default tuning configuration for bezier curves and the local
 
 #### `readPersistedUi` {#symbol-readpersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L144)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L146)
 
 ##### `readPersistedUi` — Summary
 Reads and validates persisted UI state from localStorage.
@@ -103,7 +105,7 @@ the entries of earlier versions.
 
 #### `applyPersistedUi` {#symbol-applypersistedui}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L308)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L314)
 
 ##### `applyPersistedUi` — Summary
 Merges persisted UI state onto factory defaults, producing a complete
@@ -114,28 +116,28 @@ persisted bezier config inherits missing keys from the defaults.
 
 #### `PERSISTED_NAV_KEY` {#symbol-persisted_nav_key}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L352)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L358)
 
 ##### `PERSISTED_NAV_KEY` — Summary
 localStorage key for persisted navigation state (active view + map subject).
 
 #### `PERSISTED_NAV_VERSION` {#symbol-persisted_nav_version}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L354)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L360)
 
 ##### `PERSISTED_NAV_VERSION` — Summary
 Schema version tag embedded in persisted navigation payloads.
 
 #### `PersistedNavV1` {#symbol-persistednavv1}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L357)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L363)
 
 ##### `PersistedNavV1` — Summary
 Shape of the versioned navigation state written to localStorage under {@link PERSISTED_NAV_KEY}.
 
 #### `readPersistedNav` {#symbol-readpersistednav}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L410)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L416)
 
 ##### `readPersistedNav` — Summary
 Reads and validates persisted navigation state from localStorage.
@@ -146,14 +148,14 @@ values are silently discarded.
 
 #### `PersistUiScheduler` {#symbol-persistuischeduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L460)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L466)
 
 ##### `PersistUiScheduler` — Summary
 Debounced persistence with an immediate flush before the page leaves.
 
 #### `PersistNavScheduler` {#symbol-persistnavscheduler}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L466)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L472)
 - Returns: [`PersistUiScheduler`](#symbol-persistuischeduler)
 
 ##### `PersistNavScheduler` — Summary
@@ -161,7 +163,7 @@ The same write lifetime for remembered navigation and evidence.
 
 #### `changedFromDefaults` {#symbol-changedfromdefaults}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L502)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L508)
 
 ##### `changedFromDefaults` — Summary
 What of the filters and the tuning a person has changed: every setting that differs from the defaults, and nothing
@@ -169,7 +171,7 @@ else, so that a default changed later reaches every setting they never touched.
 
 #### `createPersistUiScheduler` {#symbol-createpersistuischeduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L519)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L525)
 
 ##### `createPersistUiScheduler` — Summary
 Create a debounced UI persistence scheduler.
@@ -177,7 +179,7 @@ Writes what of the filters and tuning differs from the defaults to localStorage 
 
 #### `createPersistNavScheduler` {#symbol-createpersistnavscheduler}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L537)
+- Source: [source](../../../../../../../packages/explorer/src/client/persistence/local-storage.ts#L543)
 
 ##### `createPersistNavScheduler` — Summary
 Coalesce remembered navigation writes for 150ms, with a flush for page exit.

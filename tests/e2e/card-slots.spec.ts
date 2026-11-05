@@ -136,12 +136,13 @@ test("fixed slots keep the ordinary drawing, give every symbol the same allotmen
   expect(state(page).reading ?? []).toEqual([]);
   await page.keyboard.press("Escape");
   await expect(reader).not.toHaveClass(/visible/u);
-  // Below reading scale the prose fades; no box changes, and a tap there opens the reader without moving anything.
+  // Two steps out is the ladder's middle band: the descriptions leave (card-ladder.spec.ts holds the rest of the
+  // ladder); no box changes, and a tap there opens the reader without moving anything.
   await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
   await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
   await still(page);
-  await expect(subject).toHaveClass(/local-reading-faded/u);
-  expect(await subject.locator(".local-reading-purpose").evaluate(element => getComputedStyle(element).opacity)).toBe("0.35");
+  await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "middle");
+  await expect(subject.locator(".local-reading-purpose")).toBeHidden();
   expect(await layoutBoxes(page)).toEqual(layout);
   const overview = await geometry(page);
   await pointAt(page, name, true);
@@ -152,8 +153,8 @@ test("fixed slots keep the ordinary drawing, give every symbol the same allotmen
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
   await still(page);
-  await expect(subject).not.toHaveClass(/local-reading-faded/u);
-  expect(await subject.locator(".local-reading-purpose").evaluate(element => getComputedStyle(element).opacity)).toBe("1");
+  await expect(page.locator("#map-container")).toHaveAttribute("data-lod", "reading");
+  await expect(subject.locator(".local-reading-purpose")).toBeVisible();
   samePicture(before, await geometry(page));
 });
 

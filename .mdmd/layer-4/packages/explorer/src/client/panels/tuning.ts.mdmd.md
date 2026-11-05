@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-05T19:03:57.118Z
+- Generated At: 2026-11-05T22:04:00.384Z
 
 ## Authored
 ### Purpose
@@ -37,6 +37,8 @@ The History group (2026-10-18, ticket C4 of [the change-over-time plan](../../..
 Wire Thickness and the independent Node/Wire Zoom Resistance sliders are persisted and shared 3D appearance controls. Width scales every connector while keeping reference-count weighting and the citation/containment distinctions. Resistance spans perspective at zero, constant screen size at one and softened perspective between. The renderer excludes these controls from force settings, so adjustment redraws without disturbing the standing picture. The owner requested the thickness dial after the [October 24 visual comparison](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-7), then [continuous resistance](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11) after judging the invariant endpoints.
 
 - Card Text (`tuning-card-text`, [2026-11-05](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4)) is a select like Hold Still; because the composition changes every card's drawing and box, a change re-renders the 2D view as the search sliders do; Slot Lines (`tuning-slot-lines`, [Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)) is such a slider.
+
+- Text Resistance and Control Resistance ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)) are sliders like Slot Lines; a change re-renders the 2D view, which re-applies the ladder's scales.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -82,6 +84,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
+- [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
 - [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)
 - [`template.tuning-history-change-emphasis`](../../shared/template.html.mdmd.md#symbol-tuning-history-change-emphasis)
 - [`template.tuning-history-granularity`](../../shared/template.html.mdmd.md#symbol-tuning-history-granularity)
@@ -107,6 +110,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-stub-max-offset`](../../shared/template.html.mdmd.md#symbol-tuning-stub-max-offset)
 - [`template.tuning-stub-min`](../../shared/template.html.mdmd.md#symbol-tuning-stub-min)
 - [`template.tuning-symbol-order`](../../shared/template.html.mdmd.md#symbol-tuning-symbol-order)
+- [`template.tuning-text-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-text-resistance)
 - [`template.tuning-vertical-offset`](../../shared/template.html.mdmd.md#symbol-tuning-vertical-offset)
 <!-- LIVE-DOC:END Dependencies -->
 

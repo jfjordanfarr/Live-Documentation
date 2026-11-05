@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning-levers.ts
-- Generated At: 2026-11-05T19:03:57.055Z
+- Generated At: 2026-11-05T22:04:00.333Z
 
 ## Authored
 ### Purpose
@@ -18,6 +18,8 @@ The one place that says, in a short sentence each, what changing a tuning contro
 
 - Card Text and Slot Lines ([2026-11-05](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4)) read `card-reading.ts` and `reading.css`.
 
+- Text Resistance and Control Resistance ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)) read `controller.ts`'s `applyLevelOfDetail` and `reading.css`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -30,7 +32,7 @@ One short sentence per tuning control, keyed by the control's element id.
 
 #### `tuningHelpId` {#symbol-tuninghelpid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L83)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L85)
 
 ##### `tuningHelpId` — Summary
 The id of the visually hidden element that carries a control's sentence.

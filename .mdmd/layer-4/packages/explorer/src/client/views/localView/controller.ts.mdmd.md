@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-05T15:54:06.085Z
+- Generated At: 2026-11-05T22:04:02.266Z
 
 ## Authored
 ### Purpose
@@ -38,12 +38,14 @@ On [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2
 
 The same day's comparison ([Turn 4](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4)): the composition reaches the reading surface as `mode`, and `render` sets `--slot-lines` from Slot Lines. Since [Turn 6](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6) the zoom handler only fades prose below reading scale, with the same two ratios; no re-measure follows a zoom, and `capturePinChange` no longer carries the newly retained symbol that fed the fold's reveal exception.
 
+The card ladder ([Turn 9](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9), built under [Turn 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-10)): `applyLevelOfDetail` turns the zoom ratio against the calibrated reading scale into a band, overview, far, middle, reading or close, with edges at 0.25, 0.45, 0.74 and 1.3 and a 15 % margin upward so that a zoom resting on an edge does not chatter, writes it as `data-lod` on the map for the stylesheet, and sets `--text-scale` and `--control-scale` from the Text and Control Resistance tunings (the ratio to the power of minus the resistance, clamped) and `--prose-scale` and `--prose-lines` so that a description gains lines as the camera comes closer. It runs at every transform update and at every render. The growing composition still only fades below reading scale; the ladder draws slot cards.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L73)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L76)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary

@@ -66,6 +66,8 @@ export const getDefaultTuning = (): TuningConfig => ({
     holdStill: "click",
     cardText: "grow",
     slotLines: 2,
+    textResistance: 0.8,
+    controlResistance: 1,
     searchStarts: 32,
     searchPatience: 8,
     rankingPull: 0,
@@ -212,6 +214,8 @@ export const readPersistedUi = (): PersistedUi | null => {
         const holdStill = readHoldStill(localMapRaw.holdStill);
         const cardText = readCardText(localMapRaw.cardText);
         const slotLines = readFiniteNumber(localMapRaw.slotLines);
+        const textResistance = readFiniteNumber(localMapRaw.textResistance);
+        const controlResistance = readFiniteNumber(localMapRaw.controlResistance);
         const searchStarts = readFiniteNumber(localMapRaw.searchStarts);
         const searchPatience = readFiniteNumber(localMapRaw.searchPatience);
         const rankingPull = readFiniteNumber(localMapRaw.rankingPull);
@@ -246,6 +250,8 @@ export const readPersistedUi = (): PersistedUi | null => {
           ...(holdStill !== undefined ? { holdStill } : null),
           ...(cardText !== undefined ? { cardText } : null),
           ...(slotLines !== undefined ? { slotLines } : null),
+          ...(textResistance !== undefined ? { textResistance } : null),
+          ...(controlResistance !== undefined ? { controlResistance } : null),
           ...(searchStarts !== undefined ? { searchStarts } : null),
           ...(searchPatience !== undefined ? { searchPatience } : null),
           ...(rankingPull !== undefined ? { rankingPull } : null),
