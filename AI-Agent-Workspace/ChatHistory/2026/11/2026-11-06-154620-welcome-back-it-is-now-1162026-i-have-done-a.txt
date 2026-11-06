@@ -1,0 +1,756 @@
+
+❯ <ide_opened_file>The user opened the file /workspaces/Live-Documentation/AI-A
+  gent-Workspace/ChatHistory/2026/11/2026-11-05-last-section-temp.txt in the
+  IDE. This may or may not be related to the current task.</ide_opened_file>
+
+❯ Welcome back! It is now 11/6/2026. I have done a restart on the dev
+  environment so port 8900 is no longer hosting the most recent build. However,
+  I'd love for you to build and explore and see what you do and don't like
+  about the work completed yesterday. I noticed the 2D local map still had
+  things exceeding boundaries at very distant zoom-outs (but improvement was
+  noticeable!).
+
+  Can you start off by adding the final response from yesterday's chat to
+  yesterday's record if it doesn't already have it, and then summarizing the
+  prior chat based on the pattern you see from other summaries? That usally
+  gives us a really good bootstrap of a dev day.
+
+● I'll start with the bootstrap reading the guide calls for: the Memory
+  documents, the ChatHistory routine, and the state of yesterday's record.
+
+  Read 1 file, listed 1 directory (ctrl+o to expand)
+  ⎿  Interrupted · What should Claude do instead?
+
+❯ Ope sorry I hit stop because the effort got moved to a different setting than
+  I intended. Okay please continue.
+
+● No problem. Continuing the bootstrap: checking the sizes of what I need to
+  read in full, and the state of yesterday's record against the temp capture.
+
+  Read 3 files, ran 3 shell commands (ctrl+o to expand)
+
+● I've set up reading copies so the Memory files aren't cut off, and I'm
+  starting today's record before the full reads.
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md)
+  ⎿  Wrote 54 lines to
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md
+      1 # November 6, 2026 — session 1
+      2
+      3 Agent-maintained root conversation record. Author: the Claude Cod
+        e root agent in VS Code; model label as presented to the agent: C
+        laude Fable 5.1 (`claude-fable-5-1`). Recorded November 6, 2026.
+        This is not a harness export. Coverage begins at the opening owne
+        r request. Repository instructions and environment metadata are o
+        perational context; hidden reasoning, tool payloads and any deleg
+        ated threads are excluded.
+      4
+     … +50 lines (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● owner.md is read in full. Now direction.md, in bounded chunks.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md)
+  ⎿  Added 7 lines
+      52  
+      53  - Git at the opening: HEAD `e0e48586` on `main`; the tree clean
+           apart from the untracked `2026-11-05-last-section-temp.txt` (3
+          9,113 bytes, 689 lines, hard-wrapped terminal text beginning at
+           a reply headed "Written for: the owner, returning to port 8900
+          "), which the owner had open in the editor.
+      54  - Reading copies: the four Memory files and yesterday's record 
+          have lines longer than the reading tool shows whole (direction 
+          54 such lines, narrative 28, ideas 9, the record 5), so line-nu
+          mbered copies wrapped at 1,800 characters were made in the sess
+          ion scratchpad for the full reads. The sources are untouched.
+      55 +                                                               
+      56 +### Bootstrap reading checkpoints                              
+      57 +                                                               
+      58 +Coverage is stated as it grows, so that a compaction resumes fr
+         +om the endpoint rather than from a claim. The reading tool's bu
+         +dget for one turn is smaller than the Memory files together, so
+         + the reads are chunked and this list is the piton.             
+      59 +                                                               
+      60 +- Read in full: AGENTS.md (in context), the archive convention 
+         +([ChatHistory/README.md](../../README.md)), the workspace guide
+         +, the November inventory, and [owner.md](../../../Memory/owner.
+         +md) (all 281 lines).                                           
+      61 +- [direction.md](../../../Memory/direction.md): lines 1 to 215 
+         +of 373 read (through the October 15 `reachable` entry's opening
+         +). What bears on today: the Next block's November 6 entries are
+         + yesterday's close: containment and off-screen skipping measure
+         +d and neither taken (the commit's raster dominates, 1.6 to 1.9 
+         +s of a wheel zoom's 2.4 to 2.8 s on the chain; open: the owner'
+         +s own GPU browser decides the kept patch); the card ladder step
+         +ped into breakpoints every 20 % of zoom with six owner's calls 
+         +open (names cut to two or three letters beside the held More on
+         + narrow cards beyond the middle band; one or two held buttons p
+         +er row; the file's name cut or not; snap or ease; the mobile ba
+         +dge collapse; dots and More at their ceilings beyond the eighth
+         + step) and the known edge that a name scales with the map insid
+         +e the reading band; not built: the overview band's own drawing 
+         +(the sixth order), wires gathered per file pair, unconnected sy
+         +mbols folded into a count; the directory shells merged behind G
+         +roup Wrappers (Off by default) with their calls open (small and
+         + faint shells, two unwired shells on the estate, popped state n
+         +ot in the URL, whether the rule is the abstraction meant); the 
+         +fixed-slot composition's cost (the taller cards' effect on the 
+         +search's pricing) and its layout finding (the chain deck case m
+         +arked expected-to-fail: a corridor 32 px inside the `scripts/la
+         +yout-lab` membrane); the gate must fit inside the prompt cache'
+         +s hour; the composition verdict (slot against grow) is still th
+         +e owner's.                                                     
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md)
+  ⎿  Added 1 line, removed 1 line
+      58  Coverage is stated as it grows, so that a compaction resumes fr
+          om the endpoint rather than from a claim. The reading tool's bu
+          dget for one turn is smaller than the Memory files together, so
+           the reads are chunked and this list is the piton.
+      59  
+      60  - Read in full: AGENTS.md (in context), the archive convention 
+          ([ChatHistory/README.md](../../README.md)), the workspace guide
+          , the November inventory, and [owner.md](../../../Memory/owner.
+          md) (all 281 lines).
+      61 -- [direction.md](../../../Memory/direction.md): lines 1 to 215 
+         -of 373 read (through the October 15 `reachable` entry's opening
+         -). What bears on today: the Next block's November 6 entries are
+         - yesterday's close: containment and off-screen skipping measure
+         -d and neither taken (the commit's raster dominates, 1.6 to 1.9 
+         -s of a wheel zoom's 2.4 to 2.8 s on the chain; open: the owner'
+         -s own GPU browser decides the kept patch); the card ladder step
+         -ped into breakpoints every 20 % of zoom with six owner's calls 
+         -open (names cut to two or three letters beside the held More on
+         - narrow cards beyond the middle band; one or two held buttons p
+         -er row; the file's name cut or not; snap or ease; the mobile ba
+         -dge collapse; dots and More at their ceilings beyond the eighth
+         - step) and the known edge that a name scales with the map insid
+         -e the reading band; not built: the overview band's own drawing 
+         -(the sixth order), wires gathered per file pair, unconnected sy
+         -mbols folded into a count; the directory shells merged behind G
+         -roup Wrappers (Off by default) with their calls open (small and
+         - faint shells, two unwired shells on the estate, popped state n
+         -ot in the URL, whether the rule is the abstraction meant); the 
+         -fixed-slot composition's cost (the taller cards' effect on the 
+         -search's pricing) and its layout finding (the chain deck case m
+         -arked expected-to-fail: a corridor 32 px inside the `scripts/la
+         -yout-lab` membrane); the gate must fit inside the prompt cache'
+         -s hour; the composition verdict (slot against grow) is still th
+         -e owner's.                                                     
+      61 +- [direction.md](../../../Memory/direction.md): all 373 lines r
+         +ead, in five chunks. The standing order beneath the dated entri
+         +es (its italic "as of" paragraph is dated November 2): the sing
+         +le-folder journey for a stranger (the package first, then the f
+         +irst arrival) is the agent's recommended order of October 28, s
+         +tanding until the owner moves it; since November 3 the owner's 
+         +own steering has kept the work on the 2D card's reading, its zo
+         +om ladder and the 3D wrappers. What bears on today: the Next bl
+         +ock's November 6 entries are yesterday's close: containment and
+         + off-screen skipping measured and neither taken (the commit's r
+         +aster dominates, 1.6 to 1.9 s of a wheel zoom's 2.4 to 2.8 s on
+         + the chain; open: the owner's own GPU browser decides the kept 
+         +patch); the card ladder stepped into breakpoints every 20 % of 
+         +zoom with six owner's calls open (names cut to two or three let
+         +ters beside the held More on narrow cards beyond the middle ban
+         +d; one or two held buttons per row; the file's name cut or not;
+         + snap or ease; the mobile badge collapse; dots and More at thei
+         +r ceilings beyond the eighth step) and the known edge that a na
+         +me scales with the map inside the reading band; not built: the 
+         +overview band's own drawing (the sixth order), wires gathered p
+         +er file pair, unconnected symbols folded into a count; the dire
+         +ctory shells merged behind Group Wrappers (Off by default) with
+         + their calls open (small and faint shells, two unwired shells o
+         +n the estate, popped state not in the URL, whether the rule is 
+         +the abstraction meant); the fixed-slot composition's cost (the 
+         +taller cards' effect on the search's pricing) and its layout fi
+         +nding (the chain deck case marked expected-to-fail: a corridor 
+         +32 px inside the `scripts/layout-lab` membrane); the gate must 
+         +fit inside the prompt cache's hour; the composition verdict (sl
+         +ot against grow) is still the owner's.                         
+
+  Read 1 file (ctrl+o to expand)
+
+● I'm partway through reading the bootstrap files, with ideas.md about
+  two-thirds done, and I'm logging coverage in today's record as I go; the
+  narrative, summaries and yesterday's record come next.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md)
+  ⎿  Added 1 line
+      58  Coverage is stated as it grows, so that a compaction resumes fr
+          om the endpoint rather than from a claim. The reading tool's bu
+          dget for one turn is smaller than the Memory files together, so
+           the reads are chunked and this list is the piton.
+      59  
+      60  - Read in full: AGENTS.md (in context), the archive convention 
+          ([ChatHistory/README.md](../../README.md)), the workspace guide
+          , the November inventory, and [owner.md](../../../Memory/owner.
+          md) (all 281 lines).
+      61 +- [ideas.md](../../../Memory/ideas.md): all 135 lines read. Bea
+         +ring on today: the November 5 section "Card compositions not ch
+         +osen" (the one-line gist with in-place unfolding, set aside for
+         + the growth it keeps; the floating hover popover, set aside for
+         + occlusion, touch and flicker); the October 3 hypothesis of car
+         +ds becoming galaxy nodes on zoom-out and the October 20 note th
+         +at a far zoom-out must follow what the eye can perceive, both a
+         +ncestors of the card ladder's overview band.                   
+      62  - [direction.md](../../../Memory/direction.md): all 373 lines r
+          ead, in five chunks. The standing order beneath the dated entri
+          es (its italic "as of" paragraph is dated November 2): the sing
+          le-folder journey for a stranger (the package first, then the f
+          irst arrival) is the agent's recommended order of October 28, s
+          tanding until the owner moves it; since November 3 the owner's 
+          own steering has kept the work on the 2D card's reading, its zo
+          om ladder and the 3D wrappers. What bears on today: the Next bl
+          ock's November 6 entries are yesterday's close: containment and
+           off-screen skipping measured and neither taken (the commit's r
+          aster dominates, 1.6 to 1.9 s of a wheel zoom's 2.4 to 2.8 s on
+           the chain; open: the owner's own GPU browser decides the kept 
+          patch); the card ladder stepped into breakpoints every 20 % of 
+          zoom with six owner's calls open (names cut to two or three let
+          ters beside the held More on narrow cards beyond the middle ban
+          d; one or two held buttons per row; the file's name cut or not;
+           snap or ease; the mobile badge collapse; dots and More at thei
+          r ceilings beyond the eighth step) and the known edge that a na
+          me scales with the map inside the reading band; not built: the 
+          overview band's own drawing (the sixth order), wires gathered p
+          er file pair, unconnected symbols folded into a count; the dire
+          ctory shells merged behind Group Wrappers (Off by default) with
+           their calls open (small and faint shells, two unwired shells o
+          n the estate, popped state not in the URL, whether the rule is 
+          the abstraction meant); the fixed-slot composition's cost (the 
+          taller cards' effect on the search's pricing) and its layout fi
+          nding (the chain deck case marked expected-to-fail: a corridor 
+          32 px inside the `scripts/layout-lab` membrane); the gate must 
+          fit inside the prompt cache's hour; the composition verdict (sl
+          ot against grow) is still the owner's.
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md)
+  ⎿  Added 1 line
+      58  Coverage is stated as it grows, so that a compaction resumes fr
+          om the endpoint rather than from a claim. The reading tool's bu
+          dget for one turn is smaller than the Memory files together, so
+           the reads are chunked and this list is the piton.
+      59  
+      60  - Read in full: AGENTS.md (in context), the archive convention 
+          ([ChatHistory/README.md](../../README.md)), the workspace guide
+          , the November inventory, and [owner.md](../../../Memory/owner.
+          md) (all 281 lines).
+      61 +- [narrative.md](../../../Memory/narrative.md): all 508 lines r
+         +ead, in five chunks. Its last chapter, "November 5: the owner's
+         + test finds what the reviews missed", ends at the dawn commit `
+         +260e3ab7` and the owner's November 5 verdict on hover; the Nove
+         +mber 5–6 session is not in it yet, nor in the Harnesses and mod
+         +els table, and its "current as of" line reads November 5. Both 
+         +are this turn's to add.                                        
+      62  - [ideas.md](../../../Memory/ideas.md): all 135 lines read. Bea
+          ring on today: the November 5 section "Card compositions not ch
+          osen" (the one-line gist with in-place unfolding, set aside for
+           the growth it keeps; the floating hover popover, set aside for
+           occlusion, touch and flicker); the October 3 hypothesis of car
+          ds becoming galaxy nodes on zoom-out and the October 20 note th
+          at a far zoom-out must follow what the eye can perceive, both a
+          ncestors of the card ladder's overview band.
+      63  - [direction.md](../../../Memory/direction.md): all 373 lines r
+          ead, in five chunks. The standing order beneath the dated entri
+          es (its italic "as of" paragraph is dated November 2): the sing
+          le-folder journey for a stranger (the package first, then the f
+          irst arrival) is the agent's recommended order of October 28, s
+          tanding until the owner moves it; since November 3 the owner's 
+          own steering has kept the work on the 2D card's reading, its zo
+          om ladder and the 3D wrappers. What bears on today: the Next bl
+          ock's November 6 entries are yesterday's close: containment and
+           off-screen skipping measured and neither taken (the commit's r
+          aster dominates, 1.6 to 1.9 s of a wheel zoom's 2.4 to 2.8 s on
+           the chain; open: the owner's own GPU browser decides the kept 
+          patch); the card ladder stepped into breakpoints every 20 % of 
+          zoom with six owner's calls open (names cut to two or three let
+          ters beside the held More on narrow cards beyond the middle ban
+          d; one or two held buttons per row; the file's name cut or not;
+           snap or ease; the mobile badge collapse; dots and More at thei
+          r ceilings beyond the eighth step) and the known edge that a na
+          me scales with the map inside the reading band; not built: the 
+          overview band's own drawing (the sixth order), wires gathered p
+          er file pair, unconnected symbols folded into a count; the dire
+          ctory shells merged behind Group Wrappers (Off by default) with
+           their calls open (small and faint shells, two unwired shells o
+          n the estate, popped state not in the URL, whether the rule is 
+          the abstraction meant); the fixed-slot composition's cost (the 
+          taller cards' effect on the search's pricing) and its layout fi
+          nding (the chain deck case marked expected-to-fail: a corridor 
+          32 px inside the `scripts/layout-lab` membrane); the gate must 
+          fit inside the prompt cache's hour; the composition verdict (sl
+          ot against grow) is still the owner's.
+
+  Read 5 files (ctrl+o to expand)
+
+● Memory and all five recent summaries are now read in full. Next: yesterday's
+  record and your capture, writing the summary as I go chunk by chunk.
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md)
+  ⎿  Added 1 line
+      58  Coverage is stated as it grows, so that a compaction resumes fr
+          om the endpoint rather than from a claim. The reading tool's bu
+          dget for one turn is smaller than the Memory files together, so
+           the reads are chunked and this list is the piton.
+      59  
+      60  - Read in full: AGENTS.md (in context), the archive convention 
+          ([ChatHistory/README.md](../../README.md)), the workspace guide
+          , the November inventory, and [owner.md](../../../Memory/owner.
+          md) (all 281 lines).
+      61 +- The five most recent summaries, read in full, oldest to newes
+         +t: [October 31](../10/Summarized/2026-10-31.1.SUMMARIZED.md), [
+         +November 1](Summarized/2026-11-01.1.SUMMARIZED.md), [November 2
+         +](Summarized/2026-11-02.1.SUMMARIZED.md), [November 3](Summariz
+         +ed/2026-11-03.1.SUMMARIZED.md), [November 4](Summarized/2026-11
+         +-04.1.SUMMARIZED.md). The pattern the new summary follows is th
+         +eirs: a title with the session's themes, a status paragraph (ha
+         +rness, model label, delegates, author, date, completeness), Sou
+         +rces and coverage, Context, one entry per owner turn with sourc
+         +e links, Verified commits and outcomes as a table with evidence
+         + to reopen, and Open ends and handoff split by who decided what
+         +.                                                              
+      62  - [narrative.md](../../../Memory/narrative.md): all 508 lines r
+          ead, in five chunks. Its last chapter, "November 5: the owner's
+           test finds what the reviews missed", ends at the dawn commit `
+          260e3ab7` and the owner's November 5 verdict on hover; the Nove
+          mber 5–6 session is not in it yet, nor in the Harnesses and mod
+          els table, and its "current as of" line reads November 5. Both 
+          are this turn's to add.
+      63  - [ideas.md](../../../Memory/ideas.md): all 135 lines read. Bea
+          ring on today: the November 5 section "Card compositions not ch
+          osen" (the one-line gist with in-place unfolding, set aside for
+           the growth it keeps; the floating hover popover, set aside for
+           occlusion, touch and flicker); the October 3 hypothesis of car
+          ds becoming galaxy nodes on zoom-out and the October 20 note th
+          at a far zoom-out must follow what the eye can perceive, both a
+          ncestors of the card ladder's overview band.
+      64  - [direction.md](../../../Memory/direction.md): all 373 lines r
+          ead, in five chunks. The standing order beneath the dated entri
+          es (its italic "as of" paragraph is dated November 2): the sing
+          le-folder journey for a stranger (the package first, then the f
+          irst arrival) is the agent's recommended order of October 28, s
+          tanding until the owner moves it; since November 3 the owner's 
+          own steering has kept the work on the 2D card's reading, its zo
+          om ladder and the 3D wrappers. What bears on today: the Next bl
+          ock's November 6 entries are yesterday's close: containment and
+           off-screen skipping measured and neither taken (the commit's r
+          aster dominates, 1.6 to 1.9 s of a wheel zoom's 2.4 to 2.8 s on
+           the chain; open: the owner's own GPU browser decides the kept 
+          patch); the card ladder stepped into breakpoints every 20 % of 
+          zoom with six owner's calls open (names cut to two or three let
+          ters beside the held More on narrow cards beyond the middle ban
+          d; one or two held buttons per row; the file's name cut or not;
+           snap or ease; the mobile badge collapse; dots and More at thei
+          r ceilings beyond the eighth step) and the known edge that a na
+          me scales with the map inside the reading band; not built: the 
+          overview band's own drawing (the sixth order), wires gathered p
+          er file pair, unconnected symbols folded into a count; the dire
+          ctory shells merged behind Group Wrappers (Off by default) with
+           their calls open (small and faint shells, two unwired shells o
+          n the estate, popped state not in the URL, whether the rule is 
+          the abstraction meant); the fixed-slot composition's cost (the 
+          taller cards' effect on the search's pricing) and its layout fi
+          nding (the chain deck case marked expected-to-fail: a corridor 
+          32 px inside the `scripts/layout-lab` membrane); the gate must 
+          fit inside the prompt cache's hour; the composition verdict (sl
+          ot against grow) is still the owner's.
+
+  Read 1 file (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-05.1.SUMMARIZE
+       D.md)
+  ⎿  Wrote 25 lines to AI-Agent-Workspace/ChatHistory/2026/11/Summarized/20
+     26-11-05.1.SUMMARIZED.md
+      1 # November 5–6, 2026 — SUMMARY IN PROGRESS
+      2
+      3 _Coverage endpoint while this summary is being written: the maint
+        ained record read through line 259 of 1,022 (the opening of Turn
+        5). Entries below that point are not yet written. This line is re
+        moved when the summary is complete._
+      4
+      5 ## Turn 1
+      6
+      7 The owner opened November 5 ([record](../2026-11-05.1.record.md#t
+     … +19 lines (~7 KB) (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-05.1.SUMMARIZ
+        ED.md)
+  ⎿  Added 1 line, removed 1 line
+      1  # November 5–6, 2026 — SUMMARY IN PROGRESS
+      2  
+      3 -_Coverage endpoint while this summary is being written: the main
+        -tained record read through line 259 of 1,022 (the opening of Tur
+        -n 5). Entries below that point are not yet written. This line is
+        - removed when the summary is complete._                         
+      3 +_Coverage endpoint while this summary is being written: the main
+        +tained record read through line 446 of 1,022 (the owner's messag
+        +e of Turn 11). Entries below that point are not yet written. Thi
+        +s line is removed when the summary is complete._                
+      4  
+      5  ## Turn 1
+      6  
+
+  Read 1 file (ctrl+o to expand)
+● Halfway through yesterday's record (Turn 14 of 26+); the summary file is
+  growing chunk by chunk as I read.
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Yesterday's record is fully read; now finishing your capture (second half) to
+  find the final response and whatever the record is missing.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● I found that the record holds a prepared final reply, while your capture shows
+  a different delivered one. I'm checking a few facts with git, then I'll
+  finish the summary and append the delivered reply to yesterday's record.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Summary drafted (26 turns plus the three closing rounds). Now appending the
+  delivered final reply and the close-out note to yesterday's record.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Close-out documents are written (summary, record appendix, inventory,
+  narrative chapter). Checking every link I authored before committing.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Links verified (the repository's own audit passes; my extra check of the
+  archive files found none broken). Running the documentation audits for the
+  close-out commit, then I build and explore.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Audits are clean. Recording the close-out in today's record and committing it,
+  then on to the build.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Close-out committed as 9c7c0ac5. Now the part I've been looking forward to:
+  reading the vision, then building and exploring yesterday's work myself.
+
+  Read 1 file, listed 1 directory, ran 3 shell commands (ctrl+o to expand)
+
+● While the bundle builds, I'm reading yesterday's breakpoint evidence and the
+  ladder's spec so I can drive the page the way its own tests do.
+
+  Read 1 file (ctrl+o to expand)
+
+● Background command "Wait for the package build, then build the static Explorer
+for this repository and the estate sample" completed (exit code 0)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Server is up on port 8900 with the fresh build. Writing a small exploration
+  script to walk the far zoom-outs and measure exactly what exceeds which
+  boundary.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● The measurements already name candidates (anchor dots and row buttons drawn
+  past their rows and cards from the middle band outward). Now looking at the
+  pictures themselves.
+
+  Read 4 files, ran 1 shell command (ctrl+o to expand)
+
+● Symbol-name fragments stay at 12 px while file and directory names shrink to
+  about 4–8 px and 3–5 px. I'm checking one matched alternative and an
+  inconsistency before looking at the 3D shells.
+
+  Read 1 file, listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Looking at the 3D shells now (yesterday's links A and B), then one sketch of
+  an alternative far view, and I'll write up.
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● The first sketch reads as a map of files again, but cuts similar names alike
+  ("local-ma…" four times). Letting names wrap into the card's empty body, then
+  I'll assemble the evidence and write up.
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Assembling the evidence folder (nine pictures, the measurements, the scripts)
+  so the review is reproducible, then the write-up to you.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/README.md)
+  ⎿  Wrote 77 lines to
+     AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/README.md
+      1 # The far zoom-out of the 2D Local Map, and the 3D shells, as the
+         root found them on November 6
+      2
+      3 _Status: a review, not a change. The owner opened [the November 6
+         session](../../../ChatHistory/2026/11/2026-11-06.1.record.md#tur
+        n-1) asking the root to build, explore and say what it does and d
+        oes not like about the November 5–6 work, and reported that "the
+        2D local map still had things exceeding boundaries at very distan
+        t zoom-outs (but improvement was noticeable!)". These are the pic
+        tures and measurements behind the root's answer. Nothing in the p
+     … +75 lines (~11 KB) (ctrl+o to expand)
+
+● Evidence README is written. Finishing the probe notes, the index, and the
+  status paragraphs, then committing and writing up for you.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● A quoting slip in my script meant today's record missed its update (the
+  review's commit itself is fine: a7d2c29a). Fixing the record now with a
+  follow-up commit, then the write-up.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Written for: you; the summary and review notes linked below are written for
+  whoever bootstraps the next session.
+
+  Yesterday is closed
+
+  - The record did not have the final response as delivered. It held a version
+    prepared before the last commit. Your capture shows the delivered one ended
+    differently ("Where things stand. Three commits today since the shells…"),
+    so I appended it verbatim under a dated close-out in the record
+    (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md), with the
+    interim messages and a compaction notice your capture also showed.
+  - Summary: 2026-11-05.1.SUMMARIZED.md (AI-Agent-Workspace/ChatHistory/2026/11/
+    Summarized/2026-11-05.1.SUMMARIZED.md) covers 26 turns, the three rounds
+    after them, and ten commits checked against git. The narrative has its
+    chapter.
+  - Your …-temp.txt capture is kept and inventoried as a source, per the archive
+    rule. If you meant it as disposable, say so and I'll delete it in one
+    commit.
+
+  What you saw exceeding its boundaries
+
+  Port 8900 serves the fresh build. Open still-picture.ts (http://localhost:8900
+  /?s=N4IgbiBcDMA0IDsogC4FMDOKMHo0CY0csBLAGzIFoAHEgYxQFcAnNAOmxAF8g) and press
+  Zoom Out five times, then eight.
+
+  It is the anchor dots. From five presses outward, 158 of the 195 dots are
+  drawn past their card's edge, by up to 7.5 px. Yesterday's rule makes a held
+  dot grow away from its name, and the card shrinks under it. By eight presses
+  they stand as two columns of beads wider than the card (picture (AI-Agent-Work
+  space/Screenshots/2026-11-06/far-zoom-review/still-picture-08-overview.png)).
+
+  The dots are a symptom
+
+  Far out, the ladder holds the innermost detail and lets identity go:
+
+  ┌────────────┬──────────────────────────┬─────────────────┬──────────────┐
+  │ On screen  │       Symbol names       │   File names    │  Directory   │
+  │            │                          │    (median)     │    names     │
+  ├────────────┼──────────────────────────┼─────────────────┼──────────────┤
+  │ 5 presses  │ 12 px                    │ 8.4 px          │ 5.6 px       │
+  │ out        │                          │                 │              │
+  ├────────────┼──────────────────────────┼─────────────────┼──────────────┤
+  │ 8 presses  │ 12 px, 54 of 59 cut to   │ 4.5 px          │ 3.3 px       │
+  │ out        │ 2–3 letters              │                 │              │
+  └────────────┴──────────────────────────┴─────────────────┴──────────────┘
+
+  In level-of-detail terms, the far model keeps the screws and drops the
+  silhouette. A far view is for seeing which files, in which directories,
+  connect. Those are the names it loses first.
+
+  What I like
+
+  - Tap instead of hover, and the box that never changes. Nothing moves under
+    the hand, and a zoom lays nothing out.
+  - The slot card at reading scale is the best the card has looked (picture
+    (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/still-picture-00-
+    reading.png)).
+  - Steps as named states, clamps, crisp at rest, and the culling result kept
+    honestly as a negative.
+
+  What I don't like
+
+  - The inverted priority far out, above.
+  - Size follows a name's length. Name Growth 1.5 draws Fact at 18 px beside
+    scoreHidd… at 12, and types.ts at 22.5 px where a long spec file's name is
+    4.4. Compare as built (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-re
+    view/still-picture-05-far.png) with Name Growth 1 (AI-Agent-Workspace/Screen
+    shots/2026-11-06/far-zoom-review/still-picture-05-far-name-growth-1.png).
+  - Zooming out one step makes names bigger: 12 → 10 → 17 px, then back to 12.
+  - A More button beside sc… acts on something you can't identify.
+  - The 3D shells: the mechanism is what you described, the look isn't. With the
+    skin on, 139 files of engine/src are a faint smudge under a grey label, and
+    the rings you liked are gone (on (AI-Agent-Workspace/Screenshots/2026-11-06
+    /far-zoom-review/shells-skin-depth-2.png), off
+    (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/shells-off.png)).
+
+  What I'd build next, for your word
+
+  Two sketches show the proposal: far band (AI-Agent-Workspace/Screenshots/2026-
+  11-06/far-zoom-review/still-picture-05-far-sketch.png) and overview
+  (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/still-picture-08-ov
+  erview-sketch.png). They are styles injected into the live page, not product;
+  wires are not gathered per file pair and a few labels spill at the bottom
+  edge.
+
+  1. Your "sixth order", started one band earlier and led by the file's name.
+     From the far band out, file and directory names are held and wrap into the
+     card's empty room. Symbol rows go silent at the overview band, with dots
+     following the map. This reverses part of Turn 17's "More on every symbol"
+     once names are cut. The cheaper alternative is to cap the dots so they
+     never pass the card's edge and leave the rest; that fixes what you saw but
+     not the inverted priority.
+  2. Name Growth to 1, and names held from the first step below reading. This
+     removes the uneven sizes and the jump.
+  3. Shells with a visible volume in proportion to what they hold, after the 2D
+     work, one builder at a time.
+
+  Say go on any of these, or answer by exception. Yesterday's open calls (the
+  composition verdict, the six breakpoint calls, the shells' calls) still stand;
+  item 1 would settle the first three breakpoint calls.
+
+  What I did not look at
+
+  I looked at one subject at 1440 × 960 in a headless browser. I did not judge
+  motion (snap versus ease), the phone, the growing composition, or the estate's
+  shells. Nothing in the product changed, so no gate ran beyond the document
+  audits.
+
+  Everything is in the review
+  (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/README.md), with
+  its scripts kept beside it. Commits: 9c7c0ac5 (close-out), a7d2c29a (review),
+  ec9f8381 (today's record).
+● Written for: you; the summary and review notes linked below are written for
+  whoever bootstraps the next session.
+
+  Yesterday is closed
+
+  - The record did not have the final response as delivered. It held a version
+    prepared before the last commit. Your capture shows the delivered one ended
+    differently ("Where things stand. Three commits today since the shells…"),
+    so I appended it verbatim under a dated close-out in the record
+    (AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md), with the
+    interim messages and a compaction notice your capture also showed.
+  - Summary: 2026-11-05.1.SUMMARIZED.md (AI-Agent-Workspace/ChatHistory/2026/11/
+    Summarized/2026-11-05.1.SUMMARIZED.md) covers 26 turns, the three rounds
+    after them, and ten commits checked against git. The narrative has its
+    chapter.
+  - Your …-temp.txt capture is kept and inventoried as a source, per the archive
+    rule. If you meant it as disposable, say so and I'll delete it in one
+    commit.
+
+  What you saw exceeding its boundaries
+
+  Port 8900 serves the fresh build. Open still-picture.ts (http://localhost:8900
+  /?s=N4IgbiBcDMA0IDsogC4FMDOKMHo0CY0csBLAGzIFoAHEgYxQFcAnNAOmxAF8g) and press
+  Zoom Out five times, then eight.
+
+  It is the anchor dots. From five presses outward, 158 of the 195 dots are
+  drawn past their card's edge, by up to 7.5 px. Yesterday's rule makes a held
+  dot grow away from its name, and the card shrinks under it. By eight presses
+  they stand as two columns of beads wider than the card (picture (AI-Agent-Work
+  space/Screenshots/2026-11-06/far-zoom-review/still-picture-08-overview.png)).
+
+  The dots are a symptom
+
+  Far out, the ladder holds the innermost detail and lets identity go:
+
+  ┌────────────┬──────────────────────────┬─────────────────┬──────────────┐
+  │ On screen  │       Symbol names       │   File names    │  Directory   │
+  │            │                          │    (median)     │    names     │
+  ├────────────┼──────────────────────────┼─────────────────┼──────────────┤
+  │ 5 presses  │ 12 px                    │ 8.4 px          │ 5.6 px       │
+  │ out        │                          │                 │              │
+  ├────────────┼──────────────────────────┼─────────────────┼──────────────┤
+  │ 8 presses  │ 12 px, 54 of 59 cut to   │ 4.5 px          │ 3.3 px       │
+  │ out        │ 2–3 letters              │                 │              │
+  └────────────┴──────────────────────────┴─────────────────┴──────────────┘
+
+  In level-of-detail terms, the far model keeps the screws and drops the
+  silhouette. A far view is for seeing which files, in which directories,
+  connect. Those are the names it loses first.
+
+  What I like
+
+  - Tap instead of hover, and the box that never changes. Nothing moves under
+    the hand, and a zoom lays nothing out.
+  - The slot card at reading scale is the best the card has looked (picture
+    (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/still-picture-00-
+    reading.png)).
+  - Steps as named states, clamps, crisp at rest, and the culling result kept
+    honestly as a negative.
+
+  What I don't like
+
+  - The inverted priority far out, above.
+  - Size follows a name's length. Name Growth 1.5 draws Fact at 18 px beside
+    scoreHidd… at 12, and types.ts at 22.5 px where a long spec file's name is
+    4.4. Compare as built (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-re
+    view/still-picture-05-far.png) with Name Growth 1 (AI-Agent-Workspace/Screen
+    shots/2026-11-06/far-zoom-review/still-picture-05-far-name-growth-1.png).
+  - Zooming out one step makes names bigger: 12 → 10 → 17 px, then back to 12.
+  - A More button beside sc… acts on something you can't identify.
+  - The 3D shells: the mechanism is what you described, the look isn't. With the
+    skin on, 139 files of engine/src are a faint smudge under a grey label, and
+    the rings you liked are gone (on (AI-Agent-Workspace/Screenshots/2026-11-06
+    /far-zoom-review/shells-skin-depth-2.png), off
+    (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/shells-off.png)).
+
+  What I'd build next, for your word
+
+  Two sketches show the proposal: far band (AI-Agent-Workspace/Screenshots/2026-
+  11-06/far-zoom-review/still-picture-05-far-sketch.png) and overview
+  (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/still-picture-08-ov
+  erview-sketch.png). They are styles injected into the live page, not product;
+  wires are not gathered per file pair and a few labels spill at the bottom
+  edge.
+
+  1. Your "sixth order", started one band earlier and led by the file's name.
+     From the far band out, file and directory names are held and wrap into the
+     card's empty room. Symbol rows go silent at the overview band, with dots
+     following the map. This reverses part of Turn 17's "More on every symbol"
+     once names are cut. The cheaper alternative is to cap the dots so they
+     never pass the card's edge and leave the rest; that fixes what you saw but
+     not the inverted priority.
+  2. Name Growth to 1, and names held from the first step below reading. This
+     removes the uneven sizes and the jump.
+  3. Shells with a visible volume in proportion to what they hold, after the 2D
+     work, one builder at a time.
+
+  Say go on any of these, or answer by exception. Yesterday's open calls (the
+  composition verdict, the six breakpoint calls, the shells' calls) still stand;
+  item 1 would settle the first three breakpoint calls.
+
+  What I did not look at
+
+  I looked at one subject at 1440 × 960 in a headless browser. I did not judge
+  motion (snap versus ease), the phone, the growing composition, or the estate's
+  shells. Nothing in the product changed, so no gate ran beyond the document
+  audits.
+
+  Everything is in the review
+  (AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/README.md), with
+  its scripts kept beside it. Commits: 9c7c0ac5 (close-out), a7d2c29a (review),
+  ec9f8381 (today's record).
+
+❯ /compact
+  ⎿  Compacted
+  ⎿  Read AI-Agent-Workspace/Screenshots/2026-11-06/far-zoom-review/README.md
+     (78 lines)
+  ⎿  Referenced file
+     AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md
+  ⎿  Referenced file AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-0
+     5.1.SUMMARIZED.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/63ede1
+     ac-43c3-4bdf-bcae-301ec14bfb85/scratchpad/fold/2026-11-05.1.record.md
+  ⎿  Referenced file ../../tmp/claude-1000/-workspaces-Live-Documentation/63ede1
+     ac-43c3-4bdf-bcae-301ec14bfb85/scratchpad/fold/owner.md
+
+● Task "Serve the freshly built Explorer on port 8900" still running in
+  background
