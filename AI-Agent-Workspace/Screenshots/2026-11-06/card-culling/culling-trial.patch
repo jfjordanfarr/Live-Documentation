@@ -1,0 +1,492 @@
+diff --git a/packages/explorer/src/client/styles/local.css b/packages/explorer/src/client/styles/local.css
+index 2e691f39..73b0abd0 100644
+--- a/packages/explorer/src/client/styles/local.css
++++ b/packages/explorer/src/client/styles/local.css
+@@ -416,3 +416,7 @@ body.zoom-controls-active #view-map { height: calc(100% - 70px - var(--history-r
+    layer goes so that the picture is drawn afresh at its own scale. Kept always, the layer was rastered once and stretched
+    by the GPU, the blur close up and the aliasing far out the owner saw (Turn 17); the controller sets the class. */
+ #map-viewport.camera-moving { will-change: transform; }
++/* A card the frame does not show may have its style, layout and paint skipped by the browser, keeping its box by the
++   height the layout measured (2026-11-06, Turns 13 to 16); the renderer says which, from the boxes it placed, and only
++   ever off the frame, since the containment this brings would clip a card's grown dots and lift the wires over them. */
++.local-placed .node-card.local-card-offscreen { content-visibility: auto; }
+diff --git a/packages/explorer/src/client/views/localView/branch-renderer.ts b/packages/explorer/src/client/views/localView/branch-renderer.ts
+index 28eb3a9c..7bcc4115 100644
+--- a/packages/explorer/src/client/views/localView/branch-renderer.ts
++++ b/packages/explorer/src/client/views/localView/branch-renderer.ts
+@@ -6,6 +6,7 @@ import { BAND_BORDER, hostOf, layoutScene, planBranches, type Scene, type SceneB
+ import { beginSearch, endpointKey, judgeAlignment, judgeStart, nextTrialKind, pinFor, rowBounds, type CardRows, type ResolvedPin, type RowMeasure, type SearchState } from "./branch-search";
+ import { edgeKey, exploreBranches, isClosedDirectory, orderExploration, type BranchGraph, type DirectoryDisclosure, type Exploration } from "./branches";
+ import { countsOf, createClosedDirectory, createNodeCard } from "./card-factory";
++import { cardsOutside, drawnRegion } from "./card-culling";
+ import type { LocalViewController } from "./controller";
+ import { ancestryButton } from "./directory-ancestry";
+ import { membranePath } from "./membrane-outline";
+@@ -128,6 +129,7 @@ export function renderBranches(controller: LocalViewController, stage: BranchSta
+   const { root } = stage;
+   const path = controller.getActivePath();
+   const scale = controller.runtime.mapTransform.k || 1;
++  drawEveryCard(stage);
+   // Capture the visible rows before ending an interrupted move removes their current displacement.
+   const oldRows = stage.pose ? rowOffsets(stage, scale) : null;
+   // A move still running ends where it stands, and the search for the previous picture ends: the new picture starts
+@@ -263,6 +265,7 @@ export function refreshReadingGeometry(controller: LocalViewController, stage: B
+   if (!search || !previous) { change(); return; }
+   pauseSearch(search);
+   const scale = controller.mapTransform.k || 1;
++  drawEveryCard(stage);
+   const rows = rowOffsets(stage, scale);
+   const fileCards = cardsOf(stage).filter(card => card.classList.contains("node-card"));
+   const beforeHeights = new Map(fileCards.map(card => [card.dataset.id!, card.getBoundingClientRect().height / scale]));
+@@ -537,6 +540,8 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
+     else element.dataset.segments = box.segments.map(segment => `${segment.column}:${segment.left}:${segment.top}:${segment.right}:${segment.bottom}`).join(";");
+   }
+ 
++  holdCardHeights(stage, pose);
++
+   // Every element at its place, at once for the first picture, else moved there from where the previous one stood it.
+   if (!previous || moveMs <= 0) {
+     for (const element of leaving) element.remove();
+@@ -549,12 +554,66 @@ function showScene(controller: LocalViewController, stage: BranchStage, scene: S
+       controller.updateMapTransform();
+     }
+     controller.drawConnections();
++    cullCards(controller, stage);
+     return;
+   }
+   const rows = oldRows ? rowMotions(stage, oldRows, scale) : [];
+   startMove(controller, stage, previous, pose, moveMs, { to: pose, bandPadding: sceneTuning.bandPadding, leaving, entering, rows, frame: 0, ...reading });
+ }
+ 
++/** The class that lets the browser skip a card's contents while the frame does not show it (`content-visibility: auto`). */
++const SKIPPABLE = "local-card-offscreen";
++
++/** A wrapper's file card, or null for a closed directory's box. */
++const fileCardOf = (wrapper: HTMLElement): HTMLElement | null => {
++  const card = wrapper.firstElementChild;
++  return card instanceof HTMLElement && card.classList.contains("node-card") ? card : null;
++};
++
++/**
++ * Lets every card be drawn, before the page is measured: a skipped card is sized by its held height and has no
++ * natural width, and each of its rows read would be laid out on its own. The cull after the picture is shown skips
++ * the cards the frame does not show again.
++ */
++function drawEveryCard(stage: BranchStage): void {
++  for (const wrapper of stage.wrappers.values()) fileCardOf(wrapper)?.classList.remove(SKIPPABLE);
++}
++
++/**
++ * Lets the browser skip the cards the frame does not show, and draws again those it does: each card's box where the
++ * pose stands it, against the frame on screen widened by the lead and the overhang of `card-culling.ts` (2026-11-06,
++ * Turns 13 to 16). Only a card off the frame is ever skippable, so a card on screen is drawn exactly as without
++ * culling: `content-visibility: auto` contains a card's paint and stacking, which would clip the anchor dots grown past
++ * its edge and lift the wires over its dots. A skipped card keeps its box by its held height, stays in the tab order
++ * and in find-in-page, and the browser draws it the moment either reaches it. Run on every camera change and every
++ * frame of a move.
++ */
++export function cullCards(controller: LocalViewController, stage: BranchStage): void {
++  const pose = stage.pose;
++  if (!pose || !controller.isShown()) return;
++  const outside = cardsOutside(pose.items.values(),
++    drawnRegion(controller.getViewport().getBoundingClientRect(), stage.root.getBoundingClientRect(), controller.mapTransform.k));
++  for (const [id, wrapper] of stage.wrappers) fileCardOf(wrapper)?.classList.toggle(SKIPPABLE, outside.has(id));
++}
++
++/**
++ * Gives each card the height the layout measured it at, less its padding and border, as the size a skipped card keeps
++ * (`contain-intrinsic-height`, which sizes a content box): a card's box depends on its structure alone, never on zoom
++ * or on what is drawn, so the browser's skipping cannot move anything the layout placed. `auto` lets the browser keep
++ * the height it last drew instead, which is the same height.
++ */
++function holdCardHeights(stage: BranchStage, pose: Pose): void {
++  for (const item of pose.items.values()) {
++    const wrapper = stage.wrappers.get(item.id);
++    const card = wrapper ? fileCardOf(wrapper) : null;
++    if (!card) continue;
++    const style = getComputedStyle(card);
++    const chrome = [style.paddingTop, style.paddingBottom, style.borderTopWidth, style.borderBottomWidth]
++      .reduce((sum, value) => sum + (Number.parseFloat(value) || 0), 0);
++    card.style.setProperty("contain-intrinsic-height", `auto ${Math.max(0, item.height - chrome)}px`);
++  }
++}
++
+ /**
+  * Sets every element of the stage where the pose stands it, relative to the
+  * element that holds it: a membrane's section with its outline and its label
+@@ -658,6 +717,7 @@ function startMove(controller: LocalViewController, stage: BranchStage, from: Po
+     hold();
+     stage.pose = frame;
+     controller.drawConnections();
++    cullCards(controller, stage);
+     if (t < 1) move.frame = requestAnimationFrame(step);
+     else {
+       endMove(stage, true);
+@@ -802,6 +862,7 @@ function searchStep(controller: LocalViewController, stage: BranchStage, search:
+ function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, search: Search, branches: BranchGraph, name: string, priced: number, alignments: readonly BoundaryAlignment[], kind: "seed" | "alignment"): boolean {
+   const { root } = stage;
+   const scale = controller.runtime.mapTransform.k || 1;
++  drawEveryCard(stage);
+   const oldRows = rowOffsets(stage, scale);
+   orderRows(cardsOf(stage), branches.rows);
+   const plan = planBranches(branches, search.sceneTuning.bandPadding);
+@@ -830,6 +891,7 @@ function tryAdoptPicture(controller: LocalViewController, stage: BranchStage, se
+     }
+     for (const [directory, label] of stage.labels) if (!drawn.has(directory)) { label.remove(); stage.labels.delete(directory); }
+     applyPose(stage, scenePose(incumbent.scene), search.sceneTuning.bandPadding);
++    cullCards(controller, stage);
+     return false;
+   }
+   search.answers = answers;
+diff --git a/packages/explorer/src/client/views/localView/controller.ts b/packages/explorer/src/client/views/localView/controller.ts
+index 08bd73ed..b7bcb707 100644
+--- a/packages/explorer/src/client/views/localView/controller.ts
++++ b/packages/explorer/src/client/views/localView/controller.ts
+@@ -1,5 +1,5 @@
+ import { EMPTY_PIN_SET, isSymbolPinned as isExplorationPin, type PinSet } from "../pin-state";
+-import { createStage, dropStage, refreshReadingGeometry, renderBranches, type BranchStage } from "./branch-renderer";
++import { createStage, cullCards, dropStage, refreshReadingGeometry, renderBranches, type BranchStage } from "./branch-renderer";
+ import type { BranchGraph } from "./branches";
+ import type { CardContext } from "./card-factory";
+ import { CardReading, type ReadingTarget } from "./card-reading";
+@@ -1159,6 +1159,9 @@ export class LocalViewController implements LocalViewApi {
+       }
+     }
+     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
++    // The frame's edge has just been read, so the cull's reading of where the picture stands costs no layout; a card it
++    // brings in is drawn in this same frame (2026-11-06, Turns 13 to 16).
++    if (this.stage) cullCards(this, this.stage);
+     if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
+     // From this frame's own scale, not the animation's destination: the owner saw the fonts "jump up in size before
+     // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).
+diff --git a/packages/explorer/src/client/views/localView/card-culling.ts b/packages/explorer/src/client/views/localView/card-culling.ts
+new file mode 100644
+index 00000000..85493689
+--- /dev/null
++++ b/packages/explorer/src/client/views/localView/card-culling.ts
+@@ -0,0 +1,66 @@
++/**
++ * Which of the 2D Local Map's cards stand outside the frame, so that the browser may skip their style, layout and paint
++ * (`content-visibility: auto`) while keeping their boxes (2026-11-06, Turns 13 to 16 of the November 5 record: "Such
++ * invariants should present possibilities for speedup, at least conceptually, no?"). A card's box depends on its
++ * structure alone, never on zoom (the architectural decision "A Card's Box Never Depends on Zoom"), so the boxes the
++ * layout placed say where every card is at any camera without asking the page.
++ *
++ * Pure: the frame and the picture's origin come in as numbers, and what comes out is a set of card ids.
++ *
++ * @module card-culling
++ */
++
++/** An axis-aligned region, in whichever coordinates its caller states. */
++export interface Region {
++  left: number;
++  top: number;
++  right: number;
++  bottom: number;
++}
++
++/** A card's box where the pose stands it, in the picture's own pixels. */
++export interface PictureBox {
++  id: string;
++  left: number;
++  top: number;
++  width: number;
++  height: number;
++}
++
++/**
++ * How far past its box a card is drawn, in the picture's pixels: the test-backed halo (8 px out, with a 24 px shadow
++ * 12 px down), the subject's glow (30 px with 12 px down), the hubs 6 px out and the anchor dots grown from their edge
++ * at the far steps. A card whose box lies within this of the frame may still show a part, so it is never skipped.
++ */
++export const CARD_OVERHANG = 64;
++
++/**
++ * How far past the frame on screen a card is still drawn, as a share of the frame's larger side: the cards a pan or a
++ * zoom is about to bring in are drawn before they arrive, so that the frame that brings them does not draw them all.
++ */
++export const CULL_LEAD = 0.25;
++
++/**
++ * The region of the picture, in its own pixels, whose cards must be drawn: the frame on screen widened by
++ * {@link CULL_LEAD}, mapped back through the camera (the picture's origin on screen and its scale), then widened by
++ * {@link CARD_OVERHANG}. A scale that is not a positive finite number draws everything.
++ */
++export function drawnRegion(frame: Region, origin: { left: number; top: number }, scale: number): Region {
++  if (!(scale > 0) || !Number.isFinite(scale)) return { left: -Infinity, top: -Infinity, right: Infinity, bottom: Infinity };
++  const lead = CULL_LEAD * Math.max(frame.right - frame.left, frame.bottom - frame.top);
++  return {
++    left: (frame.left - lead - origin.left) / scale - CARD_OVERHANG,
++    top: (frame.top - lead - origin.top) / scale - CARD_OVERHANG,
++    right: (frame.right + lead - origin.left) / scale + CARD_OVERHANG,
++    bottom: (frame.bottom + lead - origin.top) / scale + CARD_OVERHANG
++  };
++}
++
++/** The ids of the cards whose boxes do not meet the region; a box that touches its edge meets it. */
++export function cardsOutside(boxes: Iterable<PictureBox>, region: Region): Set<string> {
++  const outside = new Set<string>();
++  for (const box of boxes) {
++    if (box.left + box.width < region.left || box.left > region.right || box.top + box.height < region.top || box.top > region.bottom) outside.add(box.id);
++  }
++  return outside;
++}
+diff --git a/packages/explorer/src/client/views/localView/card-culling.test.ts b/packages/explorer/src/client/views/localView/card-culling.test.ts
+new file mode 100644
+index 00000000..c8d814a6
+--- /dev/null
++++ b/packages/explorer/src/client/views/localView/card-culling.test.ts
+@@ -0,0 +1,67 @@
++import { describe, expect, it } from "vitest";
++
++import { CARD_OVERHANG, CULL_LEAD, cardsOutside, drawnRegion, type PictureBox } from "./card-culling";
++
++/** A 1,000 × 600 frame whose top left corner stands at (200, 100) on screen. */
++const frame = { left: 200, top: 100, right: 1200, bottom: 700 };
++/** The lead in screen pixels for that frame: a quarter of its larger side. */
++const lead = CULL_LEAD * 1000;
++
++describe("drawnRegion", () => {
++  it("maps the frame, widened by the lead on screen, back through the camera, then widens it by the overhang", () => {
++    // The picture's origin stands at the frame's corner at scale 1: the region is the frame in the picture's pixels.
++    expect(drawnRegion(frame, { left: 200, top: 100 }, 1)).toEqual({
++      left: -lead - CARD_OVERHANG, top: -lead - CARD_OVERHANG, right: 1000 + lead + CARD_OVERHANG, bottom: 600 + lead + CARD_OVERHANG
++    });
++    // Panned so that the origin stands 300 px left of and 50 px above the frame's corner, at half scale: the frame
++    // shows picture pixels 600 to 2,600 across and 100 to 1,300 down; the lead is halved by the scale, the overhang not.
++    expect(drawnRegion(frame, { left: -100, top: 50 }, 0.5)).toEqual({
++      left: (300 - lead) / 0.5 - CARD_OVERHANG, top: (50 - lead) / 0.5 - CARD_OVERHANG,
++      right: (1300 + lead) / 0.5 + CARD_OVERHANG, bottom: (650 + lead) / 0.5 + CARD_OVERHANG
++    });
++  });
++
++  it("leads by the larger side of the frame on both axes, so a phone's tall frame leads as far across as down", () => {
++    const tall = drawnRegion({ left: 0, top: 0, right: 390, bottom: 844 }, { left: 0, top: 0 }, 1);
++    expect(tall.left).toBe(-CULL_LEAD * 844 - CARD_OVERHANG);
++    expect(tall.top).toBe(-CULL_LEAD * 844 - CARD_OVERHANG);
++  });
++
++  it("draws everything for a scale that cannot place the picture", () => {
++    for (const scale of [0, -1, Number.NaN, Number.POSITIVE_INFINITY]) {
++      const region = drawnRegion(frame, { left: 0, top: 0 }, scale);
++      expect(cardsOutside([{ id: "far", left: 1e9, top: 1e9, width: 1, height: 1 }], region).size).toBe(0);
++    }
++  });
++});
++
++describe("cardsOutside", () => {
++  const region = { left: 0, top: 0, right: 1000, bottom: 600 };
++  const box = (id: string, left: number, top: number, width = 200, height = 100): PictureBox => ({ id, left, top, width, height });
++
++  it("names only the cards whose boxes miss the region entirely", () => {
++    const outside = cardsOutside([
++      box("inside", 100, 100),
++      box("across the left edge", -150, 100),
++      box("across the bottom edge", 400, 550),
++      box("taller than the region, from above it", 400, -500, 200, 2000),
++      box("left of it", -300, 100),
++      box("right of it", 1001, 100),
++      box("above it", 100, -101),
++      box("below it", 100, 601)
++    ], region);
++    expect([...outside].sort()).toEqual(["above it", "below it", "left of it", "right of it"]);
++  });
++
++  it("keeps a card whose box only touches the region's edge", () => {
++    expect(cardsOutside([box("touching the left", -200, 0), box("touching the bottom", 0, 600)], region).size).toBe(0);
++  });
++
++  it("keeps a card near the frame drawn, by the overhang, so that its halo and grown dots are never cut at the edge", () => {
++    // A card whose box ends 40 px left of the frame at scale 1 shows its halo and shadow inside it: the overhang keeps it.
++    const near = drawnRegion({ left: 0, top: 0, right: 1000, bottom: 600 }, { left: 0, top: 0 }, 1);
++    const card = box("just left of the frame", -lead - 240, 100);
++    expect(cardsOutside([card], near).size).toBe(0);
++    expect(cardsOutside([{ ...card, left: -lead - CARD_OVERHANG - 201 }], near).size).toBe(1);
++  });
++});
+diff --git a/tests/e2e/card-culling.spec.ts b/tests/e2e/card-culling.spec.ts
+new file mode 100644
+index 00000000..11203fb1
+--- /dev/null
++++ b/tests/e2e/card-culling.spec.ts
+@@ -0,0 +1,180 @@
++import { expect, test, type Page } from "@playwright/test";
++
++import { CHAIN_ESTATE, CHAIN_REPOSITORY } from "./scopes";
++import { localMapStill, localRetainUrl } from "./still-picture";
++
++/**
++ * Culling of the 2D Local Map's cards (2026-11-06, Turns 13 to 16 of the November 5 record): a card the frame does not
++ * show is marked `local-card-offscreen`, and the browser may skip its style, layout and paint (`content-visibility:
++ * auto`) while it keeps its box by the height the layout measured. A card's box depends on its structure alone, never
++ * on what is drawn, so skipping must move nothing; a skipped card must stay reachable by the keyboard and by the
++ * page's find; and a card on screen is never skippable, since the containment would change how it is drawn.
++ */
++
++const SKIPPABLE = "local-card-offscreen";
++
++interface CardState {
++  id: string;
++  width: number;
++  height: number;
++  /** The card's place in the picture's pixels, from the picture's root, the camera's scale taken out. */
++  left: number;
++  top: number;
++  skippable: boolean;
++  /** The browser skipped the card's contents: its first child is not drawn for `content-visibility: auto`. */
++  skipped: boolean;
++  /** Some part of the card's box is inside the map's frame on screen. */
++  onScreen: boolean;
++}
++
++const cards = (page: Page): Promise<CardState[]> => page.evaluate(() => {
++  const root = document.querySelector<HTMLElement>("#map-container .local-placed")!;
++  const origin = root.getBoundingClientRect();
++  const view = document.querySelector<HTMLElement>("#view-map")!.getBoundingClientRect();
++  const k = new DOMMatrix(getComputedStyle(document.querySelector("#map-viewport")!).transform).a;
++  return [...document.querySelectorAll<HTMLElement>("#map-container .node-card")].map(card => {
++    const rect = card.getBoundingClientRect();
++    return {
++      id: card.dataset.id!, width: card.offsetWidth, height: card.offsetHeight,
++      left: Math.round((rect.left - origin.left) / k * 100) / 100, top: Math.round((rect.top - origin.top) / k * 100) / 100,
++      skippable: card.classList.contains("local-card-offscreen"),
++      skipped: !!card.firstElementChild && !card.firstElementChild.checkVisibility({ contentVisibilityAuto: true }),
++      onScreen: rect.right > view.left && rect.left < view.right && rect.bottom > view.top && rect.top < view.bottom
++    };
++  }).sort((a, b) => a.id.localeCompare(b.id));
++});
++
++/** Two frames, in which the browser decides which marked cards it skips. */
++const frames = (page: Page): Promise<void> => page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
++
++const boxes = (states: CardState[]) => states.map(({ id, width, height, left, top }) => ({ id, width, height, left, top }));
++
++/** Every card drawn, as without culling: the marks taken off in place, until the next camera change puts them back. */
++const drawAll = (page: Page): Promise<void> => page.evaluate(name => {
++  for (const card of document.querySelectorAll("#map-container .node-card")) card.classList.remove(name);
++}, SKIPPABLE);
++
++const press = async (page: Page, name: "Zoom In" | "Zoom Out" | "Reset Zoom", times = 1): Promise<void> => {
++  for (let index = 0; index < times; index++) {
++    await page.getByRole("button", { name, exact: true }).click();
++    await localMapStill(page);
++  }
++  await frames(page);
++};
++
++/** A retained scope's picture at its fit, where most of its cards are off the frame. */
++async function openFit(page: Page, base: string, files: readonly string[]): Promise<void> {
++  await page.setViewportSize({ width: 1440, height: 960 });
++  await page.goto(localRetainUrl(base, files));
++  await page.locator(`.node-card[data-id="${files[0]}"]`).waitFor();
++  await localMapStill(page);
++  await frames(page);
++}
++
++for (const [bundle, base, files] of [["repository", "/", CHAIN_REPOSITORY], ["estate", "/samples/estate/", CHAIN_ESTATE]] as const) {
++  test(`${bundle} chain: skipping a card off the frame moves no card, at any camera, and never skips one on screen`, async ({ page }) => {
++    test.setTimeout(90_000);
++    await openFit(page, base, files);
++    let skippedSomewhere = 0;
++    const check = async (moment: string): Promise<CardState[]> => {
++      const on = await cards(page);
++      for (const card of on) {
++        expect(card.skippable && card.onScreen, `${moment}: ${card.id} is on screen and skippable`).toBe(false);
++        expect(card.skipped && !card.skippable, `${moment}: ${card.id} is skipped unmarked`).toBe(false);
++      }
++      skippedSomewhere = Math.max(skippedSomewhere, on.filter(card => card.skipped).length);
++      await drawAll(page);
++      await frames(page);
++      const off = await cards(page);
++      expect(off.every(card => !card.skipped), `${moment}: every card drawn once unmarked`).toBe(true);
++      expect(boxes(off), `${moment}: the boxes with skipping off`).toEqual(boxes(on));
++      return on;
++    };
++    const fit = boxes(await check("the fit"));
++    await press(page, "Zoom In", 4);
++    expect(boxes(await check("close up"))).toEqual(fit);
++    await press(page, "Reset Zoom");
++    await press(page, "Zoom Out", 6);
++    expect(boxes(await check("far out"))).toEqual(fit);
++    // The test proves nothing unless the browser skipped cards somewhere on the way.
++    expect(skippedSomewhere, "cards skipped at the closest camera").toBeGreaterThan(0);
++  });
++
++  test(`${bundle} chain: a picture measured again while cards are skipped measures every card as drawn`, async ({ page }) => {
++    test.setTimeout(90_000);
++    await openFit(page, base, files);
++    const before = boxes(await cards(page));
++    await press(page, "Zoom In", 4);
++    expect((await cards(page)).filter(card => card.skipped).length, "cards skipped before the window changes").toBeGreaterThan(0);
++    // A change of the window's width measures the cards again in place (the card reading's resize), with the cards off
++    // the frame skipped until then: their widths and heights must come from their contents, as at the first picture.
++    await page.setViewportSize({ width: 1180, height: 960 });
++    await localMapStill(page);
++    await page.setViewportSize({ width: 1440, height: 960 });
++    await localMapStill(page);
++    await frames(page);
++    const after = await cards(page);
++    expect(after.map(({ id, width, height }) => ({ id, width, height }))).toEqual(before.map(({ id, width, height }) => ({ id, width, height })));
++  });
++}
++
++test("Tab into a card off the frame brings it on screen and draws it", async ({ page }) => {
++  test.setTimeout(90_000);
++  // At the fit most of the retained scope's cards are off the frame (some 260 of the first 400 names are in skipped cards).
++  await openFit(page, "/", CHAIN_REPOSITORY);
++  // From the subject's name, Tab through the cards' commands until the focus enters a card that was skipped.
++  await page.locator(`.node-card[data-id="${CHAIN_REPOSITORY[0]}"] .local-file-name`).focus();
++  let entered: string | null = null;
++  for (let index = 0; index < 400 && !entered; index++) {
++    const skipped = new Set((await cards(page)).filter(card => card.skipped).map(card => card.id));
++    await page.keyboard.press("Tab");
++    await page.waitForTimeout(60);
++    const id = await page.evaluate(() => (document.activeElement?.closest(".node-card") as HTMLElement | null)?.dataset.id ?? null);
++    if (id && skipped.has(id)) entered = id;
++  }
++  expect(entered, "the focus entered a skipped card").not.toBeNull();
++  await localMapStill(page);
++  await frames(page);
++  const card = (await cards(page)).find(state => state.id === entered)!;
++  expect(card.onScreen).toBe(true);
++  expect(card.skippable).toBe(false);
++  expect(card.skipped).toBe(false);
++  // The frame the keyboard's reveal keeps a command in, as `local-map-keyboard.spec.ts` reads it.
++  const focused = await page.evaluate(() => {
++    const element = document.activeElement!, rect = element.getBoundingClientRect();
++    const main = document.querySelector("#main")!.getBoundingClientRect(), controls = document.querySelector(".perspective-controls")!.getBoundingClientRect();
++    return { name: element.getAttribute("aria-label") ?? element.textContent, left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom,
++      frame: { left: main.left, right: main.right, top: main.top, bottom: controls.top } };
++  });
++  expect(focused.left, focused.name ?? "command").toBeGreaterThanOrEqual(focused.frame.left);
++  expect(focused.right, focused.name ?? "command").toBeLessThanOrEqual(focused.frame.right);
++  expect(focused.top, focused.name ?? "command").toBeGreaterThanOrEqual(focused.frame.top);
++  expect(focused.bottom, focused.name ?? "command").toBeLessThanOrEqual(focused.frame.bottom);
++});
++
++test("the page's find reaches a name in a skipped card", async ({ page }) => {
++  test.setTimeout(90_000);
++  await openFit(page, "/", CHAIN_REPOSITORY);
++  // A symbol's name that appears once in the page, in a card the browser skipped. `window.find`, the page's find as a
++  // script can drive it, misses many names on or off the frame whatever the skipping (a name its word seams break at a
++  // hyphen or an underscore, 2026-11-06: 127 of the first 400 names found on this scope both with and without culling),
++  // so the name is one with no seam in it.
++  const target = await page.evaluate(() => {
++    const texts = [...document.querySelectorAll<HTMLElement>("#map-container .node-card .symbol-label-text")];
++    const count = (text: string): number => document.body.textContent!.split(text).length - 1;
++    for (const label of texts) {
++      const card = label.closest<HTMLElement>(".node-card")!;
++      const text = label.textContent!.trim();
++      if (text.length >= 6 && !label.children.length && card.firstElementChild && !card.firstElementChild.checkVisibility({ contentVisibilityAuto: true }) && count(text) === 1) return { id: card.dataset.id!, text };
++    }
++    return null;
++  });
++  expect(target, "a uniquely named symbol in a skipped card").not.toBeNull();
++  const found = await page.evaluate(({ id, text }) => {
++    getSelection()!.removeAllRanges();
++    const hit = (window as unknown as { find(text: string): boolean }).find(text);
++    const node = getSelection()!.anchorNode;
++    return { hit, inCard: !!node && !!(node.nodeType === Node.ELEMENT_NODE ? node as Element : node.parentElement)?.closest(`.node-card[data-id="${CSS.escape(id)}"]`) };
++  }, target!);
++  expect(found).toEqual({ hit: true, inCard: true });
++});

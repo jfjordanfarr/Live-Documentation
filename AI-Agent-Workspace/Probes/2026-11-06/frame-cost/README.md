@@ -1,0 +1,14 @@
+# The frame-cost instruments of November 6
+
+_Status: the instruments behind two measurements of 2026-11-06, kept so that the journeys can be run again, on this machine or on the owner's own browser with a GPU. The numbers they produced are in [the card-breakpoints pictures](../../../Screenshots/2026-11-06/card-breakpoints/README.md) and [the card-culling pictures](../../../Screenshots/2026-11-06/card-culling/README.md)._
+
+Each script drives a private headless Chromium (Playwright's) against a served Explorer bundle and reads Chromium's performance metrics (style, layout, script and task durations, the layout and style counts) and the requestAnimationFrame intervals over 1.2 s after a camera move, per tuning variant: the ladder (the default), constant properties (the resistances at 0, Name Growth at 1) and the growing composition. Build the bundle (`npm run build`), serve it (`npx http-server dist/explorer -p 8779 -c-1 --silent`), and run a script with `npx tsx` from the repository root, since each requires TypeScript modules of the repository (the URL state's compression, the persisted tuning key, the stillness helper of the browser specs).
+
+| Script | What it measures | Switches, in the environment |
+| --- | --- | --- |
+| `zoom-perf.cjs` | One Zoom Out press, three times, per variant: an instant jump (the root's instrument of November 6, Turn 12) | `PORT` (8900), `SUBJECT` (a file path; `tests/e2e/still-picture.ts`) |
+| `zoom-perf-wheel.cjs` | The same, zooming by five wheel notches instead: the animated zoom a person makes, where the cost shows (the breakpoint pass) | as above, with `MODE=wheel` |
+| `culling-perf.cjs` | A journey per variant: three Zoom Out presses, Reset Zoom, three wheel zooms out, a drag pan and a trackpad pan, three wheel zooms in, Reset Zoom, a drag pan and a trackpad pan; after each move the band, step, scale and how many cards the browser skipped (the culling experiment) | `PORT` (8779), `SUBJECT` or `RETAIN` (a comma list of files, every one retained), `BASE` (`/` or `/samples/estate/`), `VARIANTS` (a comma list), `JOURNEY` (a comma list of moves), `CSS` (extra CSS injected, for a trial before code), `OUT` (a JSON file) |
+| `trace-breakdown.cjs` | A Chromium trace of the renderer's main thread over the 1.2 s after one move, summed by event name: style, layout, paint, layerize, commit, forced style and layout, script | `PORT`, `SUBJECT` or `RETAIN`, `BASE`, `STEPS` (the moves before the traced one), `MOVE` (the traced move, `wheel-out` by default), `CSS` |
+
+The tables in the two evidence READMEs were made from the JSON these write, by small scripts that are not kept. On the owner's machine the same journeys would say whether off-screen skipping pays where raster weighs less; the trial to apply first is `culling-trial.patch` beside the culling pictures, which applies to the commit `51eec0c3`.

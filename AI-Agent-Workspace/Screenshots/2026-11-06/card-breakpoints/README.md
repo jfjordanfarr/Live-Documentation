@@ -129,7 +129,7 @@ A phone, 390 × 844, on the payment service: [reading](phone-reading.png), [midd
 
 ## The frame cost, before and after
 
-The root's instrument (`zoom-perf.cjs`, Chrome DevTools Protocol metrics and requestAnimationFrame intervals over 1.2 s after a Zoom Out press, three presses, three tuning variants: the ladder; the resistances at 0 and Name Growth at 1, constant properties; the growing composition), and a copy of it that zooms by five wheel notches instead (an animated zoom, the motion a person makes), on `tests/e2e/still-picture.ts` and the payment service. Before is the untouched bundle at 26a1bb86, after the bundle these pictures come from; both on the same machine, one after the other, with nothing else running. Durations are in seconds.
+The root's instrument (`zoom-perf.cjs`, kept with its wheel copy under [the frame-cost probe](../../../Probes/2026-11-06/frame-cost/README.md); Chrome DevTools Protocol metrics and requestAnimationFrame intervals over 1.2 s after a Zoom Out press, three presses, three tuning variants: the ladder; the resistances at 0 and Name Growth at 1, constant properties; the growing composition), and a copy of it that zooms by five wheel notches instead (an animated zoom, the motion a person makes), on `tests/e2e/still-picture.ts` and the payment service. Before is the untouched bundle at 26a1bb86, after the bundle these pictures come from; both on the same machine, one after the other, with nothing else running. Durations are in seconds.
 
 #### still-picture.ts, wheel zoom out (five notches)
 
