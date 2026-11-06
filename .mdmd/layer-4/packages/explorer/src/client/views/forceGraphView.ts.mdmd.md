@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphView.ts
-- Generated At: 2026-11-02T17:03:45.624Z
+- Generated At: 2026-11-06T03:23:49.886Z
 
 ## Authored
 ### Purpose
@@ -62,19 +62,23 @@ A completely new neighborhood, with no known positions among its files, unfolds 
 
 The [November 2 exploration pass](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-8) makes direct clicking reversible, shares six pixels of click slop with the renderer, and captures a pressed name's identity so movement during the press cannot activate another file. Directory discovery crosses layouts through its bounded containment neighborhood; a deeper-only scope offers Open explicitly. Whole-root overview lowers the ordinary reference web's opacity steadily, without a temporal ramp. Explicit Fit frames every shown sphere, and layout changes reframe beside obstructions while retaining camera bearing. Name measurements are batched and cached by content and viewport width; current directory validity is indexed from paths once instead of scanning the graph per name per frame.
 
+Since 2026-11-05 the view carries the [Group Wrappers experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences), off unless chosen in Tuning: in the connections layout it keys every group the scope shows only by its seed, of two files or more, by its files, links and shape settings; lays the waiting groups out with `forceGraphWrappers.ts` a few at a frame, or all before the first picture unfolds; hands the renderer the wrappers and their style; and gives each wrapped seed its wrapper's radius as clearance in the motion, once every wrapper of the picture is built, since rebuilding the field at each arrival flung a seed 39,000 units out and kept this repository's archipelago moving for two minutes where one change settles it in about seventeen; a change of that room unfolds the picture, since held where it stood its tethers fought the room for a minute after choosing Skin and 54 s after a release, against 23 to 29 s and 16 s unfolding. A click on a wrapper, on its seed or on the strip's Pin pops it: the wrapper bursts over 250 ms (at once under reduced motion) and the files that enter are placed at their hidden places about the seed before `placeNewSpheres`. A wrapped seed wears no ring, the framing counts its wrapper, and a wrapper fades and dims with its seed (0.6 for an unreached group, a veil starting fainter than a sphere).
+
+Since [Turn 12](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the `data-layout-settings` attribute carries the numeric layout settings alone, as the Tuning export does, since the Group Wrappers choice had joined the tuning and the packing journey compares the two.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ForceGraphLink` {#symbol-forcegraphlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L78)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L90)
 
 ##### `ForceGraphLink` — Summary
 A link in the Force Graph between two nodes.
 
 #### `ForceGraphNode` {#symbol-forcegraphnode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L89)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L101)
 - Returns: [`SpatialGraphNode`](./forceGraphData.ts.mdmd.md#symbol-spatialgraphnode)
 
 ##### `ForceGraphNode` — Summary
@@ -82,28 +86,28 @@ A node in the Force Graph, extending the payload with optional archetype.
 
 #### `ForceGraphData` {#symbol-forcegraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L98)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L110)
 
 ##### `ForceGraphData` — Summary
 Complete data structure for the Force Graph view.
 
 #### `ForceGraphViewOptions` {#symbol-forcegraphviewoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L109)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L121)
 
 ##### `ForceGraphViewOptions` — Summary
 Options passed to the Force Graph view factory.
 
 #### `ForceGraphViewApi` {#symbol-forcegraphviewapi}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L138)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L150)
 
 ##### `ForceGraphViewApi` — Summary
 Public API surface of the Force Graph view.
 
 #### `createForceGraphView` {#symbol-createforcegraphview}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L165)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphView.ts#L177)
 - Returns: [`ForceGraphViewApi`](#symbol-forcegraphviewapi)
 - Parameters: `options`: [`ForceGraphViewOptions`](#symbol-forcegraphviewoptions)
 
@@ -123,6 +127,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`rekey.hasRenames`](../history/rekey.ts.mdmd.md#symbol-hasrenames)
 - [`rekey.rekeyedCaches`](../history/rekey.ts.mdmd.md#symbol-rekeyedcaches)
 - [`rekey.renamedId`](../history/rekey.ts.mdmd.md#symbol-renamedid)
+- [`layout-presets.layoutSettingsOf`](../layout-presets.ts.mdmd.md#symbol-layoutsettingsof)
 - [`icon-button.CENTRE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-centre_icon)
 - [`icon-button.DIRECTORY_ICON`](../panels/icon-button.ts.mdmd.md#symbol-directory_icon)
 - [`icon-button.MORE_ICON`](../panels/icon-button.ts.mdmd.md#symbol-more_icon)
@@ -130,6 +135,7 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`icon-button.iconButton`](../panels/icon-button.ts.mdmd.md#symbol-iconbutton)
 - [`spatial-legend.renderSpatialLegend`](../panels/spatial-legend.ts.mdmd.md#symbol-renderspatiallegend)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate) (type-only)
+- [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`forceGraphAppearance.spatialNodeStyle`](./forceGraphAppearance.ts.mdmd.md#symbol-spatialnodestyle)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint)
 - [`forceGraphCamera.focusedCameraPosition`](./forceGraphCamera.ts.mdmd.md#symbol-focusedcameraposition)
@@ -169,6 +175,14 @@ Creates the Force Graph (3D) view for the Live Docs Explorer.
 - [`forceGraphScope.startHops`](./forceGraphScope.ts.mdmd.md#symbol-starthops)
 - [`forceGraphScope.startOf`](./forceGraphScope.ts.mdmd.md#symbol-startof)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
+- [`forceGraphWrappers.BURST`](./forceGraphWrappers.ts.mdmd.md#symbol-burst)
+- [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
+- [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface)
+- [`forceGraphWrappers.burstProgress`](./forceGraphWrappers.ts.mdmd.md#symbol-burstprogress)
+- [`forceGraphWrappers.groupShapeOf`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshapeof)
+- [`forceGraphWrappers.wrappedSeeds`](./forceGraphWrappers.ts.mdmd.md#symbol-wrappedseeds)
+- [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
+- [`forceGraphWrappers.wrapperPadding`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperpadding)
 - [`directory-bands.parentDirectory`](./localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)
 - [`directory-state.under`](./localView/directory-state.ts.mdmd.md#symbol-under)
 - [`perspectiveTransition.ForceScene`](./perspectiveTransition.ts.mdmd.md#symbol-forcescene) (type-only)

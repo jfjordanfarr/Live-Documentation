@@ -33,6 +33,7 @@ import {
   type TourFact,
   type TourPan
 } from "./still-picture-geometry";
+import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import { normalizeSymbolIdentifier } from "../../packages/explorer/src/client/views/symbolAnchors";
 import { explorerGraphOf } from "../../packages/explorer/src/shared/graph";
 import type { StaticExplorerData } from "../../packages/explorer/src/shared/staticExplorerData";
@@ -224,6 +225,21 @@ export const LOCAL_MAP: ViewReading = {
   folderShape: "#map-container .local-membrane-shape[data-directory]",
   lane: "#map-container .local-pass-through"
 };
+
+/**
+ * Keep the growing card composition for a journey written on it (2026-11-05, when Card Text came to default to fixed
+ * slots): merged into whatever the page has saved before every load, so that a reload keeps the person's other choices,
+ * as a test that persists a Tuning change and reloads relies on.
+ */
+export async function keepGrowingComposition(target: Pick<Page, "addInitScript">): Promise<void> {
+  await target.addInitScript(({ key, version }) => {
+    let saved: { version?: number; tuning?: { localMap?: Record<string, unknown> } } = { version };
+    try { saved = JSON.parse(localStorage.getItem(key) ?? "") ?? saved; } catch { /* nothing saved yet */ }
+    saved.version = version;
+    saved.tuning = { ...saved.tuning, localMap: { ...saved.tuning?.localMap, cardText: "grow" } };
+    localStorage.setItem(key, JSON.stringify(saved));
+  }, { key: PERSISTED_UI_KEY, version: PERSISTED_UI_VERSION });
+}
 
 /** What the page reports about one wire. */
 export interface WireReading {

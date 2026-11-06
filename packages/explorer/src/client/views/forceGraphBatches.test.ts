@@ -2,6 +2,7 @@ import { Color, Matrix4, PerspectiveCamera, Quaternion, Raycaster, Scene, Sphere
 import { describe, expect, it } from "vitest";
 
 import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum } from "./forceGraphBatches";
+import { wrapperHull, type GroupShape } from "./forceGraphWrappers";
 
 interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: number; radius: number; color: string; ring?: string }
 interface Link { source: Node; target: Node; width: number; color: string; visible: boolean; arrow: number }
@@ -43,7 +44,8 @@ describe("direct spatial buffers", () => {
     const { buffers, scene, draw } = setup(), a = node("a", 20, -8, 4, 7), b = node("b", -30, 17, 90, 13);
     a.color = "#12345633"; b.color = "#ff6600";
     buffers.setData({ nodes: [a, b], links: [] }); draw();
-    expect(scene.children).toHaveLength(4);
+    // The four instance batches and the one mesh of every wrapper (2026-11-05), whatever the picture holds.
+    expect(scene.children).toHaveLength(5);
     const { mesh, entries } = buffers.nodes;
     for (const entry of entries) {
       const matrix = new Matrix4(); mesh.getMatrixAt(entry.slot, matrix);
@@ -125,7 +127,7 @@ describe("direct spatial buffers", () => {
     buffers.setData({ nodes: nodes.slice(0, 2), links: links.slice(0, 1) }); draw();
     const first = buffers.nodes.entries[0], batch = buffers.nodes.mesh;
     buffers.setData({ nodes, links }); draw();
-    expect(scene.children).toHaveLength(4); expect(buffers.nodes.mesh).toBe(batch); expect(buffers.nodes.entries[0]).toBe(first);
+    expect(scene.children).toHaveLength(5); expect(buffers.nodes.mesh).toBe(batch); expect(buffers.nodes.entries[0]).toBe(first);
     expect(buffers.nodes.entries).toHaveLength(2000); expect(buffers.lines.entries).toHaveLength(1999);
     buffers.setData({ nodes: nodes.slice(0, 1), links: [] }); draw();
     expect(buffers.nodes.entries).toEqual([first]); expect(batch.count).toBe(1); expect(buffers.lines.mesh.count).toBe(0);
@@ -287,6 +289,59 @@ describe("spatial redraw", () => {
     camera.position.z += 1; composer.render(); expect(frames).toBe(2);
     resistance = 1; composer.render(); expect(frames).toBe(3);
     composer.render(); expect(frames).toBe(3);
+  });
+});
+
+describe("the wrappers' mesh (2026-11-05)", () => {
+  const shape = (seed: string): GroupShape => ({ seed, members: [{ id: seed, x: 0, y: 0, z: 0, radius: 4 }, { id: `${seed}+`, x: 40, y: 0, z: 0, radius: 4 }] });
+  const hulls = new Map(["a", "b"].map(seed => [seed, wrapperHull(shape(seed), 6)]));
+  const wrappers = (buffers: ReturnType<typeof setup>["buffers"]) => buffers.wrappers.userData.spatialWrappers as { look: string; seeds: string[]; popping: string[]; vertices: number; triangles: number };
+
+  it("draws nothing while off, and each wrapped seed's hull where the seed stands, following it", () => {
+    const { buffers, draw } = setup(), a = node("a", 0, 0, 0), b = node("b", 300, 0, 0), c = node("c", -300, 0, 0);
+    buffers.setData({ nodes: [a, b, c], links: [] });
+    buffers.setWrappers(["a", "b"], seed => hulls.get(seed), "off"); draw();
+    expect(buffers.wrappers.visible).toBe(false);
+    expect(buffers.wrappers.geometry.getAttribute("position")).toBeUndefined();
+    buffers.setWrappers(["a", "b", "c"], seed => hulls.get(seed), "skin"); draw();
+    expect(buffers.wrappers.visible).toBe(true);
+    // A seed without a hull yet is not drawn; the others are, every vertex of a hull about its seed.
+    expect(wrappers(buffers)).toMatchObject({ look: "skin", seeds: ["a", "b"], popping: [] });
+    expect(wrappers(buffers).triangles).toBe((hulls.get("a")!.triangles.length + hulls.get("b")!.triangles.length) / 3);
+    const position = buffers.wrappers.geometry.getAttribute("position"), group = buffers.wrappers.geometry.getAttribute("wrapperGroup");
+    const xs = (wanted: number): number[] => Array.from({ length: position.count }, (_, i) => i).filter(i => group.getX(i) === wanted).map(i => position.getX(i));
+    const spans = [0, 1].map(g => [Math.min(...xs(g)), Math.max(...xs(g))]);
+    expect(spans.some(([low, high]) => low < 0 && high > 40 && high < 100)).toBe(true);
+    expect(spans.some(([low, high]) => low < 300 && low > 250 && high > 340)).toBe(true);
+    b.x = 600; draw();
+    expect(Math.max(...Array.from({ length: position.count }, (_, i) => buffers.wrappers.geometry.getAttribute("position").getX(i)))).toBeGreaterThan(640);
+    buffers.setWrappers([], () => undefined, "off"); draw();
+    expect(buffers.wrappers.visible).toBe(false);
+    buffers.dispose();
+  });
+
+  it("picks the wrapper in front, leaves out one bursting open, and outlines the hovered one for the rim", () => {
+    const { buffers, camera, draw } = setup(), a = node("a", 0, 0, 0), b = node("b", 300, 0, 0);
+    buffers.setData({ nodes: [a, b], links: [] });
+    buffers.setWrappers(["a", "b"], seed => hulls.get(seed), "cloud-rim");
+    buffers.styleWrappers({ alpha: () => 1, scale: () => 1, hovered: "a", popping: new Set() }); draw();
+    const raycaster = new Raycaster(); raycaster.setFromCamera(new Vector2(0, 0), camera);
+    expect(buffers.pickWrapper(raycaster)?.seed).toBe("a");
+    // The wrapper is met before the sphere it holds.
+    expect(buffers.pickWrapper(raycaster)!.distance).toBeLessThan(buffers.pickNodeHit(raycaster)!.distance);
+    const material = buffers.wrappers.material as unknown as { uniforms: Record<string, { value: number }> };
+    // The rim's group is the one whose vertices stand about the hovered seed, at the origin, not the other at 300.
+    const position = buffers.wrappers.geometry.getAttribute("position"), group = buffers.wrappers.geometry.getAttribute("wrapperGroup");
+    const groupsNearA = new Set(Array.from({ length: position.count }, (_, i) => i).filter(i => Math.abs(position.getX(i)) < 100).map(i => group.getX(i)));
+    expect(material.uniforms.uRim.value).toBe(1);
+    expect([...groupsNearA]).toEqual([material.uniforms.uHover.value]);
+    buffers.styleWrappers({ alpha: seed => seed === "a" ? .5 : 1, scale: seed => seed === "a" ? 1.1 : 1, hovered: "a", popping: new Set(["a"]) }); draw();
+    expect(buffers.pickWrapper(raycaster)).toBeNull();
+    expect(wrappers(buffers)).toMatchObject({ seeds: ["b"], popping: ["a"] });
+    expect(material.uniforms.uHover.value, "a wrapper bursting open has no rim").toBe(-1);
+    const alpha = buffers.wrappers.geometry.getAttribute("wrapperAlpha");
+    expect(new Set(Array.from({ length: alpha.count }, (_, i) => alpha.getX(i)))).toEqual(new Set([.5, 1]));
+    buffers.dispose();
   });
 });
 

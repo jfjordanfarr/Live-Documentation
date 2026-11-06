@@ -235,9 +235,11 @@ export const UNFOLDED_FRACTION = 1e-3;
 /**
  * The field of a picture: its spheres' radii, a spring on each link that pulls in the layout with the rest length and
  * strength ruled above, and the tuning's repulsion with its reach and approximation, gravity, collision gap and tether.
- * Links whose ends are not among the nodes are left out, as D3 would refuse them.
+ * Links whose ends are not among the nodes are left out, as D3 would refuse them. A sphere's radius in the field is its
+ * own, or the larger that `clearance` asks for it: a wrapped group's seed keeps the room its wrapper takes (2026-11-05).
  */
-export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout): SpatialField {
+export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout,
+  clearance?: (node: N) => number | undefined): SpatialField {
   const index = new Map(nodes.map((node, i) => [node.id, i]));
   const endpoint = (end: string | N): N | undefined => {
     const at = index.get(typeof end === "string" ? end : end.id);
@@ -254,7 +256,7 @@ export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links
     a: index.get((link.source as N).id)!, b: index.get((link.target as N).id)!,
     rest: spatialLinkDistance(link, tuning), strength: strengthOf(link, i, pulling) * springShare(link, tuning)
   }));
-  return new SpatialField(Float64Array.from(nodes.map(node => spatialNodeRadius(node, tuning))), springs,
+  return new SpatialField(Float64Array.from(nodes.map(node => Math.max(spatialNodeRadius(node, tuning), clearance?.(node) ?? 0))), springs,
     { charge: tuning.charge, chargeRange: tuning.chargeRange, approximation: tuning.approximation, gravity: tuning.gravity, componentSeparation: tuning.componentSeparation, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
     (low, high) => seededDirection(`${nodes[low].id}\0${nodes[high].id}`));
 }
@@ -300,6 +302,8 @@ export interface MotionSource<N extends SpatialNode> {
   budget?(): number | undefined;
   /** A cold picture cannot finish unfolding while some of its requested membership has yet to enter. */
   readyToAnchor?(): boolean;
+  /** The room a sphere keeps beyond its own radius, when it keeps more: a wrapped group's seed keeps its wrapper's (2026-11-05). */
+  clearance?(node: N): number | undefined;
 }
 
 /** The fewest spheres one part of a tick evaluates, whatever the budget, so that a tick always goes forward. */
@@ -335,7 +339,7 @@ export function motionForce<N extends SpatialNode>(source: MotionSource<N>): Mot
   };
   const build = (): SpatialMotion => {
     keep();
-    const field = spatialFieldOf(nodes, source.links(), source.tuning(), source.layout());
+    const field = spatialFieldOf(nodes, source.links(), source.tuning(), source.layout(), source.clearance ? node => source.clearance!(node) : undefined);
     const places = nodes.map(node => [node.x ?? 0, node.y ?? 0, node.z ?? 0]);
     const positions = Float64Array.from(places.flat());
     const velocity = Float64Array.from(nodes.flatMap(node => kept.get(node.id)?.velocity ?? [0, 0, 0]));

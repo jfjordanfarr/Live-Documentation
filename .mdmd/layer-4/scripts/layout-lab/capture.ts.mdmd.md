@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: scripts/layout-lab/capture.ts
-- Generated At: 2026-11-05T04:20:08.623Z
+- Generated At: 2026-11-06T03:23:51.900Z
 
 ## Authored
 ### Purpose
@@ -33,6 +33,8 @@ The current capture uses PERSISTED_UI_VERSION rather than a stale literal, so it
 The same learning-journey pass captures relationship controls above Purpose, including their intrinsic button sizes for independent flex wrapping. Short test labels are measured at intrinsic height rather than a neighboring chip’s stretched flex height. Rich prose preserves its computed word-wrapping behavior; the product explicitly wraps long prose tokens. Coarse-pointer browser checks compare the original phone capture with a separately rendered narrower cap. Older captures without placement metadata retain bottom-count behavior.
 
 The [November 5 reading repair](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed a capture-performance failure in the 93-card repository chain: repeated append/read/remove probes caused over a thousand stylesheet recalculations, and the test exceeded its deadline despite matching geometry. Independent constant probes are now appended together, read together and removed together for each card. The unused node-meta probe is removed. Complete before/after captures agree after excluding only their capture timestamp; this changes the measurement work, not the fixture, model, deadline or tolerances.
+
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) a card capture carries `slot` for the fixed-slot composition, now the Card Text default: every public row's explicit height, measured from the first such row or taken from Slot Lines, and the Purpose's slot height, so that the model needs no text to give a slot card's height.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -74,21 +76,21 @@ One card, as the page built it.
 
 #### `CardConstants` {#symbol-cardconstants}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L111)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L116)
 
 ##### `CardConstants` — Summary
 The page's constants the card model composes with, read from computed styles.
 
 #### `Capture` {#symbol-capture}
 - Type: interface
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L134)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L139)
 
 ##### `Capture` — Summary
 A scope's capture: the fonts, the constants, every card, every label, the page's truth and the warnings.
 
 #### `captureScope` {#symbol-capturescope}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L162)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L167)
 - Parameters: `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun); `preset`: [`LayoutPreset`](../../packages/explorer/src/client/layout-presets.ts.mdmd.md#symbol-layoutpreset)
 
 ##### `captureScope` — Summary
@@ -96,7 +98,7 @@ Opens the scope in a browser of the lab's own over the built bundle and reads th
 
 #### `captureFromPage` {#symbol-capturefrompage}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L183)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L188)
 - Parameters: `page`: `Page`; `run`: [`ScopeRun`](./scopes.ts.mdmd.md#symbol-scoperun)
 
 ##### `captureFromPage` — Summary
@@ -108,7 +110,7 @@ page's Content-Security-Policy runs no script written into it.
 
 #### `writeCapture` {#symbol-writecapture}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L554)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L566)
 - Parameters: `capture`: [`Capture`](#symbol-capture)
 
 ##### `writeCapture` — Summary
@@ -116,7 +118,7 @@ Writes a capture as compact JSON.
 
 #### `readCaptureFile` {#symbol-readcapturefile}
 - Type: function
-- Source: [source](../../../../scripts/layout-lab/capture.ts#L560)
+- Source: [source](../../../../scripts/layout-lab/capture.ts#L572)
 
 ##### `readCaptureFile` — Summary
 Reads a capture written by `writeCapture`.

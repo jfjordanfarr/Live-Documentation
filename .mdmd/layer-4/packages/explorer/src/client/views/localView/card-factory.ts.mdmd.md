@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-factory.ts
-- Generated At: 2026-11-05T15:19:44.458Z
+- Generated At: 2026-11-06T03:23:50.457Z
 
 ## Authored
 ### Purpose
@@ -25,6 +25,8 @@ Symbol order is the Live Doc's appearance order, alphabetical when chosen in Tun
 `createClosedDirectory` represents a closed directory as a named, counted box without symbol pins, following the [directory disclosure design](../../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#directories-open-and-close-inside-the-local-map-three-states-on-one-scale-recorded-2026-10-08). Its body and name inspect; its separate Open button discloses files and subdirectories. A directory containing a file that participates in a drawn connection is at least encasing, so no wire reaches a closed box. `countsOf` also supplies the count of contents hidden by an encasing membrane.
 
 November 4 reading is attached through the card context after the native card is built. Canonical documentation and explicit reading choices remain owned by the separate reading surface; the factory keeps its pin actions and, since November 5, hands name taps to the reading surface; names carry aria-expanded for what is shown. See the [integration record](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
+
+Since [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) a file's name and a symbol's name carry their text in a span of their own (`local-file-name-text`, `symbol-label-text`): the card ladder scales the text, never the button, whose box fills its row and, scaled, covered the row's Pin so that a zoomed pin transition could not click it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -61,7 +63,7 @@ The created card element
 
 #### `createClosedDirectory` {#symbol-createcloseddirectory}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L238)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L242)
 - Parameters: `context`: [`CardContext`](#symbol-cardcontext); `closed`: [`ClosedDirectory`](./branches.ts.mdmd.md#symbol-closeddirectory)
 
 ##### `createClosedDirectory` — Summary
@@ -72,7 +74,7 @@ under it is at least encasing, so no wire ever reaches a closed box.
 
 #### `countsOf` {#symbol-countsof}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L273)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-factory.ts#L277)
 
 ##### `countsOf` — Summary
 "3 files, 2 directories", either part left out at zero; "empty" when both are.

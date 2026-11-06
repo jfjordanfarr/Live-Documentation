@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.test.ts
-- Generated At: 2026-11-03T00:48:32.560Z
+- Generated At: 2026-11-05T23:08:50.939Z
 
 ## Authored
 ### Purpose
@@ -17,6 +17,8 @@ A membership permutation checks that numeric endpoint indices are rebound while 
 
 The redraw tests retain coverage for revisions beyond Float32 integer precision, accumulated subpixel camera movement, same-size canvas clearing and context restoration. Wire-culling cases retain crossing and tangential strokes and reject long offscreen and diagonal corner misses. Tests of the retired native-object adapter's arbitrary parent transforms were removed with that adapter; current input is the graph's physical node coordinates and explicit endpoints.
 
+Since 2026-11-05 the bounded scene holds five objects, the four instance batches and the wrappers' one mesh, and two cases check that mesh: nothing written while off, each hull drawn about its seed and following it, the nearest wrapper picked before the sphere it holds, a bursting one left out and unrimmed ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -28,6 +30,8 @@ _No public symbols detected_
 - [`forceGraphBatches.createSpatialBuffers`](./forceGraphBatches.ts.mdmd.md#symbol-createspatialbuffers)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphBatches.screenWireIntersectsFrustum`](./forceGraphBatches.ts.mdmd.md#symbol-screenwireintersectsfrustum)
+- [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
+- [`forceGraphWrappers.wrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-function)
 - `three` - `Color`, `Matrix4`, `PerspectiveCamera`, `Quaternion`, `Raycaster`, `Scene`, `SphereGeometry`, `Vector2`, `Vector3`, `WebGLRenderer`
 - `vitest` - `describe`, `expect`, `it`
 <!-- LIVE-DOC:END Dependencies -->

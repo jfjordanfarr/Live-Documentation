@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-branches.spec.ts
-- Generated At: 2026-10-30T15:02:36.877Z
+- Generated At: 2026-11-06T03:23:54.108Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,10 @@ On this repository's five-file deck scope it holds the many-file layout to its i
 - On 2026-10-08 the rows-order case stopped expecting that the layout order, chosen again after a reload under the alphabetical one, reproduces the first picture's rows: a re-render's order search starts from the picture on the page under the churn cost and a cold render from the ranking's order, so the two can settle on different orders of the same quality. It asserts now that the rows follow the wires more closely than the file's order when chosen again, and that a cold render under the kept choice reproduces the first picture. The earlier assertion had held by luck of the picture until a neighbouring card changed shape.
 - The lanes test reads a retained picture of more than a hundred wires whole, 24 to 26 seconds on one worker, so since 2026-10-19 it declares a minute rather than the default half ([Turn 12 of the October 17 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-12)).
 
+Since [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), when Card Text came to default to the fixed-slot composition, this spec pins the growing composition in its init script, since its journeys read that composition's recorded facts and in-place descriptions; the composition not chosen is to be deleted with its spec when the owner decides.
+
+On [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the pin became `keepGrowingComposition`, which merges the choice into the saved tuning rather than replacing it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -34,6 +38,7 @@ _No public symbols detected_
 - [`still-picture.LOCAL_MAP`](./still-picture.ts.mdmd.md#symbol-local_map)
 - [`still-picture.displayNames`](./still-picture.ts.mdmd.md#symbol-displaynames)
 - [`still-picture.gesture`](./still-picture.ts.mdmd.md#symbol-gesture)
+- [`still-picture.keepGrowingComposition`](./still-picture.ts.mdmd.md#symbol-keepgrowingcomposition)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)

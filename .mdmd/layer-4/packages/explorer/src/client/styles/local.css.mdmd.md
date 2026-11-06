@@ -29,6 +29,8 @@ The pin tray’s transparent positioning wrapper does not receive pointer input;
 
 The card's title button is `.local-file-name` since [November 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1), when a file's name began to open its descriptions rather than inspect; the rule is otherwise the one that dressed `.local-file-inspect`.
 
+Since [Turn 12](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the map's viewport is a compositor layer (`will-change: transform`), so that a zoom or a pan is one transform of a rastered layer rather than a repaint of every card and wire on the main thread.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

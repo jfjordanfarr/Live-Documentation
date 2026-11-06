@@ -12,7 +12,7 @@ test.use({ viewport: { width: 900, height: 700 } });
 for (const searching of [false, true]) {
   test(`expanded symbol text stays separate ${searching ? "while the search changes row order" : "with the search disabled"}`, async ({ page }) => {
     await page.addInitScript(({ key, version, searching, subject }) => {
-      localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: searching ? 32 : 0, moveMs: 1500 } } }));
+      localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: searching ? 32 : 0, moveMs: 1500, cardText: "grow" } } }));
       const frames: RowFrame[] = [];
       (window as unknown as { rowFrames: RowFrame[] }).rowFrames = frames;
       const opaque = (row: HTMLElement): boolean => {

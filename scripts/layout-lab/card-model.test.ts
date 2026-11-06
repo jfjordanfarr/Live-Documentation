@@ -51,6 +51,33 @@ describe("the lab's card model, the parts that need no page", () => {
     expect(clipped.pins.get("inbound:X")).toBe(narrow.pins.get("inbound:X")! + 20);
   });
 
+  it("gives a slot card's public rows and Purpose their fixed allotments, the dot at the first track's middle, whatever the text (2026-11-06)", () => {
+    const label: PreparedText = { text: "X", font: "text", prepared: {
+      widths: [10], lineEndFitAdvances: [10], lineEndPaintAdvances: [10], kinds: ["text"],
+      simpleLineWalkFastPath: true, segLevels: null, breakableFitAdvances: [null], breakablePreferredBreaks: [null],
+      letterSpacing: 0, spacingGraphemeCounts: [1], discretionaryHyphenWidth: 0, tabStopAdvance: 0,
+      chunks: [{ startSegmentIndex: 0, endSegmentIndex: 1, consumedEndSegmentIndex: 1 }], segments: ["X"]
+    } as PreparedText["prepared"] };
+    const constants = Object.fromEntries([
+      "titleMarginBottom", "titlePaddingRight", "symbolsMarginTop", "gridRowGap", "gridColumnGap", "gridSideColumn",
+      "badgeHeight", "badgeGap", "testsMarginTop", "testsMarginBottom", "testsGap", "directoryMarginTop",
+      "disclosureMarginTop", "labelPaddingBottom", "internalsDotMarginTop", "placeholderHeight"
+    ].map(key => [key, 0])) as unknown as Capture["constants"];
+    constants.dotHeight = 10;
+    const capture = { fonts: { text: { lineHeight: 10 } }, constants } as unknown as Capture;
+    const reading = { children: [], lineHeight: 10, inset: { horizontal: 0, vertical: 0 }, margin: { top: 0, bottom: 0 }, maxHeight: null };
+    const rows = [{ symbol: "X", label, badgesWidth: 0, reading }, { symbol: "__internals__", label, badgesWidth: 0 }];
+    const view = { rows, registration: rows, notes: [] };
+    const card = { borderWidth: 0, padding: 0, title: label, path: label, directory: label, directoryHidden: true, rows, tests: null,
+      purpose: reading, slot: { rowHeight: 66, purposeHeight: 55 } } as unknown as CardCapture;
+    const metrics = cardMetrics(capture, card, 208, view);
+    // Title and path, 10 each; the Purpose's 55; the public row's 66, its text ignored; the Internals row's own 10.
+    expect(metrics.height).toBe(10 + 10 + 55 + 66 + 10);
+    // The public row's dot stands at the middle of its first track, the 10 px line, not of the 66 px allotment.
+    expect(metrics.pins.get("inbound:X")).toBe(10 + 10 + 55 + 5);
+    expect(metrics.pins.get("inbound:__internals__")).toBe(10 + 10 + 55 + 66 + 5);
+  });
+
   it("wraps a row of chips as a flex row does: a line as tall as its tallest chip, the lines a gap apart", () => {
     const chips = [{ width: 40, height: 14 }, { width: 100, height: 18 }, { width: 100, height: 18 }, { width: 30, height: 18 }];
     // All on one line at 300 wide: 40 + 6 + 100 + 6 + 100 + 6 + 30 = 288.

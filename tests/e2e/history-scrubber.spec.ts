@@ -57,6 +57,9 @@ const entry = (base: string, extra: Partial<typeof DEFAULT_SNAPSHOT> = {}): stri
 })}`;
 
 async function settled(page: Page): Promise<void> {
+  // A key takes effect on the view's next frame: wait for that frame before reading the busy flag, since a stale
+  // "false" let a count be read before the step had applied, under load (2026-11-06).
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 60_000 });
 }
 

@@ -1,0 +1,64 @@
+{
+  "which": "repo",
+  "popSeed": "tests/integration/programs/rosetta-manifest.json",
+  "firstSettleMs": 16961,
+  "settleAfterChoose": {
+    "skin": 29065,
+    "cloud": 3,
+    "cloud-rim": 2,
+    "off": 6762
+  },
+  "archipelago-skin": {
+    "wrapped": 42,
+    "vertices": 3472,
+    "triangles": 6776,
+    "idleFrames": 0
+  },
+  "archipelago-cloud": {
+    "wrapped": 42,
+    "vertices": 3472,
+    "triangles": 6776,
+    "idleFrames": 0
+  },
+  "archipelago-cloud-rim": {
+    "wrapped": 42,
+    "vertices": 3472,
+    "triangles": 6776,
+    "idleFrames": 0
+  },
+  "archipelago-off": {
+    "wrapped": 0,
+    "vertices": 0,
+    "triangles": 0,
+    "idleFrames": 0
+  },
+  "pinned-skin": {
+    "wrapped": 41,
+    "vertices": 3296,
+    "triangles": 6428,
+    "idleFrames": 0,
+    "hoverTitle": "tests/integration/programs/c/modular/expected/compiler-edges.json \u00b7 7 public symbols \u00b7 9 files in this group \u00b7 8 more connected, not shown \u00b7 Pin this file"
+  },
+  "pinned-cloud": {
+    "wrapped": 41,
+    "vertices": 3296,
+    "triangles": 6428,
+    "idleFrames": 0,
+    "hoverTitle": "tests/integration/programs/c/modular/expected/compiler-edges.json \u00b7 7 public symbols \u00b7 9 files in this group \u00b7 8 more connected, not shown \u00b7 Pin this file"
+  },
+  "pinned-cloud-rim": {
+    "wrapped": 41,
+    "vertices": 3296,
+    "triangles": 6428,
+    "idleFrames": 0,
+    "hoverTitle": "tests/integration/programs/c/modular/expected/compiler-edges.json \u00b7 7 public symbols \u00b7 9 files in this group \u00b7 8 more connected, not shown \u00b7 Pin this file"
+  },
+  "pinned-off": {
+    "wrapped": 0,
+    "vertices": 0,
+    "triangles": 0,
+    "idleFrames": 0,
+    "hoverTitle": "tests/integration/programs/c/modular/expected/compiler-edges.json \u00b7 7 public symbols \u00b7 9 files in this group \u00b7 8 more connected, not shown \u00b7 Pin this file"
+  },
+  "note": "Stills only; the pop and the release are in the pop measurements, taken with the page clock stepped."
+}

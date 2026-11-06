@@ -75,6 +75,18 @@ describe("persisted history tuning (2026-10-18)", () => {
   );
 });
 
+describe("persisted group wrappers (2026-11-05)", () => {
+  it("starts off, and restores a saved choice beside the numeric 3D settings", () => {
+    expect(getDefaultTuning().forceGraph.groupWrappers).toBe("off");
+    const restored = restoreTuning("forceGraph", '{"groupWrappers":"cloud-rim","gravity":0.03}').forceGraph;
+    expect(restored).toMatchObject({ groupWrappers: "cloud-rim", gravity: 0.03 });
+  });
+
+  it.each(['"balloon"', "1", "null", "true"])("falls back from an invalid choice of %s to off, keeping the rest", saved => {
+    expect(restoreTuning("forceGraph", `{"groupWrappers":${saved},"hops":3}`).forceGraph).toMatchObject({ groupWrappers: "off", hops: 3 });
+  });
+});
+
 describe("saving only what a person changed (2026-10-22)", () => {
   const defaults = () => ({ filters: getDefaultFilters(), tuning: getDefaultTuning() });
 

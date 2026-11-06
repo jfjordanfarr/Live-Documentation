@@ -8,7 +8,7 @@
 import { readPerspective, readSpatialLayout, readView } from "./navigation";
 import { LAYOUT_PRESETS, readLayoutSettings } from "../layout-presets";
 import { readReadingChoices, type ReadingChoice } from "../reading-state";
-import { CHANGE_EMPHASES, HISTORY_GRANULARITIES, type ChangeEmphasis, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
+import { CHANGE_EMPHASES, GROUP_WRAPPERS, HISTORY_GRANULARITIES, type ChangeEmphasis, type GroupWrappers, type DiscoveryTarget, type HistoryAxis, type HistoryGranularity, type InspectionTarget, type LocalMapPerspective, type ExplorerFilters, type SpatialLayout, type SymbolOrder, type TuningConfig, type ViewName } from "../types";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Persisted UI State (tuning + filters)
@@ -64,10 +64,11 @@ export const getDefaultTuning = (): TuningConfig => ({
     symbolOrder: "layout",
     moveMs: 450,
     holdStill: "click",
-    cardText: "grow",
+    cardText: "slot",
     slotLines: 2,
-    textResistance: 0.8,
+    textResistance: 1,
     controlResistance: 1,
+    nameGrowth: 1.5,
     searchStarts: 32,
     searchPatience: 8,
     rankingPull: 0,
@@ -83,7 +84,7 @@ export const getDefaultTuning = (): TuningConfig => ({
     membraneDepth: null,
     ...LAYOUT_PRESETS.relaxed.localMap
   },
-  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, componentSeparation: 0.2, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1, hops: 2, revealFrames: 60, nameAt: 18 },
+  forceGraph: { ...LAYOUT_PRESETS.relaxed.forceGraph, coupling: 1, nodeSize: 4, symbolScale: 1, linkWidth: 1, nodeZoomResistance: 0.3, wireZoomResistance: 0.9, gravity: 0.025, componentSeparation: 0.2, chargeRange: 0, approximation: 0.3, linkStrength: 0.5, updateEnergy: 1, tether: 0.02, citedByPull: 1, hops: 2, revealFrames: 60, nameAt: 18, groupWrappers: "off" },
   // The history's scrubber: steps laid out by date, linear time in which no month counts for more than another (the
   // owner, 2026-10-22), the ticks chosen by the number of steps, two steps a second when played, and a step's changed
   // files glowing while the history is shown (2026-10-31).
@@ -136,6 +137,9 @@ const readPlayRate = (value: unknown): number | undefined =>
 const readChangeEmphasis = (value: unknown): ChangeEmphasis | undefined =>
   CHANGE_EMPHASES.find(emphasis => emphasis === value);
 
+const readGroupWrappers = (value: unknown): GroupWrappers | undefined =>
+  GROUP_WRAPPERS.find(wrappers => wrappers === value);
+
 /**
  * Reads and validates persisted UI state from localStorage.
  *
@@ -183,6 +187,9 @@ export const readPersistedUi = (): PersistedUi | null => {
 
       const layout = readLayoutSettings(parsedTuning);
       if (layout?.forceGraph) tuning.forceGraph = layout.forceGraph;
+      // The one named 3D setting, which the numeric layout settings do not carry (2026-11-05).
+      const groupWrappers = readGroupWrappers(getRecord(parsedTuning, "forceGraph")?.groupWrappers);
+      if (groupWrappers !== undefined) tuning.forceGraph = { ...tuning.forceGraph, groupWrappers };
 
       const bezierRaw = getRecord(parsedTuning, "bezier");
       if (bezierRaw) {
@@ -216,6 +223,7 @@ export const readPersistedUi = (): PersistedUi | null => {
         const slotLines = readFiniteNumber(localMapRaw.slotLines);
         const textResistance = readFiniteNumber(localMapRaw.textResistance);
         const controlResistance = readFiniteNumber(localMapRaw.controlResistance);
+        const nameGrowth = readFiniteNumber(localMapRaw.nameGrowth);
         const searchStarts = readFiniteNumber(localMapRaw.searchStarts);
         const searchPatience = readFiniteNumber(localMapRaw.searchPatience);
         const rankingPull = readFiniteNumber(localMapRaw.rankingPull);
@@ -252,6 +260,7 @@ export const readPersistedUi = (): PersistedUi | null => {
           ...(slotLines !== undefined ? { slotLines } : null),
           ...(textResistance !== undefined ? { textResistance } : null),
           ...(controlResistance !== undefined ? { controlResistance } : null),
+          ...(nameGrowth !== undefined ? { nameGrowth } : null),
           ...(searchStarts !== undefined ? { searchStarts } : null),
           ...(searchPatience !== undefined ? { searchPatience } : null),
           ...(rankingPull !== undefined ? { rankingPull } : null),

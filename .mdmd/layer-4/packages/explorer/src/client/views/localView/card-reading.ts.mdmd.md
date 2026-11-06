@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-05T19:03:59.411Z
+- Generated At: 2026-11-05T23:55:56.807Z
 
 ## Authored
 ### Purpose
@@ -19,26 +19,30 @@ The [November 4 learning-journey pass](../../../../../../../../AI-Agent-Workspac
 
 The comparison of [November 5](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4) added the composition the owner wanted to see beside this one, chosen by `mode()` from the options: with fixed slots no book is made, every symbol and the Purpose get a block carrying `local-reading-slot`, filled or not, never hidden, `toggle` opens the full text in the reader dialog for a described name and still returns false for a card with nothing described, `updateCard` applies `local-slot-card` instead of `local-reading-card`, and `measure` keeps the Read full description links hidden, the ellipsis saying there is more. Later that day ([Turn 6](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)) zoom stopped changing any box in either composition: `updatePresentation` only toggles `local-reading-faded`, and the fold's reveal exceptions and scale observation went with it. Whichever composition the owner does not choose is to be deleted, not kept as an option.
 
+Since [Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11) `measureRooms`, called from `measure` for slot cards, writes the room each name may grow into below reading scale as numbers for the stylesheet: a symbol's name against its row's allotment (`--fill-scale`, the least of the width and height ratios, nine tenths of the room, never below 1), the file's name against its header down to the Purpose's slot (`--title-fill-h`, `--title-room-w`, `--title-w`) and the widths of the card's buttons (`--actions-w`, `--more-w`) that intrude on that room as they hold their size. A name's text is measured by a Range, less the map's scale and the name's own transform, because the name's box is stretched to its wrapper.
+
+Later on [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) `measureRooms` writes two rooms a row: `--fill-middle`, up to the row's controls while they stand, and `--fill-far`, the whole row once they leave, and reads a name's own transform from its text span.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L16)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L19)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L19)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L22)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L61)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L64)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only

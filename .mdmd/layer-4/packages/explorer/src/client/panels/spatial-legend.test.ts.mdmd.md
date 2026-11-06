@@ -14,6 +14,8 @@ The unit test of the 3D Local Map's key: that its rows name only what the pictur
 - Two cases: a plain connections picture, where the kinds, the size rule and the wires' width are named and nothing else (the direction row of 2026-10-30 went with the wires' colour on 2026-10-31); and a structure picture with a path and fading, where the folders' size rule, the path, the fading and containment join them. The references rows vanish when no reference is drawn, which the structure layout does until a hover, a pin or a path asks for them.
 - The words are checked exactly, since the key is text the owner reads; a change of wording is a change of the key.
 
+Since 2026-11-05 a case checks the Wrapped group row: after the Ring row, and only while a group is drawn wrapped ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

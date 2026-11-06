@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose } from "./search-bar";
-import { localMapSettled, panIntoView } from "./still-picture";
+import { keepGrowingComposition, localMapSettled, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -51,6 +51,9 @@ function samePicture(before: Picture, after: Picture): void {
 
 test.use({ viewport: { width: 1440, height: 960 } });
 
+/** Every journey here reads the growing composition, which Card Text no longer defaults to (2026-11-05). */
+test.beforeEach(async ({ page }) => { await keepGrowingComposition(page); });
+
 /** Exercise the actual visible hit target without locator scrolling or camera assistance. */
 async function pointAt(page: Page, target: Locator, click = false): Promise<void> {
   const point = await target.evaluate(element => {
@@ -78,7 +81,7 @@ for (const holdStill of ["click", "hover"] as const) for (const fixture of [
     test.setTimeout(60_000);
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, holdStill } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, holdStill, cardText: "grow" } } })
     });
     const pins = { entries: fixture.selected ? [] : fixture.names.map(symbol => ({ nodeId: fixture.id, symbol })) };
     await page.goto(url({ ...(fixture.selected ? { selectedNodeId: fixture.id } : {}), pinSet: pins, reading: [{ nodeId: fixture.id, open: false }] }));
@@ -126,7 +129,7 @@ for (const viewport of [{ width: 900, height: 700 }, { width: 1440, height: 960 
     // The idle search is off so that each picture below is the solve's own; the search's motion is tested elsewhere.
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0 } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
     });
     await page.setViewportSize(viewport);
     await page.goto(url({ selectedNodeId: payment }));
@@ -398,6 +401,7 @@ test("shared reading can be open without a pin and folded with a pin, and the fu
   await expect(page.getByRole("dialog")).toContainText("The most hops a path takes.");
   const shared = page.url();
   const recipient = await browser.newContext({ viewport: { width: 1440, height: 960 } });
+  await keepGrowingComposition(recipient);
   try {
     const other = await recipient.newPage();
     await other.goto(shared);

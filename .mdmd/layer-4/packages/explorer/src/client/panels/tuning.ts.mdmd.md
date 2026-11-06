@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-05T22:04:00.384Z
+- Generated At: 2026-11-05T23:55:55.034Z
 
 ## Authored
 ### Purpose
@@ -39,6 +39,10 @@ Wire Thickness and the independent Node/Wire Zoom Resistance sliders are persist
 - Card Text (`tuning-card-text`, [2026-11-05](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4)) is a select like Hold Still; because the composition changes every card's drawing and box, a change re-renders the 2D view as the search sliders do; Slot Lines (`tuning-slot-lines`, [Turn 6](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)) is such a slider.
 
 - Text Resistance and Control Resistance ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)) are sliders like Slot Lines; a change re-renders the 2D view, which re-applies the ladder's scales.
+
+Since 2026-11-05 the Group Wrappers select in the 3D Layout's Discovery group sets `forceGraph.groupWrappers` and draws the 3D view again at once ([the experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
+
+Name Growth ([Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)) is a slider like Text Resistance; a change re-renders the 2D view, which re-applies the ladder's scales.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -80,11 +84,13 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`tuning-levers.tuningHelpId`](./tuning-levers.ts.mdmd.md#symbol-tuninghelpid)
 - [`types.CHANGE_EMPHASES`](../types.ts.mdmd.md#symbol-change_emphases)
 - [`types.ExplorerState`](../types.ts.mdmd.md#symbol-explorerstate)
+- [`types.GROUP_WRAPPERS`](../types.ts.mdmd.md#symbol-group_wrappers)
 - [`template.export-layout-settings`](../../shared/template.html.mdmd.md#symbol-export-layout-settings)
 - [`template.tuning-card-text`](../../shared/template.html.mdmd.md#symbol-tuning-card-text)
 - [`template.tuning-churn-cost`](../../shared/template.html.mdmd.md#symbol-tuning-churn-cost)
 - [`template.tuning-column-gap`](../../shared/template.html.mdmd.md#symbol-tuning-column-gap)
 - [`template.tuning-control-resistance`](../../shared/template.html.mdmd.md#symbol-tuning-control-resistance)
+- [`template.tuning-force-group-wrappers`](../../shared/template.html.mdmd.md#symbol-tuning-force-group-wrappers)
 - [`template.tuning-history-axis`](../../shared/template.html.mdmd.md#symbol-tuning-history-axis)
 - [`template.tuning-history-change-emphasis`](../../shared/template.html.mdmd.md#symbol-tuning-history-change-emphasis)
 - [`template.tuning-history-granularity`](../../shared/template.html.mdmd.md#symbol-tuning-history-granularity)
@@ -100,6 +106,7 @@ Initialize the tuning panel with all slider and checkbox controls.
 - [`template.tuning-membrane-simplicity`](../../shared/template.html.mdmd.md#symbol-tuning-membrane-simplicity)
 - [`template.tuning-move-ms`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms)
 - [`template.tuning-move-ms-value`](../../shared/template.html.mdmd.md#symbol-tuning-move-ms-value)
+- [`template.tuning-name-growth`](../../shared/template.html.mdmd.md#symbol-tuning-name-growth)
 - [`template.tuning-order-starts`](../../shared/template.html.mdmd.md#symbol-tuning-order-starts)
 - [`template.tuning-row-levelness`](../../shared/template.html.mdmd.md#symbol-tuning-row-levelness)
 - [`template.tuning-search-patience`](../../shared/template.html.mdmd.md#symbol-tuning-search-patience)

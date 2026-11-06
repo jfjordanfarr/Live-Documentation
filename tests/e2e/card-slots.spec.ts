@@ -117,7 +117,8 @@ test("fixed slots keep the ordinary drawing, give every symbol the same allotmen
   expect(new Set(rows.map(item => item.slot)).size, "one slot height").toBe(1);
   expect(rows.every(item => item.prose === 34), "two lines of 17 px").toBe(true);
   expect(await proseLines(purpose)).toEqual({ shown: 2, clipped: true });
-  expect(await proseLines(row.locator(".local-reading-prose"))).toEqual({ shown: 2, clipped: false });
+  // At the ordinary card width, the slot card's since 2026-11-06, the service's description no longer fits two lines either.
+  expect(await proseLines(row.locator(".local-reading-prose"))).toEqual({ shown: 2, clipped: true });
   const name = row.locator(".symbol-label");
   expect(await name.getAttribute("aria-expanded")).toBeNull();
   const before = await geometry(page), layout = await layoutBoxes(page);

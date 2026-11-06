@@ -122,7 +122,11 @@ export function createNodeCard(
   const name = document.createElement("button");
   name.type = "button";
   name.className = "local-file-name";
-  setSeamedText(name, node.name);
+  // The text in a span of its own: the ladder scales the text, never the button's full-width box (2026-11-06).
+  const nameText = document.createElement("span");
+  nameText.className = "local-file-name-text";
+  setSeamedText(nameText, node.name);
+  name.append(nameText);
   name.setAttribute("aria-label", node.codeRelativePath);
   name.addEventListener("click", event => { event.stopPropagation(); void context.readNode(node); });
   header.append(name);
@@ -357,7 +361,10 @@ function createSymbolSection(
     const label = document.createElement("button");
     label.type = "button";
     label.className = "symbol-label";
-    setSeamedText(label, symbol);
+    const labelText = document.createElement("span");
+    labelText.className = "symbol-label-text";
+    setSeamedText(labelText, symbol);
+    label.append(labelText);
     label.setAttribute("aria-label", `${symbol} in ${node.name}`);
     label.addEventListener("click", event => { event.stopPropagation(); void context.readNode(node, symbol); });
     labelWrapper.appendChild(label);
@@ -417,7 +424,10 @@ function createSymbolSection(
     const internalsName = document.createElement("button");
     internalsName.type = "button";
     internalsName.className = "symbol-label internals-text";
-    internalsName.textContent = "Internals";
+    const internalsText = document.createElement("span");
+    internalsText.className = "symbol-label-text";
+    internalsText.textContent = "Internals";
+    internalsName.append(internalsText);
     internalsName.setAttribute("aria-label", `Inspect Internals in ${node.name}`);
     internalsName.addEventListener("click", event => { event.stopPropagation(); void context.inspectNode(node, "__internals__"); });
     internalsLabel.append(internalsName);

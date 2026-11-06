@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import type { Camera } from "three";
 
 import { observeGraph, renderedNodes } from "./force-graph-observation";
-import { localMapSettled, panIntoView } from "./still-picture";
+import { keepGrowingComposition, localMapSettled, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 const A = "Portal/Services/GatewayClient.cs";
@@ -34,6 +34,9 @@ const geometry = (page: Page) => page.locator("#map-container .node-card").evalu
 }));
 
 test.use({ viewport: { width: 1600, height: 1000 } });
+
+/** These journeys read the growing composition's recorded facts and in-place descriptions, so they keep it (2026-11-05). */
+test.beforeEach(async ({ page }) => { await keepGrowingComposition(page); });
 
 test("inspection and Back preserve the map; direct pins and shared evidence remain independent", async ({ page, browser }) => {
   await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(A)}`);

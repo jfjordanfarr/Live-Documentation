@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-05T22:04:03.180Z
+- Generated At: 2026-11-05T23:55:57.804Z
 
 ## Authored
 ### Purpose
@@ -37,10 +37,13 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Since 2026-10-21 Update Energy defaults to 1, a constant strength rather than a reheat's alpha, and its title says a fraction moves the picture more gently and for longer; Tether (`tuning-force-tether`, 0 to 0.1 by 0.001, 0.01 by default) stands beside it, titled for what it holds ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
 - Since 2026-10-30 ([Turn 3 of the October 30 record](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-30.1.record.md#turn-3)) each search field is followed by a hidden span where, while a moment of the history is shown, the bar says that its thing does not stand there.
+- Since 2026-11-05 the 3D Layout's Discovery group holds the Group Wrappers select beside Hops Shown, Off by default ([the experiment](../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
 - Since [2026-11-05](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4) Card Text stands under 2D Layout after Hold Still: a description opens on a tap and the card grows, or every symbol has the same fixed slot cut with an ellipsis; the two compositions the owner asked to compare on the same bundle before choosing. Slot Lines, 1 to 4 and 2 by default, follows it ([Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)).
 
 - Text Resistance (0 to 1, 0.8) and Control Resistance (0 to 1, 1) follow Slot Lines under 2D Layout ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)), the card ladder's two levers; the inventory stands at 52.
+
+Name Growth (`tuning-name-growth`, 1 to 3 by tenths, 1.5) joined the 2D Layout group on [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11) beside Text Resistance, whose default became 1; Card Text's first and selected option is now the fixed-slot composition.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -249,6 +252,9 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 #### `tuning-force-gravity-value` {#symbol-tuning-force-gravity-value}
 - Type: variable
 
+#### `tuning-force-group-wrappers` {#symbol-tuning-force-group-wrappers}
+- Type: variable
+
 #### `tuning-force-hops` {#symbol-tuning-force-hops}
 - Type: variable
 
@@ -397,6 +403,12 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Type: variable
 
 #### `tuning-move-ms-value` {#symbol-tuning-move-ms-value}
+- Type: variable
+
+#### `tuning-name-growth` {#symbol-tuning-name-growth}
+- Type: variable
+
+#### `tuning-name-growth-value` {#symbol-tuning-name-growth-value}
 - Type: variable
 
 #### `tuning-order-starts` {#symbol-tuning-order-starts}

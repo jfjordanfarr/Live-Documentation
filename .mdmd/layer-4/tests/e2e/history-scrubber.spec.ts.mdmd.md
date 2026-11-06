@@ -23,6 +23,8 @@ Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Ag
 
 Since 2026-11-02 ([Turn 3 of the November 2 record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)) the control opened with nothing asked about opens and retains the whole, so the tests that open it this way expect the whole's ticks, every step that changed a file's shape major and the content-only step minor, and the root's row in the tray beside a file's; and a moment at which the asked-about file does not yet stand shows the tree's root dimmed, the handle of what is there, where before the picture stayed empty. The run of that day found that the engine's `ticksFor` had never let the scan root hold a path.
 
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) `settled` waits for the view's next frame before reading the busy flag: a key press takes effect on that frame, and under load a stale "false" let the growth case count a partial picture (65 of 705 spheres at End).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

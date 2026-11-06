@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-11-02T17:16:59.139Z
+- Generated At: 2026-11-05T23:08:51.213Z
 
 ## Authored
 ### Purpose
@@ -31,6 +31,8 @@ A document's citation of a file (2026-10-22, [the decision](../../../../../../..
 The headless easing reveals the picture as the page does (2026-10-28, [the reveal](forceGraphReveal.ts.mdmd.md)): `easeSpatialLayout` takes `reveal`, what was asked about directly and as an open directory's files, with the warm-up defaulting to `REVEAL`; since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) it scopes the picture as the page does when asked about something in it, to the tuning's hops around it by `forceGraphScope.ts`, and with nothing in the picture asked about eases every node given from the layout's start; a sphere that already stands somewhere is kept and enters first, as the page keeps what is shown through a change, so that a still picture eased again is eased whole; the first piece is what is kept and what was asked about directly with its first hop, or an open directory's first file, warmed for the page's hidden ticks, and after them a share of the whole enters at every tick, the tuning's Reveal Frames, each newcomer placed by `placeNewSpheres` as it enters, and the easing runs until every sphere has entered and the motion is still. The physics measures of the layout lab ask about the whole picture to ease it as one piece. `MotionForce.stir` counts stillness afresh without changing how the motion holds, for spheres entering mid-motion, and `MotionSource.onNodes` hands the page the array the simulation applied, so that the page knows when a piece is in. The page grows after the engine tick that follows the warm-up and the piece applies before the next tick, so the twin grows after that tick too ([the Turn 4 work notes](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-28.1.record.md#turn-4-work-notes)).
 
 With a budget from its source (`MotionSource.budget`, milliseconds a frame), the motion force takes a tick in parts (2026-10-28): as many spheres of evaluation as the last part's time suggests the budget allows, never under 256, the spheres written back after every part so that the picture moves as the substeps land, and a tick's bookkeeping, the tether taking hold and the stillness, waiting for its last part. Headlessly, and during the library's hidden warm-up of a first picture, there is no budget and a call is a whole tick, so the twin's numbers are unchanged.
+
+Since 2026-11-05 `spatialFieldOf` and the motion's source take an optional clearance, the larger radius a sphere keeps in the field's collisions: a wrapped group's seed keeps its wrapper's room ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)). Without one, every radius is the sphere's own, as before.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -200,19 +202,20 @@ hundredth of the picture's size, they would stay far too small (measured 2026-10
 
 #### `spatialFieldOf` {#symbol-spatialfieldof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L240)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L241)
 - Returns: [`SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
-- Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
+- Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `node`: `N`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `spatialFieldOf` — Summary
 The field of a picture: its spheres' radii, a spring on each link that pulls in the layout with the rest length and
 strength ruled above, and the tuning's repulsion with its reach and approximation, gravity, collision gap and tether.
-Links whose ends are not among the nodes are left out, as D3 would refuse them.
+Links whose ends are not among the nodes are left out, as D3 would refuse them. A sphere's radius in the field is its
+own, or the larger that `clearance` asks for it: a wrapped group's seed keeps the room its wrapper takes (2026-11-05).
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L267)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L269)
 
 ##### `MotionStart` — Summary
 How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
@@ -221,7 +224,7 @@ forces, which rearrange the whole and leave the old places no reference.
 
 #### `MotionForce (interface)` {#symbol-motionforce-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L270)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L272)
 - Extends: `Force`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -230,7 +233,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L284)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L286)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -238,7 +241,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L319)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L323)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -256,14 +259,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L412)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L416)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L437)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L441)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

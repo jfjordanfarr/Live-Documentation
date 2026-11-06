@@ -1,0 +1,64 @@
+{
+  "which": "estate",
+  "popSeed": "PaymentService/PaymentService.cs",
+  "firstSettleMs": 4162,
+  "settleAfterChoose": {
+    "skin": 726,
+    "cloud": 3,
+    "cloud-rim": 2,
+    "off": 3392
+  },
+  "archipelago-skin": {
+    "wrapped": 2,
+    "vertices": 187,
+    "triangles": 366,
+    "idleFrames": 0
+  },
+  "archipelago-cloud": {
+    "wrapped": 2,
+    "vertices": 187,
+    "triangles": 366,
+    "idleFrames": 0
+  },
+  "archipelago-cloud-rim": {
+    "wrapped": 2,
+    "vertices": 187,
+    "triangles": 366,
+    "idleFrames": 0
+  },
+  "archipelago-off": {
+    "wrapped": 0,
+    "vertices": 0,
+    "triangles": 0,
+    "idleFrames": 0
+  },
+  "pinned-skin": {
+    "wrapped": 1,
+    "vertices": 69,
+    "triangles": 134,
+    "idleFrames": 0,
+    "hoverTitle": "Contracts/Contracts.csproj \u00b7 1 public symbol \u00b7 4 files in this group \u00b7 3 more connected, not shown \u00b7 Pin this file"
+  },
+  "pinned-cloud": {
+    "wrapped": 1,
+    "vertices": 69,
+    "triangles": 134,
+    "idleFrames": 0,
+    "hoverTitle": "Contracts/Contracts.csproj \u00b7 1 public symbol \u00b7 4 files in this group \u00b7 3 more connected, not shown \u00b7 Pin this file"
+  },
+  "pinned-cloud-rim": {
+    "wrapped": 1,
+    "vertices": 69,
+    "triangles": 134,
+    "idleFrames": 0,
+    "hoverTitle": "Contracts/Contracts.csproj \u00b7 1 public symbol \u00b7 4 files in this group \u00b7 3 more connected, not shown \u00b7 Pin this file"
+  },
+  "pinned-off": {
+    "wrapped": 0,
+    "vertices": 0,
+    "triangles": 0,
+    "idleFrames": 0,
+    "hoverTitle": "Contracts/Contracts.csproj \u00b7 1 public symbol \u00b7 4 files in this group \u00b7 3 more connected, not shown \u00b7 Pin this file"
+  },
+  "note": "Stills only; the pop and the release are in the pop measurements, taken with the page clock stepped."
+}

@@ -12,6 +12,9 @@ import { authoredSections } from "../../reader-sections";
 import { descriptionIsOpen, type ReadingChoice } from "../../reading-state";
 import type { InspectionTarget } from "../../types";
 
+/** The share of its room a name may fill when it grows, leaving a little air at the row's edges. */
+const ROOM_MARGIN = 0.9;
+
 /** A file's Purpose or one exact symbol's description, named by the card it is read on. */
 export interface ReadingTarget { nodeId: string; symbol?: string; }
 
@@ -265,12 +268,64 @@ export class CardReading {
         // A slot's ellipsis says there is more; the name opens it. The link would add a line to every card.
         block.more.hidden = this.slots || block.element.hidden || !(block.hasMore || block.prose.scrollHeight > block.prose.clientHeight + 1);
       }
-      if (this.slots) continue;
+      if (this.slots) { this.measureRooms(card, purpose); continue; }
       // A file with many individually short descriptions can still exceed a phone's reading frame. Keep its plain
       // full reader reachable near the top, without shrinking text or installing a scrollbar inside the card.
       if (purpose && !purpose.element.hidden && card.scrollHeight > available) purpose.more.hidden = false;
       if (overflow && (!purpose || purpose.element.hidden) && card.classList.contains("local-reading-card") && card.scrollHeight > available) overflow.hidden = false;
     }
+  }
+
+  /**
+   * The room each name may grow into below reading scale (2026-11-05, Turn 11: "the symbols didn't expand to fill the
+   * spaces left by the disappearance of the text"): a symbol's name may fill its own box while the row's controls stand
+   * and its row's allotment once they leave, the file's name the
+   * header down to the Purpose's slot, since everything between leaves at the middle band; written as numbers for the
+   * stylesheet, which bounds the growth by Name Growth and, for the file's name, by the room the card's buttons take
+   * at their held size. Measured once a render, in layout pixels, so that zoom changes nothing here.
+   */
+  private measureRooms(card: HTMLElement, purpose: ReadingBlock | null): void {
+    const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
+    if (!(k > 0)) return;
+    // A name's text is narrower than its stretched box, and the name may already be drawn scaled: the text's own width
+    // in layout pixels is its range's width, less the map's scale and its own transform.
+    const textWidth = (element: HTMLElement): number => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      const inner = element.querySelector<HTMLElement>(".symbol-label-text, .local-file-name-text") ?? element;
+      const own = new DOMMatrix(getComputedStyle(inner).transform).a || 1;
+      return range.getBoundingClientRect().width / (k * own);
+    };
+    for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
+      const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper"), label = row.querySelector<HTMLElement>(".symbol-label");
+      if (!wrapper || !label || !label.offsetHeight) continue;
+      const width = textWidth(label);
+      if (!(width > 0)) continue;
+      const wrapperStyle = getComputedStyle(wrapper), rowStyle = getComputedStyle(row);
+      const roomWidth = wrapper.clientWidth - parseFloat(wrapperStyle.paddingLeft) - parseFloat(wrapperStyle.paddingRight);
+      const roomHeight = row.clientHeight - parseFloat(rowStyle.paddingTop) - parseFloat(rowStyle.paddingBottom);
+      const byHeight = roomHeight / label.offsetHeight;
+      // While the row's Pin and More stand (through the middle band) the name has the room up to them; once they leave, the row.
+      const gap = parseFloat(wrapperStyle.columnGap) || 0;
+      let after = 0;
+      for (let sibling = label.nextElementSibling; sibling; sibling = sibling.nextElementSibling) after += (sibling as HTMLElement).offsetWidth + gap;
+      row.style.setProperty("--fill-middle", Math.max(1, ROOM_MARGIN * Math.min((roomWidth - after) / width, byHeight)).toFixed(2));
+      row.style.setProperty("--fill-far", Math.max(1, ROOM_MARGIN * Math.min(roomWidth / width, byHeight)).toFixed(2));
+    }
+    const title = card.querySelector<HTMLElement>(".local-file-name"), header = card.querySelector<HTMLElement>(".node-title");
+    if (!title || !header || !title.offsetHeight) return;
+    const titleWidth = textWidth(title);
+    if (!(titleWidth > 0)) return;
+    const headerStyle = getComputedStyle(header), headerRect = header.getBoundingClientRect();
+    const left = headerRect.left + parseFloat(headerStyle.paddingLeft) * k, top = headerRect.top + parseFloat(headerStyle.paddingTop) * k;
+    const bottom = purpose && !purpose.element.hidden ? purpose.element.getBoundingClientRect().bottom : headerRect.bottom - parseFloat(headerStyle.paddingBottom) * k;
+    const roomWidth = (headerRect.right - parseFloat(headerStyle.paddingRight) * k - left) / k, roomHeight = (bottom - top) / k;
+    card.style.setProperty("--title-fill-h", Math.max(1, ROOM_MARGIN * roomHeight / title.offsetHeight).toFixed(2));
+    card.style.setProperty("--title-room-w", (ROOM_MARGIN * roomWidth).toFixed(1));
+    card.style.setProperty("--title-w", titleWidth.toFixed(1));
+    // The buttons that stay at each band intrude on the header's room as they hold their size: all three at the middle band, More alone further out.
+    card.style.setProperty("--actions-w", String(card.querySelector<HTMLElement>(".local-card-actions")?.offsetWidth ?? 0));
+    card.style.setProperty("--more-w", String(card.querySelector<HTMLElement>(".local-file-more")?.offsetWidth ?? 0));
   }
 
   /** Every kept-visible description shows; the books and the names say what each one would do next. */

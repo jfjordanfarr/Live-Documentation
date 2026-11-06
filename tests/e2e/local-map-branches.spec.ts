@@ -1,7 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { displayNames, gesture, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, panIntoView, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
+import { displayNames, gesture, keepGrowingComposition, loadGraph, LOCAL_MAP, localMapSettled, localRetainUrl, panIntoView, readPicture, scoreExpanded, scoreForeign, scoreOcclusion, symbolCounts } from "./still-picture";
 import { framePadding } from "../../packages/explorer/src/client/views/localView/layout-measure";
+
+/** These journeys read the growing composition's recorded facts and in-place descriptions, so they keep it (2026-11-05). */
+test.beforeEach(async ({ page }) => { await keepGrowingComposition(page); });
 
 const ROOT = "tests/integration/programs/typescript/rosetta/src/";
 const card = (page: Page, file: string) => page.locator(`#map-container .node-card[data-id="${ROOT}${file}"]`);

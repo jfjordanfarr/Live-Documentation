@@ -15,6 +15,8 @@ Written on [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-
 
 Since the ladder's first pass later on November 5 ([Turn 10](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-10)) two zoom steps out reach the middle band, so the first case expects the map's `data-lod` and a hidden Purpose there instead of the fade, which no longer applies to slot cards; the ladder's own promises are in [card-ladder.spec.ts](card-ladder.spec.ts.mdmd.md).
 
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the service's two-line slot is expected clipped, since a slot card took the ordinary card's width that day.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

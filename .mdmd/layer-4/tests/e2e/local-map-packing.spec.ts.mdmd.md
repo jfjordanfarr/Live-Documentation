@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/local-map-packing.spec.ts
-- Generated At: 2026-11-02T18:46:08.818Z
+- Generated At: 2026-11-06T03:23:54.460Z
 
 ## Authored
 ### Purpose
@@ -22,6 +22,8 @@ The publisher page closes after its export and share URL are captured. The recip
 Created for [the October 13 shared-preset implementation](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-6--shared-presets-and-advanced-tuning-approved-for-implementation).
 
 The journey over this repository takes about 27 seconds on one worker and ran to 32 once, so since 2026-10-19 it declares a minute; the motion test, 48 to 53 seconds of the minute it had declared, with the 3D settle at 20 of its 25-second wait, declares two minutes and a minute's wait. A test at nine tenths of its budget fails whenever the box is used beside it ([Turn 12 of the October 17 session](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-17.1.record.md#turn-12)).
+
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the folded Rosetta cards' case keeps the growing composition, whose folding it measures; the other cases run on the default.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -41,6 +43,7 @@ _No public symbols detected_
 - [`design-audit.textBoxes`](./design-audit.ts.mdmd.md#symbol-textboxes)
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
 - [`scopes.DECK_SCOPES`](./scopes.ts.mdmd.md#symbol-deck_scopes)
+- [`still-picture.keepGrowingComposition`](./still-picture.ts.mdmd.md#symbol-keepgrowingcomposition)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.localRetainUrl`](./still-picture.ts.mdmd.md#symbol-localretainurl)
 <!-- LIVE-DOC:END Dependencies -->

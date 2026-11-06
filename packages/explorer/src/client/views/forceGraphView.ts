@@ -46,7 +46,9 @@ import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
 import { nextRevealCount, REVEAL, revealCorresponding, revealLayers } from "./forceGraphReveal";
 import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf } from "./forceGraphScope";
 import { spatialSizeScale } from "./forceGraphSizing";
-import type { ExplorerState } from "../types";
+import { BURST, burstProgress, groupShapeOf, wrappedSeeds, wrapperHull, wrapperPadding, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
+import { layoutSettingsOf } from "../layout-presets";
+import type { ExplorerState, ForceGraphTuning } from "../types";
 import { under } from "./localView/directory-state";
 import type { ForceScene } from "./perspectiveTransition";
 import { getVisibleConnections, EMPTY_PIN_SET, type PinSet } from "./pin-state";
@@ -69,6 +71,16 @@ import { renderSpatialLegend } from "../panels/spatial-legend";
  * taken in parts across frames. Drawing and input have their own costs: this target alone is not a frame-time guarantee.
  */
 const FRAME_BUDGET = 10;
+
+/** Target milliseconds a frame spends laying out the groups waiting for a wrapper, at least one group a frame (2026-11-05). */
+const WRAPPER_BUDGET = 8;
+
+/** The settings a group's hidden shape depends on: the forces, the sizes and the reveal's pace, not how it is drawn or shown. */
+function shapeSettingsOf(tuning: ForceGraphTuning): Partial<ForceGraphTuning> {
+  const { groupWrappers, linkWidth, nodeZoomResistance, wireZoomResistance, nameAt, hops, updateEnergy, ...shape } = tuning;
+  void groupWrappers; void linkWidth; void nodeZoomResistance; void wireZoomResistance; void nameAt; void hops; void updateEnergy;
+  return shape;
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
@@ -252,6 +264,33 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   /** The groups shown only by their seed: the seed's id to the group's size in files (2026-11-02). */
   let scopeGroups = new Map<string, number>();
   let frontierHop = Infinity;
+  /**
+   * The wrapped groups, the Group Wrappers experiment (2026-11-05): each group's hidden shape and hull by a key of its
+   * files, its links and the tuning they were laid out with, laid out a few at a frame; the seeds wrapped in the picture
+   * with their keys; the groups waiting for a shape; the wrappers bursting open, by seed; and the shapes whose files enter
+   * where the shape placed them about their seed, by seed.
+   */
+  const wrapperShapes = new Map<string, { shape: GroupShape; hull: WrapperHull }>();
+  let wrapped = new Map<string, string>();
+  let wrapperWork: Array<{ key: string; seed: string; nodes: SpatialGraphNode[]; links: SpatialGraphData["links"]; tuning: ForceGraphTuning }> = [];
+  /** A burst's clock starts at the first frame after its pop, since the pop's own render can outlast the burst (found 2026-11-05). */
+  const bursts = new Map<string, { started: number | null; key: string }>();
+  const poppedShapes = new Map<string, GroupShape>();
+  let onScreenIds = new Set<string>();
+  /** The room each wrapped seed keeps in the field, given it once every wrapper of the picture is built. */
+  let wrapperRoom = new Map<string, number>();
+  /** Whether the renderer was last handed wrappers to draw: while off and never on, nothing of this is touched. */
+  let wrappersHanded = false;
+  let attentionAlpha: (id: string) => number = () => 1;
+  let drawLegend = (): void => {};
+  /** Whether groups are wrapped: by the tuning's choice, in the connections layout, where a group is a disconnected component. */
+  const wrapping = (): boolean => state.tuning.forceGraph.groupWrappers !== "off" && state.spatialLayout === "connections";
+  const hullOf = (seed: string): WrapperHull | undefined => {
+    const key = wrapped.get(seed) ?? bursts.get(seed)?.key;
+    return key === undefined ? undefined : wrapperShapes.get(key)?.hull;
+  };
+  /** Whether a seed stands wrapped now: wrapping, its group wrapped and its hull built. */
+  const isWrapped = (id: string): boolean => wrapping() && wrapped.has(id) && wrapperShapes.has(wrapped.get(id)!);
   /** Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed one past it; never at hop 0. */
   const atFrontier = (id: string): boolean => { const hop = scopeHops.get(id); return hop !== undefined && hop > 0 && hop >= frontierHop; };
   let actionStrip: HTMLDivElement | null = null;
@@ -429,6 +468,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     ready = true;
     requireElement("graph-svg").setAttribute("aria-busy", String(simulationRunning));
     frameDirectory();
+    buildWrappers();
+    advanceBursts();
     instance.updateControls();
     updateFocus(performance.now());
     instance.draw(pictureRevision);
@@ -475,8 +516,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const subject = focusedId ? nodeCache.get(focusedId) : undefined;
       const ids = pathScope.length || retainedScope.size || focusedId || focusedDirectory !== null ? framingIds() : null;
       const spheres = instance.graphData().nodes.filter(node => (!ids || ids.has(node.id)) && Number.isFinite(node.x))
-        .map(node => ({ center: { x: node.x!, y: node.y!, z: node.z! }, radius: spatialNodeRadius(node, state.tuning.forceGraph)
-          * spatialSizeScale(controls.target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance) }));
+        .map(node => ({ center: { x: node.x!, y: node.y!, z: node.z! }, radius: Math.max(spatialNodeRadius(node, state.tuning.forceGraph)
+          * spatialSizeScale(controls.target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance), isWrapped(node.id) ? hullOf(node.id)!.radius : 0) }));
       const centered = !fittingScope && focusedDirectory === null && subject && Number.isFinite(subject.x)
         ? { x: subject.x!, y: subject.y!, z: subject.z! } : undefined;
       const framing = camera instanceof PerspectiveCamera
@@ -736,6 +777,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (hasBundledDoc(id.slice(8))) onShowBundledDoc(id.slice(8));
     } else {
       const action = currentAction(id);
+      if (action?.kind === "file" && isWrapped(id) && !isRetainedFile(action.node.id)) popWrapper(id);
       if (action?.kind === "directory") options.onToggleDirectory(action.directory);
       else if (action?.kind === "file") options.onToggleNode(action.node.id);
     }
@@ -1028,8 +1070,33 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     scopeGroups = scope.groups;
     frontierHop = hopsShown;
     const hasFrontier = [...scope.hops.keys()].some(atFrontier);
-    // Whether any sphere has connections the picture does not show: it wears a ring (the owner's choice of 2026-11-02).
-    const hasRings = scope.beyond.size > 0;
+    // The wrapped groups (2026-11-05): in the connections layout, by the tuning's choice, every group the picture shows
+    // only by its seed, of two files or more, keyed by its files, its links and the settings its hidden shape depends on;
+    // a group with no shape yet waits for the frame loop to lay it out, the smallest first.
+    const nextWrapped = new Map<string, string>();
+    if (wrapping()) {
+      const tuning = { ...state.tuning.forceGraph }, settings = JSON.stringify(shapeSettingsOf(tuning));
+      const seeds = wrappedSeeds(scope.groups), byId = new Map(data.nodes.map(node => [node.id, node]));
+      const groupOf = new Map<string, string>();
+      for (const seed of seeds) for (const id of scope.groupFiles.get(seed) ?? []) groupOf.set(id, seed);
+      const linksOf = new Map<string, SpatialGraphData["links"]>();
+      for (const link of data.links) {
+        const seed = groupOf.get(link.source);
+        if (seed !== undefined && groupOf.get(link.target) === seed && pulls(link)) (linksOf.get(seed) ?? linksOf.set(seed, []).get(seed)!).push(link);
+      }
+      for (const seed of seeds) {
+        const nodes = (scope.groupFiles.get(seed) ?? []).flatMap(id => byId.get(id) ?? []), links = linksOf.get(seed) ?? [];
+        const key = JSON.stringify([nodes.map(node => [node.id, symbolCountOf(node)]), links.map(link => [link.source, link.target, link.count, link.kind]), settings]);
+        nextWrapped.set(seed, key);
+        if (!wrapperShapes.has(key) && !wrapperWork.some(work => work.key === key)) wrapperWork.push({ key, seed, nodes, links, tuning });
+      }
+    }
+    wrapped = nextWrapped;
+    const wanted = new Set(nextWrapped.values());
+    wrapperWork = wrapperWork.filter(work => wanted.has(work.key)).sort((a, b) => a.nodes.length - b.nodes.length || (a.seed < b.seed ? -1 : a.seed > b.seed ? 1 : 0));
+    for (const seed of [...poppedShapes.keys()]) if (!asked.has(seed)) poppedShapes.delete(seed);
+    // The first picture lays its groups out before it unfolds, so that it unfolds with every wrapper's room from the start.
+    if (!forceGraphInstance) buildWrappers(Infinity);
     // The repository's groups over its references, whatever the layout: how many, and how many files stand alone.
     const groupSizes = [...componentLandmarks(connectedNeighbours(data.nodes.filter(node => node.directoryPath === undefined && node.archetype !== "related-doc"), data.links, link => linkPulls(link, "connections"))).values()];
     const picture: SpatialGraphData = { nodes: data.nodes.filter(node => scope.hops.has(node.id)),
@@ -1081,11 +1148,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
       const instance = forceGraphInstance!;
-      const { updateEnergy, linkWidth, nodeZoomResistance, wireZoomResistance, ...forces } = state.tuning.forceGraph;
+      const { updateEnergy, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, ...forces } = state.tuning.forceGraph;
       void updateEnergy; // The energy feeds the next membership change and changes no force.
+      void groupWrappers; // A wrapper's room is its seed's clearance, given the motion apart from the forces.
       void nodeZoomResistance; void wireZoomResistance; // Appearance does not change the layout's physical sizes.
       pointerPickNeeded = true;
-      container.dataset.layoutSettings = JSON.stringify(state.tuning.forceGraph);
+      // The numeric layout settings alone, as the export carries them; the wrapper choice is not one (2026-11-06).
+      container.dataset.layoutSettings = JSON.stringify(layoutSettingsOf(state.tuning).forceGraph);
       if (wireWidth !== linkWidth) {
         // The widths are the attention's to set, with the path's emphasis; a changed scale is a change of attention.
         wireWidth = linkWidth;
@@ -1114,6 +1183,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
           links: () => heldLinks,
           strength: () => strength,
           readyToAnchor: () => reveal.shown >= reveal.order.length,
+          // A wrapped group's seed keeps the room its wrapper takes, so that no wrapper covers another or what is shown.
+          clearance: node => wrapperRoom.get(node.id),
           // A picture still part way through its reveal is not still: the rest enters first.
           onStill: () => { if (reveal.shown === reveal.order.length) simulationRunning = false; },
           onNodes: () => { pictureChanged(); },
@@ -1237,7 +1308,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const hasAttention = !!pins.entries.length || !!path?.length || directories.length > 0;
     const rootOverview = directories.includes("");
     // The key says what is drawn: the references and their directions where they are, the path, and the fading.
-    renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention, path: !!path?.length, faded: !!path?.length, frontier: hasFrontier, rings: hasRings });
+    // The key: the rings where a sphere has connections the picture does not show (the owner's choice of 2026-11-02),
+    // save on a wrapped seed, whose wrapper says so instead, and the wrapped groups while any is drawn (2026-11-05).
+    let legendAttention = false;
+    drawLegend = (): void => renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || legendAttention,
+      path: !!path?.length, faded: legendAttention || !!path?.length, frontier: hasFrontier, rings: [...scope.beyond.keys()].some(id => !isWrapped(id)),
+      wrapped: [...wrapped.keys()].some(isWrapped) });
+    drawLegend();
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {
         focusedDirectory = directories[0] ?? null;
@@ -1286,8 +1363,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (attentionSettings === nextAttention) return;
       attentionSettings = nextAttention;
       pictureChanged();
-      renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || attention !== null, path: !!path?.length, faded: attention !== null || !!path?.length, frontier: hasFrontier, rings: hasRings });
+      legendAttention = attention !== null;
+      drawLegend();
       const frontier = atFrontier;
+      // A wrapper takes its seed's attention: faded for the hover; dimmed as another group, though less than a sphere, since a veil
+      // already starts faint and at a sphere's 0.4 the unreached groups' wrappers all but vanished (2026-11-05).
+      attentionAlpha = id => attention ? (attention.has(id) ? 1 : 0.2) : frontier(id) ? 0.6 : 1;
+      styleWrappers();
       forceGraphInstance?.nodeColor((node: ForceGraphNode) => {
         const color = spatialNodeStyle(node.archetype).color;
         // Faded for the hover, with the hovered file and its connections whole even at the frontier; dimmed as the
@@ -1300,7 +1382,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // choice of 2026-11-02, B over A, the frontier's dimming kept and the ring saying where there is more. The ring
       // keeps its strength at the frontier, where it is the cue, and fades with the hover's attention.
       forceGraphInstance?.nodeRing((node: ForceGraphNode) => {
-        if (!scopeBeyond.get(node.id)) return null;
+        if (!scopeBeyond.get(node.id) || isWrapped(node.id)) return null;
         const alpha = attention ? (attention.has(node.id) ? .85 : .15) : .85;
         return emphasizedSphere(spatialNodeStyle(node.archetype).color, alpha, changedNodes.has(node.id), emphasis);
       });
@@ -1358,6 +1440,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       updateForces(!membershipChanged);
       if (membershipChanged) feed();
       frameDirectory();
+      refreshWrappers();
       setActive(true);
       return;
     }
@@ -1408,6 +1491,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     updateAttention();
     updateForces(true);
     setPiece(firstPiece);
+    refreshWrappers();
     simulation.tick(REVEAL.warmup);
     shownLayout = state.spatialLayout;
     membership = nextMembership;
@@ -1437,6 +1521,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         if (state.openDirectories?.has(action.directory)) options.onCloseDirectory(action.directory);
         else options.onOpenDirectory(action.directory);
       } else if (action?.kind === "file") {
+        if (isWrapped(actionTargetId!) && !isRetainedFile(action.node.id)) popWrapper(actionTargetId!);
         options.onTogglePin(action.node.id);
       }
       refreshActionStrip();
@@ -1625,11 +1710,104 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       link.source = reveal.nodes.get(resolveLinkEndpoint(link.source))!;
       link.target = reveal.nodes.get(resolveLinkEndpoint(link.target))!;
     }
+    // The files of a group popped open enter where its hidden shape placed them about the seed, so that they fill the
+    // wrapper that held them (2026-11-05); a file already on screen keeps its place.
+    for (const [seed, shape] of poppedShapes) {
+      const centre = reveal.nodes.get(seed);
+      if (!centre || ![centre.x, centre.y, centre.z].every(Number.isFinite)) continue;
+      for (const member of shape.members) {
+        const node = reveal.nodes.get(member.id);
+        if (!node || member.id === seed || onScreenIds.has(member.id) || !shown.has(member.id)) continue;
+        node.x = centre.x! + member.x; node.y = centre.y! + member.y; node.z = centre.z! + member.z;
+      }
+    }
+    if (reveal.shown >= reveal.order.length) poppedShapes.clear();
     for (const [id, start] of placeNewSpheres(nodes, links, state.tuning.forceGraph, state.spatialLayout)) {
       const node = reveal.nodes.get(id)!;
       node.x = start.x; node.y = start.y; node.z = start.z;
     }
+    onScreenIds = new Set(nodes.map(node => node.id));
     return { nodes, links };
+  }
+
+  /**
+   * Begin a wrapper's pop (2026-11-05): the click that pins its seed bursts it, a tenth larger and fading over a quarter
+   * of a second, at once under reduced motion, and the files that enter fill the shape it held.
+   */
+  function popWrapper(seed: string): void {
+    const key = wrapped.get(seed), entry = key === undefined ? undefined : wrapperShapes.get(key);
+    if (key === undefined || !entry) return;
+    poppedShapes.set(seed, entry.shape);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) bursts.set(seed, { started: null, key });
+  }
+
+  /** Lay out the groups waiting for a wrapper, the smallest first, within a part of the frame and at least one a frame. */
+  function buildWrappers(budget = WRAPPER_BUDGET): void {
+    if (!wrapperWork.length) return;
+    const started = performance.now();
+    do {
+      const work = wrapperWork.shift()!;
+      if (wrapperShapes.has(work.key)) continue;
+      const shape = groupShapeOf(work.nodes, work.links, work.seed, work.tuning);
+      wrapperShapes.set(work.key, { shape, hull: wrapperHull(shape, wrapperPadding(work.tuning)) });
+    } while (wrapperWork.length && performance.now() - started < budget);
+    // Shapes laid out for settings or files no longer shown are let go once they outnumber the wrappers in use.
+    if (wrapperShapes.size > 64 + 4 * wrapped.size) {
+      const used = new Set([...wrapped.values(), ...[...bursts.values()].map(burst => burst.key)]);
+      for (const key of [...wrapperShapes.keys()]) if (!used.has(key)) wrapperShapes.delete(key);
+    }
+    refreshWrappers();
+  }
+
+  /** Advance the wrappers bursting open; one that has burst is gone from the picture. */
+  function advanceBursts(): void {
+    if (!bursts.size) return;
+    const now = performance.now(), reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let done = false;
+    for (const [seed, burst] of bursts) {
+      burst.started ??= now;
+      if (burstProgress(now - burst.started, BURST.duration, reduced) >= 1) { bursts.delete(seed); done = true; }
+    }
+    if (done) refreshWrappers();
+    else { styleWrappers(); pictureChanged(); }
+  }
+
+  /** Each wrapper's opacity, as its seed's, a bursting one's growth and fading, and the hovered or focused seed's, for the rim. */
+  function styleWrappers(): void {
+    if (!forceGraphInstance) return;
+    const now = performance.now(), reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const burst = (seed: string): number => { const at = bursts.get(seed); return at ? burstProgress(now - (at.started ?? now), BURST.duration, reduced) : 0; };
+    forceGraphInstance.wrapperStyle({
+      alpha: seed => attentionAlpha(seed) * (1 - burst(seed)),
+      scale: seed => 1 + BURST.growth * burst(seed),
+      hovered: hoveredId !== null && isWrapped(hoveredId) ? hoveredId : null,
+      popping: new Set(bursts.keys())
+    });
+  }
+
+  /**
+   * Hand the renderer the wrappers drawn now, those bursting open among them, restyle them and the rings and the key,
+   * and give each wrapped seed the room its wrapper takes: a change of that room rebuilds the field and the picture
+   * unfolds, a picture at rest at the update energy. A change of room rearranges the whole; held from where the spheres
+   * stood, their tethers fought the wrappers' room, so that on this repository switching Off to Skin at rest took a
+   * minute to fall still and a release 54 seconds, against some 25 and 16 unfolding (2026-11-05).
+   */
+  function refreshWrappers(): void {
+    const instance = forceGraphInstance;
+    if (!instance || (!wrapping() && !wrappersHanded && !bursts.size && !wrapperRoom.size)) return;
+    const look = wrapping() ? state.tuning.forceGraph.groupWrappers : "off";
+    wrappersHanded = look !== "off";
+    instance.wrappers([...wrapped.keys(), ...[...bursts.keys()].filter(seed => !wrapped.has(seed))], hullOf, look);
+    instance.invalidateAppearance();
+    styleWrappers();
+    drawLegend();
+    // The room changes once, when every wrapper of the picture is built, rather than at each arrival.
+    const room = new Map([...wrapped.keys()].filter(isWrapped).map(seed => [seed, hullOf(seed)!.radius]));
+    if (!wrapperWork.length && JSON.stringify([...room]) !== JSON.stringify([...wrapperRoom])) {
+      wrapperRoom = room;
+      if (motion) { motion.invalidate(); if (simulationRunning) motion.wake("unfold"); else move(state.tuning.forceGraph.updateEnergy, "unfold"); }
+    }
+    pictureChanged();
   }
 
   /**

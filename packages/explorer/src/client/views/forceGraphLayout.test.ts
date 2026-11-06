@@ -251,6 +251,24 @@ describe("the update energy, the constant strength of a change's motion (ticket 
   });
 });
 
+describe("a sphere's clearance, the room a wrapped group's seed keeps (2026-11-05)", () => {
+  it("is its own radius unless more is asked, and a larger clearance pushes apart a pair that would otherwise rest touching", () => {
+    const pair: SpatialNode[] = [node("a", 1), node("b", 1)];
+    const tuning = { ...getDefaultTuning().forceGraph, charge: 0, gravity: 0, tether: 0 };
+    const own = spatialFieldOf(pair, [], tuning, "connections");
+    expect(Array.from(spatialFieldOf(pair, [], tuning, "connections", () => undefined).radii)).toEqual(Array.from(own.radii));
+    expect(Array.from(spatialFieldOf(pair, [], tuning, "connections", () => 1).radii), "a smaller clearance keeps the sphere's own").toEqual(Array.from(own.radii));
+    const roomy = spatialFieldOf(pair, [], tuning, "connections", item => item.id === "a" ? 80 : undefined);
+    expect(roomy.radii[0]).toBe(80);
+    expect(roomy.radii[1]).toBe(own.radii[1]);
+    const at = Float64Array.from([-20, 0, 0, 20, 0, 0]);
+    const plain = new Float64Array(6), wrapped = new Float64Array(6);
+    own.forces(at, plain); roomy.forces(at, wrapped);
+    expect(plain[0]).toBe(0);
+    expect(wrapped[0], "the wrapped seed is pushed away from its neighbour").toBeLessThan(0);
+  });
+});
+
 describe("the springs' strength, the lever on the pull between connected neighbours (2026-10-18)", () => {
   /** The spring's pull on one of a pair 200 units apart, at the given lever, with every other force away. */
   const pull = (linkStrength: number): number => {

@@ -76,6 +76,8 @@ export interface SpatialScope {
    * dimmed because the hops did not reach its group.
    */
   groups: Map<string, number>;
+  /** Each such group's files by the seed's id, in id order: what `groups` counts, for a wrapper drawn around them (2026-11-05). */
+  groupFiles: Map<string, readonly string[]>;
 }
 
 const endpointId = <N extends SpatialNode>(end: string | N): string => typeof end === "string" ? end : end.id;
@@ -117,6 +119,7 @@ export function spatialScope<N extends SpatialNode>(nodes: readonly N[], links: 
   // in files. A group that holds directory hubs is a containment tree, whose handle is its top hub, the root when it
   // stands: a click on a hub opens its directory, so the tree is one click away as an island is (2026-11-02).
   const groups = new Map<string, number>();
+  const groupFiles = new Map<string, readonly string[]>();
   const hubs = new Map(nodes.filter(node => node.directoryPath !== undefined).map(node => [node.id, node.directoryPath!]));
   const shallower = (a: string, b: string): number => hubs.get(a)!.length - hubs.get(b)!.length || (a < b ? -1 : a > b ? 1 : 0);
   for (const [seed, members] of componentMembers(beside, seedOf(nodes))) {
@@ -125,8 +128,8 @@ export function spatialScope<N extends SpatialNode>(nodes: readonly N[], links: 
     if (!files.length) continue;
     const handle = members.filter(id => hubs.has(id)).sort(shallower)[0] ?? seed;
     const shown = members.filter(id => result.has(id));
-    if (shown.length === 0) { result.set(handle, hops + 1); groups.set(handle, files.length); }
-    else if (shown.length === 1 && shown[0] === handle && files.length > 1) groups.set(handle, files.length);
+    if (shown.length === 0) { result.set(handle, hops + 1); groups.set(handle, files.length); groupFiles.set(handle, files); }
+    else if (shown.length === 1 && shown[0] === handle && files.length > 1) { groups.set(handle, files.length); groupFiles.set(handle, files); }
   }
   const beyond = new Map<string, number>();
   for (const id of result.keys()) {
@@ -134,7 +137,7 @@ export function spatialScope<N extends SpatialNode>(nodes: readonly N[], links: 
     for (const neighbour of beside.get(id)!) if (!result.has(neighbour)) count++;
     if (count) beyond.set(id, count);
   }
-  return { hops: result, beyond, groups };
+  return { hops: result, beyond, groups, groupFiles };
 }
 
 /** Most connected first, then by id, so that a choice is the same on every machine. */

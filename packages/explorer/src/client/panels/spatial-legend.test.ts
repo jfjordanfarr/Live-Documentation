@@ -27,3 +27,13 @@ it("adds the path, the frontier, the rings, the fading, the folders' size rule a
   ]);
   expect(spatialLegendRows({ ...graph, nodes: [] }, 0, { references: true, path: false, faded: false, frontier: false, rings: false }).map(row => row.shape)).toEqual(["width", "wire"]);
 });
+
+it("names a wrapped group, after the ring, only while a group is drawn wrapped (2026-11-05)", () => {
+  const graph: SpatialGraphData = { nodes: [node("a.ts", "implementation")], links: [] };
+  const drawn = { references: true, path: false, faded: false, frontier: true, rings: true };
+  expect(spatialLegendRows(graph, 1, drawn).map(row => row.shape)).not.toContain("wrapped");
+  expect(spatialLegendRows(graph, 1, { ...drawn, wrapped: false }).map(row => row.shape)).not.toContain("wrapped");
+  const rows = spatialLegendRows(graph, 1, { ...drawn, wrapped: true });
+  expect(rows.map(row => row.shape)).toEqual(["node", "size", "frontier", "ring", "wrapped"]);
+  expect(rows.at(-1)!.label).toBe("Wrapped group: its files, not shown; click to open it");
+});

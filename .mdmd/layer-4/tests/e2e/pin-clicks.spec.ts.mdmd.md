@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/pin-clicks.spec.ts
-- Generated At: 2026-10-22T16:47:58.787Z
+- Generated At: 2026-11-06T03:23:54.800Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,10 @@ Exercises the Local Map's explicit interaction grammar: direct Pin controls reta
 
 Since [November 5](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-1) a name's click reads its description rather than inspecting. The double-click cases keep their point, that no click on a name adds a pin or moves the subject, and now also assert that the evidence reader stays closed; the recorded-type case still inspects the referenced file.
 
+Since [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), when Card Text came to default to the fixed-slot composition, this spec pins the growing composition in its init script, since its journeys read that composition's recorded facts and in-place descriptions; the composition not chosen is to be deleted with its spec when the owner decides.
+
+On [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the pin became `keepGrowingComposition`, which merges the choice into the saved tuning rather than replacing it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -29,6 +33,7 @@ _No public symbols detected_
 ### Dependencies
 - `@playwright/test` - `Page`, `expect`, `test`
 - [`compressed-url-state.decompressSnapshot`](../../packages/explorer/src/client/persistence/compressed-url-state.ts.mdmd.md#symbol-decompresssnapshot)
+- [`still-picture.keepGrowingComposition`](./still-picture.ts.mdmd.md#symbol-keepgrowingcomposition)
 - [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 - [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->

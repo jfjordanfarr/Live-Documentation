@@ -23,6 +23,10 @@ Card Text and Slot Lines joined the 2D layout group on November 5, the card comp
 
 Text Resistance and Control Resistance brought the inventory to 52 on November 5, the card ladder's levers.
 
+Since 2026-11-05 the Tuning block holds one control more, the Group Wrappers select, so the count is one higher ([the experiment](../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
+
+Name Growth brought the count to 54 on [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), after Group Wrappers made it 53.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

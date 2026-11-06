@@ -57,6 +57,10 @@ for (const run of [DECK_SCOPES[0], DECK_SCOPES[3]]) {
   test(`the captured reading text predicts a narrower card cap: ${run.bundle}`, async ({ page }) => {
     test.setTimeout(60_000);
     await page.setViewportSize({ width: 1600, height: 1000 });
+    // Both loads of this case are the growing composition, whose reading text it studies; Card Text defaults to fixed slots since 2026-11-05.
+    await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
+    });
     await page.goto(localRetainUrl(run.base, run.scope));
     const capture = await captureFromPage(page, run);
     const graph = await loadBundleGraph(run);
@@ -64,7 +68,7 @@ for (const run of [DECK_SCOPES[0], DECK_SCOPES[3]]) {
     const predicted = evaluate(capture, graph, run, config);
     await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400 } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400, cardText: "grow" } } })
     });
     await page.goto(localRetainUrl(run.base, run.scope));
     const narrower = await captureFromPage(page, run);
@@ -79,6 +83,10 @@ test.describe("phone coarse-pointer reading geometry", () => {
   test("the original capture predicts narrower cards with wrapped relationship buttons and long names", async ({ page }) => {
     test.setTimeout(60_000);
     const run = DECK_SCOPES[0];
+    // Both loads are the growing composition, whose reading geometry this studies (Card Text defaults to fixed slots since 2026-11-05).
+    await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
+      key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
+    });
     await page.goto(localRetainUrl(run.base, run.scope));
     const capture = await captureFromPage(page, run);
     const graph = await loadBundleGraph(run);
@@ -94,7 +102,7 @@ test.describe("phone coarse-pointer reading geometry", () => {
     const predicted = evaluate(capture, graph, run, config);
     await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
       key: PERSISTED_UI_KEY,
-      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 225 } } })
+      value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 225, cardText: "grow" } } })
     });
     await page.goto(localRetainUrl(run.base, run.scope));
     const narrower = await captureFromPage(page, run);
@@ -118,6 +126,10 @@ test("indented code in a reading block preserves whitespace in the capture and n
     bundle.graph.files[run.subject].authored = ["### Purpose", "A **formatted** paragraph with `inline code`.", "", "```ts", ...code, "```"].join("\n");
     await route.fulfill({ response, json: bundle });
   });
+  // Both loads are the growing composition, whose reading block this studies (Card Text defaults to fixed slots since 2026-11-05).
+  await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardText: "grow" } } })
+  });
   await page.goto(localRetainUrl(run.base, run.scope));
   const capture = await captureFromPage(page, run), graph = await loadBundleGraph(run);
   expect(driftOf(capture, evaluate(capture, graph, run, baselineConfig()))).toEqual([]);
@@ -125,7 +137,7 @@ test("indented code in a reading block preserves whitespace in the capture and n
   const config = { ...baselineConfig(), cardMaxWidth: 400 };
   const predicted = evaluate(capture, graph, run, config);
   await page.addInitScript(({ key, value }) => window.localStorage.setItem(key, value), {
-    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400 } } })
+    key: PERSISTED_UI_KEY, value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { searchStarts: 0, cardMaxWidth: 400, cardText: "grow" } } })
   });
   await page.goto(localRetainUrl(run.base, run.scope));
   expect(driftOf(await captureFromPage(page, run), predicted)).toEqual([]);

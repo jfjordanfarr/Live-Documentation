@@ -1147,7 +1147,9 @@ export class LocalViewController implements LocalViewApi {
     }
     this.edgeSigns.update(this.contentRoot ? this.contentBounds : null, this.mapTransform, this.framePlace());
     if (!this.runtime.mapAnimationTarget && !this.stage?.move) this.stage?.search?.resume();
-    const ratio = (this.runtime.mapAnimationTarget?.k ?? this.mapTransform.k) / this.readingReferenceScale;
+    // From this frame's own scale, not the animation's destination: the owner saw the fonts "jump up in size before
+    // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).
+    const ratio = this.mapTransform.k / this.readingReferenceScale;
     this.applyLevelOfDetail(ratio);
     if (this.reading && this.stage?.search && !this.readingFrame && !this.readingCalibrationPending) {
       // Below reading scale the prose fades and above it returns, with the same two ratios so that the edge does not
@@ -1166,7 +1168,9 @@ export class LocalViewController implements LocalViewApi {
    * The card ladder's band and scales (2026-11-05, Turn 9): inside a fixed box, names and controls hold their screen
    * size by a resistance, descriptions gain lines as the camera comes closer, and each band below reading scale lets
    * the next tier of a slot card leave, the stylesheet reading the band from `data-lod`. The edges, 1.3, 0.74, 0.45
-   * and 0.25 of the reading scale, carry a 15 % margin upward so that a zoom resting on one does not chatter.
+   * and 0.25 of the reading scale, carry a 15 % margin upward so that a zoom resting on one does not chatter. Below
+   * reading scale a name also grows into the room its description leaves, up to Name Growth times its held size
+   * (Turn 11), the room measured at render by the card reading.
    */
   private applyLevelOfDetail(ratio: number): void {
     if (!Number.isFinite(ratio) || ratio <= 0) return;
@@ -1176,12 +1180,13 @@ export class LocalViewController implements LocalViewApi {
     while (index > 0 && ratio < edges[index - 1]) index -= 1;
     while (index < edges.length && ratio > edges[index] * 1.15) index += 1;
     this.lod = bands[index];
-    const { textResistance, controlResistance, slotLines } = this.options.state.tuning.localMap;
+    const { textResistance, controlResistance, slotLines, nameGrowth } = this.options.state.tuning.localMap;
     const clamp = (value: number): number => Math.min(4, Math.max(0.5, value));
     const proseScale = Math.min(1, ratio ** -textResistance);
     const style = this.container.style;
     this.container.dataset.lod = this.lod;
     style.setProperty("--text-scale", clamp(ratio ** -textResistance).toFixed(3));
+    style.setProperty("--name-growth", Math.max(1, Number.isFinite(nameGrowth) ? nameGrowth : 1).toFixed(2));
     style.setProperty("--control-scale", clamp(ratio ** -controlResistance).toFixed(3));
     style.setProperty("--prose-scale", proseScale.toFixed(3));
     style.setProperty("--prose-lines", String(Math.max(1, Math.floor(Math.max(1, Math.round(slotLines)) / proseScale))));

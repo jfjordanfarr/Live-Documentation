@@ -3,7 +3,7 @@ import * as fs from "node:fs/promises";
 
 import { describeFaults, overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { DECK_SCOPES } from "./scopes";
-import { localMapSettled, localRetainUrl } from "./still-picture";
+import { keepGrowingComposition, localMapSettled, localRetainUrl } from "./still-picture";
 import { LAYOUT_PRESETS } from "../../packages/explorer/src/client/layout-presets";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -164,6 +164,7 @@ test("instant continuing layouts redraw the actual wires onto their pins", async
 });
 
 test("the default packing aligns the three folded Rosetta cards, and a packing change preserves their facts", async ({ page }) => {
+  await keepGrowingComposition(page); // folded cards are the growing composition's
   const root = "tests/integration/programs/typescript/rosetta/src/";
   await page.goto(`/?view=local&node=${root}main.ts`);
   await page.locator(".local-placed").waitFor();

@@ -37,17 +37,20 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-symbol-order":              "Orders a card's symbols by where their wires lead, alphabetically, or as the file lists them.",
   "tuning-move-ms":                   "How long the picture takes to move to a new arrangement; zero jumps.",
   "tuning-hold-still":                "Which card stays put on screen while the picture moves around it.",
-  "tuning-card-text":                 "How a card shows its text: a description opens on a tap and the card grows, or every symbol has a fixed slot.",
+  "tuning-card-text":                 "How a card shows its text: every symbol has a fixed slot cut with an ellipsis, or a description opens on a tap.",
   "tuning-slot-lines":                "With fixed slots, how many lines of text each symbol's slot holds, filled or not.",
   "tuning-text-resistance":           "With fixed slots, how much names resist the zoom below reading scale: 0 follows it, 1 holds their screen size.",
+  "tuning-name-growth":               "With fixed slots, how much names grow on screen into the room descriptions leave below reading scale: 1 holds.",
   "tuning-control-resistance":        "With fixed slots, how much a card's buttons and anchors resist the zoom: 0 follows it, 1 holds their screen size.",
   "tuning-order-starts":              "More tries before the first picture may find a better one, and draw it later.",
   "tuning-search-starts":             "How many more arrangements are tried, one at a time while idle, after the picture is drawn; zero stops the search.",
   "tuning-search-patience":           "How many tries in a row may fail to improve the picture before the search rests.",
   "tuning-churn-cost":                "How much better a found picture must be before the cards on screen move to it; zero moves to any better one.",
 
-  // 3D discovery: what the picture shows around what was asked about, and how it enters (forceGraphScope.ts, forceGraphReveal.ts).
+  // 3D discovery: what the picture shows around what was asked about, and how it enters (forceGraphScope.ts, forceGraphReveal.ts),
+  // and the wrapped groups' experiment (forceGraphWrappers.ts, 2026-11-05).
   "tuning-force-hops":                "How many hops of connections show around what you asked about; the last hop is dimmed and a click on it shows more.",
+  "tuning-force-group-wrappers":      "Wraps each group shown only by its seed in a shape of its files, which a click pops open.",
   "tuning-force-reveal-frames":       "How many frames the picture takes to enter, hop by hop; fewer is quicker.",
 
   // 3D forces: the field and its motion (forceGraphPhysics.ts, forceGraphLayout.ts).

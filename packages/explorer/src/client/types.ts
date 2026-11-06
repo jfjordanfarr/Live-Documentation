@@ -86,6 +86,12 @@ export interface LocalMapTuning {
   /** With fixed slots, how much a card's buttons and anchor dots resist the zoom: 0 follows the map, 1 holds screen size (2026-11-05). */
   controlResistance: number;
   /**
+   * With fixed slots, how much larger than its held size a name may grow on screen into the room its description leaves
+   * below reading scale, each name bounded by its own row and the file's by its header (2026-11-05, Turn 11): 1 holds,
+   * 1.5 grows by half.
+   */
+  nameGrowth: number;
+  /**
    * How strongly the ranking pulls every file toward the last column: zero ranks by the fewest column spans, a weight
    * above every pair's by longest-chain depth, as before 2026-10-06. A lever of the layout lab.
    */
@@ -191,6 +197,15 @@ export interface HistoryTuning {
   changeEmphasis: ChangeEmphasis;
 }
 
+/**
+ * How the 3D Local Map draws a disconnected group it shows only by its seed (an experiment, 2026-11-05): not at all, the
+ * default; inside a translucent skin; inside a cloud; or inside a cloud that gains a smooth rim on hover or keyboard focus.
+ */
+export type GroupWrappers = "off" | "skin" | "cloud" | "cloud-rim";
+
+/** Every wrapper choice, in the order the control offers them. */
+export const GROUP_WRAPPERS: readonly GroupWrappers[] = ["off", "skin", "cloud", "cloud-rim"];
+
 /** The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab. */
 export interface ForceGraphTuning {
   /** Preferred surface-to-surface gap for a pair with one documented reference. */
@@ -280,6 +295,11 @@ export interface ForceGraphTuning {
    * pace of the reveal (2026-10-31), so that the structure unfurls before the eye rather than appearing whole.
    */
   revealFrames: number;
+  /**
+   * How a group the picture shows only by its seed is wrapped: in a padded hull of its own files laid out hidden, which a
+   * click pops open as it pins the seed (`forceGraphWrappers.ts`); off by default, so the picture is as before (2026-11-05).
+   */
+  groupWrappers: GroupWrappers;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

@@ -1,0 +1,38 @@
+{
+  "which": "estate",
+  "popSeed": "PaymentService/PaymentService.cs",
+  "steps": [
+    {
+      "ms": 0,
+      "popping": [
+        "PaymentService/PaymentService.cs"
+      ],
+      "wrapped": 1
+    },
+    {
+      "ms": 100,
+      "popping": [
+        "PaymentService/PaymentService.cs"
+      ],
+      "wrapped": 1
+    },
+    {
+      "ms": 250,
+      "popping": [],
+      "wrapped": 1
+    },
+    {
+      "ms": 500,
+      "popping": [],
+      "wrapped": 1
+    }
+  ],
+  "popSettleMs": 3392,
+  "wrapperBackMs": 54,
+  "releaseSettleMs": 5036,
+  "released": {
+    "wrapped": 2,
+    "triangles": 366
+  },
+  "releasedIdleFrames": 0
+}

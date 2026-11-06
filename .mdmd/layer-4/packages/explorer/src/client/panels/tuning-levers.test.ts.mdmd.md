@@ -14,6 +14,10 @@ Keeps the template's tuning controls in step with the two things they answer to:
 - Reads `template.html` as text and finds the controls by their `tuning-` ids, since the template is the page's markup and no DOM is needed to list its controls (the Explorer's rule against jsdom tests). The count of 43 is the number of controls on 2026-10-30; a control added or removed changes it on purpose.
 - It also checks every control's initial value in the template, a slider's value and readout and a select's chosen option, against `getDefaultTuning` in `local-storage.ts`, finding each control's setting from its id. The panel overwrites the controls from the state as it starts, so a stale value showed only before that sync and in the markup; on 2026-10-30 Row Levelness read 0.25 and Axis began at By step against defaults of 2 and By date, and this check is what keeps them from drifting again. A control whose id names no setting fails it too.
 
+Since 2026-11-05 the template holds one control more, Group Wrappers, so the count is one higher ([the experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
+
+Name Growth brought the inventory to 54 on [Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), after Group Wrappers made it 53.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

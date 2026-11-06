@@ -83,6 +83,11 @@ export interface CardCapture {
   maxWidth?: number;
   readingWidth?: number;
   readingFrameHeight?: number;
+  /**
+   * The fixed-slot composition's allotments (2026-11-06): every public row's explicit height, and the Purpose's slot
+   * height, which depend on Slot Lines alone; absent for an ordinary or a reading card, whose rows take their content.
+   */
+  slot?: { rowHeight: number; purposeHeight: number };
   constants?: CardConstants;
   purpose?: ReadingFlow;
   overflow?: ReadingFlow;
@@ -476,6 +481,13 @@ function readCapture(page: Page): Promise<PageCapture> {
         readingWidth: card.classList.contains("local-reading-card") ? px(cardStyle.getPropertyValue("--reading-available-width")) : undefined,
         readingFrameHeight: card.classList.contains("local-reading-card") ? px(cardStyle.getPropertyValue("--reading-frame-height")) : undefined,
         constants: constants!,
+        slot: card.classList.contains("local-slot-card") ? (() => {
+          const row = grid.querySelector<HTMLElement>(":scope > .symbol-row:not(.internals-row)");
+          const lines = Math.max(1, Math.round(parseFloat(getComputedStyle(root).getPropertyValue("--slot-lines")) || 2));
+          const purposeElement = card.querySelector<HTMLElement>(":scope > .local-reading-purpose");
+          return { rowHeight: row ? unit(row.getBoundingClientRect().height / scale) : 32 + 17 * lines,
+            purposeHeight: purposeElement && getComputedStyle(purposeElement).display !== "none" ? unit(purposeElement.getBoundingClientRect().height / scale) : 0 };
+        })() : undefined,
         purpose: visibleFlow(card.querySelector<HTMLElement>(":scope > .local-reading-purpose")),
         overflow: (() => {
           const button = card.querySelector<HTMLButtonElement>(":scope > .local-reading-file-full");

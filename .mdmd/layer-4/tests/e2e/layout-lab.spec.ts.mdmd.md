@@ -18,6 +18,12 @@ For each scope the test's own page shows the retained Local Map, `captureFromPag
 
 November 4 adds predictions from the original capture at a different width cap, over repository and estate data, and a controlled canonical-document fixture with mixed prose, indented code and a blank line. The code text is checked verbatim before the independent browser geometry comparison. See the [integration record](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-2).
 
+Since [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), when Card Text came to default to the fixed-slot composition, this spec pins the growing composition in its init script, since its journeys read that composition's recorded facts and in-place descriptions; the composition not chosen is to be deleted with its spec when the owner decides.
+
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the two deck cases run on the default composition, which the lab now models; the reading-text cases keep the growing one.
+
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the narrow-cap, phone and indented-code cases keep the growing composition on both of their loads, since Card Text defaults to fixed slots and a capture of slot cards cannot predict a page of growing ones; that mismatch was the whole of their drift.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -108,9 +108,11 @@
 /* Fixed slots, the comparison of 2026-11-05: a card's box depends on the file's structure, never on what is read or on
    zoom. The ordinary type stays; every symbol's slot holds the same number of lines (Slot Lines in Tuning), filled or
    not, cut with an ellipsis; a tap on the name opens the reader. */
-.local-slot-card { min-width: min(440px, var(--reading-card-width, 520px)); max-width: min(440px, var(--reading-card-width, 520px)); }
-.local-reading-slot { padding: 1px 2px 6px; font-size: 12px; line-height: 17px; }
-.local-reading-slot .local-reading-prose { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--slot-lines, 2); overflow: hidden; height: calc(var(--slot-lines, 2) * 17px); max-height: none; }
+/* A slot card is as wide as an ordinary card, its names, path and chips deciding: the slots' prose contributes nothing
+   to the card's intrinsic width (Turn 12, when a 440 px minimum kept a directory from being framed whole) and wraps at
+   whatever width the card has. The prose clips rather than hides, so that no reveal by the browser can scroll it. */
+.local-reading-slot { padding: 1px 2px 6px; font-size: 12px; line-height: 17px; contain: inline-size; }
+.local-reading-slot .local-reading-prose { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--slot-lines, 2); overflow: clip; height: calc(var(--slot-lines, 2) * 17px); max-height: none; }
 .local-reading-slot .local-reading-prose:empty { display: -webkit-box; }
 .local-reading-slot .local-reading-prose :is(p, ul, ol, h1, h2, h3) { margin: 0; }
 .local-reading-slot .local-reading-types, .local-reading-slot .local-reading-full { display: none; }
@@ -124,19 +126,32 @@
 /* The card ladder (2026-11-05, Turn 9), slot cards only: inside a box that never changes, a description gains lines as
    the camera comes closer; below reading scale the band leaves out one tier after another, keeping each element's box so
    that nothing re-flows, and names, the node's controls and the anchor dots hold their screen size by the resistances
-   the controller writes as --text-scale and --control-scale; transforms change no layout. */
+   the controller writes as --text-scale and --control-scale; transforms change no layout. Below reading scale a name
+   also grows into the room its description leaves (Turn 11): a symbol's name up to its row's allotment, the file's name
+   down to the Purpose's slot and short of the card's buttons at their held size, the rooms measured at render by the
+   card reading as --fill-scale, --title-fill-h, --title-room-w, --title-w and --actions-w, and the growth bounded by
+   Name Growth, written as --name-growth, times the held size. */
 .local-slot-card .local-reading-slot .local-reading-prose { font-size: calc(12px * var(--prose-scale, 1)); line-height: calc(17px * var(--prose-scale, 1)); -webkit-line-clamp: var(--prose-lines, var(--slot-lines, 2)); }
 .local-slot-card .local-card-actions { transform: scale(var(--control-scale, 1)); transform-origin: top right; }
 .local-slot-card .symbol-anchor.dot { transform: scale(var(--control-scale, 1)); }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: var(--text-scale, 1); }
-.local-slot-card .symbol-label { transform: scale(var(--name-scale, 1)); transform-origin: left center; }
-.local-slot-card .local-file-name { display: inline-block; transform: scale(var(--name-scale, 1)); transform-origin: left top; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: min(var(--title-fill-h, 1), (var(--title-room-w, 1) - var(--actions-w, 0) * (var(--control-scale, 1) - 1)) / var(--title-w, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: min(var(--title-fill-h, 1), (var(--title-room-w, 1) - var(--more-w, 0) * (var(--control-scale, 1) - 1)) / var(--title-w, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
+[data-lod="middle"] .local-slot-card .symbol-row { --name-scale: min(var(--fill-middle, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: min(var(--fill-far, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
+/* The ladder scales a name's text, never its button, whose box fills the row and would cover the row's buttons scaled (2026-11-06). */
+.local-slot-card .symbol-label .symbol-label-text, .local-slot-card .local-file-name .local-file-name-text { display: inline-block; transform: scale(var(--name-scale, 1)); transform-origin: left top; }
 /* A symbol row keeps its allotment in every band; when the slot leaves, the name stands centred in it. */
 .local-slot-card .symbol-row:not(.internals-row) { height: calc(32px + var(--slot-lines, 2) * 17px); grid-template-rows: auto minmax(0, 1fr); align-content: start; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row:not(.internals-row) { align-content: center; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row .local-reading-slot { display: none; }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-reading-purpose, .local-symbol-pin, .local-symbol-more, .type-refs-indicator) { visibility: hidden; }
-:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.node-path, .node-directory, .node-tests, .node-meta, .local-disclosure, .local-back-references) { visibility: hidden; }
+/* The middle band's tier: the descriptions and the badges, and the header's path, directory line, test chips and
+   counts, so that the file's name has the header's room (Turn 11); the far band's: the row controls, the cycle link
+   and the disclosure, and every node control but More. A name's room is its own box while the row's controls stand
+   (--fill-middle) and the whole row once they leave (--fill-far). */
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-reading-purpose, .type-refs-indicator, .node-path, .node-directory, .node-tests, .node-meta) { visibility: hidden; }
+/* A row's Pin and More stay through the middle band, at the map's scale for now, so that a symbol can be pinned two
+   steps out as close up (the owner, Turn 9: "the symbol buttons too when we can"); they leave at the far band. */
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-symbol-pin, .local-symbol-more, .local-disclosure, .local-back-references) { visibility: hidden; }
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions > :not(.local-file-more) { display: none; }
 
 /* Text leads at reading scale; highlighted relationships retain their usual emphasis. */

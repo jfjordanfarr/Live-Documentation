@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphRenderer.ts
-- Generated At: 2026-11-02T06:07:14.574Z
+- Generated At: 2026-11-05T23:08:51.343Z
 
 ## Authored
 ### Purpose
@@ -19,26 +19,28 @@ Node presses use the uploaded tessellated sphere. A node drag uses a camera-faci
 
 The node/line colour, visibility, radius and width accessors describe appearance only. Camera positions and graph-to-screen coordinates are shared with labels, framing and perspective transitions. The window into the graph remains the same documented data; this layer adds no source-analysis facts.
 
+Since 2026-11-05 `nodeAt` returns a wrapped group's seed when the ray meets the group's wrapper before any sphere, so that hover, click, the press-and-hold menu and drag treat a wrapper as its seed; `wrappers` and `wrapperStyle` pass the [Group Wrappers experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)'s geometry and style to the buffers.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SPATIAL_DRAG_SLOP` {#symbol-spatial_drag_slop}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L9)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L10)
 
 ##### `SPATIAL_DRAG_SLOP` — Summary
 Mouse/touch motion within this CSS-pixel distance is still a click, shared with the view's press/hold handling.
 
 #### `SpatialRendererOptions` {#symbol-spatialrendereroptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L12)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L13)
 
 ##### `SpatialRendererOptions` — Summary
 The view owns motion and attention; this layer owns only their picture, camera and direct instance picking.
 
 #### `SpatialRenderer` {#symbol-spatialrenderer}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphRenderer.ts#L22)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
 
 ##### `SpatialRenderer` — Summary
@@ -49,10 +51,13 @@ A direct Three renderer with a bounded number of scene objects, irrespective of 
 ### Dependencies
 - [`forceGraphBatches.SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
 - [`forceGraphBatches.SpatialDrawStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawstyle)
+- [`forceGraphBatches.SpatialWrapperStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperstyle)
 - [`forceGraphBatches.createSpatialBuffers`](./forceGraphBatches.ts.mdmd.md#symbol-createspatialbuffers)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint) (type-only)
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
+- [`forceGraphWrappers.GroupWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-groupwrappers) (type-only)
+- [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface) (type-only)
 - `three` - `AmbientLight`, `DirectionalLight`, `PerspectiveCamera`, `Plane`, `Raycaster`, `Scene`, `Vector2`, `Vector3`, `WebGLRenderer`
 - `three/addons/controls/TrackballControls.js` - `TrackballControls`
 <!-- LIVE-DOC:END Dependencies -->

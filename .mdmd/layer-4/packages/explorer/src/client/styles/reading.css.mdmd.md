@@ -19,6 +19,12 @@ Since [November 5](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2
 
 The card ladder ([Turn 9](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9), slot cards only): transforms, which change no layout, scale the node's controls and the anchor dots by `--control-scale` and, from the middle band down, names and the file's name by `--text-scale`; a description's type follows `--prose-scale` inside its fixed slot with `--prose-lines` lines; every symbol row but Internals keeps an explicit allotment, `32px + Slot Lines × 17px`, and centres its name once the slot leaves. By band, read from the map's `data-lod`: Middle leaves out the descriptions, the row controls and the type badges; Far the path, the directory line, the tests chips, the counts and the cycle link, and every node control but More. Hidden parts keep their boxes (`visibility: hidden`) or stand in a row with an explicit height, so no box changes.
 
+Since [Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11) the ladder's names grow into the room their descriptions leave: a row's `--name-scale` is the least of its measured `--fill-scale` and `--text-scale` times `--name-growth`, the card's (for the file's name) the least of `--title-fill-h`, the header's width less the buttons' intrusion at `--control-scale` over the name's width, and the same product; the path, directory line, test chips and counts leave at the middle band so that the header's room is free.
+
+On [Turn 12](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) a slot card lost its 440 px width and took the ordinary card's, its slots contributing nothing to the card's intrinsic width (`contain: inline-size`), after the fixed width kept a directory from being framed whole; the prose clips rather than hides, so that no reveal by the browser can scroll it, which the navigation journey had caught.
+
+Later on [Turn 12](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6): the ladder scales the names' text spans, not their buttons; the row's Pin and More stay through the middle band, at the map's scale for now, and leave at the far band, since a symbol must be pinnable two steps out as close up; a name's room is its own box while they stand (`--fill-middle`) and the whole row once they leave (`--fill-far`).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

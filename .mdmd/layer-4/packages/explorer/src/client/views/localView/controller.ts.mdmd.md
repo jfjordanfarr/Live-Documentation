@@ -40,6 +40,10 @@ The same day's comparison ([Turn 4](../../../../../../../../AI-Agent-Workspace/C
 
 The card ladder ([Turn 9](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9), built under [Turn 10](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-10)): `applyLevelOfDetail` turns the zoom ratio against the calibrated reading scale into a band, overview, far, middle, reading or close, with edges at 0.25, 0.45, 0.74 and 1.3 and a 15 % margin upward so that a zoom resting on an edge does not chatter, writes it as `data-lod` on the map for the stylesheet, and sets `--text-scale` and `--control-scale` from the Text and Control Resistance tunings (the ratio to the power of minus the resistance, clamped) and `--prose-scale` and `--prose-lines` so that a description gains lines as the camera comes closer. It runs at every transform update and at every render. The growing composition still only fades below reading scale; the ladder draws slot cards.
 
+Since [Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11) `applyLevelOfDetail` also writes `--name-growth`, the Name Growth lever clamped to at least 1, which the stylesheet multiplies into a name's held size below reading scale; the rooms a name may grow into are measured by the card reading, not here.
+
+Since [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) `updateMapTransform` feeds the ladder the frame's own scale rather than the zoom animation's destination, after the owner saw the fonts "jump up in size before the viewport has actually reached its terminal zoom destination".
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

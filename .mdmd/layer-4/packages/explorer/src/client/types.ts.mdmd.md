@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-05T22:04:00.995Z
+- Generated At: 2026-11-05T23:55:55.642Z
 
 ## Authored
 ### Purpose
@@ -38,10 +38,13 @@ The history's levers (2026-10-18, ticket C4 of [the change-over-time plan](../..
 
 - Since 2026-10-21 `updateEnergy` is the constant strength a change's motion eases at, a share of the forces, until the spheres are still: a lower one moves the picture more gently and for longer to much the same rest, and zero still places alone. `tether` joined it that day: how strongly each sphere is held to where it stood when the picture last began to move, the force that brings a large picture to rest and keeps a person's bearings through a change, the owner's to tune by eye ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 - `showCitingDocs` and `ForceGraphTuning.citedByPull` (2026-10-22, [the decision](../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)): the filter for the documents that cite a file, apart from the documents it cites, and the share of a reference's spring such a citation pulls with, zero to draw it without pull.
+- Since 2026-11-05 `ForceGraphTuning.groupWrappers` (`GroupWrappers`, `GROUP_WRAPPERS`) is the [Group Wrappers experiment](../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)'s choice: off, the default, skin, cloud, or cloud with a rim on hover.
 
 - `LocalMapTuning.cardText` ([2026-11-05](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-4)): how a card shows its authored text, `grow`, a description opening on a tap with the card growing around its held name, or `slot`, the same fixed slot for every symbol, `slotLines` text lines (two by default, [Turn 6](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-6)) cut with an ellipsis and the full text in the reader; the comparison the owner asked to see before choosing, read by the reading surface through the controller.
 
 - `textResistance` (0.8) and `controlResistance` (1) ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)): with fixed slots, how much names, and the node's buttons and anchor dots, resist the zoom, 0 following the map and 1 holding screen size; the same lever the 3D view has for spheres and wires.
+
+`nameGrowth` joined `LocalMapTuning` on [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11): how much larger than its held size a name may grow on screen into the room its description leaves below reading scale.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -94,7 +97,7 @@ added 2025-12-07 (commit `a99ac04`) and 2025-12-17 (commit `f373c45`).
 
 #### `SymbolOrder` {#symbol-symbolorder}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L151)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L157)
 
 ##### `SymbolOrder` — Summary
 How a card's symbol rows stand: where their wires lead, which the many-file
@@ -103,14 +106,14 @@ Live Doc lists them, the order of appearance in the file.
 
 #### `TuningConfig` {#symbol-tuningconfig}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L154)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L160)
 
 ##### `TuningConfig` — Summary
 Aggregate tuning configuration threading through into every Explorer view.
 
 #### `HistoryGranularity` {#symbol-historygranularity}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L166)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L172)
 
 ##### `HistoryGranularity` — Summary
 Which ticks the history's scrubber draws and the step key moves between: every step; one per day, week or month
@@ -119,21 +122,21 @@ five-commit repository shows five ticks and a long history shows months (the vie
 
 #### `HISTORY_GRANULARITIES` {#symbol-history_granularities}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L169)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L175)
 
 ##### `HISTORY_GRANULARITIES` — Summary
 Every granularity, in the order the control offers them.
 
 #### `HistoryAxis` {#symbol-historyaxis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L172)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L178)
 
 ##### `HistoryAxis` — Summary
 How the scrubber lays its steps out: evenly by step, or by date, where a quiet stretch reads as a gap (scenario 14).
 
 #### `ChangeEmphasis` {#symbol-changeemphasis}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L179)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L185)
 
 ##### `ChangeEmphasis` — Summary
 How the files a step of the history changed are told apart in the 3D picture while the history is shown (the owner's
@@ -142,49 +145,64 @@ emphasis holds for the whole displayed commit, in playback and at rest; the next
 
 #### `CHANGE_EMPHASES` {#symbol-change_emphases}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L182)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L188)
 
 ##### `CHANGE_EMPHASES` — Summary
 Every emphasis, in the order the control offers them.
 
 #### `HistoryTuning` {#symbol-historytuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L185)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L191)
 
 ##### `HistoryTuning` — Summary
 The levers of the history's scrubber, the view's half of the granularity seam (2026-10-18), and the picture's emphasis on a step's changes (2026-10-31).
 
+#### `GroupWrappers` {#symbol-groupwrappers}
+- Type: type
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L204)
+
+##### `GroupWrappers` — Summary
+How the 3D Local Map draws a disconnected group it shows only by its seed (an experiment, 2026-11-05): not at all, the
+default; inside a translucent skin; inside a cloud; or inside a cloud that gains a smooth rim on hover or keyboard focus.
+
+#### `GROUP_WRAPPERS` {#symbol-group_wrappers}
+- Type: const
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L207)
+
+##### `GROUP_WRAPPERS` — Summary
+Every wrapper choice, in the order the control offers them.
+
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L195)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L210)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L286)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L306)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L291)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L311)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L298)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L318)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L304)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L324)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -192,7 +210,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L333)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L353)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

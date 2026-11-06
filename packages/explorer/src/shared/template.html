@@ -203,8 +203,8 @@
           <label class="tuning-slider">
             <span>Card Text</span>
             <select id="tuning-card-text">
+              <option value="slot" selected>Fixed slots, cut with an ellipsis</option>
               <option value="grow">Opens on a tap; the card grows</option>
-              <option value="slot">Fixed slots, cut with an ellipsis</option>
             </select>
           </label>
           <label class="tuning-slider">
@@ -214,8 +214,13 @@
           </label>
           <label class="tuning-slider">
             <span>Text Resistance</span>
-            <input type="range" id="tuning-text-resistance" min="0" max="1" step="0.05" value="0.8" />
-            <output id="tuning-text-resistance-value">0.8</output>
+            <input type="range" id="tuning-text-resistance" min="0" max="1" step="0.05" value="1" />
+            <output id="tuning-text-resistance-value">1</output>
+          </label>
+          <label class="tuning-slider">
+            <span>Name Growth</span>
+            <input type="range" id="tuning-name-growth" min="1" max="3" step="0.1" value="1.5" />
+            <output id="tuning-name-growth-value">1.5</output>
           </label>
           <label class="tuning-slider">
             <span>Control Resistance</span>
@@ -250,6 +255,15 @@
             <label class="tuning-slider">
               <span>Hops Shown</span><input type="range" id="tuning-force-hops" min="1" max="4" step="1" value="2" />
               <output id="tuning-force-hops-value">2</output>
+            </label>
+            <label class="tuning-slider">
+              <span>Group Wrappers</span>
+              <select id="tuning-force-group-wrappers">
+                <option value="off" selected>Off</option>
+                <option value="skin">Skin</option>
+                <option value="cloud">Cloud</option>
+                <option value="cloud-rim">Cloud, rim on hover</option>
+              </select>
             </label>
             <label class="tuning-slider">
               <span>Reveal Frames</span><input type="range" id="tuning-force-reveal-frames" min="1" max="240" step="1" value="60" />

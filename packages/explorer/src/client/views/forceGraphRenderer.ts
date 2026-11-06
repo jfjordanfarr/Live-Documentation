@@ -1,9 +1,10 @@
 import { AmbientLight, DirectionalLight, PerspectiveCamera, Plane, Raycaster, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
-import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle } from "./forceGraphBatches";
+import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle } from "./forceGraphBatches";
 import type { CameraPoint } from "./forceGraphCamera";
 import type { SpatialNode } from "./forceGraphLayout";
+import type { GroupWrappers, WrapperHull } from "./forceGraphWrappers";
 
 /** Mouse/touch motion within this CSS-pixel distance is still a click, shared with the view's press/hold handling. */
 export const SPATIAL_DRAG_SLOP = 6;
@@ -150,6 +151,12 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   nodeRadius(read: (node: N) => number): this { this.options.style.radius = read; this.invalidateAppearance(); return this; }
   /** Replace the rule for the ring around a sphere that has more behind it: its colour, or null for none (2026-11-02). */
   nodeRing(read: (node: N) => string | null): this { this.options.style.ring = read; this.invalidateAppearance(); return this; }
+  /** Wrap these groups' seeds in their hulls, drawn in the look given; none when off (2026-11-05). */
+  wrappers(seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers): this {
+    this.buffers.setWrappers(seeds, hullOf, look); this.appearance++; return this;
+  }
+  /** Each wrapper's opacity and growth, the one hovered and those bursting open, for the next draw. */
+  wrapperStyle(style: SpatialWrapperStyle): this { this.buffers.styleWrappers(style); this.appearance++; return this; }
 
   /** Read or set the canvas width in CSS pixels. */
   width(): number;
@@ -198,9 +205,15 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.pointer.set((clientX - rect.left) / rect.width * 2 - 1, 1 - (clientY - rect.top) / rect.height * 2);
     this.eye.updateMatrixWorld(); this.raycaster.setFromCamera(this.pointer, this.eye);
   }
-  /** Pick the closest tessellated sphere in the latest uploaded picture. */
+  /**
+   * Pick the closest tessellated sphere in the latest uploaded picture, or the seed of the closest wrapper when the ray
+   * meets a wrapper first: a wrapper acts as its seed does (2026-11-05).
+   */
   nodeAt(clientX: number, clientY: number): N | undefined {
-    this.setRay(clientX, clientY); return this.buffers.pickNode(this.raycaster);
+    this.setRay(clientX, clientY);
+    const sphere = this.buffers.pickNodeHit(this.raycaster), wrapper = this.buffers.pickWrapper(this.raycaster);
+    const seed = wrapper && (!sphere || wrapper.distance < sphere.distance) ? this.byId.get(wrapper.seed) : undefined;
+    return seed ?? sphere?.node;
   }
   /** Show the documented relationship under the pointer using its projected stroke. */
   showWireAt(clientX: number, clientY: number): void {

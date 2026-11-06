@@ -6,7 +6,7 @@
  */
 
 import { layoutSettingsOf } from "../layout-presets";
-import { CHANGE_EMPHASES, type ExplorerState } from "../types";
+import { CHANGE_EMPHASES, GROUP_WRAPPERS, type ExplorerState } from "../types";
 import { TUNING_HELP, tuningHelpId } from "./tuning-levers";
 
 /** Callback for when tuning values change */
@@ -64,6 +64,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const slotLinesInput = document.getElementById("tuning-slot-lines") as HTMLInputElement | null;
   const textResistanceInput = document.getElementById("tuning-text-resistance") as HTMLInputElement | null;
   const controlResistanceInput = document.getElementById("tuning-control-resistance") as HTMLInputElement | null;
+  const nameGrowthInput = document.getElementById("tuning-name-growth") as HTMLInputElement | null;
   const orderStartsInput = document.getElementById("tuning-order-starts") as HTMLInputElement | null;
   const searchStartsInput = document.getElementById("tuning-search-starts") as HTMLInputElement | null;
   const searchPatienceInput = document.getElementById("tuning-search-patience") as HTMLInputElement | null;
@@ -75,6 +76,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   const historyGranularitySelect = document.getElementById("tuning-history-granularity") as HTMLSelectElement | null;
   const historyPlayRateInput = document.getElementById("tuning-history-play-rate") as HTMLInputElement | null;
   const historyChangeEmphasisSelect = document.getElementById("tuning-history-change-emphasis") as HTMLSelectElement | null;
+  const groupWrappersSelect = document.getElementById("tuning-force-group-wrappers") as HTMLSelectElement | null;
 
   const wireSlider = (input: HTMLInputElement | null, outputId: string, setter: (v: number) => void): void => {
     if (!input) return;
@@ -163,6 +165,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     state.tuning.localMap.slotLines = setSlider(slotLinesInput, "tuning-slot-lines-value", state.tuning.localMap.slotLines, v => String(v));
     state.tuning.localMap.textResistance = setSlider(textResistanceInput, "tuning-text-resistance-value", state.tuning.localMap.textResistance, v => String(v));
     state.tuning.localMap.controlResistance = setSlider(controlResistanceInput, "tuning-control-resistance-value", state.tuning.localMap.controlResistance, v => String(v));
+    state.tuning.localMap.nameGrowth = setSlider(nameGrowthInput, "tuning-name-growth-value", state.tuning.localMap.nameGrowth, v => String(v));
     state.tuning.localMap.orderStarts = setSlider(orderStartsInput, "tuning-order-starts-value", state.tuning.localMap.orderStarts, v => String(v));
     state.tuning.localMap.searchStarts = setSlider(searchStartsInput, "tuning-search-starts-value", state.tuning.localMap.searchStarts, v => String(v));
     state.tuning.localMap.searchPatience = setSlider(searchPatienceInput, "tuning-search-patience-value", state.tuning.localMap.searchPatience, v => String(v));
@@ -174,6 +177,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     if (historyGranularitySelect) historyGranularitySelect.value = state.tuning.history.granularity;
     state.tuning.history.playRate = setSlider(historyPlayRateInput, "tuning-history-play-rate-value", state.tuning.history.playRate, v => String(v));
     if (historyChangeEmphasisSelect) historyChangeEmphasisSelect.value = state.tuning.history.changeEmphasis;
+    if (groupWrappersSelect) groupWrappersSelect.value = state.tuning.forceGraph.groupWrappers;
 
     // Set CSS custom properties on document root so they cascade to both views
     document.documentElement.style.setProperty("--local-column-gap", `${state.tuning.localMap.columnGap}px`);
@@ -249,6 +253,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
   rerenderSlider(slotLinesInput, "tuning-slot-lines-value", v => { state.tuning.localMap.slotLines = v; });
   rerenderSlider(textResistanceInput, "tuning-text-resistance-value", v => { state.tuning.localMap.textResistance = v; });
   rerenderSlider(controlResistanceInput, "tuning-control-resistance-value", v => { state.tuning.localMap.controlResistance = v; });
+  rerenderSlider(nameGrowthInput, "tuning-name-growth-value", v => { state.tuning.localMap.nameGrowth = v; });
   rerenderSlider(searchStartsInput, "tuning-search-starts-value", v => { state.tuning.localMap.searchStarts = v; });
   rerenderSlider(searchPatienceInput, "tuning-search-patience-value", v => { state.tuning.localMap.searchPatience = v; });
   rerenderSlider(churnCostInput, "tuning-churn-cost-value", v => { state.tuning.localMap.churnCost = v; });
@@ -285,6 +290,16 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
     historyChangeEmphasisSelect.addEventListener("change", () => {
       const value = historyChangeEmphasisSelect.value;
       state.tuning.history.changeEmphasis = CHANGE_EMPHASES.find(emphasis => emphasis === value) ?? "glow";
+      onTuningChange();
+      if (state.view === "map" && state.perspective === "3d") onRender();
+    });
+  }
+
+  // How the groups shown only by their seed are wrapped, an experiment (2026-11-05): the 3D view draws again at once.
+  if (groupWrappersSelect) {
+    groupWrappersSelect.addEventListener("change", () => {
+      const value = groupWrappersSelect.value;
+      state.tuning.forceGraph.groupWrappers = GROUP_WRAPPERS.find(wrappers => wrappers === value) ?? "off";
       onTuningChange();
       if (state.view === "map" && state.perspective === "3d") onRender();
     });

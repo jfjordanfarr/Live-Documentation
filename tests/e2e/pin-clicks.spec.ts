@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapSettled, panIntoView } from "./still-picture";
+import { keepGrowingComposition, localMapSettled, panIntoView } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 /**
@@ -22,6 +22,9 @@ const GATEWAY_CLIENT = "Portal/Services/GatewayClient.cs";
 const PAYMENT_RESULT = "Portal/Models/PaymentResultModel.cs";
 
 test.use({ viewport: { width: 1600, height: 1000 } });
+
+/** These journeys read the growing composition's recorded facts and in-place descriptions, so they keep it (2026-11-05). */
+test.beforeEach(async ({ page }) => { await keepGrowingComposition(page); });
 
 /** The pins the address carries, as file#symbol. */
 const pins = (page: Page): string[] => {

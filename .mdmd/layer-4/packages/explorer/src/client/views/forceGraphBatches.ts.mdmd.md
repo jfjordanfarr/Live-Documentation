@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-11-03T00:48:32.592Z
+- Generated At: 2026-11-05T23:08:50.979Z
 
 ## Authored
 ### Purpose
@@ -23,40 +23,51 @@ Picking reads uploaded matrices. A sphere query rejects nonintersecting bounding
 
 The draw guard compares explicit picture/appearance revisions with the camera, orbit target, projection, canvas and background. Camera values are compared at Float32 upload precision against the last draw, while revision counters retain full precision. Same-size canvas assignments and restored WebGL contexts invalidate the picture. A partial physics evaluation that has not changed positions does not cause a new draw. The view's reveal advances only after the preceding membership has reached the screen.
 
+Since 2026-11-05 the buffers hold one more scene object, the mesh of every [wrapped group](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences), drawn after the rings with no depth writes, double-sided, its vertices written each draw from the seeds' places, farthest group first, by `mergeWrappers`. One shader gives the three looks by uniforms (Skin, Cloud, Cloud with a rim for the hovered group); it has no time in it, so a still picture still draws once. `pickWrapper` finds the nearest wrapper a ray meets, leaving out one bursting open, and `pickNodeHit` gives a sphere's hit distance so the renderer can tell which is in front. While the choice is off and nothing is drawn, the wrappers' update writes nothing.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `SpatialDrawLink` {#symbol-spatialdrawlink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L9)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L10)
 
 ##### `SpatialDrawLink` — Summary
 The endpoints already resolved by the graph feed.
 
 #### `SpatialDrawEntry` {#symbol-spatialdrawentry}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L12)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L13)
 
 ##### `SpatialDrawEntry` — Summary
 A stable datum-to-buffer binding for picking; its slot follows the uploaded depth order.
 
 #### `SpatialDrawBatch` {#symbol-spatialdrawbatch}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L20)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L21)
 
 ##### `SpatialDrawBatch` — Summary
 Geometry shares a GPU batch; numeric working arrays keep preparation independent of graph-object shapes.
 
 #### `SpatialDrawStyle` {#symbol-spatialdrawstyle}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L35)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L36)
 
 ##### `SpatialDrawStyle` — Summary
 Values with visual meaning, supplied by the view without involving the force model.
 
+#### `SpatialWrapperStyle` {#symbol-spatialwrapperstyle}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L52)
+
+##### `SpatialWrapperStyle` — Summary
+How the wrapped groups are drawn this frame (2026-11-05): each wrapper's opacity, as its seed's, and the growth of one
+bursting open; the seed under the pointer or keyboard focus, whose wrapper the cloud with a rim outlines; and the
+seeds bursting open, drawn but no longer picked.
+
 #### `createSpatialBuffers` {#symbol-createspatialbuffers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L47)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L60)
 - Parameters: `scene`: [`Scene`](./localView/branch-scene.ts.mdmd.md#symbol-scene); `style`: [`SpatialDrawStyle`](#symbol-spatialdrawstyle)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](#symbol-spatialdrawlink)
 
@@ -65,7 +76,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L314)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L388)
 - Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -73,7 +84,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L344)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L418)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary
@@ -86,7 +97,12 @@ Clip a unit wire's axis in homogeneous coordinates, projecting its compensated w
 - [`forceGraphSizing.clipSpatialWireDepth`](./forceGraphSizing.ts.mdmd.md#symbol-clipspatialwiredepth)
 - [`forceGraphSizing.pickSpatialWire`](./forceGraphSizing.ts.mdmd.md#symbol-pickspatialwire)
 - [`forceGraphSizing.spatialSizeScale`](./forceGraphSizing.ts.mdmd.md#symbol-spatialsizescale)
-- `three` - `BufferGeometry`, `Camera`, `Color`, `ConeGeometry`, `DynamicDrawUsage`, `Frustum`, `InstancedBufferAttribute`, `InstancedMesh`, `Intersection`, `Material`, `Matrix4`, `Mesh`, `MeshBasicMaterial`, `MeshLambertMaterial`, `Quaternion`, `Raycaster`, `RingGeometry`, `Scene`, `Sphere`, `SphereGeometry`, `Vector2`, `Vector3`, `Vector4`, `WebGLRenderer`
+- [`forceGraphWrappers.GroupWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-groupwrappers)
+- [`forceGraphWrappers.WrapperGeometry`](./forceGraphWrappers.ts.mdmd.md#symbol-wrappergeometry)
+- [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface)
+- [`forceGraphWrappers.mergeWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-mergewrappers)
+- [`forceGraphWrappers.wrapperAt`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperat)
+- `three` - `BufferAttribute`, `BufferGeometry`, `Camera`, `Color`, `ConeGeometry`, `DoubleSide`, `DynamicDrawUsage`, `Frustum`, `InstancedBufferAttribute`, `InstancedMesh`, `Intersection`, `Material`, `Matrix4`, `Mesh`, `MeshBasicMaterial`, `MeshLambertMaterial`, `Quaternion`, `Raycaster`, `RingGeometry`, `Scene`, `ShaderMaterial`, `Sphere`, `SphereGeometry`, `Vector2`, `Vector3`, `Vector4`, `WebGLRenderer`
 - `three/addons/lines/LineMaterial.js` - `LineMaterial`
 - `three/addons/lines/LineSegmentsGeometry.js` - `LineSegmentsGeometry`
 <!-- LIVE-DOC:END Dependencies -->

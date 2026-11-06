@@ -17,6 +17,8 @@ A chip row is tested at several widths, including chips wider than their row; sy
 
 The text layout itself is held to the browser by the drift spec because Pretext preparation needs a canvas. The model tests began with the [October 6 lab](../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-06.1.SUMMARIZED.md#turn-10); the identity and ordering regressions protect the [October 13 competition work](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-13.1.record.md#turn-2--recovered-owner-scope-reply).
 
+A case of [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) holds a slot card's height and pins to its fixed allotments, whatever its rows' text.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

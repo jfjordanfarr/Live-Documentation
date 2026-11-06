@@ -22,6 +22,8 @@ Plays the still-picture deck over the shipped bundles, this repository's and the
 - Created on 2026-10-01; the scope sets and journeys are fixed in `RUNS` so that the numbers mean the same thing on every run.
 - Since 2026-10-05 each scope also has a "Local Map, retained" row: every file of the scope retained whole by URL, the first as the subject, at the view's own fit, the retained exploration state. Three rules hold there beyond the four above: no wire crosses a card it does not end at, no route reads backward, and no lane lies in a directory that holds neither end of its wires; a cycle's feedback is stubs, which the deck's own numbers count as backward in both views alike. Since 2026-10-06 the deck's four scopes (the repository's five files and chain, the estate's) are defined once in `scopes.ts` and shared with the layout lab, so both instruments measure the same pictures; and every wait for a drawn wire asks for a wire that is not a bundle's shared run, since a level run has a bounding box of no height and Playwright calls it invisible.
 
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the repository chain's retained case is expected to fail, with its reason: on the fixed-slot composition three lane samples of two wires lie inside the layout-lab membrane, a corridor between two of its taller cards; the case announces the fix by passing. See direction.md.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

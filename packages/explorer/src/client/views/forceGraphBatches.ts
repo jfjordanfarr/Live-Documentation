@@ -1,9 +1,10 @@
-import { BufferGeometry, Color, ConeGeometry, DynamicDrawUsage, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, MeshLambertMaterial, Quaternion, RingGeometry, Sphere, SphereGeometry, Vector2, Vector3, Vector4, type Camera, type Intersection, type Raycaster, type Scene, type WebGLRenderer } from "three";
+import { BufferAttribute, BufferGeometry, Color, ConeGeometry, DoubleSide, DynamicDrawUsage, Frustum, InstancedBufferAttribute, InstancedMesh, Material, Matrix4, Mesh, MeshBasicMaterial, MeshLambertMaterial, Quaternion, RingGeometry, ShaderMaterial, Sphere, SphereGeometry, Vector2, Vector3, Vector4, type Camera, type Intersection, type Raycaster, type Scene, type WebGLRenderer } from "three";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
 import type { SpatialNode } from "./forceGraphLayout";
 import { clipSpatialWireDepth, pickSpatialWire, spatialSizeScale } from "./forceGraphSizing";
+import { mergeWrappers, wrapperAt, type GroupWrappers, type WrapperGeometry, type WrapperHull } from "./forceGraphWrappers";
 
 /** The endpoints already resolved by the graph feed. */
 export interface SpatialDrawLink<N> { source: string | N; target: string | N }
@@ -41,6 +42,18 @@ export interface SpatialDrawStyle<N, L> {
   arrowLength: (link: L) => number;
   /** The colour of the ring around a sphere that has more behind it, or null for no ring (2026-11-02). */
   ring: (node: N) => string | null;
+}
+
+/**
+ * How the wrapped groups are drawn this frame (2026-11-05): each wrapper's opacity, as its seed's, and the growth of one
+ * bursting open; the seed under the pointer or keyboard focus, whose wrapper the cloud with a rim outlines; and the
+ * seeds bursting open, drawn but no longer picked.
+ */
+export interface SpatialWrapperStyle {
+  alpha: (seed: string) => number;
+  scale: (seed: string) => number;
+  hovered: string | null;
+  popping: ReadonlySet<string>;
 }
 
 /** Pack documented nodes and wires straight into three instance buffers; camera changes never build scene proxies. */
@@ -110,6 +123,19 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   const frustum = new Frustum(), sphere = new Sphere(), point = new Vector3(), end = new Vector3(), scale = new Vector3(), quaternion = new Quaternion();
   const viewport = new Vector2(), up = new Vector3(0, 1, 0);
   const pickProxy = new Mesh(nodes.mesh.geometry, nodes.mesh.material);
+  // The wrapped groups (2026-11-05): one mesh for every wrapper, drawn after the spheres and rings, writing no depth, so
+  // that a wrapper veils what stands behind it and cuts no wire; its vertices are written from the seeds' live places.
+  const wrapperMaterial = wrapperShader();
+  const wrappers = new Mesh(new BufferGeometry(), wrapperMaterial);
+  wrappers.name = "Spatial wrappers"; wrappers.frustumCulled = false; wrappers.renderOrder = 12; wrappers.visible = false;
+  wrappers.raycast = () => {};
+  wrappers.userData.spatialWrappers = { look: "off", seeds: [] as string[], popping: [] as string[], vertices: 0, triangles: 0 };
+  scene.add(wrappers);
+  let wrapperSeeds: readonly string[] = [], wrapperHullOf: (seed: string) => WrapperHull | undefined = () => undefined, wrapperLook: GroupWrappers = "off";
+  let wrapperStyle: SpatialWrapperStyle = { alpha: () => 1, scale: () => 1, hovered: null, popping: new Set() };
+  let wrapperDrawn: WrapperGeometry = mergeWrappers([], () => undefined, () => undefined);
+  const nodeIndex = new Map<string, number>();
+  const seedPlace = { x: 0, y: 0, z: 0 };
   const hits: Intersection[] = [];
   const entryFor = <T extends object>(cache: WeakMap<T, SpatialDrawEntry<T>>, data: T): SpatialDrawEntry<T> => {
     let entry = cache.get(data);
@@ -155,6 +181,8 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   };
   const setData = (data: { nodes: N[]; links: L[] }): void => {
     const byId = new Map(data.nodes.map((node, index) => [node.id, index]));
+    nodeIndex.clear();
+    for (const [id, index] of byId) nodeIndex.set(id, index);
     nodes.entries.length = lines.entries.length = arrows.entries.length = rings.entries.length = 0;
     for (const node of data.nodes) { nodes.entries.push(entryFor(nodeEntries, node)); rings.entries.push(entryFor(ringEntries, node)); }
     for (const link of data.links) {
@@ -280,8 +308,47 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     upload(arrows, (array, at, i) => { arrowMatrix(i).toArray(array, at); });
     const material = lines.mesh.material as LineMaterial;
     material.resolution.copy(viewport); material.uniforms.spatialWidthScale.value = wireScale;
+    updateWrappers(camera);
   };
-  const pickNode = (raycaster: Raycaster): N | undefined => {
+  /** Write every wrapper at its seed's place this frame, the farthest first so that nearer veils blend over farther ones. */
+  const updateWrappers = (camera: Camera): void => {
+    // Off, with nothing drawn, is the picture as it was before wrappers: nothing is written.
+    if (wrapperLook === "off" && !wrappers.visible) return;
+    const shown = wrapperLook === "off" ? [] : wrapperSeeds.filter(seed => nodeIndex.has(seed) && wrapperHullOf(seed));
+    const at = (seed: string): number => nodeIndex.get(seed)! * 3;
+    const eye = camera.position;
+    const distance = new Map(shown.map(seed => [seed, Math.hypot(positions[at(seed)] - eye.x, positions[at(seed) + 1] - eye.y, positions[at(seed) + 2] - eye.z)]));
+    const ordered = [...shown].sort((a, b) => distance.get(b)! - distance.get(a)! || (a < b ? -1 : a > b ? 1 : 0));
+    wrapperDrawn = mergeWrappers(ordered, wrapperHullOf, seed => {
+      const p = at(seed); seedPlace.x = positions[p]; seedPlace.y = positions[p + 1]; seedPlace.z = positions[p + 2]; return seedPlace;
+    }, wrapperStyle.scale);
+    const geometry = wrappers.geometry, count = wrapperDrawn.groups.length;
+    const alphas = new Float32Array(count);
+    for (const range of wrapperDrawn.ranges) alphas.fill(wrapperStyle.alpha(range.seed), range.vertexStart, range.vertexStart + range.vertexCount);
+    const attribute = (name: string, array: Float32Array, size: number): void => {
+      const current = geometry.getAttribute(name) as BufferAttribute | undefined;
+      if (current && current.array.length === array.length) { (current.array as Float32Array).set(array); current.needsUpdate = true; }
+      else geometry.setAttribute(name, new BufferAttribute(array, size).setUsage(DynamicDrawUsage));
+    };
+    attribute("position", wrapperDrawn.positions, 3); attribute("normal", wrapperDrawn.normals, 3); attribute("wrapperLocal", wrapperDrawn.local, 3);
+    attribute("wrapperGroup", wrapperDrawn.groups, 1); attribute("wrapperAlpha", alphas, 1);
+    const index = geometry.getIndex();
+    if (index && index.array.length === wrapperDrawn.indices.length) { (index.array as Uint32Array).set(wrapperDrawn.indices); index.needsUpdate = true; }
+    else geometry.setIndex(new BufferAttribute(wrapperDrawn.indices, 1).setUsage(DynamicDrawUsage));
+    geometry.setDrawRange(0, wrapperDrawn.indices.length);
+    const hovered = wrapperStyle.hovered === null ? undefined : wrapperDrawn.ranges.find(range => range.seed === wrapperStyle.hovered);
+    wrapperMaterial.uniforms.uHover.value = hovered && !wrapperStyle.popping.has(hovered.seed) ? hovered.group : -1;
+    wrapperMaterial.uniforms.uLook.value = wrapperLook === "skin" ? 0 : 1;
+    wrapperMaterial.uniforms.uRim.value = wrapperLook === "cloud-rim" ? 1 : 0;
+    wrappers.visible = wrapperDrawn.ranges.length > 0;
+    wrappers.userData.spatialWrappers = { look: wrapperLook, seeds: wrapperDrawn.ranges.map(range => range.seed).filter(seed => !wrapperStyle.popping.has(seed)).sort(),
+      popping: wrapperDrawn.ranges.map(range => range.seed).filter(seed => wrapperStyle.popping.has(seed)).sort(),
+      vertices: count, triangles: wrapperDrawn.indices.length / 3 };
+  };
+  /** The wrapper the ray meets first in the last picture uploaded, leaving out those bursting open (2026-11-05). */
+  const pickWrapper = (raycaster: Raycaster): { seed: string; distance: number } | null =>
+    wrappers.visible ? wrapperAt(wrapperDrawn, raycaster.ray.origin, raycaster.ray.direction, seed => wrapperStyle.popping.has(seed)) : null;
+  const pickNodeHit = (raycaster: Raycaster): { node: N; distance: number } | undefined => {
     let picked: N | undefined, nearest = Infinity;
     for (let slot = 0; slot < nodes.visible.length; slot++) {
       nodes.mesh.getMatrixAt(slot, matrix);
@@ -290,8 +357,9 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       pickProxy.matrixWorld.copy(matrix); hits.length = 0; pickProxy.raycast(raycaster, hits);
       for (const hit of hits) if (hit.distance < nearest) { nearest = hit.distance; picked = nodes.entries[nodes.visible[slot]].data; }
     }
-    return picked;
+    return picked ? { node: picked, distance: nearest } : undefined;
   };
+  const pickNode = (raycaster: Raycaster): N | undefined => pickNodeHit(raycaster)?.node;
   const pickLink = (raycaster: Raycaster, camera: Camera): L | undefined => {
     let picked: L | undefined, nearest = Infinity;
     raycaster.ray.at(1, point).project(camera);
@@ -305,8 +373,14 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     }
     return picked;
   };
-  return { nodes, lines, arrows, rings, setData, update, pickNode, pickLink, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {
+  /** Which groups are wrapped, their hulls, and how they are drawn; drawn from the next update. */
+  const setWrappers = (seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers): void => {
+    wrapperSeeds = seeds; wrapperHullOf = hullOf; wrapperLook = look;
+  };
+  const styleWrappers = (style: SpatialWrapperStyle): void => { wrapperStyle = style; };
+  return { nodes, lines, arrows, rings, wrappers, setData, update, pickNode, pickNodeHit, pickLink, pickWrapper, setWrappers, styleWrappers, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {
     for (const batch of [nodes, lines, arrows, rings]) { batch.mesh.removeFromParent(); batch.mesh.dispose(); batch.mesh.geometry.dispose(); batch.mesh.material.dispose(); }
+    wrappers.removeFromParent(); wrappers.geometry.dispose(); wrapperMaterial.dispose();
   } };
 }
 
@@ -374,6 +448,71 @@ function screenWireEndpointsInFrustum(start: Vector4, end: Vector4, width: numbe
     }
   }
   return true;
+}
+
+/**
+ * The wrappers' one material (2026-11-05), its look chosen by uniforms. The skin is a translucent, lit surface, faint
+ * face-on and denser toward its edges with a soft highlight, so that it reads as a balloon to pop; the cloud is the
+ * November 4 probe's mist, a fixed pattern carried with each group and fading at its silhouette, which veils what is
+ * behind it; with the rim, the cloud under the pointer or keyboard focus gains a smooth bright edge. Nothing moves: the
+ * pattern has no time in it, so a still picture draws once. Double-sided, so a wrapper reads from inside as from outside.
+ */
+function wrapperShader(): ShaderMaterial {
+  return new ShaderMaterial({
+    transparent: true, depthWrite: false, side: DoubleSide,
+    uniforms: { uLook: { value: 0 }, uRim: { value: 0 }, uHover: { value: -1 } },
+    vertexShader: `
+      attribute float wrapperAlpha;
+      attribute float wrapperGroup;
+      attribute vec3 wrapperLocal;
+      uniform float uHover;
+      varying vec3 vNormal;
+      varying vec3 vView;
+      varying vec3 vLocal;
+      varying float vAlpha;
+      varying float vHover;
+      void main() {
+        vec4 view = modelViewMatrix * vec4(position, 1.0);
+        vNormal = normalize(normalMatrix * normal);
+        vView = normalize(-view.xyz);
+        vLocal = wrapperLocal;
+        vAlpha = wrapperAlpha;
+        vHover = abs(wrapperGroup - uHover) < 0.5 ? 1.0 : 0.0;
+        gl_Position = projectionMatrix * view;
+      }`,
+    fragmentShader: `
+      uniform float uLook;
+      uniform float uRim;
+      varying vec3 vNormal;
+      varying vec3 vView;
+      varying vec3 vLocal;
+      varying float vAlpha;
+      varying float vHover;
+      void main() {
+        vec3 n = normalize(vNormal);
+        if (!gl_FrontFacing) n = -n;
+        vec3 v = normalize(vView);
+        float facing = abs(dot(n, v));
+        vec3 color;
+        float alpha;
+        if (uLook < 0.5) {
+          vec3 light = normalize(vec3(-0.45, 0.75, 0.5));
+          float diffuse = 0.55 + 0.45 * max(dot(n, light), 0.0);
+          float shine = pow(max(dot(reflect(-light, n), v), 0.0), 40.0);
+          color = vec3(0.514, 0.725, 0.831) * diffuse + vec3(0.32, 0.44, 0.54) * shine;
+          alpha = 0.12 + 0.22 * pow(1.0 - facing, 2.0) + 0.3 * shine;
+        } else {
+          // The probe's mist over a group drawn 1.8 units across: the same two or so swells span every wrapper.
+          vec3 p = vLocal * 0.9;
+          float noise = sin(p.x * 7.0) * sin(p.y * 6.0) * sin(p.z * 5.0);
+          color = vec3(0.545, 0.675, 0.78);
+          alpha = (0.62 + 0.38 * noise) * smoothstep(0.0, 0.45, facing) * 0.27;
+        }
+        float rim = uRim * vHover * pow(1.0 - facing, 3.0);
+        color = mix(color, vec3(0.86, 0.93, 1.0), rim);
+        gl_FragColor = vec4(color, (alpha + 0.6 * rim) * vAlpha);
+      }`
+  });
 }
 
 /** Use Three's near-plane-safe, round-capped wide-line shader with our batched transforms, widths, colours and alpha. */

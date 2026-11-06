@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { dragBy, LOCAL_MAP, localMapSettled, panIntoView } from "./still-picture";
+import { dragBy, keepGrowingComposition, LOCAL_MAP, localMapSettled, panIntoView } from "./still-picture";
 import { decompressSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -34,6 +34,9 @@ async function stableSubject(page: Page): Promise<{ x: number; y: number; width:
   });
 }
 
+/** Every journey here reads the growing composition, which Card Text no longer defaults to (2026-11-05). */
+test.beforeEach(async ({ page }) => { await keepGrowingComposition(page); });
+
 test("header growth does not pull a deliberately offscreen title back into view", async ({ page }) => {
   await page.goto(entry);
   const title = page.locator(`.node-card[data-id="${payment}"] .node-title`);
@@ -53,7 +56,7 @@ test("header growth does not pull a deliberately offscreen title back into view"
 test("a growing pin header keeps a previously visible acted-on title below its new edge", async ({ page }) => {
   await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), {
     key: PERSISTED_UI_KEY,
-    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 1200, searchStarts: 0 } } })
+    value: JSON.stringify({ version: PERSISTED_UI_VERSION, tuning: { localMap: { moveMs: 1200, searchStarts: 0, cardText: "grow" } } })
   });
   await page.setViewportSize({ width: 900, height: 700 });
   await page.goto(entry);
@@ -214,6 +217,14 @@ test.describe("phone reading", () => {
     const subject = page.locator(`.node-card[data-id="${payment}"]`);
     await subject.waitFor();
     await localMapSettled(page);
+    // The reading frame slides the card in after the layout settles: the swipe starts once the card has stood still on
+    // screen, since under load the scan once ran while the card was still off to the right (2026-11-06).
+    await expect.poll(async () => {
+      const before = await subject.boundingBox();
+      await page.waitForTimeout(300);
+      const after = await subject.boundingBox();
+      return before && after && before.x === after.x && before.y === after.y && after.x < 390 ? "still" : "moving";
+    }, { timeout: 15_000 }).toBe("still");
     const frame = (await page.locator("#view-map").boundingBox())!;
     const controls = (await page.locator(".perspective-controls").boundingBox())!;
     expect(frame.y + frame.height).toBeLessThanOrEqual(controls.y);

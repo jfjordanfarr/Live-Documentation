@@ -96,7 +96,8 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
   y += text(card.title, content - c.titlePaddingRight) + c.titleMarginBottom + (c.titlePaddingTop ?? 0);
   y += text(card.path, content);
   if (card.footer?.position === "after-path") y += card.footer.top + chipsHeight(card.footer.items, content, card.footer.gap) + (card.footer.bottom ?? 0);
-  if (card.purpose) y += readingHeight(card.purpose, content);
+  // A slot card's Purpose has a fixed allotment, whatever its text (2026-11-06).
+  if (card.purpose) y += card.slot ? card.slot.purposeHeight : readingHeight(card.purpose, content);
   y += c.symbolsMarginTop;
   if (card.meta) y += text(card.meta, content);
   const cell = content - 2 * c.gridSideColumn - 2 * c.gridColumnGap;
@@ -108,12 +109,15 @@ export function cardMetrics(capture: Capture, card: CardCapture, width: number, 
     const internals = row.symbol === "__internals__";
     const dotMargin = internals ? c.internalsDotMarginTop : 0;
     const wrapper = frame.height + Math.max(text(row.label, labelWidth), row.badgesWidth > 0 ? c.badgeHeight : 0, row.controls?.height ?? 0);
-    const height = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, wrapper);
+    const natural = Math.max(c.dotHeight + dotMargin, internals ? c.placeholderHeight : 0, wrapper);
+    // A slot card's public row keeps its fixed allotment, its name and dot in the first track at the top, its slot in
+    // the rest (2026-11-06); the Internals row and every row of the other compositions take their content.
+    const height = card.slot && !internals ? card.slot.rowHeight : natural;
     if (i > 0) y += c.gridRowGap;
-    const centre = y + Math.floor((height - c.dotHeight - dotMargin) / 2 * 64 + 1e-3) / 64 + dotMargin + c.dotHeight / 2;
+    const centre = y + Math.floor((natural - c.dotHeight - dotMargin) / 2 * 64 + 1e-3) / 64 + dotMargin + c.dotHeight / 2;
     centres.set(row, centre);
     y += height;
-    if (row.reading) y += c.gridRowGap + readingHeight(row.reading, cell);
+    if (row.reading && !card.slot) y += c.gridRowGap + readingHeight(row.reading, cell);
   });
   if (card.tests) {
     y += c.testsMarginTop + chipsHeight([card.tests.label, ...card.tests.chips], content, c.testsGap);

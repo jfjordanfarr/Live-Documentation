@@ -22,6 +22,8 @@ Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Ag
 
 Since [2026-11-05](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8) the gathering case installs its frame sampler before the click and records from the layer's first frame to its last, reading the wire and pair counts from the first: installed after four round trips to a page busy drawing the transition, it had missed the fold window entirely once in a full run. It now sees every frame the page draws, and passed five runs in a row at 7.7 s.
 
+Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the SVG-copy case compares declarations without the map's zoom state (the ladder's custom properties), which every element inherits and which changes between a live reading and the copy's moment.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

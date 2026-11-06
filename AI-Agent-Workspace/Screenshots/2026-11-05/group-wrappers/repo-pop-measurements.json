@@ -1,0 +1,38 @@
+{
+  "which": "repo",
+  "popSeed": "tests/integration/programs/rosetta-manifest.json",
+  "steps": [
+    {
+      "ms": 0,
+      "popping": [
+        "tests/integration/programs/rosetta-manifest.json"
+      ],
+      "wrapped": 41
+    },
+    {
+      "ms": 100,
+      "popping": [
+        "tests/integration/programs/rosetta-manifest.json"
+      ],
+      "wrapped": 41
+    },
+    {
+      "ms": 250,
+      "popping": [],
+      "wrapped": 41
+    },
+    {
+      "ms": 500,
+      "popping": [],
+      "wrapped": 41
+    }
+  ],
+  "popSettleMs": 24707,
+  "wrapperBackMs": 9,
+  "releaseSettleMs": 15903,
+  "released": {
+    "wrapped": 42,
+    "triangles": 6776
+  },
+  "releasedIdleFrames": 0
+}
