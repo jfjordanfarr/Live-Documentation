@@ -17,6 +17,8 @@ The volume comparison explicitly selects perspective node sizing through the pub
 
 Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the structure check opens the root, so that both layouts hold the whole estate; its reference-on-demand premise holds because the references at rest are drawn among the pinned files, not an open directory's. The hub check keeps the start's picture, waits for the picture to come back in after the directory's release, and finds the hub again after its inspection grew the picture and the reader's close receded it.
 
+Since 2026-11-06 (the breakpoint round's gate, [the closing work notes after Turn 26](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-26--november-6)) the first test reads the structure layout's first picture once the scan root's hub is among its hubs rather than at the first hub: the hubs enter over frames in the reveal's order, the root's not the first of them, and that gate had read the picture one frame before it entered and found no root.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

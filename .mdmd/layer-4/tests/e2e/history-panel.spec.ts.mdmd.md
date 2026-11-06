@@ -15,6 +15,8 @@ Holds the history's step panel over the scripted sample's bundle: the panel as t
 
 Since 2026-10-31 (discovery, [Turn 4 of the October 31 record](../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-4)) the entries ask four hops from the start, which shows the whole scripted sample with nothing pinned, and the path check's file off the path is util.ts, in the model's folder, since the legacy helper stands four containment hops away in Structure and is not in the path's picture.
 
+Since 2026-11-06 (the breakpoint round's gate, [the closing work notes after Turn 26](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-26--november-6)) the path check reads each sphere once it has entered the moment's picture: the picture reveals its spheres over frames, the path's files first and util.ts, a hop beyond, after them, and that gate had read the picture one frame before util.ts was there.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

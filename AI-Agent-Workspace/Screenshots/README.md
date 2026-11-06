@@ -2,6 +2,10 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-06
+
+[Card breakpoints](2026-11-06/card-breakpoints/README.md): the card ladder as breakpoints after the owner's Turns 17 to 19, the payment service, pathfind.ts and still-picture.ts at every step out to the camera's least scale and in to its greatest, the blur close up and the aliasing far out before and after, a pinned row's highlight, a phone width, and the frame cost of a zoom before and after; implementation evidence for the owner's eye, not a verdict (2026-11-06).
+
 ## 2026-11-05
 
 [Reading access and hover stability](2026-11-05/reading-access/README.md): owner-reported blocked descriptions at useful zoom, cumulative displacement during uninterrupted symbol hovering, and interrupted-return/zoom cases. Baseline failures, repaired pictures, a supplemental estate 3D motion look and the passing full gate remain explicit.

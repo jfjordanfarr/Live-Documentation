@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/controller.ts
-- Generated At: 2026-11-05T22:04:02.266Z
+- Generated At: 2026-11-06T10:12:24.029Z
 
 ## Authored
 ### Purpose
@@ -44,12 +44,16 @@ Since [Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2
 
 Since [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) `updateMapTransform` feeds the ladder the frame's own scale rather than the zoom animation's destination, after the owner saw the fonts "jump up in size before the viewport has actually reached its terminal zoom destination".
 
+The card ladder as breakpoints (2026-11-06, the owner's [Turns 17 to 19](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)): `applyLevelOfDetail` asks `ladder-steps` for the band and for a step every 20 % of zoom, and writes `data-lod`, `data-step`, `--text-scale`, `--control-scale` and `--name-growth` only when the band, the step or a lever changes, where it had written five custom properties at every frame. The close band's prose shrink (`--prose-scale`, `--prose-lines`) is gone, so that zooming in shrinks nothing. On `tests/e2e/still-picture.ts` a wheel zoom out went from 15 to 22 frames in 1.2 s to 35 to 51, and its style recalculation from about 0.67 s to 0.08 to 0.11 s; the tables are in [the card-breakpoints evidence](../../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/card-breakpoints/README.md).
+
+Since the same pass `watchCamera` says `data-camera="moving"` on the container while a drag, a pinch, inertia or an animation moves the camera, and gives the viewport the class `camera-moving` meanwhile, which alone makes it a compositor layer: the always-promoted layer of Turn 12 was rastered once and stretched, the blur close up and the aliasing far out the owner showed in Turn 17. An instant jump, such as a Zoom button's, is no motion. When a step changes, the wires are drawn again once, the frame after, since the anchor dots they end at are drawn at a new size from their edge beside the name, and the wires' measurer reads the dots as drawn (an independent oracle in `local-map-motion.spec.ts` holds every drawn wire end to its dot as drawn; an earlier attempt in this pass that measured the dots' laid-out boxes instead broke it). `animateCamera` starts every eased move of the controller's own and says so at once, so that a test waiting on the camera (`localMapSettled`) cannot read the picture in the frame before the move's first step; while the camera moves it is looked at once a frame, since a release and inertia's last frame end the motion without another camera change.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `LocalViewController` {#symbol-localviewcontroller}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L76)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/controller.ts#L74)
 - Implements: [`LocalViewApi`](./types.ts.mdmd.md#symbol-localviewapi)
 
 ##### `LocalViewController` — Summary
@@ -76,6 +80,10 @@ Coordinates the native Local Map, independent exploration pins and explicit FROM
 - [`edge-signs.EdgeSigns`](./edge-signs.ts.mdmd.md#symbol-edgesigns)
 - [`edge-signs.FramePlace`](./edge-signs.ts.mdmd.md#symbol-frameplace)
 - [`edge-signs.createEdgeSigns`](./edge-signs.ts.mdmd.md#symbol-createedgesigns)
+- [`ladder-steps.LadderBand`](./ladder-steps.ts.mdmd.md#symbol-ladderband-type)
+- [`ladder-steps.ladderBand`](./ladder-steps.ts.mdmd.md#symbol-ladderband-function)
+- [`ladder-steps.ladderScales`](./ladder-steps.ts.mdmd.md#symbol-ladderscales-function)
+- [`ladder-steps.ladderStep`](./ladder-steps.ts.mdmd.md#symbol-ladderstep)
 - [`layout-measure.Bounds`](./layout-measure.ts.mdmd.md#symbol-bounds)
 - [`layout-measure.Frame`](./layout-measure.ts.mdmd.md#symbol-frame)
 - [`layout-measure.LayoutExtents`](./layout-measure.ts.mdmd.md#symbol-layoutextents)

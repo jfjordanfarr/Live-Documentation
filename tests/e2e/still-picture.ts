@@ -153,20 +153,25 @@ export const forceGraphUrl = (base: string, file: string): string => `${base}?vi
 /**
  * Waits until the Local Map's picture is at rest: a change of pins moves the branch picture from one arrangement to the
  * next over the tuning's move length, and the continuing search may move it again to a better arrangement
- * (2026-10-07); the root says `data-moving` while a move runs and `data-search-status` what the search is doing.
+ * (2026-10-07); the root says `data-moving` while a move runs and `data-search-status` what the search is doing, and
+ * the map says `data-camera="moving"` while a gesture, inertia or an animation moves the camera, such as the fit that
+ * eases on after a branch move (2026-11-06).
  */
 export async function localMapSettled(page: Page, timeout = 30_000): Promise<void> {
   await page.waitForFunction(() => {
-    const root = document.querySelector<HTMLElement>("#map-container .local-placed");
-    return !root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running");
+    const map = document.querySelector<HTMLElement>("#map-container");
+    const root = map?.querySelector<HTMLElement>(".local-placed");
+    return map?.dataset.camera !== "moving" && (!root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running"));
   }, undefined, { timeout });
 }
 
 /**
  * Waits until the Local Map is still on screen: {@link localMapSettled}, then frames until every card's box has stood
- * unchanged for 150 ms, within five seconds. The branch move's end is not the picture's rest: the camera's fit eases on
- * for about a third of a second after it, moving a card by some 40 px on the navigation reveal case (measured
- * 2026-11-06, the shells merge), and the reading calibration or a resize can move the picture too.
+ * unchanged for 150 ms, within five seconds. The camera's own motion, such as the fit that eases on after a branch move
+ * and moved a card by some 40 px on the navigation reveal case, is now in `localMapSettled`'s wait (2026-11-06: of 133
+ * waits in the ladder, card reading, navigation and keyboard specs, none saw a card move after it, where the bundle
+ * without the camera's state moved the navigation reveal's card for 14 frames and the keyboard case's for 6); the
+ * frames remain for what no flag reports, a resize's reflow, which moved the card reading's phone case for 26 frames.
  */
 export async function localMapStill(page: Page): Promise<void> {
   await localMapSettled(page);

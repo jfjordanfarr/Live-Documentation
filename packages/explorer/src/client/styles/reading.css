@@ -123,35 +123,92 @@
    follows the ladder below instead. */
 .local-reading-faded:not(.local-slot-card) .local-reading-block { opacity: .35; }
 
-/* The card ladder (2026-11-05, Turn 9), slot cards only: inside a box that never changes, a description gains lines as
-   the camera comes closer; below reading scale the band leaves out one tier after another, keeping each element's box so
-   that nothing re-flows, and names, the node's controls and the anchor dots hold their screen size by the resistances
-   the controller writes as --text-scale and --control-scale; transforms change no layout. Below reading scale a name
-   also grows into the room its description leaves (Turn 11): a symbol's name up to its row's allotment, the file's name
-   down to the Purpose's slot and short of the card's buttons at their held size, the rooms measured at render by the
-   card reading as --fill-scale, --title-fill-h, --title-room-w, --title-w and --actions-w, and the growth bounded by
-   Name Growth, written as --name-growth, times the held size. */
-.local-slot-card .local-reading-slot .local-reading-prose { font-size: calc(12px * var(--prose-scale, 1)); line-height: calc(17px * var(--prose-scale, 1)); -webkit-line-clamp: var(--prose-lines, var(--slot-lines, 2)); }
-.local-slot-card .local-card-actions { transform: scale(var(--control-scale, 1)); transform-origin: top right; }
-.local-slot-card .symbol-anchor.dot { transform: scale(var(--control-scale, 1)); }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: min(var(--title-fill-h, 1), (var(--title-room-w, 1) - var(--actions-w, 0) * (var(--control-scale, 1) - 1)) / var(--title-w, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
-:is([data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: min(var(--title-fill-h, 1), (var(--title-room-w, 1) - var(--more-w, 0) * (var(--control-scale, 1) - 1)) / var(--title-w, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
-[data-lod="middle"] .local-slot-card .symbol-row { --name-scale: min(var(--fill-middle, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
-:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: min(var(--fill-far, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
+/* The card ladder (2026-11-05, Turn 9; breakpoints since 2026-11-06, Turns 17 to 19), slot cards only: inside a box that
+   never changes, the zoom picks a band, which says what has left, and a step, which says how large what stays is drawn.
+   The controller writes them as data-lod and data-step with the step's held scales, --text-scale for names and
+   --control-scale for controls and dots, only when one of them changes; nothing here is computed between steps, and
+   transforms change no layout. The first step holds reading size for every closer zoom, so that zooming in never shrinks
+   anything: a name, a description, a button and a dot all grow with the map there. Below reading scale a name also
+   grows into the room its description leaves (Turn 11), up to Name Growth (--name-growth) times its held size, the rooms
+   measured at render by the card reading. The limits, beside the steps (Turn 19: "prevent runaway goofy rendering
+   results that emerge from extreme inputs"): a dot, a row's Pin and More, and the node's buttons are never smaller than
+   at reading size nor taller than the row's allotment (a dot is 14 px, a row button 17, a node button 20); a name never
+   smaller than its reading size in the map's own units, never larger than its room or Name Growth allows; a pinned row's
+   highlight never shorter than the name's own box nor taller than its row. Beyond the last step nothing changes. */
+.local-slot-card { --node-control-scale: clamp(1, var(--control-scale, 1), calc((32 + var(--slot-lines, 2) * 17) / 20)); }
+.local-slot-card .symbol-row {
+    --dot-scale: clamp(1, var(--control-scale, 1), calc(var(--row-h, 14) / 14));
+    --row-control-scale: clamp(1, var(--control-scale, 1), calc(var(--row-h, 17) / 17));
+}
+.local-slot-card .local-card-actions { transform: scale(var(--node-control-scale)); transform-origin: top right; }
+/* A dot grows from its edge beside the name, away from it: the use-dot leftward, the offer-dot rightward, as wires enter
+   on the left and leave on the right; the controller draws the wires again at a new step, so they end at the dot drawn. */
+.local-slot-card .symbol-anchor.dot { transform: scale(var(--dot-scale)); }
+.local-slot-card .symbol-anchor.dot.inbound { transform-origin: right center; }
+.local-slot-card .symbol-anchor.dot.outbound { transform-origin: left center; }
+/* A row's controls hold their size together from the row's right edge: More scales about its own right edge, and the
+   Pin beside it scales about its right edge and moves left by what More and the gap grew. */
+.local-slot-card .local-symbol-more { transform: scale(var(--row-control-scale)); transform-origin: right center; }
+.local-slot-card .local-symbol-pin { transform: translateX(calc(var(--row-more-w, 0) * (1 - var(--row-control-scale)) * 1px)) scale(var(--row-control-scale)); transform-origin: right center; }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: min(var(--title-fill-h, 1), (var(--title-room-w, 1) - var(--actions-w, 0) * (var(--node-control-scale) - 1)) / var(--title-w, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card { --name-scale: min(var(--title-fill-h, 1), (var(--title-room-w, 1) - var(--more-w, 0) * (var(--node-control-scale) - 1)) / var(--title-w, 1), var(--text-scale, 1) * var(--name-growth, 1)); }
+/* A symbol's name holds its step's size (on screen between 0.87 and 1.15 of its reading size across the step, Turn 19)
+   and grows past it into the room across its box less its row's controls at their held size, Pin and More through the
+   middle band and More alone beyond it, nine tenths of that room at most, up to Name Growth; its row's height, from where
+   it begins, bounds it in every case, and it never draws smaller than in the map's own units. A name that the room
+   cannot hold at its held size is cut with an ellipsis below rather than shrunk (the owner, Turn 17: "we should be
+   willing to cut off symbol name text through truncation"). */
+[data-lod="middle"] .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-controls-w, 0) * var(--row-control-scale)); }
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-room: calc(var(--row-room-w, 0) - var(--row-more-w, 0) * var(--row-control-scale)); }
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row { --name-scale: max(1, min(var(--row-fill-h, 1), max(var(--text-scale, 1), min(0.9 * var(--name-room) / var(--row-name-w, 1), var(--text-scale, 1) * var(--name-growth, 1))))); }
 /* The ladder scales a name's text, never its button, whose box fills the row and would cover the row's buttons scaled (2026-11-06). */
 .local-slot-card .symbol-label .symbol-label-text, .local-slot-card .local-file-name .local-file-name-text { display: inline-block; transform: scale(var(--name-scale, 1)); transform-origin: left top; }
-/* A symbol row keeps its allotment in every band; when the slot leaves, the name stands centred in it. */
+/* Below reading scale a symbol's name stands at its row's top and grows downward into the room its description left,
+   nine tenths of the row's height at most, so that it stays inside its row; one that its room cannot hold beside the
+   row's More at its least size ends with an ellipsis of its own, so that it never runs under the button. It is a block
+   at its label's top, as wide as its text up to that room, so that its box is the label's line and the highlight below,
+   measured from the label, holds it exactly. */
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-label .symbol-label-text {
+    display: block;
+    width: max-content;
+    white-space: nowrap;
+    overflow-x: clip;
+    overflow-y: visible;
+    text-overflow: ellipsis;
+    max-width: calc(var(--name-room) / var(--name-scale) * 1px);
+}
+/* The word seams that let a name wrap at reading scale would break it here: Chromium breaks at a wbr under nowrap. */
+:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-label .symbol-label-text wbr { display: none; }
+/* A pinned row's highlight is a layer under the name that grows downward with it, from the wrapper's top to 2 px below
+   the name drawn (the name begins where the card reading measured it, centred beside the row's taller buttons), never
+   shorter than the wrapper's own box nor reaching past its row's bottom (the wrapper stands 2 px above its row, by its
+   margin, into the gap before the row above), so the text never leaves it. */
+.local-slot-card .symbol-row.symbol-pinned .symbol-label-wrapper { position: relative; isolation: isolate; background: none; box-shadow: none; }
+.local-slot-card .symbol-row.symbol-pinned .symbol-label-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    height: clamp(100%, calc((var(--row-name-top, 2) + var(--row-name-h, 0) * var(--name-scale, 1) + 2) * 1px), calc((var(--row-h, 0) + 2) * 1px));
+    border-radius: 4px;
+    background: var(--accent-subtle);
+    box-shadow: 0 0 0 1px var(--accent), 0 0 8px var(--color-outbound-glow);
+    pointer-events: none;
+}
+/* A symbol row keeps its allotment in every band; when the slot leaves, its track stays and takes the room below, so the
+   name keeps the row's top (measured 2026-11-06: an alignment to the centre had no free space to act on). */
 .local-slot-card .symbol-row:not(.internals-row) { height: calc(32px + var(--slot-lines, 2) * 17px); grid-template-rows: auto minmax(0, 1fr); align-content: start; }
-:is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row:not(.internals-row) { align-content: center; }
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card .symbol-row .local-reading-slot { display: none; }
 /* The middle band's tier: the descriptions and the badges, and the header's path, directory line, test chips and
-   counts, so that the file's name has the header's room (Turn 11); the far band's: the row controls, the cycle link
-   and the disclosure, and every node control but More. A name's room is its own box while the row's controls stand
-   (--fill-middle) and the whole row once they leave (--fill-far). */
+   counts, so that the file's name has the header's room (Turn 11); the far band's: the row's Pin, the cycle link and the
+   disclosure, and every node control but More. */
 :is([data-lod="middle"], [data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-reading-purpose, .type-refs-indicator, .node-path, .node-directory, .node-tests, .node-meta) { visibility: hidden; }
-/* A row's Pin and More stay through the middle band, at the map's scale for now, so that a symbol can be pinned two
-   steps out as close up (the owner, Turn 9: "the symbol buttons too when we can"); they leave at the far band. */
-:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-symbol-pin, .local-symbol-more, .local-disclosure, .local-back-references) { visibility: hidden; }
+/* A row's Pin stands through the middle band, so that a symbol can be pinned two steps out as close up (the owner,
+   Turn 9: "the symbol buttons too when we can"), and folds into the row's More beyond it, whose menu pins and unpins;
+   More stands on every row at every band (Turn 17), the one held button a row keeps, which is also the phone's rule. */
+:is([data-lod="far"], [data-lod="overview"]) .local-slot-card :is(.local-symbol-pin, .local-disclosure, .local-back-references) { visibility: hidden; }
 :is([data-lod="far"], [data-lod="overview"]) .local-slot-card .local-card-actions > :not(.local-file-more) { display: none; }
 
 /* Text leads at reading scale; highlighted relationships retain their usual emphasis. */

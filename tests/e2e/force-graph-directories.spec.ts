@@ -74,9 +74,11 @@ test("the structure layout preserves files, uses uniform directory junctions, an
   await expect(structure).toHaveAttribute("aria-pressed", "true");
   // The first picture with hubs is read as soon as it exists, a few ticks into the fold: the files have not been thrown
   // back to a cold start, which would gather them on a small spiral about the origin, and the scan root's hub begins
-  // among them, at the centroid of the files that already stood somewhere.
+  // among them, at the centroid of the files that already stood somewhere. The hubs enter over frames in the reveal's
+  // order, the scan root's not the first of them (a gate of 2026-11-06 read the picture one frame before it had
+  // entered), so the picture is read once that hub is there.
   let first: Rendered = [];
-  await expect.poll(async () => { first = await renderedNodes(page); return first.some(node => node.directory !== undefined); }, { timeout: 10_000 }).toBe(true);
+  await expect.poll(async () => { first = await renderedNodes(page); return first.some(node => node.directory === ""); }, { timeout: 10_000 }).toBe(true);
   const span = extent(network);
   const moved = first.filter(node => node.directory === undefined).map(node => {
     const before = network.find(file => file.id === node.id)!;

@@ -273,7 +273,11 @@ export function startDrag(
   runtime.isDragging = true;
   runtime.mapUserAdjusted = true;
   cancelInertia(runtime);
+  // A drag takes the camera from an animation, whose destination goes with it: left standing, it said that the camera
+  // was still on its way (2026-11-06), which held the layout's search, sent the next wheel zoom from that destination
+  // and kept the camera's motion from ending.
   cancelAnimationFrame(runtime.mapAnimationFrame);
+  runtime.mapAnimationTarget = null;
   runtime.lastDragPosition = { x: clientX, y: clientY, time: performance.now() };
   runtime.dragVelocity = { x: 0, y: 0 };
   viewport.style.cursor = "grabbing";

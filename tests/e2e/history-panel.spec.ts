@@ -227,7 +227,11 @@ test("a path asked at a moment runs over that moment's wires and names its files
   // The picture draws the path as the moment names it: the view, an end that is not pinned, at the pinned model's
   // strength, and a file off the path fainter; util.ts, in the model's folder, is in the path's picture (discovery,
   // 2026-10-31), where the legacy helper, four containment hops away, is not.
-  const opacity = async (id: string): Promise<number> => (await renderedNodes(page)).find(node => node.id === id)!.opacity;
+  // The moment's picture reveals its spheres over frames, the path's files first and util.ts, a hop beyond, after them:
+  // a gate of 2026-11-06 read the picture one frame before util.ts had entered. Each sphere is read once it is there.
+  const rendered = async (id: string) => (await renderedNodes(page)).find(node => node.id === id);
+  for (const id of ["src/app/view.ts", "src/core/model.ts", "src/core/util.ts"]) await expect.poll(async () => Boolean(await rendered(id)), { message: `${id} enters the moment's picture` }).toBe(true);
+  const opacity = async (id: string): Promise<number> => (await rendered(id))!.opacity;
   await expect.poll(() => opacity("src/app/view.ts")).toBe(await opacity("src/core/model.ts"));
   expect(await opacity("src/app/view.ts")).toBeGreaterThan(await opacity("src/core/util.ts"));
 

@@ -65,10 +65,10 @@ test("perspective copies preserve every computed SVG declaration without live id
     // Normalize all declarations through CSSOM, as the original freeze did. Computed aliases can change spelling
     // when assigned (for example app-region), so comparing raw computed strings would report false differences.
     for (const name of names) reference.style.setProperty(name, computed.getPropertyValue(name));
-    // The card ladder writes the map's zoom state as custom properties on the map at every frame (2026-11-05), and
-    // every element inherits them; they are the map's state at the moment of a reading, not the SVG's own
-    // declarations, so the copy is compared without them.
-    const zoomState = new Set(["--text-scale", "--control-scale", "--prose-scale", "--prose-lines", "--name-growth", "--name-scale"]);
+    // The card ladder writes the map's zoom state as custom properties on the map at each of its steps (2026-11-05;
+    // stepped since 2026-11-06), and every element inherits them; they are the map's state at the moment of a reading,
+    // not the SVG's own declarations, so the copy is compared without them.
+    const zoomState = new Set(["--text-scale", "--control-scale", "--name-growth", "--name-scale", "--node-control-scale"]);
     return Object.fromEntries(names.filter(name => !zoomState.has(name)).map(name => [name, reference.style.getPropertyValue(name)]));
   });
   expect(expected["--snapshot-punctuation"]).toBe('"left;right:still"');

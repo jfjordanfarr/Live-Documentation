@@ -31,6 +31,8 @@ The card's title button is `.local-file-name` since [November 5](../../../../../
 
 Since [Turn 12](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the map's viewport is a compositor layer (`will-change: transform`), so that a zoom or a pan is one transform of a rastered layer rather than a repaint of every card and wire on the main thread.
 
+Since 2026-11-06 ([Turns 17 to 19](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)) `#map-viewport` is a compositor layer only while the camera moves (`.camera-moving`, set by the controller): kept always, as Turn 12 made it, the layer was rastered once and stretched by the GPU, the blur close up and the aliasing far out the owner showed.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

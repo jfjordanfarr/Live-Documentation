@@ -15,6 +15,9 @@ import type { InspectionTarget } from "../../types";
 /** The share of its room a name may fill when it grows, leaving a little air at the row's edges. */
 const ROOM_MARGIN = 0.9;
 
+/** A custom property the card ladder's stylesheet reads, measured for one element: written after every reading. */
+type RoomWrite = readonly [element: HTMLElement, name: string, value: string];
+
 /** A file's Purpose or one exact symbol's description, named by the card it is read on. */
 export interface ReadingTarget { nodeId: string; symbol?: string; }
 
@@ -268,64 +271,17 @@ export class CardReading {
         // A slot's ellipsis says there is more; the name opens it. The link would add a line to every card.
         block.more.hidden = this.slots || block.element.hidden || !(block.hasMore || block.prose.scrollHeight > block.prose.clientHeight + 1);
       }
-      if (this.slots) { this.measureRooms(card, purpose); continue; }
+      if (this.slots) continue;
       // A file with many individually short descriptions can still exceed a phone's reading frame. Keep its plain
       // full reader reachable near the top, without shrinking text or installing a scrollbar inside the card.
       if (purpose && !purpose.element.hidden && card.scrollHeight > available) purpose.more.hidden = false;
       if (overflow && (!purpose || purpose.element.hidden) && card.classList.contains("local-reading-card") && card.scrollHeight > available) overflow.hidden = false;
     }
-  }
-
-  /**
-   * The room each name may grow into below reading scale (2026-11-05, Turn 11: "the symbols didn't expand to fill the
-   * spaces left by the disappearance of the text"): a symbol's name may fill its own box while the row's controls stand
-   * and its row's allotment once they leave, the file's name the
-   * header down to the Purpose's slot, since everything between leaves at the middle band; written as numbers for the
-   * stylesheet, which bounds the growth by Name Growth and, for the file's name, by the room the card's buttons take
-   * at their held size. Measured once a render, in layout pixels, so that zoom changes nothing here.
-   */
-  private measureRooms(card: HTMLElement, purpose: ReadingBlock | null): void {
-    const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
-    if (!(k > 0)) return;
-    // A name's text is narrower than its stretched box, and the name may already be drawn scaled: the text's own width
-    // in layout pixels is its range's width, less the map's scale and its own transform.
-    const textWidth = (element: HTMLElement): number => {
-      const range = document.createRange();
-      range.selectNodeContents(element);
-      const inner = element.querySelector<HTMLElement>(".symbol-label-text, .local-file-name-text") ?? element;
-      const own = new DOMMatrix(getComputedStyle(inner).transform).a || 1;
-      return range.getBoundingClientRect().width / (k * own);
-    };
-    for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
-      const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper"), label = row.querySelector<HTMLElement>(".symbol-label");
-      if (!wrapper || !label || !label.offsetHeight) continue;
-      const width = textWidth(label);
-      if (!(width > 0)) continue;
-      const wrapperStyle = getComputedStyle(wrapper), rowStyle = getComputedStyle(row);
-      const roomWidth = wrapper.clientWidth - parseFloat(wrapperStyle.paddingLeft) - parseFloat(wrapperStyle.paddingRight);
-      const roomHeight = row.clientHeight - parseFloat(rowStyle.paddingTop) - parseFloat(rowStyle.paddingBottom);
-      const byHeight = roomHeight / label.offsetHeight;
-      // While the row's Pin and More stand (through the middle band) the name has the room up to them; once they leave, the row.
-      const gap = parseFloat(wrapperStyle.columnGap) || 0;
-      let after = 0;
-      for (let sibling = label.nextElementSibling; sibling; sibling = sibling.nextElementSibling) after += (sibling as HTMLElement).offsetWidth + gap;
-      row.style.setProperty("--fill-middle", Math.max(1, ROOM_MARGIN * Math.min((roomWidth - after) / width, byHeight)).toFixed(2));
-      row.style.setProperty("--fill-far", Math.max(1, ROOM_MARGIN * Math.min(roomWidth / width, byHeight)).toFixed(2));
-    }
-    const title = card.querySelector<HTMLElement>(".local-file-name"), header = card.querySelector<HTMLElement>(".node-title");
-    if (!title || !header || !title.offsetHeight) return;
-    const titleWidth = textWidth(title);
-    if (!(titleWidth > 0)) return;
-    const headerStyle = getComputedStyle(header), headerRect = header.getBoundingClientRect();
-    const left = headerRect.left + parseFloat(headerStyle.paddingLeft) * k, top = headerRect.top + parseFloat(headerStyle.paddingTop) * k;
-    const bottom = purpose && !purpose.element.hidden ? purpose.element.getBoundingClientRect().bottom : headerRect.bottom - parseFloat(headerStyle.paddingBottom) * k;
-    const roomWidth = (headerRect.right - parseFloat(headerStyle.paddingRight) * k - left) / k, roomHeight = (bottom - top) / k;
-    card.style.setProperty("--title-fill-h", Math.max(1, ROOM_MARGIN * roomHeight / title.offsetHeight).toFixed(2));
-    card.style.setProperty("--title-room-w", (ROOM_MARGIN * roomWidth).toFixed(1));
-    card.style.setProperty("--title-w", titleWidth.toFixed(1));
-    // The buttons that stay at each band intrude on the header's room as they hold their size: all three at the middle band, More alone further out.
-    card.style.setProperty("--actions-w", String(card.querySelector<HTMLElement>(".local-card-actions")?.offsetWidth ?? 0));
-    card.style.setProperty("--more-w", String(card.querySelector<HTMLElement>(".local-file-more")?.offsetWidth ?? 0));
+    if (!this.slots) return;
+    // The rooms of every slot card are read before any is written, so that the page lays out once for them all rather
+    // than once a row (direction.md's November 6 cost finding).
+    const rooms = [...this.cards.values()].flatMap(({ card, purpose }) => measureRooms(card, purpose));
+    for (const [element, name, value] of rooms) element.style.setProperty(name, value);
   }
 
   /** Every kept-visible description shows; the books and the names say what each one would do next. */
@@ -413,6 +369,76 @@ export class CardReading {
     });
     return { element, prose, more, hasMore };
   }
+}
+
+/**
+ * What the card ladder's stylesheet needs to know of a slot card's rooms (2026-11-05, Turn 11: "the symbols didn't expand
+ * to fill the spaces left by the disappearance of the text"; 2026-11-06, Turns 17 to 19: clamps, and a More held on every
+ * row), measured once a render in layout pixels so that zoom changes nothing here; read only, the writes returned. Each
+ * symbol row gets its own height, the room across its name's box, its name's text width, height and place below the top of
+ * its wrapper, how many times the
+ * name's height its row could hold, and the widths of its controls with the gap before them: Pin and More, which stand
+ * through the middle band, and More alone, which stands at every band. The stylesheet bounds a name's growth by those
+ * rooms less the controls at their held size, by Name Growth and by the row's height, and a dot's, a control's and the
+ * highlight's by the row's height. The file's name gets the header down to the Purpose's slot, since everything between
+ * leaves at the middle band, and the widths of the card's buttons, which intrude on it at their held size.
+ */
+function measureRooms(card: HTMLElement, purpose: ReadingBlock | null): RoomWrite[] {
+  const writes: RoomWrite[] = [];
+  const k = card.offsetHeight ? card.getBoundingClientRect().height / card.offsetHeight : 0;
+  if (!(k > 0)) return writes;
+  // A name's text is narrower than its stretched box, and the name may already be drawn scaled: the text's own width
+  // in layout pixels is its range's width, less the map's scale and its own transform.
+  const textWidth = (element: HTMLElement): number => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    const inner = element.querySelector<HTMLElement>(".symbol-label-text, .local-file-name-text") ?? element;
+    const own = new DOMMatrix(getComputedStyle(inner).transform).a || 1;
+    return range.getBoundingClientRect().width / (k * own);
+  };
+  for (const row of card.querySelectorAll<HTMLElement>(".symbol-row")) {
+    const wrapper = row.querySelector<HTMLElement>(".symbol-label-wrapper"), label = row.querySelector<HTMLElement>(".symbol-label");
+    if (!wrapper || !label || !label.offsetHeight) continue;
+    const width = textWidth(label);
+    if (!(width > 0)) continue;
+    const wrapperStyle = getComputedStyle(wrapper), rowStyle = getComputedStyle(row);
+    const roomWidth = wrapper.clientWidth - parseFloat(wrapperStyle.paddingLeft) - parseFloat(wrapperStyle.paddingRight);
+    const labelTop = label.getBoundingClientRect().top;
+    // A name grows downward from where it begins, and its row's highlight reaches 2 px below it: its room by height is
+    // from its top to its row's bottom, less those 2 px.
+    const roomHeight = row.clientHeight - parseFloat(rowStyle.paddingBottom) - (labelTop - row.getBoundingClientRect().top) / k - 2;
+    const gap = parseFloat(wrapperStyle.columnGap) || 0;
+    const pin = row.querySelector<HTMLElement>(".local-symbol-pin")?.offsetWidth ?? 0;
+    const more = row.querySelector<HTMLElement>(".local-symbol-more")?.offsetWidth ?? 0;
+    writes.push(
+      [row, "--row-h", String(row.clientHeight)],
+      [row, "--row-room-w", roomWidth.toFixed(1)],
+      [row, "--row-name-w", width.toFixed(1)],
+      [row, "--row-name-h", String(label.offsetHeight)],
+      // The name stands centred beside the row's taller buttons: how far below the wrapper's top it begins.
+      [row, "--row-name-top", ((labelTop - wrapper.getBoundingClientRect().top) / k).toFixed(1)],
+      [row, "--row-fill-h", (ROOM_MARGIN * Math.max(0, roomHeight) / label.offsetHeight).toFixed(2)],
+      [row, "--row-controls-w", String(pin || more ? gap + pin + (pin && more ? gap : 0) + more : 0)],
+      [row, "--row-more-w", String(more ? gap + more : 0)]
+    );
+  }
+  const title = card.querySelector<HTMLElement>(".local-file-name"), header = card.querySelector<HTMLElement>(".node-title");
+  if (!title || !header || !title.offsetHeight) return writes;
+  const titleWidth = textWidth(title);
+  if (!(titleWidth > 0)) return writes;
+  const headerStyle = getComputedStyle(header), headerRect = header.getBoundingClientRect();
+  const left = headerRect.left + parseFloat(headerStyle.paddingLeft) * k, top = headerRect.top + parseFloat(headerStyle.paddingTop) * k;
+  const bottom = purpose && !purpose.element.hidden ? purpose.element.getBoundingClientRect().bottom : headerRect.bottom - parseFloat(headerStyle.paddingBottom) * k;
+  const roomWidth = (headerRect.right - parseFloat(headerStyle.paddingRight) * k - left) / k, roomHeight = (bottom - top) / k;
+  writes.push(
+    [card, "--title-fill-h", Math.max(1, ROOM_MARGIN * roomHeight / title.offsetHeight).toFixed(2)],
+    [card, "--title-room-w", (ROOM_MARGIN * roomWidth).toFixed(1)],
+    [card, "--title-w", titleWidth.toFixed(1)],
+    // The buttons that stay at each band intrude on the header's room as they hold their size: all three at the middle band, More alone further out.
+    [card, "--actions-w", String(card.querySelector<HTMLElement>(".local-card-actions")?.offsetWidth ?? 0)],
+    [card, "--more-w", String(card.querySelector<HTMLElement>(".local-file-more")?.offsetWidth ?? 0)]
+  );
+  return writes;
 }
 
 /** Empty generated placeholders are not a file description. The complete authored text remains in the reader. */

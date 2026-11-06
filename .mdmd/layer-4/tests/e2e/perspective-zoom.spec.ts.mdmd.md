@@ -24,6 +24,8 @@ Since [2026-11-05](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05
 
 Since [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the SVG-copy case compares declarations without the map's zoom state (the ladder's custom properties), which every element inherits and which changes between a live reading and the copy's moment.
 
+Since 2026-11-06 ([Turns 17 to 19](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)) the SVG copy comparison leaves out the ladder's properties as the map now writes them, at each step rather than each frame: `--text-scale`, `--control-scale`, `--name-growth`, `--name-scale` and `--node-control-scale`; the close band's `--prose-scale` and `--prose-lines` are gone.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

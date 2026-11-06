@@ -14,6 +14,7 @@ import {
 } from "../symbolAnchors";
 import { clearConnections, drawConnections } from "./connections";
 import { createEdgeSigns, type EdgeSigns, type FramePlace } from "./edge-signs";
+import { ladderBand, ladderScales, ladderStep, type LadderBand } from "./ladder-steps";
 import {
   computeLayoutExtents,
   computeFitTransform,
@@ -69,9 +70,6 @@ import type {
 } from "./types";
 import { readingFiles } from "../../reading-state";
 
-/** The card ladder's bands, from the farthest zoom to the closest (2026-11-05, Turn 9). */
-type LevelOfDetail = "overview" | "far" | "middle" | "reading" | "close";
-
 /** Coordinates the native Local Map, independent exploration pins and explicit FROM/TO paths. */
 export class LocalViewController implements LocalViewApi {
   /** Injected options including graph data, state, and navigation callbacks. */
@@ -119,7 +117,17 @@ export class LocalViewController implements LocalViewApi {
   /** A reading change holds the card's name through its move; under hover anchoring the pointer re-anchors only once that move has ended. */
   readingHold = false;
   /** The card ladder's band (2026-11-05, Turn 9), read by the stylesheet from the container's `data-lod`. */
-  private lod: LevelOfDetail = "reading";
+  private lod: LadderBand = "reading";
+  /** The card ladder's step (2026-11-06, Turns 17 to 19), read by the stylesheet from the container's `data-step`; null before the first. */
+  private ladderStep: number | null = null;
+  /** What the stylesheet was last given by the ladder, so that a frame with the same band and held scales writes nothing. */
+  private ladderWritten = "";
+  /** Whether a gesture, inertia or an animation moves the camera, as the container's `data-camera` last said. */
+  private cameraMoving = false;
+  /** The frame at which the camera's motion is looked at again while it moves; 0 at rest. */
+  private cameraFrame = 0;
+  /** The frame at which the wires are drawn again for a new step of the ladder; 0 when none is owed. */
+  private ladderRedraw = 0;
   private readingVisible = true;
   private readingReferenceScale = 1;
   private readingFrame = 0;
@@ -270,6 +278,7 @@ export class LocalViewController implements LocalViewApi {
       return;
     }
     handleWheelFn(this.runtime, event, () => this.updateMapTransform());
+    this.watchCamera();
   };
 
   private readonly handleWindowPointerUp = (event: PointerEvent): void => {
@@ -416,6 +425,10 @@ export class LocalViewController implements LocalViewApi {
    */
   dispose(): void {
     cancelAnimationFrame(this.readingFrame);
+    cancelAnimationFrame(this.cameraFrame);
+    this.cameraFrame = 0;
+    cancelAnimationFrame(this.ladderRedraw);
+    this.ladderRedraw = 0;
     this.reading?.dispose();
     cancelAnimationFrame(this.pendingRender);
     this.viewport.removeEventListener("pointerleave", this.handlePointerLeave);
@@ -883,7 +896,7 @@ export class LocalViewController implements LocalViewApi {
     this.mapHasInitialFit = true;
     this.mapInitialTransform = { ...next };
     this.mapUserAdjusted = true;
-    animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
+    this.animateCamera(next);
   }
 
   /** Zooms the map in by 20%. */
@@ -1151,6 +1164,7 @@ export class LocalViewController implements LocalViewApi {
     // the viewport has actually reached its terminal zoom destination" (2026-11-06, Turn 12).
     const ratio = this.mapTransform.k / this.readingReferenceScale;
     this.applyLevelOfDetail(ratio);
+    this.watchCamera();
     if (this.reading && this.stage?.search && !this.readingFrame && !this.readingCalibrationPending) {
       // Below reading scale the prose fades and above it returns, with the same two ratios so that the edge does not
       // chatter; a card's box never changes with zoom (the owner, 2026-11-05).
@@ -1164,32 +1178,73 @@ export class LocalViewController implements LocalViewApi {
     }
   }
 
+  /** Eases the camera to a pose, saying from its first moment that the camera moves. */
+  private animateCamera(next: MapTransform): void {
+    animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
+    this.watchCamera();
+  }
+
   /**
-   * The card ladder's band and scales (2026-11-05, Turn 9): inside a fixed box, names and controls hold their screen
-   * size by a resistance, descriptions gain lines as the camera comes closer, and each band below reading scale lets
-   * the next tier of a slot card leave, the stylesheet reading the band from `data-lod`. The edges, 1.3, 0.74, 0.45
-   * and 0.25 of the reading scale, carry a 15 % margin upward so that a zoom resting on one does not chatter. Below
-   * reading scale a name also grows into the room its description leaves, up to Name Growth times its held size
+   * Says on the container whether the camera moves (`data-camera="moving"`, absent at rest) and promotes the map's
+   * viewport to a compositor layer only meanwhile (2026-11-06, Turns 17 to 19): a layer is rastered once at the scale it
+   * had and stretched by the GPU after, which blurred the cards close up and aliased them far out, so a pan or a zoom in
+   * motion is one cheap transform of a layer and the picture at rest is drawn afresh at its own scale. The motion is a
+   * drag or a pinch, inertia, or an animation (a wheel's zoom, a fit, a focus); an instant jump such as a Zoom button's
+   * is no motion and draws at its scale at once. While the camera moves it is looked at once a frame, since a drag's
+   * release and inertia's last frame end the motion without another camera change.
+   */
+  private watchCamera(): void {
+    const runtime = this.runtime;
+    const moving = runtime.isDragging || this.pinch !== null || runtime.mapInertiaFrame !== 0 || runtime.mapAnimationTarget !== null;
+    if (moving !== this.cameraMoving) {
+      this.cameraMoving = moving;
+      if (moving) this.container.dataset.camera = "moving";
+      else delete this.container.dataset.camera;
+      this.container.parentElement?.classList.toggle("camera-moving", moving);
+    }
+    if (moving && !this.cameraFrame) this.cameraFrame = requestAnimationFrame(() => {
+      this.cameraFrame = 0;
+      this.watchCamera();
+    });
+  }
+
+  /**
+   * The card ladder's band and step (2026-11-05, Turn 9; breakpoints since 2026-11-06, Turns 17 to 19). The band says
+   * which tier of a slot card has left, the step how large what stays is drawn: a step every 20 % of zoom, each with
+   * its held scales for names and controls from the resistances, and nothing computed between steps. Both keep their
+   * value a margin past their edges, so a camera resting on one does not chatter, and the stylesheet is written only
+   * when the band, the step or a lever changes: a moving camera costs one style pass and one drawing of the wires a
+   * step instead of a style pass a frame.
+   * Below reading scale a name also grows into the room its description leaves, up to Name Growth times its held size
    * (Turn 11), the room measured at render by the card reading.
    */
   private applyLevelOfDetail(ratio: number): void {
     if (!Number.isFinite(ratio) || ratio <= 0) return;
-    const bands: LevelOfDetail[] = ["overview", "far", "middle", "reading", "close"];
-    const edges = [0.25, 0.45, 0.74, 1.3];
-    let index = bands.indexOf(this.lod);
-    while (index > 0 && ratio < edges[index - 1]) index -= 1;
-    while (index < edges.length && ratio > edges[index] * 1.15) index += 1;
-    this.lod = bands[index];
-    const { textResistance, controlResistance, slotLines, nameGrowth } = this.options.state.tuning.localMap;
-    const clamp = (value: number): number => Math.min(4, Math.max(0.5, value));
-    const proseScale = Math.min(1, ratio ** -textResistance);
+    this.lod = ladderBand(ratio, this.lod);
+    this.ladderStep = ladderStep(ratio, this.ladderStep);
+    const step = String(this.ladderStep);
+    if (this.container.dataset.step !== step) this.container.dataset.step = step;
+    const { textResistance, controlResistance, nameGrowth } = this.options.state.tuning.localMap;
+    const growth = Math.max(1, Number.isFinite(nameGrowth) ? nameGrowth : 1).toFixed(2);
+    const held = ladderScales(this.ladderStep, { textResistance, controlResistance });
+    const text = held.text.toFixed(3), control = held.control.toFixed(3);
+    // Only what the stylesheet reads is compared: a step whose held scales equal the last one's (at resistance 0, or
+    // past a ceiling) writes nothing, and the page has nothing to draw again.
+    const written = `${this.lod} ${text} ${control} ${growth}`;
+    if (written === this.ladderWritten) return;
+    // New held controls draw the anchor dots at a new size from their edge beside the name, so the wires that end at
+    // them are drawn again once, the frame after (a render draws them itself; the first writing is a render's).
+    const dotsChanged = this.container.style.getPropertyValue("--control-scale") !== control;
+    if (this.ladderWritten && dotsChanged && !this.ladderRedraw && this.stage) this.ladderRedraw = requestAnimationFrame(() => {
+      this.ladderRedraw = 0;
+      if (this.stage && this.isShown()) this.drawConnections();
+    });
+    this.ladderWritten = written;
     const style = this.container.style;
     this.container.dataset.lod = this.lod;
-    style.setProperty("--text-scale", clamp(ratio ** -textResistance).toFixed(3));
-    style.setProperty("--name-growth", Math.max(1, Number.isFinite(nameGrowth) ? nameGrowth : 1).toFixed(2));
-    style.setProperty("--control-scale", clamp(ratio ** -controlResistance).toFixed(3));
-    style.setProperty("--prose-scale", proseScale.toFixed(3));
-    style.setProperty("--prose-lines", String(Math.max(1, Math.floor(Math.max(1, Math.round(slotLines)) / proseScale))));
+    style.setProperty("--text-scale", text);
+    style.setProperty("--name-growth", growth);
+    style.setProperty("--control-scale", control);
   }
 
   /** Pan only as far as the focused command needs, including while its native row is moving. */
@@ -1266,7 +1321,7 @@ export class LocalViewController implements LocalViewApi {
     const next = settleTransform(extents.content, current, this.frameRect());
     if (Math.abs(next.x - current.x) < 0.5 && Math.abs(next.y - current.y) < 0.5) return;
     this.cancelInertia();
-    animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
+    this.animateCamera(next);
   }
 
   // Placeholder utilities to be implemented below
@@ -1536,7 +1591,7 @@ export class LocalViewController implements LocalViewApi {
 
     applyContainerDimensions(this.container, this.overlay, extents.content);
     const next = target(extents, frame);
-    animateMapTransformFn(this.runtime, next, () => this.updateMapTransform(), true);
+    this.animateCamera(next);
     this.mapHasInitialFit = true;
     this.mapInitialTransform = { ...next };
     this.scheduleConnectionRedraw();

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/card-reading.ts
-- Generated At: 2026-11-05T23:55:56.807Z
+- Generated At: 2026-11-06T09:34:11.656Z
 
 ## Authored
 ### Purpose
@@ -23,26 +23,28 @@ Since [Turn 11](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2
 
 Later on [Turn 12](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) `measureRooms` writes two rooms a row: `--fill-middle`, up to the row's controls while they stand, and `--fill-far`, the whole row once they leave, and reads a name's own transform from its text span.
 
+Since the breakpoint pass (2026-11-06, [Turns 17 to 19](../../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-17--november-6)) `measureRooms` is a module function that only reads and returns its writes, and `measure` reads every slot card before writing any, so that the page lays out once for them all rather than once a row (direction.md's November 6 cost finding). It writes a row's raw facts, `--row-h`, `--row-room-w`, `--row-name-w`, `--row-name-h`, `--row-name-top`, `--row-fill-h`, `--row-controls-w` and `--row-more-w`, in place of the two precomputed fills: the room a name has beside its row's controls now depends on the step, at which the controls are held, so the stylesheet computes it. The room by height is measured from where the name begins to the row's bottom, less the 2 px the pinned highlight keeps under it, so that a name grown downward and its highlight stay inside the row.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `ReadingTarget` {#symbol-readingtarget}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L19)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L22)
 
 ##### `ReadingTarget` — Summary
 A file's Purpose or one exact symbol's description, named by the card it is read on.
 
 #### `CardReadingOptions` {#symbol-cardreadingoptions}
 - Type: interface
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L22)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L25)
 
 ##### `CardReadingOptions` — Summary
 Canonical text, application-owned choices and the actions a card's text can lead to.
 
 #### `CardReading` {#symbol-cardreading}
 - Type: class
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L64)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/card-reading.ts#L67)
 
 ##### `CardReading` — Summary
 Builds on-card explanations from the same bundled docs as the full reader. A description opens and folds only
