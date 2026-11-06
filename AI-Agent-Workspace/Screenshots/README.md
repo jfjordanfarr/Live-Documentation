@@ -4,6 +4,8 @@ _The owner's standing request (2026-09-29): after changing the Explorer, build i
 
 ## 2026-11-06
 
+[Far-zoom review](2026-11-06/far-zoom-review/README.md): the root's look at the November 5–6 work on the freshly built bundle, at the owner's request: `still-picture.ts` walked out one zoom step at a time with every held part measured against its card and its row (the anchor dots past the card's edge from the far band outward), the screen size of symbol, file and directory names at each step, the same step with Name Growth at 1, two sketches of a far view led by file and directory names, and the 3D picture with the directory shells on and off; a review and a proposal, no product change (2026-11-06).
+
 [Card culling](2026-11-06/card-culling/README.md): containment and off-screen skipping for the 2D cards, the experiment of the owner's Turns 13 to 16, measured on four pages and left out of the product, with the trial kept as a patch, the pictures skipping on and off, the journey tables and a trace of where a wheel zoom's time goes; numbers for the owner, not a verdict (2026-11-06).
 
 [Card breakpoints](2026-11-06/card-breakpoints/README.md): the card ladder as breakpoints after the owner's Turns 17 to 19, the payment service, pathfind.ts and still-picture.ts at every step out to the camera's least scale and in to its greatest, the blur close up and the aliasing far out before and after, a pinned row's highlight, a phone width, and the frame cost of a zoom before and after; implementation evidence for the owner's eye, not a verdict (2026-11-06).

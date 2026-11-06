@@ -1,0 +1,14 @@
+# The far-zoom review's instruments of November 6
+
+_Status: the scripts behind [the root's review of the far zoom-out and the 3D shells](../../../Screenshots/2026-11-06/far-zoom-review/README.md), kept so that the same walk can be made again after a change to the card ladder. They drive a private headless Chromium (Playwright's) against a served bundle and change nothing in the product. `far-sketch.cjs` is a design sketch by injected styles, disposable once the question it pictures is answered._
+
+Build and serve first (`npm run build`, `npm run live-docs:visualize`, `npx http-server dist/explorer -p 8900 -c-1`), then run a script from the repository's root with `npx tsx <script>`.
+
+| Script | What it does | Switches, in the environment |
+| --- | --- | --- |
+| `box-audit.cjs` | Presses Zoom Out one step at a time until the camera can go no farther and, at each press, measures in screen pixels every drawn part of every card against the card's box, every part of a symbol row against its row, and each card's ink against its neighbours' boxes; prints one line a press and writes the whole reading as JSON, with pictures at chosen presses | `SUBJECT` (a file path; `tests/e2e/still-picture.ts`), `NAME`, `OUT` (a folder, required), `SHOTS` (a comma list of presses), `STEPS`, `W`, `H`, `BASE` |
+| `type-sizes.cjs` | The same walk, reading the height on screen of file names, symbol names and directory names as least / median / greatest, and how many of the subject's rows are cut with an ellipsis | `SUBJECT`, `NAME`, `TUNING` (JSON for the Local Map's tuning, such as `{"nameGrowth":1}`), `OUT` and `SHOTS` for pictures, `CSS` (a stylesheet to inject) |
+| `far-sketch.cjs` | The sketch: at presses 5, 8 and 10, injects a stylesheet and a layer of held file and directory names over the page and takes the picture; described in the evidence README | `SUBJECT`, `NAME`, `OUT` |
+| `shells-links.cjs` | Loads the shells links of the November 5–6 record's reply (A, B and the rest by letter), waits for the 3D picture to report rest, and takes the picture | `LINKS` (a comma list of letters), `OUT` |
+
+`box-audit.cjs` is the nearest of these to a regression: a held part drawn outside the box it belongs to is a fault geometry can name, the kind [the design audit](../../../../tests/e2e/design-audit.ts) exists for. It is not in the suite, because what the far bands should hold is a design question still with the owner; when that is answered, its assertion belongs in the ladder's spec.
