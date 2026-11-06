@@ -1,6 +1,6 @@
 # Ideas and observations without a home yet
 
-_Current as of 2026-11-05. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
+_Current as of 2026-11-06. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
 
 ## Asked for or loved by the owner
 
@@ -120,6 +120,16 @@ Offered by the root in [Turn 2](../ChatHistory/2026/11/2026-11-05.1.record.md#tu
 
 - **A one-line gist per described symbol, with a tap unfolding the full text in place.** The first sentence of each description always visible and cut with an ellipsis, so the card is a little taller always and still grows when someone reads the whole text, but the gist has already said whether it is worth it. Set aside because the growth it keeps is the layout shift the owner wants gone.
 - **A hover popover that floats over the map, outside the layout, with a tap to keep it.** The classic answer to “a hover peeks”: it moves nothing because it is not in the layout. Set aside for the classic problems: it occludes neighbours and wires, touch has no hover, and it flickers when crossing rows.
+
+## Far-view labelling not chosen — November 6, 2026
+
+Weighed by the root while designing the far and overview bands of the 2D card ladder ([Turn 3](../ChatHistory/2026/11/2026-11-06.1.record.md#turn-3), under the owner's go for improvements), and set aside for the rule that was built: a held thing is bounded by the room of the box it belongs to. None was shown to the owner as a picture.
+
+- **A directory's name held past its band's room.** A label kept at reading size when the strip above its first card is thinner than the text would lie over that card's top or stand out of its membrane, the very overlap the owner had reported. A plate behind it, like a folder's tab, would make the overlap deliberate; still an overlap.
+- **Region names as a watermark.** A directory's name set large and faint behind translucent cards, as an atlas sets a country's name under its cities. It needs the cards to turn translucent at the overview band and the eye to judge whether wires over it leave it readable.
+- **A file's name beside a card smaller than its label,** as a map labels a town, with labels dropped where they collide. It leaves the card's box, which the owner's rule and their reports of things exceeding boundaries argue against.
+- **A file's name cut to the part that tells it from its siblings:** `…branches…` for `local-map-branches.spec.ts` among thirty files that begin and end alike. It would fit far more names into narrow cards at the overview band; it needs a rule for what counts as shared and an honest mark of what was dropped.
+- **A one-line gist held through the middle band,** a description shortening to one held line before it leaves, so that the room the slots keep is not empty there. The owner's wish of November 5 that names take the room descriptions leave was answered with Name Growth, whose default went to 1 on November 6 for the sake of one size; this would fill the same room with meaning instead of size.
 
 ## Continuous file perspectives — October 3, 2026
 
