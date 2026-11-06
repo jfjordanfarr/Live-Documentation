@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphRenderer.ts
-- Generated At: 2026-11-05T23:08:51.343Z
+- Generated At: 2026-11-06T02:11:47.571Z
 
 ## Authored
 ### Purpose
@@ -20,6 +20,8 @@ Node presses use the uploaded tessellated sphere. A node drag uses a camera-faci
 The node/line colour, visibility, radius and width accessors describe appearance only. Camera positions and graph-to-screen coordinates are shared with labels, framing and perspective transitions. The window into the graph remains the same documented data; this layer adds no source-analysis facts.
 
 Since 2026-11-05 `nodeAt` returns a wrapped group's seed when the ray meets the group's wrapper before any sphere, so that hover, click, the press-and-hold menu and drag treat a wrapper as its seed; `wrappers` and `wrapperStyle` pass the [Group Wrappers experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)'s geometry and style to the buffers.
+
+Since 2026-11-05 `wrappers` takes the place of a wrapper whose node has left the picture, so that a popped directory shell bursts where it stood.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -55,6 +57,7 @@ A direct Three renderer with a bounded number of scene objects, irrespective of 
 - [`forceGraphBatches.createSpatialBuffers`](./forceGraphBatches.ts.mdmd.md#symbol-createspatialbuffers)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint) (type-only)
+- [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed) (type-only)
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode) (type-only)
 - [`forceGraphWrappers.GroupWrappers`](./forceGraphWrappers.ts.mdmd.md#symbol-groupwrappers) (type-only)
 - [`forceGraphWrappers.WrapperHull`](./forceGraphWrappers.ts.mdmd.md#symbol-wrapperhull-interface) (type-only)

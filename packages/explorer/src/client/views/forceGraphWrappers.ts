@@ -1,18 +1,18 @@
 /**
- * Wrapped groups in the 3D Local Map, an experiment behind the tuning's Group Wrappers (2026-11-05): every disconnected
- * group the picture shows only by its seed is drawn inside one padded convex hull of its own files, laid out hidden as
- * they would stand were the group shown, so that the group reads as a shape a click can pop open and the files then
- * fill. The owner proposed a mesh "which shrink-wraps the shape of the cluster it engulfs" on November 4 ([Turn 16 of
- * the November 3 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4))
+ * Wrappers in the 3D Local Map, the experiment behind the tuning's Group Wrappers (2026-11-05): a padded hull drawn over
+ * many files the picture does not show, so that they read as one shape a click can pop open and the files then fill.
+ * The owner proposed a mesh "which shrink-wraps the shape of the cluster it engulfs" on November 4 ([Turn 16 of the
+ * November 3 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4))
  * and asked to push it forward on November 5 ([Turn 10](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-10)).
+ * Two things are wrapped: every disconnected group the picture shows only by its seed, its wrapper centred on the seed,
+ * and, since experiment 2 of that day, the directory shells inside the groups it shows in part (`forceGraphShells.ts`),
+ * each a body of its own. Both are drawn over a phantom packing of their files inside a body sized by their count, not
+ * over a layout: experiment 1 laid every wrapped group out hidden, which cost a second and a half before this
+ * repository's first picture, and the owner's correction of Turn 11 asked for wrappers inside the connected structure.
  *
- * Only a disconnected group is wrapped: no wire leaves one, so a wrapper over it can hide no route between files. A ring's
- * hidden neighbourhood inside a connected component is not a disjoint bag of files and is not wrapped here; who would own
- * a file two frontier spheres both reach is a design question the records leave open.
- *
- * A convex hull bridges the hollows between a group's branches: it is an outer envelope, not a concave shrink-wrap. It
- * encloses every member's sphere padded by `padding`, each sphere stood in for by a geodesic polyhedron whose inscribed
- * sphere is the padded sphere, so that the hull of the polyhedra holds the spheres whole.
+ * A convex hull bridges the hollows between members: it is an outer envelope, not a concave shrink-wrap. It encloses
+ * every member's sphere padded by `padding`, each sphere stood in for by a geodesic polyhedron whose inscribed sphere is
+ * the padded sphere, so that the hull of the polyhedra holds the spheres whole.
  *
  * Pure-function module: no DOM, no GPU. The page draws and picks what these functions build.
  */
@@ -22,43 +22,29 @@ import { ConvexHull } from "three/addons/math/ConvexHull.js";
 
 import type { ForceGraphTuning } from "../types";
 export { GROUP_WRAPPERS, type GroupWrappers } from "../types";
-import { easeSpatialLayout, linkPulls, spatialNodeRadius, type Placed, type SpatialLink } from "./forceGraphLayout";
-import type { StartableNode } from "./forceGraphScope";
+import type { Placed } from "./forceGraphLayout";
 
 /** The seeds of the groups wrapped: those the scope shows only by their seed, of two files or more, in id order. */
 export function wrappedSeeds(groups: ReadonlyMap<string, number>): string[] {
   return [...groups].filter(([, files]) => files >= 2).map(([seed]) => seed).sort();
 }
 
-/** One member of a group's hidden layout: where it stands relative to the seed, and its sphere's radius. */
+/** One member of a wrapped body: where it stands relative to the body's centre, and its sphere's radius. */
 export interface GroupMember extends Placed {
   id: string;
   radius: number;
 }
 
-/** A group's hidden layout, every member relative to its seed, the seed at the origin. */
+/** A wrapped body's members, each relative to its centre: a group's seed, or a shell's own place. */
 export interface GroupShape {
   seed: string;
   members: GroupMember[];
-}
-
-/**
- * Lay a group out alone, as the 3D picture would were the whole group shown: its members and their links eased headlessly
- * with the page's own motion and the tuning's forces in the connections layout, from no positions, so that the same group
- * and tuning give the same shape on every machine. Positions are relative to the seed's. Members are taken in id order.
- */
-export function groupShapeOf(nodes: readonly StartableNode[], links: readonly SpatialLink[], seed: string, tuning: ForceGraphTuning, maxTicks = 12_000): GroupShape {
-  const ids = new Set(nodes.map(node => node.id));
-  if (!ids.has(seed)) throw new Error(`A group's seed must be one of its members; ${JSON.stringify(seed)} is not.`);
-  const fresh = [...nodes].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
-    .map(node => ({ ...node, x: undefined, y: undefined, z: undefined, vx: undefined, vy: undefined, vz: undefined, fx: undefined, fy: undefined, fz: undefined }));
-  const end = (value: string | { id: string }): string => (typeof value === "string" ? value : value.id);
-  const own = links.filter(link => ids.has(end(link.source)) && ids.has(end(link.target)) && linkPulls(link, "connections", tuning))
-    .map(link => ({ ...link, source: end(link.source), target: end(link.target) }));
-  const eased = easeSpatialLayout(fresh, own, tuning, "connections", { maxTicks });
-  const at = eased.nodes.find(node => node.id === seed)!;
-  const sx = at.x ?? 0, sy = at.y ?? 0, sz = at.z ?? 0;
-  return { seed, members: eased.nodes.map(node => ({ id: node.id, x: (node.x ?? 0) - sx, y: (node.y ?? 0) - sy, z: (node.z ?? 0) - sz, radius: spatialNodeRadius(node, tuning) })) };
+  /**
+   * The spheres the hull is taken over, when not the members: a directory shell's subdirectories, each the ball that holds
+   * its files, so that a shell of thousands is wrapped at the cost of its few subdirectories (the T3 sample's largest
+   * shell, 13,095 files, took 114 ms to wrap over its files, measured 2026-11-05).
+   */
+  outline?: GroupMember[];
 }
 
 /** The space a wrapper keeps around each member's sphere: one and a half times the radius of a file with no symbols. */
@@ -109,18 +95,38 @@ const GEODESIC = ((): { points: number[][]; inradius: number } => {
   return { points, inradius };
 })();
 
+/** How many of a body's farthest-reaching members its hull is first taken over. */
+const OUTER_MEMBERS = 64;
+
 /**
- * The convex hull of a group's padded spheres, relative to its seed. Each vertex's normal is the area-weighted mean of
+ * The convex hull of a body's padded spheres, relative to its centre. Each vertex's normal is the area-weighted mean of
  * its triangles' outward normals, so that the hull shades as one smooth surface. Triangles wind outward.
  */
 export function wrapperHull(shape: GroupShape, padding: number): WrapperHull {
   if (!(Number.isFinite(padding) && padding >= 0)) throw new Error("A wrapper's padding must be a finite, nonnegative length.");
-  const points: Vector3[] = [];
-  for (const member of shape.members) {
+  // Only the outer members shape the hull. Each member's polyhedron lies within a ball about the centre of its distance
+  // plus its reach; the hull of the farthest-reaching members is taken, and while any member's ball might leave it, more
+  // are added and the hull taken again, so that the hull is that of every member at the cost of those on its outside.
+  const reaches = (shape.outline ?? shape.members).map(member => {
     const reach = (member.radius + padding) / GEODESIC.inradius;
-    for (const [x, y, z] of GEODESIC.points) points.push(new Vector3(member.x + x * reach, member.y + y * reach, member.z + z * reach));
+    return { member, reach, extent: Math.hypot(member.x, member.y, member.z) + reach };
+  }).sort((a, b) => b.extent - a.extent);
+  let taken = Math.min(reaches.length, OUTER_MEMBERS), hull: ConvexHull;
+  for (;;) {
+    const points: Vector3[] = [];
+    for (const { member, reach } of reaches.slice(0, taken)) {
+      for (const [x, y, z] of GEODESIC.points) points.push(new Vector3(member.x + x * reach, member.y + y * reach, member.z + z * reach));
+    }
+    hull = new ConvexHull().setFromPoints(points);
+    if (taken === reaches.length) break;
+    // The nearest face plane to the centre: a ball about the centre no larger lies inside the hull.
+    let inside = Infinity;
+    for (const face of hull.faces) inside = Math.min(inside, face.normal.dot(face.midpoint));
+    let more = taken;
+    while (more < reaches.length && reaches[more].extent > inside) more++;
+    if (more === taken) break;
+    taken = Math.min(reaches.length, Math.max(more, 2 * taken));
   }
-  const hull = new ConvexHull().setFromPoints(points);
   const index = new Map<Vector3, number>();
   const corners: number[] = [];
   const triangles: number[] = [];

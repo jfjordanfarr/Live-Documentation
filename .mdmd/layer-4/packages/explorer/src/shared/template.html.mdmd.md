@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/shared/template.html
-- Generated At: 2026-11-05T23:55:57.804Z
+- Generated At: 2026-11-06T06:45:43.210Z
 
 ## Authored
 ### Purpose
@@ -44,6 +44,8 @@ Tuning's History group (2026-10-18, the plan's C4 and C14): the scrubber's axis,
 - Text Resistance (0 to 1, 0.8) and Control Resistance (0 to 1, 1) follow Slot Lines under 2D Layout ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)), the card ladder's two levers; the inventory stands at 52.
 
 Name Growth (`tuning-name-growth`, 1 to 3 by tenths, 1.5) joined the 2D Layout group on [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11) beside Text Resistance, whose default became 1; Card Text's first and selected option is now the fixed-slot composition.
+
+Since 2026-11-05 Discovery holds a Shell Depth slider (1 to 6, default 2) after Group Wrappers.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -301,6 +303,12 @@ Name Growth (`tuning-name-growth`, 1 to 3 by tenths, 1.5) joined the 2D Layout g
 - Type: variable
 
 #### `tuning-force-reveal-frames-value` {#symbol-tuning-force-reveal-frames-value}
+- Type: variable
+
+#### `tuning-force-shell-depth` {#symbol-tuning-force-shell-depth}
+- Type: variable
+
+#### `tuning-force-shell-depth-value` {#symbol-tuning-force-shell-depth-value}
 - Type: variable
 
 #### `tuning-force-symbol-scale` {#symbol-tuning-force-symbol-scale}

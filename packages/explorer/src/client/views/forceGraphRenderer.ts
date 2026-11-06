@@ -3,7 +3,7 @@ import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
 import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle } from "./forceGraphBatches";
 import type { CameraPoint } from "./forceGraphCamera";
-import type { SpatialNode } from "./forceGraphLayout";
+import type { Placed, SpatialNode } from "./forceGraphLayout";
 import type { GroupWrappers, WrapperHull } from "./forceGraphWrappers";
 
 /** Mouse/touch motion within this CSS-pixel distance is still a click, shared with the view's press/hold handling. */
@@ -151,9 +151,12 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   nodeRadius(read: (node: N) => number): this { this.options.style.radius = read; this.invalidateAppearance(); return this; }
   /** Replace the rule for the ring around a sphere that has more behind it: its colour, or null for none (2026-11-02). */
   nodeRing(read: (node: N) => string | null): this { this.options.style.ring = read; this.invalidateAppearance(); return this; }
-  /** Wrap these groups' seeds in their hulls, drawn in the look given; none when off (2026-11-05). */
-  wrappers(seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers): this {
-    this.buffers.setWrappers(seeds, hullOf, look); this.appearance++; return this;
+  /**
+   * Wrap these nodes in their hulls, drawn in the look given, none when off (2026-11-05): a wrapped group's seed or a
+   * directory shell, each at its node's place, or at the place given for one bursting after its node left the picture.
+   */
+  wrappers(seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers, placeOf?: (seed: string) => Placed | undefined): this {
+    this.buffers.setWrappers(seeds, hullOf, look, placeOf); this.appearance++; return this;
   }
   /** Each wrapper's opacity and growth, the one hovered and those bursting open, for the next draw. */
   wrapperStyle(style: SpatialWrapperStyle): this { this.buffers.styleWrappers(style); this.appearance++; return this; }
@@ -206,8 +209,9 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
     this.eye.updateMatrixWorld(); this.raycaster.setFromCamera(this.pointer, this.eye);
   }
   /**
-   * Pick the closest tessellated sphere in the latest uploaded picture, or the seed of the closest wrapper when the ray
-   * meets a wrapper first: a wrapper acts as its seed does (2026-11-05).
+   * Pick the closest tessellated sphere in the latest uploaded picture, or the node of the closest wrapper when the ray
+   * meets a wrapper first: a wrapper acts as its seed does, and a directory shell, drawn as its wrapper alone, is picked
+   * by it (2026-11-05).
    */
   nodeAt(clientX: number, clientY: number): N | undefined {
     this.setRay(clientX, clientY);

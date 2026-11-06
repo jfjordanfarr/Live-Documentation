@@ -1,0 +1,86 @@
+{
+  "which": "estate",
+  "pin": "PaymentService/PaymentService.cs",
+  "depth": 1,
+  "directory": "Portal",
+  "before": {
+    "spheres": 19,
+    "shells": 2,
+    "wires": 42,
+    "shellWires": 5,
+    "wrappers": 3,
+    "popping": [],
+    "triangles": 366
+  },
+  "steps": [
+    {
+      "ms": 0,
+      "spheres": 20,
+      "shells": 1,
+      "wires": 42,
+      "shellWires": 4,
+      "wrappers": 2,
+      "popping": [
+        "shell:Portal"
+      ],
+      "triangles": 366
+    },
+    {
+      "ms": 100,
+      "spheres": 24,
+      "shells": 3,
+      "wires": 50,
+      "shellWires": 8,
+      "wrappers": 4,
+      "popping": [
+        "shell:Portal"
+      ],
+      "triangles": 566
+    },
+    {
+      "ms": 250,
+      "spheres": 24,
+      "shells": 3,
+      "wires": 50,
+      "shellWires": 8,
+      "wrappers": 4,
+      "popping": [],
+      "triangles": 404
+    },
+    {
+      "ms": 500,
+      "spheres": 24,
+      "shells": 3,
+      "wires": 50,
+      "shellWires": 8,
+      "wrappers": 4,
+      "popping": [],
+      "triangles": 404
+    }
+  ],
+  "popSettleMs": 14868,
+  "afterPop": {
+    "spheres": 24,
+    "shells": 3,
+    "wires": 50,
+    "shellWires": 8,
+    "wrappers": 4,
+    "popping": [],
+    "triangles": 404
+  },
+  "chip": {
+    "text": "Portal",
+    "title": "Portal · opened · Wrap its files again"
+  },
+  "wrapSettleMs": 2263,
+  "wrapped": {
+    "spheres": 19,
+    "shells": 2,
+    "wires": 42,
+    "shellWires": 5,
+    "wrappers": 3,
+    "popping": [],
+    "triangles": 366
+  },
+  "wrappedIdleFrames": 0
+}

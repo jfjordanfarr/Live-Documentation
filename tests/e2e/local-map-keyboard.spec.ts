@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { localMapSettled } from "./still-picture";
+import { localMapStill } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 
 test("Tab keeps each native map command in the unobstructed frame without changing exploration", async ({ page }) => {
@@ -9,7 +9,9 @@ test("Tab keeps each native map command in the unobstructed frame without changi
   const nodeId = "tests/integration/programs/csharp/estate/PaymentService/PaymentService.cs";
   await page.goto(`/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", selectedNodeId: nodeId })}`);
   await page.locator(`.node-card[data-id="${nodeId}"]`).waitFor();
-  await localMapSettled(page);
+  // The camera's fit eases on after the branch move ends; the scale is read once the picture stands still (2026-11-06,
+  // when a gate read 1.374 here and 1.45, the fit, at the end).
+  await localMapStill(page);
   await page.mouse.move(280, 55);
   const scale = () => page.locator("#map-viewport").evaluate(element => new DOMMatrix(getComputedStyle(element).transform).a);
   const initialScale = await scale();

@@ -16,13 +16,15 @@ export interface SpatialLegendDrawn {
   rings: boolean;
   /** Whether any group is drawn wrapped, the Group Wrappers experiment: its files hidden in a shape a click opens (2026-11-05). */
   wrapped?: boolean;
+  /** Whether any directory shell is drawn, the same experiment's second rule: a directory's hidden files as one body (2026-11-05). */
+  shells?: boolean;
 }
 
 /** One row of the key: its words and the sample the stylesheet draws from its shape and colour. */
 export interface SpatialLegendRow {
   label: string;
   color: string;
-  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "faded" | "frontier" | "ring" | "wrapped";
+  shape: "node" | "size" | "width" | "wire" | "arrow" | "path" | "faded" | "frontier" | "ring" | "wrapped" | "shell";
 }
 
 /** The rows of the key for a filtered graph at the moment shown, in reading order; pure, so that a test can read them. */
@@ -41,6 +43,7 @@ export function spatialLegendRows(graph: SpatialGraphData, symbolScale: number, 
   if (drawn.frontier) rows.push({ label: "Dimmed: a hop beyond, or another group; click to see more", color: "#aeb8c6", shape: "frontier" });
   if (drawn.rings) rows.push({ label: "Ring: more connected, not shown; click to see it", color: "#aeb8c6", shape: "ring" });
   if (drawn.wrapped) rows.push({ label: "Wrapped group: its files, not shown; click to open it", color: "#aeb8c6", shape: "wrapped" });
+  if (drawn.shells) rows.push({ label: "Shell: N files of a directory; click to open it", color: "#aeb8c6", shape: "shell" });
   if (drawn.faded) rows.push({ label: "Faded: not on the path or hovered", color: "#aeb8c6", shape: "faded" });
   if (kinds.has("containment")) rows.push({ label: "Contains", color: SPATIAL_NODE_STYLES.directory.color, shape: "wire" });
   if (kinds.has("related-doc")) rows.push({ label: "Cites document", color: SPATIAL_NODE_STYLES["related-doc"].color, shape: "arrow" });

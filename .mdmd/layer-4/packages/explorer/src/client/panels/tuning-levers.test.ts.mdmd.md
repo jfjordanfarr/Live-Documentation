@@ -18,6 +18,8 @@ Since 2026-11-05 the template holds one control more, Group Wrappers, so the cou
 
 Name Growth brought the inventory to 54 on [Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), after Group Wrappers made it 53.
 
+Shell Depth, merged on November 6 with the directory shells (experiment 2 of [Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)), makes it 55.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

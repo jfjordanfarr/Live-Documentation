@@ -1,0 +1,80 @@
+{
+  "which": "repo",
+  "pin": "packages/explorer/src/client/views/forceGraphView.ts",
+  "firstSettleMs": 23012,
+  "skin": {
+    "spheres": 247,
+    "shells": 10,
+    "shellFiles": 328,
+    "wires": 692,
+    "shellWires": 134,
+    "wrappers": 51,
+    "triangles": 7916,
+    "vertices": 4060,
+    "idleFrames": 0
+  },
+  "settleAfterChoose": {
+    "cloud": 304,
+    "cloud-rim": 304,
+    "off": 7350,
+    "skin": 7329
+  },
+  "cloud": {
+    "spheres": 247,
+    "shells": 10,
+    "shellFiles": 328,
+    "wires": 692,
+    "shellWires": 134,
+    "wrappers": 51,
+    "triangles": 7916,
+    "vertices": 4060,
+    "idleFrames": 0
+  },
+  "off": {
+    "spheres": 247,
+    "shells": 0,
+    "shellFiles": 0,
+    "wires": 558,
+    "shellWires": 0,
+    "wrappers": 0,
+    "triangles": 0,
+    "vertices": 0,
+    "idleFrames": 0
+  },
+  "depth-1-settleMs": 8799,
+  "depth-1": {
+    "spheres": 247,
+    "shells": 3,
+    "shellFiles": 328,
+    "wires": 661,
+    "shellWires": 103,
+    "wrappers": 44,
+    "triangles": 6616,
+    "vertices": 3396,
+    "idleFrames": 0
+  },
+  "depth-2-settleMs": 8534,
+  "depth-2": {
+    "spheres": 247,
+    "shells": 10,
+    "shellFiles": 328,
+    "wires": 692,
+    "shellWires": 134,
+    "wrappers": 51,
+    "triangles": 7916,
+    "vertices": 4060,
+    "idleFrames": 0
+  },
+  "depth-3-settleMs": 7813,
+  "depth-3": {
+    "spheres": 247,
+    "shells": 11,
+    "shellFiles": 328,
+    "wires": 696,
+    "shellWires": 138,
+    "wrappers": 52,
+    "triangles": 7994,
+    "vertices": 4101,
+    "idleFrames": 0
+  }
+}

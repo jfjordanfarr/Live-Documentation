@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { localMapSettled } from "./still-picture";
+import { localMapStill } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -37,30 +37,11 @@ const reading = (page: Page) => page.evaluate(id => {
   };
 }, payment);
 
-async function still(page: Page): Promise<void> {
-  await localMapSettled(page);
-  await page.evaluate(async () => {
-    let previous = "", since = performance.now();
-    const deadline = since + 5000;
-    while (performance.now() < deadline) {
-      await new Promise(requestAnimationFrame);
-      const picture = [...document.querySelectorAll(".node-card")].map(element => {
-        const rect = element.getBoundingClientRect();
-        return [rect.x, rect.y, rect.width, rect.height];
-      });
-      const value = JSON.stringify(picture);
-      if (value !== previous) { previous = value; since = performance.now(); }
-      if (performance.now() - since > 150) return;
-    }
-    throw new Error("The picture did not settle");
-  });
-}
-
 /** Zoom out one step at a time until the map reports the band, within a bounded number of steps. */
 async function zoomOutTo(page: Page, band: string): Promise<void> {
   for (let step = 0; step < 8; step += 1) {
     await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-    await still(page);
+    await localMapStill(page);
     if ((await reading(page)).band === band) return;
   }
   throw new Error(`The ${band} band was not reached in eight steps`);
@@ -79,7 +60,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
   await page.goto(url({ selectedNodeId: payment }));
   const subject = page.locator(`.node-card[data-id="${payment}"]`);
   await subject.waitFor();
-  await still(page);
+  await localMapStill(page);
   const boxes = await layoutBoxes(page);
   const start = await reading(page);
   expect(start.band).toBe("reading");
@@ -91,7 +72,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
 
   // One step closer stays in the reading band: the name grows with the map, the More button and the anchor dot do not.
   await page.getByRole("button", { name: "Zoom In", exact: true }).click();
-  await still(page);
+  await localMapStill(page);
   const closer = await reading(page);
   expect(closer.band).toBe("reading");
   expect(closer.scale).toBeGreaterThan(start.scale);
@@ -99,7 +80,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
   expect(Math.abs(closer.more - start.more)).toBeLessThan(1);
   expect(Math.abs(closer.anchor - start.anchor)).toBeLessThan(1);
   await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
-  await still(page);
+  await localMapStill(page);
 
   // Middle: the descriptions, the row controls, the badges, the path and the directory line leave; the name holds its
   // screen size (resistance 1) and grows into its row's room up to Name Growth (1.5), the file's name likewise within
@@ -143,7 +124,7 @@ test("each band below reading scale lets one tier leave, names and controls hold
 
   // Reset Zoom returns the reading band with everything back.
   await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
-  await still(page);
+  await localMapStill(page);
   const back = await reading(page);
   expect(back.band).toBe("reading");
   await expect(row.locator(".local-reading-slot")).toBeVisible();
@@ -158,7 +139,7 @@ test("the resistances and the growth in Tuning change how much names and control
   await page.goto(url({ selectedNodeId: payment }));
   const subject = page.locator(`.node-card[data-id="${payment}"]`);
   await subject.waitFor();
-  await still(page);
+  await localMapStill(page);
   const start = await reading(page);
   await page.getByText("Tuning", { exact: true }).click();
   const section = page.locator("details.tuning-subsection").filter({ hasText: "2D Layout" });
@@ -170,7 +151,7 @@ test("the resistances and the growth in Tuning change how much names and control
     }, value);
     await expect(page.locator(`#${id}-value`)).toHaveText(value);
   }
-  await still(page);
+  await localMapStill(page);
   await zoomOutTo(page, "middle");
   const middle = await reading(page);
   // With no resistance and no growth everything scales with the map, controls and the file's name included.

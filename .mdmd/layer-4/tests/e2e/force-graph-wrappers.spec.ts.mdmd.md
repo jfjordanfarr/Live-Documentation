@@ -13,6 +13,8 @@ Checks in the browser that Group Wrappers stays off by default and, chosen as Sk
 ### Notes
 Written on 2026-11-05 with the experiment ([the design](../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)). The wrappers are read from the record the wrappers' mesh keeps of what it drew (`userData.spatialWrappers`), and the groups expected are computed from the bundle by the same pure scope the page uses, so the count follows the repository; the research of November 5 counted 42 groups of two files or more among 95. The choice is seeded as a saved Tuning choice, which also exercises its persistence. The journey case waits for the picture to settle before hovering, since the camera follows the first unfold; the archipelago with wrappers settled in about sixteen seconds on this machine's software renderer, against under two without, because each wrapped seed keeps its wrapper's room. Motion stays off in the suite: the burst runs only on a pop and its end is awaited, not measured.
 
+Since 2026-11-05 the pinned group holds its hidden files in directory shells, which the check of the other groups' wrappers leaves aside, and the release focuses whichever of the seed's names is shown, since beside the shells the subject's focus name and its name label need not both be placed.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/card-reading.spec.ts
-- Generated At: 2026-11-06T03:23:53.068Z
+- Generated At: 2026-11-06T07:19:51.783Z
 
 ## Authored
 ### Purpose
@@ -27,6 +27,8 @@ Since [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.
 
 On [Turn 12](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-12--november-6) the pin became `keepGrowingComposition`, which merges the choice into the saved tuning rather than replacing it.
 
+On November 6 ([Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), the shells merge) the spec's private stillness wait became the shared `localMapStill` of `still-picture.ts`.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -47,6 +49,6 @@ _No public symbols detected_
 - [`design-audit.truncations`](./design-audit.ts.mdmd.md#symbol-truncations)
 - [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
 - [`still-picture.keepGrowingComposition`](./still-picture.ts.mdmd.md#symbol-keepgrowingcomposition)
-- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 - [`still-picture.panIntoView`](./still-picture.ts.mdmd.md#symbol-panintoview)
 <!-- LIVE-DOC:END Dependencies -->

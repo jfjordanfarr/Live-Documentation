@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { compressToEncodedURIComponent } from "lz-string";
 
 import { currentSnapshot, pathAddress } from "./search-bar";
-import { localMapSettled } from "./still-picture";
+import { localMapStill } from "./still-picture";
 import { PERSISTED_NAV_KEY } from "../../packages/explorer/src/client/persistence/local-storage";
 
 const SUBJECT = "packages/explorer/src/client/index.ts";
@@ -169,10 +169,12 @@ test("a reveal by the browser scrolls nothing that clips a view, so no picture s
   await ready(page, "2d");
   const card = page.locator('#map-container .node-card[data-id="tests/integration/programs/typescript/rosetta/src/helpers.ts"]');
   await expect(card).toBeVisible();
-  await localMapSettled(page);
+  // The branch move's end is not the camera's: its fit eases on for about a third of a second and moved the card by
+  // 8 and 43 px between the two readings below (2026-11-06), so the picture is read once it stands still.
+  await localMapStill(page);
   const before = (await card.boundingBox())!;
   expect(await revealEverything(page, "#view-map")).toEqual([]);
-  // The camera's last easing can still move the card by a fraction of a pixel; a scroll moves it by whole pixels.
+  // A scroll moves the card by whole pixels; nothing else may move it now.
   const after = (await card.boundingBox())!;
   for (const key of ["x", "y", "width", "height"] as const) expect(after[key]).toBeCloseTo(before[key], 0);
   await page.getByRole("button", { name: "3D", exact: true }).click();

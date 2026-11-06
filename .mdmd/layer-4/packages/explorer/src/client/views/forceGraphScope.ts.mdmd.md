@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphScope.ts
-- Generated At: 2026-11-05T23:08:51.447Z
+- Generated At: 2026-11-06T02:11:47.652Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Written on 2026-10-31 for discovery, the owner's direction that the 3D Local Map
 `componentMembers` names each disconnected component by its seed, with its members sorted, and `componentLandmarks` gives the seeds with their sizes, both over the connected neighbours of the links that connect in the layout, every node visited once. Since 2026-11-02 the seeds are part of the picture ([Turn 3](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-02.1.record.md#turn-3)): while anything is asked about, `spatialScope` adds the seed of every group the hops do not reach one past the last hop, drawn dimmed as the frontier is, and reports in `groups` the groups shown only by their seed with their sizes in files, which the view writes into the seed's name. A group of nothing but hubs is never a group of the picture's, and a group that holds hubs is a containment tree, whose handle is its top hub, the root when it stands, so that a moment before a pinned file's birth shows the root dimmed rather than nothing; the history specs of that day found the tree seeded by its first file by id. Before that day the landmarks only prioritised names, which the view no longer does: names stand at rest beside what was asked about, the rest at the Name At lever. Temporary directory discovery resolves an exact hub or its sole collapsed descendant, then collects only that directory's file/document members within containment hops. This lets Connections carry the same discovered neighborhood without silently retaining an entire subtree.
 
 Since 2026-11-05 the scope also names each group's files (`groupFiles`), what `groups` counts, so that a [wrapper](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences) is drawn around the same files the count names.
+
+Since 2026-11-05 the scope also returns `hidden`, the files of each group shown in part, but not only by its seed, that the picture leaves out, which the directory shells hold, and `beside`, the neighbours it walked, so that the shells need not walk them again.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -60,7 +62,7 @@ The shown part of a picture: each shown sphere's hop from what was asked about, 
 
 #### `connectedNeighbours` {#symbol-connectedneighbours}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L86)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L93)
 - Parameters: `link`: [`SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
 
@@ -69,7 +71,7 @@ Each node's connected neighbours over the links that connect in the layout, coun
 
 #### `spatialScope (function)` {#symbol-spatialscope-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L105)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L112)
 - Returns: [`SpatialScope`](#symbol-spatialscope-interface)
 - Parameters: `attention`: `ReadonlySet`; `link`: [`SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
@@ -83,7 +85,7 @@ frontier's "more here".
 
 #### `mostConnectedFirst` {#symbol-mostconnectedfirst}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L144)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L153)
 - Parameters: `beside`: `ReadonlyMap`
 
 ##### `mostConnectedFirst` — Summary
@@ -91,7 +93,7 @@ Most connected first, then by id, so that a choice is the same on every machine.
 
 #### `componentMembers` {#symbol-componentmembers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L162)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L171)
 - Parameters: `beside`: `ReadonlyMap`
 
 ##### `componentMembers` — Summary
@@ -101,7 +103,7 @@ connected member. The walk visits every node once, so a picture of thousands of 
 
 #### `componentLandmarks` {#symbol-componentlandmarks}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L181)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L190)
 - Parameters: `beside`: `ReadonlyMap`
 
 ##### `componentLandmarks` — Summary
@@ -109,7 +111,7 @@ One real file and member count for each disconnected component, including isolat
 
 #### `startOf` {#symbol-startof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L191)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L200)
 - Parameters: `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `link`: [`SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - Constraints: [`StartableNode`](#symbol-startablenode)
 
@@ -121,7 +123,7 @@ no start.
 
 #### `startHops` {#symbol-starthops}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L202)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphScope.ts#L211)
 - Parameters: `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `startHops` — Summary

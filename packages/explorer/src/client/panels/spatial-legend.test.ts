@@ -37,3 +37,12 @@ it("names a wrapped group, after the ring, only while a group is drawn wrapped (
   expect(rows.map(row => row.shape)).toEqual(["node", "size", "frontier", "ring", "wrapped"]);
   expect(rows.at(-1)!.label).toBe("Wrapped group: its files, not shown; click to open it");
 });
+
+it("names a directory shell, after the wrapped group, only while a shell is drawn (2026-11-05)", () => {
+  const graph: SpatialGraphData = { nodes: [node("a.ts", "implementation")], links: [] };
+  const drawn = { references: true, path: false, faded: false, frontier: true, rings: false, wrapped: true };
+  expect(spatialLegendRows(graph, 1, drawn).map(row => row.shape)).not.toContain("shell");
+  const rows = spatialLegendRows(graph, 1, { ...drawn, shells: true });
+  expect(rows.map(row => row.shape)).toEqual(["node", "size", "frontier", "wrapped", "shell"]);
+  expect(rows.at(-1)!.label).toBe("Shell: N files of a directory; click to open it");
+});

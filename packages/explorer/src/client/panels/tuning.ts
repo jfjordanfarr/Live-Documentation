@@ -41,7 +41,7 @@ export function initTuningPanel(config: TuningPanelConfig): () => void {
       ["coupling", "coupling"], ["nodeSize", "node-size"], ["symbolScale", "symbol-scale"], ["linkWidth", "link-width"],
       ["nodeZoomResistance", "node-zoom-resistance"], ["wireZoomResistance", "wire-zoom-resistance"],
       ["gravity", "gravity"], ["componentSeparation", "component-separation"], ["chargeRange", "charge-range"], ["approximation", "approximation"], ["linkStrength", "link-strength"], ["updateEnergy", "update-energy"], ["tether", "tether"],
-      ["citedByPull", "cited-by-pull"], ["hops", "hops"], ["revealFrames", "reveal-frames"], ["nameAt", "name-at"] ] as const).map(([key, name]) => ({
+      ["citedByPull", "cited-by-pull"], ["hops", "hops"], ["shellDepth", "shell-depth"], ["revealFrames", "reveal-frames"], ["nameAt", "name-at"] ] as const).map(([key, name]) => ({
       id: `tuning-force-${name}`, get: () => state.tuning.forceGraph[key], set: (value: number) => { state.tuning.forceGraph[key] = value; }
     }))
   ];

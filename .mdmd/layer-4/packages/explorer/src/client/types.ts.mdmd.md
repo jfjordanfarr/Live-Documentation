@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/types.ts
-- Generated At: 2026-11-05T23:55:55.642Z
+- Generated At: 2026-11-06T06:45:40.671Z
 
 ## Authored
 ### Purpose
@@ -45,6 +45,8 @@ The history's levers (2026-10-18, ticket C4 of [the change-over-time plan](../..
 - `textResistance` (0.8) and `controlResistance` (1) ([Turn 9](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-9)): with fixed slots, how much names, and the node's buttons and anchor dots, resist the zoom, 0 following the map and 1 holding screen size; the same lever the 3D view has for spheres and wires.
 
 `nameGrowth` joined `LocalMapTuning` on [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11): how much larger than its held size a name may grow on screen into the room its description leaves below reading scale.
+
+Since 2026-11-05 `ForceGraphTuning` carries `shellDepth`, the directory shells' depth under the scan root (1 to 6, default 2), and the Group Wrappers comments name the shells.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -159,50 +161,51 @@ The levers of the history's scrubber, the view's half of the granularity seam (2
 
 #### `GroupWrappers` {#symbol-groupwrappers}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L204)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L205)
 
 ##### `GroupWrappers` — Summary
-How the 3D Local Map draws a disconnected group it shows only by its seed (an experiment, 2026-11-05): not at all, the
-default; inside a translucent skin; inside a cloud; or inside a cloud that gains a smooth rim on hover or keyboard focus.
+How the 3D Local Map wraps the files it does not show (an experiment, 2026-11-05): not at all, the default; or, in a
+translucent skin, a cloud, or a cloud that gains a smooth rim on hover or keyboard focus, a disconnected group it shows
+only by its seed and, inside a group it shows in part, the hidden files of each directory as a shell.
 
 #### `GROUP_WRAPPERS` {#symbol-group_wrappers}
 - Type: const
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L207)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L208)
 
 ##### `GROUP_WRAPPERS` — Summary
 Every wrapper choice, in the order the control offers them.
 
 #### `ForceGraphTuning` {#symbol-forcegraphtuning}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L210)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L211)
 
 ##### `ForceGraphTuning` — Summary
 The 3D Local Map's packing and stable visual encodings, shared with the headless layout lab.
 
 #### `PathDestination` {#symbol-pathdestination}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L306)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L315)
 
 ##### `PathDestination` — Summary
 The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14).
 
 #### `InspectionTarget` {#symbol-inspectiontarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L311)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L320)
 
 ##### `InspectionTarget` — Summary
 The evidence explicitly open in the reader, independent of the Local Map subject and its pins.
 
 #### `DiscoveryTarget` {#symbol-discoverytarget}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L318)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L327)
 
 ##### `DiscoveryTarget` — Summary
 The latest discovery remains in the map after its evidence closes; a new discovery replaces it and Pin keeps it.
 
 #### `ExplorerState` {#symbol-explorerstate}
 - Type: interface
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L324)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L333)
 
 ##### `ExplorerState` — Summary
 Root state object for the Explorer client, managed by
@@ -210,7 +213,7 @@ Root state object for the Explorer client, managed by
 
 #### `TestCoverageMap` {#symbol-testcoveragemap}
 - Type: type
-- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L353)
+- Source: [source](../../../../../../packages/explorer/src/client/types.ts#L362)
 
 ##### `TestCoverageMap` — Summary
 Map from implementation file path → covering test node(s).

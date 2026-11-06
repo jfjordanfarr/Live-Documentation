@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { overlapsAmong, textBoxes, truncations } from "./design-audit";
 import { choose } from "./search-bar";
-import { keepGrowingComposition, localMapSettled, panIntoView } from "./still-picture";
+import { keepGrowingComposition, localMapStill, panIntoView } from "./still-picture";
 import { compressSnapshot, decompressSnapshot, DEFAULT_SNAPSHOT, type UrlStateSnapshot } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 
@@ -11,26 +11,6 @@ const pathfind = "packages/engine/src/live-docs/pathfind.ts";
 const card = (page: Page, id: string) => page.locator(`.node-card[data-id="${id}"]`);
 const url = (state: Partial<UrlStateSnapshot>): string => `/?s=${compressSnapshot({ ...DEFAULT_SNAPSHOT, view: "map", perspective: "2d", ...state })}`;
 const state = (page: Page) => decompressSnapshot(new URL(page.url()).searchParams.get("s")!);
-
-/** Wait for the camera and disclosure together, including the first approach and a responsive resize. */
-async function still(page: Page): Promise<void> {
-  await localMapSettled(page);
-  await page.evaluate(async () => {
-    let previous = "", since = performance.now();
-    const deadline = since + 5000;
-    while (performance.now() < deadline) {
-      await new Promise(requestAnimationFrame);
-      const picture = [...document.querySelectorAll(".node-card")].map(element => {
-        const rect = element.getBoundingClientRect();
-        return [rect.x, rect.y, rect.width, rect.height];
-      });
-      const value = JSON.stringify(picture);
-      if (value !== previous) { previous = value; since = performance.now(); }
-      if (performance.now() - since > 150) return;
-    }
-    throw new Error("The reading picture did not settle");
-  });
-}
 
 const geometry = (page: Page) => page.locator(".node-card").evaluateAll(elements => elements.map(element => {
   const rect = element.getBoundingClientRect();
@@ -87,7 +67,7 @@ for (const holdStill of ["click", "hover"] as const) for (const fixture of [
     await page.goto(url({ ...(fixture.selected ? { selectedNodeId: fixture.id } : {}), pinSet: pins, reading: [{ nodeId: fixture.id, open: false }] }));
     const subject = card(page, fixture.id);
     await subject.waitFor();
-    await still(page);
+    await localMapStill(page);
     await page.mouse.move(280, 55);
     const initial = await geometry(page);
     const title = (await subject.locator(".node-title").boundingBox())!;
@@ -105,7 +85,7 @@ for (const holdStill of ["click", "hover"] as const) for (const fixture of [
       await pointAt(page, subject.locator(`.symbol-row[data-symbol="${name}"] .symbol-label`), true);
       if (open.has(name)) open.delete(name); else open.add(name);
       for (const other of fixture.names) await expect(block(other))[open.has(other) ? "toBeVisible" : "toBeHidden"]();
-      await still(page);
+      await localMapStill(page);
       const key = [...open].sort().join("+") || "none";
       const picture = await geometry(page);
       if (pictures.has(key)) samePicture(pictures.get(key)!, picture);
@@ -135,12 +115,12 @@ for (const viewport of [{ width: 900, height: 700 }, { width: 1440, height: 960 
     await page.goto(url({ selectedNodeId: payment }));
     const subject = card(page, payment), book = subject.locator(".local-file-read");
     await subject.waitFor();
-    await still(page);
+    await localMapStill(page);
     const layout = await layoutBoxes(page);
     await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-    await still(page);
+    await localMapStill(page);
     await page.getByRole("button", { name: "Zoom Out", exact: true }).click();
-    await still(page);
+    await localMapStill(page);
     // Zoom changes no card's box (the owner, 2026-11-05): the prose stays and fades.
     await expect(subject.locator(".local-reading-purpose")).toBeVisible();
     await expect(subject).toHaveClass(/local-reading-faded/u);
@@ -150,33 +130,33 @@ for (const viewport of [{ width: 900, height: 700 }, { width: 1440, height: 960 
     // A tap folds one description at this scale as at any other, and a second tap opens it again.
     await pointAt(page, row.locator(".symbol-label"), true);
     await expect(row.locator(".local-reading-block")).toBeHidden();
-    await still(page);
+    await localMapStill(page);
     expect(state(page).pinSet).toEqual(initial.pinSet);
     expect(state(page).reading).toEqual([...(initial.reading ?? []), { nodeId: payment, symbol: "PaymentService", open: false }]);
     await pointAt(page, row.locator(".symbol-label"), true);
     await expect(row.locator(".local-reading-block")).toBeVisible();
-    await still(page);
+    await localMapStill(page);
     // The book folds everything and opens everything.
     await pointAt(page, book, true);
     await expect(subject.locator(".local-reading-block:visible")).toHaveCount(0);
     await expect(book).toHaveAttribute("aria-label", "Read PaymentService.cs");
     expect(state(page).reading).toEqual([{ nodeId: payment, open: false }]);
-    await still(page);
+    await localMapStill(page);
     await pointAt(page, book, true);
     await expect(subject.locator(".local-reading-purpose")).toBeVisible();
     await expect(subject.locator(".symbol-row:not(.internals-row) .local-reading-block:visible")).toHaveCount(3);
     await expect(book).toHaveAttribute("aria-label", "Fold PaymentService.cs");
     expect(state(page).reading).toEqual([{ nodeId: payment, open: true }]);
-    await still(page);
+    await localMapStill(page);
     // Back at reading scale the prose returns to full strength; with everything open again, no box has changed.
     await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
-    await still(page);
+    await localMapStill(page);
     await expect(subject).not.toHaveClass(/local-reading-faded/u);
     expect(await layoutBoxes(page)).toEqual(layout);
     // A new pin changes no reading choice.
     const open = state(page).reading;
     await pointAt(page, subject.locator(".local-file-pin"), true);
-    await still(page);
+    await localMapStill(page);
     expect(state(page).reading).toEqual(open);
     expect(state(page).pinSet.entries).toEqual([{ nodeId: payment, symbol: "*" }]);
     await expect(subject.locator(".symbol-row:not(.internals-row) .local-reading-block:visible")).toHaveCount(3);
@@ -187,10 +167,10 @@ test("inspection from More, the symbol menu and a pin after a tap keep the click
   await page.goto(url({ selectedNodeId: payment, reading: [{ nodeId: payment, open: false }] }));
   const subject = card(page, payment), row = subject.locator('.symbol-row[data-symbol="PaymentService"]');
   await subject.waitFor();
-  await still(page);
+  await localMapStill(page);
   await pointAt(page, row.locator(".symbol-label"), true);
   await expect(row.locator(".local-reading-block")).toBeVisible();
-  await still(page);
+  await localMapStill(page);
   await inspectFromMore(page, row, "PaymentService");
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/u);
   expect(state(page).inspection).toMatchObject({ nodeId: payment, symbol: "PaymentService" });
@@ -199,10 +179,10 @@ test("inspection from More, the symbol menu and a pin after a tap keep the click
   await page.keyboard.press("Escape");
   await expect(page.locator("#detail-panel")).not.toHaveClass(/visible/u);
   await expect(row.locator(".local-reading-block")).toBeVisible();
-  await still(page);
+  await localMapStill(page);
   const before = (await row.locator(".symbol-label-wrapper").boundingBox())!;
   await pointAt(page, row.locator(".local-symbol-pin"), true);
-  await still(page);
+  await localMapStill(page);
   const after = (await row.locator(".symbol-label-wrapper").boundingBox())!;
   expect(after.x).toBeCloseTo(before.x, 0);
   expect(after.y).toBeCloseTo(before.y, 0);
@@ -218,17 +198,17 @@ test("reversing zoom during disclosure keeps the same reachable frame as settled
     await page.goto(url({ selectedNodeId: payment }));
     const subject = card(page, payment);
     await subject.waitFor();
-    await still(page);
+    await localMapStill(page);
     const out = (await page.getByRole("button", { name: "Zoom Out", exact: true }).boundingBox())!;
     const inward = (await page.getByRole("button", { name: "Zoom In", exact: true }).boundingBox())!;
     const clickOut = () => page.mouse.click(out.x + out.width / 2, out.y + out.height / 2);
     const clickIn = () => page.mouse.click(inward.x + inward.width / 2, inward.y + inward.height / 2);
     await clickOut();
-    if (!rapid) await still(page);
+    if (!rapid) await localMapStill(page);
     await clickOut();
-    if (!rapid) await still(page);
+    if (!rapid) await localMapStill(page);
     await clickIn();
-    await still(page);
+    await localMapStill(page);
     endpoints.push(await subject.locator(".node-title").evaluate(element => {
       const box = element.getBoundingClientRect(), frame = document.querySelector("#view-map")!.getBoundingClientRect();
       if (box.left < frame.left || box.right > frame.right || box.top < frame.top || box.bottom > frame.bottom) {
@@ -249,17 +229,17 @@ test("tapping Walk and walk opens each, folding both restores the same picture, 
   await page.goto(url({ pinSet: pins, reading: [{ nodeId: pathfind, open: false }] }));
   const subject = card(page, pathfind);
   await subject.waitFor();
-  await still(page);
+  await localMapStill(page);
   await panIntoView(page, subject);
   await page.mouse.move(280, 55);
-  await still(page);
+  await localMapStill(page);
   const before = await geometry(page);
   const row = (symbol: string) => subject.locator(`.symbol-row[data-symbol="${symbol}"]`);
   for (let cycle = 0; cycle < 4; cycle++) {
     for (const [symbol, open] of [["Walk (interface)", 1], ["walk (function)", 2], ["Walk (interface)", 1], ["walk (function)", 0]] as const) {
       await pointAt(page, row(symbol).locator(".symbol-label"), true);
       await expect(subject.locator(".symbol-row .local-reading-block:visible")).toHaveCount(open);
-      await still(page);
+      await localMapStill(page);
       expect(state(page).pinSet).toEqual(pins);
     }
     samePicture(before, await geometry(page));
@@ -272,7 +252,7 @@ test("tapping Walk and walk opens each, folding both restores the same picture, 
   await expect(book).toHaveAttribute("aria-expanded", "true");
   await expect(book).toHaveAttribute("aria-pressed", "true");
   expect(state(page).reading).toEqual([{ nodeId: pathfind, open: true }]);
-  await still(page);
+  await localMapStill(page);
   await pointAt(page, name, true);
   await expect(subject.locator(".local-reading-purpose")).toBeHidden();
   await expect(subject.locator(".local-reading-block:visible")).toHaveCount(0);
@@ -280,7 +260,7 @@ test("tapping Walk and walk opens each, folding both restores the same picture, 
   await expect(book).toHaveAttribute("aria-expanded", "false");
   await expect(book).toHaveAttribute("aria-pressed", "false");
   expect(state(page).reading).toEqual([{ nodeId: pathfind, open: false }]);
-  await still(page);
+  await localMapStill(page);
   samePicture(before, await geometry(page));
 });
 
@@ -288,11 +268,11 @@ test("the portrait reading frame returns from overview and follows a phone resiz
   await page.goto(url({ selectedNodeId: payment }));
   const subject = card(page, payment);
   await subject.waitFor();
-  await still(page);
+  await localMapStill(page);
   const before = await geometry(page);
   await page.mouse.move(280, 60);
   await page.mouse.wheel(0, 500);
-  await still(page);
+  await localMapStill(page);
   await expect(subject.locator(".local-reading-purpose")).toBeVisible();
   await expect(subject).toHaveClass(/local-reading-faded/u);
   await expect(subject.locator(".local-file-read")).toHaveAttribute("aria-expanded", "true");
@@ -300,10 +280,10 @@ test("the portrait reading frame returns from overview and follows a phone resiz
   await page.getByRole("button", { name: "Reset Zoom", exact: true }).click();
   await expect(subject).not.toHaveClass(/local-reading-faded/u);
   await expect(subject.locator(".local-reading-purpose")).toBeVisible();
-  await still(page);
+  await localMapStill(page);
   samePicture(before, await geometry(page));
   await page.setViewportSize({ width: 390, height: 844 });
-  await still(page);
+  await localMapStill(page);
   const bounds = await subject.boundingBox();
   expect(bounds!.x).toBeGreaterThanOrEqual(48);
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
@@ -322,7 +302,7 @@ test("full reading keeps map and pins, traps keyboard focus, and restores the op
   await page.goto(url({ selectedNodeId: payment }));
   const subject = card(page, payment), opener = subject.locator(".local-reading-purpose .local-reading-full");
   await opener.waitFor();
-  await still(page);
+  await localMapStill(page);
   const before = await geometry(page);
   await opener.click();
   const dialog = page.getByRole("dialog");
@@ -349,7 +329,7 @@ test("an explicit fold stays folded while its book control keeps keyboard focus"
   await page.goto(url({ selectedNodeId: payment }));
   const subject = card(page, payment), book = subject.locator(".local-file-read");
   await book.waitFor();
-  await still(page);
+  await localMapStill(page);
   await page.keyboard.press("Tab");
   await book.focus();
   await page.keyboard.press("Enter");
@@ -364,18 +344,18 @@ test("a name opens and folds its description from the keyboard and keeps focus, 
   await page.goto(url({ selectedNodeId: payment, reading: [{ nodeId: payment, open: false }] }));
   const subject = card(page, payment), row = subject.locator('.symbol-row[data-symbol="Post"]');
   await subject.waitFor();
-  await still(page);
+  await localMapStill(page);
   await row.locator(".symbol-label").focus();
   await page.keyboard.press("Enter");
   await expect(row.locator(".local-reading-block")).toBeVisible();
   await expect(row.locator(".symbol-label")).toBeFocused();
   await expect(row.locator(".symbol-label")).toHaveAttribute("aria-expanded", "true");
-  await still(page);
+  await localMapStill(page);
   await page.keyboard.press("Enter");
   await expect(row.locator(".local-reading-block")).toBeHidden();
   await expect(row.locator(".symbol-label")).toBeFocused();
   await expect(row.locator(".symbol-label")).toHaveAttribute("aria-expanded", "false");
-  await still(page);
+  await localMapStill(page);
   const name = subject.locator(".local-file-name");
   await name.focus();
   await page.keyboard.press(" ");
@@ -391,7 +371,7 @@ test("shared reading can be open without a pin and folded with a pin, and the fu
   const pins = { entries: [{ nodeId: payment, symbol: "*" }] };
   await page.goto(url({ pinSet: pins, reading: choices }));
   await card(page, payment).waitFor();
-  await still(page);
+  await localMapStill(page);
   await expect(card(page, payment).locator(".local-reading-purpose")).toBeHidden();
   const row = card(page, pathfind).locator('.symbol-row[data-symbol="reachability (function)"]');
   await expect(row.locator(".local-reading-block")).toBeVisible();
@@ -414,7 +394,7 @@ test("shared reading can be open without a pin and folded with a pin, and the fu
     const close = card(other, pathfind).getByRole("button", { name: "Close pathfind.ts", exact: true });
     await panIntoView(other, close);
     await close.click();
-    await still(other);
+    await localMapStill(other);
     await expect(card(other, pathfind)).toHaveCount(0);
     expect(state(other)).toMatchObject({ pinSet: pins, reading: [{ nodeId: payment, open: false }] });
   } finally { await recipient.close(); }
@@ -423,28 +403,28 @@ test("shared reading can be open without a pin and folded with a pin, and the fu
 test("a symbol search restores reading from overview and follows the row on resize; its name folds and reopens it, and Escape closes the reader opened from More", async ({ page }) => {
   await page.goto(url({ selectedNodeId: payment }));
   await card(page, payment).waitFor();
-  await still(page);
+  await localMapStill(page);
   await page.mouse.move(280, 60);
   await page.mouse.wheel(0, 700);
-  await still(page);
+  await localMapStill(page);
   await choose(page, "subject", "pathfind.ts walk", { file: pathfind, symbol: "walk (function)" });
   const row = card(page, pathfind).locator('.symbol-row[data-symbol="walk (function)"]');
-  await still(page);
+  await localMapStill(page);
   await expect(row.locator(".local-reading-block")).toBeVisible();
   await expect(card(page, pathfind)).not.toHaveClass(/local-reading-faded/u);
   await expect(row.locator(".symbol-label")).toBeInViewport();
   await page.setViewportSize({ width: 390, height: 844 });
-  await still(page);
+  await localMapStill(page);
   await expect(row.locator(".local-reading-block")).toBeVisible();
   await expect(row.locator(".symbol-label")).toBeInViewport();
   await page.setViewportSize({ width: 1440, height: 960 });
-  await still(page);
+  await localMapStill(page);
   await row.locator(".symbol-label").click();
   await expect(row.locator(".local-reading-block")).toBeHidden();
-  await still(page);
+  await localMapStill(page);
   await row.locator(".symbol-label").click();
   await expect(row.locator(".local-reading-block")).toBeVisible();
-  await still(page);
+  await localMapStill(page);
   await inspectFromMore(page, row, "walk (function)");
   await expect(page.locator("#detail-panel")).toHaveClass(/visible/u);
   await page.keyboard.press("Escape");
@@ -470,18 +450,18 @@ test("a tapped description is saved reading: it survives a 3D round trip and tra
   await page.goto(`/samples/estate/?view=local&node=${encodeURIComponent(id)}`);
   const subject = card(page, id);
   await subject.waitFor();
-  await still(page);
+  await localMapStill(page);
   await subject.locator(".local-file-read").click();
   await page.mouse.move(280, 55);
-  await still(page);
+  await localMapStill(page);
   const block = subject.locator('.symbol-row[data-symbol="PaymentService"] .local-reading-block');
   await subject.locator('.symbol-row[data-symbol="PaymentService"] .symbol-label').click();
   await expect(block).toBeVisible();
-  await still(page);
+  await localMapStill(page);
   await page.getByRole("button", { name: "3D", exact: true }).click();
   await expect(page.getByRole("button", { name: "2D", exact: true })).toBeEnabled();
   await page.getByRole("button", { name: "2D", exact: true }).click();
-  await still(page);
+  await localMapStill(page);
   await expect(block).toBeVisible();
   expect(state(page)).toMatchObject({ pinSet: { entries: [] }, reading: [{ nodeId: id, open: false }, { nodeId: id, symbol: "PaymentService", open: true }] });
 });

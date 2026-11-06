@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/layout-presets.ts
-- Generated At: 2026-11-02T17:03:44.389Z
+- Generated At: 2026-11-06T06:45:39.745Z
 
 ## Authored
 ### Purpose
@@ -26,6 +26,10 @@ Both packing profiles value card-top alignment. Relaxed gives it greater weight 
 `tether` (0 to 0.1 by 0.001) joined the force graph's ranges on 2026-10-21, riding in the saved and the shared settings like the other levers and no part of a packing profile ([Turn 5](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-5)).
 
 Wire Thickness (`linkWidth`, 0.1 to 4 by 0.1) and Node/Wire Zoom Resistance (`nodeZoomResistance` and `wireZoomResistance`, 0 to 1 by 0.05) are appearance settings independent of the packing profiles. They are carried and validated by the same saved/shared settings as the other 3D controls, with omitted values retaining the default or current preference. The owner asked for thickness in the [October 24 visual pass](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-7), then [separate resistance controls](../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-24.1.record.md#turn-11).
+
+Since 2026-11-05 `shellDepth` is one of the numeric 3D settings, read and bounded from 1 to 6 like the hops.
+
+Since November 6 (the directory shells merged, experiment 2 of [Turn 11](../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)) `readLayoutSettings` also carries `groupWrappers` when it is one of the four choices, so that a shared link's layout payload, a saved tuning and the 3D view's `data-layout-settings` attribute all carry the wrappers' look with the numbers, and a link shows the group wrappers and the directory shells without a switch; an unknown look is dropped, and the storage's own reading of the choice is gone.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -69,15 +73,17 @@ Return a fresh tuning record with both representations' packing set together.
 
 #### `readLayoutSettings` {#symbol-readlayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L48)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L52)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 
 ##### `readLayoutSettings` — Summary
-Read only known, finite settings and bound them to their public control ranges.
+Read only known settings: the finite numbers, bound to their public control ranges, and the one named 3D setting a
+link or a saved tuning carries beside them, the wrappers' look (2026-11-06, so that a shared link shows the group
+wrappers and the directory shells without a switch).
 
 #### `layoutSettingsOf` {#symbol-layoutsettingsof}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L69)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L78)
 - Returns: [`LayoutSettings`](#symbol-layoutsettings)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 
@@ -86,7 +92,7 @@ Snapshot the controls that affect packing and spatial encodings, independent of 
 
 #### `applyLayoutSettings` {#symbol-applylayoutsettings}
 - Type: function
-- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L74)
+- Source: [source](../../../../../../packages/explorer/src/client/layout-presets.ts#L83)
 - Returns: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 - Parameters: `tuning`: [`TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig); `settings`: [`LayoutSettings`](#symbol-layoutsettings)
 
@@ -96,9 +102,10 @@ Merge a validated partial snapshot over the current values, leaving unrelated pr
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
 ### Dependencies
-- [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
-- [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning) (type-only)
-- [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig) (type-only)
+- [`types.ForceGraphTuning`](./types.ts.mdmd.md#symbol-forcegraphtuning)
+- [`types.GROUP_WRAPPERS`](./types.ts.mdmd.md#symbol-group_wrappers)
+- [`types.LocalMapTuning`](./types.ts.mdmd.md#symbol-localmaptuning)
+- [`types.TuningConfig`](./types.ts.mdmd.md#symbol-tuningconfig)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

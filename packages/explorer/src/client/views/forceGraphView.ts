@@ -41,12 +41,13 @@ import { focusedCameraPosition, frameCameraSpheres, screenAnchorTranslation, whe
 import { directoryNodeId, labelNamesOf, spatialGraphOf, type SpatialGraphData, type SpatialGraphNode, type SpatialLinkKind } from "./forceGraphData";
 import { emphasizedSphere, emphasizedWireAlpha, pairKey } from "./forceGraphEmphasis";
 import { placeSpatialLabels, type SpatialLabel, type LabelBox } from "./forceGraphLabels";
-import { linkPulls, motionForce, placeNewSpheres, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart } from "./forceGraphLayout";
+import { linkPulls, motionForce, placeNewSpheres, shellRadius, spatialNodeRadius, symbolCountOf, type MotionForce, type MotionStart, type Placed } from "./forceGraphLayout";
 import { SPATIAL_DRAG_SLOP, SpatialRenderer } from "./forceGraphRenderer";
 import { nextRevealCount, REVEAL, revealCorresponding, revealLayers } from "./forceGraphReveal";
 import { componentLandmarks, connectedNeighbours, directoryHubOf, directoryMembersWithinHops, spatialScope, startHops, startOf } from "./forceGraphScope";
+import { bodyShape, poppedAfter, shellId, shellPicture, type DirectoryShell } from "./forceGraphShells";
 import { spatialSizeScale } from "./forceGraphSizing";
-import { BURST, burstProgress, groupShapeOf, wrappedSeeds, wrapperHull, wrapperPadding, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
+import { BURST, burstProgress, wrappedSeeds, wrapperHull, wrapperPadding, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
 import { layoutSettingsOf } from "../layout-presets";
 import type { ExplorerState, ForceGraphTuning } from "../types";
 import { under } from "./localView/directory-state";
@@ -72,15 +73,12 @@ import { renderSpatialLegend } from "../panels/spatial-legend";
  */
 const FRAME_BUDGET = 10;
 
-/** Target milliseconds a frame spends laying out the groups waiting for a wrapper, at least one group a frame (2026-11-05). */
+/**
+ * Target milliseconds a frame spends building the wrappers' hulls waiting to be drawn, at least one a frame (2026-11-05):
+ * a hull costs one to three milliseconds, and this repository's first pinned picture asks for fifty at once.
+ */
 const WRAPPER_BUDGET = 8;
 
-/** The settings a group's hidden shape depends on: the forces, the sizes and the reveal's pace, not how it is drawn or shown. */
-function shapeSettingsOf(tuning: ForceGraphTuning): Partial<ForceGraphTuning> {
-  const { groupWrappers, linkWidth, nodeZoomResistance, wireZoomResistance, nameAt, hops, updateEnergy, ...shape } = tuning;
-  void groupWrappers; void linkWidth; void nodeZoomResistance; void wireZoomResistance; void nameAt; void hops; void updateEnergy;
-  return shape;
-}
 
 // ─────────────────────────────────────────────────────────────────────────
 // Force Graph Types
@@ -265,32 +263,46 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let scopeGroups = new Map<string, number>();
   let frontierHop = Infinity;
   /**
-   * The wrapped groups, the Group Wrappers experiment (2026-11-05): each group's hidden shape and hull by a key of its
-   * files, its links and the tuning they were laid out with, laid out a few at a frame; the seeds wrapped in the picture
-   * with their keys; the groups waiting for a shape; the wrappers bursting open, by seed; and the shapes whose files enter
-   * where the shape placed them about their seed, by seed.
+   * The wrappers, the Group Wrappers experiment (2026-11-05): each wrapped body's phantom packing and hull, by a key of its
+   * files and the sizes the tuning gives them, built as the picture asks for them; the nodes wrapped in the picture with
+   * their keys, a group's seed or a directory shell; the wrappers bursting open, with the place a popped shell stood; the
+   * places the files and shells a pop releases are born at; and the directories popped open, the view's own memory for
+   * this experiment rather than the URL's.
    */
-  const wrapperShapes = new Map<string, { shape: GroupShape; hull: WrapperHull }>();
+  const bodies = new Map<string, { shape: GroupShape; hull: WrapperHull }>();
+  let bodyWork: Array<{ key: string; id: string; files: SpatialGraphNode[]; centre?: string; directory?: string; tuning: ForceGraphTuning }> = [];
   let wrapped = new Map<string, string>();
-  let wrapperWork: Array<{ key: string; seed: string; nodes: SpatialGraphNode[]; links: SpatialGraphData["links"]; tuning: ForceGraphTuning }> = [];
   /** A burst's clock starts at the first frame after its pop, since the pop's own render can outlast the burst (found 2026-11-05). */
-  const bursts = new Map<string, { started: number | null; key: string }>();
-  const poppedShapes = new Map<string, GroupShape>();
+  const bursts = new Map<string, { started: number | null; key: string; fit: number; place?: Placed }>();
+  const bornAt = new Map<string, Placed>();
+  let popped = new Set<string>();
+  /** The directory shells of the picture, by id, and the names a popped directory keeps, a click on which wraps it again. */
+  let shells = new Map<string, DirectoryShell>();
+  const poppedChips = new Map<string, HTMLButtonElement>();
   let onScreenIds = new Set<string>();
-  /** The room each wrapped seed keeps in the field, given it once every wrapper of the picture is built. */
+  /** The room each wrapped group's seed keeps in the field, its wrapper's radius; a shell's body is its own radius. */
   let wrapperRoom = new Map<string, number>();
   /** Whether the renderer was last handed wrappers to draw: while off and never on, nothing of this is touched. */
   let wrappersHanded = false;
   let attentionAlpha: (id: string) => number = () => 1;
   let drawLegend = (): void => {};
-  /** Whether groups are wrapped: by the tuning's choice, in the connections layout, where a group is a disconnected component. */
+  /** Whether the picture is wrapped: by the tuning's choice, in the connections layout, where a group is a disconnected component. */
   const wrapping = (): boolean => state.tuning.forceGraph.groupWrappers !== "off" && state.spatialLayout === "connections";
-  const hullOf = (seed: string): WrapperHull | undefined => {
-    const key = wrapped.get(seed) ?? bursts.get(seed)?.key;
-    return key === undefined ? undefined : wrapperShapes.get(key)?.hull;
+  const hullOf = (id: string): WrapperHull | undefined => {
+    const key = wrapped.get(id) ?? bursts.get(id)?.key;
+    return key === undefined ? undefined : bodies.get(key)?.hull;
   };
-  /** Whether a seed stands wrapped now: wrapping, its group wrapped and its hull built. */
-  const isWrapped = (id: string): boolean => wrapping() && wrapped.has(id) && wrapperShapes.has(wrapped.get(id)!);
+  /**
+   * How much a wrapper is drawn smaller than its hull, to fit the room its node keeps in the field: a shell's body, a
+   * wrapped seed's room. A packing of a few files cannot shrink below one padded file, which is larger than such a body.
+   */
+  const fitOf = (id: string): number => {
+    const hull = hullOf(id), shell = shells.get(id);
+    const room = shell ? shellRadius(shell.files.length, state.tuning.forceGraph) : wrapperRoom.get(id);
+    return bursts.get(id)?.fit ?? (hull && room ? Math.min(1, room / hull.radius) : 1);
+  };
+  /** Whether a node stands wrapped now: wrapping, and a group's seed or a directory shell with its hull built. */
+  const isWrapped = (id: string): boolean => wrapping() && wrapped.has(id) && bodies.has(wrapped.get(id)!);
   /** Whether a shown sphere is dimmed: at the last hop shown, or an unreached group's seed one past it; never at hop 0. */
   const atFrontier = (id: string): boolean => { const hop = scopeHops.get(id); return hop !== undefined && hop > 0 && hop >= frontierHop; };
   let actionStrip: HTMLDivElement | null = null;
@@ -468,7 +480,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     ready = true;
     requireElement("graph-svg").setAttribute("aria-busy", String(simulationRunning));
     frameDirectory();
-    buildWrappers();
+    buildBodies();
     advanceBursts();
     instance.updateControls();
     updateFocus(performance.now());
@@ -517,7 +529,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const ids = pathScope.length || retainedScope.size || focusedId || focusedDirectory !== null ? framingIds() : null;
       const spheres = instance.graphData().nodes.filter(node => (!ids || ids.has(node.id)) && Number.isFinite(node.x))
         .map(node => ({ center: { x: node.x!, y: node.y!, z: node.z! }, radius: Math.max(spatialNodeRadius(node, state.tuning.forceGraph)
-          * spatialSizeScale(controls.target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance), isWrapped(node.id) ? hullOf(node.id)!.radius : 0) }));
+          * spatialSizeScale(controls.target, camera, instance.height(), state.tuning.forceGraph.nodeZoomResistance), isWrapped(node.id) ? hullOf(node.id)!.radius * fitOf(node.id) : 0) }));
       const centered = !fittingScope && focusedDirectory === null && subject && Number.isFinite(subject.x)
         ? { x: subject.x!, y: subject.y!, z: subject.z! } : undefined;
       const framing = camera instanceof PerspectiveCamera
@@ -584,7 +596,9 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       // Disclosure follows proximity, at the tuning's size (2026-11-02; six pixels before, which named far too much):
       // resistance changes the sphere's outline, not when a name becomes useful.
       if (priority >= 5 && perspectiveRadius < state.tuning.forceGraph.nameAt) continue;
-      const radius = perspectiveRadius * spatialSizeScale(instance.controls().target, camera, frame.height, state.tuning.forceGraph.nodeZoomResistance);
+      // A shell is drawn at its body's size, whatever the zoom's resistance does to a sphere.
+      const radius = node.shellFiles !== undefined ? perspectiveRadius
+        : perspectiveRadius * spatialSizeScale(instance.controls().target, camera, frame.height, state.tuning.forceGraph.nodeZoomResistance);
       let label = node.id === focusedId ? focusLabel : nameLabels.get(node.id);
       if (!label) {
         label = document.createElement("button");
@@ -607,16 +621,18 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const retained = action?.kind === "file" && isRetainedFile(action.node.id);
       const discovered = action?.kind === "file" ? state.discovery?.kind === "file" && state.discovery.nodeId === action.node.id
         : action?.kind === "directory" && state.discovery?.kind === "directory" && state.discovery.directory === action.directory;
-      const title = (node.directoryPath !== undefined ? `${node.directoryPath || "Scan root"} · ${node.directoryFileCount} visible files`
+      const title = (node.shellFiles !== undefined ? `${node.codeRelativePath || "Scan root"} · ${node.shellFiles.toLocaleString("en-US")} files`
+        : node.directoryPath !== undefined ? `${node.directoryPath || "Scan root"} · ${node.directoryFileCount} visible files`
         : node.id.startsWith("related:") ? `${node.codeRelativePath}${hasBundledDoc(node.id.slice(8)) ? "" : " · not in this bundle"}`
         : `${node.codeRelativePath} · ${count} public ${count === 1 ? "symbol" : "symbols"}`)
         + (scopeGroups.has(node.id) && scopeGroups.get(node.id)! > 1 ? ` · ${scopeGroups.get(node.id)!.toLocaleString("en-US")} files in this group` : "")
         + (more ? ` · ${more} more connected, not shown` : "")
         + (action?.kind === "file" ? ` · ${retained ? "Unpin this file" : discovered ? "Release this discovery" : "Pin this file"}`
-          : action?.kind === "directory" ? ` · ${discovered ? "Release this discovery" : "Explore this directory"}` : "");
+          : action?.kind === "directory" ? ` · ${discovered ? "Release this discovery" : "Explore this directory"}`
+          : action?.kind === "shell" ? " · Open this shell" : "");
       if (label.title !== title) label.title = title;
       label.dataset.nodeId = node.id;
-      label.dataset.kind = node.directoryPath !== undefined ? "directory" : "file";
+      label.dataset.kind = node.shellFiles !== undefined ? "shell" : node.directoryPath !== undefined ? "directory" : "file";
       if (action) label.setAttribute("aria-pressed", String(retained || discovered));
       else label.removeAttribute("aria-pressed");
       label.dataset.priority = String(priority);
@@ -625,6 +641,40 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       if (!size || size.text !== name || size.availableWidth !== frame.width) label.hidden = false;
       measuring.push({ id: node.id, x, y, radius, priority, label, name });
       buttons.set(node.id, label);
+    }
+    // A popped directory keeps its name, dimmed, at the centroid of what it released, a click on which wraps it again (2026-11-05).
+    for (const [directory, chip] of poppedChips) if (!wrapping() || !popped.has(directory)) { chip.remove(); poppedChips.delete(directory); }
+    if (wrapping()) for (const directory of [...popped].sort()) {
+      let sx = 0, sy = 0, sz = 0, count = 0;
+      for (const node of instance.graphData().nodes) {
+        if (!Number.isFinite(node.x) || !under(node.codeRelativePath, directory)) continue;
+        sx += node.x!; sy += node.y!; sz += node.z!; count++;
+      }
+      if (!count) continue;
+      projected.set(sx / count, sy / count, sz / count).applyMatrix4(projection);
+      const x = (projected.x + 1) * frame.width / 2, y = (1 - projected.y) * frame.height / 2;
+      if (projected.z < -1 || projected.z > 1 || x < 0 || y < 0 || x > frame.width || y > frame.height) continue;
+      let chip = poppedChips.get(directory);
+      if (!chip) {
+        chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "force-graph-label";
+        chip.dataset.kind = "popped";
+        chip.dataset.context = "true";
+        chip.dataset.directory = directory;
+        const whole = directory || "Scan root";
+        chip.title = `${whole} · opened · Wrap its files again`;
+        chip.setAttribute("aria-label", `Wrap ${whole} again`);
+        chip.addEventListener("click", () => wrapShell(directory));
+        container.append(chip);
+        poppedChips.set(directory, chip);
+      }
+      const name = directory.split("/").pop() || "Scan root", id = `popped:${directory}`;
+      if (chip.textContent !== name) { chip.textContent = name; labelSizes.delete(chip); }
+      const size = labelSizes.get(chip);
+      if (!size || size.text !== name || size.availableWidth !== frame.width) chip.hidden = false;
+      measuring.push({ id, x, y, radius: 0, priority: 4, label: chip, name });
+      buttons.set(id, chip);
     }
     // Finish all DOM writes before measuring any new name. A large reveal otherwise forces a layout per new label.
     for (const { label, name, ...candidate } of measuring) {
@@ -641,6 +691,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       const id = label.dataset.nodeId ?? "";
       label.hidden = buttons.get(id) !== label || !placements.has(id);
     }
+    for (const [directory, chip] of poppedChips) chip.hidden = !placements.has(`popped:${directory}`);
     for (const item of candidates) {
       const box = placements.get(item.id);
       if (!box) continue;
@@ -735,9 +786,11 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   }
 
   /** Act on the file at the displayed moment, retaining its historical identity when it no longer exists today. */
-  function currentAction(id: string): { kind: "file"; node: ExplorerNodePayload } | { kind: "directory"; directory: string } | null {
+  function currentAction(id: string): { kind: "file"; node: ExplorerNodePayload } | { kind: "directory"; directory: string } | { kind: "shell"; directory: string } | null {
     const rendered = nodeCache.get(id);
     if (!rendered || !forceGraphInstance?.hasNode(id)) return null;
+    const shell = shells.get(id);
+    if (shell) return { kind: "shell", directory: shell.directory };
     if (rendered.directoryPath !== undefined) {
       const today = moment ? moment.directoryToday(rendered.directoryPath) : rendered.directoryPath;
       return moment || currentDirectories.has(today) ? { kind: "directory", directory: today } : null;
@@ -778,7 +831,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     } else {
       const action = currentAction(id);
       if (action?.kind === "file" && isWrapped(id) && !isRetainedFile(action.node.id)) popWrapper(id);
-      if (action?.kind === "directory") options.onToggleDirectory(action.directory);
+      if (action?.kind === "shell") popShell(action.directory);
+      else if (action?.kind === "directory") options.onToggleDirectory(action.directory);
       else if (action?.kind === "file") options.onToggleNode(action.node.id);
     }
     syncInspectionAction();
@@ -869,8 +923,16 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     }
     actionTargetId = id;
     actionStrip.hidden = false;
-    primaryAction.dataset.kind = action.kind;
-    if (action.kind === "directory") {
+    primaryAction.dataset.kind = action.kind === "shell" ? "directory" : action.kind;
+    // A shell offers its pop alone: it is no file to centre on, and its directory's actions stand on the directory.
+    centreAction.hidden = moreAction.hidden = action.kind === "shell";
+    if (action.kind === "shell") {
+      const name = action.directory || "Scan root";
+      actionStrip.setAttribute("aria-label", `Actions for the shell of ${name}`);
+      primaryAction.setAttribute("aria-label", `Open the shell of ${name}`);
+      primaryAction.setAttribute("aria-pressed", "false");
+      primaryAction.title = "Open this shell into its files and the shells of its subdirectories";
+    } else if (action.kind === "directory") {
       // Open and Close as the 2D label offers them, by the directory's state.
       const opened = state.openDirectories?.has(action.directory) ?? false;
       actionStrip.setAttribute("aria-label", `Actions for ${action.directory || "Scan root"}`);
@@ -1069,38 +1131,63 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     scopeBeyond = scope.beyond;
     scopeGroups = scope.groups;
     frontierHop = hopsShown;
-    const hasFrontier = [...scope.hops.keys()].some(atFrontier);
-    // The wrapped groups (2026-11-05): in the connections layout, by the tuning's choice, every group the picture shows
-    // only by its seed, of two files or more, keyed by its files, its links and the settings its hidden shape depends on;
-    // a group with no shape yet waits for the frame loop to lay it out, the smallest first.
+    // The wrappers (2026-11-05): in the connections layout, by the tuning's choice, every group the picture shows only by
+    // its seed, of two files or more, and, inside the groups it shows in part, the directory shells of the files it leaves
+    // out, each one body of the picture with its members' references bundled into its wires; the files a pop releases
+    // join the picture one past the hops shown, as the unreached groups' seeds stand. Each body's packing and hull is built
+    // once for its files and sizes, a few a frame (`buildBodies`), while the body itself is in the picture at once; the
+    // page's timeline measures this partition as "live-docs:shells" and each frame's hulls as "live-docs:wrapper-hulls".
+    const building = performance.now();
     const nextWrapped = new Map<string, string>();
+    const shellNodes: SpatialGraphNode[] = [];
+    let shellWires: SpatialGraphData["links"] = [];
     if (wrapping()) {
-      const tuning = { ...state.tuning.forceGraph }, settings = JSON.stringify(shapeSettingsOf(tuning));
-      const seeds = wrappedSeeds(scope.groups), byId = new Map(data.nodes.map(node => [node.id, node]));
-      const groupOf = new Map<string, string>();
-      for (const seed of seeds) for (const id of scope.groupFiles.get(seed) ?? []) groupOf.set(id, seed);
-      const linksOf = new Map<string, SpatialGraphData["links"]>();
-      for (const link of data.links) {
-        const seed = groupOf.get(link.source);
-        if (seed !== undefined && groupOf.get(link.target) === seed && pulls(link)) (linksOf.get(seed) ?? linksOf.set(seed, []).get(seed)!).push(link);
+      const tuning = { ...state.tuning.forceGraph }, sizes = JSON.stringify([tuning.nodeSize, tuning.symbolScale]);
+      const byId = new Map(data.nodes.map(node => [node.id, node]));
+      const keyOf = (files: readonly string[]): string => `${sizes}\0${files.map(file => `${file}\u0001${byId.has(file) ? symbolCountOf(byId.get(file)!) : 0}`).join("\0")}`;
+      const queued = new Set(bodyWork.map(work => work.key));
+      const bodyOf = (id: string, key: string, files: readonly string[], place: { centre?: string; directory?: string }): void => {
+        nextWrapped.set(id, key);
+        if (bodies.has(key) || queued.has(key)) return;
+        queued.add(key);
+        bodyWork.push({ key, id, files: files.flatMap(file => byId.get(file) ?? []), ...place, tuning });
+      };
+      for (const seed of wrappedSeeds(scope.groups)) {
+        const files = scope.groupFiles.get(seed) ?? [];
+        bodyOf(seed, `group\0${seed}\0${keyOf(files)}`, files, { centre: seed });
       }
-      for (const seed of seeds) {
-        const nodes = (scope.groupFiles.get(seed) ?? []).flatMap(id => byId.get(id) ?? []), links = linksOf.get(seed) ?? [];
-        const key = JSON.stringify([nodes.map(node => [node.id, symbolCountOf(node)]), links.map(link => [link.source, link.target, link.count, link.kind]), settings]);
-        nextWrapped.set(seed, key);
-        if (!wrapperShapes.has(key) && !wrapperWork.some(work => work.key === key)) wrapperWork.push({ key, seed, nodes, links, tuning });
+      const held = shellPicture({ nodes: byId, links: data.links, shown: new Set(scope.hops.keys()), hidden: scope.hidden,
+        depth: tuning.shellDepth, popped, beside: scope.beside,
+        bundles: link => pulls(link) && link.kind !== "related-doc" && link.kind !== "cited-by" });
+      shellWires = held.wires;
+      scopeHops = new Map(scope.hops);
+      for (const id of held.released) scopeHops.set(id, hopsShown + 1);
+      scopeBeyond = held.beyond;
+      shells = new Map(held.shells.map(shell => [shell.id, shell]));
+      for (const shell of held.shells) {
+        bodyOf(shell.id, `shell\0${shell.directory}\0${keyOf(shell.files)}`, shell.files, { directory: shell.directory });
+        scopeHops.set(shell.id, hopsShown + 1);
+        shellNodes.push({ id: shell.id, name: shell.name, codePath: shell.directory, codeRelativePath: shell.directory,
+          docPath: "", docRelativePath: "", archetype: "shell", shellFiles: shell.files.length, publicSymbols: [], dependencies: [], dependents: [], missingDependencies: [] });
       }
-    }
+    } else shells = new Map();
     wrapped = nextWrapped;
-    const wanted = new Set(nextWrapped.values());
-    wrapperWork = wrapperWork.filter(work => wanted.has(work.key)).sort((a, b) => a.nodes.length - b.nodes.length || (a.seed < b.seed ? -1 : a.seed > b.seed ? 1 : 0));
-    for (const seed of [...poppedShapes.keys()]) if (!asked.has(seed)) poppedShapes.delete(seed);
-    // The first picture lays its groups out before it unfolds, so that it unfolds with every wrapper's room from the start.
-    if (!forceGraphInstance) buildWrappers(Infinity);
+    const wanted = new Set(wrapped.values());
+    bodyWork = bodyWork.filter(work => wanted.has(work.key)).sort((a, b) => a.files.length - b.files.length || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+    if (wrapped.size) performance.measure("live-docs:shells", { start: building });
+    // A wrapped group's seed keeps its body's room in the field, its own sphere or its group's volume and a wrapper's
+    // padding, known before its hull is built, so that no wrapper covers another or what is shown and the room does not
+    // change when the hull arrives; the hull is drawn to fit it.
+    const roomTuning = state.tuning.forceGraph, nodeOf = new Map(data.nodes.map(node => [node.id, node]));
+    const room = new Map([...wrapped.keys()].filter(id => !shells.has(id)).map(id => [id, wrapperPadding(roomTuning)
+      + Math.max(nodeOf.has(id) ? spatialNodeRadius(nodeOf.get(id)!, roomTuning) : 0, shellRadius(scope.groups.get(id) ?? 1, roomTuning))]));
+    const roomChanged = JSON.stringify([...room]) !== JSON.stringify([...wrapperRoom]);
+    wrapperRoom = room;
+    const hasFrontier = [...scopeHops.keys()].some(atFrontier);
     // The repository's groups over its references, whatever the layout: how many, and how many files stand alone.
     const groupSizes = [...componentLandmarks(connectedNeighbours(data.nodes.filter(node => node.directoryPath === undefined && node.archetype !== "related-doc"), data.links, link => linkPulls(link, "connections"))).values()];
-    const picture: SpatialGraphData = { nodes: data.nodes.filter(node => scope.hops.has(node.id)),
-      links: data.links.filter(link => scope.hops.has(link.source) && scope.hops.has(link.target)) };
+    const picture: SpatialGraphData = { nodes: [...data.nodes.filter(node => scopeHops.has(node.id)), ...shellNodes],
+      links: [...data.links.filter(link => scopeHops.has(link.source) && scopeHops.has(link.target)), ...shellWires] };
     emptyHint.hidden = picture.nodes.length > 0;
     deeperDirectory = !picture.nodes.length && discovery?.kind === "directory" && state.spatialLayout === "connections"
       && filteredNodes.some(node => under(node.id, directoryAt(discovery.directory))) ? discovery.directory : null;
@@ -1116,7 +1203,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     openDeeper.textContent = `Open ${deeperPath.split("/").pop() || "Scan root"}`;
     openDeeper.setAttribute("aria-label", `Open ${deeperPath || "Scan root"}`);
     openDeeper.title = `Show every eligible file under ${deeperPath || "the scan root"}`;
-    const isFile = (node: SpatialGraphNode): boolean => node.directoryPath === undefined && !node.id.startsWith("related:");
+    const isFile = (node: SpatialGraphNode): boolean => node.directoryPath === undefined && node.shellFiles === undefined && !node.id.startsWith("related:");
     options.onShown?.(picture.nodes.filter(isFile).length, data.nodes.filter(isFile).length, groupSizes.filter(size => size > 1).length, groupSizes.filter(size => size === 1).length);
     // Keep node data by id and link data by pair across membership changes. Positions and stable instance bindings
     // follow those data objects, including through historical renames; the 2D wires keep their elements the same way.
@@ -1129,6 +1216,18 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return cached;
     });
     const liveNodes = new Map(graphNodes.map(node => [node.id, node]));
+    // A shell a pop releases is born at the centroid of its files' places in the popped wrapper; one wrapped again, at
+    // the centroid of its files where they stood.
+    for (const shell of shells.values()) {
+      if (onScreenIds.has(shell.id) || bornAt.has(shell.id)) continue;
+      let sx = 0, sy = 0, sz = 0, count = 0;
+      for (const file of shell.files) {
+        const at = bornAt.get(file) ?? (onScreenIds.has(file) ? nodeCache.get(file) : undefined);
+        if (!at || !Number.isFinite(at.x) || !Number.isFinite(at.y) || !Number.isFinite(at.z)) continue;
+        sx += at.x!; sy += at.y!; sz += at.z!; count++;
+      }
+      if (count) bornAt.set(shell.id, { x: sx / count, y: sy / count, z: sz / count });
+    }
     const graphLinks: ForceGraphLink[] = picture.links.map(link => {
       const cached = linkCache.get(linkKey(link));
       if (!cached) { linkCache.set(linkKey(link), link); return link; }
@@ -1141,19 +1240,20 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     });
     // A history step may change only a file's exposed surface. Its physical size belongs to the field's
     // input too, even when every node and wire keeps its identity.
-    const nextMembership = JSON.stringify([graphNodes.map(node => [node.id, symbolCountOf(node), node.directoryPath]),
+    const nextMembership = JSON.stringify([graphNodes.map(node => [node.id, symbolCountOf(node), node.directoryPath, node.shellFiles]),
       picture.links.map(link => [linkKey(link), link.count])]);
     const membershipChanged = nextMembership !== membership;
 
     /** Build the field again when the forces' settings changed; unfold at full strength for a change of the forces alone, since a membership change is fed at the update energy instead. */
     const updateForces = (reheat: boolean): void => {
       const instance = forceGraphInstance!;
-      const { updateEnergy, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, ...forces } = state.tuning.forceGraph;
+      const { updateEnergy, linkWidth, nodeZoomResistance, wireZoomResistance, groupWrappers, shellDepth, ...forces } = state.tuning.forceGraph;
       void updateEnergy; // The energy feeds the next membership change and changes no force.
-      void groupWrappers; // A wrapper's room is its seed's clearance, given the motion apart from the forces.
+      // What is wrapped changes what is shown, which the membership carries; a wrapper's room is its seed's clearance.
+      void groupWrappers; void shellDepth;
       void nodeZoomResistance; void wireZoomResistance; // Appearance does not change the layout's physical sizes.
       pointerPickNeeded = true;
-      // The numeric layout settings alone, as the export carries them; the wrapper choice is not one (2026-11-06).
+      // The layout settings as a shared link carries them, the wrappers' look among them (2026-11-06).
       container.dataset.layoutSettings = JSON.stringify(layoutSettingsOf(state.tuning).forceGraph);
       if (wireWidth !== linkWidth) {
         // The widths are the attention's to set, with the path's emphasis; a changed scale is a change of attention.
@@ -1275,6 +1375,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       reveal = { order, nodes: liveNodes, links: graphLinks, shown };
     }
     labelNames = labelNamesOf(graphNodes);
+    // A shell is named by its directory's last name and the files it holds (2026-11-05).
+    for (const node of graphNodes) if (node.shellFiles !== undefined) labelNames.set(node.id, `${node.name} · ${node.shellFiles.toLocaleString("en-US")}`);
     const changedNames = new Set(historyChanges?.changedFiles ?? []);
     const changedNodes = new Set(historyChanges?.changed ?? []);
     if (historyChanges && state.spatialLayout === "structure") {
@@ -1309,11 +1411,13 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const rootOverview = directories.includes("");
     // The key says what is drawn: the references and their directions where they are, the path, and the fading.
     // The key: the rings where a sphere has connections the picture does not show (the owner's choice of 2026-11-02),
-    // save on a wrapped seed, whose wrapper says so instead, and the wrapped groups while any is drawn (2026-11-05).
+    // save on a wrapped seed, whose wrapper says so instead, and the wrapped groups and the shells while any is drawn
+    // (2026-11-05); a shell is no kind of file, so the kinds are read from the files.
     let legendAttention = false;
-    drawLegend = (): void => renderSpatialLegend(picture, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || legendAttention,
-      path: !!path?.length, faded: legendAttention || !!path?.length, frontier: hasFrontier, rings: [...scope.beyond.keys()].some(id => !isWrapped(id)),
-      wrapped: [...wrapped.keys()].some(isWrapped) });
+    const keyed: SpatialGraphData = { nodes: picture.nodes.filter(node => node.shellFiles === undefined), links: picture.links };
+    drawLegend = (): void => renderSpatialLegend(keyed, state.tuning.forceGraph.symbolScale, { references: state.spatialLayout === "connections" || hasAttention || legendAttention,
+      path: !!path?.length, faded: legendAttention || !!path?.length, frontier: hasFrontier, rings: [...scopeBeyond.keys()].some(id => !isWrapped(id)),
+      wrapped: [...wrapped.keys()].some(id => !shells.has(id) && isWrapped(id)), shells: [...shells.keys()].some(isWrapped) });
     drawLegend();
     frameDirectory = (): void => {
       if (directoryScope && directoryScope !== framedDirectoryScope) {
@@ -1439,6 +1543,12 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       refreshActionStrip();
       updateForces(!membershipChanged);
       if (membershipChanged) feed();
+      else if (roomChanged && motion) {
+        // A change of room alone rearranges the whole: held from where the spheres stood, their tethers fought the
+        // wrappers' room, so that switching Off to Skin at rest took a minute to fall still against some 25 s unfolding (2026-11-05).
+        motion.invalidate();
+        if (simulationRunning) motion.wake("unfold"); else move(state.tuning.forceGraph.updateEnergy, "unfold");
+      }
       frameDirectory();
       refreshWrappers();
       setActive(true);
@@ -1467,7 +1577,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
         linkWidth: () => state.tuning.forceGraph.linkWidth,
         linkVisible: () => true,
         arrowLength: link => link.kind === "related-doc" || link.kind === "cited-by" ? 4 : 0,
-        ring: () => null
+        ring: () => null,
+        sphere: node => node.shellFiles === undefined
       },
       resistance: () => ({ nodes: state.tuning.forceGraph.nodeZoomResistance, wires: state.tuning.forceGraph.wireZoomResistance }),
       linkLabel: link => {
@@ -1517,7 +1628,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     primaryAction.addEventListener("click", event => {
       event.stopPropagation();
       const action = actionTargetId ? currentAction(actionTargetId) : null;
-      if (action?.kind === "directory") {
+      if (action?.kind === "shell") popShell(action.directory);
+      else if (action?.kind === "directory") {
         if (state.openDirectories?.has(action.directory)) options.onCloseDirectory(action.directory);
         else options.onOpenDirectory(action.directory);
       } else if (action?.kind === "file") {
@@ -1667,7 +1779,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     const rect = requireElement("graph-svg").getBoundingClientRect();
     const colorForNode = instance.nodeColor();
     const files = (instance.graphData().nodes).flatMap(node => {
-      if (!Number.isFinite(node.x)) return [];
+      if (!Number.isFinite(node.x) || node.shellFiles !== undefined) return [];
       const point = new Vector3(node.x, node.y, node.z);
       const depth = point.clone().project(camera).z;
       if (depth < -1 || depth > 1) return [];
@@ -1678,7 +1790,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       return [{ id: node.id, name: node.name, x: rect.left + center.x, y: rect.top + center.y,
         radius: Math.abs(screenEdge.x - center.x), color: typeof colorForNode === "function" ? colorForNode(node) : "#888888" }];
     });
-    return { files, links: instance.graphData().links.map(link => ({ source: resolveLinkEndpoint(link.source as string | { id: string }), target: resolveLinkEndpoint(link.target as string | { id: string }) })) };
+    return { files, links: instance.graphData().links.map(link => ({ source: resolveLinkEndpoint(link.source as string | { id: string }), target: resolveLinkEndpoint(link.target as string | { id: string }) }))
+      .filter(link => !shells.has(link.source) && !shells.has(link.target)) };
   }
 
   function setMoment(next: HistoryMoment | null, renames: Renames, energy?: number, changes: HistoryChanges | null = next): void {
@@ -1710,18 +1823,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
       link.source = reveal.nodes.get(resolveLinkEndpoint(link.source))!;
       link.target = reveal.nodes.get(resolveLinkEndpoint(link.target))!;
     }
-    // The files of a group popped open enter where its hidden shape placed them about the seed, so that they fill the
-    // wrapper that held them (2026-11-05); a file already on screen keeps its place.
-    for (const [seed, shape] of poppedShapes) {
-      const centre = reveal.nodes.get(seed);
-      if (!centre || ![centre.x, centre.y, centre.z].every(Number.isFinite)) continue;
-      for (const member of shape.members) {
-        const node = reveal.nodes.get(member.id);
-        if (!node || member.id === seed || onScreenIds.has(member.id) || !shown.has(member.id)) continue;
-        node.x = centre.x! + member.x; node.y = centre.y! + member.y; node.z = centre.z! + member.z;
-      }
+    // A file or shell a pop releases enters where the popped wrapper's packing held it (2026-11-05); one already on
+    // screen keeps its place.
+    for (const node of nodes) {
+      const at = bornAt.get(node.id);
+      if (!at || onScreenIds.has(node.id)) continue;
+      node.x = at.x; node.y = at.y; node.z = at.z;
+      bornAt.delete(node.id);
     }
-    if (reveal.shown >= reveal.order.length) poppedShapes.clear();
+    if (reveal.shown >= reveal.order.length) bornAt.clear();
     for (const [id, start] of placeNewSpheres(nodes, links, state.tuning.forceGraph, state.spatialLayout)) {
       const node = reveal.nodes.get(id)!;
       node.x = start.x; node.y = start.y; node.z = start.z;
@@ -1730,33 +1840,74 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     return { nodes, links };
   }
 
-  /**
-   * Begin a wrapper's pop (2026-11-05): the click that pins its seed bursts it, a tenth larger and fading over a quarter
-   * of a second, at once under reduced motion, and the files that enter fill the shape it held.
-   */
-  function popWrapper(seed: string): void {
-    const key = wrapped.get(seed), entry = key === undefined ? undefined : wrapperShapes.get(key);
-    if (key === undefined || !entry) return;
-    poppedShapes.set(seed, entry.shape);
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) bursts.set(seed, { started: null, key });
-  }
-
-  /** Lay out the groups waiting for a wrapper, the smallest first, within a part of the frame and at least one a frame. */
-  function buildWrappers(budget = WRAPPER_BUDGET): void {
-    if (!wrapperWork.length) return;
+  /** Build the hulls waiting to be drawn, the smallest first, within a part of the frame and at least one a frame. */
+  function buildBodies(budget = WRAPPER_BUDGET): void {
+    if (!bodyWork.length) return;
     const started = performance.now();
     do {
-      const work = wrapperWork.shift()!;
-      if (wrapperShapes.has(work.key)) continue;
-      const shape = groupShapeOf(work.nodes, work.links, work.seed, work.tuning);
-      wrapperShapes.set(work.key, { shape, hull: wrapperHull(shape, wrapperPadding(work.tuning)) });
-    } while (wrapperWork.length && performance.now() - started < budget);
-    // Shapes laid out for settings or files no longer shown are let go once they outnumber the wrappers in use.
-    if (wrapperShapes.size > 64 + 4 * wrapped.size) {
+      const work = bodyWork.shift()!;
+      if (bodies.has(work.key)) continue;
+      const padding = wrapperPadding(work.tuning);
+      const shape = bodyShape(work.id, work.files, work.tuning, padding, work.centre, work.directory);
+      bodies.set(work.key, { shape, hull: wrapperHull(shape, padding) });
+    } while (bodyWork.length && performance.now() - started < budget);
+    performance.measure("live-docs:wrapper-hulls", { start: started });
+    // Bodies built for files or sizes no longer shown are let go once they outnumber those in use.
+    if (bodies.size > 64 + 4 * wrapped.size) {
       const used = new Set([...wrapped.values(), ...[...bursts.values()].map(burst => burst.key)]);
-      for (const key of [...wrapperShapes.keys()]) if (!used.has(key)) wrapperShapes.delete(key);
+      for (const key of [...bodies.keys()]) if (!used.has(key)) bodies.delete(key);
     }
     refreshWrappers();
+  }
+
+  /**
+   * Where the members of a wrapped body are born when it pops: its packing about the place it stood, at the packing's own
+   * size, larger than the skin drawn to fit the body, so that the files burst out of it rather than being born on top of
+   * one another. Born at the skin's size, the estate's pop of its portal took 19 s to fall still (measured 2026-11-05).
+   */
+  function releaseAt(key: string, place: Placed): void {
+    for (const member of bodies.get(key)?.shape.members ?? []) {
+      bornAt.set(member.id, { x: place.x + member.x, y: place.y + member.y, z: place.z + member.z });
+    }
+  }
+
+  /** A wrapper bursts open, a tenth larger and fading over a quarter of a second, but not under reduced motion. */
+  function burst(id: string, key: string, place?: Placed): void {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) bursts.set(id, { started: null, key, fit: fitOf(id), place });
+  }
+
+  /**
+   * Begin a wrapped group's pop (2026-11-05): the click that pins its seed bursts its wrapper, and the files that enter
+   * fill the shape it held about the seed, which keeps its place.
+   */
+  function popWrapper(seed: string): void {
+    const key = wrapped.get(seed), node = nodeCache.get(seed);
+    if (key === undefined || !node || !Number.isFinite(node.x)) return;
+    releaseAt(key, { x: node.x!, y: node.y!, z: node.z! });
+    bornAt.delete(seed);
+    burst(seed, key);
+  }
+
+  /**
+   * Pop a directory shell open (2026-11-05): it bursts where it stood, its own files enter where its packing held them,
+   * and the hidden files of each of its subdirectories become a shell of their own, born at their centroid there: a
+   * balloon full of balloons. Its directory keeps a name a click on which wraps it again.
+   */
+  function popShell(directory: string): void {
+    const id = shellId(directory), key = wrapped.get(id), node = nodeCache.get(id);
+    if (key !== undefined && node && Number.isFinite(node.x)) {
+      const place = { x: node.x!, y: node.y!, z: node.z! };
+      releaseAt(key, place);
+      burst(id, key, place);
+    }
+    popped = poppedAfter(popped, directory, true);
+    render();
+  }
+
+  /** Wrap a popped directory's files again, with every directory popped beneath it. */
+  function wrapShell(directory: string): void {
+    popped = poppedAfter(popped, directory, false);
+    render();
   }
 
   /** Advance the wrappers bursting open; one that has burst is gone from the picture. */
@@ -1772,41 +1923,29 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     else { styleWrappers(); pictureChanged(); }
   }
 
-  /** Each wrapper's opacity, as its seed's, a bursting one's growth and fading, and the hovered or focused seed's, for the rim. */
+  /** Each wrapper's opacity, as its node's, a bursting one's growth and fading, and the hovered or focused node's, for the rim. */
   function styleWrappers(): void {
     if (!forceGraphInstance) return;
     const now = performance.now(), reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const burst = (seed: string): number => { const at = bursts.get(seed); return at ? burstProgress(now - (at.started ?? now), BURST.duration, reduced) : 0; };
     forceGraphInstance.wrapperStyle({
       alpha: seed => attentionAlpha(seed) * (1 - burst(seed)),
-      scale: seed => 1 + BURST.growth * burst(seed),
+      scale: seed => fitOf(seed) * (1 + BURST.growth * burst(seed)),
       hovered: hoveredId !== null && isWrapped(hoveredId) ? hoveredId : null,
       popping: new Set(bursts.keys())
     });
   }
 
-  /**
-   * Hand the renderer the wrappers drawn now, those bursting open among them, restyle them and the rings and the key,
-   * and give each wrapped seed the room its wrapper takes: a change of that room rebuilds the field and the picture
-   * unfolds, a picture at rest at the update energy. A change of room rearranges the whole; held from where the spheres
-   * stood, their tethers fought the wrappers' room, so that on this repository switching Off to Skin at rest took a
-   * minute to fall still and a release 54 seconds, against some 25 and 16 unfolding (2026-11-05).
-   */
+  /** Hand the renderer the wrappers drawn now, those bursting open among them, and restyle them and the key. */
   function refreshWrappers(): void {
     const instance = forceGraphInstance;
-    if (!instance || (!wrapping() && !wrappersHanded && !bursts.size && !wrapperRoom.size)) return;
+    if (!instance || (!wrapping() && !wrappersHanded && !bursts.size)) return;
     const look = wrapping() ? state.tuning.forceGraph.groupWrappers : "off";
     wrappersHanded = look !== "off";
-    instance.wrappers([...wrapped.keys(), ...[...bursts.keys()].filter(seed => !wrapped.has(seed))], hullOf, look);
+    instance.wrappers([...wrapped.keys(), ...[...bursts.keys()].filter(id => !wrapped.has(id))], hullOf, look, id => bursts.get(id)?.place);
     instance.invalidateAppearance();
     styleWrappers();
     drawLegend();
-    // The room changes once, when every wrapper of the picture is built, rather than at each arrival.
-    const room = new Map([...wrapped.keys()].filter(isWrapped).map(seed => [seed, hullOf(seed)!.radius]));
-    if (!wrapperWork.length && JSON.stringify([...room]) !== JSON.stringify([...wrapperRoom])) {
-      wrapperRoom = room;
-      if (motion) { motion.invalidate(); if (simulationRunning) motion.wake("unfold"); else move(state.tuning.forceGraph.updateEnergy, "unfold"); }
-    }
     pictureChanged();
   }
 

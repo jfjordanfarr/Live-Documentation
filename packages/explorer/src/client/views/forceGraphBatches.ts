@@ -2,7 +2,7 @@ import { BufferAttribute, BufferGeometry, Color, ConeGeometry, DoubleSide, Dynam
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 
-import type { SpatialNode } from "./forceGraphLayout";
+import type { Placed, SpatialNode } from "./forceGraphLayout";
 import { clipSpatialWireDepth, pickSpatialWire, spatialSizeScale } from "./forceGraphSizing";
 import { mergeWrappers, wrapperAt, type GroupWrappers, type WrapperGeometry, type WrapperHull } from "./forceGraphWrappers";
 
@@ -42,6 +42,11 @@ export interface SpatialDrawStyle<N, L> {
   arrowLength: (link: L) => number;
   /** The colour of the ring around a sphere that has more behind it, or null for no ring (2026-11-02). */
   ring: (node: N) => string | null;
+  /**
+   * Whether a node is drawn as a sphere (every node, unless said): a directory shell is drawn as its wrapper alone
+   * (2026-11-05), its radius kept for its wires, which end at its body rather than at a sphere drawn under the zoom's resistance.
+   */
+  sphere?: (node: N) => boolean;
 }
 
 /**
@@ -132,6 +137,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   wrappers.userData.spatialWrappers = { look: "off", seeds: [] as string[], popping: [] as string[], vertices: 0, triangles: 0 };
   scene.add(wrappers);
   let wrapperSeeds: readonly string[] = [], wrapperHullOf: (seed: string) => WrapperHull | undefined = () => undefined, wrapperLook: GroupWrappers = "off";
+  let wrapperPlaceOf: (seed: string) => Placed | undefined = () => undefined;
   let wrapperStyle: SpatialWrapperStyle = { alpha: () => 1, scale: () => 1, hovered: null, popping: new Set() };
   let wrapperDrawn: WrapperGeometry = mergeWrappers([], () => undefined, () => undefined);
   const nodeIndex = new Map<string, number>();
@@ -168,7 +174,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
         batch.enabled[i] = Number(entry.enabled = visible(entry.data));
       }
     };
-    read(nodes, style.nodeColor, style.radius, () => true, .75);
+    read(nodes, style.nodeColor, style.radius, style.sphere ?? (() => true), .75);
     read(lines, style.linkColor, link => Math.ceil(style.linkWidth(link) * 10) / 10, style.linkVisible, 1);
     read(arrows, style.linkColor, style.arrowLength, style.linkVisible, 3);
     // A ring takes its sphere's radius, read above, and its own colour and alpha; no colour, no ring.
@@ -246,7 +252,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     for (let i = 0; i < nodes.entries.length; i++) {
       const node = nodes.entries[i].data, p = i * 3, c = i * 4;
       const x = positions[p] = node.x ?? 0, y = positions[p + 1] = node.y ?? 0, z = positions[p + 2] = node.z ?? 0;
-      drawnRadii[i] = nodes.appearance[i * 5 + 4] * nodeScale;
+      drawnRadii[i] = nodes.appearance[i * 5 + 4] * (nodes.enabled[i] ? nodeScale : 1);
       clipStart.set(x, y, z, 1).applyMatrix4(projection).toArray(clips, c);
       nodes.depths[i] = clipStart.z / clipStart.w;
     }
@@ -254,7 +260,7 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
       sphere.center.fromArray(positions, i * 3); sphere.radius = drawnRadii[i];
       const seen = frustum.intersectsSphere(sphere);
       nodeSeen[i] = Number(seen);
-      (seen ? nodes.visible : nodes.unseen).push(i);
+      (seen && nodes.enabled[i] ? nodes.visible : nodes.unseen).push(i);
     }
     for (const i of lines.ordered) {
       const a = lineEnds[2 * i], b = lineEnds[2 * i + 1];
@@ -314,14 +320,21 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
   const updateWrappers = (camera: Camera): void => {
     // Off, with nothing drawn, is the picture as it was before wrappers: nothing is written.
     if (wrapperLook === "off" && !wrappers.visible) return;
-    const shown = wrapperLook === "off" ? [] : wrapperSeeds.filter(seed => nodeIndex.has(seed) && wrapperHullOf(seed));
-    const at = (seed: string): number => nodeIndex.get(seed)! * 3;
+    // A wrapper stands at its node's place this frame, or, for one bursting after its node left the picture, at the place given.
+    const placeOf = (seed: string): Placed | undefined => {
+      const index = nodeIndex.get(seed);
+      if (index === undefined) return wrapperPlaceOf(seed);
+      seedPlace.x = positions[3 * index]; seedPlace.y = positions[3 * index + 1]; seedPlace.z = positions[3 * index + 2];
+      return seedPlace;
+    };
     const eye = camera.position;
-    const distance = new Map(shown.map(seed => [seed, Math.hypot(positions[at(seed)] - eye.x, positions[at(seed) + 1] - eye.y, positions[at(seed) + 2] - eye.z)]));
-    const ordered = [...shown].sort((a, b) => distance.get(b)! - distance.get(a)! || (a < b ? -1 : a > b ? 1 : 0));
-    wrapperDrawn = mergeWrappers(ordered, wrapperHullOf, seed => {
-      const p = at(seed); seedPlace.x = positions[p]; seedPlace.y = positions[p + 1]; seedPlace.z = positions[p + 2]; return seedPlace;
-    }, wrapperStyle.scale);
+    const distance = new Map<string, number>();
+    for (const seed of wrapperLook === "off" ? [] : wrapperSeeds) {
+      const at = wrapperHullOf(seed) ? placeOf(seed) : undefined;
+      if (at) distance.set(seed, Math.hypot(at.x - eye.x, at.y - eye.y, at.z - eye.z));
+    }
+    const ordered = [...distance.keys()].sort((a, b) => distance.get(b)! - distance.get(a)! || (a < b ? -1 : a > b ? 1 : 0));
+    wrapperDrawn = mergeWrappers(ordered, wrapperHullOf, placeOf, wrapperStyle.scale);
     const geometry = wrappers.geometry, count = wrapperDrawn.groups.length;
     const alphas = new Float32Array(count);
     for (const range of wrapperDrawn.ranges) alphas.fill(wrapperStyle.alpha(range.seed), range.vertexStart, range.vertexStart + range.vertexCount);
@@ -373,9 +386,10 @@ export function createSpatialBuffers<N extends SpatialNode, L extends SpatialDra
     }
     return picked;
   };
-  /** Which groups are wrapped, their hulls, and how they are drawn; drawn from the next update. */
-  const setWrappers = (seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers): void => {
-    wrapperSeeds = seeds; wrapperHullOf = hullOf; wrapperLook = look;
+  /** Which groups are wrapped, their hulls, how they are drawn, and where one stands whose node is not drawn; drawn from the next update. */
+  const setWrappers = (seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers,
+    placeOf: (seed: string) => Placed | undefined = () => undefined): void => {
+    wrapperSeeds = seeds; wrapperHullOf = hullOf; wrapperLook = look; wrapperPlaceOf = placeOf;
   };
   const styleWrappers = (style: SpatialWrapperStyle): void => { wrapperStyle = style; };
   return { nodes, lines, arrows, rings, wrappers, setData, update, pickNode, pickNodeHit, pickLink, pickWrapper, setWrappers, styleWrappers, invalidateAppearance: (): void => { appearanceDirty = true; }, dispose(): void {

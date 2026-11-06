@@ -1,0 +1,88 @@
+{
+  "which": "repo",
+  "pin": "packages/explorer/src/client/views/forceGraphView.ts",
+  "depth": 2,
+  "directory": "packages/engine/src",
+  "before": {
+    "spheres": 247,
+    "shells": 10,
+    "wires": 692,
+    "shellWires": 134,
+    "wrappers": 51,
+    "popping": [],
+    "triangles": 7916
+  },
+  "steps": [
+    {
+      "ms": 0,
+      "spheres": 247,
+      "shells": 13,
+      "wires": 708,
+      "shellWires": 150,
+      "wrappers": 54,
+      "popping": [
+        "shell:packages/engine/src"
+      ],
+      "triangles": 8654
+    },
+    {
+      "ms": 100,
+      "spheres": 247,
+      "shells": 13,
+      "wires": 708,
+      "shellWires": 150,
+      "wrappers": 54,
+      "popping": [
+        "shell:packages/engine/src"
+      ],
+      "triangles": 8654
+    },
+    {
+      "ms": 250,
+      "spheres": 247,
+      "shells": 13,
+      "wires": 708,
+      "shellWires": 150,
+      "wrappers": 54,
+      "popping": [
+        "shell:packages/engine/src"
+      ],
+      "triangles": 8654
+    },
+    {
+      "ms": 500,
+      "spheres": 247,
+      "shells": 13,
+      "wires": 708,
+      "shellWires": 150,
+      "wrappers": 54,
+      "popping": [],
+      "triangles": 8550
+    }
+  ],
+  "popSettleMs": 6940,
+  "afterPop": {
+    "spheres": 247,
+    "shells": 13,
+    "wires": 708,
+    "shellWires": 150,
+    "wrappers": 54,
+    "popping": [],
+    "triangles": 8550
+  },
+  "chip": {
+    "text": "src",
+    "title": "packages/engine/src · opened · Wrap its files again"
+  },
+  "wrapSettleMs": 6662,
+  "wrapped": {
+    "spheres": 247,
+    "shells": 10,
+    "wires": 692,
+    "shellWires": 134,
+    "wrappers": 51,
+    "popping": [],
+    "triangles": 7916
+  },
+  "wrappedIdleFrames": 0
+}

@@ -198,8 +198,9 @@ export interface HistoryTuning {
 }
 
 /**
- * How the 3D Local Map draws a disconnected group it shows only by its seed (an experiment, 2026-11-05): not at all, the
- * default; inside a translucent skin; inside a cloud; or inside a cloud that gains a smooth rim on hover or keyboard focus.
+ * How the 3D Local Map wraps the files it does not show (an experiment, 2026-11-05): not at all, the default; or, in a
+ * translucent skin, a cloud, or a cloud that gains a smooth rim on hover or keyboard focus, a disconnected group it shows
+ * only by its seed and, inside a group it shows in part, the hidden files of each directory as a shell.
  */
 export type GroupWrappers = "off" | "skin" | "cloud" | "cloud-rim";
 
@@ -296,10 +297,18 @@ export interface ForceGraphTuning {
    */
   revealFrames: number;
   /**
-   * How a group the picture shows only by its seed is wrapped: in a padded hull of its own files laid out hidden, which a
-   * click pops open as it pins the seed (`forceGraphWrappers.ts`); off by default, so the picture is as before (2026-11-05).
+   * How the files the picture does not show are wrapped: a group shown only by its seed in a padded hull of its files,
+   * which a click pops open as it pins the seed, and the hidden files of a group shown in part in directory shells, which
+   * a click pops open (`forceGraphWrappers.ts`, `forceGraphShells.ts`); off by default, so the picture is as before (2026-11-05).
    */
   groupWrappers: GroupWrappers;
+  /**
+   * How deep under the scan root the directory shells stand, with Group Wrappers on (experiment 2, 2026-11-05): the files
+   * a picture leaves out of a group it shows in part are held by the shell of their directory cut to this many
+   * directories, one body each (`forceGraphShells.ts`); a pop opens a shell into its own files and its subdirectories'
+   * shells.
+   */
+  shellDepth: number;
 }
 
 /** The end of a path a person asked for: a file, perhaps one symbol of it, or a directory. The path starts at the newest pin (2026-10-14). */

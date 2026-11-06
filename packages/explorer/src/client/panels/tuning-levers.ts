@@ -48,9 +48,10 @@ export const TUNING_HELP: Readonly<Record<string, string>> = {
   "tuning-churn-cost":                "How much better a found picture must be before the cards on screen move to it; zero moves to any better one.",
 
   // 3D discovery: what the picture shows around what was asked about, and how it enters (forceGraphScope.ts, forceGraphReveal.ts),
-  // and the wrapped groups' experiment (forceGraphWrappers.ts, 2026-11-05).
+  // and the wrappers' experiments (forceGraphWrappers.ts, forceGraphShells.ts, 2026-11-05).
   "tuning-force-hops":                "How many hops of connections show around what you asked about; the last hop is dimmed and a click on it shows more.",
-  "tuning-force-group-wrappers":      "Wraps each group shown only by its seed in a shape of its files, which a click pops open.",
+  "tuning-force-group-wrappers":      "Wraps the files not shown in shapes a click pops open: a group shown by its seed, and each directory's hidden files.",
+  "tuning-force-shell-depth":         "With wrappers on, how many directories deep the shells of hidden files stand; deeper makes more, smaller shells.",
   "tuning-force-reveal-frames":       "How many frames the picture takes to enter, hop by hop; fewer is quicker.",
 
   // 3D forces: the field and its motion (forceGraphPhysics.ts, forceGraphLayout.ts).

@@ -14,6 +14,8 @@ export interface SpatialNode extends SimulationNodeDatum {
   symbolCount?: number;
   /** A directory junction, including the scan root as the empty path; its size is independent of its descendants. */
   directoryPath?: string;
+  /** A directory shell's count of the hidden files it holds (2026-11-05, `forceGraphShells.ts`): its size is theirs. */
+  shellFiles?: number;
 }
 
 /**
@@ -44,8 +46,22 @@ export function spatialNodeValue(node: SpatialNode, tuning: ForceGraphTuning): n
   return node.directoryPath !== undefined ? 4 : Math.pow(1 + symbolCountOf(node), tuning.symbolScale);
 }
 
-/** Actual sphere radius, shared by rendering, collision clearance and the command's report. */
+/**
+ * A directory shell's radius (2026-11-05): the volume of its files, each a file with no symbols, so that the radius grows
+ * with the cube root of the count from that file's. Volumes add, so that a shell's subdirectories' bodies fit inside its
+ * own and a pop releases balloons no larger than the balloon that held them. Two rules were measured and replaced on this
+ * repository's picture pinned on `forceGraphView.ts`, which falls still in 334 frames with no shells: that radius times
+ * the cube root plus two and a half of it, room for the skin, took 475 frames, and its children were larger together than
+ * itself, so that the estate's pop of its portal took 16 s to fall still; two and a half times this radius, the files in
+ * their padding, took 924. This one takes 332: the larger the bodies, the longer the picture takes to rest.
+ */
+export function shellRadius(files: number, tuning: Pick<ForceGraphTuning, "nodeSize">): number {
+  return tuning.nodeSize * Math.cbrt(Math.max(1, files));
+}
+
+/** Actual sphere radius, shared by rendering, collision clearance and the command's report; a shell's is its body's. */
 export function spatialNodeRadius(node: SpatialNode, tuning: ForceGraphTuning): number {
+  if (node.shellFiles !== undefined) return shellRadius(node.shellFiles, tuning);
   return tuning.nodeSize * Math.cbrt(spatialNodeValue(node, tuning));
 }
 

@@ -20,8 +20,9 @@ test("every tuning control explains what changing it does, as its tooltip and it
   await openTuning(page);
   const controls = page.locator(".tuning-content input[type=range], .tuning-content select");
   // Card Text, Slot Lines, Text Resistance, Name Growth and Control Resistance joined the 2D layout group on 2026-11-05
-  // (the card composition comparison and its ladder); Group Wrappers joined the 3D layout group the same day.
-  await expect(controls).toHaveCount(54);
+  // (the card composition comparison and its ladder); Group Wrappers and then Shell Depth joined the 3D layout group the
+  // same day.
+  await expect(controls).toHaveCount(55);
   const facts = await controls.evaluateAll(elements => elements.map(element => {
     const describedBy = element.getAttribute("aria-describedby") ?? "";
     const description = document.getElementById(describedBy);
@@ -52,7 +53,7 @@ test("every tuning control explains what changing it does, as its tooltip and it
 
 /** The 3D layout's four groups, each named by one word, with the levers in the order a person reaches for them; Discovery since 2026-10-31. */
 const SPATIAL_GROUPS = {
-  Discovery: ["tuning-force-hops", "tuning-force-reveal-frames"],
+  Discovery: ["tuning-force-hops", "tuning-force-shell-depth", "tuning-force-reveal-frames"],
   Forces: ["tuning-force-charge", "tuning-force-link-strength", "tuning-force-gravity", "tuning-force-component-separation", "tuning-force-tether", "tuning-force-cited-by-pull",
     "tuning-force-charge-range", "tuning-force-update-energy", "tuning-force-approximation"],
   Spacing: ["tuning-force-link-gap", "tuning-force-coupling", "tuning-force-collision-gap"],

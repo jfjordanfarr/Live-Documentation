@@ -1,0 +1,80 @@
+{
+  "which": "estate",
+  "pin": "PaymentService/PaymentService.cs",
+  "firstSettleMs": 4181,
+  "skin": {
+    "spheres": 19,
+    "shells": 3,
+    "shellFiles": 7,
+    "wires": 41,
+    "shellWires": 4,
+    "wrappers": 4,
+    "triangles": 404,
+    "vertices": 210,
+    "idleFrames": 0
+  },
+  "settleAfterChoose": {
+    "cloud": 304,
+    "cloud-rim": 303,
+    "off": 1814,
+    "skin": 1734
+  },
+  "cloud": {
+    "spheres": 19,
+    "shells": 3,
+    "shellFiles": 7,
+    "wires": 41,
+    "shellWires": 4,
+    "wrappers": 4,
+    "triangles": 404,
+    "vertices": 210,
+    "idleFrames": 0
+  },
+  "off": {
+    "spheres": 19,
+    "shells": 0,
+    "shellFiles": 0,
+    "wires": 37,
+    "shellWires": 0,
+    "wrappers": 0,
+    "triangles": 0,
+    "vertices": 0,
+    "idleFrames": 0
+  },
+  "depth-1-settleMs": 1730,
+  "depth-1": {
+    "spheres": 19,
+    "shells": 2,
+    "shellFiles": 12,
+    "wires": 42,
+    "shellWires": 5,
+    "wrappers": 3,
+    "triangles": 366,
+    "vertices": 189,
+    "idleFrames": 0
+  },
+  "depth-2-settleMs": 1704,
+  "depth-2": {
+    "spheres": 19,
+    "shells": 3,
+    "shellFiles": 7,
+    "wires": 41,
+    "shellWires": 4,
+    "wrappers": 4,
+    "triangles": 404,
+    "vertices": 210,
+    "idleFrames": 0
+  },
+  "depth-3-settleMs": 304,
+  "depth-3": {
+    "spheres": 19,
+    "shells": 3,
+    "shellFiles": 7,
+    "wires": 41,
+    "shellWires": 4,
+    "wrappers": 4,
+    "triangles": 404,
+    "vertices": 210,
+    "idleFrames": 0
+  }
+}

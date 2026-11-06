@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning.ts
-- Generated At: 2026-11-05T23:55:55.034Z
+- Generated At: 2026-11-06T06:45:40.104Z
 
 ## Authored
 ### Purpose
@@ -43,6 +43,8 @@ Wire Thickness and the independent Node/Wire Zoom Resistance sliders are persist
 Since 2026-11-05 the Group Wrappers select in the 3D Layout's Discovery group sets `forceGraph.groupWrappers` and draws the 3D view again at once ([the experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
 Name Growth ([Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)) is a slider like Text Resistance; a change re-renders the 2D view, which re-applies the ladder's scales.
+
+Since 2026-11-05 the panel wires the Shell Depth slider to `forceGraph.shellDepth`.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->

@@ -16,6 +16,8 @@ The unit test of the 3D Local Map's key: that its rows name only what the pictur
 
 Since 2026-11-05 a case checks the Wrapped group row: after the Ring row, and only while a group is drawn wrapped ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
+Since 2026-11-05 a case checks the Shell row stands after the wrapped group's, only while a shell is drawn.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

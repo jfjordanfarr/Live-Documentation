@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/tuning-levers.ts
-- Generated At: 2026-11-05T23:55:54.985Z
+- Generated At: 2026-11-06T06:45:40.039Z
 
 ## Authored
 ### Purpose
@@ -23,6 +23,8 @@ The one place that says, in a short sentence each, what changing a tuning contro
 
 Name Growth's sentence joined on [Turn 11](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), and Card Text's names the fixed-slot composition first, as the default.
 
+Since 2026-11-05 Shell Depth has its sentence, and Group Wrappers' sentence names the directory shells it now also draws.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -35,7 +37,7 @@ One short sentence per tuning control, keyed by the control's element id.
 
 #### `tuningHelpId` {#symbol-tuninghelpid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L88)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/tuning-levers.ts#L89)
 
 ##### `tuningHelpId` — Summary
 The id of the visually hidden element that carries a control's sentence.

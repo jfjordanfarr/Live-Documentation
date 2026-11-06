@@ -21,6 +21,8 @@ Layout and interaction styles for the Explorer's application shell: sidebar (nav
 - `#main` and the view containers clip with `overflow: clip`, as do the World Map's root and the 3D host in their own sheets: with `overflow: hidden` a reveal by the browser (a Tab onto a control at a view's edge, a find in the page, a test runner's retried click) scrolled them from code, sliding the picture and its controls out from under the camera with nothing to scroll them back (2026-10-21, [the work note](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#work-notes-the-gate-and-the-clipped-views)).
 - Since 2026-11-05 `.spatial-legend-sample--wrapped` draws the key's wrapped group, a translucent convex shell around its seed ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
+Since 2026-11-05 the key draws a Shell sample: the wrapped group's skin with no sphere at its heart.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

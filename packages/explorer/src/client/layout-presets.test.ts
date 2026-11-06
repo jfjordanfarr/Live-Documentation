@@ -44,4 +44,16 @@ describe("shared packing preferences", () => {
     expect(readLayoutSettings({ localMap: { columnGap: 73 }, forceGraph: { nodeSize: 4.1 } }))
       .toEqual({ localMap: { columnGap: 72 }, forceGraph: { nodeSize: 4 } });
   });
+
+  it("carries the wrappers' look beside the numbers, for a link or a saved tuning, and drops an unknown one", () => {
+    expect(readLayoutSettings({ forceGraph: { gravity: 0.1, groupWrappers: "cloud-rim" } })).toEqual({ forceGraph: { gravity: 0.1, groupWrappers: "cloud-rim" } });
+    expect(readLayoutSettings({ forceGraph: { groupWrappers: "cloud-rim" } })).toEqual({ forceGraph: { groupWrappers: "cloud-rim" } });
+    expect(readLayoutSettings({ forceGraph: { groupWrappers: "balloon" } })).toBeUndefined();
+    expect(readLayoutSettings({ localMap: { groupWrappers: "cloud-rim" } })).toBeUndefined();
+    const tuning = getDefaultTuning();
+    tuning.forceGraph.groupWrappers = "skin";
+    expect(layoutSettingsOf(tuning).forceGraph?.groupWrappers).toBe("skin");
+    const restored = decompressSnapshot(compressSnapshot({ ...DEFAULT_SNAPSHOT, perspective: "3d", layout: layoutSettingsOf(tuning) }));
+    expect(applyLayoutSettings(getDefaultTuning(), restored.layout).forceGraph.groupWrappers).toBe("skin");
+  });
 });

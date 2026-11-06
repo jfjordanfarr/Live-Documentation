@@ -27,6 +27,8 @@ Since 2026-11-05 the Tuning block holds one control more, the Group Wrappers sel
 
 Name Growth brought the count to 54 on [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), after Group Wrappers made it 53.
 
+The directory shells, merged on November 6 (experiment 2 of [Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)), add Shell Depth between Hops Shown and Reveal Frames in Discovery, and the inventory counts 55.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

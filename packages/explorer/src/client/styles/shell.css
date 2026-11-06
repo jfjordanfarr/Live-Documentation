@@ -1082,6 +1082,8 @@ body.force-graph-active #spatial-legend { display: block; }
 /* A wrapped group: a translucent convex shell around its seed, which a click pops open (an experiment, 2026-11-05). */
 .spatial-legend-sample--wrapped::before { width: 6px; height: 6px; top: 4px; left: 7px; border-radius: 50%; }
 .spatial-legend-sample--wrapped::after { width: 18px; height: 14px; top: 0; left: 1px; background: rgba(131, 185, 212, .4); clip-path: polygon(22% 0, 78% 6%, 100% 48%, 80% 100%, 18% 92%, 0 42%); }
+/* A directory shell: the same skin with no sphere at its heart, since a shell is its files' body alone (2026-11-05). */
+.spatial-legend-sample--shell::before { width: 18px; height: 14px; top: 0; left: 1px; background: rgba(131, 185, 212, .4); clip-path: polygon(18% 4%, 70% 0, 100% 40%, 86% 94%, 30% 100%, 0 56%); }
 
 .sidebar-section .legend-row {
     display: flex;

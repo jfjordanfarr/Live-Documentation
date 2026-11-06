@@ -112,10 +112,15 @@ test("hovering a wrapper names its group; a click pops it open into its files, a
   await expect(page.locator(".pin-tray-toggle")).toHaveText("1 pin");
   await expect.poll(async () => (await drawnWrappers(page)).seeds.includes(chosen), { timeout: 5_000 }).toBe(false);
   await expect.poll(async () => (await drawnWrappers(page)).popping, { timeout: 5_000 }).toEqual([]);
-  expect((await drawnWrappers(page)).seeds).toEqual(wrapped.filter(id => id !== chosen));
+  // The pinned group, shown now in part, holds its hidden files in directory shells (experiment 2, 2026-11-05): the other
+  // groups' wrappers are as they were.
+  expect((await drawnWrappers(page)).seeds.filter(seed => !seed.startsWith("shell:"))).toEqual(wrapped.filter(id => id !== chosen));
   await expect.poll(async () => (await renderedNodes(page)).length, { message: "the group grows by its hops", timeout: 5_000 }).toBeGreaterThan(seeds.length);
   // Releasing the pin with Enter on the seed's name, which stays named while pinned, wraps the group again.
-  await page.locator(`.force-graph-label[data-node-id="${chosen}"], .force-graph-focus[data-node-id="${chosen}"]`).first().focus();
+  // The name shown, the focus label or the name label: with directory shells beside it the two need not both be placed.
+  const name = page.locator(`.force-graph-label[data-node-id="${chosen}"]:not([hidden]), .force-graph-focus[data-node-id="${chosen}"]:not([hidden])`).first();
+  await expect(name).toBeVisible();
+  await name.focus();
   await page.keyboard.press("Enter");
   await expect(page.locator(".pin-tray-toggle")).toHaveText("0 pins");
   await expect.poll(async () => (await drawnWrappers(page)).seeds, { timeout: 5_000 }).toEqual(wrapped);

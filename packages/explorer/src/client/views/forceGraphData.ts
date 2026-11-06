@@ -9,6 +9,8 @@ export interface SpatialGraphNode extends ExplorerNodePayload {
   directoryPath?: string;
   /** Number of filtered source files below this directory, at every depth. */
   directoryFileCount?: number;
+  /** A directory shell's count of the hidden files it holds, in the 3D picture alone (2026-11-05). */
+  shellFiles?: number;
 }
 
 /**

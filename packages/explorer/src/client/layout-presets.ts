@@ -1,4 +1,4 @@
-import type { ForceGraphTuning, LocalMapTuning, TuningConfig } from "./types";
+import { GROUP_WRAPPERS, type ForceGraphTuning, type LocalMapTuning, type TuningConfig } from "./types";
 
 /** One packing preference interpreted by both Local Map representations. */
 export type LayoutPreset = "compact" | "relaxed";
@@ -22,7 +22,7 @@ export const LAYOUT_RANGES = {
     linkGap: [8, 200, 2], charge: [0, 300, 5], collisionGap: [0, 20, 0.5], coupling: [0, 3, 0.1], nodeSize: [1, 10, 0.25], symbolScale: [0, 2, 0.1],
     gravity: [0, 0.3, 0.005], componentSeparation: [0, 0.95, 0.05], chargeRange: [0, 1000, 10], approximation: [0, 0.5, 0.05], linkStrength: [0, 2, 0.05], updateEnergy: [0, 1, 0.01], tether: [0, 0.1, 0.001],
     citedByPull: [0, 1, 0.05], linkWidth: [0.1, 4, 0.1], nodeZoomResistance: [0, 1, 0.05], wireZoomResistance: [0, 1, 0.05], nameAt: [4, 60, 1],
-    hops: [1, 4, 1], revealFrames: [1, 240, 1]
+    hops: [1, 4, 1], revealFrames: [1, 240, 1], shellDepth: [1, 6, 1]
   }
 } as const;
 
@@ -44,23 +44,32 @@ export function applyLayoutPreset(tuning: TuningConfig, preset: LayoutPreset): T
   return { ...tuning, localMap: { ...tuning.localMap, ...packing.localMap }, forceGraph: { ...tuning.forceGraph, ...packing.forceGraph } };
 }
 
-/** Read only known, finite settings and bound them to their public control ranges. */
+/**
+ * Read only known settings: the finite numbers, bound to their public control ranges, and the one named 3D setting a
+ * link or a saved tuning carries beside them, the wrappers' look (2026-11-06, so that a shared link shows the group
+ * wrappers and the directory shells without a switch).
+ */
 export function readLayoutSettings(value: unknown): LayoutSettings | undefined {
   if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
   const result: LayoutSettings = {};
   for (const group of ["localMap", "forceGraph"] as const) {
     const input = (value as Record<string, unknown>)[group];
     if (!input || typeof input !== "object" || Array.isArray(input)) continue;
-    const settings: Record<string, number> = {};
+    const numbers: Record<string, number> = {};
     const ranges: Readonly<Record<string, readonly [number, number, number]>> = LAYOUT_RANGES[group];
     for (const [key, [min, max, step]] of Object.entries(ranges)) {
       const number = (input as Record<string, unknown>)[key];
       if (typeof number === "number" && Number.isFinite(number)) {
         const clamped = Math.max(min, Math.min(max, number));
-        settings[key] = Number((min + Math.round((clamped - min) / step) * step).toFixed(8));
+        numbers[key] = Number((min + Math.round((clamped - min) / step) * step).toFixed(8));
       }
     }
-    if (Object.keys(settings).length) result[group] = settings;
+    if (group === "localMap") {
+      if (Object.keys(numbers).length) result.localMap = numbers;
+      continue;
+    }
+    const groupWrappers = GROUP_WRAPPERS.find(choice => choice === (input as Record<string, unknown>).groupWrappers);
+    if (Object.keys(numbers).length || groupWrappers) result.forceGraph = { ...numbers, ...(groupWrappers ? { groupWrappers } : null) };
   }
   return Object.keys(result).length ? result : undefined;
 }

@@ -162,6 +162,31 @@ export async function localMapSettled(page: Page, timeout = 30_000): Promise<voi
   }, undefined, { timeout });
 }
 
+/**
+ * Waits until the Local Map is still on screen: {@link localMapSettled}, then frames until every card's box has stood
+ * unchanged for 150 ms, within five seconds. The branch move's end is not the picture's rest: the camera's fit eases on
+ * for about a third of a second after it, moving a card by some 40 px on the navigation reveal case (measured
+ * 2026-11-06, the shells merge), and the reading calibration or a resize can move the picture too.
+ */
+export async function localMapStill(page: Page): Promise<void> {
+  await localMapSettled(page);
+  await page.evaluate(async () => {
+    let previous = "", since = performance.now();
+    const deadline = since + 5000;
+    while (performance.now() < deadline) {
+      await new Promise(requestAnimationFrame);
+      const picture = [...document.querySelectorAll(".node-card")].map(element => {
+        const rect = element.getBoundingClientRect();
+        return [rect.x, rect.y, rect.width, rect.height];
+      });
+      const value = JSON.stringify(picture);
+      if (value !== previous) { previous = value; since = performance.now(); }
+      if (performance.now() - since > 150) return;
+    }
+    throw new Error("The picture did not settle");
+  });
+}
+
 // ─── Reading a view ───────────────────────────────────────────────────────
 
 /** How a view's DOM is read: where its wires, cards, rows and names are, and which way its wires are stamped. */

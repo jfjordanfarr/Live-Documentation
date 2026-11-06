@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 
 import { linkPulls, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
 import { spatialScope, startHops, startOf, type StartableNode } from "./forceGraphScope";
-import { burstProgress, groupShapeOf, mergeWrappers, wrappedSeeds, wrapperAt, wrapperHull, wrapperPadding, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
+import { bodyShape } from "./forceGraphShells";
+import { burstProgress, mergeWrappers, wrappedSeeds, wrapperAt, wrapperHull, wrapperPadding, type GroupShape, type WrapperHull } from "./forceGraphWrappers";
 import { getDefaultTuning } from "../persistence/local-storage";
 
 const tuning = getDefaultTuning().forceGraph;
@@ -51,31 +52,11 @@ describe("which groups are wrapped", () => {
   });
 });
 
-describe("a group's shape", () => {
-  it("lays the group out alone, relative to its seed, the same every time", () => {
-    const { nodes, links } = archipelago();
-    const members = nodes.filter(node => node.id.startsWith("a/"));
-    const shape = groupShapeOf(members, links, "a/hub.ts", tuning);
-    expect(shape.members.map(member => member.id)).toEqual(members.map(member => member.id).sort());
-    const seed = shape.members.find(member => member.id === "a/hub.ts")!;
-    expect([seed.x, seed.y, seed.z]).toEqual([0, 0, 0]);
-    // The members stand apart: a layout, not a heap at the seed.
-    for (const member of shape.members) if (member !== seed) expect(Math.hypot(member.x, member.y, member.z)).toBeGreaterThan(seed.radius + member.radius);
-    // Positions it was given are ignored: the shape is the group's own, whatever the picture did with its objects.
-    const moved = members.map(member => ({ ...member, x: 500, y: -300, z: 12 }));
-    expect(groupShapeOf([...moved].reverse(), links, "a/hub.ts", tuning)).toEqual(shape);
-  });
-
-  it("refuses a seed that is not a member", () => {
-    const { nodes, links } = archipelago();
-    expect(() => groupShapeOf(nodes.slice(0, 2), links, "b/x.ts", tuning)).toThrow(/seed/);
-  });
-});
-
 describe("a group's hull", () => {
-  const { nodes, links } = archipelago();
-  const shape = groupShapeOf(nodes.filter(node => node.id.startsWith("a/")), links, "a/hub.ts", tuning);
+  const { nodes } = archipelago();
   const padding = wrapperPadding(tuning);
+  // A group's wrapper is drawn over the phantom packing of its files about its seed (2026-11-05), no longer a hidden layout.
+  const shape = bodyShape("a/hub.ts", nodes.filter(node => node.id.startsWith("a/")), tuning, padding, "a/hub.ts");
   const hull = wrapperHull(shape, padding);
 
   it("encloses every member's sphere with its padding", () => {
@@ -111,6 +92,19 @@ describe("a group's hull", () => {
     expect(wrapperHull(shape, padding)).toEqual(hull);
   });
 
+  it("is the hull of every member, though it is first taken over the outer ones alone", () => {
+    // A body of 300 members, more than the first take: every member's padded sphere lies within the hull built.
+    const many = Array.from({ length: 300 }, (_, i) => file(`m/${String(i).padStart(3, "0")}.ts`, i % 9));
+    const body = bodyShape("m", many, tuning, padding);
+    const wrapped = wrapperHull(body, padding);
+    for (const member of body.members) expect(farthestBeyond(wrapped, member.x, member.y, member.z) + member.radius + padding, member.id).toBeLessThanOrEqual(1e-6);
+    // A shape whose outer members leave room inside still holds a member that reaches past the first take's hull.
+    const lopsided: GroupShape = { seed: "o", members: [...Array.from({ length: 70 }, (_, i) => ({ id: `r${i}`, x: 40 * Math.cos(i), y: 40 * Math.sin(i), z: (i % 7) - 3, radius: 4 })),
+      { id: "far", x: 0, y: 0, z: 30, radius: 2 }] };
+    const held = wrapperHull(lopsided, 2);
+    expect(farthestBeyond(held, 0, 0, 30) + 2 + 2).toBeLessThanOrEqual(1e-6);
+  });
+
   it("wraps a lone pair, and a single sphere, whole", () => {
     const pair: GroupShape = { seed: "p", members: [{ id: "p", x: 0, y: 0, z: 0, radius: 4 }, { id: "q", x: 30, y: 0, z: 0, radius: 6 }] };
     const wrapped = wrapperHull(pair, 2);
@@ -123,10 +117,11 @@ describe("a group's hull", () => {
 
 describe("the merged wrappers", () => {
   const { nodes, links } = archipelago();
+  const padding = wrapperPadding(tuning);
   const start = spatialScope(nodes, links, startOf(nodes, links, "connections", pulls), startHops("connections", tuning.hops), pulls);
   const seeds = wrappedSeeds(start.groups);
   const groupOf = (seed: string): StartableNode[] => nodes.filter(node => node.id.split("/")[0] === seed.split("/")[0]);
-  const hulls = new Map(seeds.map(seed => [seed, wrapperHull(groupShapeOf(groupOf(seed), links, seed, tuning), wrapperPadding(tuning))]));
+  const hulls = new Map(seeds.map(seed => [seed, wrapperHull(bodyShape(seed, groupOf(seed), tuning, padding, seed), padding)]));
   const centres = new Map(seeds.map((seed, i) => [seed, { x: 400 * i, y: -50 * i, z: 10 }]));
   const geometry = mergeWrappers(seeds, seed => hulls.get(seed), seed => centres.get(seed));
 

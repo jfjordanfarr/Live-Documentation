@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/explorer-navigation.spec.ts
-- Generated At: 2026-10-22T16:47:58.118Z
+- Generated At: 2026-11-06T07:24:52.626Z
 
 ## Authored
 ### Purpose
@@ -19,6 +19,8 @@ Exercises the three navigable Explorer views and the remembered Local Map repres
 
 - Since [2026-11-05](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-8) the sender leaves its 3D picture for `about:blank` before a second browser context loads its own: the recipient's whole-repository settle beside the sender's still-running one, two renders in the one GPU process, took the first case to 36.5 s of its 30 s budget against 19 s alone; measured five times after the change at 15 to 16 s. Nothing is asserted on the sender after that point.
 
+On November 6 ([Turn 11](../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11), the shells merge) the reveal case reads its picture after `localMapStill`, since the camera's easing had moved the card 8 and 43 px between its two readings in two runs; the claim, that no reveal scrolls a clipping box, is unchanged.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -32,7 +34,7 @@ _No public symbols detected_
 - [`local-storage.PERSISTED_NAV_KEY`](../../packages/explorer/src/client/persistence/local-storage.ts.mdmd.md#symbol-persisted_nav_key)
 - [`search-bar.currentSnapshot`](./search-bar.ts.mdmd.md#symbol-currentsnapshot)
 - [`search-bar.pathAddress`](./search-bar.ts.mdmd.md#symbol-pathaddress)
-- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
+- [`still-picture.localMapStill`](./still-picture.ts.mdmd.md#symbol-localmapstill)
 <!-- LIVE-DOC:END Dependencies -->
 
 <!-- LIVE-DOC:BEGIN Cited By -->

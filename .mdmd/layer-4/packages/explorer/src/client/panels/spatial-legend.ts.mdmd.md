@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/panels/spatial-legend.ts
-- Generated At: 2026-11-05T23:08:49.982Z
+- Generated At: 2026-11-06T02:11:46.303Z
 
 ## Authored
 ### Purpose
@@ -16,6 +16,8 @@ Created during the [October 24 Connections review](../../../../../../../AI-Agent
 The body-size key is omitted when symbol scaling is disabled. Code-reference width describes the number of documented references represented by a file-pair wire, not its direction or physical length. Since 2026-10-30 the rows are a pure list the view and the unit test share, and they say only what is drawn: the references' width only while reference wires are drawn (on demand in the structure layout), a Path row while a path is, a Dimmed row while the picture ends in a frontier, the last hop of connections shown dimmed, a click on which shows more (2026-10-31, discovery), a Ring row while any sphere wears the ring of connections the picture does not show (2026-11-02), a Faded row while a path or a hover fades the rest (pins faded the rest until that day, when the picture came to hold only what they reach), a folder's size rule when hubs are shown. A direction row, a blue-to-green stroke, stood above the width row for one day and went with the wires' colour on 2026-10-31 ([Turn 1 of the October 31 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-31.1.record.md#turn-1)). Rows change only when their meanings change, so repeated graph renders do not continually replace the sidebar.
 
 Since 2026-11-05 a Wrapped group row follows the Ring row while any group is drawn wrapped, and the Ring row stands only while a sphere that is not wrapped wears a ring ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
+
+Since 2026-11-05 the key has a Shell row, "Shell: N files of a directory; click to open it", while any directory shell is drawn; the 3D view leaves the shells out of the kinds it reads, since a shell is no kind of file.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -29,14 +31,14 @@ What the 3D picture draws beyond its data: the key says only what is on screen (
 
 #### `SpatialLegendRow` {#symbol-spatiallegendrow}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L22)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L24)
 
 ##### `SpatialLegendRow` — Summary
 One row of the key: its words and the sample the stylesheet draws from its shape and colour.
 
 #### `spatialLegendRows` {#symbol-spatiallegendrows}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L29)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L31)
 - Returns: [`SpatialLegendRow`](#symbol-spatiallegendrow)[]
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
@@ -45,7 +47,7 @@ The rows of the key for a filtered graph at the moment shown, in reading order; 
 
 #### `renderSpatialLegend` {#symbol-renderspatiallegend}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L54)
+- Source: [source](../../../../../../../packages/explorer/src/client/panels/spatial-legend.ts#L57)
 - Parameters: `graph`: [`SpatialGraphData`](../views/forceGraphData.ts.mdmd.md#symbol-spatialgraphdata); `drawn`: [`SpatialLegendDrawn`](#symbol-spatiallegenddrawn)
 
 ##### `renderSpatialLegend` — Summary

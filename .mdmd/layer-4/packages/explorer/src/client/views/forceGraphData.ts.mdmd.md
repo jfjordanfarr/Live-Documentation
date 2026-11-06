@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphData.ts
-- Generated At: 2026-11-01T20:01:36.774Z
+- Generated At: 2026-11-06T02:11:47.330Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,8 @@ File symbol counts still determine file size at every historical moment; folder 
 The names the spheres' labels show, `labelNamesOf` (2026-10-28), live here rather than in the renderer because [the T3 diagnosis of 2026-10-27](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/Summarized/2026-10-27.1.SUMMARIZED.md#turn-6) found the renderer's own loop, which asked every file about every other for each name and each path ending, taking seventeen seconds over the T3 bundle's 21,720 files before any picture ([the probe record](../../../../../../../AI-Agent-Workspace/Probes/2026-10-27/t3-code/3d-startup.md)). The names and every path ending are counted once, and the same labels come in a tenth of a second; the test compares the two over a crowd of repeated names.
 A document's citation of a file (2026-10-22, [the decision](../../../../../../../.mdmd/layer-3/architectural-decisions.mdmd.md#related-documents-run-both-ways-a-docs-cited-by-section-is-generated-from-the-documents-own-links-recorded-2026-10-22)) is a link of its own kind, `cited-by`, drawn from the document to the file, where a file's citation of a document (`related-doc`) runs from the file; the two are counted apart even between one pair, since `fileConnections` would fold them into one undirected pair as it folds references, so the document links are counted here by kind and orientation and added after it.
 
+Since 2026-11-05 a node may carry `shellFiles`, set by the 3D view on the directory shells it adds to a picture; `spatialGraphOf` never sets it.
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -34,7 +36,7 @@ A source file, a related document or, in the structure layout, a directory hub d
 
 #### `SpatialLinkKind` {#symbol-spatiallinkkind}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L18)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L20)
 - Returns: [`ExplorerLinkKind`](../../shared/types.ts.mdmd.md#symbol-explorerlinkkind)
 
 ##### `SpatialLinkKind` — Summary
@@ -43,21 +45,21 @@ of a file (`cited-by`) is told from a file's citation of a document (`related-do
 
 #### `directoryNodeId` {#symbol-directorynodeid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L21)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L23)
 
 ##### `directoryNodeId` — Summary
 Stable directory identity outside the source-file namespace.
 
 #### `SpatialGraphData` {#symbol-spatialgraphdata}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L24)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L26)
 
 ##### `SpatialGraphData` — Summary
 A filtered, counted spatial graph, before the simulation adds positions.
 
 #### `spatialGraphOf` {#symbol-spatialgraphof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L39)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L41)
 - Returns: [`SpatialGraphData`](#symbol-spatialgraphdata)
 - Parameters: `graph`: [`ExplorerGraphPayload`](../../shared/types.ts.mdmd.md#symbol-explorergraphpayload); `node`: [`ExplorerNodePayload`](../../shared/types.ts.mdmd.md#symbol-explorernodepayload); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
@@ -73,14 +75,14 @@ into it, as the 2D bands collapse such chains; the scan root stands whatever it 
 
 #### `LabelledNode` {#symbol-labellednode}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L141)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L143)
 
 ##### `LabelledNode` — Summary
 What a sphere's label reads of its node: a hub's directory, a file's name and path.
 
 #### `labelNamesOf` {#symbol-labelnamesof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L149)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphData.ts#L151)
 
 ##### `labelNamesOf` — Summary
 The name each sphere's label shows, by node id: a directory hub its path, the scan root "Scan root"; a file its name,
