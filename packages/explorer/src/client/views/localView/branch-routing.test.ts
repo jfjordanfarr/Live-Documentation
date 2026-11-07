@@ -67,6 +67,31 @@ describe("threaded routes", () => {
     expect(route.d.split(" L ")).toHaveLength(3);
   });
 
+  it("runs straight from a pin short of its column's edge to the gutter before curving, and straight in from the gutter, the pieces unchanged", () => {
+    // The offering card ends 60 px before its column's widest; the using card's column begins 20 px before its pin.
+    const short = { x: 180, y: 150 }, clearance = { leaving: 250, arriving: 660 };
+    const route = threadedRoute(short, to, [lane], tuning, clearance);
+    expect(route.d.startsWith(`M 180 150 L 250 150 C`)).toBe(true);
+    expect(route.d.endsWith(`L 674 300`)).toBe(true);
+    expect(route.pieces.map(piece => piece.kind)).toEqual(["curve", "lane", "curve"]);
+    expect(route.pieces[0].from).toEqual({ x: 250, y: 150 });
+    expect(route.pieces[2].to).toEqual({ x: 660, y: 300 });
+    // The straight runs never cross a card, and every curve begins and ends in a gutter.
+    for (const piece of route.pieces.filter(piece => piece.kind === "curve")) {
+      for (const point of sampleCurve(piece.from, curveTo(piece.from, piece.to, tuning))) {
+        expect(cards.some(card => point.x > card.left && point.x < card.right && point.y > card.top && point.y < card.bottom), `(${point.x}, ${point.y}) is inside a card`).toBe(false);
+      }
+    }
+    // One curve across one gutter, with the same runs.
+    const single = threadedRoute(short, { x: 334, y: 200 }, [], tuning, { leaving: 250, arriving: 330 });
+    expect(single.d).toBe(`M 180 150 L 250 150 ${curveTo({ x: 250, y: 150 }, { x: 330, y: 200 }, tuning)} L 334 200`);
+    expect(single.pieces).toEqual([{ kind: "curve", from: { x: 250, y: 150 }, to: { x: 330, y: 200 } }]);
+    // A pin at or past its column's edge, or a clearance beyond the wire's reach, adds no run.
+    expect(threadedRoute(from, to, [lane], tuning, { leaving: 246, arriving: 674 }).d).toBe(threadedRoute(from, to, [lane], tuning).d);
+    expect(threadedRoute(from, to, [lane], tuning, { leaving: 400, arriving: 300 }).d).toBe(threadedRoute(from, to, [lane], tuning).d);
+    expect(routeBacktracks(route.pieces, tuning)).toBe(false);
+  });
+
   it("curves leave to the right and arrive from the left, and a near-vertical hop is a quadratic", () => {
     const cubic = curveTo({ x: 0, y: 0 }, { x: 200, y: 80 }, tuning);
     const [c1x, , c2x] = cubic.match(/-?\d+(?:\.\d+)?/gu)!.map(Number);

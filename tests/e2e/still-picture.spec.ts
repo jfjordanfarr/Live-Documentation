@@ -379,13 +379,14 @@ for (const run of RUNS) {
       // A retained scope draws every reference among dozens of files, three to four times the wires of the selected
       // state, and the tour and the six pans each read the whole picture again; the budget is sized to that work.
       test.setTimeout(360_000);
-      // Known on the fixed-slot composition, the Card Text default since 2026-11-05: with every card of the layout-lab
-      // column taller, a corridor between two of its cards lay inside that directory's membrane by 32 px, and three
-      // lane samples of two wires from tests/e2e to compressed-url-state.ts counted as foreign (2026-11-06), so this
-      // case was marked to fail on the repository's chain. Later the same day, once the Live Docs had gained the far
-      // bands' files, the picture drew no foreign lane sample, with the round's code and with the code before it alike:
-      // the picture changed, the rule was not repaired. The membrane must still leave a corridor it does not own, or
-      // the lane avoid it; see direction.md.
+      // On the fixed-slot composition, the Card Text default since 2026-11-05, three lane samples of two wires from
+      // tests/e2e to compressed-url-state.ts counted as foreign inside the layout lab's membrane (2026-11-06), so this
+      // case was marked to fail on the repository's chain; later that day the picture changed with the Live Docs and
+      // the count was zero, the rule unrepaired. It returned with the 3D shells' third round's files (2026-11-07, six
+      // samples, the same wires): the wires were not routed through that lane but dived down the gutter from a card
+      // that ends short of its column's widest, the dive beginning over the column, through the membrane and across
+      // the lane's end. A wire now runs straight to the gutter before its first curve (branch-routing.ts); the evidence
+      // is in AI-Agent-Workspace/Screenshots/2026-11-07/column-clearance.
       const graph = await loadGraph(page, run.base);
       const facts = factsInScope(graph, run.scope);
       const names = displayNames(graph, graph.nodes.map(node => node.id));

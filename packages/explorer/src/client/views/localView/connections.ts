@@ -1,4 +1,4 @@
-import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Passage, type RoutePiece } from "./branch-routing";
+import { curveTo, LANE_MARGIN, routeBacktracks, threadedRoute, type Clearance, type Passage, type RoutePiece } from "./branch-routing";
 import { edgeKey, type BranchGraph } from "./branches";
 import type { LocalViewRuntime, WireLayer } from "./runtime";
 import type { ColumnRole, LayoutExtents, LocalEdge } from "./types";
@@ -372,6 +372,13 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
     for (const anchor of [providerAnchor!, consumerAnchor!]) if (anchor.classList.contains("hub")) hubsEnding.add(anchor);
     return { provider, consumer };
   };
+  // Where a wire leaves its offering column and enters its using column: their extents widened by the lane margin, as
+  // a passage is, so that a pin standing short of its column's edge, in a narrower band's card, runs straight to the
+  // gutter before its curve dives (2026-11-07).
+  const clearance = (a: number, b: number): Clearance => ({
+    leaving: columnBounds[a].right - bounds.left + LANE_MARGIN,
+    arriving: columnBounds[b].left - bounds.left - LANE_MARGIN
+  });
   // A wire that skips columns threads the lanes the order reserved for one of its member references, by that
   // reference's key; null when a passage is missing, and the wire is drawn as the native curve.
   const threadFor = (key: string, a: number, b: number, from: Point, to: Point): { d: string; pieces: RoutePiece[]; slots: string[] } | null => {
@@ -390,10 +397,13 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
       });
       slots.push(`${passage.lane}\0${passage.index}`);
     }
-    return { ...threadedRoute(from, to, passages, state.tuning.bezier), slots };
+    return { ...threadedRoute(from, to, passages, state.tuning.bezier, clearance(a, b)), slots };
   };
+  // A forward wire's route: through its lanes, or the one curve across the gutter; leaving and entering its columns straight either way.
+  const routeFor = (key: string, a: number, b: number, from: Point, to: Point): { d: string; pieces: RoutePiece[]; slots: string[] } =>
+    threadFor(key, a, b, from, to) ?? { ...threadedRoute(from, to, [], state.tuning.bezier, clearance(a, b)), slots: [] };
   if (runtime.container.dataset.lod === "overview") {
-    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, laceRanks, shape);
+    const overview = drawOverviewWires(context, layer, seen, measure, bounds, columnOf, wireEnds, threadFor, routeFor, laceRanks, shape);
     markHubs(runtime.container, hubsEnding);
     return overview;
   }
@@ -419,18 +429,16 @@ function drawBranchConnections(context: ConnectionsContext, layer: WireLayer, se
       return;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
-    const threaded = threadFor(key, a, b, from, to);
-    const route = threaded?.d;
-    const threadedSlots = threaded?.slots ?? [];
-    if (presence >= 1 && routeBacktracks(threaded?.pieces ?? [{ kind: "curve", from, to }], state.tuning.bezier)) backward++;
-    const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, route, undefined, presence);
+    const routed = routeFor(key, a, b, from, to);
+    if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward++;
+    const gradientId = drawWire(layer, seen, from, to, "outbound", edge, context.svgNamespace, state.tuning.bezier, routed.d, undefined, presence);
     // The first wire drawn through a slot lends its run and its gradient to the bundle's shared run there.
-    threadedSlots.forEach((slot, i) => {
+    routed.slots.forEach((slot, i) => {
       const existing = runs.get(slot);
       if (existing) { existing.presence = Math.max(existing.presence, presence); return; }
       const passage = branches.order.passages.get(`${key}\0${a + 1 + i}`)!;
       const members = branches.order.lanes.get(passage.lane)?.bundles[passage.index]?.edges.length ?? 1;
-      runs.set(slot, { curve: threaded!.pieces[2 * i], lane: threaded!.pieces[2 * i + 1], gradient: gradientId, members, presence });
+      runs.set(slot, { curve: routed.pieces[2 * i], lane: routed.pieces[2 * i + 1], gradient: gradientId, members, presence });
     });
   });
   for (const [key, run] of runs) {
@@ -460,6 +468,7 @@ function drawOverviewWires(
   columnOf: ReadonlyMap<string, number>,
   wireEnds: WireEnds,
   threadFor: (key: string, a: number, b: number, from: Point, to: Point) => { d: string; pieces: RoutePiece[] } | null,
+  routeFor: (key: string, a: number, b: number, from: Point, to: Point) => { d: string; pieces: RoutePiece[] },
   laceRanks: Map<string, number>,
   shape: SelfLoopParams
 ): { drawn: number; backward: number } {
@@ -497,10 +506,10 @@ function drawOverviewWires(
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "back-route"])) as SVGPathElement | undefined;
     } else {
       const a = columnOf.get(wire.providerId)!, b = columnOf.get(wire.consumerId)!;
-      // Through the lanes one of its references was given, where all of that reference's passages stand.
-      const threaded = wire.members.map(member => threadFor(edgeKey(member), a, b, from, to)).find(Boolean) ?? null;
-      if (presence >= 1 && routeBacktracks(threaded?.pieces ?? [{ kind: "curve", from, to }], state.tuning.bezier)) backward += wire.members.length;
-      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, threaded?.d, "gathered", presence);
+      // Through the lanes one of its references was given, where all of that reference's passages stand; else the one curve.
+      const routed = wire.members.map(member => threadFor(edgeKey(member), a, b, from, to)).find(Boolean) ?? routeFor(edgeKey(wire.members[0]), a, b, from, to);
+      if (presence >= 1 && routeBacktracks(routed.pieces, state.tuning.bezier)) backward += wire.members.length;
+      drawWire(layer, seen, from, to, "outbound", gathered, svgNamespace, state.tuning.bezier, routed.d, "gathered", presence);
       path = layer.elements.get(JSON.stringify([edgeKey(gathered), "gathered"])) as SVGPathElement | undefined;
     }
     if (path) {
@@ -526,7 +535,7 @@ function drawOverviewWires(
       continue;
     }
     const a = columnOf.get(edge.targetId)!, b = columnOf.get(edge.sourceId)!;
-    drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, threadFor(edgeKey(edge), a, b, from, to)?.d, "own", presence);
+    drawWire(layer, seen, from, to, "outbound", edge, svgNamespace, state.tuning.bezier, routeFor(edgeKey(edge), a, b, from, to).d, "own", presence);
   }
   return { drawn, backward };
 }

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/connections.ts
-- Generated At: 2026-11-06T20:08:40.437Z
+- Generated At: 2026-11-07T11:16:38.184Z
 
 ## Authored
 ### Purpose
@@ -70,6 +70,7 @@ Takes every wire off the overlay and forgets the layer; the next drawing makes a
 - [`connection-geometry.LaceEdges`](../connection-geometry.ts.mdmd.md#symbol-laceedges)
 - [`connection-geometry.SelfLoopParams`](../connection-geometry.ts.mdmd.md#symbol-selfloopparams)
 - [`connection-geometry.computeSelfLoopStubs`](../connection-geometry.ts.mdmd.md#symbol-computeselfloopstubs)
+- [`branch-routing.Clearance`](./branch-routing.ts.mdmd.md#symbol-clearance)
 - [`branch-routing.LANE_MARGIN`](./branch-routing.ts.mdmd.md#symbol-lane_margin)
 - [`branch-routing.Passage`](./branch-routing.ts.mdmd.md#symbol-passage)
 - [`branch-routing.RoutePiece`](./branch-routing.ts.mdmd.md#symbol-routepiece)

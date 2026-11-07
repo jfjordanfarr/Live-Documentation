@@ -2,6 +2,12 @@
 
 _The owner's standing request (2026-09-29): after changing the Explorer, build it, look at it, and keep the pictures here, so that a sense of the UI accrues in the workspace and a change can be judged against what came before. Each dated folder is listed below with what each picture shows and how it was taken. The probe records under `../Probes/` keep their own pictures; the World Map's first pictures, from 2026-09-28, are there._
 
+## 2026-11-07
+
+[Column clearance](2026-11-07/column-clearance/README.md): the 2D Local Map's wires from `compressed-url-state.ts` diving while still over their column, through the layout lab's membrane and across a lane's end, the gate's foreign-lane failure on the repository chain's retained picture (the same wires as 2026-11-06's); the spot before and after a wire runs straight to the gutter before it curves, and the whole picture after (2026-11-07).
+
+[Shell faults](2026-11-07/shell-faults/README.md): the 3D shells' third round, the second round's faults that are not the nesting fork: the T3 sample's blade shown to be its wires along the line its shells were born in, and the same view after the new birth; the packing's stall and its spreading over frames, with the bodies byte for byte the same; a shell's weight tried four ways with the rest counts, and the Off pictures byte for byte unchanged; the picture-wide drawing budget on the T3 sample (the builder's order, changed by the root at the review); the popped directories' names before and after, nested pops level by level; every force-graph spec on both bundles; implementation evidence for the owner's eye, Group Wrappers still Off by default (2026-11-07).
+
 ## 2026-11-06
 
 [Far bands](2026-11-06/far-bands/README.md): both milestones of the card ladder's far and overview bands after the far-zoom review and the owner's go-ahead (November 6, Turn 3), with the root's four reviews: `still-picture.ts`, the estate's payment service and `rosetta-manifest.json` pinned whole from reading scale to the farthest zoom, every held part inside its box, file names held in lines that never break a word that fits, the overview's silent rows and gathered wires, the zoom's limit, a render at any zoom laying out what a render at reading scale does; the review's two tables before and after; implementation evidence for the owner's eye, not a verdict (2026-11-06).

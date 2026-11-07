@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/localView/branch-routing.ts
-- Generated At: 2026-11-02T02:09:51.685Z
+- Generated At: 2026-11-07T11:16:37.760Z
 
 ## Authored
 ### Purpose
@@ -79,10 +79,18 @@ leave and arrive horizontally, so a wire departs an offering pin to the right
 and enters a using pin from the left; a near-vertical hop is a quadratic.
 Returns the path commands after the move to `from`.
 
+#### `Clearance` {#symbol-clearance}
+- Type: interface
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L61)
+
+##### `Clearance` — Summary
+Where a wire's own columns end, in the route's coordinates: the x past which the offering column's gutter begins, and
+the x before which the using column's gutter ends; each a column's extent widened by the lane margin, as a passage is.
+
 #### `threadedRoute` {#symbol-threadedroute}
 - Type: function
-- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L64)
-- Parameters: `from`: [`RoutePoint`](#symbol-routepoint); `to`: [`RoutePoint`](#symbol-routepoint); `tuning`: [`BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning)
+- Source: [source](../../../../../../../../packages/explorer/src/client/views/localView/branch-routing.ts#L82)
+- Parameters: `from`: [`RoutePoint`](#symbol-routepoint); `to`: [`RoutePoint`](#symbol-routepoint); `tuning`: [`BezierTuning`](../../types.ts.mdmd.md#symbol-beziertuning); `clearance`: [`Clearance`](#symbol-clearance)
 
 ##### `threadedRoute` — Summary
 A wire that skips columns: from its offering pin it curves across the first
@@ -90,6 +98,18 @@ gutter into a lane through the next column, runs straight along that lane,
 and curves on, until it enters its using pin. Every curve lives in a gutter
 and every straight run in a lane, so the route never reaches backward and
 never enters a card, given lanes that lie in gaps between cards.
+
+A pin can stand inside its column's extent: a column holds the cards of
+several directory bands, each band's as wide as its own text asks and set
+in by its depth, so a card can end well before the column's widest does.
+A curve begun at such a pin dives while still over the column, through the
+membrane and the lane ends of the bands below (seen 2026-11-06 and again
+2026-11-07, the wires of `compressed-url-state.ts` cutting a corner of the
+layout lab's membrane). Given the clearance, the wire first runs straight
+from its pin to where the gutter begins, and arrives straight from where the
+gutter ends to its pin; those runs are commands of the path, not pieces, so
+the pieces stay the curve into each lane and the run along it, in pairs,
+which a bundle's shared run reads by index.
 <!-- LIVE-DOC:END Public Symbols -->
 
 <!-- LIVE-DOC:BEGIN Dependencies -->
