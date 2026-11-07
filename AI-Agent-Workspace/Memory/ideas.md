@@ -1,6 +1,6 @@
 # Ideas and observations without a home yet
 
-_Current as of 2026-11-06. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
+_Current as of 2026-11-07. Unprioritised. Mined from the planning documents retired on 2026-09-27, the chat archive, and the September 2026 sessions. Nothing here is a commitment; [the vision](../../.mdmd/layer-1/vision.mdmd.md) and the [decisions log](../../.mdmd/layer-3/architectural-decisions.mdmd.md) hold those. Delete an entry when it lands or when the owner rejects it._
 
 ## Asked for or loved by the owner
 
@@ -130,6 +130,14 @@ Weighed by the root while designing the far and overview bands of the 2D card la
 - **A file's name beside a card smaller than its label,** as a map labels a town, with labels dropped where they collide. It leaves the card's box, which the owner's rule and their reports of things exceeding boundaries argue against.
 - **A file's name cut to the part that tells it from its siblings:** `…branches…` for `local-map-branches.spec.ts` among thirty files that begin and end alike. It would fit far more names into narrow cards at the overview band; it needs a rule for what counts as shared and an honest mark of what was dropped.
 - **A one-line gist held through the middle band,** a description shortening to one held line before it leaves, so that the room the slots keep is not empty there. The owner's wish of November 5 that names take the room descriptions leave was answered with Name Growth, whose default went to 1 on November 6 for the sake of one size; this would fill the same room with meaning instead of size.
+
+## Shells and bands not chosen — November 6 to 7, 2026
+
+Weighed by the root and the builders while the far and overview bands and the two shell rounds were built ([Turns 3 to 7 of the November 6 record](../ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)); none built, none shown to the owner as a picture unless said.
+
+- **Alternatives to nesting bubbles in full.** Round two's bodies from the leaves make the largest shells about twice as wide as round one's, since bubbles may not overlap. Two cheaper forms were laid out to the owner with the round: a shell that draws only one level, its own files and each subdirectory as a plain balloon at its true size with nothing drawn inside until a pop; and a flat ball of every file the shell holds, with its directories drawn as translucent membranes grouping them rather than as room. Each keeps "no bubble appears to have fewer nodes than it really does" less fully than full nesting. The root's recommendation was to judge full nesting live first.
+- **A shell's weight in proportion to what it holds.** Round two's reference picture takes 2.92 times the frames of the picture without shells to come to rest, against the rounds' budget of one and a half. The builder's unbuilt remedy: a shell's weight in the force layout in proportion to the files it holds, so that the large shells sit still while the small things settle around them. Untried; listed for the shells' third pass.
+- **The wires into Internals landing side by side along its opening.** In the sealed-box form sketched for the Internals row (Turn 7), every wire ends at one square opening. The wires could land along the box's opening side by side, each at its own place, so that the count of uses is seen as a comb rather than read as a number. Deferred until the owner chooses a form for the row.
 
 ## Continuous file perspectives — October 3, 2026
 
