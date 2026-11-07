@@ -160,11 +160,16 @@ export function createSearchField(options: SearchFieldOptions): SearchField {
   };
 
   input.addEventListener("focus", () => input.select());
-  input.addEventListener("input", () => {
+  const search = (): void => {
     query = input.value;
     selected = 0;
     render();
-  });
+  };
+  input.addEventListener("input", search);
+  // The field stands in the page before the Explorer's data has loaded and this listener exists, so words typed in that
+  // moment have fired their input events into nothing (seen on a slow machine by the search-bar spec, 2026-11-07). A
+  // field that holds the person's words and their focus searches them now; a field left alone keeps its text as it is.
+  if (document.activeElement === input && input.value) search();
   input.addEventListener("keydown", event => {
     if (event.key === "Escape") {
       // The field has used this Escape; the reader or map behind it must not act on it too.

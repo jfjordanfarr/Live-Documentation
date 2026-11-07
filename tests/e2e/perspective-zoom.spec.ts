@@ -52,6 +52,11 @@ test("hover isolates within retained files, and a row of a whole file narrows th
 
 test("perspective copies preserve every computed SVG declaration without live identifiers or hooks", async ({ page }) => {
   await page.goto(`/?view=local&node=${ROOT}helpers.ts`);
+  // At rest, so that the reading and the copy see the map at one band: the card ladder declares some of a card's custom
+  // properties only from the middle band out (--title-room-h, --title-scale), and the arrival passes through the middle
+  // band on its way in, so a reading taken while its camera still moved found them set where the copy, made at rest,
+  // had none (the gates of 2026-11-07).
+  await localMapSettled(page);
   const expected = await page.locator(`${cardSelector} .local-file-pin svg path`).evaluate(element => {
     const source = element as SVGElement;
     source.id = "transition-source-marker";

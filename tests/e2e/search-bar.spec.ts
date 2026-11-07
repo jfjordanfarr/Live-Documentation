@@ -178,6 +178,24 @@ test("a result's path is readable: at least 4.5:1 against its row, selected or n
   }
 });
 
+test("words typed before the Explorer's data has loaded are searched once the bar is wired", async ({ page }) => {
+  // The field stands in the page before the data arrives and the bar is wired, so these words' input events fire into
+  // nothing: on a slow machine the readable-path case above typed its words then and saw no results (the gate of
+  // 2026-11-07). The data is held back until the words are typed, then released.
+  let release: () => void = () => {};
+  const held = new Promise<void>(resolve => { release = resolve; });
+  await page.route("**/explorer-data.json", async route => { await held; await route.continue(); });
+  await page.goto("/", { waitUntil: "commit" });
+  await page.click("#search-subject");
+  await page.keyboard.type("generator");
+  await expect(page.locator("#search-subject-results")).toBeHidden();
+  release();
+  const first = page.locator("#search-subject-results .search-row--file").first();
+  await expect(first.locator(".search-row-name")).toHaveText("generator.ts");
+  await expect(page.locator("#search-subject")).toBeFocused();
+  await expect(page.locator("#search-subject")).toHaveValue("generator");
+});
+
 test("each field is a combobox over a listbox: open or closed, and the keyboard's row named while focus stays in the field", async ({ page }) => {
   await page.goto("/");
   const field = page.getByRole("combobox", { name: /^Search files, symbols and directories/u });

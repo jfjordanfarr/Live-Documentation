@@ -155,13 +155,16 @@ export const forceGraphUrl = (base: string, file: string): string => `${base}?vi
  * next over the tuning's move length, and the continuing search may move it again to a better arrangement
  * (2026-10-07); the root says `data-moving` while a move runs and `data-search-status` what the search is doing, and
  * the map says `data-camera="moving"` while a gesture, inertia or an animation moves the camera, such as the fit that
- * eases on after a branch move (2026-11-06).
+ * eases on after a branch move (2026-11-06). A map not yet drawn is not at rest: the container stands empty in the
+ * page until the view renders into it, and the arrival's camera is flagged in the render's own task, so a wait that
+ * took the empty container for rest let the perspective-copy case read the card mid-arrival (2026-11-07).
  */
 export async function localMapSettled(page: Page, timeout = 30_000): Promise<void> {
   await page.waitForFunction(() => {
     const map = document.querySelector<HTMLElement>("#map-container");
     const root = map?.querySelector<HTMLElement>(".local-placed");
-    return map?.dataset.camera !== "moving" && (!root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running"));
+    if (!map || !(root || map.querySelector(".empty-hint"))) return false;
+    return map.dataset.camera !== "moving" && (!root || (root.dataset.moving !== "true" && root.dataset.searchStatus !== "running"));
   }, undefined, { timeout });
 }
 
@@ -335,7 +338,11 @@ export interface PictureReading {
  * for the measures of where it runs (occlusion, foreign directories, lanes, length, flow); `along: false` leaves the
  * sampling out, so that the path measures read zero and the points none, for a reader that asks only which wires are
  * legible: that is decided by the endpoints' rows and names, never by the samples, and the sampling is nearly all of a
- * reading's time (a retained scope of hundreds of wires took 30 s a reading, measured 2026-11-02).
+ * reading's time (a retained scope of hundreds of wires took 30 s a reading, measured 2026-11-02). Of that time the
+ * page's hit test and the membranes' fill tests were the greater part (21 s of 52 on the branches case's 385 wires,
+ * 195,000 samples, on a slow day, 2026-11-07), so each is asked only where it can answer: the hit test where the sample
+ * lies within a card other than the wire's ends, the fill test within the membrane's box; the rest of a reading is the
+ * browser's own walk along each path to its sample points, kept as the oracle's arithmetic.
  */
 export async function readPicture(page: Page, view: ViewReading, names: Record<string, Record<string, string>>, along = true): Promise<PictureReading> {
   return page.evaluate(
@@ -356,16 +363,20 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
       };
       const legibleText = (el: Element): boolean => inside(el.getBoundingClientRect()) && uncovered(el) && fontPx(el) >= readingPx;
       const folderOf = (id: string): string => (id.lastIndexOf("/") < 0 ? "" : id.slice(0, id.lastIndexOf("/")));
-      const within = (r: DOMRect, x: number, y: number): boolean => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      type Edges = Pick<DOMRect, "left" | "right" | "top" | "bottom">;
+      const within = (r: Edges, x: number, y: number): boolean => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      /** A box grown by a margin on every side. */
+      const grown = (r: Edges, by: number): Edges => ({ left: r.left - by, right: r.right + by, top: r.top - by, bottom: r.bottom + by });
       /** Whether a file lies in a directory or below it; the root holds everything. */
       const under = (directory: string, file: string): boolean => directory === "" || folderOf(file) === directory || folderOf(file).startsWith(`${directory}/`);
       const folderBoxes = (view.folderBox ? [...document.querySelectorAll<HTMLElement>(view.folderBox)] : []).map(el => ({ directory: el.dataset.directory ?? "", rect: el.getBoundingClientRect() }));
+      // A shape's fill lies within its box; the box, a pixel wider for the edges' rounding, says where the fill test can say yes.
       const folderShapes = (view.folderShape ? [...document.querySelectorAll<SVGGeometryElement>(view.folderShape)] : [])
-        .flatMap(el => { const inverse = el.getScreenCTM()?.inverse(); return inverse ? [{ directory: el.dataset.directory ?? "", el, inverse }] : []; });
+        .flatMap(el => { const inverse = el.getScreenCTM()?.inverse(); return inverse ? [{ directory: el.dataset.directory ?? "", el, inverse, bounds: grown(el.getBoundingClientRect(), 1) }] : []; });
       /** Whether a screen point lies in a directory's drawn region: its box, or its shape's fill. */
       const folders = [...folderBoxes, ...folderShapes];
       const inFolder = (folder: typeof folders[number], x: number, y: number): boolean =>
-        "rect" in folder ? within(folder.rect, x, y) : folder.el.isPointInFill(new DOMPoint(x, y).matrixTransform(folder.inverse));
+        "rect" in folder ? within(folder.rect, x, y) : within(folder.bounds, x, y) && folder.el.isPointInFill(new DOMPoint(x, y).matrixTransform(folder.inverse));
       const laneBoxes = (view.lane ? [...document.querySelectorAll<HTMLElement>(view.lane)] : []).map(el => el.getBoundingClientRect());
       /** Whether a label's text names the folder: the whole path, its last segment, or a file path inside it. */
       const namesFolder = (text: string, folder: string): boolean => {
@@ -379,6 +390,19 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
       const scale = cameraEl ? new DOMMatrix(getComputedStyle(cameraEl).transform).a || 1 : 1;
 
       const cards = [...document.querySelectorAll<HTMLElement>(view.card)];
+      // A card's hull: its box and its parts' boxes, since a part may stand out of the card (an anchor on its edge), a
+      // few pixels wider for strokes and glyphs. The page's hit test can name a card at a point only within its hull.
+      const hulls = cards.map(card => {
+        const r = card.getBoundingClientRect();
+        const hull = { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+        for (const part of card.querySelectorAll("*")) {
+          const b = part.getBoundingClientRect();
+          if (b.width === 0 || b.height === 0) continue;
+          hull.left = Math.min(hull.left, b.left); hull.right = Math.max(hull.right, b.right);
+          hull.top = Math.min(hull.top, b.top); hull.bottom = Math.max(hull.bottom, b.bottom);
+        }
+        return { id: card.dataset.id ?? "", bounds: grown(hull, 8) };
+      });
       let cardsInFrame = 0;
       let cardsPartlyInFrame = 0;
       const cardReadings: CardReading[] = [];
@@ -485,9 +509,13 @@ export async function readPicture(page: Page, view: ViewReading, names: Record<s
             }
             if (point.x < frame.left || point.x > frame.right || point.y < frame.top || point.y > frame.bottom) continue;
             samples += 1;
-            const top = document.elementFromPoint(point.x, point.y);
-            const card = top?.closest<HTMLElement>(view.card);
-            if (card && card.dataset.id !== consumer && card.dataset.id !== provider) occludedSamples += 1;
+            // Occluded where the page's topmost element at the sample belongs to a card other than the wire's ends; the
+            // hit test, the costly reading, is asked only within such a card's hull, where alone it can say so.
+            if (hulls.some(hull => hull.id !== consumer && hull.id !== provider && within(hull.bounds, point.x, point.y))) {
+              const top = document.elementFromPoint(point.x, point.y);
+              const card = top?.closest<HTMLElement>(view.card);
+              if (card && card.dataset.id !== consumer && card.dataset.id !== provider) occludedSamples += 1;
+            }
           }
           const end = sample(length);
           points.push(end.x, end.y);
