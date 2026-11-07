@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphPhysics.ts
-- Generated At: 2026-11-05T05:00:02.866Z
+- Generated At: 2026-11-06T18:06:29.246Z
 
 ## Authored
 ### Purpose
@@ -30,6 +30,8 @@ A tick can be taken in parts (`SpatialMotion.advance`, 2026-10-28): each part ev
 In the [November 2 exploration pass](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/Summarized/2026-11-01.1.SUMMARIZED.md#turn-8), Group Separation added component-centroid gravity. Positive-strength springs define the components; a singleton is a component. For each member, gravity toward its component centroid is unchanged while gravity of that centroid toward the common origin is multiplied by one minus the separation. The potential keeps the same split, so exact repulsion still gives a conservative field. Zero preserves ordinary origin gravity and the stiffness bound stays valid. Settling uses physical sphere extents as well as center positions, avoiding a zero size reference for one isolated file.
 
 The full gate during the [November 5 reading repair](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-04.1.record.md#turn-9) exposed two slow existing physics tests. When both repulsion and collision stiffness are zero, exact evaluation now skips the inactive quadratic pair work while retaining each step's maximum spring stiffness and the normal completion checks. The bounded octree walk keeps its nearest-corner prune, but computes a cell's farthest corner only after the cell could pass the aggregate opening rule. Accepted cells, pair arithmetic and summation order are unchanged. Original/candidate force arrays and readings, including lazy energy, compare bit-for-bit across 48 bounded/unbounded, exact/approximated, coincident and partitioned-evaluation scenarios. The existing reference tests, coverage and deadlines remain intact; no force constant or approximation rule changed.
+
+Since 2026-11-06 a field may take a softness for each sphere, a share of the collision's stiffness: two spheres closer than their clearance push apart as hard as the softer allows, in the energy, the forces and the stiffness alike, summed exactly or through the tree. A directory shell is soft ([`forceGraphLayout.ts`](forceGraphLayout.ts.mdmd.md)), since one light contact on a large shell held every tick of its picture to two substeps; without softness the field is the one it was, to the last digit ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -85,14 +87,14 @@ spheres.
 
 #### `MotionSettings` {#symbol-motionsettings}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L497)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L507)
 
 ##### `MotionSettings` — Summary
 The motion's constants: the step of time per tick and the drag per unit of time.
 
 #### `MotionTick` {#symbol-motiontick}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L504)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L514)
 - Extends: [`FieldReading`](#symbol-fieldreading)
 
 ##### `MotionTick` — Summary
@@ -100,7 +102,7 @@ How far one tick moved the spheres, beside the field's reading at the new positi
 
 #### `SpatialMotion` {#symbol-spatialmotion}
 - Type: class
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L536)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L546)
 
 ##### `SpatialMotion` — Summary
 Damped velocity Verlet through a field at a constant strength: half a kick, a drift, the forces at the new place, half a
@@ -120,7 +122,7 @@ are the same either way.
 
 #### `diagonalOf` {#symbol-diagonalof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L699)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphPhysics.ts#L709)
 
 ##### `diagonalOf` — Summary
 The diagonal of the box around the spheres, the measure of the picture's size that stillness is judged against.

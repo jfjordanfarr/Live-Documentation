@@ -1,0 +1,40 @@
+{
+ "url": "http://127.0.0.1:8912/samples/estate/?s=N4IgbiBcDMA0IEcomgEx",
+ "frames": 194,
+ "seconds": 6.72,
+ "spheres": 22,
+ "skins": 4,
+ "filesDrawnWithin": 10,
+ "counts": [
+  {
+   "seed": "Contracts/Contracts.csproj",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:Portal/Models",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:Gateway",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:Portal/Pages",
+   "holds": 3,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  }
+ ],
+ "pops": [],
+ "frameMs": null
+}

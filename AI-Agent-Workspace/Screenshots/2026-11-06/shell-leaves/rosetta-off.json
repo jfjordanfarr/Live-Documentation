@@ -1,0 +1,15 @@
+{
+ "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAdsgLgUwGccCB6",
+ "frames": 197,
+ "seconds": 7.66,
+ "spheres": 111,
+ "skins": 0,
+ "filesDrawnWithin": 0,
+ "counts": [],
+ "pops": [],
+ "frameMs": {
+  "median": 33.3,
+  "mean": 32.5,
+  "frames": 40
+ }
+}

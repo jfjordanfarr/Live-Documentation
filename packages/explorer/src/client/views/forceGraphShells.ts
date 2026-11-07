@@ -14,15 +14,19 @@
  * are shown while its subdirectories become shells of their own. A shell's wires are its members' references bundled,
  * one wire for each pair of a shown file or shell with a shell, its count the references between them in both
  * directions, so that a route through hidden files still shows as a route through a shell. A shell is drawn over a
- * phantom packing of its members, a deterministic arrangement scaled to its body, never a layout of the files
- * themselves: the picture simulates the shown files and the shells, never the files the shells hold.
+ * phantom packing of its members, a deterministic arrangement inside its body, never a layout of the files themselves:
+ * the picture simulates the shown files and the shells, never the files the shells hold. Since November 6 the body is
+ * the shell's true size and the skin shows within it the units a pop releases, its own files and its subdirectories'
+ * balloons, where the pop leaves them; the owner had found the first shells "a replacement for the ring around a single
+ * node rather than a computed mesh which is a stand-in for many many many nodes underneath it"
+ * ([Turn 3 of the November 6 record](../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)).
  *
  * Pure-function module: no DOM, no GPU. The page draws, picks and pops what these functions describe.
  */
 
 import type { FileConnection } from "./fileConnections";
-import { seededDirection, spatialNodeRadius, type SpatialNode } from "./forceGraphLayout";
-import type { GroupMember, GroupShape } from "./forceGraphWrappers";
+import { seededDirection, spatialNodeRadius, type Placed, type SpatialNode } from "./forceGraphLayout";
+import type { BodyUnit, GroupMember, GroupShape } from "./forceGraphWrappers";
 import type { ForceGraphTuning } from "../types";
 import { parentDirectory } from "./localView/directory-bands";
 
@@ -215,96 +219,322 @@ export function shellPicture<N extends ShellCandidate, T extends string>(source:
 /** The golden angle, the turn between successive points of a Fibonacci sphere. */
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 
-/** A number in [0, 1) seeded by an id, the same on every machine: the jitter of a phantom. */
+/** A number in [0, 1) seeded by an id, the same on every machine. */
 function seededFraction(id: string): number {
   let hash = 2166136261;
   for (let index = id.length - 1; index >= 0; index--) { hash ^= id.charCodeAt(index); hash = Math.imul(hash, 16777619) >>> 0; }
   return hash / 0x100000000;
 }
 
-/** How many of a body's members stand in its outer layer, the skin's lumps, when it has more. */
-export const OUTER_LAYER = 48;
+/** The room a body keeps between two of its units' surfaces, and between its units and its skin, in a tuning's units. */
+export interface BodyGaps {
+  /** Between two units' surfaces: the collision's gap, so that what a pop releases stands clear of its neighbours. */
+  gap: number;
+  /** Between a bubble's units and its skin. */
+  margin: number;
+}
+
+/** A body's gaps for a tuning: the collision's gap between units, half of it to the skin (2026-11-06, second round). */
+export function bodyGaps(tuning: Pick<ForceGraphTuning, "collisionGap">): BodyGaps {
+  return { gap: tuning.collisionGap, margin: tuning.collisionGap / 2 };
+}
+
+/** One sphere to pack: its id and radius. */
+interface Packable {
+  id: string;
+  radius: number;
+}
+
+/** Below this many units a packing places each in turn and compares every pair; above it, it relaxes a spiral, through a grid. */
+const PAIRWISE = 48;
+
+/** The directions a sphere may touch another in, for a greedy packing: 64 along a Fibonacci sphere. */
+const DIRECTIONS: ReadonlyArray<Placed> = Array.from({ length: 64 }, (_, i) => {
+  const h = 1 - 2 * (i + 0.5) / 64, ring = Math.sqrt(1 - h * h), turn = i * Math.PI * (3 - Math.sqrt(5));
+  return { x: ring * Math.cos(turn), y: h, z: ring * Math.sin(turn) };
+});
 
 /**
- * Where a body's members stand while it is wrapped: a phantom packing, never a layout. Up to `OUTER_LAYER` members, the
- * first by a hash of their ids, stand in an outer layer near the skin, each at a direction of a Fibonacci sphere turned
- * toward one seeded by its id and at a depth the id jitters, so that the hull over them is lumpy rather than a gem; the
- * rest fill the inner part of the body the same way, so that the hull is shaped by the few on its outside and a large
- * body costs no more to wrap than a small one. Each member stands so far inside that its sphere, padded, stays within
- * `bodyRadius`, at the centre when it cannot. A member named `centre` stands at the centre itself, as a wrapped group's
- * seed does. Positions are relative to the centre, and they and the members' order, by the hash, do not depend on the order given.
+ * Pack spheres into a ball, apart by `gap` between their surfaces, about the origin (2026-11-06, second round): they start
+ * on a Fibonacci ball, the largest nearest the centre, and are pulled toward the centre and pushed apart in turn, the
+ * lighter of two moving the more, then only pushed apart until no two are closer than the gap by more than a hundredth
+ * of it; one named `centre` stands at the origin throughout, as a wrapped group's seed does. A ball of mixed spheres
+ * settles at about the density of spheres poured into a jar. The places depend only on the spheres given, not on their
+ * order. Returns each sphere's place and the radius from the origin that holds them all.
  */
-export function phantomShape(seed: string, members: ReadonlyArray<{ id: string; radius: number }>, bodyRadius: number, padding: number, centre?: string): GroupShape {
-  const placed: GroupMember[] = [];
-  const middle = members.find(member => member.id === centre);
-  if (middle) placed.push({ id: middle.id, x: 0, y: 0, z: 0, radius: middle.radius });
-  const byHash = members.filter(member => member.id !== centre).map(member => ({ member, hash: seededFraction(member.id) }))
-    .sort((a, b) => a.hash - b.hash || (a.member.id < b.member.id ? -1 : a.member.id > b.member.id ? 1 : 0));
-  const outer = byHash.slice(0, OUTER_LAYER), inner = byHash.slice(OUTER_LAYER);
-  /** Lay a layer's members along a Fibonacci sphere, each between `low` and `high` of its room from the centre. */
-  const layer = (entries: typeof byHash, low: number, high: number): void => entries.forEach(({ member }, i) => {
-    const count = entries.length;
-    const y = 1 - (2 * (i + 0.5)) / count, ring = Math.sqrt(Math.max(0, 1 - y * y)), turn = i * GOLDEN_ANGLE;
-    const jitter = seededDirection(member.id);
-    let dx = ring * Math.cos(turn) + 0.3 * jitter.x, dy = y + 0.3 * jitter.y, dz = ring * Math.sin(turn) + 0.3 * jitter.z;
-    const length = Math.hypot(dx, dy, dz) || 1;
-    dx /= length; dy /= length; dz /= length;
-    const room = Math.max(0, bodyRadius - member.radius - padding);
-    // The inner members spread through their part of the volume by the cube root; the outer ones by a second hash of the
-    // id, apart from the one that orders them around the sphere, so that depth does not follow the spiral.
-    const spread = seededFraction(`${member.id}\u0001`);
-    const share = low > 0 ? spread : Math.cbrt(((i + 0.5) * 0.6180339887498949 + spread) % 1);
-    const depth = room * (low + (high - low) * share);
-    placed.push({ id: member.id, x: dx * depth, y: dy * depth, z: dz * depth, radius: member.radius });
+export function packBall(units: readonly Packable[], gap: number, centre?: string): { places: Map<string, Placed>; extent: number } {
+  const order = [...units].sort((a, b) => (a.id === centre ? -1 : b.id === centre ? 1 : 0) || b.radius - a.radius
+    || seededFraction(a.id) - seededFraction(b.id) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const n = order.length;
+  const x = new Float64Array(n), y = new Float64Array(n), z = new Float64Array(n), r = Float64Array.from(order.map(unit => unit.radius));
+  const fixed = order.map(unit => unit.id === centre);
+  let volume = 0;
+  for (const radius of r) volume += (radius + gap / 2) ** 3;
+  const start = Math.cbrt(volume / 0.5);
+  if (n <= PAIRWISE) {
+    // Few spheres, often of very different sizes: each, the largest first, stands touching one already placed where it
+    // reaches least far from the middle of the first two, so that small spheres fill the waist beside large ones rather
+    // than a shell around them.
+    let mx = 0, my = 0, mz = 0;
+    for (let i = 1; i < n; i++) {
+      if (fixed[i]) continue;
+      let best = -1, bx = 0, by = 0, bz = 0;
+      for (let j = 0; j < i; j++) for (let k = 0; k < DIRECTIONS.length; k++) {
+        const d = DIRECTIONS[k], reach = r[j] + r[i] + gap;
+        const cx = x[j] + d.x * reach, cy = y[j] + d.y * reach, cz = z[j] + d.z * reach;
+        let clear = true;
+        for (let m = 0; m < i && clear; m++) {
+          const ex = cx - x[m], ey = cy - y[m], ez = cz - z[m], least = r[m] + r[i] + gap - 1e-9;
+          if (ex * ex + ey * ey + ez * ez < least * least) clear = false;
+        }
+        if (!clear) continue;
+        const score = Math.sqrt((cx - mx) ** 2 + (cy - my) ** 2 + (cz - mz) ** 2) + r[i];
+        if (best < 0 || score < best - 1e-9) { best = score; bx = cx; by = cy; bz = cz; }
+      }
+      x[i] = bx; y[i] = by; z[i] = bz;
+      if (i === 1 && !fixed[0]) {
+        // The middle of the ball that holds the first two, on the line between them.
+        const d = Math.hypot(x[1] - x[0], y[1] - y[0], z[1] - z[0]) || 1, along = (d + r[1] - r[0]) / 2;
+        mx = x[0] + (x[1] - x[0]) / d * along; my = y[0] + (y[1] - y[0]) / d * along; mz = z[0] + (z[1] - z[0]) / d * along;
+      }
+    }
+  } else order.forEach((unit, i) => {
+    if (fixed[i]) return;
+    // The i-th of n along a Fibonacci spiral, at the depth the ball's volume puts the i-th sphere, turned by the id.
+    const k = i + 0.5, h = 1 - 2 * k / n, ring = Math.sqrt(Math.max(0, 1 - h * h)), turn = i * GOLDEN_ANGLE, jitter = seededDirection(unit.id);
+    const dx = ring * Math.cos(turn) + 0.25 * jitter.x, dy = h + 0.25 * jitter.y, dz = ring * Math.sin(turn) + 0.25 * jitter.z;
+    const length = Math.hypot(dx, dy, dz) || 1, depth = start * Math.cbrt(k / n);
+    x[i] = dx / length * depth; y[i] = dy / length * depth; z[i] = dz / length * depth;
   });
-  layer(outer, 0.8, 1);
-  layer(inner, 0, 0.6);
-  return { seed, members: placed };
+  const mass = Float64Array.from(r, radius => radius ** 3);
+  // A sphere more than twice the median's radius is large, compared with every sphere; the grid's cell holds the rest.
+  const sortedRadii = Float64Array.from(r).sort(), median = sortedRadii[Math.floor((n - 1) / 2)];
+  const large: number[] = [];
+  let typical = 0;
+  for (let i = 0; i < n; i++) if (r[i] > 2 * median) large.push(i); else typical = Math.max(typical, r[i]);
+  const cellX = new Int32Array(n), cellY = new Int32Array(n), cellZ = new Int32Array(n), next = new Int32Array(n);
+  let head = new Int32Array(0);
+  /** Push apart each pair closer than their radii and the gap; the largest shortfall found. */
+  const separate = (): number => {
+    let worst = 0;
+    const push = (i: number, j: number): void => {
+      let dx = x[i] - x[j], dy = y[i] - y[j], dz = z[i] - z[j];
+      const least = r[i] + r[j] + gap, d2 = dx * dx + dy * dy + dz * dz;
+      if (d2 >= least * least) return;
+      let d = Math.sqrt(d2);
+      const short = least - d;
+      if (short > worst) worst = short;
+      if (d < 1e-9) { const unit = seededDirection(`${order[Math.min(i, j)].id}\0${order[Math.max(i, j)].id}`); dx = unit.x; dy = unit.y; dz = unit.z; d = 1; }
+      const share = fixed[i] ? 0 : fixed[j] ? 1 : mass[j] / (mass[i] + mass[j]);
+      const ux = dx / d * short, uy = dy / d * short, uz = dz / d * short;
+      x[i] += ux * share; y[i] += uy * share; z[i] += uz * share;
+      x[j] -= ux * (1 - share); y[j] -= uy * (1 - share); z[j] -= uz * (1 - share);
+    };
+    if (n <= PAIRWISE) {
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) push(i, j);
+      return worst;
+    }
+    // Through a dense grid whose cell holds two of the rest and the gap, each cell a list threaded through `next`; the
+    // large spheres compared with every sphere.
+    const cell = 2 * typical + gap;
+    let lowX = Infinity, lowY = Infinity, lowZ = Infinity, highX = -Infinity, highY = -Infinity, highZ = -Infinity;
+    for (let i = 0; i < n; i++) {
+      if (r[i] > 2 * median) continue;
+      const cx = cellX[i] = Math.floor(x[i] / cell), cy = cellY[i] = Math.floor(y[i] / cell), cz = cellZ[i] = Math.floor(z[i] / cell);
+      if (cx < lowX) lowX = cx; if (cx > highX) highX = cx; if (cy < lowY) lowY = cy; if (cy > highY) highY = cy; if (cz < lowZ) lowZ = cz; if (cz > highZ) highZ = cz;
+    }
+    const spanX = highX - lowX + 1, spanY = highY - lowY + 1, spanZ = highZ - lowZ + 1, cells = spanX * spanY * spanZ;
+    if (head.length < cells) head = new Int32Array(cells);
+    head.fill(-1, 0, cells);
+    for (let i = 0; i < n; i++) {
+      if (r[i] > 2 * median) continue;
+      const at = ((cellX[i] - lowX) * spanY + cellY[i] - lowY) * spanZ + cellZ[i] - lowZ;
+      next[i] = head[at]; head[at] = i;
+    }
+    for (let i = 0; i < n; i++) {
+      if (r[i] > 2 * median) continue;
+      for (let ox = -1; ox <= 1; ox++) {
+        const gx = cellX[i] + ox - lowX;
+        if (gx < 0 || gx >= spanX) continue;
+        for (let oy = -1; oy <= 1; oy++) {
+          const gy = cellY[i] + oy - lowY;
+          if (gy < 0 || gy >= spanY) continue;
+          for (let oz = -1; oz <= 1; oz++) {
+            const gz = cellZ[i] + oz - lowZ;
+            if (gz < 0 || gz >= spanZ) continue;
+            for (let j = head[(gx * spanY + gy) * spanZ + gz]; j >= 0; j = next[j]) if (i < j) push(i, j);
+          }
+        }
+      }
+    }
+    for (const i of large) for (let j = 0; j < n; j++) if (j !== i && (r[j] <= 2 * median || j > i)) push(i, j);
+    return worst;
+  };
+  /**
+   * The centre of a small ball holding every sphere, after Bădoiu and Clarkson: from `start`, step toward the farthest
+   * sphere's far side by a shrinking share, so that a ball of one large sphere and a few small ones is centred between
+   * them rather than on the large one. The origin, when a sphere is fixed there.
+   */
+  const centreOf = (start: Placed, steps: number): Placed => {
+    if (fixed.some(Boolean)) return { x: 0, y: 0, z: 0 };
+    let cx = start.x, cy = start.y, cz = start.z;
+    for (let step = 1; step <= steps; step++) {
+      let far = -1, reach = -Infinity;
+      for (let i = 0; i < n; i++) { const d = Math.sqrt((x[i] - cx) ** 2 + (y[i] - cy) ** 2 + (z[i] - cz) ** 2) + r[i]; if (d > reach) { reach = d; far = i; } }
+      const d = Math.sqrt((x[far] - cx) ** 2 + (y[far] - cy) ** 2 + (z[far] - cz) ** 2) || 1, k = (d + r[far]) / d;
+      const qx = cx + (x[far] - cx) * k, qy = cy + (y[far] - cy) * k, qz = cz + (z[far] - cz) * k;
+      cx += (qx - cx) / (step + 1); cy += (qy - cy) / (step + 1); cz += (qz - cz) / (step + 1);
+    }
+    return { x: cx, y: cy, z: cz };
+  };
+  let middle: Placed = { x: 0, y: 0, z: 0 };
+  if (n > 1) {
+    // Drawn toward the middle of the ball that holds them and pushed apart, so that the ball closes up; then apart
+    // alone, until no pair is short.
+    for (let pass = 0; pass < (n <= PAIRWISE ? 20 : 40); pass++) {
+      middle = centreOf(middle, 16);
+      const squeeze = 0.985;
+      for (let i = 0; i < n; i++) if (!fixed[i]) { x[i] = middle.x + (x[i] - middle.x) * squeeze; y[i] = middle.y + (y[i] - middle.y) * squeeze; z[i] = middle.z + (z[i] - middle.z) * squeeze; }
+      separate();
+    }
+    for (let pass = 0; pass < 150 && separate() > 1e-2 * Math.max(gap, 1e-3); pass++);
+    middle = centreOf(middle, 200);
+  }
+  const places = new Map<string, Placed>();
+  let extent = 0;
+  order.forEach((unit, i) => {
+    const at = { x: x[i] - middle.x, y: y[i] - middle.y, z: z[i] - middle.z };
+    places.set(unit.id, at);
+    extent = Math.max(extent, Math.hypot(at.x, at.y, at.z) + r[i]);
+  });
+  return { places, extent };
+}
+
+/** One sphere a body is drawn over: a file, or a bubble of the files of a directory below it, about the body's centre. */
+interface BodyNode {
+  id: string;
+  kind: "file" | "directory";
+  radius: number;
+  /** The files it holds, one for a file. */
+  files: number;
+  archetype?: string;
+  /** A bubble's units, about its centre. */
+  children: Array<{ node: BodyNode; x: number; y: number; z: number }>;
+}
+
+/** A file the tree is built over: its id, radius, kind and its own directory's names. */
+interface TreeFile {
+  id: string;
+  radius: number;
+  archetype?: string;
+  parts: readonly string[];
+}
+
+/** How many names two lists of directory names share from the start. */
+function sharedNames(a: readonly string[], b: readonly string[]): number {
+  let same = 0;
+  while (same < a.length && same < b.length && a[same] === b[same]) same++;
+  return same;
 }
 
 /**
- * The radius a packing of so many files takes: their volume, each a file with no symbols in a wrapper's padding, so that
- * every member's padded sphere fits and the hull over them is lumpy. A shell's body in the field is smaller
- * (`shellRadius`, the files without their padding), and the view draws the hull and births the files a pop releases
- * scaled down to fit it.
+ * The bubble of these files, from the leaves (2026-11-06, second round): the deepest directory holding them all, so that
+ * a chain of directories holding nothing but one subdirectory collapses into what it holds; its own files each a unit,
+ * each subdirectory of one file that file, and each other subdirectory a bubble of its own, built the same way and
+ * first; the units packed apart by the gap, and the bubble as large as holds them with the margin, so that the
+ * polyhedra a hull stands in for their padded spheres with stay within it. Its radius is the same whether it is a body
+ * of the picture or a bubble inside one.
  */
-export function packingRadius(files: number, tuning: Pick<ForceGraphTuning, "nodeSize">, padding: number): number {
-  return (tuning.nodeSize + padding) * Math.cbrt(Math.max(1, files));
+function bubbleOf(files: readonly TreeFile[], gaps: BodyGaps): BodyNode {
+  let depth = files[0].parts.length;
+  for (const file of files) depth = Math.min(depth, sharedNames(files[0].parts, file.parts));
+  const directory = files[0].parts.slice(0, depth).join("/");
+  const units: BodyNode[] = [], groups = new Map<string, TreeFile[]>();
+  for (const file of files) {
+    if (file.parts.length === depth) units.push({ id: file.id, kind: "file", radius: file.radius, files: 1, archetype: file.archetype, children: [] });
+    else (groups.get(file.parts[depth]) ?? groups.set(file.parts[depth], []).get(file.parts[depth])!).push(file);
+  }
+  for (const group of groups.values()) {
+    units.push(group.length === 1 ? { id: group[0].id, kind: "file", radius: group[0].radius, files: 1, archetype: group[0].archetype, children: [] } : bubbleOf(group, gaps));
+  }
+  return enclose(directory, units, gaps);
+}
+
+/** A bubble around these units, packed apart, its radius such that each unit's padded polyhedron stays within it. */
+function enclose(id: string, units: BodyNode[], gaps: BodyGaps, centre?: string): BodyNode {
+  const { places } = packBall(units.map(unit => ({ id: unit.id, radius: unit.radius })), gaps.gap, centre);
+  let radius = 0;
+  // In id order, so that what is built from the bubble does not depend on the order its files came in.
+  const children = [...units].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)).map(node => {
+    const at = places.get(node.id)!;
+    radius = Math.max(radius, Math.hypot(at.x, at.y, at.z) + node.radius + gaps.margin);
+    return { node, x: at.x, y: at.y, z: at.z };
+  });
+  return { id, kind: "directory", radius, files: units.reduce((sum, unit) => sum + unit.files, 0), children };
 }
 
 /**
- * A body's phantom packing of its files, as the tuning sizes them, each file its own sphere inside a packing of so many
- * padded files. A wrapped group packs its files about its seed. A directory shell packs its own files one by one and each
- * subdirectory as one ball of its files' volume, its files at its centre, so that the lumps of its skin, its outline,
- * are its subdirectories and a pop releases each subdirectory's shell where its ball stood, the balloons inside the
- * balloon.
+ * The most files a body draws within its skins (2026-11-06, second round): over it, the bubbles whose files would pass it
+ * are drawn veiled, their files unseen. Set by the cost of drawing spheres in the software renderer this repository's
+ * pictures are taken in; the label keeps the true count.
  */
-export function bodyShape<N extends SpatialNode & { codeRelativePath?: string }>(seed: string, files: readonly N[], tuning: ForceGraphTuning, padding: number,
+export const DRAWN_FILES = 1024;
+
+/**
+ * A body's packing of its files, as the tuning sizes them, built from the leaves (2026-11-06, second round). A directory
+ * shell is the bubble of its directory (`bubbleOf`): every file a sphere inside the innermost bubble that holds it. A
+ * wrapped group is one bubble of its files about its seed, which stands at the centre. The result names every file's
+ * place about the body's centre (`members`), the spheres the hull is taken over, the body's own units (`outline`), its
+ * radius, the margin the hull pads them by, and what its skin shows within it (`units`): every inner bubble and every
+ * file but a group's seed, opened breadth-first from the body itself while the files shown stay within `DRAWN_FILES`,
+ * a bubble that would pass it drawn veiled with nothing shown inside it. Nothing depends on the order the files are given in.
+ */
+export function bodyShape<N extends SpatialNode & { codeRelativePath?: string; archetype?: string }>(seed: string, files: readonly N[], tuning: ForceGraphTuning,
   centre?: string, directory?: string): GroupShape {
-  const sized = files.map(file => ({ id: file.id, radius: spatialNodeRadius(file, tuning), path: file.codeRelativePath ?? file.id }));
-  const body = packingRadius(files.length, tuning, padding);
-  if (directory === undefined) return phantomShape(seed, sized, body, padding, centre);
-  const units = new Map<string, typeof sized>();
-  for (const file of sized) {
-    const own = parentDirectory(file.path);
-    // A file of the directory itself is a unit alone, named apart from any subdirectory.
-    const unit = own === directory ? `\0${file.id}` : directoryAt(own, depthOf(directory) + 1);
-    (units.get(unit) ?? units.set(unit, []).get(unit)!).push(file);
+  const gaps = bodyGaps(tuning);
+  const tree: TreeFile[] = files.map(file => {
+    const own = parentDirectory(file.codeRelativePath ?? file.id);
+    return { id: file.id, radius: spatialNodeRadius(file, tuning), archetype: file.archetype, parts: own === "" ? [] : own.split("/") };
+  });
+  const root = directory === undefined || tree.length < 2
+    ? enclose(seed, tree.map(file => ({ id: file.id, kind: "file" as const, radius: file.radius, files: 1, archetype: file.archetype, children: [] })), gaps, centre)
+    : bubbleOf(tree, gaps);
+  const members: GroupMember[] = [], units: BodyUnit[] = [];
+  /** Every file's place, depth first. */
+  const place = (node: BodyNode, ox: number, oy: number, oz: number): void => {
+    for (const child of node.children) {
+      const x = ox + child.x, y = oy + child.y, z = oz + child.z;
+      if (child.node.kind === "file") members.push({ id: child.node.id, x, y, z, radius: child.node.radius });
+      else place(child.node, x, y, z);
+    }
+  };
+  place(root, 0, 0, 0);
+  // What the skin shows: opened breadth-first, a bubble's own files counted against the limit when it opens.
+  let shown = 0;
+  const queue: Array<{ node: BodyNode; x: number; y: number; z: number; depth: number }> = [{ node: root, x: 0, y: 0, z: 0, depth: 0 }];
+  const fileCount = (node: BodyNode): number => node.children.filter(child => child.node.kind === "file" && child.node.id !== centre).length;
+  let veiled = false;
+  if (fileCount(root) > DRAWN_FILES) veiled = true;
+  else shown += fileCount(root);
+  for (let at = 0; !veiled && at < queue.length; at++) {
+    const { node, x: ox, y: oy, z: oz, depth } = queue[at];
+    // The smaller bubbles open first, so that as many as can be are seen open.
+    for (const child of [...node.children].sort((a, b) => a.node.files - b.node.files || (a.node.id < b.node.id ? -1 : 1))) {
+      const x = ox + child.x, y = oy + child.y, z = oz + child.z;
+      if (child.node.kind === "file") {
+        if (child.node.id !== centre) units.push({ id: child.node.id, kind: "file", x, y, z, radius: child.node.radius, reach: child.node.radius + gaps.gap / 2, files: 1, archetype: child.node.archetype, depth, parent: node === root ? undefined : node.id });
+        continue;
+      }
+      const inner = fileCount(child.node), open = shown + inner <= DRAWN_FILES;
+      if (open) shown += inner;
+      units.push({ id: child.node.id, kind: "directory", x, y, z, radius: child.node.radius, reach: child.node.radius, files: child.node.files, depth, veiled: !open, parent: node === root ? undefined : node.id });
+      if (open) queue.push({ node: child.node, x, y, z, depth: depth + 1 });
+    }
   }
-  if (units.size < 2) return phantomShape(seed, sized, body, padding);
-  const unitRadius = (members: typeof sized): number => (members.length === 1 ? members[0].radius + padding : packingRadius(members.length, tuning, padding));
-  const places = phantomShape(seed, [...units].map(([id, members]) => ({ id, radius: unitRadius(members) })), body, 0);
-  const placed: GroupMember[] = [];
-  // The hull is taken over the units' balls, each padded as a member is, which hold every member's padded sphere.
-  const outline = places.members.map(unit => ({ ...unit, radius: units.get(unit.id)!.length === 1 ? units.get(unit.id)![0].radius : unit.radius - padding }));
-  for (const unit of places.members) {
-    const members = units.get(unit.id)!;
-    // A subdirectory's files stand at its centre: a pop shows only the shell's own files, and the subdirectory's shell is
-    // born where they stand, its own packing built when it is wrapped. Packing them here cost 71 ms of the T3 sample's
-    // largest shell, 13,095 files (measured 2026-11-05).
-    for (const member of members) placed.push({ id: member.id, x: unit.x, y: unit.y, z: unit.z, radius: member.radius });
-  }
-  return { seed, members: placed, outline };
+  // A body whose own files are too many to draw is one veiled bubble inside its skin, never an empty one.
+  if (veiled) units.push({ id: seed, kind: "directory", x: 0, y: 0, z: 0, radius: Math.max(0, root.radius - gaps.margin), reach: root.radius, files: root.files, depth: -1, veiled: true });
+  const outline = root.children.map(child => ({ id: child.node.id, x: child.x, y: child.y, z: child.z, radius: child.node.radius }));
+  return { seed, members, outline, units, radius: root.radius, margin: gaps.margin, veiled, files: root.files };
 }
 
 /** The pops of a picture after `directory` is popped open, or wrapped again with every pop beneath it. */

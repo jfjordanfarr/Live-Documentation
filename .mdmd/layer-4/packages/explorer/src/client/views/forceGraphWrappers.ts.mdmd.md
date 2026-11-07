@@ -4,13 +4,15 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphWrappers.ts
-- Generated At: 2026-11-06T02:11:47.947Z
+- Generated At: 2026-11-06T21:42:36.655Z
 
 ## Authored
 ### Purpose
 Builds the wrappers of the 3D Local Map's Group Wrappers experiment: which groups are wrapped, the padded convex hull of a wrapped body's members, a group's or a directory shell's, every wrapper merged into one geometry centred on the seeds' live places, the pick of the wrapper a ray meets first, and the pace of a wrapper's burst when it is popped open.
 
 ### Notes
+Since 2026-11-06 a `GroupShape` may carry the units a directory shell shows within its skin (`units`, `BodyUnit`), and `HULL_REACH` says how far a hull may reach beyond a padded sphere, so that a shell's packing keeps its hull within its true size ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md)).
+
 Built on 2026-11-05 at the owner's request to push forward the shrink-wrap of hidden groups, "a meshing optimization that would also be as fun as popping bubble wrap or balloons" ([Turn 10 of the November 5 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-10)), from their proposal of November 4 ([Turn 16 of the November 3 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-16--november-4)) and the [throwaway probe](../../../../../../../AI-Agent-Workspace/Probes/2026-11-04/cluster-wrap/README.md) that drew one padded convex hull as a skin, a cage and a cloud. The owner favoured the cloud for reducing visible line density and the skin for "that itch to click it and pop it open", and wondered about a combination ([Turn 17](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-17--november-4)); the cage's mesh lines were noise and are not offered. The view draws and picks what this module builds, behind the tuning's Group Wrappers choice, off by default ([the design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
 Only a disconnected group the scope shows by its seed alone, of two files or more, is wrapped (`wrappedSeeds` over `SpatialScope.groups`, with its files from `groupFiles`). No wire leaves such a group, so a wrapper can hide no route: the owner's "Dangerous and true" on a cloud concealing a connecting route ([Turn 18](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-18--november-4)). A ring's hidden neighbourhood inside a connected component is not a disjoint bag of files, and which wrapper would own a file two frontier spheres both reach was a design question the records left open, so experiment 1 wrapped none; experiment 2's directory shells (`forceGraphShells.ts`) hold such files by directory since 2026-11-05.
@@ -18,6 +20,8 @@ Only a disconnected group the scope shows by its seed alone, of two files or mor
 Until experiment 2 `groupShapeOf` eased each group alone with `easeSpatialLayout` to give its hidden shape; it was deleted on 2026-11-05, since that layout cost a second and a half before this repository's first picture, and a group is now drawn over the phantom packing `forceGraphShells.ts` builds. `wrapperHull` stands each member's sphere, padded by `wrapperPadding`, in for a 42-vertex geodesic polyhedron whose inscribed sphere is the padded sphere, and takes Three's quickhull over all of them, so the hull holds every padded sphere whole; normals are area-weighted means, so the hull shades as one smooth surface. A convex hull bridges a group's hollows: an outer envelope, not a concave shrink-wrap. `mergeWrappers` copies each seed's place (a caller may hand one object back for every seed: the first build drew every hull at the last seed's place) and writes each vertex's group and its seed-relative position in units of its hull's radius, so the cloud's pattern spans a small wrapper as it spans a large one; at world scale it drew a fine weave over this repository's largest group. Measurements are in [the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-05/group-wrappers/README.md).
 
 Since 2026-11-05 (experiment 2, [Turn 11 of the November 5 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)) the hull is also drawn over the directory shells inside the groups a picture shows in part. `wrapperHull` takes the farthest-reaching members first and adds more only while one might reach past the hull, and takes a body's `outline` in place of its members when it has one, so that a shell of thousands is wrapped over its subdirectories' balls.
+
+Since the second round of 2026-11-06 a `GroupShape` carries its body's radius, the margin its hull pads by, whether it is veiled and how many files it holds, and a `BodyUnit` its depth, its bubble and whether it is veiled ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -53,23 +57,39 @@ One member of a wrapped body: where it stands relative to the body's centre, and
 ##### `GroupShape` — Summary
 A wrapped body's members, each relative to its centre: a group's seed, or a shell's own place.
 
+#### `BodyUnit` {#symbol-bodyunit}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L65)
+- Extends: [`GroupMember`](#symbol-groupmember)
+
+##### `BodyUnit` — Summary
+One unit a body shows within its skin: a file, or a bubble of the files of a directory below it (2026-11-06).
+
 #### `wrapperPadding` {#symbol-wrapperpadding}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L51)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L82)
 
 ##### `wrapperPadding` — Summary
 The space a wrapper keeps around each member's sphere: one and a half times the radius of a file with no symbols.
 
 #### `WrapperHull (interface)` {#symbol-wrapperhull-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L56)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L87)
 
 ##### `WrapperHull (interface)` — Summary
 A group's hull, relative to its seed: vertex positions and smooth normals, its triangles, and the radius from the seed that holds it.
 
+#### `HULL_REACH` {#symbol-hull_reach}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L133)
+
+##### `HULL_REACH` — Summary
+How far beyond a padded sphere's radius its hull may reach, as a share of that radius: the polyhedron standing in for
+the sphere holds it whole, so its corners stand out by one over its inscribed sphere's radius (2026-11-06).
+
 #### `wrapperHull (function)` {#symbol-wrapperhull-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L105)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L142)
 - Returns: [`WrapperHull`](#symbol-wrapperhull-interface)
 - Parameters: `shape`: [`GroupShape`](#symbol-groupshape)
 
@@ -79,21 +99,21 @@ its triangles' outward normals, so that the hull shades as one smooth surface. T
 
 #### `WrapperRange` {#symbol-wrapperrange}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L164)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L201)
 
 ##### `WrapperRange` — Summary
 Where one group stands in the merged geometry.
 
 #### `WrapperGeometry` {#symbol-wrappergeometry}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L177)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L214)
 
 ##### `WrapperGeometry` — Summary
 Every wrapper in one geometry: world positions, normals, each vertex's group and its seed-relative position, and the triangles.
 
 #### `mergeWrappers` {#symbol-mergewrappers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L195)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L232)
 - Returns: [`WrapperHull`](#symbol-wrapperhull-interface), [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed), [`WrapperGeometry`](#symbol-wrappergeometry)
 
 ##### `mergeWrappers` — Summary
@@ -103,7 +123,7 @@ grows a group's hull about its seed, as a pop does (one when absent).
 
 #### `wrapperAt` {#symbol-wrapperat}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L233)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L270)
 - Parameters: `geometry`: [`WrapperGeometry`](#symbol-wrappergeometry); `origin`: [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed); `direction`: [`Placed`](./worldMap/layout.ts.mdmd.md#symbol-placed)
 
 ##### `wrapperAt` — Summary
@@ -112,7 +132,7 @@ either side, as the wrappers are drawn double-sided. `skip` leaves a group out, 
 
 #### `burstProgress` {#symbol-burstprogress}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L272)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L309)
 
 ##### `burstProgress` — Summary
 How far a wrapper has burst open `elapsed` milliseconds after its pop: from zero to one over `duration`, eased out, so
@@ -120,7 +140,7 @@ that it grows by a tenth and fades as the files fill it; at once under reduced m
 
 #### `BURST` {#symbol-burst}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L279)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphWrappers.ts#L316)
 
 ##### `BURST` — Summary
 How long a wrapper takes to burst open, and how much it grows as it does.

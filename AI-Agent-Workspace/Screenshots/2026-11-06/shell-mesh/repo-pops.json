@@ -1,0 +1,366 @@
+[
+ {
+  "level": 1,
+  "shell": "shell:packages/engine/src",
+  "files": 139,
+  "skinRadius": 75.16,
+  "body": 73.87292367023858,
+  "unitsShown": 4,
+  "matched": 4,
+  "allInside": true,
+  "worstOffFromShown": 0,
+  "movedMedian": 138.6,
+  "movedMax": 162,
+  "movedMedianOfRadius": 1.84,
+  "othersMovedMedian": 12.4,
+  "othersMovedMax": 175.9,
+  "restAfterPop": {
+   "seconds": 19.6,
+   "frames": 191
+  },
+  "units": [
+   {
+    "unit": "packages/engine/src/live-docs",
+    "kind": "directory",
+    "radius": 70.2,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 32.5
+   },
+   {
+    "unit": "packages/engine/src/tooling",
+    "kind": "directory",
+    "radius": 24.8,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 162
+   },
+   {
+    "unit": "packages/engine/src/config",
+    "kind": "directory",
+    "radius": 20.7,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 91.1
+   },
+   {
+    "unit": "packages/engine/src/languages",
+    "kind": "directory",
+    "radius": 32,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 138.6
+   }
+  ]
+ },
+ {
+  "level": 2,
+  "shell": "shell:packages/engine/src/live-docs",
+  "files": 119,
+  "skinRadius": 70.19,
+  "body": 70.2137296041795,
+  "unitsShown": 36,
+  "matched": 36,
+  "allInside": true,
+  "worstOffFromShown": 0,
+  "movedMedian": 224.3,
+  "movedMax": 339.2,
+  "movedMedianOfRadius": 3.2,
+  "othersMovedMedian": 56.3,
+  "othersMovedMax": 212.9,
+  "restAfterPop": {
+   "seconds": 45.5,
+   "frames": 386
+  },
+  "units": [
+   {
+    "unit": "packages/engine/src/live-docs/relatedDocs.ts",
+    "kind": "file",
+    "radius": 7.4,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 176.7
+   },
+   {
+    "unit": "packages/engine/src/live-docs/dependencies.ts",
+    "kind": "file",
+    "radius": 7.4,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 271.6
+   },
+   {
+    "unit": "packages/engine/src/live-docs/coreTypes.ts",
+    "kind": "file",
+    "radius": 11.4,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 244.8
+   },
+   {
+    "unit": "packages/engine/src/live-docs/graph.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 84.9
+   },
+   {
+    "unit": "packages/engine/src/live-docs/estateGraph.ts",
+    "kind": "file",
+    "radius": 6.5,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 152.3
+   },
+   {
+    "unit": "packages/engine/src/live-docs/document.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 151.4
+   },
+   {
+    "unit": "packages/engine/src/live-docs/openings.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 279.6
+   },
+   {
+    "unit": "packages/engine/src/live-docs/openings.ts",
+    "kind": "file",
+    "radius": 12.9,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 211
+   },
+   {
+    "unit": "packages/engine/src/live-docs/discovery.ts",
+    "kind": "file",
+    "radius": 7,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 206.1
+   },
+   {
+    "unit": "packages/engine/src/live-docs/graphFiles.ts",
+    "kind": "file",
+    "radius": 7,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 148.5
+   },
+   {
+    "unit": "packages/engine/src/live-docs/estateGraph.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 163.2
+   },
+   {
+    "unit": "packages/engine/src/live-docs/document.ts",
+    "kind": "file",
+    "radius": 11.6,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 111.3
+   },
+   {
+    "unit": "packages/engine/src/live-docs/coreConstants.ts",
+    "kind": "file",
+    "radius": 6.5,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 305.5
+   },
+   {
+    "unit": "packages/engine/src/live-docs/boardGraph.ts",
+    "kind": "file",
+    "radius": 9.6,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 93.3
+   },
+   {
+    "unit": "packages/engine/src/live-docs/sourceAnalysis.ts",
+    "kind": "file",
+    "radius": 5.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 300.7
+   },
+   {
+    "unit": "packages/engine/src/live-docs/discovery.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 231.9
+   },
+   {
+    "unit": "packages/engine/src/live-docs/jsDoc.ts",
+    "kind": "file",
+    "radius": 5.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 298.5
+   },
+   {
+    "unit": "packages/engine/src/live-docs/pathfind.ts",
+    "kind": "file",
+    "radius": 12.5,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 86.3
+   },
+   {
+    "unit": "packages/engine/src/live-docs/archetype.ts",
+    "kind": "file",
+    "radius": 7.4,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 176.1
+   },
+   {
+    "unit": "packages/engine/src/live-docs/coreUtils.ts",
+    "kind": "file",
+    "radius": 10.2,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 273.7
+   },
+   {
+    "unit": "packages/engine/src/live-docs/archetype.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 234.1
+   },
+   {
+    "unit": "packages/engine/src/live-docs/core.docstring.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 149.9
+   },
+   {
+    "unit": "packages/engine/src/live-docs/dependencies.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 339.2
+   },
+   {
+    "unit": "packages/engine/src/live-docs/board.ts",
+    "kind": "file",
+    "radius": 10.2,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 181.9
+   },
+   {
+    "unit": "packages/engine/src/live-docs/symbolExtraction.ts",
+    "kind": "file",
+    "radius": 5.9,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 306.5
+   },
+   {
+    "unit": "packages/engine/src/live-docs/gitUtils.ts",
+    "kind": "file",
+    "radius": 5.9,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 209.6
+   },
+   {
+    "unit": "packages/engine/src/live-docs/core.ts",
+    "kind": "file",
+    "radius": 12.5,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 224.3
+   },
+   {
+    "unit": "packages/engine/src/live-docs/relatedDocs.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 289.5
+   },
+   {
+    "unit": "packages/engine/src/live-docs/boardGraph.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 230.2
+   },
+   {
+    "unit": "packages/engine/src/live-docs/compose.ts",
+    "kind": "file",
+    "radius": 7.8,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 262.6
+   },
+   {
+    "unit": "packages/engine/src/live-docs/board.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 267.5
+   },
+   {
+    "unit": "packages/engine/src/live-docs/compose.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 222
+   },
+   {
+    "unit": "packages/engine/src/live-docs/pathfind.test.ts",
+    "kind": "file",
+    "radius": 4.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 186.1
+   },
+   {
+    "unit": "packages/engine/src/live-docs/heuristics",
+    "kind": "directory",
+    "radius": 18.8,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 270.4
+   },
+   {
+    "unit": "packages/engine/src/live-docs/history",
+    "kind": "directory",
+    "radius": 39.9,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 134.4
+   },
+   {
+    "unit": "packages/engine/src/live-docs/adapters",
+    "kind": "directory",
+    "radius": 52.8,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 258.1
+   }
+  ]
+ }
+]

@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.test.ts
-- Generated At: 2026-10-21T21:29:28.043Z
+- Generated At: 2026-11-06T18:06:28.992Z
 
 ## Authored
 ### Purpose
@@ -21,6 +21,8 @@ Since 2026-10-21 the tests run the motion (`easeSpatialLayout`, `motionForce`) a
 
 Since 2026-11-05 a case checks the field's clearance: none or a smaller one keeps a sphere's radius, a larger one pushes apart a pair that otherwise feels nothing ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)).
 
+Since 2026-11-06 two cases check a directory shell in the field: its contacts pushed back by their softness and its stiffness less, with no softness at all in a picture without shells, and its birth outside the placed mass on the side of the files it is wired to, clear of the farthest sphere that way, a file still born beside what holds it ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
@@ -33,8 +35,10 @@ _No public symbols detected_
 - [`layout-presets.applyLayoutPreset`](../layout-presets.ts.mdmd.md#symbol-applylayoutpreset)
 - [`local-storage.getDefaultTuning`](../persistence/local-storage.ts.mdmd.md#symbol-getdefaulttuning)
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
+- [`forceGraphLayout.COLLISION_STIFFNESS`](./forceGraphLayout.ts.mdmd.md#symbol-collision_stiffness)
 - [`forceGraphLayout.PlaceableNode`](./forceGraphLayout.ts.mdmd.md#symbol-placeablenode)
 - [`forceGraphLayout.QUIET_TICKS`](./forceGraphLayout.ts.mdmd.md#symbol-quiet_ticks)
+- [`forceGraphLayout.SHELL_SOFTNESS`](./forceGraphLayout.ts.mdmd.md#symbol-shell_softness)
 - [`forceGraphLayout.SpatialLink`](./forceGraphLayout.ts.mdmd.md#symbol-spatiallink)
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
 - [`forceGraphLayout.easeSpatialLayout`](./forceGraphLayout.ts.mdmd.md#symbol-easespatiallayout)

@@ -4,65 +4,69 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphShells.ts
-- Generated At: 2026-11-06T02:11:47.739Z
+- Generated At: 2026-11-06T21:42:36.354Z
 
 ## Authored
 ### Purpose
-Builds the directory shells of the 3D Local Map's Group Wrappers experiment: which hidden files each directory's shell holds at the Shell Depth, which a pop releases and which stay loose, the bundled wires between shown files and shells with their counts in both directions, the rings left over, and each wrapped body's phantom packing, the deterministic arrangement its skin is drawn over.
+Builds the directory shells of the 3D Local Map's Group Wrappers experiment: which hidden files each directory's shell holds at the Shell Depth, which a pop releases and which stay loose, the bundled wires between shown files and shells with their counts in both directions, the rings left over, and each wrapped body's phantom packing, the deterministic arrangement its skin is drawn over, with what a shell's skin shows within it.
 
 ### Notes
 Built on 2026-11-05 as experiment 2 of the shrink-wrap work, after the owner corrected experiment 1's rule that only a disconnected group may be wrapped: "The idea is to abstract a crapton of nodes into fewer ungulfing "nodes" (meshes that wrap those nodes)" ([Turn 11 of the November 5 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-05.1.record.md#turn-11)), and, of what to wrap, "obscuring nodes which aren't part of the hop chain in the current pin set" ([Turn 17 of the November 3 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-03.1.record.md#turn-17--november-4)). The rule here, directory shells as bodies, is one of several the owner may compare ([the design](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)); reach-depth cells from the frontier and communities of the reference graph are named there and not built.
 
-`partitionHidden` cuts each hidden file's directory to the depth, one deeper below a popped directory, and names a shell for the deepest directory holding all its files, so that a pop always opens onto more than one thing; a directory with fewer than two hidden files makes no shell, its file loose unless a pop opened its parent. Its work is memoised by directory: the T3 sample hides 19,398 files. `shellPicture` reads each link's ends once and bundles one wire per pair of ends, a shown pair being the picture's own wire and a pair inside one shell the shell's business. `shellRadius` (in `forceGraphLayout.ts`) sizes a shell's body by its files without their padding, the rule that settled fastest of three measured; `packingRadius` packs them in their padding, and the view draws the hull scaled to fit the body. `bodyShape` packs a shell's own files one by one and each subdirectory as one ball at whose centre its files stand, the balls being the hull's `outline`, so that the skin's lumps are subdirectories and a large shell is wrapped at the cost of its few subdirectories. Measurements and their disappointments are in [the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-05/directory-shells/README.md).
+`partitionHidden` cuts each hidden file's directory to the depth, one deeper below a popped directory, and names a shell for the deepest directory holding all its files, so that a pop always opens onto more than one thing; a directory with fewer than two hidden files makes no shell, its file loose unless a pop opened its parent. Its work is memoised by directory: the T3 sample hides 19,398 files. `shellPicture` reads each link's ends once and bundles one wire per pair of ends, a shown pair being the picture's own wire and a pair inside one shell the shell's business. `bodyShape` packs a shell's own files one by one and each subdirectory as one ball at whose centre its files stand, the balls being the hull's `outline`, so that the skin's lumps are subdirectories and a large shell is wrapped at the cost of its few subdirectories. Measurements and their disappointments are in [the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-05/directory-shells/README.md).
+
+Until 2026-11-06 a shell's body was its files' volume without their padding, the rule that settled fastest of three measured, and the view drew the hull scaled down to it while a pop released the files at the packing's larger size; the owner saw "a vast difference between the skinned mesh and what emerges from it on click" ([Turn 3 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)). Since then a shell's body is its true size (`shellRadius` in `forceGraphLayout.ts`, its files' padded spheres at the packing's density), `bodyShape` packs its units inside it, a subdirectory's ball its own shell's size, pulls the first `SHOWN_UNITS` apart (`relaxApart`) and keeps each so far inside that its hull's polyhedron stays within the body (`HULL_REACH`), and hands the view those units (`GroupShape.units`) for the skin to show within it, where a pop leaves them. `packingRadius` now sizes the wrapped islands' packings alone. The pictures and the numbers are in [the evidence of November 6](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md).
+
+Since the second round of 2026-11-06, at the owner's wish to see "a bundle of nodes engulfed rather than just one which suddenly appears to multiply into many" ([Turn 4 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-4)), `bodyShape` builds a body from the leaves: `bubbleOf` makes each directory a bubble of its own files and its subdirectories' bubbles, built first, a chain of single directories collapsed into what it holds and a lone subdirectory file that file; `packBall` packs a bubble's units apart by the collision's gap (`bodyGaps`), a greedy placement for a few units and a relaxation through a dense grid for many; and the body lists every file's place, the radius it keeps, and what its skin shows, every file and inner bubble, those past `DRAWN_FILES` veiled. A wrapped group is one bubble about its seed. `phantomShape`, `packingRadius`, `SHOWN_UNITS` and the relaxation inside a fixed size went with this; nesting makes large shells larger, which [the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md) measures.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols
 #### `shellId` {#symbol-shellid}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L30)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L34)
 
 ##### `shellId` — Summary
 The id of a directory's shell, outside the files' and the hubs' namespaces.
 
 #### `shellDirectory` {#symbol-shelldirectory}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L33)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L37)
 
 ##### `shellDirectory` — Summary
 The directory a shell stands for, or undefined for an id that is not a shell's.
 
 #### `depthOf` {#symbol-depthof}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L36)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L40)
 
 ##### `depthOf` — Summary
 How many directories deep a path is: none for the scan root, one for `packages`, two for `packages/explorer`.
 
 #### `directoryAt` {#symbol-directoryat}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L39)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L43)
 
 ##### `directoryAt` — Summary
 A directory cut to its first `depth` directories; a shallower directory is itself.
 
 #### `DirectoryShell` {#symbol-directoryshell}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L44)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L48)
 
 ##### `DirectoryShell` — Summary
 One shell: its id, its directory, and the hidden files it holds, in id order.
 
 #### `ShellPartition` {#symbol-shellpartition}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L54)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L58)
 
 ##### `ShellPartition` — Summary
 How the hidden files of a picture are held.
 
 #### `partitionHidden` {#symbol-partitionhidden}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L95)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L99)
 - Returns: [`ShellPartition`](#symbol-shellpartition)
 - Parameters: `hidden`: `ReadonlyArray`; `popped`: `ReadonlySet`
 
@@ -77,14 +81,14 @@ opens `src` and the chain above it. Files are given by id with their path.
 
 #### `ShellCandidate` {#symbol-shellcandidate}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L141)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L145)
 
 ##### `ShellCandidate` — Summary
 A file the shells read: its id and path, and its kind, since a document is never held.
 
 #### `ShellPicture (interface)` {#symbol-shellpicture-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L148)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L152)
 - Extends: [`ShellPartition`](#symbol-shellpartition)
 
 ##### `ShellPicture (interface)` — Summary
@@ -92,7 +96,7 @@ What a picture's shells are: the partition, the bundled wires and the counts its
 
 #### `ShellSource` {#symbol-shellsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L160)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L164)
 - Constraints: [`ShellCandidate`](#symbol-shellcandidate)
 
 ##### `ShellSource` — Summary
@@ -100,7 +104,7 @@ What the shells of a picture are read from.
 
 #### `shellPicture (function)` {#symbol-shellpicture-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L183)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L187)
 - Returns: [`ShellPicture`](#symbol-shellpicture-interface)
 - Parameters: `source`: [`ShellSource`](#symbol-shellsource)
 - Constraints: [`ShellCandidate`](#symbol-shellcandidate)
@@ -111,55 +115,61 @@ reference between a shown or released file and a held file, or between files of 
 pair of ends, and the counts left for the rings: a file whose hidden neighbours are all held needs no ring, since the
 shell says it.
 
-#### `OUTER_LAYER` {#symbol-outer_layer}
+#### `BodyGaps (interface)` {#symbol-bodygaps-interface}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L230)
+
+##### `BodyGaps (interface)` — Summary
+The room a body keeps between two of its units' surfaces, and between its units and its skin, in a tuning's units.
+
+#### `bodyGaps (function)` {#symbol-bodygaps-function}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L238)
+- Returns: [`BodyGaps`](#symbol-bodygaps-interface)
+
+##### `bodyGaps (function)` — Summary
+A body's gaps for a tuning: the collision's gap between units, half of it to the skin (2026-11-06, second round).
+
+#### `packBall` {#symbol-packball}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L265)
+
+##### `packBall` — Summary
+Pack spheres into a ball, apart by `gap` between their surfaces, about the origin (2026-11-06, second round): they start
+on a Fibonacci ball, the largest nearest the centre, and are pulled toward the centre and pushed apart in turn, the
+lighter of two moving the more, then only pushed apart until no two are closer than the gap by more than a hundredth
+of it; one named `centre` stands at the origin throughout, as a wrapped group's seed does. A ball of mixed spheres
+settles at about the density of spheres poured into a jar. The places depend only on the spheres given, not on their
+order. Returns each sphere's place and the radius from the origin that holds them all.
+
+#### `DRAWN_FILES` {#symbol-drawn_files}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L226)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L481)
 
-##### `OUTER_LAYER` — Summary
-How many of a body's members stand in its outer layer, the skin's lumps, when it has more.
-
-#### `phantomShape` {#symbol-phantomshape}
-- Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L237)
-- Returns: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
-- Parameters: `members`: `ReadonlyArray`
-
-##### `phantomShape` — Summary
-Where a body's members stand while it is wrapped: a phantom packing, never a layout. Up to `OUTER_LAYER` members, the
-first by a hash of their ids, stand in an outer layer near the skin, each at a direction of a Fibonacci sphere turned
-toward one seeded by its id and at a depth the id jitters, so that the hull over them is lumpy rather than a gem; the
-rest fill the inner part of the body the same way, so that the hull is shaped by the few on its outside and a large
-body costs no more to wrap than a small one. Each member stands so far inside that its sphere, padded, stays within
-`bodyRadius`, at the centre when it cannot. A member named `centre` stands at the centre itself, as a wrapped group's
-seed does. Positions are relative to the centre, and they and the members' order, by the hash, do not depend on the order given.
-
-#### `packingRadius` {#symbol-packingradius}
-- Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L271)
-
-##### `packingRadius` — Summary
-The radius a packing of so many files takes: their volume, each a file with no symbols in a wrapper's padding, so that
-every member's padded sphere fits and the hull over them is lumpy. A shell's body in the field is smaller
-(`shellRadius`, the files without their padding), and the view draws the hull and births the files a pop releases
-scaled down to fit it.
+##### `DRAWN_FILES` — Summary
+The most files a body draws within its skins (2026-11-06, second round): over it, the bubbles whose files would pass it
+are drawn veiled, their files unseen. Set by the cost of drawing spheres in the software renderer this repository's
+pictures are taken in; the label keeps the true count.
 
 #### `bodyShape` {#symbol-bodyshape}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L282)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L492)
 - Returns: [`GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
 
 ##### `bodyShape` — Summary
-A body's phantom packing of its files, as the tuning sizes them, each file its own sphere inside a packing of so many
-padded files. A wrapped group packs its files about its seed. A directory shell packs its own files one by one and each
-subdirectory as one ball of its files' volume, its files at its centre, so that the lumps of its skin, its outline,
-are its subdirectories and a pop releases each subdirectory's shell where its ball stood, the balloons inside the
-balloon.
+A body's packing of its files, as the tuning sizes them, built from the leaves (2026-11-06, second round). A directory
+shell is the bubble of its directory (`bubbleOf`): every file a sphere inside the innermost bubble that holds it. A
+wrapped group is one bubble of its files about its seed, which stands at the centre. The result names every file's
+place about the body's centre (`members`), the spheres the hull is taken over, the body's own units (`outline`), its
+radius, the margin the hull pads them by, and what its skin shows within it (`units`): every inner bubble and every
+file but a group's seed, opened breadth-first from the body itself while the files shown stay within `DRAWN_FILES`,
+a bubble that would pass it drawn veiled with nothing shown inside it. Nothing depends on the order the files are given in.
 
 #### `poppedAfter` {#symbol-poppedafter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L311)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L541)
 - Parameters: `popped`: `ReadonlySet`
 
 ##### `poppedAfter` — Summary
@@ -170,9 +180,11 @@ The pops of a picture after `directory` is popped open, or wrapped again with ev
 ### Dependencies
 - [`types.ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning) (type-only)
 - [`fileConnections.FileConnection`](./fileConnections.ts.mdmd.md#symbol-fileconnection) (type-only)
+- [`forceGraphLayout.Placed`](./forceGraphLayout.ts.mdmd.md#symbol-placed)
 - [`forceGraphLayout.SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode)
 - [`forceGraphLayout.seededDirection`](./forceGraphLayout.ts.mdmd.md#symbol-seededdirection)
 - [`forceGraphLayout.spatialNodeRadius`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnoderadius)
+- [`forceGraphWrappers.BodyUnit`](./forceGraphWrappers.ts.mdmd.md#symbol-bodyunit) (type-only)
 - [`forceGraphWrappers.GroupMember`](./forceGraphWrappers.ts.mdmd.md#symbol-groupmember) (type-only)
 - [`forceGraphWrappers.GroupShape`](./forceGraphWrappers.ts.mdmd.md#symbol-groupshape) (type-only)
 - [`directory-bands.parentDirectory`](./localView/directory-bands.ts.mdmd.md#symbol-parentdirectory)

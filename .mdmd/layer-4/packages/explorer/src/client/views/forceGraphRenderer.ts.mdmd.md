@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphRenderer.ts
-- Generated At: 2026-11-06T02:11:47.571Z
+- Generated At: 2026-11-06T18:06:29.303Z
 
 ## Authored
 ### Purpose
@@ -21,7 +21,7 @@ The node/line colour, visibility, radius and width accessors describe appearance
 
 Since 2026-11-05 `nodeAt` returns a wrapped group's seed when the ray meets the group's wrapper before any sphere, so that hover, click, the press-and-hold menu and drag treat a wrapper as its seed; `wrappers` and `wrapperStyle` pass the [Group Wrappers experiment](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)'s geometry and style to the buffers.
 
-Since 2026-11-05 `wrappers` takes the place of a wrapper whose node has left the picture, so that a popped directory shell bursts where it stood.
+Since 2026-11-05 `wrappers` takes the place of a wrapper whose node has left the picture, so that a popped directory shell bursts where it stood; since 2026-11-06 it also takes what each shell's skin shows within it.
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -54,6 +54,7 @@ A direct Three renderer with a bounded number of scene objects, irrespective of 
 - [`forceGraphBatches.SpatialDrawLink`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawlink)
 - [`forceGraphBatches.SpatialDrawStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialdrawstyle)
 - [`forceGraphBatches.SpatialWrapperStyle`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperstyle)
+- [`forceGraphBatches.SpatialWrapperUnit`](./forceGraphBatches.ts.mdmd.md#symbol-spatialwrapperunit)
 - [`forceGraphBatches.createSpatialBuffers`](./forceGraphBatches.ts.mdmd.md#symbol-createspatialbuffers)
 - [`forceGraphBatches.drawSpatialGraphOnChange`](./forceGraphBatches.ts.mdmd.md#symbol-drawspatialgraphonchange)
 - [`forceGraphCamera.CameraPoint`](./forceGraphCamera.ts.mdmd.md#symbol-camerapoint) (type-only)

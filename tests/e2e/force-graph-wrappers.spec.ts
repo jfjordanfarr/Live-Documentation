@@ -92,6 +92,34 @@ test("the skin wraps every group of two files or more, in place of its seed's ri
   for (const node of seeds.filter(node => wrapped.includes(node.id))) expect(node.ring, `${node.id} is wrapped, not ringed`).toBe(false);
 });
 
+test("the skin shows within each wrapped group every file it holds about its seed, and is drawn at their size", async ({ page }) => {
+  // The owner on November 6: "I strongly prefer when I can see a bundle of nodes engulfed rather than just one which
+  // suddenly appears to multiply into many" (second round): a group's skin is no longer fitted down to its seed's room.
+  const { wrapped, sizes } = await skinArchipelago(page);
+  await expect.poll(async () => (await page.evaluate(() => {
+    let count = 0;
+    (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: { name: string; userData: Record<string, unknown> }) => void): void } } }).renderedGraph.scene.traverse(object => {
+      if (object.name === "Spatial shell files") count = (object.userData.spatialUnits as unknown[]).length;
+    });
+    return count;
+  })), { timeout: 10_000 }).toBeGreaterThan(0);
+  const { units, ranges } = await page.evaluate(() => {
+    const found = { units: [] as Array<{ seed: string; kind: string; x: number; y: number; z: number; radius: number }>, ranges: [] as Array<{ seed: string; x: number; y: number; z: number; radius: number }> };
+    (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: { name: string; userData: Record<string, unknown> }) => void): void } } }).renderedGraph.scene.traverse(object => {
+      if (object.name === "Spatial shell files") found.units.push(...object.userData.spatialUnits as typeof found.units);
+      if (object.name === "Spatial wrappers") found.ranges = (object.userData.spatialWrappers as { ranges: typeof found.ranges }).ranges;
+    });
+    return found;
+  });
+  for (const seed of wrapped) {
+    // Its files and its seed, drawn as a sphere of its own at the centre: as many as the group holds.
+    const files = units.filter(unit => unit.seed === seed);
+    expect(files.length + 1, seed).toBe(sizes.get(seed));
+    const skin = ranges.find(range => range.seed === seed)!;
+    for (const unit of files) expect(Math.hypot(unit.x - skin.x, unit.y - skin.y, unit.z - skin.z) + unit.radius, unit.seed).toBeLessThanOrEqual(skin.radius + 1e-3);
+  }
+});
+
 test("hovering a wrapper names its group; a click pops it open into its files, and releasing the pin wraps it again", async ({ page }) => {
   const { wrapped, sizes } = await skinArchipelago(page);
   // The camera follows the first unfold, so the pointer aims at a picture at rest.
@@ -116,6 +144,9 @@ test("hovering a wrapper names its group; a click pops it open into its files, a
   // groups' wrappers are as they were.
   expect((await drawnWrappers(page)).seeds.filter(seed => !seed.startsWith("shell:"))).toEqual(wrapped.filter(id => id !== chosen));
   await expect.poll(async () => (await renderedNodes(page)).length, { message: "the group grows by its hops", timeout: 5_000 }).toBeGreaterThan(seeds.length);
+  // The group's files enter where its skin showed them (2026-11-06, second round), under the pointer that popped it: the
+  // pointer leaves, so that its hover of one of them takes no part in the release.
+  await page.mouse.move(2, 2);
   // Releasing the pin with Enter on the seed's name, which stays named while pinned, wraps the group again.
   // The name shown, the focus label or the name label: with directory shells beside it the two need not both be placed.
   const name = page.locator(`.force-graph-label[data-node-id="${chosen}"]:not([hidden]), .force-graph-focus[data-node-id="${chosen}"]:not([hidden])`).first();

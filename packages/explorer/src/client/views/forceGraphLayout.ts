@@ -16,6 +16,8 @@ export interface SpatialNode extends SimulationNodeDatum {
   directoryPath?: string;
   /** A directory shell's count of the hidden files it holds (2026-11-05, `forceGraphShells.ts`): its size is theirs. */
   shellFiles?: number;
+  /** A directory shell's radius, `shellRadius` of the files it holds as the tuning sizes them (2026-11-06). */
+  shellBody?: number;
 }
 
 /**
@@ -47,21 +49,65 @@ export function spatialNodeValue(node: SpatialNode, tuning: ForceGraphTuning): n
 }
 
 /**
- * A directory shell's radius (2026-11-05): the volume of its files, each a file with no symbols, so that the radius grows
- * with the cube root of the count from that file's. Volumes add, so that a shell's subdirectories' bodies fit inside its
- * own and a pop releases balloons no larger than the balloon that held them. Two rules were measured and replaced on this
- * repository's picture pinned on `forceGraphView.ts`, which falls still in 334 frames with no shells: that radius times
- * the cube root plus two and a half of it, room for the skin, took 475 frames, and its children were larger together than
- * itself, so that the estate's pop of its portal took 16 s to fall still; two and a half times this radius, the files in
- * their padding, took 924. This one takes 332: the larger the bodies, the longer the picture takes to rest.
+ * The radius of so many files' volume, each a file with no symbols: the cube root of the count times that file's radius.
+ * A wrapped island's seed keeps this much room beside a wrapper's padding (2026-11-05).
  */
-export function shellRadius(files: number, tuning: Pick<ForceGraphTuning, "nodeSize">): number {
+export function filesRadius(files: number, tuning: Pick<ForceGraphTuning, "nodeSize">): number {
   return tuning.nodeSize * Math.cbrt(Math.max(1, files));
 }
 
-/** Actual sphere radius, shared by rendering, collision clearance and the command's report; a shell's is its body's. */
+/** The room a shell's packing keeps around each of its files' spheres, in radii of a file with no symbols: a wrapper's padding (`wrapperPadding`). */
+const SHELL_PADDING = 1.5;
+
+/**
+ * The share of a shell's volume its files' padded spheres fill (2026-11-06): about as densely as spheres of mixed sizes
+ * pulled apart inside a ball settle, so that a shell's own files fit within it apart. A shell's subdirectories' balloons,
+ * each this rule's size, fill it whole together and overlap a little where they are all it holds.
+ */
+export const SHELL_PACKING = 0.6;
+
+/**
+ * A directory shell's radius from its files' spheres' radii, its true size (2026-11-06): the volume of its files, each
+ * sphere in a wrapper's padding, at the packing's density. It is the size its skin is drawn at and the room in which a
+ * pop releases its files and its subdirectories' shells, each subdirectory's shell its own files' radius by the same
+ * rule. The owner found the shells of November 5 drawn far smaller than what burst out of them, "a vast difference
+ * between the skinned mesh and what emerges from it on click" (Turn 3 of the November 6 record, linked from this file's
+ * Live Doc): their bodies were the files' volume alone, with no padding and no symbols, measured to rest faster on this repository's
+ * picture pinned on `forceGraphView.ts` (924 frames at two and a half times that size against 334 with no shells). The
+ * cost was not the size itself but the stiffness of a large body's contacts, which held every tick of the picture to two
+ * substeps; a shell is now soft (`SHELL_SOFTNESS`) and born outside the mass (`placeNewSpheres`).
+ */
+export function shellRadiusOf(radii: readonly number[], tuning: Pick<ForceGraphTuning, "nodeSize">): number {
+  const padding = SHELL_PADDING * tuning.nodeSize;
+  let volume = 0;
+  // Summed smallest first, so that the radius is the same to the last digit whatever order the files come in.
+  for (const radius of [...radii].sort((a, b) => a - b)) volume += (radius + padding) ** 3;
+  return Math.cbrt(Math.max(volume, (tuning.nodeSize + padding) ** 3) / SHELL_PACKING);
+}
+
+/** A directory shell's radius, its true size, from its files as the tuning sizes them (`shellRadiusOf`). */
+export function shellRadius(files: readonly SpatialNode[], tuning: ForceGraphTuning): number {
+  return shellRadiusOf(files.map(file => spatialNodeRadius(file, tuning)), tuning);
+}
+
+/**
+ * How hard a shell pushes back on a sphere closer than their clearance, as a share of what two files do (2026-11-06): a
+ * balloon gives. The motion's tick is one step while the stiffest sphere's stiffness stays under eight; a contact adds
+ * twice the collision's stiffness, six, so that one light contact on a shell wired by springs worth more than two split
+ * every tick of this repository's pinned picture in two (560 evaluations of the field to rest against 326 with no shells,
+ * in the headless twin). At a third, a contact adds two, 383; but once the Live Docs were regenerated, three files rested
+ * against `engine/src` and took it past eight again (650 against 314). At a sixth, a contact adds one, and a shell wired
+ * like `engine/src` may rest against six (355 and 430 evaluations, before and after). The cost: a hub file pressed
+ * between a shell and the mass sinks through the collision's five-unit gap and up to a unit past the skin.
+ */
+export const SHELL_SOFTNESS = 1 / 6;
+
+/**
+ * Actual sphere radius, shared by rendering, collision clearance and the command's report; a shell's is its body's, or,
+ * told only how many files it holds, that of so many files with no symbols.
+ */
 export function spatialNodeRadius(node: SpatialNode, tuning: ForceGraphTuning): number {
-  if (node.shellFiles !== undefined) return shellRadius(node.shellFiles, tuning);
+  if (node.shellFiles !== undefined) return node.shellBody ?? shellRadiusOf(Array.from({ length: Math.max(1, node.shellFiles) }, () => tuning.nodeSize), tuning);
   return tuning.nodeSize * Math.cbrt(spatialNodeValue(node, tuning));
 }
 
@@ -143,7 +189,8 @@ function massRadiusOf<N extends PlaceableNode>(nodes: readonly N[], positionOf: 
  * mass, at most some hundred units out, and it spent the settle pushing its way through what had already settled, so that
  * the owner could not find the islands and orphans ("Nice little stars -- or maybe a kuiper belt -- of orphans"). An
  * island's first sphere is born there and its members are placed beside it as they enter, so the island is born outside
- * as a whole. The nodes are not changed; the result is the start of each sphere placed here.
+ * as a whole. A directory shell is born outside the mass on the side of what it is wired to (2026-11-06, below). The
+ * nodes are not changed; the result is the start of each sphere placed here.
  */
 export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout): Map<string, Placed> {
   const starts = new Map<string, Placed>();
@@ -172,9 +219,28 @@ export function placeNewSpheres<N extends PlaceableNode>(nodes: readonly N[], li
     const beside = (neighbours.get(node.id) ?? []).filter(({ node: other }) => positionOf(other));
     if (!beside.length) return undefined;
     const anchor = centroid(beside.map(({ node: other }) => positionOf(other)!));
+    if (node.shellFiles !== undefined) return outside(node, anchor);
     const reach = beside.reduce((sum, { node: other, count }) => sum + spatialLinkDistance({ source: node, target: other, count }, tuning), 0) / beside.length;
     const direction = seededDirection(node.id);
     return { x: anchor.x + reach * direction.x, y: anchor.y + reach * direction.y, z: anchor.z + reach * direction.z };
+  };
+  /**
+   * Where a directory shell starts (2026-11-06): outside the placed mass on the side of the files it is wired to, its
+   * body just clear of the farthest placed sphere that way from the mass's centroid, toward the centroid of its placed
+   * neighbours. Born beside them as a file is, in a seeded direction, a shell as large as what it holds stood inside the
+   * mass and spent the settle shoving its way out: on the estate's picture pinned on its payment service, at a Shell
+   * Depth of one, 315 evaluations of the field to rest against 223 born outside (the headless twin).
+   */
+  const outside = (node: N, anchor: Placed): Placed => {
+    const placed = nodes.flatMap(other => { const at = other !== node ? positionOf(other) : undefined; return at ? [{ other, at }] : []; });
+    const centre = centroid(placed.map(({ at }) => at));
+    let dx = anchor.x - centre.x, dy = anchor.y - centre.y, dz = anchor.z - centre.z;
+    const length = Math.hypot(dx, dy, dz);
+    if (length > 1e-9) { dx /= length; dy /= length; dz /= length; } else ({ x: dx, y: dy, z: dz } = seededDirection(node.id));
+    let far = 0;
+    for (const { other, at } of placed) far = Math.max(far, (at.x - centre.x) * dx + (at.y - centre.y) * dy + (at.z - centre.z) * dz + spatialNodeRadius(other, tuning));
+    const reach = far + tuning.collisionGap + spatialNodeRadius(node, tuning);
+    return { x: centre.x + reach * dx, y: centre.y + reach * dy, z: centre.z + reach * dz };
   };
   const waiting = nodes.filter(node => !isPlaced(node));
   const besidePlaced = (): void => {
@@ -253,6 +319,7 @@ export const UNFOLDED_FRACTION = 1e-3;
  * strength ruled above, and the tuning's repulsion with its reach and approximation, gravity, collision gap and tether.
  * Links whose ends are not among the nodes are left out, as D3 would refuse them. A sphere's radius in the field is its
  * own, or the larger that `clearance` asks for it: a wrapped group's seed keeps the room its wrapper takes (2026-11-05).
+ * A directory shell's contacts are soft (`SHELL_SOFTNESS`, 2026-11-06); a picture without shells is the field it was.
  */
 export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links: readonly SpatialLink<N>[], tuning: ForceGraphTuning, layout: SpatialLayout,
   clearance?: (node: N) => number | undefined): SpatialField {
@@ -272,9 +339,11 @@ export function spatialFieldOf<N extends SpatialNode>(nodes: readonly N[], links
     a: index.get((link.source as N).id)!, b: index.get((link.target as N).id)!,
     rest: spatialLinkDistance(link, tuning), strength: strengthOf(link, i, pulling) * springShare(link, tuning)
   }));
+  const soft = nodes.some(node => node.shellFiles !== undefined);
   return new SpatialField(Float64Array.from(nodes.map(node => Math.max(spatialNodeRadius(node, tuning), clearance?.(node) ?? 0))), springs,
     { charge: tuning.charge, chargeRange: tuning.chargeRange, approximation: tuning.approximation, gravity: tuning.gravity, componentSeparation: tuning.componentSeparation, collisionGap: tuning.collisionGap, collisionStiffness: COLLISION_STIFFNESS, tether: tuning.tether },
-    (low, high) => seededDirection(`${nodes[low].id}\0${nodes[high].id}`));
+    (low, high) => seededDirection(`${nodes[low].id}\0${nodes[high].id}`),
+    soft ? Float64Array.from(nodes.map(node => node.shellFiles !== undefined ? SHELL_SOFTNESS : 1)) : undefined);
 }
 
 /**

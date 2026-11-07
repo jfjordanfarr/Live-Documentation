@@ -99,6 +99,28 @@ describe("the 3D picture's field", () => {
     expect(force[5]).toBeCloseTo(-force[2], 9);
   });
 
+  it("softens a sphere's contacts by its softness, the softer of a pair's, in the energy, the forces and the stiffness, summed exactly or through the tree (2026-11-06)", () => {
+    const { x } = scene(), radii = Float64Array.from([4, 6, 5, 4, 8]), softness = Float64Array.from([1, 1, 1, 0.25, 1]);
+    for (const approximation of [0, 0.3]) {
+      const settings = { ...SETTINGS, approximation }, hard = new SpatialField(radii, [], settings, UP), soft = new SpatialField(radii, [], settings, UP, softness);
+      const one = new SpatialField(radii, [], settings, UP, new Float64Array(5).fill(1));
+      // Softness one everywhere is the field it was, to the last digit.
+      const a = new Float64Array(15), b = new Float64Array(15);
+      expect(one.forces(x, a)).toEqual(hard.forces(x, b));
+      expect(Array.from(a)).toEqual(Array.from(b));
+      // Spheres 3 and 4 overlap: the soft one's contact pushes a quarter as hard, with a quarter of its energy.
+      const repulsionOnly = new SpatialField(radii, [], { ...settings, collisionStiffness: 0 }, UP);
+      const [base, firm, gentle] = [repulsionOnly, hard, soft].map(field => { const out = new Float64Array(15); return { out, reading: field.forces(x, out) }; });
+      const contact = (of: typeof firm) => Math.hypot(of.out[12] - base.out[12], of.out[13] - base.out[13], of.out[14] - base.out[14]);
+      expect(contact(firm)).toBeGreaterThan(0);
+      expect(contact(gentle)).toBeCloseTo(contact(firm) / 4, 9);
+      expect(gentle.reading.stiffness).toBeLessThan(firm.reading.stiffness);
+      expect(energyAt(soft, x) - energyAt(repulsionOnly, x)).toBeCloseTo((energyAt(hard, x) - energyAt(repulsionOnly, x)) / 4, 9);
+    }
+    expect(() => new SpatialField(radii, [], SETTINGS, UP, Float64Array.from([1, 1, 1, 0, 1]))).toThrow("softness");
+    expect(() => new SpatialField(radii, [], SETTINGS, UP, Float64Array.from([1, 1]))).toThrow("softness");
+  });
+
   it("refuses constants it cannot honour", () => {
     expect(() => new SpatialField(Float64Array.from([0]), [], SETTINGS, UP)).toThrow("positive radius");
     expect(() => new SpatialField(Float64Array.from([1]), [], { ...SETTINGS, gravity: -1 }, UP)).toThrow("nonnegative");

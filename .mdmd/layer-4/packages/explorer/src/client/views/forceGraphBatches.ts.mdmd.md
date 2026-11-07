@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphBatches.ts
-- Generated At: 2026-11-06T02:11:47.251Z
+- Generated At: 2026-11-06T21:42:35.674Z
 
 ## Authored
 ### Purpose
@@ -25,7 +25,11 @@ The draw guard compares explicit picture/appearance revisions with the camera, o
 
 Since 2026-11-05 the buffers hold one more scene object, the mesh of every [wrapped group](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences), drawn after the rings with no depth writes, double-sided, its vertices written each draw from the seeds' places, farthest group first, by `mergeWrappers`. One shader gives the three looks by uniforms (Skin, Cloud, Cloud with a rim for the hovered group); it has no time in it, so a still picture still draws once. `pickWrapper` finds the nearest wrapper a ray meets, leaving out one bursting open, and `pickNodeHit` gives a sphere's hit distance so the renderer can tell which is in front. While the choice is off and nothing is drawn, the wrappers' update writes nothing.
 
+Since 2026-11-06 the buffers hold two more scene objects, what the directory shells' skins show within them under the Skin look: a shell's own files as lit spheres in their colours, drawn with the spheres at the size a sphere draws but never past the room each keeps, and its subdirectories' balloons in the skin's own look (`wrapperShader`, instanced), drawn before the skins with no depth writes; a shell whose hull is not built yet is drawn as one balloon of its body in any look but Off. Their records (`spatialUnits`) and the skins' centres and radii (`ranges`) are kept on the meshes for the browser specs ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md)).
+
 Since 2026-11-05 a style may say a node is not drawn as a sphere (`sphere`): a directory shell is drawn as its wrapper alone, its wires ending at its body's unresisted radius, and it is picked by its wrapper. `setWrappers` takes the place of a wrapper whose node has left the picture, a shell bursting after its pop.
+
+Since the second round of 2026-11-06 the units are drawn for every wrapped body, a group's too, at its skin or, before its hull is built, at its node; an inner bubble is a faint rim and a veiled one a milky fill (`spatialVeil`), and each unit's record carries its bubble and depth ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-leaves/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -67,9 +71,18 @@ How the wrapped groups are drawn this frame (2026-11-05): each wrapper's opacity
 bursting open; the seed under the pointer or keyboard focus, whose wrapper the cloud with a rim outlines; and the
 seeds bursting open, drawn but no longer picked.
 
+#### `SpatialWrapperUnit` {#symbol-spatialwrapperunit}
+- Type: interface
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L69)
+
+##### `SpatialWrapperUnit` — Summary
+One unit a wrapper shows within its skin (2026-11-06), relative to its centre: a file, drawn as a sphere in its colour
+at the size a sphere draws, never past the room it keeps, or a subdirectory's balloon, drawn at its body's size in the
+skin's look.
+
 #### `createSpatialBuffers` {#symbol-createspatialbuffers}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L65)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L86)
 - Parameters: `scene`: [`Scene`](./localView/branch-scene.ts.mdmd.md#symbol-scene); `style`: [`SpatialDrawStyle`](#symbol-spatialdrawstyle)
 - Constraints: [`SpatialNode`](./forceGraphLayout.ts.mdmd.md#symbol-spatialnode), [`SpatialDrawLink`](#symbol-spatialdrawlink)
 
@@ -78,7 +91,7 @@ Pack documented nodes and wires straight into three instance buffers; camera cha
 
 #### `drawSpatialGraphOnChange` {#symbol-drawspatialgraphonchange}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L402)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L509)
 - Parameters: `camera`: [`Camera`](./worldMap/projection.ts.mdmd.md#symbol-camera); `renderer`: `WebGLRenderer`
 
 ##### `drawSpatialGraphOnChange` — Summary
@@ -86,7 +99,7 @@ Draw when the camera or the caller's picture revision changes, leaving stationar
 
 #### `screenWireIntersectsFrustum` {#symbol-screenwireintersectsfrustum}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L432)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphBatches.ts#L539)
 - Parameters: `clipMatrix`: `Matrix4`; `viewport`: `Vector2`
 
 ##### `screenWireIntersectsFrustum` — Summary

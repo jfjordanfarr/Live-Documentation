@@ -147,8 +147,12 @@ export class SpatialField {
   /** The evaluation begun last: an earlier one shares its scratch, so it may not go on. */
   private current: Progress | null = null;
 
-  constructor(readonly radii: Float64Array, readonly springs: readonly FieldSpring[], readonly settings: FieldSettings, private readonly direction: PairDirection) {
+  constructor(readonly radii: Float64Array, readonly springs: readonly FieldSpring[], readonly settings: FieldSettings, private readonly direction: PairDirection,
+    readonly softness?: Float64Array) {
     if (!radii.every(radius => Number.isFinite(radius) && radius > 0)) throw new Error("Every sphere needs a finite positive radius.");
+    if (softness && (softness.length !== radii.length || !softness.every(value => Number.isFinite(value) && value > 0 && value <= 1))) {
+      throw new Error("A sphere's softness is a share of the collision's stiffness, above zero and at most one, one per sphere.");
+    }
     for (const value of [settings.charge, settings.gravity, settings.collisionGap, settings.collisionStiffness, settings.tether, settings.approximation]) {
       if (!(Number.isFinite(value) && value >= 0)) throw new Error("The field's constants must be finite and nonnegative.");
     }
@@ -171,6 +175,12 @@ export class SpatialField {
   /** How many spheres the field holds. */
   get count(): number {
     return this.radii.length;
+  }
+
+  /** How hard two spheres closer than their clearance push apart: the field's stiffness, times the softer one's softness. */
+  private contactStiffness(i: number, j: number): number {
+    const stiffness = this.settings.collisionStiffness, softness = this.softness;
+    return softness ? stiffness * Math.min(softness[i], softness[j]) : stiffness;
   }
 
   /** Write the forces at these positions into `out` and return the energy, with the overlaps found; the tether pulls toward `anchor`. */
@@ -289,14 +299,14 @@ export class SpatialField {
         }
         const clearance = radius + this.radii[j] + collisionGap;
         if (r < clearance && collisionStiffness > 0) {
-          const shortfall = clearance - r;
+          const shortfall = clearance - r, contact = this.contactStiffness(i, j);
           overlaps++;
           if (shortfall > worstOverlap) worstOverlap = shortfall;
-          if (measureEnergy) energy += collisionStiffness * shortfall * shortfall / 2;
-          const k = collisionStiffness * shortfall / r;
+          if (measureEnergy) energy += contact * shortfall * shortfall / 2;
+          const k = contact * shortfall / r;
           fx += k * dx; fy += k * dy; fz += k * dz;
           out[b] -= k * dx; out[b + 1] -= k * dy; out[b + 2] -= k * dz;
-          radialStiffness += collisionStiffness;
+          radialStiffness += contact;
         }
         stiffness += 2 * radialStiffness;
         pairStiffness[j] += 2 * radialStiffness;
@@ -344,15 +354,15 @@ export class SpatialField {
           }
           const r = Math.sqrt(r2), clearance = radius + this.radii[j] + collisionGap;
           if (r < clearance) {
-            const shortfall = clearance - r;
+            const shortfall = clearance - r, contact = this.contactStiffness(i, j);
             overlaps++;
             if (shortfall > worstOverlap) worstOverlap = shortfall;
-            if (measureEnergy) energy += collisionStiffness * shortfall * shortfall / 2;
-            const k2 = collisionStiffness * shortfall / r;
+            if (measureEnergy) energy += contact * shortfall * shortfall / 2;
+            const k2 = contact * shortfall / r;
             fx += k2 * dx; fy += k2 * dy; fz += k2 * dz;
             out[b] -= k2 * dx; out[b + 1] -= k2 * dy; out[b + 2] -= k2 * dz;
-            stiffness += 2 * collisionStiffness;
-            stiffnessOf[j] += 2 * collisionStiffness;
+            stiffness += 2 * contact;
+            stiffnessOf[j] += 2 * contact;
           }
         }
         out[a] = fx; out[a + 1] = fy; out[a + 2] = fz;

@@ -1,0 +1,126 @@
+[
+ {
+  "level": 1,
+  "shell": "shell:Portal",
+  "files": 10,
+  "skinRadius": 31.89,
+  "body": 31.913632815475193,
+  "unitsShown": 7,
+  "matched": 7,
+  "allInside": true,
+  "worstOffFromShown": 0,
+  "movedMedian": 60.1,
+  "movedMax": 84.8,
+  "movedMedianOfRadius": 1.89,
+  "othersMovedMedian": 29.4,
+  "othersMovedMax": 41.7,
+  "restAfterPop": {
+   "seconds": 11.8,
+   "frames": 509
+  },
+  "units": [
+   {
+    "unit": "Portal/Services/GatewayClient.cs",
+    "kind": "file",
+    "radius": 5.8,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 62.7
+   },
+   {
+    "unit": "Portal/Scripts/portal.js",
+    "kind": "file",
+    "radius": 3.4,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 26.4
+   },
+   {
+    "unit": "Portal/Controllers/PaymentsController.cs",
+    "kind": "file",
+    "radius": 6.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 52.5
+   },
+   {
+    "unit": "Portal/App_Code/Globals.cs",
+    "kind": "file",
+    "radius": 6.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 60.1
+   },
+   {
+    "unit": "Portal/Web.config",
+    "kind": "file",
+    "radius": 4.9,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 84.8
+   },
+   {
+    "unit": "Portal/Pages",
+    "kind": "directory",
+    "radius": 21.6,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 46.1
+   },
+   {
+    "unit": "Portal/Models",
+    "kind": "directory",
+    "radius": 18.8,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 79.6
+   }
+  ]
+ },
+ {
+  "level": 2,
+  "shell": "shell:Portal/Pages",
+  "files": 3,
+  "skinRadius": 21.58,
+  "body": 21.643109749064156,
+  "unitsShown": 3,
+  "matched": 3,
+  "allInside": true,
+  "worstOffFromShown": 0,
+  "movedMedian": 44.7,
+  "movedMax": 58,
+  "movedMedianOfRadius": 2.07,
+  "othersMovedMedian": 21.5,
+  "othersMovedMax": 34.9,
+  "restAfterPop": {
+   "seconds": 2.9,
+   "frames": 131
+  },
+  "units": [
+   {
+    "unit": "Portal/Pages/Default.aspx.cs",
+    "kind": "file",
+    "radius": 4.9,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 44.7
+   },
+   {
+    "unit": "Portal/Pages/Default.aspx.designer.cs",
+    "kind": "file",
+    "radius": 5.8,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 58
+   },
+   {
+    "unit": "Portal/Pages/Default.aspx",
+    "kind": "file",
+    "radius": 6.1,
+    "offFromShown": 0,
+    "inside": true,
+    "moved": 32.2
+   }
+  ]
+ }
+]

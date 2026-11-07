@@ -1,0 +1,5070 @@
+{
+ "url": "http://127.0.0.1:8912/samples/t3-code/?s=N4IgbiBcDMA0IEcomgE",
+ "frames": 58,
+ "seconds": 153.12,
+ "spheres": 6691,
+ "skins": 722,
+ "filesDrawnWithin": 8175,
+ "counts": [
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/Redis.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/gcp-website-nextjs/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/EmailEventSource.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AICapabilities/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IAM/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Website/fixtures/static-site/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AndroidEnterprise/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/tools/ai-codegen/src/main.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Schemas/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/PaymentCryptography/Bindings.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/Website/Fixture.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3/Bindings.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Timestream/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/R2/fixtures/stack.ts",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/StepFunctions/fixtures/order-program.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Tunnel/fixtures/stack.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/ai-docs/src/51_http-server/20_testing.ts",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/provider-core/src/server/mcpToolPresentation.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/url-stack.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-tanstack-start/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/semver.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/desktop/scripts/electron-launcher.mjs",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppRunner/ServicePlatform.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/DrainableWorker.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ELBv2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/resolve-previous-release-tag.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SNS/PlatformApplication.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-terminal/T3TerminalNative.podspec",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/ec.config.mjs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/sql/pg/test/fixtures/goldens.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/AI/fixtures/bindings-stack.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-nextjs/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DataExchange/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/SecretsStore/fixtures/effect-worker.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/persistence/PersistedCacheTest.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/foldkit-fixture/src/entry.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/LexV2/RecognizeText.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/prebuilt/lib/greeting.mjs",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Website/fixtures/vite-app/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/CloudSearch/common.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/src/components/marketing/highlightTS.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/stacks/otel/Datasets.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/tanstack-start/src/routeTree.gen.ts",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/GmailPostmasterTools/common.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Route53/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-waku/src/pages.gen.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudWatch/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Secret/Secret.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/FileSystem.test-utils.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Location/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CodeDeploy/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/monorepo-multi-stack/tsconfig.base.json",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Browser/fixtures/stack.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ResourceExplorer/ResourceExplorer.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-vite/src/App.tsx",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EventBridge/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/sql/libsql/test/util.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/LicenseManager/SellerLifecycle.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Stripe/ConsumeEvents.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Transcribe/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/BigLake/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Vault/common.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/fixtures/issue-16534/seed.py",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/GeoMaps/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/compute-static-live/public/docs/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DataBrew/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/vocs/tsconfig.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Translate/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/require-node-builtins/worker.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/server/scripts/t3-sqlite-state.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/Connect.test.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Pricing/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/OpenSearchServerless/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/schema/SchemaAOTCompilerBuild.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Container/fixtures/restart/stack.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RAM/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/nodeSqliteClient.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/http-api/api.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/web/src/composer-rich-text.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Macie2/TestLease.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/solid-spa/src/routes.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AccessContextManager/common.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Timestream/RecordsSink.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-react-router/app/routes/home.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MailManager/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ServiceQuotas/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/provider-core/src/server/instanceEnvironment.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Forecast/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EntityResolution/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/nodeProbe.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/userMessage.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/CloudNumberRegistry/common.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/PinpointSMSVoiceV2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-solidstart/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/neon-website-tanstack-start/src/routes/index.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IVSChat/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/astro-ssr/src/env.d.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RedshiftServerless/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/FakeManagementApi.ts",
+   "holds": null,
+   "files": 11,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Rbin/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Neptune/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudWatch/MetricSink.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Shield/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/.pnpmfile.mjs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/cli/services/MockTerminal.ts",
+   "holds": null,
+   "files": 11,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/mcpApps/host.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EventBridge/BusSink.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-vinext/app/page.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-tanstack-start/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/ManagementApiContract.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/fixtures/waku-app/src/pages.gen.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-vue/tsconfig.json",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Bedrock/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Container/LocalContainerReload.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/DataCatalog/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/src/components/marketing-islands/_terminal.tsx",
+   "holds": null,
+   "files": 19,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/NotificationsContacts/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SES/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/GeoRoutes/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/RpcWebSocketClient.types.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Jobs/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/SQL/Migrations/sqlite-executor.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-nuxt/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-tanstack-start/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/fixtures/monorepo-workspace/lib/src/greeting.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IoT/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-service-bindings/alchemy.run.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ACMPCA/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/Website/Fixture.ts",
+   "holds": null,
+   "files": 15,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/fixtures/language-model-resources.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-react-router/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-git-service/src/ui/components.tsx",
+   "holds": null,
+   "files": 16,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3/EventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AppEngine/fixtures/cert.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IoTSiteWise/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Comprehend/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/Website/fixtures/sveltekit/src/routes/api/deployment/[operation]/state.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/types/Agent.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/MtlsCertificate/fixtures/certs.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/SQL/fixtures/routes.ts",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/work-log/scrollAnchor.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/SasPortal/common.ts",
+   "holds": null,
+   "files": 19,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/FirebaseAppHosting/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Planetscale/Postgres/Hyperdrive.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/web/src/state/npmRelease.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/vite-hmr/src/server-marker.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/MerchantApiReviews/common.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/KMS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/OpenSearchServerless/IndexBindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/astro/src/env.d.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/mock-update-server.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/dpop.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/D1/fixtures/stack.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3/ServerEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/cloudflare-runtime/src/rolldown/test/fixtures/node-compat/early-process-access.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-react-router/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3Control/ObjectLambdaAccessPoint.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/HttpServer.fixture.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/SecurityPosture/common.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Flagship/fixtures/stack.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SNS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/dev-stress/src/api-worker.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/web/src/components/chat/agentSpawnSummary.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/telemetryId.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-vite/src/App.tsx",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/orchestrationV2Timeline.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/sveltekit/tsconfig.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Dns/fixtures/effect.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/desktopBootstrapToken.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/GKEOnPrem/common.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "infra/task-cache/src/nativeHook.js",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AIOps/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Rekognition/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/neon-website-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AuditManager/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/HealthLake/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DMS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AnalyticsHub/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppRegistry/TestLease.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-static/index.html",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/neon-website-solidstart/src/routes/index.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/tsconfig.playwright.json",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/relayUrl.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/QuickSight/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workflows/Workflow.local.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SageMaker/images.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/Service.test.ts",
+   "holds": null,
+   "files": 17,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AndroidPublisher/common.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/relayAuth.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/mobile-native-client.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/VerifiedPermissions/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IVS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MediaPackageV2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-vinext/app/page.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Access/IdentityProvider.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-solidstart/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Translate/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DevOpsGuru/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IVSRealtime/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Hetzner/Service.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/NetworkFirewall/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Hyperdrive/Connection.local.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Textract/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Cognito/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/cluster/TestEntity.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/fixtures/waku-app/src/env.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Container/fixtures/sqlreach/expect.ts",
+   "holds": null,
+   "files": 15,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-static-site/site/styles.css",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MediaConvert/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/astro-static/src/env.d.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SecretsManager/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/gitPatchPath.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/CloudIdentity/common.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "infra/relay/migrations/postgres/20260527044716_baseline/migration.sql",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/monorepo-multi-stack/backend/src/Spec.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Dataplex/quota.ts",
+   "holds": null,
+   "files": 24,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-waku/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cli/PlanTestNodes.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ImageBuilder/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/relayTracing.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-source-text/ios/T3SourceTextComponentDescriptor.h",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Glacier/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/neon-website-static/index.html",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Queue/RoundTrip.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Inspector2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/Postgres.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/cloneUrl.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Run/Service.test.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DirectoryService/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/work-log/commandLabel.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/sql/d1/test/utils.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AIPlatform/fixtures/features.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/CloudChannel/common.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/worker-first-fixture/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-vite/src/main.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Pipes/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/tools/utils/src/commands/codegen.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/compute-static-build/public/docs/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/GamesConfiguration/common.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Signer/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-nextjs/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Smoke/Serverless.smoke.test.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "native/kde-snap-shot/src/feedback.rs",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/vite-url-fixture/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/web/src/state/desktopCliCommand.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/persistence/RateLimiter.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DSQL/Connect.test.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DLM/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/neon-website-waku/src/pages.gen.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/test/cross-version-test/test/02-beta.44/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EKS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Bedrock/LanguageModel.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Organizations/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ObservabilityAdmin/TestLease.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RDS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3Control/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/monorepo-workspace/lib/src/greeting.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/OpenSearch/DataPlane.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/Fetch.local.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/FSx/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Artifacts/fixtures/stack.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/FunctionEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EFS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Queue/SubscriptionSources.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/merge-update-manifests.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RDSData/Bindings.test.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IAM/fixtures.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppConfig/DeploymentEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Redshift/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/tagged-rpc-do/object.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SSM/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/vite-do-fixture/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/KeyedCoalescingWorker.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Container/LocalContainerHostReach.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SQS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-waku/src/pages.gen.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/CloudScheduler/ScheduleEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CodeArtifact/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/GuardDuty/TestLease.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/WriteCertificates.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/waku-durable-objects/src/env.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DynamoDB/TableSink.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Pipelines/fixtures/stack.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-highlights/Vendor/highlights/highlights.c",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Run/Job.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/sql/mssql/test/Persistence.integration.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/AI/fixtures/Gateway.ts",
+   "holds": null,
+   "files": 11,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/XRay/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EKS/ClusterBindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Secret/Secret.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ControlTower/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-react-router/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Keyspaces/RestoreTable.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Account/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/VpcLattice/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/dynamic-worker-loader/stack.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/foldkit-worker-fixture/src/entry.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/devHome.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Firehose/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ElastiCache/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/persistence/KeyValueStore.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/vite-spa-fixture/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DynamoDB/Stream.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/vite-hmr/src/client.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/AnalyticsEngine/AnalyticsEngineDataset.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SQS/Queue.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ApplicationSignals/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/AccessContext.local.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudTrail/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-source-text/src/SourceText.tsx",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/bucket.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Local/fixtures/process-effect.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/NeptuneGraph/Graph.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Glue/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-waku/src/pages.gen.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/monorepo-multi-stack/frontend/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/toolActivity.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Container/fixtures/remote/local-stack.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Scheduler/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Backup/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Kinesis/StreamEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-solidstart/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/do-abort/stack.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MedicalImaging/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MWAAServerless/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Deadline/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-waku/src/pages.gen.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AndroidManagement/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/src/SQLite/SQLiteConnection.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IoT/TopicRuleEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Synthetics/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/fixtures/function-effect.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/PubSub/TopicEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:.repos/alchemy-effect",
+   "holds": 13095,
+   "files": 1024,
+   "bubbles": 288,
+   "veiled": 31
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/ai/utils.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MemoryDB/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/filePreview.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/fixtures/octane-spa-app/src/main.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Polly/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CostExplorer/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Personalize/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/pullRequestEditing.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/src/octane/test/fixtures/cloudflare/src/App.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/src/blog-sidebar.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-vocs/alchemy.run.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RolesAnywhere/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MediaLive/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/desktop/scripts/verify-preload-bundle.mjs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-vite/src/main.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-tanstack-start-solid/src/routeTree.gen.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SSMContacts/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/LakeFormation/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/ACME/fixtures/shared.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Dataform/common.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/Shutdown.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/OAM/Bindings.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/RpcDurableObjectNamespace.test.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/tagged-do/stack.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AuthorizedBuyersMarketplace/BuyersClientsUser.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:.repos/effect-smol",
+   "holds": 972,
+   "files": 972,
+   "bubbles": 137,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/monorepo-single-stack/backend/src/Spec.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/relayJwt.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-react-router/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Kubernetes/LocalCluster.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SimpleDB/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:apps/desktop",
+   "holds": 262,
+   "files": 262,
+   "bubbles": 18,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/tools/openapi-generator/src/OpenApiGenerator.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/cron/cron-worker.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-vue/alchemy.run.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-waku/src/pages.gen.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:infra/relay",
+   "holds": 92,
+   "files": 92,
+   "bubbles": 7,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-vue/src/main.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Chatbot/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Queue/Queue.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/KinesisVideo/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:evals",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:apps/server",
+   "holds": 1215,
+   "files": 1023,
+   "bubbles": 139,
+   "veiled": 77
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/Workflow.test.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Budgets/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:oxlint-plugin-t3code",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SNS/Subscription.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Omics/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Licensing/LicenseAssignment.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SageMaker/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/scripts/floci-image.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Vectorize/fixtures/stack.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CodePipeline/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/waku/src/components/NavCounter.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/D1/fixtures/drizzle-worker.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/DiscoveryEngine/parent.ts",
+   "holds": null,
+   "files": 24,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IoTManagedIntegrations/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:infra/task-cache",
+   "holds": 45,
+   "files": 45,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/static-website/index.html",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:evals/mcp-tool-use",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DMS/reap.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:evals/thread-titles",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/effect-codex-app-server",
+   "holds": 19,
+   "files": 19,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/WAFv2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/rpc-worker-binding/caller-worker.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ComprehendMedical/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/waku/tsconfig.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/sql/pg/test/utils.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Pipes/PipeDelivery.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/src/components/marketing/diagrams/_colors.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/AndroidDeviceProvisioning/CustomersConfiguration.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/contracts",
+   "holds": 25,
+   "files": 25,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Bedrock/KnowledgeBase.slow.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:apps/web",
+   "holds": 1547,
+   "files": 983,
+   "bubbles": 39,
+   "veiled": 3
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/SaasServiceManagement/common.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/FraudDetector/FraudDetector.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Kubernetes/Deployment.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MediaConnect/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "infra/relay/migrations/postgres/20260603035812_managed_endpoint_allocations/migration.sql",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:apps/mobile",
+   "holds": 1142,
+   "files": 969,
+   "bubbles": 46,
+   "veiled": 1
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EMR/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/ContactCenterInsights/transcript.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-acp",
+   "holds": 17,
+   "files": 17,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/client-runtime",
+   "holds": 318,
+   "files": 318,
+   "bubbles": 14,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/platform/node-shared/test/HttpPlatform.test-utils.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-router/apps/web/src/main.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/BlueGreen.test.ts",
+   "holds": null,
+   "files": 21,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/effect-acp",
+   "holds": 22,
+   "files": 22,
+   "bubbles": 4,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-core",
+   "holds": 48,
+   "files": 48,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-vinext/app/page.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/sql-migrations/rollback/0001_stable.sql",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/SqlMigrations.upgrade.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-acp-registry",
+   "holds": 21,
+   "files": 21,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/desktopAppControl.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-tutorial/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/platform/node/test/RpcServer.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/worker-worker-binding/stack.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-azure-devops",
+   "holds": 19,
+   "files": 19,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/EventSourceMapping.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/Storage.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Athena/Query.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppSync/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-fx",
+   "holds": 14,
+   "files": 14,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-cursor",
+   "holds": 39,
+   "files": 39,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-bitbucket",
+   "holds": 17,
+   "files": 17,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/shared",
+   "holds": 142,
+   "files": 142,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-grok",
+   "holds": 21,
+   "files": 21,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Route53Profiles/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/tailscale",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-muse",
+   "holds": 28,
+   "files": 28,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-testing",
+   "holds": 4,
+   "files": 4,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-solidstart/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/ssh",
+   "holds": 11,
+   "files": 11,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-opencode",
+   "holds": 38,
+   "files": 38,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-forgejo",
+   "holds": 17,
+   "files": 17,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Queue/fixtures/write-binding.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-gitcafe",
+   "holds": 17,
+   "files": 17,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/provider-pi",
+   "holds": 23,
+   "files": 23,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-definitions",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/website-artifact/next/next.config.mjs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppConfig/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SecurityLake/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-core",
+   "holds": 16,
+   "files": 16,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Redshift/Connect.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-gitlab",
+   "holds": 23,
+   "files": 23,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/cloudflare-runtime/src/rolldown/test/fixtures/module-resolution/requires/ext.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/tools/oxc/src/oxlint/index.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/better-auth/test/Drizzle.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-testing",
+   "holds": 3,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/compute-static-build/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts",
+   "holds": 26,
+   "files": 26,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/GeoPlaces/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/source-control-github",
+   "holds": 51,
+   "files": 51,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts/mobile-e2e",
+   "holds": 8,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppIntegrations/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/provider-core/src/server/mcpSession.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:",
+   "holds": 3,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:apps/marketing",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts/lib",
+   "holds": 24,
+   "files": 24,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IoTWireless/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "oxlint-plugin-t3code/index.ts",
+   "holds": null,
+   "files": 63,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/KeyedLock.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/python/util.py",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/website-artifact/vite/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/gcp-static-site/site/docs/index.html",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudFront/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fixtures/compute-static-live/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Config/TestLease.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/RandomEnvLocal.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/vite-fixture/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RUM/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-neon-prisma/src/prisma/generated/index.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/SecretKey.local.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Transfer/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/LicenseManager/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/KV/Binding.test.ts",
+   "holds": null,
+   "files": 9,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/test/cross-version-test/test/01-beta.39/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/delimitedPreview.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/workflow-pause/worker.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EMRServerless/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RedshiftData/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/test/cross-version-test/test/04-beta.59/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Logs/LogEventSink.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/orchestrationTiming.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/changedFileKind.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Logs/LogGroupEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ApiGatewayV2/HttpApi.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/KeylessCertificate/KeylessCertificate.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/NetworkFirewall/FirewallBindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/searchRanking.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Geo/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-highlights/cpp/t3_highlights.c",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ECS/NestedPlatformInit.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-router/apps/docs/src/main.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudFormation/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/rpc-http/group.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/BeyondCorp/common.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/server/scripts/acp-mock-agent.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/neon-website-vite/src/main.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/nextjs/app/guestbook/actions.js",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/sql-migrations/flat/0001_values.sql",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppFlow/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Grafana/Bindings.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ECR/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/Net.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/platform/node/test/cluster/SqlMessageStorage.integration.test.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Keyspaces/TableStreams.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ApplicationAutoScaling/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/process/ChildProcessSpawnerTest.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/tools/oxc/test/utils.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "infra/task-cache/migrations/savings/0001_savings.sql",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ApiGateway/Test.ts",
+   "holds": null,
+   "files": 24,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-solidstart/src/routes/index.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3/VersionedObjects.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DynamoDB/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudHSMV2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-highlights/Vendor/wasm2c/wasm-rt-impl.h",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/DurableFunction.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/AI/Ai.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-review-diff/T3ReviewDiffNative.podspec",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/src/components/marketing-islands/agentPrompt.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-nextjs/app/page.jsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-tanstack-start/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/web/components.json",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/provider-core/src/server/processGroup.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/RateLimit/fixtures/stack.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MediaTailor/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Route53Domains/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Run/InvokeService.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/GreengrassV2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "infra/task-cache/vendor/vite-plus-remote-cache-cloudflare/migrations/0001_cache.sql",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-foldkit/src/entry.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DataZone/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Compute/Network.smoke.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SSMIncidents/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CostAndUsageReport/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3/VersionedMultipart.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/R2/Presign.local.test.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/BCMDataExports/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IoTFleetWise/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/monorepo-single-stack/tsconfig.base.json",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AMP/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/mobile-native-static-check.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/OriginTlsClientAuth/fixtures/certs.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/Website/fixtures/vite/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Kinesis/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/Sprite.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Smoke/Serverless.smoke.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/tools/doctest/src/index.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/QBusiness/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ServiceCatalog/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-sveltekit/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/monorepo-single-stack/frontend/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EMRContainers/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/InternetMonitor/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/fakes.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/Bucket.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".github/scripts/ci-changes.cjs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RedshiftServerless/Snapshots.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/waku-durable-objects/tsconfig.json",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/InitIO.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/B2BI/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Storage/BucketEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-waku/src/pages.gen.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/OSIS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/GlobalAccelerator/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "native/hyprland-snap-shot/src/main.rs",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/ChromeManagement/CustomersConnectorConfig.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Email/scope.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AppRunner/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ResourceGroups/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/nextjs/app/counter/counter.jsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Logs/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/public/bun-logo.svg",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/fixtures/StorageResources.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EC2/fixtures/client-vpn.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Cognito/Triggers.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/CertificateAuthorities/HostnameAssociation.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Stripe/Binding.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/ClientCertificate/ClientCertificate.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-nextjs/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/typeperf/compare.mjs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-nextjs/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudControl/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-source-text/ios/T3SourceTextRunShadowNode.h",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RolesAnywhere/RolesAnywhere.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/test/cross-version-test/test/05-current/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/OpenSearch/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/AccessAnalyzer/Bindings.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Vision/common.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/ai-docs/src/71_ai/10_language-model.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-vite/src/App.tsx",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/DataSync/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/LocalWorkerHandoff.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/CloudFunctions/EffectNative.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3Vectors/Vectors.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Email/fixtures/worker.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Notifications/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/PinpointSMSVoiceV2/PhoneNumberBindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-solidstart/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CodeConnections/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/fixtures/microvm/stack.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RePostSpace/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Access/WorkerApplication.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/notify-discord-release.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/IdentityCenter/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/platform/node/test/cluster-integration/harness.ts",
+   "holds": null,
+   "files": 9,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Compute/fixtures/https-proxy-cert.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-solidstart/alchemy.run.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/video.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/OriginCaCertificate/OriginCaCertificate.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Prisma/Hyperdrive.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-react-router/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/QApps/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/KinesisAnalyticsV2/code-bucket.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Website/fixtures/foldkit-app/src/entry.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Images/fixtures/stack.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/shared/src/threadSearch.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/tailscale/src/tailscale.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/WorkersForPlatforms/fixtures/shared.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/fixtures/lockfile-pinning/handler-impl.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Email/SendEmail.local.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/work-log/toolPresentation.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-nextjs/app/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-astro/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/Cors.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Planetscale/MySQL/Hyperdrive.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SageMaker/EndpointBindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/RedshiftServerless/Connect.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/DataLabeling/common.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/hetzner-website-vinext/app/page.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ApiGatewayV2/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/design-system/preview/_card.css",
+   "holds": null,
+   "files": 22,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/FunctionForms.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/tools/api-diff/test/utils.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-website-vite/src/main.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/source-control-core/src/server/mergeMessage.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/src/docs-tabs-sidebar.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/runtimeperf/config.json",
+   "holds": null,
+   "files": 30,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/InitIO.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ACM/handler.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/BackupSearch/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/BedrockAgentCore/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-react-router/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/MQ/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/ai/McpServer/McpConformance/McpConformance.ts",
+   "holds": null,
+   "files": 33,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/effect/test/ScopedRef.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/web/src/components/files/office/LICENSE.opencode",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CloudTrail/LakeBindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Fly/fixtures/bindings-api.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-solidjs-ssr/src/routes.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3/VersionedObjectLock.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/SecureSourceManager/common.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/BedrockDataAutomation/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/FMS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/StepFunctions/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Amplify/TestLease.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/neon-website-react-router/app/routes/home.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/website/src/styles/global.css",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SecurityHub/TestLease.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SQS/QueueEventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Website/vite-container-fixture/index.html",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/sql-migrations/drizzle/20240101000000_init/migration.sql",
+   "holds": null,
+   "files": 11,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/drizzle-schema-chunks/schema/users.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/frontend-frameworks/fixtures/sveltekit-spa/tsconfig.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Hyperdrive/fixtures/effect-worker.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-foldkit-ssr/index.html",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ECRPublic/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-better-auth/src/client.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Neon/fixtures/backend-resources.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/generated-uniwind-themes.css",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/client-runtime/src/device/phoneInteraction.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Dialogflow/parent.ts",
+   "holds": null,
+   "files": 19,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/VMMigration/common.ts",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/sql/mysql2/test/utils.ts",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/ACME/Pki.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "apps/mobile/modules/t3-highlights/T3HighlightsNative.podspec",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/platform/deno/test/fixtures/rpc-e2e.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Kendra/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/EC2/Instance.local.test.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/CodeBuild/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/FIS/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/aws-website-nextjs/alchemy.run.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/ApiGatewayV2/WebSocket.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/prisma-website-tanstack-start/src/routes/index.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/provider-core/src/server/runtimeInstructions.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/effect-smol/packages/platform/browser/test/fixtures/rpc-e2e.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/railway-website-vinext/app/page.tsx",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/test/cross-version-test/test/03-beta.45/alchemy.run.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Detective/Bindings.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/Lambda/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/sql-migrations-unit/node-import.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Git/fixtures/zlib-probe-worker.ts",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/fly-website-tanstack-start/src/components/Card.tsx",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/Workers/fixtures/alarm-callback/worker.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/examples/cloudflare-vue/src/assets/base.css",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/SocialMessaging/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/GCP/Eventarc/EventSource.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/AWS/S3Tables/Bindings.test.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Cloudflare/AI/fixtures/crawl-target-worker.ts",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/node-utils/src/ignore.ts",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": ".repos/alchemy-effect/packages/alchemy/test/Hetzner/App.fixture.test.ts",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  }
+ ],
+ "pops": [],
+ "frameMs": {
+  "median": 5333.1,
+  "mean": 5401.4,
+  "frames": 10
+ }
+}

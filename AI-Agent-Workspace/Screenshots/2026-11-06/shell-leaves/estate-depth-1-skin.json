@@ -1,0 +1,78 @@
+{
+ "url": "http://127.0.0.1:8912/samples/estate/?s=N4IgbiBcDMA0IEcomgEx",
+ "frames": 181,
+ "seconds": 6,
+ "spheres": 21,
+ "skins": 3,
+ "filesDrawnWithin": 15,
+ "counts": [
+  {
+   "seed": "Contracts/Contracts.csproj",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:Gateway",
+   "holds": 2,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:Portal",
+   "holds": 10,
+   "files": 10,
+   "bubbles": 2,
+   "veiled": 0
+  }
+ ],
+ "pops": [
+  {
+   "level": 1,
+   "shell": "shell:Portal",
+   "files": 10,
+   "skinRadius": 44.41829486410701,
+   "body": 43.02114774590716,
+   "released": 7,
+   "matched": 7,
+   "bubblesReleased": 2,
+   "innerUnitsShown": 5,
+   "allInside": true,
+   "worstOffFromShown": 0,
+   "sizeKept": true,
+   "movedMedian": 56.9,
+   "movedMax": 93.5,
+   "movedMedianOfRadius": 1.28,
+   "othersMovedMedian": 28.8,
+   "restAfterPop": {
+    "seconds": 6.3,
+    "frames": 262
+   }
+  },
+  {
+   "level": 2,
+   "shell": "shell:Portal/Pages",
+   "files": 3,
+   "skinRadius": 20.37185080865811,
+   "body": 19.799604138679364,
+   "released": 3,
+   "matched": 3,
+   "bubblesReleased": 0,
+   "innerUnitsShown": 0,
+   "allInside": true,
+   "worstOffFromShown": 0,
+   "sizeKept": true,
+   "movedMedian": 45.9,
+   "movedMax": 67.2,
+   "movedMedianOfRadius": 2.25,
+   "othersMovedMedian": 20.6,
+   "restAfterPop": {
+    "seconds": 3.2,
+    "frames": 130
+   }
+  }
+ ],
+ "frameMs": null
+}

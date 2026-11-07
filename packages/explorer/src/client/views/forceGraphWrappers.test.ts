@@ -56,7 +56,7 @@ describe("a group's hull", () => {
   const { nodes } = archipelago();
   const padding = wrapperPadding(tuning);
   // A group's wrapper is drawn over the phantom packing of its files about its seed (2026-11-05), no longer a hidden layout.
-  const shape = bodyShape("a/hub.ts", nodes.filter(node => node.id.startsWith("a/")), tuning, padding, "a/hub.ts");
+  const shape = bodyShape("a/hub.ts", nodes.filter(node => node.id.startsWith("a/")), tuning, "a/hub.ts");
   const hull = wrapperHull(shape, padding);
 
   it("encloses every member's sphere with its padding", () => {
@@ -95,7 +95,7 @@ describe("a group's hull", () => {
   it("is the hull of every member, though it is first taken over the outer ones alone", () => {
     // A body of 300 members, more than the first take: every member's padded sphere lies within the hull built.
     const many = Array.from({ length: 300 }, (_, i) => file(`m/${String(i).padStart(3, "0")}.ts`, i % 9));
-    const body = bodyShape("m", many, tuning, padding);
+    const body = bodyShape("m", many, tuning);
     const wrapped = wrapperHull(body, padding);
     for (const member of body.members) expect(farthestBeyond(wrapped, member.x, member.y, member.z) + member.radius + padding, member.id).toBeLessThanOrEqual(1e-6);
     // A shape whose outer members leave room inside still holds a member that reaches past the first take's hull.
@@ -121,7 +121,7 @@ describe("the merged wrappers", () => {
   const start = spatialScope(nodes, links, startOf(nodes, links, "connections", pulls), startHops("connections", tuning.hops), pulls);
   const seeds = wrappedSeeds(start.groups);
   const groupOf = (seed: string): StartableNode[] => nodes.filter(node => node.id.split("/")[0] === seed.split("/")[0]);
-  const hulls = new Map(seeds.map(seed => [seed, wrapperHull(bodyShape(seed, groupOf(seed), tuning, padding, seed), padding)]));
+  const hulls = new Map(seeds.map(seed => [seed, wrapperHull(bodyShape(seed, groupOf(seed), tuning, seed), padding)]));
   const centres = new Map(seeds.map((seed, i) => [seed, { x: 400 * i, y: -50 * i, z: 10 }]));
   const geometry = mergeWrappers(seeds, seed => hulls.get(seed), seed => centres.get(seed));
 

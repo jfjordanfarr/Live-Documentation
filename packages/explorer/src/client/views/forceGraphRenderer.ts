@@ -1,7 +1,7 @@
 import { AmbientLight, DirectionalLight, PerspectiveCamera, Plane, Raycaster, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
-import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle } from "./forceGraphBatches";
+import { createSpatialBuffers, drawSpatialGraphOnChange, type SpatialDrawLink, type SpatialDrawStyle, type SpatialWrapperStyle, type SpatialWrapperUnit } from "./forceGraphBatches";
 import type { CameraPoint } from "./forceGraphCamera";
 import type { Placed, SpatialNode } from "./forceGraphLayout";
 import type { GroupWrappers, WrapperHull } from "./forceGraphWrappers";
@@ -153,10 +153,12 @@ export class SpatialRenderer<N extends SpatialNode, L extends SpatialDrawLink<N>
   nodeRing(read: (node: N) => string | null): this { this.options.style.ring = read; this.invalidateAppearance(); return this; }
   /**
    * Wrap these nodes in their hulls, drawn in the look given, none when off (2026-11-05): a wrapped group's seed or a
-   * directory shell, each at its node's place, or at the place given for one bursting after its node left the picture.
+   * directory shell, each at its node's place, or at the place given for one bursting after its node left the picture;
+   * a directory shell shows within its skin the units `unitsOf` gives (2026-11-06).
    */
-  wrappers(seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers, placeOf?: (seed: string) => Placed | undefined): this {
-    this.buffers.setWrappers(seeds, hullOf, look, placeOf); this.appearance++; return this;
+  wrappers(seeds: readonly string[], hullOf: (seed: string) => WrapperHull | undefined, look: GroupWrappers, placeOf?: (seed: string) => Placed | undefined,
+    unitsOf?: (seed: string) => readonly SpatialWrapperUnit[] | undefined): this {
+    this.buffers.setWrappers(seeds, hullOf, look, placeOf, unitsOf); this.appearance++; return this;
   }
   /** Each wrapper's opacity and growth, the one hovered and those bursting open, for the next draw. */
   wrapperStyle(style: SpatialWrapperStyle): this { this.buffers.styleWrappers(style); this.appearance++; return this; }

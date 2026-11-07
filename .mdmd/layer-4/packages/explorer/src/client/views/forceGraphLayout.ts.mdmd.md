@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphLayout.ts
-- Generated At: 2026-11-06T02:11:47.461Z
+- Generated At: 2026-11-06T18:56:14.032Z
 
 ## Authored
 ### Purpose
@@ -34,7 +34,7 @@ With a budget from its source (`MotionSource.budget`, milliseconds a frame), the
 
 Since 2026-11-05 `spatialFieldOf` and the motion's source take an optional clearance, the larger radius a sphere keeps in the field's collisions: a wrapped group's seed keeps its wrapper's room ([Group Wrappers](../../../../../../../.mdmd/layer-3/live-documentation-explorer.mdmd.md#competing-layout-preferences)). Without one, every radius is the sphere's own, as before.
 
-Since 2026-11-05 a node may carry `shellFiles`, a directory shell's count of the hidden files it holds, and `spatialNodeRadius` sizes it by `shellRadius`, its files' volume without padding; two larger rules made this repository's pinned picture take 475 and 924 frames to rest against 332 ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-05/directory-shells/README.md)).
+Since 2026-11-05 a node may carry `shellFiles`, a directory shell's count of the hidden files it holds. Until 2026-11-06 `spatialNodeRadius` sized it by its files' volume without padding, since two larger rules made this repository's pinned picture take 475 and 924 frames to rest against 332 ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-05/directory-shells/README.md)); that rule lives on as `filesRadius`, a wrapped island's room. Since 2026-11-06, at the owner's word that the shells were no stand-in for what they hold ([Turn 3 of the November 6 record](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)), a shell carries `shellBody`, its true size: `shellRadius` of its files, their spheres in a wrapper's padding at `SHELL_PACKING`. The headless twin of the page found why the larger bodies had cost so much: not their size but one light contact on a large body wired by springs worth more than two, which lifted the field's stiffness past the single step's bound of eight and split every tick in two. A shell's contacts are therefore soft (`SHELL_SOFTNESS`, through the field's `softness`), and `placeNewSpheres` bears a shell outside the placed mass on the side of the files it is wired to; with both, the true size rests within one and a half times the frames of the picture without shells, 1.24 times on this repository's pinned picture, though not within its seconds in the software renderer, where the Skin's frames are slower to draw; the softness, first a third, became a sixth when the regenerated Live Docs put three files against one shell at rest ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md)).
 
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
@@ -49,7 +49,7 @@ The documented interface and mutable position of a file, or of a directory hub, 
 
 #### `symbolCountOf` {#symbol-symbolcountof}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L26)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L28)
 
 ##### `symbolCountOf` — Summary
 How many public symbols a file exposes: the count it carries, or its names counted. A count that is not a number of
@@ -58,7 +58,7 @@ motion refuses and stop the picture (2026-10-21).
 
 #### `SpatialLink` {#symbol-spatiallink}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L32)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L34)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `SpatialLink` — Summary
@@ -66,7 +66,7 @@ One undirected file pair; count is the number of documented references in either
 
 #### `spatialNodeValue` {#symbol-spatialnodevalue}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L45)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L47)
 - Parameters: `node`: [`SpatialNode`](#symbol-spatialnode); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialNodeValue` — Summary
@@ -74,30 +74,72 @@ Sphere volume in baseline units. Files grow with their exposed symbols; every di
 junction, independent of depth, contents and symbol scaling. This is the moderate uniform marker of the October 24
 comparison, reaffirmed November 1: hierarchy is carried by containment, not by large ancestors covering their children.
 
+#### `filesRadius` {#symbol-filesradius}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L55)
+
+##### `filesRadius` — Summary
+The radius of so many files' volume, each a file with no symbols: the cube root of the count times that file's radius.
+A wrapped island's seed keeps this much room beside a wrapper's padding (2026-11-05).
+
+#### `SHELL_PACKING` {#symbol-shell_packing}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L67)
+
+##### `SHELL_PACKING` — Summary
+The share of a shell's volume its files' padded spheres fill (2026-11-06): about as densely as spheres of mixed sizes
+pulled apart inside a ball settle, so that a shell's own files fit within it apart. A shell's subdirectories' balloons,
+each this rule's size, fill it whole together and overlap a little where they are all it holds.
+
+#### `shellRadiusOf` {#symbol-shellradiusof}
+- Type: function
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L80)
+
+##### `shellRadiusOf` — Summary
+A directory shell's radius from its files' spheres' radii, its true size (2026-11-06): the volume of its files, each
+sphere in a wrapper's padding, at the packing's density. It is the size its skin is drawn at and the room in which a
+pop releases its files and its subdirectories' shells, each subdirectory's shell its own files' radius by the same
+rule. The owner found the shells of November 5 drawn far smaller than what burst out of them, "a vast difference
+between the skinned mesh and what emerges from it on click" (Turn 3 of the November 6 record, linked from this file's
+Live Doc): their bodies were the files' volume alone, with no padding and no symbols, measured to rest faster on this repository's
+picture pinned on `forceGraphView.ts` (924 frames at two and a half times that size against 334 with no shells). The
+cost was not the size itself but the stiffness of a large body's contacts, which held every tick of the picture to two
+substeps; a shell is now soft (`SHELL_SOFTNESS`) and born outside the mass (`placeNewSpheres`).
+
 #### `shellRadius` {#symbol-shellradius}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L58)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L89)
+- Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `shellRadius` — Summary
-A directory shell's radius (2026-11-05): the volume of its files, each a file with no symbols, so that the radius grows
-with the cube root of the count from that file's. Volumes add, so that a shell's subdirectories' bodies fit inside its
-own and a pop releases balloons no larger than the balloon that held them. Two rules were measured and replaced on this
-repository's picture pinned on `forceGraphView.ts`, which falls still in 334 frames with no shells: that radius times
-the cube root plus two and a half of it, room for the skin, took 475 frames, and its children were larger together than
-itself, so that the estate's pop of its portal took 16 s to fall still; two and a half times this radius, the files in
-their padding, took 924. This one takes 332: the larger the bodies, the longer the picture takes to rest.
+A directory shell's radius, its true size, from its files as the tuning sizes them (`shellRadiusOf`).
+
+#### `SHELL_SOFTNESS` {#symbol-shell_softness}
+- Type: const
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L103)
+
+##### `SHELL_SOFTNESS` — Summary
+How hard a shell pushes back on a sphere closer than their clearance, as a share of what two files do (2026-11-06): a
+balloon gives. The motion's tick is one step while the stiffest sphere's stiffness stays under eight; a contact adds
+twice the collision's stiffness, six, so that one light contact on a shell wired by springs worth more than two split
+every tick of this repository's pinned picture in two (560 evaluations of the field to rest against 326 with no shells,
+in the headless twin). At a third, a contact adds two, 383; but once the Live Docs were regenerated, three files rested
+against `engine/src` and took it past eight again (650 against 314). At a sixth, a contact adds one, and a shell wired
+like `engine/src` may rest against six (355 and 430 evaluations, before and after). The cost: a hub file pressed
+between a shell and the mass sinks through the collision's five-unit gap and up to a unit past the skin.
 
 #### `spatialNodeRadius` {#symbol-spatialnoderadius}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L63)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L109)
 - Parameters: `node`: [`SpatialNode`](#symbol-spatialnode); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialNodeRadius` — Summary
-Actual sphere radius, shared by rendering, collision clearance and the command's report; a shell's is its body's.
+Actual sphere radius, shared by rendering, collision clearance and the command's report; a shell's is its body's, or,
+told only how many files it holds, that of so many files with no symbols.
 
 #### `spatialLinkDistance` {#symbol-spatiallinkdistance}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L69)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L115)
 - Parameters: `link`: [`SpatialLink`](#symbol-spatiallink); `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning)
 
 ##### `spatialLinkDistance` — Summary
@@ -105,7 +147,7 @@ More coupling reduces the desired surface gap with diminishing returns, without 
 
 #### `linkPulls` {#symbol-linkpulls}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L81)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L127)
 - Parameters: `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 
 ##### `linkPulls` — Summary
@@ -116,21 +158,21 @@ that whether such a link should shape the picture can be seen before it is decid
 
 #### `springShare` {#symbol-springshare}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L88)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L134)
 
 ##### `springShare` — Summary
 How hard a pulling link's spring pulls, as a share of a reference's: the tuning's lever for a document's citation, one for the rest.
 
 #### `Placed` {#symbol-placed}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L93)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L139)
 
 ##### `Placed` — Summary
 A point the simulation placed, or the carry did.
 
 #### `PlaceableNode` {#symbol-placeablenode}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L96)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L142)
 - Extends: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `PlaceableNode` — Summary
@@ -138,7 +180,7 @@ What the placement of a new sphere reads of a node beside its position: for a hu
 
 #### `seededDirection` {#symbol-seededdirection}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L103)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L149)
 - Returns: [`Placed`](#symbol-placed)
 
 ##### `seededDirection` — Summary
@@ -146,7 +188,7 @@ A unit vector seeded by the id, the same on every machine, so that a born sphere
 
 #### `placeNewSpheres` {#symbol-placenewspheres}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L148)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L195)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout)
 - Constraints: [`PlaceableNode`](#symbol-placeablenode)
 
@@ -162,11 +204,12 @@ plus a spring's length, in its seeded direction; before, D3 seated it on a spira
 mass, at most some hundred units out, and it spent the settle pushing its way through what had already settled, so that
 the owner could not find the islands and orphans ("Nice little stars -- or maybe a kuiper belt -- of orphans"). An
 island's first sphere is born there and its members are placed beside it as they enter, so the island is born outside
-as a whole. The nodes are not changed; the result is the start of each sphere placed here.
+as a whole. A directory shell is born outside the mass on the side of what it is wired to (2026-11-06, below). The
+nodes are not changed; the result is the start of each sphere placed here.
 
 #### `springStrength` {#symbol-springstrength}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L214)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L280)
 - Parameters: `edge`: `L`; `links`: `L`[]
 - Constraints: [`SpatialNode`](#symbol-spatialnode), [`SpatialLink`](#symbol-spatiallink)
 
@@ -177,7 +220,7 @@ spring keeps full strength because the leaf has degree one. Counts come from pul
 
 #### `MOTION` {#symbol-motion}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L231)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L297)
 - Returns: [`MotionSettings`](./forceGraphPhysics.ts.mdmd.md#symbol-motionsettings)
 
 ##### `MOTION` — Summary
@@ -185,28 +228,28 @@ The motion's step and drag: the probe's smooth control, which the owner found "q
 
 #### `COLLISION_STIFFNESS` {#symbol-collision_stiffness}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L234)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L300)
 
 ##### `COLLISION_STIFFNESS` — Summary
 How hard two spheres closer than their clearance push apart, per unit of overlap.
 
 #### `STILL_FRACTION` {#symbol-still_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L237)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L303)
 
 ##### `STILL_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, below which the spheres count as still.
 
 #### `QUIET_TICKS` {#symbol-quiet_ticks}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L240)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L306)
 
 ##### `QUIET_TICKS` — Summary
 How many still ticks in a row end the easing.
 
 #### `UNFOLDED_FRACTION` {#symbol-unfolded_fraction}
 - Type: const
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L249)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L315)
 
 ##### `UNFOLDED_FRACTION` — Summary
 The largest move of a tick, as a share of the picture's diagonal, under which a picture unfolding from nothing has
@@ -217,7 +260,7 @@ hundredth of the picture's size, they would stay far too small (measured 2026-10
 
 #### `spatialFieldOf` {#symbol-spatialfieldof}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L257)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L324)
 - Returns: [`SpatialField`](./forceGraphPhysics.ts.mdmd.md#symbol-spatialfield)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `node`: `N`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -227,10 +270,11 @@ The field of a picture: its spheres' radii, a spring on each link that pulls in 
 strength ruled above, and the tuning's repulsion with its reach and approximation, gravity, collision gap and tether.
 Links whose ends are not among the nodes are left out, as D3 would refuse them. A sphere's radius in the field is its
 own, or the larger that `clearance` asks for it: a wrapped group's seed keeps the room its wrapper takes (2026-11-05).
+A directory shell's contacts are soft (`SHELL_SOFTNESS`, 2026-11-06); a picture without shells is the field it was.
 
 #### `MotionStart` {#symbol-motionstart}
 - Type: type
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L285)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L354)
 
 ##### `MotionStart` — Summary
 How a motion begins: held from where the spheres stand, for a change of what is shown or a hand, so that the picture
@@ -239,7 +283,7 @@ forces, which rearrange the whole and leave the old places no reference.
 
 #### `MotionForce (interface)` {#symbol-motionforce-interface}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L288)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L357)
 - Extends: `Force`
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
@@ -248,7 +292,7 @@ The one force that moves the 3D picture, with what the page asks of it.
 
 #### `MotionSource` {#symbol-motionsource}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L302)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L371)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
 
 ##### `MotionSource` — Summary
@@ -256,7 +300,7 @@ What the motion force reads at every tick.
 
 #### `motionForce (function)` {#symbol-motionforce-function}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L339)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L408)
 - Returns: [`MotionForce`](#symbol-motionforce-interface)
 - Parameters: `source`: [`MotionSource`](#symbol-motionsource)
 - Constraints: [`SpatialNode`](#symbol-spatialnode)
@@ -274,14 +318,14 @@ its last part (2026-10-28); the spheres are written back after every part, so th
 
 #### `EaseOptions` {#symbol-easeoptions}
 - Type: interface
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L432)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L501)
 
 ##### `EaseOptions` — Summary
 How a headless easing runs: its constant strength, how it begins, and the most ticks it may take.
 
 #### `easeSpatialLayout` {#symbol-easespatiallayout}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L457)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphLayout.ts#L526)
 - Parameters: `tuning`: [`ForceGraphTuning`](../types.ts.mdmd.md#symbol-forcegraphtuning); `layout`: [`SpatialLayout`](../types.ts.mdmd.md#symbol-spatiallayout); `_unnamed_`: [`EaseOptions`](#symbol-easeoptions)
 
 ##### `easeSpatialLayout` — Summary

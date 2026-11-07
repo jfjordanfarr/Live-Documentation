@@ -1,0 +1,55 @@
+loaded in 0.3 s; shown 255 shells 10 islands 41
+packages/engine/src                           139 r1   73.9 now  114.0 x 1.54 hull 119.5 files drawn 139 bubbles 7 veiled 0 depth 2 65.3 ms hull 7.4 ms
+packages/explorer/src                          75 r1   58.0 now  111.6 x 1.92 hull 117.8 files drawn 75 bubbles 9 veiled 0 depth 3 5.4 ms hull 1.7 ms
+tests/e2e                                      42 r1   44.2 now   35.0 x 0.79 hull 35.4 files drawn 42 bubbles 0 veiled 0 depth 0 27.9 ms hull 7.6 ms
+tests/integration/live-docs                    19 r1   36.4 now   29.4 x 0.81 hull 29.7 files drawn 19 bubbles 0 veiled 0 depth 0 1.4 ms hull 2.6 ms
+scripts/live-docs                              13 r1   32.5 now   35.4 x 1.09 hull 37.2 files drawn 13 bubbles 1 veiled 0 depth 1 5.7 ms hull 2.9 ms
+scripts/slopcop                                11 r1   31.2 now   27.2 x 0.87 hull 27.8 files drawn 11 bubbles 0 veiled 0 depth 0 4.0 ms hull 2.9 ms
+scripts/oracle                                  9 r1   31.7 now   28.1 x 0.88 hull 28.9 files drawn 9 bubbles 0 veiled 0 depth 0 4.2 ms hull 2.3 ms
+scripts/layout-lab                              8 r1   29.3 now   25.5 x 0.87 hull 26.1 files drawn 8 bubbles 0 veiled 0 depth 0 0.3 ms hull 3.6 ms
+packages/generator/src                          5 r1   23.2 now   28.6 x 1.23 hull 29.9 files drawn 5 bubbles 1 veiled 0 depth 1 0.3 ms hull 2.0 ms
+scripts/doc-tools                               4 r1   23.3 now   20.6 x 0.88 hull 21.4 files drawn 4 bubbles 0 veiled 0 depth 0 0.2 ms hull 3.4 ms
+all shells built in 115 ms
+island tegration/programs/rosetta-manifest.json 102 room r1 24.7 now 66.1
+island harp/estate/expected/compiler-edges.json 33 room r1 18.8 now 41.7
+island ms/go/depot/expected/compiler-edges.json 15 room r1 15.9 now 32.8
+island lopcop-assets/workspace/pages/index.html 14 room r1 15.6 now 24.1
+island thon/ledger/expected/compiler-edges.json 14 room r1 15.6 now 32.9
+islands 41 built in 24 ms
+loaded in 0.0 s; shown 19 shells 2 islands 1
+Portal                                         10 r1   31.9 now   43.0 x 1.35 hull 44.4 files drawn 10 bubbles 2 veiled 0 depth 1 7.2 ms hull 5.1 ms
+Gateway                                         2 r1   19.2 now   18.6 x 0.97 hull 19.2 files drawn 2 bubbles 0 veiled 0 depth 0 3.1 ms hull 6.3 ms
+all shells built in 10 ms
+island Contracts/Contracts.csproj               4 room r1 12.3 now 22.6
+islands 1 built in 1 ms
+loaded in 0.3 s; shown 111 shells 9 islands 41
+tests/integration/programs/csharp/rosetta      12 r1   34.9 now   68.0 x 1.95 hull 72.2 files drawn 12 bubbles 5 veiled 0 depth 2 2.6 ms hull 3.6 ms
+tests/integration/programs/java/rosetta        12 r1   34.7 now   67.7 x 1.95 hull 71.9 files drawn 12 bubbles 5 veiled 0 depth 2 1.7 ms hull 1.6 ms
+tests/integration/programs/c/rosetta           11 r1   33.8 now   39.2 x 1.16 hull 41.5 files drawn 11 bubbles 1 veiled 0 depth 1 12.6 ms hull 5.6 ms
+tests/integration/programs/cpp/rosetta         11 r1   33.8 now   38.3 x 1.13 hull 40.5 files drawn 11 bubbles 1 veiled 0 depth 1 4.9 ms hull 2.1 ms
+tests/integration/programs/go/rosetta           8 r1   30.9 now   51.2 x 1.66 hull 54.2 files drawn 8 bubbles 3 veiled 0 depth 2 1.1 ms hull 1.4 ms
+tests/integration/programs/rust/rosetta         8 r1   29.7 now   34.7 x 1.17 hull 36.5 files drawn 8 bubbles 1 veiled 0 depth 1 1.5 ms hull 1.1 ms
+ts/integration/programs/typescript/rosetta      8 r1   27.0 now   32.5 x 1.21 hull 34.2 files drawn 8 bubbles 1 veiled 0 depth 1 1.7 ms hull 1.2 ms
+ts/integration/programs/python/rosetta/src      7 r1   31.3 now   28.7 x 0.92 hull 29.3 files drawn 7 bubbles 0 veiled 0 depth 0 1.4 ms hull 3.0 ms
+tests/integration/programs/ruby/rosetta         7 r1   28.6 now   44.1 x 1.54 hull 45.9 files drawn 7 bubbles 2 veiled 0 depth 1 1.0 ms hull 1.2 ms
+all shells built in 28 ms
+island ne/src/config/liveDocumentationConfig.ts 487 room r1 37.5 now 97.6
+island harp/estate/expected/compiler-edges.json 33 room r1 18.8 now 41.7
+island ms/go/depot/expected/compiler-edges.json 15 room r1 15.9 now 32.8
+island lopcop-assets/workspace/pages/index.html 14 room r1 15.6 now 24.1
+island thon/ledger/expected/compiler-edges.json 14 room r1 15.6 now 32.9
+islands 41 built in 335 ms
+loaded in 7.8 s; shown 6648 shells 43 islands 679
+.repos/alchemy-effect                       13095 r1  346.3 now 1686.1 x 4.87 hull 1782.0 files drawn 1024 bubbles 288 veiled 31 depth 3 1546.5 ms hull 4.5 ms
+apps/web                                     1547 r1  161.2 now  262.8 x 1.63 hull 279.3 files drawn 983 bubbles 39 veiled 3 depth 4 185.1 ms hull 2.3 ms
+apps/server                                  1215 r1  151.2 now  301.7 x 2.00 hull 320.4 files drawn 1023 bubbles 139 veiled 77 depth 5 100.8 ms hull 1.7 ms
+apps/mobile                                  1142 r1  145.3 now  252.9 x 1.74 hull 268.6 files drawn 969 bubbles 46 veiled 1 depth 5 111.8 ms hull 2.8 ms
+.repos/effect-smol                            972 r1  183.1 now  584.5 x 3.19 hull 623.2 files drawn 972 bubbles 137 veiled 0 depth 6 103.0 ms hull 4.2 ms
+packages/client-runtime                       318 r1   99.1 now  140.3 x 1.42 hull 149.5 files drawn 318 bubbles 14 veiled 0 depth 2 40.5 ms hull 0.8 ms
+all shells built in 2214 ms
+island oxlint-plugin-t3code/index.ts            64 room r1 22.0 now 73.2
+island pServer/McpConformance/McpConformance.ts 34 room r1 19.0 now 37.1
+island /packages/effect/runtimeperf/config.json 31 room r1 18.6 now 51.3
+island ages/alchemy/test/AWS/ApiGateway/Test.ts 25 room r1 17.7 now 29.9
+island kages/alchemy/test/GCP/Dataplex/quota.ts 25 room r1 17.7 now 28.6
+islands 679 built in 97 ms

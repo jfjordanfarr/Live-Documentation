@@ -6,7 +6,7 @@ import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { GroupWrappers } from "../../packages/explorer/src/client/types";
 import { spatialGraphOf } from "../../packages/explorer/src/client/views/forceGraphData";
-import { linkPulls, shellRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
+import { linkPulls, spatialNodeRadius } from "../../packages/explorer/src/client/views/forceGraphLayout";
 import { connectedNeighbours, spatialScope } from "../../packages/explorer/src/client/views/forceGraphScope";
 import { shellPicture, type ShellPicture } from "../../packages/explorer/src/client/views/forceGraphShells";
 
@@ -92,6 +92,67 @@ async function screenOf(page: Page, id: string, radius: number): Promise<{ x: nu
   }, [id, radius] as const);
 }
 
+/**
+ * A shell's skin as the page draws it, read from the wrappers' mesh alone: its centre, the shell's place among the drawn
+ * spheres' data; the skin, the group of the mesh's vertices that stands nearest it; its drawn radius, the farthest of
+ * those vertices from the centre; and its opacity.
+ */
+async function skinOf(page: Page, id: string): Promise<{ centre: { x: number; y: number; z: number }; radius: number; alpha: number } | null> {
+  return page.evaluate(wanted => {
+    type Attribute = { count: number; getX(i: number): number; getY(i: number): number; getZ(i: number): number };
+    type Object3D = { name: string; visible: boolean; userData: Record<string, unknown>; geometry?: { getAttribute(name: string): Attribute | undefined } };
+    const observed = (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: Object3D) => void): void } } }).renderedGraph;
+    let centre: { x: number; y: number; z: number } | null = null, mesh: Object3D | null = null;
+    observed.scene.traverse(object => {
+      const batch = object.userData.spatialBatch as { kind: string; entries: Array<{ data: { id: string; x: number; y: number; z: number } }> } | undefined;
+      if (batch?.kind === "nodes") for (const { data } of batch.entries) if (data.id === wanted) centre = { x: data.x, y: data.y, z: data.z };
+      if (object.name === "Spatial wrappers") mesh = object;
+    });
+    const at = centre as { x: number; y: number; z: number } | null, skin = mesh as Object3D | null;
+    if (!at || !skin?.visible) return null;
+    const position = skin.geometry!.getAttribute("position")!, group = skin.geometry!.getAttribute("wrapperGroup")!, alpha = skin.geometry!.getAttribute("wrapperAlpha")!;
+    const sums = new Map<number, { x: number; y: number; z: number; n: number; first: number }>();
+    for (let i = 0; i < position.count; i++) {
+      const g = group.getX(i), sum = sums.get(g) ?? sums.set(g, { x: 0, y: 0, z: 0, n: 0, first: i }).get(g)!;
+      sum.x += position.getX(i); sum.y += position.getY(i); sum.z += position.getZ(i); sum.n++;
+    }
+    let nearest = -1, best = Infinity;
+    for (const [g, sum] of sums) {
+      const d = Math.hypot(sum.x / sum.n - at.x, sum.y / sum.n - at.y, sum.z / sum.n - at.z);
+      if (d < best) { best = d; nearest = g; }
+    }
+    if (nearest < 0) return null;
+    let radius = 0;
+    for (let i = 0; i < position.count; i++) if (group.getX(i) === nearest) radius = Math.max(radius, Math.hypot(position.getX(i) - at.x, position.getY(i) - at.y, position.getZ(i) - at.z));
+    return { centre: at, radius, alpha: alpha.getX(sums.get(nearest)!.first) };
+  }, id);
+}
+
+/** Every drawn node's place and body, by id, for what a pop releases. */
+async function drawnBodies(page: Page): Promise<Map<string, { x: number; y: number; z: number; radius: number }>> {
+  const tuning = getDefaultTuning().forceGraph;
+  const nodes = await page.evaluate(() => {
+    const found: Array<{ id: string; x: number; y: number; z: number; publicSymbols: string[]; shellFiles?: number; shellBody?: number }> = [];
+    (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: { userData: Record<string, unknown> }) => void): void } } }).renderedGraph.scene.traverse(object => {
+      const batch = object.userData.spatialBatch as { kind: string; entries: Array<{ data: (typeof found)[number] }> } | undefined;
+      if (batch?.kind === "nodes") for (const { data } of batch.entries) found.push({ id: data.id, x: data.x, y: data.y, z: data.z, publicSymbols: data.publicSymbols, shellFiles: data.shellFiles, shellBody: data.shellBody });
+    });
+    return found;
+  });
+  return new Map(nodes.map(node => [node.id, { x: node.x, y: node.y, z: node.z, radius: spatialNodeRadius(node, tuning) }]));
+}
+
+/** What the shells' skins show within them, as the page draws it: each unit's shell, place, body and kind. */
+async function shownUnits(page: Page): Promise<Array<{ seed: string; id: string; kind: string; x: number; y: number; z: number; radius: number; depth?: number; parent?: string; veiled?: boolean }>> {
+  return page.evaluate(() => {
+    const found: Array<{ seed: string; id: string; kind: string; x: number; y: number; z: number; radius: number; depth?: number; parent?: string; veiled?: boolean }> = [];
+    (window as unknown as { renderedGraph: { scene: { traverse(visit: (object: { name: string; visible: boolean; userData: Record<string, unknown> }) => void): void } } }).renderedGraph.scene.traverse(object => {
+      if ((object.name === "Spatial shell files" || object.name === "Spatial shell balloons") && object.visible) found.push(...object.userData.spatialUnits as typeof found);
+    });
+    return found;
+  });
+}
+
 const legendRow = (page: Page, label: RegExp) => page.locator("#spatial-legend .legend-row").filter({ hasText: label });
 const SHELL_ROW = /^Shell: N files of a directory; click to open it$/;
 
@@ -138,7 +199,7 @@ test("a click pops a shell into its own files and a shell of a subdirectory, and
   await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
   await expect.poll(async () => (await drawnShells(page)).wrapped).toContain(portal.id);
   // Aim at the shell where the pointer names it: its centre, or a point within its body when a sphere stands in front.
-  const radius = shellRadius(portal.files.length, getDefaultTuning().forceGraph);
+  const radius = (await drawnBodies(page)).get(portal.id)!.radius;
   const at = (await screenOf(page, portal.id, radius))!;
   const named = page.locator(`.force-graph-label[data-node-id="${portal.id}"]:not([hidden])`);
   let aimed: { x: number; y: number } | null = null;
@@ -166,4 +227,116 @@ test("a click pops a shell into its own files and a shell of a subdirectory, and
   const wrapped = await drawnShells(page);
   for (const id of after.released) expect(wrapped.nodes, id).not.toContain(id);
   await expect(chip).toHaveCount(0);
+});
+
+/**
+ * A shell as a true stand-in for what it holds (2026-11-06, the owner on November 6: "a computed mesh which is a stand-in
+ * for many many many nodes underneath it", [Turn 3 of the November 6 record](../../AI-Agent-Workspace/ChatHistory/2026/11/2026-11-06.1.record.md#turn-3)):
+ * in the foreground, as large as what it holds, showing within its skin what a pop releases, and leaving it standing
+ * there at the frame of the pop. On the estate one directory deep, whose portal holds its own files and two
+ * subdirectories' shells.
+ */
+async function portalShell(page: Page): Promise<{ portal: ShellPicture["shells"][number]; releases: string[]; files: string[]; balloons: number }> {
+  await observeGraph(page);
+  await choose(page, "skin", 1);
+  await page.goto(entry("/samples/estate/", ESTATE_PIN));
+  const before = await expectedShells(page, "/samples/estate/", ESTATE_PIN, 1);
+  const after = await expectedShells(page, "/samples/estate/", ESTATE_PIN, 1, ["Portal"]);
+  const portal = before.shells.find(shell => shell.directory === "Portal")!;
+  // What its pop releases: its files that enter the picture, and its subdirectories' shells.
+  const files = after.released.filter(id => portal.files.includes(id)), shells = after.shells.filter(shell => shell.directory.startsWith("Portal/")).map(shell => shell.id);
+  expect(files.length && shells.length, "the portal's pop releases files and shells").toBeTruthy();
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 25_000 });
+  await expect.poll(async () => (await drawnShells(page)).wrapped).toContain(portal.id);
+  return { portal, releases: [...files, ...shells], files, balloons: shells.length };
+}
+
+test("a shell is as bright as a shown file, and its skin shows within it every file it holds, in its bubbles, apart", async ({ page }) => {
+  const { portal, balloons } = await portalShell(page);
+  // Nothing has the attention: the skin is as opaque as a shown sphere, not dimmed as a hop beyond, and so is its name.
+  const skin = (await skinOf(page, portal.id))!;
+  expect(skin.alpha).toBe(1);
+  const label = page.locator(`.force-graph-label[data-node-id="${portal.id}"]`);
+  await expect(label).toHaveAttribute("data-context", "false");
+  expect(await label.evaluate(element => getComputedStyle(element).opacity)).toBe("1");
+  await expect(label).toHaveText(`Portal · ${portal.files.length}`);
+  // From the leaves (2026-11-06, second round): as many spheres within the skin as its name counts, every one of its files,
+  // each subdirectory's bubble one level in, and the bubbles inside the skin and apart from each other.
+  const units = (await shownUnits(page)).filter(unit => unit.seed === portal.id);
+  expect(units.filter(unit => unit.kind === "file").map(unit => unit.id).sort()).toEqual([...portal.files].sort());
+  const bubbles = units.filter(unit => unit.kind === "directory");
+  expect(bubbles.filter(unit => unit.depth === 0)).toHaveLength(balloons);
+  for (const unit of units) {
+    expect(Math.hypot(unit.x - skin.centre.x, unit.y - skin.centre.y, unit.z - skin.centre.z) + unit.radius, unit.id).toBeLessThanOrEqual(skin.radius + 1e-3);
+    const parent = bubbles.find(bubble => bubble.id === unit.parent);
+    if (parent) expect(Math.hypot(unit.x - parent.x, unit.y - parent.y, unit.z - parent.z) + unit.radius, `${unit.id} within ${parent.id}`).toBeLessThanOrEqual(parent.radius + 1e-3);
+  }
+  const gap = getDefaultTuning().forceGraph.collisionGap;
+  for (const [i, a] of bubbles.entries()) for (const b of bubbles.slice(i + 1)) {
+    if (a.parent === b.parent) expect(Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z), `${a.id} apart from ${b.id}`).toBeGreaterThanOrEqual(a.radius + b.radius + gap - gap / 100);
+  }
+});
+
+test("a pop leaves standing at its frame what the skin showed: every unit it releases inside the skin, its bubbles as shells of their size", async ({ page }) => {
+  await page.clock.install();
+  const { portal, releases } = await portalShell(page);
+  const skin = (await skinOf(page, portal.id))!;
+  const shown = (await shownUnits(page)).filter(unit => unit.seed === portal.id && (unit.depth ?? 0) === 0);
+  // The page's clock stops at the pop and goes one frame on: the frame of the pop is the page's own first after it.
+  await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 1000);
+  await page.locator(`.force-graph-label[data-node-id="${portal.id}"]`).evaluate(element => (element as HTMLElement).click());
+  await page.clock.runFor(20);
+  const bodies = await drawnBodies(page);
+  // Born where the skin showed it, each unit has had the frame's one tick of motion, which may carry it a little.
+  const tick = getDefaultTuning().forceGraph.collisionGap;
+  const reaches = releases.map(id => {
+    const body = bodies.get(id);
+    expect(body, `${id} stands at the frame of the pop`).toBeDefined();
+    // A file is shown by its id, a subdirectory's shell as the bubble of its directory.
+    const unit = shown.find(item => item.id === id || `shell:${item.id}` === id);
+    expect(unit, `${id} was shown within the skin`).toBeDefined();
+    expect(Math.hypot(body!.x - unit!.x, body!.y - unit!.y, body!.z - unit!.z), `${id} stands where it was shown`).toBeLessThan(tick);
+    if (unit!.kind === "directory") expect(body!.radius, `${id} is a shell as large as its bubble was`).toBeCloseTo(unit!.radius, 6);
+    const reach = Math.hypot(body!.x - skin.centre.x, body!.y - skin.centre.y, body!.z - skin.centre.z) + body!.radius;
+    expect(reach, `${id} stands inside the skin`).toBeLessThanOrEqual(skin.radius + tick);
+    return reach;
+  });
+  // The skin was drawn as large as what it held: what it releases reaches out to it.
+  expect(Math.max(...reaches)).toBeGreaterThan(0.8 * skin.radius);
+  await page.clock.resume();
+});
+
+/**
+ * A chain of directories holding one subdirectory each collapses into what it holds (2026-11-06, second round): in this
+ * repository pinned on the rosetta manifest at one hop, four directories deep, the Java program's shell holds its
+ * `pom.xml` and the bubble of `src/com/rosetta`, four bubbles and a lone file inside it, so that its pop leaves two things, never one shell
+ * named `src` holding all.
+ */
+test("a shell over a chain shows every file it holds, and its pop leaves more than one thing: the chain's bubble as a shell of its size", async ({ page }) => {
+  test.setTimeout(240_000);
+  const pin = "tests/integration/programs/rosetta-manifest.json", java = "tests/integration/programs/java/rosetta";
+  await observeGraph(page);
+  await page.addInitScript(([key, version]) => {
+    localStorage.setItem(key, JSON.stringify({ version, tuning: { localMap: { searchStarts: 0 }, forceGraph: { groupWrappers: "skin", shellDepth: 4, hops: 1 } } }));
+  }, [PERSISTED_UI_KEY, PERSISTED_UI_VERSION] as const);
+  await page.clock.install();
+  await page.goto(entry("/", pin));
+  await expect(page.locator("#graph-svg")).toHaveAttribute("aria-busy", "false", { timeout: 200_000 });
+  const id = `shell:${java}`;
+  await expect.poll(async () => (await shownUnits(page)).filter(unit => unit.seed === id && unit.kind === "file").length, { timeout: 10_000 }).toBe(12);
+  const units = (await shownUnits(page)).filter(unit => unit.seed === id);
+  const chain = units.find(unit => unit.kind === "directory" && unit.depth === 0)!;
+  expect(chain.id).toBe(`${java}/src/com/rosetta`);
+  // Its five subdirectories: four bubbles, and `app`, whose one file is that file.
+  expect(units.filter(unit => unit.kind === "directory" && unit.parent === chain.id)).toHaveLength(4);
+  expect(units.filter(unit => unit.kind === "file" && unit.parent === chain.id).map(unit => unit.id)).toEqual([`${java}/src/com/rosetta/app/PipelineTest.java`]);
+  await expect(page.locator(`.force-graph-label[data-node-id="${id}"]`)).toHaveText(/ · 12$/);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 1000);
+  await page.locator(`.force-graph-label[data-node-id="${id}"]`).evaluate(element => (element as HTMLElement).click());
+  await page.clock.runFor(20);
+  const bodies = await drawnBodies(page);
+  expect(bodies.has(`${java}/pom.xml`), "the pom stands").toBe(true);
+  expect(bodies.get(`shell:${chain.id}`)?.radius, "the chain's bubble stands as a shell of its size").toBeCloseTo(chain.radius, 6);
+  expect(bodies.has(`shell:${java}/src`), "no shell named src holds all").toBe(false);
+  await page.clock.resume();
 });

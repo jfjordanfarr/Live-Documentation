@@ -2,7 +2,7 @@ import { forceLink, forceSimulation } from "d3-force-3d";
 import { describe, expect, it } from "vitest";
 
 import { applyLayoutPreset } from "../layout-presets";
-import { easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
+import { COLLISION_STIFFNESS, easeSpatialLayout, linkPulls, motionForce, placeNewSpheres, QUIET_TICKS, seededDirection, SHELL_SOFTNESS, spatialFieldOf, spatialLinkDistance, spatialNodeRadius, spatialNodeValue, springStrength, symbolCountOf, type PlaceableNode, type SpatialLink, type SpatialNode } from "./forceGraphLayout";
 import { diagonalOf } from "./forceGraphPhysics";
 import { getDefaultTuning } from "../persistence/local-storage";
 import type { ForceGraphTuning } from "../types";
@@ -266,6 +266,41 @@ describe("a sphere's clearance, the room a wrapped group's seed keeps (2026-11-0
     own.forces(at, plain); roomy.forces(at, wrapped);
     expect(plain[0]).toBe(0);
     expect(wrapped[0], "the wrapped seed is pushed away from its neighbour").toBeLessThan(0);
+  });
+});
+
+describe("a directory shell in the field (2026-11-06)", () => {
+  const tuning = { ...getDefaultTuning().forceGraph, charge: 0, gravity: 0, tether: 0 };
+  const shell = (id: string, files: number): SpatialNode => ({ id, publicSymbols: [], shellFiles: files });
+
+  it("is soft: a sphere closer than their clearance is pushed back by its share of the collision, its stiffness less, and a picture without shells is the field it was", () => {
+    const files: SpatialNode[] = [node("a", 1), node("b", 1)];
+    const plain = spatialFieldOf(files, [], tuning, "connections");
+    expect(plain.softness, "no shell, no softness").toBeUndefined();
+    const radius = spatialNodeRadius(shell("shell:s", 20), tuning);
+    const soft = spatialFieldOf([shell("shell:s", 20), node("b", 1)], [], tuning, "connections");
+    expect(Array.from(soft.softness!)).toEqual([SHELL_SOFTNESS, 1]);
+    // Two files and a file against the shell, each pair one unit inside its clearance.
+    const gap = tuning.collisionGap, r = spatialNodeRadius(node("b", 1), tuning);
+    const between = (field: typeof plain, apart: number) => { const out = new Float64Array(6); const reading = field.forces(Float64Array.from([0, 0, 0, apart, 0, 0]), out); return { push: out[3], stiffness: reading.stiffness }; };
+    const hard = between(plain, 2 * r + gap - 1), gentle = between(soft, radius + r + gap - 1);
+    expect(hard.push).toBeCloseTo(COLLISION_STIFFNESS, 9);
+    expect(gentle.push).toBeCloseTo(COLLISION_STIFFNESS * SHELL_SOFTNESS, 9);
+    expect(gentle.stiffness).toBeLessThan(hard.stiffness);
+  });
+
+  it("is born outside the placed mass, on the side of the files it is wired to, clear of the farthest sphere that way", () => {
+    const mass: Array<SpatialNode & PlaceableNode> = [-60, -30, 0, 30, 60].map((x, i) => ({ ...node(`m${i}`, 0), x, y: 0, z: 0 }));
+    const born = shell("shell:s", 30);
+    const links: SpatialLink[] = [{ source: "m3", target: "shell:s", count: 4 }, { source: "m4", target: "shell:s", count: 1 }];
+    const start = placeNewSpheres([...mass, born], links, tuning, "connections").get("shell:s")!;
+    // The mass's centroid is the origin, its wired files to the right: the shell stands on the x axis beyond the farthest file.
+    expect(start.y).toBeCloseTo(0, 9); expect(start.z).toBeCloseTo(0, 9);
+    expect(start.x).toBeCloseTo(60 + spatialNodeRadius(mass[4], tuning) + tuning.collisionGap + spatialNodeRadius(born, tuning), 9);
+    // A file in its place is born beside what it is wired to, as before.
+    const file = { ...node("f", 0) };
+    const beside = placeNewSpheres([...mass, file], links.map(link => ({ ...link, target: "f" })), tuning, "connections").get("f")!;
+    expect(distance(beside, { x: 45, y: 0, z: 0 })).toBeLessThan(80);
   });
 });
 

@@ -1,0 +1,15 @@
+{
+ "url": "http://127.0.0.1:8912/samples/t3-code/?s=N4IgbiBcDMA0IEcomgE",
+ "frames": 127,
+ "seconds": 153.58,
+ "spheres": 6648,
+ "skins": 0,
+ "filesDrawnWithin": 0,
+ "counts": [],
+ "pops": [],
+ "frameMs": {
+  "median": 1249.9,
+  "mean": 1333.3,
+  "frames": 10
+ }
+}

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import type { FileConnection } from "./fileConnections";
-import { linkPulls, shellRadius, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
+import { linkPulls, shellRadiusOf, spatialNodeRadius, type SpatialLink } from "./forceGraphLayout";
 import { connectedNeighbours, spatialScope, type StartableNode } from "./forceGraphScope";
-import { bodyShape, directoryAt, OUTER_LAYER, packingRadius, partitionHidden, phantomShape, poppedAfter, shellDirectory, shellId, shellPicture, type ShellPartition } from "./forceGraphShells";
-import { wrapperHull, wrapperPadding, type WrapperHull } from "./forceGraphWrappers";
+import { bodyGaps, bodyShape, directoryAt, DRAWN_FILES, packBall, partitionHidden, poppedAfter, shellDirectory, shellId, shellPicture, type ShellPartition } from "./forceGraphShells";
+import { wrapperHull, type WrapperHull } from "./forceGraphWrappers";
 import { getDefaultTuning } from "../persistence/local-storage";
 
 const tuning = getDefaultTuning().forceGraph;
@@ -191,75 +191,131 @@ function farthestBeyond(hull: WrapperHull, x: number, y: number, z: number): num
   return worst;
 }
 
-describe("a shell's body and its phantom packing", () => {
-  const padding = wrapperPadding(tuning);
+describe("a ball of spheres packed apart (2026-11-06, second round)", () => {
+  const spheres = (count: number, big = 0): Array<{ id: string; radius: number }> =>
+    Array.from({ length: count }, (_, i) => ({ id: `u${String(i).padStart(4, "0")}`, radius: i < big ? 30 + 7 * i : 4 + ((i * 7919) % 13) * 0.7 }));
+  const shortfall = (units: ReadonlyArray<{ id: string; radius: number }>, places: Map<string, { x: number; y: number; z: number }>, gap: number): number => {
+    let worst = 0;
+    for (let i = 0; i < units.length; i++) for (let j = i + 1; j < units.length; j++) {
+      const a = places.get(units[i].id)!, b = places.get(units[j].id)!;
+      worst = Math.max(worst, units[i].radius + units[j].radius + gap - Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z));
+    }
+    return worst;
+  };
 
-  it("grows with the cube root of its files from a file with no symbols, and its children's volumes fit its own", () => {
-    expect(shellRadius(1, tuning)).toBeCloseTo(spatialNodeRadius(file("x"), tuning), 9);
-    expect(shellRadius(27, tuning)).toBeCloseTo(3 * shellRadius(1, tuning), 9);
-    expect(shellRadius(3, tuning) ** 3 + shellRadius(7, tuning) ** 3).toBeCloseTo(shellRadius(10, tuning) ** 3, 6);
-    // A shell node is sized by its files, in the field and on screen alike; its packing takes the files in their padding.
-    expect(spatialNodeRadius({ id: "shell:a", publicSymbols: [], shellFiles: 64 }, tuning)).toBe(shellRadius(64, tuning));
-    expect(packingRadius(8, tuning, padding)).toBeCloseTo(2 * (tuning.nodeSize + padding), 9);
-  });
-
-  for (const count of [2, 7, OUTER_LAYER + 1, 300]) {
-    it(`packs ${count} files the same every time, inside the packing, every one padded within the hull`, () => {
-      const files = Array.from({ length: count }, (_, i) => file(`d/f${String(i).padStart(3, "0")}.ts`, (i * 7) % 11));
-      const shape = bodyShape("shell:d", files, tuning, padding);
-      expect(bodyShape("shell:d", [...files].reverse(), tuning, padding)).toEqual(shape);
-      expect(shape.members.map(member => member.id).sort()).toEqual(files.map(node => node.id));
-      const body = packingRadius(count, tuning, padding);
-      const hull = wrapperHull(shape, padding);
-      // Drawn to fit the shell's body, the hull shrinks toward it, never grows.
-      expect(shellRadius(count, tuning) / hull.radius).toBeLessThan(1);
-      for (const member of shape.members) {
-        const out = Math.hypot(member.x, member.y, member.z);
-        // A member stands where its padded sphere fits the body, at the centre when the body is too small for it.
-        if (member.radius + padding <= body) expect(out + member.radius + padding, member.id).toBeLessThanOrEqual(body + 1e-9);
-        else expect(out, member.id).toBe(0);
-        expect(farthestBeyond(hull, member.x, member.y, member.z) + member.radius + padding, member.id).toBeLessThanOrEqual(1e-6);
-      }
-      // Lumpy, not a gem: the members stand at many depths, not on one sphere.
-      const depths = shape.members.map(member => Math.hypot(member.x, member.y, member.z));
-      expect(Math.max(...depths) - Math.min(...depths)).toBeGreaterThan(0.05 * body);
+  for (const [count, big] of [[1, 0], [2, 2], [7, 3], [40, 2], [120, 0]] as const) {
+    it(`keeps ${count} spheres apart by the gap, held by its extent, the same whatever their order`, () => {
+      const units = spheres(count, big), { places, extent } = packBall(units, 5);
+      expect(shortfall(units, places, 5)).toBeLessThanOrEqual(5 / 100);
+      for (const unit of units) { const at = places.get(unit.id)!; expect(Math.hypot(at.x, at.y, at.z) + unit.radius).toBeLessThanOrEqual(extent + 1e-9); }
+      expect(packBall([...units].reverse(), 5)).toEqual({ places, extent });
     });
   }
 
-  it("packs a shell's subdirectories each together, inside the packing, its own files alone, so a pop's shells are born where their files stood", () => {
-    const files = [...Array.from({ length: 6 }, (_, i) => file(`p/models/m${i}.ts`, i)), ...Array.from({ length: 3 }, (_, i) => file(`p/pages/deep/q${i}.ts`)),
-      file("p/own.ts", 4), file("p/other.ts")];
-    const shape = bodyShape("shell:p", files, tuning, padding, undefined, "p");
-    const byId = (members: readonly { id: string }[]) => [...members].sort((a, b) => (a.id < b.id ? -1 : 1));
-    const reversed = bodyShape("shell:p", [...files].reverse(), tuning, padding, undefined, "p");
-    expect(byId(reversed.members)).toEqual(byId(shape.members));
-    expect(byId(reversed.outline!)).toEqual(byId(shape.outline!));
-    const body = packingRadius(files.length, tuning, padding), hull = wrapperHull(shape, padding);
-    const at = new Map(shape.members.map(member => [member.id, member]));
-    for (const member of shape.members) {
-      expect(Math.hypot(member.x, member.y, member.z) + member.radius + padding, member.id).toBeLessThanOrEqual(body + 1e-9);
-      expect(farthestBeyond(hull, member.x, member.y, member.z) + member.radius + padding, member.id).toBeLessThanOrEqual(1e-6);
-    }
-    // Each subdirectory's files stand within its own ball about their centroid, at its centre, and the two balls stand apart.
-    const centroid = (prefix: string): { x: number; y: number; z: number } => {
-      const members = shape.members.filter(member => member.id.startsWith(prefix));
-      return { x: members.reduce((s, m) => s + m.x, 0) / members.length, y: members.reduce((s, m) => s + m.y, 0) / members.length, z: members.reduce((s, m) => s + m.z, 0) / members.length };
-    };
-    const models = centroid("p/models/"), pages = centroid("p/pages/");
-    for (const [prefix, centre, count] of [["p/models/", models, 6], ["p/pages/", pages, 3]] as const) {
-      for (const member of shape.members.filter(m => m.id.startsWith(prefix))) {
-        expect(Math.hypot(member.x - centre.x, member.y - centre.y, member.z - centre.z) + member.radius, member.id).toBeLessThanOrEqual(packingRadius(count, tuning, padding) + 1e-6);
-      }
-    }
-    expect(Math.hypot(models.x - pages.x, models.y - pages.y, models.z - pages.z)).toBeGreaterThan(0.5 * packingRadius(3, tuning, padding));
-    expect(at.get("p/own.ts")).toBeDefined();
-    // The hull is taken over the subdirectories' balls and the shell's own files: four spheres, not eleven.
-    expect(shape.outline?.length).toBe(4);
+  it("is compact: spheres of mixed sizes fill a good share of the ball, and a small one stands beside a large one, not around it", () => {
+    const units = spheres(120), { extent } = packBall(units, 5);
+    const volume = units.reduce((sum, unit) => sum + (unit.radius + 2.5) ** 3, 0);
+    expect(volume / extent ** 3).toBeGreaterThan(0.35);
+    // One large and one small: the ball that holds them is no larger than the two side by side.
+    const pair = packBall([{ id: "large", radius: 40 }, { id: "small", radius: 10 }], 5);
+    expect(pair.extent).toBeLessThanOrEqual((40 + 10 + 2.5) * 1.002);
   });
 
-  it("stands a group's seed at its centre, the rest about it", () => {
-    const shape = phantomShape("seed", [{ id: "b", radius: 4 }, { id: "seed", radius: 6 }, { id: "a", radius: 4 }], 30, padding, "seed");
-    expect(shape.members.find(member => member.id === "seed")).toEqual({ id: "seed", x: 0, y: 0, z: 0, radius: 6 });
-    for (const member of shape.members.filter(member => member.id !== "seed")) expect(Math.hypot(member.x, member.y, member.z)).toBeGreaterThan(0);
+  it("stands a sphere named the centre at the origin", () => {
+    const units = spheres(30), { places } = packBall(units, 5, units[7].id);
+    expect(places.get(units[7].id)).toEqual({ x: 0, y: 0, z: 0 });
+    expect(shortfall(units, places, 5)).toBeLessThanOrEqual(5 / 100);
+  });
+});
+
+describe("a body built from the leaves (2026-11-06, second round)", () => {
+  const gaps = bodyGaps(tuning);
+  /** A shell over a small tree: own files, a leaf directory, a chain of single directories, a lone file, and a nest two deep. */
+  const files = [file("p/own.ts", 4), file("p/other.ts"),
+    ...Array.from({ length: 5 }, (_, i) => file(`p/models/m${i}.ts`, i)),
+    file("p/chain/a/b/x.ts", 2), file("p/chain/a/b/y.ts"), file("p/chain/a/b/deep/z.ts"), file("p/chain/a/b/deep/w.ts", 9),
+    file("p/lone/only.ts", 3),
+    ...Array.from({ length: 3 }, (_, i) => file(`p/nest/inner/f${i}.ts`)), file("p/nest/n.ts", 1)];
+  const shape = bodyShape("shell:p", files, tuning, undefined, "p");
+  const units = new Map(shape.units!.map(unit => [unit.id, unit]));
+  const at = (id: string) => units.get(id)!;
+
+  it("places every file exactly once, and the result does not depend on the order the files are given in", () => {
+    expect(shape.members.map(member => member.id).sort()).toEqual(files.map(node => node.id).sort());
+    expect(shape.files).toBe(files.length);
+    const reversed = bodyShape("shell:p", [...files].reverse(), tuning, undefined, "p");
+    expect(reversed).toEqual(shape);
+  });
+
+  it("draws every file inside its innermost bubble, a lone subdirectory's file as that file, and collapses a chain into what it holds", () => {
+    expect(shape.units!.filter(unit => unit.kind === "file").map(unit => unit.id).sort()).toEqual(files.map(node => node.id).sort());
+    expect([...units.values()].filter(unit => unit.kind === "directory").map(unit => unit.id).sort())
+      .toEqual(["p/chain/a/b", "p/chain/a/b/deep", "p/models", "p/nest", "p/nest/inner"]);
+    expect(at("p/lone/only.ts")).toMatchObject({ kind: "file", depth: 0, parent: undefined });
+    expect(at("p/models/m3.ts")).toMatchObject({ parent: "p/models", depth: 1 });
+    expect(at("p/chain/a/b/deep/z.ts")).toMatchObject({ parent: "p/chain/a/b/deep", depth: 2 });
+    expect(at("p/nest/inner/f1.ts")).toMatchObject({ parent: "p/nest/inner", depth: 2 });
+    expect(at("p/nest")).toMatchObject({ files: 4, depth: 0 });
+  });
+
+  it("stands every unit inside its bubble, the bubble's units apart by the gap, and the body as large as holds them", () => {
+    const parentOf = (id: string) => at(id).parent;
+    for (const unit of units.values()) {
+      const parent = unit.parent === undefined ? { x: 0, y: 0, z: 0, radius: shape.radius! } : at(unit.parent);
+      expect(Math.hypot(unit.x - parent.x, unit.y - parent.y, unit.z - parent.z) + unit.radius + gaps.margin, unit.id).toBeLessThanOrEqual(parent.radius + 1e-6);
+    }
+    const all = [...units.values()];
+    for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length; j++) {
+      const a = all[i], b = all[j];
+      if (parentOf(a.id) !== parentOf(b.id)) continue;
+      expect(Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z), `${a.id} ${b.id}`).toBeGreaterThanOrEqual(a.radius + b.radius + gaps.gap - gaps.gap / 100);
+    }
+    // As large as holds them: some unit of the body's own reaches its skin less the margin.
+    const reach = Math.max(...all.filter(unit => unit.parent === undefined).map(unit => Math.hypot(unit.x, unit.y, unit.z) + unit.radius + gaps.margin));
+    expect(reach).toBeCloseTo(shape.radius!, 6);
+    // The skin, the hull over the body's own units padded by the margin, holds each of them whole.
+    const hull = wrapperHull(shape, shape.margin!);
+    for (const unit of all.filter(item => item.parent === undefined)) expect(farthestBeyond(hull, unit.x, unit.y, unit.z) + unit.radius, unit.id).toBeLessThanOrEqual(1e-6);
+  });
+
+  it("makes each bubble the body its directory's shell has when a pop releases it: the same size and the same places within", () => {
+    const nest = at("p/nest"), inner = files.filter(node => node.id.startsWith("p/nest/"));
+    const shell = bodyShape("shell:p/nest", inner, tuning, undefined, "p/nest");
+    expect(shell.radius).toBeCloseTo(nest.radius, 9);
+    for (const member of shell.members) {
+      const placed = shape.members.find(other => other.id === member.id)!;
+      expect(placed.x - nest.x).toBeCloseTo(member.x, 6); expect(placed.y - nest.y).toBeCloseTo(member.y, 6); expect(placed.z - nest.z).toBeCloseTo(member.z, 6);
+    }
+  });
+
+  it(`veils a bubble whose files would pass ${DRAWN_FILES}, keeping its count, and a body whose own files would`, () => {
+    const many = [...Array.from({ length: DRAWN_FILES - 2 }, (_, i) => file(`q/a/f${String(i).padStart(4, "0")}.ts`)), ...Array.from({ length: 5 }, (_, i) => file(`q/b/g${i}.ts`)), file("q/own.ts")];
+    const body = bodyShape("shell:q", many, tuning, undefined, "q");
+    expect(body.veiled).toBe(false);
+    const drawn = body.units!.filter(unit => unit.kind === "file").length, veiled = body.units!.filter(unit => unit.veiled);
+    expect(drawn).toBeLessThanOrEqual(DRAWN_FILES);
+    expect(veiled.map(unit => ({ id: unit.id, files: unit.files }))).toEqual([{ id: "q/a", files: DRAWN_FILES - 2 }]);
+    expect(body.units!.some(unit => unit.parent === "q/a")).toBe(false);
+    expect(body.members).toHaveLength(many.length);
+    const flat = bodyShape("shell:r", Array.from({ length: DRAWN_FILES + 1 }, (_, i) => file(`r/f${String(i).padStart(4, "0")}.ts`)), tuning, undefined, "r");
+    expect(flat.veiled).toBe(true);
+    expect(flat.units).toEqual([expect.objectContaining({ kind: "directory", veiled: true, files: DRAWN_FILES + 1, depth: -1 })]);
+    // Two bodies of over a thousand files each, packed whole: some seconds under the coverage run.
+  }, 30_000);
+
+  it("packs a wrapped group about its seed, every member drawn but the seed, which stands at the centre", () => {
+    const group = [file("g/seed.ts", 6), ...Array.from({ length: 12 }, (_, i) => file(`g/x/m${i}.ts`, i % 4))];
+    const island = bodyShape("g/seed.ts", group, tuning, "g/seed.ts");
+    expect(island.members.find(member => member.id === "g/seed.ts")).toEqual({ id: "g/seed.ts", x: 0, y: 0, z: 0, radius: spatialNodeRadius(group[0], tuning) });
+    expect(island.units!.map(unit => unit.id).sort()).toEqual(group.slice(1).map(node => node.id).sort());
+    expect(island.units!.every(unit => unit.kind === "file" && unit.depth === 0)).toBe(true);
+    for (const unit of island.units!) expect(Math.hypot(unit.x, unit.y, unit.z) + unit.radius + gaps.margin).toBeLessThanOrEqual(island.radius! + 1e-6);
+  });
+});
+
+describe("a shell's radius told only its count", () => {
+  it("is so many symbol-less files' padded volume, for a node whose body is not yet known", () => {
+    expect(spatialNodeRadius({ id: "shell:x", publicSymbols: [], shellFiles: 64 }, tuning)).toBeCloseTo(shellRadiusOf(Array.from({ length: 64 }, () => tuning.nodeSize), tuning), 9);
+    expect(spatialNodeRadius({ id: "shell:x", publicSymbols: [], shellFiles: 3, shellBody: 42 }, tuning)).toBe(42);
   });
 });

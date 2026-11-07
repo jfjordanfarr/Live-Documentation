@@ -1,0 +1,440 @@
+{
+ "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAdsgDgQwGMBrPA",
+ "frames": 958,
+ "seconds": 269.15,
+ "spheres": 265,
+ "skins": 51,
+ "filesDrawnWithin": 680,
+ "counts": [
+  {
+   "seed": "tests/integration/programs/csharp/estate/Contracts/Contracts.csproj",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/rust/analytics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/powershell/rollout/expected/compiler-edges.json",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/slopcop-assets/workspace/pages/index.html",
+   "holds": null,
+   "files": 13,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/src/lib.rs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/java/basic/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/csharp/estate/expected/compiler-edges.json",
+   "holds": null,
+   "files": 32,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/go/app/go.mod",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/rust/stockroom/expected/compiler-edges.json",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts/oracle",
+   "holds": 9,
+   "files": 9,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/ruby/basic/lib/reporter.rb",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/powershell-compendium/expected/compiler-edges.json",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts/doc-tools",
+   "holds": 4,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts/slopcop",
+   "holds": 11,
+   "files": 11,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/steps.mjs",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/rosetta-manifest.json",
+   "holds": null,
+   "files": 101,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/live-docs",
+   "holds": 19,
+   "files": 19,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/java/warehouse/expected/compiler-edges.json",
+   "holds": null,
+   "files": 12,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/ruby/cli/lib/commands/report.rb",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/queue-worker/workspace/Workers/TelemetryWorker.cs",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts/live-docs",
+   "holds": 13,
+   "files": 13,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/generator/src",
+   "holds": 5,
+   "files": 5,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/python/ledger/expected/compiler-edges.json",
+   "holds": null,
+   "files": 13,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/engine/src",
+   "holds": 139,
+   "files": 139,
+   "bubbles": 7,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/rust/basics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tsconfig.base.json",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/python/basics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:packages/explorer/src",
+   "holds": 75,
+   "files": 75,
+   "bubbles": 9,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/java/app/pom.xml",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/include-dirs/expected/compiler-edges.json",
+   "holds": null,
+   "files": 9,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Default.aspx",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/c/basics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/java/service/expected/compiler-edges.json",
+   "holds": null,
+   "files": 9,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:scripts/layout-lab",
+   "holds": 8,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/e2e",
+   "holds": 42,
+   "files": 42,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/typescript/layered/expected/compiler-edges.json",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/BaseWidget.cs",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/entry-points/workspace/src/lib.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/csharp/basic/expected/compiler-edges.json",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/engine/package.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/go/depot/expected/compiler-edges.json",
+   "holds": null,
+   "files": 14,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/python/pipeline/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/typescript/basic/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/c/modular/expected/compiler-edges.json",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/csharp/webforms/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  }
+ ],
+ "pops": [
+  {
+   "level": 1,
+   "shell": "shell:packages/explorer/src",
+   "files": 75,
+   "skinRadius": 117.83409530916768,
+   "body": 111.57036045439693,
+   "released": 0,
+   "matched": 0,
+   "bubblesReleased": 0,
+   "innerUnitsShown": 0,
+   "allInside": true,
+   "worstOffFromShown": 0,
+   "sizeKept": true,
+   "movedMedian": null,
+   "movedMax": null,
+   "movedMedianOfRadius": null,
+   "othersMovedMedian": 11.4,
+   "restAfterPop": {
+    "seconds": 91.5,
+    "frames": 353
+   }
+  },
+  {
+   "level": 2,
+   "shell": "shell:packages/explorer/src/client",
+   "files": 71,
+   "skinRadius": 94.32425226572104,
+   "body": 89.98279165442901,
+   "released": 0,
+   "matched": 0,
+   "bubblesReleased": 0,
+   "innerUnitsShown": 0,
+   "allInside": true,
+   "worstOffFromShown": 0,
+   "sizeKept": true,
+   "movedMedian": null,
+   "movedMax": null,
+   "movedMedianOfRadius": null,
+   "othersMovedMedian": 19.6,
+   "restAfterPop": {
+    "seconds": 137.2,
+    "frames": 576
+   }
+  },
+  {
+   "level": 3,
+   "shell": "shell:packages/explorer/src/client/views",
+   "files": 40,
+   "skinRadius": 65.60847023409708,
+   "body": 63.02610733684334,
+   "released": 0,
+   "matched": 0,
+   "bubblesReleased": 0,
+   "innerUnitsShown": 0,
+   "allInside": true,
+   "worstOffFromShown": 0,
+   "sizeKept": true,
+   "movedMedian": null,
+   "movedMax": null,
+   "movedMedianOfRadius": null,
+   "othersMovedMedian": 16.1,
+   "restAfterPop": {
+    "seconds": 116.7,
+    "frames": 484
+   }
+  }
+ ],
+ "frameMs": {
+  "median": 241,
+  "mean": 234,
+  "frames": 40
+ }
+}

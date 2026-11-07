@@ -23,6 +23,8 @@ Each was seen to fail when the code was broken on purpose (2026-10-28), fifteen 
 
 The original tests were seen to fail when the code was broken on purpose (2026-10-21): unequal spring reactions failed five, no drag three, held spheres ignored one, a reversed tether two, and a tick that dropped the anchor one. Written with the module, for the easing the owner asked to carry on "until it's stable enough to integrate" ([Turn 2](../../../../../../../AI-Agent-Workspace/ChatHistory/2026/10/2026-10-21.1.record.md#turn-2)).
 
+Since 2026-11-06 a case checks the field's softness, summed exactly and through the tree: a softness of one everywhere is the field without it to the last digit, a soft sphere's contact pushes and stores its share of a firm one's, its stiffness is less, and a softness out of bounds is refused ([the evidence](../../../../../../../AI-Agent-Workspace/Screenshots/2026-11-06/shell-mesh/README.md)).
+
 ## Generated
 <!-- LIVE-DOC:BEGIN Public Symbols -->
 ### Public Symbols

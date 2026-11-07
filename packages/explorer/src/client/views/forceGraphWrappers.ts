@@ -45,6 +45,37 @@ export interface GroupShape {
    * shell, 13,095 files, took 114 ms to wrap over its files, measured 2026-11-05).
    */
   outline?: GroupMember[];
+  /**
+   * What a body's skin shows within it (2026-11-06), relative to its centre: every file but a group's seed, each inside
+   * the innermost bubble that holds it, and every inner bubble, where a pop leaves them; a bubble whose files would pass
+   * the drawing's limit is veiled, and nothing within it is listed.
+   */
+  units?: BodyUnit[];
+  /** The body's radius, its true size: its skin is drawn at it and its node keeps it in the field (2026-11-06). */
+  radius?: number;
+  /** How far the hull stands out from the spheres it is taken over. */
+  margin?: number;
+  /** Whether the whole body is veiled, its files too many to draw. */
+  veiled?: boolean;
+  /** How many files the body holds. */
+  files?: number;
+}
+
+/** One unit a body shows within its skin: a file, or a bubble of the files of a directory below it (2026-11-06). */
+export interface BodyUnit extends GroupMember {
+  kind: "file" | "directory";
+  /** The room it keeps: a file's sphere and half the gap to its neighbours, a bubble's own radius. */
+  reach: number;
+  /** The files it holds, one for a file. */
+  files: number;
+  /** A file's kind, for its colour. */
+  archetype?: string;
+  /** How many bubbles inside the body's own skin it stands in. */
+  depth: number;
+  /** A bubble drawn veiled, its files not shown, since showing them would pass the drawing's limit. */
+  veiled?: boolean;
+  /** The inner bubble it stands in, by its id; none for a unit of the body's own skin. */
+  parent?: string;
 }
 
 /** The space a wrapper keeps around each member's sphere: one and a half times the radius of a file with no symbols. */
@@ -94,6 +125,12 @@ const GEODESIC = ((): { points: number[][]; inradius: number } => {
   }
   return { points, inradius };
 })();
+
+/**
+ * How far beyond a padded sphere's radius its hull may reach, as a share of that radius: the polyhedron standing in for
+ * the sphere holds it whole, so its corners stand out by one over its inscribed sphere's radius (2026-11-06).
+ */
+export const HULL_REACH = 1 / GEODESIC.inradius;
 
 /** How many of a body's farthest-reaching members its hull is first taken over. */
 const OUTER_MEMBERS = 64;

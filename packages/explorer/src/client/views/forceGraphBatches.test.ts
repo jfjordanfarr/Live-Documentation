@@ -1,19 +1,19 @@
-import { Color, Matrix4, PerspectiveCamera, Quaternion, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
+import { Color, InstancedMesh, Matrix4, PerspectiveCamera, Quaternion, Raycaster, Scene, SphereGeometry, Vector2, Vector3, type WebGLRenderer } from "three";
 import { describe, expect, it } from "vitest";
 
-import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum } from "./forceGraphBatches";
+import { createSpatialBuffers, drawSpatialGraphOnChange, screenWireIntersectsFrustum, type SpatialWrapperUnit } from "./forceGraphBatches";
 import { wrapperHull, type GroupShape } from "./forceGraphWrappers";
 
 interface Node { id: string; publicSymbols: string[]; x: number; y: number; z: number; radius: number; color: string; ring?: string }
 interface Link { source: Node; target: Node; width: number; color: string; visible: boolean; arrow: number }
 const node = (id: string, x: number, y: number, z: number, radius = 4): Node => ({ id, x, y, z, radius, color: "#0091ff", publicSymbols: [] });
 const link = (source: Node, target: Node, width = 1): Link => ({ source, target, width, color: "rgba(255, 255, 255, 0.16)", visible: true, arrow: 0 });
-const setup = () => {
+const setup = (sphere?: (node: Node) => boolean) => {
   const scene = new Scene(), camera = new PerspectiveCamera(60, 1, .1, 20000);
   camera.position.z = 1000; camera.updateMatrixWorld();
   const buffers = createSpatialBuffers<Node, Link>(scene, {
     radius: node => node.radius, nodeColor: node => node.color, linkColor: link => link.color,
-    linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow, ring: node => node.ring ?? null
+    linkWidth: link => link.width, linkVisible: link => link.visible, arrowLength: link => link.arrow, ring: node => node.ring ?? null, sphere
   });
   return { scene, camera, buffers, draw: (nodes = 0, wires = 1) => buffers.update(camera, 1000, 1000, nodes, wires, new Vector3()) };
 };
@@ -44,8 +44,9 @@ describe("direct spatial buffers", () => {
     const { buffers, scene, draw } = setup(), a = node("a", 20, -8, 4, 7), b = node("b", -30, 17, 90, 13);
     a.color = "#12345633"; b.color = "#ff6600";
     buffers.setData({ nodes: [a, b], links: [] }); draw();
-    // The four instance batches and the one mesh of every wrapper (2026-11-05), whatever the picture holds.
-    expect(scene.children).toHaveLength(5);
+    // The four instance batches, the one mesh of every wrapper (2026-11-05) and the two of what the shells' skins show
+    // within them (2026-11-06), whatever the picture holds.
+    expect(scene.children).toHaveLength(7);
     const { mesh, entries } = buffers.nodes;
     for (const entry of entries) {
       const matrix = new Matrix4(); mesh.getMatrixAt(entry.slot, matrix);
@@ -127,7 +128,7 @@ describe("direct spatial buffers", () => {
     buffers.setData({ nodes: nodes.slice(0, 2), links: links.slice(0, 1) }); draw();
     const first = buffers.nodes.entries[0], batch = buffers.nodes.mesh;
     buffers.setData({ nodes, links }); draw();
-    expect(scene.children).toHaveLength(5); expect(buffers.nodes.mesh).toBe(batch); expect(buffers.nodes.entries[0]).toBe(first);
+    expect(scene.children).toHaveLength(7); expect(buffers.nodes.mesh).toBe(batch); expect(buffers.nodes.entries[0]).toBe(first);
     expect(buffers.nodes.entries).toHaveLength(2000); expect(buffers.lines.entries).toHaveLength(1999);
     buffers.setData({ nodes: nodes.slice(0, 1), links: [] }); draw();
     expect(buffers.nodes.entries).toEqual([first]); expect(batch.count).toBe(1); expect(buffers.lines.mesh.count).toBe(0);
@@ -341,6 +342,68 @@ describe("the wrappers' mesh (2026-11-05)", () => {
     expect(material.uniforms.uHover.value, "a wrapper bursting open has no rim").toBe(-1);
     const alpha = buffers.wrappers.geometry.getAttribute("wrapperAlpha");
     expect(new Set(Array.from({ length: alpha.count }, (_, i) => alpha.getX(i)))).toEqual(new Set([.5, 1]));
+    buffers.dispose();
+  });
+});
+
+describe("what a shell's skin shows within it (2026-11-06)", () => {
+  type Drawn = { seed: string; id: string; kind: string; x: number; y: number; z: number; radius: number; alpha: number };
+  const units: SpatialWrapperUnit[] = [{ id: "s/own.ts", kind: "file", x: 10, y: 0, z: 0, radius: 4, reach: 10, color: "#ff6600" },
+    { id: "s/sub", kind: "directory", x: -15, y: 0, z: 0, radius: 12, reach: 12 }];
+  const hull = wrapperHull({ seed: "shell:s", members: units.map(({ id, x, y, z, reach }) => ({ id, x, y, z, radius: reach - 6 })) }, 6);
+  const shown = (buffers: ReturnType<typeof setup>["buffers"], name: string): Drawn[] => {
+    let found: Drawn[] = [];
+    buffers.wrappers.parent!.traverse(object => { if (object.name === name) found = object.userData.spatialUnits as Drawn[]; });
+    return found;
+  };
+  const mesh = (buffers: ReturnType<typeof setup>["buffers"], name: string) => buffers.wrappers.parent!.getObjectByName(name) as InstancedMesh;
+
+  it("shows its files and its subdirectories' balloons under Skin alone, at its place and growth, and none while it bursts", () => {
+    const { buffers, draw } = setup(node => !node.id.startsWith("shell:")), shell = node("shell:s", 100, 0, 0, 30);
+    buffers.setData({ nodes: [shell], links: [] });
+    buffers.setWrappers(["shell:s"], () => hull, "off", undefined, () => units); draw();
+    expect(mesh(buffers, "Spatial shell files").visible).toBe(false);
+    expect(mesh(buffers, "Spatial shell balloons").visible).toBe(false);
+    buffers.setWrappers(["shell:s"], () => hull, "skin", undefined, () => units);
+    buffers.styleWrappers({ alpha: () => .8, scale: () => 1, hovered: null, popping: new Set() }); draw();
+    expect(shown(buffers, "Spatial shell files")).toEqual([{ seed: "shell:s", id: "s/own.ts", kind: "file", x: 110, y: 0, z: 0, radius: 4, alpha: .75 * .8, veiled: false }]);
+    expect(shown(buffers, "Spatial shell balloons")).toEqual([{ seed: "shell:s", id: "s/sub", kind: "directory", x: 85, y: 0, z: 0, radius: 12, alpha: .8, veiled: false }]);
+    const files = mesh(buffers, "Spatial shell files"), matrix = new Matrix4(), color = new Color();
+    files.getMatrixAt(0, matrix); files.getColorAt(0, color);
+    expect(new Vector3().setFromMatrixPosition(matrix).toArray()).toEqual([110, 0, 0]);
+    expect(matrix.elements[0]).toBe(4);
+    expect(color.r).toBeCloseTo(new Color("#ff6600").r, 6);
+    // The skin's centre and drawn radius are recorded with what it shows.
+    const ranges = (buffers.wrappers.userData.spatialWrappers as { ranges: Array<{ seed: string; x: number; radius: number; alpha: number }> }).ranges;
+    expect(ranges).toEqual([expect.objectContaining({ seed: "shell:s", x: 100, radius: hull.radius, alpha: .8 })]);
+    // A file draws as a sphere does under the zoom's resistance, never past the room it keeps.
+    draw(1);
+    expect(shown(buffers, "Spatial shell files")[0].radius).toBeGreaterThan(4);
+    expect(shown(buffers, "Spatial shell files")[0].radius).toBeLessThanOrEqual(10);
+    // Growing as it bursts, it carries what it shows; bursting, it shows nothing, since its units stand in the picture.
+    buffers.styleWrappers({ alpha: () => 1, scale: () => 1.1, hovered: null, popping: new Set() }); draw();
+    expect(shown(buffers, "Spatial shell balloons")[0]).toMatchObject({ x: 100 - 16.5, radius: 12 * 1.1 });
+    buffers.styleWrappers({ alpha: () => 1, scale: () => 1.1, hovered: null, popping: new Set(["shell:s"]) }); draw();
+    expect(shown(buffers, "Spatial shell files")).toEqual([]);
+    expect(shown(buffers, "Spatial shell balloons")).toEqual([]);
+    // The clouds veil what they hold.
+    buffers.setWrappers(["shell:s"], () => hull, "cloud", undefined, () => units);
+    buffers.styleWrappers({ alpha: () => 1, scale: () => 1, hovered: null, popping: new Set() }); draw();
+    expect(shown(buffers, "Spatial shell files")).toEqual([]);
+    expect(mesh(buffers, "Spatial shell balloons").visible).toBe(false);
+    buffers.dispose();
+  });
+
+  it("stands a shell whose skin is not built yet as one balloon of its body, in every look but Off", () => {
+    const { buffers, draw } = setup(node => !node.id.startsWith("shell:")), shell = node("shell:t", -50, 20, 0, 25), seed = node("seed", 0, 0, 0);
+    buffers.setData({ nodes: [shell, seed], links: [] });
+    for (const look of ["skin", "cloud", "cloud-rim"] as const) {
+      buffers.setWrappers(["shell:t", "seed"], () => undefined, look); draw();
+      // The seed, drawn as a sphere, needs no stand-in.
+      expect(shown(buffers, "Spatial shell balloons").map(({ id, x, y, radius }) => ({ id, x, y, radius }))).toEqual([{ id: "shell:t", x: -50, y: 20, radius: 25 }]);
+    }
+    buffers.setWrappers(["shell:t"], () => undefined, "off"); draw();
+    expect(mesh(buffers, "Spatial shell balloons").visible).toBe(false);
     buffers.dispose();
   });
 });

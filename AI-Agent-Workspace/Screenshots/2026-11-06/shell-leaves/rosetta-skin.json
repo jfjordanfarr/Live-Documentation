@@ -1,0 +1,366 @@
+{
+ "url": "http://127.0.0.1:8912/?s=N4IgbiBcDMA0IEcomgExPAdsgLgUwGccCB6",
+ "frames": 208,
+ "seconds": 53.06,
+ "spheres": 120,
+ "skins": 50,
+ "filesDrawnWithin": 824,
+ "counts": [
+  {
+   "seed": "tests/integration/programs/csharp/webforms/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/blazor-telemetry/workspace/Pages/_Host.cshtml",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/engine/src/config/liveDocumentationConfig.ts",
+   "holds": null,
+   "files": 486,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/powershell/rollout/expected/compiler-edges.json",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/csharp/estate/Contracts/Contracts.csproj",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/csharp/estate/expected/compiler-edges.json",
+   "holds": null,
+   "files": 32,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/slopcop-assets/workspace/pages/index.html",
+   "holds": null,
+   "files": 13,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/java/basic/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/rust/stockroom/expected/compiler-edges.json",
+   "holds": null,
+   "files": 10,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/ruby/basic/lib/reporter.rb",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/src/lib.rs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/ruby/cli/lib/commands/report.rb",
+   "holds": null,
+   "files": 5,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/java/app/src/main/java/com/acme/tally/app/Main.java",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/java/warehouse/expected/compiler-edges.json",
+   "holds": null,
+   "files": 12,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/rust/analytics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/queue-worker/workspace/Workers/TelemetryWorker.cs",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/rust/basics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/python/ledger/expected/compiler-edges.json",
+   "holds": null,
+   "files": 13,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/rust/rosetta",
+   "holds": 8,
+   "files": 8,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/go/app/go.mod",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/python/basics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tsconfig.base.json",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/powershell-compendium/expected/compiler-edges.json",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/ruby/rosetta",
+   "holds": 7,
+   "files": 7,
+   "bubbles": 2,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/go/rosetta",
+   "holds": 8,
+   "files": 8,
+   "bubbles": 3,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/python/rosetta/src",
+   "holds": 7,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/java/rosetta",
+   "holds": 12,
+   "files": 12,
+   "bubbles": 5,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/rust/stock/Cargo.toml",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/csharp-reflection/workspace/Services/ReflectionFactory.cs",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/webforms-appsettings/workspace/packages/site/Default.aspx",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/java/service/expected/compiler-edges.json",
+   "holds": null,
+   "files": 9,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/c/rosetta",
+   "holds": 11,
+   "files": 11,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/manifests/workspace/java/app/pom.xml",
+   "holds": null,
+   "files": 2,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "scripts/steps.mjs",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/include-dirs/expected/compiler-edges.json",
+   "holds": null,
+   "files": 9,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/entry-points/workspace/src/lib.ts",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/csharp-advanced-symbols/src/Diagnostics/BaseWidget.cs",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/csharp/rosetta",
+   "holds": 12,
+   "files": 12,
+   "bubbles": 5,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/spa-runtime-config/workspace/src/bootstrap.ts",
+   "holds": null,
+   "files": 1,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/typescript/layered/expected/compiler-edges.json",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/python/pipeline/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/typescript/rosetta",
+   "holds": 8,
+   "files": 8,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/csharp/basic/expected/compiler-edges.json",
+   "holds": null,
+   "files": 7,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "shell:tests/integration/programs/cpp/rosetta",
+   "holds": 11,
+   "files": 11,
+   "bubbles": 1,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/c/basics/expected/compiler-edges.json",
+   "holds": null,
+   "files": 4,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/go/depot/expected/compiler-edges.json",
+   "holds": null,
+   "files": 14,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "packages/engine/package.json",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/fixtures/razor-appsettings/workspace/Pages/Index.cshtml",
+   "holds": null,
+   "files": 3,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/typescript/basic/expected/compiler-edges.json",
+   "holds": null,
+   "files": 6,
+   "bubbles": 0,
+   "veiled": 0
+  },
+  {
+   "seed": "tests/integration/programs/c/modular/expected/compiler-edges.json",
+   "holds": null,
+   "files": 8,
+   "bubbles": 0,
+   "veiled": 0
+  }
+ ],
+ "pops": [],
+ "frameMs": {
+  "median": 233.3,
+  "mean": 232.9,
+  "frames": 40
+ }
+}

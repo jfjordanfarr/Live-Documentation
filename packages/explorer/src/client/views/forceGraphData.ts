@@ -11,6 +11,8 @@ export interface SpatialGraphNode extends ExplorerNodePayload {
   directoryFileCount?: number;
   /** A directory shell's count of the hidden files it holds, in the 3D picture alone (2026-11-05). */
   shellFiles?: number;
+  /** A directory shell's radius, its files' true size (2026-11-06). */
+  shellBody?: number;
 }
 
 /**
