@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: implementation
 - Code Path: packages/explorer/src/client/views/forceGraphShells.ts
-- Generated At: 2026-11-07T07:49:38.369Z
+- Generated At: 2026-11-07T09:31:43.850Z
 
 ## Authored
 ### Purpose
@@ -213,18 +213,22 @@ picture's budget (`pictureVeils`) veils.
 
 #### `pictureVeils` {#symbol-pictureveils}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L570)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L574)
 - Parameters: `bodies`: `ReadonlyArray`
 
 ##### `pictureVeils` — Summary
 Which bodies of a picture draw nothing within their skins, so that the picture as a whole draws no more files within
-skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the
-smallest body still drawn, by the files it holds, is veiled. Each body is given by its id, the files it holds and the
-files its skin would draw; the ids veiled are returned. Labels keep the true counts.
+skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the body
+farthest from what was asked about is veiled, and among bodies as far, the largest by the files it holds, so that the
+budget goes to the neighbourhood of the pin and, there, to the bodies whose interiors a person can read (the root's
+order; the builder's brief had said the smallest first, which on the T3 sample gave the whole budget to one giant far
+from the pin and veiled the shells beside it). Each body is given by its id, the files it holds, the files its skin
+would draw and its hop from what was asked about, the nearest hop of a shown file it is wired to, or none when it is
+wired to no shown file; the ids veiled are returned. Labels keep the true counts.
 
 #### `poppedAfter` {#symbol-poppedafter}
 - Type: function
-- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L626)
+- Source: [source](../../../../../../../packages/explorer/src/client/views/forceGraphShells.ts#L632)
 - Parameters: `popped`: `ReadonlySet`
 
 ##### `poppedAfter` — Summary

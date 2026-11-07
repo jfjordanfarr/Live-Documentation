@@ -4,7 +4,7 @@
 - Layer: 4
 - Archetype: test
 - Code Path: tests/e2e/force-graph-shells.spec.ts
-- Generated At: 2026-11-06T21:42:44.242Z
+- Generated At: 2026-11-07T09:31:49.398Z
 
 ## Authored
 ### Purpose
@@ -40,5 +40,7 @@ _No public symbols detected_
 - [`forceGraphShells.ShellPicture`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-shellpicture-interface)
 - [`forceGraphShells.shellPicture`](../../packages/explorer/src/client/views/forceGraphShells.ts.mdmd.md#symbol-shellpicture-function)
 - [`force-graph-observation.observeGraph`](./force-graph-observation.ts.mdmd.md#symbol-observegraph)
+- [`search-bar.choose`](./search-bar.ts.mdmd.md#symbol-choose)
 - [`still-picture.loadGraph`](./still-picture.ts.mdmd.md#symbol-loadgraph)
+- [`still-picture.localMapSettled`](./still-picture.ts.mdmd.md#symbol-localmapsettled)
 <!-- LIVE-DOC:END Dependencies -->

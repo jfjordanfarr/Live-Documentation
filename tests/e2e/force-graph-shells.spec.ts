@@ -1,7 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { observeGraph } from "./force-graph-observation";
-import { loadGraph } from "./still-picture";
+import { choose as chooseSubject } from "./search-bar";
+import { loadGraph, localMapSettled } from "./still-picture";
 import { compressSnapshot, DEFAULT_SNAPSHOT } from "../../packages/explorer/src/client/persistence/compressed-url-state";
 import { getDefaultTuning, PERSISTED_UI_KEY, PERSISTED_UI_VERSION } from "../../packages/explorer/src/client/persistence/local-storage";
 import type { GroupWrappers } from "../../packages/explorer/src/client/types";
@@ -339,4 +340,42 @@ test("a shell over a chain shows every file it holds, and its pop leaves more th
   expect(bodies.get(`shell:${chain.id}`)?.radius, "the chain's bubble stands as a shell of its size").toBeCloseTo(chain.radius, 6);
   expect(bodies.has(`shell:${java}/src`), "no shell named src holds all").toBe(false);
   await page.clock.resume();
+});
+
+test("the transition from 2D arrives at the 3D picture, not at the one before it, while that picture waits for its bodies to be packed", async ({ page }) => {
+  // A picture packs the bodies it names over frames since the third round (2026-11-07), standing as it was meanwhile. A
+  // transition that took the view as ready at its next frame captured the picture before, so that the cards folded toward
+  // files of another subject and the picture then changed under them. The first 3D picture is the repository's reference;
+  // two subjects far from it are then pinned in 2D, so that the 3D picture they make packs more than one new body, the
+  // first alone past a frame's budget (the rosetta programs' one bubble of many files, 180 ms here), and must wait.
+  test.setTimeout(90_000);
+  await choose(page, "skin", 2);
+  await observeGraph(page);
+  await page.goto(entry("/", REPO_PIN));
+  await expect.poll(async () => (await drawnShells(page)).shells.length, { message: "the first picture is built", timeout: 20_000 }).toBeGreaterThan(0);
+  await page.getByRole("button", { name: "2D", exact: true }).click();
+  const bridge = page.locator(".perspective-transition[data-graph-files]");
+  await expect(bridge).toHaveCount(0, { timeout: 20_000 });
+  await localMapSettled(page);
+  // The reference's pin released, so that the 2D picture to copy is the two far subjects' alone.
+  const referencePin = page.locator(`#map-container .node-card[data-id="${REPO_PIN}"] .local-file-pin`);
+  await expect(referencePin).toHaveAttribute("aria-pressed", "true");
+  await referencePin.click();
+  await localMapSettled(page);
+  const far = ["tests/integration/programs/typescript/rosetta/src/helpers.ts", "packages/generator/src/generator.ts"];
+  for (const file of far) {
+    await chooseSubject(page, "subject", file.slice(file.lastIndexOf("/") + 1), { file });
+    await localMapSettled(page);
+    await expect(page.locator(`#map-container .node-card[data-id="${file}"]`)).toBeVisible();
+  }
+  await page.getByRole("button", { name: "3D", exact: true }).click();
+  await expect(bridge).toBeVisible();
+  // A card's travelling name shows only when the captured picture holds its file; captured before the picture was built,
+  // the picture before held nothing of these subjects, and their names stayed invisible while their cards folded in place.
+  for (const file of far) {
+    const name = bridge.locator(`.perspective-file-name[data-node-id="${file}"]`);
+    await expect.poll(() => name.evaluate(element => parseFloat((element as HTMLElement).style.opacity)), { message: `the transition saw the picture it arrives at: ${file}`, timeout: 10_000 }).toBeGreaterThan(0);
+  }
+  await expect(bridge).toHaveCount(0, { timeout: 20_000 });
+  await expect.poll(async () => (await drawnShells(page)).nodes, { timeout: 20_000 }).toContain(far[1]);
 });

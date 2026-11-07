@@ -351,17 +351,24 @@ describe("the picture's budget of files drawn within skins (2026-11-07, third ro
     expect(pictureVeils([body("a", 600), body("b", 424)], 1024)).toEqual(new Set());
   });
 
-  it("veils the smallest bodies first until the rest draw within the limit, whatever order they come in", () => {
-    const bodies = [body("large", 2000, 1000), body("middle", 300), body("small", 20), body("tiny", 3), body("tiny-too", 3)];
+  it("veils the farthest bodies first, and among bodies as far the largest, until the rest draw within the limit, whatever order they come in", () => {
+    const near = (id: string, files: number, hop: number, drawn = files) => ({ ...body(id, files, drawn), hop });
+    // 1,326 drawn: the giant beside the pin stands over the middling body two hops out; the far ones go first.
+    const bodies = [near("giant", 2000, 0, 1000), near("middle", 300, 2), near("small", 20, 1), near("tiny", 3, 1), body("adrift", 3)];
     const veiled = pictureVeils(bodies, 1024);
-    // 1,326 drawn: the two of three files go first, then the twenty and the three hundred; the large one stands.
-    expect(veiled).toEqual(new Set(["tiny", "tiny-too", "small", "middle"]));
+    expect(veiled).toEqual(new Set(["adrift", "middle"]));
     expect(pictureVeils([...bodies].reverse(), 1024)).toEqual(veiled);
-    expect(pictureVeils(bodies, 1300)).toEqual(new Set(["tiny", "tiny-too", "small"]));
+    // Bodies as far as one another: the largest is veiled first, so that the more of them stay open.
+    expect(pictureVeils([near("a", 600, 1), near("b", 500, 1), near("c", 400, 1)], 1024)).toEqual(new Set(["a"]));
+    expect(pictureVeils([near("a", 600, 1), near("b", 500, 1), near("c", 400, 1)], 900)).toEqual(new Set(["a"]));
+    expect(pictureVeils([near("a", 600, 1), near("b", 500, 1), near("c", 400, 1)], 300)).toEqual(new Set(["a", "b", "c"]));
+    // The hop decides before the size: a giant at the pin outlasts a small body a hop farther.
+    expect(pictureVeils([near("giant", 2000, 0, 1000), near("small", 100, 1)], 1024)).toEqual(new Set(["small"]));
   });
 
   it("passes over a body that draws nothing within its skin, and veils one that alone would pass the limit", () => {
-    expect(pictureVeils([body("veiled", 5000, 0), body("a", 10), body("b", 1020)], 1024)).toEqual(new Set(["a"]));
+    // Neither wired to a shown file, so the larger goes first and the small one stays.
+    expect(pictureVeils([body("veiled", 5000, 0), body("a", 10), body("b", 1020)], 1024)).toEqual(new Set(["b"]));
     expect(pictureVeils([body("alone", 1500, 1500)], 1024)).toEqual(new Set(["alone"]));
   });
 });

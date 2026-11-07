@@ -378,7 +378,14 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   let ready = false;
   let framedDirectoryScope = "";
   let frameDirectory = (): void => {};
+  /**
+   * Those waiting for the view to be ready: a frame drawn, and no picture waiting for its bodies to be packed, since a
+   * picture that waits stands as it was and the perspective transition into it must see the picture it arrives at, not
+   * the one before (the root's check of the third round, 2026-11-07).
+   */
   const readyWaiters: Array<() => void> = [];
+  /** The files a transition asked to reveal while the picture waited for its bodies; revealed once it is built. */
+  let pendingReveal: readonly string[] | null = null;
   const linkKey = (link: { kind: string; source: string | { id: string }; target: string | { id: string } }): string =>
     `${link.kind}|${resolveLinkEndpoint(link.source)}|${resolveLinkEndpoint(link.target)}`;
 
@@ -538,7 +545,7 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     updatePointerHover();
     spheresOnScreen = instance.graphData().nodes.length;
     grow();
-    for (const resolve of readyWaiters.splice(0)) resolve();
+    if (!packing.size) for (const resolve of readyWaiters.splice(0)) resolve();
     animation = requestAnimationFrame(animateFocus);
   }
 
@@ -1255,9 +1262,29 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     scopeGroups = scope.groups;
     frontierHop = hopsShown;
     wrapped = nextWrapped;
+    // Each body's hop from what was asked about, for the picture's budget: a wrapped group's seed stands at its own hop;
+    // a shell at the nearest hop of a shown file its wires join, or one past a shell's that joins it, or none.
+    const bodyHop = new Map<string, number>();
+    for (const id of wrapped.keys()) if (!shells.has(id) && scope.hops.has(id)) bodyHop.set(id, scope.hops.get(id)!);
+    const between: Array<[string, string]> = [];
+    for (const wire of shellWires) {
+      const [a, b] = [wire.source, wire.target];
+      for (const [shell, other] of [[a, b], [b, a]] as const) {
+        if (!shells.has(shell)) continue;
+        if (shells.has(other)) between.push([shell, other]);
+        else if (scope.hops.has(other)) bodyHop.set(shell, Math.min(bodyHop.get(shell) ?? Infinity, scope.hops.get(other)!));
+      }
+    }
+    for (let settled = false; !settled;) {
+      settled = true;
+      for (const [shell, other] of between) {
+        const through = bodyHop.get(other);
+        if (through !== undefined && through + 1 < (bodyHop.get(shell) ?? Infinity)) { bodyHop.set(shell, through + 1); settled = false; }
+      }
+    }
     pictureVeiled = pictureVeils([...wrapped].map(([id, key]) => {
       const shape = bodies.get(key)!.shape;
-      return { id, files: shape.files ?? 0, drawn: shape.units?.filter(unit => unit.kind === "file").length ?? 0 };
+      return { id, files: shape.files ?? 0, drawn: shape.units?.filter(unit => unit.kind === "file").length ?? 0, hop: bodyHop.get(id) };
     }));
     const wanted = new Set(wrapped.values());
     bodyWork = bodyWork.filter(key => wanted.has(key)).sort((a, b) => (bodies.get(a)!.shape.files ?? 0) - (bodies.get(b)!.shape.files ?? 0) || (a < b ? -1 : a > b ? 1 : 0));
@@ -1949,13 +1976,15 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
   function packOn(): void {
     packingFrame = 0;
     if (!packing.size) return;
-    if (packBodies()) render();
-    else packingFrame = requestAnimationFrame(packOn);
+    if (!packBodies()) { packingFrame = requestAnimationFrame(packOn); return; }
+    render();
+    if (!packing.size && pendingReveal) { const ids = pendingReveal; pendingReveal = null; revealForTransition(ids); }
   }
 
   /** Stop the packing a picture waits for, when wrapping no longer asks for it. */
   function cancelPacking(): void {
     packing = new Map();
+    pendingReveal = null;
     cancelAnimationFrame(packingFrame);
     packingFrame = 0;
   }
@@ -2097,6 +2126,8 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
 
   function revealForTransition(nodeIds: readonly string[]): void {
     if (!forceGraphInstance || !motion) return;
+    // A picture waiting for its bodies is not the one these files belong to; they are revealed once it is built.
+    if (packing.size) { pendingReveal = nodeIds; return; }
     const next = revealCorresponding(reveal.order, reveal.shown, new Set(nodeIds));
     if (next.shown === reveal.shown) return;
     Object.assign(reveal, next);
@@ -2136,5 +2167,5 @@ export function createForceGraphView(options: ForceGraphViewOptions): ForceGraph
     container.setAttribute("aria-busy", "true");
   }
 
-  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, settle, whenReady: () => ready ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
+  return { render, setActive, focusNode, focusDirectory, fit, keepInspectionVisible, getSubjectAnchor, placeSubjectAnchor, captureScene, revealForTransition, setMoment, settle, whenReady: () => ready && !packing.size ? Promise.resolve() : new Promise(resolve => readyWaiters.push(resolve)) };
 }

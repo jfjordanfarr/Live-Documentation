@@ -563,15 +563,21 @@ export function veiledUnits(shape: Pick<GroupShape, "seed" | "radius" | "margin"
 
 /**
  * Which bodies of a picture draw nothing within their skins, so that the picture as a whole draws no more files within
- * skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the
- * smallest body still drawn, by the files it holds, is veiled. Each body is given by its id, the files it holds and the
- * files its skin would draw; the ids veiled are returned. Labels keep the true counts.
+ * skins than `DRAWN_FILES`, as one body does (2026-11-07, third round): while the files drawn pass the limit, the body
+ * farthest from what was asked about is veiled, and among bodies as far, the largest by the files it holds, so that the
+ * budget goes to the neighbourhood of the pin and, there, to the bodies whose interiors a person can read (the root's
+ * order; the builder's brief had said the smallest first, which on the T3 sample gave the whole budget to one giant far
+ * from the pin and veiled the shells beside it). Each body is given by its id, the files it holds, the files its skin
+ * would draw and its hop from what was asked about, the nearest hop of a shown file it is wired to, or none when it is
+ * wired to no shown file; the ids veiled are returned. Labels keep the true counts.
  */
-export function pictureVeils(bodies: ReadonlyArray<{ id: string; files: number; drawn: number }>, limit = DRAWN_FILES): Set<string> {
+export function pictureVeils(bodies: ReadonlyArray<{ id: string; files: number; drawn: number; hop?: number }>, limit = DRAWN_FILES): Set<string> {
   let drawn = 0;
   for (const body of bodies) drawn += body.drawn;
   const veiled = new Set<string>();
-  const order = bodies.filter(body => body.drawn > 0).sort((a, b) => a.files - b.files || a.drawn - b.drawn || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const far = (body: { hop?: number }): number => body.hop ?? Infinity;
+  const farther = (a: { hop?: number }, b: { hop?: number }): number => (far(b) > far(a) ? 1 : far(b) < far(a) ? -1 : 0);
+  const order = bodies.filter(body => body.drawn > 0).sort((a, b) => farther(a, b) || b.files - a.files || b.drawn - a.drawn || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   for (const body of order) {
     if (drawn <= limit) break;
     veiled.add(body.id);
